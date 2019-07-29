@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.secrets;
 
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.configuration.Configuration;
@@ -47,10 +48,6 @@ import java.util.Objects;
  * {@codesnippet com.azure.security.keyvault.keys.async.secretclient.pipeline.instantiation}
  *
  * @see SecretClient
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> master
  * @see SecretAsyncClient
  */
 @ServiceClientBuilder(serviceClients = SecretClient.class)
@@ -130,7 +127,7 @@ public final class SecretClientBuilder {
         policies.addAll(this.policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
-        HttpPipeline pipeline = HttpPipeline.builder()
+        HttpPipeline pipeline = new HttpPipelineBuilder()
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
                 .build();

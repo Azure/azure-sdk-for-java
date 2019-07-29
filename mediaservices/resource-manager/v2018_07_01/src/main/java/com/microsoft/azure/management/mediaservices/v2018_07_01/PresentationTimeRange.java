@@ -46,7 +46,7 @@ public class PresentationTimeRange {
     private Long timescale;
 
     /**
-     * The indicator of forcing exsiting of end time stamp.
+     * The indicator of forcing existing of end time stamp.
      */
     @JsonProperty(value = "forceEndTimestamp")
     private Boolean forceEndTimestamp;
@@ -152,7 +152,7 @@ public class PresentationTimeRange {
     }
 
     /**
-     * Get the indicator of forcing exsiting of end time stamp.
+     * Get the indicator of forcing existing of end time stamp.
      *
      * @return the forceEndTimestamp value
      */
@@ -161,7 +161,7 @@ public class PresentationTimeRange {
     }
 
     /**
-     * Set the indicator of forcing exsiting of end time stamp.
+     * Set the indicator of forcing existing of end time stamp.
      *
      * @param forceEndTimestamp the forceEndTimestamp value to set
      * @return the PresentationTimeRange object itself.

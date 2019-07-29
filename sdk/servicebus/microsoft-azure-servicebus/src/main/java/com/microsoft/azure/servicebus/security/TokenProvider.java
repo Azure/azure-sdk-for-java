@@ -55,6 +55,9 @@ public abstract class TokenProvider {
         if (callback == null) {
             throw new IllegalArgumentException("The callback provided cannot be null.");
         }
+        if (authority == null) {
+            throw new IllegalArgumentException("The authority provided cannot be null.");
+        }
         return new AzureActiveDirectoryTokenProvider(callback, authority, callbackState);
     }
 

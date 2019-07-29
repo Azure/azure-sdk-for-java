@@ -40,12 +40,11 @@ import java.util.stream.Stream;
  * </ol>
  */
 public class ServiceClientInstantiationCheck extends AbstractCheck {
-    private static final String ASYNC = "Async";
-    private static final String ASYNC_CLIENT ="AsyncClient";
+    private static final String SERVICE_CLIENT = "ServiceClient";
     private static final String BUILDER = "builder";
+    private static final String ASYNC_CLIENT = "AsyncClient";
     private static final String CLIENT = "Client";
     private static final String IS_ASYNC = "isAsync";
-    private static final String SERVICE_CLIENT = "ServiceClient";
 
     private static final String COLLECTION_RETURN_TYPE = "ReturnType.COLLECTION";
     private static final String SINGLE_RETURN_TYPE = "ReturnType.SINGLE";
@@ -66,6 +65,7 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
 
     private static boolean isAsync;
     private static boolean hasServiceClientAnnotation;
+    private static boolean isImplPackage;
     private final Map<String, String> simpleClassNameToQualifiedNameMap = new HashMap<>();
 
     @Override
@@ -82,6 +82,7 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
     public int[] getRequiredTokens() {
         return new int[] {
             TokenTypes.IMPORT,
+            TokenTypes.PACKAGE_DEF,
             TokenTypes.CLASS_DEF,
             TokenTypes.CTOR_DEF,
             TokenTypes.METHOD_DEF,
@@ -118,13 +119,22 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
     public void beginTree(DetailAST root) {
         hasServiceClientAnnotation = false;
         isAsync = false;
+        isImplPackage = false;
     }
 
     @Override
     public void visitToken(DetailAST token) {
+        if (isImplPackage) {
+            return;
+        }
+
         switch (token.getType()) {
             case TokenTypes.IMPORT:
                 addImportedClassPath(token);
+                break;
+            case TokenTypes.PACKAGE_DEF:
+                String packageName = FullIdent.createFullIdent(token.findFirstToken(TokenTypes.DOT)).getText();
+                isImplPackage = packageName.contains(".implementation");
                 break;
             case TokenTypes.CLASS_DEF:
                 hasServiceClientAnnotation = hasServiceClientAnnotation(token);

@@ -3,43 +3,63 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.TransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
+import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
+import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
+import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.azure.messaging.eventhubs.EventHubClient.DEFAULT_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Tests scenarios on {@link EventHubClient}.
+ * Tests scenarios on {@link EventHubAsyncClient}.
  */
+@RunWith(Parameterized.class)
 public class EventHubClientIntegrationTest extends ApiTestBase {
-    private static final String PARTITION_ID = "0";
+    private static final int NUMBER_OF_EVENTS = 5;
 
-    private EventHubClient client;
+    @Parameterized.Parameters(name = "{index}: transportType={0}")
+    public static Iterable<Object> getTransportTypes() {
+        return Arrays.asList(TransportType.AMQP, TransportType.AMQP_WEB_SOCKETS);
+    }
+
+    private static final String PARTITION_ID = "1";
+    private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
+    private static final String MESSAGE_TRACKING_VALUE = UUID.randomUUID().toString();
+
+    private EventHubAsyncClient client;
 
     @Rule
     public TestName testName = new TestName();
 
-    public EventHubClientIntegrationTest() {
+    public EventHubClientIntegrationTest(TransportType transportType) {
         super(new ClientLogger(EventHubClientIntegrationTest.class));
+
+        setTransportType(transportType);
     }
 
     @Override
@@ -49,8 +69,12 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
-        ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
+        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
+        final ConnectionOptions connectionOptions = getConnectionOptions();
+
+        client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);
+
+        setupEventTestData(client);
     }
 
     @Override
@@ -60,49 +84,7 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
 
     @Test(expected = NullPointerException.class)
     public void nullConstructor() throws NullPointerException {
-        new EventHubClient(null, null, null);
-    }
-
-    /**
-     * Verifies that we can create and send a message to an Event Hub partition.
-     */
-    @Test
-    public void sendMessageToPartition() throws IOException {
-        skipIfNotRecordMode();
-
-        // Arrange
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
-        final List<EventData> events = Arrays.asList(
-            new EventData("Event 1".getBytes(UTF_8)),
-            new EventData("Event 2".getBytes(UTF_8)),
-            new EventData("Event 3".getBytes(UTF_8)));
-
-        // Act & Assert
-        try (EventHubProducer producer = client.createProducer(producerOptions)) {
-            StepVerifier.create(producer.send(events))
-                .verifyComplete();
-        }
-    }
-
-    /**
-     * Verifies that we can create an {@link EventHubProducer} that does not care about partitions and lets the service
-     * distribute the events.
-     */
-    @Test
-    public void sendMessage() throws IOException {
-        skipIfNotRecordMode();
-
-        // Arrange
-        final List<EventData> events = Arrays.asList(
-            new EventData("Event 1".getBytes(UTF_8)),
-            new EventData("Event 2".getBytes(UTF_8)),
-            new EventData("Event 3".getBytes(UTF_8)));
-
-        // Act & Assert
-        try (EventHubProducer producer = client.createProducer()) {
-            StepVerifier.create(producer.send(events))
-                .verifyComplete();
-        }
+        new EventHubAsyncClient(null, null, null);
     }
 
     /**
@@ -114,15 +96,14 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        final int numberOfEvents = 10;
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
             .prefetchCount(2);
         final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
             EventPosition.earliest(), options);
 
         // Act & Assert
-        StepVerifier.create(consumer.receive().take(numberOfEvents))
-            .expectNextCount(numberOfEvents)
+        StepVerifier.create(consumer.receive().filter(x -> isMatchingEvent(x, MESSAGE_TRACKING_VALUE)).take(NUMBER_OF_EVENTS))
+            .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
     }
 
@@ -146,9 +127,9 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
         });
 
         final CountDownLatch countDownLatch = new CountDownLatch(numberOfClients);
-        final EventHubClient[] clients = new EventHubClient[numberOfClients];
+        final EventHubAsyncClient[] clients = new EventHubAsyncClient[numberOfClients];
         for (int i = 0; i < numberOfClients; i++) {
-            clients[i] = new EventHubClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()));
+            clients[i] = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()));
         }
 
         final EventHubProducer producer = clients[0].createProducer(new EventHubProducerOptions().partitionId(PARTITION_ID));
@@ -156,7 +137,7 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
         final Disposable.Composite subscriptions = Disposables.composite();
 
         try {
-            for (final EventHubClient hubClient : clients) {
+            for (final EventHubAsyncClient hubClient : clients) {
                 final EventHubConsumer consumer = hubClient.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
                 consumers.add(consumer);
 
@@ -191,6 +172,29 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
             dispose(producer);
             dispose(consumers.toArray(new EventHubConsumer[0]));
             dispose(clients);
+        }
+    }
+
+    /**
+     * When we run this test, we check if there have been events already pushed to the partition, if not, we push some
+     * events there.
+     */
+    private void setupEventTestData(EventHubAsyncClient client) {
+        if (HAS_PUSHED_EVENTS.getAndSet(true)) {
+            logger.info("Already pushed events to partition. Skipping.");
+            return;
+        }
+
+        logger.info("Pushing events to partition. Message tracking value: {}", MESSAGE_TRACKING_VALUE);
+
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
+        final EventHubProducer producer = client.createProducer(producerOptions);
+        final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, MESSAGE_TRACKING_VALUE);
+
+        try {
+            producer.send(events).block(TIMEOUT);
+        } finally {
+            dispose(producer);
         }
     }
 }

@@ -1,0 +1,109 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://sima.queue.core.windows.net/queue17925938",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "dd222afc-4003-0028-0875-37b82d000000",
+      "Date" : "Wed, 10 Jul 2019 23:18:01 GMT"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://sima.queue.core.windows.net/queue17925938/messages?visibilitytimeout=0&messagettl=604800",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "dd222b1e-4003-0028-2375-37b82d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>86c3b192-2c4f-4bd4-89bf-07553c141ac0</MessageId><InsertionTime>Wed, 10 Jul 2019 23:18:02 GMT</InsertionTime><ExpirationTime>Wed, 17 Jul 2019 23:18:02 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAI8dyuHU31QE=</PopReceipt><TimeNextVisible>Wed, 10 Jul 2019 23:18:02 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Wed, 10 Jul 2019 23:18:01 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://sima.queue.core.windows.net/queue17925938/messages?visibilitytimeout=0&messagettl=604800",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "dd222b4a-4003-0028-4775-37b82d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>1b2d50b7-3540-4dd4-a480-8549b5207fe7</MessageId><InsertionTime>Wed, 10 Jul 2019 23:18:02 GMT</InsertionTime><ExpirationTime>Wed, 17 Jul 2019 23:18:02 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAqWl6uHU31QE=</PopReceipt><TimeNextVisible>Wed, 10 Jul 2019 23:18:02 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Wed, 10 Jul 2019 23:18:01 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sima.queue.core.windows.net/queue17925938/messages?numofmessages=2&peekonly=true",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "dd222b67-4003-0028-6175-37b82d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>86c3b192-2c4f-4bd4-89bf-07553c141ac0</MessageId><InsertionTime>Wed, 10 Jul 2019 23:18:02 GMT</InsertionTime><ExpirationTime>Wed, 17 Jul 2019 23:18:02 GMT</ExpirationTime><DequeueCount>0</DequeueCount><MessageText>test message</MessageText></QueueMessage><QueueMessage><MessageId>1b2d50b7-3540-4dd4-a480-8549b5207fe7</MessageId><InsertionTime>Wed, 10 Jul 2019 23:18:02 GMT</InsertionTime><ExpirationTime>Wed, 17 Jul 2019 23:18:02 GMT</ExpirationTime><DequeueCount>0</DequeueCount><MessageText>test message 2</MessageText></QueueMessage></QueueMessagesList>",
+      "Date" : "Wed, 10 Jul 2019 23:18:01 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://sima.queue.core.windows.net/queue17925938/messages",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "dd222b7e-4003-0028-7675-37b82d000000",
+      "Date" : "Wed, 10 Jul 2019 23:18:01 GMT"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://sima.queue.core.windows.net/queue17925938",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "dd222b8e-4003-0028-0675-37b82d000000",
+      "Date" : "Wed, 10 Jul 2019 23:18:01 GMT"
+    }
+  } ],
+  "variables" : [ "queue17925938" ]
+}

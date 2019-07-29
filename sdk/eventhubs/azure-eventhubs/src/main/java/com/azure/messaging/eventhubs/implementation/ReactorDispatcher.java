@@ -100,7 +100,7 @@ public final class ReactorDispatcher {
                 oneByteBuffer = ByteBuffer.allocate(1);
             }
         } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
-            logger.info("signalWorkQueue failed with an error: %s", ignorePipeClosedDuringReactorShutdown);
+            logger.info("signalWorkQueue failed with an error: {}", ignorePipeClosedDuringReactorShutdown);
         }
     }
 

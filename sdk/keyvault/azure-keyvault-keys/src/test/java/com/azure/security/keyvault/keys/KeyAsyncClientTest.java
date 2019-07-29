@@ -14,10 +14,10 @@ import com.azure.security.keyvault.keys.models.KeyBase;
 import com.azure.security.keyvault.keys.models.KeyCreateOptions;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.junit.Assert;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -34,20 +34,20 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             client = clientSetup(credentials -> new KeyClientBuilder()
-                    .credential(credentials)
-                    .endpoint(getEndpoint())
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                    .buildAsyncClient());
+                .credential(credentials)
+                .endpoint(getEndpoint())
+                .httpClient(interceptorManager.getPlaybackClient())
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .buildAsyncClient());
         } else {
             client = clientSetup(credentials -> new KeyClientBuilder()
-                    .credential(credentials)
-                    .endpoint(getEndpoint())
-                    .httpClient(HttpClient.createDefault().wiretap(true))
-                    .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .addPolicy(new RetryPolicy())
-                    .buildAsyncClient());
+                .credential(credentials)
+                .endpoint(getEndpoint())
+                .httpClient(HttpClient.createDefault().wiretap(true))
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .addPolicy(new RetryPolicy())
+                .buildAsyncClient());
         }
     }
 
@@ -57,8 +57,8 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void setKey() {
 
         setKeyRunner((expected) -> StepVerifier.create(client.createKey(expected))
-                .assertNext(response -> assertKeyEquals(expected, response))
-                .verifyComplete());
+            .assertNext(response -> assertKeyEquals(expected, response))
+            .verifyComplete());
     }
 
     /**
@@ -66,26 +66,24 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
      */
     public void setKeyEmptyName() {
         StepVerifier.create(client.createKey("", KeyType.RSA))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpResponseStatus.BAD_REQUEST.code()));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class,
+                HttpResponseStatus.BAD_REQUEST.code()));
     }
 
     /**
      * Tests that we can create keys when value is not null or an empty string.
      */
     public void setKeyNullType() {
-        setKeyEmptyValueRunner((key) -> {
-
-            StepVerifier.create(client.createKey(key))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpResponseStatus.BAD_REQUEST.code()));
-
-        });
+        setKeyEmptyValueRunner((key) -> StepVerifier.create(client.createKey(key))
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class,
+                HttpResponseStatus.BAD_REQUEST.code())));
     }
 
     /**
      * Verifies that an exception is thrown when null key object is passed for creation.
      */
     public void setKeyNull() {
-        assertRunnableThrowsException(() -> client.createKey(null), NullPointerException.class);
+        assertRunnableThrowsException(() -> client.createKey(null).block(), NullPointerException.class);
     }
 
     /**
@@ -94,19 +92,19 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void updateKey() {
         updateKeyRunner((original, updated) -> {
             StepVerifier.create(client.createKey(original))
-                    .assertNext(response -> assertKeyEquals(original, response))
-                    .verifyComplete();
-            Key keyToUpdate = client.getKey(original.name()).block().value();
+                .assertNext(response -> assertKeyEquals(original, response))
+                .verifyComplete();
+            Key keyToUpdate = client.getKey(original.name()).block();
 
             StepVerifier.create(client.updateKey(keyToUpdate.expires(updated.expires())))
-                    .assertNext(response -> {
-                        assertNotNull(response.value());
-                        assertEquals(original.name(), response.value().name());
-                    }).verifyComplete();
+                .assertNext(response -> {
+                    assertNotNull(response);
+                    assertEquals(original.name(), response.name());
+                }).verifyComplete();
 
             StepVerifier.create(client.getKey(original.name()))
-                    .assertNext(updatedKeyResponse -> assertKeyEquals(updated, updatedKeyResponse))
-                    .verifyComplete();
+                .assertNext(updatedKeyResponse -> assertKeyEquals(updated, updatedKeyResponse))
+                .verifyComplete();
         });
     }
 
@@ -116,19 +114,19 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void updateDisabledKey() {
         updateDisabledKeyRunner((original, updated) -> {
             StepVerifier.create(client.createKey(original))
-                    .assertNext(response -> assertKeyEquals(original, response))
-                    .verifyComplete();
-            Key keyToUpdate = client.getKey(original.name()).block().value();
+                .assertNext(response -> assertKeyEquals(original, response))
+                .verifyComplete();
+            Key keyToUpdate = client.getKey(original.name()).block();
 
             StepVerifier.create(client.updateKey(keyToUpdate.expires(updated.expires())))
-                    .assertNext(response -> {
-                        assertNotNull(response.value());
-                        assertEquals(original.name(), response.value().name());
-                    }).verifyComplete();
+                .assertNext(response -> {
+                    assertNotNull(response);
+                    assertEquals(original.name(), response.name());
+                }).verifyComplete();
 
             StepVerifier.create(client.getKey(original.name()))
-                    .assertNext(updatedKeyResponse -> assertKeyEquals(updated, updatedKeyResponse))
-                    .verifyComplete();
+                .assertNext(updatedKeyResponse -> assertKeyEquals(updated, updatedKeyResponse))
+                .verifyComplete();
         });
     }
 
@@ -140,8 +138,8 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         getKeyRunner((original) -> {
             client.createKey(original);
             StepVerifier.create(client.getKey(original.name()))
-                    .assertNext(response -> assertKeyEquals(original, response))
-                    .verifyComplete();
+                .assertNext(response -> assertKeyEquals(original, response))
+                .verifyComplete();
         });
     }
 
@@ -150,16 +148,16 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
      */
     public void getKeySpecificVersion() {
         getKeySpecificVersionRunner((key, keyWithNewVal) -> {
-            final Key keyVersionOne = client.createKey(key).block().value();
-            final Key keyVersionTwo = client.createKey(keyWithNewVal).block().value();
+            final Key keyVersionOne = client.createKey(key).block();
+            final Key keyVersionTwo = client.createKey(keyWithNewVal).block();
 
             StepVerifier.create(client.getKey(key.name(), keyVersionOne.version()))
-                    .assertNext(response -> assertKeyEquals(key, response))
-                    .verifyComplete();
+                .assertNext(response -> assertKeyEquals(key, response))
+                .verifyComplete();
 
             StepVerifier.create(client.getKey(keyWithNewVal.name(), keyVersionTwo.version()))
-                    .assertNext(response -> assertKeyEquals(keyWithNewVal, response))
-                    .verifyComplete();
+                .assertNext(response -> assertKeyEquals(keyWithNewVal, response))
+                .verifyComplete();
         });
     }
 
@@ -168,7 +166,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
      */
     public void getKeyNotFound() {
         StepVerifier.create(client.getKey("non-existing"))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
     }
 
 
@@ -178,31 +176,27 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void deleteKey() {
         deleteKeyRunner((keyToDelete) -> {
             StepVerifier.create(client.createKey(keyToDelete))
-                    .assertNext(keyResponse -> {
-                        assertKeyEquals(keyToDelete, keyResponse.value());
-                    }).verifyComplete();
+                .assertNext(keyResponse -> assertKeyEquals(keyToDelete, keyResponse)).verifyComplete();
 
             StepVerifier.create(client.deleteKey(keyToDelete.name()))
-                    .assertNext(deletedKeyResponse -> {
-                        DeletedKey deletedKey = deletedKeyResponse.value();
-                        assertNotNull(deletedKey.deletedDate());
-                        assertNotNull(deletedKey.recoveryId());
-                        assertNotNull(deletedKey.scheduledPurgeDate());
-                        assertEquals(keyToDelete.name(), deletedKey.name());
-                    }).verifyComplete();
+                .assertNext(deletedKeyResponse -> {
+                    assertNotNull(deletedKeyResponse.deletedDate());
+                    assertNotNull(deletedKeyResponse.recoveryId());
+                    assertNotNull(deletedKeyResponse.scheduledPurgeDate());
+                    assertEquals(keyToDelete.name(), deletedKeyResponse.name());
+                }).verifyComplete();
             sleepInRecordMode(30000);
 
             StepVerifier.create(client.purgeDeletedKey(keyToDelete.name()))
-                    .assertNext(voidResponse -> {
-                        assertEquals(HttpResponseStatus.NO_CONTENT.code(), voidResponse.statusCode());
-                    }).verifyComplete();
+                .assertNext(voidResponse -> assertEquals(HttpResponseStatus.NO_CONTENT.code(),
+                    voidResponse.statusCode())).verifyComplete();
             sleepInRecordMode(15000);
         });
     }
 
     public void deleteKeyNotFound() {
         StepVerifier.create(client.deleteKey("non-existing"))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
     }
 
     /**
@@ -210,7 +204,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
      */
     public void getDeletedKeyNotFound() {
         StepVerifier.create(client.getDeletedKey("non-existing"))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
     }
 
     /**
@@ -219,24 +213,18 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void recoverDeletedKey() {
         recoverDeletedKeyRunner((keyToDeleteAndRecover) -> {
             StepVerifier.create(client.createKey(keyToDeleteAndRecover))
-                    .assertNext(keyResponse -> {
-                        assertKeyEquals(keyToDeleteAndRecover, keyResponse.value());
-                    }).verifyComplete();
+                .assertNext(keyResponse -> assertKeyEquals(keyToDeleteAndRecover, keyResponse)).verifyComplete();
 
             StepVerifier.create(client.deleteKey(keyToDeleteAndRecover.name()))
-                    .assertNext(deletedKeyResponse -> {
-                        DeletedKey deletedKey = deletedKeyResponse.value();
-                        assertNotNull(deletedKey);
-                    }).verifyComplete();
+                .assertNext(Assert::assertNotNull).verifyComplete();
             sleepInRecordMode(30000);
 
             StepVerifier.create(client.recoverDeletedKey(keyToDeleteAndRecover.name()))
-                    .assertNext(keyResponse -> {
-                        Key recoveredKey = keyResponse.value();
-                        assertEquals(keyToDeleteAndRecover.name(), recoveredKey.name());
-                        assertEquals(keyToDeleteAndRecover.notBefore(), recoveredKey.notBefore());
-                        assertEquals(keyToDeleteAndRecover.expires(), recoveredKey.expires());
-                    }).verifyComplete();
+                .assertNext(keyResponse -> {
+                    assertEquals(keyToDeleteAndRecover.name(), keyResponse.name());
+                    assertEquals(keyToDeleteAndRecover.notBefore(), keyResponse.notBefore());
+                    assertEquals(keyToDeleteAndRecover.expires(), keyResponse.expires());
+                }).verifyComplete();
         });
     }
 
@@ -245,7 +233,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
      */
     public void recoverDeletedKeyNotFound() {
         StepVerifier.create(client.recoverDeletedKey("non-existing"))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
     }
 
     /**
@@ -254,16 +242,13 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void backupKey() {
         backupKeyRunner((keyToBackup) -> {
             StepVerifier.create(client.createKey(keyToBackup))
-                    .assertNext(keyResponse -> {
-                        assertKeyEquals(keyToBackup, keyResponse.value());
-                    }).verifyComplete();
+                .assertNext(keyResponse -> assertKeyEquals(keyToBackup, keyResponse)).verifyComplete();
 
             StepVerifier.create(client.backupKey(keyToBackup.name()))
-                    .assertNext(response -> {
-                        byte[] backupBytes = response.value();
-                        assertNotNull(backupBytes);
-                        assertTrue(backupBytes.length > 0);
-                    }).verifyComplete();
+                .assertNext(response -> {
+                    assertNotNull(response);
+                    assertTrue(response.length > 0);
+                }).verifyComplete();
         });
     }
 
@@ -272,7 +257,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
      */
     public void backupKeyNotFound() {
         StepVerifier.create(client.backupKey("non-existing"))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
     }
 
     /**
@@ -281,33 +266,26 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void restoreKey() {
         restoreKeyRunner((keyToBackupAndRestore) -> {
             StepVerifier.create(client.createKey(keyToBackupAndRestore))
-                    .assertNext(keyResponse -> {
-                        assertKeyEquals(keyToBackupAndRestore, keyResponse.value());
-                    }).verifyComplete();
-            byte[] backup = client.backupKey(keyToBackupAndRestore.name()).block().value();
+                .assertNext(keyResponse -> assertKeyEquals(keyToBackupAndRestore, keyResponse)).verifyComplete();
+            byte[] backup = client.backupKey(keyToBackupAndRestore.name()).block();
 
             StepVerifier.create(client.deleteKey(keyToBackupAndRestore.name()))
-                    .assertNext(deletedKeyResponse -> {
-                        DeletedKey deletedKey = deletedKeyResponse.value();
-                        assertNotNull(deletedKey);
-                    }).verifyComplete();
+                .assertNext(Assert::assertNotNull).verifyComplete();
             pollOnKeyDeletion(keyToBackupAndRestore.name());
 
             StepVerifier.create(client.purgeDeletedKey(keyToBackupAndRestore.name()))
-                    .assertNext(voidResponse -> {
-                        assertEquals(HttpResponseStatus.NO_CONTENT.code(), voidResponse.statusCode());
-                    }).verifyComplete();
+                .assertNext(voidResponse -> assertEquals(HttpResponseStatus.NO_CONTENT.code(),
+                    voidResponse.statusCode())).verifyComplete();
             pollOnKeyPurge(keyToBackupAndRestore.name());
 
             sleepInRecordMode(60000);
 
             StepVerifier.create(client.restoreKey(backup))
-                    .assertNext(response -> {
-                        Key restoredKey = response.value();
-                        assertEquals(keyToBackupAndRestore.name(), restoredKey.name());
-                        assertEquals(keyToBackupAndRestore.notBefore(), restoredKey.notBefore());
-                        assertEquals(keyToBackupAndRestore.expires(), restoredKey.expires());
-                    }).verifyComplete();
+                .assertNext(response -> {
+                    assertEquals(keyToBackupAndRestore.name(), response.name());
+                    assertEquals(keyToBackupAndRestore.notBefore(), response.notBefore());
+                    assertEquals(keyToBackupAndRestore.expires(), response.expires());
+                }).verifyComplete();
         });
     }
 
@@ -317,7 +295,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void restoreKeyFromMalformedBackup() {
         byte[] keyBackupBytes = "non-existing".getBytes();
         StepVerifier.create(client.restoreKey(keyBackupBytes))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpResponseStatus.BAD_REQUEST.code()));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpResponseStatus.BAD_REQUEST.code()));
     }
 
     /**
@@ -327,31 +305,24 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         getDeletedKeyRunner((keyToDeleteAndGet) -> {
 
             StepVerifier.create(client.createKey(keyToDeleteAndGet))
-                    .assertNext(keyResponse -> {
-                        assertKeyEquals(keyToDeleteAndGet, keyResponse.value());
-                    }).verifyComplete();
+                .assertNext(keyResponse -> assertKeyEquals(keyToDeleteAndGet, keyResponse)).verifyComplete();
 
             StepVerifier.create(client.deleteKey(keyToDeleteAndGet.name()))
-                    .assertNext(deletedKeyResponse -> {
-                        DeletedKey deletedKey = deletedKeyResponse.value();
-                        assertNotNull(deletedKey);
-                    }).verifyComplete();
+                .assertNext(Assert::assertNotNull).verifyComplete();
             pollOnKeyDeletion(keyToDeleteAndGet.name());
             sleepInRecordMode(30000);
 
             StepVerifier.create(client.getDeletedKey(keyToDeleteAndGet.name()))
-                    .assertNext(deletedKeyResponse -> {
-                        DeletedKey deletedKey = deletedKeyResponse.value();
-                        assertNotNull(deletedKey.deletedDate());
-                        assertNotNull(deletedKey.recoveryId());
-                        assertNotNull(deletedKey.scheduledPurgeDate());
-                        assertEquals(keyToDeleteAndGet.name(), deletedKey.name());
-                    }).verifyComplete();
+                .assertNext(deletedKeyResponse -> {
+                    assertNotNull(deletedKeyResponse.deletedDate());
+                    assertNotNull(deletedKeyResponse.recoveryId());
+                    assertNotNull(deletedKeyResponse.scheduledPurgeDate());
+                    assertEquals(keyToDeleteAndGet.name(), deletedKeyResponse.name());
+                }).verifyComplete();
 
             StepVerifier.create(client.purgeDeletedKey(keyToDeleteAndGet.name()))
-                    .assertNext(voidResponse -> {
-                        assertEquals(HttpResponseStatus.NO_CONTENT.code(), voidResponse.statusCode());
-                    }).verifyComplete();
+                .assertNext(voidResponse -> assertEquals(HttpResponseStatus.NO_CONTENT.code(),
+                    voidResponse.statusCode())).verifyComplete();
             pollOnKeyPurge(keyToDeleteAndGet.name());
             sleepInRecordMode(15000);
         });
@@ -364,22 +335,16 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void listDeletedKeys() {
         listDeletedKeysRunner((keys) -> {
 
-            HashMap<String, KeyCreateOptions> keysToDelete = keys;
             List<DeletedKey> deletedKeys = new ArrayList<>();
-            for (KeyCreateOptions key : keysToDelete.values()) {
+            for (KeyCreateOptions key : keys.values()) {
                 StepVerifier.create(client.createKey(key))
-                        .assertNext(keyResponse -> {
-                            assertKeyEquals(key, keyResponse.value());
-                        }).verifyComplete();
+                    .assertNext(keyResponse -> assertKeyEquals(key, keyResponse)).verifyComplete();
             }
             sleepInRecordMode(10000);
 
-            for (KeyCreateOptions key : keysToDelete.values()) {
+            for (KeyCreateOptions key : keys.values()) {
                 StepVerifier.create(client.deleteKey(key.name()))
-                        .assertNext(deletedKeyResponse -> {
-                            DeletedKey deletedKey = deletedKeyResponse.value();
-                            assertNotNull(deletedKey);
-                        }).verifyComplete();
+                    .assertNext(Assert::assertNotNull).verifyComplete();
                 pollOnKeyDeletion(key.name());
             }
 
@@ -388,20 +353,19 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             sleepInRecordMode(30000);
 
             for (DeletedKey actualKey : deletedKeys) {
-                if (keysToDelete.containsKey(actualKey.name())) {
+                if (keys.containsKey(actualKey.name())) {
                     assertNotNull(actualKey.deletedDate());
                     assertNotNull(actualKey.recoveryId());
-                    keysToDelete.remove(actualKey.name());
+                    keys.remove(actualKey.name());
                 }
             }
 
-            assertEquals(0, keysToDelete.size());
+            assertEquals(0, keys.size());
 
             for (DeletedKey deletedKey : deletedKeys) {
                 StepVerifier.create(client.purgeDeletedKey(deletedKey.name()))
-                        .assertNext(voidResponse -> {
-                            assertEquals(HttpResponseStatus.NO_CONTENT.code(), voidResponse.statusCode());
-                        }).verifyComplete();
+                    .assertNext(voidResponse -> assertEquals(HttpResponseStatus.NO_CONTENT.code(),
+                        voidResponse.statusCode())).verifyComplete();
                 pollOnKeyPurge(deletedKey.name());
             }
         });
@@ -413,32 +377,27 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @Override
     public void listKeyVersions() {
         listKeyVersionsRunner((keys) -> {
-            List<KeyCreateOptions> keyVersions = keys;
             List<KeyBase> output = new ArrayList<>();
             String keyName = null;
-            for (KeyCreateOptions key : keyVersions) {
+            for (KeyCreateOptions key : keys) {
                 keyName = key.name();
-                client.createKey(key).subscribe(keyResponse -> assertKeyEquals(key, keyResponse.value()));
+                client.createKey(key).subscribe(keyResponse -> assertKeyEquals(key, keyResponse));
                 sleepInRecordMode(1000);
             }
             sleepInRecordMode(30000);
             client.listKeyVersions(keyName).subscribe(output::add);
             sleepInRecordMode(30000);
 
-            assertEquals(keyVersions.size(), output.size());
+            assertEquals(keys.size(), output.size());
 
             StepVerifier.create(client.deleteKey(keyName))
-                    .assertNext(deletedKeyResponse -> {
-                        DeletedKey deletedKey = deletedKeyResponse.value();
-                        assertNotNull(deletedKey);
-                    }).verifyComplete();
+                .assertNext(Assert::assertNotNull).verifyComplete();
             pollOnKeyDeletion(keyName);
 
 
             StepVerifier.create(client.purgeDeletedKey(keyName))
-                    .assertNext(voidResponse -> {
-                        assertEquals(HttpResponseStatus.NO_CONTENT.code(), voidResponse.statusCode());
-                    }).verifyComplete();
+                .assertNext(voidResponse -> assertEquals(HttpResponseStatus.NO_CONTENT.code(),
+                    voidResponse.statusCode())).verifyComplete();
             pollOnKeyPurge(keyName);
         });
 
@@ -449,10 +408,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
      */
     public void listKeys() {
         listKeysRunner((keys) -> {
-            HashMap<String, KeyCreateOptions> keysToList = keys;
             List<KeyBase> output = new ArrayList<>();
-            for (KeyCreateOptions key : keysToList.values()) {
-                client.createKey(key).subscribe(keyResponse -> assertKeyEquals(key, keyResponse.value()));
+            for (KeyCreateOptions key : keys.values()) {
+                client.createKey(key).subscribe(keyResponse -> assertKeyEquals(key, keyResponse));
                 sleepInRecordMode(1000);
             }
             sleepInRecordMode(30000);
@@ -471,43 +429,40 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         });
     }
 
-    private DeletedKey pollOnKeyDeletion(String keyName) {
+    private void pollOnKeyDeletion(String keyName) {
         int pendingPollCount = 0;
         while (pendingPollCount < 30) {
             DeletedKey deletedKey = null;
             try {
-                deletedKey = client.getDeletedKey(keyName).block().value();
+                deletedKey = client.getDeletedKeyWithResponse(keyName).block().value();
             } catch (ResourceNotFoundException e) {
             }
             if (deletedKey == null) {
                 sleepInRecordMode(2000);
                 pendingPollCount += 1;
-                continue;
             } else {
-                return deletedKey;
+                return;
             }
         }
         System.err.printf("Deleted Key %s not found \n", keyName);
-        return null;
     }
 
-    private DeletedKey pollOnKeyPurge(String keyName) {
+    private void pollOnKeyPurge(String keyName) {
         int pendingPollCount = 0;
         while (pendingPollCount < 10) {
             DeletedKey deletedKey = null;
             try {
-                deletedKey = client.getDeletedKey(keyName).block().value();
+                deletedKey = client.getDeletedKeyWithResponse(keyName).block().value();
             } catch (ResourceNotFoundException e) {
             }
             if (deletedKey != null) {
                 sleepInRecordMode(2000);
                 pendingPollCount += 1;
-                continue;
             } else {
-                return deletedKey;
+                return;
             }
         }
         System.err.printf("Deleted Key %s was not purged \n", keyName);
-        return null;
     }
 }
+

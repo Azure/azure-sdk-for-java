@@ -51,12 +51,12 @@ The easiest means for doing so is to use a connection string, which is created a
 Event Hubs namespace. If you aren't familiar with shared access policies in Azure, you may wish to follow the
 step-by-step guide to [get an Event Hubs connection string][event_hubs_connection_string].
 
-Once the connection string is obtained, create an `EventHubClient` using the `EventHubClientBuilder`:
+Once the connection string is obtained, create an `EventHubAsyncClient` using the `EventHubClientBuilder`:
 
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE EVENT HUBS NAMESPACE >>";
 String eventHubPath = "<< NAME OF THE EVENT HUB >>";
-EventHubClient client = new EventHubClientBuilder()
+EventHubAsyncClient client = new EventHubClientBuilder()
     .connectionString(connectionString, eventHubPath)
     .buildAsyncClient();
 ```
@@ -91,7 +91,7 @@ ClientSecretCredential credential = new ClientSecretCredential()
 // {your-namespace}.servicebus.windows.net
 String host = "<< EVENT HUBS HOST >>"
 String eventHubPath = "<< NAME OF THE EVENT HUB >>";
-EventHubClient client = new EventHubClientBuilder()
+EventHubAsyncClient client = new EventHubClientBuilder()
     .credential(host, eventHubPath, credential)
     .buildAsyncClient();
 ```
@@ -143,7 +143,7 @@ you can also use the send method to send multiple events using a single call.
 
 #### Producer creation
 
-With an existing [EventHubClient][eventhubclient], developers can create a producer by calling `createProducer()` or
+With an existing [EventHubAsyncClient][eventhubasyncclient], developers can create a producer by calling `createProducer()` or
 `createProducer(EventHubProducerOptions)`.
 
 Creates a producer sends events to any partition, allowing Event Hubs service to route the event to an available
@@ -192,7 +192,7 @@ We are creating a consumer that receives events from `partitionID` and only list
 the partition.
 
 ```java
-EventHubConsumer consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, partitionID,
+EventHubConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionID,
     EventPosition.latest());
 ```
 
@@ -305,21 +305,21 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [event_hubs_messaging_exceptions]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-messaging-exceptions
 [event_hubs_product_docs]: https://docs.microsoft.com/en-us/azure/event-hubs/
 [event_hubs_quotas]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-quotas
-[eventhubclient]: ./azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubClient.java
-[eventhubconsumer]: ./azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubProducer.java
-[eventhubproduceroptions]: ./azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubProducerOptions.java
+[eventhubasyncclient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubAsyncClient.java
+[eventhubconsumer]: ./src/main/java/com/azure/messaging/eventhubs/EventHubProducer.java
+[eventhubproduceroptions]: ./src/main/java/com/azure/messaging/eventhubs/models/EventHubProducerOptions.java
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [log_levels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [maven]: https://maven.apache.org/
 [oasis_amqp_v1_error]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
 [oasis_amqp_v1]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
 [qpid_proton_j_apache]: http://qpid.apache.org/proton/
-[sample_examples]: ./azure-eventhubs/src/samples/java
-[sample_consume_event]: ./azure-eventhubs/src/samples/java/ConsumeEvent.java
-[sample_get_event_hubs_metadata]: ./azure-eventhubs/src/samples/java/GetEventHubMetadata.java
-[sample_publish_custom_meta_data]: ./azure-eventhubs/src/samples/java/PublishEventsWithCustomMetadata.java
-[sample_publish_event]: ./azure-eventhubs/src/samples/java/PublishEvent.java
-[sample_publish_partition_ID]: ./azure-eventhubs/src/samples/java/PublishEventsToSpecificPartition.java
-[sample_publish_partition_key]: ./azure-eventhubs/src/samples/java/PublishEventsWithPartitionKey.java
-[sample_sequence_number]: ./azure-eventhubs/src/samples/java/ConsumeEventsFromKnownSequenceNumberPosition.java
-[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/eventhubs/client/
+[sample_examples]: ./src/samples/java/com/azure/messaging/eventhubs/
+[sample_consume_event]: ./src/samples/java/com/azure/messaging/eventhubs/ConsumeEvent.java
+[sample_get_event_hubs_metadata]: ./src/samples/java/com/azure/messaging/eventhubs/GetEventHubMetadata.java
+[sample_publish_custom_meta_data]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithCustomMetadata.java
+[sample_publish_event]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEvent.java
+[sample_publish_partition_ID]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsToSpecificPartition.java
+[sample_publish_partition_key]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithPartitionKey.java
+[sample_sequence_number]: ./src/samples/java/com/azure/messaging/eventhubs/ConsumeEventsFromKnownSequenceNumberPosition.java
+[source_code]: ./

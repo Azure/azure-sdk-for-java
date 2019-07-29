@@ -6,6 +6,7 @@ package com.microsoft.azure.servicebus.primitives;
 import org.junit.Test;
 
 import com.microsoft.azure.servicebus.ClientSettings;
+import com.microsoft.azure.servicebus.TestUtils;
 import com.microsoft.azure.servicebus.security.ManagedIdentityTokenProvider;
 import com.microsoft.azure.servicebus.security.SharedAccessSignatureTokenProvider;
 
@@ -22,16 +23,17 @@ public class ConnectionStringBuilderTests {
         assertEquals(connectionString, builder.toString());
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void invalidAadAndSasKeyConnectionStringTest() {
-        String connecitionString = "Endpoint=sb://test.servicebus.windows.net/;Authentication=Managed Identity;SHAREDACCESSKEYNAME=val2";
-        new ConnectionStringBuilder(connecitionString);
-    }
-    
-    @Test(expected = IllegalArgumentException.class)
-    public void invalidAadAndSasTokenConnectionStringTest() {
-        String connecitionString = "Endpoint=sb://test.servicebus.windows.net/;Authentication=Managed Identity;SharedAccessSignatureToken=val2";
-        new ConnectionStringBuilder(connecitionString);
+    @Test
+    public void invalidAadTokenConnectionStringTest() {
+        TestUtils.assertThrows(IllegalArgumentException.class, () -> {
+            String connecitionString = "Endpoint=sb://test.servicebus.windows.net/;Authentication=Managed Identity;SHAREDACCESSKEYNAME=val2";
+            new ConnectionStringBuilder(connecitionString);
+        });
+        
+        TestUtils.assertThrows(IllegalArgumentException.class, () -> {
+            String connecitionString = "Endpoint=sb://test.servicebus.windows.net/;Authentication=Managed Identity;SharedAccessSignatureToken=val2";
+            new ConnectionStringBuilder(connecitionString);
+        });
     }
     
     @Test
@@ -40,6 +42,16 @@ public class ConnectionStringBuilderTests {
         ClientSettings settings = Util.getClientSettingsFromConnectionStringBuilder(new ConnectionStringBuilder(connecitionString));
         assertTrue(settings.getTokenProvider() instanceof ManagedIdentityTokenProvider);
 
+        // Should accept "ManagedIdentity" without the space as well
+        connecitionString = "Endpoint=sb://test.servicebus.windows.net/;Authentication=ManagedIdentity";
+        settings = Util.getClientSettingsFromConnectionStringBuilder(new ConnectionStringBuilder(connecitionString));
+        assertTrue(settings.getTokenProvider() instanceof ManagedIdentityTokenProvider);
+        
+        // Should be case insensitive
+        connecitionString = "Endpoint=sb://test.servicebus.windows.net/;AUTHENTICATION=managedidentity";
+        settings = Util.getClientSettingsFromConnectionStringBuilder(new ConnectionStringBuilder(connecitionString));
+        assertTrue(settings.getTokenProvider() instanceof ManagedIdentityTokenProvider);
+        
         connecitionString = "Endpoint=sb://test.servicebus.windows.net/;SHAREDACCESSKEYNAME=keyname;SharedAccessKey=key";
         settings = Util.getClientSettingsFromConnectionStringBuilder(new ConnectionStringBuilder(connecitionString));
         assertTrue(settings.getTokenProvider() instanceof SharedAccessSignatureTokenProvider);

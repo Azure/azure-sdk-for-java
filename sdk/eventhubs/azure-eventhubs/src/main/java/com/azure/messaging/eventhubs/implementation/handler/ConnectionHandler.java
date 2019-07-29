@@ -21,6 +21,9 @@ import org.apache.qpid.proton.reactor.Handshaker;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Creates an AMQP connection using sockets and the default AMQP protocol port 5671.
+ */
 public class ConnectionHandler extends Handler {
     static final Symbol PRODUCT = Symbol.valueOf("product");
     static final Symbol VERSION = Symbol.valueOf("version");
@@ -32,8 +35,8 @@ public class ConnectionHandler extends Handler {
     static final int AMQPS_PORT = 5671;
     static final int MAX_FRAME_SIZE = 65536;
 
-    private final ClientLogger logger;
     private final Map<String, Object> connectionProperties;
+    protected final ClientLogger logger;
 
     /**
      * Creates a handler that handles proton-j's connection events.
@@ -62,7 +65,7 @@ public class ConnectionHandler extends Handler {
 
         this.connectionProperties = new HashMap<>();
         this.connectionProperties.put(PRODUCT.toString(), ClientConstants.PRODUCT_NAME);
-        this.connectionProperties.put(VERSION.toString(), ClientConstants.CURRENT_JAVACLIENT_VERSION);
+        this.connectionProperties.put(VERSION.toString(), ClientConstants.CURRENT_JAVA_CLIENT_VERSION);
         this.connectionProperties.put(PLATFORM.toString(), ClientConstants.PLATFORM_INFO);
         this.connectionProperties.put(FRAMEWORK.toString(), ClientConstants.FRAMEWORK_INFO);
 
