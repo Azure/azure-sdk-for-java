@@ -2,9 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -23,6 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -81,6 +84,7 @@ public final class QueueServiceClientBuilder {
     private HttpLogDetailLevel logLevel;
     private RetryPolicy retryPolicy;
     private Configuration configuration;
+    private TokenCredential tokenCredential;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link QueueServiceClient QueueServiceClients}
@@ -110,7 +114,7 @@ public final class QueueServiceClientBuilder {
     public QueueServiceAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint);
 
-        if (sasTokenCredential == null && sharedKeyCredential == null) {
+        if (sasTokenCredential == null && sharedKeyCredential == null && tokenCredential == null) {
             LOGGER.asError().log("Credentials are required for authorization");
             throw new IllegalArgumentException("Credentials are required for authorization");
         }
@@ -127,7 +131,9 @@ public final class QueueServiceClientBuilder {
 
         if (sharedKeyCredential != null) {
             policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
-        } else {
+        } else if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+        } else if (sasTokenCredential != null) {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         }
 
@@ -169,7 +175,7 @@ public final class QueueServiceClientBuilder {
     /**
      * Sets the endpoint for the Azure Storage Queue instance that the client will interact with.
      *
-     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQuery(String) fromQuery} in an
+     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQueryParameters(Map)} fromQuery} in an
      * attempt to generate a {@link SASTokenCredential} to authenticate requests sent to the service.</p>
      *
      * @param endpoint The URL of the Azure Storage Queue instance to send service requests to and receive responses from.
@@ -183,9 +189,10 @@ public final class QueueServiceClientBuilder {
             this.endpoint = new URL(fullURL.getProtocol() + "://" + fullURL.getHost());
 
             // Attempt to get the SAS token from the URL passed
-            SASTokenCredential credential = SASTokenCredential.fromQuery(fullURL.getQuery());
-            if (credential != null) {
-                this.sasTokenCredential = credential;
+            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
+            if (this.sasTokenCredential != null) {
+                this.sharedKeyCredential = null;
+                this.tokenCredential = null;
             }
         } catch (MalformedURLException ex) {
             LOGGER.asError().log("The Azure Storage Queue endpoint url is malformed.");
@@ -204,6 +211,8 @@ public final class QueueServiceClientBuilder {
      */
     public QueueServiceClientBuilder credential(SASTokenCredential credential) {
         this.sasTokenCredential = Objects.requireNonNull(credential);
+        this.sharedKeyCredential = null;
+        this.tokenCredential = null;
         return this;
     }
 
@@ -216,9 +225,23 @@ public final class QueueServiceClientBuilder {
      */
     public QueueServiceClientBuilder credential(SharedKeyCredential credential) {
         this.sharedKeyCredential = Objects.requireNonNull(credential);
+        this.sasTokenCredential = null;
+        this.tokenCredential = null;
         return this;
     }
 
+    /**
+     * Sets the {@link TokenCredential} used to authenticate requests sent to the Queue service.
+     * @param credential authorization credential
+     * @return the updated QueueServiceClientBuilder object
+     * @throws NullPointerException If {@code credential} is {@code null}
+     */
+    public QueueServiceClientBuilder credential(TokenCredential credential) {
+        this.tokenCredential = Objects.requireNonNull(credential);
+        this.sharedKeyCredential = null;
+        this.sasTokenCredential = null;
+        return this;
+    }
 
     /**
      * Creates a {@link SharedKeyCredential} from the {@code connectionString} used to authenticate requests sent to the
