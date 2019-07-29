@@ -441,8 +441,6 @@
       <Class name="com.azure.storage.blob.BlobInputStream"/>
       <Class name="com.azure.storage.blob.BlobOutputStream"/>
       <Class name="com.azure.storage.queue.QueueServiceClient"/>
-<<<<<<< HEAD
-=======
     </Or>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
@@ -453,7 +451,6 @@
     <Or>
       <Class name="com.azure.security.keyvault.keys.KeyClient"/>
       <Class name="com.azure.security.keyvault.keys.SecretClient"/>
->>>>>>> 9bbc188570dec6bc2baa66847a6a5041e5638294
     </Or>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
