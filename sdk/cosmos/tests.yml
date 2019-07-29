@@ -7,34 +7,7 @@ variables:
 jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
-      TestName: Single_Region
-      ServiceDirectory: cosmos
-      TimeoutInMinutes: 240
-      EnvVars:
-          ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
-          ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
-      MaxParallel: 1
-      Matrix:
-        Strong_Http:
-          DisplayName: Single Region Strong Https
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pfast'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-          ACCOUNT_DEFAULT_CONSISTENCY: Strong
-
-      PreRunSteps:
-        - template: ../steps/install-reporting-tools.yml
-
-      TestStepMavenInputs:
-        goals: verify
-        options: '$(ProfileFlag) -Dgpg.skip'
-        # testResultsFiles: '**/junitreports/TEST-*.xml'
-        # testRunTitle: 'Live tests for cosmos $(DisplayName)'  # TODO: DRY "cosmos" up
-
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-    parameters:
-      TestName: Session Integration Tests
+      TestName: Session_Integration_Tests
       ServiceDirectory: cosmos
       TimeoutInMinutes: 240
       EnvVars:
@@ -89,7 +62,7 @@ jobs:
 
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
-      TestName: Strong Integration Tests
+      TestName: Strong_Integration_Tests
       ServiceDirectory: cosmos
       TimeoutInMinutes: 240
       EnvVars:
