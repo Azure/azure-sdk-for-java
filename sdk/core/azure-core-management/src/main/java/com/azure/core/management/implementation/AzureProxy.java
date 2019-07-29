@@ -8,6 +8,7 @@ import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -189,7 +190,7 @@ public final class AzureProxy extends RestProxy {
             policies.add(credentialsPolicy);
         }
 
-        return HttpPipeline.builder()
+        return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
     }

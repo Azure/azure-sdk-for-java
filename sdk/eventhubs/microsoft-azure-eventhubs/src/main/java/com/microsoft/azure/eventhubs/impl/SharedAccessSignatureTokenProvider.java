@@ -88,10 +88,10 @@ public class SharedAccessSignatureTokenProvider implements ITokenProvider {
 
         if (this.sharedAccessSignature == null) {
             try {
-            	// Generation is nonblocking so there is no need to run it async.
+                // Generation is nonblocking so there is no need to run it async.
                 final String token = generateSharedAccessSignature(this.keyName, this.sharedAccessKey, resource, ClientConstants.TOKEN_VALIDITY);
                 result.complete(new SecurityToken(token, Date.from(Instant.now().plus(ClientConstants.TOKEN_VALIDITY)), resource, ClientConstants.SAS_TOKEN_TYPE));
-            } catch (NoSuchAlgorithmException|IOException|InvalidKeyException e) {
+            } catch (NoSuchAlgorithmException | IOException | InvalidKeyException e) {
                 result.completeExceptionally(e);
             }
         } else {

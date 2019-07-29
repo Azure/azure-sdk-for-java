@@ -19,15 +19,6 @@ public final class HttpPipeline {
 
 
     /**
-     * Creates a builder that can configure options for the HttpPipeline before creating an instance of it.
-     *
-     * @return A new {@link HttpPipelineBuilder} to create a HttpPipeline from.
-     */
-    public static HttpPipelineBuilder builder() {
-        return new HttpPipelineBuilder();
-    }
-
-    /**
      * Creates a HttpPipeline holding array of policies that gets applied to all request initiated through
      * {@link HttpPipeline#send(HttpPipelineCallContext)} and it's response.
      *
