@@ -3789,7 +3789,7 @@
         "FileServiceProperties": {
             "name": "FileServiceProperties",
             "in": "body",
-            "description": "The StorageService properties.",
+            "description": "The FileStorage properties.",
             "required": true,
             "schema": {
                 "$ref": "#/definitions/FileServiceProperties"
