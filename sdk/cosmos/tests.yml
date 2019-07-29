@@ -20,6 +20,7 @@ jobs:
           ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+          ACCOUNT_DEFAULT_CONSISTENCY: Strong
 
       PreRunSteps:
         - template: ../steps/install-reporting-tools.yml
