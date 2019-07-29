@@ -59,16 +59,6 @@ public class PagedFlux<T> extends Flux<T> {
     }
 
     /**
-     * Creates an instance of {@link PagedFlux} using argument as a supplier that fetches the first page of {@code T}.
-
-     * <p><strong>Code sample</strong></p>
-     * @param firstPageRetriever Supplier that retrieves the first page
-     */
-    public PagedFlux(Supplier<Mono<PagedResponse<T>>> firstPageRetriever) {
-        this(firstPageRetriever, nextUrl -> Mono.empty());
-    }
-
-    /**
      * Creates a flux of {@link PagedResponse} starting from the first page.
      *
      * <p><strong>Code sample</strong></p>

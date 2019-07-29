@@ -26,6 +26,7 @@ public class IterableResponse<T> implements Iterable<T> {
 
     /**
      * Utility function to provide {@link Stream} of value T.
+     * It will provide same stream of T values every time if called multiple times.
      * @return {@link Stream} of value T.
      */
     public Stream<T> stream() {
@@ -34,6 +35,7 @@ public class IterableResponse<T> implements Iterable<T> {
 
     /**
      * Utility function to provide {@link Iterator} of value T.
+     * It will provide same collection of T values every time if called multiple times.
      * @return {@link Iterator} of value T.
      */
     @Override

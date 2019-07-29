@@ -290,14 +290,14 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      */
     public void listSettingsContext() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettings#SettingSelector-Context
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector-context
         SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
         Context ctx = new Context(key2, value2);
         PagedIterable<ConfigurationSetting> csStream =  configurationClient.listSettings(settingSelector, ctx);
         csStream.forEach(setting -> {
             System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
         });
-        // END: com.azure.data.applicationconfig.configurationclient.listSettings#SettingSelector-Context
+        // END: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector-context
     }
 
     /**
@@ -319,14 +319,14 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      */
     public void listSettingRevisionsContext() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#SettingSelector-Context
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector-context
         SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
         Context ctx = new Context(key2, value2);
         PagedIterable<ConfigurationSetting> csStream =  configurationClient.listSettingRevisions(settingSelector, ctx);
-        csStream.streamByPage().forEach(setting -> {
-            System.out.printf("Key: %s, Value: %s", setting.value().get(0).key(), setting.value().get(0).value());
+        csStream.forEach(setting -> {
+            System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
         });
-        // END: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#SettingSelector-Context
+        // END: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector-context
     }
 
     /**

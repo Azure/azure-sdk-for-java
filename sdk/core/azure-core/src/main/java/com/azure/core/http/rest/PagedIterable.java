@@ -23,6 +23,7 @@ public class PagedIterable<T> extends IterableResponse<T>  {
 
     /**
      * Retrieve the {@link Stream}, one page at a time.
+     * It will provide same stream of T values from starting every time if called multiple times.
      * @return {@link Stream} of {@link PagedResponse}
      */
     public Stream<PagedResponse<T>> streamByPage() {
@@ -31,7 +32,7 @@ public class PagedIterable<T> extends IterableResponse<T>  {
 
     /**
      * Provides iterable API for{@link PagedResponse}
-     * .
+     * It will provide same collection of T values from starting every time if called multiple times.
      * @return iterable interface
      */
     public Iterable<PagedResponse<T>> iterableByPage() {
