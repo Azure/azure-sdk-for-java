@@ -22,13 +22,28 @@ import com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation.D
 @JsonFlatten
 public class ImpalaObjectDataset extends DatasetInner {
     /**
-     * The table name. Type: string (or Expression with resultType string).
+     * This property will be retired. Please consider using schema + table
+     * properties instead.
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /**
-     * Get the table name. Type: string (or Expression with resultType string).
+     * The table name of the Impala. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "typeProperties.table")
+    private Object table;
+
+    /**
+     * The schema name of the Impala. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "typeProperties.schema")
+    private Object impalaObjectDatasetSchema;
+
+    /**
+     * Get this property will be retired. Please consider using schema + table properties instead.
      *
      * @return the tableName value
      */
@@ -37,13 +52,53 @@ public class ImpalaObjectDataset extends DatasetInner {
     }
 
     /**
-     * Set the table name. Type: string (or Expression with resultType string).
+     * Set this property will be retired. Please consider using schema + table properties instead.
      *
      * @param tableName the tableName value to set
      * @return the ImpalaObjectDataset object itself.
      */
     public ImpalaObjectDataset withTableName(Object tableName) {
         this.tableName = tableName;
+        return this;
+    }
+
+    /**
+     * Get the table name of the Impala. Type: string (or Expression with resultType string).
+     *
+     * @return the table value
+     */
+    public Object table() {
+        return this.table;
+    }
+
+    /**
+     * Set the table name of the Impala. Type: string (or Expression with resultType string).
+     *
+     * @param table the table value to set
+     * @return the ImpalaObjectDataset object itself.
+     */
+    public ImpalaObjectDataset withTable(Object table) {
+        this.table = table;
+        return this;
+    }
+
+    /**
+     * Get the schema name of the Impala. Type: string (or Expression with resultType string).
+     *
+     * @return the impalaObjectDatasetSchema value
+     */
+    public Object impalaObjectDatasetSchema() {
+        return this.impalaObjectDatasetSchema;
+    }
+
+    /**
+     * Set the schema name of the Impala. Type: string (or Expression with resultType string).
+     *
+     * @param impalaObjectDatasetSchema the impalaObjectDatasetSchema value to set
+     * @return the ImpalaObjectDataset object itself.
+     */
+    public ImpalaObjectDataset withImpalaObjectDatasetSchema(Object impalaObjectDatasetSchema) {
+        this.impalaObjectDatasetSchema = impalaObjectDatasetSchema;
         return this;
     }
 

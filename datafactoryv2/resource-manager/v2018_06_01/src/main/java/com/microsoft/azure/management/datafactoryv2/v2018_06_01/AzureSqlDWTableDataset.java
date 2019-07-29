@@ -22,14 +22,28 @@ import com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation.D
 @JsonFlatten
 public class AzureSqlDWTableDataset extends DatasetInner {
     /**
-     * The table name of the Azure SQL Data Warehouse. Type: string (or
-     * Expression with resultType string).
+     * This property will be retired. Please consider using schema + table
+     * properties instead.
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /**
-     * Get the table name of the Azure SQL Data Warehouse. Type: string (or Expression with resultType string).
+     * The schema name of the Azure SQL Data Warehouse. Type: string (or
+     * Expression with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.schema")
+    private Object azureSqlDWTableDatasetSchema;
+
+    /**
+     * The table name of the Azure SQL Data Warehouse. Type: string (or
+     * Expression with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.table")
+    private Object table;
+
+    /**
+     * Get this property will be retired. Please consider using schema + table properties instead.
      *
      * @return the tableName value
      */
@@ -38,13 +52,53 @@ public class AzureSqlDWTableDataset extends DatasetInner {
     }
 
     /**
-     * Set the table name of the Azure SQL Data Warehouse. Type: string (or Expression with resultType string).
+     * Set this property will be retired. Please consider using schema + table properties instead.
      *
      * @param tableName the tableName value to set
      * @return the AzureSqlDWTableDataset object itself.
      */
     public AzureSqlDWTableDataset withTableName(Object tableName) {
         this.tableName = tableName;
+        return this;
+    }
+
+    /**
+     * Get the schema name of the Azure SQL Data Warehouse. Type: string (or Expression with resultType string).
+     *
+     * @return the azureSqlDWTableDatasetSchema value
+     */
+    public Object azureSqlDWTableDatasetSchema() {
+        return this.azureSqlDWTableDatasetSchema;
+    }
+
+    /**
+     * Set the schema name of the Azure SQL Data Warehouse. Type: string (or Expression with resultType string).
+     *
+     * @param azureSqlDWTableDatasetSchema the azureSqlDWTableDatasetSchema value to set
+     * @return the AzureSqlDWTableDataset object itself.
+     */
+    public AzureSqlDWTableDataset withAzureSqlDWTableDatasetSchema(Object azureSqlDWTableDatasetSchema) {
+        this.azureSqlDWTableDatasetSchema = azureSqlDWTableDatasetSchema;
+        return this;
+    }
+
+    /**
+     * Get the table name of the Azure SQL Data Warehouse. Type: string (or Expression with resultType string).
+     *
+     * @return the table value
+     */
+    public Object table() {
+        return this.table;
+    }
+
+    /**
+     * Set the table name of the Azure SQL Data Warehouse. Type: string (or Expression with resultType string).
+     *
+     * @param table the table value to set
+     * @return the AzureSqlDWTableDataset object itself.
+     */
+    public AzureSqlDWTableDataset withTable(Object table) {
+        this.table = table;
         return this;
     }
 
