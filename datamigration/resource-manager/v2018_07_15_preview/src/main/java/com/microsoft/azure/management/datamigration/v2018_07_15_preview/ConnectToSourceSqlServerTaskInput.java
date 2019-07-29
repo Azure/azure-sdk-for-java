@@ -30,6 +30,12 @@ public class ConnectToSourceSqlServerTaskInput {
     private ServerLevelPermissionsGroup checkPermissionsGroup;
 
     /**
+     * Flag for whether to collect databases from source server.
+     */
+    @JsonProperty(value = "collectDatabases")
+    private Boolean collectDatabases;
+
+    /**
      * Flag for whether to collect logins from source server.
      */
     @JsonProperty(value = "collectLogins")
@@ -46,6 +52,13 @@ public class ConnectToSourceSqlServerTaskInput {
      */
     @JsonProperty(value = "collectTdeCertificateInfo")
     private Boolean collectTdeCertificateInfo;
+
+    /**
+     * Flag for whether to validate SSIS catalog is reachable on the source
+     * server.
+     */
+    @JsonProperty(value = "validateSsisCatalogOnly")
+    private Boolean validateSsisCatalogOnly;
 
     /**
      * Get connection information for Source SQL Server.
@@ -84,6 +97,26 @@ public class ConnectToSourceSqlServerTaskInput {
      */
     public ConnectToSourceSqlServerTaskInput withCheckPermissionsGroup(ServerLevelPermissionsGroup checkPermissionsGroup) {
         this.checkPermissionsGroup = checkPermissionsGroup;
+        return this;
+    }
+
+    /**
+     * Get flag for whether to collect databases from source server.
+     *
+     * @return the collectDatabases value
+     */
+    public Boolean collectDatabases() {
+        return this.collectDatabases;
+    }
+
+    /**
+     * Set flag for whether to collect databases from source server.
+     *
+     * @param collectDatabases the collectDatabases value to set
+     * @return the ConnectToSourceSqlServerTaskInput object itself.
+     */
+    public ConnectToSourceSqlServerTaskInput withCollectDatabases(Boolean collectDatabases) {
+        this.collectDatabases = collectDatabases;
         return this;
     }
 
@@ -144,6 +177,26 @@ public class ConnectToSourceSqlServerTaskInput {
      */
     public ConnectToSourceSqlServerTaskInput withCollectTdeCertificateInfo(Boolean collectTdeCertificateInfo) {
         this.collectTdeCertificateInfo = collectTdeCertificateInfo;
+        return this;
+    }
+
+    /**
+     * Get flag for whether to validate SSIS catalog is reachable on the source server.
+     *
+     * @return the validateSsisCatalogOnly value
+     */
+    public Boolean validateSsisCatalogOnly() {
+        return this.validateSsisCatalogOnly;
+    }
+
+    /**
+     * Set flag for whether to validate SSIS catalog is reachable on the source server.
+     *
+     * @param validateSsisCatalogOnly the validateSsisCatalogOnly value to set
+     * @return the ConnectToSourceSqlServerTaskInput object itself.
+     */
+    public ConnectToSourceSqlServerTaskInput withValidateSsisCatalogOnly(Boolean validateSsisCatalogOnly) {
+        this.validateSsisCatalogOnly = validateSsisCatalogOnly;
         return this;
     }
 
