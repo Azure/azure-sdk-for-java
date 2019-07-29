@@ -16,8 +16,8 @@ jobs:
          OSVmImage: 'macOS-10.13'
          ProfileFlag: '-Pmulti-master'
          DisplayName: Multi Master Integration Tests (Single Region)
-         ACCOUNT_HOST: $(java-cosmos-multimaster-singleregion-host)
-         ACCOUNT_KEY: $(java-cosmos-multimaster-singleregion-key)
+         AccountHost: $(java-cosmos-multimaster-singleregion-host)
+         AccountKey: $(java-cosmos-multimaster-singleregion-key)
          PREFERRED_LOCATIONS: ''
 
       PreRunSteps:
@@ -25,7 +25,7 @@ jobs:
 
       TestStepMavenInputs:
         goals: verify
-        options: '$(ProfileFlag) -Dgpg.skip'
-        # testResultsFiles: '**/junitreports/TEST-*.xml' # TODO: Do we need this?
+        options: '$(ProfileFlag) -Dgpg.skip -DACCOUNT_HOST=$(AccountHost) -DACCOUNT_KEY=($AccountKey)'
+        testResultsFiles: '**/junitreports/TEST-*.xml' # TODO: Do we need this?
 
 
