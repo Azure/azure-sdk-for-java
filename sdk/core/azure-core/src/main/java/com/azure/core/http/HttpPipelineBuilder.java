@@ -42,9 +42,8 @@ public class HttpPipelineBuilder {
 
 
     /**
-     -     * Creates a builder that can configure options for the HttpPipeline before creating an instance of it.
-     -     *
-     -     * @return A new {@link HttpPipelineBuilder} to create a HttpPipeline from.
+     *  Creates a new instance of HttpPipelineBuilder that can configure options for the {@link HttpPipeline} before
+     *  creating an instance of it.
      */
     public HttpPipelineBuilder() {
     }
