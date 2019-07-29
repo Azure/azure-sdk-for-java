@@ -91,6 +91,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
         this.retry = retry;
         this.timeout = timeout;
         this.maxMessageSize = maxMessageSize;
+
         this.subscriptions = Disposables.composite(
             handler.getDeliveredMessages().subscribe(this::processDeliveredMessage),
 
@@ -100,17 +101,9 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             }),
 
             handler.getEndpointStates().subscribe(
-                endpoint -> {
-                    final boolean isActive = endpoint == EndpointState.ACTIVE;
-                    if (!hasConnected.getAndSet(isActive)) {
-                        final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
-
-                        if (remoteMaxMessageSize != null) {
-                            this.maxMessageSize = remoteMaxMessageSize.intValue();
-                        }
-                    }
-
-                    notifyEndpointState(endpoint);
+                state -> {
+                    this.hasConnected.set(state == EndpointState.ACTIVE);
+                    this.notifyEndpointState(state);
                 },
                 error -> logger.error("Error encountered getting endpointState", error),
                 () -> {
@@ -141,7 +134,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
         try {
             encodedSize = message.encode(bytes, 0, allocationSize);
         } catch (BufferOverflowException exception) {
-            final String errorMessage = String.format(Locale.US, "Error sending. Size of the payload exceeded Maximum message size: %s kb", maxMessageSize / 1024);
+            final String errorMessage = String.format(Locale.US, "Error sending. Size of the payload exceeded maximum message size: %s kb", maxMessageSize / 1024);
             final Throwable error = new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage,
                 exception, handler.getErrorContext(sender));
 
@@ -183,7 +176,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             try {
                 encodedSize = messageWrappedByData.encode(bytes, byteArrayOffset, maxMessageSizeTemp - byteArrayOffset - 1);
             } catch (BufferOverflowException exception) {
-                final String message = String.format(Locale.US, "Size of the payload exceeded Maximum message size: %s kb", maxMessageSizeTemp / 1024);
+                final String message = String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb", maxMessageSizeTemp / 1024);
                 final AmqpException error = new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message,
                     exception, handler.getErrorContext(sender));
 
@@ -209,6 +202,26 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     @Override
     public String getEntityPath() {
         return entityPath;
+    }
+
+    @Override
+    public Mono<Integer> getLinkSize() {
+        if (this.hasConnected.get() && this.maxMessageSize > 0) {
+            return Mono.just(maxMessageSize);
+        }
+
+        return handler.getEndpointStates()
+            .takeUntil(state -> state == EndpointState.ACTIVE)
+            .timeout(timeout)
+            .then(Mono.fromCallable(() -> {
+                final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
+
+                if (remoteMaxMessageSize != null) {
+                    this.maxMessageSize = remoteMaxMessageSize.intValue();
+                }
+
+                return this.maxMessageSize;
+            }));
     }
 
     @Override

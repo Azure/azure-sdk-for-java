@@ -6,6 +6,8 @@ package com.microsoft.azure.eventprocessorhost;
 import java.util.ArrayList;
 import java.util.concurrent.ScheduledExecutorService;
 
+import com.microsoft.azure.eventhubs.AzureActiveDirectoryTokenProvider;
+
 public class PerTestSettings {
     // In-out properties: may be set before test setup and then changed by setup.
     final EPHConstructorArgs inoutEPHConstructorArgs;
@@ -60,6 +62,7 @@ public class PerTestSettings {
         static final int LEASE_MANAGER_OVERRIDE = 0x0800;
         static final int EXPLICIT_MANAGER = CHECKPOINT_MANAGER_OVERRIDE | LEASE_MANAGER_OVERRIDE;
         static final int TELLTALE_ON_TIMEOUT = 0x1000;
+        static final int AUTH_CALLBACK = 0x2000;
 
         private int flags;
 
@@ -67,6 +70,8 @@ public class PerTestSettings {
         private String ehPath;
         private String consumerGroupName;
         private String ehConnection;
+        private AzureActiveDirectoryTokenProvider.AuthenticationCallback authCallback;
+        private String authAuthority;
         private String storageConnection;
         private String storageContainerName;
         private String storageBlobPrefix;
@@ -81,6 +86,8 @@ public class PerTestSettings {
             this.ehPath = null;
             this.consumerGroupName = null;
             this.ehConnection = null;
+            this.authCallback = null;
+            this.authAuthority = null;
             this.storageConnection = null;
             this.storageContainerName = null;
             this.storageBlobPrefix = null;
@@ -135,6 +142,20 @@ public class PerTestSettings {
         void setEHConnection(String ehConnection) {
             this.ehConnection = ehConnection;
             this.flags |= EH_CONNECTION_OVERRIDE;
+        }
+        
+        AzureActiveDirectoryTokenProvider.AuthenticationCallback getAuthCallback() {
+            return this.authCallback;
+        }
+        
+        String getAuthAuthority() {
+            return this.authAuthority;
+        }
+
+        void setAuthCallback(AzureActiveDirectoryTokenProvider.AuthenticationCallback authCallback, String authAuthority) {
+            this.authCallback = authCallback;
+            this.authAuthority = authAuthority;
+            this.flags |= AUTH_CALLBACK;
         }
 
         String getStorageConnection() {

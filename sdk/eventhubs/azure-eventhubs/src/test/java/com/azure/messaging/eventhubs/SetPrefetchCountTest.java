@@ -11,6 +11,7 @@ import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -29,6 +30,7 @@ import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 /**
  * Verifies we can use various prefetch options with {@link EventHubConsumer}.
  */
+@Ignore("Set prefetch tests do not work because they try to send very large number of events at once.")
 public class SetPrefetchCountTest extends ApiTestBase {
     private static final String PARTITION_ID = "1";
     // Default number of events to fetch when creating the consumer.

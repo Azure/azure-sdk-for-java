@@ -4,7 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -29,7 +28,7 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * Client to a block blob. It may only be instantiated through a {@link BlockBlobClientBuilder}, via
+ * Client to a block blob. It may only be instantiated through a {@link BlobClientBuilder}, via
  * the method {@link BlobClient#asBlockBlobClient()}, or via the method
  * {@link ContainerClient#getBlockBlobClient(String)}. This class does not hold
  * any state about a particular blob, but is instead a convenient way of sending appropriate
@@ -44,25 +43,25 @@ import java.util.List;
  * for more information.
  */
 public final class BlockBlobClient extends BlobClient {
+    private final BlockBlobAsyncClient blockBlobAsyncClient;
 
-    private BlockBlobAsyncClient blockBlobAsyncClient;
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
-    public static final int MAX_UPLOAD_BLOB_BYTES = 256 * Constants.MB;
+    public static final int MAX_UPLOAD_BLOB_BYTES = BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to stageBlock.
      */
-    public static final int MAX_STAGE_BLOCK_BYTES = 100 * Constants.MB;
+    public static final int MAX_STAGE_BLOCK_BYTES = BlockBlobAsyncClient.MAX_STAGE_BLOCK_BYTES;
 
     /**
      * Indicates the maximum number of blocks allowed in a block blob.
      */
-    public static final int MAX_BLOCKS = 50000;
+    public static final int MAX_BLOCKS = BlockBlobAsyncClient.MAX_BLOCKS;
 
     /**
-     * Package-private constructor for use by {@link BlockBlobClientBuilder}.
+     * Package-private constructor for use by {@link BlobClientBuilder}.
      * @param blockBlobAsyncClient the async block blob client
      */
     BlockBlobClient(BlockBlobAsyncClient blockBlobAsyncClient) {
@@ -161,9 +160,8 @@ public final class BlockBlobClient extends BlobClient {
                 return ByteBufAllocator.DEFAULT.buffer((int) count).writeBytes(cache);
             }));
 
-        Mono<Response<BlockBlobItem>> upload = blockBlobAsyncClient.blockBlobAsyncRawClient
-            .upload(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, accessConditions)
-            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
+        Mono<Response<BlockBlobItem>> upload = blockBlobAsyncClient
+            .upload(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, accessConditions);
 
         try {
             return Utility.blockWithOptionalTimeout(upload, timeout);

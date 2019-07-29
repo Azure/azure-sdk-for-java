@@ -49,7 +49,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="AvoidStarImport"/>
     <module name="IllegalImport">
       <property name="regexp" value="true"/>
-      <property name="illegalPkgs" value="(com\.)?sun\.\w*"/>
+      <property name="illegalPkgs" value="^(com\.)?sun\.\w*, ^io\.opencensus"/>
     </module>
     <module name="RedundantImport"/>
     <module name="UnusedImports"/>
@@ -60,7 +60,12 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="LocalFinalVariableName"/>
     <module name="LocalVariableName"/>
     <module name="MemberName"/>
-    <module name="MethodName"/>
+    <module name="MethodName">
+      <!-- Use default MethodName but block the use of 'builder' as method name -->
+      <property name="format" value="(?=^[a-z][a-zA-Z0-9]*$)(?!^(?i)builder$)"/>
+      <!-- allow the name on private methods  -->
+      <property name="applyToPrivate" value="false"/>
+    </module>
     <module name="PackageName"/>
     <module name="ParameterName"/>
     <module name="StaticVariableName"/>
@@ -290,5 +295,22 @@ page at http://checkstyle.sourceforge.net/config.html -->
     We should only return types, and accept argument types, that are from the com.azure namespace.
     All other types should have suppression added if required. -->
     <module name="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"/>
+
+    <!--CUSTOM CHECKS-->
+    <!-- The @ServiceClientBuilder class should have the following rules:
+    1) All service client builder should be named <ServiceName>ClientBuilder and annotated with @ServiceClientBuilder.
+    2) Has a method 'buildClient()' to build a synchronous client,
+    3) Has a method 'buildAsyncClient()' to build an asynchronous client -->
+    <module name="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck"/>
+
+    <!--CUSTOM CHECKS-->
+    <!-- The @ServiceInterface class should have the following rules:
+    1) The annotation property 'name' should be non-empty
+    2) The length of value of property 'name' should be less than 20 characters and without space -->
+    <module name="com.azure.tools.checkstyle.checks.ServiceInterfaceCheck"/>
+
+    <!--CUSTOM CHECKS-->
+    <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
+<!--    <module name="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck"/>-->
   </module>
 </module>

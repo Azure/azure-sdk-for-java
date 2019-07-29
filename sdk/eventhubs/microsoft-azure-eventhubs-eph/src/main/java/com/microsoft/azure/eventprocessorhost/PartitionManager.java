@@ -47,7 +47,7 @@ class PartitionManager extends Closable {
                 final CompletableFuture<Void> cleanupFuture = new CompletableFuture<Void>();
 
                 // Stage 0A: get EventHubClient for the event hub
-                retval = EventHubClient.create(this.hostContext.getEventHubConnectionString(), this.hostContext.getRetryPolicy(), this.hostContext.getExecutor())
+                retval = this.hostContext.getEventHubClientFactory().createEventHubClient()
                         // Stage 0B: set up a way to close the EventHubClient when we're done
                         .thenApplyAsync((ehClient) -> {
                             final EventHubClient saveForCleanupClient = ehClient;

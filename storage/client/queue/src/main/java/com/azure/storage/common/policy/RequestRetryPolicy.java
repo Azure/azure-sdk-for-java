@@ -30,6 +30,10 @@ import java.util.concurrent.TimeoutException;
 public final class RequestRetryPolicy implements HttpPipelinePolicy {
     private final RequestRetryOptions requestRetryOptions;
 
+    /**
+     * Create a policy of retrying a given HTTP request.
+     * @param requestRetryOptions Options for configuring the RequestRetryPolicy.
+     */
     public RequestRetryPolicy(RequestRetryOptions requestRetryOptions) {
         this.requestRetryOptions = requestRetryOptions;
     }
