@@ -28,7 +28,6 @@ import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.http.ContentType;
 import com.azure.core.implementation.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.util.ResourceLeakDetector;
@@ -72,8 +71,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import static org.junit.Assert.assertArrayEquals;
 
 public class RestProxyStressTests {
-    private final ClientLogger logger = new ClientLogger(RestProxyStressTests.class);
-
     private static IOService service;
     private static Process testServer;
     // By default will spawn a test server running on the default port.
@@ -283,8 +280,7 @@ public class RestProxyStressTests {
                 try {
                     return Files.readAllBytes(filePath);
                 } catch (IOException ioe) {
-                    logger.logAndThrow(Exceptions.propagate(ioe));
-                    return null;
+                    throw Exceptions.propagate(ioe);
                 }
             });
         //
@@ -322,8 +318,7 @@ public class RestProxyStressTests {
                     try {
                         return Files.readAllBytes(filePath);
                     } catch (IOException ioe) {
-                        logger.logAndThrow(Exceptions.propagate(ioe));
-                        return null;
+                        throw Exceptions.propagate(ioe);
                     }
                 });
 
@@ -377,8 +372,7 @@ public class RestProxyStressTests {
                     try {
                         return Files.readAllBytes(filePath);
                     } catch (IOException ioe) {
-                        logger.logAndThrow(Exceptions.propagate(ioe));
-                        return null;
+                        throw Exceptions.propagate(ioe);
                     }
                 });
         //
@@ -400,8 +394,7 @@ public class RestProxyStressTests {
                             });
 
                         } catch (NoSuchAlgorithmException nsae) {
-                            logger.logAndThrow(Exceptions.propagate(nsae));
-                            return null;
+                            throw Exceptions.propagate(nsae);
                         }
                     });
                 })
@@ -422,8 +415,7 @@ public class RestProxyStressTests {
                     try {
                         return Files.readAllBytes(filePath);
                     } catch (IOException ioe) {
-                        logger.logAndThrow(Exceptions.propagate(ioe));
-                        return null;
+                        throw Exceptions.propagate(ioe);
                     }
                 });
         //
