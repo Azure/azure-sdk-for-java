@@ -14,10 +14,8 @@ import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.ErrorResponseException;
-import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.MonitoringDetails;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.Tags;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -125,14 +123,6 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances beginShutdown" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}/shutdown")
         Observable<Response<ResponseBody>> beginShutdown(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances enableMonitoring" })
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}/monitoring")
-        Observable<Response<ResponseBody>> enableMonitoring(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Body MonitoringDetails monitoringParameter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances beginEnableMonitoring" })
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}/monitoring")
-        Observable<Response<ResponseBody>> beginEnableMonitoring(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Body MonitoringDetails monitoringParameter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances listNext" })
         @GET
@@ -1451,176 +1441,6 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    /**
-     * The operation to add a monitor to an SAP HANA instance.
-     *
-     * @param resourceGroupName Name of the resource group.
-     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param monitoringParameter Request body that only contains monitoring attributes
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void enableMonitoring(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter) {
-        enableMonitoringWithServiceResponseAsync(resourceGroupName, hanaInstanceName, monitoringParameter).toBlocking().last().body();
-    }
-
-    /**
-     * The operation to add a monitor to an SAP HANA instance.
-     *
-     * @param resourceGroupName Name of the resource group.
-     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param monitoringParameter Request body that only contains monitoring attributes
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> enableMonitoringAsync(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(enableMonitoringWithServiceResponseAsync(resourceGroupName, hanaInstanceName, monitoringParameter), serviceCallback);
-    }
-
-    /**
-     * The operation to add a monitor to an SAP HANA instance.
-     *
-     * @param resourceGroupName Name of the resource group.
-     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param monitoringParameter Request body that only contains monitoring attributes
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    public Observable<Void> enableMonitoringAsync(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter) {
-        return enableMonitoringWithServiceResponseAsync(resourceGroupName, hanaInstanceName, monitoringParameter).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * The operation to add a monitor to an SAP HANA instance.
-     *
-     * @param resourceGroupName Name of the resource group.
-     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param monitoringParameter Request body that only contains monitoring attributes
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    public Observable<ServiceResponse<Void>> enableMonitoringWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (hanaInstanceName == null) {
-            throw new IllegalArgumentException("Parameter hanaInstanceName is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        if (monitoringParameter == null) {
-            throw new IllegalArgumentException("Parameter monitoringParameter is required and cannot be null.");
-        }
-        Validator.validate(monitoringParameter);
-        Observable<Response<ResponseBody>> observable = service.enableMonitoring(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), monitoringParameter, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
-    }
-
-    /**
-     * The operation to add a monitor to an SAP HANA instance.
-     *
-     * @param resourceGroupName Name of the resource group.
-     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param monitoringParameter Request body that only contains monitoring attributes
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void beginEnableMonitoring(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter) {
-        beginEnableMonitoringWithServiceResponseAsync(resourceGroupName, hanaInstanceName, monitoringParameter).toBlocking().single().body();
-    }
-
-    /**
-     * The operation to add a monitor to an SAP HANA instance.
-     *
-     * @param resourceGroupName Name of the resource group.
-     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param monitoringParameter Request body that only contains monitoring attributes
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> beginEnableMonitoringAsync(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(beginEnableMonitoringWithServiceResponseAsync(resourceGroupName, hanaInstanceName, monitoringParameter), serviceCallback);
-    }
-
-    /**
-     * The operation to add a monitor to an SAP HANA instance.
-     *
-     * @param resourceGroupName Name of the resource group.
-     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param monitoringParameter Request body that only contains monitoring attributes
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> beginEnableMonitoringAsync(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter) {
-        return beginEnableMonitoringWithServiceResponseAsync(resourceGroupName, hanaInstanceName, monitoringParameter).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * The operation to add a monitor to an SAP HANA instance.
-     *
-     * @param resourceGroupName Name of the resource group.
-     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param monitoringParameter Request body that only contains monitoring attributes
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> beginEnableMonitoringWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (hanaInstanceName == null) {
-            throw new IllegalArgumentException("Parameter hanaInstanceName is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        if (monitoringParameter == null) {
-            throw new IllegalArgumentException("Parameter monitoringParameter is required and cannot be null.");
-        }
-        Validator.validate(monitoringParameter);
-        return service.beginEnableMonitoring(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), monitoringParameter, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = beginEnableMonitoringDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> beginEnableMonitoringDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
                 .build(response);
     }
 
