@@ -314,7 +314,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [oasis_amqp_v1_error]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
 [oasis_amqp_v1]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
 [qpid_proton_j_apache]: http://qpid.apache.org/proton/
-[sample_examples]: ./src/samples/java
+[sample_examples]: ./src/samples/java/com/azure/messaging/eventhubs/
 [sample_consume_event]: ./src/samples/java/com/azure/messaging/eventhubs/ConsumeEvent.java
 [sample_get_event_hubs_metadata]: ./src/samples/java/com/azure/messaging/eventhubs/GetEventHubMetadata.java
 [sample_publish_custom_meta_data]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithCustomMetadata.java
@@ -322,4 +322,4 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [sample_publish_partition_ID]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsToSpecificPartition.java
 [sample_publish_partition_key]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithPartitionKey.java
 [sample_sequence_number]: ./src/samples/java/com/azure/messaging/eventhubs/ConsumeEventsFromKnownSequenceNumberPosition.java
-[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/eventhubs/client/
+[source_code]: ./
