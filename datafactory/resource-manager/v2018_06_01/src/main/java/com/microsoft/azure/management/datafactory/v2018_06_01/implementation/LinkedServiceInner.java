@@ -49,7 +49,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "Phoenix", value = PhoenixLinkedService.class),
     @JsonSubTypes.Type(name = "Paypal", value = PaypalLinkedService.class),
     @JsonSubTypes.Type(name = "Marketo", value = MarketoLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureMariaDB", value = AzureMariaDBLinkedService.class),
     @JsonSubTypes.Type(name = "MariaDB", value = MariaDBLinkedService.class),
     @JsonSubTypes.Type(name = "Magento", value = MagentoLinkedService.class),
     @JsonSubTypes.Type(name = "Jira", value = JiraLinkedService.class),

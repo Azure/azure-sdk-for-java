@@ -39,7 +39,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "PhoenixSource", value = PhoenixSource.class),
     @JsonSubTypes.Type(name = "PaypalSource", value = PaypalSource.class),
     @JsonSubTypes.Type(name = "MarketoSource", value = MarketoSource.class),
-    @JsonSubTypes.Type(name = "AzureMariaDBSource", value = AzureMariaDBSource.class),
     @JsonSubTypes.Type(name = "MariaDBSource", value = MariaDBSource.class),
     @JsonSubTypes.Type(name = "MagentoSource", value = MagentoSource.class),
     @JsonSubTypes.Type(name = "JiraSource", value = JiraSource.class),
