@@ -14,11 +14,11 @@ jobs:
       Matrix:
         Single_Region_Fast:
          OSVmImage: 'macOS-10.13'
-         ProfileFlag: '-Pfast'
+         ProfileFlag: '-Pmulti-master'
          DisplayName: Multi Master Integration Tests (Single Region)
          ACCOUNT_HOST: $(java-cosmos-multimaster-singleregion-host)
          ACCOUNT_KEY: $(java-cosmos-multimaster-singleregion-key)
-         PREFERRED_LOCATIONS: null
+         PREFERRED_LOCATIONS: ''
 
       PreRunSteps:
         - template: ../steps/install-reporting-tools.yml
@@ -26,6 +26,6 @@ jobs:
       TestStepMavenInputs:
         goals: verify
         options: '$(ProfileFlag) -Dgpg.skip'
-        testResultsFiles: '**/junitreports/TEST-*.xml' # TODO: Do we need this?
+        # testResultsFiles: '**/junitreports/TEST-*.xml' # TODO: Do we need this?
 
 
