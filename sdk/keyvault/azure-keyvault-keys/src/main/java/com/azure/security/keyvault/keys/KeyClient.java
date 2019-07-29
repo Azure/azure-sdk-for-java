@@ -156,7 +156,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new RSA key with size 2048 which activates in one day and expires in one year. Prints out the details of the created key.</p>
-     * {@codesnippet com.azure.keyvault.keys.keyclient.createRsaKeyWithResponse#keyOptions}
+     * {@codesnippet com.azure.keyvault.keys.keyclient.createRsaKeyWithResponse#keyOptions-Context}
      *
      * @param rsaKeyCreateOptions The key options object containing information about the rsa key being created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -209,7 +209,7 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key with P-384 web key curve. The key activates in one day and expires in one year. Prints out
      * the details of the created key.</p>
-     * {@codesnippet com.azure.keyvault.keys.keyclient.createEcKeyWithResponse#keyOptions}
+     * {@codesnippet com.azure.keyvault.keys.keyclient.createEcKeyWithResponse#keyOptions-Context}
      *
      * @param ecKeyCreateOptions The key options object containing information about the ec key being created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -368,11 +368,30 @@ public final class KeyClient {
      * @return The requested {@link Key key}.
      */
     public Key getKey(KeyBase keyBase) {
+        return this.getKeyWithResponse(keyBase, Context.NONE).value();
+    }
+
+    /**
+     * Get public part of the key which represents {@link KeyBase keyBase} from the key vault. The get key operation is applicable
+     * to all key types and it requires the {@code keys/get} permission.
+     *
+     * <p>The list operations {@link KeyClient#listKeys()} and {@link KeyClient#listKeyVersions(String)} return
+     * the {@link List} containing {@link KeyBase base key} as output excluding the key material of the key.
+     * This operation can then be used to get the full key with its key material from {@code keyBase}. </p>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.getKeyWithResponse#KeyBase-Context}
+     *
+     * @param keyBase The {@link KeyBase base key} holding attributes of the key being requested.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version() version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link KeyBase#name()}  name} or {@link KeyBase#version() version} is empty string.
+     * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
+     */
+    public Response<Key> getKeyWithResponse(KeyBase keyBase, Context context) {
         Objects.requireNonNull(keyBase, "The Key Base parameter cannot be null.");
         if (keyBase.version() == null) {
-            return getKey(keyBase.name());
+            return client.getKey(keyBase.name(), "", context).block();
         }
-        return getKeyWithResponse(keyBase.name(), keyBase.version(), Context.NONE).value();
+        return client.getKey(keyBase.name(), keyBase.version(), context).block();
     }
 
     /**

@@ -155,8 +155,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createKey(KeyCreateOptions keyCreateOptions) {
-        return withContext(context -> createKeyWithResponse(keyCreateOptions))
-            .flatMap(FluxUtil::toMono);
+        return this.createKeyWithResponse(keyCreateOptions).flatMap(FluxUtil::toMono);
     }
 
     Mono<Response<Key>> createKey(KeyCreateOptions keyCreateOptions, Context context) {
@@ -196,8 +195,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createRsaKey(RsaKeyCreateOptions rsaKeyCreateOptions) {
-        return withContext(context -> createRsaKeyWithResponse(rsaKeyCreateOptions))
-            .flatMap(FluxUtil::toMono);
+        return this.createRsaKeyWithResponse(rsaKeyCreateOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -262,8 +260,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createEcKey(EcKeyCreateOptions ecKeyCreateOptions) {
-        return withContext(context -> createEcKeyWithResponse(ecKeyCreateOptions))
-            .flatMap(FluxUtil::toMono);
+        return this.createEcKeyWithResponse(ecKeyCreateOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -366,8 +363,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> importKey(KeyImportOptions keyImportOptions) {
-        return withContext(context -> importKeyWithResponse(keyImportOptions))
-            .flatMap(FluxUtil::toMono);
+        return this.importKeyWithResponse(keyImportOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -430,12 +426,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> getKey(String name, String version) {
-        if (version == null) {
-            return getKeyWithResponse(name)
-                .flatMap(FluxUtil::toMono);
-        }
-        return withContext(context -> getKeyWithResponse(name, version))
-            .flatMap(FluxUtil::toMono);
+        return this.getKeyWithResponse(name, version).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -456,7 +447,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> getKeyWithResponse(String name, String version) {
         if (version == null) {
-            return getKeyWithResponse(name);
+            return withContext(context -> getKey(name, "", context));
         }
         return withContext(context -> getKey(name, version, context));
     }
@@ -485,28 +476,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> getKey(String name) {
-        return getKeyWithResponse(name, "")
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Get the public part of the latest version of the specified key from the key vault. The get key operation is applicable to
-     * all key types and it requires the {@code keys/get} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Gets latest version of the key in the key vault. Subscribes to the call asynchronously and prints out the
-     * returned key details when a response has been received.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#string}
-     *
-     * @param name The name of the key.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@code name} is empty string.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Key>> getKeyWithResponse(String name) {
-        return getKeyWithResponse(name, "");
+        return this.getKeyWithResponse(name, "").flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -526,13 +496,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> getKey(KeyBase keyBase) {
-        Objects.requireNonNull(keyBase, "The Key Base parameter cannot be null.");
-        if (keyBase.version() == null) {
-            return getKeyWithResponse(keyBase.name())
-                .flatMap(FluxUtil::toMono);
-        }
-        return getKeyWithResponse(keyBase.name(), keyBase.version())
-            .flatMap(FluxUtil::toMono);
+        return this.getKeyWithResponse(keyBase).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -554,9 +518,9 @@ public final class KeyAsyncClient {
     public Mono<Response<Key>> getKeyWithResponse(KeyBase keyBase) {
         Objects.requireNonNull(keyBase, "The Key Base parameter cannot be null.");
         if (keyBase.version() == null) {
-            return getKeyWithResponse(keyBase.name());
+            return withContext(context -> getKey(keyBase.name(), "", context));
         }
-        return getKeyWithResponse(keyBase.name(), keyBase.version());
+        return withContext(context -> getKey(keyBase.name(), keyBase.version(), context));
     }
 
     /**
@@ -578,30 +542,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> updateKey(KeyBase key) {
-        return withContext(context -> updateKeyWithResponse(key))
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Updates the attributes associated with the specified key, but not the cryptographic key material of the specified key in the key vault. The update
-     * operation changes specified attributes of an existing stored key and attributes that are not specified in the request are left unchanged.
-     * The cryptographic key material of a key itself cannot be changed. This operation requires the {@code keys/set} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Gets latest version of the key, changes its notBefore time and then updates it in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
-     * returned key details when a response has been received.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.updateKeyWithResponse#KeyBase}
-     *
-     * @param key The {@link KeyBase base key} object with updated properties.
-     * @throws NullPointerException if {@code key} is {@code null}.
-     * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty string.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Key>> updateKeyWithResponse(KeyBase key) {
-        return withContext(context -> updateKey(key, context));
+        return withContext(context -> this.updateKey(key, context).flatMap(FluxUtil::toMono));
     }
 
     Mono<Response<Key>> updateKey(KeyBase key, Context context) {
@@ -658,8 +599,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> updateKey(KeyBase key, KeyOperation... keyOperations) {
-        return withContext(context -> updateKeyWithResponse(key, keyOperations))
-            .flatMap(FluxUtil::toMono);
+        return this.updateKeyWithResponse(key, keyOperations).flatMap(FluxUtil::toMono);
     }
 
     Mono<Response<Key>> updateKey(KeyBase key, Context context, KeyOperation... keyOperations) {
@@ -694,8 +634,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedKey> deleteKey(String name) {
-        return withContext(context -> deleteKeyWithResponse(name))
-            .flatMap(FluxUtil::toMono);
+        return this.deleteKeyWithResponse(name).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -747,8 +686,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedKey> getDeletedKey(String name) {
-        return withContext(context -> getDeletedKeyWithResponse(name))
-            .flatMap(FluxUtil::toMono);
+        return this.getDeletedKeyWithResponse(name).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -826,8 +764,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> recoverDeletedKey(String name) {
-        return withContext(context -> recoverDeletedKeyWithResponse(name))
-            .flatMap(FluxUtil::toMono);
+        return this.recoverDeletedKeyWithResponse(name).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -882,8 +819,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<byte[]> backupKey(String name) {
-        return withContext(context -> backupKeyWithResponse(name))
-            .flatMap(FluxUtil::toMono);
+        return this.backupKeyWithResponse(name).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -944,8 +880,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> restoreKey(byte[] backup) {
-        return withContext(context -> restoreKeyWithResponse(backup))
-            .flatMap(FluxUtil::toMono);
+        return this.restoreKeyWithResponse(backup).flatMap(FluxUtil::toMono);
     }
 
     /**

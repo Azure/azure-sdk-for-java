@@ -3,9 +3,6 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
@@ -54,7 +51,7 @@ public final class SecretClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link SecretClient#getSecretWithResponse(String, Context)}
+     * Method to insert code snippets for {@link SecretClient#getSecretWithResponse(String, String, Context)}
      */
     public void getSecretWithResponseCodeSnippets() {
         SecretClient secretClient = getSecretClient();
@@ -66,12 +63,13 @@ public final class SecretClientJavaDocCodeSnippets {
         }
         // END: com.azure.security.keyvault.secretclient.getSecretWithResponse#secretBase
 
-        // BEGIN: com.azure.security.keyvault.secretclient.getSecretWithResponse#string-Context
-        Secret secretWithVersion = secretClient.getSecretWithResponse("secretName",
+        // BEGIN: com.azure.security.keyvault.secretclient.getSecretWithResponse#string-string-Context
+        String secretVersion = "6A385B124DEF4096AF1361A85B16C204";
+        Secret secretWithVersion = secretClient.getSecretWithResponse("secretName", secretVersion,
             new Context(key2, value2)).value();
         System.out.printf("Secret is returned with name %s and value %s \n",
             secretWithVersion.name(), secretWithVersion.value());
-        // END: com.azure.security.keyvault.secretclient.getSecretWithResponse#string-Context
+        // END: com.azure.security.keyvault.secretclient.getSecretWithResponse#string-string-Context
     }
 
     /**
@@ -79,11 +77,11 @@ public final class SecretClientJavaDocCodeSnippets {
      */
     public void setSecretCodeSnippets() {
         SecretClient secretClient = getSecretClient();
-        // BEGIN: com.azure.security.keyvault.secretclient.setSecret#secretBase
+        // BEGIN: com.azure.security.keyvault.secretclient.setSecret#secret
         Secret newSecret = new Secret("secretName", "secretValue").expires(OffsetDateTime.now().plusDays(60));
         Secret returnedSecret = secretClient.setSecret(newSecret);
         System.out.printf("Secret is created with name %s and value %s \n", returnedSecret.name(), returnedSecret.value());
-        // END: com.azure.security.keyvault.secretclient.setSecret#secretBase
+        // END: com.azure.security.keyvault.secretclient.setSecret#secret
 
         // BEGIN: com.azure.security.keyvault.secretclient.setSecret#string-string
         Secret secret = secretClient.setSecret("secretName", "secretValue");
@@ -92,15 +90,15 @@ public final class SecretClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link SecretClient#setSecretWithResponse(String, String, Context)}
+     * Method to insert code snippets for {@link SecretClient#setSecretWithResponse(Secret Context)}
      */
     public void setSecretWithResponseCodeSnippets() {
         SecretClient secretClient = getSecretClient();
-        // BEGIN: com.azure.security.keyvault.secretclient.setSecret#string-string-Context
-        Secret secret = secretClient.setSecretWithResponse("secretName", "secretValue",
-            new Context(key1, value1)).value();
+        // BEGIN: com.azure.security.keyvault.secretclient.setSecretWithResponse#secret-Context
+        Secret newSecret = new Secret("secretName", "secretValue").expires(OffsetDateTime.now().plusDays(60));
+        Secret secret = secretClient.setSecretWithResponse(newSecret, new Context(key1, value1)).value();
         System.out.printf("Secret is created with name %s and value %s \n", secret.name(), secret.value());
-        // END: com.azure.security.keyvault.secretclient.setSecret#string-string-Context
+        // END: com.azure.security.keyvault.secretclient.setSecretWithResponse#secret-Context
     }
 
     /**

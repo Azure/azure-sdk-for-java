@@ -49,7 +49,7 @@ public final class SecretClient {
      * set to true by key vault, if not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * {@codesnippet com.azure.security.keyvault.secretclient.setSecret#secretBase}
+     * {@codesnippet com.azure.security.keyvault.secretclient.setSecret#secret}
      *
      * @param secret The Secret object containing information about the secret and its properties. The properties secret.name and secret.value must be non null.
      * @throws NullPointerException if {@code secret} is {@code null}.
@@ -58,7 +58,7 @@ public final class SecretClient {
      * @return The {@link Secret created secret}.
      */
     public Secret setSecret(Secret secret) {
-        return client.setSecret(secret, Context.NONE).block().value();
+        return this.setSecretWithResponse(secret, Context.NONE).value();
     }
 
     /**
@@ -76,7 +76,7 @@ public final class SecretClient {
      * @return The {@link Secret created secret}.
      */
     public Secret setSecret(String name, String value) {
-        return this.setSecretWithResponse(name, value, Context.NONE).value();
+        return client.setSecret(name, value, Context.NONE).block().value();
     }
 
     /**
@@ -85,17 +85,16 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new secret in the key vault. Prints out the details of the newly created secret returned in the response.</p>
-     * {@codesnippet com.azure.security.keyvault.secretclient.setSecret#string-string-Context}
+     * {@codesnippet com.azure.security.keyvault.secretclient.setSecretWithResponse#secret-Context}
      *
-     * @param name The name of the secret. It is required and cannot be null.
-     * @param value The value of the secret. It is required and cannot be null.
+     * @param secret The Secret object containing information about the secret and its properties. The properties secret.name and secret.value must be non null.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceModifiedException if invalid {@code name} or {@code value} is specified.
      * @throws HttpRequestException if {@code name} or {@code value} is empty string.
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Secret created secret}.
      */
-    public Response<Secret> setSecretWithResponse(String name, String value, Context context) {
-        return client.setSecret(name, value, context).block();
+    public Response<Secret> setSecretWithResponse(Secret secret, Context context) {
+        return client.setSecret(secret, context).block();
     }
 
     /**
@@ -113,7 +112,7 @@ public final class SecretClient {
      * @return The requested {@link Secret secret}.
      */
     public Secret getSecret(String name, String version) {
-        return client.getSecret(name, version, Context.NONE).block().value();
+        return this.getSecretWithResponse(name, version, Context.NONE).value();
     }
 
     /**
@@ -169,25 +168,33 @@ public final class SecretClient {
      * @return The requested {@link Secret}.
      */
     public Secret getSecret(String name) {
-        return getSecret(name, "");
+        return this.getSecretWithResponse(name, "", Context.NONE).value();
     }
 
     /**
-     * Get the latest version of the specified secret from the key vault. The get operation is applicable to any secret stored in Azure Key Vault.
-     * This operation requires the {@code secrets/get} permission.
+     * Get the specified secret with specified version from the key vault. The get operation is
+     * applicable to any secret stored in Azure Key Vault. This operation requires the {@code
+     * secrets/get} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets the latest version of the secret in the key vault. Prints out the details of the returned secret.</p>
-     * {@codesnippet com.azure.security.keyvault.secretclient.getSecretWithResponse#string-Context}
+     * <p>Gets a specific version of the secret in the key vault. Subscribes to the call
+     * asynchronously and prints out the
+     * returned secret details when a response is received.</p>
+     * {@codesnippet com.azure.security.keyvault.secretclient.getSecretWithResponse#string-string-Context}
      *
-     * @param name The name of the secret.
+     * @param name The name of the secret, cannot be null
+     * @param version The version of the secret to retrieve. If this is an empty String or null, this
+     * call is equivalent to calling {@link #getSecret(String)}, with the latest version being
+     * retrieved.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@code name} is empty string.
+     *
      * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Secret}.
+     * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't
+     * exist in the key vault.
+     * @throws HttpRequestException if {@code name}  name} or {@code version} is empty string.
      */
-    public Response<Secret> getSecretWithResponse(String name, Context context) {
-        return client.getSecret(name, "", context).block();
+    public Response<Secret> getSecretWithResponse(String name, String version, Context context) {
+        return client.getSecret(name, version, context).block();
     }
 
     /**
