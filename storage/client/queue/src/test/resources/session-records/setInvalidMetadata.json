@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue54649fe6",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue527846d2",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -12,12 +12,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "e3c20117-d003-0095-3fd3-435145000000",
-      "Date" : "Fri, 26 Jul 2019 16:56:33 GMT"
+      "x-ms-request-id" : "ce259283-3003-003e-4235-468657000000",
+      "Date" : "Mon, 29 Jul 2019 17:45:33 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue54649fe6?comp=metadata",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue527846d2?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -29,14 +29,14 @@
       "retry-after" : "0",
       "Content-Length" : "285",
       "StatusCode" : "400",
-      "x-ms-request-id" : "e3c20135-d003-0095-5bd3-435145000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:e3c20135-d003-0095-5bd3-435145000000\nTime:2019-07-26T16:56:34.2640952Z</Message><MetadataValue>bad metadata</MetadataValue></Error>",
-      "Date" : "Fri, 26 Jul 2019 16:56:33 GMT",
+      "x-ms-request-id" : "ce25928f-3003-003e-4d35-468657000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:ce25928f-3003-003e-4d35-468657000000\nTime:2019-07-29T17:45:33.3696674Z</Message><MetadataValue>bad metadata</MetadataValue></Error>",
+      "Date" : "Mon, 29 Jul 2019 17:45:33 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue54649fe6/messages",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue527846d2/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -47,12 +47,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "e3c20146-d003-0095-6bd3-435145000000",
-      "Date" : "Fri, 26 Jul 2019 16:56:33 GMT"
+      "x-ms-request-id" : "ce2592a2-3003-003e-5e35-468657000000",
+      "Date" : "Mon, 29 Jul 2019 17:45:33 GMT"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue54649fe6",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue527846d2",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -63,9 +63,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "e3c2015f-d003-0095-02d3-435145000000",
-      "Date" : "Fri, 26 Jul 2019 16:56:33 GMT"
+      "x-ms-request-id" : "ce2592ae-3003-003e-6a35-468657000000",
+      "Date" : "Mon, 29 Jul 2019 17:45:33 GMT"
     }
   } ],
-  "variables" : [ "queue54649fe6" ]
+  "variables" : [ "queue527846d2" ]
 }

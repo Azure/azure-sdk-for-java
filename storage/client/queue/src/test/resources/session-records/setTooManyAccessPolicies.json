@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue0889776b",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue0184403a",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -12,12 +12,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "e3c249f3-d003-0095-52d3-435145000000",
-      "Date" : "Fri, 26 Jul 2019 16:57:08 GMT"
+      "x-ms-request-id" : "ce25bf67-3003-003e-1235-468657000000",
+      "Date" : "Mon, 29 Jul 2019 17:46:09 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue0889776b?comp=acl",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue0184403a?comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0",
@@ -30,14 +30,14 @@
       "retry-after" : "0",
       "Content-Length" : "294",
       "StatusCode" : "400",
-      "x-ms-request-id" : "e3c24a0b-d003-0095-66d3-435145000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:e3c24a0b-d003-0095-66d3-435145000000\nTime:2019-07-26T16:57:09.1934833Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
-      "Date" : "Fri, 26 Jul 2019 16:57:08 GMT",
+      "x-ms-request-id" : "ce25bf9e-3003-003e-4435-468657000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:ce25bf9e-3003-003e-4435-468657000000\nTime:2019-07-29T17:46:09.3848737Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
+      "Date" : "Mon, 29 Jul 2019 17:46:09 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue0889776b/messages",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue0184403a/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -48,12 +48,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "e3c24a1e-d003-0095-79d3-435145000000",
-      "Date" : "Fri, 26 Jul 2019 16:57:08 GMT"
+      "x-ms-request-id" : "ce25bfb0-3003-003e-5535-468657000000",
+      "Date" : "Mon, 29 Jul 2019 17:46:09 GMT"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue0889776b",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue0184403a",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -64,9 +64,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "e3c24a2e-d003-0095-07d3-435145000000",
-      "Date" : "Fri, 26 Jul 2019 16:57:08 GMT"
+      "x-ms-request-id" : "ce25bfc1-3003-003e-6635-468657000000",
+      "Date" : "Mon, 29 Jul 2019 17:46:09 GMT"
     }
   } ],
-  "variables" : [ "queue0889776b" ]
+  "variables" : [ "queue0184403a" ]
 }

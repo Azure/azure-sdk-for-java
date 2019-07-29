@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue3021697c?comp=acl",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue62705f0a?comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0",
@@ -14,14 +14,14 @@
       "retry-after" : "0",
       "Content-Length" : "294",
       "StatusCode" : "400",
-      "x-ms-request-id" : "e3c24ea0-d003-0095-0ed3-435145000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:e3c24ea0-d003-0095-0ed3-435145000000\nTime:2019-07-26T16:57:11.1452926Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
-      "Date" : "Fri, 26 Jul 2019 16:57:10 GMT",
+      "x-ms-request-id" : "ce25c33d-3003-003e-2335-468657000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:ce25c33d-3003-003e-2335-468657000000\nTime:2019-07-29T17:46:12.0213031Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
+      "Date" : "Mon, 29 Jul 2019 17:46:11 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue3021697c/messages",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue62705f0a/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -33,11 +33,11 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "e3c24eb2-d003-0095-1ed3-435145000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:e3c24eb2-d003-0095-1ed3-435145000000\nTime:2019-07-26T16:57:11.1733186Z</Message></Error>",
-      "Date" : "Fri, 26 Jul 2019 16:57:10 GMT",
+      "x-ms-request-id" : "ce25c348-3003-003e-2e35-468657000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:ce25c348-3003-003e-2e35-468657000000\nTime:2019-07-29T17:46:12.0653446Z</Message></Error>",
+      "Date" : "Mon, 29 Jul 2019 17:46:11 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queue3021697c" ]
+  "variables" : [ "queue62705f0a" ]
 }

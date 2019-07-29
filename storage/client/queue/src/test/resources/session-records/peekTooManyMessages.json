@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue27888638",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue59213917",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -12,12 +12,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "e3c24b5b-d003-0095-1ad3-435145000000",
-      "Date" : "Fri, 26 Jul 2019 16:57:09 GMT"
+      "x-ms-request-id" : "ce25c0cd-3003-003e-5c35-468657000000",
+      "Date" : "Mon, 29 Jul 2019 17:46:09 GMT"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue27888638/messages?numofmessages=64&peekonly=true",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue59213917/messages?numofmessages=64&peekonly=true",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -29,14 +29,14 @@
       "retry-after" : "0",
       "Content-Length" : "456",
       "StatusCode" : "400",
-      "x-ms-request-id" : "e3c24b71-d003-0095-2cd3-435145000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeQueryParameterValue</Code><Message>One of the query parameters specified in the request URI is outside the permissible range.\nRequestId:e3c24b71-d003-0095-2cd3-435145000000\nTime:2019-07-26T16:57:09.7600095Z</Message><QueryParameterName>numofmessages</QueryParameterName><QueryParameterValue>64</QueryParameterValue><MinimumAllowed>1</MinimumAllowed><MaximumAllowed>32</MaximumAllowed></Error>",
-      "Date" : "Fri, 26 Jul 2019 16:57:09 GMT",
+      "x-ms-request-id" : "ce25c0d9-3003-003e-6735-468657000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeQueryParameterValue</Code><Message>One of the query parameters specified in the request URI is outside the permissible range.\nRequestId:ce25c0d9-3003-003e-6735-468657000000\nTime:2019-07-29T17:46:10.2256481Z</Message><QueryParameterName>numofmessages</QueryParameterName><QueryParameterValue>64</QueryParameterValue><MinimumAllowed>1</MinimumAllowed><MaximumAllowed>32</MaximumAllowed></Error>",
+      "Date" : "Mon, 29 Jul 2019 17:46:09 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue27888638/messages",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue59213917/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -47,12 +47,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "e3c24b7f-d003-0095-38d3-435145000000",
-      "Date" : "Fri, 26 Jul 2019 16:57:09 GMT"
+      "x-ms-request-id" : "ce25c0e4-3003-003e-7235-468657000000",
+      "Date" : "Mon, 29 Jul 2019 17:46:10 GMT"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue27888638",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue59213917",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -63,9 +63,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "e3c24b91-d003-0095-4ad3-435145000000",
-      "Date" : "Fri, 26 Jul 2019 16:57:09 GMT"
+      "x-ms-request-id" : "ce25c0ee-3003-003e-7c35-468657000000",
+      "Date" : "Mon, 29 Jul 2019 17:46:10 GMT"
     }
   } ],
-  "variables" : [ "queue27888638" ]
+  "variables" : [ "queue59213917" ]
 }

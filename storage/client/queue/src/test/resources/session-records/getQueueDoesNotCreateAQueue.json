@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue941119fb/messages?visibilitytimeout=0&messagettl=604800",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue67216694/messages?visibilitytimeout=0&messagettl=604800",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0",
@@ -14,14 +14,14 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "f3da6198-1003-0000-7be1-433076000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:f3da6198-1003-0000-7be1-433076000000\nTime:2019-07-26T18:41:09.1648899Z</Message></Error>",
-      "Date" : "Fri, 26 Jul 2019 18:41:08 GMT",
+      "x-ms-request-id" : "ce25cadc-3003-003e-4635-468657000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:ce25cadc-3003-003e-4635-468657000000\nTime:2019-07-29T17:46:18.0898964Z</Message></Error>",
+      "Date" : "Mon, 29 Jul 2019 17:46:17 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net?prefix=queue941119fb&include=&comp=list",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net?prefix=queue67216694&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -33,11 +33,11 @@
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "f3da61a0-1003-0000-02e1-433076000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.queue.core.windows.net/\"><Prefix>queue941119fb</Prefix><Queues /><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 26 Jul 2019 18:41:08 GMT",
+      "x-ms-request-id" : "ce25cae6-3003-003e-4f35-468657000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.queue.core.windows.net/\"><Prefix>queue67216694</Prefix><Queues /><NextMarker /></EnumerationResults>",
+      "Date" : "Mon, 29 Jul 2019 17:46:17 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queue941119fb" ]
+  "variables" : [ "queue67216694" ]
 }

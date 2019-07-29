@@ -22,7 +22,10 @@ import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -71,6 +74,7 @@ import java.util.Objects;
  */
 public final class QueueStorageClientBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(QueueStorageClientBuilder.class);
+    private static final String ACCOUNT_NAME = "accountname";
     private final List<HttpPipelinePolicy> policies;
 
     private URL endpoint;
@@ -231,9 +235,24 @@ public final class QueueStorageClientBuilder {
     public QueueStorageClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
         this.sharedKeyCredential = SharedKeyCredential.fromConnectionString(connectionString);
+        getEndPointFromConnectionString(connectionString);
         return this;
     }
 
+    private void getEndPointFromConnectionString(String connectionString) {
+        Map<String, String> connectionStringPieces = new HashMap<>();
+        for (String connectionStringPiece : connectionString.split(";")) {
+            String[] kvp = connectionStringPiece.split("=", 2);
+            connectionStringPieces.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
+        }
+        String accountName = connectionStringPieces.get(ACCOUNT_NAME);
+        try {
+            this.endpoint = new URL(String.format("https://%s.queue.core.windows.net", accountName));
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException(String.format("There is no valid endpoint for the connection string. "
+                + "Connection String: %s", connectionString));
+        }
+    }
     /**
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *

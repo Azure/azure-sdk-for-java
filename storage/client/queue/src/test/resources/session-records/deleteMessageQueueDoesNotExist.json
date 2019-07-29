@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue84832473/messages/invalid?popreceipt=call",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue120879ad/messages/invalid?popreceipt=call",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -13,14 +13,14 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "e3c24d8c-d003-0095-12d3-435145000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:e3c24d8c-d003-0095-12d3-435145000000\nTime:2019-07-26T16:57:10.7118914Z</Message></Error>",
-      "Date" : "Fri, 26 Jul 2019 16:57:10 GMT",
+      "x-ms-request-id" : "ce25c268-3003-003e-6135-468657000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:ce25c268-3003-003e-6135-468657000000\nTime:2019-07-29T17:46:11.4487759Z</Message></Error>",
+      "Date" : "Mon, 29 Jul 2019 17:46:11 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue84832473/messages",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue120879ad/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -32,11 +32,11 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "e3c24da2-d003-0095-25d3-435145000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:e3c24da2-d003-0095-25d3-435145000000\nTime:2019-07-26T16:57:10.7399174Z</Message></Error>",
-      "Date" : "Fri, 26 Jul 2019 16:57:10 GMT",
+      "x-ms-request-id" : "ce25c280-3003-003e-7435-468657000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:ce25c280-3003-003e-7435-468657000000\nTime:2019-07-29T17:46:11.4848086Z</Message></Error>",
+      "Date" : "Mon, 29 Jul 2019 17:46:11 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queue84832473" ]
+  "variables" : [ "queue120879ad" ]
 }

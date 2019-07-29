@@ -8,7 +8,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.file.models.CorsRule;
 import com.azure.storage.file.models.FileServiceProperties;
-import com.azure.storage.file.models.ListSharesOptions;
 import com.azure.storage.file.models.Metrics;
 import com.azure.storage.file.models.RetentionPolicy;
 import com.azure.storage.file.models.ShareItem;

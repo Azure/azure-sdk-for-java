@@ -79,8 +79,7 @@ public class QueueStorageClientTests extends QueueStorageClientTestsBase {
 
     @Override
     public void createQueue() {
-        QueueClient client = serviceClient.createQueue(queueName).value();
-        Response<EnqueuedMessage> response = client.enqueueMessage("Testing service client creating a queue");
+        Response<QueueClient> response = serviceClient.createQueue(queueName);
         helper.assertResponseStatusCode(response, 201);
     }
 

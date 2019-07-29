@@ -13,9 +13,9 @@
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "f3da6046-1003-0000-57e1-433076000000",
+      "x-ms-request-id" : "ce25c937-3003-003e-3635-468657000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceProperties><Logging><Version>1.0</Version><Read>false</Read><Write>false</Write><Delete>false</Delete><RetentionPolicy><Enabled>false</Enabled></RetentionPolicy></Logging><HourMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>true</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>7</Days></RetentionPolicy></HourMetrics><MinuteMetrics><Version>1.0</Version><Enabled>false</Enabled><RetentionPolicy><Enabled>false</Enabled></RetentionPolicy></MinuteMetrics><Cors /></StorageServiceProperties>",
-      "Date" : "Fri, 26 Jul 2019 18:41:06 GMT",
+      "Date" : "Mon, 29 Jul 2019 17:46:16 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
@@ -32,8 +32,8 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "f3da6054-1003-0000-63e1-433076000000",
-      "Date" : "Fri, 26 Jul 2019 18:41:07 GMT"
+      "x-ms-request-id" : "ce25c948-3003-003e-4735-468657000000",
+      "Date" : "Mon, 29 Jul 2019 17:46:16 GMT"
     }
   }, {
     "Method" : "GET",
@@ -49,9 +49,9 @@
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "f3da60bc-1003-0000-39e1-433076000000",
+      "x-ms-request-id" : "ce25c952-3003-003e-5035-468657000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceProperties><Logging><Version>1.0</Version><Read>false</Read><Write>true</Write><Delete>true</Delete><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></Logging><HourMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></HourMetrics><MinuteMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></MinuteMetrics><Cors /></StorageServiceProperties>",
-      "Date" : "Fri, 26 Jul 2019 18:41:07 GMT",
+      "Date" : "Mon, 29 Jul 2019 17:46:16 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
@@ -68,8 +68,8 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "f3da60c1-1003-0000-3ee1-433076000000",
-      "Date" : "Fri, 26 Jul 2019 18:41:07 GMT"
+      "x-ms-request-id" : "ce25c95e-3003-003e-5c35-468657000000",
+      "Date" : "Mon, 29 Jul 2019 17:46:16 GMT"
     }
   }, {
     "Method" : "GET",
@@ -85,14 +85,14 @@
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "f3da60c5-1003-0000-42e1-433076000000",
+      "x-ms-request-id" : "ce25c969-3003-003e-6735-468657000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceProperties><Logging><Version>1.0</Version><Read>false</Read><Write>false</Write><Delete>false</Delete><RetentionPolicy><Enabled>false</Enabled></RetentionPolicy></Logging><HourMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>true</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>7</Days></RetentionPolicy></HourMetrics><MinuteMetrics><Version>1.0</Version><Enabled>false</Enabled><RetentionPolicy><Enabled>false</Enabled></RetentionPolicy></MinuteMetrics><Cors /></StorageServiceProperties>",
-      "Date" : "Fri, 26 Jul 2019 18:41:07 GMT",
+      "Date" : "Mon, 29 Jul 2019 17:46:16 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net?prefix=queue90650e1d&include=&comp=list",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net?prefix=queue53549f94&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -104,11 +104,11 @@
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "f3da60cb-1003-0000-48e1-433076000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.queue.core.windows.net/\"><Prefix>queue90650e1d</Prefix><Queues /><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 26 Jul 2019 18:41:07 GMT",
+      "x-ms-request-id" : "ce25c97a-3003-003e-7735-468657000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.queue.core.windows.net/\"><Prefix>queue53549f94</Prefix><Queues /><NextMarker /></EnumerationResults>",
+      "Date" : "Mon, 29 Jul 2019 17:46:16 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queue90650e1d" ]
+  "variables" : [ "queue53549f94" ]
 }
