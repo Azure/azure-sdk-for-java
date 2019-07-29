@@ -32,14 +32,12 @@ public class ExponentialRetryPolicyTest {
         // Arrange
 
         final ExponentialRetryPolicy retry = new ExponentialRetryPolicy(options);
-        final Duration remainingTime = Duration.ofSeconds(60);
 
         // Act
-        final Duration firstRetryInterval = retry.calculateRetryDelay(exception, remainingTime, 1);
+        final Duration firstRetryInterval = retry.calculateRetryDelay(exception, 1);
         Assert.assertNotNull(firstRetryInterval);
 
-        final Duration leftoverTime = remainingTime.minus(firstRetryInterval);
-        final Duration secondRetryInterval = retry.calculateRetryDelay(exception, leftoverTime, 2);
+        final Duration secondRetryInterval = retry.calculateRetryDelay(exception, 2);
 
         // Assert
         Assert.assertNotNull(secondRetryInterval);
@@ -55,10 +53,8 @@ public class ExponentialRetryPolicyTest {
         final ExponentialRetryPolicy retry = new ExponentialRetryPolicy(options);
         final ExponentialRetryPolicy clone = (ExponentialRetryPolicy) retry.clone();
 
-        final Duration remainingTime = Duration.ofSeconds(120);
-
-        final Duration retryInterval = retry.calculateRetryDelay(exception, remainingTime, 1);
-        final Duration cloneRetryInterval = clone.calculateRetryDelay(exception, remainingTime, 4);
+        final Duration retryInterval = retry.calculateRetryDelay(exception, 1);
+        final Duration cloneRetryInterval = clone.calculateRetryDelay(exception, 4);
 
         // Assert
         Assert.assertNotNull(retryInterval);
@@ -95,11 +91,10 @@ public class ExponentialRetryPolicyTest {
         final ExponentialRetryPolicy retry = new ExponentialRetryPolicy(options);
         final ExponentialRetryPolicy clone = (ExponentialRetryPolicy) retry.clone();
         final int retryCount = 1;
-        final Duration remainingTime = Duration.ofSeconds(60);
 
         // Act
-        final Duration retryInterval = retry.calculateRetryDelay(exception, remainingTime, retryCount);
-        final Duration cloneRetryInterval = clone.calculateRetryDelay(exception, remainingTime, retryCount);
+        final Duration retryInterval = retry.calculateRetryDelay(exception, retryCount);
+        final Duration cloneRetryInterval = clone.calculateRetryDelay(exception, retryCount);
 
         // Assert
         Assert.assertNotSame(retry, clone);

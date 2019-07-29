@@ -15,7 +15,7 @@ public final class FixedRetryPolicy extends RetryPolicy {
      *
      * @param retryOptions The options to set on this retry policy.
      */
-    protected FixedRetryPolicy(RetryOptions retryOptions) {
+    public FixedRetryPolicy(RetryOptions retryOptions) {
         super(retryOptions);
     }
 

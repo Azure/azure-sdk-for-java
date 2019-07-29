@@ -8,6 +8,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeoutException;
 
 import static com.azure.core.amqp.exception.ErrorCondition.SERVER_BUSY_ERROR;
 
@@ -52,36 +53,46 @@ public abstract class RetryPolicy implements Cloneable {
     }
 
     /**
+     * Gets the maximum number of retry attempts.
+     *
+     * @return The maximum number of retry attempts.
+     */
+    public int getMaxRetries() {
+        return retryOptions.maxRetries();
+    }
+
+    /**
      * Calculates the amount of time to delay before the next retry attempt.
      *
      * @param lastException The last exception that was observed for the operation to be retried.
-     * @param remainingTime The amount of time remaining for the cumulative timeout across retry attempts.
      * @param retryCount The number of attempts that have been made, including the initial attempt before any
      *         retries.
      * @return The amount of time to delay before retrying the associated operation; if {@code null}, then the operation
      *         is no longer eligible to be retried.
      */
-    public Duration calculateRetryDelay(Exception lastException, Duration remainingTime, int retryCount) {
+    public Duration calculateRetryDelay(Exception lastException, int retryCount) {
         if (retryOptions.delay() == Duration.ZERO
             || retryOptions.maxDelay() == Duration.ZERO
-            || retryCount > retryOptions.maxRetries()
-            || !isRetriableException(lastException)) {
+            || retryCount > retryOptions.maxRetries()) {
             return null;
         }
 
-        if (!(lastException instanceof AmqpException)) {
+        final Duration baseDelay;
+        if (lastException instanceof AmqpException && isRetriableException(lastException)) {
+            baseDelay = ((AmqpException) lastException).getErrorCondition() == SERVER_BUSY_ERROR
+                ? retryOptions.delay().plus(SERVER_BUSY_WAIT_TIME)
+                : retryOptions.delay();
+        } else if (lastException instanceof TimeoutException) {
+            baseDelay = retryOptions.delay();
+        } else {
+            baseDelay = null;
+        }
+
+        if (baseDelay == null) {
             return null;
         }
 
-        final Duration baseDelay = ((AmqpException) lastException).getErrorCondition() == SERVER_BUSY_ERROR
-            ? retryOptions.delay().plus(SERVER_BUSY_WAIT_TIME)
-            : retryOptions.delay();
-
-        final Duration delay = calculateRetryDelay(retryCount, baseDelay, baseJitter, ThreadLocalRandom.current());
-
-        return delay != null && delay.compareTo(remainingTime) <= 0
-            ? delay
-            : null;
+        return calculateRetryDelay(retryCount, baseDelay, baseJitter, ThreadLocalRandom.current());
     }
 
     /**

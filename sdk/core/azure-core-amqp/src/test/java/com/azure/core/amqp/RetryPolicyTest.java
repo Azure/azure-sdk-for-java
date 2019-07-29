@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.time.Duration;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeoutException;
 
 public class RetryPolicyTest {
     private final ErrorContext errorContext = new ErrorContext("test-namespace");
@@ -25,13 +26,28 @@ public class RetryPolicyTest {
     public void isRetriableException() {
         // Arrange
         final Exception exception = new AmqpException(true, "error message", errorContext);
-        final Duration remaining = Duration.ofSeconds(120);
         final Duration expected = Duration.ofSeconds(40);
         final int count = 2;
         final RetryPolicy policy = new MockRetryPolicy(options, expected);
 
         // Act
-        final Duration actual = policy.calculateRetryDelay(exception, remaining, count);
+        final Duration actual = policy.calculateRetryDelay(exception, count);
+
+        // Assert
+        Assert.assertEquals(expected, actual);
+        Assert.assertEquals(maxRetries, policy.getMaxRetries());
+    }
+
+    @Test
+    public void isTimeoutException() {
+        // Arrange
+        final Exception exception = new TimeoutException("test-message-timeout");
+        final Duration expected = Duration.ofSeconds(40);
+        final int count = 2;
+        final RetryPolicy policy = new MockRetryPolicy(options, expected);
+
+        // Act
+        final Duration actual = policy.calculateRetryDelay(exception, count);
 
         // Assert
         Assert.assertEquals(expected, actual);
@@ -41,13 +57,12 @@ public class RetryPolicyTest {
     public void notRetriableException() {
         // Arrange
         final Exception invalidException = new RuntimeException("invalid exception");
-        final Duration remaining = Duration.ofSeconds(120);
         final Duration expected = Duration.ofSeconds(40);
         final int count = 2;
         final RetryPolicy policy = new MockRetryPolicy(options, expected);
 
         // Act
-        final Duration actual = policy.calculateRetryDelay(invalidException, remaining, count);
+        final Duration actual = policy.calculateRetryDelay(invalidException, count);
 
         // Assert
         Assert.assertNull(actual);
@@ -57,13 +72,12 @@ public class RetryPolicyTest {
     public void notRetriableExceptionNotTransient() {
         // Arrange
         final Exception invalidException = new AmqpException(false, "Some test exception", errorContext);
-        final Duration remaining = Duration.ofSeconds(120);
         final Duration expected = Duration.ofSeconds(40);
         final int count = 2;
         final RetryPolicy policy = new MockRetryPolicy(options, expected);
 
         // Act
-        final Duration actual = policy.calculateRetryDelay(invalidException, remaining, count);
+        final Duration actual = policy.calculateRetryDelay(invalidException, count);
 
         // Assert
         Assert.assertNull(actual);
