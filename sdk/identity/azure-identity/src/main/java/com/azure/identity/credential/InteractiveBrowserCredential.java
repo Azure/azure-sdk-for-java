@@ -6,7 +6,10 @@ package com.azure.identity.credential;
 import com.azure.core.credentials.AccessToken;
 import com.azure.identity.IdentityClient;
 import com.azure.identity.IdentityClientOptions;
+import com.microsoft.aad.msal4j.IAccount;
 import reactor.core.publisher.Mono;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * An AAD credential that acquires a token for an AAD application by prompting the login in the default browser. When
@@ -44,7 +47,10 @@ public class InteractiveBrowserCredential extends AadCredential<InteractiveBrows
 
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
-        validate();
-        return identityClient.authenticateWithBrowserInteraction(tenantId(), clientId(), scopes, port);
+        if (clientId() == null) {
+            throw new IllegalArgumentException("Must provide non-null value for client id in " + this.getClass().getSimpleName());
+        }
+        return identityClient.authenticateWithCurrentlyLoggedInAccount(scopes).onErrorResume(t -> Mono.empty())
+            .switchIfEmpty(identityClient.authenticateWithBrowserInteraction(clientId(), scopes, port));
     }
 }

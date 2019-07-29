@@ -41,6 +41,7 @@ public class DeviceCodeCredential extends AadCredential<DeviceCodeCredential> {
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
         validate();
-        return identityClient.authenticateWithDeviceCode(tenantId(), clientId(), scopes, deviceCodeChallengeConsumer);
+        return identityClient.authenticateWithCurrentlyLoggedInAccount(scopes).onErrorResume(t -> Mono.empty())
+            .switchIfEmpty(identityClient.authenticateWithDeviceCode(tenantId(), clientId(), scopes, deviceCodeChallengeConsumer));
     }
 }

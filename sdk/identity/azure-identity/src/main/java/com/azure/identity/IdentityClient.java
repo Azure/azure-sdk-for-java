@@ -19,10 +19,13 @@ import com.microsoft.aad.msal4j.ClientSecret;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCode;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.IAccount;
+import com.microsoft.aad.msal4j.IClientApplicationBase;
 import com.microsoft.aad.msal4j.IntegratedWindowsAuthenticationParameters;
 import com.microsoft.aad.msal4j.IntegratedWindowsAuthenticationParameters.IntegratedWindowsAuthenticationParametersBuilder;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.PublicClientApplication;
+import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserAssertion;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
@@ -57,6 +60,7 @@ import java.util.Scanner;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 /**
@@ -68,11 +72,14 @@ public final class IdentityClient {
     private final SerializerAdapter adapter = JacksonAdapter.createDefaultSerializerAdapter();
     private static final Random RANDOM = new Random();
 
+    private final AtomicReference<IAccount> currentAccount;
+    private final AtomicReference<IClientApplicationBase> currentApplication;
+
     /**
      * Creates an IdentityClient with default options.
      */
     public IdentityClient() {
-        this.options = new IdentityClientOptions();
+        this(new IdentityClientOptions());
     }
 
     /**
@@ -82,6 +89,8 @@ public final class IdentityClient {
      */
     public IdentityClient(IdentityClientOptions options) {
         this.options = options;
+        this.currentAccount = new AtomicReference<>();
+        this.currentApplication = new AtomicReference<>();
     }
 
     /**
@@ -95,15 +104,18 @@ public final class IdentityClient {
      */
     public Mono<AccessToken> authenticateWithClientSecret(String tenantId, String clientId, String clientSecret, String[] scopes) {
         String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
-        ExecutorService executor = Executors.newSingleThreadExecutor();
         try {
-            ConfidentialClientApplication application = ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.create(clientSecret))
-                .authority(authorityUrl)
-                .executorService(executor)
-                .build();
+            ConfidentialClientApplication.Builder applicationBuilder = ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.create(clientSecret)).authority(authorityUrl);
+            if (options.proxyOptions() != null) {
+                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.proxyOptions()));
+            }
+            ConfidentialClientApplication application = applicationBuilder.build();
             return Mono.fromFuture(application.acquireToken(ClientCredentialParameters.builder(new HashSet<>(Arrays.asList(scopes))).build()))
-                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(), ZoneOffset.UTC)))
-                .doFinally(s -> executor.shutdown());
+                .map(ar -> {
+                    currentAccount.set(ar.account());
+                    currentApplication.set(application);
+                    return new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(), ZoneOffset.UTC));
+                });
         } catch (MalformedURLException e) {
             return Mono.error(e);
         }
@@ -121,15 +133,18 @@ public final class IdentityClient {
      */
     public Mono<AccessToken> authenticateWithPfxCertificate(String tenantId, String clientId, String pfxCertificatePath, String pfxCertificatePassword, String[] scopes) {
         String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
-        ExecutorService executor = Executors.newSingleThreadExecutor();
         try {
-            ConfidentialClientApplication application = ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.create(new FileInputStream(pfxCertificatePath), pfxCertificatePassword))
-                .authority(authorityUrl)
-                .executorService(executor)
-                .build();
+            ConfidentialClientApplication.Builder applicationBuilder = ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.create(new FileInputStream(pfxCertificatePath), pfxCertificatePassword)).authority(authorityUrl);
+            if (options.proxyOptions() != null) {
+                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.proxyOptions()));
+            }
+            ConfidentialClientApplication application = applicationBuilder.build();
             return Mono.fromFuture(application.acquireToken(ClientCredentialParameters.builder(new HashSet<>(Arrays.asList(scopes))).build()))
-                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(), ZoneOffset.UTC)))
-                .doFinally(s -> executor.shutdown());
+                .map(ar -> {
+                    currentAccount.set(ar.account());
+                    currentApplication.set(application);
+                    return new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(), ZoneOffset.UTC));
+                });
         } catch (CertificateException | UnrecoverableKeyException | NoSuchAlgorithmException | KeyStoreException | NoSuchProviderException | IOException e) {
             return Mono.error(e);
         }
@@ -146,16 +161,19 @@ public final class IdentityClient {
      */
     public Mono<AccessToken> authenticateWithPemCertificate(String tenantId, String clientId, String pemCertificatePath, String[] scopes) {
         String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
-        ExecutorService executor = Executors.newSingleThreadExecutor();
         try {
             byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(pemCertificatePath));
-            ConfidentialClientApplication application = ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.create(CertificateUtil.privateKeyFromPem(pemCertificateBytes), CertificateUtil.publicKeyFromPem(pemCertificateBytes)))
-                .authority(authorityUrl)
-                .executorService(executor)
-                .build();
+            ConfidentialClientApplication.Builder applicationBuilder = ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.create(CertificateUtil.privateKeyFromPem(pemCertificateBytes), CertificateUtil.publicKeyFromPem(pemCertificateBytes))).authority(authorityUrl);
+            if (options.proxyOptions() != null) {
+                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.proxyOptions()));
+            }
+            ConfidentialClientApplication application = applicationBuilder.build();
             return Mono.fromFuture(application.acquireToken(ClientCredentialParameters.builder(new HashSet<>(Arrays.asList(scopes))).build()))
-                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(), ZoneOffset.UTC)))
-                .doFinally(s -> executor.shutdown());
+                .map(ar -> {
+                    currentAccount.set(ar.account());
+                    currentApplication.set(application);
+                    return new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(), ZoneOffset.UTC));
+                });
         } catch (IOException e) {
             return Mono.error(e);
         }
@@ -173,15 +191,37 @@ public final class IdentityClient {
      */
     public Mono<AccessToken> authenticateWithUsernamePassword(String tenantId, String clientId, String[] scopes, String username, String password) {
         String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
-        ExecutorService executor = Executors.newSingleThreadExecutor();
         try {
-            PublicClientApplication application = PublicClientApplication.builder(clientId)
-                .authority(authorityUrl)
-                .executorService(executor)
-                .build();
+            PublicClientApplication.Builder applicationBuilder = PublicClientApplication.builder(clientId).authority(authorityUrl);
+            if (options.proxyOptions() != null) {
+                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.proxyOptions()));
+            }
+            PublicClientApplication application = applicationBuilder.build();
             return Mono.fromFuture(application.acquireToken(UserNamePasswordParameters.builder(new HashSet<>(Arrays.asList(scopes)), username, password.toCharArray()).build()))
-                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(), ZoneOffset.UTC)))
-                .doFinally(s -> executor.shutdown());
+                .map(ar -> {
+                    currentAccount.set(ar.account());
+                    currentApplication.set(application);
+                    return new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(), ZoneOffset.UTC));
+                });
+        } catch (MalformedURLException e) {
+            return Mono.error(e);
+        }
+    }
+
+    public Mono<AccessToken> authenticateWithCurrentlyLoggedInAccount(String[] scopes) {
+        try {
+            SilentParameters parameters;
+            if (currentApplication.get() != null) {
+                if (currentAccount.get() != null) {
+                    parameters = SilentParameters.builder(new HashSet<>(Arrays.asList(scopes)), currentAccount.get()).build();
+                } else {
+                    parameters = SilentParameters.builder(new HashSet<>(Arrays.asList(scopes))).build();
+                }
+                return Mono.fromFuture(currentApplication.get().acquireTokenSilently(parameters))
+                    .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(), ZoneOffset.UTC)));
+            } else {
+                return Mono.error(new UnsupportedOperationException("No cached token available - Must call another method to authenticate first"));
+            }
         } catch (MalformedURLException e) {
             return Mono.error(e);
         }
@@ -200,22 +240,22 @@ public final class IdentityClient {
      */
     public Mono<AccessToken> authenticateWithDeviceCode(String tenantId, String clientId, String[] scopes, Consumer<DeviceCodeChallenge> deviceCodeConsumer) {
         String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
-        ExecutorService executor = Executors.newSingleThreadExecutor();
         try {
-            PublicClientApplication.Builder applicationBuilder = PublicClientApplication.builder(clientId)
-                .authority(authorityUrl)
-                .executorService(executor);
+            PublicClientApplication.Builder applicationBuilder = PublicClientApplication.builder(clientId).authority(authorityUrl);
             if (options.proxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.proxyOptions()));
             }
             PublicClientApplication application = applicationBuilder.build();
             return Mono.fromFuture(() -> {
-                DeviceCodeFlowParameters parameters = DeviceCodeFlowParameters.builder(new HashSet<>(Arrays.asList(scopes)), deviceCodeInternal -> deviceCodeConsumer.accept(new DeviceCodeChallenge(deviceCodeInternal))).build();
-                return application.acquireToken(parameters);
-            })
-                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(), ZoneOffset.UTC)))
-                .doFinally(s -> executor.shutdown());
-        } catch (MalformedURLException e) {
+                    DeviceCodeFlowParameters parameters = DeviceCodeFlowParameters.builder(new HashSet<>(Arrays.asList(scopes)), deviceCodeInternal -> deviceCodeConsumer.accept(new DeviceCodeChallenge(deviceCodeInternal))).build();
+                    return application.acquireToken(parameters);
+                })
+                .map(ar -> {
+                    currentAccount.set(ar.account());
+                    currentApplication.set(application);
+                    return new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(), ZoneOffset.UTC));
+                });
+        } catch (Exception e) {
             return Mono.error(e);
         }
     }
@@ -223,25 +263,27 @@ public final class IdentityClient {
     /**
      * Asynchronously acquire a token from Active Directory with an authorization code from an oauth flow.
      *
-     * @param tenantId           the tenant ID of the application
      * @param clientId           the client ID of the application
      * @param scopes             the scopes to authenticate to
      * @param authorizationCode  the oauth2 authorization code
      * @param redirectUri        the redirectUri where the authorization code is sent to
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateWithAuthorizationCode(String tenantId, String clientId, String[] scopes, String authorizationCode, URI redirectUri) {
-        String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
-        ExecutorService executor = Executors.newSingleThreadExecutor();
+    public Mono<AccessToken> authenticateWithAuthorizationCode(String clientId, String[] scopes, String authorizationCode, URI redirectUri) {
+        String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/common";
         try {
-            PublicClientApplication application = PublicClientApplication.builder(clientId)
-                .authority(authorityUrl)
-                .executorService(executor)
-                .build();
+            PublicClientApplication.Builder applicationBuilder = PublicClientApplication.builder(clientId).authority(authorityUrl);
+            if (options.proxyOptions() != null) {
+                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.proxyOptions()));
+            }
+            PublicClientApplication application = applicationBuilder.build();
             return Mono.fromFuture(application.acquireToken(AuthorizationCodeParameters.builder(authorizationCode, redirectUri).scopes(new HashSet<>(Arrays.asList(scopes))).build()))
-                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(), ZoneOffset.UTC)))
-                .doFinally(s -> executor.shutdown());
-        } catch (MalformedURLException e) {
+                .map(ar -> {
+                    currentAccount.set(ar.account());
+                    currentApplication.set(application);
+                    return new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(), ZoneOffset.UTC));
+                });
+        } catch (Exception e) {
             return Mono.error(e);
         }
     }
@@ -251,14 +293,13 @@ public final class IdentityClient {
      * credential will run a minimal local HttpServer at the given port, so {@code http://localhost:{port}} must be
      * listed as a valid reply URL for the application.
      *
-     * @param tenantId           the tenant ID of the application
      * @param clientId           the client ID of the application
      * @param scopes             the scopes to authenticate to
      * @param port               the port on which the HTTP server is listening
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateWithBrowserInteraction(String tenantId, String clientId, String[] scopes, int port) {
-        String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
+    public Mono<AccessToken> authenticateWithBrowserInteraction(String clientId, String[] scopes, int port) {
+        String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + "common";
         return AuthorizationCodeListener.create(port)
             .flatMap(server -> {
                 URI redirectUri;
@@ -279,8 +320,8 @@ public final class IdentityClient {
                             throw new RuntimeException(e);
                         }
                     })
-                    .flatMap(code -> authenticateWithAuthorizationCode(tenantId, clientId, scopes, code, redirectUri))
-                    .doFinally(s -> server.dispose());
+                    .flatMap(code -> authenticateWithAuthorizationCode(clientId, scopes, code, redirectUri))
+                    .doFinally(s -> server.dispose().block());
             });
     }
 
