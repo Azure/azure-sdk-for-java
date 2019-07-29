@@ -43,6 +43,9 @@ public abstract class ShareClientTestBase extends TestBase {
     public abstract void getDirectoryDoesNotCreateADirectory();
 
     @Test
+    public abstract void getFileClientDoesNotCreateAFile();
+
+    @Test
     public abstract void createDirectoryFromShareClient();
 
     @Test

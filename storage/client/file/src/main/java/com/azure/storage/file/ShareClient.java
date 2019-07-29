@@ -76,6 +76,19 @@ public class ShareClient {
     }
 
     /**
+     * Constructs a {@link FileClient} that interacts with the specified file.
+     *
+     * <p>If the file doesn't exist in the share {@link FileClient#create(long)} ) create} in the client will
+     * need to be called before interaction with the file can happen.</p>
+     *
+     * @param filePath Name of the file
+     * @return a {@link FileClient} that interacts with the file in the share
+     */
+    public FileClient getFileClient(String filePath) {
+        return new FileClient(client.getFileClient(filePath));
+    }
+
+    /**
      * Creates the share in the storage account.
      *
      * <p><strong>Code Samples</strong></p>

@@ -84,6 +84,15 @@ public class ShareAsyncClientTests extends ShareClientTestBase {
     }
 
     @Override
+    public void getFileClientDoesNotCreateAFile() {
+        shareAsyncClient.create().block();
+        FileAsyncClient fileAsyncClient = shareAsyncClient.getFileClient("testfile");
+        Assert.assertNotNull(fileAsyncClient);
+        StepVerifier.create(fileAsyncClient.getProperties())
+            .verifyErrorSatisfies(response -> FileTestHelpers.assertExceptionStatusCode(response, 404));
+    }
+
+    @Override
     public void createDirectoryFromShareClient() {
         shareAsyncClient.create().block();
         StepVerifier.create(shareAsyncClient.createDirectory("testshare"))

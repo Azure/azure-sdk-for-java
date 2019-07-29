@@ -126,6 +126,19 @@ public class ShareAsyncClient {
     }
 
     /**
+     * Constructs a {@link FileAsyncClient} that interacts with the specified file.
+     *
+     * <p>If the file doesn't exist in the share {@link FileAsyncClient#create(long)} ) create} in the client will
+     * need to be called before interaction with the file can happen.</p>
+     *
+     * @param filePath Name of the file
+     * @return a {@link FileAsyncClient} that interacts with the file in the share
+     */
+    public FileAsyncClient getFileClient(String filePath) {
+        return new FileAsyncClient(azureFileStorageClient, shareName, filePath, null);
+    }
+
+    /**
      * Creates the share in the storage account.
      *
      * <p><strong>Code Samples</strong></p>

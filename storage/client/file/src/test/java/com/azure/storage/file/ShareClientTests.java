@@ -88,6 +88,15 @@ public class ShareClientTests extends ShareClientTestBase {
     }
 
     @Override
+    public void getFileClientDoesNotCreateAFile() {
+        shareClient.create();
+        FileClient fileClient = shareClient.getFileClient("testfile");
+        Assert.assertNotNull(fileClient);
+        thrown.expect(StorageErrorException.class);
+        fileClient.getProperties();
+    }
+
+    @Override
     public void createDirectoryFromShareClient() {
         shareClient.create();
         FileTestHelpers.assertResponseStatusCode(shareClient.createDirectory("testshare"), 201);

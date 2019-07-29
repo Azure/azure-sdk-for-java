@@ -1,0 +1,74 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share24337d65?restype=share&sv=2018-03-28&ss=bfqt&srt=sco&sp=rwdlacup&st=2019-07-26T17:09:15Z&se=2019-12-08T02:09:15Z&spr=https&sig=s0rTOY95%2FrkAX8kd70%2F56AzGBBaHAALvePvrt9F2Iwk%3D",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "Connection" : "close",
+      "x-ms-error-code" : "OperationTimedOut",
+      "retry-after" : "0",
+      "Content-Length" : "245",
+      "StatusCode" : "500",
+      "x-ms-request-id" : "5f5fcd44-001a-0072-173e-464148000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OperationTimedOut</Code><Message>Operation could not be completed within the specified time.\nRequestId:5f5fcd44-001a-0072-173e-464148000000\nTime:2019-07-29T18:51:20.5736189Z</Message></Error>",
+      "Date" : "Mon, 29 Jul 2019 18:51:19 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share24337d65?restype=share&sv=2018-03-28&ss=bfqt&srt=sco&sp=rwdlacup&st=2019-07-26T17:09:15Z&se=2019-12-08T02:09:15Z&spr=https&sig=s0rTOY95%2FrkAX8kd70%2F56AzGBBaHAALvePvrt9F2Iwk%3D",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D71455BF324470\"",
+      "Last-Modified" : "Mon, 29 Jul 2019 18:51:20 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "47fbc170-301a-0094-5a3e-4650b8000000",
+      "Date" : "Mon, 29 Jul 2019 18:51:19 GMT"
+    }
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share24337d65/testfile?sv=2018-03-28&ss=bfqt&srt=sco&sp=rwdlacup&st=2019-07-26T17:09:15Z&se=2019-12-08T02:09:15Z&spr=https&sig=s0rTOY95%2FrkAX8kd70%2F56AzGBBaHAALvePvrt9F2Iwk%3D",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "47fbc174-301a-0094-5b3e-4650b8000000",
+      "Date" : "Mon, 29 Jul 2019 18:51:20 GMT"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share24337d65?restype=share&sv=2018-03-28&ss=bfqt&srt=sco&sp=rwdlacup&st=2019-07-26T17:09:15Z&se=2019-12-08T02:09:15Z&spr=https&sig=s0rTOY95%2FrkAX8kd70%2F56AzGBBaHAALvePvrt9F2Iwk%3D",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "47fbc175-301a-0094-5c3e-4650b8000000",
+      "Date" : "Mon, 29 Jul 2019 18:51:20 GMT"
+    }
+  } ],
+  "variables" : [ "share24337d65" ]
+}

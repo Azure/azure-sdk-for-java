@@ -4,8 +4,10 @@ package com.azure.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.storage.file.FileClient;
 import com.azure.storage.file.ShareClient;
 import com.azure.storage.file.ShareClientBuilder;
+import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.StorageErrorException;
 import java.util.UUID;
@@ -100,6 +102,14 @@ public class ShareSample {
             );
         } catch (StorageErrorException e) {
             System.out.println("Failed to delete the share. Reasons: " + e.getMessage());
+        }
+
+        // Create a file with size of 1024 bytes under the share.
+        try {
+            FileClient fileClient = shareClient.getFileClient("myFile");
+            fileClient.create(1024);
+        } catch (StorageErrorException e) {
+            System.out.println("Failed to create a file under the share. Reasons: " + e.getMessage());
         }
 
         // Delete the share snapshot 1
