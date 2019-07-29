@@ -64,10 +64,14 @@ class ApiPolicysImpl extends WrapperImpl<ApiPolicysInner> implements ApiPolicys 
     public Observable<ApiPolicyContract> getAsync(String resourceGroupName, String serviceName, String apiId) {
         ApiPolicysInner client = this.inner();
         return client.getAsync(resourceGroupName, serviceName, apiId)
-        .map(new Func1<PolicyContractInner, ApiPolicyContract>() {
+        .flatMap(new Func1<PolicyContractInner, Observable<ApiPolicyContract>>() {
             @Override
-            public ApiPolicyContract call(PolicyContractInner inner) {
-                return wrapModel(inner);
+            public Observable<ApiPolicyContract> call(PolicyContractInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ApiPolicyContract)wrapModel(inner));
+                }
             }
        });
     }
