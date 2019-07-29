@@ -30,7 +30,8 @@ public class PagedIterable<T> extends IterableResponse<T>  {
     }
 
     /**
-     * Provides iterable API for{@link PagedResponse}.
+     * Provides iterable API for{@link PagedResponse}
+     * .
      * @return iterable interface
      */
     public Iterable<PagedResponse<T>> iterableByPage() {
