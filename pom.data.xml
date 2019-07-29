@@ -546,6 +546,6 @@
     <module>./sdk/eventhubs/pom.data.xml</module>
     <module>./sdk/keyvault/pom.data.xml</module>
     <module>./sdk/servicebus</module>
-    <module>./storage/data-plane</module>
+    <module>./sdk/storage/microsoft-azure-storage-blob</module>
   </modules>
 </project>
