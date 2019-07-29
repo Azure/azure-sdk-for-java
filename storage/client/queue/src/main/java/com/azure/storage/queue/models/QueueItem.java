@@ -4,6 +4,7 @@
 
 package com.azure.storage.queue.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.Map;
  * An Azure Storage Queue.
  */
 @JacksonXmlRootElement(localName = "Queue")
+@Fluent
 public final class QueueItem {
     /*
      * The name of the Queue.

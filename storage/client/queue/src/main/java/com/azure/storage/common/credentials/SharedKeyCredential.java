@@ -116,10 +116,10 @@ public final class SharedKeyCredential {
             byte[] utf8Bytes = stringToSign.getBytes(StandardCharsets.UTF_8);
             return Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
         } catch (final NoSuchAlgorithmException e) {
-            LOGGER.asError().log(e.getMessage());
+            LOGGER.error(e.getMessage());
             throw new RuntimeException(e);
         } catch (InvalidKeyException e) {
-            LOGGER.asError().log("Please double check the account key. Error details: " + e.getMessage());
+            LOGGER.error("Please double check the account key. Error details: " + e.getMessage());
             throw new RuntimeException("Please double check the account key. Error details: " + e.getMessage());
         }
     }
@@ -232,7 +232,7 @@ public final class SharedKeyCredential {
             String signature = Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
             return String.format(AUTHORIZATION_HEADER_FORMAT, accountName, signature);
         } catch (NoSuchAlgorithmException | InvalidKeyException ex) {
-            LOGGER.asError().log(ex.getMessage());
+            LOGGER.error(ex.getMessage());
             throw new Error(ex);
         }
     }

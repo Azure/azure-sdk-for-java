@@ -73,7 +73,7 @@ public final class StorageAsyncClient {
     public ContainerAsyncClient getContainerAsyncClient(String containerName) {
         return new ContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getAccountUrl(), containerName).toString())
-            .pipeline(azureBlobStorage.httpPipeline()));
+            .pipeline(azureBlobStorage.getHttpPipeline()));
     }
 
     /**
@@ -125,9 +125,9 @@ public final class StorageAsyncClient {
      */
     public URL getAccountUrl() {
         try {
-            return new URL(azureBlobStorage.url());
+            return new URL(azureBlobStorage.getUrl());
         } catch (MalformedURLException e) {
-            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.url()), e);
+            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e);
         }
     }
 
@@ -318,7 +318,7 @@ public final class StorageAsyncClient {
         accountSASSignatureValues.ipRange(ipRange);
         accountSASSignatureValues.protocol(sasProtocol);
 
-        SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.azureBlobStorage.httpPipeline());
+        SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.azureBlobStorage.getHttpPipeline());
 
         SASQueryParameters sasQueryParameters = accountSASSignatureValues.generateSASQueryParameters(sharedKeyCredential);
 

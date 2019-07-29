@@ -4,6 +4,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * AppendBlobs_appendBlock, AppendBlobs_appendBlockFromUrl.
  */
 @JacksonXmlRootElement(localName = "append-position-access-conditions")
+@Fluent
 public final class AppendPositionAccessConditions {
     /*
      * Optional conditional header. The max length in bytes permitted for the
