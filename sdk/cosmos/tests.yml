@@ -16,11 +16,12 @@ jobs:
           DisplayName: Single Region Strong Https
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pfast'
-          ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
-          ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
           ACCOUNT_DEFAULT_CONSISTENCY: Strong
+      EnvVars:
+          ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
+          ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
 
       PreRunSteps:
         - template: ../steps/install-reporting-tools.yml
@@ -28,5 +29,5 @@ jobs:
       TestStepMavenInputs:
         goals: verify
         options: '$(ProfileFlag) -Dgpg.skip'
-        testResultsFiles: '**/junitreports/TEST-*.xml'
-        testRunTitle: 'Live tests for cosmos $(DisplayName)'  # TODO: DRY "cosmos" up
+        # testResultsFiles: '**/junitreports/TEST-*.xml'
+        # testRunTitle: 'Live tests for cosmos $(DisplayName)'  # TODO: DRY "cosmos" up
