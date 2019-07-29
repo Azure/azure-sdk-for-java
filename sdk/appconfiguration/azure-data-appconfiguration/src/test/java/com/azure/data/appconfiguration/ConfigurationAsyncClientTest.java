@@ -7,8 +7,8 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.rest.IterableResponse;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -416,7 +416,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
                 .verifyComplete();
-            return new PagedIterable<>(Flux.fromIterable(selected));
+            return new IterableResponse<>(Flux.fromIterable(selected));
         });
     }
 
@@ -445,7 +445,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .consumeNextWith(selected::add)
                 .verifyComplete();
 
-            return new PagedIterable<>(Flux.fromIterable(selected));
+            return new IterableResponse<>(Flux.fromIterable(selected));
         });
     }
 
@@ -468,7 +468,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(settingsReturned::add)
                 .verifyComplete();
 
-            return new PagedIterable<>(Flux.fromIterable(settingsReturned));
+            return new IterableResponse<>(Flux.fromIterable(settingsReturned));
         });
     }
 
@@ -573,7 +573,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .consumeNextWith(selected::add)
                 .verifyComplete();
 
-            return new PagedIterable<>(Flux.fromIterable(selected));
+            return new IterableResponse<>(Flux.fromIterable(selected));
         });
     }
 
@@ -611,7 +611,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .consumeNextWith(selected::add)
                 .verifyComplete();
 
-            return new PagedIterable<>(Flux.fromIterable(selected));
+            return new IterableResponse<>(Flux.fromIterable(selected));
         });
     }
 

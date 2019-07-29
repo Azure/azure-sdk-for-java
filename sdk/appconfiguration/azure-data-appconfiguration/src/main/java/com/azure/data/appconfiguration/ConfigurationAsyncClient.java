@@ -625,7 +625,13 @@ public final class ConfigurationAsyncClient {
         return result;
     }
 
-    Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
+    PagedFlux<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
+        return new PagedFlux<>(() ->
+            listSettingRevisionsFirstPage(selector, context),
+            continuationToken -> listSettingRevisionsNextPage(continuationToken, context));
+    }
+
+    /*Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
         Mono<PagedResponse<ConfigurationSetting>> result;
 
         if (selector != null) {
@@ -646,7 +652,7 @@ public final class ConfigurationAsyncClient {
         }
 
         return result.flatMapMany(r -> extractAndFetchConfigurationSettings(r, context));
-    }
+    }*/
 
     private Flux<ConfigurationSetting> listSettings(String nextPageLink, Context context) {
         Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink, context)

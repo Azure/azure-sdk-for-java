@@ -278,8 +278,8 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector
         SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
         PagedIterable<ConfigurationSetting> csStream =  configurationClient.listSettings(settingSelector);
-        csStream.streamByPage().forEach(setting -> {
-            System.out.printf("Key: %s, Value: %s", setting.value().get(0).key(), setting.value().get(0).value());
+        csStream.forEach(setting -> {
+            System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
         });
         // END: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector
     }
@@ -293,8 +293,8 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
         Context ctx = new Context(key2, value2);
         PagedIterable<ConfigurationSetting> csStream =  configurationClient.listSettings(settingSelector, ctx);
-        csStream.streamByPage().forEach(setting -> {
-            System.out.printf("Key: %s, Value: %s", setting.value().get(0).key(), setting.value().get(0).value());
+        csStream.forEach(setting -> {
+            System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
         });
         // END: com.azure.data.applicationconfig.configurationclient.listSettings#SettingSelector-Context
     }

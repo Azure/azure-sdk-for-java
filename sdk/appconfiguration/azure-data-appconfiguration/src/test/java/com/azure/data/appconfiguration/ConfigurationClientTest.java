@@ -312,7 +312,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value(value).label(label);
 
         assertConfigurationEquals(expected, client.setSetting(expected));
-
         assertConfigurationEquals(expected, client.listSettings(new SettingSelector().keys(key).labels(label)).iterator().next());
         assertConfigurationEquals(expected, client.listSettings(new SettingSelector().keys(key)).iterator().next());
     }
@@ -343,10 +342,9 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         String label2 = getLabel();
 
         listWithMultipleLabelsRunner(key, label, label2, (setting, setting2) -> {
-            logger.info("$$$$ listWithMultipleLabels adding setting");
             assertConfigurationEquals(setting, client.addSetting(setting));
             assertConfigurationEquals(setting2, client.addSetting(setting2));
-            logger.info("$$$$ listWithMultipleLabels listSettings");
+
             return client.listSettings(new SettingSelector().keys(key).labels(label, label2));
         });
     }
@@ -530,14 +528,11 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         }
 
         SettingSelector filter = new SettingSelector().keys(keyPrefix).labels(labelPrefix);
-        List<ConfigurationSetting> configurationSettingList = new ArrayList<>();
-
-        client.listSettingRevisions(filter).streamByPage().forEach(c -> configurationSettingList.addAll(c.value()));
-        assertEquals(numberExpected, configurationSettingList.size());
+        assertEquals(numberExpected, client.listSettingRevisions(filter).stream().collect(Collectors.toList()).size());
     }
 
     /**
-     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and stream is invoked multiple times.
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using stream
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
     public void listRevisionsWithPaginationAndRepeatStream() {
@@ -547,19 +542,14 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         }
 
         SettingSelector filter = new SettingSelector().keys(keyPrefix).labels(labelPrefix);
-        List<ConfigurationSetting> configurationSettingList1 = new ArrayList<>();
-        List<ConfigurationSetting> configurationSettingList2 = new ArrayList<>();
         PagedIterable<ConfigurationSetting> configurationSettingPagedIterable = client.listSettingRevisions(filter);
+        assertEquals(numberExpected, configurationSettingPagedIterable.stream().collect(Collectors.toList()).size());
 
-        configurationSettingPagedIterable.stream().forEach(configurationSetting -> configurationSettingList1.add(configurationSetting));
-        assertEquals(numberExpected, configurationSettingList1.size());
-
-        configurationSettingPagedIterable.stream().forEach(configurationSetting -> configurationSettingList2.add(configurationSetting));
-        assertEquals(numberExpected, configurationSettingList2.size());
+        assertEquals(numberExpected, configurationSettingPagedIterable.stream().collect(Collectors.toList()).size());
     }
 
     /**
-     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and iterator is invoked multiple times.
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using iterator
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
     public void listRevisionsWithPaginationAndRepeatIterator() {
@@ -569,9 +559,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         }
 
         SettingSelector filter = new SettingSelector().keys(keyPrefix).labels(labelPrefix);
+
+        PagedIterable<ConfigurationSetting> configurationSettingPagedIterable = client.listSettingRevisions(filter);
         List<ConfigurationSetting> configurationSettingList1 = new ArrayList<>();
         List<ConfigurationSetting> configurationSettingList2 = new ArrayList<>();
-        PagedIterable<ConfigurationSetting> configurationSettingPagedIterable = client.listSettingRevisions(filter);
 
         configurationSettingPagedIterable.iterator().forEachRemaining(configurationSetting -> configurationSettingList1.add(configurationSetting));
         assertEquals(numberExpected, configurationSettingList1.size());
