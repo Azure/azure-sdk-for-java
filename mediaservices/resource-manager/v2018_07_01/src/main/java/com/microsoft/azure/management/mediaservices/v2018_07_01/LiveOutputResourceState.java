@@ -8,49 +8,37 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for LiveOutputResourceState.
  */
-public enum LiveOutputResourceState {
-    /** Enum value Creating. */
-    CREATING("Creating"),
+public final class LiveOutputResourceState extends ExpandableStringEnum<LiveOutputResourceState> {
+    /** Static value Creating for LiveOutputResourceState. */
+    public static final LiveOutputResourceState CREATING = fromString("Creating");
 
-    /** Enum value Running. */
-    RUNNING("Running"),
+    /** Static value Running for LiveOutputResourceState. */
+    public static final LiveOutputResourceState RUNNING = fromString("Running");
 
-    /** Enum value Deleting. */
-    DELETING("Deleting");
+    /** Static value Deleting for LiveOutputResourceState. */
+    public static final LiveOutputResourceState DELETING = fromString("Deleting");
 
-    /** The actual serialized value for a LiveOutputResourceState instance. */
-    private String value;
-
-    LiveOutputResourceState(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a LiveOutputResourceState from its string representation.
+     * @param name a name to look for
+     * @return the corresponding LiveOutputResourceState
+     */
+    @JsonCreator
+    public static LiveOutputResourceState fromString(String name) {
+        return fromString(name, LiveOutputResourceState.class);
     }
 
     /**
-     * Parses a serialized value to a LiveOutputResourceState instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed LiveOutputResourceState object, or null if unable to parse.
+     * @return known LiveOutputResourceState values
      */
-    @JsonCreator
-    public static LiveOutputResourceState fromString(String value) {
-        LiveOutputResourceState[] items = LiveOutputResourceState.values();
-        for (LiveOutputResourceState item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<LiveOutputResourceState> values() {
+        return values(LiveOutputResourceState.class);
     }
 }

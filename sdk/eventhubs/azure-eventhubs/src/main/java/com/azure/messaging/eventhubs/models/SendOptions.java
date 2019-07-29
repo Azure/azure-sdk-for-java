@@ -4,37 +4,21 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.implementation.annotation.Fluent;
+import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubProducer;
+import reactor.core.publisher.Flux;
 
 /**
  * The set of options that can be specified when sending a set of events to influence the way in which events are sent
  * to the Event Hubs service.
  *
- * @see EventHubProducer
+ * @see EventHubProducer#send(EventData, SendOptions)
+ * @see EventHubProducer#send(Iterable, SendOptions)
+ * @see EventHubProducer#send(Flux, SendOptions)
  */
 @Fluent
 public class SendOptions implements Cloneable {
-    private int maximumSizeInBytes;
     private String partitionKey;
-
-    /**
-     * Creates an instance with the maximum message size set to the maximum amount allowed by the protocol.
-     */
-    public SendOptions() {
-        this.maximumSizeInBytes = EventHubProducer.MAX_MESSAGE_LENGTH_BYTES;
-    }
-
-    /**
-     * Sets the maximum size to allow for a single batch of events, in bytes. If this size is exceeded, an exception
-     * will be thrown and the send operation will fail.
-     *
-     * @param maximumSizeInBytes The maximum size to allow for a single batch of events.
-     * @return The updated {@link SendOptions} object.
-     */
-    SendOptions maximumSizeInBytes(int maximumSizeInBytes) {
-        this.maximumSizeInBytes = maximumSizeInBytes;
-        return this;
-    }
 
     /**
      * Sets a hashing key to be provided for the batch of events, which instructs the Event Hubs service map this key to
@@ -68,11 +52,12 @@ public class SendOptions implements Cloneable {
     }
 
     /**
-     * Creates a shallow clone of this instance. The parameters are not cloned, but they are immutable.
+     * Creates a shallow clone of this instance.
      *
      * @return A shallow clone of this object.
      */
-    public SendOptions clone() {
+    @Override
+    public Object clone() {
         SendOptions clone;
         try {
             clone = (SendOptions) super.clone();
@@ -80,7 +65,6 @@ public class SendOptions implements Cloneable {
             clone = new SendOptions();
         }
 
-        clone.maximumSizeInBytes(maximumSizeInBytes);
         clone.partitionKey(partitionKey);
 
         return clone;

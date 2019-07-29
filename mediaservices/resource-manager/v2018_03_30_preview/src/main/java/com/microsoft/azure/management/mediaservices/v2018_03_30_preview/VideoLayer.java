@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * Describes the settings to be used when encoding the input video into a
  * desired output bitrate layer.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = VideoLayer.class)
 @JsonTypeName("#Microsoft.Media.VideoLayer")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.H264Layer", value = H264Layer.class)

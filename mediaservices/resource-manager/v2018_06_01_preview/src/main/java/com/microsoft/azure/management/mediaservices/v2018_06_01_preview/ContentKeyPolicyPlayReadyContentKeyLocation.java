@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * Base class for content key ID location. A derived class must be used to
  * represent the location.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = ContentKeyPolicyPlayReadyContentKeyLocation.class)
 @JsonTypeName("ContentKeyPolicyPlayReadyContentKeyLocation")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader", value = ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader.class),

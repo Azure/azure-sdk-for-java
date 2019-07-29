@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.MessageConstant;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpConstants;
 import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
 import org.apache.qpid.proton.Proton;
@@ -22,52 +23,87 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-/*
+/**
  * A class for aggregating EventData into a single, size-limited, batch that will be treated as a single message when
  * sent to the Azure Event Hubs service.
+ *
+ * @see EventHubProducer#createBatch()
+ * @see EventHubProducer#createBatch(BatchOptions)
+ * @see EventHubProducer See EventHubProducer for examples.
  */
-final class EventDataBatch {
+public final class EventDataBatch {
+    private final ClientLogger logger = new ClientLogger(EventDataBatch.class);
+    private final Object lock = new Object();
     private final int maxMessageSize;
     private final String partitionKey;
     private final ErrorContextProvider contextProvider;
     private final List<EventData> events;
     private final byte[] eventBytes;
-    private int currentSize;
+    private int sizeInBytes;
 
     EventDataBatch(int maxMessageSize, String partitionKey, ErrorContextProvider contextProvider) {
         this.maxMessageSize = maxMessageSize;
         this.partitionKey = partitionKey;
         this.contextProvider = contextProvider;
         this.events = new LinkedList<>();
-        this.currentSize = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
+        this.sizeInBytes = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
         this.eventBytes = new byte[maxMessageSize];
     }
 
-    int getSize() {
+    /**
+     * Gets the number of {@link EventData events} in the batch.
+     *
+     * @return The number of {@link EventData events} in the batch.
+     */
+    public int getSize() {
         return events.size();
     }
 
-    boolean tryAdd(final EventData eventData) {
+    /**
+     * Gets the size of the {@link EventDataBatch} in bytes.
+     *
+     * @return the size of the {@link EventDataBatch} in bytes.
+     */
+    public int getSizeInBytes() {
+        return this.sizeInBytes;
+    }
 
+    /**
+     * Tries to add an {@link EventData eventData} to the batch.
+     *
+     * @param eventData The {@link EventData} to add to the batch.
+     * @return {@code true} if the event could be added to the batch; {@code false} if the event was too large to fit in
+     *         the batch.
+     * @throws IllegalArgumentException if {@code eventData} is {@code null}.
+     * @throws AmqpException if {@code eventData} is larger than the maximum size of the {@link
+     *         EventDataBatch}.
+     */
+    public boolean tryAdd(final EventData eventData) {
         if (eventData == null) {
-            throw new IllegalArgumentException("eventData cannot be null");
+            logger.logAndThrow(new IllegalArgumentException("eventData cannot be null"));
+            return false;
         }
 
         final int size;
         try {
             size = getSize(eventData, events.isEmpty());
         } catch (java.nio.BufferOverflowException exception) {
-            throw new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-                String.format(Locale.US, "Size of the payload exceeded Maximum message size: %s kb", maxMessageSize / 1024),
-                contextProvider.getErrorContext());
-        }
+            logger.logAndThrow(new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+                String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb", maxMessageSize / 1024),
+                contextProvider.getErrorContext()));
 
-        if (this.currentSize + size > this.maxMessageSize) {
             return false;
         }
 
+        synchronized (lock) {
+            if (this.sizeInBytes + size > this.maxMessageSize) {
+                return false;
+            }
+
+            this.sizeInBytes += size;
+        }
+
         this.events.add(eventData);
-        this.currentSize += size;
         return true;
     }
 
@@ -101,7 +137,7 @@ final class EventDataBatch {
     /*
      * Creates the AMQP message represented by the event data
      */
-    private static Message createAmqpMessage(EventData event, String partitionKey) {
+    private Message createAmqpMessage(EventData event, String partitionKey) {
         final Message message = Proton.message();
 
         if (event.properties() != null && !event.properties().isEmpty()) {
@@ -159,7 +195,7 @@ final class EventDataBatch {
                             message.setReplyToGroupId((String) value);
                             break;
                         default:
-                            throw new IllegalArgumentException(String.format(Locale.US, "Property is not a recognized reserved property name: %s", key));
+                            logger.logAndThrow(new IllegalArgumentException(String.format(Locale.US, "Property is not a recognized reserved property name: %s", key)));
                     }
                 } else {
                     final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)

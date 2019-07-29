@@ -70,10 +70,14 @@ class ApiOperationsImpl extends WrapperImpl<ApiOperationsInner> implements ApiOp
     public Observable<OperationContract> getAsync(String resourceGroupName, String serviceName, String apiId, String operationId) {
         ApiOperationsInner client = this.inner();
         return client.getAsync(resourceGroupName, serviceName, apiId, operationId)
-        .map(new Func1<OperationContractInner, OperationContract>() {
+        .flatMap(new Func1<OperationContractInner, Observable<OperationContract>>() {
             @Override
-            public OperationContract call(OperationContractInner inner) {
-                return wrapModel(inner);
+            public Observable<OperationContract> call(OperationContractInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((OperationContract)wrapModel(inner));
+                }
             }
        });
     }

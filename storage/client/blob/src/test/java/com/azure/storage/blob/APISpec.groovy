@@ -3,9 +3,15 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.http.*
+import com.azure.core.http.HttpClient
+import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpRequest
+import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.http.ProxyOptions
 import com.azure.core.http.rest.Response
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.identity.credential.EnvironmentCredential

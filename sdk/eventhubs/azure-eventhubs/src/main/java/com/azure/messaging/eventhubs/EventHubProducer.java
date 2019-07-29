@@ -14,7 +14,6 @@ import com.azure.messaging.eventhubs.implementation.EventDataUtil;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.message.Message;
-import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -69,6 +68,7 @@ import java.util.stream.Collector;
  * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.instantiatePartitionProducer}
  *
  * <p><strong>Publish events to the same partition, grouped together using {@link SendOptions#partitionKey(String)}.</strong></p>
+ *
  * If developers want to push similar events to end up at the same partition, but do not require them to go to a
  * specific partition, they can use {@link SendOptions#partitionKey(String)}.
  *
@@ -77,17 +77,32 @@ import java.util.stream.Collector;
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.send#publisher-sendOptions}
  *
+ * <p><strong>Publish events using an {@link EventDataBatch}.</strong></p>
+ *
+ * Developers can create an {@link EventDataBatch}, add the events they want into it, and publish these
+ * events together. When creating a {@link EventDataBatch batch}, developers can specify a set of {@link BatchOptions
+ * options} to configure this batch.
+ *
+ * In the scenario below, the developer is creating a networked video game. They want to receive telemetry about their
+ * users' gaming systems, but do not want to slow down the network with telemetry. So they limit the size of their
+ * {@link EventDataBatch batches} to be no larger than 256 bytes. The events within the batch also get hashed to the
+ * same partition because they all share the same {@link BatchOptions#partitionKey()}.
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.send#eventdatabatch}
+ *
  * @see EventHubAsyncClient#createProducer()
  */
 @Immutable
 public class EventHubProducer implements Closeable {
+    private static final int MAX_PARTITION_KEY_LENGTH = 128;
+
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.
      */
     public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
 
-    private static final int MAX_PARTITION_KEY_LENGTH = 128;
     private static final SendOptions DEFAULT_SEND_OPTIONS = new SendOptions();
+    private static final BatchOptions DEFAULT_BATCH_OPTIONS = new BatchOptions();
 
     private final ClientLogger logger = new ClientLogger(EventHubProducer.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
@@ -105,6 +120,48 @@ public class EventHubProducer implements Closeable {
         this.sendLinkMono = amqpSendLinkMono.cache();
         this.senderOptions = options;
         this.isPartitionSender = !ImplUtils.isNullOrEmpty(options.partitionId());
+    }
+
+    /**
+     * Creates an {@link EventDataBatch} that can fit as many events as the transport allows.
+     *
+     * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
+     */
+    public Mono<EventDataBatch> createBatch() {
+        return createBatch(DEFAULT_BATCH_OPTIONS);
+    }
+
+    /**
+     * Creates an {@link EventDataBatch} that can fit as many events as the transport allows.
+     *
+     * @param options A set of options used to configure the {@link EventDataBatch}.
+     * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
+     */
+    public Mono<EventDataBatch> createBatch(BatchOptions options) {
+        Objects.requireNonNull(options);
+
+        final BatchOptions clone = (BatchOptions) options.clone();
+
+        verifyPartitionKey(clone.partitionKey());
+
+        return sendLinkMono.flatMap(link -> link.getLinkSize()
+            .flatMap(size -> {
+                final int maximumLinkSize = size > 0
+                    ? size
+                    : MAX_MESSAGE_LENGTH_BYTES;
+
+                if (clone.maximumSizeInBytes() > maximumLinkSize) {
+                    return Mono.error(new IllegalArgumentException(String.format(Locale.US,
+                        "BatchOptions.maximumSizeInBytes (%s bytes) is larger than the link size (%s bytes).",
+                        clone.maximumSizeInBytes(), maximumLinkSize)));
+                }
+
+                final int batchSize = clone.maximumSizeInBytes() > 0
+                    ? clone.maximumSizeInBytes()
+                    : maximumLinkSize;
+
+                return Mono.just(new EventDataBatch(batchSize, clone.partitionKey(), () -> link.getErrorContext()));
+            }));
     }
 
     /**
@@ -180,10 +237,10 @@ public class EventHubProducer implements Closeable {
      * @param events Events to send to the service.
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
-    public Mono<Void> send(Publisher<EventData> events) {
+    public Mono<Void> send(Flux<EventData> events) {
         Objects.requireNonNull(events);
 
-        return sendInternal(Flux.from(events), DEFAULT_SEND_OPTIONS);
+        return send(events, DEFAULT_SEND_OPTIONS);
     }
 
     /**
@@ -195,45 +252,25 @@ public class EventHubProducer implements Closeable {
      * @param options The set of options to consider when sending this batch.
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
-    public Mono<Void> send(Publisher<EventData> events, SendOptions options) {
+    public Mono<Void> send(Flux<EventData> events, SendOptions options) {
         Objects.requireNonNull(events);
         Objects.requireNonNull(options);
 
-        return sendInternal(Flux.from(events), options);
+        return sendInternal(events, options);
     }
 
-    private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
-        final String partitionKey = options.partitionKey();
+    /**
+     * Sends the batch to the associated Event Hub.
+     *
+     * @param batch The batch to send to the service.
+     * @return A {@link Mono} that completes when the batch is pushed to the service.
+     * @throws NullPointerException if {@code batch} is {@code null}.
+     * @see EventHubProducer#createBatch()
+     * @see EventHubProducer#createBatch(BatchOptions)
+     */
+    public Mono<Void> send(EventDataBatch batch) {
+        Objects.requireNonNull(batch);
 
-        if (!ImplUtils.isNullOrEmpty(partitionKey)) {
-            if (isPartitionSender) {
-                throw new IllegalArgumentException(String.format(Locale.US,
-                    "SendOptions.partitionKey() cannot be set when an EventHubProducer is created with"
-                        + "EventHubProducerOptions.partitionId() set. This EventHubProducer can only send events to partition '%s'.",
-                    senderOptions.partitionId()));
-            } else if (partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
-                throw new IllegalArgumentException(String.format(Locale.US,
-                    "PartitionKey '%s' exceeds the maximum allowed length: '%s'.", partitionKey, MAX_PARTITION_KEY_LENGTH));
-            }
-        }
-
-        //TODO (conniey): When we implement partial success, update the maximum number of batches or remove it completely.
-        return sendLinkMono.flatMap(link -> {
-            return events.collect(new EventDataCollector(options, 1, link::getErrorContext))
-                .flatMap(list -> send(Flux.fromIterable(list)));
-        });
-    }
-
-    private Mono<Void> send(Flux<EventDataBatch> eventBatches) {
-        return eventBatches
-            .flatMap(this::send)
-            .then()
-            .doOnError(error -> {
-                logger.error("Error sending batch.", error);
-            });
-    }
-
-    private Mono<Void> send(EventDataBatch batch) {
         if (batch.getEvents().isEmpty()) {
             logger.info("Cannot send an EventBatch that is empty.");
             return Mono.empty();
@@ -246,6 +283,50 @@ public class EventHubProducer implements Closeable {
         return sendLinkMono.flatMap(link -> messages.size() == 1
             ? link.send(messages.get(0))
             : link.send(messages));
+    }
+
+    private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
+        final String partitionKey = options.partitionKey();
+
+        verifyPartitionKey(partitionKey);
+
+        return sendLinkMono.flatMap(link -> {
+            return link.getLinkSize()
+                .flatMap(size -> {
+                    final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
+                    final BatchOptions batchOptions = new BatchOptions()
+                        .partitionKey(partitionKey)
+                        .maximumSizeInBytes(batchSize);
+
+                    return events.collect(new EventDataCollector(batchOptions, 1, () -> link.getErrorContext()));
+                })
+                .flatMap(list -> sendInternal(Flux.fromIterable(list)));
+        });
+    }
+
+    private Mono<Void> sendInternal(Flux<EventDataBatch> eventBatches) {
+        return eventBatches
+            .flatMap(this::send)
+            .then()
+            .doOnError(error -> {
+                logger.error("Error sending batch.", error);
+            });
+    }
+
+    private void verifyPartitionKey(String partitionKey) {
+        if (ImplUtils.isNullOrEmpty(partitionKey)) {
+            return;
+        }
+
+        if (isPartitionSender) {
+            throw new IllegalArgumentException(String.format(Locale.US,
+                "BatchOptions.partitionKey() cannot be set when an EventHubProducer is created with"
+                    + "EventHubProducerOptions.partitionId() set. This EventHubProducer can only send events to partition '%s'.",
+                senderOptions.partitionId()));
+        } else if (partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
+            throw new IllegalArgumentException(String.format(Locale.US,
+                "PartitionKey '%s' exceeds the maximum allowed length: '%s'.", partitionKey, MAX_PARTITION_KEY_LENGTH));
+        }
     }
 
     /**
@@ -278,13 +359,15 @@ public class EventHubProducer implements Closeable {
 
         private volatile EventDataBatch currentBatch;
 
-        EventDataCollector(SendOptions options, Integer maxNumberOfBatches, ErrorContextProvider contextProvider) {
+        EventDataCollector(BatchOptions options, Integer maxNumberOfBatches, ErrorContextProvider contextProvider) {
             this.maxNumberOfBatches = maxNumberOfBatches;
-            this.maxMessageSize = MAX_MESSAGE_LENGTH_BYTES;
+            this.maxMessageSize = options.maximumSizeInBytes() > 0
+                ? options.maximumSizeInBytes()
+                : MAX_MESSAGE_LENGTH_BYTES;
             this.partitionKey = options.partitionKey();
             this.contextProvider = contextProvider;
 
-            currentBatch = new EventDataBatch(MAX_MESSAGE_LENGTH_BYTES, options.partitionKey(), contextProvider);
+            currentBatch = new EventDataBatch(this.maxMessageSize, options.partitionKey(), contextProvider);
         }
 
         @Override

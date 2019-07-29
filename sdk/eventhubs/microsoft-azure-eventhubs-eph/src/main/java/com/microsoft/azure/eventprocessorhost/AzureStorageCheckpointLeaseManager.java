@@ -6,6 +6,7 @@ package com.microsoft.azure.eventprocessorhost;
 import com.google.gson.Gson;
 import com.microsoft.azure.storage.AccessCondition;
 import com.microsoft.azure.storage.CloudStorageAccount;
+import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.StorageExtendedErrorInformation;
@@ -46,6 +47,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     private static final String METADATA_OWNER_NAME = "OWNINGHOST";
 
     private final String storageConnectionString;
+    private final StorageCredentials storageCredentials;
     private final String storageBlobPrefix;
     private final BlobRequestOptions leaseOperationOptions = new BlobRequestOptions();
     private final BlobRequestOptions checkpointOperationOptions = new BlobRequestOptions();
@@ -59,16 +61,30 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 
     private Hashtable<String, Checkpoint> latestCheckpoint = new Hashtable<String, Checkpoint>();
 
-    AzureStorageCheckpointLeaseManager(String storageConnectionString, String storageContainerName) {
-        this(storageConnectionString, storageContainerName, "");
-    }
-
     AzureStorageCheckpointLeaseManager(String storageConnectionString, String storageContainerName, String storageBlobPrefix) {
         if ((storageConnectionString == null) || storageConnectionString.trim().isEmpty()) {
             throw new IllegalArgumentException("Provide valid Azure Storage connection string when using Azure Storage");
         }
         this.storageConnectionString = storageConnectionString;
+        this.storageCredentials = null;
+        
+        if ((storageContainerName != null) && storageContainerName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Azure Storage container name must be a valid container name or null to use the default");
+        }
+        this.storageContainerName = storageContainerName;
 
+        // Convert all-whitespace prefix to empty string. Convert null prefix to empty string.
+        // Then the rest of the code only has one case to worry about.
+        this.storageBlobPrefix = (storageBlobPrefix != null) ? storageBlobPrefix.trim() : "";
+    }
+    
+    AzureStorageCheckpointLeaseManager(StorageCredentials storageCredentials, String storageContainerName, String storageBlobPrefix) {
+        if (storageCredentials == null) {
+            throw new IllegalArgumentException("Provide valid Azure Storage credentials when using Azure Storage");
+        }
+        this.storageConnectionString = null;
+        this.storageCredentials = storageCredentials;
+        
         if ((storageContainerName != null) && storageContainerName.trim().isEmpty()) {
             throw new IllegalArgumentException("Azure Storage container name must be a valid container name or null to use the default");
         }
@@ -102,7 +118,13 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
                     + "Must be from 3 to 63 characters long.");
         }
 
-        this.storageClient = CloudStorageAccount.parse(this.storageConnectionString).createCloudBlobClient();
+        CloudStorageAccount storageAccount = null;
+        if (this.storageConnectionString != null) {
+            storageAccount = CloudStorageAccount.parse(this.storageConnectionString);
+        } else {
+            storageAccount = new CloudStorageAccount(this.storageCredentials);
+        }
+        this.storageClient = storageAccount.createCloudBlobClient();
 
         this.eventHubContainer = this.storageClient.getContainerReference(this.storageContainerName);
 
