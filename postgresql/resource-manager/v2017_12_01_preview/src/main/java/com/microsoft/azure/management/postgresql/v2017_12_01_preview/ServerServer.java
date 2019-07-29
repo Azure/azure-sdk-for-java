@@ -11,14 +11,14 @@ package com.microsoft.azure.management.postgresql.v2017_12_01_preview;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.implementation.ServerInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.postgresql.v2017_12_01_preview.implementation.PostgreSQLManager;
+import com.microsoft.azure.management.postgresql.v2017_12_01_preview.implementation.DBforPostgreSQLManager;
 import org.joda.time.DateTime;
 import java.util.Map;
 
 /**
  * Type representing ServerServer.
  */
-public interface ServerServer extends HasInner<ServerInner>, HasManager<PostgreSQLManager> {
+public interface ServerServer extends HasInner<ServerInner>, HasManager<DBforPostgreSQLManager> {
     /**
      * @return the administratorLogin value.
      */
