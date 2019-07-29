@@ -212,7 +212,7 @@ public final class SecretAsyncClient {
 
     Mono<Response<Secret>> getSecret(String name, String version, Context context) {
         if (version == null) {
-            return this.getSecretWithResponse(name, "");
+            return this.getSecret(name, "", context);
         }
 
         return service.getSecret(endpoint, name, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
