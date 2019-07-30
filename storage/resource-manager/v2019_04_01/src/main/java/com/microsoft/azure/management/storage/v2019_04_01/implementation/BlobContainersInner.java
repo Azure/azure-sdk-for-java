@@ -10,7 +10,9 @@ package com.microsoft.azure.management.storage.v2019_04_01.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.storage.v2019_04_01.BlobContainersCreateOrUpdateImmutabilityPolicyHeaders;
 import com.microsoft.azure.management.storage.v2019_04_01.BlobContainersDeleteImmutabilityPolicyHeaders;
 import com.microsoft.azure.management.storage.v2019_04_01.BlobContainersExtendImmutabilityPolicyHeaders;
@@ -18,6 +20,8 @@ import com.microsoft.azure.management.storage.v2019_04_01.BlobContainersGetImmut
 import com.microsoft.azure.management.storage.v2019_04_01.BlobContainersLockImmutabilityPolicyHeaders;
 import com.microsoft.azure.management.storage.v2019_04_01.LeaseContainerRequest;
 import com.microsoft.azure.management.storage.v2019_04_01.PublicAccess;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -37,6 +41,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -69,7 +74,7 @@ public class BlobContainersInner {
     interface BlobContainersService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_04_01.BlobContainers list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers")
-        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$skipToken") String skipToken, @Query("$maxpagesize") String maxpagesize, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_04_01.BlobContainers create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}")
@@ -119,6 +124,10 @@ public class BlobContainersInner {
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/lease")
         Observable<Response<ResponseBody>> lease(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("containerName") String containerName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body LeaseContainerRequest parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_04_01.BlobContainers listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
     }
 
     /**
@@ -129,10 +138,16 @@ public class BlobContainersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ListContainerItemsInner object if successful.
+     * @return the PagedList&lt;ListContainerItemInner&gt; object if successful.
      */
-    public ListContainerItemsInner list(String resourceGroupName, String accountName) {
-        return listWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
+    public PagedList<ListContainerItemInner> list(final String resourceGroupName, final String accountName) {
+        ServiceResponse<Page<ListContainerItemInner>> response = listSinglePageAsync(resourceGroupName, accountName).toBlocking().single();
+        return new PagedList<ListContainerItemInner>(response.body()) {
+            @Override
+            public Page<ListContainerItemInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -144,8 +159,16 @@ public class BlobContainersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ListContainerItemsInner> listAsync(String resourceGroupName, String accountName, final ServiceCallback<ListContainerItemsInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    public ServiceFuture<List<ListContainerItemInner>> listAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<ListContainerItemInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSinglePageAsync(resourceGroupName, accountName),
+            new Func1<String, Observable<ServiceResponse<Page<ListContainerItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ListContainerItemInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -154,15 +177,16 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ListContainerItemsInner object
+     * @return the observable to the PagedList&lt;ListContainerItemInner&gt; object
      */
-    public Observable<ListContainerItemsInner> listAsync(String resourceGroupName, String accountName) {
-        return listWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<ListContainerItemsInner>, ListContainerItemsInner>() {
-            @Override
-            public ListContainerItemsInner call(ServiceResponse<ListContainerItemsInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<ListContainerItemInner>> listAsync(final String resourceGroupName, final String accountName) {
+        return listWithServiceResponseAsync(resourceGroupName, accountName)
+            .map(new Func1<ServiceResponse<Page<ListContainerItemInner>>, Page<ListContainerItemInner>>() {
+                @Override
+                public Page<ListContainerItemInner> call(ServiceResponse<Page<ListContainerItemInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -171,9 +195,31 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ListContainerItemsInner object
+     * @return the observable to the PagedList&lt;ListContainerItemInner&gt; object
      */
-    public Observable<ServiceResponse<ListContainerItemsInner>> listWithServiceResponseAsync(String resourceGroupName, String accountName) {
+    public Observable<ServiceResponse<Page<ListContainerItemInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String accountName) {
+        return listSinglePageAsync(resourceGroupName, accountName)
+            .concatMap(new Func1<ServiceResponse<Page<ListContainerItemInner>>, Observable<ServiceResponse<Page<ListContainerItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ListContainerItemInner>>> call(ServiceResponse<Page<ListContainerItemInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation token.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ListContainerItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ListContainerItemInner>>> listSinglePageAsync(final String resourceGroupName, final String accountName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -186,13 +232,16 @@ public class BlobContainersInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ListContainerItemsInner>>>() {
+        final String skipToken = null;
+        final String maxpagesize = null;
+        final String filter = null;
+        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), skipToken, maxpagesize, filter, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ListContainerItemInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<ListContainerItemsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<ListContainerItemInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ListContainerItemsInner> clientResponse = listDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl1<ListContainerItemInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ListContainerItemInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -200,9 +249,140 @@ public class BlobContainersInner {
             });
     }
 
-    private ServiceResponse<ListContainerItemsInner> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ListContainerItemsInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ListContainerItemsInner>() { }.getType())
+    /**
+     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation token.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param skipToken Optional. Continuation token for the list operation.
+     * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
+     * @param filter Optional. When specified, only container names starting with the filter will be listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ListContainerItemInner&gt; object if successful.
+     */
+    public PagedList<ListContainerItemInner> list(final String resourceGroupName, final String accountName, final String skipToken, final String maxpagesize, final String filter) {
+        ServiceResponse<Page<ListContainerItemInner>> response = listSinglePageAsync(resourceGroupName, accountName, skipToken, maxpagesize, filter).toBlocking().single();
+        return new PagedList<ListContainerItemInner>(response.body()) {
+            @Override
+            public Page<ListContainerItemInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation token.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param skipToken Optional. Continuation token for the list operation.
+     * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
+     * @param filter Optional. When specified, only container names starting with the filter will be listed.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ListContainerItemInner>> listAsync(final String resourceGroupName, final String accountName, final String skipToken, final String maxpagesize, final String filter, final ListOperationCallback<ListContainerItemInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSinglePageAsync(resourceGroupName, accountName, skipToken, maxpagesize, filter),
+            new Func1<String, Observable<ServiceResponse<Page<ListContainerItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ListContainerItemInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation token.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param skipToken Optional. Continuation token for the list operation.
+     * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
+     * @param filter Optional. When specified, only container names starting with the filter will be listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ListContainerItemInner&gt; object
+     */
+    public Observable<Page<ListContainerItemInner>> listAsync(final String resourceGroupName, final String accountName, final String skipToken, final String maxpagesize, final String filter) {
+        return listWithServiceResponseAsync(resourceGroupName, accountName, skipToken, maxpagesize, filter)
+            .map(new Func1<ServiceResponse<Page<ListContainerItemInner>>, Page<ListContainerItemInner>>() {
+                @Override
+                public Page<ListContainerItemInner> call(ServiceResponse<Page<ListContainerItemInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation token.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param skipToken Optional. Continuation token for the list operation.
+     * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
+     * @param filter Optional. When specified, only container names starting with the filter will be listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ListContainerItemInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ListContainerItemInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String accountName, final String skipToken, final String maxpagesize, final String filter) {
+        return listSinglePageAsync(resourceGroupName, accountName, skipToken, maxpagesize, filter)
+            .concatMap(new Func1<ServiceResponse<Page<ListContainerItemInner>>, Observable<ServiceResponse<Page<ListContainerItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ListContainerItemInner>>> call(ServiceResponse<Page<ListContainerItemInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation token.
+     *
+    ServiceResponse<PageImpl1<ListContainerItemInner>> * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+    ServiceResponse<PageImpl1<ListContainerItemInner>> * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+    ServiceResponse<PageImpl1<ListContainerItemInner>> * @param skipToken Optional. Continuation token for the list operation.
+    ServiceResponse<PageImpl1<ListContainerItemInner>> * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
+    ServiceResponse<PageImpl1<ListContainerItemInner>> * @param filter Optional. When specified, only container names starting with the filter will be listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ListContainerItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ListContainerItemInner>>> listSinglePageAsync(final String resourceGroupName, final String accountName, final String skipToken, final String maxpagesize, final String filter) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), skipToken, maxpagesize, filter, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ListContainerItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ListContainerItemInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<ListContainerItemInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ListContainerItemInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<ListContainerItemInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<ListContainerItemInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<ListContainerItemInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1864,6 +2044,117 @@ public class BlobContainersInner {
     private ServiceResponse<LeaseContainerResponseInner> leaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<LeaseContainerResponseInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<LeaseContainerResponseInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation token.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ListContainerItemInner&gt; object if successful.
+     */
+    public PagedList<ListContainerItemInner> listNext(final String nextPageLink) {
+        ServiceResponse<Page<ListContainerItemInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<ListContainerItemInner>(response.body()) {
+            @Override
+            public Page<ListContainerItemInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation token.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ListContainerItemInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ListContainerItemInner>> serviceFuture, final ListOperationCallback<ListContainerItemInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ListContainerItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ListContainerItemInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation token.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ListContainerItemInner&gt; object
+     */
+    public Observable<Page<ListContainerItemInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ListContainerItemInner>>, Page<ListContainerItemInner>>() {
+                @Override
+                public Page<ListContainerItemInner> call(ServiceResponse<Page<ListContainerItemInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation token.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ListContainerItemInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ListContainerItemInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
+        return listNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ListContainerItemInner>>, Observable<ServiceResponse<Page<ListContainerItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ListContainerItemInner>>> call(ServiceResponse<Page<ListContainerItemInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation token.
+     *
+    ServiceResponse<PageImpl1<ListContainerItemInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ListContainerItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ListContainerItemInner>>> listNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ListContainerItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ListContainerItemInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<ListContainerItemInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ListContainerItemInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<ListContainerItemInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<ListContainerItemInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<ListContainerItemInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
