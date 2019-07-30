@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  * An AAD credential that acquires a token with a device code for an AAD application.
  */
 public class DeviceCodeCredential extends AadCredential<DeviceCodeCredential> {
-    private Consumer<DeviceCodeChallenge> deviceCodeChallengeConsumer;
+    private final Consumer<DeviceCodeChallenge> deviceCodeChallengeConsumer;
     private final IdentityClient identityClient;
 
     /**

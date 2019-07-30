@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
  * listed as a valid reply URL.
  */
 public class InteractiveBrowserCredential extends AadCredential<InteractiveBrowserCredential> {
-    private int port;
+    private final int port;
     private final IdentityClient identityClient;
 
     /**

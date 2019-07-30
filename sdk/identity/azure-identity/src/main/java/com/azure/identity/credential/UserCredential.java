@@ -4,12 +4,9 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.identity.DeviceCodeChallenge;
 import com.azure.identity.IdentityClient;
 import com.azure.identity.IdentityClientOptions;
 import reactor.core.publisher.Mono;
-
-import java.util.function.Consumer;
 
 /**
  * An AAD credential that acquires a token with a username and a password. Users with 2FA/MFA (Multi-factored auth)
@@ -17,8 +14,8 @@ import java.util.function.Consumer;
  * instead, or create a service principal if you want to authenticate silently.
  */
 public class UserCredential extends AadCredential<UserCredential> {
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
     private final IdentityClient identityClient;
 
     /**

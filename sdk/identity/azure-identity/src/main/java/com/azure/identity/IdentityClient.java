@@ -15,25 +15,18 @@ import com.azure.identity.implementation.util.CertificateUtil;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
-import com.microsoft.aad.msal4j.ClientSecret;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
-import com.microsoft.aad.msal4j.DeviceCode;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IClientApplicationBase;
-import com.microsoft.aad.msal4j.IntegratedWindowsAuthenticationParameters;
-import com.microsoft.aad.msal4j.IntegratedWindowsAuthenticationParameters.IntegratedWindowsAuthenticationParametersBuilder;
-import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SilentParameters;
-import com.microsoft.aad.msal4j.UserAssertion;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
 
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
@@ -50,7 +43,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
@@ -58,8 +50,6 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
@@ -96,10 +86,10 @@ public class IdentityClient {
     /**
      * Asynchronously acquire a token from Active Directory with a client secret.
      *
-     * @param tenantId     the tenant ID of the application
-     * @param clientId     the client ID of the application
+     * @param tenantId the tenant ID of the application
+     * @param clientId the client ID of the application
      * @param clientSecret the client secret of the application
-     * @param scopes       the scopes to authenticate to
+     * @param scopes the scopes to authenticate to
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithClientSecret(String tenantId, String clientId, String clientSecret, String[] scopes) {
@@ -124,11 +114,11 @@ public class IdentityClient {
     /**
      * Asynchronously acquire a token from Active Directory with a PKCS12 certificate.
      *
-     * @param tenantId               the tenant ID of the application
-     * @param clientId               the client ID of the application
-     * @param pfxCertificatePath     the path to the PKCS12 certificate of the application
+     * @param tenantId the tenant ID of the application
+     * @param clientId the client ID of the application
+     * @param pfxCertificatePath the path to the PKCS12 certificate of the application
      * @param pfxCertificatePassword the password protecting the PFX certificate
-     * @param scopes                 the scopes to authenticate to
+     * @param scopes the scopes to authenticate to
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithPfxCertificate(String tenantId, String clientId, String pfxCertificatePath, String pfxCertificatePassword, String[] scopes) {
@@ -153,10 +143,10 @@ public class IdentityClient {
     /**
      * Asynchronously acquire a token from Active Directory with a PEM certificate.
      *
-     * @param tenantId           the tenant ID of the application
-     * @param clientId           the client ID of the application
+     * @param tenantId the tenant ID of the application
+     * @param clientId the client ID of the application
      * @param pemCertificatePath the path to the PEM certificate of the application
-     * @param scopes             the scopes to authenticate to
+     * @param scopes the scopes to authenticate to
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithPemCertificate(String tenantId, String clientId, String pemCertificatePath, String[] scopes) {
@@ -182,11 +172,11 @@ public class IdentityClient {
     /**
      * Asynchronously acquire a token from Active Directory with a username and a password.
      *
-     * @param tenantId           the tenant ID of the application
-     * @param clientId           the client ID of the application
-     * @param scopes             the scopes to authenticate to
-     * @param username           the username of the user
-     * @param password           the password of the user
+     * @param tenantId the tenant ID of the application
+     * @param clientId the client ID of the application
+     * @param scopes the scopes to authenticate to
+     * @param username the username of the user
+     * @param password the password of the user
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithUsernamePassword(String tenantId, String clientId, String[] scopes, String username, String password) {
@@ -208,6 +198,11 @@ public class IdentityClient {
         }
     }
 
+    /**
+     * Asynchronously acquire a token from the currently logged in client.
+     * @param scopes the scopes to authenticate to
+     * @return a Publisher that emits an AccessToken
+     */
     public Mono<AccessToken> authenticateWithCurrentlyLoggedInAccount(String[] scopes) {
         try {
             SilentParameters parameters;
@@ -232,8 +227,8 @@ public class IdentityClient {
      * a device code for login and the user must meet the challenge by authenticating in a browser on the current or a
      * different device.
      *
-     * @param clientId           the client ID of the application
-     * @param scopes             the scopes to authenticate to
+     * @param clientId the client ID of the application
+     * @param scopes the scopes to authenticate to
      * @param deviceCodeConsumer the user provided closure that will consume the device code challenge
      * @return a Publisher that emits an AccessToken when the device challenge is met, or an exception if the device code expires
      */
@@ -262,10 +257,10 @@ public class IdentityClient {
     /**
      * Asynchronously acquire a token from Active Directory with an authorization code from an oauth flow.
      *
-     * @param clientId           the client ID of the application
-     * @param scopes             the scopes to authenticate to
-     * @param authorizationCode  the oauth2 authorization code
-     * @param redirectUri        the redirectUri where the authorization code is sent to
+     * @param clientId the client ID of the application
+     * @param scopes the scopes to authenticate to
+     * @param authorizationCode the oauth2 authorization code
+     * @param redirectUri the redirectUri where the authorization code is sent to
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithAuthorizationCode(String clientId, String[] scopes, String authorizationCode, URI redirectUri) {
@@ -292,9 +287,9 @@ public class IdentityClient {
      * credential will run a minimal local HttpServer at the given port, so {@code http://localhost:{port}} must be
      * listed as a valid reply URL for the application.
      *
-     * @param clientId           the client ID of the application
-     * @param scopes             the scopes to authenticate to
-     * @param port               the port on which the HTTP server is listening
+     * @param clientId the client ID of the application
+     * @param scopes the scopes to authenticate to
+     * @param port the port on which the HTTP server is listening
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithBrowserInteraction(String clientId, String[] scopes, int port) {
@@ -328,9 +323,9 @@ public class IdentityClient {
      * Asynchronously acquire a token from the App Service Managed Service Identity endpoint.
      *
      * @param msiEndpoint the endpoint to acquire token from
-     * @param msiSecret   the secret to acquire token with
-     * @param clientId    the client ID of the application service
-     * @param scopes      the scopes to authenticate to
+     * @param msiSecret the secret to acquire token with
+     * @param clientId the client ID of the application service
+     * @param scopes the scopes to authenticate to
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String msiEndpoint, String msiSecret, String clientId, String[] scopes) {
@@ -379,7 +374,7 @@ public class IdentityClient {
      * Asynchronously acquire a token from the Virtual Machine IMDS endpoint.
      *
      * @param clientId the client ID of the virtual machine
-     * @param scopes   the scopes to authenticate to
+     * @param scopes the scopes to authenticate to
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateToIMDSEndpoint(String clientId, String[] scopes) {
@@ -459,11 +454,10 @@ public class IdentityClient {
 
     private static Proxy proxyOptionsToJavaNetProxy(ProxyOptions options) {
         switch (options.type()) {
-            case HTTP:
-                return new Proxy(Type.HTTP, options.address());
             case SOCKS4:
             case SOCKS5:
                 return new Proxy(Type.SOCKS, options.address());
+            case HTTP:
             default:
                 return new Proxy(Type.HTTP, options.address());
         }

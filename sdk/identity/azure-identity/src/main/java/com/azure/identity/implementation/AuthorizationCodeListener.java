@@ -6,11 +6,6 @@ import reactor.core.publisher.MonoProcessor;
 import reactor.netty.DisposableServer;
 import reactor.netty.http.server.HttpServer;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.util.Random;
-
 public class AuthorizationCodeListener {
     private DisposableServer server;
     private MonoProcessor<String> authorizationCodeEmitter;
@@ -20,11 +15,11 @@ public class AuthorizationCodeListener {
         this.authorizationCodeEmitter = authorizationCodeEmitter;
     }
 
-    public String host() {
+    public String getHost() {
         return server.host();
     }
 
-    public int port() {
+    public int getPort() {
         return server.port();
     }
 
