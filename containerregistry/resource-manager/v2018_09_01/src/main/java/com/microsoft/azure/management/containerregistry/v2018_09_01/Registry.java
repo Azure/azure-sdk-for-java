@@ -41,6 +41,11 @@ public interface Registry extends HasInner<RegistryInner>, Resource, GroupableRe
     String loginServer();
 
     /**
+     * @return the networkRuleSet value.
+     */
+    NetworkRuleSet networkRuleSet();
+
+    /**
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
@@ -107,6 +112,18 @@ public interface Registry extends HasInner<RegistryInner>, Resource, GroupableRe
         }
 
         /**
+         * The stage of the registry definition allowing to specify NetworkRuleSet.
+         */
+        interface WithNetworkRuleSet {
+            /**
+             * Specifies networkRuleSet.
+             * @param networkRuleSet The network rule set for a container registry
+             * @return the next definition stage
+             */
+            WithCreate withNetworkRuleSet(NetworkRuleSet networkRuleSet);
+        }
+
+        /**
          * The stage of the registry definition allowing to specify StorageAccount.
          */
         interface WithStorageAccount {
@@ -123,13 +140,13 @@ public interface Registry extends HasInner<RegistryInner>, Resource, GroupableRe
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Registry>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdminUserEnabled, DefinitionStages.WithStorageAccount {
+        interface WithCreate extends Creatable<Registry>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdminUserEnabled, DefinitionStages.WithNetworkRuleSet, DefinitionStages.WithStorageAccount {
         }
     }
     /**
      * The template for a Registry update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Registry>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdminUserEnabled, UpdateStages.WithSku, UpdateStages.WithStorageAccount {
+    interface Update extends Appliable<Registry>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdminUserEnabled, UpdateStages.WithNetworkRuleSet, UpdateStages.WithSku, UpdateStages.WithStorageAccount {
     }
 
     /**
@@ -146,6 +163,18 @@ public interface Registry extends HasInner<RegistryInner>, Resource, GroupableRe
              * @return the next update stage
              */
             Update withAdminUserEnabled(Boolean adminUserEnabled);
+        }
+
+        /**
+         * The stage of the registry update allowing to specify NetworkRuleSet.
+         */
+        interface WithNetworkRuleSet {
+            /**
+             * Specifies networkRuleSet.
+             * @param networkRuleSet The network rule set for a container registry
+             * @return the next update stage
+             */
+            Update withNetworkRuleSet(NetworkRuleSet networkRuleSet);
         }
 
         /**
