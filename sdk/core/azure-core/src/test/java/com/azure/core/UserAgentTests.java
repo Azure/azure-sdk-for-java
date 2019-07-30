@@ -6,6 +6,7 @@ package com.azure.core;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpClient;
 import com.azure.core.http.MockHttpResponse;
@@ -19,7 +20,7 @@ import java.net.URL;
 public class UserAgentTests {
     @Test
     public void defaultUserAgentTests() throws Exception {
-        final HttpPipeline pipeline = HttpPipeline.builder()
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new MockHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
@@ -40,7 +41,7 @@ public class UserAgentTests {
 
     @Test
     public void customUserAgentTests() throws Exception {
-        final HttpPipeline pipeline = HttpPipeline.builder()
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new MockHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {

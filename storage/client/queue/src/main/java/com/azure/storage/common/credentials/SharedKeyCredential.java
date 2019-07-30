@@ -4,6 +4,7 @@
 package com.azure.storage.common.credentials;
 
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.handler.codec.http.QueryStringDecoder;
 
 import javax.crypto.Mac;
@@ -26,11 +27,12 @@ import java.util.stream.Collectors;
  * SharedKey credential policy that is put into a header to authorize requests.
  */
 public final class SharedKeyCredential {
+    private static final ClientLogger LOGGER = new ClientLogger(SharedKeyCredential.class);
     private static final String AUTHORIZATION_HEADER_FORMAT = "SharedKey %s:%s";
 
     // Pieces of the connection string that are needed.
-    private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
-    private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
+    private static final String ACCOUNT_NAME = "accountname";
+    private static final String ACCOUNT_KEY = "accountkey";
 
     private final String accountName;
     private final byte[] accountKey;
@@ -59,7 +61,7 @@ public final class SharedKeyCredential {
         HashMap<String, String> connectionStringPieces = new HashMap<>();
         for (String connectionStringPiece : connectionString.split(";")) {
             String[] kvp = connectionStringPiece.split("=", 2);
-            connectionStringPieces.put(kvp[0].toLowerCase(), kvp[1]);
+            connectionStringPieces.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
         }
 
         String accountName = connectionStringPieces.get(ACCOUNT_NAME);
@@ -98,9 +100,11 @@ public final class SharedKeyCredential {
      *
      * @param stringToSign The UTF-8-encoded string to sign.
      * @return A {@code String} that contains the HMAC-SHA256-encoded signature.
-     * @throws InvalidKeyException If the accountKey is not a valid Base64-encoded string.
+     * @throws RuntimeException for one of the following cases:
+     *                              - If the HMAC-SHA256 signature for {@code sharedKeyCredentials} fails to generate.
+     *                              - If the an invalid key has been given to the client.
      */
-    public String computeHmac256(final String stringToSign) throws InvalidKeyException {
+    public String computeHmac256(final String stringToSign) {
         try {
             /*
             We must get a new instance of the Mac calculator for each signature calculated because the instances are
@@ -111,8 +115,12 @@ public final class SharedKeyCredential {
             hmacSha256.init(new SecretKeySpec(this.accountKey, "HmacSHA256"));
             byte[] utf8Bytes = stringToSign.getBytes(StandardCharsets.UTF_8);
             return Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
-        } catch (final  NoSuchAlgorithmException e) {
-            throw new Error(e);
+        } catch (final NoSuchAlgorithmException e) {
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException(e);
+        } catch (InvalidKeyException e) {
+            LOGGER.error("Please double check the account key. Error details: " + e.getMessage());
+            throw new RuntimeException("Please double check the account key. Error details: " + e.getMessage());
         }
     }
 
@@ -121,20 +129,20 @@ public final class SharedKeyCredential {
         contentLength = contentLength.equals("0") ? "" : contentLength;
 
         // If the x-ms-header exists ignore the Date header
-        String dateHeader = (headers.containsKey("x-ms-date")) ? "" : getStandardHeaderValue(headers,"Date");
+        String dateHeader = (headers.containsKey("x-ms-date")) ? "" : getStandardHeaderValue(headers, "Date");
 
         return String.join("\n",
             httpMethod,
-            getStandardHeaderValue(headers,"Content-Encoding"),
-            getStandardHeaderValue(headers,"Content-Language"),
+            getStandardHeaderValue(headers, "Content-Encoding"),
+            getStandardHeaderValue(headers, "Content-Language"),
             contentLength,
-            getStandardHeaderValue(headers,"Content-MD5"),
-            getStandardHeaderValue(headers,"Content-Type"),
+            getStandardHeaderValue(headers, "Content-MD5"),
+            getStandardHeaderValue(headers, "Content-Type"),
             dateHeader,
-            getStandardHeaderValue(headers,"If-Modified-Since"),
-            getStandardHeaderValue(headers,"If-Match"),
+            getStandardHeaderValue(headers, "If-Modified-Since"),
+            getStandardHeaderValue(headers, "If-Match"),
             getStandardHeaderValue(headers, "If-None-Match"),
-            getStandardHeaderValue(headers,"If-Unmodified-Since"),
+            getStandardHeaderValue(headers, "If-Unmodified-Since"),
             getStandardHeaderValue(headers, "Range"),
             getAdditionalXmsHeaders(headers),
             getCanonicalizedResource(requestURL));
@@ -224,6 +232,7 @@ public final class SharedKeyCredential {
             String signature = Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
             return String.format(AUTHORIZATION_HEADER_FORMAT, accountName, signature);
         } catch (NoSuchAlgorithmException | InvalidKeyException ex) {
+            LOGGER.error(ex.getMessage());
             throw new Error(ex);
         }
     }

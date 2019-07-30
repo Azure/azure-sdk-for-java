@@ -4,6 +4,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * The properties that enable an account to host a static website.
  */
 @JacksonXmlRootElement(localName = "StaticWebsite")
+@Fluent
 public final class StaticWebsite {
     /*
      * Indicates whether this account is hosting a static website

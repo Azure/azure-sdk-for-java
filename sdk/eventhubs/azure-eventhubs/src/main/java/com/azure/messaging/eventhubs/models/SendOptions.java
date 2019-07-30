@@ -4,8 +4,9 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.implementation.annotation.Fluent;
+import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubProducer;
-import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
 
 /**
  * The set of options that can be specified when sending a set of events to influence the way in which events are sent
@@ -13,7 +14,7 @@ import org.reactivestreams.Publisher;
  *
  * @see EventHubProducer#send(EventData, SendOptions)
  * @see EventHubProducer#send(Iterable, SendOptions)
- * @see EventHubProducer#send(Publisher, SendOptions)
+ * @see EventHubProducer#send(Flux, SendOptions)
  */
 @Fluent
 public class SendOptions implements Cloneable {

@@ -4,6 +4,7 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * An enumeration of directories and files.
  */
 @JacksonXmlRootElement(localName = "EnumerationResults")
+@Fluent
 public final class ListFilesAndDirectoriesSegmentResponse {
     /*
      * The serviceEndpoint property.
@@ -26,7 +28,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     private String shareName;
 
     /*
-     * The shareSnapshot property.
+     * The snapshot property.
      */
     @JacksonXmlProperty(localName = "ShareSnapshot", isAttribute = true)
     private String shareSnapshot;
@@ -108,18 +110,18 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
-     * Get the shareSnapshot property: The shareSnapshot property.
+     * Get the snapshot property: The snapshot property.
      *
-     * @return the shareSnapshot value.
+     * @return the snapshot value.
      */
     public String shareSnapshot() {
         return this.shareSnapshot;
     }
 
     /**
-     * Set the shareSnapshot property: The shareSnapshot property.
+     * Set the snapshot property: The snapshot property.
      *
-     * @param shareSnapshot the shareSnapshot value to set.
+     * @param shareSnapshot the snapshot value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
     public ListFilesAndDirectoriesSegmentResponse shareSnapshot(String shareSnapshot) {

@@ -11,18 +11,19 @@ import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 
 
 /**
- * Client to an append blob. It may only be instantiated through a {@link AppendBlobClientBuilder}, via
+ * Client to an append blob. It may only be instantiated through a {@link BlobClientBuilder}, via
  * the method {@link BlobClient#asAppendBlobClient()}, or via the method
  * {@link ContainerClient#getAppendBlobClient(String)}. This class does not hold
  * any state about a particular blob, but is instead a convenient way of sending appropriate
@@ -30,35 +31,34 @@ import java.time.Duration;
  *
  * <p>
  * This client contains operations on a blob. Operations on a container are available on {@link ContainerClient},
- * and operations on the service are available on {@link StorageClient}.
+ * and operations on the service are available on {@link BlobServiceClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information.
  */
 public final class AppendBlobClient extends BlobClient {
-
-    AppendBlobAsyncClient appendBlobAsyncClient;
+    private AppendBlobAsyncClient appendBlobAsyncClient;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
      */
-    public static final int MAX_APPEND_BLOCK_BYTES = 4 * Constants.MB;
+    public static final int MAX_APPEND_BLOCK_BYTES = AppendBlobAsyncClient.MAX_APPEND_BLOCK_BYTES;
 
     /**
      * Indicates the maximum number of blocks allowed in an append blob.
      */
-    public static final int MAX_BLOCKS = 50000;
+    public static final int MAX_BLOCKS = AppendBlobAsyncClient.MAX_BLOCKS;
 
     /**
-     * Package-private constructor for use by {@link AppendBlobClientBuilder}.
+     * Package-private constructor for use by {@link BlobClientBuilder}.
      * @param appendBlobAsyncClient the async append blob client
      */
     AppendBlobClient(AppendBlobAsyncClient appendBlobAsyncClient) {
         super(appendBlobAsyncClient);
         this.appendBlobAsyncClient = appendBlobAsyncClient;
     }
-    
+
     /**
      * Creates and opens an output stream to write data to the append blob. If the blob already exists on the service,
      * it will be overwritten.
@@ -160,7 +160,7 @@ public final class AppendBlobClient extends BlobClient {
      */
     public Response<AppendBlobItem> appendBlock(InputStream data, long length,
                                                            AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout) {
-        Flux<ByteBuffer> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) MAX_APPEND_BLOCK_BYTES))
+        Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) MAX_APPEND_BLOCK_BYTES))
             .map(i -> i * MAX_APPEND_BLOCK_BYTES)
             .concatMap(pos -> Mono.fromCallable(() -> {
                 long count = pos + MAX_APPEND_BLOCK_BYTES > length ? length - pos : MAX_APPEND_BLOCK_BYTES;
@@ -169,7 +169,8 @@ public final class AppendBlobClient extends BlobClient {
                 while (read < count) {
                     read += data.read(cache, read, (int) count - read);
                 }
-                return ByteBuffer.wrap(cache);
+
+                return ByteBufAllocator.DEFAULT.buffer((int) count).writeBytes(cache);
             }));
 
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlock(fbb.subscribeOn(Schedulers.elastic()), length, appendBlobAccessConditions);

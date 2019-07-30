@@ -4,6 +4,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
  * The BlobFlatListSegment model.
  */
 @JacksonXmlRootElement(localName = "Blobs")
+@Fluent
 public final class BlobFlatListSegment {
     /*
      * The blobItems property.

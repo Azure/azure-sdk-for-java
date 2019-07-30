@@ -4,6 +4,7 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * Defines headers for ListSharesSegment operation.
  */
 @JacksonXmlRootElement(localName = "Service-ListSharesSegment-Headers")
+@Fluent
 public final class ServiceListSharesSegmentHeaders {
     /*
      * This header uniquely identifies the request that was made and can be

@@ -1,0 +1,71 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://sima.queue.core.windows.net/queue0432116e",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "dd226070-4003-0028-4675-37b82d000000",
+      "Date" : "Wed, 10 Jul 2019 23:18:37 GMT"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://sima.queue.core.windows.net/queue0432116e",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "QueueAlreadyExists",
+      "retry-after" : "0",
+      "Content-Length" : "222",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "dd22608d-4003-0028-5f75-37b82d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueAlreadyExists</Code><Message>The specified queue already exists.\nRequestId:dd22608d-4003-0028-5f75-37b82d000000\nTime:2019-07-10T23:18:38.0176580Z</Message></Error>",
+      "Date" : "Wed, 10 Jul 2019 23:18:37 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://sima.queue.core.windows.net/queue0432116e/messages",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "dd22609f-4003-0028-7175-37b82d000000",
+      "Date" : "Wed, 10 Jul 2019 23:18:37 GMT"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://sima.queue.core.windows.net/queue0432116e",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "dd2260a4-4003-0028-7675-37b82d000000",
+      "Date" : "Wed, 10 Jul 2019 23:18:37 GMT"
+    }
+  } ],
+  "variables" : [ "queue0432116e" ]
+}

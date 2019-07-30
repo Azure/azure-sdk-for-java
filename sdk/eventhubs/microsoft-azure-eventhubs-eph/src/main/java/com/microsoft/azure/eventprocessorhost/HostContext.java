@@ -62,7 +62,7 @@ final class HostContext {
     }
 
     EventHubClientFactory getEventHubClientFactory() {
-    	return this.eventHubClientFactory;
+        return this.eventHubClientFactory;
     }
 
     ILeaseManager getLeaseManager() {

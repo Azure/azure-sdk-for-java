@@ -43,7 +43,7 @@ public class ListOperations {
         // You need to check te type of keys already exist in your key vault. Let's list the keys and print their types.
         // List operations don't return the keys with key material information. So, for each returned key we call getKey to get the key with its key material information.
         for (KeyBase key : keyClient.listKeys()) {
-            Key keyWithMaterial = keyClient.getKey(key).value();
+            Key keyWithMaterial = keyClient.getKey(key);
             System.out.printf("Received key with name %s and type %s", keyWithMaterial.name(), keyWithMaterial.keyMaterial().kty());
         }
 
@@ -55,7 +55,7 @@ public class ListOperations {
 
         // You need to check all the different versions Cloud Rsa key had previously. Lets print all the versions of this key.
         for (KeyBase key : keyClient.listKeyVersions("CloudRsaKey")) {
-            Key keyWithMaterial  = keyClient.getKey(key).value();
+            Key keyWithMaterial  = keyClient.getKey(key);
             System.out.printf("Received key's version with name %s, type %s and version %s", keyWithMaterial.name(), keyWithMaterial.keyMaterial().kty(), keyWithMaterial.version());
         }
     }
