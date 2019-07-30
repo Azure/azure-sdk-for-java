@@ -19,7 +19,7 @@ jobs:
           DisplayName: ReadMyWrites Integration Tests
           OSVmImage: 'vs2017-win2016'
           ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Http"'
+          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Session'
         # 09m 23s, passed
         Single_Region_Fast:
@@ -131,7 +131,7 @@ jobs:
           DisplayName: Single Region ReadMyWrites
           OSVmImage: 'vs2017-win2016'
           ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Http"'
+          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Strong'
         # 09m 32s, passed
         Strong_Tcp_Fast:
@@ -225,8 +225,8 @@ jobs:
           DisplayName: Multimaster Multi Region Long
           OSVmImage: 'vs2017-win2016'
           ProfileFlag: '-e -Plong'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Http"'
-        # 06m 34s, failed ******************************************
+          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
+        # 06m 34s, failed (expected)
         MultiMaster:
           DisplayName: Multimaster Multi Region Multi-Master
           OSVmImage: 'macOS-10.13'
