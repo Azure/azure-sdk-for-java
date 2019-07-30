@@ -6,8 +6,23 @@ package com.azure.core.http.rest;
 import java.util.stream.Stream;
 
 /**
- *  This class provides utility to iterate over {@link PagedResponse}.
+ *  This class provides utility to iterate over {@link PagedResponse} using {@link Stream} and {@link Iterable} interfaces.
+ *
+ * <p><strong>Code sample using Stream by page</strong></p>
+ *
+ * {@codesnippet com.azure.core.http.rest.pagedIterable.streamByPage}
+ *
+ * <p><strong>Code sample using {@link Iterable} by page</strong></p>
+ *
+ * {@codesnippet com.azure.core.http.rest.pagedIterable.iterableByPage}
+ *
+ * <p><strong>Code sample using {@link Iterable} by page and while loop</strong></p>
+ *
+ * {@codesnippet com.azure.core.http.rest.pagedIterable.iterableByPage.while}
+ *
  * @param  <T> value
+ * @see PagedResponse
+ * @see IterableResponse
  */
 public class PagedIterable<T> extends IterableResponse<T>  {
     private final PagedFlux<T> pagedFlux;
@@ -23,7 +38,7 @@ public class PagedIterable<T> extends IterableResponse<T>  {
 
     /**
      * Retrieve the {@link Stream}, one page at a time.
-     * It will provide same {@link Stream} of T values from starting every time if called multiple times.
+     * It will provide same {@link Stream} of T values from starting if called multiple times.
      * @return {@link Stream} of {@link PagedResponse}
      */
     public Stream<PagedResponse<T>> streamByPage() {
@@ -32,7 +47,7 @@ public class PagedIterable<T> extends IterableResponse<T>  {
 
     /**
      * Provides {@link Iterable} API for{ @link PagedResponse}
-     * It will provide same collection of T values from starting every time if called multiple times.
+     * It will provide same collection of T values from starting if called multiple times.
      * @return {@link Iterable} interface
      */
     public Iterable<PagedResponse<T>> iterableByPage() {

@@ -17,13 +17,11 @@ import com.azure.core.util.logging.ClientLogger;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class ConfigurationClientTest extends ConfigurationClientTestBase {
     private final ClientLogger logger = new ClientLogger(ConfigurationClientTest.class);
@@ -532,7 +530,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using stream
+     * Verifies that, given a ton of revisions, we can process {@link java.util.stream.Stream} multiple time and get same result.
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
     public void listRevisionsWithPaginationAndRepeatStream() {
@@ -549,7 +547,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using iterator
+     * Verifies that, given a ton of revisions, we can iterate over multiple time and get same result.
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
     public void listRevisionsWithPaginationAndRepeatIterator() {
@@ -569,6 +567,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         configurationSettingPagedIterable.iterator().forEachRemaining(configurationSetting -> configurationSettingList2.add(configurationSetting));
         assertEquals(numberExpected, configurationSettingList2.size());
+
+        assertArrayEquals(configurationSettingList1.toArray(), configurationSettingList2.toArray());
     }
 
     /**

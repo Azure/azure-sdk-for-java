@@ -13,13 +13,18 @@ import java.util.stream.Stream;
  *
  * <p><strong>Code sample using Stream</strong></p>
  *
- * {@codesnippet com.azure.core.http.rest.stream}
+ * {@codesnippet ccom.azure.core.http.rest.iterableResponse.stream}
  *
  * <p><strong>Code sample using Iterator</strong></p>
  *
- * {@codesnippet com.azure.core.http.rest.iterator}
+ * {@codesnippet com.azure.core.http.rest.iterableResponse.iterator.while}
+ *
+ * <p><strong>Code sample using Stream and filter</strong></p>
+ *
+ * {@codesnippet com.azure.core.http.rest.iterableResponse.stream.filter}
  *
  * @param <T> value
+ * @see Iterable
  */
 public class IterableResponse<T> implements Iterable<T> {
     private final Flux<T> flux;
@@ -34,7 +39,7 @@ public class IterableResponse<T> implements Iterable<T> {
 
     /**
      * Utility function to provide {@link Stream} of value T.
-     * It will provide same stream of T values every time if called multiple times.
+     * It will provide same stream of T values if called multiple times.
      * @return {@link Stream} of value T.
      */
     public Stream<T> stream() {
@@ -43,7 +48,7 @@ public class IterableResponse<T> implements Iterable<T> {
 
     /**
      * Utility function to provide {@link Iterator} of value T.
-     * It will provide same collection of T values every time if called multiple times.
+     * It will provide same collection of T values if called multiple times.
      * @return {@link Iterator} of value T.
      */
     @Override

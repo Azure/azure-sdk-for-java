@@ -32,7 +32,7 @@ public class IterableResponseJavaDocCodeSnippets {
         IterableResponse<PagedResponseBase<String, Integer>> myIterableResponse =
             new IterableResponse<>(Flux.just(createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, 1, 3)));
 
-        // BEGIN: com.azure.core.http.rest.stream
+        // BEGIN: com.azure.core.http.rest.iterableResponse.stream
         // process the stream
         myIterableResponse.stream().forEach(resp -> {
             if (resp.statusCode() == HttpResponseStatus.OK.code()) {
@@ -44,11 +44,10 @@ public class IterableResponseJavaDocCodeSnippets {
                 System.out.printf("Failed with status is %d and url is %s\n", resp.statusCode(), resp.request().url());
             }
         });
-        // END: com.azure.core.http.rest.stream
+        // END: com.azure.core.http.rest.iterableResponse.stream
     }
 
-
-    public void iteratorSnippet() throws MalformedURLException {
+    public void iteratorwhileSnippet() throws MalformedURLException {
         HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
             .put("header2", "value2");
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
@@ -58,7 +57,7 @@ public class IterableResponseJavaDocCodeSnippets {
         IterableResponse<PagedResponseBase<String, Integer>> myIterableResponse =
             new IterableResponse<>(Flux.just(createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, 1, 3)));
 
-        // BEGIN: com.azure.core.http.rest.iterator
+        // BEGIN: com.azure.core.http.rest.iterableResponse.iterator.while
         // Iterate over iterator
         Iterator<PagedResponseBase<String, Integer>> ite = myIterableResponse.iterator();
         while(ite.hasNext()) {
@@ -72,11 +71,34 @@ public class IterableResponseJavaDocCodeSnippets {
                 System.out.printf("Failed with status is %d and url is %s\n", resp.statusCode(), resp.request().url());
             }
         }
-        // END: com.azure.core.http.rest.iterator
+        // END: com.azure.core.http.rest.iterableResponse.iterator.while
     }
 
-    private PagedResponseBase<String, Integer> createPagedResponse(HttpRequest httpRequest,
-                                                                   HttpHeaders httpHeaders, String deserializedHeaders, int i, int noOfPages) {
+    public void iteratorStreamFilterSnippet() throws MalformedURLException {
+        HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
+            .put("header2", "value2");
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
+
+        String deserializedHeaders = "header1,value1,header2,value2";
+
+        IterableResponse<PagedResponseBase<String, Integer>> myIterableResponse =
+            new IterableResponse<>(Flux.just(createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, 1, 3)));
+
+        // BEGIN: com.azure.core.http.rest.iterableResponse.stream.filter
+        // process the stream
+        myIterableResponse.stream().filter(resp -> resp.statusCode() == HttpResponseStatus.OK.code())
+            .limit(10)
+            .forEach(resp -> {
+                System.out.printf("Response headers are %s. Url %s \n", resp.deserializedHeaders(), resp.request().url());
+                resp.items().forEach( value -> {
+                    System.out.printf("Response value is %d \n", value);
+                });
+            });
+        // END: com.azure.core.http.rest.iterableResponse.stream.filter
+    }
+
+    private PagedResponseBase<String, Integer> createPagedResponse(HttpRequest httpRequest, HttpHeaders httpHeaders,
+                                                                   String deserializedHeaders, int i, int noOfPages) {
         return new PagedResponseBase<>(httpRequest, HttpResponseStatus.OK.code(),
             httpHeaders,
             getItems(i),
@@ -86,10 +108,5 @@ public class IterableResponseJavaDocCodeSnippets {
 
     private List<Integer> getItems(Integer i) {
         return IntStream.range(i * 3, i * 3 + 3).boxed().collect(Collectors.toList());
-    }
-
-    public static void main(String[] args) throws Exception{
-        IterableResponseJavaDocCodeSnippets x =  new IterableResponseJavaDocCodeSnippets();
-        x.iteratorSnippet();
     }
 }

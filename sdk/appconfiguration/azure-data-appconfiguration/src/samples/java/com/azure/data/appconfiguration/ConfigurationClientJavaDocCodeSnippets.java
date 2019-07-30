@@ -12,6 +12,7 @@ import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.security.GeneralSecurityException;
 
@@ -305,8 +306,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector
         SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
         client.listSettingRevisions(settingSelector).streamByPage().forEach(response -> {
-            // HTTP OK code = 200
-            if (response.statusCode()  == 200) {
+            if (response.statusCode()  == HttpResponseStatus.OK.code()) {
                 response.value().forEach(setting -> {
                     System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
                 });
