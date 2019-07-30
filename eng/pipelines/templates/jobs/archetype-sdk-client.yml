@@ -110,7 +110,7 @@ jobs:
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
 
       # TODO: validate that options and logging options are appropriate
-      - template: ../../templates/steps/install-reporting-tools.yml
+      - template: ../../../templates/steps/install-reporting-tools.yml
         parameters:
           Options: --batch-mode
           MavenOptions: $(LoggingOptions)
