@@ -2,65 +2,119 @@ trigger: none
 
 variables:
   AdditionalArgs: ''
-  DefaultOptions: '--batch-mode -Dmaven.wagon.http.pool=false'
-
 
 jobs:
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-    parameters:
-      TestName: Single_Region_Session
-      ServiceDirectory: cosmos
-      TimeoutInMinutes: 240
-      EnvVars:
-        ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
-        ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
-      MaxParallel: 1
-      Matrix:
-        Http_E2E:
-          DisplayName: ReadMyWrites Integration Tests
-          OSVmImage: 'vs2017-win2016'
-          ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=$(cosmos.directModeProtocol)"'
-          DESIRED_CONSISTENCY: 'Session'
-        Single_Region_Fast:
-          DisplayName: Single Region Fast
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pfast'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Session"]'
-        Single_Region_Direct:
-          DisplayName: Single Region Direct
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pdirect'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Session"]'
-        Single_Region_Examples:
-          DisplayName: Single Region Examples
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pexamples'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Session"]'
-        Single_Region_NonEmulator:
-          DisplayName: Single Region Examples
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pnon-emulator'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Session"]'
-        Single_Region_Long:
-          DisplayName: Long Integration Tests
-          OSVmImage: 'vs2017-win2016'
-          ProfileFlag: '-e -Plong'
-          DESIRED_CONSISTENCIES: '["Session"]'
-          # TODO: Is this line really needed?
-          PREFERRED_LOCATIONS: null
+  # - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+  #   parameters:
+  #     TestName: Single_Region_Session
+  #     ServiceDirectory: cosmos
+  #     TimeoutInMinutes: 240
+  #     EnvVars:
+  #       ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
+  #       ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
+  #     MaxParallel: 1
+  #     Matrix:
+  #       # 59m 59s, timed out
+  #       Http_E2E:
+  #         DisplayName: ReadMyWrites Integration Tests
+  #         OSVmImage: 'vs2017-win2016'
+  #         ProfileFlag: '-Pe2e'
+  #         AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=$(cosmos.directModeProtocol)"'
+  #         DESIRED_CONSISTENCY: 'Session'
+  #       # 09m 23s, passed
+  #       Single_Region_Fast:
+  #         DisplayName: Single Region Fast
+  #         OSVmImage: 'macOS-10.13'
+  #         ProfileFlag: '-Pfast'
+  #         PROTOCOLS: '["Https"]'
+  #         DESIRED_CONSISTENCIES: '["Session"]'
+  #       # 09m 0s, passed
+  #       Single_Region_Direct:
+  #         DisplayName: Single Region Direct
+  #         OSVmImage: 'macOS-10.13'
+  #         ProfileFlag: '-Pdirect'
+  #         PROTOCOLS: '["Https"]'
+  #         DESIRED_CONSISTENCIES: '["Session"]'
+  #       # 7m 44s, passed
+  #       Single_Region_Examples:
+  #         DisplayName: Single Region Examples
+  #         OSVmImage: 'macOS-10.13'
+  #         ProfileFlag: '-Pexamples'
+  #         PROTOCOLS: '["Https"]'
+  #         DESIRED_CONSISTENCIES: '["Session"]'
+  #       # 6m 58s, passed
+  #       Single_Region_NonEmulator:
+  #         DisplayName: Single Region Examples
+  #         OSVmImage: 'macOS-10.13'
+  #         ProfileFlag: '-Pnon-emulator'
+  #         PROTOCOLS: '["Https"]'
+  #         DESIRED_CONSISTENCIES: '["Session"]'
+  #       # 28m 42s, passed
+  #       Single_Region_Long:
+  #         DisplayName: Long Integration Tests
+  #         OSVmImage: 'vs2017-win2016'
+  #         ProfileFlag: '-e -Plong'
+  #         DESIRED_CONSISTENCIES: '["Session"]'
+  #         # TODO: Is this line really needed?
+  #         PREFERRED_LOCATIONS: null
 
-      PreRunSteps:
-        - template: ../steps/install-reporting-tools.yml
+  #     PreRunSteps:
+  #       - template: ../steps/install-reporting-tools.yml
 
-      TestStepMavenInputs:
-          goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+  #     TestStepMavenInputs:
+  #         goals: verify
+  #         options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
 
+  #     TestResultsFiles: '**/junitreports/TEST-*.xml'
+
+
+  # # This template parllelizes tests that could be run on Single_Region_Session
+  # # by running them against a different cosmosdb instance
+  # - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+  #   parameters:
+  #     TestName: Single_Region_Session_2
+  #     ServiceDirectory: cosmos
+  #     TimeoutInMinutes: 240
+  #     EnvVars:
+  #       ACCOUNT_HOST: $(java-cosmos-session-singleregion-one-host)
+  #       ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-key)
+  #       DESIRED_CONSISTENCIES: '["Session"]'
+  #       PROTOCOLS: '["Tcp"]'
+  #     MaxParallel: 1
+  #     Matrix:
+  #       # 09m 07s, passed
+  #       Fast:
+  #         DisplayName: Multimaster Single Region Fast
+  #         OSVmImage: 'macOS-10.13'
+  #         ProfileFlag: '-Pfast'
+  #         AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+  #       # 09m 14s, passed
+  #       Direct:
+  #         DisplayName: Multimaster Single Region Direct
+  #         OSVmImage: 'macOS-10.13'
+  #         ProfileFlag: '-Pdirect'
+  #         AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+  #       # 07m 42s, passed
+  #       Examples:
+  #         DisplayName: Multimaster Single Region Examples
+  #         OSVmImage: 'macOS-10.13'
+  #         ProfileFlag: '-Pexamples'
+  #         AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+  #       # 07m 05s, passed
+  #       NonEmulator:
+  #         DisplayName: Multimaster Single Region NonEmulator
+  #         OSVmImage: 'macOS-10.13'
+  #         ProfileFlag: '-Pnon-emulator'
+  #         AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+
+  #     PreRunSteps:
+  #       - template: ../steps/install-reporting-tools.yml
+
+  #     TestStepMavenInputs:
+  #         goals: verify
+  #         options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+
+  #     TestResultsFiles: '**/junitreports/TEST-*.xml'
 
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
@@ -72,69 +126,77 @@ jobs:
         ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
       MaxParallel: 1
       Matrix:
-        Http_E2E:
-          DisplayName: Single Region ReadMyWrites
-          OSVmImage: 'vs2017-win2016'
-          ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=$(cosmos.directModeProtocol)"'
-          DESIRED_CONSISTENCY: 'Strong'
+        # # 59m 58s, timed out
+        # Http_E2E:
+        #   DisplayName: Single Region ReadMyWrites
+        #   OSVmImage: 'vs2017-win2016'
+        #   ProfileFlag: '-Pe2e'
+        #   AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=$(cosmos.directModeProtocol)"'
+        #   DESIRED_CONSISTENCY: 'Strong'
+        # 10m 17s, FAILED *********************** (benchmark took ~3x as long)
         Strong_Tcp_Fast:
           DisplayName: Strong TCP Fast
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pfast'
-          # TODO: -DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong" may be obsolete
           AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        Strong_Http_Fast:
-          DisplayName: Strong HTTP Fast
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pfast'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        Strong_Tcp_Direct:
-          DisplayName: Strong TCP Direct
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pdirect'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        Strong_Http_Direct:
-          DisplayName: Strong HTTP Direct
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pdirect'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        Strong_Tcp_Examples:
-          DisplayName: Strong TCP Examples
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pexamples'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        Strong_Http_Examples:
-          DisplayName: Strong HTTP Examples
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pexamples'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        Strong_Tcp_NonEmulator:
-          DisplayName: Strong TCP NonEmulator
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pnon-emulator'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        Strong_Http_NonEmulator:
-          DisplayName: Strong HTTP NonEmulator
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pnon-emulator'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        # # 08m 50s, passed
+        # Strong_Http_Fast:
+        #   DisplayName: Strong HTTP Fast
+        #   OSVmImage: 'macOS-10.13'
+        #   ProfileFlag: '-Pfast'
+        #   AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+        #   PROTOCOLS: '["Https"]'
+        #   DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        # # 08m 53s, passed
+        # Strong_Tcp_Direct:
+        #   DisplayName: Strong TCP Direct
+        #   OSVmImage: 'macOS-10.13'
+        #   ProfileFlag: '-Pdirect'
+        #   AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+        #   PROTOCOLS: '["Tcp"]'
+        #   DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        # # 08m 50s, passed
+        # Strong_Http_Direct:
+        #   DisplayName: Strong HTTP Direct
+        #   OSVmImage: 'macOS-10.13'
+        #   ProfileFlag: '-Pdirect'
+        #   AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+        #   PROTOCOLS: '["Https"]'
+        #   DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        # # 07m 36s, passed
+        # Strong_Tcp_Examples:
+        #   DisplayName: Strong TCP Examples
+        #   OSVmImage: 'macOS-10.13'
+        #   ProfileFlag: '-Pexamples'
+        #   AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+        #   PROTOCOLS: '["Tcp"]'
+        #   DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        # # 07m 36s, passed
+        # Strong_Http_Examples:
+        #   DisplayName: Strong HTTP Examples
+        #   OSVmImage: 'macOS-10.13'
+        #   ProfileFlag: '-Pexamples'
+        #   AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+        #   PROTOCOLS: '["Https"]'
+        #   DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        # # 06m 59s, passed
+        # Strong_Tcp_NonEmulator:
+        #   DisplayName: Strong TCP NonEmulator
+        #   OSVmImage: 'macOS-10.13'
+        #   ProfileFlag: '-Pnon-emulator'
+        #   AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+        #   PROTOCOLS: '["Tcp"]'
+        #   DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        # # 06m 59s, passed
+        # Strong_Http_NonEmulator:
+        #   DisplayName: Strong HTTP NonEmulator
+        #   OSVmImage: 'macOS-10.13'
+        #   ProfileFlag: '-Pnon-emulator'
+        #   AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+        #   PROTOCOLS: '["Https"]'
+        #   DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
       PreRunSteps:
         - template: ../steps/install-reporting-tools.yml
@@ -142,6 +204,8 @@ jobs:
       TestStepMavenInputs:
           goals: verify
           options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+
+      TestResultsFiles: '**/junitreports/TEST-*.xml'
 
 
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
@@ -156,31 +220,44 @@ jobs:
         PREFERRED_LOCATIONS: '["East US 2"]'
       MaxParallel: 1
       Matrix:
-        Long:
-          DisplayName: Multimaster Multi Region Long
-          OSVmImage: 'vs2017-win2016'
-          ProfileFlag: '-e -Plong'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=$(cosmos.directModeProtocol)"'
+        # # 29m 23s, passed
+        # Long:
+        #   DisplayName: Multimaster Multi Region Long
+        #   OSVmImage: 'vs2017-win2016'
+        #   ProfileFlag: '-e -Plong'
+        #   AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=$(cosmos.directModeProtocol)"'
+        # 06m 34s, failed ******************************************
+        # Should run OSX
+        # Expected: failure in Microsoft Azure SDK for SQL API of Azure Cosmos DB Service
+        # Actual: Expected happened!! (success-ish)
         MultiMaster:
           DisplayName: Multimaster Multi Region Multi-Master
-          OSVmImage: 'vs2017-win2016'
+          OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pmulti-master'
+        # 07m 13s, failed ******************************************
+        # Expected: success
+        # Actual: Failed -- Microsoft Azure SDK for SQL API of Azure Cosmos DB Service FAILURE
         Fast:
           DisplayName: Multimaster Multi Region Fast
-          OSVmImage: 'vs2017-win2016'
+          OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pfast'
+        # 17m 07s, failed ******************************************
+        # Expected: Success
+        # Actual: Failure -- Microsoft Azure SDK for SQL API of Azure Cosmos DB Service FAILURE
         Direct:
           DisplayName: Multimaster Multi Region Direct
-          OSVmImage: 'vs2017-win2016'
+          OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pdirect'
-        Examples:
-          DisplayName: Multimaster Multi Region Examples
-          OSVmImage: 'vs2017-win2016'
-          ProfileFlag: '-Pexamples'
-        NonEmulator:
-          DisplayName: Multimaster Multi Region NonEmulator
-          OSVmImage: 'vs2017-win2016'
-          ProfileFlag: '-Pnon-emulator'
+        # # 07m 49s, passed
+        # Examples:
+        #   DisplayName: Multimaster Multi Region Examples
+        #   OSVmImage: 'macOS-10.13'
+        #   ProfileFlag: '-Pexamples'
+        # # 08m 0s, passed
+        # NonEmulator:
+        #   DisplayName: Multimaster Multi Region NonEmulator
+        #   OSVmImage: 'macOS-10.13'
+        #   ProfileFlag: '-Pnon-emulator'
 
       PreRunSteps:
         - template: ../steps/install-reporting-tools.yml
@@ -188,6 +265,8 @@ jobs:
       TestStepMavenInputs:
           goals: verify
           options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+
+      TestResultsFiles: '**/junitreports/TEST-*.xml'
 
 
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
@@ -202,26 +281,33 @@ jobs:
         PREFERRED_LOCATIONS: null
       MaxParallel: 1
       Matrix:
+        # 05m 21s, failed **************************************
+        # Expected: Failure -- Microsoft Azure SDK for SQL API of Azure Cosmos DB Service FAILURE
+        # Actual: Failure -- Microsoft Azure SDK for SQL API of Azure Cosmos DB Service (success-ish)
         MultiMaster:
           DisplayName: MultiMaster Single Region Multi-Master
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pmulti-master'
-        Fast:
-          DisplayName: Multimaster Single Region Fast
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pfast'
-        Direct:
-          DisplayName: Multimaster Single Region Direct
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pdirect'
-        Examples:
-          DisplayName: Multimaster Single Region Examples
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pexamples'
-        NonEmulator:
-          DisplayName: Multimaster Single Region NonEmulator
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pnon-emulator'
+        # # 09m 34s, passed
+        # Fast:
+        #   DisplayName: Multimaster Single Region Fast
+        #   OSVmImage: 'macOS-10.13'
+        #   ProfileFlag: '-Pfast'
+        # # 09m 05s, passed
+        # Direct:
+        #   DisplayName: Multimaster Single Region Direct
+        #   OSVmImage: 'macOS-10.13'
+        #   ProfileFlag: '-Pdirect'
+        # # 07m 52s, passed
+        # Examples:
+        #   DisplayName: Multimaster Single Region Examples
+        #   OSVmImage: 'macOS-10.13'
+        #   ProfileFlag: '-Pexamples'
+        # # 07m 10s, passed
+        # NonEmulator:
+        #   DisplayName: Multimaster Single Region NonEmulator
+        #   OSVmImage: 'macOS-10.13'
+        #   ProfileFlag: '-Pnon-emulator'
 
       PreRunSteps:
         - template: ../steps/install-reporting-tools.yml
@@ -230,42 +316,4 @@ jobs:
           goals: verify
           options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
 
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-    parameters:
-      TestName: Single_Region_Session_2
-      ServiceDirectory: cosmos
-      TimeoutInMinutes: 240
-      EnvVars:
-        ACCOUNT_HOST: $(java-cosmos-session-singleregion-one-host)
-        ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-key)
-        DESIRED_CONSISTENCIES: '["Session"]'
-        PROTOCOLS: '["Tcp"]'
-      MaxParallel: 1
-      Matrix:
-        Fast:
-          DisplayName: Multimaster Single Region Fast
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pfast'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
-        Direct:
-          DisplayName: Multimaster Single Region Direct
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pdirect'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
-        Examples:
-          DisplayName: Multimaster Single Region Examples
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pexamples'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
-        NonEmulator:
-          DisplayName: Multimaster Single Region NonEmulator
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pnon-emulator'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
-
-      PreRunSteps:
-        - template: ../steps/install-reporting-tools.yml
-
-      TestStepMavenInputs:
-          goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+      TestResultsFiles: '**/junitreports/TEST-*.xml'
