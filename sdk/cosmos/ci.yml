@@ -47,16 +47,16 @@ jobs:
           JavaVersion: '1.8'
           ProfileFlag: '-Pemulator'
           TestDisplayName: 'Emulator only Integration Tests'
-          ProtocolFlag: '["Tcp"]'
-          Consistency: '["Strong", "Session"]'
+          PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
         Https_Integration_Tests_Java8:
           OSVmImage: 'vs2017-win2016'
           JavaVersion: '1.8'
           ProfileFlag: '-Pemulator'
           TestDisplayName: 'Emulator only Integration Tests'
-          ProtocolFlag: '["Https"]'
-          Consistency: '["Strong", "Session"]'
+          PROTOCOLS: '["Https"]'
+          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
 
         Examples_Integration_Tests_Java8:
@@ -64,8 +64,8 @@ jobs:
           JavaVersion: '1.8'
           ProfileFlag: '-Pexamples'
           TestDisplayName: 'Examples Integration Tests'
-          ProtocolFlag: '["Https", "Tcp"]'
-          Consistency: '["Strong", "Session"]'
+          PROTOCOLS: '["Https", "Tcp"]'
+          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
     pool:
       vmImage: $(OSVmImage)
@@ -83,14 +83,15 @@ jobs:
       - task: Maven@3
         displayName: $(TestDisplayName)
         inputs:
-         mavenPomFile: $(pomFile)
-         goals: 'verify'
-         options: '$(ProfileFlag) -Dgpg.skip -DargLine="-DACCOUNT_HOST=$(CosmosDbEmulator.Endpoint)"'
-         testResultsFiles: '**/junitreports/TEST-*.xml'
-         mavenAuthenticateFeed: true
-         jdkVersionOption: $(JavaVersion)
-        env:
-          PROTOCOLS: $(ProtocolFlag)
-          DESIRED_CONSISTENCIES: $(Consistency)
+          mavenPomFile: $(pomFile)
+          goals: 'verify'
+          options: '$(ProfileFlag) -Dgpg.skip -DargLine="-DACCOUNT_HOST=$(CosmosDbEmulator.Endpoint)"'
+          mavenAuthenticateFeed: true
+          jdkVersionOption: $(JavaVersion)
         condition: succeededOrFailed()
 
+      - task: PublishTestResults@2
+        condition: succeededOrFailed()
+        inputs:
+          mergeTestResults: true
+          testRunTitle: $(TestDisplayName))
