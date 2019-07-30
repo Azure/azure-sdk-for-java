@@ -5,6 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -13,6 +14,7 @@ import java.time.OffsetDateTime;
  * Defines headers for CreateSnapshot operation.
  */
 @JacksonXmlRootElement(localName = "Blob-CreateSnapshot-Headers")
+@Fluent
 public final class BlobCreateSnapshotHeaders {
     /*
      * Uniquely identifies the snapshot and indicates the snapshot version. It

@@ -3,14 +3,18 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.http.*
+import com.azure.core.http.HttpClient
+import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpRequest
+import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.http.ProxyOptions
 import com.azure.core.http.rest.Response
-import com.azure.core.util.Context
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.identity.credential.EnvironmentCredential
-import com.azure.storage.blob.BlobProperties
 import com.azure.storage.blob.models.*
 import com.azure.storage.common.credentials.SharedKeyCredential
 import org.junit.Assume
@@ -41,8 +45,6 @@ class APISpec extends Specification {
     static final String defaultText = "default"
 
     static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.getBytes(StandardCharsets.UTF_8))
-
-    static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData)
 
     static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>() {
         @Override
@@ -96,25 +98,21 @@ class APISpec extends Specification {
     /*
     URLs to various kinds of accounts.
      */
-    StorageClient primaryServiceURL
+    BlobServiceClient primaryServiceURL
 
     @Shared
-    static StorageClient alternateServiceURL
+    static BlobServiceClient alternateServiceURL
 
     @Shared
-    static StorageClient blobStorageServiceURL
+    static BlobServiceClient blobStorageServiceURL
 
     @Shared
-    static StorageClient premiumServiceURL
+    static BlobServiceClient premiumServiceURL
 
     /*
     Constants for testing that the context parameter is properly passed to the pipeline.
      */
     static final String defaultContextKey = "Key"
-
-    static final String defaultContextValue = "Value"
-
-    static final Context defaultContext = new Context(defaultContextKey, defaultContextValue)
 
     static String getTestName(ISpecificationContext ctx) {
         return ctx.getCurrentFeature().name.replace(' ', '').toLowerCase()
@@ -197,10 +195,10 @@ class APISpec extends Specification {
         }
     }
 
-    static StorageClient getGenericServiceURL(SharedKeyCredential creds) {
+    static BlobServiceClient getGenericServiceURL(SharedKeyCredential creds) {
         // TODO: logging?
 
-        return new StorageClientBuilder()
+        return new BlobServiceClientBuilder()
             .endpoint("https://" + creds.accountName() + ".blob.core.windows.net")
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
@@ -209,7 +207,7 @@ class APISpec extends Specification {
     }
 
     static void cleanupContainers() throws MalformedURLException {
-        StorageClient serviceURL = new StorageClientBuilder()
+        BlobServiceClient serviceURL = new BlobServiceClientBuilder()
             .endpoint("http://" + primaryCreds.accountName() + ".blob.core.windows.net")
             .credential(primaryCreds)
             .buildClient()
@@ -271,11 +269,13 @@ class APISpec extends Specification {
         }
         catch (Exception e) {
         }
+
         try {
             blobStorageServiceURL = getGenericServiceURL(getGenericCreds("BLOB_STORAGE_"))
         }
         catch (Exception e) {
         }
+
         try {
             premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_STORAGE_"))
         }
@@ -556,7 +556,7 @@ class APISpec extends Specification {
     }
 
     def getOAuthServiceURL() {
-        return new StorageClientBuilder()
+        return new BlobServiceClientBuilder()
             .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCreds.accountName()))
             .credential(new EnvironmentCredential()) // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             .buildClient()

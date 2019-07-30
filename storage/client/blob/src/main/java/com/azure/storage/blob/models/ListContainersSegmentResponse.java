@@ -4,6 +4,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -15,6 +16,7 @@ import java.util.List;
  * An enumeration of containers.
  */
 @JacksonXmlRootElement(localName = "EnumerationResults")
+@Fluent
 public final class ListContainersSegmentResponse {
     /*
      * The serviceEndpoint property.

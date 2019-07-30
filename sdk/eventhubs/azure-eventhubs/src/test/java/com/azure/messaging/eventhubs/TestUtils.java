@@ -87,12 +87,15 @@ final class TestUtils {
     }
 
     static Flux<EventData> getEvents(int numberOfEvents, String messageTrackingValue) {
-        return Flux.range(0, numberOfEvents).map(number -> {
-            final EventData eventData = new EventData(("Event " + number).getBytes(UTF_8));
-            eventData.addProperty(MESSAGE_TRACKING_ID, messageTrackingValue);
-            eventData.addProperty(MESSAGE_POSITION_ID, number);
-            return eventData;
-        });
+        return Flux.range(0, numberOfEvents)
+            .map(number -> getEvent("Event " + number, messageTrackingValue, number));
+    }
+
+    static EventData getEvent(String body, String messageTrackingValue, int position) {
+        final EventData eventData = new EventData(body.getBytes(UTF_8));
+        eventData.addProperty(MESSAGE_TRACKING_ID, messageTrackingValue);
+        eventData.addProperty(MESSAGE_POSITION_ID, position);
+        return eventData;
     }
 
     /**

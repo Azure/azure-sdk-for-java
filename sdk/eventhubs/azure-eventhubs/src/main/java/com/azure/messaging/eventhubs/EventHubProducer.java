@@ -15,7 +15,6 @@ import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.message.Message;
-import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -239,10 +238,10 @@ public class EventHubProducer implements Closeable {
      * @param events Events to send to the service.
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
-    public Mono<Void> send(Publisher<EventData> events) {
+    public Mono<Void> send(Flux<EventData> events) {
         Objects.requireNonNull(events);
 
-        return sendInternal(Flux.from(events), DEFAULT_SEND_OPTIONS);
+        return send(events, DEFAULT_SEND_OPTIONS);
     }
 
     /**
@@ -254,11 +253,11 @@ public class EventHubProducer implements Closeable {
      * @param options The set of options to consider when sending this batch.
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
-    public Mono<Void> send(Publisher<EventData> events, SendOptions options) {
+    public Mono<Void> send(Flux<EventData> events, SendOptions options) {
         Objects.requireNonNull(events);
         Objects.requireNonNull(options);
 
-        return sendInternal(Flux.from(events), options);
+        return sendInternal(events, options);
     }
 
     /**
@@ -302,11 +301,11 @@ public class EventHubProducer implements Closeable {
 
                     return events.collect(new EventDataCollector(batchOptions, 1, () -> link.getErrorContext()));
                 })
-                .flatMap(list -> send(Flux.fromIterable(list)));
+                .flatMap(list -> sendInternal(Flux.fromIterable(list)));
         });
     }
 
-    private Mono<Void> send(Flux<EventDataBatch> eventBatches) {
+    private Mono<Void> sendInternal(Flux<EventDataBatch> eventBatches) {
         return eventBatches
             .flatMap(this::send)
             .then()

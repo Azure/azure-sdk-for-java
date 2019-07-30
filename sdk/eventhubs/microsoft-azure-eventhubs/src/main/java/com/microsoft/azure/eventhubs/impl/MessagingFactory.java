@@ -72,26 +72,26 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     private CompletableFuture<MessagingFactory> open;
     private CompletableFuture<?> openTimer;
     private CompletableFuture<?> closeTimer;
-    private String reactorCreationTime;			// used when looking at Java dumps, do not remove
+    private String reactorCreationTime;            // used when looking at Java dumps, do not remove
 
     MessagingFactory(final String hostname,
-			 		 final Duration operationTimeout,
-			 		 final TransportType transportType,
-			 		 final ITokenProvider tokenProvider,
+                      final Duration operationTimeout,
+                      final TransportType transportType,
+                      final ITokenProvider tokenProvider,
                      final RetryPolicy retryPolicy,
                      final ScheduledExecutorService executor,
                      final ReactorFactory reactorFactory) {
         super(StringUtil.getRandomString("MF"), null, executor);
 
-		if (StringUtil.isNullOrWhiteSpace(hostname)) {
-			throw new IllegalArgumentException("Endpoint hostname cannot be null or empty");
-		}
-		Objects.requireNonNull(operationTimeout, "Operation timeout cannot be null");
-		Objects.requireNonNull(transportType, "Transport type cannot be null");
-		Objects.requireNonNull(tokenProvider, "Token provider cannot be null");
-		Objects.requireNonNull(retryPolicy, "Retry policy cannot be null");
-		Objects.requireNonNull(executor, "Executor cannot be null");
-		Objects.requireNonNull(reactorFactory, "Reactor factory cannot be null");
+        if (StringUtil.isNullOrWhiteSpace(hostname)) {
+            throw new IllegalArgumentException("Endpoint hostname cannot be null or empty");
+        }
+        Objects.requireNonNull(operationTimeout, "Operation timeout cannot be null");
+        Objects.requireNonNull(transportType, "Transport type cannot be null");
+        Objects.requireNonNull(tokenProvider, "Token provider cannot be null");
+        Objects.requireNonNull(retryPolicy, "Retry policy cannot be null");
+        Objects.requireNonNull(executor, "Executor cannot be null");
+        Objects.requireNonNull(reactorFactory, "Reactor factory cannot be null");
         
         this.hostName = hostname;
         this.reactorFactory = reactorFactory;
@@ -124,90 +124,89 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             final RetryPolicy retryPolicy,
             final ScheduledExecutorService executor,
             final ReactorFactory reactorFactory) throws IOException {
-	    final ConnectionStringBuilder csb = new ConnectionStringBuilder(connectionString);
-		ITokenProvider tokenProvider = null;
-		if (!StringUtil.isNullOrWhiteSpace(csb.getSharedAccessSignature())) {
-			tokenProvider = new SharedAccessSignatureTokenProvider(csb.getSharedAccessSignature());
-		} else if (!StringUtil.isNullOrWhiteSpace(csb.getSasKey())) {
-			tokenProvider = new SharedAccessSignatureTokenProvider(csb.getSasKeyName(), csb.getSasKey());
-		} else if ((csb.getAuthentication() != null) && csb.getAuthentication().equalsIgnoreCase(ConnectionStringBuilder.MANAGED_IDENTITY_AUTHENTICATION)) {
-			tokenProvider = new ManagedIdentityTokenProvider();
-		} else {
-			throw new IllegalArgumentException("Connection string must specify a Shared Access Signature, Shared Access Key, or Managed Identity");
-		}
+        final ConnectionStringBuilder csb = new ConnectionStringBuilder(connectionString);
+        ITokenProvider tokenProvider = null;
+        if (!StringUtil.isNullOrWhiteSpace(csb.getSharedAccessSignature())) {
+            tokenProvider = new SharedAccessSignatureTokenProvider(csb.getSharedAccessSignature());
+        } else if (!StringUtil.isNullOrWhiteSpace(csb.getSasKey())) {
+            tokenProvider = new SharedAccessSignatureTokenProvider(csb.getSasKeyName(), csb.getSasKey());
+        } else if ((csb.getAuthentication() != null) && csb.getAuthentication().equalsIgnoreCase(ConnectionStringBuilder.MANAGED_IDENTITY_AUTHENTICATION)) {
+            tokenProvider = new ManagedIdentityTokenProvider();
+        } else {
+            throw new IllegalArgumentException("Connection string must specify a Shared Access Signature, Shared Access Key, or Managed Identity");
+        }
 
-	    final MessagingFactoryBuilder builder = new MessagingFactoryBuilder(csb.getEndpoint().getHost(), tokenProvider, executor).
-	    		setOperationTimeout(csb.getOperationTimeout()).
-	    		setTransportType(csb.getTransportType()).
-	    		setRetryPolicy(retryPolicy).
-	    		setReactorFactory(reactorFactory);
-	    return builder.build();
+        final MessagingFactoryBuilder builder = new MessagingFactoryBuilder(csb.getEndpoint().getHost(), tokenProvider, executor).
+                setOperationTimeout(csb.getOperationTimeout()).
+                setTransportType(csb.getTransportType()).
+                setRetryPolicy(retryPolicy).
+                setReactorFactory(reactorFactory);
+        return builder.build();
     }
 
     public static class MessagingFactoryBuilder {
-    	// These parameters must always be specified by the caller
-    	private final String hostname;
-    	private final ITokenProvider tokenProvider;
-    	private final ScheduledExecutorService executor;
-    	
-    	// Optional parameters with defaults
-    	private Duration operationTimeout = DefaultOperationTimeout;
-    	private TransportType transportType = TransportType.AMQP;
-    	private RetryPolicy retryPolicy = RetryPolicy.getDefault();
-    	private ReactorFactory reactorFactory = new ReactorFactory();
-    	
-    	public MessagingFactoryBuilder(final String hostname, final ITokenProvider tokenProvider, final ScheduledExecutorService executor) {
-    		if (StringUtil.isNullOrWhiteSpace(hostname)) {
-    			throw new IllegalArgumentException("Endpoint hostname cannot be null or empty");
-    		}
-    		this.hostname = hostname;
-    		
-    		this.tokenProvider = Objects.requireNonNull(tokenProvider);
-    		this.executor = Objects.requireNonNull(executor);
-    	}
-    	
-    	public MessagingFactoryBuilder setOperationTimeout(Duration operationTimeout) {
-    		if (operationTimeout != null) {
-        		this.operationTimeout = operationTimeout;
-    		}
-    		return this;
-    	}
-    	
-    	public MessagingFactoryBuilder setTransportType(TransportType transportType) {
-    		if (transportType != null) {
-        		this.transportType = transportType;
-    		}
-    		return this;
-    	}
-    	
-    	public MessagingFactoryBuilder setRetryPolicy(RetryPolicy retryPolicy) {
-    		if (retryPolicy != null) {
-        		this.retryPolicy = retryPolicy;
-    		}
-    		return this;
-    	}
-    	
-    	public MessagingFactoryBuilder setReactorFactory(ReactorFactory reactorFactory) {
-    		if (reactorFactory != null) {
-        		this.reactorFactory = reactorFactory;
-    		}
-    		return this;
-    	}
-    	
-    	public CompletableFuture<MessagingFactory> build() throws IOException {
-    		final MessagingFactory messagingFactory = new MessagingFactory(this.hostname,
-    				this.operationTimeout,
-    				this.transportType,
-    				this.tokenProvider,
-    				this.retryPolicy,
-    				this.executor,
-    				this.reactorFactory);
-    		return MessagingFactory.factoryStartup(messagingFactory);
-    	}
+        // These parameters must always be specified by the caller
+        private final String hostname;
+        private final ITokenProvider tokenProvider;
+        private final ScheduledExecutorService executor;
+        
+        // Optional parameters with defaults
+        private Duration operationTimeout = DefaultOperationTimeout;
+        private TransportType transportType = TransportType.AMQP;
+        private RetryPolicy retryPolicy = RetryPolicy.getDefault();
+        private ReactorFactory reactorFactory = new ReactorFactory();
+        
+        public MessagingFactoryBuilder(final String hostname, final ITokenProvider tokenProvider, final ScheduledExecutorService executor) {
+            if (StringUtil.isNullOrWhiteSpace(hostname)) {
+                throw new IllegalArgumentException("Endpoint hostname cannot be null or empty");
+            }
+            this.hostname = hostname;
+            
+            this.tokenProvider = Objects.requireNonNull(tokenProvider);
+            this.executor = Objects.requireNonNull(executor);
+        }
+        
+        public MessagingFactoryBuilder setOperationTimeout(Duration operationTimeout) {
+            if (operationTimeout != null) {
+                this.operationTimeout = operationTimeout;
+            }
+            return this;
+        }
+        
+        public MessagingFactoryBuilder setTransportType(TransportType transportType) {
+            if (transportType != null) {
+                this.transportType = transportType;
+            }
+            return this;
+        }
+        
+        public MessagingFactoryBuilder setRetryPolicy(RetryPolicy retryPolicy) {
+            if (retryPolicy != null) {
+                this.retryPolicy = retryPolicy;
+            }
+            return this;
+        }
+        
+        public MessagingFactoryBuilder setReactorFactory(ReactorFactory reactorFactory) {
+            if (reactorFactory != null) {
+                this.reactorFactory = reactorFactory;
+            }
+            return this;
+        }
+        
+        public CompletableFuture<MessagingFactory> build() throws IOException {
+            final MessagingFactory messagingFactory = new MessagingFactory(this.hostname,
+                    this.operationTimeout,
+                    this.transportType,
+                    this.tokenProvider,
+                    this.retryPolicy,
+                    this.executor,
+                    this.reactorFactory);
+            return MessagingFactory.factoryStartup(messagingFactory);
+        }
     }
 
-    private static CompletableFuture<MessagingFactory> factoryStartup(MessagingFactory messagingFactory) throws IOException
-    {
+    private static CompletableFuture<MessagingFactory> factoryStartup(MessagingFactory messagingFactory) throws IOException {
         messagingFactory.createConnection();
 
         final Timer timer = new Timer(messagingFactory);
@@ -225,14 +224,13 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 
         // if scheduling messagingfactory openTimer fails - notify user and stop
         messagingFactory.openTimer.handleAsync(
-                (unUsed, exception) -> {
-                    if (exception != null && !(exception instanceof CancellationException)) {
-                        messagingFactory.open.completeExceptionally(exception);
-                        messagingFactory.getReactor().stop();
-                    }
-
-                    return null;
-                }, messagingFactory.executor);
+            (unUsed, exception) -> {
+                if (exception != null && !(exception instanceof CancellationException)) {
+                    messagingFactory.open.completeExceptionally(exception);
+                    messagingFactory.getReactor().stop();
+                }
+                return null;
+            }, messagingFactory.executor);
 
         return messagingFactory.open;
     }

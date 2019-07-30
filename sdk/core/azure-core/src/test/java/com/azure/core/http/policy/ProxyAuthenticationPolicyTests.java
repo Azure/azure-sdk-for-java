@@ -5,6 +5,7 @@ package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.MockHttpClient;
 import org.junit.Test;
@@ -23,7 +24,7 @@ public class ProxyAuthenticationPolicyTests {
         final String username = "testuser";
         final String password = "testpass";
         //
-        final HttpPipeline pipeline = HttpPipeline.builder()
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new MockHttpClient())
             .policies(new ProxyAuthenticationPolicy(username, password),
                 (context, next) -> {

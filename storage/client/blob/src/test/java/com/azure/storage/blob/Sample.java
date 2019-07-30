@@ -8,6 +8,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerItem;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -16,7 +18,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
@@ -29,7 +30,7 @@ public class Sample {
     //@Test
     public void sample() throws IOException {
         // get service client
-        StorageClient serviceClient = new StorageClientBuilder().endpoint(ACCOUNT_ENDPOINT)
+        BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
             .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
@@ -81,7 +82,7 @@ public class Sample {
     //@Test
     public void asyncSample() throws IOException {
         // get service client
-        StorageAsyncClient serviceClient = new StorageClientBuilder().endpoint(ACCOUNT_ENDPOINT)
+        BlobServiceAsyncClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
             .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();
@@ -116,8 +117,7 @@ public class Sample {
                 for (int i = 0; i < 5; i++) {
                     BlockBlobAsyncClient blobClient = finalContainerClient.getBlockBlobAsyncClient("testblob-" + i);
                     byte[] message = ("test data" + i).getBytes(StandardCharsets.UTF_8);
-                    Flux<ByteBuffer> testdata = Flux.just(ByteBuffer.wrap(message));
-
+                    Flux<ByteBuf> testdata = Flux.just(ByteBufAllocator.DEFAULT.buffer(message.length).writeBytes(message));
 
                     finished = finished.and(blobClient.upload(testdata, message.length)
                         .then(Mono.defer(() -> {
@@ -161,7 +161,7 @@ public class Sample {
         fstream.close();
 
         // get service client
-        StorageClient serviceClient = new StorageClientBuilder().endpoint(ACCOUNT_ENDPOINT)
+        BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
             .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
@@ -191,7 +191,7 @@ public class Sample {
         fstream.close();
 
         // get service client
-        StorageAsyncClient serviceClient = new StorageClientBuilder().endpoint(ACCOUNT_ENDPOINT)
+        BlobServiceAsyncClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
             .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();

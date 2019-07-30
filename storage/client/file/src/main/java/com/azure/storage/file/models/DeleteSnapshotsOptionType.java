@@ -14,12 +14,7 @@ public enum DeleteSnapshotsOptionType {
     /**
      * Enum value include.
      */
-    INCLUDE("include"),
-
-    /**
-     * Enum value only.
-     */
-    ONLY("only");
+    INCLUDE("include");
 
     /**
      * The actual serialized value for a DeleteSnapshotsOptionType instance.

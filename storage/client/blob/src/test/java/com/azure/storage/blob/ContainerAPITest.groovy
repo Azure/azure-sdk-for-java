@@ -1539,11 +1539,11 @@ class ContainerAPITest extends APISpec {
             cu.create()
         }
 
-        AppendBlobClient bu = new AppendBlobClientBuilder()
+        AppendBlobClient bu = new BlobClientBuilder()
                 .credential(primaryCreds)
                 .endpoint("http://" + primaryCreds.accountName() + ".blob.core.windows.net/\$root/rootblob")
                 .httpClient(getHttpClient())
-                .buildClient()
+                .buildAppendBlobClient()
 
         when:
         Response<AppendBlobItem> createResponse = bu.create()
@@ -1565,11 +1565,11 @@ class ContainerAPITest extends APISpec {
             cu.create()
         }
 
-        AppendBlobClient bu = new AppendBlobClientBuilder()
+        AppendBlobClient bu = new BlobClientBuilder()
             .credential(primaryCreds)
             .endpoint("http://" + primaryCreds.accountName() + ".blob.core.windows.net/rootblob")
             .httpClient(getHttpClient())
-            .buildClient()
+            .buildAppendBlobClient()
 
         when:
         Response<AppendBlobItem> createResponse = bu.create()
@@ -1624,7 +1624,7 @@ class ContainerAPITest extends APISpec {
 
     def "Get account info error"() {
         when:
-        StorageClient serviceURL = new StorageClientBuilder()
+        BlobServiceClient serviceURL = new BlobServiceClientBuilder()
             .endpoint(primaryServiceURL.getAccountUrl().toString())
             .buildClient()
 

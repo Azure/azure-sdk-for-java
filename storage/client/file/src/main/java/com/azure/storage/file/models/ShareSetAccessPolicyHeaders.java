@@ -5,6 +5,7 @@
 package com.azure.storage.file.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -13,6 +14,7 @@ import java.time.OffsetDateTime;
  * Defines headers for SetAccessPolicy operation.
  */
 @JacksonXmlRootElement(localName = "Share-SetAccessPolicy-Headers")
+@Fluent
 public final class ShareSetAccessPolicyHeaders {
     /*
      * The ETag contains a value that you can use to perform operations

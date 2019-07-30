@@ -335,8 +335,8 @@ jobs:
 
         Strong_Https:
          OSVmImage: 'macOS-10.13'
-         CosmosAccountHost: $(java-cosmos-session-singleregion-one-host)
-         CosmosAccountKey: $(java-cosmos-session-singleregion-one-key)
+         CosmosAccountHost: $(java-cosmos-strong-singleregion-host)
+         CosmosAccountKey: $(java-cosmos-strong-singleregion-key)
          ProtocolFlag: '["Https"]'
          Consistency: '["Strong", "Session"]'
 

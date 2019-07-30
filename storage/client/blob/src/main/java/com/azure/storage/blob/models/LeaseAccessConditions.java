@@ -4,6 +4,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * Additional parameters for a set of operations.
  */
 @JacksonXmlRootElement(localName = "lease-access-conditions")
+@Fluent
 public final class LeaseAccessConditions {
     /*
      * If specified, the operation only succeeds if the resource's lease is

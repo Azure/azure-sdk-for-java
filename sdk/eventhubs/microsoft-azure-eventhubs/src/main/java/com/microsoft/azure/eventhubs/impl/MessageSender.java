@@ -118,37 +118,37 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                 new Runnable() {
                     @Override
                     public void run() {
-                            underlyingFactory.getCBSChannel().sendToken(
-                                    underlyingFactory.getReactorDispatcher(),
-                                    underlyingFactory.getTokenProvider().getToken(tokenAudience, ClientConstants.TOKEN_VALIDITY),
-                                    tokenAudience,
-                                    new OperationResult<Void, Exception>() {
-                                        @Override
-                                        public void onComplete(Void result) {
-                                            if (TRACE_LOGGER.isDebugEnabled()) {
-                                                TRACE_LOGGER.debug(String.format(Locale.US,
-                                                        "clientId[%s], path[%s], linkName[%s] - token renewed",
-                                                        getClientId(), sendPath, getSendLinkName()));
-                                            }
+                        underlyingFactory.getCBSChannel().sendToken(
+                                underlyingFactory.getReactorDispatcher(),
+                                underlyingFactory.getTokenProvider().getToken(tokenAudience, ClientConstants.TOKEN_VALIDITY),
+                                tokenAudience,
+                                new OperationResult<Void, Exception>() {
+                                    @Override
+                                    public void onComplete(Void result) {
+                                        if (TRACE_LOGGER.isDebugEnabled()) {
+                                            TRACE_LOGGER.debug(String.format(Locale.US,
+                                                    "clientId[%s], path[%s], linkName[%s] - token renewed",
+                                                    getClientId(), sendPath, getSendLinkName()));
                                         }
+                                    }
 
-                                        @Override
-                                        public void onError(Exception error) {
-                                            if (TRACE_LOGGER.isInfoEnabled()) {
-                                                TRACE_LOGGER.info(String.format(Locale.US,
-                                                        "clientId[%s], path[%s], linkName[%s] - tokenRenewalFailure[%s]",
-                                                        getClientId(), sendPath, getSendLinkName(), error.getMessage()));
-                                            }
+                                    @Override
+                                    public void onError(Exception error) {
+                                        if (TRACE_LOGGER.isInfoEnabled()) {
+                                            TRACE_LOGGER.info(String.format(Locale.US,
+                                                    "clientId[%s], path[%s], linkName[%s] - tokenRenewalFailure[%s]",
+                                                    getClientId(), sendPath, getSendLinkName(), error.getMessage()));
                                         }
-                                    },
-                                    (exception) -> {
-                                        if (TRACE_LOGGER.isWarnEnabled()) {
-                                            TRACE_LOGGER.warn(String.format(Locale.US,
-                                                    "clientId[%s], path[%s], linkName[%s] - tokenRenewalScheduleFailure[%s]",
-                                                    getClientId(), sendPath, getSendLinkName(), exception.getMessage()));
-                                        }
-                                    });
-                        }
+                                    }
+                                },
+                            (exception) -> {
+                                if (TRACE_LOGGER.isWarnEnabled()) {
+                                    TRACE_LOGGER.warn(String.format(Locale.US,
+                                                "clientId[%s], path[%s], linkName[%s] - tokenRenewalScheduleFailure[%s]",
+                                                getClientId(), sendPath, getSendLinkName(), exception.getMessage()));
+                                }
+                            });
+                    }
                 },
                 ClientConstants.TOKEN_REFRESH_INTERVAL,
                 this.underlyingFactory);
@@ -729,9 +729,9 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                         MessageSender.this.onError(completionException);
                     }
                 },
-                (exception) -> {
-                    MessageSender.this.onError(exception);
-                });
+            (exception) -> {
+                MessageSender.this.onError(exception);
+            });
     }
 
     private void scheduleLinkOpenTimeout(TimeoutTracker timeout) {

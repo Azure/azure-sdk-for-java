@@ -3,13 +3,12 @@
 
 import com.azure.storage.blob.BlockBlobClient;
 import com.azure.storage.blob.ContainerClient;
-import com.azure.storage.blob.StorageClient;
-import com.azure.storage.blob.StorageClientBuilder;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.URL;
@@ -53,10 +52,10 @@ public class FileTransferExample {
         String endPoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName);
 
         /*
-         * Create a StorageClient object that wraps the service endpoint, credential and a request pipeline.
+         * Create a BlobServiceClient object that wraps the service endpoint, credential and a request pipeline.
          * Now you can use the storageClient to perform various container and blob operations.
          */
-        StorageClient storageClient = new StorageClientBuilder().endpoint(endPoint).credential(credential).buildClient();
+        BlobServiceClient storageClient = new BlobServiceClientBuilder().endpoint(endPoint).credential(credential).buildClient();
 
 
         /*
@@ -139,7 +138,7 @@ public class FileTransferExample {
         }
     }
 
-    private static void createTempFileWithFileSize(File f, long size) throws FileNotFoundException, IOException {
+    private static void createTempFileWithFileSize(File f, long size) throws IOException {
         RandomAccessFile raf = new RandomAccessFile(f, "rw");
         raf.setLength(size);
         raf.close();
@@ -148,7 +147,7 @@ public class FileTransferExample {
     private static void checkTwoFilesAreTheSame(File f1, File f2) throws IOException, NoSuchAlgorithmException {
         String checksumUpload = getFileChecksum(f1);
         String checksumDownload = getFileChecksum(f2);
-        if (checksumUpload.equals(checksumDownload)) {
+        if (!checksumUpload.equals(checksumDownload)) {
             throw new RuntimeException("The file upload does not match the file download.");
         }
     }

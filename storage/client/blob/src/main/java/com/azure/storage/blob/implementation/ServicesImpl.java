@@ -4,18 +4,20 @@
 
 package com.azure.storage.blob.implementation;
 
-import com.azure.core.annotations.BodyParam;
-import com.azure.core.annotations.ExpectedResponses;
-import com.azure.core.annotations.GET;
-import com.azure.core.annotations.HeaderParam;
-import com.azure.core.annotations.Host;
-import com.azure.core.annotations.HostParam;
-import com.azure.core.annotations.POST;
-import com.azure.core.annotations.PUT;
-import com.azure.core.annotations.QueryParam;
-import com.azure.core.annotations.Service;
-import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.annotation.BodyParam;
+import com.azure.core.implementation.annotation.ExpectedResponses;
+import com.azure.core.implementation.annotation.Get;
+import com.azure.core.implementation.annotation.HeaderParam;
+import com.azure.core.implementation.annotation.Host;
+import com.azure.core.implementation.annotation.HostParam;
+import com.azure.core.implementation.annotation.Post;
+import com.azure.core.implementation.annotation.Put;
+import com.azure.core.implementation.annotation.QueryParam;
+import com.azure.core.implementation.annotation.ReturnType;
+import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.implementation.annotation.ServiceMethod;
+import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListContainersIncludeType;
@@ -50,43 +52,43 @@ public final class ServicesImpl {
      * @param client the instance of the service client containing this operation class.
      */
     public ServicesImpl(AzureBlobStorageImpl client) {
-        this.service = RestProxy.create(ServicesService.class, client);
+        this.service = RestProxy.create(ServicesService.class, client.getHttpPipeline());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for Services to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for AzureBlobStorageServices to
+     * be used by the proxy service to perform REST calls.
      */
     @Host("{url}")
-    @Service("Storage Blobs Service")
+    @ServiceInterface(name = "AzureBlobStorageServices")
     private interface ServicesService {
-        @PUT("")
+        @Put("")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ServicesSetPropertiesResponse> setProperties(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") StorageServiceProperties storageServiceProperties, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
-        @GET("")
+        @Get("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ServicesGetPropertiesResponse> getProperties(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
-        @GET("")
+        @Get("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ServicesGetStatisticsResponse> getStatistics(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
-        @GET("")
+        @Get("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ServicesListContainersSegmentResponse> listContainersSegment(@HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("include") ListContainersIncludeType include, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
 
-        @POST("")
+        @Post("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKey(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") KeyInfo keyInfo, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
-        @GET("")
+        @Get("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ServicesGetAccountInfoResponse> getAccountInfo(@HostParam("url") String url, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
@@ -100,12 +102,13 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(StorageServiceProperties storageServiceProperties, Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String restype = "service";
         final String comp = "properties";
-        return service.setProperties(this.client.url(), storageServiceProperties, timeout, this.client.version(), requestId, restype, comp, context);
+        return service.setProperties(this.client.getUrl(), storageServiceProperties, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -118,10 +121,11 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(StorageServiceProperties storageServiceProperties, Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
-        return service.setProperties(this.client.url(), storageServiceProperties, timeout, this.client.version(), requestId, restype, comp, context);
+        return service.setProperties(this.client.getUrl(), storageServiceProperties, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -131,12 +135,13 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetPropertiesResponse> getPropertiesWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String restype = "service";
         final String comp = "properties";
-        return service.getProperties(this.client.url(), timeout, this.client.version(), requestId, restype, comp, context);
+        return service.getProperties(this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -148,10 +153,11 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetPropertiesResponse> getPropertiesWithRestResponseAsync(Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
-        return service.getProperties(this.client.url(), timeout, this.client.version(), requestId, restype, comp, context);
+        return service.getProperties(this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -161,12 +167,13 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetStatisticsResponse> getStatisticsWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String restype = "service";
         final String comp = "stats";
-        return service.getStatistics(this.client.url(), timeout, this.client.version(), requestId, restype, comp, context);
+        return service.getStatistics(this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -178,10 +185,11 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetStatisticsResponse> getStatisticsWithRestResponseAsync(Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "stats";
-        return service.getStatistics(this.client.url(), timeout, this.client.version(), requestId, restype, comp, context);
+        return service.getStatistics(this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -191,6 +199,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesListContainersSegmentResponse> listContainersSegmentWithRestResponseAsync(Context context) {
         final String prefix = null;
         final String marker = null;
@@ -199,7 +208,7 @@ public final class ServicesImpl {
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "list";
-        return service.listContainersSegment(this.client.url(), prefix, marker, maxresults, include, timeout, this.client.version(), requestId, comp, context);
+        return service.listContainersSegment(this.client.getUrl(), prefix, marker, maxresults, include, timeout, this.client.getVersion(), requestId, comp, context);
     }
 
     /**
@@ -215,9 +224,10 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesListContainersSegmentResponse> listContainersSegmentWithRestResponseAsync(String prefix, String marker, Integer maxresults, ListContainersIncludeType include, Integer timeout, String requestId, Context context) {
         final String comp = "list";
-        return service.listContainersSegment(this.client.url(), prefix, marker, maxresults, include, timeout, this.client.version(), requestId, comp, context);
+        return service.listContainersSegment(this.client.getUrl(), prefix, marker, maxresults, include, timeout, this.client.getVersion(), requestId, comp, context);
     }
 
     /**
@@ -228,12 +238,13 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKeyWithRestResponseAsync(KeyInfo keyInfo, Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String restype = "service";
         final String comp = "userdelegationkey";
-        return service.getUserDelegationKey(this.client.url(), keyInfo, timeout, this.client.version(), requestId, restype, comp, context);
+        return service.getUserDelegationKey(this.client.getUrl(), keyInfo, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -246,10 +257,11 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKeyWithRestResponseAsync(KeyInfo keyInfo, Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "userdelegationkey";
-        return service.getUserDelegationKey(this.client.url(), keyInfo, timeout, this.client.version(), requestId, restype, comp, context);
+        return service.getUserDelegationKey(this.client.getUrl(), keyInfo, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -259,9 +271,10 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetAccountInfoResponse> getAccountInfoWithRestResponseAsync(Context context) {
         final String restype = "account";
         final String comp = "properties";
-        return service.getAccountInfo(this.client.url(), this.client.version(), restype, comp, context);
+        return service.getAccountInfo(this.client.getUrl(), this.client.getVersion(), restype, comp, context);
     }
 }
