@@ -5,6 +5,9 @@ package com.azure.core.http.rest;
 
 import reactor.core.publisher.Flux;
 
+import java.util.Iterator;
+
+
 /**
  * Code snippets for {@link IterableResponse}
  */
@@ -25,9 +28,10 @@ public class IterableResponseJavaDocCodeSnippets {
         IterableResponse<Integer> myIterableResponse = new IterableResponse<>(Flux.range(1, 10));
         // BEGIN: com.azure.core.http.rest.iterator
         // Iterate over stream
-        myIterableResponse.iterator().forEachRemaining(number -> {
-            System.out.println(" The number :" + number);
-        });
+        Iterator<Integer> ite = myIterableResponse.iterator();
+        while(ite.hasNext()) {
+            System.out.printf("Value is %d", ite.next());
+        }
         // END: com.azure.core.http.rest.iterator
     }
 

@@ -32,7 +32,6 @@ public class IterableResponse<T> implements Iterable<T> {
      * Creates instance given {@link Flux}.
      * @param flux to iterate over
      */
-
     public IterableResponse(Flux<T> flux) {
         this.flux = flux;
     }

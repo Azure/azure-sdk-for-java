@@ -4,7 +4,6 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.models.RecordedData;
@@ -13,8 +12,10 @@ import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.nimbusds.oauth2.sdk.http.HTTPResponse;
 
 import java.security.GeneralSecurityException;
+import java.util.Iterator;
 
 /**
  * This class contains code samples for generating javadocs through doclets for {@link ConfigurationClient}
@@ -278,8 +279,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector
         SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
-        PagedIterable<ConfigurationSetting> csStream =  configurationClient.listSettings(settingSelector);
-        csStream.forEach(setting -> {
+        configurationClient.listSettings(settingSelector).forEach(setting -> {
             System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
         });
         // END: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector
@@ -293,8 +293,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector-context
         SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
         Context ctx = new Context(key2, value2);
-        PagedIterable<ConfigurationSetting> csStream =  configurationClient.listSettings(settingSelector, ctx);
-        csStream.forEach(setting -> {
+        configurationClient.listSettings(settingSelector, ctx).forEach(setting -> {
             System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
         });
         // END: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector-context
@@ -304,13 +303,20 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      * Generates code sample for using {@link ConfigurationClient#listSettingRevisions(SettingSelector)}
      */
     public void listSettingRevisions() {
-        ConfigurationClient configurationClient = createSyncConfigurationClient();
+        ConfigurationClient client = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector
         SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
-        PagedIterable<ConfigurationSetting> csStream =  configurationClient.listSettingRevisions(settingSelector);
-        csStream.streamByPage().forEach(setting -> {
-            System.out.printf("Key: %s, Value: %s", setting.value().get(0).key(), setting.value().get(0).value());
+        client.listSettingRevisions(settingSelector).streamByPage().forEach(response -> {
+            if (response.statusCode()  == HTTPResponse.SC_OK) {
+                response.value().forEach(setting -> {
+                    System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
+                });
+            }else {
+                System.out.printf(" Did not get successful response. Status code: %d, ", response.statusCode() );
+            }
         });
+
+
         // END: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector
     }
 
@@ -322,8 +328,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector-context
         SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
         Context ctx = new Context(key2, value2);
-        PagedIterable<ConfigurationSetting> csStream =  configurationClient.listSettingRevisions(settingSelector, ctx);
-        csStream.forEach(setting -> {
+        configurationClient.listSettingRevisions(settingSelector, ctx).forEach(setting -> {
             System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
         });
         // END: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector-context

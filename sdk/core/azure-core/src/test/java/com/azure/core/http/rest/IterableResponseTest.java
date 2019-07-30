@@ -55,6 +55,6 @@ public class IterableResponseTest {
 
     private IterableResponse<Integer> getIntegerIterableResponse(int startNumber, int noOfValues){
         Flux<Integer>  integerFlux = Flux.range(startNumber, noOfValues);
-            return new IterableResponse<>(integerFlux);
+        return new IterableResponse<>(integerFlux);
     }
 }
