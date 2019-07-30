@@ -19,10 +19,6 @@ import java.util.stream.Stream;
  *
  * {@codesnippet com.azure.core.http.rest.iterator}
  *
- * <p><strong>Code sample count using Stream</strong></p>
- *
- * {@codesnippet com.azure.core.http.rest.stream.count}
- *
  * @param <T> value
  */
 public class IterableResponse<T> implements Iterable<T> {
