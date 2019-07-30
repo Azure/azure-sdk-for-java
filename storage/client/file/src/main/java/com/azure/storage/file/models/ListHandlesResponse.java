@@ -4,6 +4,7 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -15,6 +16,7 @@ import java.util.List;
  * An enumeration of handles.
  */
 @JacksonXmlRootElement(localName = "EnumerationResults")
+@Fluent
 public final class ListHandlesResponse {
     private static final class EntriesWrapper {
         @JacksonXmlProperty(localName = "Handle")

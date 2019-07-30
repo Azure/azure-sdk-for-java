@@ -4,8 +4,8 @@
 
 package com.azure.storage.file.models;
 
-import com.azure.core.annotations.HeaderCollection;
 import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -16,6 +16,7 @@ import java.util.Map;
  * Properties of a share.
  */
 @JacksonXmlRootElement(localName = "ShareProperties")
+@Fluent
 public final class ShareProperties {
     /*
      * The lastModified property.
@@ -35,7 +36,10 @@ public final class ShareProperties {
     @JsonProperty(value = "Quota", required = true)
     private int quota;
 
-    @HeaderCollection(value = "x-ms-meta-")
+    /*
+     * The metadata property.
+     */
+    @JsonProperty(value = "Metadata")
     private Map<String, String> metadata;
 
     /**
@@ -105,10 +109,21 @@ public final class ShareProperties {
         return this;
     }
 
+    /**
+     * Get the metadata property: The metadata property.
+     *
+     * @return the metadata value.
+     */
     public Map<String, String> metadata() {
-        return metadata;
+        return this.metadata;
     }
 
+    /**
+     * Set the metadata property: The metadata property.
+     *
+     * @param metadata the metadata value to set.
+     * @return the ShareProperties object itself.
+     */
     public ShareProperties metadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;

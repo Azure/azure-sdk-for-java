@@ -4,6 +4,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * Defines headers for GetProperties operation.
  */
 @JacksonXmlRootElement(localName = "Service-GetProperties-Headers")
+@Fluent
 public final class ServiceGetPropertiesHeaders {
     /*
      * This header uniquely identifies the request that was made and can be

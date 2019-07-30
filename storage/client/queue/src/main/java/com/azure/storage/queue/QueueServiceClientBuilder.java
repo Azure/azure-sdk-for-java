@@ -5,6 +5,7 @@ package com.azure.storage.queue;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -145,7 +146,7 @@ public final class QueueServiceClientBuilder {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(logLevel));
 
-        HttpPipeline pipeline = HttpPipeline.builder()
+        HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
@@ -195,7 +196,7 @@ public final class QueueServiceClientBuilder {
                 this.tokenCredential = null;
             }
         } catch (MalformedURLException ex) {
-            LOGGER.asError().log("The Azure Storage Queue endpoint url is malformed.");
+            LOGGER.error("The Azure Storage Queue endpoint url is malformed.");
             throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed.");
         }
 

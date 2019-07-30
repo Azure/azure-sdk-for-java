@@ -5,6 +5,7 @@
 package com.azure.storage.file.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -13,6 +14,7 @@ import java.time.OffsetDateTime;
  * Defines headers for StartCopy operation.
  */
 @JacksonXmlRootElement(localName = "File-StartCopy-Headers")
+@Fluent
 public final class FileStartCopyHeaders {
     /*
      * If the copy is completed, contains the ETag of the destination file. If
