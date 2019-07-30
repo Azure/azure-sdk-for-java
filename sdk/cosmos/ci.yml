@@ -28,9 +28,11 @@ jobs:
         Windows - java8:
           OSVmImage: 'vs2017-win2016'
           JavaVersion: '1.8'
+          OSName: Windows
         MacOS - java8:
           OSVmImage: 'macOS-10.13'
           JavaVersion: '1.8'
+          OSName: macOS
       PreTestSteps:
         - template: ../steps/install-reporting-tools.yml
 
