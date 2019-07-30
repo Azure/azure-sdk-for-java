@@ -16,6 +16,7 @@ public class EventHubProducerOptionsTest {
         String partitionId = "my-partition-id";
         Duration timeout = Duration.ofMinutes(10);
         RetryOptions retryOptions = new RetryOptions()
+            .tryTimeout(timeout)
             .delay(Duration.ofSeconds(20))
             .maxDelay(Duration.ofSeconds(30))
             .maxRetries(3);
