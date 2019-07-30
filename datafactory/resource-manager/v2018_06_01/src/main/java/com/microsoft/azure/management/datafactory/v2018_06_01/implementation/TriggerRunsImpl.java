@@ -11,6 +11,7 @@ package com.microsoft.azure.management.datafactory.v2018_06_01.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.datafactory.v2018_06_01.TriggerRuns;
+import rx.Completable;
 import rx.functions.Func1;
 import rx.Observable;
 import com.microsoft.azure.management.datafactory.v2018_06_01.TriggerRunsQueryResponse;
@@ -26,6 +27,12 @@ class TriggerRunsImpl extends WrapperImpl<TriggerRunsInner> implements TriggerRu
 
     public DataFactoryManager manager() {
         return this.manager;
+    }
+
+    @Override
+    public Completable rerunAsync(String resourceGroupName, String factoryName, String triggerName, String runId) {
+        TriggerRunsInner client = this.inner();
+        return client.rerunAsync(resourceGroupName, factoryName, triggerName, runId).toCompletable();
     }
 
     @Override

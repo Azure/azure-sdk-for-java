@@ -8,14 +8,25 @@
 
 package com.microsoft.azure.management.datafactory.v2018_06_01;
 
+import rx.Completable;
 import rx.Observable;
-import com.microsoft.azure.management.datafactory.v2018_06_01.implementation.TriggerRunsInner;
-import com.microsoft.azure.arm.model.HasInner;
 
 /**
  * Type representing TriggerRuns.
  */
-public interface TriggerRuns extends HasInner<TriggerRunsInner> {
+public interface TriggerRuns {
+    /**
+     * Rerun single trigger instance by runId.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable rerunAsync(String resourceGroupName, String factoryName, String triggerName, String runId);
+
     /**
      * Query trigger runs.
      *
