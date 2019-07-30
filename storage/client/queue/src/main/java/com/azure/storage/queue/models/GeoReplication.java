@@ -5,6 +5,7 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -13,6 +14,7 @@ import java.time.OffsetDateTime;
  * The GeoReplication model.
  */
 @JacksonXmlRootElement(localName = "GeoReplication")
+@Fluent
 public final class GeoReplication {
     /*
      * The status of the secondary location. Possible values include: 'live',

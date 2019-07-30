@@ -4,6 +4,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * Additional parameters for a set of operations.
  */
 @JacksonXmlRootElement(localName = "blob-HTTP-headers")
+@Fluent
 public final class BlobHTTPHeaders {
     /*
      * Optional. Sets the blob's cache control. If specified, this property is

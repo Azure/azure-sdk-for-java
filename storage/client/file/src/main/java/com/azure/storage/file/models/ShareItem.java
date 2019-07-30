@@ -4,6 +4,7 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.Map;
  * A listed Azure Storage share item.
  */
 @JacksonXmlRootElement(localName = "Share")
+@Fluent
 public final class ShareItem {
     /*
      * The name property.
