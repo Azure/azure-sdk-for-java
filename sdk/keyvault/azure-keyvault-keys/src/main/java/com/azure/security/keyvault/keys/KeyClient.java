@@ -406,27 +406,7 @@ public final class KeyClient {
      * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty string.
      * @return The {@link KeyBase updated key}.
      */
-    public Key updateKey(KeyBase key) { return updateKeyWithResponse(key, Context.NONE).value(); }
-
-    /**
-     * Updates the attributes associated with the specified key, but not the cryptographic key material of the specified key in the key vault. The update
-     * operation changes specified attributes of an existing stored key and attributes that are not specified in the request are left unchanged.
-     * The cryptographic key material of a key itself cannot be changed. This operation requires the {@code keys/set} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Gets the latest version of the key, changes its expiry time and the updates the key in the key vault.</p>
-     * {@codesnippet com.azure.keyvault.keys.keyclient.updateKeyWithResponse#KeyBase-Context}
-     *
-     * @param key The {@link KeyBase base key} object with updated properties.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws NullPointerException if {@code key} is {@code null}.
-     * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty string.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
-     */
-    public Response<Key> updateKeyWithResponse(KeyBase key, Context context) {
-        return client.updateKeyWithResponse(key, context).block();
-    }
+    public Key updateKey(KeyBase key) { return client.updateKeyWithResponse(key, Context.NONE).block().value(); }
 
     /**
      * Updates the attributes and key operations associated with the specified key, but not the cryptographic key material of the specified key in the key vault. The update
