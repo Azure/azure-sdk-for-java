@@ -3,6 +3,8 @@ trigger: none
 variables:
   AdditionalArgs: ''
 
+
+# TODO: examine whether $(DefaultOptions) is appropriate here...
 jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
@@ -126,13 +128,6 @@ jobs:
         ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
       MaxParallel: 1
       Matrix:
-        # 59m 58s, timed out
-        Http_E2E:
-          DisplayName: Single Region ReadMyWrites
-          OSVmImage: 'vs2017-win2016'
-          ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
-          DESIRED_CONSISTENCY: 'Strong'
         # 09m 32s, passed
         Strong_Tcp_Fast:
           DisplayName: Strong TCP Fast
@@ -141,14 +136,6 @@ jobs:
           AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        # 08m 50s, passed
-        Strong_Http_Fast:
-          DisplayName: Strong HTTP Fast
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pfast'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
         # 08m 53s, passed
         Strong_Tcp_Direct:
           DisplayName: Strong TCP Direct
@@ -156,6 +143,58 @@ jobs:
           ProfileFlag: '-Pdirect'
           AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        # 07m 36s, passed
+        Strong_Tcp_Examples:
+          DisplayName: Strong TCP Examples
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pexamples'
+          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        # 06m 59s, passed
+        Strong_Tcp_NonEmulator:
+          DisplayName: Strong TCP NonEmulator
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pnon-emulator'
+          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+
+      PreRunSteps:
+        - template: ../steps/install-reporting-tools.yml
+
+      TestStepMavenInputs:
+          goals: verify
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+
+      TestResultsFiles: '**/junitreports/TEST-*.xml'
+
+  # Same host as above, parallelizing the e2e tests saves time overall
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      TestName: Single_Region_Strong
+      ServiceDirectory: cosmos
+      TimeoutInMinutes: 240
+      EnvVars:
+        ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
+        ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
+      MaxParallel: 1
+      Matrix:
+        # 59m 58s, timed out
+        Http_E2E:
+          DisplayName: Single Region ReadMyWrites
+          OSVmImage: 'vs2017-win2016'
+          ProfileFlag: '-Pe2e'
+          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
+          DESIRED_CONSISTENCY: 'Strong'
+        # 08m 50s, passed
+        Strong_Http_Fast:
+          DisplayName: Strong HTTP Fast
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pfast'
+          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
         # 08m 50s, passed
         Strong_Http_Direct:
@@ -166,28 +205,12 @@ jobs:
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
         # 07m 36s, passed
-        Strong_Tcp_Examples:
-          DisplayName: Strong TCP Examples
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pexamples'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        # 07m 36s, passed
         Strong_Http_Examples:
           DisplayName: Strong HTTP Examples
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pexamples'
           AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        # 06m 59s, passed
-        Strong_Tcp_NonEmulator:
-          DisplayName: Strong TCP NonEmulator
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pnon-emulator'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
         # 06m 59s, passed
         Strong_Http_NonEmulator:
