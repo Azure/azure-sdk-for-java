@@ -11,7 +11,7 @@ package com.microsoft.azure.management.storage.v2017_10_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Dimension of blobs, possiblly be blob type or access tier.
+ * Dimension of blobs, possibly be blob type or access tier.
  */
 public class Dimension {
     /**
