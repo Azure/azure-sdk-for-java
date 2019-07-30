@@ -56,7 +56,7 @@ class APISpec extends Specification {
     static defaultDataSize = defaultData.remaining()
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static boolean enableDebugging = true
+    static boolean enableDebugging = false
 
     // Prefixes for blobs and containers
     static String containerPrefix = "jtc" // java test container
@@ -98,16 +98,16 @@ class APISpec extends Specification {
     /*
     URLs to various kinds of accounts.
      */
-    StorageClient primaryServiceURL
+    BlobServiceClient primaryServiceURL
 
     @Shared
-    static StorageClient alternateServiceURL
+    static BlobServiceClient alternateServiceURL
 
     @Shared
-    static StorageClient blobStorageServiceURL
+    static BlobServiceClient blobStorageServiceURL
 
     @Shared
-    static StorageClient premiumServiceURL
+    static BlobServiceClient premiumServiceURL
 
     /*
     Constants for testing that the context parameter is properly passed to the pipeline.
@@ -195,10 +195,10 @@ class APISpec extends Specification {
         }
     }
 
-    static StorageClient getGenericServiceURL(SharedKeyCredential creds) {
+    static BlobServiceClient getGenericServiceURL(SharedKeyCredential creds) {
         // TODO: logging?
 
-        return new StorageClientBuilder()
+        return new BlobServiceClientBuilder()
             .endpoint("https://" + creds.accountName() + ".blob.core.windows.net")
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
@@ -207,7 +207,7 @@ class APISpec extends Specification {
     }
 
     static void cleanupContainers() throws MalformedURLException {
-        StorageClient serviceURL = new StorageClientBuilder()
+        BlobServiceClient serviceURL = new BlobServiceClientBuilder()
             .endpoint("http://" + primaryCreds.accountName() + ".blob.core.windows.net")
             .credential(primaryCreds)
             .buildClient()
@@ -556,7 +556,7 @@ class APISpec extends Specification {
     }
 
     def getOAuthServiceURL() {
-        return new StorageClientBuilder()
+        return new BlobServiceClientBuilder()
             .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCreds.accountName()))
             .credential(new EnvironmentCredential()) // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             .buildClient()

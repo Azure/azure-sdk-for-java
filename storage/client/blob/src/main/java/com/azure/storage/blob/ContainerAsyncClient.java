@@ -41,13 +41,13 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
 
 /**
  * Client to a container. It may only be instantiated through a {@link ContainerClientBuilder} or via the method {@link
- * StorageAsyncClient#getContainerAsyncClient(String)}. This class does not hold any state about a particular blob but
+ * BlobServiceAsyncClient#getContainerAsyncClient(String)}. This class does not hold any state about a particular blob but
  * is instead a convenient way of sending off appropriate requests to the resource on the service. It may also be used
  * to construct URLs to blobs.
  *
  * <p>
  * This client contains operations on a container. Operations on a blob are available on {@link BlobAsyncClient} through
- * {@link #getBlobAsyncClient(String)}, and operations on the service are available on {@link StorageAsyncClient}.
+ * {@link #getBlobAsyncClient(String)}, and operations on the service are available on {@link BlobServiceAsyncClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure
@@ -206,12 +206,12 @@ public final class ContainerAsyncClient {
     }
 
     /**
-     * Initializes a {@link StorageAsyncClient} object pointing to the storage account this container is in.
+     * Initializes a {@link BlobServiceAsyncClient} object pointing to the storage account this container is in.
      *
-     * @return A {@link StorageAsyncClient} object pointing to the specified storage account
+     * @return A {@link BlobServiceAsyncClient} object pointing to the specified storage account
      */
-    public StorageAsyncClient getStorageAsyncClient() {
-        return new StorageAsyncClient(new AzureBlobStorageBuilder()
+    public BlobServiceAsyncClient getBlobServiceAsyncClient() {
+        return new BlobServiceAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.stripLastPathSegment(getContainerUrl()).toString())
             .pipeline(azureBlobStorage.getHttpPipeline()));
     }

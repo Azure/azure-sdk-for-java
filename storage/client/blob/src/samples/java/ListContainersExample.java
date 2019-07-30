@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.storage.blob.StorageClient;
-import com.azure.storage.blob.StorageClientBuilder;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
 import java.util.Locale;
@@ -32,9 +32,9 @@ public class ListContainersExample {
         String endpoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName);
 
         /*
-         * Create a StorageClient object that wraps the service endpoint, credential and a request pipeline.
+         * Create a BlobServiceClient object that wraps the service endpoint, credential and a request pipeline.
          */
-        StorageClient storageClient = new StorageClientBuilder().endpoint(endpoint).credential(credential).buildClient();
+        BlobServiceClient storageClient = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential).buildClient();
 
         /*
          * Create 3 different containers from the storageClient.
