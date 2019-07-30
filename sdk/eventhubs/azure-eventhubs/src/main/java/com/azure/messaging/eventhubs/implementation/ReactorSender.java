@@ -245,9 +245,6 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             return RetryUtil.withRetry(
                 handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE),
                 timeout, retry)
-                .doOnComplete(() -> {
-                    logger.verbose("Resetting timeouts.");
-                })
                 .then(sendWorkItem);
         }
     }
