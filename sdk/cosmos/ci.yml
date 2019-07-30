@@ -32,7 +32,7 @@ jobs:
           OSVmImage: 'macOS-10.13'
           JavaVersion: '1.8'
       PreTestSteps:
-        - template: ../../eng/pipelines/templates/steps/install-reporting-tools.yml
+        - template: ../steps/install-reporting-tools.yml
 
   - job: 'Emulator'
 
