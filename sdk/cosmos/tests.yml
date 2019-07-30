@@ -120,7 +120,7 @@ jobs:
 
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
-      TestName: Single_Region_Strong
+      TestName: Single_Region_Strong_Tcp
       ServiceDirectory: cosmos
       TimeoutInMinutes: 240
       EnvVars:
@@ -173,7 +173,7 @@ jobs:
   # Same host as above, parallelizing the e2e tests saves time overall
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
-      TestName: Single_Region_Strong
+      TestName: Single_Region_Strong_Https
       ServiceDirectory: cosmos
       TimeoutInMinutes: 240
       EnvVars:
@@ -182,14 +182,14 @@ jobs:
       MaxParallel: 1
       Matrix:
         # 59m 58s, timed out
-        Http_E2E:
+        Https_E2E:
           DisplayName: Single Region ReadMyWrites
           OSVmImage: 'vs2017-win2016'
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Strong'
         # 08m 50s, passed
-        Strong_Http_Fast:
+        Strong_Https_Fast:
           DisplayName: Strong HTTP Fast
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pfast'
@@ -197,7 +197,7 @@ jobs:
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
         # 08m 50s, passed
-        Strong_Http_Direct:
+        Strong_Https_Direct:
           DisplayName: Strong HTTP Direct
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pdirect'
@@ -205,7 +205,7 @@ jobs:
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
         # 07m 36s, passed
-        Strong_Http_Examples:
+        Strong_Https_Examples:
           DisplayName: Strong HTTP Examples
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pexamples'
@@ -213,7 +213,7 @@ jobs:
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
         # 06m 59s, passed
-        Strong_Http_NonEmulator:
+        Strong_Https_NonEmulator:
           DisplayName: Strong HTTP NonEmulator
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pnon-emulator'
