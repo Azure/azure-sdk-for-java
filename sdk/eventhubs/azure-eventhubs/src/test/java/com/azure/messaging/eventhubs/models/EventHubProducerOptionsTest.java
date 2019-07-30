@@ -3,8 +3,7 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.amqp.ExponentialRetry;
-import com.azure.core.amqp.Retry;
+import com.azure.core.amqp.RetryOptions;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -16,12 +15,14 @@ public class EventHubProducerOptionsTest {
         // Arrange
         String partitionId = "my-partition-id";
         Duration timeout = Duration.ofMinutes(10);
-        Retry retry = new ExponentialRetry(Duration.ofSeconds(20), Duration.ofSeconds(30), 3);
+        RetryOptions retryOptions = new RetryOptions()
+            .delay(Duration.ofSeconds(20))
+            .maxDelay(Duration.ofSeconds(30))
+            .maxRetries(3);
         EventHubProducerOptions options = new EventHubProducerOptions();
 
         options.partitionId(partitionId)
-            .timeout(timeout)
-            .retry(retry)
+            .retry(retryOptions)
             .partitionId(partitionId);
 
         // Act
@@ -29,9 +30,9 @@ public class EventHubProducerOptionsTest {
 
         // Assert
         Assert.assertEquals(partitionId, clone.partitionId());
-        Assert.assertEquals(timeout, clone.timeout());
-        Assert.assertEquals(retry, clone.retry());
+        Assert.assertEquals(timeout, clone.retry().tryTimeout());
+        Assert.assertEquals(retryOptions, clone.retry());
 
-        Assert.assertNotSame(retry, clone.retry());
+        Assert.assertNotSame(retryOptions, clone.retry());
     }
 }

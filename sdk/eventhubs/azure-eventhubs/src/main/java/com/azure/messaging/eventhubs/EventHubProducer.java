@@ -293,7 +293,6 @@ public class EventHubProducer implements Closeable {
         verifyPartitionKey(partitionKey);
 
         return sendLinkMono.flatMap(link -> {
-            //TODO (conniey): When we implement partial success, update the maximum number of batches or remove it completely.
             return link.getLinkSize()
                 .flatMap(size -> {
                     final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
@@ -341,7 +340,7 @@ public class EventHubProducer implements Closeable {
     @Override
     public void close() throws IOException {
         if (!isDisposed.getAndSet(true)) {
-            final AmqpSendLink block = sendLinkMono.block(senderOptions.timeout());
+            final AmqpSendLink block = sendLinkMono.block(senderOptions.retry().tryTimeout());
             if (block != null) {
                 block.close();
             }

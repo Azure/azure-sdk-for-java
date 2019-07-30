@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpEndpointState;
-import com.azure.core.amqp.Retry;
+import com.azure.core.amqp.RetryOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLink;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
@@ -84,9 +84,9 @@ public class EventHubConsumerTest {
         options = new EventHubConsumerOptions()
             .identifier("an-identifier")
             .prefetchCount(PREFETCH)
-            .retry(Retry.getNoRetry())
+            .retry(new RetryOptions())
             .scheduler(Schedulers.elastic());
-        consumer = new EventHubConsumer(receiveLinkMono, options, TIMEOUT);
+        consumer = new EventHubConsumer(receiveLinkMono, options);
     }
 
     @After

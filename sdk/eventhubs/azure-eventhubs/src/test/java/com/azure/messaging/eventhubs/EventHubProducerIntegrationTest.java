@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
@@ -49,8 +48,8 @@ public class EventHubProducerIntegrationTest extends ApiTestBase {
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         final ConnectionStringProperties properties = new ConnectionStringProperties(getConnectionString());
         final ConnectionOptions connectionOptions = new ConnectionOptions(properties.endpoint().getHost(),
-            properties.eventHubPath(), getTokenCredential(), getAuthorizationType(), TIMEOUT, TransportType.AMQP,
-            Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.newSingle("single-threaded"));
+            properties.eventHubPath(), getTokenCredential(), getAuthorizationType(), TransportType.AMQP, RETRY_OPTIONS,
+            ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.newSingle("single-threaded"));
 
         client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);
     }
