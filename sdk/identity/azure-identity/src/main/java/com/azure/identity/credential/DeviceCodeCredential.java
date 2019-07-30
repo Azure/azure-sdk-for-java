@@ -40,8 +40,10 @@ public class DeviceCodeCredential extends AadCredential<DeviceCodeCredential> {
 
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
-        validate();
+        if (clientId() == null) {
+            throw new IllegalArgumentException("Must provide non-null value for client id in " + this.getClass().getSimpleName());
+        }
         return identityClient.authenticateWithCurrentlyLoggedInAccount(scopes).onErrorResume(t -> Mono.empty())
-            .switchIfEmpty(identityClient.authenticateWithDeviceCode(tenantId(), clientId(), scopes, deviceCodeChallengeConsumer));
+            .switchIfEmpty(identityClient.authenticateWithDeviceCode(clientId(), scopes, deviceCodeChallengeConsumer));
     }
 }

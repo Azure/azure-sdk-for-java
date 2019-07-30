@@ -32,10 +32,10 @@ public class IdentityClientIntegrationTests {
         Assert.assertFalse(token.isExpired());
     }
 
-    @Ignore("Integration test")
+    @Test
     public void deviceCodeCanGetToken() {
         IdentityClient client = new IdentityClient(new IdentityClientOptions().proxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
-        AccessToken token = client.authenticateWithDeviceCode(System.getenv(AZURE_TENANT_ID), System.getenv(AZURE_CLI_CLIENT_ID), scopes, deviceCode -> {
+        AccessToken token = client.authenticateWithDeviceCode(System.getenv(AZURE_CLI_CLIENT_ID), scopes, deviceCode -> {
             System.out.println(deviceCode.message());
             try {
                 Thread.sleep(60000);

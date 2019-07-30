@@ -67,7 +67,7 @@ import java.util.function.Consumer;
  * The identity client that contains APIs to retrieve access tokens
  * from various configurations.
  */
-public final class IdentityClient {
+public class IdentityClient {
     private final IdentityClientOptions options;
     private final SerializerAdapter adapter = JacksonAdapter.createDefaultSerializerAdapter();
     private static final Random RANDOM = new Random();
@@ -232,14 +232,13 @@ public final class IdentityClient {
      * a device code for login and the user must meet the challenge by authenticating in a browser on the current or a
      * different device.
      *
-     * @param tenantId           the tenant ID of the application
      * @param clientId           the client ID of the application
      * @param scopes             the scopes to authenticate to
      * @param deviceCodeConsumer the user provided closure that will consume the device code challenge
      * @return a Publisher that emits an AccessToken when the device challenge is met, or an exception if the device code expires
      */
-    public Mono<AccessToken> authenticateWithDeviceCode(String tenantId, String clientId, String[] scopes, Consumer<DeviceCodeChallenge> deviceCodeConsumer) {
-        String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
+    public Mono<AccessToken> authenticateWithDeviceCode(String clientId, String[] scopes, Consumer<DeviceCodeChallenge> deviceCodeConsumer) {
+        String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/organizations/common";
         try {
             PublicClientApplication.Builder applicationBuilder = PublicClientApplication.builder(clientId).authority(authorityUrl);
             if (options.proxyOptions() != null) {
