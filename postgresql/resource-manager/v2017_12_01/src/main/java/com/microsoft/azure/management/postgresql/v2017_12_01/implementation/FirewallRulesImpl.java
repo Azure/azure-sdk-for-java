@@ -18,14 +18,14 @@ import java.util.List;
 import com.microsoft.azure.management.postgresql.v2017_12_01.FirewallRule;
 
 class FirewallRulesImpl extends WrapperImpl<FirewallRulesInner> implements FirewallRules {
-    private final PostgreSQLManager manager;
+    private final DBforPostgreSQLManager manager;
 
-    FirewallRulesImpl(PostgreSQLManager manager) {
+    FirewallRulesImpl(DBforPostgreSQLManager manager) {
         super(manager.inner().firewallRules());
         this.manager = manager;
     }
 
-    public PostgreSQLManager manager() {
+    public DBforPostgreSQLManager manager() {
         return this.manager;
     }
 
