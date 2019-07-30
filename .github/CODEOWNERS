@@ -13,7 +13,7 @@
 /sdk/core/                   @alzimmermsft @jianghaolu @srnagar @hemanttanwar
 /sdk/cosmos/                 @moderakh @christopheranderson @kushagraThapar
 /sdk/eventhubs/              @conniey @srnagar @mssfang
-/sdk/identity/               @jianghaolu @g2vinay
+/sdk/identity/               @jianghaolu @g2vinay @hemanttanwar
 /sdk/keyvault/               @g2vinay @samvaity
 /sdk/servicebus/             @yvgopal @nemakam
 /sdk/tracing/                @samvaity @alzimmermsft
