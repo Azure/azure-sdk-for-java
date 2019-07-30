@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 
 import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.storage.blob.StorageClient;
-import com.azure.storage.blob.StorageClientBuilder;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 
 import java.util.Locale;
 
@@ -30,7 +30,7 @@ public class AzureIdentityExample {
         /*
          * Create a storage client using the Azure Identity credentials.
          */
-        StorageClient storageClient = new StorageClientBuilder()
+        BlobServiceClient storageClient = new BlobServiceClientBuilder()
                 .endpoint(endpoint)
                 .credential(new DefaultAzureCredential())
                 .buildClient();
