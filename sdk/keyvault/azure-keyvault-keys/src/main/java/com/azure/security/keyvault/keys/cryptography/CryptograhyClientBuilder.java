@@ -10,8 +10,6 @@ import com.azure.core.http.policy.*;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
-import com.azure.security.keyvault.keys.KeyAsyncClient;
-import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 
@@ -20,34 +18,24 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link KeyAsyncClient secret async client} and {@link KeyClient secret sync client},
+ * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link CryptographyClient cryptography client}
  * by calling {@link CryptograhyClientBuilder#buildClient() buildClient} respectively.
- * It constructs an instance of the desired client.
  *
- * <p> The minimal configuration options required by {@link CryptograhyClientBuilder} to build {@link KeyAsyncClient}
- * are {@link String endpoint} and {@link TokenCredential credential}. </p>
- *
- * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.instantiation}
+ * <p> The minimal configuration options required by {@link CryptograhyClientBuilder} to build {@link CryptographyClient} is
+ * {@link TokenCredential credential}. </p>
  *
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link CryptograhyClientBuilder}.</p>
-
- * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.withhttpclient.instantiation}
  *
  * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and {@link String endpoint}
- * can be specified. It provides finer control over the construction of {@link KeyAsyncClient} and {@link KeyClient}</p>
+ * can be specified. It provides finer control over the construction of {@link CryptographyClient}</p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.pipeline.instantiation}
- *
- * <p> The minimal configuration options required by {@link CryptograhyClientBuilder secretClientBuilder} to build {@link KeyClient}
+ * <p> The minimal configuration options required by {@link CryptograhyClientBuilder secretClientBuilder} to build {@link CryptographyClient}
  * are {@link String endpoint} and {@link TokenCredential credential}. </p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.keyclient.instantiation}
- *
- * @see KeyAsyncClient
- * @see KeyClient
+ * @see CryptographyClient
  */
-@ServiceClientBuilder(serviceClients = KeyClient.class)
+@ServiceClientBuilder(serviceClients = CryptographyClient.class)
 public final class CryptograhyClientBuilder {
     private final List<HttpPipelinePolicy> policies;
     private TokenCredential credential;
@@ -80,17 +68,16 @@ public final class CryptograhyClientBuilder {
     }
 
     /**
-     * Creates a {@link KeyAsyncClient} based on options set in the builder.
-     * Every time {@code buildAsyncClient()} is called, a new instance of {@link KeyAsyncClient} is created.
+     * Creates a {@link CryptographyClient} based on options set in the builder.
+     * Every time {@code buildClient()} is called, a new instance of {@link CryptographyClient} is created.
      *
      * <p>If {@link CryptograhyClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * ({@link CryptograhyClientBuilder#key jsonWebKey} or {@link CryptograhyClientBuilder#keyId key Id}) are used to create the
      * {@link CryptograhyClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set,
-     * then {@link CryptograhyClientBuilder#credential(TokenCredential) key vault credential and
-     * {@link CryptograhyClientBuilder#endpoint(String)} key vault endpoint are required to build the {@link KeyAsyncClient client}.}</p>
+     * then {@link CryptograhyClientBuilder#credential(TokenCredential) is required to build the {@link CryptographyClient client}.}</p>
      *
-     * @return A {@link KeyAsyncClient} with the options set from the builder.
-     * @throws IllegalStateException If {@link CryptograhyClientBuilder#credential(TokenCredential)}
+     * @return A {@link CryptographyClient} with the options set from the builder.
+     * @throws IllegalStateException If {@link CryptograhyClientBuilder#credential(TokenCredential)} is not set.
      */
     public CryptographyClient buildClient() {
         Configuration buildConfiguration = (configuration == null) ? ConfigurationManager.getConfiguration().clone() : configuration;
@@ -111,7 +98,7 @@ public final class CryptograhyClientBuilder {
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION, buildConfiguration));
         policies.add(retryPolicy);
-        policies.add(new BearerTokenAuthenticationPolicy(credential, CryptographyClient.KEY_VAULT_SCOPE));
+        policies.add(new KeyVaultCredentialPolicy(credential, CryptographyClient.KEY_VAULT_SCOPE));
         policies.addAll(this.policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
@@ -156,7 +143,7 @@ public final class CryptograhyClientBuilder {
     }
 
     /**
-     * Adds a policy to the set of existing policies that are executed after {@link KeyAsyncClient} and {@link KeyClient} required policies.
+     * Adds a policy to the set of existing policies that are executed after {@link CryptographyClient} required policies.
      *
      * @param policy The {@link HttpPipelinePolicy policy} to be added.
      * @return the updated {@link CryptograhyClientBuilder} object.

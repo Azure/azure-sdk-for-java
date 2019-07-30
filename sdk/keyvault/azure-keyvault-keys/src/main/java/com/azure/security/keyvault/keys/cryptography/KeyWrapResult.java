@@ -1,12 +1,24 @@
 package com.azure.security.keyvault.keys.cryptography;
 
-
+/**
+ * Represents the details of wrap operation result.
+ */
 public class KeyWrapResult {
 
+    /**
+     * The encrypted key content
+     */
     private byte[] encryptedKey;
 
+    /**
+     * The key wrap algorithm used to wrap the key content.
+     */
     private KeyWrapAlgorithm algorithm;
 
+    /**
+     * Get the encrypted key content.
+     * @return The encrypted key.
+     */
     public byte[] encryptedKey() {
         return encryptedKey;
     }
@@ -16,6 +28,10 @@ public class KeyWrapResult {
         return this;
     }
 
+    /**
+     * Get the key wrap algorithm used to wrap the key content.
+     * @return The key wrap algorithm.
+     */
     public KeyWrapAlgorithm algorithm() {
         return algorithm;
     }

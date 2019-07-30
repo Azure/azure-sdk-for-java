@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The key verify parameters.
  */
-public class KeyVerifyRequest {
+class KeyVerifyRequest {
     /**
      * The signing/verification algorithm. For more information on possible
      * algorithm types, see SignatureAlgorithm. Possible values

@@ -22,27 +22,23 @@ public class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     private static final String BEARER_TOKEP_REFIX = "Bearer ";
     private static final String AUTHORIZATION = "Authorization";
+    private final ScopeTokenCache cache;
 
     private TokenCredential credential;
-    private final String[] scopes;
 
     public KeyVaultCredentialPolicy(TokenCredential credential, String scope) {
-        this(credential, new String[] { scope });
+        this(credential);
     }
 
     /**
-     * Creates BearerTokenAuthenticationPolicy.
+     * Creates KeyVaultCredentialPolicy.
      *
      * @param credential the token credential to authenticate the request
-     * @param scopes the scopes of authentication the credential should get token for
      */
-    public KeyVaultCredentialPolicy(TokenCredential credential, String... scopes) {
+    public KeyVaultCredentialPolicy(TokenCredential credential) {
         Objects.requireNonNull(credential);
-        Objects.requireNonNull(scopes);
-        assert scopes.length > 0;
         this.credential = credential;
-        this.scopes = scopes;
-        //this.cache = new SimpleTokenCache(() -> credential.getToken(scopes));
+        this.cache = new ScopeTokenCache((scopes) -> credential.getToken(scopes));
     }
 
     /**
@@ -59,9 +55,12 @@ public class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
                 .doOnNext(HttpResponse::close)
                 .map(res -> res.headerValue(WWW_AUTHENTICATE))
                 .map(header -> extractChallenge(header, BEARER_TOKEP_REFIX))
-                .flatMap(map -> credential.getToken(map.get("resource")+"/.default"))
+                .flatMap(map -> {
+                    cache.scopes(map.get("resource")+"/.default");
+                    return cache.getToken();
+                })
                 .flatMap(token -> {
-                    context.httpRequest().header(AUTHORIZATION, BEARER_TOKEP_REFIX + token);
+                    context.httpRequest().header(AUTHORIZATION, BEARER_TOKEP_REFIX + token.token());
                     return next.process();
                 });
     }

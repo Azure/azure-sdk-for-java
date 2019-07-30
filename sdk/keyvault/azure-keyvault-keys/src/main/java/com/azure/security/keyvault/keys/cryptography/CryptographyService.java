@@ -22,6 +22,7 @@ interface CryptographyService {
     @Post("keys/{key-name}/{key-version}/encrypt")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<KeyOperationResult>> encrypt(@HostParam("url") String url,
                                   @PathParam("key-name") String keyName,

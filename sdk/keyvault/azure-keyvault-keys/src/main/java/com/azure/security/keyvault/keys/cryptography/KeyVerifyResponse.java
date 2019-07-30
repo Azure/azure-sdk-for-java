@@ -2,7 +2,7 @@ package com.azure.security.keyvault.keys.cryptography;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class KeyVerifyResponse {
+class KeyVerifyResponse {
 
     /**
      * True if the signature is verified, otherwise false.

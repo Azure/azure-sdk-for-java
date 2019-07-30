@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The key operations parameters.
  */
-public class KeyOperationParameters {
+class KeyOperationParameters {
     /**
      * algorithm identifier. Possible values include: 'RSA-OAEP',
      * 'RSA-OAEP-256', 'RSA1_5'.

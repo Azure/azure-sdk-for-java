@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The key operation result.
  */
-public class KeyOperationResult {
+class KeyOperationResult {
     /**
      * Key identifier.
      */
