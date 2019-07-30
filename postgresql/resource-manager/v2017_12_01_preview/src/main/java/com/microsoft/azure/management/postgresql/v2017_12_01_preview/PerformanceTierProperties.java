@@ -11,13 +11,13 @@ package com.microsoft.azure.management.postgresql.v2017_12_01_preview;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.implementation.PerformanceTierPropertiesInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.postgresql.v2017_12_01_preview.implementation.PostgreSQLManager;
+import com.microsoft.azure.management.postgresql.v2017_12_01_preview.implementation.DBforPostgreSQLManager;
 import java.util.List;
 
 /**
  * Type representing PerformanceTierProperties.
  */
-public interface PerformanceTierProperties extends HasInner<PerformanceTierPropertiesInner>, HasManager<PostgreSQLManager> {
+public interface PerformanceTierProperties extends HasInner<PerformanceTierPropertiesInner>, HasManager<DBforPostgreSQLManager> {
     /**
      * @return the id value.
      */

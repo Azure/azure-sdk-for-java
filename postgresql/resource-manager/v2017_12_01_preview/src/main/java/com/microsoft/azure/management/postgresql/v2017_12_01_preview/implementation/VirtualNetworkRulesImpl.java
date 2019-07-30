@@ -18,14 +18,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.VirtualNetworkRule;
 
 class VirtualNetworkRulesImpl extends WrapperImpl<VirtualNetworkRulesInner> implements VirtualNetworkRules {
-    private final PostgreSQLManager manager;
+    private final DBforPostgreSQLManager manager;
 
-    VirtualNetworkRulesImpl(PostgreSQLManager manager) {
+    VirtualNetworkRulesImpl(DBforPostgreSQLManager manager) {
         super(manager.inner().virtualNetworkRules());
         this.manager = manager;
     }
 
-    public PostgreSQLManager manager() {
+    public DBforPostgreSQLManager manager() {
         return this.manager;
     }
 
