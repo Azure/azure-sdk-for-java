@@ -3,10 +3,10 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.storage.blob.StorageClient;
+import com.azure.storage.blob.BlobServiceClient;
 
 /**
- * Defines options available to configure the behavior of a call to listContainersSegment on a {@link StorageClient}
+ * Defines options available to configure the behavior of a call to listContainersSegment on a {@link BlobServiceClient}
  * object. See the constructor for details on each of the options. Null may be passed in place of an object of this
  * type if no options are desirable.
  */

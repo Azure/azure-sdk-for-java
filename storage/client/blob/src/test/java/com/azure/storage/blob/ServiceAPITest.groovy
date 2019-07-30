@@ -234,7 +234,7 @@ class ServiceAPITest extends APISpec {
 
     def "Set props error"() {
         when:
-        new StorageClientBuilder()
+        new BlobServiceClientBuilder()
             .endpoint("https://error.blob.core.windows.net")
             .credential(primaryCreds)
             .buildClient()
@@ -251,7 +251,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get props error"() {
         when:
-        new StorageClientBuilder()
+        new BlobServiceClientBuilder()
             .endpoint("https://error.blob.core.windows.net")
             .credential(primaryCreds)
             .buildClient()
@@ -306,7 +306,7 @@ class ServiceAPITest extends APISpec {
     def "Get stats"() {
         setup:
         String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCreds.accountName())
-        StorageClient serviceClient = new StorageClientBuilder().endpoint(secondaryEndpoint)
+        BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(secondaryEndpoint)
                                         .credential(primaryCreds).buildClient()
         Response<StorageServiceStats> response = serviceClient.getStatistics()
 
@@ -321,7 +321,7 @@ class ServiceAPITest extends APISpec {
     def "Get stats min"() {
         setup:
         String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCreds.accountName())
-        StorageClient serviceClient = new StorageClientBuilder().endpoint(secondaryEndpoint)
+        BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(secondaryEndpoint)
             .credential(primaryCreds).buildClient()
         expect:
         serviceClient.getStatistics().statusCode() == 200
@@ -354,7 +354,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get account info error"() {
         when:
-        StorageClient serviceURL = new StorageClientBuilder()
+        BlobServiceClient serviceURL = new BlobServiceClientBuilder()
             .endpoint(primaryServiceURL.getAccountUrl().toString())
             .buildClient()
         serviceURL.getAccountInfo()
@@ -368,7 +368,7 @@ class ServiceAPITest extends APISpec {
     def "Invalid account name"() {
         setup:
         URL badURL = new URL("http://fake.blobfake.core.windows.net")
-        StorageClient client = new StorageClientBuilder()
+        BlobServiceClient client = new BlobServiceClientBuilder()
             .endpoint(badURL.toString())
             .credential(primaryCreds)
             .retryOptions(new RequestRetryOptions(null, 2, null, null, null, null))

@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * A wrapper around List&lt;SignedIdentifier&gt; which provides top-level metadata for serialization.
  */
-@JacksonXmlRootElement(localName = "SignedIdentifier")
+@JacksonXmlRootElement(localName = "SignedIdentifiers")
 public final class SignedIdentifierWrapper {
     @JacksonXmlProperty(localName = "SignedIdentifier")
     private final List<SignedIdentifier> signedIdentifier;
