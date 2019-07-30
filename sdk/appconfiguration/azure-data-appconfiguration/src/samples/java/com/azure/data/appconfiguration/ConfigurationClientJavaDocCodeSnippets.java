@@ -12,10 +12,8 @@ import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.nimbusds.oauth2.sdk.http.HTTPResponse;
 
 import java.security.GeneralSecurityException;
-import java.util.Iterator;
 
 /**
  * This class contains code samples for generating javadocs through doclets for {@link ConfigurationClient}
@@ -307,7 +305,8 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector
         SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
         client.listSettingRevisions(settingSelector).streamByPage().forEach(response -> {
-            if (response.statusCode()  == HTTPResponse.SC_OK) {
+            // HTTP OK code = 200
+            if (response.statusCode()  == 200) {
                 response.value().forEach(setting -> {
                     System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
                 });
@@ -315,7 +314,6 @@ public final class ConfigurationClientJavaDocCodeSnippets {
                 System.out.printf(" Did not get successful response. Status code: %d, ", response.statusCode() );
             }
         });
-
 
         // END: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector
     }
