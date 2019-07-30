@@ -44,17 +44,14 @@ import java.util.Objects;
  * <p><strong>Instantiating an Asynchronous Queue Service Client with SAS token</strong></p>
  * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.instantiation.sastoken}
  *
- * <p>If the {@code endpoint} doesn't contain {@code SASTokenCredential} they may be set using
- * {@link QueueClientBuilder#credential(SASTokenCredential) credential}.</p>
+ * <p>If the {@code endpoint} doesn't contain the query parameters to construct a {@code SASTokenCredential} they may
+ * be set using {@link QueueServiceClientBuilder#credential(SASTokenCredential) credential} together with endpoint.</p>
  *
  * <p><strong>Instantiating a synchronous Queue Service Client with SAS token</strong></p>
  * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential}
  *
  * <p><strong>Instantiating an Asynchronous Queue Service Client with SAS token</strong></p>
  * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential}
- *
- * <p>If the {@code endpoint} doesn't contain the query parameters to construct a {@code SASTokenCredential} they may
- * be set using {@link QueueServiceClientBuilder#credential(SASTokenCredential) credential}.</p>
  *
  * <p>Another way to authenticate the client is using a {@link SharedKeyCredential}. To create a SharedKeyCredential
  * a connection string from the Storage Queue service must be used. Set the SharedKeyCredential with
