@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.Assert;
 import org.junit.Test;
 
