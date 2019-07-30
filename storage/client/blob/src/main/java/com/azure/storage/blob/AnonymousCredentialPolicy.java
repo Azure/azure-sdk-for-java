@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
  * Anonymous credentials are to be used with with HTTP(S) requests that read blobs from public containers or requests
  * that use a Shared Access Signature (SAS). This is because Anonymous credentials will not set an Authorization header.
  * Pass an instance of this class as the credentials parameter when creating a new pipeline (typically with
- * {@link StorageClient}).
+ * {@link BlobServiceClient}).
  */
 public final class AnonymousCredentialPolicy implements HttpPipelinePolicy {
 
