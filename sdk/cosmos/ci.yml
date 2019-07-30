@@ -32,17 +32,7 @@ jobs:
           OSVmImage: 'macOS-10.13'
           JavaVersion: '1.8'
       PreTestSteps:
-        - task: Maven@3
-          displayName: 'Install reporting tools'
-          inputs:
-            mavenPomFile: ./eng/code-quality-reports/pom.xml
-            options: --batch-mode
-            mavenOptions: $(LoggingOptions)
-            javaHomeOption: 'JDKVersion'
-            jdkVersionOption: '1.11'
-            jdkArchitectureOption: 'x64'
-            publishJUnitResults: false
-            goals: 'install'
+        - template: ../../eng/pipelines/templates/steps/install-reporting-tools.yml
 
   - job: 'Emulator'
 
@@ -86,7 +76,7 @@ jobs:
 
       # We `install` separately from running `site:site site:stage` so that the `install` brings in the non-shipping-modules,
       # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
-      - template: ../steps/install-reporting-tools.yml
+      - template: ../../eng/pipelines/templates/steps/install-reporting-tools.yml
 
       - task: Maven@3
         displayName: $(TestDisplayName)
