@@ -26,13 +26,13 @@ import java.util.List;
 
 /**
  * Client to a container. It may only be instantiated through a {@link ContainerClientBuilder} or via the method {@link
- * StorageClient#getContainerClient(String)}. This class does not hold any state about a particular container but is
+ * BlobServiceClient#getContainerClient(String)}. This class does not hold any state about a particular container but is
  * instead a convenient way of sending off appropriate requests to the resource on the service. It may also be used to
  * construct URLs to blobs.
  *
  * <p>
  * This client contains operations on a container. Operations on a blob are available on {@link BlobClient} through
- * {@link #getBlobClient(String)}, and operations on the service are available on {@link StorageClient}.
+ * {@link #getBlobClient(String)}, and operations on the service are available on {@link BlobServiceClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure
@@ -171,12 +171,12 @@ public final class ContainerClient {
     }
 
     /**
-     * Initializes a {@link StorageClient} object pointing to the storage account this container is in.
+     * Initializes a {@link BlobServiceClient} object pointing to the storage account this container is in.
      *
-     * @return A {@link StorageClient} object pointing to the specified storage account
+     * @return A {@link BlobServiceClient} object pointing to the specified storage account
      */
-    public StorageClient getStorageClient() {
-        return new StorageClient(containerAsyncClient.getStorageAsyncClient());
+    public BlobServiceClient getBlobServiceClient() {
+        return new BlobServiceClient(containerAsyncClient.getBlobServiceAsyncClient());
     }
 
     /**

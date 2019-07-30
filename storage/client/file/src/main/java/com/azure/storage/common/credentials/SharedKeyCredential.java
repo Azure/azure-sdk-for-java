@@ -119,11 +119,11 @@ public final class SharedKeyCredential {
             return Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
         } catch (final NoSuchAlgorithmException e) {
             String errorMsg = "There is no such algorithm. Error Details: " + e.getMessage();
-            logger.asWarning().log(errorMsg);
+            logger.warning(errorMsg);
             throw new RuntimeException(errorMsg);
         } catch (InvalidKeyException e) {
             String errorMsg = "Please double check the account key. Error details: " + e.getMessage();
-            logger.asWarning().log(errorMsg);
+            logger.warning(errorMsg);
             throw new RuntimeException(errorMsg);
         }
     }
@@ -236,7 +236,7 @@ public final class SharedKeyCredential {
             String signature = Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
             return String.format(AUTHORIZATION_HEADER_FORMAT, accountName, signature);
         } catch (NoSuchAlgorithmException | InvalidKeyException ex) {
-            logger.asWarning().log(ex.getMessage());
+            logger.warning(ex.getMessage());
             throw new Error(ex);
         }
     }

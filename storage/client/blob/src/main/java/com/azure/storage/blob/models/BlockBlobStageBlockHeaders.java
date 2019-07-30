@@ -5,6 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -14,6 +15,7 @@ import java.time.OffsetDateTime;
  * Defines headers for StageBlock operation.
  */
 @JacksonXmlRootElement(localName = "BlockBlob-StageBlock-Headers")
+@Fluent
 public final class BlockBlobStageBlockHeaders {
     /*
      * If the blob has an MD5 hash and this operation is to read the full blob,

@@ -43,10 +43,14 @@ class QuotaByPeriodKeysImpl extends WrapperImpl<QuotaByPeriodKeysInner> implemen
     public Observable<QuotaCounterContract> getAsync(String resourceGroupName, String serviceName, String quotaCounterKey, String quotaPeriodKey) {
         QuotaByPeriodKeysInner client = this.inner();
         return client.getAsync(resourceGroupName, serviceName, quotaCounterKey, quotaPeriodKey)
-        .map(new Func1<QuotaCounterContractInner, QuotaCounterContract>() {
+        .flatMap(new Func1<QuotaCounterContractInner, Observable<QuotaCounterContract>>() {
             @Override
-            public QuotaCounterContract call(QuotaCounterContractInner inner) {
-                return wrapModel(inner);
+            public Observable<QuotaCounterContract> call(QuotaCounterContractInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((QuotaCounterContract)wrapModel(inner));
+                }
             }
        });
     }

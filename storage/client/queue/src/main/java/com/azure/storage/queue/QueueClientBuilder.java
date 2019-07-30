@@ -4,6 +4,7 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -20,6 +21,7 @@ import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -135,7 +137,7 @@ public final class QueueClientBuilder {
         Objects.requireNonNull(queueName);
 
         if (sasTokenCredential == null && sharedKeyCredential == null) {
-            LOGGER.asError().log("Credentials are required for authorization");
+            LOGGER.error("Credentials are required for authorization");
             throw new IllegalArgumentException("Credentials are required for authorization");
         }
 
@@ -163,7 +165,7 @@ public final class QueueClientBuilder {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(logLevel));
 
-        HttpPipeline pipeline = HttpPipeline.builder()
+        HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
@@ -202,7 +204,7 @@ public final class QueueClientBuilder {
                 this.sasTokenCredential = credential;
             }
         } catch (MalformedURLException ex) {
-            LOGGER.asError().log("The Azure Storage Queue endpoint url is malformed. Endpoint: " + endpoint);
+            LOGGER.error("The Azure Storage Queue endpoint url is malformed. Endpoint: " + endpoint);
             throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed. Endpoint: " + endpoint);
         }
 
@@ -270,7 +272,7 @@ public final class QueueClientBuilder {
         try {
             this.endpoint = new URL(String.format("https://%s.queue.core.windows.net", accountName));
         } catch (MalformedURLException e) {
-            LOGGER.asError().log("There is no valid account for the connection string. "
+            LOGGER.error("There is no valid account for the connection string. "
                 + "Connection String: %s", connectionString);
             throw new IllegalArgumentException(String.format("There is no valid account for the connection string. "
                                                                  + "Connection String: %s", connectionString));

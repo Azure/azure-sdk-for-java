@@ -127,6 +127,9 @@ public final class QueueServiceClient {
      *
      * {@codesnippet com.azure.storage.queue.queueServiceClient.listQueues}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
+     *
      * @return {@link QueueItem Queues} in the storage account
      */
     public Iterable<QueueItem> listQueues() {
@@ -144,6 +147,9 @@ public final class QueueServiceClient {
      * <p>List all queues that begin with "azure"</p>
      *
      * {@codesnippet com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
      *
      * @param options Options for listing queues
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
@@ -176,6 +182,9 @@ public final class QueueServiceClient {
      *
      * {@codesnippet com.azure.storage.queue.queueServiceClient.getProperties}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-properties">Azure Docs</a>.</p>
+     *
      * @return Storage account Queue service properties
      */
     public Response<StorageServiceProperties> getProperties() {
@@ -198,6 +207,9 @@ public final class QueueServiceClient {
      * <p>Enable Minute and Hour Metrics</p>
      *
      * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesEnableMetrics#storageServiceProperties}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure Docs</a>.</p>
      *
      * @param properties Storage account Queue service properties
      * @return A response that only contains headers and response status code
@@ -225,6 +237,9 @@ public final class QueueServiceClient {
      * <p>Retrieve the geo replication information</p>
      *
      * {@codesnippet com.azure.storage.queue.queueServiceClient.getStatistics}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
      *
      * @return The geo replication information about the Queue service
      */
