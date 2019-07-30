@@ -1,10 +1,15 @@
+
+parameters:
+  Options: $(DefaultOptions)
+  MavenOptions: $(LoggingOptions)
+
 steps:
   - task: Maven@3
     displayName: 'Install reporting tools'
     inputs:
       mavenPomFile: ./eng/code-quality-reports/pom.xml
-      options: '--batch-mode -Dmaven.wagon.http.pool=false -DskipTests -Dgpg.skip'
-      mavenOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+      options: ${{ parameters.Options }}
+      mavenOptions: ${{ parameters.MavenOptions }}
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '1.11'
       jdkArchitectureOption: 'x64'
