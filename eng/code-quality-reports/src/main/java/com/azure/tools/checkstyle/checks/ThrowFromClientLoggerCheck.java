@@ -47,33 +47,9 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
     public void visitToken(DetailAST token) {
         switch (token.getType()) {
             case TokenTypes.LITERAL_THROW:
-                DetailAST parentToken = token.getParent();
-                boolean throwsFromMethod = false;
-                while (parentToken != null) {
-                    int parentType = parentToken.getType();
-                    // Skip throw exception check if LITERAL_THROW from static method
-                    if (parentType == TokenTypes.METHOD_DEF) {
-                        DetailAST modifiersToken = parentToken.findFirstToken(TokenTypes.MODIFIERS);
-                        if (modifiersToken.branchContains(TokenTypes.LITERAL_STATIC)) {
-                            return;
-                        }
-                        throwsFromMethod = true;
-                    }
-                    // Skip throw exception check if LITERAL_THROW from static class
-                    if (parentType == TokenTypes.CLASS_DEF) {
-                        DetailAST modifiersToken = parentToken.findFirstToken(TokenTypes.MODIFIERS);
-                        if (modifiersToken.branchContains(TokenTypes.LITERAL_STATIC)) {
-                            return;
-                        }
-                        break;
-                    }
-                    // Skip throw exception check if LITERAL_THROW from constructor
-                    if (!throwsFromMethod && parentType == TokenTypes.CTOR_DEF) {
-                        return;
-                    }
-                    parentToken = parentToken.getParent();
+                if (!isValidScope(token)) {
+                    return;
                 }
-
                 log(token, String.format("Directly throwing an exception is disallowed. Replace the throw statement with" +
                     " a call to ''%s''.", LOGGER_LOG_AND_THROW));
                 break;
@@ -82,8 +58,14 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
                 if (!LOGGER_LOG_AND_THROW.equals(methodCall)) {
                     return;
                 }
+
+                if (!isValidScope(token)) {
+                    return;
+                }
+
                 DetailAST exprToken = token.getParent();
-                if (exprToken.getNextSibling().getType() != TokenTypes.LITERAL_RETURN) {
+                if (exprToken.getNextSibling() == null || exprToken.getNextSibling().getNextSibling() == null
+                    || exprToken.getNextSibling().getNextSibling().getType() != TokenTypes.LITERAL_RETURN) {
                     log(token, String.format("Always call ''return'' after calling ''%s''.", LOGGER_LOG_AND_THROW));
                 }
                 break;
@@ -91,5 +73,43 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
                 // Checkstyle complains if there's no default block in switch
                 break;
         }
+    }
+
+    /**
+     * Given a token as a root node, traversal back to find the if the token is belong to a static method.
+     * If not, check if it is in the constructor or a static class. Use this method to define the scope of the token.
+     *
+     * @param token the given token as a root to traversal back to one of the ancestors.
+     * @return false if the token is in a scope of static method, constructor or static class. otherwise, return true.
+     */
+    private boolean isValidScope(DetailAST token) {
+        DetailAST parentToken = token.getParent();
+        boolean throwsFromMethod = false;
+        while (parentToken != null) {
+            int parentType = parentToken.getType();
+            // Skip check if the token is from static method
+            if (parentType == TokenTypes.METHOD_DEF) {
+                DetailAST modifiersToken = parentToken.findFirstToken(TokenTypes.MODIFIERS);
+                if (modifiersToken.branchContains(TokenTypes.LITERAL_STATIC)) {
+                    return false;
+                }
+                throwsFromMethod = true;
+            }
+            // Skip check if the token is from static class
+            if (parentType == TokenTypes.CLASS_DEF) {
+                DetailAST modifiersToken = parentToken.findFirstToken(TokenTypes.MODIFIERS);
+                if (modifiersToken.branchContains(TokenTypes.LITERAL_STATIC)) {
+                    return false;
+                }
+                break;
+            }
+            // Skip check if the token from constructor
+            if (!throwsFromMethod && parentType == TokenTypes.CTOR_DEF) {
+                return false;
+            }
+            parentToken = parentToken.getParent();
+        }
+
+        return true;
     }
 }
