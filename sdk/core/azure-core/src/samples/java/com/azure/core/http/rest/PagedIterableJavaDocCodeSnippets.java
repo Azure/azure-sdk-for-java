@@ -3,10 +3,9 @@
 
 package com.azure.core.http.rest;
 
-import io.netty.handler.codec.http.HttpResponseStatus;
-
 import reactor.core.publisher.Mono;
 
+import java.net.HttpURLConnection;
 import java.util.Iterator;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -25,7 +24,7 @@ public class PagedIterableJavaDocCodeSnippets {
         // BEGIN: com.azure.core.http.rest.pagedIterable.streamByPage
         // process the streamByPage
         pagedIterableResponse.streamByPage().forEach(resp -> {
-            if (resp.statusCode() == HttpResponseStatus.OK.code()) {
+            if (resp.statusCode() == HttpURLConnection.HTTP_OK) {
                 System.out.printf("Response headers are %s. Url %s \n", resp.headers(), resp.request().url());
                 resp.items().forEach(value -> {
                     System.out.printf("Response value is %d \n", value);
@@ -46,7 +45,7 @@ public class PagedIterableJavaDocCodeSnippets {
         // BEGIN: com.azure.core.http.rest.pagedIterable.iterableByPage
         // process the iterableByPage
         pagedIterableResponse.iterableByPage().forEach(resp -> {
-            if (resp.statusCode() == HttpResponseStatus.OK.code()) {
+            if (resp.statusCode() == HttpURLConnection.HTTP_OK) {
                 System.out.printf("Response headers are %s. Url %s \n", resp.headers(), resp.request().url());
                 resp.items().forEach(value -> {
                     System.out.printf("Response value is %d \n", value);
@@ -69,7 +68,7 @@ public class PagedIterableJavaDocCodeSnippets {
         Iterator<PagedResponse<Integer>> ite = pagedIterableResponse.iterableByPage().iterator();
         while (ite.hasNext()) {
             PagedResponse<Integer> resp = ite.next();
-            if (resp.statusCode() == HttpResponseStatus.OK.code()) {
+            if (resp.statusCode() == HttpURLConnection.HTTP_OK) {
                 System.out.printf("Response headers are %s. Url %s \n", resp.headers(), resp.request().url());
                 resp.items().forEach(value -> {
                     System.out.printf("Response value is %d \n", value);

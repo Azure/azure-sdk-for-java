@@ -12,8 +12,8 @@ import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import io.netty.handler.codec.http.HttpResponseStatus;
 
+import java.net.HttpURLConnection;
 import java.security.GeneralSecurityException;
 
 /**
@@ -306,12 +306,12 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector
         SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
         client.listSettingRevisions(settingSelector).streamByPage().forEach(response -> {
-            if (response.statusCode()  == HttpResponseStatus.OK.code()) {
+            if (response.statusCode()  == HttpURLConnection.HTTP_OK) {
                 response.value().forEach(setting -> {
                     System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
                 });
-            }else {
-                System.out.printf(" Did not get successful response. Status code: %d, ", response.statusCode() );
+            } else {
+                System.out.printf(" Did not get successful response. Status code: %d, ", response.statusCode());
             }
         });
 

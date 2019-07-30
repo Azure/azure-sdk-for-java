@@ -7,9 +7,9 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.implementation.http.PagedResponseBase;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import reactor.core.publisher.Flux;
 
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
@@ -39,7 +39,7 @@ public class IterableResponseJavaDocCodeSnippets {
         // BEGIN: com.azure.core.http.rest.iterableResponse.stream
         // process the stream
         myIterableResponse.stream().forEach(resp -> {
-            if (resp.statusCode() == HttpResponseStatus.OK.code()) {
+            if (resp.statusCode() == HttpURLConnection.HTTP_OK) {
                 System.out.printf("Response headers are %s. Url %s \n", resp.deserializedHeaders(), resp.request().url());
                 resp.items().forEach(value -> {
                     System.out.printf("Response value is %d \n", value);
@@ -70,7 +70,7 @@ public class IterableResponseJavaDocCodeSnippets {
         Iterator<PagedResponseBase<String, Integer>> ite = myIterableResponse.iterator();
         while (ite.hasNext()) {
             PagedResponseBase<String, Integer> resp = ite.next();
-            if (resp.statusCode() == HttpResponseStatus.OK.code()) {
+            if (resp.statusCode() == HttpURLConnection.HTTP_OK) {
                 System.out.printf("Response headers are %s. Url %s \n", resp.deserializedHeaders(), resp.request().url());
                 resp.items().forEach(value -> {
                     System.out.printf("Response value is %d \n", value);
@@ -98,7 +98,7 @@ public class IterableResponseJavaDocCodeSnippets {
 
         // BEGIN: com.azure.core.http.rest.iterableResponse.stream.filter
         // process the stream
-        myIterableResponse.stream().filter(resp -> resp.statusCode() == HttpResponseStatus.OK.code())
+        myIterableResponse.stream().filter(resp -> resp.statusCode() == HttpURLConnection.HTTP_OK)
             .limit(10)
             .forEach(resp -> {
                 System.out.printf("Response headers are %s. Url %s \n", resp.deserializedHeaders(), resp.request().url());
@@ -111,7 +111,7 @@ public class IterableResponseJavaDocCodeSnippets {
 
     private PagedResponseBase<String, Integer> createPagedResponse(HttpRequest httpRequest, HttpHeaders httpHeaders,
                                                                    String deserializedHeaders, int i, int noOfPages) {
-        return new PagedResponseBase<>(httpRequest, HttpResponseStatus.OK.code(),
+        return new PagedResponseBase<>(httpRequest, HttpURLConnection.HTTP_OK,
             httpHeaders,
             getItems(i),
             i < noOfPages - 1 ? String.valueOf(i + 1) : null,

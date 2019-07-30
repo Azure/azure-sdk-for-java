@@ -493,7 +493,7 @@ public final class ConfigurationClient {
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector}
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
-     * @return {@link PagedIterable} of the {@link ConfigurationSetting}
+     * @return Revisions of the ConfigurationSetting
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
