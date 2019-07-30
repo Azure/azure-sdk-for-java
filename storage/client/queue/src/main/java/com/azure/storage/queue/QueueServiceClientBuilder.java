@@ -176,7 +176,7 @@ public final class QueueServiceClientBuilder {
     /**
      * Sets the endpoint for the Azure Storage Queue instance that the client will interact with.
      *
-     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQueryParameters(Map)} fromQuery} in an
+     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQueryParameters(String)} fromQuery} in an
      * attempt to generate a {@link SASTokenCredential} to authenticate requests sent to the service.</p>
      *
      * @param endpoint The URL of the Azure Storage Queue instance to send service requests to and receive responses from.
@@ -190,7 +190,7 @@ public final class QueueServiceClientBuilder {
             this.endpoint = new URL(fullURL.getProtocol() + "://" + fullURL.getHost());
 
             // Attempt to get the SAS token from the URL passed
-            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
+            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(fullURL.getQuery());
             if (this.sasTokenCredential != null) {
                 this.sharedKeyCredential = null;
                 this.tokenCredential = null;

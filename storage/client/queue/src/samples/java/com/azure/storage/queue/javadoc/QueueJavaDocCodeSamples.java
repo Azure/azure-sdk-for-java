@@ -86,8 +86,7 @@ public class QueueJavaDocCodeSamples {
         QueueClient queueClient = new QueueClientBuilder()
             .endpoint("https://${accountName}.queue.core.windows.net")
             .queueName("myqueue")
-            .credential(SASTokenCredential.fromQueryParameters(
-                Collections.singletonMap("{SASTokenQueryParams}", "{SASTokenQueryValues}")))
+            .credential(SASTokenCredential.fromQueryParameters("{SASTokenQueryParams}"))
             .buildClient();
         // END: com.azure.storage.queue.queueClient.instantiation.credential
         return queueClient;
@@ -102,8 +101,7 @@ public class QueueJavaDocCodeSamples {
         QueueAsyncClient queueAsyncClient = new QueueClientBuilder()
             .endpoint("https://{accountName}.queue.core.windows.net")
             .queueName("myqueue")
-            .credential(SASTokenCredential.fromQueryParameters(
-                Collections.singletonMap("{SASTokenQueryParams}", "{SASTokenQueryValues}")))
+            .credential(SASTokenCredential.fromQueryParameters("{SASTokenQueryParams}"))
             .buildAsyncClient();
         // END: com.azure.storage.queue.queueAsyncClient.instantiation.credential
         return queueAsyncClient;
