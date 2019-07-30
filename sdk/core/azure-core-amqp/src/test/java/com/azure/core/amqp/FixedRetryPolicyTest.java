@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import java.time.Duration;
 
-public class ExponentialRetryPolicyTest {
+public class FixedRetryPolicyTest {
     private final ErrorContext errorContext = new ErrorContext("test-namespace");
     private final AmqpException exception = new AmqpException(true, ErrorCondition.SERVER_BUSY_ERROR, "error message", errorContext);
     private final Duration minBackoff = Duration.ofSeconds(15);
@@ -22,16 +22,15 @@ public class ExponentialRetryPolicyTest {
         .delay(minBackoff)
         .maxDelay(maxBackoff)
         .maxRetries(retryAttempts)
-        .retryMode(RetryMode.EXPONENTIAL);
+        .retryMode(RetryMode.FIXED);
 
     /**
      * Verifies that when the service is busy and we retry an exception multiple times, the retry duration gets longer.
      */
     @Test
-    public void retryDurationIncreases() {
+    public void retryDurationIsTheSame() {
         // Arrange
-
-        final ExponentialRetryPolicy retry = new ExponentialRetryPolicy(options);
+        final FixedRetryPolicy retry = new FixedRetryPolicy(options);
 
         // Act
         final Duration firstRetryInterval = retry.calculateRetryDelay(exception, 1);
@@ -40,7 +39,12 @@ public class ExponentialRetryPolicyTest {
         // Assert
         Assert.assertNotNull(firstRetryInterval);
         Assert.assertNotNull(secondRetryInterval);
-        Assert.assertTrue(secondRetryInterval.toNanos() > firstRetryInterval.toNanos());
+
+        // Assert that the second retry interval is within our jitter threshold.
+        final Duration minValue = firstRetryInterval.minus(tolerance);
+        final Duration maxValue = firstRetryInterval.plus(tolerance);
+        Assert.assertTrue(minValue.compareTo(secondRetryInterval) < 0
+            && maxValue.compareTo(secondRetryInterval) > 0);
     }
 
     /**
@@ -49,8 +53,8 @@ public class ExponentialRetryPolicyTest {
     @Test
     public void retryCloneBehavesSame() {
         // Arrange
-        final ExponentialRetryPolicy retry = new ExponentialRetryPolicy(options);
-        final ExponentialRetryPolicy clone = (ExponentialRetryPolicy) retry.clone();
+        final FixedRetryPolicy retry = new FixedRetryPolicy(options);
+        final FixedRetryPolicy clone = (FixedRetryPolicy) retry.clone();
 
         final Duration retryInterval = retry.calculateRetryDelay(exception, 1);
         final Duration cloneRetryInterval = clone.calculateRetryDelay(exception, 4);
@@ -59,9 +63,11 @@ public class ExponentialRetryPolicyTest {
         Assert.assertNotNull(retryInterval);
         Assert.assertNotNull(cloneRetryInterval);
 
-        // The retry interval for the clone will be larger because we've incremented the retry count, so it should
-        // calculate a longer waiting period.
-        Assert.assertTrue(cloneRetryInterval.compareTo(retryInterval) > 0);
+        // Assert that the cloned retry interval is within our jitter threshold.
+        final Duration minValue = retryInterval.minus(tolerance);
+        final Duration maxValue = retryInterval.plus(tolerance);
+        Assert.assertTrue(minValue.compareTo(cloneRetryInterval) < 0
+            && maxValue.compareTo(cloneRetryInterval) > 0);
     }
 
     /**
@@ -70,14 +76,14 @@ public class ExponentialRetryPolicyTest {
     @Test
     public void isEquals() {
         // Arrange
-        final ExponentialRetryPolicy policy = new ExponentialRetryPolicy(options);
+        final FixedRetryPolicy policy = new FixedRetryPolicy(options);
 
         final RetryOptions otherOptions = new RetryOptions()
             .delay(minBackoff)
             .maxDelay(maxBackoff)
             .maxRetries(retryAttempts)
-            .retryMode(RetryMode.EXPONENTIAL);
-        final ExponentialRetryPolicy otherPolicy = new ExponentialRetryPolicy(otherOptions);
+            .retryMode(RetryMode.FIXED);
+        final FixedRetryPolicy otherPolicy = new FixedRetryPolicy(otherOptions);
 
         // Assert
         Assert.assertEquals(policy, otherPolicy);
@@ -87,8 +93,8 @@ public class ExponentialRetryPolicyTest {
     @Test
     public void retryClone() {
         // Arrange
-        final ExponentialRetryPolicy retry = new ExponentialRetryPolicy(options);
-        final ExponentialRetryPolicy clone = (ExponentialRetryPolicy) retry.clone();
+        final FixedRetryPolicy retry = new FixedRetryPolicy(options);
+        final FixedRetryPolicy clone = (FixedRetryPolicy) retry.clone();
         final int retryCount = 1;
 
         // Act
