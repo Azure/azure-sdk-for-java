@@ -11,11 +11,11 @@ import java.util.Random;
 
 public class AadLoginTest {
     private static final Random RANDOM = new Random();
-    private static StorageClient storageClient;
+    private static BlobServiceClient storageClient;
 
     @BeforeClass
     public static void setup() {
-        storageClient = new StorageClientBuilder()
+        storageClient = new BlobServiceClientBuilder()
             .endpoint("https://" + System.getenv("ACCOUNT_NAME") + ".blob.core.windows.net")
             .credential(new EnvironmentCredential())
 //            .httpClient(HttpClient.createDefault().proxy(() -> new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))))
