@@ -40,6 +40,7 @@ import java.util.stream.Stream;
  * </ol>
  */
 public class ServiceClientInstantiationCheck extends AbstractCheck {
+    private static final String ASYNC = "Async";
     private static final String SERVICE_CLIENT = "ServiceClient";
     private static final String BUILDER = "builder";
     private static final String ASYNC_CLIENT = "AsyncClient";
@@ -95,28 +96,45 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
     Class<?> responseObj;
 
     @Override
-    public void init() {
-        try {
-            fluxObj = Class.forName(FLUX);
-        } catch (ClassNotFoundException ex) {
-            log(0, String.format(FAILED_TO_LOAD_MESSAGE, FLUX));
-        }
-
-        try {
-            monoObj = Class.forName(MONO);
-        } catch (ClassNotFoundException ex) {
-            log(0, String.format(FAILED_TO_LOAD_MESSAGE, MONO));
-        }
-
-        try {
-            responseObj = Class.forName(RESPONSE);
-        } catch (ClassNotFoundException ex) {
-            log(0, String.format(FAILED_TO_LOAD_MESSAGE, RESPONSE));
-        }
-    }
-
-    @Override
     public void beginTree(DetailAST root) {
+//
+//        try {
+//            fluxObj = Class.forName(FLUX);
+////            log(0, "++++++++++++++++++++++++++++++" + responseObj.getName());
+//        } catch (ClassNotFoundException ex) {
+//            log(0, String.format(FAILED_TO_LOAD_MESSAGE, FLUX));
+//        }
+//
+//        try {
+//            monoObj = Class.forName(MONO);
+////            log(0, "++++++++++++++++++++++++++++++" + monoObj.getName());
+//        } catch (ClassNotFoundException ex) {
+//            log(0, String.format(FAILED_TO_LOAD_MESSAGE, MONO));
+//        }
+//
+//        try {
+//            responseObj = Class.forName(RESPONSE);
+////            log(0, "++++++++++++++++++++++++++++++" + responseObj.getName());
+//        } catch (ClassNotFoundException ex) {
+//            log(0, String.format(FAILED_TO_LOAD_MESSAGE, RESPONSE));
+//        }
+//
+//        // TESTING
+//        try {
+//            responseObj = Class.forName("java.util.Map");
+//            log(0, "++++++++++++++++++++++++++++++" + responseObj.getName());
+//        } catch (ClassNotFoundException ex) {
+//            log(0, String.format(FAILED_TO_LOAD_MESSAGE, RESPONSE));
+//        }
+//
+//        try {
+//            responseObj = Class.forName("com.azure.security.keyvault.keys.KeyClientJavaDocCodeSnippets");
+//            log(0, "+++++++++++++++    KeyBasePage   +++++++++++++++" + responseObj.getName());
+//        } catch (ClassNotFoundException ex) {
+//            log(0, String.format(FAILED_TO_LOAD_MESSAGE, "com.azure.security.keyvault.keys.KeyClientJavaDocCodeSnippets"));
+//        }
+
+
         hasServiceClientAnnotation = false;
         isAsync = false;
         isImplPackage = false;
