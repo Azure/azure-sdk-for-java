@@ -17,10 +17,11 @@ parameters:
     jdkArchitectureOption: 'x64'
     publishJUnitResults: false
     goals: 'test'
-
+  TestResultsFiles: ''
 
 jobs:
   - job: ${{ parameters.TestName }}
+    timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 
     strategy:
       matrix: ${{ parameters.Matrix }}
@@ -44,4 +45,5 @@ jobs:
         condition: succeededOrFailed()
         inputs:
           mergeTestResults: true
+          testResultsFiles: ${{ parameters.TestResultsFiles }}
           testRunTitle: 'Live tests for ${{ parameters.ServiceDirectory }} $(DisplayName)'
