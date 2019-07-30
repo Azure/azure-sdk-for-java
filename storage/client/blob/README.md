@@ -97,9 +97,9 @@ Blob storage is designed for:
 
 The following sections provide several code snippets covering some of the most common Azure Storage Blob tasks, including:
 
-- [Create BlobServiceClient](#create-storage-client)
-- [Create ContainerClient](#create-container-client)
-- [Create BlobClient](#create-blob-client)
+- [Create BlobServiceClient](#create-blobserviceclient)
+- [Create ContainerClient](#create-containerclient)
+- [Create BlobClient](#create-blobclient)
 - [Create a container](#create-a-container)
 - [Upload a blob from InputStream](#uploading-a-blob-from-a-stream)
 - [Upload a blob from File](#uploading-a-blob-from-file)
