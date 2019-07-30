@@ -32,7 +32,7 @@ import java.time.OffsetDateTime;
 import static com.azure.storage.blob.Utility.postProcessResponse;
 
 /**
- * Client to a storage account. It may only be instantiated through a {@link StorageClientBuilder}. This class does not
+ * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does not
  * hold any state about a particular storage account but is instead a convenient way of sending off appropriate requests
  * to the resource on the service. It may also be used to construct URLs to blobs and containers.
  *
@@ -50,15 +50,15 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  * operation, until {@code .subscribe()} is called on the reactive response. You can simply convert one of these
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
-public final class StorageAsyncClient {
+public final class BlobServiceAsyncClient {
     private final AzureBlobStorageImpl azureBlobStorage;
 
     /**
-     * Package-private constructor for use by {@link StorageClientBuilder}.
+     * Package-private constructor for use by {@link BlobServiceClientBuilder}.
      *
      * @param azureBlobStorageBuilder the API client builder for blob storage API
      */
-    StorageAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
+    BlobServiceAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
         this.azureBlobStorage = azureBlobStorageBuilder.build();
     }
 
@@ -73,7 +73,7 @@ public final class StorageAsyncClient {
     public ContainerAsyncClient getContainerAsyncClient(String containerName) {
         return new ContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getAccountUrl(), containerName).toString())
-            .pipeline(azureBlobStorage.httpPipeline()));
+            .pipeline(azureBlobStorage.getHttpPipeline()));
     }
 
     /**
@@ -125,9 +125,9 @@ public final class StorageAsyncClient {
      */
     public URL getAccountUrl() {
         try {
-            return new URL(azureBlobStorage.url());
+            return new URL(azureBlobStorage.getUrl());
         } catch (MalformedURLException e) {
-            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.url()), e);
+            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e);
         }
     }
 
@@ -318,7 +318,7 @@ public final class StorageAsyncClient {
         accountSASSignatureValues.ipRange(ipRange);
         accountSASSignatureValues.protocol(sasProtocol);
 
-        SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.azureBlobStorage.httpPipeline());
+        SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.azureBlobStorage.getHttpPipeline());
 
         SASQueryParameters sasQueryParameters = accountSASSignatureValues.generateSASQueryParameters(sharedKeyCredential);
 

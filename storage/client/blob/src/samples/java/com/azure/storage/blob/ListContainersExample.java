@@ -32,9 +32,9 @@ public class ListContainersExample {
         String endpoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName);
 
         /*
-         * Create a StorageClient object that wraps the service endpoint, credential and a request pipeline.
+         * Create a BlobServiceClient object that wraps the service endpoint, credential and a request pipeline.
          */
-        StorageClient storageClient = new StorageClientBuilder().endpoint(endpoint).credential(credential).buildClient();
+        BlobServiceClient storageClient = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential).buildClient();
 
         /*
          * Create 3 different containers from the storageClient.

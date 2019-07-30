@@ -30,7 +30,7 @@ public class AzureIdentityExample {
         /*
          * Create a storage client using the Azure Identity credentials.
          */
-        StorageClient storageClient = new StorageClientBuilder()
+        BlobServiceClient storageClient = new BlobServiceClientBuilder()
                 .endpoint(endpoint)
                 .credential(new DefaultAzureCredential())
                 .buildClient();

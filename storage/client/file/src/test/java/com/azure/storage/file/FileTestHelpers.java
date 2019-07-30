@@ -48,7 +48,7 @@ class FileTestHelpers {
         }
 
         if (ImplUtils.isNullOrEmpty(connectionString) && ImplUtils.isNullOrEmpty(endpoint)) {
-            logger.asWarning().log("Connection string or endpoint must be set to buildClient the testing client");
+            logger.warning("Connection string or endpoint must be set to buildClient the testing client");
             fail();
             return null;
         }

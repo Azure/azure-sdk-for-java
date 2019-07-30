@@ -21,14 +21,14 @@ import java.util.List;
  * <p>Create a pipeline without configuration</p>
  *
  * <pre>
- * HttpPipeline.builder()
+ * new HttpPipelineBuilder()
  *     .build();
  * </pre>
  *
  * <p>Create a pipeline using the default HTTP client and a retry policy</p>
  *
  * <pre>
- * HttpPipeline.builder()
+ * new HttpPipelineBuilder()
  *     .httpClient(HttpClient.createDefault())
  *     .policies(new RetryPolicy())
  *     .build();
@@ -42,9 +42,8 @@ public class HttpPipelineBuilder {
 
 
     /**
-     -     * Creates a builder that can configure options for the HttpPipeline before creating an instance of it.
-     -     *
-     -     * @return A new {@link HttpPipelineBuilder} to create a HttpPipeline from.
+     *  Creates a new instance of HttpPipelineBuilder that can configure options for the {@link HttpPipeline} before
+     *  creating an instance of it.
      */
     public HttpPipelineBuilder() {
     }

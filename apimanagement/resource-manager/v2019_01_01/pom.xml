@@ -15,7 +15,7 @@
         <relativePath>../../../pom.management.xml</relativePath>
     </parent>
     <artifactId>azure-mgmt-apimanagement</artifactId>
-    <version>1.0.0-beta</version>
+    <version>1.0.0-beta-1</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for ApiManagement Management</name>
     <description>This package contains Microsoft ApiManagement Management SDK.</description>
@@ -71,6 +71,8 @@
             <artifactId>azure-arm-client-runtime</artifactId>
             <type>test-jar</type>
             <scope>test</scope>
+            <!--Below version for test jar needs to be removed, this will be done as part of v1-runtime 1.6.7-->
+            <version>1.6.5</version>
         </dependency>
     </dependencies>
     <build>

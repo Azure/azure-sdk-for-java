@@ -64,10 +64,14 @@ class ApiOperationPolicysImpl extends WrapperImpl<ApiOperationPolicysInner> impl
     public Observable<OperationApiPolicyContract> getAsync(String resourceGroupName, String serviceName, String apiId, String operationId) {
         ApiOperationPolicysInner client = this.inner();
         return client.getAsync(resourceGroupName, serviceName, apiId, operationId)
-        .map(new Func1<PolicyContractInner, OperationApiPolicyContract>() {
+        .flatMap(new Func1<PolicyContractInner, Observable<OperationApiPolicyContract>>() {
             @Override
-            public OperationApiPolicyContract call(PolicyContractInner inner) {
-                return wrapModel(inner);
+            public Observable<OperationApiPolicyContract> call(PolicyContractInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((OperationApiPolicyContract)wrapModel(inner));
+                }
             }
        });
     }

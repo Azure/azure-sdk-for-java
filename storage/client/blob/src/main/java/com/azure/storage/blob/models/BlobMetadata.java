@@ -4,6 +4,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -13,6 +14,7 @@ import java.util.Map;
  * The BlobMetadata model.
  */
 @JacksonXmlRootElement(localName = "Metadata")
+@Fluent
 public final class BlobMetadata {
     /*
      * Unmatched properties from the message are deserialized this collection

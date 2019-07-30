@@ -13,12 +13,12 @@ import java.util.Random;
 public class LargeFileTest {
     private static final Random RANDOM = new Random();
     private static final String FILE_PATH = "C:\\Users\\jianghlu\\10g.dat";
-    private static StorageClient storageClient;
+    private static BlobServiceClient storageClient;
     private static ContainerClient containerClient;
 
     //@BeforeClass
     public static void setup() {
-        storageClient = new StorageClientBuilder()
+        storageClient = new BlobServiceClientBuilder()
             .credential(new SharedKeyCredential(System.getenv("ACCOUNT_NAME"), System.getenv("ACCOUNT_KEY")))
             .endpoint("https://" + System.getenv("ACCOUNT_NAME") + ".blob.core.windows.net")
 //            .httpClient(HttpClient.createDefault().proxy(() -> new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))))

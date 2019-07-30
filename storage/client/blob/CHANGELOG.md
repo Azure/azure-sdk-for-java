@@ -7,7 +7,7 @@ https://aka.ms/azure-sdk-preview1-java.
 
 **Breaking changes: New API design**
 - Operations are now scoped to a particular client:
-    - `StorageClient`: StorageURL's functionality was migrated to StorageClient. This client handles account-level operations. This includes managing service properties and listing the containers within an account.
+    - `BlobServiceClient`: StorageURL's functionality was migrated to BlobServiceClient. This client handles account-level operations. This includes managing service properties and listing the containers within an account.
     - `ContainerClient`: ContainerURL's functionality was migrated to ContainerClient. The client handles operations for a particular container. This includes creating or deleting that container, as well as listing the blobs within that container.
     - `BlobClient`: BlobURL's functionality was migrated to BlobClient, TransferManager download functionality was migrated to BlobClient and TransferManager upload functionality was migrated to BlockBlobClient. The client handles most operations, excluding upload, for an individual blob, including downloading data and working with blob properties.
     There are subclients (BlockBlobClient, PageBlobClient, AppendBlobClient) available for their respective blob types on the service.

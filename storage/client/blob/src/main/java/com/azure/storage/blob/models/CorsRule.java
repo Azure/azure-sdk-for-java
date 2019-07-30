@@ -4,6 +4,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * one domain (the origin domain) to call APIs in another domain.
  */
 @JacksonXmlRootElement(localName = "CorsRule")
+@Fluent
 public final class CorsRule {
     /*
      * The origin domains that are permitted to make a request against the
