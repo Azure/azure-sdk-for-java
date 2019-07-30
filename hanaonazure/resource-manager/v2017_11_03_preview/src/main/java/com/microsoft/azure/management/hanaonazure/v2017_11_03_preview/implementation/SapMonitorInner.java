@@ -57,6 +57,19 @@ public class SapMonitorInner extends Resource {
     private String hanaDbPassword;
 
     /**
+     * KeyVault URL link to the password for the HANA database.
+     */
+    @JsonProperty(value = "properties.hanaDbPasswordKeyVaultUrl")
+    private String hanaDbPasswordKeyVaultUrl;
+
+    /**
+     * MSI ID passed by customer which has access to customer's KeyVault and to
+     * be assigned to the Collector VM.
+     */
+    @JsonProperty(value = "properties.hanaDbCredentialsMsiId")
+    private String hanaDbCredentialsMsiId;
+
+    /**
      * State of provisioning of the HanaInstance. Possible values include:
      * 'Accepted', 'Creating', 'Updating', 'Failed', 'Succeeded', 'Deleting',
      * 'Migrating'.
@@ -181,6 +194,46 @@ public class SapMonitorInner extends Resource {
      */
     public SapMonitorInner withHanaDbPassword(String hanaDbPassword) {
         this.hanaDbPassword = hanaDbPassword;
+        return this;
+    }
+
+    /**
+     * Get keyVault URL link to the password for the HANA database.
+     *
+     * @return the hanaDbPasswordKeyVaultUrl value
+     */
+    public String hanaDbPasswordKeyVaultUrl() {
+        return this.hanaDbPasswordKeyVaultUrl;
+    }
+
+    /**
+     * Set keyVault URL link to the password for the HANA database.
+     *
+     * @param hanaDbPasswordKeyVaultUrl the hanaDbPasswordKeyVaultUrl value to set
+     * @return the SapMonitorInner object itself.
+     */
+    public SapMonitorInner withHanaDbPasswordKeyVaultUrl(String hanaDbPasswordKeyVaultUrl) {
+        this.hanaDbPasswordKeyVaultUrl = hanaDbPasswordKeyVaultUrl;
+        return this;
+    }
+
+    /**
+     * Get mSI ID passed by customer which has access to customer's KeyVault and to be assigned to the Collector VM.
+     *
+     * @return the hanaDbCredentialsMsiId value
+     */
+    public String hanaDbCredentialsMsiId() {
+        return this.hanaDbCredentialsMsiId;
+    }
+
+    /**
+     * Set mSI ID passed by customer which has access to customer's KeyVault and to be assigned to the Collector VM.
+     *
+     * @param hanaDbCredentialsMsiId the hanaDbCredentialsMsiId value to set
+     * @return the SapMonitorInner object itself.
+     */
+    public SapMonitorInner withHanaDbCredentialsMsiId(String hanaDbCredentialsMsiId) {
+        this.hanaDbCredentialsMsiId = hanaDbCredentialsMsiId;
         return this;
     }
 

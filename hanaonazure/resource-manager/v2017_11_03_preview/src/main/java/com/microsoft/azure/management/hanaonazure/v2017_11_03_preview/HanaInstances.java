@@ -53,15 +53,4 @@ public interface HanaInstances extends SupportsCreating<HanaInstance.DefinitionS
      */
     Completable shutdownAsync(String resourceGroupName, String hanaInstanceName);
 
-    /**
-     * The operation to add a monitor to an SAP HANA instance.
-     *
-     * @param resourceGroupName Name of the resource group.
-     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param monitoringParameter Request body that only contains monitoring attributes
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable enableMonitoringAsync(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter);
-
 }

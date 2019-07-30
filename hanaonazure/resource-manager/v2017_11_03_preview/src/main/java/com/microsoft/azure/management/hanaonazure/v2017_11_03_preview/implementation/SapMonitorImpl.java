@@ -45,6 +45,11 @@ class SapMonitorImpl extends GroupableResourceCoreImpl<SapMonitor, SapMonitorInn
 
 
     @Override
+    public String hanaDbCredentialsMsiId() {
+        return this.inner().hanaDbCredentialsMsiId();
+    }
+
+    @Override
     public String hanaDbName() {
         return this.inner().hanaDbName();
     }
@@ -52,6 +57,11 @@ class SapMonitorImpl extends GroupableResourceCoreImpl<SapMonitor, SapMonitorInn
     @Override
     public String hanaDbPassword() {
         return this.inner().hanaDbPassword();
+    }
+
+    @Override
+    public String hanaDbPasswordKeyVaultUrl() {
+        return this.inner().hanaDbPasswordKeyVaultUrl();
     }
 
     @Override
@@ -80,6 +90,12 @@ class SapMonitorImpl extends GroupableResourceCoreImpl<SapMonitor, SapMonitorInn
     }
 
     @Override
+    public SapMonitorImpl withHanaDbCredentialsMsiId(String hanaDbCredentialsMsiId) {
+        this.inner().withHanaDbCredentialsMsiId(hanaDbCredentialsMsiId);
+        return this;
+    }
+
+    @Override
     public SapMonitorImpl withHanaDbName(String hanaDbName) {
         this.inner().withHanaDbName(hanaDbName);
         return this;
@@ -88,6 +104,12 @@ class SapMonitorImpl extends GroupableResourceCoreImpl<SapMonitor, SapMonitorInn
     @Override
     public SapMonitorImpl withHanaDbPassword(String hanaDbPassword) {
         this.inner().withHanaDbPassword(hanaDbPassword);
+        return this;
+    }
+
+    @Override
+    public SapMonitorImpl withHanaDbPasswordKeyVaultUrl(String hanaDbPasswordKeyVaultUrl) {
+        this.inner().withHanaDbPasswordKeyVaultUrl(hanaDbPasswordKeyVaultUrl);
         return this;
     }
 
