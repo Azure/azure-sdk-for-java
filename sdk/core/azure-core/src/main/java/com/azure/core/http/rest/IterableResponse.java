@@ -9,7 +9,20 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 
 /**
- * This class provides utility to iterate over values.
+ * This class provides utility to iterate over values. All the values are preserved even if they are traversed multiple times.
+ *
+ * <p><strong>Code sample using Stream</strong></p>
+ *
+ * {@codesnippet com.azure.core.http.rest.stream}
+ *
+ * <p><strong>Code sample using Iterator</strong></p>
+ *
+ * {@codesnippet com.azure.core.http.rest.iterator}
+ *
+ * <p><strong>Code sample count using Stream</strong></p>
+ *
+ * {@codesnippet com.azure.core.http.rest.stream.count}
+ *
  * @param <T> value
  */
 public class IterableResponse<T> implements Iterable<T> {

@@ -35,7 +35,7 @@ public class IterableResponseTest {
 
         // ensure original list of values are same after calling iterator()
         List<Integer> originalIntegerList =  Arrays.asList(2, 3, 4, 5, 6);
-        iterableResponse.iterator().forEachRemaining(number ->  Assert.assertTrue(originalIntegerList.contains(number)));
+        iterableResponse.stream().forEach(number ->  Assert.assertTrue(originalIntegerList.contains(number)));
     }
 
     /*Ensure that if we call iterator multiple times, it always returns same values and they are same as original list of values.*/
