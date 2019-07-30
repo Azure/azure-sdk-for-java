@@ -2405,15 +2405,6 @@
               "format": "file"
             }
           },
-          "304": {
-            "description": "The condition specified using HTTP conditional header(s) is not met.",
-            "headers": {
-              "x-ms-error-code": {
-                "x-ms-client-name": "ErrorCode",
-                "type": "string"
-              }
-            }
-          },
           "default": {
             "description": "Failure",
             "headers": {
@@ -2703,15 +2694,6 @@
                 "type": "string",
                 "format": "date-time-rfc1123",
                 "description": "The time the tier was changed on the object. This is only returned if the tier on the block blob was ever set."
-              }
-            }
-          },
-          "304": {
-            "description": "The condition specified using HTTP conditional header(s) is not met.",
-            "headers": {
-              "x-ms-error-code": {
-                "x-ms-client-name": "ErrorCode",
-                "type": "string"
               }
             }
           },
@@ -5077,15 +5059,6 @@
               }
             }
           },
-          "304": {
-            "description": "The condition specified using HTTP conditional header(s) is not met.",
-            "headers": {
-              "x-ms-error-code": {
-                "x-ms-client-name": "ErrorCode",
-                "type": "string"
-              }
-            }
-          },
           "default": {
             "description": "Failure",
             "headers": {
@@ -5791,15 +5764,6 @@
               }
             }
           },
-          "304": {
-            "description": "The condition specified using HTTP conditional header(s) is not met.",
-            "headers": {
-              "x-ms-error-code": {
-                "x-ms-client-name": "ErrorCode",
-                "type": "string"
-              }
-            }
-          },
           "default": {
             "description": "Failure",
             "headers": {
@@ -5930,15 +5894,6 @@
               "$ref": "#/definitions/PageList"
             }
           },
-          "304": {
-            "description": "The condition specified using HTTP conditional header(s) is not met.",
-            "headers": {
-              "x-ms-error-code": {
-                "x-ms-client-name": "ErrorCode",
-                "type": "string"
-              }
-            }
-          },
           "default": {
             "description": "Failure",
             "headers": {
@@ -6054,15 +6009,6 @@
             },
             "schema": {
               "$ref": "#/definitions/PageList"
-            }
-          },
-          "304": {
-            "description": "The condition specified using HTTP conditional header(s) is not met.",
-            "headers": {
-              "x-ms-error-code": {
-                "x-ms-client-name": "ErrorCode",
-                "type": "string"
-              }
             }
           },
           "default": {
@@ -6683,15 +6629,6 @@
               }
             }
           },
-          "304": {
-            "description": "The condition specified using HTTP conditional header(s) is not met.",
-            "headers": {
-              "x-ms-error-code": {
-                "x-ms-client-name": "ErrorCode",
-                "type": "string"
-              }
-            }
-          },
           "default": {
             "description": "Failure",
             "headers": {
@@ -6939,7 +6876,13 @@
           "$ref": "#/definitions/BlobProperties"
         },
         "Metadata": {
-          "$ref": "#/definitions/BlobMetadata"
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "IsPrefix": {
+          "type": "boolean"
         }
       }
     },
@@ -7767,7 +7710,7 @@
       },
       "xml": {
         "wrapped": true,
-        "name": "SignedIdentifiers"
+        "name": "SignedIdentifier"
       }
     },
     "StaticWebsite": {
@@ -7864,7 +7807,7 @@
       "pattern": "^[a-zA-Z0-9]+(?:/[a-zA-Z0-9]+)*(?:\\.[a-zA-Z0-9]+){0,1}$",
       "minLength": 1,
       "maxLength": 1024,
-      "x-ms-parameter-location": "client",
+      "x-ms-parameter-location": "method",
       "description": "The blob name."
     },
     "BlobCacheControl": {
@@ -8119,7 +8062,7 @@
       "in": "path",
       "required": true,
       "type": "string",
-      "x-ms-parameter-location": "client",
+      "x-ms-parameter-location": "method",
       "description": "The container name."
     },
     "ContentCrc64": {

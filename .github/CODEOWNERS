@@ -28,5 +28,6 @@
 # Eng Sys
 ###########
 /eng/   @weshaggard @mitchdenny @danieljurek
+/eng/code-quality-reports/ @mssfang @JonathanGiles
 /**/tests.yml   @danieljurek
 /**/ci.yml      @mitchdenny

@@ -4,6 +4,7 @@
 
 package com.azure.storage.queue.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * Stats for the storage service.
  */
 @JacksonXmlRootElement(localName = "StorageServiceStats")
+@Fluent
 public final class StorageServiceStats {
     /*
      * Geo-Replication information for the Secondary Storage Service

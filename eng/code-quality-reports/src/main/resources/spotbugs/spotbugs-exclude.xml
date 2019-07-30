@@ -347,7 +347,7 @@
     <Bug pattern="NP_NULL_PARAM_DEREF"/>
   </Match>
 
-  <!-- The switch cases are encoded version of all SAS query parameters, which will further be appended to a request URL it seems like. A default case wouldn't make sense -->
+  <!-- The switch cases are encoded version of all SAS query parameters, which will further be appended to a request URL it seems like. A default case wouldn't make sense -->
   <Match>
     <Class name="com.microsoft.azure.storage.blob.SASQueryParameters"/>
     <Bug pattern="SF_SWITCH_NO_DEFAULT"/>

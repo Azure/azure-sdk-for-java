@@ -4,19 +4,20 @@
 
 package com.azure.storage.file.models;
 
-import com.azure.core.annotations.HeaderCollection;
 import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.implementation.annotation.HeaderCollection;
 import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.Map;
 
 /**
  * Defines headers for GetProperties operation.
  */
 @JacksonXmlRootElement(localName = "File-GetProperties-Headers")
+@Fluent
 public final class FileGetPropertiesHeaders {
     /*
      * Returns the date and time the file was last modified. The date format

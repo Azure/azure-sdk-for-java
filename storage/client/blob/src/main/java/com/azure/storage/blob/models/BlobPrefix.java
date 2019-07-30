@@ -4,6 +4,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * The BlobPrefix model.
  */
 @JacksonXmlRootElement(localName = "BlobPrefix")
+@Fluent
 public final class BlobPrefix {
     /*
      * The name property.

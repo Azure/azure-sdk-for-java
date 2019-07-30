@@ -4,6 +4,7 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * The retention policy.
  */
 @JacksonXmlRootElement(localName = "RetentionPolicy")
+@Fluent
 public final class RetentionPolicy {
     /*
      * Indicates whether a retention policy is enabled for the File service. If
