@@ -3398,7 +3398,8 @@
             "properties": {
                 "ShareUsageBytes": {
                     "description": "The approximate size of the data stored in bytes, rounded up to the nearest gigabyte. Note that this value may not include all recently created or recently resized files.",
-                    "type": "integer"
+                    "type": "integer",
+                    "format": "int64"
                 }
             }
         },
@@ -3545,7 +3546,7 @@
             "required": true,
             "type": "string",
             "x-ms-parameter-location": "method",
-            "x-ms-skip-url-encoding": true
+            "x-ms-skip-url-encoding": false
         },
         "FileCacheControl": {
             "name": "x-ms-cache-control",
@@ -3627,7 +3628,7 @@
             "required": true,
             "type": "string",
             "x-ms-parameter-location": "method",
-            "x-ms-skip-url-encoding": true
+            "x-ms-skip-url-encoding": false
         },
         "FileType": {
             "name": "x-ms-type",
