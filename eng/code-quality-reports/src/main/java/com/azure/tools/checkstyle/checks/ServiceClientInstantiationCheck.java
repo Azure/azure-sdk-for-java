@@ -47,12 +47,17 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
     private static final String CLIENT = "Client";
     private static final String IS_ASYNC = "isAsync";
 
+    private static final String RESPONSE = "Response";
+    private static final String MONO_RESPONSE = "Mono<Response>";
+    private static final String WITH_RESPONSE = "withResponse";
+
+
     private static final String COLLECTION_RETURN_TYPE = "ReturnType.COLLECTION";
     private static final String SINGLE_RETURN_TYPE = "ReturnType.SINGLE";
 
-    private static final String FLUX = "reactor.core.publisher.Flux";
-    private static final String MONO = "reactor.core.publisher.Mono";
-    private static final String RESPONSE = "com.azure.core.http.rest.response";
+    private static final String FLUX_PACKAGE_NAME = "reactor.core.publisher.Flux";
+    private static final String MONO_PACKAGE_NAME = "reactor.core.publisher.Mono";
+    private static final String RESPONSE_PACKAGE_NAME = "com.azure.core.http.rest.response";
 
     private static final String COLLECTION_RETURN_ERROR = "%s should either be a ''Flux'' class or class extends it if returns an ''async'' collection, " +
         "or a ''Stream'' class or class extends it if returns a ''sync'' collection.";
@@ -351,6 +356,10 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
         String returnsAnnotationMemberValue = getAnnotationMemberReturnsValue(serviceMethodAnnotation);
 
         String returnType = methodDefToken.findFirstToken(TokenTypes.TYPE).getText();
+
+        // Check 'withResponse' naming pattern
+        checkReturnTypeNamingPattern(methodDefToken, methodName);
+
         if (!simpleClassNameToQualifiedNameMap.containsKey(returnType)) {
             if (SINGLE_RETURN_TYPE.equals(returnsAnnotationMemberValue)) {
                 log(methodDefToken, String.format(SINGLE_VALUE_RETURN_ERROR, SINGLE_RETURN_TYPE));
@@ -458,4 +467,46 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
         }
         return null;
     }
+
+    /**
+     * Given the method is already annotated @ServiceMethod. Checks if the return type is Response or Mono<Response>,
+     * If the return type is Response, the method name must end with 'withResponse'.
+     * If the return type is Mono<Response>. the method name must not end with 'withResponse'.
+     *
+     * @param methodDefToken METHOD_DEF AST node
+     */
+    private void checkReturnTypeNamingPattern(DetailAST methodDefToken, String methodName) {
+        DetailAST typeToken = methodDefToken.findFirstToken(TokenTypes.TYPE);
+        // Check if the return type
+        StringBuilder sb = new StringBuilder();
+
+        getReturnType(typeToken, sb);
+        String returnType = sb.toString();
+        if (returnType.equals(RESPONSE) && !methodName.endsWith(WITH_RESPONSE)) {
+            log(methodDefToken, String.format("Return type is ''%s'', the method name must end with ''%s'' ", RESPONSE, WITH_RESPONSE));
+        } else if (returnType.equals(MONO_RESPONSE) && methodName.endsWith(WITH_RESPONSE)) {
+            log(methodDefToken, String.format("Return type is ''%s'', the method name must not end with ''%s'' ", MONO_RESPONSE, WITH_RESPONSE));
+        }
+    }
+
+    /**
+     * Get full name of return type. Such as Response, Mono<Response>.
+     *
+     * @param token a token could be a TYPE, TYPE_ARGUMENT, TYPE_ARGUMENTS token
+     * @param sb a StringBuilder that used to collect method return type.
+     */
+    private void getReturnType (DetailAST token, StringBuilder sb) {
+        for (DetailAST currentToken = token.getFirstChild(); currentToken != null; currentToken = currentToken.getNextSibling()) {
+            int tokenType = currentToken.getType();
+            switch (tokenType) {
+                case TokenTypes.TYPE_ARGUMENT:
+                case TokenTypes.TYPE_ARGUMENTS:
+                    getReturnType(currentToken, sb);
+                    break;
+                default:
+                    sb.append(currentToken.getText());
+            }
+        }
+    }
+
 }
