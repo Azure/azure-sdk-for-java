@@ -58,7 +58,7 @@ public final class SecretClient {
      * @return The {@link Secret created secret}.
      */
     public Secret setSecret(Secret secret) {
-        return this.setSecretWithResponse(secret, Context.NONE).value();
+        return setSecretWithResponse(secret, Context.NONE).value();
     }
 
     /**
@@ -76,7 +76,7 @@ public final class SecretClient {
      * @return The {@link Secret created secret}.
      */
     public Secret setSecret(String name, String value) {
-        return client.setSecret(name, value, Context.NONE).block().value();
+        return client.setSecretWithResponse(name, value, Context.NONE).block().value();
     }
 
     /**
@@ -94,7 +94,7 @@ public final class SecretClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Secret created secret}.
      */
     public Response<Secret> setSecretWithResponse(Secret secret, Context context) {
-        return client.setSecret(secret, context).block();
+        return client.setSecretWithResponse(secret, context).block();
     }
 
     /**
@@ -112,7 +112,7 @@ public final class SecretClient {
      * @return The requested {@link Secret secret}.
      */
     public Secret getSecret(String name, String version) {
-        return this.getSecretWithResponse(name, version, Context.NONE).value();
+        return getSecretWithResponse(name, version, Context.NONE).value();
     }
 
     /**
@@ -132,7 +132,7 @@ public final class SecretClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Secret secret}.
      */
     public Response<Secret> getSecretWithResponse(SecretBase secretBase, Context context) {
-        return client.getSecret(secretBase, context).block();
+        return client.getSecretWithResponse(secretBase, context).block();
     }
 
     /**
@@ -150,9 +150,7 @@ public final class SecretClient {
      * @throws HttpRequestException if {@link SecretBase#name()  name} or {@link SecretBase#version() version} is empty string.
      * @return The requested {@link Secret secret}.
      */
-    public Secret getSecret(SecretBase secretBase) {
-        return this.getSecretWithResponse(secretBase, Context.NONE).value();
-    }
+    public Secret getSecret(SecretBase secretBase) { return getSecretWithResponse(secretBase, Context.NONE).value(); }
 
     /**
      * Get the latest version of the specified secret from the key vault. The get operation is applicable to any secret stored in Azure Key Vault.
@@ -168,7 +166,7 @@ public final class SecretClient {
      * @return The requested {@link Secret}.
      */
     public Secret getSecret(String name) {
-        return this.getSecretWithResponse(name, "", Context.NONE).value();
+        return getSecretWithResponse(name, "", Context.NONE).value();
     }
 
     /**
@@ -194,7 +192,7 @@ public final class SecretClient {
      * @throws HttpRequestException if {@code name}  name} or {@code version} is empty string.
      */
     public Response<Secret> getSecretWithResponse(String name, String version, Context context) {
-        return client.getSecret(name, version, context).block();
+        return client.getSecretWithResponse(name, version, context).block();
     }
 
     /**
@@ -216,7 +214,7 @@ public final class SecretClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link SecretBase updated secret}.
      */
     public Response<SecretBase> updateSecretWithResponse(SecretBase secret, Context context) {
-        return client.updateSecret(secret, context).block();
+        return client.updateSecretWithResponse(secret, context).block();
     }
 
     /**
@@ -237,7 +235,7 @@ public final class SecretClient {
      * @return The {@link SecretBase updated secret}.
      */
     public SecretBase updateSecret(SecretBase secret) {
-        return this.updateSecretWithResponse(secret, Context.NONE).value();
+        return updateSecretWithResponse(secret, Context.NONE).value();
     }
 
     /**
@@ -255,7 +253,7 @@ public final class SecretClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link DeletedSecret deleted secret}.
      */
     public DeletedSecret deleteSecret(String name) {
-        return this.deleteSecretWithResponse(name, Context.NONE).value();
+        return deleteSecretWithResponse(name, Context.NONE).value();
     }
 
     /**
@@ -274,7 +272,7 @@ public final class SecretClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link DeletedSecret deleted secret}.
      */
     public Response<DeletedSecret> deleteSecretWithResponse(String name, Context context) {
-        return client.deleteSecret(name, context).block();
+        return client.deleteSecretWithResponse(name, context).block();
     }
 
     /**
@@ -293,7 +291,7 @@ public final class SecretClient {
      * @return The {@link DeletedSecret deleted secret}.
      */
     public DeletedSecret getDeletedSecret(String name) {
-        return this.getDeletedSecretWithResponse(name, Context.NONE).value();
+        return getDeletedSecretWithResponse(name, Context.NONE).value();
     }
 
     /**
@@ -313,7 +311,7 @@ public final class SecretClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link DeletedSecret deleted secret}.
      */
     public Response<DeletedSecret> getDeletedSecretWithResponse(String name, Context context) {
-        return client.getDeletedSecret(name, context).block();
+        return client.getDeletedSecretWithResponse(name, context).block();
     }
 
     /**
@@ -331,7 +329,7 @@ public final class SecretClient {
      * @return A {@link VoidResponse}.
      */
     public VoidResponse purgeDeletedSecret(String name) {
-        return client.purgeDeletedSecret(name, Context.NONE).block();
+        return purgeDeletedSecret(name, Context.NONE);
     }
 
     /**
@@ -369,7 +367,7 @@ public final class SecretClient {
      * @return The {@link Secret recovered secret}.
      */
     public Secret recoverDeletedSecret(String name) {
-        return this.recoverDeletedSecretWithResponse(name, Context.NONE).value();
+        return recoverDeletedSecretWithResponse(name, Context.NONE).value();
     }
 
     /**
@@ -389,7 +387,7 @@ public final class SecretClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Secret recovered secret}.
      */
     public Response<Secret> recoverDeletedSecretWithResponse(String name, Context context) {
-        return client.recoverDeletedSecret(name, context).block();
+        return client.recoverDeletedSecretWithResponse(name, context).block();
     }
 
     /**
@@ -406,7 +404,7 @@ public final class SecretClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the backed up secret blob.
      */
     public byte[] backupSecret(String name) {
-        return this.backupSecretWithResponse(name, Context.NONE).value();
+        return backupSecretWithResponse(name, Context.NONE).value();
     }
 
     /**
@@ -424,7 +422,7 @@ public final class SecretClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the backed up secret blob.
      */
     public Response<byte[]> backupSecretWithResponse(String name, Context context) {
-        return client.backupSecret(name, context).block();
+        return client.backupSecretWithResponse(name, context).block();
     }
 
     /**
@@ -442,7 +440,7 @@ public final class SecretClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Secret restored secret}.
      */
     public Secret restoreSecret(byte[] backup) {
-        return this.restoreSecretWithResponse(backup, Context.NONE).value();
+        return restoreSecretWithResponse(backup, Context.NONE).value();
     }
 
     /**
@@ -461,7 +459,7 @@ public final class SecretClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Secret restored secret}.
      */
     public Response<Secret> restoreSecretWithResponse(byte[] backup, Context context) {
-        return client.restoreSecret(backup, context).block();
+        return client.restoreSecretWithResponse(backup, context).block();
     }
 
     /**
@@ -475,9 +473,7 @@ public final class SecretClient {
      *
      * @return A {@link List} containing {@link SecretBase} of all the secrets in the vault. The {@link SecretBase} contains all the information about the secret, except its value.
      */
-    public Iterable<SecretBase> listSecrets() {
-        return client.listSecrets().toIterable();
-    }
+    public Iterable<SecretBase> listSecrets() { return listSecrets(Context.NONE); }
 
     /**
      * List the secrets in the key vault. The list Secrets operation is applicable to the entire vault. The individual secret response
@@ -491,9 +487,7 @@ public final class SecretClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.*
      * @return A {@link List} containing {@link SecretBase} of all the secrets in the vault. The {@link SecretBase} contains all the information about the secret, except its value.
      */
-    public Iterable<SecretBase> listSecrets(Context context) {
-        return client.listSecrets(context).toIterable();
-    }
+    public Iterable<SecretBase> listSecrets(Context context) { return client.listSecrets(context).toIterable(); }
 
     /**
      * Lists {@link DeletedSecret deleted secrets} of the key vault. The get deleted secrets operation returns the secrets that
@@ -521,7 +515,7 @@ public final class SecretClient {
      * @return A {@link List} containing all of the {@link DeletedSecret deleted secrets} in the vault.
      */
     public Iterable<DeletedSecret> listDeletedSecrets() {
-        return client.listDeletedSecrets().toIterable();
+        return listDeletedSecrets(Context.NONE);
     }
 
     /**
@@ -538,9 +532,7 @@ public final class SecretClient {
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      * @return A {@link List} containing {@link SecretBase} of all the versions of the specified secret in the vault. List is empty if secret with {@code name} does not exist in key vault
      */
-    public Iterable<SecretBase> listSecretVersions(String name) {
-        return client.listSecretVersions(name).toIterable();
-    }
+    public Iterable<SecretBase> listSecretVersions(String name) { return listSecretVersions(name, Context.NONE); }
 
     /**
      * List all versions of the specified secret. The individual secret response in the list is represented by {@link SecretBase}

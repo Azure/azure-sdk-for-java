@@ -86,9 +86,7 @@ public final class SecretAsyncClient {
      * @return A {@link Mono} containing the {@link Secret created secret}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Secret> setSecret(Secret secret) {
-        return setSecretWithResponse(secret).flatMap(FluxUtil::toMono);
-    }
+    public Mono<Secret> setSecret(Secret secret) { return setSecretWithResponse(secret).flatMap(FluxUtil::toMono); }
 
     /**
      * The set operation adds a secret to the key vault. If the named secret already exists, Azure Key Vault creates
@@ -111,10 +109,10 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Secret>> setSecretWithResponse(Secret secret) {
-        return withContext(context -> setSecret(secret, context));
+        return withContext(context -> setSecretWithResponse(secret, context));
     }
 
-    Mono<Response<Secret>> setSecret(Secret secret, Context context) {
+    Mono<Response<Secret>> setSecretWithResponse(Secret secret, Context context) {
         Objects.requireNonNull(secret, "The Secret input parameter cannot be null.");
         SecretRequestParameters parameters = new SecretRequestParameters()
             .value(secret.value())
@@ -146,11 +144,10 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Secret> setSecret(String name, String value) {
-        return withContext(context -> setSecret(name, value, context))
-            .flatMap(FluxUtil::toMono);
+        return withContext(context -> setSecretWithResponse(name, value, context)).flatMap(FluxUtil::toMono);
     }
 
-    Mono<Response<Secret>> setSecret(String name, String value, Context context) {
+    Mono<Response<Secret>> setSecretWithResponse(String name, String value, Context context) {
         SecretRequestParameters parameters = new SecretRequestParameters().value(value);
         return service.setSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Setting secret - {}", name))
@@ -181,7 +178,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Secret> getSecret(String name, String version) {
-        return this.getSecretWithResponse(name, version).flatMap(FluxUtil::toMono);
+        return getSecretWithResponse(name, version).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -207,15 +204,11 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Secret>> getSecretWithResponse(String name, String version) {
-        return withContext(context -> getSecret(name, version, context));
+        return withContext(context -> getSecretWithResponse(name, version, context));
     }
 
-    Mono<Response<Secret>> getSecret(String name, String version, Context context) {
-        if (version == null) {
-            return this.getSecret(name, "", context);
-        }
-
-        return service.getSecret(endpoint, name, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+    Mono<Response<Secret>> getSecretWithResponse(String name, String version, Context context) {
+        return service.getSecret(endpoint, name, version == null ? "" : version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignoredValue -> logger.info("Retrieving secret - {}", name))
             .doOnSuccess(response -> logger.info("Retrieved secret - {}", response.value().name()))
             .doOnError(error -> logger.warning("Failed to get secret - {}", name, error));
@@ -243,7 +236,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Secret> getSecret(SecretBase secretBase) {
-        return this.getSecretWithResponse(secretBase).flatMap(FluxUtil::toMono);
+        return getSecretWithResponse(secretBase).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -269,15 +262,12 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Secret>> getSecretWithResponse(SecretBase secretBase) {
-        return withContext(context ->  this.getSecret(secretBase, context));
+        return withContext(context ->  getSecretWithResponse(secretBase, context));
     }
 
-    Mono<Response<Secret>> getSecret(SecretBase secretBase, Context context) {
+    Mono<Response<Secret>> getSecretWithResponse(SecretBase secretBase, Context context) {
         Objects.requireNonNull(secretBase, "The Secret Base parameter cannot be null.");
-        if (secretBase.version() == null) {
-            return getSecret(secretBase.name(), context);
-        }
-        return getSecret(secretBase.name(), secretBase.version(), context);
+        return getSecretWithResponse(secretBase.name(), secretBase.version() == null ? "" : secretBase.version(), context);
     }
 
     /**
@@ -295,14 +285,7 @@ public final class SecretAsyncClient {
      * @return A {@link Mono} containing the requested {@link Secret secret}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Secret> getSecret(String name) {
-        return getSecretWithResponse(name, "")
-            .flatMap(FluxUtil::toMono);
-    }
-
-    Mono<Response<Secret>> getSecret(String name, Context context) {
-        return getSecret(name, "", context);
-    }
+    public Mono<Secret> getSecret(String name) { return getSecretWithResponse(name, "").flatMap(FluxUtil::toMono); }
 
     /**
      * Updates the attributes associated with the specified secret, but not the value of the specified secret in the key vault. The update
@@ -324,7 +307,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecretBase> updateSecret(SecretBase secret) {
-        return this.updateSecretWithResponse(secret).flatMap(FluxUtil::toMono);
+        return updateSecretWithResponse(secret).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -347,10 +330,10 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretBase>> updateSecretWithResponse(SecretBase secret) {
-        return withContext(context -> updateSecret(secret, context));
+        return withContext(context -> updateSecretWithResponse(secret, context));
     }
 
-    Mono<Response<SecretBase>> updateSecret(SecretBase secret, Context context) {
+    Mono<Response<SecretBase>> updateSecretWithResponse(SecretBase secret, Context context) {
         Objects.requireNonNull(secret, "The secret input parameter cannot be null.");
         SecretRequestParameters parameters = new SecretRequestParameters()
                 .tags(secret.tags())
@@ -380,7 +363,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedSecret> deleteSecret(String name) {
-        return this.deleteSecretWithResponse(name).flatMap(FluxUtil::toMono);
+        return deleteSecretWithResponse(name).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -400,10 +383,10 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedSecret>> deleteSecretWithResponse(String name) {
-        return withContext(context -> deleteSecret(name, context));
+        return withContext(context -> deleteSecretWithResponse(name, context));
     }
 
-    Mono<Response<DeletedSecret>> deleteSecret(String name, Context context) {
+    Mono<Response<DeletedSecret>> deleteSecretWithResponse(String name, Context context) {
         return service.deleteSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Deleting secret - {}", name))
                 .doOnSuccess(response -> logger.info("Deleted secret - {}", response.value().name()))
@@ -430,7 +413,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedSecret> getDeletedSecret(String name) {
-        return this.getDeletedSecretWithResponse(name).flatMap(FluxUtil::toMono);
+        return getDeletedSecretWithResponse(name).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -454,10 +437,10 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedSecret>> getDeletedSecretWithResponse(String name) {
-        return withContext(context -> getDeletedSecret(name, context));
+        return withContext(context -> getDeletedSecretWithResponse(name, context));
     }
 
-    Mono<Response<DeletedSecret>> getDeletedSecret(String name, Context context) {
+    Mono<Response<DeletedSecret>> getDeletedSecretWithResponse(String name, Context context) {
         return service.getDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Retrieving deleted secret - {}", name))
                 .doOnSuccess(response -> logger.info("Retrieved deleted secret - {}", response.value().name()))
@@ -513,7 +496,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Secret> recoverDeletedSecret(String name) {
-        return this.recoverDeletedSecretWithResponse(name).flatMap(FluxUtil::toMono);
+        return recoverDeletedSecretWithResponse(name).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -534,10 +517,10 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Secret>> recoverDeletedSecretWithResponse(String name) {
-        return withContext(context -> recoverDeletedSecret(name, context));
+        return withContext(context -> recoverDeletedSecretWithResponse(name, context));
     }
 
-    Mono<Response<Secret>> recoverDeletedSecret(String name, Context context) {
+    Mono<Response<Secret>> recoverDeletedSecretWithResponse(String name, Context context) {
         return service.recoverDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Recovering deleted secret - {}", name))
                 .doOnSuccess(response -> logger.info("Recovered deleted secret - {}", response.value().name()))
@@ -563,7 +546,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<byte[]> backupSecret(String name) {
-        return this.backupSecretWithResponse(name).flatMap(FluxUtil::toMono);
+        return backupSecretWithResponse(name).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -585,10 +568,10 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<byte[]>> backupSecretWithResponse(String name) {
-        return withContext(context -> backupSecret(name, context));
+        return withContext(context -> backupSecretWithResponse(name, context));
     }
 
-    Mono<Response<byte[]>> backupSecret(String name, Context context) {
+    Mono<Response<byte[]>> backupSecretWithResponse(String name, Context context) {
         return service.backupSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Backing up secret - {}", name))
                 .doOnSuccess(response -> logger.info("Backed up secret - {}", name))
@@ -615,7 +598,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Secret> restoreSecret(byte[] backup) {
-        return this.restoreSecretWithResponse(backup).flatMap(FluxUtil::toMono);
+        return restoreSecretWithResponse(backup).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -637,10 +620,10 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Secret>> restoreSecretWithResponse(byte[] backup) {
-        return withContext(context -> restoreSecret(backup, context));
+        return withContext(context -> restoreSecretWithResponse(backup, context));
     }
 
-    Mono<Response<Secret>> restoreSecret(byte[] backup, Context context) {
+    Mono<Response<Secret>> restoreSecretWithResponse(byte[] backup, Context context) {
         SecretRestoreRequestParameters parameters = new SecretRestoreRequestParameters().secretBackup(backup);
         return service.restoreSecret(endpoint, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Attempting to restore secret"))
