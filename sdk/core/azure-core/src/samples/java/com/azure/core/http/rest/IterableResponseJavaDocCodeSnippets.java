@@ -22,6 +22,10 @@ import java.util.stream.IntStream;
  */
 public class IterableResponseJavaDocCodeSnippets {
 
+    /**
+     * Iterate over {@link java.util.stream.Stream}
+     * @throws MalformedURLException if can not create URL object.
+     */
     public void streamSnippet() throws MalformedURLException {
         HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
             .put("header2", "value2");
@@ -37,16 +41,20 @@ public class IterableResponseJavaDocCodeSnippets {
         myIterableResponse.stream().forEach(resp -> {
             if (resp.statusCode() == HttpResponseStatus.OK.code()) {
                 System.out.printf("Response headers are %s. Url %s \n", resp.deserializedHeaders(), resp.request().url());
-                resp.items().forEach( value -> {
+                resp.items().forEach(value -> {
                     System.out.printf("Response value is %d \n", value);
                 });
-            }else {
+            } else {
                 System.out.printf("Failed with status is %d and url is %s\n", resp.statusCode(), resp.request().url());
             }
         });
         // END: com.azure.core.http.rest.iterableResponse.stream
     }
 
+    /**
+     *  Iterate with {@link Iterator} interface.
+     * @throws MalformedURLException if can not create URL object.
+     */
     public void iteratorwhileSnippet() throws MalformedURLException {
         HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
             .put("header2", "value2");
@@ -60,20 +68,24 @@ public class IterableResponseJavaDocCodeSnippets {
         // BEGIN: com.azure.core.http.rest.iterableResponse.iterator.while
         // Iterate over iterator
         Iterator<PagedResponseBase<String, Integer>> ite = myIterableResponse.iterator();
-        while(ite.hasNext()) {
+        while (ite.hasNext()) {
             PagedResponseBase<String, Integer> resp = ite.next();
             if (resp.statusCode() == HttpResponseStatus.OK.code()) {
                 System.out.printf("Response headers are %s. Url %s \n", resp.deserializedHeaders(), resp.request().url());
-                resp.items().forEach( value -> {
+                resp.items().forEach(value -> {
                     System.out.printf("Response value is %d \n", value);
                 });
-            }else {
+            } else {
                 System.out.printf("Failed with status is %d and url is %s\n", resp.statusCode(), resp.request().url());
             }
         }
         // END: com.azure.core.http.rest.iterableResponse.iterator.while
     }
 
+    /**
+     * Iterate over {@link java.util.stream.Stream}
+     * @throws MalformedURLException if can not create URL object.
+     */
     public void iteratorStreamFilterSnippet() throws MalformedURLException {
         HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
             .put("header2", "value2");
@@ -90,7 +102,7 @@ public class IterableResponseJavaDocCodeSnippets {
             .limit(10)
             .forEach(resp -> {
                 System.out.printf("Response headers are %s. Url %s \n", resp.deserializedHeaders(), resp.request().url());
-                resp.items().forEach( value -> {
+                resp.items().forEach(value -> {
                     System.out.printf("Response value is %d \n", value);
                 });
             });

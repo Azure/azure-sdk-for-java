@@ -13,7 +13,7 @@ import java.util.stream.Stream;
  *
  * <p><strong>Code sample using Stream</strong></p>
  *
- * {@codesnippet ccom.azure.core.http.rest.iterableResponse.stream}
+ * {@codesnippet com.azure.core.http.rest.iterableResponse.stream}
  *
  * <p><strong>Code sample using Iterator</strong></p>
  *
