@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.annotations.HEAD;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
