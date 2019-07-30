@@ -406,7 +406,9 @@ public final class KeyClient {
      * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty string.
      * @return The {@link KeyBase updated key}.
      */
-    public Key updateKey(KeyBase key) { return client.updateKeyWithResponse(key, Context.NONE).block().value(); }
+    public Key updateKey(KeyBase key) {
+        return client.updateKeyWithResponse(key, Context.NONE).block().value();
+    }
 
     /**
      * Updates the attributes and key operations associated with the specified key, but not the cryptographic key material of the specified key in the key vault. The update
@@ -725,7 +727,9 @@ public final class KeyClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link List} containing {@link KeyBase key} of all the keys in the vault.
      */
-    public Iterable<KeyBase> listKeys(Context context) { return client.listKeys(context).toIterable(); }
+    public Iterable<KeyBase> listKeys(Context context) {
+        return client.listKeys(context).toIterable();
+    }
 
     /**
      * Lists {@link DeletedKey deleted keys} of the key vault. The deleted keys are retrieved as JSON Web Key structures
@@ -772,7 +776,9 @@ public final class KeyClient {
      * @throws HttpRequestException when a key with {@code name} is empty string.
      * @return A {@link List} containing {@link KeyBase key} of all the versions of the specified key in the vault. List is empty if key with {@code name} does not exist in key vault.
      */
-    public Iterable<KeyBase> listKeyVersions(String name) { return listKeyVersions(name, Context.NONE); }
+    public Iterable<KeyBase> listKeyVersions(String name) {
+        return listKeyVersions(name, Context.NONE);
+    }
 
     /**
      * List all versions of the specified key. The individual key response in the flux is represented by {@link KeyBase}

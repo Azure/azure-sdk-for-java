@@ -150,7 +150,9 @@ public final class SecretClient {
      * @throws HttpRequestException if {@link SecretBase#name()  name} or {@link SecretBase#version() version} is empty string.
      * @return The requested {@link Secret secret}.
      */
-    public Secret getSecret(SecretBase secretBase) { return getSecretWithResponse(secretBase, Context.NONE).value(); }
+    public Secret getSecret(SecretBase secretBase) {
+        return getSecretWithResponse(secretBase, Context.NONE).value();
+    }
 
     /**
      * Get the latest version of the specified secret from the key vault. The get operation is applicable to any secret stored in Azure Key Vault.
@@ -473,7 +475,9 @@ public final class SecretClient {
      *
      * @return A {@link List} containing {@link SecretBase} of all the secrets in the vault. The {@link SecretBase} contains all the information about the secret, except its value.
      */
-    public Iterable<SecretBase> listSecrets() { return listSecrets(Context.NONE); }
+    public Iterable<SecretBase> listSecrets() {
+        return listSecrets(Context.NONE);
+    }
 
     /**
      * List the secrets in the key vault. The list Secrets operation is applicable to the entire vault. The individual secret response
@@ -487,7 +491,9 @@ public final class SecretClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.*
      * @return A {@link List} containing {@link SecretBase} of all the secrets in the vault. The {@link SecretBase} contains all the information about the secret, except its value.
      */
-    public Iterable<SecretBase> listSecrets(Context context) { return client.listSecrets(context).toIterable(); }
+    public Iterable<SecretBase> listSecrets(Context context) {
+        return client.listSecrets(context).toIterable();
+    }
 
     /**
      * Lists {@link DeletedSecret deleted secrets} of the key vault. The get deleted secrets operation returns the secrets that
@@ -532,7 +538,9 @@ public final class SecretClient {
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      * @return A {@link List} containing {@link SecretBase} of all the versions of the specified secret in the vault. List is empty if secret with {@code name} does not exist in key vault
      */
-    public Iterable<SecretBase> listSecretVersions(String name) { return listSecretVersions(name, Context.NONE); }
+    public Iterable<SecretBase> listSecretVersions(String name) {
+        return listSecretVersions(name, Context.NONE);
+    }
 
     /**
      * List all versions of the specified secret. The individual secret response in the list is represented by {@link SecretBase}

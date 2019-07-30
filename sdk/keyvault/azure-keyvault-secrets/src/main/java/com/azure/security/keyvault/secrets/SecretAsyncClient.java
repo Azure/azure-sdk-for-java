@@ -86,7 +86,9 @@ public final class SecretAsyncClient {
      * @return A {@link Mono} containing the {@link Secret created secret}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Secret> setSecret(Secret secret) { return setSecretWithResponse(secret).flatMap(FluxUtil::toMono); }
+    public Mono<Secret> setSecret(Secret secret) {
+        return setSecretWithResponse(secret).flatMap(FluxUtil::toMono);
+    }
 
     /**
      * The set operation adds a secret to the key vault. If the named secret already exists, Azure Key Vault creates
@@ -285,7 +287,9 @@ public final class SecretAsyncClient {
      * @return A {@link Mono} containing the requested {@link Secret secret}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Secret> getSecret(String name) { return getSecretWithResponse(name, "").flatMap(FluxUtil::toMono); }
+    public Mono<Secret> getSecret(String name) {
+        return getSecretWithResponse(name, "").flatMap(FluxUtil::toMono);
+    }
 
     /**
      * Updates the attributes associated with the specified secret, but not the value of the specified secret in the key vault. The update
