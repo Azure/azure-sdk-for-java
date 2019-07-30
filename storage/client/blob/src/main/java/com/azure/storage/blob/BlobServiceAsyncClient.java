@@ -32,7 +32,7 @@ import java.time.OffsetDateTime;
 import static com.azure.storage.blob.Utility.postProcessResponse;
 
 /**
- * Client to a storage account. It may only be instantiated through a {@link StorageClientBuilder}. This class does not
+ * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does not
  * hold any state about a particular storage account but is instead a convenient way of sending off appropriate requests
  * to the resource on the service. It may also be used to construct URLs to blobs and containers.
  *
@@ -50,15 +50,15 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  * operation, until {@code .subscribe()} is called on the reactive response. You can simply convert one of these
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
-public final class StorageAsyncClient {
+public final class BlobServiceAsyncClient {
     private final AzureBlobStorageImpl azureBlobStorage;
 
     /**
-     * Package-private constructor for use by {@link StorageClientBuilder}.
+     * Package-private constructor for use by {@link BlobServiceClientBuilder}.
      *
      * @param azureBlobStorageBuilder the API client builder for blob storage API
      */
-    StorageAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
+    BlobServiceAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
         this.azureBlobStorage = azureBlobStorageBuilder.build();
     }
 

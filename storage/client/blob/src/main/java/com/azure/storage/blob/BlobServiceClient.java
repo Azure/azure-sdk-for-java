@@ -24,7 +24,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
- * Client to a storage account. It may only be instantiated through a {@link StorageClientBuilder}. This class does not
+ * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does not
  * hold any state about a particular storage account but is instead a convenient way of sending off appropriate requests
  * to the resource on the service. It may also be used to construct URLs to blobs and containers.
  *
@@ -36,16 +36,16 @@ import java.time.OffsetDateTime;
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
  * information on containers.
  */
-public final class StorageClient {
-    private final StorageAsyncClient storageAsyncClient;
+public final class BlobServiceClient {
+    private final BlobServiceAsyncClient blobServiceAsyncClient;
 
     /**
-     * Package-private constructor for use by {@link StorageClientBuilder}.
+     * Package-private constructor for use by {@link BlobServiceClientBuilder}.
      *
-     * @param storageAsyncClient the async storage account client
+     * @param blobServiceAsyncClient the async storage account client
      */
-    StorageClient(StorageAsyncClient storageAsyncClient) {
-        this.storageAsyncClient = storageAsyncClient;
+    BlobServiceClient(BlobServiceAsyncClient blobServiceAsyncClient) {
+        this.blobServiceAsyncClient = blobServiceAsyncClient;
     }
 
     /**
@@ -56,7 +56,7 @@ public final class StorageClient {
      * @return A {@link ContainerClient} object pointing to the specified container
      */
     public ContainerClient getContainerClient(String containerName) {
-        return new ContainerClient(storageAsyncClient.getContainerAsyncClient(containerName));
+        return new ContainerClient(blobServiceAsyncClient.getContainerAsyncClient(containerName));
     }
 
     /**
@@ -96,7 +96,7 @@ public final class StorageClient {
      * @return A response containing status code and HTTP headers
      */
     public VoidResponse deleteContainer(String containerName) {
-        return storageAsyncClient.deleteContainer(containerName).block();
+        return blobServiceAsyncClient.deleteContainer(containerName).block();
     }
 
     /**
@@ -105,7 +105,7 @@ public final class StorageClient {
      * @return the URL.
      */
     public URL getAccountUrl() {
-        return storageAsyncClient.getAccountUrl();
+        return blobServiceAsyncClient.getAccountUrl();
     }
 
     /**
@@ -129,7 +129,7 @@ public final class StorageClient {
      * @return The list of containers.
      */
     public Iterable<ContainerItem> listContainers(ListContainersOptions options, Duration timeout) {
-        Flux<ContainerItem> response = storageAsyncClient.listContainers(options);
+        Flux<ContainerItem> response = blobServiceAsyncClient.listContainers(options);
 
         return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
     }
@@ -153,7 +153,7 @@ public final class StorageClient {
      */
     public Response<StorageServiceProperties> getProperties(Duration timeout) {
 
-        Mono<Response<StorageServiceProperties>> response = storageAsyncClient.getProperties();
+        Mono<Response<StorageServiceProperties>> response = blobServiceAsyncClient.getProperties();
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -182,7 +182,7 @@ public final class StorageClient {
      * @return The storage account properties.
      */
     public VoidResponse setProperties(StorageServiceProperties properties, Duration timeout) {
-        Mono<VoidResponse> response = storageAsyncClient.setProperties(properties);
+        Mono<VoidResponse> response = blobServiceAsyncClient.setProperties(properties);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -210,7 +210,7 @@ public final class StorageClient {
      */
     public Response<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
                                                             Duration timeout) {
-        Mono<Response<UserDelegationKey>> response = storageAsyncClient.getUserDelegationKey(start, expiry);
+        Mono<Response<UserDelegationKey>> response = blobServiceAsyncClient.getUserDelegationKey(start, expiry);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -237,7 +237,7 @@ public final class StorageClient {
      * @return The storage account statistics.
      */
     public Response<StorageServiceStats> getStatistics(Duration timeout) {
-        Mono<Response<StorageServiceStats>> response = storageAsyncClient.getStatistics();
+        Mono<Response<StorageServiceStats>> response = blobServiceAsyncClient.getStatistics();
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -260,7 +260,7 @@ public final class StorageClient {
      * @return The storage account info.
      */
     public Response<StorageAccountInfo> getAccountInfo(Duration timeout) {
-        Mono<Response<StorageAccountInfo>> response = storageAsyncClient.getAccountInfo();
+        Mono<Response<StorageAccountInfo>> response = blobServiceAsyncClient.getAccountInfo();
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -276,7 +276,7 @@ public final class StorageClient {
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
                                      AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
-        return this.storageAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime);
+        return this.blobServiceAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime);
     }
 
     /**
@@ -295,6 +295,6 @@ public final class StorageClient {
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
                                      AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version, IPRange ipRange,
                                      SASProtocol sasProtocol) {
-        return this.storageAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
+        return this.blobServiceAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
     }
 }

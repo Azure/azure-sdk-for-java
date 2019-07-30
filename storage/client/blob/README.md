@@ -112,7 +112,7 @@ The following sections provide several code snippets covering some of the most c
 
 Create a storage client using the [`sasToken`](#get-credentials) generated above.
 ```java
-StorageClient storageClient = StorageClient.builder()
+BlobServiceClient storageClient = BlobServiceClient.builder()
         .endpoint("<your-storage-blob-url>")
         .credential("<your-sasToken>")
         .build();
@@ -222,7 +222,7 @@ containerClient.listBlobsFlat()
 The [Azure Identity library][identity] provides Azure Active Directory support for authenticating with Azure Storage.
 
 ```java
-StorageClient storageClient = StorageClient.storageClientBuilder()
+BlobServiceClient storageClient = BlobServiceClient.storageClientBuilder()
         .endpoint(endpoint)
         .credential(new DefaultAzureCredential())
         .buildClient();
