@@ -97,8 +97,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createKey(String name, KeyType keyType) {
-        return withContext(context -> createKey(name, keyType, context))
-            .flatMap(FluxUtil::toMono);
+        return withContext(context -> createKeyWithResponse(name, keyType, context)).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -120,10 +119,10 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> createKeyWithResponse(KeyCreateOptions keyCreateOptions) {
-        return withContext(context -> createKey(keyCreateOptions, context));
+        return withContext(context -> createKeyWithResponse(keyCreateOptions, context));
     }
 
-    Mono<Response<Key>> createKey(String name, KeyType keyType, Context context) {
+    Mono<Response<Key>> createKeyWithResponse(String name, KeyType keyType, Context context) {
         KeyRequestParameters parameters = new KeyRequestParameters().kty(keyType);
         return service.createKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Creating key - {}",  name))
@@ -155,10 +154,10 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createKey(KeyCreateOptions keyCreateOptions) {
-        return this.createKeyWithResponse(keyCreateOptions).flatMap(FluxUtil::toMono);
+        return createKeyWithResponse(keyCreateOptions).flatMap(FluxUtil::toMono);
     }
 
-    Mono<Response<Key>> createKey(KeyCreateOptions keyCreateOptions, Context context) {
+    Mono<Response<Key>> createKeyWithResponse(KeyCreateOptions keyCreateOptions, Context context) {
         Objects.requireNonNull(keyCreateOptions, "The key create options parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
             .kty(keyCreateOptions.keyType())
@@ -195,7 +194,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createRsaKey(RsaKeyCreateOptions rsaKeyCreateOptions) {
-        return this.createRsaKeyWithResponse(rsaKeyCreateOptions).flatMap(FluxUtil::toMono);
+        return createRsaKeyWithResponse(rsaKeyCreateOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -219,10 +218,10 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> createRsaKeyWithResponse(RsaKeyCreateOptions rsaKeyCreateOptions) {
-        return withContext(context -> createRsaKey(rsaKeyCreateOptions, context));
+        return withContext(context -> createRsaKeyWithResponse(rsaKeyCreateOptions, context));
     }
 
-    Mono<Response<Key>> createRsaKey(RsaKeyCreateOptions rsaKeyCreateOptions, Context context) {
+    Mono<Response<Key>> createRsaKeyWithResponse(RsaKeyCreateOptions rsaKeyCreateOptions, Context context) {
         Objects.requireNonNull(rsaKeyCreateOptions, "The Rsa key options parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
             .kty(rsaKeyCreateOptions.keyType())
@@ -260,7 +259,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createEcKey(EcKeyCreateOptions ecKeyCreateOptions) {
-        return this.createEcKeyWithResponse(ecKeyCreateOptions).flatMap(FluxUtil::toMono);
+        return createEcKeyWithResponse(ecKeyCreateOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -288,10 +287,10 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> createEcKeyWithResponse(EcKeyCreateOptions ecKeyCreateOptions) {
-        return withContext(context -> createEcKey(ecKeyCreateOptions, context));
+        return withContext(context -> createEcKeyWithResponse(ecKeyCreateOptions, context));
     }
 
-    Mono<Response<Key>> createEcKey(EcKeyCreateOptions ecKeyCreateOptions, Context context) {
+    Mono<Response<Key>> createEcKeyWithResponse(EcKeyCreateOptions ecKeyCreateOptions, Context context) {
         Objects.requireNonNull(ecKeyCreateOptions, "The Ec key options options cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
             .kty(ecKeyCreateOptions.keyType())
@@ -323,11 +322,10 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> importKey(String name, JsonWebKey keyMaterial) {
-        return withContext(context -> importKey(name, keyMaterial, context))
-            .flatMap(FluxUtil::toMono);
+        return withContext(context -> importKeyWithResponse(name, keyMaterial, context)).flatMap(FluxUtil::toMono);
     }
 
-    Mono<Response<Key>> importKey(String name, JsonWebKey keyMaterial, Context context) {
+    Mono<Response<Key>> importKeyWithResponse(String name, JsonWebKey keyMaterial, Context context) {
         KeyImportRequestParameters parameters = new KeyImportRequestParameters().key(keyMaterial);
         return service.importKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Importing key - {}",  name))
@@ -363,7 +361,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> importKey(KeyImportOptions keyImportOptions) {
-        return this.importKeyWithResponse(keyImportOptions).flatMap(FluxUtil::toMono);
+        return importKeyWithResponse(keyImportOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -394,10 +392,10 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> importKeyWithResponse(KeyImportOptions keyImportOptions) {
-        return withContext(context -> importKey(keyImportOptions, context));
+        return withContext(context -> importKeyWithResponse(keyImportOptions, context));
     }
 
-    Mono<Response<Key>> importKey(KeyImportOptions keyImportOptions, Context context) {
+    Mono<Response<Key>> importKeyWithResponse(KeyImportOptions keyImportOptions, Context context) {
         Objects.requireNonNull(keyImportOptions, "The key import configuration parameter cannot be null.");
         KeyImportRequestParameters parameters = new KeyImportRequestParameters()
             .key(keyImportOptions.keyMaterial())
@@ -426,7 +424,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> getKey(String name, String version) {
-        return this.getKeyWithResponse(name, version).flatMap(FluxUtil::toMono);
+        return getKeyWithResponse(name, version).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -446,13 +444,10 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> getKeyWithResponse(String name, String version) {
-        if (version == null) {
-            return withContext(context -> getKey(name, "", context));
-        }
-        return withContext(context -> getKey(name, version, context));
+        return withContext(context -> getKeyWithResponse(name, version == null ? "" : version, context));
     }
 
-    Mono<Response<Key>> getKey(String name, String version, Context context) {
+    Mono<Response<Key>> getKeyWithResponse(String name, String version, Context context) {
         return service.getKey(endpoint, name, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Retrieving key - {}",  name))
                 .doOnSuccess(response -> logger.info("Retrieved key - {}", response.value().name()))
@@ -476,7 +471,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> getKey(String name) {
-        return this.getKeyWithResponse(name, "").flatMap(FluxUtil::toMono);
+        return getKeyWithResponse(name, "").flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -496,7 +491,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> getKey(KeyBase keyBase) {
-        return this.getKeyWithResponse(keyBase).flatMap(FluxUtil::toMono);
+        return getKeyWithResponse(keyBase).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -517,10 +512,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> getKeyWithResponse(KeyBase keyBase) {
         Objects.requireNonNull(keyBase, "The Key Base parameter cannot be null.");
-        if (keyBase.version() == null) {
-            return withContext(context -> getKey(keyBase.name(), "", context));
-        }
-        return withContext(context -> getKey(keyBase.name(), keyBase.version(), context));
+        return withContext(context -> getKeyWithResponse(keyBase.name(), keyBase.version() == null ? "" : keyBase.version(), context));
     }
 
     /**
@@ -542,10 +534,10 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> updateKey(KeyBase key) {
-        return withContext(context -> this.updateKey(key, context).flatMap(FluxUtil::toMono));
+        return withContext(context -> updateKeyWithResponse(key, context).flatMap(FluxUtil::toMono));
     }
 
-    Mono<Response<Key>> updateKey(KeyBase key, Context context) {
+    Mono<Response<Key>> updateKeyWithResponse(KeyBase key, Context context) {
         Objects.requireNonNull(key, "The key input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
             .tags(key.tags())
@@ -576,7 +568,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> updateKeyWithResponse(KeyBase key, KeyOperation... keyOperations) {
-        return withContext(context -> updateKey(key, context, keyOperations));
+        return withContext(context -> updateKeyWithResponse(key, context, keyOperations));
     }
 
     /**
@@ -599,10 +591,10 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> updateKey(KeyBase key, KeyOperation... keyOperations) {
-        return this.updateKeyWithResponse(key, keyOperations).flatMap(FluxUtil::toMono);
+        return updateKeyWithResponse(key, keyOperations).flatMap(FluxUtil::toMono);
     }
 
-    Mono<Response<Key>> updateKey(KeyBase key, Context context, KeyOperation... keyOperations) {
+    Mono<Response<Key>> updateKeyWithResponse(KeyBase key, Context context, KeyOperation... keyOperations) {
         Objects.requireNonNull(key, "The key input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
             .tags(key.tags())
@@ -634,7 +626,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedKey> deleteKey(String name) {
-        return this.deleteKeyWithResponse(name).flatMap(FluxUtil::toMono);
+        return deleteKeyWithResponse(name).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -657,10 +649,10 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedKey>> deleteKeyWithResponse(String name) {
-        return withContext(context -> deleteKey(name, context));
+        return withContext(context -> deleteKeyWithResponse(name, context));
     }
 
-    Mono<Response<DeletedKey>> deleteKey(String name, Context context) {
+    Mono<Response<DeletedKey>> deleteKeyWithResponse(String name, Context context) {
         return service.deleteKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Deleting key - {}",  name))
                 .doOnSuccess(response -> logger.info("Deleted key - {}", response.value().name()))
@@ -674,7 +666,6 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p> Gets the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and prints out the
      * deleted key details when a response has been received.</p>
-     * <pre>
      * //Assuming key is deleted on a soft-delete enabled vault.
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getDeletedKey#string}
@@ -686,7 +677,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedKey> getDeletedKey(String name) {
-        return this.getDeletedKeyWithResponse(name).flatMap(FluxUtil::toMono);
+        return getDeletedKeyWithResponse(name).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -696,7 +687,6 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p> Gets the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and prints out the
      * deleted key details when a response has been received.</p>
-     * <pre>
      * //Assuming key is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getDeletedKeyWithResponse#string}
      *
@@ -707,10 +697,10 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedKey>> getDeletedKeyWithResponse(String name) {
-        return withContext(context -> getDeletedKey(name, context));
+        return withContext(context -> getDeletedKeyWithResponse(name, context));
     }
 
-    Mono<Response<DeletedKey>> getDeletedKey(String name, Context context) {
+    Mono<Response<DeletedKey>> getDeletedKeyWithResponse(String name, Context context) {
         return service.getDeletedKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Retrieving deleted key - {}",  name))
                 .doOnSuccess(response -> logger.info("Retrieved deleted key - {}", response.value().name()))
@@ -724,7 +714,6 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Purges the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and prints out the
      * status code from the server response when a response has been received.</p>
-     * <pre>
      * //Assuming key is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.purgeDeletedKey#string}
      *
@@ -753,7 +742,6 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Recovers the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and prints out the
      * recovered key details when a response has been received.</p>
-     * <pre>
      * //Assuming key is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#string}
      *
@@ -764,7 +752,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> recoverDeletedKey(String name) {
-        return this.recoverDeletedKeyWithResponse(name).flatMap(FluxUtil::toMono);
+        return recoverDeletedKeyWithResponse(name).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -775,7 +763,6 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Recovers the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and prints out the
      * recovered key details when a response has been received.</p>
-     * <pre>
      * //Assuming key is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKeyWithResponse#string}
      *
@@ -786,10 +773,10 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> recoverDeletedKeyWithResponse(String name) {
-        return withContext(context -> recoverDeletedKey(name, context));
+        return withContext(context -> recoverDeletedKeyWithResponse(name, context));
     }
 
-    Mono<Response<Key>> recoverDeletedKey(String name, Context context) {
+    Mono<Response<Key>> recoverDeletedKeyWithResponse(String name, Context context) {
         return service.recoverDeletedKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Recovering deleted key - {}",  name))
                 .doOnSuccess(response -> logger.info("Recovered deleted key - {}", response.value().name()))
@@ -819,7 +806,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<byte[]> backupKey(String name) {
-        return this.backupKeyWithResponse(name).flatMap(FluxUtil::toMono);
+        return backupKeyWithResponse(name).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -845,10 +832,10 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<byte[]>> backupKeyWithResponse(String name) {
-        return withContext(context -> backupKey(name, context));
+        return withContext(context -> backupKeyWithResponse(name, context));
     }
 
-    Mono<Response<byte[]>> backupKey(String name, Context context) {
+    Mono<Response<byte[]>> backupKeyWithResponse(String name, Context context) {
         return service.backupKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Backing up key - {}",  name))
                 .doOnSuccess(response -> logger.info("Backed up key - {}", name))
@@ -869,7 +856,6 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Restores the key in the key vault from its backup. Subscribes to the call asynchronously and prints out the restored key
      * details when a response has been received.</p>
-     * <pre>
      * //Pass the Key Backup Byte array to the restore operation.
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.restoreKey#byte}
@@ -880,7 +866,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> restoreKey(byte[] backup) {
-        return this.restoreKeyWithResponse(backup).flatMap(FluxUtil::toMono);
+        return restoreKeyWithResponse(backup).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -895,7 +881,6 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Restores the key in the key vault from its backup. Subscribes to the call asynchronously and prints out the restored key
      * details when a response has been received.</p>
-     * <pre>
      * //Pass the Key Backup Byte array to the restore operation.
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.restoreKeyWithResponse#byte}
@@ -906,10 +891,10 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> restoreKeyWithResponse(byte[] backup) {
-        return withContext(context -> restoreKey(backup, context));
+        return withContext(context -> restoreKeyWithResponse(backup, context));
     }
 
-    Mono<Response<Key>> restoreKey(byte[] backup, Context context) {
+    Mono<Response<Key>> restoreKeyWithResponse(byte[] backup, Context context) {
         KeyRestoreRequestParameters parameters = new KeyRestoreRequestParameters().keyBackup(backup);
         return service.restoreKey(endpoint, API_VERSION, parameters, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Attempting to restore key"))

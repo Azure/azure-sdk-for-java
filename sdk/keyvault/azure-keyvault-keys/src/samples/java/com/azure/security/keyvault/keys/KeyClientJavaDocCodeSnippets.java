@@ -198,6 +198,15 @@ public final class KeyClientJavaDocCodeSnippets {
         Key updatedKey = keyClient.getKey(updatedKeyBase.name());
         System.out.printf("Key is updated with name %s and id %s \n", updatedKey.name(), updatedKey.id());
         // END: com.azure.keyvault.keys.keyclient.updateKeyWithResponse#KeyBase-keyOperations-Context
+
+        // BEGIN: com.azure.keyvault.keys.keyclient.updateKeyWithResponse#KeyBase-Context
+        Key newKey = keyClient.getKey("keyName");
+        key.expires(OffsetDateTime.now().plusDays(60));
+        KeyBase updatedKeyBaseAttr = keyClient.updateKeyWithResponse(key,
+            new Context(key1, value1)).value();
+        Key newUpdatedKey = keyClient.getKey(updatedKeyBase.name());
+        System.out.printf("Key is updated with name %s and id %s \n", newUpdatedKey.name(), newUpdatedKey.id());
+        // END: com.azure.keyvault.keys.keyclient.updateKeyWithResponse#KeyBase-Context
     }
 
     /**
