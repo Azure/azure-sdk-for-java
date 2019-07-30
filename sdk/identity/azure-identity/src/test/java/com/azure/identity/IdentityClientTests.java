@@ -1,7 +1,6 @@
 package com.azure.identity;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.identity.credential.ClientSecretCredential;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.IAccount;
@@ -32,7 +31,7 @@ public class IdentityClientTests {
         // setup
         String secret = "secret";
         String accessToken = "token";
-        String scope = "https://management.azure.com";
+        String[] scopes = new String[] { "https://management.azure.com" };
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
@@ -40,8 +39,8 @@ public class IdentityClientTests {
             .toReturn(getMockAuthenticationResult(accessToken, expiresOn));
 
         // test
-        ClientSecretCredential credential = new ClientSecretCredential().tenantId(tenantId).clientId(clientId).clientSecret(secret);
-        AccessToken token = credential.getToken(scope).block();
+        IdentityClient client = new IdentityClient();
+        AccessToken token = client.authenticateWithClientSecret(tenantId, clientId, secret, scopes).block();
         Assert.assertEquals(accessToken, token.token());
         Assert.assertEquals(expiresOn, token.expiresOn());
     }
@@ -50,7 +49,7 @@ public class IdentityClientTests {
     public void testInvalidSecret() throws Exception {
         // setup
         String secret = "secret";
-        String scope = "https://management.azure.com";
+        String[] scopes = new String[] { "https://management.azure.com" };
 
         // mock
         PowerMockito.stub(PowerMockito.method(ConfidentialClientApplication.class, "acquireToken", ClientCredentialParameters.class))
@@ -58,8 +57,8 @@ public class IdentityClientTests {
 
         // test
         try {
-            ClientSecretCredential credential = new ClientSecretCredential().tenantId(tenantId).clientId(clientId).clientSecret(secret);
-            credential.getToken(scope).block();
+            IdentityClient client = new IdentityClient();
+            client.authenticateWithClientSecret(tenantId, clientId, secret, scopes).block();
             fail();
         } catch (MsalServiceException e) {
             Assert.assertEquals("bad secret", e.getMessage());

@@ -43,7 +43,7 @@ public class DeviceCodeCredential extends AadCredential<DeviceCodeCredential> {
         if (clientId() == null) {
             throw new IllegalArgumentException("Must provide non-null value for client id in " + this.getClass().getSimpleName());
         }
-        return identityClient.authenticateWithCurrentlyLoggedInAccount(scopes).onErrorResume(t -> Mono.empty())
-            .switchIfEmpty(identityClient.authenticateWithDeviceCode(clientId(), scopes, deviceCodeChallengeConsumer));
+        return Mono.defer(() -> identityClient.authenticateWithCurrentlyLoggedInAccount(scopes).onErrorResume(t -> Mono.empty()))
+            .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithDeviceCode(clientId(), scopes, deviceCodeChallengeConsumer)));
     }
 }

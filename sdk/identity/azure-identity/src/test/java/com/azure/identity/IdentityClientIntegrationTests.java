@@ -5,7 +5,6 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.ProxyOptions.Type;
 import org.junit.Assert;
 import org.junit.Ignore;
-import org.junit.Test;
 
 import java.net.InetSocketAddress;
 
@@ -32,7 +31,7 @@ public class IdentityClientIntegrationTests {
         Assert.assertFalse(token.isExpired());
     }
 
-    @Test
+    @Ignore("Integration test")
     public void deviceCodeCanGetToken() {
         IdentityClient client = new IdentityClient(new IdentityClientOptions().proxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
         AccessToken token = client.authenticateWithDeviceCode(System.getenv(AZURE_CLI_CLIENT_ID), scopes, deviceCode -> {

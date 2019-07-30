@@ -1,7 +1,6 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.identity.DeviceCodeChallenge;
 import com.azure.identity.IdentityClient;
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,8 +13,8 @@ import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Random;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -23,24 +22,26 @@ import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(fullyQualifiedNames = "com.azure.identity.*")
-public class DeviceCodeCredentialTest {
+public class InteractiveBrowserCredentialTest {
 
     private static final String tenantId = "contoso.com";
     private static final String clientId = UUID.randomUUID().toString();
 
     @Test
-    public void testValidDeviceCode() throws Exception {
+    public void testValidInteractive() throws Exception {
+        Random random = new Random();
+
         // setup
-        Consumer<DeviceCodeChallenge> consumer = deviceCodeChallenge -> { /* do nothing */ };
         String token1 = "token1";
         String token2 = "token2";
         String[] scopes1 = new String[] { "https://management.azure.com" };
         String[] scopes2 = new String[] { "https://vault.azure.net" };
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        int port = random.nextInt(10000) + 10000;
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithDeviceCode(eq(clientId), eq(scopes1), eq(consumer))).thenReturn(getMockAccessToken(token1, expiresOn));
+        when(identityClient.authenticateWithBrowserInteraction(eq(clientId), eq(scopes1), eq(port))).thenReturn(getMockAccessToken(token1, expiresOn));
         when(identityClient.authenticateWithCurrentlyLoggedInAccount(any()))
             .thenAnswer(invocation -> {
                 String[] argument = (String[])invocation.getArguments()[0];
@@ -55,7 +56,7 @@ public class DeviceCodeCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        DeviceCodeCredential credential = new DeviceCodeCredential(consumer).clientId(clientId);
+        InteractiveBrowserCredential credential = new InteractiveBrowserCredential(port).clientId(clientId);
         AccessToken token = credential.getToken(scopes1).block();
         Assert.assertEquals(token1, token.token());
         Assert.assertEquals(expiresOn, token.expiresOn());
