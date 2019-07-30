@@ -278,6 +278,7 @@ public final class QueueClientBuilder {
                                                                  + "Connection String: %s", connectionString));
         }
     }
+
     /**
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
