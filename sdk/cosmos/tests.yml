@@ -5,8 +5,6 @@ variables:
   - name: AdditionalArgs
     value: ''
 
-
-# TODO: examine whether $(DefaultOptions) is appropriate here...
 jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
@@ -49,6 +47,9 @@ jobs:
 
       PreRunSteps:
         - template: ../steps/install-reporting-tools.yml
+          parameters:
+            Options: $(DefaultOptions)
+            MavenOptions: $(LoggingOptions)
 
       TestStepMavenInputs:
           goals: verify
@@ -113,6 +114,9 @@ jobs:
 
       PreRunSteps:
         - template: ../steps/install-reporting-tools.yml
+          parameters:
+            Options: $(DefaultOptions)
+            MavenOptions: $(LoggingOptions)
 
       TestStepMavenInputs:
           goals: verify
@@ -165,6 +169,9 @@ jobs:
 
       PreRunSteps:
         - template: ../steps/install-reporting-tools.yml
+          parameters:
+            Options: $(DefaultOptions)
+            MavenOptions: $(LoggingOptions)
 
       TestStepMavenInputs:
           goals: verify
@@ -225,6 +232,9 @@ jobs:
 
       PreRunSteps:
         - template: ../steps/install-reporting-tools.yml
+          parameters:
+            Options: $(DefaultOptions)
+            MavenOptions: $(LoggingOptions)
 
       TestStepMavenInputs:
           goals: verify
@@ -279,6 +289,9 @@ jobs:
 
       PreRunSteps:
         - template: ../steps/install-reporting-tools.yml
+          parameters:
+            Options: $(DefaultOptions)
+            MavenOptions: $(LoggingOptions)
 
       TestStepMavenInputs:
           goals: verify
@@ -327,6 +340,9 @@ jobs:
 
       PreRunSteps:
         - template: ../steps/install-reporting-tools.yml
+          parameters:
+            Options: $(DefaultOptions)
+            MavenOptions: $(LoggingOptions)
 
       TestStepMavenInputs:
           goals: verify
