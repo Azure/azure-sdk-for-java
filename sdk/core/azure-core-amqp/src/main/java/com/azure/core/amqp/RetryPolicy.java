@@ -92,7 +92,12 @@ public abstract class RetryPolicy {
             return null;
         }
 
-        return calculateRetryDelay(retryCount, baseDelay, baseJitter, ThreadLocalRandom.current());
+        final Duration delay = calculateRetryDelay(retryCount, baseDelay, baseJitter, ThreadLocalRandom.current());
+
+        // If delay is smaller or equal to the maximum delay, return the maximum delay.
+        return delay.compareTo(retryOptions.maxDelay()) <= 0
+            ? delay
+            : retryOptions.maxDelay();
     }
 
     /**
