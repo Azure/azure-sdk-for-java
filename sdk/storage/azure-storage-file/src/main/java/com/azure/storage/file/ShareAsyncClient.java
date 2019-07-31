@@ -370,7 +370,10 @@ public class ShareAsyncClient {
      * <p>Create the directory "mydirectory"</p>
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.createDirectory#string}
-     *      *
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
+     *
      * @param directoryName Name of the directory
      * @return A response containing a {@link DirectoryAsyncClient} to interact with the created directory and the
      * status of its creation.
@@ -389,6 +392,9 @@ public class ShareAsyncClient {
      * <p>Create the directory "documents" with metadata "directory:metadata"</p>
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.createDirectory#string-map}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
      * @param metadata Optional metadata to associate with the directory

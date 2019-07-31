@@ -332,6 +332,9 @@ public class DirectoryAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.directoryAsyncClient.createSubDirectory#string}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
+     *
      * @param subDirectoryName Name of the subdirectory
      * @return A response containing the subdirectory client and the status of creating the directory.
      * @throws StorageErrorException If the subdirectory has already existed, the parent directory does not exist or directory is an invalid resource name.
