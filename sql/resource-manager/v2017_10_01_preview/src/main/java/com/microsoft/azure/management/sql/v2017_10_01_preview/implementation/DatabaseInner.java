@@ -27,7 +27,20 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class DatabaseInner extends Resource {
     /**
-     * The name and tier of the SKU.
+     * The database SKU.
+     *
+     * The list of SKUs may vary by region and support offer. To determine the
+     * SKUs (including the SKU name, tier/edition, family, and capacity) that
+     * are available to your subscription in an Azure region, use the
+     * `Capabilities_ListByLocation` REST API or one of the following commands:
+     *
+     * ```azurecli
+     * az sql db list-editions -l &lt;location&gt; -o table
+     * ````
+     *
+     * ```powershell
+     * Get-AzSqlServerServiceObjective -Location &lt;location&gt;
+     * ````.
      */
     @JsonProperty(value = "sku")
     private Sku sku;
@@ -125,7 +138,8 @@ public class DatabaseInner extends Resource {
      * 'Restoring', 'RecoveryPending', 'Recovering', 'Suspect', 'Offline',
      * 'Standby', 'Shutdown', 'EmergencyMode', 'AutoClosed', 'Copying',
      * 'Creating', 'Inaccessible', 'OfflineSecondary', 'Pausing', 'Paused',
-     * 'Resuming', 'Scaling'.
+     * 'Resuming', 'Scaling', 'OfflineChangingDwPerformanceTiers',
+     * 'OnlineChangingDwPerformanceTiers'.
      */
     @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseStatus status;
@@ -257,7 +271,28 @@ public class DatabaseInner extends Resource {
     private Sku currentSku;
 
     /**
-     * Get the name and tier of the SKU.
+     * Time in minutes after which database is automatically paused. A value of
+     * -1 means that automatic pause is disabled.
+     */
+    @JsonProperty(value = "properties.autoPauseDelay")
+    private Integer autoPauseDelay;
+
+    /**
+     * Minimal capacity that database will always have allocated, if not
+     * paused.
+     */
+    @JsonProperty(value = "properties.minCapacity")
+    private Double minCapacity;
+
+    /**
+     * Get the database SKU.
+     The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name, tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the `Capabilities_ListByLocation` REST API or one of the following commands:
+     ```azurecli
+     az sql db list-editions -l &lt;location&gt; -o table
+     ````
+     ```powershell
+     Get-AzSqlServerServiceObjective -Location &lt;location&gt;
+     ````.
      *
      * @return the sku value
      */
@@ -266,7 +301,14 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the name and tier of the SKU.
+     * Set the database SKU.
+     The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name, tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the `Capabilities_ListByLocation` REST API or one of the following commands:
+     ```azurecli
+     az sql db list-editions -l &lt;location&gt; -o table
+     ````
+     ```powershell
+     Get-AzSqlServerServiceObjective -Location &lt;location&gt;
+     ````.
      *
      * @param sku the sku value to set
      * @return the DatabaseInner object itself.
@@ -431,7 +473,7 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the status of the database. Possible values include: 'Online', 'Restoring', 'RecoveryPending', 'Recovering', 'Suspect', 'Offline', 'Standby', 'Shutdown', 'EmergencyMode', 'AutoClosed', 'Copying', 'Creating', 'Inaccessible', 'OfflineSecondary', 'Pausing', 'Paused', 'Resuming', 'Scaling'.
+     * Get the status of the database. Possible values include: 'Online', 'Restoring', 'RecoveryPending', 'Recovering', 'Suspect', 'Offline', 'Standby', 'Shutdown', 'EmergencyMode', 'AutoClosed', 'Copying', 'Creating', 'Inaccessible', 'OfflineSecondary', 'Pausing', 'Paused', 'Resuming', 'Scaling', 'OfflineChangingDwPerformanceTiers', 'OnlineChangingDwPerformanceTiers'.
      *
      * @return the status value
      */
@@ -718,6 +760,46 @@ public class DatabaseInner extends Resource {
      */
     public Sku currentSku() {
         return this.currentSku;
+    }
+
+    /**
+     * Get time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled.
+     *
+     * @return the autoPauseDelay value
+     */
+    public Integer autoPauseDelay() {
+        return this.autoPauseDelay;
+    }
+
+    /**
+     * Set time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled.
+     *
+     * @param autoPauseDelay the autoPauseDelay value to set
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withAutoPauseDelay(Integer autoPauseDelay) {
+        this.autoPauseDelay = autoPauseDelay;
+        return this;
+    }
+
+    /**
+     * Get minimal capacity that database will always have allocated, if not paused.
+     *
+     * @return the minCapacity value
+     */
+    public Double minCapacity() {
+        return this.minCapacity;
+    }
+
+    /**
+     * Set minimal capacity that database will always have allocated, if not paused.
+     *
+     * @param minCapacity the minCapacity value to set
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withMinCapacity(Double minCapacity) {
+        this.minCapacity = minCapacity;
+        return this;
     }
 
 }

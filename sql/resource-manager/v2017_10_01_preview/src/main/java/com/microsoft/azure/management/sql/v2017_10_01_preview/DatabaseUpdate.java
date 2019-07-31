@@ -106,7 +106,8 @@ public class DatabaseUpdate {
      * 'Restoring', 'RecoveryPending', 'Recovering', 'Suspect', 'Offline',
      * 'Standby', 'Shutdown', 'EmergencyMode', 'AutoClosed', 'Copying',
      * 'Creating', 'Inaccessible', 'OfflineSecondary', 'Pausing', 'Paused',
-     * 'Resuming', 'Scaling'.
+     * 'Resuming', 'Scaling', 'OfflineChangingDwPerformanceTiers',
+     * 'OnlineChangingDwPerformanceTiers'.
      */
     @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseStatus status;
@@ -236,6 +237,20 @@ public class DatabaseUpdate {
      */
     @JsonProperty(value = "properties.currentSku", access = JsonProperty.Access.WRITE_ONLY)
     private Sku currentSku;
+
+    /**
+     * Time in minutes after which database is automatically paused. A value of
+     * -1 means that automatic pause is disabled.
+     */
+    @JsonProperty(value = "properties.autoPauseDelay")
+    private Integer autoPauseDelay;
+
+    /**
+     * Minimal capacity that database will always have allocated, if not
+     * paused.
+     */
+    @JsonProperty(value = "properties.minCapacity")
+    private Double minCapacity;
 
     /**
      * Resource tags.
@@ -400,7 +415,7 @@ public class DatabaseUpdate {
     }
 
     /**
-     * Get the status of the database. Possible values include: 'Online', 'Restoring', 'RecoveryPending', 'Recovering', 'Suspect', 'Offline', 'Standby', 'Shutdown', 'EmergencyMode', 'AutoClosed', 'Copying', 'Creating', 'Inaccessible', 'OfflineSecondary', 'Pausing', 'Paused', 'Resuming', 'Scaling'.
+     * Get the status of the database. Possible values include: 'Online', 'Restoring', 'RecoveryPending', 'Recovering', 'Suspect', 'Offline', 'Standby', 'Shutdown', 'EmergencyMode', 'AutoClosed', 'Copying', 'Creating', 'Inaccessible', 'OfflineSecondary', 'Pausing', 'Paused', 'Resuming', 'Scaling', 'OfflineChangingDwPerformanceTiers', 'OnlineChangingDwPerformanceTiers'.
      *
      * @return the status value
      */
@@ -687,6 +702,46 @@ public class DatabaseUpdate {
      */
     public Sku currentSku() {
         return this.currentSku;
+    }
+
+    /**
+     * Get time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled.
+     *
+     * @return the autoPauseDelay value
+     */
+    public Integer autoPauseDelay() {
+        return this.autoPauseDelay;
+    }
+
+    /**
+     * Set time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled.
+     *
+     * @param autoPauseDelay the autoPauseDelay value to set
+     * @return the DatabaseUpdate object itself.
+     */
+    public DatabaseUpdate withAutoPauseDelay(Integer autoPauseDelay) {
+        this.autoPauseDelay = autoPauseDelay;
+        return this;
+    }
+
+    /**
+     * Get minimal capacity that database will always have allocated, if not paused.
+     *
+     * @return the minCapacity value
+     */
+    public Double minCapacity() {
+        return this.minCapacity;
+    }
+
+    /**
+     * Set minimal capacity that database will always have allocated, if not paused.
+     *
+     * @param minCapacity the minCapacity value to set
+     * @return the DatabaseUpdate object itself.
+     */
+    public DatabaseUpdate withMinCapacity(Double minCapacity) {
+        this.minCapacity = minCapacity;
+        return this;
     }
 
     /**
