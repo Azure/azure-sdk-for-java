@@ -4,9 +4,14 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.identity.IdentityClient;
-import com.azure.identity.IdentityClientOptions;
+import com.azure.core.credentials.TokenCredential;
+import com.azure.core.implementation.annotation.Immutable;
+import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.MsalToken;
 import reactor.core.publisher.Mono;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * An AAD credential that acquires a token for an AAD application by prompting the login in the default browser. When
@@ -16,38 +21,38 @@ import reactor.core.publisher.Mono;
  * The application to authenticate to must have delegated user login permissions and have {@code http://localhost:{port}}
  * listed as a valid reply URL.
  */
-public class InteractiveBrowserCredential extends AadCredential<InteractiveBrowserCredential> {
+@Immutable
+public class InteractiveBrowserCredential implements TokenCredential {
     private final int port;
     private final IdentityClient identityClient;
-
-    /**
-     * Creates a InteractiveBrowserCredential with a listening port, for which {@code http://localhost:{port}} must be
-     * registered as a valid reply URL on the application.
-     *
-     * @param port the port on which the credential will listen for the browser authentication result
-     */
-    public InteractiveBrowserCredential(int port) {
-        this(port, new IdentityClientOptions());
-    }
+    private final AtomicReference<MsalToken> cachedToken;
 
     /**
      * Creates a InteractiveBrowserCredential with the given identity client options and a listening port, for which
      * {@code http://localhost:{port}} must be registered as a valid reply URL on the application.
      *
+     * @param clientId the client ID of the application
      * @param port the port on which the credential will listen for the browser authentication result
      * @param identityClientOptions the options for configuring the identity client
      */
-    public InteractiveBrowserCredential(int port, IdentityClientOptions identityClientOptions) {
+    InteractiveBrowserCredential(String clientId, int port, IdentityClientOptions identityClientOptions) {
         this.port = port;
-        identityClient = new IdentityClient(identityClientOptions);
+        identityClient = new IdentityClient("common", clientId, identityClientOptions);
+        cachedToken = new AtomicReference<>();
     }
 
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
-        if (clientId() == null) {
-            throw new IllegalArgumentException("Must provide non-null value for client id in " + this.getClass().getSimpleName());
-        }
-        return Mono.defer(() -> identityClient.authenticateWithCurrentlyLoggedInAccount(scopes).onErrorResume(t -> Mono.empty()))
-            .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(clientId(), scopes, port)));
+        return Mono.defer(() -> {
+            if (cachedToken.get() != null) {
+                return identityClient.authenticateWithUserRefreshToken(scopes, cachedToken.get()).onErrorResume(t -> Mono.empty());
+            } else {
+                return Mono.empty();
+            }
+        }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(scopes, port)))
+            .map(msalToken -> {
+                cachedToken.set(msalToken);
+                return msalToken;
+            });
     }
 }

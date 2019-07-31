@@ -1,10 +1,11 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
+import com.azure.core.util.configuration.BaseConfigurations;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
-import com.azure.identity.IdentityClient;
-import com.microsoft.aad.msal4j.MsalServiceException;
+import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.util.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +29,24 @@ public class ManagedIdentityCredentialTest {
     private static final String clientId = UUID.randomUUID().toString();
 
     @Test
+    public void testAppServiceMSICredentialConfigurations() {
+        ConfigurationManager.getConfiguration()
+            .put(BaseConfigurations.MSI_ENDPOINT, "http://foo")
+            .put(BaseConfigurations.MSI_SECRET, "bar");
+        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().build();
+        Assert.assertEquals("http://foo", credential.msiEndpoint());
+        Assert.assertEquals("bar", credential.msiSecret());
+    }
+
+    @Test
+    public void testVirtualMachineMSICredentialConfigurations() {
+        ConfigurationManager.getConfiguration().remove(BaseConfigurations.MSI_ENDPOINT);
+        ConfigurationManager.getConfiguration().remove(BaseConfigurations.MSI_SECRET);
+        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId("foo").build();
+        Assert.assertEquals("foo", credential.clientId());
+    }
+
+    @Test
     public void testMSIEndpoint() throws Exception {
         Configuration configuration = ConfigurationManager.getConfiguration();
 
@@ -43,11 +62,11 @@ public class ManagedIdentityCredentialTest {
 
             // mock
             IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-            when(identityClient.authenticateToManagedIdentityEndpoint(endpoint, secret, clientId, scopes1)).thenReturn(getMockAccessToken(token1, expiresOn));
+            when(identityClient.authenticateToManagedIdentityEndpoint(endpoint, secret, scopes1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
             PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
             // test
-            ManagedIdentityCredential credential = new ManagedIdentityCredential().clientId(clientId);
+            ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
             AccessToken token = credential.getToken(scopes1).block();
             Assert.assertEquals(token1, token.token());
             Assert.assertEquals(expiresOn, token.expiresOn());
@@ -67,17 +86,13 @@ public class ManagedIdentityCredentialTest {
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateToIMDSEndpoint(clientId, scopes)).thenReturn(getMockAccessToken(token1, expiresOn));
+        when(identityClient.authenticateToIMDSEndpoint(scopes)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        ManagedIdentityCredential credential = new ManagedIdentityCredential().clientId(clientId);
+        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
         AccessToken token = credential.getToken(scopes).block();
         Assert.assertEquals(token1, token.token());
         Assert.assertEquals(expiresOn, token.expiresOn());
-    }
-
-    private static Mono<AccessToken> getMockAccessToken(String accessToken, OffsetDateTime expiresOn) {
-        return Mono.just(new AccessToken(accessToken, expiresOn.plusMinutes(2)));
     }
 }

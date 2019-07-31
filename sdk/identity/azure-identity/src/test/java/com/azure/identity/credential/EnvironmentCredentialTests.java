@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity;
+package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.util.configuration.BaseConfigurations;
@@ -24,7 +24,7 @@ public class EnvironmentCredentialTests {
         configuration.put(BaseConfigurations.AZURE_CLIENT_SECRET, "bar");
         configuration.put(BaseConfigurations.AZURE_TENANT_ID, "baz");
 
-        EnvironmentCredential credential = new EnvironmentCredential();
+        EnvironmentCredential credential = new EnvironmentCredentialBuilder().build();
 
         // authentication will fail client-id=foo, but should be able to create ClientSecretCredential
         AccessToken token = credential.getToken("qux/.default")

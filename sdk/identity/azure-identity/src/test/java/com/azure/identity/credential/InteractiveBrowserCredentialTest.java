@@ -1,7 +1,8 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.identity.IdentityClient;
+import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.util.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,12 +42,12 @@ public class InteractiveBrowserCredentialTest {
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithBrowserInteraction(eq(clientId), eq(scopes1), eq(port))).thenReturn(getMockAccessToken(token1, expiresOn));
-        when(identityClient.authenticateWithCurrentlyLoggedInAccount(any()))
+        when(identityClient.authenticateWithBrowserInteraction(eq(scopes1), eq(port))).thenReturn(TestUtils.getMockMsalToken(token1, expiresOn));
+        when(identityClient.authenticateWithUserRefreshToken(any(), any()))
             .thenAnswer(invocation -> {
                 String[] argument = (String[])invocation.getArguments()[0];
                 if (argument.length == 1 && argument[0].equals(scopes2[0])) {
-                    return getMockAccessToken(token2, expiresOn);
+                    return TestUtils.getMockMsalToken(token2, expiresOn);
                 } else if (argument.length == 1 && argument[0].equals(scopes1[0])) {
                     return Mono.error(new UnsupportedOperationException("nothing cached"));
                 } else {
@@ -56,17 +57,12 @@ public class InteractiveBrowserCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        InteractiveBrowserCredential credential = new InteractiveBrowserCredential(port).clientId(clientId);
+        InteractiveBrowserCredential credential = new InteractiveBrowserCredentialBuilder().port(port).clientId(clientId).build();
         AccessToken token = credential.getToken(scopes1).block();
         Assert.assertEquals(token1, token.token());
         Assert.assertEquals(expiresOn, token.expiresOn());
         token = credential.getToken(scopes2).block();
         Assert.assertEquals(token2, token.token());
         Assert.assertEquals(expiresOn, token.expiresOn());
-
-    }
-
-    private static Mono<AccessToken> getMockAccessToken(String accessToken, OffsetDateTime expiresOn) {
-        return Mono.just(new AccessToken(accessToken, expiresOn.plusMinutes(2)));
     }
 }

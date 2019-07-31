@@ -1,7 +1,8 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.identity.IdentityClient;
+import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -39,16 +40,16 @@ public class ClientCertificateCredentialTest {
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithPemCertificate(tenantId, clientId, pemPath, scopes1)).thenReturn(getMockAccessToken(token1, expiresOn));
-        when(identityClient.authenticateWithPfxCertificate(tenantId, clientId, pfxPath, pfxPassword, scopes2)).thenReturn(getMockAccessToken(token2, expiresOn));
+        when(identityClient.authenticateWithPemCertificate(pemPath, scopes1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
+        when(identityClient.authenticateWithPfxCertificate(pfxPath, pfxPassword, scopes2)).thenReturn(TestUtils.getMockAccessToken(token2, expiresOn));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        ClientCertificateCredential credential = new ClientCertificateCredential().tenantId(tenantId).clientId(clientId).pemCertificate(pemPath);
+        ClientCertificateCredential credential = new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pemCertificate(pemPath).build();
         AccessToken token = credential.getToken(scopes1).block();
         Assert.assertEquals(token1, token.token());
         Assert.assertEquals(expiresOn, token.expiresOn());
-        credential = new ClientCertificateCredential().tenantId(tenantId).clientId(clientId).pfxCertificate(pfxPath, pfxPassword);
+        credential = new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pfxCertificate(pfxPath, pfxPassword).build();
         token = credential.getToken(scopes2).block();
         Assert.assertEquals(token2, token.token());
         Assert.assertEquals(expiresOn, token.expiresOn());
@@ -66,19 +67,19 @@ public class ClientCertificateCredentialTest {
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithPemCertificate(tenantId, clientId, pemPath, scopes1)).thenThrow(new MsalServiceException("bad pem", "BadPem"));
-        when(identityClient.authenticateWithPfxCertificate(tenantId, clientId, pfxPath, pfxPassword, scopes2)).thenThrow(new MsalServiceException("bad pfx", "BadPfx"));
+        when(identityClient.authenticateWithPemCertificate(pemPath, scopes1)).thenThrow(new MsalServiceException("bad pem", "BadPem"));
+        when(identityClient.authenticateWithPfxCertificate(pfxPath, pfxPassword, scopes2)).thenThrow(new MsalServiceException("bad pfx", "BadPfx"));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
         try {
-            ClientCertificateCredential credential = new ClientCertificateCredential().tenantId(tenantId).clientId(clientId).pemCertificate(pemPath);
+            ClientCertificateCredential credential = new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pemCertificate(pemPath).build();
             credential.getToken(scopes1).block();
         } catch (MsalServiceException e) {
             Assert.assertEquals("bad pem", e.getMessage());
         }
         try {
-            ClientCertificateCredential credential = new ClientCertificateCredential().tenantId(tenantId).clientId(clientId).pfxCertificate(pfxPath, pfxPassword);
+            ClientCertificateCredential credential = new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pfxCertificate(pfxPath, pfxPassword).build();
             credential.getToken(scopes2).block();
             fail();
         } catch (MsalServiceException e) {
@@ -96,34 +97,30 @@ public class ClientCertificateCredentialTest {
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithPemCertificate(tenantId, clientId, pemPath, scopes)).thenReturn(getMockAccessToken(token1, expiresOn));
+        when(identityClient.authenticateWithPemCertificate(pemPath, scopes)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
         try {
-            ClientCertificateCredential credential = new ClientCertificateCredential().clientId(clientId).pemCertificate(pemPath);
+            ClientCertificateCredential credential = new ClientCertificateCredentialBuilder().clientId(clientId).pemCertificate(pemPath).build();
             credential.getToken(scopes).block();
             fail();
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains("tenantId"));
         }
         try {
-            ClientCertificateCredential credential = new ClientCertificateCredential().tenantId(tenantId).pemCertificate(pemPath);
+            ClientCertificateCredential credential = new ClientCertificateCredentialBuilder().tenantId(tenantId).pemCertificate(pemPath).build();
             credential.getToken(scopes).block();
             fail();
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains("clientId"));
         }
         try {
-            ClientCertificateCredential credential = new ClientCertificateCredential().tenantId(tenantId).clientId(clientId);
+            ClientCertificateCredential credential = new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).build();
             credential.getToken(scopes).block();
             fail();
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains("clientCertificate"));
         }
-    }
-
-    private static Mono<AccessToken> getMockAccessToken(String accessToken, OffsetDateTime expiresOn) {
-        return Mono.just(new AccessToken(accessToken, expiresOn.plusMinutes(2)));
     }
 }

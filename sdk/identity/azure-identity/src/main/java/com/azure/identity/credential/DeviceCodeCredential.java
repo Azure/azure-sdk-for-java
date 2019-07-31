@@ -4,46 +4,51 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
+import com.azure.core.credentials.TokenCredential;
+import com.azure.core.implementation.annotation.Immutable;
 import com.azure.identity.DeviceCodeChallenge;
-import com.azure.identity.IdentityClient;
-import com.azure.identity.IdentityClientOptions;
+import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.MsalToken;
 import reactor.core.publisher.Mono;
 
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 /**
  * An AAD credential that acquires a token with a device code for an AAD application.
  */
-public class DeviceCodeCredential extends AadCredential<DeviceCodeCredential> {
+@Immutable
+public class DeviceCodeCredential implements TokenCredential {
     private final Consumer<DeviceCodeChallenge> deviceCodeChallengeConsumer;
     private final IdentityClient identityClient;
-
-    /**
-     * Creates a DeviceCodeCredential with default identity client options.
-     *
-     * @param deviceCodeChallengeConsumer a method allowing the user to meet the device code challenge
-     */
-    public DeviceCodeCredential(Consumer<DeviceCodeChallenge> deviceCodeChallengeConsumer) {
-        this(deviceCodeChallengeConsumer, new IdentityClientOptions());
-    }
+    private final AtomicReference<MsalToken> cachedToken;
 
     /**
      * Creates a DeviceCodeCredential with the given identity client options.
      *
+     * @param clientId the client ID of the application
      * @param deviceCodeChallengeConsumer a method allowing the user to meet the device code challenge
      * @param identityClientOptions the options for configuring the identity client
      */
-    public DeviceCodeCredential(Consumer<DeviceCodeChallenge> deviceCodeChallengeConsumer, IdentityClientOptions identityClientOptions) {
+    DeviceCodeCredential(String clientId, Consumer<DeviceCodeChallenge> deviceCodeChallengeConsumer, IdentityClientOptions identityClientOptions) {
         this.deviceCodeChallengeConsumer = deviceCodeChallengeConsumer;
-        identityClient = new IdentityClient(identityClientOptions);
+        identityClient = new IdentityClient("common", clientId, identityClientOptions);
+        this.cachedToken = new AtomicReference<>();
     }
 
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
-        if (clientId() == null) {
-            throw new IllegalArgumentException("Must provide non-null value for client id in " + this.getClass().getSimpleName());
-        }
-        return Mono.defer(() -> identityClient.authenticateWithCurrentlyLoggedInAccount(scopes).onErrorResume(t -> Mono.empty()))
-            .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithDeviceCode(clientId(), scopes, deviceCodeChallengeConsumer)));
+        return Mono.defer(() -> {
+            if (cachedToken.get() != null) {
+                return identityClient.authenticateWithUserRefreshToken(scopes, cachedToken.get()).onErrorResume(t -> Mono.empty());
+            } else {
+                return Mono.empty();
+            }
+        }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithDeviceCode(scopes, deviceCodeChallengeConsumer)))
+            .map(msalToken -> {
+                cachedToken.set(msalToken);
+                return msalToken;
+            });
     }
 }

@@ -4,46 +4,44 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.identity.IdentityClient;
-import com.azure.identity.IdentityClientOptions;
+import com.azure.core.credentials.TokenCredential;
+import com.azure.core.implementation.annotation.Immutable;
+import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientOptions;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 /**
  * An AAD credential that acquires a token with a username and a password. Users with 2FA/MFA (Multi-factored auth)
  * turned on will not be able to use this credential. Please use {@link DeviceCodeCredential} or {@link InteractiveBrowserCredential}
  * instead, or create a service principal if you want to authenticate silently.
  */
-public class UserCredential extends AadCredential<UserCredential> {
+@Immutable
+public class UserCredential implements TokenCredential {
     private final String username;
     private final String password;
     private final IdentityClient identityClient;
 
     /**
-     * Creates a UserCredential with default identity client options.
-     *
-     * @param username the username of the user
-     * @param password the password of the user
-     */
-    public UserCredential(String username, String password) {
-        this(username, password, new IdentityClientOptions());
-    }
-
-    /**
      * Creates a UserCredential with the given identity client options.
      *
+     * @param tenantId the tenant ID of the application
+     * @param clientId the client ID of the application
      * @param username the username of the user
      * @param password the password of the user
      * @param identityClientOptions the options for configuring the identity client
      */
-    public UserCredential(String username, String password, IdentityClientOptions identityClientOptions) {
+    UserCredential(String tenantId, String clientId, String username, String password, IdentityClientOptions identityClientOptions) {
+        Objects.requireNonNull(username);
+        Objects.requireNonNull(password);
         this.username = username;
         this.password = password;
-        identityClient = new IdentityClient(identityClientOptions);
+        identityClient = new IdentityClient(tenantId, clientId, identityClientOptions);
     }
 
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
-        validate();
-        return identityClient.authenticateWithUsernamePassword(tenantId(), clientId(), scopes, username, password);
+        return identityClient.authenticateWithUsernamePassword(scopes, username, password);
     }
 }

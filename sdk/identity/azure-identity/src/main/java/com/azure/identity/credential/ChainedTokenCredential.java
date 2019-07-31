@@ -6,6 +6,7 @@ package com.azure.identity.credential;
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.implementation.annotation.Immutable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -15,6 +16,7 @@ import java.util.Deque;
 /**
  * A token credential provider that can provide a credential from a list of providers.
  */
+@Immutable
 public class ChainedTokenCredential implements TokenCredential {
     private final Deque<TokenCredential> credentials;
 
@@ -22,28 +24,8 @@ public class ChainedTokenCredential implements TokenCredential {
      * Create an instance of chained token credential that aggregates a list of token
      * credentials.
      */
-    public ChainedTokenCredential() {
-        credentials = new ArrayDeque<>();
-    }
-
-    /**
-     * Adds a credential to try to authenticate at the front of the chain.
-     * @param credential the credential to be added to the front of chain
-     * @return the ChainedTokenCredential itself
-     */
-    public ChainedTokenCredential addFirst(TokenCredential credential) {
-        credentials.addFirst(credential);
-        return this;
-    }
-
-    /**
-     * Adds a credential to try to authenticate at the last of the chain.
-     * @param credential the credential to be added to the end of chain
-     * @return the ChainedTokenCredential itself
-     */
-    public ChainedTokenCredential addLast(TokenCredential credential) {
-        credentials.addLast(credential);
-        return this;
+    ChainedTokenCredential(Deque<TokenCredential> credentials) {
+        this.credentials = credentials;
     }
 
     @Override

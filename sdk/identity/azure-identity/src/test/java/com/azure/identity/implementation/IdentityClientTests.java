@@ -1,10 +1,10 @@
-package com.azure.identity;
+package com.azure.identity.implementation;
 
 import com.azure.core.credentials.AccessToken;
+import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
-import com.microsoft.aad.msal4j.IAccount;
-import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,9 +15,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Date;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 import static org.junit.Assert.fail;
 
@@ -36,11 +34,11 @@ public class IdentityClientTests {
 
         // mock
         PowerMockito.stub(PowerMockito.method(ConfidentialClientApplication.class, "acquireToken", ClientCredentialParameters.class))
-            .toReturn(getMockAuthenticationResult(accessToken, expiresOn));
+            .toReturn(TestUtils.getMockAuthenticationResult(accessToken, expiresOn));
 
         // test
-        IdentityClient client = new IdentityClient();
-        AccessToken token = client.authenticateWithClientSecret(tenantId, clientId, secret, scopes).block();
+        IdentityClient client = new IdentityClient(tenantId, clientId, null);
+        AccessToken token = client.authenticateWithClientSecret(secret, scopes).block();
         Assert.assertEquals(accessToken, token.token());
         Assert.assertEquals(expiresOn, token.expiresOn());
     }
@@ -57,46 +55,11 @@ public class IdentityClientTests {
 
         // test
         try {
-            IdentityClient client = new IdentityClient();
-            client.authenticateWithClientSecret(tenantId, clientId, secret, scopes).block();
+            IdentityClient client = new IdentityClient(tenantId, clientId, null);
+            client.authenticateWithClientSecret(secret, scopes).block();
             fail();
         } catch (MsalServiceException e) {
             Assert.assertEquals("bad secret", e.getMessage());
         }
-    }
-
-    private static CompletableFuture<IAuthenticationResult> getMockAuthenticationResult(String accessToken, OffsetDateTime expiresOn) {
-        return CompletableFuture.completedFuture(new IAuthenticationResult() {
-            @Override
-            public String accessToken() {
-                return accessToken;
-            }
-
-            @Override
-            public String idToken() {
-                return null;
-            }
-
-            @Override
-            public IAccount account() {
-                return null;
-            }
-
-            @Override
-            public String environment() {
-                return null;
-            }
-
-            @Override
-            public String scopes() {
-                return null;
-            }
-
-            @Override
-            public Date expiresOnDate() {
-                // Access token dials back 2 minutes
-                return Date.from(expiresOn.plusMinutes(2).toInstant());
-            }
-        });
     }
 }

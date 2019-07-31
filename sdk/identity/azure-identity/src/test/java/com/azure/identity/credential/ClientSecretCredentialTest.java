@@ -1,7 +1,8 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.identity.IdentityClient;
+import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -9,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -37,12 +37,12 @@ public class ClientSecretCredentialTest {
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithClientSecret(tenantId, clientId, secret, scopes1)).thenReturn(getMockAccessToken(token1, expiresOn));
-        when(identityClient.authenticateWithClientSecret(tenantId, clientId, secret, scopes2)).thenReturn(getMockAccessToken(token2, expiresOn));
+        when(identityClient.authenticateWithClientSecret(secret, scopes1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
+        when(identityClient.authenticateWithClientSecret(secret, scopes2)).thenReturn(TestUtils.getMockAccessToken(token2, expiresOn));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        ClientSecretCredential credential = new ClientSecretCredential().tenantId(tenantId).clientId(clientId).clientSecret(secret);
+        ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(secret).build();
         AccessToken token = credential.getToken(scopes1).block();
         Assert.assertEquals(token1, token.token());
         Assert.assertEquals(expiresOn, token.expiresOn());
@@ -62,17 +62,17 @@ public class ClientSecretCredentialTest {
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithClientSecret(tenantId, clientId, secret, scopes)).thenReturn(getMockAccessToken(token1, expiresOn));
-        when(identityClient.authenticateWithClientSecret(tenantId, clientId, badSecret, scopes)).thenThrow(new MsalServiceException("bad secret", "BadSecret"));
+        when(identityClient.authenticateWithClientSecret(secret, scopes)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
+        when(identityClient.authenticateWithClientSecret(badSecret, scopes)).thenThrow(new MsalServiceException("bad secret", "BadSecret"));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        ClientSecretCredential credential = new ClientSecretCredential().tenantId(tenantId).clientId(clientId).clientSecret(secret);
+        ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(secret).build();
         AccessToken token = credential.getToken(scopes).block();
         Assert.assertEquals(token1, token.token());
         Assert.assertEquals(expiresOn, token.expiresOn());
         try {
-            credential.clientSecret(badSecret);
+            credential = new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(badSecret).build();
             credential.getToken(scopes).block();
             fail();
         } catch (MsalServiceException e) {
@@ -90,34 +90,30 @@ public class ClientSecretCredentialTest {
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithClientSecret(tenantId, clientId, secret, scopes)).thenReturn(getMockAccessToken(token1, expiresOn));
+        when(identityClient.authenticateWithClientSecret(secret, scopes)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
         try {
-            ClientSecretCredential credential = new ClientSecretCredential().clientId(clientId).clientSecret(secret);
+            ClientSecretCredential credential = new ClientSecretCredentialBuilder().clientId(clientId).clientSecret(secret).build();
             credential.getToken(scopes).block();
             fail();
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains("tenantId"));
         }
         try {
-            ClientSecretCredential credential = new ClientSecretCredential().tenantId(tenantId).clientSecret(secret);
+            ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(tenantId).clientSecret(secret).build();
             credential.getToken(scopes).block();
             fail();
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains("clientId"));
         }
         try {
-            ClientSecretCredential credential = new ClientSecretCredential().tenantId(tenantId).clientId(clientId);
+            ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).build();
             credential.getToken(scopes).block();
             fail();
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains("clientSecret"));
         }
-    }
-
-    private static Mono<AccessToken> getMockAccessToken(String accessToken, OffsetDateTime expiresOn) {
-        return Mono.just(new AccessToken(accessToken, expiresOn.plusMinutes(2)));
     }
 }

@@ -4,8 +4,8 @@ import com.azure.core.credentials.AccessToken;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
-import com.azure.identity.IdentityClient;
-import com.microsoft.aad.msal4j.MsalServiceException;
+import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.util.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +14,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
@@ -45,11 +44,11 @@ public class DefaultAzureCredentialTest {
 
             // mock
             IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-            when(identityClient.authenticateWithClientSecret(tenantId, clientId, secret, scopes1)).thenReturn(getMockAccessToken(token1, expiresOn));
+            when(identityClient.authenticateWithClientSecret(secret, scopes1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
             PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
             // test
-            DefaultAzureCredential credential = new DefaultAzureCredential();
+            DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
             AccessToken token = credential.getToken(scopes1).block();
             Assert.assertEquals(token1, token.token());
             Assert.assertEquals(expiresOn, token.expiresOn());
@@ -70,11 +69,11 @@ public class DefaultAzureCredentialTest {
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateToIMDSEndpoint(null, scopes)).thenReturn(getMockAccessToken(token1, expiresOn));
+        when(identityClient.authenticateToIMDSEndpoint(scopes)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        DefaultAzureCredential credential = new DefaultAzureCredential();
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         AccessToken token = credential.getToken(scopes).block();
         Assert.assertEquals(token1, token.token());
         Assert.assertEquals(expiresOn, token.expiresOn());
@@ -87,20 +86,16 @@ public class DefaultAzureCredentialTest {
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateToIMDSEndpoint(null, scopes)).thenReturn(Mono.error(new RuntimeException("Hidden error message")));
+        when(identityClient.authenticateToIMDSEndpoint( scopes)).thenReturn(Mono.error(new RuntimeException("Hidden error message")));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
         try {
-            DefaultAzureCredential credential = new DefaultAzureCredential();
+            DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
             credential.getToken(scopes).block();
             fail();
         } catch (ClientAuthenticationException e) {
             Assert.assertTrue(e.getMessage().contains("No credential can provide a token"));
         }
-    }
-
-    private static Mono<AccessToken> getMockAccessToken(String accessToken, OffsetDateTime expiresOn) {
-        return Mono.just(new AccessToken(accessToken, expiresOn.plusMinutes(2)));
     }
 }

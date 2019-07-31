@@ -1,8 +1,11 @@
-package com.azure.identity;
+package com.azure.identity.implementation;
 
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.ProxyOptions.Type;
+import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.MsalToken;
 import org.junit.Assert;
 import org.junit.Ignore;
 
@@ -18,13 +21,13 @@ public class IdentityClientIntegrationTests {
 
     @Ignore("Integration test")
     public void clientSecretCanGetToken() {
-        IdentityClient client = new IdentityClient(new IdentityClientOptions().proxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
-        AccessToken token = client.authenticateWithClientSecret(System.getenv(AZURE_TENANT_ID), System.getenv(AZURE_CLIENT_ID), System.getenv(AZURE_CLIENT_SECRET), scopes).block();
+        IdentityClient client = new IdentityClient(System.getenv(AZURE_TENANT_ID), System.getenv(AZURE_CLIENT_ID), new IdentityClientOptions().proxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
+        AccessToken token = client.authenticateWithClientSecret(System.getenv(AZURE_CLIENT_SECRET), scopes).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.token());
         Assert.assertNotNull(token.expiresOn());
         Assert.assertFalse(token.isExpired());
-        token = client.authenticateWithCurrentlyLoggedInAccount(new String[] { "https://vault.azure.net/.default" }).block();
+        token = client.authenticateWithClientSecret(System.getenv(AZURE_CLIENT_SECRET), new String[] { "https://vault.azure.net/.default" }).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.token());
         Assert.assertNotNull(token.expiresOn());
@@ -33,8 +36,8 @@ public class IdentityClientIntegrationTests {
 
     @Ignore("Integration test")
     public void deviceCodeCanGetToken() {
-        IdentityClient client = new IdentityClient(new IdentityClientOptions().proxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
-        AccessToken token = client.authenticateWithDeviceCode(System.getenv(AZURE_CLI_CLIENT_ID), scopes, deviceCode -> {
+        IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), new IdentityClientOptions().proxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
+        MsalToken token = client.authenticateWithDeviceCode(scopes, deviceCode -> {
             System.out.println(deviceCode.message());
             try {
                 Thread.sleep(60000);
@@ -46,7 +49,7 @@ public class IdentityClientIntegrationTests {
         Assert.assertNotNull(token.token());
         Assert.assertNotNull(token.expiresOn());
         Assert.assertFalse(token.isExpired());
-        token = client.authenticateWithCurrentlyLoggedInAccount(new String[] { "https://vault.azure.net/.default" }).block();
+        token = client.authenticateWithUserRefreshToken(new String[] { "https://vault.azure.net/.default" }, token).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.token());
         Assert.assertNotNull(token.expiresOn());
@@ -55,13 +58,13 @@ public class IdentityClientIntegrationTests {
 
     @Ignore("Integration test")
     public void browserCanGetToken() {
-        IdentityClient client = new IdentityClient(new IdentityClientOptions().proxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
-        AccessToken token = client.authenticateWithBrowserInteraction(System.getenv(AZURE_CLI_CLIENT_ID), scopes, 8765).block();
+        IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), new IdentityClientOptions().proxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
+        MsalToken token = client.authenticateWithBrowserInteraction(scopes, 8765).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.token());
         Assert.assertNotNull(token.expiresOn());
         Assert.assertFalse(token.isExpired());
-        token = client.authenticateWithCurrentlyLoggedInAccount(new String[] { "https://vault.azure.net/.default" }).block();
+        token = client.authenticateWithUserRefreshToken(new String[] { "https://vault.azure.net/.default" }, token).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.token());
         Assert.assertNotNull(token.expiresOn());
