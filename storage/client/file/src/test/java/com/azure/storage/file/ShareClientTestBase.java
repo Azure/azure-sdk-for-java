@@ -61,6 +61,21 @@ public abstract class ShareClientTestBase extends TestBase {
     public abstract void deleteDirectoryDoesNotExistFromShareClient();
 
     @Test
+    public abstract void createFileFromShareClient();
+
+    @Test
+    public abstract void createFileInvalidNameFromShareClient();
+
+    @Test
+    public abstract void createFileAlreadyExistsFromShareClient();
+
+    @Test
+    public abstract void deleteFileFromShareClient();
+
+    @Test
+    public abstract void deleteFileDoesNotExistFromShareClient();
+
+    @Test
     public abstract void createFromShareClient();
 
     @Test

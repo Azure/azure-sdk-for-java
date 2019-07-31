@@ -3,6 +3,7 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.Response;
@@ -90,7 +91,7 @@ public class ShareClientTests extends ShareClientTestBase {
         shareClient.create();
         FileClient fileClient = shareClient.getFileClient("testfile");
         Assert.assertNotNull(fileClient);
-        thrown.expect(StorageErrorException.class);
+        thrown.expect(HttpResponseException.class);
         fileClient.getProperties();
     }
 
@@ -130,6 +131,42 @@ public class ShareClientTests extends ShareClientTestBase {
         thrown.expect(StorageErrorException.class);
         thrown.expectMessage("ResourceNotFound");
         shareClient.deleteDirectory("testshare");
+    }
+
+    @Override
+    public void createFileFromShareClient() {
+        shareClient.create();
+        FileTestHelpers.assertResponseStatusCode(shareClient.createFile("myFile", 1024), 201);
+    }
+
+    @Override
+    public void createFileInvalidNameFromShareClient() {
+        shareClient.create();
+        thrown.expect(StorageErrorException.class);
+        thrown.expectMessage("ParentNotFound");
+        FileTestHelpers.assertResponseStatusCode(shareClient.createFile("my/File", 1024), 201);
+    }
+
+    @Override
+    public void createFileAlreadyExistsFromShareClient() {
+        shareClient.create();
+        shareClient.createFile("myFile", 1024);
+        FileTestHelpers.assertResponseStatusCode(shareClient.createFile("myFile", 1024), 201);
+    }
+
+    @Override
+    public void deleteFileFromShareClient() {
+        shareClient.create();
+        FileTestHelpers.assertResponseStatusCode(shareClient.createFile("myFile", 1024), 201);
+        FileTestHelpers.assertResponseStatusCode(shareClient.deleteFile("myFile"), 202);
+    }
+
+    @Override
+    public void deleteFileDoesNotExistFromShareClient() {
+        shareClient.create();
+        thrown.expect(StorageErrorException.class);
+        thrown.expectMessage("ResourceNotFound");
+        shareClient.deleteFile("myFile");
     }
 
     @Override

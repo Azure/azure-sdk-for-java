@@ -3,6 +3,7 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.Response;
@@ -87,7 +88,7 @@ public class ShareAsyncClientTests extends ShareClientTestBase {
         FileAsyncClient fileAsyncClient = shareAsyncClient.getFileClient("testfile");
         Assert.assertNotNull(fileAsyncClient);
         StepVerifier.create(fileAsyncClient.getProperties())
-            .verifyErrorSatisfies(response -> FileTestHelpers.assertExceptionStatusCode(response, 404));
+            .verifyErrorSatisfies(response -> Assert.assertTrue(response instanceof HttpResponseException));
     }
 
     @Override
@@ -126,6 +127,46 @@ public class ShareAsyncClientTests extends ShareClientTestBase {
     public void deleteDirectoryDoesNotExistFromShareClient() {
         shareAsyncClient.create().block();
         StepVerifier.create(shareAsyncClient.deleteDirectory("testshare"))
+            .verifyErrorSatisfies(response -> FileTestHelpers.assertExceptionStatusCode(response, 404));
+    }
+
+    @Override
+    public void createFileFromShareClient() {
+        shareAsyncClient.create().block();
+        StepVerifier.create(shareAsyncClient.createFile("myFile", 1024))
+            .assertNext(fileAsyncClientResponse -> FileTestHelpers.assertResponseStatusCode(fileAsyncClientResponse, 201))
+            .verifyComplete();
+    }
+
+    @Override
+    public void createFileInvalidNameFromShareClient() {
+        shareAsyncClient.create().block();
+        StepVerifier.create(shareAsyncClient.createFile("my/File", 1024))
+            .verifyErrorSatisfies(response -> FileTestHelpers.assertExceptionStatusCode(response, 404));
+    }
+
+    @Override
+    public void createFileAlreadyExistsFromShareClient() {
+        shareAsyncClient.create().block();
+        shareAsyncClient.createFile("myFile", 1024).block();
+        StepVerifier.create(shareAsyncClient.createFile("myFile", 1024))
+            .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201));
+    }
+
+    @Override
+    public void deleteFileFromShareClient() {
+        shareAsyncClient.create().block();
+        StepVerifier.create(shareAsyncClient.createFile("myFile", 1024))
+            .assertNext(fileAsyncClientResponse -> FileTestHelpers.assertResponseStatusCode(fileAsyncClientResponse, 201))
+            .verifyComplete();
+        StepVerifier.create(shareAsyncClient.deleteFile("myFile"))
+            .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 202));
+    }
+
+    @Override
+    public void deleteFileDoesNotExistFromShareClient() {
+        shareAsyncClient.create().block();
+        StepVerifier.create(shareAsyncClient.deleteFile("myFile"))
             .verifyErrorSatisfies(response -> FileTestHelpers.assertExceptionStatusCode(response, 404));
     }
 
