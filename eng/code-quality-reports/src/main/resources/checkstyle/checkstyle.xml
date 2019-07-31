@@ -310,6 +310,11 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="com.azure.tools.checkstyle.checks.ServiceInterfaceCheck"/>
 
     <!--CUSTOM CHECKS-->
+    <!-- The @Immutable class should have the following rules:
+    1) All fields must be final -->
+    <module name="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClassCheck"/>
+
+    <!--CUSTOM CHECKS-->
     <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
 <!--    <module name="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck"/>-->
   </module>
