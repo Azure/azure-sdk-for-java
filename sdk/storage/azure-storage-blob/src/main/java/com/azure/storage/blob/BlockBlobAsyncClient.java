@@ -9,6 +9,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -67,6 +68,8 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
 public final class BlockBlobAsyncClient extends BlobAsyncClient {
     static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
     static final int BLOB_MAX_UPLOAD_BLOCK_SIZE = 100 * Constants.MB;
+
+    private final ClientLogger logger = new ClientLogger(BlockBlobAsyncClient.class);
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
@@ -182,7 +185,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
     public Mono<Void> uploadFromFile(String filePath, Integer blockSize, BlobHTTPHeaders headers, Metadata metadata,
                                      BlobAccessConditions accessConditions) {
         if (blockSize < 0 || blockSize > BLOB_MAX_UPLOAD_BLOCK_SIZE) {
-            throw new IllegalArgumentException("Block size should not exceed 100MB");
+            logger.logAndThrow(new IllegalArgumentException("Block size should not exceed 100MB"));
         }
 
         return Mono.using(() -> uploadFileResourceSupplier(filePath),
@@ -200,7 +203,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
                         try {
                             channel.close();
                         } catch (IOException e) {
-                            throw new UncheckedIOException(e);
+                            logger.logAndThrow(new UncheckedIOException(e));
                         }
                     });
             }, this::uploadFileCleanup);
@@ -210,7 +213,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         try {
             return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ);
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            logger.logAndThrow(new UncheckedIOException(e));
+            return null;
         }
     }
 
@@ -218,7 +222,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         try {
             channel.close();
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            logger.logAndThrow(new UncheckedIOException(e));
         }
     }
 

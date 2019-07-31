@@ -16,6 +16,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
@@ -71,6 +72,7 @@ import java.util.Objects;
  */
 public class ShareClientBuilder {
     private static final String ACCOUNT_NAME = "accountname";
+    private final ClientLogger logger = new ClientLogger(ShareClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
 
     private URL endpoint;
@@ -117,7 +119,7 @@ public class ShareClientBuilder {
         }
 
         if (sasTokenCredential == null && sharedKeyCredential == null) {
-            throw new IllegalArgumentException("Credentials are required for authorization");
+            logger.logAndThrow(new IllegalArgumentException("Credentials are required for authorization"));
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -191,7 +193,7 @@ public class ShareClientBuilder {
                 this.sharedKeyCredential = null;
             }
         } catch (MalformedURLException ex) {
-            throw new IllegalArgumentException("The Azure Storage File Service endpoint url is malformed.");
+            logger.logAndThrow(new IllegalArgumentException("The Azure Storage File Service endpoint url is malformed."));
         }
 
         return this;
@@ -248,8 +250,8 @@ public class ShareClientBuilder {
         try {
             this.endpoint = new URL(String.format("https://%s.file.core.windows.net", accountName));
         } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(String.format("There is no valid endpoint for the connection string. "
-                                                                 + "Connection String: %s", connectionString));
+            logger.logAndThrow(new IllegalArgumentException(String.format("There is no valid endpoint for the connection string. "
+                                                                 + "Connection String: %s", connectionString)));
         }
     }
 

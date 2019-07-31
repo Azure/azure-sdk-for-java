@@ -39,6 +39,10 @@ import com.azure.storage.file.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageErrorException;
 import io.netty.buffer.ByteBuf;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -54,9 +58,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 /**
  * This class provides a client that contains all the operations for interacting with file in Azure Storage File Service.
@@ -120,14 +121,15 @@ public class FileAsyncClient {
     /**
      * Get the url of the storage file client.
      * @return the URL of the storage file client
-     * @throws RuntimeException If the file is using a malformed URL.
+     * @throws IllegalStateException If the file is using a malformed URL.
      */
     public URL getFileUrl() {
         try {
             return new URL(azureFileStorageClient.getUrl());
         } catch (MalformedURLException e) {
-            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
-                azureFileStorageClient.getUrl()), e);
+            logger.logAndThrow(new IllegalStateException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
+                azureFileStorageClient.getUrl()), e));
+            return null;
         }
     }
 
@@ -252,7 +254,8 @@ public class FileAsyncClient {
         try {
             return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ, StandardOpenOption.WRITE);
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            logger.logAndThrow(new UncheckedIOException(e));
+            return null;
         }
     }
 
@@ -260,7 +263,7 @@ public class FileAsyncClient {
         try {
             channel.close();
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            logger.logAndThrow(new UncheckedIOException(e));
         }
     }
 

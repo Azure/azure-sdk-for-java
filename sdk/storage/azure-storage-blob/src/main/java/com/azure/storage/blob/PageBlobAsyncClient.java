@@ -7,6 +7,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -62,6 +63,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      */
     public static final int MAX_PUT_PAGES_BYTES = 4 * Constants.MB;
 
+    private final ClientLogger logger = new ClientLogger(PageBlobAsyncClient.class);
+
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
      * @param azureBlobStorageBuilder the API client builder for blob storage API
@@ -115,12 +118,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         if (size % PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES.");
+            logger.logAndThrow(new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES."));
         }
         if (sequenceNumber != null && sequenceNumber < 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new IllegalArgumentException("SequenceNumber must be greater than or equal to 0.");
+            logger.logAndThrow(new IllegalArgumentException("SequenceNumber must be greater than or equal to 0."));
         }
         metadata = metadata == null ? new Metadata() : metadata;
 
@@ -182,7 +185,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         if (pageRange == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new IllegalArgumentException("pageRange cannot be null.");
+            logger.logAndThrow(new IllegalArgumentException("pageRange cannot be null."));
         }
         String pageRangeStr = pageRangeToString(pageRange);
 
@@ -256,7 +259,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         if (range == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new IllegalArgumentException("range cannot be null.");
+            logger.logAndThrow(new IllegalArgumentException("range cannot be null."));
         }
 
         String rangeString = pageRangeToString(range);
@@ -315,7 +318,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         if (pageRange == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new IllegalArgumentException("pageRange cannot be null.");
+            logger.logAndThrow(new IllegalArgumentException("pageRange cannot be null."));
         }
         String pageRangeStr = pageRangeToString(pageRange);
 
@@ -402,7 +405,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         if (prevSnapshot == null) {
-            throw new IllegalArgumentException("prevSnapshot cannot be null");
+            logger.logAndThrow(new IllegalArgumentException("prevSnapshot cannot be null"));
         }
 
         return postProcessResponse(this.azureBlobStorage.pageBlobs().getPageRangesDiffWithRestResponseAsync(
@@ -444,7 +447,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         if (size % PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES.");
+            logger.logAndThrow(new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES."));
         }
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
@@ -491,7 +494,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         if (sequenceNumber != null && sequenceNumber < 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new IllegalArgumentException("SequenceNumber must be greater than or equal to 0.");
+            logger.logAndThrow(new IllegalArgumentException("SequenceNumber must be greater than or equal to 0."));
         }
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         sequenceNumber = action == SequenceNumberActionType.INCREMENT ? null : sequenceNumber;
@@ -541,7 +544,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         will fail if the specified condition is not satisfied.
      *
      * @return A reactive response emitting the copy status.
-     * @throws Error If {@code source} and {@code snapshot} form a malformed URL.
+     * @throws IllegalStateException If {@code source} and {@code snapshot} form a malformed URL.
      */
     public Mono<Response<CopyStatusType>> copyIncremental(URL source, String snapshot, ModifiedAccessConditions modifiedAccessConditions) {
         UrlBuilder builder = UrlBuilder.parse(source);
@@ -550,7 +553,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
             source = builder.toURL();
         } catch (MalformedURLException e) {
             // We are parsing a valid url and adding a query parameter. If this fails, we can't recover.
-            throw new Error(e);
+            logger.logAndThrow(new IllegalStateException(e));
         }
         return postProcessResponse(this.azureBlobStorage.pageBlobs().copyIncrementalWithRestResponseAsync(
             null, null, source, null, null, modifiedAccessConditions, Context.NONE))

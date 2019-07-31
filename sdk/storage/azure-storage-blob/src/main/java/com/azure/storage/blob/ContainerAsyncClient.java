@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.BlobFlatListSegment;
@@ -65,7 +66,9 @@ public final class ContainerAsyncClient {
     public static final String STATIC_WEBSITE_CONTAINER_NAME = "$web";
 
     public static final String LOG_CONTAINER_NAME = "$logs";
+    private static final String ETAG_NOT_ALLOWED_MESSAGE = "ETag access conditions are not supported for this API.";
 
+    private final ClientLogger logger = new ClientLogger(ContainerAsyncClient.class);
     private final AzureBlobStorageImpl azureBlobStorage;
 
     /**
@@ -226,7 +229,8 @@ public final class ContainerAsyncClient {
         try {
             return new URL(azureBlobStorage.getUrl());
         } catch (MalformedURLException e) {
-            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e);
+            logger.logAndThrow(new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e));
+            return null;
         }
     }
 
@@ -300,7 +304,7 @@ public final class ContainerAsyncClient {
         if (!validateNoEtag(accessConditions.modifiedAccessConditions())) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new UnsupportedOperationException("ETag access conditions are not supported for this API.");
+            logger.logAndThrow(new UnsupportedOperationException(ETAG_NOT_ALLOWED_MESSAGE));
         }
 
         return postProcessResponse(this.azureBlobStorage.containers()
@@ -362,8 +366,7 @@ public final class ContainerAsyncClient {
             || accessConditions.modifiedAccessConditions().ifUnmodifiedSince() != null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new UnsupportedOperationException(
-                "If-Modified-Since is the only HTTP access condition supported for this API");
+            logger.logAndThrow(new UnsupportedOperationException("If-Modified-Since is the only HTTP access condition supported for this API"));
         }
 
         return postProcessResponse(this.azureBlobStorage.containers()
@@ -439,7 +442,7 @@ public final class ContainerAsyncClient {
         if (!validateNoEtag(accessConditions.modifiedAccessConditions())) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new UnsupportedOperationException("ETag access conditions are not supported for this API.");
+            logger.logAndThrow(new UnsupportedOperationException(ETAG_NOT_ALLOWED_MESSAGE));
         }
 
         /*
@@ -658,7 +661,7 @@ public final class ContainerAsyncClient {
     private Mono<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(String marker, String delimiter, ListBlobsOptions options) {
         options = options == null ? new ListBlobsOptions() : options;
         if (options.details().snapshots()) {
-            throw new UnsupportedOperationException("Including snapshots in a hierarchical listing is not supported.");
+            logger.logAndThrow(new UnsupportedOperationException("Including snapshots in a hierarchical listing is not supported."));
         }
 
         return postProcessResponse(this.azureBlobStorage.containers()
@@ -791,8 +794,7 @@ public final class ContainerAsyncClient {
         if (!this.validateNoEtag(modifiedAccessConditions)) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new UnsupportedOperationException(
-                "ETag access conditions are not supported for this API.");
+            logger.logAndThrow(new UnsupportedOperationException(ETAG_NOT_ALLOWED_MESSAGE));
         }
 
         return postProcessResponse(this.azureBlobStorage.containers().acquireLeaseWithRestResponseAsync(
@@ -825,8 +827,7 @@ public final class ContainerAsyncClient {
         if (!this.validateNoEtag(modifiedAccessConditions)) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new UnsupportedOperationException(
-                "ETag access conditions are not supported for this API.");
+            logger.logAndThrow(new UnsupportedOperationException(ETAG_NOT_ALLOWED_MESSAGE));
         }
 
         return postProcessResponse(this.azureBlobStorage.containers().renewLeaseWithRestResponseAsync(null,
@@ -859,8 +860,7 @@ public final class ContainerAsyncClient {
         if (!this.validateNoEtag(modifiedAccessConditions)) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new UnsupportedOperationException(
-                "ETag access conditions are not supported for this API.");
+            logger.logAndThrow(new UnsupportedOperationException(ETAG_NOT_ALLOWED_MESSAGE));
         }
 
         return postProcessResponse(this.azureBlobStorage.containers().releaseLeaseWithRestResponseAsync(
@@ -898,8 +898,7 @@ public final class ContainerAsyncClient {
         if (!this.validateNoEtag(modifiedAccessConditions)) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new UnsupportedOperationException(
-                "ETag access conditions are not supported for this API.");
+            logger.logAndThrow(new UnsupportedOperationException(ETAG_NOT_ALLOWED_MESSAGE));
         }
 
         return postProcessResponse(this.azureBlobStorage.containers().breakLeaseWithRestResponseAsync(null,
@@ -935,8 +934,7 @@ public final class ContainerAsyncClient {
         if (!this.validateNoEtag(modifiedAccessConditions)) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new UnsupportedOperationException(
-                "ETag access conditions are not supported for this API.");
+            logger.logAndThrow(new UnsupportedOperationException(ETAG_NOT_ALLOWED_MESSAGE));
         }
 
         return postProcessResponse(this.azureBlobStorage.containers().changeLeaseWithRestResponseAsync(null,

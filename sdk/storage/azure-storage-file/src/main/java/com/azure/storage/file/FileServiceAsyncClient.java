@@ -9,6 +9,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageBuilder;
@@ -22,14 +23,15 @@ import com.azure.storage.file.models.ListSharesResponse;
 import com.azure.storage.file.models.ServicesListSharesSegmentResponse;
 import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.StorageErrorException;
+import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * This class provides a azureFileStorageClient that contains all the operations for interacting with a file account in Azure Storage.
@@ -48,6 +50,7 @@ import reactor.core.publisher.Mono;
  * @see SASTokenCredential
  */
 public final class FileServiceAsyncClient {
+    private final ClientLogger logger = new ClientLogger(FileServiceAsyncClient.class);
     private final AzureFileStorageImpl azureFileStorageClient;
 
     /**
@@ -66,14 +69,15 @@ public final class FileServiceAsyncClient {
     /**
      * Get the url of the storage file service client.
      * @return the url of the Storage File service.
-     * @throws RuntimeException If the file service is using a malformed URL.
+     * @throws IllegalStateException If the file service is using a malformed URL.
      */
     public URL getFileServiceUrl() {
         try {
             return new URL(azureFileStorageClient.getUrl());
         } catch (MalformedURLException e) {
-            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
-                azureFileStorageClient.getUrl()), e);
+            logger.logAndThrow(new IllegalStateException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
+                azureFileStorageClient.getUrl()), e));
+            return null;
         }
     }
 

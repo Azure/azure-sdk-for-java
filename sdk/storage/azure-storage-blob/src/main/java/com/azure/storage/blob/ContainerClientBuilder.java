@@ -17,6 +17,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -56,6 +57,7 @@ public final class ContainerClientBuilder {
     private static final String ENDPOINT_PROTOCOL = "defaultendpointsprotocol";
     private static final String ENDPOINT_SUFFIX = "endpointsuffix";
 
+    private final ClientLogger logger = new ClientLogger(ContainerClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
 
     private String endpoint;
@@ -161,7 +163,7 @@ public final class ContainerClientBuilder {
                 this.sharedKeyCredential = null;
             }
         } catch (MalformedURLException ex) {
-            throw new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed.");
+            logger.logAndThrow(new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed."));
         }
 
         return this;
@@ -252,7 +254,7 @@ public final class ContainerClientBuilder {
         String endpointSuffix = connectionKVPs.get(ENDPOINT_SUFFIX);
 
         if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
-            throw new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'.");
+            logger.logAndThrow(new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'."));
         }
 
         if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {

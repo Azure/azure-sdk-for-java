@@ -70,8 +70,8 @@ import java.util.Objects;
  * @see SharedKeyCredential
  */
 public final class QueueServiceClientBuilder {
-    private static final ClientLogger LOGGER = new ClientLogger(QueueServiceClientBuilder.class);
     private static final String ACCOUNT_NAME = "accountname";
+    private final ClientLogger logger = new ClientLogger(QueueServiceClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
 
     private URL endpoint;
@@ -106,14 +106,13 @@ public final class QueueServiceClientBuilder {
      *
      * @return A QueueServiceAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} or {@code queueName} have not been set.
-     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
+     * @throws IllegalStateException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
      */
     public QueueServiceAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint);
 
         if (sasTokenCredential == null && sharedKeyCredential == null) {
-            LOGGER.error("Credentials are required for authorization");
-            throw new IllegalArgumentException("Credentials are required for authorization");
+            logger.logAndThrow(new IllegalStateException("Credentials are required for authorization"));
         }
 
         if (pipeline != null) {
@@ -189,8 +188,7 @@ public final class QueueServiceClientBuilder {
                 this.sasTokenCredential = credential;
             }
         } catch (MalformedURLException ex) {
-            LOGGER.error("The Azure Storage Queue endpoint url is malformed.");
-            throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed.");
+            logger.logAndThrow(new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed."));
         }
 
         return this;
@@ -245,10 +243,8 @@ public final class QueueServiceClientBuilder {
         try {
             this.endpoint = new URL(String.format("https://%s.queue.core.windows.net", accountName));
         } catch (MalformedURLException e) {
-            LOGGER.error("There is no valid account for the connection string. "
-                + "Connection String: %s", connectionString);
-            throw new IllegalArgumentException(String.format("There is no valid account for the connection string. "
-                + "Connection String: %s", connectionString));
+            logger.logAndThrow(new IllegalArgumentException(String.format("There is no valid account for the connection string. "
+                + "Connection String: %s", connectionString)));
         }
     }
 

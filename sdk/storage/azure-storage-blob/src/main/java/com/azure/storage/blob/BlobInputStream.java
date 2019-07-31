@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobRange;
 import reactor.netty.ByteBufFlux;
@@ -14,6 +15,8 @@ import java.nio.ByteBuffer;
  * Provides an input stream to read a given blob resource.
  */
 public final class BlobInputStream extends InputStream {
+    private final ClientLogger logger = new ClientLogger(BlobInputStream.class);
+
     /**
      * Holds the reference to the blob this stream is associated with.
      */
@@ -123,7 +126,7 @@ public final class BlobInputStream extends InputStream {
         this.accessCondition = accessCondition;
 
         if (blobRangeOffset < 0 || (blobRangeLength != null && blobRangeLength <= 0)) {
-            throw new IndexOutOfBoundsException();
+            logger.logAndThrow(new IndexOutOfBoundsException());
         }
 
         BlobProperties properties = blobClient.getProperties().block().value();
@@ -345,7 +348,7 @@ public final class BlobInputStream extends InputStream {
     @Override
     public int read(final byte[] b, final int off, final int len) throws IOException {
         if (off < 0 || len < 0 || len > b.length - off) {
-            throw new IndexOutOfBoundsException();
+            logger.logAndThrow(new IndexOutOfBoundsException());
         }
 
         return this.readInternal(b, off, len);
@@ -447,7 +450,7 @@ public final class BlobInputStream extends InputStream {
         }
 
         if (n < 0 || this.currentAbsoluteReadPosition + n > this.streamLength + this.blobRangeOffset) {
-            throw new IndexOutOfBoundsException();
+            logger.logAndThrow(new IndexOutOfBoundsException());
         }
 
         this.reposition(this.currentAbsoluteReadPosition + n);

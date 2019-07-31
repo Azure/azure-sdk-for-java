@@ -47,7 +47,7 @@ import java.util.Map;
  * @see SASTokenCredential
  */
 public final class QueueServiceAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(QueueServiceAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(QueueServiceAsyncClient.class);
     private final AzureQueueStorageImpl client;
 
     /**
@@ -65,14 +65,13 @@ public final class QueueServiceAsyncClient {
 
     /**
      * @return the URL of the storage queue
-     * @throws RuntimeException If the queue service is using a malformed URL.
+     * @throws IllegalStateException If the queue service is using a malformed URL.
      */
     public URL getQueueServiceUrl() {
         try {
             return new URL(client.getUrl());
         } catch (MalformedURLException ex) {
-            LOGGER.error("Queue Service URL is malformed");
-            throw new RuntimeException("Storage account URL is malformed");
+            logger.logAndThrow(new IllegalStateException("Storage account URL is malformed"));
         }
     }
 

@@ -16,6 +16,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
@@ -71,6 +72,7 @@ import java.util.Objects;
  */
 public class DirectoryClientBuilder {
     private static final String ACCOUNT_NAME = "accountname";
+    private final ClientLogger logger = new ClientLogger(DirectoryClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
     private final RetryPolicy retryPolicy;
 
@@ -109,7 +111,7 @@ public class DirectoryClientBuilder {
      *
      * @return A ShareAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code shareName} is {@code null} or {@code shareName} is {@code null}.
-     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
+     * @throws IllegalStateException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
      */
     public DirectoryAsyncClient buildAsyncClient() {
         Objects.requireNonNull(shareName);
@@ -120,7 +122,7 @@ public class DirectoryClientBuilder {
         }
 
         if (sasTokenCredential == null && sharedKeyCredential == null) {
-            throw new IllegalArgumentException("Credentials are required for authorization");
+            logger.logAndThrow(new IllegalStateException("Credentials are required for authorization"));
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -199,7 +201,7 @@ public class DirectoryClientBuilder {
                 this.sharedKeyCredential = null;
             }
         } catch (MalformedURLException ex) {
-            throw new IllegalArgumentException("The Azure Storage Directory endpoint url is malformed.");
+            logger.logAndThrow(new IllegalArgumentException("The Azure Storage Directory endpoint url is malformed."));
         }
 
         return this;
@@ -256,8 +258,8 @@ public class DirectoryClientBuilder {
         try {
             this.endpoint = new URL(String.format("https://%s.file.core.windows.net", accountName));
         } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(String.format("There is no valid endpoint for the connection string. "
-                                                                 + "Connection String: %s", connectionString));
+            logger.logAndThrow(new IllegalArgumentException(String.format("There is no valid endpoint for the connection string. "
+                                                                 + "Connection String: %s", connectionString)));
         }
     }
 

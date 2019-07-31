@@ -100,7 +100,7 @@ public final class SharedKeyCredential {
      *
      * @param stringToSign The UTF-8-encoded string to sign.
      * @return A {@code String} that contains the HMAC-SHA256-encoded signature.
-     *  @throws RuntimeException for one of the following cases:
+     *  @throws IllegalStateException for one of the following cases:
      * <ul>
      *   <li> If the HMAC-SHA256 signature for {@code sharedKeyCredentials} fails to generate. </li>
      *   <li> If the an invalid key has been given to the client. </li>
@@ -117,14 +117,9 @@ public final class SharedKeyCredential {
             hmacSha256.init(new SecretKeySpec(this.accountKey, "HmacSHA256"));
             byte[] utf8Bytes = stringToSign.getBytes(StandardCharsets.UTF_8);
             return Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
-        } catch (final NoSuchAlgorithmException e) {
-            String errorMsg = "There is no such algorithm. Error Details: " + e.getMessage();
-            logger.warning(errorMsg);
-            throw new RuntimeException(errorMsg);
-        } catch (InvalidKeyException e) {
-            String errorMsg = "Please double check the account key. Error details: " + e.getMessage();
-            logger.warning(errorMsg);
-            throw new RuntimeException(errorMsg);
+        } catch (final InvalidKeyException | NoSuchAlgorithmException e) {
+            logger.logAndThrow(new IllegalStateException(e));
+            return null;
         }
     }
 
@@ -236,8 +231,8 @@ public final class SharedKeyCredential {
             String signature = Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
             return String.format(AUTHORIZATION_HEADER_FORMAT, accountName, signature);
         } catch (NoSuchAlgorithmException | InvalidKeyException ex) {
-            logger.warning(ex.getMessage());
-            throw new Error(ex);
+            logger.logAndThrow(new IllegalStateException(ex));
+            return null;
         }
     }
 }

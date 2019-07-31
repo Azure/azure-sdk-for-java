@@ -15,8 +15,10 @@ import com.azure.storage.blob.models.ReliableDownloadOptions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 
@@ -110,13 +112,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.download
         client.download().subscribe(response -> {
             ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
-            response.value().subscribe(piece -> {
-                try {
-                    downloadData.write(piece.array());
-                } catch (IOException ex) {
-                    throw new UncheckedIOException(ex);
-                }
-            });
+            response.value().subscribe(piece -> writeDataToStream(downloadData, piece));
         });
         // END: com.azure.storage.blob.BlobAsyncClient.download
 
@@ -126,15 +122,17 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
         client.download(range, options, null, false).subscribe(response -> {
             ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
-            response.value().subscribe(piece -> {
-                try {
-                    downloadData.write(piece.array());
-                } catch (IOException ex) {
-                    throw new UncheckedIOException(ex);
-                }
-            });
+            response.value().subscribe(piece -> writeDataToStream(downloadData, piece));
         });
         // END: com.azure.storage.blob.BlobAsyncClient.download#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
+    }
+
+    private void writeDataToStream(OutputStream stream, ByteBuffer data) {
+        try {
+            stream.write(data.array());
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
     }
 
     /**

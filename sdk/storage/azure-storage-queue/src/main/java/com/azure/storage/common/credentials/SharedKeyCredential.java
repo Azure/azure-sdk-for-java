@@ -27,8 +27,8 @@ import java.util.stream.Collectors;
  * SharedKey credential policy that is put into a header to authorize requests.
  */
 public final class SharedKeyCredential {
-    private static final ClientLogger LOGGER = new ClientLogger(SharedKeyCredential.class);
     private static final String AUTHORIZATION_HEADER_FORMAT = "SharedKey %s:%s";
+    private final ClientLogger logger = new ClientLogger(SharedKeyCredential.class);
 
     // Pieces of the connection string that are needed.
     private static final String ACCOUNT_NAME = "accountname";
@@ -115,12 +115,9 @@ public final class SharedKeyCredential {
             hmacSha256.init(new SecretKeySpec(this.accountKey, "HmacSHA256"));
             byte[] utf8Bytes = stringToSign.getBytes(StandardCharsets.UTF_8);
             return Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
-        } catch (final NoSuchAlgorithmException e) {
-            LOGGER.error(e.getMessage());
-            throw new RuntimeException(e);
-        } catch (InvalidKeyException e) {
-            LOGGER.error("Please double check the account key. Error details: " + e.getMessage());
-            throw new RuntimeException("Please double check the account key. Error details: " + e.getMessage());
+        } catch (final InvalidKeyException | NoSuchAlgorithmException e) {
+            logger.logAndThrow(new IllegalStateException(e));
+            return null;
         }
     }
 
@@ -232,8 +229,7 @@ public final class SharedKeyCredential {
             String signature = Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
             return String.format(AUTHORIZATION_HEADER_FORMAT, accountName, signature);
         } catch (NoSuchAlgorithmException | InvalidKeyException ex) {
-            LOGGER.error(ex.getMessage());
-            throw new Error(ex);
+            logger.logAndThrow(new IllegalStateException(ex));
         }
     }
 }

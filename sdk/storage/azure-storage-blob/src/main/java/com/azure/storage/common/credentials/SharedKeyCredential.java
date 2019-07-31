@@ -4,6 +4,7 @@
 package com.azure.storage.common.credentials;
 
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.handler.codec.http.QueryStringDecoder;
 
 import javax.crypto.Mac;
@@ -31,6 +32,8 @@ public final class SharedKeyCredential {
     // Pieces of the connection string that are needed.
     private static final String ACCOUNT_NAME = "accountname";
     private static final String ACCOUNT_KEY = "accountkey";
+
+    private final ClientLogger logger = new ClientLogger(SharedKeyCredential.class);
 
     private final String accountName;
     private final byte[] accountKey;
@@ -113,7 +116,8 @@ public final class SharedKeyCredential {
             byte[] utf8Bytes = stringToSign.getBytes(StandardCharsets.UTF_8);
             return Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
         } catch (final  NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            logger.logAndThrow(new RuntimeException(e));
+            return null;
         }
     }
 
@@ -225,7 +229,8 @@ public final class SharedKeyCredential {
             String signature = Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
             return String.format(AUTHORIZATION_HEADER_FORMAT, accountName, signature);
         } catch (NoSuchAlgorithmException | InvalidKeyException ex) {
-            throw new Error(ex);
+            logger.logAndThrow(new IllegalStateException(ex));
+            return null;
         }
     }
 }

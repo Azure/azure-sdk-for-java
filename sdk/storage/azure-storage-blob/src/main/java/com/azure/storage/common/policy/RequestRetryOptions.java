@@ -3,6 +3,8 @@
 
 package com.azure.storage.common.policy;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -11,6 +13,7 @@ import java.util.concurrent.TimeUnit;
  * this functionality.
  */
 public final class RequestRetryOptions {
+    private final ClientLogger logger = new ClientLogger(RequestRetryOptions.class);
 
     private final int maxTries;
     private final int tryTimeout;
@@ -86,7 +89,7 @@ public final class RequestRetryOptions {
 
         if ((retryDelayInMs == null && maxRetryDelayInMs != null)
                 || (retryDelayInMs != null && maxRetryDelayInMs == null)) {
-            throw new IllegalArgumentException("Both retryDelay and maxRetryDelay must be null or neither can be null");
+            logger.logAndThrow(new IllegalArgumentException("Both retryDelay and maxRetryDelay must be null or neither can be null"));
         }
 
         if (retryDelayInMs != null && maxRetryDelayInMs != null) {
@@ -103,7 +106,9 @@ public final class RequestRetryOptions {
                     this.retryDelayInMs = TimeUnit.SECONDS.toMillis(30);
                     break;
                 default:
-                    throw new IllegalArgumentException("Unrecognize retry policy type.");
+                    this.retryDelayInMs = TimeUnit.SECONDS.toMillis(30);
+                    logger.logAndThrow(new IllegalArgumentException("Unrecognize retry policy type."));
+                    break;
             }
             this.maxRetryDelayInMs = TimeUnit.SECONDS.toMillis(120);
         }
@@ -150,7 +155,7 @@ public final class RequestRetryOptions {
                 delay = this.retryDelayInMs;
                 break;
             default:
-                throw new IllegalArgumentException("Invalid retry policy type.");
+                logger.logAndThrow(new IllegalArgumentException("Invalid retry policy type."));
         }
 
         return Math.min(delay, this.maxRetryDelayInMs);

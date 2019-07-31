@@ -10,6 +10,7 @@ import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
@@ -74,6 +75,8 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
 public class BlobAsyncClient {
     private static final int BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE = 4 * Constants.MB;
     private static final int BLOB_MAX_DOWNLOAD_BLOCK_SIZE = 100 * Constants.MB;
+
+    private final ClientLogger logger = new ClientLogger(BlobAsyncClient.class);
 
     final AzureBlobStorageImpl azureBlobStorage;
     protected final String snapshot;
@@ -142,7 +145,7 @@ public class BlobAsyncClient {
      * Gets the URL of the blob represented by this client.
      *
      * @return the URL.
-     * @throws RuntimeException If the blob is using a malformed URL.
+     * @throws IllegalStateException If the blob is using a malformed URL.
      */
     public URL getBlobUrl() {
         try {
@@ -152,7 +155,8 @@ public class BlobAsyncClient {
             }
             return urlBuilder.toURL();
         } catch (MalformedURLException e) {
-            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e);
+            logger.logAndThrow(new IllegalStateException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e));
+            return null;
         }
     }
 
@@ -458,7 +462,7 @@ public class BlobAsyncClient {
     public Mono<Void> downloadToFile(String filePath, BlobRange range, Integer blockSize, ReliableDownloadOptions options,
                                      BlobAccessConditions accessConditions, boolean rangeGetContentMD5) {
         if (blockSize < 0 || blockSize > BLOB_MAX_DOWNLOAD_BLOCK_SIZE) {
-            throw new IllegalArgumentException("Block size should not exceed 100MB");
+            logger.logAndThrow(new IllegalArgumentException("Block size should not exceed 100MB"));
         }
 
         return Mono.using(() -> downloadToFileResourceSupplier(filePath),
@@ -475,7 +479,8 @@ public class BlobAsyncClient {
         try {
             return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ, StandardOpenOption.WRITE);
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            logger.logAndThrow(new UncheckedIOException(e));
+            return null;
         }
     }
 
@@ -483,7 +488,7 @@ public class BlobAsyncClient {
         try {
             channel.close();
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            logger.logAndThrow(new UncheckedIOException(e));
         }
     }
 
@@ -824,7 +829,7 @@ public class BlobAsyncClient {
         if (!(duration == -1 || (duration >= 15 && duration <= 60))) {
             // Throwing is preferred to Mono.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new IllegalArgumentException("Duration must be -1 or between 15 and 60.");
+            logger.logAndThrow(new IllegalArgumentException("Duration must be -1 or between 15 and 60."));
         }
 
         return postProcessResponse(this.azureBlobStorage.blobs().acquireLeaseWithRestResponseAsync(

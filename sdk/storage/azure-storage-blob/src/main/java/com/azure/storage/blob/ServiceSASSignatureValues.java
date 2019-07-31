@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
@@ -29,6 +30,7 @@ import java.time.OffsetDateTime;
  * file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
  */
 final class ServiceSASSignatureValues {
+    private final ClientLogger logger = new ClientLogger(ServiceSASSignatureValues.class);
 
     private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
@@ -232,19 +234,17 @@ final class ServiceSASSignatureValues {
     /**
      * The canonical name of the object the SAS user may access.
      *
-     * @throws RuntimeException If urlString is a malformed URL.
+     * @throws IllegalArgumentException If urlString is a malformed URL.
      */
     public ServiceSASSignatureValues canonicalName(String urlString, String accountName) {
-        URL url = null;
         try {
-            url = new URL(urlString);
+            URL url = new URL(urlString);
+            StringBuilder canonicalName = new StringBuilder("/blob");
+            canonicalName.append('/').append(accountName).append(url.getPath());
+            this.canonicalName = canonicalName.toString();
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            logger.logAndThrow(new IllegalArgumentException(e));
         }
-
-        StringBuilder canonicalName = new StringBuilder("/blob");
-        canonicalName.append('/').append(accountName).append(url.getPath());
-        this.canonicalName = canonicalName.toString();
 
         return this;
     }
@@ -364,7 +364,7 @@ final class ServiceSASSignatureValues {
      *
      * @param sharedKeyCredentials A {@link SharedKeyCredential} object used to sign the SAS values.
      * @return {@link SASQueryParameters}
-     * @throws Error If the accountKey is not a valid Base64-encoded string.
+     * @throws IllegalStateException If the accountKey is not a valid Base64-encoded string.
      */
     public SASQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
@@ -377,7 +377,7 @@ final class ServiceSASSignatureValues {
         try {
             signature = sharedKeyCredentials.computeHmac256(stringToSign);
         } catch (InvalidKeyException e) {
-            throw new Error(e); // The key should have been validated by now. If it is no longer valid here, we fail.
+            logger.logAndThrow(new IllegalStateException(e)); // The key should have been validated by now. If it is no longer valid here, we fail.
         }
 
         return new SASQueryParameters(this.version, null, null,
@@ -391,7 +391,7 @@ final class ServiceSASSignatureValues {
      *
      * @param delegationKey A {@link UserDelegationKey} object used to sign the SAS values.
      * @return {@link SASQueryParameters}
-     * @throws Error If the accountKey is not a valid Base64-encoded string.
+     * @throws IllegalStateException If the accountKey is not a valid Base64-encoded string.
      */
     public SASQueryParameters generateSASQueryParameters(UserDelegationKey delegationKey) {
         Utility.assertNotNull("delegationKey", delegationKey);
@@ -404,7 +404,7 @@ final class ServiceSASSignatureValues {
         try {
             signature = Utility.delegateComputeHmac256(delegationKey, stringToSign);
         } catch (InvalidKeyException e) {
-            throw new Error(e); // The key should have been validated by now. If it is no longer valid here, we fail.
+            logger.logAndThrow(new IllegalStateException(e)); // The key should have been validated by now. If it is no longer valid here, we fail.
         }
 
         return new SASQueryParameters(this.version, null, null,
@@ -433,7 +433,7 @@ final class ServiceSASSignatureValues {
 
         if (this.resource != null && this.resource.equals(Constants.UrlConstants.SAS_CONTAINER_CONSTANT)) {
             if (this.snapshotId != null) {
-                throw new IllegalArgumentException("Cannot set a snapshotId without resource being a blob.");
+                logger.logAndThrow(new IllegalArgumentException("Cannot set a snapshotId without resource being a blob."));
             }
         }
     }
