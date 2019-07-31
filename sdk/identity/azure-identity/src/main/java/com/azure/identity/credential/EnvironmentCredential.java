@@ -10,6 +10,7 @@ import com.azure.core.implementation.annotation.Immutable;
 import com.azure.core.util.configuration.BaseConfigurations;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientOptions;
 import reactor.core.publisher.Mono;
 
@@ -21,6 +22,7 @@ import reactor.core.publisher.Mono;
 public class EnvironmentCredential implements TokenCredential {
     private Configuration configuration;
     private final IdentityClientOptions identityClientOptions;
+    private final ClientLogger logger = new ClientLogger(EnvironmentCredential.class);
 
     /**
      * Creates an instance of the default environment credential provider.
@@ -44,7 +46,8 @@ public class EnvironmentCredential implements TokenCredential {
                     identityClientOptions);
             }
             // Other environment variables
-            throw new ClientAuthenticationException("Cannot create any credentials with the current environment variables", null);
+            logger.logAndThrow(new ClientAuthenticationException("Cannot create any credentials with the current environment variables", null));
+            return null;
         }).flatMap(cred -> cred.getToken(scopes));
     }
 }
