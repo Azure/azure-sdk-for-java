@@ -22,6 +22,9 @@ public class RetryPolicyTest {
         .maxDelay(maxDelay)
         .delay(delay);
 
+    /**
+     * Verifies we retry on a retriable AmqpException.
+     */
     @Test
     public void isRetriableException() {
         // Arrange
@@ -38,6 +41,9 @@ public class RetryPolicyTest {
         Assert.assertEquals(maxRetries, policy.getMaxRetries());
     }
 
+    /**
+     * Verifies that a timeout exception will allow for retries.
+     */
     @Test
     public void isTimeoutException() {
         // Arrange
@@ -53,6 +59,9 @@ public class RetryPolicyTest {
         Assert.assertEquals(expected, actual);
     }
 
+    /**
+     * Verifies that null is returned if the exception is not an AmqpException.
+     */
     @Test
     public void notRetriableException() {
         // Arrange
@@ -68,6 +77,9 @@ public class RetryPolicyTest {
         Assert.assertNull(actual);
     }
 
+    /**
+     * Verifies that null is returned if the AmqpException is not transient.
+     */
     @Test
     public void notRetriableExceptionNotTransient() {
         // Arrange
@@ -81,6 +93,25 @@ public class RetryPolicyTest {
 
         // Assert
         Assert.assertNull(actual);
+    }
+
+    /**
+     * Verifies that we return {@link RetryOptions#maxDelay()} if the returned delay is larger than the maximum.
+     */
+    @Test
+    public void returnsMaxDelayIfDelayLarger() {
+        // Arrange
+        final Exception exception = new AmqpException(true, "error message", errorContext);
+        final Duration returnedDelay = maxDelay.plus(Duration.ofMillis(50));
+        final int count = 2;
+        final RetryPolicy policy = new MockRetryPolicy(options, returnedDelay);
+
+        // Act
+        final Duration actual = policy.calculateRetryDelay(exception, count);
+
+        // Assert
+        Assert.assertEquals(maxDelay, actual);
+        Assert.assertEquals(maxRetries, policy.getMaxRetries());
     }
 
     private class MockRetryPolicy extends RetryPolicy {
