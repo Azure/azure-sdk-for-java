@@ -23,7 +23,7 @@ public class VirtualMachineScaleSetInstanceViewStatusesSummary {
     private List<VirtualMachineStatusCodeCount> statusesSummary;
 
     /**
-     * Get the statusesSummary value.
+     * Get the extensions information.
      *
      * @return the statusesSummary value
      */

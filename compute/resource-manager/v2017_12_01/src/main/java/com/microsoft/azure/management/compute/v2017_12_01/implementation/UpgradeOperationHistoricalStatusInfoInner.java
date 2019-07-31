@@ -34,7 +34,7 @@ public class UpgradeOperationHistoricalStatusInfoInner {
     private String location;
 
     /**
-     * Get the properties value.
+     * Get information about the properties of the upgrade operation.
      *
      * @return the properties value
      */
@@ -43,7 +43,7 @@ public class UpgradeOperationHistoricalStatusInfoInner {
     }
 
     /**
-     * Get the type value.
+     * Get resource type.
      *
      * @return the type value
      */
@@ -52,7 +52,7 @@ public class UpgradeOperationHistoricalStatusInfoInner {
     }
 
     /**
-     * Get the location value.
+     * Get resource location.
      *
      * @return the location value
      */

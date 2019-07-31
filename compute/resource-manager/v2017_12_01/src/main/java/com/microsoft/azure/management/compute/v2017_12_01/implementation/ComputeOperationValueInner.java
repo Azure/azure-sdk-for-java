@@ -53,7 +53,7 @@ public class ComputeOperationValueInner {
     private String provider;
 
     /**
-     * Get the origin value.
+     * Get the origin of the compute operation.
      *
      * @return the origin value
      */
@@ -62,7 +62,7 @@ public class ComputeOperationValueInner {
     }
 
     /**
-     * Get the name value.
+     * Get the name of the compute operation.
      *
      * @return the name value
      */
@@ -71,7 +71,7 @@ public class ComputeOperationValueInner {
     }
 
     /**
-     * Get the operation value.
+     * Get the display name of the compute operation.
      *
      * @return the operation value
      */
@@ -80,7 +80,7 @@ public class ComputeOperationValueInner {
     }
 
     /**
-     * Get the resource value.
+     * Get the display name of the resource the operation applies to.
      *
      * @return the resource value
      */
@@ -89,7 +89,7 @@ public class ComputeOperationValueInner {
     }
 
     /**
-     * Get the description value.
+     * Get the description of the operation.
      *
      * @return the description value
      */
@@ -98,7 +98,7 @@ public class ComputeOperationValueInner {
     }
 
     /**
-     * Get the provider value.
+     * Get the resource provider for the operation.
      *
      * @return the provider value
      */
