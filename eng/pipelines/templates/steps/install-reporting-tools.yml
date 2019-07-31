@@ -1,7 +1,7 @@
 
 parameters:
-  Options: $(DefaultOptions)
-  MavenOptions: $(LoggingOptions)
+  Options: '--batch-mode -Dmaven.wagon.http.pool=false --settings eng/settings.xml'
+  MavenOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
 
 steps:
   - task: Maven@3
