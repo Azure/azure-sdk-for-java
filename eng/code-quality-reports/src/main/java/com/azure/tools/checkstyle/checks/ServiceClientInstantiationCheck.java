@@ -9,7 +9,6 @@ import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
-import jdk.nashorn.internal.parser.Token;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -585,5 +584,4 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
             }
         }
     }
-
 }
