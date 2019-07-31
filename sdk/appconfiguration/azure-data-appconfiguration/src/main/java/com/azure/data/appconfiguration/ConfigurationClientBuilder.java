@@ -238,6 +238,10 @@ public final class ConfigurationClientBuilder {
      * @return The updated ConfigurationClientBuilder object.
      */
     public ConfigurationClientBuilder httpClient(HttpClient client) {
+        if (this.httpClient != null && client == null) {
+            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+        }
+
         this.httpClient = client;
         return this;
     }
@@ -252,6 +256,10 @@ public final class ConfigurationClientBuilder {
      * @return The updated ConfigurationClientBuilder object.
      */
     public ConfigurationClientBuilder pipeline(HttpPipeline pipeline) {
+        if (this.pipeline != null && pipeline == null) {
+            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
+
         this.pipeline = pipeline;
         return this;
     }
