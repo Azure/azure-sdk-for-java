@@ -5,7 +5,6 @@ package com.azure.core.http.rest;
 
 import reactor.core.publisher.Mono;
 
-import java.net.HttpURLConnection;
 import java.util.Iterator;
 import java.util.function.Function;
 import java.util.function.Supplier;

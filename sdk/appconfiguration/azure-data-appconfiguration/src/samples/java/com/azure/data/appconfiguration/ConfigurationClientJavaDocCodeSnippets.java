@@ -5,7 +5,6 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
@@ -14,7 +13,6 @@ import com.azure.data.appconfiguration.credentials.ConfigurationClientCredential
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
-import java.net.HttpURLConnection;
 import java.security.GeneralSecurityException;
 
 /**
