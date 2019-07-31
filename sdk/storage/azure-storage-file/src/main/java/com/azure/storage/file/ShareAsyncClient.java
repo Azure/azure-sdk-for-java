@@ -395,7 +395,10 @@ public class ShareAsyncClient {
      * <p>Create the file "myfile" with size of 1024 bytes.</p>
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.createFile#string-long}
-     *      *
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
+     *
      * @param fileName Name of the file.
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @return A response containing a {@link FileAsyncClient} to interact with the created file and the
@@ -422,7 +425,10 @@ public class ShareAsyncClient {
      * <p>Create the file "myfile" with length of 1024 bytes, some headers and metadata</p>
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.createFile#string-long-filehttpheaders-map}
-     *      *
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
+     *
      * @param fileName Name of the file.
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @param httpHeaders Additional parameters for the operation.
@@ -469,6 +475,9 @@ public class ShareAsyncClient {
      * <p>Delete the file "myfile"</p>
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.deleteFile#string}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file.
      * @return A response that only contains headers and response status code
