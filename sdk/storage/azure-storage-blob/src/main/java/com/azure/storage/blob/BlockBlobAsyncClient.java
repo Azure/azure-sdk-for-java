@@ -24,6 +24,7 @@ import com.azure.storage.common.Constants;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import sun.awt.WindowIDProvider;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,6 +42,8 @@ import java.util.TreeMap;
 import java.util.UUID;
 
 import static com.azure.storage.blob.PostProcessor.postProcessResponse;
+import static com.azure.storage.blob.Utility.postProcessResponse;
+import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link BlobClientBuilder}, via
@@ -114,8 +117,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<Response<BlockBlobItem>> upload(Flux<ByteBuf> data, long length) {
-        return this.upload(data, length, null, null, null);
+    public Mono<BlockBlobItem> upload(Flux<ByteBuf> data, long length) {
+        return uploadWithResponse(data, length, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -146,16 +149,54 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<Response<BlockBlobItem>> upload(Flux<ByteBuf> data, long length, BlobHTTPHeaders headers,
+    public Mono<BlockBlobItem> upload(Flux<ByteBuf> data, long length, BlobHTTPHeaders headers,
+                                                            Metadata metadata, BlobAccessConditions accessConditions) {
+        return uploadWithResponse(data,length, headers, metadata, accessConditions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not
+     * supported with PutBlob; the content of the existing blob is overwritten with the new content. To
+     * perform a partial update of a block blob's, use PutBlock and PutBlockList.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     * <p>
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
+     * <p>
+     *
+     * @param data
+     *         The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
+     *         (the default). In other words, the Flux must produce the same data each time it is subscribed to.
+     * @param length
+     *         The exact length of the data. It is important that this value match precisely the length of the data
+     *         emitted by the {@code Flux}.
+     * @param headers
+     *         {@link BlobHTTPHeaders}
+     * @param metadata
+     *         {@link Metadata}
+     * @param accessConditions
+     *         {@link BlobAccessConditions}
+     *
+     * @return
+     *      A reactive response containing the information of the uploaded block blob.
+     */
+    public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuf> data, long length, BlobHTTPHeaders headers,
             Metadata metadata, BlobAccessConditions accessConditions) {
+        return withContext(context -> uploadWithResponse(data,length, headers, metadata, accessConditions, context));
+    }
+
+    Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuf> data, long length, BlobHTTPHeaders headers,
+                                         Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
-            null, data, length, null, metadata, null, null, null,
-            null, null, null, headers, accessConditions.leaseAccessConditions(), null,
-            accessConditions.modifiedAccessConditions(), Context.NONE))
-            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
+            null, data, length, null, metadata, null, null,
+            null, null, headers, accessConditions.leaseAccessConditions(),
+            accessConditions.modifiedAccessConditions(), context))
+                   .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
     }
 
     /**
@@ -206,6 +247,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
                     });
             }, this::uploadFileCleanup);
     }
+
+
 
     private AsynchronousFileChannel uploadFileResourceSupplier(String filePath) {
         try {
@@ -267,7 +310,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      */
     public Mono<VoidResponse> stageBlock(String base64BlockID, Flux<ByteBuf> data,
                                                          long length) {
-        return this.stageBlock(base64BlockID, data, length, null);
+        return stageBlock(base64BlockID, data, length, null);
     }
 
     /**
@@ -296,10 +339,15 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      */
     public Mono<VoidResponse> stageBlock(String base64BlockID, Flux<ByteBuf> data, long length,
                  LeaseAccessConditions leaseAccessConditions) {
+        return withContext(context -> stageBlock(base64BlockID, data, length, leaseAccessConditions, context));
+    }
+
+    Mono<VoidResponse> stageBlock(String base64BlockID, Flux<ByteBuf> data, long length,
+                                  LeaseAccessConditions leaseAccessConditions, Context context) {
         return postProcessResponse(this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null,
-            null, base64BlockID, length, data, null, null, null, null,
-            null, null, null, leaseAccessConditions, null, Context.NONE))
-            .map(VoidResponse::new);
+            null, base64BlockID, length, data, null, null, null,
+            null, null, null, leaseAccessConditions, context))
+                   .map(VoidResponse::new);
     }
 
     /**
@@ -322,7 +370,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      */
     public Mono<VoidResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange) {
-        return this.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null,
+        return stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null,
                 null, null);
     }
 
@@ -355,14 +403,20 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
     public Mono<VoidResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
             SourceModifiedAccessConditions sourceModifiedAccessConditions) {
+        return withContext(context -> stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions));
+    }
+
+    Mono<VoidResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
+                                         BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
+                                         SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
         sourceRange = sourceRange == null ? new BlobRange(0) : sourceRange;
 
         return postProcessResponse(
             this.azureBlobStorage.blockBlobs().stageBlockFromURLWithRestResponseAsync(null, null,
                 base64BlockID, 0, sourceURL, sourceRange.toHeaderValue(), sourceContentMD5, null, null,
                 null, null, null, null,
-                leaseAccessConditions, null, sourceModifiedAccessConditions, Context.NONE))
-            .map(VoidResponse::new);
+                leaseAccessConditions, sourceModifiedAccessConditions, context))
+                   .map(VoidResponse::new);
     }
 
     /**
@@ -425,8 +479,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the block blob.
      */
-    public Mono<Response<BlockBlobItem>> commitBlockList(List<String> base64BlockIDs) {
-        return this.commitBlockList(base64BlockIDs, null, null, null);
+    public Mono<BlockBlobItem> commitBlockList(List<String> base64BlockIDs) {
+        return commitBlockListWithResponse(base64BlockIDs, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -450,15 +504,46 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the block blob.
      */
-    public Mono<Response<BlockBlobItem>> commitBlockList(List<String> base64BlockIDs,
+    public Mono<BlockBlobItem> commitBlockList(List<String> base64BlockIDs,
+                                                         BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
+        return commitBlockListWithResponse(base64BlockIDs, headers, metadata, accessConditions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Writes a blob by specifying the list of block IDs that are to make up the blob.
+     * In order to be written as part of a blob, a block must have been successfully written
+     * to the server in a prior stageBlock operation. You can call commitBlockList to update a blob
+     * by uploading only those blocks that have changed, then committing the new and existing
+     * blocks together. Any blocks not specified in the block list and permanently deleted.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
+     *
+     * @param base64BlockIDs
+     *         A list of base64 encode {@code String}s that specifies the block IDs to be committed.
+     * @param headers
+     *         {@link BlobHTTPHeaders}
+     * @param metadata
+     *         {@link Metadata}
+     * @param accessConditions
+     *         {@link BlobAccessConditions}
+     *
+     * @return
+     *      A reactive response containing the information of the block blob.
+     */
+    public Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIDs,
                                               BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
+        return withContext(context -> commitBlockListWithResponse(base64BlockIDs, headers, metadata, accessConditions, context));
+    }
+
+    Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIDs,
+                                                  BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(
-            null, null, new BlockLookupList().latest(base64BlockIDs), null, null, null, metadata, null,
-            null, null, null, null, null, headers,
-            accessConditions.leaseAccessConditions(), null, accessConditions.modifiedAccessConditions(), Context.NONE))
-            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
+            null, null, new BlockLookupList().latest(base64BlockIDs), null, metadata,
+            null, null, null, null, headers,
+            accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(), context))
+                   .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
     }
 }
