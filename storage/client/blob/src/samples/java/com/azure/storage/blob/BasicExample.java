@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
-
+import com.azure.storage.blob.BlockBlobClient;
+import com.azure.storage.blob.ContainerClient;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
 import java.io.ByteArrayInputStream;
