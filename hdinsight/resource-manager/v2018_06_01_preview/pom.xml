@@ -11,11 +11,11 @@
     <parent>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-arm-parent</artifactId>
-        <version>1.1.0</version>
-        <relativePath>../../../pom.management.xml</relativePath>
+        <version>0.0.3-beta</version>
+        <relativePath>../../../pom.xml</relativePath>
     </parent>
     <artifactId>azure-mgmt-hdinsight</artifactId>
-    <version>1.1.0</version>
+    <version>1.0.0-beta</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for HDInsight Management</name>
     <description>This package contains Microsoft HDInsight Management SDK.</description>
@@ -71,36 +71,6 @@
             <artifactId>azure-arm-client-runtime</artifactId>
             <type>test-jar</type>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>com.microsoft.azure</groupId>
-          <artifactId>azure-mgmt-storage</artifactId>
-          <version>1.18.0</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>com.microsoft.azure</groupId>
-          <artifactId>azure-mgmt-msi</artifactId>
-          <version>1.18.0</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>com.microsoft.azure</groupId>
-          <artifactId>azure-mgmt-keyvault</artifactId>
-          <version>1.18.0</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>com.microsoft.azure</groupId>
-          <artifactId>azure-keyvault</artifactId>
-          <version>1.2.0</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.assertj</groupId>
-          <artifactId>assertj-core</artifactId>
-          <version>2.9.1</version>
-          <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
