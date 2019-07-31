@@ -143,7 +143,7 @@ class BlobAPITest extends APISpec {
 
         when:
         def outStream = new ByteArrayOutputStream()
-        bu.download(outStream, null, range, null, false, null)
+        bu.download(outStream, range, null, null, false, null)
         String bodyStr = outStream.toString()
 
         then:
@@ -213,7 +213,7 @@ class BlobAPITest extends APISpec {
 
     def "Download md5"() {
         when:
-        VoidResponse response = bu.download(new ByteArrayOutputStream(), null, new BlobRange(0 ,3), null, true, null)
+        VoidResponse response = bu.download(new ByteArrayOutputStream(), new BlobRange(0 ,3), null, null, true, null)
         byte[] contentMD5 = response.headers().value("content-md5").getBytes()
 
         then:

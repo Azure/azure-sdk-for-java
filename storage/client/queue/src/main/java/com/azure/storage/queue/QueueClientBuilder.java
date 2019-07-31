@@ -47,7 +47,8 @@ import java.util.Objects;
  * {@codesnippet com.azure.storage.queue.queueAsyncClient.instantiation.sastoken}
  *
  * <p>If the {@code endpoint} doesn't contain the queue name or {@code SASTokenCredential} they may be set using
- * {@link QueueClientBuilder#queueName(String) queueName} and {@link QueueClientBuilder#credential(SASTokenCredential) credential}.</p>
+ * {@link QueueClientBuilder#queueName(String) queueName} and {@link QueueClientBuilder#credential(SASTokenCredential) credential}
+ * together with endpoint..</p>
  *
  * <p><strong>Instantiating a synchronous Queue Client with credential</strong></p>
  * {@codesnippet com.azure.storage.queue.queueClient.instantiation.credential}
@@ -278,6 +279,7 @@ public final class QueueClientBuilder {
                                                                  + "Connection String: %s", connectionString));
         }
     }
+
     /**
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
