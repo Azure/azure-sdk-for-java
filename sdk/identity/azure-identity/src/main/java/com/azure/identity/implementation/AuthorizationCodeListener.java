@@ -3,44 +3,53 @@ package com.azure.identity.implementation;
 import com.azure.core.implementation.http.UrlBuilder;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoProcessor;
+import reactor.core.publisher.ReplayProcessor;
 import reactor.netty.DisposableServer;
 import reactor.netty.http.server.HttpServer;
 
+/**
+ * A local HTTP server that listens to the authorization code response from Azure Active Directory.
+ */
 public class AuthorizationCodeListener {
     private DisposableServer server;
-    private MonoProcessor<String> authorizationCodeEmitter;
+    private ReplayProcessor<String> authorizationCodeEmitter;
 
-    private AuthorizationCodeListener(DisposableServer server, MonoProcessor<String> authorizationCodeEmitter) {
+    private AuthorizationCodeListener(DisposableServer server, ReplayProcessor<String> authorizationCodeEmitter) {
         this.server = server;
         this.authorizationCodeEmitter = authorizationCodeEmitter;
     }
 
-    public String getHost() {
-        return server.host();
-    }
-
-    public int getPort() {
-        return server.port();
-    }
-
+    /**
+     * Starts the server asynchronously on a given port. "http://locahost:{port}" must be white-listed as a reply URL.
+     * @param port the port to listen on
+     * @return a Publisher emitting the listener instance
+     */
     public static Mono<AuthorizationCodeListener> create(int port) {
-        MonoProcessor<String> monoProcessor = MonoProcessor.create();
+        ReplayProcessor<String> replayProcessor = ReplayProcessor.create();
         return HttpServer.create()
             .port(port)
             .handle((inbound, outbound) -> {
-                monoProcessor.onNext(getCodeFromUri(inbound.uri()));
+                replayProcessor.onNext(getCodeFromUri(inbound.uri()));
                 return inbound.receive().then();
             })
             .bind()
-            .map(server -> new AuthorizationCodeListener(server, monoProcessor));
+            .map(server -> new AuthorizationCodeListener(server, replayProcessor));
     }
 
+    /**
+     * Dispose the server
+     * @return a Publisher signaling the completion
+     */
     public Mono<Void> dispose() {
-        return server.onDispose();
+        return Mono.fromRunnable(() -> server.disposeNow());
     }
 
+    /**
+     * Listen for the next authorization code
+     * @return a Publisher emitting an authorization code
+     */
     public Mono<String> listen() {
-        return authorizationCodeEmitter;
+        return authorizationCodeEmitter.next();
     }
 
     private static String getCodeFromUri(String uri) {

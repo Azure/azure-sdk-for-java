@@ -252,16 +252,15 @@ public class IdentityClient {
                     return server.dispose().then(Mono.error(e));
                 }
 
+                try {
+                    Desktop.getDesktop().browse(browserUri);
+                } catch (IOException e) {
+                    logger.logAndThrow(new RuntimeException(e));
+                }
                 return server.listen()
-                    .doOnSubscribe(s -> {
-                        try {
-                            Desktop.getDesktop().browse(browserUri);
-                        } catch (IOException e) {
-                            logger.logAndThrow(new RuntimeException(e));
-                        }
-                    })
                     .flatMap(code -> authenticateWithAuthorizationCode(scopes, code, redirectUri))
-                    .doFinally(s -> server.dispose().block());
+                    .onErrorResume(t -> server.dispose().then(Mono.error(t)))
+                    .flatMap(msalToken -> server.dispose().then(Mono.just(msalToken)));
             });
     }
 

@@ -8,6 +8,7 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalToken;
 import org.junit.Assert;
 import org.junit.Ignore;
+import org.junit.Test;
 
 import java.net.InetSocketAddress;
 
@@ -56,10 +57,15 @@ public class IdentityClientIntegrationTests {
         Assert.assertFalse(token.isExpired());
     }
 
-    @Ignore("Integration test")
+    @Test
     public void browserCanGetToken() {
-        IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), new IdentityClientOptions().proxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
+        IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLI_CLIENT_ID), new IdentityClientOptions().proxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
         MsalToken token = client.authenticateWithBrowserInteraction(scopes, 8765).block();
+        Assert.assertNotNull(token);
+        Assert.assertNotNull(token.token());
+        Assert.assertNotNull(token.expiresOn());
+        Assert.assertFalse(token.isExpired());
+        token = client.authenticateWithBrowserInteraction(new String[] { "https://vault.azure.net/.default" }, 8765).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.token());
         Assert.assertNotNull(token.expiresOn());
