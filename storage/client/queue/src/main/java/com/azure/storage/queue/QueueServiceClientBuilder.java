@@ -25,8 +25,10 @@ import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -45,17 +47,14 @@ import java.util.Objects;
  * <p><strong>Instantiating an Asynchronous Queue Service Client with SAS token</strong></p>
  * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.instantiation.sastoken}
  *
- * <p>If the {@code endpoint} doesn't contain {@code SASTokenCredential} they may be set using
- * {@link QueueClientBuilder#credential(SASTokenCredential) credential}.</p>
+ * <p>If the {@code endpoint} doesn't contain the query parameters to construct a {@code SASTokenCredential} they may
+ * be set using {@link QueueServiceClientBuilder#credential(SASTokenCredential) credential} together with endpoint.</p>
  *
  * <p><strong>Instantiating a synchronous Queue Service Client with SAS token</strong></p>
  * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential}
  *
  * <p><strong>Instantiating an Asynchronous Queue Service Client with SAS token</strong></p>
  * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential}
- *
- * <p>If the {@code endpoint} doesn't contain the query parameters to construct a {@code SASTokenCredential} they may
- * be set using {@link QueueServiceClientBuilder#credential(SASTokenCredential) credential}.</p>
  *
  * <p>Another way to authenticate the client is using a {@link SharedKeyCredential}. To create a SharedKeyCredential
  * a connection string from the Storage Queue service must be used. Set the SharedKeyCredential with
@@ -75,6 +74,7 @@ import java.util.Objects;
  */
 public final class QueueServiceClientBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(QueueServiceClientBuilder.class);
+    private static final String ACCOUNT_NAME = "accountname";
     private final List<HttpPipelinePolicy> policies;
 
     private URL endpoint;
@@ -253,9 +253,26 @@ public final class QueueServiceClientBuilder {
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      */
     public QueueServiceClientBuilder connectionString(String connectionString) {
-        Objects.requireNonNull(connectionString);
         this.sharedKeyCredential = SharedKeyCredential.fromConnectionString(connectionString);
+        getEndPointFromConnectionString(connectionString);
         return this;
+    }
+
+    private void getEndPointFromConnectionString(String connectionString) {
+        HashMap<String, String> connectionStringPieces = new HashMap<>();
+        for (String connectionStringPiece : connectionString.split(";")) {
+            String[] kvp = connectionStringPiece.split("=", 2);
+            connectionStringPieces.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
+        }
+        String accountName = connectionStringPieces.get(ACCOUNT_NAME);
+        try {
+            this.endpoint = new URL(String.format("https://%s.queue.core.windows.net", accountName));
+        } catch (MalformedURLException e) {
+            LOGGER.error("There is no valid account for the connection string. "
+                + "Connection String: %s", connectionString);
+            throw new IllegalArgumentException(String.format("There is no valid account for the connection string. "
+                + "Connection String: %s", connectionString));
+        }
     }
 
     /**

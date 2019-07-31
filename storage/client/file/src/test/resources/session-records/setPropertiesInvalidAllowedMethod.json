@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net?restype=service&comp=properties",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.2 1.8.0_201; Windows 10 10.0",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -14,17 +14,17 @@
       "retry-after" : "0",
       "Content-Length" : "340",
       "StatusCode" : "400",
-      "x-ms-request-id" : "a4781fd9-001a-006b-3175-4192c4000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlNodeValue</Code><Message>The value for one of the XML nodes is not in the correct format.\nRequestId:a4781fd9-001a-006b-3175-4192c4000000\nTime:2019-07-23T16:43:48.3661282Z</Message><XmlNodeName>AllowedMethods</XmlNodeName><XmlNodeValue>NOTAREALHTTPMETHOD</XmlNodeValue></Error>",
-      "Date" : "Tue, 23 Jul 2019 16:43:47 GMT",
+      "x-ms-request-id" : "9ebed231-b01a-000d-290a-47df7a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlNodeValue</Code><Message>The value for one of the XML nodes is not in the correct format.\nRequestId:9ebed231-b01a-000d-290a-47df7a000000\nTime:2019-07-30T19:13:34.5983455Z</Message><XmlNodeName>AllowedMethods</XmlNodeName><XmlNodeValue>NOTAREALHTTPMETHOD</XmlNodeValue></Error>",
+      "Date" : "Tue, 30 Jul 2019 19:13:34 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net?prefix=share26492564&include=&comp=list",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=share33180966&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -32,11 +32,11 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "a4781fda-001a-006b-3275-4192c4000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share26492564</Prefix><Shares /><NextMarker /></EnumerationResults>",
-      "Date" : "Tue, 23 Jul 2019 16:43:47 GMT",
+      "x-ms-request-id" : "9ebed232-b01a-000d-2a0a-47df7a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>share33180966</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 30 Jul 2019 19:13:34 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "share26492564" ]
+  "variables" : [ "share33180966" ]
 }
