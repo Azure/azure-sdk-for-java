@@ -1,9 +1,10 @@
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+package com.azure.storage.blob;
+
 import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.BlobServiceClientBuilder;
 
 import java.util.Locale;
 
@@ -31,9 +32,9 @@ public class AzureIdentityExample {
          * Create a storage client using the Azure Identity credentials.
          */
         BlobServiceClient storageClient = new BlobServiceClientBuilder()
-                .endpoint(endpoint)
-                .credential(new DefaultAzureCredential())
-                .buildClient();
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredential())
+            .buildClient();
 
         System.out.println("Successfully setup client using the Azure Identity, please check the service version: "
             + storageClient.getProperties().value().defaultServiceVersion());

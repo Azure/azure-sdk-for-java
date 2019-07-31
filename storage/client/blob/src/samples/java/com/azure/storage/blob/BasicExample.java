@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.storage.blob.BlockBlobClient;
-import com.azure.storage.blob.ContainerClient;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.BlobServiceClientBuilder;
+package com.azure.storage.blob;
+
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
 import java.io.ByteArrayInputStream;
@@ -105,7 +103,7 @@ public class BasicExample {
             String sampleData = "Samples";
             InputStream dataInBlobs = new ByteArrayInputStream(sampleData.getBytes(Charset.defaultCharset()));
             containerClient.getBlockBlobClient("myblobsforlisting" + System.currentTimeMillis())
-                    .upload(dataInBlobs, sampleData.length());
+                .upload(dataInBlobs, sampleData.length());
             dataInBlobs.close();
         }
 
