@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.annotations.HEAD;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
