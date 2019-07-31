@@ -15,7 +15,7 @@ import java.util.Optional;
  * {@code Context} object that refers to its parent, forming a linked list.
  */
 @Immutable
-public class Context {
+public final class Context {
     // All fields must be immutable.
     //
     /**

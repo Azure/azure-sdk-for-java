@@ -47,10 +47,11 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
     private static final String CLIENT = "Client";
     private static final String IS_ASYNC = "isAsync";
 
-    private static final String RESPONSE = "Response";
+    private static final String RESPONSE_GENERIC_START = "Response<";
     private static final String MONO_RESPONSE = "Mono<Response>";
     private static final String WITH_RESPONSE = "withResponse";
 
+    private static final String CONTEXT = "Context";
 
     private static final String COLLECTION_RETURN_TYPE = "ReturnType.COLLECTION";
     private static final String SINGLE_RETURN_TYPE = "ReturnType.SINGLE";
@@ -359,6 +360,7 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
 
         // Check 'withResponse' naming pattern
         checkReturnTypeNamingPattern(methodDefToken, methodName);
+        checkContextInRightPlace(methodDefToken);
 
         if (!simpleClassNameToQualifiedNameMap.containsKey(returnType)) {
             if (SINGLE_RETURN_TYPE.equals(returnsAnnotationMemberValue)) {
@@ -482,8 +484,8 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
 
         getReturnType(typeToken, sb);
         String returnType = sb.toString();
-        if (returnType.equals(RESPONSE) && !methodName.endsWith(WITH_RESPONSE)) {
-            log(methodDefToken, String.format("Return type is ''%s'', the method name must end with ''%s'' ", RESPONSE, WITH_RESPONSE));
+        if (returnType.startsWith(RESPONSE_GENERIC_START) && !methodName.endsWith(WITH_RESPONSE)) {
+            log(methodDefToken, String.format("Return type is ''%s'', the method name must end with ''%s'' ", RESPONSE_GENERIC_START, WITH_RESPONSE));
         } else if (returnType.equals(MONO_RESPONSE) && methodName.endsWith(WITH_RESPONSE)) {
             log(methodDefToken, String.format("Return type is ''%s'', the method name must not end with ''%s'' ", MONO_RESPONSE, WITH_RESPONSE));
         }
@@ -507,6 +509,47 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
                     sb.append(currentToken.getText());
             }
         }
+    }
+
+    /**
+     * Checks the type Context should be in the right place.
+     * Synchronous method with annotation @ServiceMethod has to have {@code Context} as a parameter.
+     * Asynchronous method with annotation @ServiceMethod must not has {@code Context} as a parameter.
+     *
+     * @param methodDefToken METHOD_DEF AST token
+     */
+    private void checkContextInRightPlace(DetailAST methodDefToken) {
+        StringBuilder sb = new StringBuilder();
+
+        getReturnType(methodDefToken, sb);
+
+        DetailAST parametersToken = methodDefToken.findFirstToken(TokenTypes.PARAMETERS);
+        String returnType = sb.toString();
+        if (returnType.startsWith(RESPONSE_GENERIC_START) && !containsTypeParameter(parametersToken, CONTEXT)) {
+            log(methodDefToken, String.format("Synchronous method with annotation @ServiceMethod must has ''%s'' as a method parameter.", CONTEXT));
+        } else if (returnType.equals(MONO_RESPONSE) && containsTypeParameter(parametersToken, CONTEXT)) {
+            log(methodDefToken, String.format("Asynchronous method with annotation @ServiceMethod must not has ''%s'' as a method parameter.", CONTEXT));
+        }
+    }
+
+    /**
+     *  A method which used to find if a given PARAMETER node has a given parameter type.
+     *
+     * @param parametersToken PARAMETERS AST node
+     * @param parameter A given type that used to define whether the PARAMETERS node has the same parameter type.
+     * @return
+     */
+    private boolean containsTypeParameter(DetailAST parametersToken, String parameter) {
+        for (DetailAST token = parametersToken.getFirstChild(); token != null; token = token.getNextSibling()) {
+            if (token.getType() != TokenTypes.PARAMETER_DEF) {
+                continue;
+            }
+            String type = token.findFirstToken(TokenTypes.TYPE).findFirstToken(TokenTypes.IDENT).getText();
+            if (type.equals(parameter)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
