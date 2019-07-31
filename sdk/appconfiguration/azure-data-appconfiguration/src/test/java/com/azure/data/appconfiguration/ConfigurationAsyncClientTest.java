@@ -725,12 +725,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void listRevisionsWithPaginationAndRepeatStream() {
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
-        for (int value = 0; value < numberExpected; value++) {
-            settings.add(new ConfigurationSetting().key(keyPrefix).value("myValue" + value).label(labelPrefix));
-        }
-
         List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
-        for (ConfigurationSetting setting : settings) {
+        for (int value = 0; value < numberExpected; value++) {
+            ConfigurationSetting setting = new ConfigurationSetting().key(keyPrefix).value("myValue" + value).label(labelPrefix);
+            settings.add(setting);
             results.add(client.setSettingWithResponse(setting));
         }
 
@@ -756,12 +754,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void listRevisionsWithPaginationAndRepeatIterator() {
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
-        for (int value = 0; value < numberExpected; value++) {
-            settings.add(new ConfigurationSetting().key(keyPrefix).value("myValue" + value).label(labelPrefix));
-        }
-
         List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
-        for (ConfigurationSetting setting : settings) {
+        for (int value = 0; value < numberExpected; value++) {
+            ConfigurationSetting setting = new ConfigurationSetting().key(keyPrefix).value("myValue" + value).label(labelPrefix);
+            settings.add(setting);
             results.add(client.setSettingWithResponse(setting));
         }
 

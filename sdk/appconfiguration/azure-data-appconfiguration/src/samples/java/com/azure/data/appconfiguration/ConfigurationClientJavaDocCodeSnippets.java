@@ -306,7 +306,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector
         SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
         client.listSettingRevisions(settingSelector).streamByPage().forEach(response -> {
-            if (response.statusCode()  == HttpURLConnection.HTTP_OK) {
+            if (response.statusCode() == HttpURLConnection.HTTP_OK) {
                 response.value().forEach(setting -> {
                     System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
                 });
@@ -314,7 +314,6 @@ public final class ConfigurationClientJavaDocCodeSnippets {
                 System.out.printf(" Did not get successful response. Status code: %d, ", response.statusCode());
             }
         });
-
         // END: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector
     }
 

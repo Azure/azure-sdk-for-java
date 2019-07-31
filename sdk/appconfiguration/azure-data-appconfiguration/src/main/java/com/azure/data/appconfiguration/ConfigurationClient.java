@@ -516,7 +516,7 @@ public final class ConfigurationClient {
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return {@link PagedIterable} of the {@link ConfigurationSetting}
+     * @return {@link PagedIterable} of {@link ConfigurationSetting} revisions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
