@@ -572,6 +572,9 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
             final DetailAST annotationIdent = ast.findFirstToken(TokenTypes.IDENT);
             if (annotationIdent != null && SERVICE_CLIENT.equals(annotationIdent.getText())) {
                 String propertyValue = getAnnotationMemberReturnsValue(ast, "async");
+                if (propertyValue == null) {
+                    log(ast, "ServiceClient missing member key ''async'' and value.");
+                }
                 if (isAsync && !propertyValue.equals("true")) {
                     log(ast, "Asynchronous Service Client has ''async'' property value set to not true. Required to set to true.");
                     return;
@@ -580,8 +583,6 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
                     return;
                 }
             }
-
-            log(ast, "ServiceClient missing member key ''async'' and value.");
         }
     }
 
