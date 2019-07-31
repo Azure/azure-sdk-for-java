@@ -71,7 +71,7 @@ public class IdentityClient {
      * @param clientId the client ID of the application.
      * @param options the options configuring the client.
      */
-    public IdentityClient(String tenantId, String clientId, IdentityClientOptions options) {
+    IdentityClient(String tenantId, String clientId, IdentityClientOptions options) {
         if (tenantId == null) {
             tenantId = "common";
         }

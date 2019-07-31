@@ -7,6 +7,7 @@ import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.implementation.annotation.Immutable;
 import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import reactor.core.publisher.Mono;
 
@@ -23,8 +24,8 @@ public class ClientCertificateCredential implements TokenCredential {
 
     /**
      * Creates a ClientSecretCredential with default identity client options.
-     * @param tenantId     the tenant ID of the application
-     * @param clientId     the client ID of the application
+     * @param tenantId the tenant ID of the application
+     * @param clientId the client ID of the application
      * @param certificatePath the PEM file / PFX file containing the certificate
      * @param certificatePassword the password protecting the PFX file
      * @param identityClientOptions the options to configure the identity client
@@ -33,14 +34,11 @@ public class ClientCertificateCredential implements TokenCredential {
         Objects.requireNonNull(certificatePath);
         this.clientCertificate = certificatePath;
         this.clientCertificatePassword = certificatePassword;
-        this.identityClient = new IdentityClient(tenantId, clientId, identityClientOptions);
+        identityClient = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(identityClientOptions).build();
     }
 
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
-        if (clientCertificate == null) {
-            return Mono.error(new IllegalArgumentException("Non-null value must be provided for clientCertificate property in ClientCertificateCredential"));
-        }
         if (clientCertificatePassword != null) {
             return identityClient.authenticateWithPfxCertificate(clientCertificate, clientCertificatePassword, scopes);
         } else {

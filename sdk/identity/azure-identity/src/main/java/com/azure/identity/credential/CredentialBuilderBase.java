@@ -12,7 +12,7 @@ import java.util.function.Function;
  * The base class for all the credential builders.
  * @param <T> the type of the credential builder
  */
-class CredentialBuilderBase<T extends CredentialBuilderBase<T>> {
+public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> {
     IdentityClientOptions identityClientOptions;
 
     CredentialBuilderBase() {

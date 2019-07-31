@@ -5,9 +5,8 @@ package com.azure.identity;
 
 import com.azure.core.implementation.annotation.Fluent;
 import com.azure.core.implementation.annotation.Immutable;
-import com.microsoft.aad.msal4j.DeviceCode;
 
-import java.util.Objects;
+import java.time.Duration;
 
 /**
  * Response returned from the STS device code endpoint containing information necessary for
@@ -30,22 +29,22 @@ public class DeviceCodeChallenge {
         this.userCode = userCode;
         this.deviceCode = deviceCode;
         this.verificationUri = verificationUri;
-        this.expiresIn = expiresIn;
-        this.interval = interval;
+        this.expiresIn = Duration.ofSeconds(expiresIn);
+        this.interval = Duration.ofSeconds(interval);
         this.message = message;
     }
 
-    private String userCode;
+    private final String userCode;
 
-    private String deviceCode;
+    private final String deviceCode;
 
-    private String verificationUri;
+    private final String verificationUri;
 
-    private long expiresIn;
+    private final Duration expiresIn;
 
-    private long interval;
+    private final Duration interval;
 
-    private String message;
+    private final String message;
 
 
     /**
@@ -70,16 +69,16 @@ public class DeviceCodeChallenge {
     }
 
     /**
-     * @return expiration time of device code in seconds.
+     * @return expiration time of device code.
      */
-    public long expiresIn() {
+    public Duration expiresIn() {
         return expiresIn;
     }
 
     /**
      * @return interval at which the STS should be polled at.
      */
-    public long interval() {
+    public Duration interval() {
         return interval;
     }
 

@@ -3,8 +3,9 @@
 
 package com.azure.identity.credential;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.azure.identity.implementation.util.ValidationUtil;
+
+import java.util.HashMap;
 
 /**
  * Fluent credential builder for instantiating a {@link ClientSecretCredentialBuilder}.
@@ -28,20 +29,11 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
      * @return a {@link ClientSecretCredentialBuilder} with the current configurations.
      */
     public ClientSecretCredential build() {
-        List<String> missing = new ArrayList<>();
-        if (clientId == null) {
-            missing.add("clientId");
-        }
-        if (tenantId == null) {
-            missing.add("tenantId");
-        }
-        if (clientSecret == null) {
-            missing.add("clientSecret");
-        }
-        if (missing.size() > 0) {
-            throw new IllegalArgumentException("Must provide non-null values for "
-                + String.join(", ", missing) + " properties in " + this.getClass().getSimpleName());
-        }
+        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
+            put("clientId", clientId);
+            put("tenantId", tenantId);
+            put("clientSecret", clientSecret);
+        }});
         return new ClientSecretCredential(tenantId, clientId, clientSecret, identityClientOptions);
     }
 }

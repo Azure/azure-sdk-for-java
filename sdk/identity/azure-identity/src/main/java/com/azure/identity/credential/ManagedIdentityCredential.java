@@ -10,6 +10,7 @@ import com.azure.core.util.configuration.BaseConfigurations;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import reactor.core.publisher.Mono;
 
@@ -27,7 +28,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client.
      */
     ManagedIdentityCredential(String clientId, IdentityClientOptions identityClientOptions) {
-        IdentityClient identityClient = new IdentityClient(null, clientId, identityClientOptions);
+        IdentityClient identityClient = new IdentityClientBuilder().clientId(clientId).identityClientOptions(identityClientOptions).build();
         Configuration configuration = ConfigurationManager.getConfiguration();
         if (configuration.contains(BaseConfigurations.MSI_ENDPOINT)) {
             appServiceMSICredential = new AppServiceMSICredential(clientId, identityClient);

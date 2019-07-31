@@ -3,8 +3,9 @@
 
 package com.azure.identity.credential;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.azure.identity.implementation.util.ValidationUtil;
+
+import java.util.HashMap;
 
 /**
  * Fluent credential builder for instantiating a {@link InteractiveBrowserCredential}.
@@ -30,17 +31,10 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      * @return a {@link InteractiveBrowserCredential} with the current configurations.
      */
     public InteractiveBrowserCredential build() {
-        List<String> missing = new ArrayList<>();
-        if (clientId == null) {
-            missing.add("clientId");
-        }
-        if (port == 0) {
-            missing.add("port");
-        }
-        if (missing.size() > 0) {
-            throw new IllegalArgumentException("Must provide non-null values for "
-                + String.join(", ", missing) + " properties in " + this.getClass().getSimpleName());
-        }
+        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
+            put("clientId", clientId);
+            put("port", port);
+        }});
         return new InteractiveBrowserCredential(clientId, port, identityClientOptions);
     }
 }

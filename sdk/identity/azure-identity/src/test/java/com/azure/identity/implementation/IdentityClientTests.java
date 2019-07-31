@@ -1,7 +1,6 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
@@ -37,7 +36,7 @@ public class IdentityClientTests {
             .toReturn(TestUtils.getMockAuthenticationResult(accessToken, expiresOn));
 
         // test
-        IdentityClient client = new IdentityClient(tenantId, clientId, null);
+        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
         AccessToken token = client.authenticateWithClientSecret(secret, scopes).block();
         Assert.assertEquals(accessToken, token.token());
         Assert.assertEquals(expiresOn, token.expiresOn());
@@ -55,7 +54,7 @@ public class IdentityClientTests {
 
         // test
         try {
-            IdentityClient client = new IdentityClient(tenantId, clientId, null);
+            IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
             client.authenticateWithClientSecret(secret, scopes).block();
             fail();
         } catch (MsalServiceException e) {

@@ -8,6 +8,7 @@ import com.azure.core.credentials.TokenCredential;
 import com.azure.core.implementation.annotation.Immutable;
 import com.azure.identity.DeviceCodeChallenge;
 import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalToken;
 import reactor.core.publisher.Mono;
@@ -33,7 +34,7 @@ public class DeviceCodeCredential implements TokenCredential {
      */
     DeviceCodeCredential(String clientId, Consumer<DeviceCodeChallenge> deviceCodeChallengeConsumer, IdentityClientOptions identityClientOptions) {
         this.deviceCodeChallengeConsumer = deviceCodeChallengeConsumer;
-        identityClient = new IdentityClient("common", clientId, identityClientOptions);
+        identityClient = new IdentityClientBuilder().tenantId("common").clientId(clientId).identityClientOptions(identityClientOptions).build();
         this.cachedToken = new AtomicReference<>();
     }
 

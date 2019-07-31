@@ -47,6 +47,6 @@ public class ChainedTokenCredentialBuilder {
      * @return a {@link ChainedTokenCredential} with the current configurations.
      */
     public ChainedTokenCredential build() {
-        return new ChainedTokenCredential(credentials);
+        return new ChainedTokenCredential(new ArrayDeque<>(credentials));
     }
 }

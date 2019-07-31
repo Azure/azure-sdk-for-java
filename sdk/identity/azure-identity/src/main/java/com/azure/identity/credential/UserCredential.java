@@ -7,6 +7,7 @@ import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.implementation.annotation.Immutable;
 import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import reactor.core.publisher.Mono;
 
@@ -37,7 +38,7 @@ public class UserCredential implements TokenCredential {
         Objects.requireNonNull(password);
         this.username = username;
         this.password = password;
-        identityClient = new IdentityClient(tenantId, clientId, identityClientOptions);
+        identityClient = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(identityClientOptions).build();
     }
 
     @Override

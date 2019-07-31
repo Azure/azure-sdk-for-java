@@ -7,6 +7,7 @@ import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.implementation.annotation.Immutable;
 import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import reactor.core.publisher.Mono;
 
@@ -32,7 +33,7 @@ public class ClientSecretCredential implements TokenCredential {
     ClientSecretCredential(String tenantId, String clientId, String clientSecret, IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(clientSecret);
         Objects.requireNonNull(identityClientOptions);
-        identityClient = new IdentityClient(tenantId, clientId, identityClientOptions);
+        identityClient = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(identityClientOptions).build();
         this.clientSecret = clientSecret;
     }
 

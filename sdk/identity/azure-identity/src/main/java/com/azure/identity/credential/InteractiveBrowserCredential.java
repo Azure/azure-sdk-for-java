@@ -7,6 +7,7 @@ import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.implementation.annotation.Immutable;
 import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalToken;
 import reactor.core.publisher.Mono;
@@ -37,7 +38,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
      */
     InteractiveBrowserCredential(String clientId, int port, IdentityClientOptions identityClientOptions) {
         this.port = port;
-        identityClient = new IdentityClient("common", clientId, identityClientOptions);
+        identityClient = new IdentityClientBuilder().tenantId("common").clientId(clientId).identityClientOptions(identityClientOptions).build();
         cachedToken = new AtomicReference<>();
     }
 

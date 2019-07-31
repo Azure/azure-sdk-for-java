@@ -4,9 +4,9 @@
 package com.azure.identity.credential;
 
 import com.azure.identity.DeviceCodeChallenge;
+import com.azure.identity.implementation.util.ValidationUtil;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.function.Consumer;
 
 /**
@@ -33,17 +33,10 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      * @return a {@link DeviceCodeCredential} with the current configurations.
      */
     public DeviceCodeCredential build() {
-        List<String> missing = new ArrayList<>();
-        if (clientId == null) {
-            missing.add("clientId");
-        }
-        if (deviceCodeChallengeConsumer == null) {
-            missing.add("deviceCodeChallengeConsumer");
-        }
-        if (missing.size() > 0) {
-            throw new IllegalArgumentException("Must provide non-null values for "
-                + String.join(", ", missing) + " properties in " + this.getClass().getSimpleName());
-        }
+        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
+            put("clientId", clientId);
+            put("deviceCodeChallengeConsumer", deviceCodeChallengeConsumer);
+        }});
         return new DeviceCodeCredential(clientId, deviceCodeChallengeConsumer, identityClientOptions);
     }
 }

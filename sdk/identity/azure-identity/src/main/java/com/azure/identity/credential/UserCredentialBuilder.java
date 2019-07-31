@@ -3,6 +3,10 @@
 
 package com.azure.identity.credential;
 
+import com.azure.identity.implementation.util.ValidationUtil;
+
+import java.util.HashMap;
+
 /**
  * Fluent credential builder for instantiating a {@link UserCredential}.
  *
@@ -36,6 +40,12 @@ public class UserCredentialBuilder extends AadCredentialBuilderBase<UserCredenti
      * @return a {@link UserCredential} with the current configurations.
      */
     public UserCredential build() {
+        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
+            put("clientId", clientId);
+            put("tenantId", tenantId);
+            put("username", username);
+            put("password", password);
+        }});
         return new UserCredential(tenantId, clientId, username, password, identityClientOptions);
     }
 }

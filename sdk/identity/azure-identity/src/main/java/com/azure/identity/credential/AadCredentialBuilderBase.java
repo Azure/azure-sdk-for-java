@@ -7,7 +7,7 @@ package com.azure.identity.credential;
  * The base class for credential builders that allow specifying a client id and tenant ID for an Azure Active Directory.
  * @param <T> the type of the credential builder
  */
-class AadCredentialBuilderBase<T extends AadCredentialBuilderBase<T>> extends CredentialBuilderBase<T> {
+public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBase<T>> extends CredentialBuilderBase<T> {
     String clientId;
     String tenantId;
 
