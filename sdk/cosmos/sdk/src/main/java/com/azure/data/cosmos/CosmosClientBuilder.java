@@ -4,6 +4,7 @@ package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.Permission;
+import com.azure.data.cosmos.sync.CosmosSyncClient;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class CosmosClientBuilder {
     private List<Permission> permissions;
     private TokenResolver tokenResolver;
 
-    CosmosClientBuilder() {
+    public CosmosClientBuilder() {
     }
 
     /**
@@ -184,6 +185,20 @@ public class CosmosClientBuilder {
                 "cannot build client without key or resource token");
 
         return new CosmosClient(this);
+    }
+
+    /**
+     * Builds a cosmos sync client object with the provided properties
+     * @return CosmosSyncClient
+     */
+    public CosmosSyncClient buildSyncClient() {
+
+        ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot build client without service endpoint");
+        ifThrowIllegalArgException(
+                this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty()),
+                "cannot build client without key or resource token");
+
+        return new CosmosSyncClient(this);
     }
 
     Configs configs() {
