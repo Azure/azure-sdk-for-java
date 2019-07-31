@@ -4,18 +4,20 @@
 
 package com.azure.storage.file.implementation;
 
-import com.azure.core.annotations.BodyParam;
-import com.azure.core.annotations.ExpectedResponses;
-import com.azure.core.annotations.GET;
-import com.azure.core.annotations.HeaderParam;
-import com.azure.core.annotations.Host;
-import com.azure.core.annotations.HostParam;
-import com.azure.core.annotations.PUT;
-import com.azure.core.annotations.QueryParam;
-import com.azure.core.annotations.Service;
-import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.CollectionFormat;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.annotation.BodyParam;
+import com.azure.core.implementation.annotation.ExpectedResponses;
+import com.azure.core.implementation.annotation.Get;
+import com.azure.core.implementation.annotation.HeaderParam;
+import com.azure.core.implementation.annotation.Host;
+import com.azure.core.implementation.annotation.HostParam;
+import com.azure.core.implementation.annotation.Put;
+import com.azure.core.implementation.annotation.QueryParam;
+import com.azure.core.implementation.annotation.ReturnType;
+import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.implementation.annotation.ServiceMethod;
+import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.util.Context;
 import com.azure.storage.file.models.FileServiceProperties;
@@ -24,10 +26,8 @@ import com.azure.storage.file.models.ServicesGetPropertiesResponse;
 import com.azure.storage.file.models.ServicesListSharesSegmentResponse;
 import com.azure.storage.file.models.ServicesSetPropertiesResponse;
 import com.azure.storage.file.models.StorageErrorException;
-import reactor.core.publisher.Mono;
-
-
 import java.util.List;
+import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -50,28 +50,28 @@ public final class ServicesImpl {
      * @param client the instance of the service client containing this operation class.
      */
     public ServicesImpl(AzureFileStorageImpl client) {
-        this.service = RestProxy.create(ServicesService.class, client.httpPipeline());
+        this.service = RestProxy.create(ServicesService.class, client.getHttpPipeline());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for Services to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for AzureFileStorageServices to
+     * be used by the proxy service to perform REST calls.
      */
     @Host("{url}")
-    @Service("Storage File Services")
+    @ServiceInterface(name = "AzureFileStorageServices")
     private interface ServicesService {
-        @PUT("")
+        @Put("")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ServicesSetPropertiesResponse> setProperties(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") FileServiceProperties fileServiceProperties, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
-        @GET("")
+        @Get("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ServicesGetPropertiesResponse> getProperties(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
-        @GET("")
+        @Get("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ServicesListSharesSegmentResponse> listSharesSegment(@HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
@@ -80,31 +80,33 @@ public final class ServicesImpl {
     /**
      * Sets properties for a storage account's File service endpoint, including properties for Storage Analytics metrics and CORS (Cross-Origin Resource Sharing) rules.
      *
-     * @param fileServiceProperties The FileService properties.
+     * @param fileServiceProperties The FileStorage properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(FileServiceProperties fileServiceProperties, Context context) {
         final Integer timeout = null;
         final String restype = "service";
         final String comp = "properties";
-        return service.setProperties(this.client.url(), fileServiceProperties, timeout, this.client.version(), restype, comp, context);
+        return service.setProperties(this.client.getUrl(), fileServiceProperties, timeout, this.client.getVersion(), restype, comp, context);
     }
 
     /**
      * Sets properties for a storage account's File service endpoint, including properties for Storage Analytics metrics and CORS (Cross-Origin Resource Sharing) rules.
      *
-     * @param fileServiceProperties The FileService properties.
+     * @param fileServiceProperties The FileStorage properties.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(FileServiceProperties fileServiceProperties, Integer timeout, Context context) {
         final String restype = "service";
         final String comp = "properties";
-        return service.setProperties(this.client.url(), fileServiceProperties, timeout, this.client.version(), restype, comp, context);
+        return service.setProperties(this.client.getUrl(), fileServiceProperties, timeout, this.client.getVersion(), restype, comp, context);
     }
 
     /**
@@ -114,11 +116,12 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetPropertiesResponse> getPropertiesWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final String restype = "service";
         final String comp = "properties";
-        return service.getProperties(this.client.url(), timeout, this.client.version(), restype, comp, context);
+        return service.getProperties(this.client.getUrl(), timeout, this.client.getVersion(), restype, comp, context);
     }
 
     /**
@@ -129,10 +132,11 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetPropertiesResponse> getPropertiesWithRestResponseAsync(Integer timeout, Context context) {
         final String restype = "service";
         final String comp = "properties";
-        return service.getProperties(this.client.url(), timeout, this.client.version(), restype, comp, context);
+        return service.getProperties(this.client.getUrl(), timeout, this.client.getVersion(), restype, comp, context);
     }
 
     /**
@@ -142,6 +146,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesListSharesSegmentResponse> listSharesSegmentWithRestResponseAsync(Context context) {
         final String prefix = null;
         final String marker = null;
@@ -149,7 +154,7 @@ public final class ServicesImpl {
         final Integer timeout = null;
         final String comp = "list";
         String includeConverted = null;
-        return service.listSharesSegment(this.client.url(), prefix, marker, maxresults, includeConverted, timeout, this.client.version(), comp, context);
+        return service.listSharesSegment(this.client.getUrl(), prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(), comp, context);
     }
 
     /**
@@ -164,9 +169,10 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesListSharesSegmentResponse> listSharesSegmentWithRestResponseAsync(String prefix, String marker, Integer maxresults, List<ListSharesIncludeType> include, Integer timeout, Context context) {
         final String comp = "list";
         String includeConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
-        return service.listSharesSegment(this.client.url(), prefix, marker, maxresults, includeConverted, timeout, this.client.version(), comp, context);
+        return service.listSharesSegment(this.client.getUrl(), prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(), comp, context);
     }
 }

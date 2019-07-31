@@ -41,14 +41,12 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
         if (interceptorManager.isPlaybackMode()) {
             fileServiceClient = setupClient((connectionString, endpoint) -> new FileServiceClientBuilder()
                 .connectionString(connectionString)
-                .endpoint(endpoint)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .buildClient(), true, fileServiceLogger);
         } else {
             fileServiceClient = setupClient((connectionString, endpoint) -> new FileServiceClientBuilder()
                 .connectionString(connectionString)
-                .endpoint(endpoint)
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())

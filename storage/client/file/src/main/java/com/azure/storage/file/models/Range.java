@@ -4,6 +4,7 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * An Azure Storage file range.
  */
 @JacksonXmlRootElement(localName = "Range")
+@Fluent
 public final class Range {
     /*
      * Start of the range.

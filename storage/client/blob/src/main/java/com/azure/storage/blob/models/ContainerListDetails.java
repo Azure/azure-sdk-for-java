@@ -3,11 +3,11 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.storage.blob.StorageClient;
+import com.azure.storage.blob.BlobServiceClient;
 
 /**
  * This type allows users to specify additional information the service should return with each container when listing
- * containers in an account (via a {@link StorageClient} object). This type is immutable to ensure thread-safety of
+ * containers in an account (via a {@link BlobServiceClient} object). This type is immutable to ensure thread-safety of
  * requests, so changing the details for a different listing operation requires construction of a new object. Null may
  * be passed if none of the options are desirable.
  */

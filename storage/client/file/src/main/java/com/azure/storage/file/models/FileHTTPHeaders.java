@@ -4,16 +4,17 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import java.util.Arrays;
 
 /**
  * Additional parameters for a set of operations, such as: Files_create,
  * Files_setHTTPHeaders.
  */
 @JacksonXmlRootElement(localName = "file-HTTP-headers")
+@Fluent
 public final class FileHTTPHeaders {
     /*
      * Sets the MIME content type of the file. The default type is
