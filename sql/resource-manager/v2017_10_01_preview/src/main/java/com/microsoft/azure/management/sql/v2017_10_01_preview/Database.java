@@ -26,6 +26,11 @@ import java.util.Map;
  */
 public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshable<Database>, Updatable<Database.Update>, HasManager<SqlManager> {
     /**
+     * @return the autoPauseDelay value.
+     */
+    Integer autoPauseDelay();
+
+    /**
      * @return the catalogCollation value.
      */
     CatalogCollationType catalogCollation();
@@ -119,6 +124,11 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
      * @return the maxSizeBytes value.
      */
     Long maxSizeBytes();
+
+    /**
+     * @return the minCapacity value.
+     */
+    Double minCapacity();
 
     /**
      * @return the name value.
@@ -237,6 +247,18 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         }
 
         /**
+         * The stage of the database definition allowing to specify AutoPauseDelay.
+         */
+        interface WithAutoPauseDelay {
+            /**
+             * Specifies autoPauseDelay.
+             * @param autoPauseDelay Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled
+             * @return the next definition stage
+             */
+            WithCreate withAutoPauseDelay(Integer autoPauseDelay);
+        }
+
+        /**
          * The stage of the database definition allowing to specify CatalogCollation.
          */
         interface WithCatalogCollation {
@@ -329,6 +351,18 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         }
 
         /**
+         * The stage of the database definition allowing to specify MinCapacity.
+         */
+        interface WithMinCapacity {
+            /**
+             * Specifies minCapacity.
+             * @param minCapacity Minimal capacity that database will always have allocated, if not paused
+             * @return the next definition stage
+             */
+            WithCreate withMinCapacity(Double minCapacity);
+        }
+
+        /**
          * The stage of the database definition allowing to specify ReadScale.
          */
         interface WithReadScale {
@@ -406,7 +440,14 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithSku {
             /**
              * Specifies sku.
-             * @param sku The name and tier of the SKU
+             * @param sku The database SKU.
+ The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name, tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the `Capabilities_ListByLocation` REST API or one of the following commands:
+ ```azurecli
+ az sql db list-editions -l &lt;location&gt; -o table
+ ````
+ ```powershell
+ Get-AzSqlServerServiceObjective -Location &lt;location&gt;
+ ````
              * @return the next definition stage
              */
             WithCreate withSku(Sku sku);
@@ -465,19 +506,31 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Database>, DefinitionStages.WithCatalogCollation, DefinitionStages.WithCollation, DefinitionStages.WithCreateMode, DefinitionStages.WithElasticPoolId, DefinitionStages.WithLicenseType, DefinitionStages.WithLongTermRetentionBackupResourceId, DefinitionStages.WithMaxSizeBytes, DefinitionStages.WithReadScale, DefinitionStages.WithRecoverableDatabaseId, DefinitionStages.WithRecoveryServicesRecoveryPointId, DefinitionStages.WithRestorableDroppedDatabaseId, DefinitionStages.WithRestorePointInTime, DefinitionStages.WithSampleName, DefinitionStages.WithSku, DefinitionStages.WithSourceDatabaseDeletionDate, DefinitionStages.WithSourceDatabaseId, DefinitionStages.WithTags, DefinitionStages.WithZoneRedundant {
+        interface WithCreate extends Creatable<Database>, DefinitionStages.WithAutoPauseDelay, DefinitionStages.WithCatalogCollation, DefinitionStages.WithCollation, DefinitionStages.WithCreateMode, DefinitionStages.WithElasticPoolId, DefinitionStages.WithLicenseType, DefinitionStages.WithLongTermRetentionBackupResourceId, DefinitionStages.WithMaxSizeBytes, DefinitionStages.WithMinCapacity, DefinitionStages.WithReadScale, DefinitionStages.WithRecoverableDatabaseId, DefinitionStages.WithRecoveryServicesRecoveryPointId, DefinitionStages.WithRestorableDroppedDatabaseId, DefinitionStages.WithRestorePointInTime, DefinitionStages.WithSampleName, DefinitionStages.WithSku, DefinitionStages.WithSourceDatabaseDeletionDate, DefinitionStages.WithSourceDatabaseId, DefinitionStages.WithTags, DefinitionStages.WithZoneRedundant {
         }
     }
     /**
      * The template for a Database update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Database>, UpdateStages.WithCatalogCollation, UpdateStages.WithCollation, UpdateStages.WithCreateMode, UpdateStages.WithElasticPoolId, UpdateStages.WithLicenseType, UpdateStages.WithLongTermRetentionBackupResourceId, UpdateStages.WithMaxSizeBytes, UpdateStages.WithReadScale, UpdateStages.WithRecoverableDatabaseId, UpdateStages.WithRecoveryServicesRecoveryPointId, UpdateStages.WithRestorableDroppedDatabaseId, UpdateStages.WithRestorePointInTime, UpdateStages.WithSampleName, UpdateStages.WithSku, UpdateStages.WithSourceDatabaseDeletionDate, UpdateStages.WithSourceDatabaseId, UpdateStages.WithTags, UpdateStages.WithZoneRedundant {
+    interface Update extends Appliable<Database>, UpdateStages.WithAutoPauseDelay, UpdateStages.WithCatalogCollation, UpdateStages.WithCollation, UpdateStages.WithCreateMode, UpdateStages.WithElasticPoolId, UpdateStages.WithLicenseType, UpdateStages.WithLongTermRetentionBackupResourceId, UpdateStages.WithMaxSizeBytes, UpdateStages.WithMinCapacity, UpdateStages.WithReadScale, UpdateStages.WithRecoverableDatabaseId, UpdateStages.WithRecoveryServicesRecoveryPointId, UpdateStages.WithRestorableDroppedDatabaseId, UpdateStages.WithRestorePointInTime, UpdateStages.WithSampleName, UpdateStages.WithSku, UpdateStages.WithSourceDatabaseDeletionDate, UpdateStages.WithSourceDatabaseId, UpdateStages.WithTags, UpdateStages.WithZoneRedundant {
     }
 
     /**
      * Grouping of Database update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the database update allowing to specify AutoPauseDelay.
+         */
+        interface WithAutoPauseDelay {
+            /**
+             * Specifies autoPauseDelay.
+             * @param autoPauseDelay Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled
+             * @return the next update stage
+             */
+            Update withAutoPauseDelay(Integer autoPauseDelay);
+        }
+
         /**
          * The stage of the database update allowing to specify CatalogCollation.
          */
@@ -568,6 +621,18 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
              * @return the next update stage
              */
             Update withMaxSizeBytes(Long maxSizeBytes);
+        }
+
+        /**
+         * The stage of the database update allowing to specify MinCapacity.
+         */
+        interface WithMinCapacity {
+            /**
+             * Specifies minCapacity.
+             * @param minCapacity Minimal capacity that database will always have allocated, if not paused
+             * @return the next update stage
+             */
+            Update withMinCapacity(Double minCapacity);
         }
 
         /**
