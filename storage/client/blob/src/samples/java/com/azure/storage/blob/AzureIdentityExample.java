@@ -32,9 +32,9 @@ public class AzureIdentityExample {
          * Create a storage client using the Azure Identity credentials.
          */
         BlobServiceClient storageClient = new BlobServiceClientBuilder()
-            .endpoint(endpoint)
-            .credential(new DefaultAzureCredential())
-            .buildClient();
+                .endpoint(endpoint)
+                .credential(new DefaultAzureCredential())
+                .buildClient();
 
         System.out.println("Successfully setup client using the Azure Identity, please check the service version: "
             + storageClient.getProperties().value().defaultServiceVersion());

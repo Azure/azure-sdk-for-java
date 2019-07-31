@@ -103,7 +103,7 @@ public class BasicExample {
             String sampleData = "Samples";
             InputStream dataInBlobs = new ByteArrayInputStream(sampleData.getBytes(Charset.defaultCharset()));
             containerClient.getBlockBlobClient("myblobsforlisting" + System.currentTimeMillis())
-                .upload(dataInBlobs, sampleData.length());
+                    .upload(dataInBlobs, sampleData.length());
             dataInBlobs.close();
         }
 
