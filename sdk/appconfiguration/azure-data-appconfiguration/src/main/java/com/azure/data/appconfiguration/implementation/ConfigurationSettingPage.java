@@ -32,7 +32,7 @@ public final class ConfigurationSettingPage implements Page<ConfigurationSetting
     /**
      * Gets the list of {@link ConfigurationSetting ConfigurationSettings} on this page.
      *
-     * @return The list of {@code ConfigurationSettings}.
+     * @return The list of {@link ConfigurationSetting ConfigurationSettings}.
      */
     @Override
     public List<ConfigurationSetting> items() {
