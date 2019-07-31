@@ -37,14 +37,12 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
         if (interceptorManager.isPlaybackMode()) {
             fileServiceAsyncClient = setupClient((connectionString, endpoint) -> new FileServiceClientBuilder()
                 .connectionString(connectionString)
-                .endpoint(endpoint)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .buildAsyncClient(), true, fileServiceAsyncLogger);
         } else {
             fileServiceAsyncClient = setupClient((connectionString, endpoint) -> new FileServiceClientBuilder()
                 .connectionString(connectionString)
-                .endpoint(endpoint)
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
