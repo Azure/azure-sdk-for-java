@@ -5,6 +5,7 @@ package com.azure.security.keyvault.secrets;
 
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
+import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.credentials.TokenCredential;
@@ -32,7 +33,7 @@ import java.util.Objects;
  * <p> The minimal configuration options required by {@link SecretClientBuilder secretClientBuilder} to build
  * {@link SecretAsyncClient} are {@link String endpoint} and {@link TokenCredential credential}. </p>
  *
- * {@codesnippet com.azure.security.keyvault.secretclient.async.construct}
+ * {@codesnippet com.azure.security.keyvault.secrets.async.secretclient.construct}
  *
  * <p><strong>Samples to construct the sync client</strong></p>
  * {@codesnippet com.azure.security.keyvault.secretclient.sync.construct}
@@ -40,12 +41,12 @@ import java.util.Objects;
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link SecretClientBuilder}.</p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.async.secretclient.withhttpclient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.secrets.async.secretclient.withhttpclient.instantiation}
  *
  * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and {@link String endpoint}
  * can be specified. It provides finer control over the construction of {@link SecretAsyncClient client}</p>
 
- * {@codesnippet com.azure.security.keyvault.keys.async.secretclient.pipeline.instantiation}
+ * {@codesnippet com.azure.security.keyvault.secrets.async.secretclient.pipeline.instantiation}
  *
  * @see SecretClient
  * @see SecretAsyncClient
@@ -122,9 +123,11 @@ public final class SecretClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION, buildConfiguration));
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
         policies.add(new BearerTokenAuthenticationPolicy(credential, SecretAsyncClient.KEY_VAULT_SCOPE));
         policies.addAll(this.policies);
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()

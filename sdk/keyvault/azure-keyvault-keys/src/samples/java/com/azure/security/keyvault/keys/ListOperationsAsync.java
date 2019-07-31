@@ -39,10 +39,10 @@ public class ListOperationsAsync {
 
         Thread.sleep(2000);
 
-        keyAsyncClient.createRsaKeyWithResponse(new RsaKeyCreateOptions("CloudRsaKey")
+        keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
                 .expires(OffsetDateTime.now().plusYears(1)))
                 .subscribe(keyResponse ->
-                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.value().name(), keyResponse.value().keyMaterial().kty()));
+                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.name(), keyResponse.keyMaterial().kty()));
 
         Thread.sleep(2000);
 

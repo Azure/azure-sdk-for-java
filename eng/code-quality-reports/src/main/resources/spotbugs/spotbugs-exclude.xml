@@ -450,7 +450,7 @@
   <Match>
     <Or>
       <Class name="com.azure.security.keyvault.keys.KeyClient"/>
-      <Class name="com.azure.security.keyvault.keys.SecretClient"/>
+      <Class name="com.azure.security.keyvault.secrets.SecretClient"/>
     </Or>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
