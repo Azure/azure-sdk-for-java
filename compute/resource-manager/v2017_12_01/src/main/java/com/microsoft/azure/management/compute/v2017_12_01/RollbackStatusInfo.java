@@ -34,7 +34,7 @@ public class RollbackStatusInfo {
     private ApiError rollbackError;
 
     /**
-     * Get the successfullyRolledbackInstanceCount value.
+     * Get the number of instances which have been successfully rolled back.
      *
      * @return the successfullyRolledbackInstanceCount value
      */
@@ -43,7 +43,7 @@ public class RollbackStatusInfo {
     }
 
     /**
-     * Get the failedRolledbackInstanceCount value.
+     * Get the number of instances which failed to rollback.
      *
      * @return the failedRolledbackInstanceCount value
      */
@@ -52,7 +52,7 @@ public class RollbackStatusInfo {
     }
 
     /**
-     * Get the rollbackError value.
+     * Get error details if OS rollback failed.
      *
      * @return the rollbackError value
      */
