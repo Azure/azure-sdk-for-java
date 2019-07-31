@@ -158,7 +158,7 @@ public class EventHubAsyncClient implements Closeable {
     public EventHubProducer createProducer(EventHubProducerOptions options) {
         Objects.requireNonNull(options);
 
-        final EventHubProducerOptions clonedOptions = (EventHubProducerOptions) options.clone();
+        final EventHubProducerOptions clonedOptions = options.clone();
 
         if (clonedOptions.retry() == null) {
             clonedOptions.retry(connectionOptions.retry());
