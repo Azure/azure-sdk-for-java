@@ -28,8 +28,8 @@ public class ManagedDatabaseInner extends Resource {
     private String collation;
 
     /**
-     * Status for the database. Possible values include: 'Online', 'Offline',
-     * 'Shutdown', 'Creating', 'Inaccessible'.
+     * Status of the database. Possible values include: 'Online', 'Offline',
+     * 'Shutdown', 'Creating', 'Inaccessible', 'Updating'.
      */
     @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
     private ManagedDatabaseStatus status;
@@ -73,8 +73,11 @@ public class ManagedDatabaseInner extends Resource {
      * SourceDatabaseName, SourceManagedInstanceName and PointInTime must be
      * specified. RestoreExternalBackup: Create a database by restoring from
      * external backup files. Collation, StorageContainerUri and
-     * StorageContainerSasToken must be specified. Possible values include:
-     * 'Default', 'RestoreExternalBackup', 'PointInTimeRestore'.
+     * StorageContainerSasToken must be specified. Recovery: Creates a database
+     * by restoring a geo-replicated backup. RecoverableDatabaseId must be
+     * specified as the recoverable database resource ID to restore. Possible
+     * values include: 'Default', 'RestoreExternalBackup',
+     * 'PointInTimeRestore', 'Recovery'.
      */
     @JsonProperty(value = "properties.createMode")
     private ManagedDatabaseCreateMode createMode;
@@ -95,6 +98,13 @@ public class ManagedDatabaseInner extends Resource {
     private String sourceDatabaseId;
 
     /**
+     * The restorable dropped database resource id to restore when creating
+     * this database.
+     */
+    @JsonProperty(value = "properties.restorableDroppedDatabaseId")
+    private String restorableDroppedDatabaseId;
+
+    /**
      * Conditional. If createMode is RestoreExternalBackup, this value is
      * required. Specifies the storage container sas token.
      */
@@ -107,6 +117,13 @@ public class ManagedDatabaseInner extends Resource {
      */
     @JsonProperty(value = "properties.failoverGroupId", access = JsonProperty.Access.WRITE_ONLY)
     private String failoverGroupId;
+
+    /**
+     * The resource identifier of the recoverable database associated with
+     * create operation of this database.
+     */
+    @JsonProperty(value = "properties.recoverableDatabaseId")
+    private String recoverableDatabaseId;
 
     /**
      * Get collation of the managed database.
@@ -129,7 +146,7 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Get status for the database. Possible values include: 'Online', 'Offline', 'Shutdown', 'Creating', 'Inaccessible'.
+     * Get status of the database. Possible values include: 'Online', 'Offline', 'Shutdown', 'Creating', 'Inaccessible', 'Updating'.
      *
      * @return the status value
      */
@@ -205,7 +222,7 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Get managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Possible values include: 'Default', 'RestoreExternalBackup', 'PointInTimeRestore'.
+     * Get managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to restore. Possible values include: 'Default', 'RestoreExternalBackup', 'PointInTimeRestore', 'Recovery'.
      *
      * @return the createMode value
      */
@@ -214,7 +231,7 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Set managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Possible values include: 'Default', 'RestoreExternalBackup', 'PointInTimeRestore'.
+     * Set managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to restore. Possible values include: 'Default', 'RestoreExternalBackup', 'PointInTimeRestore', 'Recovery'.
      *
      * @param createMode the createMode value to set
      * @return the ManagedDatabaseInner object itself.
@@ -265,6 +282,26 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
+     * Get the restorable dropped database resource id to restore when creating this database.
+     *
+     * @return the restorableDroppedDatabaseId value
+     */
+    public String restorableDroppedDatabaseId() {
+        return this.restorableDroppedDatabaseId;
+    }
+
+    /**
+     * Set the restorable dropped database resource id to restore when creating this database.
+     *
+     * @param restorableDroppedDatabaseId the restorableDroppedDatabaseId value to set
+     * @return the ManagedDatabaseInner object itself.
+     */
+    public ManagedDatabaseInner withRestorableDroppedDatabaseId(String restorableDroppedDatabaseId) {
+        this.restorableDroppedDatabaseId = restorableDroppedDatabaseId;
+        return this;
+    }
+
+    /**
      * Get conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the storage container sas token.
      *
      * @return the storageContainerSasToken value
@@ -291,6 +328,26 @@ public class ManagedDatabaseInner extends Resource {
      */
     public String failoverGroupId() {
         return this.failoverGroupId;
+    }
+
+    /**
+     * Get the resource identifier of the recoverable database associated with create operation of this database.
+     *
+     * @return the recoverableDatabaseId value
+     */
+    public String recoverableDatabaseId() {
+        return this.recoverableDatabaseId;
+    }
+
+    /**
+     * Set the resource identifier of the recoverable database associated with create operation of this database.
+     *
+     * @param recoverableDatabaseId the recoverableDatabaseId value to set
+     * @return the ManagedDatabaseInner object itself.
+     */
+    public ManagedDatabaseInner withRecoverableDatabaseId(String recoverableDatabaseId) {
+        this.recoverableDatabaseId = recoverableDatabaseId;
+        return this;
     }
 
 }

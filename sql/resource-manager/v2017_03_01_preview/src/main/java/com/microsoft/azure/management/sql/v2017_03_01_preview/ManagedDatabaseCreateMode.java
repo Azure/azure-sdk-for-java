@@ -25,6 +25,9 @@ public final class ManagedDatabaseCreateMode extends ExpandableStringEnum<Manage
     /** Static value PointInTimeRestore for ManagedDatabaseCreateMode. */
     public static final ManagedDatabaseCreateMode POINT_IN_TIME_RESTORE = fromString("PointInTimeRestore");
 
+    /** Static value Recovery for ManagedDatabaseCreateMode. */
+    public static final ManagedDatabaseCreateMode RECOVERY = fromString("Recovery");
+
     /**
      * Creates or finds a ManagedDatabaseCreateMode from its string representation.
      * @param name a name to look for

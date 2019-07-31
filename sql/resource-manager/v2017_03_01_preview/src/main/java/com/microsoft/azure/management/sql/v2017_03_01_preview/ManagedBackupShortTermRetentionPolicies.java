@@ -16,7 +16,7 @@ import com.microsoft.azure.arm.model.HasInner;
 /**
  * Type representing ManagedBackupShortTermRetentionPolicies.
  */
-public interface ManagedBackupShortTermRetentionPolicies extends SupportsCreating<ManagedBackupShortTermRetentionPolicy.DefinitionStages.Blank>, HasInner<ManagedBackupShortTermRetentionPoliciesInner> {
+public interface ManagedBackupShortTermRetentionPolicies extends SupportsCreating<DatabasisManagedInstanceManagedBackupShortTermRetentionPolicy.DefinitionStages.Blank>, HasInner<ManagedBackupShortTermRetentionPoliciesInner> {
     /**
      * Gets a managed database's short term retention policy.
      *
@@ -26,7 +26,7 @@ public interface ManagedBackupShortTermRetentionPolicies extends SupportsCreatin
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ManagedBackupShortTermRetentionPolicy> getAsync(String resourceGroupName, String managedInstanceName, String databaseName);
+    Observable<DatabasisManagedInstanceManagedBackupShortTermRetentionPolicy> getAsync(String resourceGroupName, String managedInstanceName, String databaseName);
 
     /**
      * Gets a managed database's short term retention policy list.
@@ -37,6 +37,6 @@ public interface ManagedBackupShortTermRetentionPolicies extends SupportsCreatin
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ManagedBackupShortTermRetentionPolicy> listByDatabaseAsync(final String resourceGroupName, final String managedInstanceName, final String databaseName);
+    Observable<DatabasisManagedInstanceManagedBackupShortTermRetentionPolicy> listByDatabaseAsync(final String resourceGroupName, final String managedInstanceName, final String databaseName);
 
 }

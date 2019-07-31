@@ -46,7 +46,7 @@ public interface ManagedDatabases {
     Observable<ManagedDatabase> listByInstanceAsync(final String resourceGroupName, final String managedInstanceName);
 
     /**
-     * Deletes the managed database.
+     * Deletes a managed database.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
