@@ -28,6 +28,7 @@ public class RetryUtil {
      *
      * @param options A set of options used to configure the retry policy.
      * @return A new retry policy configured with the given {@code options}.
+     * @throws IllegalArgumentException If {@link RetryOptions#retryMode()} is not a supported mode.
      */
     public static RetryPolicy getRetryPolicy(RetryOptions options) {
         switch (options.retryMode()) {
@@ -75,6 +76,6 @@ public class RetryUtil {
                 //TODO (conniey): is it possible to add a logger here even though it is static? :/
                 return retryPolicy.calculateRetryDelay((TimeoutException) error, attempt);
             })
-            .flatMap(duration -> Mono.delay(duration));
+            .flatMap(Mono::delay);
     }
 }

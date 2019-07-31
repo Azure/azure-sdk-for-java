@@ -36,10 +36,10 @@ class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
     private final Mono<RequestResponseChannel> cbsChannelMono;
     private final ReactorProvider provider;
     private final CBSAuthorizationType authorizationType;
-    private final RetryOptions retry;
+    private final RetryOptions retryOptions;
 
     CBSChannel(AmqpConnection connection, TokenCredential tokenCredential, CBSAuthorizationType authorizationType,
-               ReactorProvider provider, ReactorHandlerProvider handlerProvider, RetryOptions retry) {
+               ReactorProvider provider, ReactorHandlerProvider handlerProvider, RetryOptions retryOptions) {
         super(new ClientLogger(CBSChannel.class));
 
         Objects.requireNonNull(connection);
@@ -47,17 +47,17 @@ class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
         Objects.requireNonNull(authorizationType);
         Objects.requireNonNull(provider);
         Objects.requireNonNull(handlerProvider);
-        Objects.requireNonNull(retry);
+        Objects.requireNonNull(retryOptions);
 
         this.authorizationType = authorizationType;
-        this.retry = retry;
+        this.retryOptions = retryOptions;
         this.connection = connection;
         this.credential = tokenCredential;
         this.provider = provider;
         this.cbsChannelMono = connection.createSession(SESSION_NAME)
             .cast(ReactorSession.class)
             .map(session -> new RequestResponseChannel(connection.getIdentifier(), connection.getHost(), LINK_NAME,
-                CBS_ADDRESS, session.session(), this.retry, handlerProvider))
+                CBS_ADDRESS, session.session(), this.retryOptions, handlerProvider))
             .cache();
     }
 
@@ -81,7 +81,7 @@ class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
 
     @Override
     public void close() {
-        final RequestResponseChannel channel = cbsChannelMono.block(retry.tryTimeout());
+        final RequestResponseChannel channel = cbsChannelMono.block(retryOptions.tryTimeout());
         if (channel != null) {
             channel.close();
         }
