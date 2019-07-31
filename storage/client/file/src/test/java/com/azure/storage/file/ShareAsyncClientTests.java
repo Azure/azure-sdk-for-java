@@ -150,7 +150,8 @@ public class ShareAsyncClientTests extends ShareClientTestBase {
         shareAsyncClient.create().block();
         shareAsyncClient.createFile("myFile", 1024).block();
         StepVerifier.create(shareAsyncClient.createFile("myFile", 1024))
-            .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201));
+            .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
+            .verifyComplete();
     }
 
     @Override
@@ -160,7 +161,8 @@ public class ShareAsyncClientTests extends ShareClientTestBase {
             .assertNext(fileAsyncClientResponse -> FileTestHelpers.assertResponseStatusCode(fileAsyncClientResponse, 201))
             .verifyComplete();
         StepVerifier.create(shareAsyncClient.deleteFile("myFile"))
-            .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 202));
+            .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 202))
+            .verifyComplete();
     }
 
     @Override

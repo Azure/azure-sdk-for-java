@@ -400,8 +400,15 @@ public class ShareAsyncClient {
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @return A response containing a {@link FileAsyncClient} to interact with the created file and the
      * status of its creation.
-     * @throws StorageErrorException If the share doesn't exist, the file already exists or is in the process of
-     * being deleted.
+     * @throws StorageErrorException If one of the following cases happen:
+     * <ul>
+     *     <li>
+     *         If the share or parent directory does not exist.
+     *     </li>
+     *     <li>
+     *          An attempt to create file on a share snapshot will fail with 400 (InvalidQueryParameterValue).
+     *     </li>
+     * </ul>
      */
     public Mono<Response<FileAsyncClient>> createFile(String fileName, long maxSize) {
         return createFile(fileName, maxSize, null, null);
@@ -422,8 +429,15 @@ public class ShareAsyncClient {
      * @param metadata Optional metadata to associate with the file.
      * @return A response containing a {@link FileAsyncClient} to interact with the created file and the
      * status of its creation.
-     * @throws StorageErrorException If the share doesn't exist, the file already exists or is in the process of
-     * being deleted or the metadata is using an illegal key name.
+     * @throws StorageErrorException If one of the following cases happen:
+     * <ul>
+     *     <li>
+     *         If the share or parent directory does not exist.
+     *     </li>
+     *     <li>
+     *          An attempt to create file on a share snapshot will fail with 400 (InvalidQueryParameterValue).
+     *     </li>
+     * </ul>
      */
     public Mono<Response<FileAsyncClient>> createFile(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata) {
         FileAsyncClient fileAsyncClient = getFileClient(fileName);

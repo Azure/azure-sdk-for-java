@@ -344,10 +344,10 @@ public class ShareClient {
      * @throws StorageErrorException If one of the following cases happen:
      * <ul>
      *     <li>
-     *         If the share or parent directory does not exist..
+     *         If the share or parent directory does not exist.
      *     </li>
      *     <li>
-     *          An attempt to create file on a share snapshot will fail with 400 %28InvalidQueryParameterValue%29.
+     *          An attempt to create file on a share snapshot will fail with 400 (InvalidQueryParameterValue).
      *     </li>
      * </ul>
      */
@@ -373,7 +373,7 @@ public class ShareClient {
      * @throws StorageErrorException If one of the following cases happen:
      * <ul>
      *     <li>
-     *         If the share or parent directory does not exist..
+     *         If the share or parent directory does not exist.
      *     </li>
      *     <li>
      *          An attempt to create file on a share snapshot will fail with 400 (InvalidQueryParameterValue).
