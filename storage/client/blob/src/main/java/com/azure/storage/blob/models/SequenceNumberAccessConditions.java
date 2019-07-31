@@ -4,6 +4,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * PageBlobs_uploadPages, PageBlobs_clearPages, PageBlobs_uploadPagesFromURL.
  */
 @JacksonXmlRootElement(localName = "sequence-number-access-conditions")
+@Fluent
 public final class SequenceNumberAccessConditions {
     /*
      * Specify this header value to operate only on a blob if it has a sequence

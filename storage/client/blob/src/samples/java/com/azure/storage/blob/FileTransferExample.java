@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.storage.blob.BlockBlobClient;
-import com.azure.storage.blob.ContainerClient;
-import com.azure.storage.blob.StorageClient;
-import com.azure.storage.blob.StorageClientBuilder;
+package com.azure.storage.blob;
+
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
 import java.io.File;
@@ -52,10 +50,10 @@ public class FileTransferExample {
         String endPoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName);
 
         /*
-         * Create a StorageClient object that wraps the service endpoint, credential and a request pipeline.
+         * Create a BlobServiceClient object that wraps the service endpoint, credential and a request pipeline.
          * Now you can use the storageClient to perform various container and blob operations.
          */
-        StorageClient storageClient = new StorageClientBuilder().endpoint(endPoint).credential(credential).buildClient();
+        BlobServiceClient storageClient = new BlobServiceClientBuilder().endpoint(endPoint).credential(credential).buildClient();
 
 
         /*

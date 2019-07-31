@@ -4,6 +4,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -12,6 +13,7 @@ import java.time.OffsetDateTime;
  * A user delegation key.
  */
 @JacksonXmlRootElement(localName = "UserDelegationKey")
+@Fluent
 public final class UserDelegationKey {
     /*
      * The Azure Active Directory object ID in GUID format.

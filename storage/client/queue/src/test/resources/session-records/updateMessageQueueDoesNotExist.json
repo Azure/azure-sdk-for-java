@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.queue.core.windows.net/queue77530b22/messages/doesn't?popreceipt=exist&visibilitytimeout=5",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue960895d5/messages/doesn't?popreceipt=exist&visibilitytimeout=5",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -14,17 +14,17 @@
       "retry-after" : "0",
       "Content-Length" : "415",
       "StatusCode" : "400",
-      "x-ms-request-id" : "dd2229e1-4003-0028-1475-37b82d000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidQueryParameterValue</Code><Message>Value for one of the query parameters specified in the request URI is invalid.\nRequestId:dd2229e1-4003-0028-1475-37b82d000000\nTime:2019-07-10T23:18:01.7878412Z</Message><QueryParameterName>popreceipt</QueryParameterName><QueryParameterValue>exist</QueryParameterValue><Reason>Invalid pop receipt format</Reason></Error>",
-      "Date" : "Wed, 10 Jul 2019 23:18:01 GMT",
+      "x-ms-request-id" : "8071d32f-4003-00b9-6803-47d378000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidQueryParameterValue</Code><Message>Value for one of the query parameters specified in the request URI is invalid.\nRequestId:8071d32f-4003-00b9-6803-47d378000000\nTime:2019-07-30T18:19:03.0460773Z</Message><QueryParameterName>popreceipt</QueryParameterName><QueryParameterValue>exist</QueryParameterValue><Reason>Invalid pop receipt format</Reason></Error>",
+      "Date" : "Tue, 30 Jul 2019 18:19:02 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.queue.core.windows.net/queue77530b22/messages",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue960895d5/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -33,11 +33,11 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "dd2229fb-4003-0028-2a75-37b82d000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:dd2229fb-4003-0028-2a75-37b82d000000\nTime:2019-07-10T23:18:01.8368763Z</Message></Error>",
-      "Date" : "Wed, 10 Jul 2019 23:18:01 GMT",
+      "x-ms-request-id" : "8071d341-4003-00b9-7a03-47d378000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:8071d341-4003-00b9-7a03-47d378000000\nTime:2019-07-30T18:19:03.0771058Z</Message></Error>",
+      "Date" : "Tue, 30 Jul 2019 18:19:03 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queue77530b22" ]
+  "variables" : [ "queue960895d5" ]
 }

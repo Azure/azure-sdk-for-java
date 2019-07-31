@@ -4,6 +4,7 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * File properties.
  */
 @JacksonXmlRootElement(localName = "FileProperty")
+@Fluent
 public final class FileProperty {
     /*
      * Content length of the file. This value may not be up-to-date since an

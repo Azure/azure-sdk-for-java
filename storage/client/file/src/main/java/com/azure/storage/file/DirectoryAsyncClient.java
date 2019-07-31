@@ -58,7 +58,7 @@ public class DirectoryAsyncClient {
     private final String snapshot;
 
     /**
-     * Creates a DirectoryAsyncClient that sends requests to the storage directory at {@link AzureFileStorageImpl#url() endpoint}.
+     * Creates a DirectoryAsyncClient that sends requests to the storage directory at {@link AzureFileStorageImpl#getUrl() endpoint}.
      * Each service call goes through the {@link HttpPipeline pipeline} in the {@code client}.
      * @param azureFileStorageClient Client that interacts with the service interfaces
      * @param shareName Name of the share
@@ -97,10 +97,10 @@ public class DirectoryAsyncClient {
      */
     public URL getDirectoryUrl() {
         try {
-            return new URL(azureFileStorageClient.url());
+            return new URL(azureFileStorageClient.getUrl());
         } catch (MalformedURLException e) {
             throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
-                azureFileStorageClient.url()), e);
+                azureFileStorageClient.getUrl()), e);
         }
     }
 

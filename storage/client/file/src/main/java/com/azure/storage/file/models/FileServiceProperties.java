@@ -4,6 +4,7 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -15,6 +16,7 @@ import java.util.List;
  * Storage service properties.
  */
 @JacksonXmlRootElement(localName = "StorageServiceProperties")
+@Fluent
 public final class FileServiceProperties {
     /*
      * A summary of request statistics grouped by API in hourly aggregates for

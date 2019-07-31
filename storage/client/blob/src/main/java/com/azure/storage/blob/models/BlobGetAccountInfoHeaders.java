@@ -5,6 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -13,6 +14,7 @@ import java.time.OffsetDateTime;
  * Defines headers for GetAccountInfo operation.
  */
 @JacksonXmlRootElement(localName = "Blob-GetAccountInfo-Headers")
+@Fluent
 public final class BlobGetAccountInfoHeaders {
     /*
      * This header uniquely identifies the request that was made and can be
