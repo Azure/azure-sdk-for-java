@@ -92,7 +92,7 @@ public class DirectoryClient {
      * {@codesnippet com.azure.storage.file.directoryClient.createDirectory}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @return A response containing the directory info and the status of creating the directory.
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
@@ -111,7 +111,7 @@ public class DirectoryClient {
      * {@codesnippet com.azure.storage.file.directoryClient.create#map}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param metadata Optional metadata to associate with the directory.
      * @return A response containing the directory info and the status of creating the directory.
@@ -276,7 +276,7 @@ public class DirectoryClient {
      * {@codesnippet com.azure.storage.file.directoryClient.createSubDirectory#string}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param subDirectoryName Name of the subdirectory
      * @return A response containing the subdirectory client and the status of creating the directory.
@@ -296,7 +296,7 @@ public class DirectoryClient {
      * {@codesnippet com.azure.storage.file.directoryClient.createSubDirectory#string-map}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param subDirectoryName Name of the subdirectory
      * @param metadata Optional metadata to associate with the subdirectory
