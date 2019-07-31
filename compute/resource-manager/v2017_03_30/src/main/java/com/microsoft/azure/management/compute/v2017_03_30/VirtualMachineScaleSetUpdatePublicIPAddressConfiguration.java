@@ -36,7 +36,7 @@ public class VirtualMachineScaleSetUpdatePublicIPAddressConfiguration {
     private VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings dnsSettings;
 
     /**
-     * Get the name value.
+     * Get the publicIP address configuration name.
      *
      * @return the name value
      */
@@ -45,7 +45,7 @@ public class VirtualMachineScaleSetUpdatePublicIPAddressConfiguration {
     }
 
     /**
-     * Set the name value.
+     * Set the publicIP address configuration name.
      *
      * @param name the name value to set
      * @return the VirtualMachineScaleSetUpdatePublicIPAddressConfiguration object itself.
@@ -56,7 +56,7 @@ public class VirtualMachineScaleSetUpdatePublicIPAddressConfiguration {
     }
 
     /**
-     * Get the idleTimeoutInMinutes value.
+     * Get the idle timeout of the public IP address.
      *
      * @return the idleTimeoutInMinutes value
      */
@@ -65,7 +65,7 @@ public class VirtualMachineScaleSetUpdatePublicIPAddressConfiguration {
     }
 
     /**
-     * Set the idleTimeoutInMinutes value.
+     * Set the idle timeout of the public IP address.
      *
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set
      * @return the VirtualMachineScaleSetUpdatePublicIPAddressConfiguration object itself.
@@ -76,7 +76,7 @@ public class VirtualMachineScaleSetUpdatePublicIPAddressConfiguration {
     }
 
     /**
-     * Get the dnsSettings value.
+     * Get the dns settings to be applied on the publicIP addresses .
      *
      * @return the dnsSettings value
      */
@@ -85,7 +85,7 @@ public class VirtualMachineScaleSetUpdatePublicIPAddressConfiguration {
     }
 
     /**
-     * Set the dnsSettings value.
+     * Set the dns settings to be applied on the publicIP addresses .
      *
      * @param dnsSettings the dnsSettings value to set
      * @return the VirtualMachineScaleSetUpdatePublicIPAddressConfiguration object itself.
