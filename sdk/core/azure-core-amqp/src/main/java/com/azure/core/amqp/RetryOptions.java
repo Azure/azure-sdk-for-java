@@ -64,7 +64,7 @@ public class RetryOptions {
     /**
      * Sets the maximum permissible delay between retry attempts.
      *
-     * @param maximumDelay the maximum permissible delay between retry attempts.
+     * @param maximumDelay The maximum permissible delay between retry attempts.
      * @return The updated {@link RetryOptions} object.
      */
     public RetryOptions maxDelay(Duration maximumDelay) {

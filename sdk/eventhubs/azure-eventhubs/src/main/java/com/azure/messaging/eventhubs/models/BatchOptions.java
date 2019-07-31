@@ -12,7 +12,7 @@ import com.azure.messaging.eventhubs.EventHubProducer;
  * @see EventHubProducer#createBatch()
  * @see EventHubProducer#createBatch(BatchOptions)
  */
-public class BatchOptions implements Cloneable {
+public class BatchOptions {
     private int maximumSizeInBytes;
     private String partitionKey;
 
@@ -63,18 +63,9 @@ public class BatchOptions implements Cloneable {
      *
      * @return A shallow clone of this object.
      */
-    @Override
-    public Object clone() {
-        BatchOptions clone;
-        try {
-            clone = (BatchOptions) super.clone();
-        } catch (CloneNotSupportedException e) {
-            clone = new BatchOptions();
-        }
-
-        clone.partitionKey(partitionKey);
-        clone.maximumSizeInBytes(maximumSizeInBytes);
-
-        return clone;
+    public BatchOptions clone() {
+        return new BatchOptions()
+            .partitionKey(partitionKey)
+            .maximumSizeInBytes(maximumSizeInBytes);
     }
 }

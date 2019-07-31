@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs.models;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.implementation.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubConsumer;
 import reactor.core.scheduler.Scheduler;
@@ -22,9 +21,7 @@ import java.util.Optional;
  * @see EventHubAsyncClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  */
 @Fluent
-public class EventHubConsumerOptions implements Cloneable {
-    private final ClientLogger logger = new ClientLogger(EventHubConsumerOptions.class);
-
+public class EventHubConsumerOptions {
     /**
      * The maximum length, in characters, for the identifier assigned to an {@link EventHubConsumer}.
      */
@@ -205,21 +202,15 @@ public class EventHubConsumerOptions implements Cloneable {
      * @return A shallow clone of this object.
      */
     public EventHubConsumerOptions clone() {
-        EventHubConsumerOptions clone;
-        try {
-            clone = (EventHubConsumerOptions) super.clone();
-        } catch (CloneNotSupportedException e) {
-            clone = new EventHubConsumerOptions();
-        }
+        final EventHubConsumerOptions clone = new EventHubConsumerOptions()
+            .scheduler(this.scheduler())
+            .identifier(this.identifier())
+            .prefetchCount(this.prefetchCount())
+            .ownerLevel(this.ownerLevel());
 
         if (retry != null) {
-            clone.retry((RetryOptions) retry.clone());
+            clone.retry(retry.clone());
         }
-
-        clone.scheduler(this.scheduler());
-        clone.identifier(this.identifier());
-        clone.prefetchCount(this.prefetchCount());
-        clone.ownerLevel(this.ownerLevel());
 
         return clone;
     }

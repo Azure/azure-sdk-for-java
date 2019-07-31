@@ -15,9 +15,9 @@ import com.azure.messaging.eventhubs.EventHubProducer;
  * @see EventHubAsyncClient#createProducer(EventHubProducerOptions)
  */
 @Fluent
-public class EventHubProducerOptions implements Cloneable {
+public class EventHubProducerOptions {
     private String partitionId;
-    private RetryOptions retry;
+    private RetryOptions retryOptions;
 
     /**
      * Sets the identifier of the Event Hub partition that the {@link EventHubProducer} will be bound to, limiting it to
@@ -43,7 +43,7 @@ public class EventHubProducerOptions implements Cloneable {
      * @return The updated SenderOptions object.
      */
     public EventHubProducerOptions retry(RetryOptions retry) {
-        this.retry = retry;
+        this.retryOptions = retry;
         return this;
     }
 
@@ -54,7 +54,7 @@ public class EventHubProducerOptions implements Cloneable {
      *         null}, then the retry options configured on the associated {@link EventHubAsyncClient} is used.
      */
     public RetryOptions retry() {
-        return retry;
+        return retryOptions;
     }
 
     /**
@@ -75,20 +75,13 @@ public class EventHubProducerOptions implements Cloneable {
      *
      * @return A shallow clone of this object.
      */
-    @Override
-    public Object clone() {
-        EventHubProducerOptions clone;
-        try {
-            clone = (EventHubProducerOptions) super.clone();
-        } catch (CloneNotSupportedException e) {
-            clone = new EventHubProducerOptions();
-        }
+    public EventHubProducerOptions clone() {
+        final EventHubProducerOptions clone = new EventHubProducerOptions()
+            .partitionId(partitionId);
 
-        if (retry != null) {
-            clone.retry((RetryOptions) retry.clone());
+        if (retryOptions != null) {
+            clone.retry(retryOptions.clone());
         }
-
-        clone.partitionId(partitionId);
 
         return clone;
     }
