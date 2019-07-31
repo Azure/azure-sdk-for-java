@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.queue.core.windows.net/queue38693e14",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue04921afb",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -12,15 +12,15 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "dd22272a-4003-0028-7175-37b82d000000",
-      "Date" : "Wed, 10 Jul 2019 23:17:59 GMT"
+      "x-ms-request-id" : "8071d01e-4003-00b9-7903-47d378000000",
+      "Date" : "Tue, 30 Jul 2019 18:19:02 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.queue.core.windows.net/queue38693e14?comp=metadata",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue04921afb?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -29,17 +29,17 @@
       "retry-after" : "0",
       "Content-Length" : "285",
       "StatusCode" : "400",
-      "x-ms-request-id" : "dd22274f-4003-0028-0b75-37b82d000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:dd22274f-4003-0028-0b75-37b82d000000\nTime:2019-07-10T23:18:00.5359517Z</Message><MetadataValue>bad metadata</MetadataValue></Error>",
-      "Date" : "Wed, 10 Jul 2019 23:18:00 GMT",
+      "x-ms-request-id" : "8071d048-4003-00b9-2003-47d378000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:8071d048-4003-00b9-2003-47d378000000\nTime:2019-07-30T18:19:02.1712670Z</Message><MetadataValue>bad metadata</MetadataValue></Error>",
+      "Date" : "Tue, 30 Jul 2019 18:19:02 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.queue.core.windows.net/queue38693e14/messages",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue04921afb/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -47,15 +47,15 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "dd222779-4003-0028-2875-37b82d000000",
-      "Date" : "Wed, 10 Jul 2019 23:18:00 GMT"
+      "x-ms-request-id" : "8071d05e-4003-00b9-3603-47d378000000",
+      "Date" : "Tue, 30 Jul 2019 18:19:02 GMT"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.queue.core.windows.net/queue38693e14",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue04921afb",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -63,9 +63,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "dd222798-4003-0028-4375-37b82d000000",
-      "Date" : "Wed, 10 Jul 2019 23:18:00 GMT"
+      "x-ms-request-id" : "8071d078-4003-00b9-5003-47d378000000",
+      "Date" : "Tue, 30 Jul 2019 18:19:02 GMT"
     }
   } ],
-  "variables" : [ "queue38693e14" ]
+  "variables" : [ "queue04921afb" ]
 }

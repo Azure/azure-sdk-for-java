@@ -39,7 +39,6 @@ public class ShareAsyncClientTests extends ShareClientTestBase {
         if (interceptorManager.isPlaybackMode()) {
             shareAsyncClient = setupClient((connectionString, endpoint) -> new ShareClientBuilder()
                 .connectionString(connectionString)
-                .endpoint(endpoint)
                 .shareName(shareName)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
@@ -47,7 +46,6 @@ public class ShareAsyncClientTests extends ShareClientTestBase {
         } else {
             shareAsyncClient = setupClient((connectionString, endpoint) -> new ShareClientBuilder()
                 .connectionString(connectionString)
-                .endpoint(endpoint)
                 .shareName(shareName)
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)

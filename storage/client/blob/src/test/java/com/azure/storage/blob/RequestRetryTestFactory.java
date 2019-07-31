@@ -6,7 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
@@ -91,7 +91,7 @@ class RequestRetryTestFactory {
     }
 
     Mono<HttpResponse> send(URL url) {
-        return HttpPipeline.builder()
+        return new HttpPipelineBuilder()
             .policies(new RequestRetryPolicy(this.options))
             .httpClient(new RetryTestClient(this))
             .build()

@@ -28,7 +28,7 @@ import java.time.OffsetDateTime;
  * <a href=https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java>here</a>
  * for additional samples.</p>
  */
-public final class AccountSASSignatureValues {
+final class AccountSASSignatureValues {
 
     private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
@@ -50,7 +50,7 @@ public final class AccountSASSignatureValues {
      * Initializes an {@code AccountSASSignatureValues} object with the version number set to the default and all
      * other values empty.
      */
-    public AccountSASSignatureValues() {
+    AccountSASSignatureValues() {
     }
 
     /**
