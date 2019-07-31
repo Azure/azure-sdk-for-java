@@ -19,6 +19,34 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("RestSource")
 public class RestSource extends CopySource {
     /**
+     * The HTTP method used to call the RESTful API. The default is GET. Type:
+     * string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "requestMethod")
+    private Object requestMethod;
+
+    /**
+     * The HTTP request body to the RESTful API if requestMethod is POST. Type:
+     * string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "requestBody")
+    private Object requestBody;
+
+    /**
+     * The additional HTTP headers in the request to the RESTful API. Type:
+     * string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "additionalHeaders")
+    private Object additionalHeaders;
+
+    /**
+     * The pagination rules to compose next page requests. Type: string (or
+     * Expression with resultType string).
+     */
+    @JsonProperty(value = "paginationRules")
+    private Object paginationRules;
+
+    /**
      * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get
      * a response, not the timeout to read response data. Default value:
      * 00:01:40. Type: string (or Expression with resultType string), pattern:
@@ -32,6 +60,86 @@ public class RestSource extends CopySource {
      */
     @JsonProperty(value = "requestInterval")
     private Object requestInterval;
+
+    /**
+     * Get the HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType string).
+     *
+     * @return the requestMethod value
+     */
+    public Object requestMethod() {
+        return this.requestMethod;
+    }
+
+    /**
+     * Set the HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType string).
+     *
+     * @param requestMethod the requestMethod value to set
+     * @return the RestSource object itself.
+     */
+    public RestSource withRequestMethod(Object requestMethod) {
+        this.requestMethod = requestMethod;
+        return this;
+    }
+
+    /**
+     * Get the HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType string).
+     *
+     * @return the requestBody value
+     */
+    public Object requestBody() {
+        return this.requestBody;
+    }
+
+    /**
+     * Set the HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType string).
+     *
+     * @param requestBody the requestBody value to set
+     * @return the RestSource object itself.
+     */
+    public RestSource withRequestBody(Object requestBody) {
+        this.requestBody = requestBody;
+        return this;
+    }
+
+    /**
+     * Get the additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType string).
+     *
+     * @return the additionalHeaders value
+     */
+    public Object additionalHeaders() {
+        return this.additionalHeaders;
+    }
+
+    /**
+     * Set the additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType string).
+     *
+     * @param additionalHeaders the additionalHeaders value to set
+     * @return the RestSource object itself.
+     */
+    public RestSource withAdditionalHeaders(Object additionalHeaders) {
+        this.additionalHeaders = additionalHeaders;
+        return this;
+    }
+
+    /**
+     * Get the pagination rules to compose next page requests. Type: string (or Expression with resultType string).
+     *
+     * @return the paginationRules value
+     */
+    public Object paginationRules() {
+        return this.paginationRules;
+    }
+
+    /**
+     * Set the pagination rules to compose next page requests. Type: string (or Expression with resultType string).
+     *
+     * @param paginationRules the paginationRules value to set
+     * @return the RestSource object itself.
+     */
+    public RestSource withPaginationRules(Object paginationRules) {
+        this.paginationRules = paginationRules;
+        return this;
+    }
 
     /**
      * Get the timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read response data. Default value: 00:01:40. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).

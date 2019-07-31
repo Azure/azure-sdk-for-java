@@ -44,6 +44,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "PhoenixObject", value = PhoenixObjectDataset.class),
     @JsonSubTypes.Type(name = "PaypalObject", value = PaypalObjectDataset.class),
     @JsonSubTypes.Type(name = "MarketoObject", value = MarketoObjectDataset.class),
+    @JsonSubTypes.Type(name = "AzureMariaDBTable", value = AzureMariaDBTableDataset.class),
     @JsonSubTypes.Type(name = "MariaDBTable", value = MariaDBTableDataset.class),
     @JsonSubTypes.Type(name = "MagentoObject", value = MagentoObjectDataset.class),
     @JsonSubTypes.Type(name = "JiraObject", value = JiraObjectDataset.class),
