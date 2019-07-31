@@ -173,7 +173,7 @@ public final class BlobOutputStream extends OutputStream {
             if (accessCondition.appendPositionAccessConditions().appendPosition() != null) {
                 this.initialBlobOffset = accessCondition.appendPositionAccessConditions().appendPosition();
             } else {
-                this.initialBlobOffset = parentBlob.getProperties().block().value().blobSize();
+                this.initialBlobOffset = parentBlob.getProperties().block().blobSize();
             }
         }
 

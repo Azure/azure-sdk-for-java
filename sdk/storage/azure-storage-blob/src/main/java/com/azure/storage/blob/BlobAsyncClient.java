@@ -505,14 +505,18 @@ public class BlobAsyncClient {
      * "Sample code for BlobAsyncClient.download")] \n For more samples, please see the [Samples
      * file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
+    Mono<DownloadAsyncResponse> download(BlobRange range, BlobAccessConditions accessConditions, boolean rangeGetContentMD5) {
+        return withContext(context ->download(range, accessConditions, rangeGetContentMD5, context));
+    }
+
     Mono<DownloadAsyncResponse> download(BlobRange range, BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Context context) {
         range = range == null ? new BlobRange(0) : range;
         Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         HTTPGetterInfo info = new HTTPGetterInfo()
-            .offset(range.offset())
-            .count(range.count())
-            .eTag(accessConditions.modifiedAccessConditions().ifMatch());
+                                  .offset(range.offset())
+                                  .count(range.count())
+                                  .eTag(accessConditions.modifiedAccessConditions().ifMatch());
 
         // TODO: range is BlobRange but expected as String
         // TODO: figure out correct response
@@ -520,18 +524,19 @@ public class BlobAsyncClient {
             null, null, snapshot, null, null, range.toHeaderValue(), getMD5, null,
             null, null, null, null,
             accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(), context))
-            // Convert the autorest response to a DownloadAsyncResponse, which enable reliable download.
-            .map(response -> {
-                // If there wasn't an etag originally specified, lock on the one returned.
-                info.eTag(response.deserializedHeaders().eTag());
-                return new DownloadAsyncResponse(response, info,
-                    // In the event of a stream failure, make a new request to pick up where we left off.
-                    newInfo ->
-                        this.download(new BlobRange(newInfo.offset(), newInfo.count()),
-                            new BlobAccessConditions().modifiedAccessConditions(
-                                new ModifiedAccessConditions().ifMatch(info.eTag())), false, context));
-            });
+                   // Convert the autorest response to a DownloadAsyncResponse, which enable reliable download.
+                   .map(response -> {
+                       // If there wasn't an etag originally specified, lock on the one returned.
+                       info.eTag(response.deserializedHeaders().eTag());
+                       return new DownloadAsyncResponse(response, info,
+                           // In the event of a stream failure, make a new request to pick up where we left off.
+                           newInfo ->
+                               this.download(new BlobRange(newInfo.offset(), newInfo.count()),
+                                   new BlobAccessConditions().modifiedAccessConditions(
+                                       new ModifiedAccessConditions().ifMatch(info.eTag())), false, context));
+                   });
     }
+
 
     /**
      * Downloads the entire blob into a file specified by the path. The file will be created if it doesn't exist.
