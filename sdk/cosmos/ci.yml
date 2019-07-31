@@ -119,4 +119,4 @@ jobs:
 
       # We `install` separately from running `site:site site:stage` so that the `install` brings in the non-shipping-modules,
       # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
-      - template: ../../eng/pipelines/templates/steps/install-reporting-tools.yml
+      - template: ../steps/install-reporting-tools.yml
