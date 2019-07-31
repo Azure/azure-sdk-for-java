@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -57,7 +58,7 @@ public class SetMetadataAndHTTPHeadersExample {
         /*
          * Create a container with the containerMetadata above.
          */
-        containerClient.create(containerMetadata, null, null);
+        containerClient.create(containerMetadata, null, null, new Context("key1", "value1"));
 
         /*
          * Create a blob client.

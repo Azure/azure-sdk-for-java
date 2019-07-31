@@ -36,7 +36,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
      */
     public void existsCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.exists
-        client.exists().subscribe(response -> System.out.printf("Exists? %b%n", response.value()));
+        client.exists().subscribe(response -> System.out.printf("Exists? %b%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.exists
     }
 
@@ -47,7 +47,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void startCopyFromURL() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.startCopyFromURL#URL
         client.startCopyFromURL(url)
-            .subscribe(response -> System.out.printf("Copy identifier: %s%n", response.value()));
+            .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.startCopyFromURL#URL
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.startCopyFromURL#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions
@@ -58,7 +58,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId));
 
         client.startCopyFromURL(url, metadata, modifiedAccessConditions, blobAccessConditions)
-            .subscribe(response -> System.out.printf("Copy identifier: %s%n", response.value()));
+            .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.startCopyFromURL#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions
     }
 
@@ -85,7 +85,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
      */
     public void copyFromURL() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURL#URL
-        client.copyFromURL(url).subscribe(response -> System.out.printf("Copy identifier: %s%n", response.value()));
+        client.copyFromURL(url).subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.copyFromURL#URL
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURL#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions
@@ -96,7 +96,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId));
 
         client.copyFromURL(url, metadata, modifiedAccessConditions, blobAccessConditions)
-            .subscribe(response -> System.out.printf("Copy identifier: %s%n", response.value()));
+            .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.copyFromURL#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions
     }
 
@@ -110,7 +110,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.download
         client.download().subscribe(response -> {
             ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
-            response.value().subscribe(piece -> {
+            response.subscribe(piece -> {
                 try {
                     downloadData.write(piece.array());
                 } catch (IOException ex) {
@@ -126,7 +126,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
         client.download(range, options, null, false).subscribe(response -> {
             ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
-            response.value().subscribe(piece -> {
+            response.subscribe(piece -> {
                 try {
                     downloadData.write(piece.array());
                 } catch (IOException ex) {
@@ -178,7 +178,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void getProperties() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.getProperties
         client.getProperties().subscribe(response ->
-            System.out.printf("Type: %s, Size: %d%n", response.value().blobType(), response.value().blobSize()));
+            System.out.printf("Type: %s, Size: %d%n", response.blobType(), response.blobSize()));
         // END: com.azure.storage.blob.BlobAsyncClient.getProperties
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.getProperties#BlobAccessConditions
@@ -186,7 +186,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId));
 
         client.getProperties(accessConditions).subscribe(response ->
-            System.out.printf("Type: %s, Size: %d%n", response.value().blobType(), response.value().blobSize()));
+            System.out.printf("Type: %s, Size: %d%n", response.blobType(), response.blobSize()));
         // END: com.azure.storage.blob.BlobAsyncClient.getProperties#BlobAccessConditions
     }
 
@@ -289,7 +289,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void acquireLease() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.acquireLease#String-int
         client.acquireLease("proposedId", 60)
-            .subscribe(response -> System.out.printf("Lease ID is %s%n", response.value()));
+            .subscribe(response -> System.out.printf("Lease ID is %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.acquireLease#String-int
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.acquireLease#String-int-ModifiedAccessConditions
@@ -297,7 +297,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .ifModifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.acquireLease("proposedId", 60, modifiedAccessConditions)
-            .subscribe(response -> System.out.printf("Lease ID is %s%n", response.value()));
+            .subscribe(response -> System.out.printf("Lease ID is %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.acquireLease#String-int-ModifiedAccessConditions
     }
 
@@ -308,7 +308,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void renewLease() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.renewLease#String
         client.renewLease(leaseId)
-            .subscribe(response -> System.out.printf("Renewed lease ID is %s%n", response.value()));
+            .subscribe(response -> System.out.printf("Renewed lease ID is %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.renewLease#String
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.renewLease#String-ModifiedAccessConditions
@@ -316,7 +316,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.renewLease(leaseId, modifiedAccessConditions)
-            .subscribe(response -> System.out.printf("Renewed lease ID is %s%n", response.value()));
+            .subscribe(response -> System.out.printf("Renewed lease ID is %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.renewLease#String-ModifiedAccessConditions
     }
 
@@ -347,7 +347,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.breakLease
         client.breakLease()
             .subscribe(response ->
-                System.out.printf("The broken lease has %d seconds remaining on the lease", response.value()));
+                System.out.printf("The broken lease has %d seconds remaining on the lease", response));
         // END: com.azure.storage.blob.BlobAsyncClient.breakLease
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.breakLease#Integer-ModifiedAccessConditions
@@ -357,7 +357,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
         client.breakLease(retainLeaseInSeconds, modifiedAccessConditions)
             .subscribe(response ->
-                System.out.printf("The broken lease has %d seconds remaining on the lease", response.value()));
+                System.out.printf("The broken lease has %d seconds remaining on the lease", response));
         // END: com.azure.storage.blob.BlobAsyncClient.breakLease#Integer-ModifiedAccessConditions
     }
 
@@ -368,7 +368,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void changeLease() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.changeLease#String-String
         client.changeLease(leaseId, "proposedId")
-            .subscribe(response -> System.out.printf("Changed lease ID is %s%n", response.value()));
+            .subscribe(response -> System.out.printf("Changed lease ID is %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.changeLease#String-String
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.changeLease#String-String-ModifiedAccessConditions
@@ -376,7 +376,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.changeLease(leaseId, "proposedId", modifiedAccessConditions)
-            .subscribe(response -> System.out.printf("Changed lease ID is %s%n", response.value()));
+            .subscribe(response -> System.out.printf("Changed lease ID is %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.changeLease#String-String-ModifiedAccessConditions
     }
 
@@ -386,7 +386,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void getAccountInfo() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.getAccountInfo
         client.getAccountInfo().subscribe(response -> System.out.printf("Account Kind: %s, SKU: %s%n",
-            response.value().accountKind(), response.value().skuName()));
+            response.accountKind(), response.skuName()));
         // END: com.azure.storage.blob.BlobAsyncClient.getAccountInfo
     }
 }

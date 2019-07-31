@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -32,17 +33,21 @@ public class BlobClientJavaDocCodeSnippets {
     private URL url = JavaDocCodeSnippetsHelpers.generateURL("https://sample.com");
     private String file = "file";
     private Duration timeout = Duration.ofSeconds(30);
+    private String key1 = "key1";
+    private String key2 = "key2";
+    private String value1 = "val1";
+    private String value2 = "val2";
 
     /**
      * Code snippets for {@link BlobClient#exists()} and {@link BlobClient#exists(Duration)}
      */
     public void existsCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobClient.exists
-        System.out.printf("Exists? %b%n", client.exists().value());
+        System.out.printf("Exists? %b%n", client.exists());
         // END: com.azure.storage.blob.BlobClient.exists
 
         // BEGIN: com.azure.storage.blob.BlobClient.exists#Duration
-        System.out.printf("Exists? %b%n", client.exists(timeout).value());
+        System.out.printf("Exists? %b%n", client.exists(timeout));
         // END: com.azure.storage.blob.BlobClient.exists#Duration
     }
 
@@ -52,7 +57,7 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void startCopyFromURL() {
         // BEGIN: com.azure.storage.blob.BlobClient.startCopyFromURL#URL
-        System.out.printf("Copy identifier: %s%n", client.startCopyFromURL(url).value());
+        System.out.printf("Copy identifier: %s%n", client.startCopyFromURL(url));
         // END: com.azure.storage.blob.BlobClient.startCopyFromURL#URL
 
         // BEGIN: com.azure.storage.blob.BlobClient.startCopyFromURL#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions-Duration
@@ -69,7 +74,7 @@ public class BlobClientJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobClient#abortCopyFromURL(String)} and
-     * {@link BlobClient#abortCopyFromURL(String, LeaseAccessConditions, Duration)}
+     * {@link BlobClient#abortCopyFromURL(String, LeaseAccessConditions, Duration, Context)}
      */
     public void abortCopyFromURL() {
         // BEGIN: com.azure.storage.blob.BlobClient.abortCopyFromURL#String
@@ -79,7 +84,7 @@ public class BlobClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobClient.abortCopyFromURL#String-LeaseAccessConditions-Duration
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().leaseId(leaseId);
         System.out.printf("Aborted copy completed with status %d%n",
-            client.abortCopyFromURL(copyId, leaseAccessConditions, timeout).statusCode());
+            client.abortCopyFromURL(copyId, leaseAccessConditions, timeout, new Context(key1, value1)).statusCode());
         // END: com.azure.storage.blob.BlobClient.abortCopyFromURL#String-LeaseAccessConditions-Duration
     }
 
@@ -89,7 +94,7 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void copyFromURL() {
         // BEGIN: com.azure.storage.blob.BlobClient.copyFromURL#URL
-        System.out.printf("Copy identifier: %s%n", client.copyFromURL(url).value());
+        System.out.printf("Copy identifier: %s%n", client.copyFromURL(url));
         // END: com.azure.storage.blob.BlobClient.copyFromURL#URL
 
         // BEGIN: com.azure.storage.blob.BlobClient.copyFromURL#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions-Duration
@@ -100,13 +105,13 @@ public class BlobClientJavaDocCodeSnippets {
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId));
 
         System.out.printf("Copy identifier: %s%n",
-            client.copyFromURL(url, metadata, modifiedAccessConditions, blobAccessConditions, timeout).value());
+            client.copyFromURL(url, metadata, modifiedAccessConditions, blobAccessConditions, timeout));
         // END: com.azure.storage.blob.BlobClient.copyFromURL#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions-Duration
     }
 
     /**
      * Code snippets for {@link BlobClient#download(OutputStream)} and
-     * {@link BlobClient#download(OutputStream, BlobRange, ReliableDownloadOptions, BlobAccessConditions, boolean, Duration)}
+     * {@link BlobClient#download(OutputStream, BlobRange, ReliableDownloadOptions, BlobAccessConditions, boolean, Duration, Context)}
      */
     public void download() {
         // BEGIN: com.azure.storage.blob.BlobClient.download#OutputStream
@@ -119,13 +124,13 @@ public class BlobClientJavaDocCodeSnippets {
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
         System.out.printf("Download completed with status %d%n",
-            client.download(new ByteArrayOutputStream(), range, options, null, false, timeout).statusCode());
+            client.download(new ByteArrayOutputStream(), range, options, null, false, timeout, new Context(key2, value2)).statusCode());
         // END: com.azure.storage.blob.BlobClient.download#OutputStream-BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration
     }
 
     /**
      * Code snippets for {@link BlobClient#downloadToFile(String)} and
-     * {@link BlobClient#downloadToFile(String, BlobRange, Integer, ReliableDownloadOptions, BlobAccessConditions, boolean, Duration)}
+     * {@link BlobClient#downloadToFile(String, BlobRange, Integer, ReliableDownloadOptions, BlobAccessConditions, boolean, Duration, Context)}
      */
     public void downloadToFile() {
         // BEGIN: com.azure.storage.blob.BlobClient.downloadToFile#String
@@ -137,14 +142,14 @@ public class BlobClientJavaDocCodeSnippets {
         BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
-        client.downloadToFile(file, range, null, options, null, false, timeout);
+        client.downloadToFile(file, range, null, options, null, false, timeout, new Context(key2, value2));
         System.out.println("Completed download to file");
         // END: com.azure.storage.blob.BlobClient.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration
     }
 
     /**
      * Code snippets for {@link BlobClient#delete()} and
-     * {@link BlobClient#delete(DeleteSnapshotsOptionType, BlobAccessConditions, Duration)}
+     * {@link BlobClient#delete(DeleteSnapshotsOptionType, BlobAccessConditions, Duration, Context)}
      */
     public void delete() {
         // BEGIN: com.azure.storage.blob.BlobClient.delete
@@ -153,7 +158,7 @@ public class BlobClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.storage.blob.BlobClient.delete#DeleteSnapshotsOptionType-BlobAccessConditions-Duration
         System.out.printf("Delete completed with status %d%n",
-            client.delete(DeleteSnapshotsOptionType.INCLUDE, null, timeout).statusCode());
+            client.delete(DeleteSnapshotsOptionType.INCLUDE, null, timeout, new Context(key2, value2)).statusCode());
         // END: com.azure.storage.blob.BlobClient.delete#DeleteSnapshotsOptionType-BlobAccessConditions-Duration
     }
 
@@ -162,7 +167,7 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void getProperties() {
         // BEGIN: com.azure.storage.blob.BlobClient.getProperties
-        BlobProperties properties = client.getProperties().value();
+        BlobProperties properties = client.getProperties();
         System.out.printf("Type: %s, Size: %d%n", properties.blobType(), properties.blobSize());
         // END: com.azure.storage.blob.BlobClient.getProperties
     }
@@ -175,14 +180,14 @@ public class BlobClientJavaDocCodeSnippets {
         BlobAccessConditions accessConditions = new BlobAccessConditions()
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId));
 
-        BlobProperties properties = client.getProperties(accessConditions, timeout).value();
+        BlobProperties properties = client.getProperties(accessConditions, timeout);
         System.out.printf("Type: %s, Size: %d%n", properties.blobType(), properties.blobSize());
         // END: com.azure.storage.blob.BlobClient.getProperties#BlobAccessConditions-Duration
     }
 
     /**
      * Code snippets for {@link BlobClient#setHTTPHeaders(BlobHTTPHeaders)} and
-     * {@link BlobClient#setHTTPHeaders(BlobHTTPHeaders, BlobAccessConditions, Duration)}
+     * {@link BlobClient#setHTTPHeaders(BlobHTTPHeaders, BlobAccessConditions, Duration, Context)}
      */
     public void setHTTPHeaders() {
         // BEGIN: com.azure.storage.blob.BlobClient.setHTTPHeaders#BlobHTTPHeaders
@@ -200,14 +205,14 @@ public class BlobClientJavaDocCodeSnippets {
         System.out.printf("Set HTTP headers completed with status %d%n",
             client.setHTTPHeaders(new BlobHTTPHeaders()
                 .blobContentLanguage("en-US")
-                .blobContentType("binary"), accessConditions, timeout)
+                .blobContentType("binary"), accessConditions, timeout, new Context(key2, value2))
                 .statusCode());
         // END: com.azure.storage.blob.BlobClient.setHTTPHeaders#BlobHTTPHeaders-BlobAccessConditions-Duration
     }
 
     /**
      * Code snippets for {@link BlobClient#setMetadata(Metadata)} and
-     * {@link BlobClient#setMetadata(Metadata, BlobAccessConditions, Duration)}
+     * {@link BlobClient#setMetadata(Metadata, BlobAccessConditions, Duration, Context)}
      */
     public void setMetadata() {
         // BEGIN: com.azure.storage.blob.BlobClient.setMetadata#Metadata
@@ -221,7 +226,7 @@ public class BlobClientJavaDocCodeSnippets {
 
         System.out.printf("Set metadata completed with status %d%n",
             client.setMetadata(
-                new Metadata(Collections.singletonMap("metadata", "value")), accessConditions, timeout).statusCode());
+                new Metadata(Collections.singletonMap("metadata", "value")), accessConditions, timeout, new Context(key2, value2)).statusCode());
         // END: com.azure.storage.blob.BlobClient.setMetadata#Metadata-BlobAccessConditions-Duration
     }
 
@@ -246,7 +251,7 @@ public class BlobClientJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobClient#setTier(AccessTier)} and
-     * {@link BlobClient#setTier(AccessTier, LeaseAccessConditions, Duration)}
+     * {@link BlobClient#setTier(AccessTier, LeaseAccessConditions, Duration, Context)}
      */
     public void setTier() {
         // BEGIN: com.azure.storage.blob.BlobClient.setTier#AccessTier
@@ -257,12 +262,12 @@ public class BlobClientJavaDocCodeSnippets {
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().leaseId(leaseId);
 
         System.out.printf("Set tier completed with status code %d%n",
-            client.setTier(AccessTier.HOT, accessConditions, timeout).statusCode());
+            client.setTier(AccessTier.HOT, accessConditions, timeout, new Context(key2, value2)).statusCode());
         // END: com.azure.storage.blob.BlobClient.setTier#AccessTier-LeaseAccessConditions-Duration
     }
 
     /**
-     * Code snippets for {@link BlobClient#undelete()} and {@link BlobClient#undelete(Duration)}
+     * Code snippets for {@link BlobClient#undelete()} and {@link BlobClient#undelete(Duration, Context)}
      */
     public void undelete() {
         // BEGIN: com.azure.storage.blob.BlobClient.undelete
@@ -270,7 +275,7 @@ public class BlobClientJavaDocCodeSnippets {
         // END: com.azure.storage.blob.BlobClient.undelete
 
         // BEGIN: com.azure.storage.blob.BlobClient.undelete#Duration
-        System.out.printf("Undelete completed with status %d%n", client.undelete(timeout).statusCode());
+        System.out.printf("Undelete completed with status %d%n", client.undelete(timeout, new Context(key2, value2)).statusCode());
         // END: com.azure.storage.blob.BlobClient.undelete#Duration
     }
 
@@ -280,7 +285,7 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void acquireLease() {
         // BEGIN: com.azure.storage.blob.BlobClient.acquireLease#String-int
-        System.out.printf("Lease ID is %s%n", client.acquireLease("proposedId", 60).value());
+        System.out.printf("Lease ID is %s%n", client.acquireLease("proposedId", 60));
         // END: com.azure.storage.blob.BlobClient.acquireLease#String-int
 
         // BEGIN: com.azure.storage.blob.BlobClient.acquireLease#String-int-ModifiedAccessConditions-Duration
@@ -288,7 +293,7 @@ public class BlobClientJavaDocCodeSnippets {
             .ifModifiedSince(OffsetDateTime.now().minusDays(3));
 
         System.out.printf("Lease ID is %s%n",
-            client.acquireLease("proposedId", 60, modifiedAccessConditions, timeout).value());
+            client.acquireLease("proposedId", 60, modifiedAccessConditions, timeout));
         // END: com.azure.storage.blob.BlobClient.acquireLease#String-int-ModifiedAccessConditions-Duration
     }
 
@@ -298,7 +303,7 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void renewLease() {
         // BEGIN: com.azure.storage.blob.BlobClient.renewLease#String
-        System.out.printf("Renewed lease ID is %s%n", client.renewLease(leaseId).value());
+        System.out.printf("Renewed lease ID is %s%n", client.renewLease(leaseId));
         // END: com.azure.storage.blob.BlobClient.renewLease#String
 
         // BEGIN: com.azure.storage.blob.BlobClient.renewLease#String-ModifiedAccessConditions-Duration
@@ -306,13 +311,13 @@ public class BlobClientJavaDocCodeSnippets {
             .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         System.out.printf("Renewed lease ID is %s%n",
-            client.renewLease(leaseId, modifiedAccessConditions, timeout).value());
+            client.renewLease(leaseId, modifiedAccessConditions, timeout));
         // END: com.azure.storage.blob.BlobClient.renewLease#String-ModifiedAccessConditions-Duration
     }
 
     /**
      * Code snippets for {@link BlobClient#releaseLease(String)} and
-     * {@link BlobClient#releaseLease(String, ModifiedAccessConditions, Duration)}
+     * {@link BlobClient#releaseLease(String, ModifiedAccessConditions, Duration, Context)}
      */
     public void releaseLease() {
         // BEGIN: com.azure.storage.blob.BlobClient.releaseLease#String
@@ -324,7 +329,7 @@ public class BlobClientJavaDocCodeSnippets {
             .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         System.out.printf("Release lease completed with status %d%n",
-            client.releaseLease(leaseId, modifiedAccessConditions, timeout).statusCode());
+            client.releaseLease(leaseId, modifiedAccessConditions, timeout, new Context(key2, value2)).statusCode());
         // END: com.azure.storage.blob.BlobClient.releaseLease#String-ModifiedAccessConditions-Duration
     }
 
@@ -334,7 +339,7 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void breakLease() {
         // BEGIN: com.azure.storage.blob.BlobClient.breakLease
-        System.out.printf("The broken lease has %d seconds remaining on the lease", client.breakLease().value());
+        System.out.printf("The broken lease has %d seconds remaining on the lease", client.breakLease());
         // END: com.azure.storage.blob.BlobClient.breakLease
 
         // BEGIN: com.azure.storage.blob.BlobClient.breakLease#Integer-ModifiedAccessConditions-Duration
@@ -343,7 +348,7 @@ public class BlobClientJavaDocCodeSnippets {
             .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         System.out.printf("The broken lease has %d seconds remaining on the lease",
-            client.breakLease(retainLeaseInSeconds, modifiedAccessConditions, timeout).value());
+            client.breakLease(retainLeaseInSeconds, modifiedAccessConditions, timeout));
         // END: com.azure.storage.blob.BlobClient.breakLease#Integer-ModifiedAccessConditions-Duration
     }
 
@@ -353,7 +358,7 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void changeLease() {
         // BEGIN: com.azure.storage.blob.BlobClient.changeLease#String-String
-        System.out.printf("Changed lease ID is %s%n", client.changeLease(leaseId, "proposedId").value());
+        System.out.printf("Changed lease ID is %s%n", client.changeLease(leaseId, "proposedId"));
         // END: com.azure.storage.blob.BlobClient.changeLease#String-String
 
         // BEGIN: com.azure.storage.blob.BlobClient.changeLease#String-String-ModifiedAccessConditions-Duration
@@ -361,7 +366,7 @@ public class BlobClientJavaDocCodeSnippets {
             .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         System.out.printf("Changed lease ID is %s%n",
-            client.changeLease(leaseId, "proposedId", modifiedAccessConditions, timeout).value());
+            client.changeLease(leaseId, "proposedId", modifiedAccessConditions, timeout));
         // END: com.azure.storage.blob.BlobClient.changeLease#String-String-ModifiedAccessConditions-Duration
     }
 
@@ -370,7 +375,7 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void getAccountInfo() {
         // BEGIN: com.azure.storage.blob.BlobClient.getAccountInfo
-        StorageAccountInfo accountInfo = client.getAccountInfo().value();
+        StorageAccountInfo accountInfo = client.getAccountInfo();
         System.out.printf("Account Kind: %s, SKU: %s%n", accountInfo.accountKind(), accountInfo.skuName());
         // END: com.azure.storage.blob.BlobClient.getAccountInfo
     }
@@ -380,7 +385,7 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void getAccountInfoWithTimeout() {
         // BEGIN: com.azure.storage.blob.BlobClient.getAccountInfo#Duration
-        StorageAccountInfo accountInfo = client.getAccountInfo(timeout).value();
+        StorageAccountInfo accountInfo = client.getAccountInfo(timeout);
         System.out.printf("Account Kind: %s, SKU: %s%n", accountInfo.accountKind(), accountInfo.skuName());
         // END: com.azure.storage.blob.BlobClient.getAccountInfo#Duration
     }
