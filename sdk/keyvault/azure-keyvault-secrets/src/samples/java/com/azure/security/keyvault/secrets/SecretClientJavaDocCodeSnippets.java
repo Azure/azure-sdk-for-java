@@ -6,7 +6,7 @@ package com.azure.security.keyvault.secrets;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.Secret;
 import com.azure.security.keyvault.secrets.models.SecretBase;
@@ -90,7 +90,7 @@ public final class SecretClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link SecretClient#setSecretWithResponse(Secret Context)}
+     * Method to insert code snippets for {@link SecretClient#setSecretWithResponse(Secret, Context)}
      */
     public void setSecretWithResponseCodeSnippets() {
         SecretClient secretClient = getSecretClient();
@@ -334,7 +334,7 @@ public final class SecretClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.secretclient.sync.construct
         SecretClient secretClient = new SecretClientBuilder()
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("https://myvault.vault.azure.net/")
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .buildClient();

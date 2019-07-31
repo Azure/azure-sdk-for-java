@@ -11,6 +11,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
 import com.azure.security.keyvault.keys.models.KeyBase;
 import com.azure.security.keyvault.keys.models.KeyCreateOptions;
@@ -41,7 +42,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         RecordedData networkData = new RecordedData();
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
             .endpoint("https://myvault.azure.net/")
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .addPolicy(new RecordNetworkCallPolicy(networkData))
             .httpClient(HttpClient.createDefault())
