@@ -71,10 +71,54 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
-      - task: azure-cosmosdb.emulator-public-preview.run-cosmosdbemulatorcontainer.CosmosDbEmulator@2
-        inputs:
-          defaultPartitionCount: 25
-        displayName: "Run Azure Cosmos DB Emulator container (public)"
+      - powershell: |
+         Write-Host "Downloading Cosmos Emulator - $(EmulatorMsiUrl)"
+         wget "$(EmulatorMsiUrl)" -outfile "$env:temp\azure-cosmosdb-emulator.msi"
+         Write-Host "Finished Downloading Cosmos Emulator - $env:temp\azure-cosmosdb-emulator.msi"
+         dir "$env:temp"
+        displayName: 'Download Public Cosmos DB Emulator'
+
+      - script: |
+         choco install lessmsi
+         choco upgrade lessmsi
+         mkdir "%TEMP%\Azure Cosmos DB Emulator"
+         lessmsi x "%TEMP%\azure-cosmosdb-emulator.msi" "%TEMP%\Azure Cosmos DB Emulator\"
+        displayName: 'Install Public Cosmos DB Emulator'
+
+      - powershell: |
+         Write-Host "Starting Comsos DB Emulator"
+         Start-Process "$env:Temp\Azure Cosmos DB Emulator\SourceDir\Azure Cosmos DB Emulator\CosmosDB.Emulator.exe" "/NoExplorer /NoUI /DisableRateLimiting /PartitionCount=100 /Consistency=Strong" -Verb RunAs
+        displayName: 'Run Public Cosmos DB Emulator'
+
+      - powershell: |
+         Import-Module "$env:Temp\Azure Cosmos DB Emulator\SourceDir\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
+
+         Write-Host "Sleeping for 240 seconds"
+         sleep 240;
+
+         Write-Host "Cosmos DB Emulator Status:"
+         Get-CosmosDbEmulatorStatus
+
+        displayName: 'Check Public Cosmos DB Emulator Status'
+
+      - powershell: |
+         $Key = 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
+         $password = ConvertTo-SecureString -String $Key -Force -AsPlainText
+         $cert = Get-ChildItem cert:\LocalMachine\My | Where-Object { $_.FriendlyName -eq "DocumentDbEmulatorCertificate" }
+         Export-PfxCertificate -Cert $cert -FilePath ".\CosmosDbEmulatorCert.pfx" -Password $password | Out-Null
+         $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2
+         $cert.Import(".\CosmosDbEmulatorCert.pfx", $Key, "DefaultKeySet")
+         $cert | Export-Certificate -FilePath "$env:temp\CosmosDbEmulatorCert.cer" -Type CERT
+        displayName: 'Export Cosmos DB Emulator Certificate'
+
+      - powershell: |
+         # You can write your powershell scripts inline here.
+         # You can also pass predefined and custom variables to this scripts using arguments
+
+         cd $env:java_home\jre\lib\security
+         cp $env:temp\CosmosDbEmulatorCert.cer .
+         keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias CosmosDbEmulatorCert -file CosmosDbEmulatorCert.cer -storepass changeit
+        displayName: 'Create Java TrustStore'
 
       # We `install` separately from running `site:site site:stage` so that the `install` brings in the non-shipping-modules,
       # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
@@ -85,7 +129,7 @@ jobs:
         inputs:
           mavenPomFile: $(pomFile)
           goals: 'verify'
-          options: '$(ProfileFlag) -Dgpg.skip -DargLine="-DACCOUNT_HOST=$(CosmosDbEmulator.Endpoint)"'
+          options: '$(ProfileFlag) -Dgpg.skip -DargLine="-DACCOUNT_HOST=https://localhost:8081/"'
           mavenAuthenticateFeed: true
           jdkVersionOption: $(JavaVersion)
         condition: succeededOrFailed()
@@ -94,4 +138,4 @@ jobs:
         condition: succeededOrFailed()
         inputs:
           mergeTestResults: true
-          testRunTitle: $(TestDisplayName))
+          testRunTitle: $(TestDisplayName)
