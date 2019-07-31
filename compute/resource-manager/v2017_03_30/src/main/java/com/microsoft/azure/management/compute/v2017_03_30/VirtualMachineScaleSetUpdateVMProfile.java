@@ -51,7 +51,7 @@ public class VirtualMachineScaleSetUpdateVMProfile {
     private String licenseType;
 
     /**
-     * Get the osProfile value.
+     * Get the virtual machine scale set OS profile.
      *
      * @return the osProfile value
      */
@@ -60,7 +60,7 @@ public class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Set the osProfile value.
+     * Set the virtual machine scale set OS profile.
      *
      * @param osProfile the osProfile value to set
      * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
@@ -71,7 +71,7 @@ public class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Get the storageProfile value.
+     * Get the virtual machine scale set storage profile.
      *
      * @return the storageProfile value
      */
@@ -80,7 +80,7 @@ public class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Set the storageProfile value.
+     * Set the virtual machine scale set storage profile.
      *
      * @param storageProfile the storageProfile value to set
      * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
@@ -91,7 +91,7 @@ public class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Get the networkProfile value.
+     * Get the virtual machine scale set network profile.
      *
      * @return the networkProfile value
      */
@@ -100,7 +100,7 @@ public class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Set the networkProfile value.
+     * Set the virtual machine scale set network profile.
      *
      * @param networkProfile the networkProfile value to set
      * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
@@ -111,7 +111,7 @@ public class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Get the diagnosticsProfile value.
+     * Get the virtual machine scale set diagnostics profile.
      *
      * @return the diagnosticsProfile value
      */
@@ -120,7 +120,7 @@ public class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Set the diagnosticsProfile value.
+     * Set the virtual machine scale set diagnostics profile.
      *
      * @param diagnosticsProfile the diagnosticsProfile value to set
      * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
@@ -131,7 +131,7 @@ public class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Get the extensionProfile value.
+     * Get the virtual machine scale set extension profile.
      *
      * @return the extensionProfile value
      */
@@ -140,7 +140,7 @@ public class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Set the extensionProfile value.
+     * Set the virtual machine scale set extension profile.
      *
      * @param extensionProfile the extensionProfile value to set
      * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
@@ -151,7 +151,7 @@ public class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Get the licenseType value.
+     * Get the license type, which is for bring your own license scenario.
      *
      * @return the licenseType value
      */
@@ -160,7 +160,7 @@ public class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Set the licenseType value.
+     * Set the license type, which is for bring your own license scenario.
      *
      * @param licenseType the licenseType value to set
      * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
