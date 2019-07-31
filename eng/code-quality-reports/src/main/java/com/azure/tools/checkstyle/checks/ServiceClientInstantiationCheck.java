@@ -9,6 +9,7 @@ import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
+import jdk.nashorn.internal.parser.Token;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -162,9 +163,11 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
                 break;
             case TokenTypes.CLASS_DEF:
                 hasServiceClientAnnotation = hasServiceClientAnnotation(token);
-                if (hasServiceClientAnnotation) {
-                    checkServiceClientNaming(token);
+                if (!hasServiceClientAnnotation) {
+                    return;
                 }
+                checkServiceClientNaming(token);
+                checkServiceClientProperty(token);
                 break;
             case TokenTypes.CTOR_DEF:
                 if (hasServiceClientAnnotation) {
@@ -354,7 +357,7 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
         }
 
         // Find the annotation member 'returns' value
-        String returnsAnnotationMemberValue = getAnnotationMemberReturnsValue(serviceMethodAnnotation);
+        String returnsAnnotationMemberValue = getAnnotationMemberReturnsValue(serviceMethodAnnotation, "returns");
 
         String returnType = methodDefToken.findFirstToken(TokenTypes.TYPE).getText();
 
@@ -444,12 +447,13 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
     }
 
     /**
-     * Find the annotation member 'returns' value
+     * Find the annotation member value for the given member key.
      *
-     * @param serviceMethodAnnotation ANNOTATION_MEMBER_VALUE_PAIR AST node
+     * @param serviceMethodAnnotation ANNOTATION_MEMBER_VALUE_PAIR AST node.
+     * @param memberKey the member key in the ServiceClient annotation.
      * @return annotation member 'returns' value if found, null otherwise.
      */
-    private String getAnnotationMemberReturnsValue(DetailAST serviceMethodAnnotation) {
+    private String getAnnotationMemberReturnsValue(DetailAST serviceMethodAnnotation, String memberKey) {
         for (DetailAST annotationChild = serviceMethodAnnotation.getFirstChild(); annotationChild != null;
              annotationChild = annotationChild.getNextSibling()) {
             // Skip if not ANNOTATION_MEMBER_VALUE_PAIR
@@ -458,7 +462,7 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
             }
             // Skip if the annotation member is not 'returns'
             String annotationParamName = annotationChild.findFirstToken(TokenTypes.IDENT).getText();
-            if (!"returns".equals(annotationParamName)) {
+            if (!memberKey.equals(annotationParamName)) {
                 continue;
             }
             // value of Annotation member 'returns'
@@ -550,6 +554,35 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
             }
         }
         return false;
+    }
+
+    /**
+     * Checks for the annotation @ServiceClient. If the client is an Asynchronous client, the member value of 'async'
+     * must set to true. If it is a asynchronous client, the value of 'async' must set to false.
+     *
+     * @param classDefToken CLASS_DEF AST node
+     */
+    private void checkServiceClientProperty(DetailAST classDefToken) {
+        DetailAST modifiersToken = classDefToken.findFirstToken(TokenTypes.MODIFIERS);
+        for (DetailAST ast = modifiersToken.getFirstChild(); ast != null; ast = modifiersToken.getNextSibling()) {
+            if (ast.getType() != TokenTypes.ANNOTATION) {
+                continue;
+            }
+            // One class could have multiple annotations, return true if found one.
+            final DetailAST annotationIdent = ast.findFirstToken(TokenTypes.IDENT);
+            if (annotationIdent != null && SERVICE_CLIENT.equals(annotationIdent.getText())) {
+                String propertyValue = getAnnotationMemberReturnsValue(ast, "async");
+                if (isAsync && !propertyValue.equals("true")) {
+                    log(ast, "Asynchronous Service Client has ''async'' property value set to not true. Required to set to true.");
+                    return;
+                } else if (!isAsync && propertyValue.equals("true")) {
+                    log(ast, "Synchronous Service Client has ''async'' property value set to true. Required to set to not true.");
+                    return;
+                }
+            }
+
+            log(ast, "ServiceClient missing member key ''async'' and value.");
+        }
     }
 
 }
