@@ -73,7 +73,7 @@ public final class BlobServiceClient {
      * @return The {@link ContainerClient} used to interact with the container created.
      */
     public ContainerClient createContainer(String containerName) {
-        return createContainerWithResponse(containerName, null, null, Context.NONE).value();
+        return createContainer(containerName, null, null);
     }
 
     /**
@@ -87,7 +87,7 @@ public final class BlobServiceClient {
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @return The {@link ContainerClient} used to interact with the container created.
      */
-    public ContainerClient createContainerWithResponse(String containerName, Metadata metadata, PublicAccessType accessType) {
+    public ContainerClient createContainer(String containerName, Metadata metadata, PublicAccessType accessType) {
         return createContainerWithResponse(containerName, metadata, accessType, Context.NONE).value();
     }
 
@@ -172,7 +172,7 @@ public final class BlobServiceClient {
      * @return The storage account properties.
      */
     public StorageServiceProperties getProperties() {
-        return getPropertiesWithResponse(null, Context.NONE).value();
+        return getProperties(null);
     }
 
     /**
@@ -238,7 +238,7 @@ public final class BlobServiceClient {
      * @return The user delegation key.
      */
     public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return getUserDelegationKeyWithResponse(start, expiry, null, Context.NONE).value();
+        return getUserDelegationKey(start, expiry, null);
     }
 
     /**
@@ -280,7 +280,7 @@ public final class BlobServiceClient {
      * @return The storage account statistics.
      */
     public StorageServiceStats getStatistics() {
-        return getStatisticsWithResponse(null, Context.NONE).value();
+        return getStatistics(null);
     }
 
     /**
@@ -318,7 +318,7 @@ public final class BlobServiceClient {
      * @return The storage account info.
      */
     public StorageAccountInfo getAccountInfo() {
-        return getAccountInfoWithResponse(null, Context.NONE).value();
+        return getAccountInfo(null);
     }
 
     /**

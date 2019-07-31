@@ -119,7 +119,7 @@ public final class BlockBlobClient extends BlobClient {
      * @throws IOException If an I/O error occurs
      */
     public BlockBlobItem upload(InputStream data, long length) throws IOException {
-        return uploadWithResponse(data, length, null, null, null, null).value();
+        return upload(data, length, null, null, null, null);
     }
 
     /**
@@ -153,37 +153,6 @@ public final class BlockBlobClient extends BlobClient {
         return uploadWithResponse(data, length, headers, metadata, accessConditions, timeout, Context.NONE).value();
     }
 
-    /**
-     * Creates a new block blob, or updates the content of an existing block blob.
-     * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not
-     * supported with PutBlob; the content of the existing blob is overwritten with the new content. To
-     * perform a partial update of a block blob's, use PutBlock and PutBlockList.
-     * For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
-     *
-     * @param data
-     *         The data to write to the blob.
-     * @param length
-     *         The exact length of the data. It is important that this value match precisely the length of the data
-     *         provided in the {@link InputStream}.
-     * @param headers
-     *         {@link BlobHTTPHeaders}
-     * @param metadata
-     *         {@link Metadata}
-     * @param accessConditions
-     *         {@link BlobAccessConditions}
-     * @param timeout
-     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     *
-     * @return
-     *      The information of the uploaded block blob.
-     * @throws IOException If an I/O error occurs
-     */
-    public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHTTPHeaders headers,
-                                Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) throws IOException {
-        return uploadWithResponse(data, length, headers, metadata, accessConditions, timeout, Context.NONE);
-    }
-
     public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHTTPHeaders headers,
                                    Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) throws IOException {
         Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE))
@@ -215,7 +184,7 @@ public final class BlockBlobClient extends BlobClient {
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile(String filePath) throws IOException {
-        this.uploadFromFile(filePath, null, null, null, null);
+        uploadFromFile(filePath, null, null, null, null);
     }
 
     /**
@@ -407,7 +376,7 @@ public final class BlockBlobClient extends BlobClient {
      *      The information of the block blob.
      */
     public BlockBlobItem commitBlockList(List<String> base64BlockIDs) {
-        return commitBlockListWithResponse(base64BlockIDs, null, null, null, null, Context.NONE).value();
+        return commitBlockList(base64BlockIDs, null, null, null, null);
     }
 
     /**

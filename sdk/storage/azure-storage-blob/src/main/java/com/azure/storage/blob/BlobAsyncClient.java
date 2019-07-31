@@ -229,7 +229,7 @@ public class BlobAsyncClient {
      * @return A reactive response containing the copy ID for the long running operation.
      */
     public Mono<String> startCopyFromURL(URL sourceURL) {
-        return startCopyFromURLWithResponse(sourceURL, null, null, null).flatMap(FluxUtil::toMono);
+        return startCopyFromURL(sourceURL, null, null, null);
     }
 
     /**
@@ -355,7 +355,7 @@ public class BlobAsyncClient {
      * @return A reactive response containing the copy ID for the long running operation.
      */
     public Mono<String> copyFromURL(URL copySource) {
-        return copyFromURLWithResponse(copySource, null, null, null).flatMap(FluxUtil::toMono);
+        return copyFromURL(copySource, null, null, null);
     }
 
     /**
@@ -437,7 +437,7 @@ public class BlobAsyncClient {
      * @return A reactive response containing the blob data.
      */
     public Mono<Flux<ByteBuffer>> download() {
-        return downloadWithResponse(null, null, null, false).flatMap(FluxUtil::toMono);
+        return download(null, null, null, false);
     }
 
 
@@ -702,7 +702,7 @@ public class BlobAsyncClient {
      * @return A reactive response containing the blob properties and metadata.
      */
     public Mono<BlobProperties> getProperties() {
-        return getPropertiesWithResponse(null).flatMap(FluxUtil::toMono);
+        return getProperties(null);
     }
 
     /**
@@ -719,7 +719,7 @@ public class BlobAsyncClient {
      * @return A reactive response containing the blob properties and metadata.
      */
     public Mono<BlobProperties> getProperties(BlobAccessConditions accessConditions) {
-        return getPropertiesWithResponse(accessConditions).flatMap(FluxUtil::toMono);
+        return getProperties(accessConditions);
     }
 
     /**
@@ -976,7 +976,7 @@ public class BlobAsyncClient {
      * @return A reactive response containing the lease ID.
      */
     public Mono<String> acquireLease(String proposedId, int duration) {
-        return acquireLeaseWithResponse(proposedId, duration, null).flatMap(FluxUtil::toMono);
+        return acquireLease(proposedId, duration, null);
     }
 
     /**
@@ -1054,7 +1054,7 @@ public class BlobAsyncClient {
      * @return A reactive response containing the renewed lease ID.
      */
     public Mono<String> renewLease(String leaseId) {
-        return renewLeaseWithResponse(leaseId, null).flatMap(FluxUtil::toMono);
+        return renewLease(leaseId, null);
     }
 
     /**
@@ -1160,7 +1160,7 @@ public class BlobAsyncClient {
      * @return A reactive response containing the remaining time in the broken lease in seconds.
      */
     public Mono<Integer> breakLease() {
-        return breakLeaseWithResponse(null, null).flatMap(FluxUtil::toMono);
+        return breakLease(null, null);
     }
 
     /**
@@ -1234,7 +1234,7 @@ public class BlobAsyncClient {
      * @return A reactive response containing the new lease ID.
      */
     public Mono<String> changeLease(String leaseId, String proposedId) {
-        return changeLeaseWithResponse(leaseId, proposedId, null).flatMap(FluxUtil::toMono);
+        return changeLease(leaseId, proposedId, null);
     }
 
     /**

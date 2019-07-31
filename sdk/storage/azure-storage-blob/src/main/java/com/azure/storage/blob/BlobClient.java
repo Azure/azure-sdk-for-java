@@ -628,7 +628,7 @@ public class BlobClient {
      * @return A response containing status code and HTTP headers.
      */
     public VoidResponse setMetadata(Metadata metadata) {
-        return this.setMetadata(metadata, null, null, Context.NONE);
+        return setMetadata(metadata, null, null, Context.NONE);
     }
 
     /**
@@ -712,7 +712,7 @@ public class BlobClient {
      * @return A response containing status code and HTTP headers.
      */
     public VoidResponse setTier(AccessTier tier) {
-        return this.setTier(tier, null, null, Context.NONE);
+        return setTier(tier, null, null, Context.NONE);
     }
 
     /**
@@ -792,7 +792,7 @@ public class BlobClient {
      * @return The lease ID.
      */
     public String acquireLease(String proposedId, int duration) {
-        return this.acquireLease(proposedId, duration, null, null);
+        return acquireLease(proposedId, duration, null, null);
     }
 
     /**
@@ -923,7 +923,7 @@ public class BlobClient {
      * @return A response containing status code and HTTP headers.
      */
     public VoidResponse releaseLease(String leaseId) {
-        return this.releaseLease(leaseId, null, null, Context.NONE);
+        return releaseLease(leaseId, null, null, Context.NONE);
     }
 
     /**
@@ -963,7 +963,7 @@ public class BlobClient {
      * @return The remaining time in the broken lease in seconds.
      */
     public Integer breakLease() {
-        return this.breakLease(null, null, null);
+        return breakLease(null, null, null);
     }
 
 

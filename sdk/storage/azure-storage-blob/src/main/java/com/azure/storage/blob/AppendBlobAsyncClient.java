@@ -73,10 +73,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
      *
      * @return
-     *      A {@link Mono} containing a the information of the created appended blob.
+     *      A {@link Mono} containing the information of the created appended blob.
      */
     public Mono<AppendBlobItem> create() {
-        return createWithResponse(null, null, null).flatMap(FluxUtil::toMono);
+        return create(null, null, null);
     }
 
     /**
@@ -90,7 +90,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *         {@link BlobAccessConditions}
      *
      * @return
-     *      A {@link Mono} containing a the information of the created appended blob.
+     *      A {@link Mono} containing the information of the created appended blob.
      */
     public Mono<AppendBlobItem> create(BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
         return createWithResponse(headers, metadata, accessConditions).flatMap(FluxUtil::toMono);
@@ -107,7 +107,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *         {@link BlobAccessConditions}
      *
      * @return
-     *      A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {created appended blob.
+     *      A {@link Mono} containing {@link Response} whose {@link Response#value() value} contains the {created appended blob.
      */
     public Mono<Response<AppendBlobItem>> createWithResponse(BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
         return withContext(context -> createWithResponse(headers, metadata, accessConditions, context));
@@ -141,7 +141,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *      {@link Mono} containing a the information of the append blob operation.
      */
     public Mono<AppendBlobItem> appendBlock(Flux<ByteBuf> data, long length) {
-        return appendBlockWithResponse(data, length, null).flatMap(FluxUtil::toMono);
+        return appendBlock(data, length, null);
     }
 
     /**
@@ -183,7 +183,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *         {@link AppendBlobAccessConditions}
      *
      * @return
-     *      A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the append blob operation.
+     *      A {@link Mono} containing {@link Response} whose {@link Response#value() value} contains the append blob operation.
      */
     public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuf> data, long length,
                                                       AppendBlobAccessConditions appendBlobAccessConditions) {
@@ -225,7 +225,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *      {@link Mono} containing a the information of the append blob operation.
      */
     public Mono<AppendBlobItem> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
-        return appendBlockFromUrlWithResponse(sourceURL, sourceRange, null, null, null).flatMap(FluxUtil::toMono);
+        return appendBlockFromUrl(sourceURL, sourceRange, null, null, null);
     }
 
     /**
@@ -275,7 +275,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *          {@link SourceModifiedAccessConditions}
      *
      * @return
-     *      A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the append blob operation.
+     *      A {@link Mono} containing {@link Response} whose {@link Response#value() value} contains the append blob operation.
      */
     public Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(URL sourceURL, BlobRange sourceRange,
             byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,

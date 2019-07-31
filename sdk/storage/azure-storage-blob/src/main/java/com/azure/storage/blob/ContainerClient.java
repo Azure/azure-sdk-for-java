@@ -198,7 +198,7 @@ public final class ContainerClient {
      * @return true if the container exists, false if it doesn't
      */
     public Boolean exists() {
-        return existsWithResponse(null, Context.NONE).value();
+        return exists(null);
     }
 
 
@@ -284,7 +284,7 @@ public final class ContainerClient {
      *
      * @return The container properties.
      */
-    public ContainerProperties getProperties() { return getPropertiesWithResponse(null, null, Context.NONE).value(); }
+    public ContainerProperties getProperties() { return getProperties(null, null); }
 
 
         /**
@@ -352,7 +352,7 @@ public final class ContainerClient {
      * @return The container access policy.
      */
     public ContainerAccessPolicies getAccessPolicy() {
-        return getAccessPolicyWithResponse(null, null, Context.NONE).value();
+        return getAccessPolicy(null, null);
     }
 
     /**
@@ -544,7 +544,7 @@ public final class ContainerClient {
      * @return The lease ID.
      */
     public String acquireLease(String proposedId, int duration) {
-        return acquireLeaseWithResponse(proposedId, duration, null, null, Context.NONE).value();
+        return acquireLease(proposedId, duration, null, null);
     }
 
     /**
@@ -593,7 +593,7 @@ public final class ContainerClient {
      * @return The renewed lease ID.
      */
     public String renewLease(String leaseID) {
-        return renewLeaseWithResponse(leaseID, null, null, Context.NONE).value();
+        return renewLease(leaseID, null, null);
     }
 
     /**
@@ -636,7 +636,7 @@ public final class ContainerClient {
      * @return A response containing status code and HTTP headers
      */
     public VoidResponse releaseLease(String leaseID) {
-        return this.releaseLease(leaseID, null, null, Context.NONE);
+        return releaseLease(leaseID, null, null, Context.NONE);
     }
 
     /**
@@ -664,7 +664,7 @@ public final class ContainerClient {
      * @return The remaining time in the broken lease.
      */
     public Duration breakLease() {
-        return breakLeaseWithResponse(null, null, null, Context.NONE).value();
+        return breakLease(null, null, null);
     }
 
     /**
@@ -718,7 +718,7 @@ public final class ContainerClient {
      * @return The new lease ID.
      */
     public String changeLease(String leaseId, String proposedID) {
-        return changeLeaseWithResponse(leaseId, proposedID, null, null, Context.NONE).value();
+        return changeLease(leaseId, proposedID, null, null);
     }
 
     /**

@@ -355,7 +355,7 @@ public final class ContainerAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} containing the container properties.
      */
     public Mono<ContainerProperties> getProperties() {
-        return getPropertiesWithResponse(null).flatMap(FluxUtil::toMono);
+        return getProperties(null);
     }
 
     /**
@@ -439,7 +439,7 @@ public final class ContainerAsyncClient {
      * @return A reactive response containing the container access policy.
      */
     public Mono<ContainerAccessPolicies> getAccessPolicy() {
-        return getAccessPolicyWithResponse(null).flatMap(FluxUtil::toMono);
+        return getAccessPolicy(null);
     }
 
     /**
@@ -851,7 +851,7 @@ public final class ContainerAsyncClient {
      * @return A reactive response containing the lease ID.
      */
     public Mono<String> acquireLease(String proposedId, int duration) {
-        return acquireLeaseWithResponse(proposedId, duration, null).flatMap(FluxUtil::toMono);
+        return acquireLease(proposedId, duration, null);
     }
 
     /**
@@ -910,7 +910,7 @@ public final class ContainerAsyncClient {
      * @return A reactive response containing the renewed lease ID.
      */
     public Mono<String> renewLease(String leaseID) {
-        return this.renewLeaseWithResponse(leaseID, null).flatMap(FluxUtil::toMono);
+        return renewLease(leaseID, null);
     }
 
     /**
@@ -1001,7 +1001,7 @@ public final class ContainerAsyncClient {
      * @return A reactive response containing the remaining time in the broken lease.
      */
     public Mono<Duration> breakLease() {
-        return breakLeaseWithResponse(null, null).flatMap(FluxUtil::toMono);
+        return breakLease(null, null);
     }
 
     /**
@@ -1065,7 +1065,7 @@ public final class ContainerAsyncClient {
      * @return A reactive response containing the new lease ID.
      */
     public Mono<String> changeLease(String leaseId, String proposedID) {
-        return changeLeaseWithResponse(leaseId, proposedID, null).flatMap(FluxUtil::toMono);
+        return changeLease(leaseId, proposedID, null);
     }
 
     /**

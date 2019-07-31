@@ -118,7 +118,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *      A reactive response containing the information of the uploaded block blob.
      */
     public Mono<BlockBlobItem> upload(Flux<ByteBuf> data, long length) {
-        return uploadWithResponse(data, length, null, null, null).flatMap(FluxUtil::toMono);
+        return upload(data, length, null, null, null);
     }
 
     /**
@@ -206,7 +206,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return An empty response
      */
     public Mono<Void> uploadFromFile(String filePath) {
-        return this.uploadFromFile(filePath, BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, null, null, null);
+        return uploadFromFile(filePath, BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, null, null, null);
     }
 
     /**
@@ -480,7 +480,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *      A reactive response containing the information of the block blob.
      */
     public Mono<BlockBlobItem> commitBlockList(List<String> base64BlockIDs) {
-        return commitBlockListWithResponse(base64BlockIDs, null, null, null).flatMap(FluxUtil::toMono);
+        return commitBlockList(base64BlockIDs, null, null, null);
     }
 
     /**

@@ -92,7 +92,7 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link ContainerAsyncClient} used to interact with the container created.
      */
     public Mono<ContainerAsyncClient> createContainer(String containerName) {
-        return createContainerWithResponse(containerName, null, null).flatMap(FluxUtil::toMono);
+        return createContainer(containerName, null, null);
     }
 
     /**

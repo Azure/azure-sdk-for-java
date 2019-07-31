@@ -97,7 +97,7 @@ public final class AppendBlobClient extends BlobClient {
      *      The information of the created appended blob.
      */
     public AppendBlobItem create() {
-        return createWithResponse(null, null, null, null, Context.NONE).value();
+        return create(null, null, null, null);
     }
 
     /**
@@ -159,7 +159,7 @@ public final class AppendBlobClient extends BlobClient {
      *      The information of the append blob operation.
      */
     public AppendBlobItem appendBlock(InputStream data, long length) {
-        return appendBlockWithResponse(data, length, null, null, Context.NONE).value();
+        return appendBlock(data, length, null, null);
     }
 
     /**
@@ -183,7 +183,7 @@ public final class AppendBlobClient extends BlobClient {
      *      The information of the append blob operation.
      */
     public AppendBlobItem appendBlock(InputStream data, long length,
-                                                           AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout) {
+                                      AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout) {
         return appendBlockWithResponse(data, length, appendBlobAccessConditions, timeout, Context.NONE).value();
     }
 
@@ -243,7 +243,7 @@ public final class AppendBlobClient extends BlobClient {
      *      The information of the append blob operation.
      */
     public AppendBlobItem appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
-        return appendBlockFromUrlWithResponse(sourceURL, sourceRange, null, null, null, null, Context.NONE).value();
+        return appendBlockFromUrl(sourceURL, sourceRange, null, null, null, null);
     }
 
     /**
