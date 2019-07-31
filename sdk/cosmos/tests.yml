@@ -23,21 +23,21 @@ jobs:
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Session'
-        # 09m 23s, passed
+        # 09m 23s, expect passed
         Single_Region_Fast:
           DisplayName: Single Region Fast
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pfast'
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Session"]'
-        # 09m 0s, passed
+        # 09m 0s, expect passed
         Single_Region_Direct:
           DisplayName: Single Region Direct
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pdirect'
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Session"]'
-        # 7m 44s, passed
+        # 7m 44s, expect passed
         Single_Region_Examples:
           DisplayName: Single Region Examples
           OSVmImage: 'macOS-10.13'
@@ -72,31 +72,31 @@ jobs:
         PROTOCOLS: '["Tcp"]'
       MaxParallel: 1
       Matrix:
-        # 09m 07s, passed
+        # 09m 07s, expect passed
         Fast:
           DisplayName: Multimaster Single Region Fast
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pfast'
           AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
-        # 09m 14s, passed
+        # 09m 14s, expect passed
         Direct:
           DisplayName: Multimaster Single Region Direct
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pdirect'
           AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
-        # 07m 42s, passed
+        # 07m 42s, expect passed
         Examples:
           DisplayName: Multimaster Single Region Examples
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pexamples'
           AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
-        # 07m 05s, passed
+        # 07m 05s, expect passed
         NonEmulator:
           DisplayName: Multimaster Single Region NonEmulator
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pnon-emulator'
           AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
-        # 28m 42s, passed (rebalanced)
+        # 28m 42s, expect passed (rebalanced)
         Single_Region_Long:
           DisplayName: Long Integration Tests
           OSVmImage: 'vs2017-win2016'
@@ -104,7 +104,7 @@ jobs:
           DESIRED_CONSISTENCIES: '["Session"]'
           PREFERRED_LOCATIONS: null
           PROTOCOLS: null
-        # 6m 58s, passed (rebalanced)
+        # 6m 58s, expect passed (rebalanced)
         Single_Region_NonEmulator:
           DisplayName: Single Region Examples
           OSVmImage: 'macOS-10.13'
@@ -134,7 +134,7 @@ jobs:
         ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
       MaxParallel: 1
       Matrix:
-        # 09m 32s, passed
+        # 09m 32s, expect passed
         Strong_Tcp_Fast:
           DisplayName: Strong TCP Fast
           OSVmImage: 'macOS-10.13'
@@ -142,7 +142,7 @@ jobs:
           AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        # 08m 53s, passed
+        # 08m 53s, expect passed
         Strong_Tcp_Direct:
           DisplayName: Strong TCP Direct
           OSVmImage: 'macOS-10.13'
@@ -150,7 +150,7 @@ jobs:
           AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        # 07m 36s, passed
+        # 07m 36s, expect passed
         Strong_Tcp_Examples:
           DisplayName: Strong TCP Examples
           OSVmImage: 'macOS-10.13'
@@ -158,7 +158,7 @@ jobs:
           AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        # 06m 59s, passed
+        # 06m 59s, expect passed
         Strong_Tcp_NonEmulator:
           DisplayName: Strong TCP NonEmulator
           OSVmImage: 'macOS-10.13'
@@ -197,7 +197,7 @@ jobs:
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Strong'
-        # 08m 50s, passed
+        # 08m 50s, expect passed
         Strong_Https_Fast:
           DisplayName: Strong HTTP Fast
           OSVmImage: 'macOS-10.13'
@@ -205,7 +205,7 @@ jobs:
           AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        # 08m 50s, passed
+        # 08m 50s, expect passed
         Strong_Https_Direct:
           DisplayName: Strong HTTP Direct
           OSVmImage: 'macOS-10.13'
@@ -213,7 +213,7 @@ jobs:
           AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        # 07m 36s, passed
+        # 07m 36s, expect passed
         Strong_Https_Examples:
           DisplayName: Strong HTTP Examples
           OSVmImage: 'macOS-10.13'
@@ -221,7 +221,7 @@ jobs:
           AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        # 06m 59s, passed
+        # 06m 59s, expect passed
         Strong_Https_NonEmulator:
           DisplayName: Strong HTTP NonEmulator
           OSVmImage: 'macOS-10.13'
@@ -255,33 +255,33 @@ jobs:
         PREFERRED_LOCATIONS: '["East US 2"]'
       MaxParallel: 1
       Matrix:
-        # 29m 23s, passed
+        # 29m 23s, expect passed
         Long:
           DisplayName: Multimaster Multi Region Long
           OSVmImage: 'vs2017-win2016'
           ProfileFlag: '-e -Plong'
           AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
-        # 06m 34s, failed (expected)
+        # 06m 34s, previously failing
         MultiMaster:
           DisplayName: Multimaster Multi Region Multi-Master
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pmulti-master'
-        # 09m 43s, passed
+        # 09m 43s, expect passed
         Fast:
           DisplayName: Multimaster Multi Region Fast
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pfast'
-        # 09m 10s, passed
+        # 09m 10s, expect passed
         Direct:
           DisplayName: Multimaster Multi Region Direct
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pdirect'
-        # 07m 49s, passed
+        # 07m 49s, expect passed
         Examples:
           DisplayName: Multimaster Multi Region Examples
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pexamples'
-        # 08m 0s, passed
+        # 08m 0s, expect passed
         NonEmulator:
           DisplayName: Multimaster Multi Region NonEmulator
           OSVmImage: 'macOS-10.13'
@@ -312,27 +312,27 @@ jobs:
         PREFERRED_LOCATIONS: null
       MaxParallel: 1
       Matrix:
-        # 05m 21s, expected failure
+        # 05m 21s, previously failing
         MultiMaster:
           DisplayName: MultiMaster Single Region Multi-Master
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pmulti-master'
-        # 09m 34s, passed
+        # 09m 34s, expect passed
         Fast:
           DisplayName: Multimaster Single Region Fast
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pfast'
-        # 09m 05s, passed
+        # 09m 05s, expect passed
         Direct:
           DisplayName: Multimaster Single Region Direct
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pdirect'
-        # 07m 52s, passed
+        # 07m 52s, expect passed
         Examples:
           DisplayName: Multimaster Single Region Examples
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pexamples'
-        # 07m 10s, passed
+        # 07m 10s, expect passed
         NonEmulator:
           DisplayName: Multimaster Single Region NonEmulator
           OSVmImage: 'macOS-10.13'
