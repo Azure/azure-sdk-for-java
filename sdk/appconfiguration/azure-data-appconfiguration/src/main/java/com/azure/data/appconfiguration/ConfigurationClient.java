@@ -470,7 +470,7 @@ public final class ConfigurationClient {
      *
      * @param options Optional. Options to filter configuration setting results from the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
+     * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code options}. If no options were provided, the {@link PagedIterable}
      * contains all of the current settings in the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -493,7 +493,7 @@ public final class ConfigurationClient {
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector}
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
-     * @return Revisions of the ConfigurationSetting
+     * @return {@link PagedIterable} of {@link ConfigurationSetting} revisions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {

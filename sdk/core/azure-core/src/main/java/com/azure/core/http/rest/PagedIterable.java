@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 /**
  *  This class provides utility to iterate over {@link PagedResponse} using {@link Stream} and {@link Iterable} interfaces.
  *
- * <p><strong>Code sample using Stream by page</strong></p>
+ * <p><strong>Code sample using {@link Stream} by page</strong></p>
  *
  * {@codesnippet com.azure.core.http.rest.pagedIterable.streamByPage}
  *
@@ -20,7 +20,7 @@ import java.util.stream.Stream;
  *
  * {@codesnippet com.azure.core.http.rest.pagedIterable.iterableByPage.while}
  *
- * @param  <T> value
+ * @param  <T> The type of value contained in this {@link IterableResponse}.
  * @see PagedResponse
  * @see IterableResponse
  */

@@ -23,7 +23,7 @@ import java.util.stream.Stream;
  *
  * {@codesnippet com.azure.core.http.rest.iterableResponse.stream.filter}
  *
- * @param <T> value
+ * @param <T> The type of value in this {@link Iterable}.
  * @see Iterable
  */
 public class IterableResponse<T> implements Iterable<T> {

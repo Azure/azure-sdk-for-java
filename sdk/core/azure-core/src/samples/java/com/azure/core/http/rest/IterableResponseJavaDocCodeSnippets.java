@@ -44,8 +44,6 @@ public class IterableResponseJavaDocCodeSnippets {
                 resp.items().forEach(value -> {
                     System.out.printf("Response value is %d \n", value);
                 });
-            } else {
-                System.out.printf("Failed with status is %d and url is %s\n", resp.statusCode(), resp.request().url());
             }
         });
         // END: com.azure.core.http.rest.iterableResponse.stream
@@ -75,8 +73,6 @@ public class IterableResponseJavaDocCodeSnippets {
                 resp.items().forEach(value -> {
                     System.out.printf("Response value is %d \n", value);
                 });
-            } else {
-                System.out.printf("Failed with status is %d and url is %s\n", resp.statusCode(), resp.request().url());
             }
         }
         // END: com.azure.core.http.rest.iterableResponse.iterator.while

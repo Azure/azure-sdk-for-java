@@ -5,6 +5,7 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
@@ -305,14 +306,12 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         ConfigurationClient client = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector
         SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
-        client.listSettingRevisions(settingSelector).streamByPage().forEach(response -> {
-            if (response.statusCode() == HttpURLConnection.HTTP_OK) {
-                response.value().forEach(setting -> {
-                    System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
-                });
-            } else {
-                System.out.printf(" Did not get successful response. Status code: %d, ", response.statusCode());
-            }
+        client.listSettingRevisions(settingSelector).streamByPage().forEach(resp -> {
+            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.headers(),
+                resp.request().url(), resp.statusCode());
+            resp.items().forEach(value -> {
+                System.out.printf("Response value is %d %n", value);
+            });
         });
         // END: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector
     }

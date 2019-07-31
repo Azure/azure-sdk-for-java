@@ -24,14 +24,11 @@ public class PagedIterableJavaDocCodeSnippets {
         // BEGIN: com.azure.core.http.rest.pagedIterable.streamByPage
         // process the streamByPage
         pagedIterableResponse.streamByPage().forEach(resp -> {
-            if (resp.statusCode() == HttpURLConnection.HTTP_OK) {
-                System.out.printf("Response headers are %s. Url %s \n", resp.headers(), resp.request().url());
-                resp.items().forEach(value -> {
-                    System.out.printf("Response value is %d \n", value);
-                });
-            } else {
-                System.out.printf("Failed with status is %d and url is %s %n", resp.statusCode(), resp.request().url());
-            }
+            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.headers(),
+                resp.request().url(), resp.statusCode());
+            resp.items().forEach(value -> {
+                System.out.printf("Response value is %d %n", value);
+            });
         });
         // END: com.azure.core.http.rest.pagedIterable.streamByPage
     }
@@ -45,14 +42,11 @@ public class PagedIterableJavaDocCodeSnippets {
         // BEGIN: com.azure.core.http.rest.pagedIterable.iterableByPage
         // process the iterableByPage
         pagedIterableResponse.iterableByPage().forEach(resp -> {
-            if (resp.statusCode() == HttpURLConnection.HTTP_OK) {
-                System.out.printf("Response headers are %s. Url %s %n", resp.headers(), resp.request().url());
-                resp.items().forEach(value -> {
-                    System.out.printf("Response value is %d \n", value);
-                });
-            } else {
-                System.out.printf("Failed with status is %d and url is %s %n", resp.statusCode(), resp.request().url());
-            }
+            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.headers(),
+                resp.request().url(), resp.statusCode());
+            resp.items().forEach(value -> {
+                System.out.printf("Response value is %d %n", value);
+            });
         });
         // END: com.azure.core.http.rest.pagedIterable.iterableByPage
     }
@@ -68,14 +62,11 @@ public class PagedIterableJavaDocCodeSnippets {
         Iterator<PagedResponse<Integer>> ite = pagedIterableResponse.iterableByPage().iterator();
         while (ite.hasNext()) {
             PagedResponse<Integer> resp = ite.next();
-            if (resp.statusCode() == HttpURLConnection.HTTP_OK) {
-                System.out.printf("Response headers are %s. Url %s %n", resp.headers(), resp.request().url());
-                resp.items().forEach(value -> {
-                    System.out.printf("Response value is %d %n", value);
-                });
-            } else {
-                System.out.printf("Failed with status is %d and url is %s %n", resp.statusCode(), resp.request().url());
-            }
+            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.headers(),
+                resp.request().url(), resp.statusCode());
+            resp.items().forEach(value -> {
+                System.out.printf("Response value is %d %n", value);
+            });
         }
         // END: com.azure.core.http.rest.pagedIterable.iterableByPage.while
     }
