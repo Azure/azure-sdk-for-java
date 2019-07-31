@@ -4,6 +4,7 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.rest.Response
+import com.azure.core.util.Context
 import com.azure.storage.blob.models.*
 import spock.lang.Unroll
 
@@ -55,7 +56,7 @@ class AppendBlobAPITest extends APISpec {
 
         when:
         bu.create(headers, null, null, null)
-        Response<BlobProperties> response = bu.getProperties()
+        Response<BlobProperties> response = bu.getPropertiesWithResponse(null, null, new Context("key1", "value1"))
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType
