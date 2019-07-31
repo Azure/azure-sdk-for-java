@@ -115,7 +115,7 @@ class BlobAPITest extends APISpec {
         when:
         BlobRange range = new BlobRange(2, 5L)
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(3)
-        bu2.download(new ByteArrayOutputStream(), options, range, null, false, null)
+        bu2.download(new ByteArrayOutputStream(), range, options, null, false, null)
 
         then:
         /*
