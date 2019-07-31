@@ -5,6 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -13,6 +14,7 @@ import java.time.OffsetDateTime;
  * Defines headers for GetAccessPolicy operation.
  */
 @JacksonXmlRootElement(localName = "Container-GetAccessPolicy-Headers")
+@Fluent
 public final class ContainerGetAccessPolicyHeaders {
     /*
      * Indicated whether data in the container may be accessed publicly and the

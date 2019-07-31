@@ -23,7 +23,7 @@ final class AccountSASResourceType {
     /**
      * Initializes an {@code AccountSASResourceType} object with all fields set to false.
      */
-    public AccountSASResourceType() {
+    private AccountSASResourceType() {
     }
 
     /**

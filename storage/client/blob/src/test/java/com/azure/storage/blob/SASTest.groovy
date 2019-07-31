@@ -482,7 +482,7 @@ class SASTest extends APISpec {
         when:
         def sas = primaryServiceURL.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
 
-        def scBuilder = new StorageClientBuilder()
+        def scBuilder = new BlobServiceClientBuilder()
         scBuilder.endpoint(primaryServiceURL.getAccountUrl().toString())
             .httpClient(getHttpClient())
             .credential(SASTokenCredential.fromSASTokenString(sas))
@@ -509,7 +509,7 @@ class SASTest extends APISpec {
         when:
         def sas = primaryServiceURL.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
 
-        def scBuilder = new StorageClientBuilder()
+        def scBuilder = new BlobServiceClientBuilder()
         scBuilder.endpoint(primaryServiceURL.getAccountUrl().toString())
             .httpClient(getHttpClient())
             .credential(SASTokenCredential.fromSASTokenString(sas))

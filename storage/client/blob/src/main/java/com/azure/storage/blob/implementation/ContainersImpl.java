@@ -4,21 +4,23 @@
 
 package com.azure.storage.blob.implementation;
 
-import com.azure.core.annotations.BodyParam;
-import com.azure.core.annotations.DELETE;
-import com.azure.core.annotations.ExpectedResponses;
-import com.azure.core.annotations.GET;
-import com.azure.core.annotations.HeaderParam;
-import com.azure.core.annotations.Host;
-import com.azure.core.annotations.HostParam;
-import com.azure.core.annotations.PUT;
-import com.azure.core.annotations.PathParam;
-import com.azure.core.annotations.QueryParam;
-import com.azure.core.annotations.Service;
-import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.CollectionFormat;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.annotation.BodyParam;
+import com.azure.core.implementation.annotation.Delete;
+import com.azure.core.implementation.annotation.ExpectedResponses;
+import com.azure.core.implementation.annotation.Get;
+import com.azure.core.implementation.annotation.HeaderParam;
+import com.azure.core.implementation.annotation.Host;
+import com.azure.core.implementation.annotation.HostParam;
+import com.azure.core.implementation.annotation.PathParam;
+import com.azure.core.implementation.annotation.Put;
+import com.azure.core.implementation.annotation.QueryParam;
+import com.azure.core.implementation.annotation.ReturnType;
+import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.implementation.annotation.ServiceMethod;
+import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.ContainersAcquireLeaseResponse;
@@ -41,11 +43,10 @@ import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.SignedIdentifier;
 import com.azure.storage.blob.models.StorageErrorException;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -68,83 +69,83 @@ public final class ContainersImpl {
      * @param client the instance of the service client containing this operation class.
      */
     public ContainersImpl(AzureBlobStorageImpl client) {
-        this.service = RestProxy.create(ContainersService.class, client);
+        this.service = RestProxy.create(ContainersService.class, client.getHttpPipeline());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for Containers to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for AzureBlobStorageContainers
+     * to be used by the proxy service to perform REST calls.
      */
     @Host("{url}")
-    @Service("Storage Blobs Containers")
+    @ServiceInterface(name = "AzureBlobStorageContainers")
     private interface ContainersService {
-        @PUT("{containerName}")
+        @Put("{containerName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ContainersCreateResponse> create(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-blob-public-access") PublicAccessType access, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, Context context);
 
-        @GET("{containerName}")
+        @Get("{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ContainersGetPropertiesResponse> getProperties(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
 
-        @DELETE("{containerName}")
+        @Delete("{containerName}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ContainersDeleteResponse> delete(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
-        @PUT("{containerName}")
+        @Put("{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ContainersSetMetadataResponse> setMetadata(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, Context context);
 
-        @GET("{containerName}")
+        @Get("{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ContainersGetAccessPolicyResponse> getAccessPolicy(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
 
-        @PUT("{containerName}")
+        @Put("{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<ContainersSetAccessPolicyResponse> setAccessPolicy(@PathParam("containerName") String containerName, @HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") SignedIdentifiersWrapper containerAcl, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-blob-public-access") PublicAccessType access, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
+        Mono<ContainersSetAccessPolicyResponse> setAccessPolicy(@PathParam("containerName") String containerName, @HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") SignedIdentifierWrapper containerAcl, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-blob-public-access") PublicAccessType access, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
-        @PUT("{containerName}")
+        @Put("{containerName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ContainersAcquireLeaseResponse> acquireLease(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-duration") Integer duration, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @QueryParam("restype") String restype, @HeaderParam("x-ms-lease-action") String action, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
-        @PUT("{containerName}")
+        @Put("{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ContainersReleaseLeaseResponse> releaseLease(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @QueryParam("restype") String restype, @HeaderParam("x-ms-lease-action") String action, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
-        @PUT("{containerName}")
+        @Put("{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ContainersRenewLeaseResponse> renewLease(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @QueryParam("restype") String restype, @HeaderParam("x-ms-lease-action") String action, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
-        @PUT("{containerName}")
+        @Put("{containerName}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ContainersBreakLeaseResponse> breakLease(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-break-period") Integer breakPeriod, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @QueryParam("restype") String restype, @HeaderParam("x-ms-lease-action") String action, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
-        @PUT("{containerName}")
+        @Put("{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ContainersChangeLeaseResponse> changeLease(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @QueryParam("restype") String restype, @HeaderParam("x-ms-lease-action") String action, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
-        @GET("{containerName}")
+        @Get("{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ContainersListBlobFlatSegmentResponse> listBlobFlatSegment(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
-        @GET("{containerName}")
+        @Get("{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ContainersListBlobHierarchySegmentResponse> listBlobHierarchySegment(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("delimiter") String delimiter, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
-        @GET("{containerName}")
+        @Get("{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ContainersGetAccountInfoResponse> getAccountInfo(@PathParam("containerName") String containerName, @HostParam("url") String url, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
@@ -158,13 +159,14 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersCreateResponse> createWithRestResponseAsync(String containerName, Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
         final PublicAccessType access = null;
         final String requestId = null;
         final String restype = "container";
-        return service.create(containerName, this.client.url(), timeout, metadata, access, this.client.version(), requestId, restype, context);
+        return service.create(containerName, this.client.getUrl(), timeout, metadata, access, this.client.getVersion(), requestId, restype, context);
     }
 
     /**
@@ -179,9 +181,10 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersCreateResponse> createWithRestResponseAsync(String containerName, Integer timeout, Map<String, String> metadata, PublicAccessType access, String requestId, Context context) {
         final String restype = "container";
-        return service.create(containerName, this.client.url(), timeout, metadata, access, this.client.version(), requestId, restype, context);
+        return service.create(containerName, this.client.getUrl(), timeout, metadata, access, this.client.getVersion(), requestId, restype, context);
     }
 
     /**
@@ -192,12 +195,13 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersGetPropertiesResponse> getPropertiesWithRestResponseAsync(String containerName, Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String restype = "container";
         final String leaseId = null;
-        return service.getProperties(containerName, this.client.url(), timeout, this.client.version(), requestId, restype, leaseId, context);
+        return service.getProperties(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, leaseId, context);
     }
 
     /**
@@ -211,13 +215,14 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersGetPropertiesResponse> getPropertiesWithRestResponseAsync(String containerName, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, Context context) {
         final String restype = "container";
         String leaseId = null;
         if (leaseAccessConditions != null) {
             leaseId = leaseAccessConditions.leaseId();
         }
-        return service.getProperties(containerName, this.client.url(), timeout, this.client.version(), requestId, restype, leaseId, context);
+        return service.getProperties(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, leaseId, context);
     }
 
     /**
@@ -228,6 +233,7 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersDeleteResponse> deleteWithRestResponseAsync(String containerName, Context context) {
         final Integer timeout = null;
         final String requestId = null;
@@ -235,7 +241,7 @@ public final class ContainersImpl {
         final String leaseId = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.delete(containerName, this.client.url(), timeout, this.client.version(), requestId, restype, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.delete(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -250,6 +256,7 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersDeleteResponse> deleteWithRestResponseAsync(String containerName, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String restype = "container";
         String leaseId = null;
@@ -266,7 +273,7 @@ public final class ContainersImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.delete(containerName, this.client.url(), timeout, this.client.version(), requestId, restype, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.delete(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -277,6 +284,7 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersSetMetadataResponse> setMetadataWithRestResponseAsync(String containerName, Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
@@ -285,7 +293,7 @@ public final class ContainersImpl {
         final String comp = "metadata";
         final String leaseId = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        return service.setMetadata(containerName, this.client.url(), timeout, metadata, this.client.version(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, context);
+        return service.setMetadata(containerName, this.client.getUrl(), timeout, metadata, this.client.getVersion(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, context);
     }
 
     /**
@@ -301,6 +309,7 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersSetMetadataResponse> setMetadataWithRestResponseAsync(String containerName, Integer timeout, Map<String, String> metadata, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String restype = "container";
         final String comp = "metadata";
@@ -313,7 +322,7 @@ public final class ContainersImpl {
             ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        return service.setMetadata(containerName, this.client.url(), timeout, metadata, this.client.version(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, context);
+        return service.setMetadata(containerName, this.client.getUrl(), timeout, metadata, this.client.getVersion(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, context);
     }
 
     /**
@@ -324,13 +333,14 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersGetAccessPolicyResponse> getAccessPolicyWithRestResponseAsync(String containerName, Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String restype = "container";
         final String comp = "acl";
         final String leaseId = null;
-        return service.getAccessPolicy(containerName, this.client.url(), timeout, this.client.version(), requestId, restype, comp, leaseId, context);
+        return service.getAccessPolicy(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, leaseId, context);
     }
 
     /**
@@ -344,6 +354,7 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersGetAccessPolicyResponse> getAccessPolicyWithRestResponseAsync(String containerName, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, Context context) {
         final String restype = "container";
         final String comp = "acl";
@@ -351,7 +362,7 @@ public final class ContainersImpl {
         if (leaseAccessConditions != null) {
             leaseId = leaseAccessConditions.leaseId();
         }
-        return service.getAccessPolicy(containerName, this.client.url(), timeout, this.client.version(), requestId, restype, comp, leaseId, context);
+        return service.getAccessPolicy(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, leaseId, context);
     }
 
     /**
@@ -362,6 +373,7 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(String containerName, Context context) {
         final Integer timeout = null;
         final PublicAccessType access = null;
@@ -369,10 +381,10 @@ public final class ContainersImpl {
         final String restype = "container";
         final String comp = "acl";
         final String leaseId = null;
-        SignedIdentifiersWrapper containerAclConverted = new SignedIdentifiersWrapper(null);
+        SignedIdentifierWrapper containerAclConverted = new SignedIdentifierWrapper(null);
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.setAccessPolicy(containerName, this.client.url(), containerAclConverted, timeout, access, this.client.version(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.setAccessPolicy(containerName, this.client.getUrl(), containerAclConverted, timeout, access, this.client.getVersion(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -389,6 +401,7 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(String containerName, List<SignedIdentifier> containerAcl, Integer timeout, PublicAccessType access, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String restype = "container";
         final String comp = "acl";
@@ -404,10 +417,10 @@ public final class ContainersImpl {
         if (modifiedAccessConditions != null) {
             ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
         }
-        SignedIdentifiersWrapper containerAclConverted = new SignedIdentifiersWrapper(containerAcl);
+        SignedIdentifierWrapper containerAclConverted = new SignedIdentifierWrapper(containerAcl);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.setAccessPolicy(containerName, this.client.url(), containerAclConverted, timeout, access, this.client.version(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.setAccessPolicy(containerName, this.client.getUrl(), containerAclConverted, timeout, access, this.client.getVersion(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -418,6 +431,7 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersAcquireLeaseResponse> acquireLeaseWithRestResponseAsync(String containerName, Context context) {
         final Integer timeout = null;
         final Integer duration = null;
@@ -428,7 +442,7 @@ public final class ContainersImpl {
         final String action = "acquire";
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.acquireLease(containerName, this.client.url(), timeout, duration, proposedLeaseId, this.client.version(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.acquireLease(containerName, this.client.getUrl(), timeout, duration, proposedLeaseId, this.client.getVersion(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -444,6 +458,7 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersAcquireLeaseResponse> acquireLeaseWithRestResponseAsync(String containerName, Integer timeout, Integer duration, String proposedLeaseId, String requestId, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String comp = "lease";
         final String restype = "container";
@@ -458,7 +473,7 @@ public final class ContainersImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.acquireLease(containerName, this.client.url(), timeout, duration, proposedLeaseId, this.client.version(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.acquireLease(containerName, this.client.getUrl(), timeout, duration, proposedLeaseId, this.client.getVersion(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -470,6 +485,7 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersReleaseLeaseResponse> releaseLeaseWithRestResponseAsync(String containerName, String leaseId, Context context) {
         final Integer timeout = null;
         final String requestId = null;
@@ -478,7 +494,7 @@ public final class ContainersImpl {
         final String action = "release";
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.releaseLease(containerName, this.client.url(), timeout, leaseId, this.client.version(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.releaseLease(containerName, this.client.getUrl(), timeout, leaseId, this.client.getVersion(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -493,6 +509,7 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersReleaseLeaseResponse> releaseLeaseWithRestResponseAsync(String containerName, String leaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String comp = "lease";
         final String restype = "container";
@@ -507,7 +524,7 @@ public final class ContainersImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.releaseLease(containerName, this.client.url(), timeout, leaseId, this.client.version(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.releaseLease(containerName, this.client.getUrl(), timeout, leaseId, this.client.getVersion(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -519,6 +536,7 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersRenewLeaseResponse> renewLeaseWithRestResponseAsync(String containerName, String leaseId, Context context) {
         final Integer timeout = null;
         final String requestId = null;
@@ -527,7 +545,7 @@ public final class ContainersImpl {
         final String action = "renew";
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.renewLease(containerName, this.client.url(), timeout, leaseId, this.client.version(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.renewLease(containerName, this.client.getUrl(), timeout, leaseId, this.client.getVersion(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -542,6 +560,7 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersRenewLeaseResponse> renewLeaseWithRestResponseAsync(String containerName, String leaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String comp = "lease";
         final String restype = "container";
@@ -556,7 +575,7 @@ public final class ContainersImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.renewLease(containerName, this.client.url(), timeout, leaseId, this.client.version(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.renewLease(containerName, this.client.getUrl(), timeout, leaseId, this.client.getVersion(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -567,6 +586,7 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersBreakLeaseResponse> breakLeaseWithRestResponseAsync(String containerName, Context context) {
         final Integer timeout = null;
         final Integer breakPeriod = null;
@@ -576,7 +596,7 @@ public final class ContainersImpl {
         final String action = "break";
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.breakLease(containerName, this.client.url(), timeout, breakPeriod, this.client.version(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.breakLease(containerName, this.client.getUrl(), timeout, breakPeriod, this.client.getVersion(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -591,6 +611,7 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersBreakLeaseResponse> breakLeaseWithRestResponseAsync(String containerName, Integer timeout, Integer breakPeriod, String requestId, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String comp = "lease";
         final String restype = "container";
@@ -605,7 +626,7 @@ public final class ContainersImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.breakLease(containerName, this.client.url(), timeout, breakPeriod, this.client.version(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.breakLease(containerName, this.client.getUrl(), timeout, breakPeriod, this.client.getVersion(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -618,6 +639,7 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersChangeLeaseResponse> changeLeaseWithRestResponseAsync(String containerName, String leaseId, String proposedLeaseId, Context context) {
         final Integer timeout = null;
         final String requestId = null;
@@ -626,7 +648,7 @@ public final class ContainersImpl {
         final String action = "change";
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.changeLease(containerName, this.client.url(), timeout, leaseId, proposedLeaseId, this.client.version(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.changeLease(containerName, this.client.getUrl(), timeout, leaseId, proposedLeaseId, this.client.getVersion(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -642,6 +664,7 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersChangeLeaseResponse> changeLeaseWithRestResponseAsync(String containerName, String leaseId, String proposedLeaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String comp = "lease";
         final String restype = "container";
@@ -656,7 +679,7 @@ public final class ContainersImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.changeLease(containerName, this.client.url(), timeout, leaseId, proposedLeaseId, this.client.version(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.changeLease(containerName, this.client.getUrl(), timeout, leaseId, proposedLeaseId, this.client.getVersion(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -667,6 +690,7 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersListBlobFlatSegmentResponse> listBlobFlatSegmentWithRestResponseAsync(String containerName, Context context) {
         final String prefix = null;
         final String marker = null;
@@ -676,7 +700,7 @@ public final class ContainersImpl {
         final String restype = "container";
         final String comp = "list";
         String includeConverted = null;
-        return service.listBlobFlatSegment(containerName, this.client.url(), prefix, marker, maxresults, includeConverted, timeout, this.client.version(), requestId, restype, comp, context);
+        return service.listBlobFlatSegment(containerName, this.client.getUrl(), prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -693,11 +717,12 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersListBlobFlatSegmentResponse> listBlobFlatSegmentWithRestResponseAsync(String containerName, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId, Context context) {
         final String restype = "container";
         final String comp = "list";
         String includeConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
-        return service.listBlobFlatSegment(containerName, this.client.url(), prefix, marker, maxresults, includeConverted, timeout, this.client.version(), requestId, restype, comp, context);
+        return service.listBlobFlatSegment(containerName, this.client.getUrl(), prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -709,6 +734,7 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersListBlobHierarchySegmentResponse> listBlobHierarchySegmentWithRestResponseAsync(String containerName, String delimiter, Context context) {
         final String prefix = null;
         final String marker = null;
@@ -718,7 +744,7 @@ public final class ContainersImpl {
         final String restype = "container";
         final String comp = "list";
         String includeConverted = null;
-        return service.listBlobHierarchySegment(containerName, this.client.url(), prefix, delimiter, marker, maxresults, includeConverted, timeout, this.client.version(), requestId, restype, comp, context);
+        return service.listBlobHierarchySegment(containerName, this.client.getUrl(), prefix, delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -736,11 +762,12 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersListBlobHierarchySegmentResponse> listBlobHierarchySegmentWithRestResponseAsync(String containerName, String delimiter, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId, Context context) {
         final String restype = "container";
         final String comp = "list";
         String includeConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
-        return service.listBlobHierarchySegment(containerName, this.client.url(), prefix, delimiter, marker, maxresults, includeConverted, timeout, this.client.version(), requestId, restype, comp, context);
+        return service.listBlobHierarchySegment(containerName, this.client.getUrl(), prefix, delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -751,9 +778,10 @@ public final class ContainersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersGetAccountInfoResponse> getAccountInfoWithRestResponseAsync(String containerName, Context context) {
         final String restype = "account";
         final String comp = "properties";
-        return service.getAccountInfo(containerName, this.client.url(), this.client.version(), restype, comp, context);
+        return service.getAccountInfo(containerName, this.client.getUrl(), this.client.getVersion(), restype, comp, context);
     }
 }

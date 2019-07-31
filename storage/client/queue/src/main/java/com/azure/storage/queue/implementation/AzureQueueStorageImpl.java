@@ -4,14 +4,13 @@
 
 package com.azure.storage.queue.implementation;
 
-import com.azure.core.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
 
 /**
  * Initializes a new instance of the AzureQueueStorage type.
  */
-public final class AzureQueueStorageImpl extends ServiceClient {
+public final class AzureQueueStorageImpl {
     /**
      * The URL of the service account, queue or message that is the targe of the desired operation.
      */
@@ -22,7 +21,7 @@ public final class AzureQueueStorageImpl extends ServiceClient {
      *
      * @return the url value.
      */
-    public String url() {
+    public String getUrl() {
         return this.url;
     }
 
@@ -30,11 +29,9 @@ public final class AzureQueueStorageImpl extends ServiceClient {
      * Sets The URL of the service account, queue or message that is the targe of the desired operation.
      *
      * @param url the url value.
-     * @return the service client itself.
      */
-    AzureQueueStorageImpl url(String url) {
+    void setUrl(String url) {
         this.url = url;
-        return this;
     }
 
     /**
@@ -47,7 +44,7 @@ public final class AzureQueueStorageImpl extends ServiceClient {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -55,11 +52,23 @@ public final class AzureQueueStorageImpl extends ServiceClient {
      * Sets Specifies the version of the operation to use for this request.
      *
      * @param version the version value.
-     * @return the service client itself.
      */
-    AzureQueueStorageImpl version(String version) {
+    void setVersion(String version) {
         this.version = version;
-        return this;
+    }
+
+    /**
+     * The HTTP pipeline to send requests through.
+     */
+    private HttpPipeline httpPipeline;
+
+    /**
+     * Gets The HTTP pipeline to send requests through.
+     *
+     * @return the httpPipeline value.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.httpPipeline;
     }
 
     /**
@@ -131,7 +140,7 @@ public final class AzureQueueStorageImpl extends ServiceClient {
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     public AzureQueueStorageImpl(HttpPipeline httpPipeline) {
-        super(httpPipeline);
+        this.httpPipeline = httpPipeline;
         this.services = new ServicesImpl(this);
         this.queues = new QueuesImpl(this);
         this.messages = new MessagesImpl(this);

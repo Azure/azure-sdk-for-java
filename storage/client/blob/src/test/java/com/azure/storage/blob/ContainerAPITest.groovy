@@ -1624,7 +1624,7 @@ class ContainerAPITest extends APISpec {
 
     def "Get account info error"() {
         when:
-        StorageClient serviceURL = new StorageClientBuilder()
+        BlobServiceClient serviceURL = new BlobServiceClientBuilder()
             .endpoint(primaryServiceURL.getAccountUrl().toString())
             .buildClient()
 

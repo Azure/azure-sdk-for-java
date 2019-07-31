@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.storage.blob.BlockBlobClient;
-import com.azure.storage.blob.ContainerClient;
-import com.azure.storage.blob.StorageClient;
-import com.azure.storage.blob.StorageClientBuilder;
+package com.azure.storage.blob;
+
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
 import java.io.ByteArrayInputStream;
@@ -46,9 +44,9 @@ public class BasicExample {
         String endpoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName);
 
         /*
-         * Create a StorageClient object that wraps the service endpoint, credential and a request pipeline.
+         * Create a BlobServiceClient object that wraps the service endpoint, credential and a request pipeline.
          */
-        StorageClient storageClient = new StorageClientBuilder().endpoint(endpoint).credential(credential).buildClient();
+        BlobServiceClient storageClient = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential).buildClient();
 
         /*
          * This example shows several common operations just to get you started.

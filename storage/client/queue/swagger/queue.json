@@ -327,6 +327,9 @@
         "description": "creates a new queue under the given account.",
         "parameters": [
           {
+            "$ref": "#/parameters/QueueName"
+          },
+          {
             "$ref": "#/parameters/Timeout"
           },
           {
@@ -402,6 +405,9 @@
         "description": "operation permanently deletes the specified queue",
         "parameters": [
           {
+            "$ref": "#/parameters/QueueName"
+          },
+          {
             "$ref": "#/parameters/Timeout"
           },
           {
@@ -456,6 +462,9 @@
         "operationId": "Queue_GetProperties",
         "description": "Retrieves user-defined metadata and queue properties on the specified queue. Metadata is associated with the queue as name-values pairs.",
         "parameters": [
+          {
+            "$ref": "#/parameters/QueueName"
+          },
           {
             "$ref": "#/parameters/Timeout"
           },
@@ -518,6 +527,9 @@
         "operationId": "Queue_SetMetadata",
         "description": "sets user-defined metadata on the specified queue. Metadata is associated with the queue as name-value pairs.",
         "parameters": [
+          {
+            "$ref": "#/parameters/QueueName"
+          },
           {
             "$ref": "#/parameters/Timeout"
           },
@@ -587,6 +599,9 @@
         "description": "returns details about any stored access policies specified on the queue that may be used with Shared Access Signatures.",
         "parameters": [
           {
+            "$ref": "#/parameters/QueueName"
+          },
+          {
             "$ref": "#/parameters/Timeout"
           },
           {
@@ -641,6 +656,9 @@
         "operationId": "Queue_SetAccessPolicy",
         "description": "sets stored access policies for the queue that may be used with Shared Access Signatures",
         "parameters": [
+          {
+            "$ref": "#/parameters/QueueName"
+          },
           {
             "$ref": "#/parameters/QueueAcl"
           },
@@ -710,6 +728,9 @@
         "description": "The Dequeue operation retrieves one or more messages from the front of the queue.",
         "parameters": [
           {
+            "$ref": "#/parameters/QueueName"
+          },
+          {
             "$ref": "#/parameters/NumOfMessages"
           },
           {
@@ -771,6 +792,9 @@
         "description": "The Clear operation deletes all messages from the specified queue.",
         "parameters": [
           {
+            "$ref": "#/parameters/QueueName"
+          },
+          {
             "$ref": "#/parameters/Timeout"
           },
           {
@@ -825,6 +849,9 @@
         "operationId": "Messages_Enqueue",
         "description": "The Enqueue operation adds a new message to the back of the message queue. A visibility timeout can also be specified to make the message invisible until the visibility timeout expires. A message must be in a format that can be included in an XML request with UTF-8 encoding. The encoded message can be up to 64 KB in size for versions 2011-08-18 and newer, or 8 KB in size for previous versions.",
         "parameters": [
+          {
+            "$ref": "#/parameters/QueueName"
+          },
           {
             "$ref": "#/parameters/QueueMessage"
           },
@@ -892,6 +919,9 @@
         "operationId": "Messages_Peek",
         "description": "The Peek operation retrieves one or more messages from the front of the queue, but does not alter the visibility of the message.",
         "parameters": [
+          {
+            "$ref": "#/parameters/QueueName"
+          },
           {
             "$ref": "#/parameters/NumOfMessages"
           },
@@ -963,6 +993,12 @@
         "operationId": "MessageId_Update",
         "description": "The Update operation was introduced with version 2011-08-18 of the Queue service API. The Update Message operation updates the visibility timeout of a message. You can also use this operation to update the contents of a message. A message must be in a format that can be included in an XML request with UTF-8 encoding, and the encoded message can be up to 64KB in size.",
         "parameters": [
+          {
+            "$ref": "#/parameters/QueueName"
+          },
+          {
+            "$ref": "#/parameters/MessageId"
+          },
           {
             "$ref": "#/parameters/QueueMessage"
           },
@@ -1038,6 +1074,12 @@
         "operationId": "MessageId_Delete",
         "description": "The Delete operation deletes the specified message.",
         "parameters": [
+          {
+            "$ref": "#/parameters/QueueName"
+          },
+          {
+            "$ref": "#/parameters/MessageId"
+          },
           {
             "$ref": "#/parameters/PopReceipt"
           },
@@ -1432,7 +1474,7 @@
         "name": "QueueMessage"
       }
     },
-    "PeekedMessageItem": {
+    "PeekedMessage": {
       "description": "The object returned in the QueueMessageList array when calling Peek Messages on a Queue",
       "type": "object",
       "required": [
@@ -1530,7 +1572,7 @@
       "description": "The object returned when calling Peek Messages on a Queue",
       "type": "array",
       "items": {
-        "$ref": "#/definitions/PeekedMessageItem",
+        "$ref": "#/definitions/PeekedMessage",
         "xml": {
           "name": "QueueMessage"
         }
@@ -1746,7 +1788,7 @@
       "required": true,
       "type": "string",
       "x-ms-parameter-location": "method",
-      "description": "The container name."
+      "description": "The message ID name."
     },
     "MessageTTL": {
       "name": "messagettl",

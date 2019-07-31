@@ -32,7 +32,7 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  *
  * <p>
  * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient},
- * and operations on the service are available on {@link StorageAsyncClient}.
+ * and operations on the service are available on {@link BlobServiceAsyncClient}.
  *
  * <p>
  * Please refer

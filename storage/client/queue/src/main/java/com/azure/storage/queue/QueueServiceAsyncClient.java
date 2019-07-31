@@ -21,13 +21,14 @@ import com.azure.storage.queue.models.ServicesListQueuesSegmentResponse;
 import com.azure.storage.queue.models.StorageErrorException;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue account in Azure Storage.
@@ -68,9 +69,9 @@ public final class QueueServiceAsyncClient {
      */
     public URL getQueueServiceUrl() {
         try {
-            return new URL(client.url());
+            return new URL(client.getUrl());
         } catch (MalformedURLException ex) {
-            LOGGER.asError().log("Queue Service URL is malformed");
+            LOGGER.error("Queue Service URL is malformed");
             throw new RuntimeException("Storage account URL is malformed");
         }
     }
@@ -153,6 +154,9 @@ public final class QueueServiceAsyncClient {
      *
      * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.listQueues}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
+     *
      * @return {@link QueueItem Queues} in the storage account
      */
     public Flux<QueueItem> listQueues() {
@@ -170,6 +174,9 @@ public final class QueueServiceAsyncClient {
      * <p>List all queues that begin with "azure"</p>
      *
      * {@codesnippet com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
      *
      * @param options Options for listing queues
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
@@ -240,6 +247,9 @@ public final class QueueServiceAsyncClient {
      *
      * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.getProperties}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-properties">Azure Docs</a>.</p>
+     *
      * @return Storage account Queue service properties
      */
     public Mono<Response<StorageServiceProperties>> getProperties() {
@@ -263,6 +273,9 @@ public final class QueueServiceAsyncClient {
      * <p>Enable Minute and Hour Metrics</p>
      *
      * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.setPropertiesEnableMetrics#storageServiceProperties}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure Docs</a>.</p>
      *
      * @param properties Storage account Queue service properties
      * @return A response that only contains headers and response status code
@@ -291,6 +304,9 @@ public final class QueueServiceAsyncClient {
      * <p>Retrieve the geo replication information</p>
      *
      * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.getStatistics}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
      *
      * @return The geo replication information about the Queue service
      */
