@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.Range;
 import com.azure.data.appconfiguration.models.SettingFields;
@@ -12,6 +11,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -21,7 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertArrayEquals;
 
 public class ConfigurationClientTest extends ConfigurationClientTestBase {
     private final ClientLogger logger = new ClientLogger(ConfigurationClientTest.class);
