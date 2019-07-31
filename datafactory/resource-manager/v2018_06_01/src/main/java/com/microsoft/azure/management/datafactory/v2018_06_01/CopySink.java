@@ -44,6 +44,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "BlobSink", value = BlobSink.class),
     @JsonSubTypes.Type(name = "BinarySink", value = BinarySink.class),
     @JsonSubTypes.Type(name = "ParquetSink", value = ParquetSink.class),
+    @JsonSubTypes.Type(name = "AvroSink", value = AvroSink.class),
     @JsonSubTypes.Type(name = "AzureTableSink", value = AzureTableSink.class),
     @JsonSubTypes.Type(name = "AzureQueueSink", value = AzureQueueSink.class),
     @JsonSubTypes.Type(name = "SapCloudForCustomerSink", value = SapCloudForCustomerSink.class),
@@ -90,6 +91,14 @@ public class CopySink {
      */
     @JsonProperty(value = "maxConcurrentConnections")
     private Object maxConcurrentConnections;
+
+    /**
+     * The option to handle sink table, such as autoCreate. For now only
+     * 'autoCreate' value is supported. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "tableOption")
+    private Object tableOption;
 
     /**
      * Get unmatched properties from the message are deserialized this collection.
@@ -208,6 +217,26 @@ public class CopySink {
      */
     public CopySink withMaxConcurrentConnections(Object maxConcurrentConnections) {
         this.maxConcurrentConnections = maxConcurrentConnections;
+        return this;
+    }
+
+    /**
+     * Get the option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string (or Expression with resultType string).
+     *
+     * @return the tableOption value
+     */
+    public Object tableOption() {
+        return this.tableOption;
+    }
+
+    /**
+     * Set the option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string (or Expression with resultType string).
+     *
+     * @param tableOption the tableOption value to set
+     * @return the CopySink object itself.
+     */
+    public CopySink withTableOption(Object tableOption) {
+        this.tableOption = tableOption;
         return this;
     }
 

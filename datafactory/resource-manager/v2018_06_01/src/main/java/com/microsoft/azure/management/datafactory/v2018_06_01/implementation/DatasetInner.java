@@ -70,6 +70,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "SapHanaTable", value = SapHanaTableDataset.class),
     @JsonSubTypes.Type(name = "SapEccResource", value = SapEccResourceDataset.class),
     @JsonSubTypes.Type(name = "SapCloudForCustomerResource", value = SapCloudForCustomerResourceDataset.class),
+    @JsonSubTypes.Type(name = "SapBwCube", value = SapBwCubeDataset.class),
+    @JsonSubTypes.Type(name = "SybaseTable", value = SybaseTableDataset.class),
     @JsonSubTypes.Type(name = "SalesforceServiceCloudObject", value = SalesforceServiceCloudObjectDataset.class),
     @JsonSubTypes.Type(name = "SalesforceObject", value = SalesforceObjectDataset.class),
     @JsonSubTypes.Type(name = "MicrosoftAccessTable", value = MicrosoftAccessTableDataset.class),
@@ -103,6 +105,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "Binary", value = BinaryDataset.class),
     @JsonSubTypes.Type(name = "DelimitedText", value = DelimitedTextDataset.class),
     @JsonSubTypes.Type(name = "Parquet", value = ParquetDataset.class),
+    @JsonSubTypes.Type(name = "Avro", value = AvroDataset.class),
     @JsonSubTypes.Type(name = "AmazonS3Object", value = AmazonS3Dataset.class)
 })
 public class DatasetInner {
