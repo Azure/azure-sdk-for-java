@@ -10,7 +10,7 @@ import java.time.Duration;
 
 /**
  * Response returned from the STS device code endpoint containing information necessary for
- * device code flow
+ * device code flow.
  */
 @Fluent
 @Immutable
