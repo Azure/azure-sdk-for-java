@@ -1,7 +1,9 @@
 trigger: none
 
 variables:
-  AdditionalArgs: ''
+  - template: ../../eng/pipelines/templates/variables/globals.yml
+  - name: AdditionalArgs
+    value: ''
 
 
 # TODO: examine whether $(DefaultOptions) is appropriate here...
