@@ -21,7 +21,7 @@ jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: cosmos
-      TestGoals: 'test'
+      TestGoals: verify
       TestMatrix:
         Windows - java8:
           OSVmImage: 'vs2017-win2016'
@@ -87,7 +87,7 @@ jobs:
       - powershell: |
           Write-Host "Starting Comsos DB Emulator"
           Start-Process "$env:Temp\Azure Cosmos DB Emulator\SourceDir\Azure Cosmos DB Emulator\CosmosDB.Emulator.exe" "/NoExplorer /NoUI /DisableRateLimiting /PartitionCount=100 /Consistency=Strong" -Verb RunAs
-          displayName: 'Run Public Cosmos DB Emulator'
+        displayName: 'Run Public Cosmos DB Emulator'
 
       - powershell: |
           Import-Module "$env:Temp\Azure Cosmos DB Emulator\SourceDir\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
