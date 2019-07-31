@@ -42,7 +42,6 @@ public class FileClientTest extends FileClientTestBase {
                              .connectionString(connectionString)
                              .shareName(shareName)
                              .filePath(filePath)
-                             .endpoint(endpoint)
                              .httpClient(interceptorManager.getPlaybackClient())
                              .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                              .buildClient(), true, fileLogger);
@@ -51,7 +50,6 @@ public class FileClientTest extends FileClientTestBase {
                              .connectionString(connectionString)
                              .shareName(shareName)
                              .filePath(filePath)
-                             .endpoint(endpoint)
                              .httpClient(HttpClient.createDefault().wiretap(true))
                              .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                              .addPolicy(interceptorManager.getRecordPolicy())
