@@ -248,8 +248,7 @@ jobs:
       - task: Maven@3
         displayName: 'Run tests'
         inputs:
-          # TODO: make this pom.service.xml again
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.xml
+          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
           options: ${{ parameters.TestOptions }}
           mavenOptions: '-Xmx3072m $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
