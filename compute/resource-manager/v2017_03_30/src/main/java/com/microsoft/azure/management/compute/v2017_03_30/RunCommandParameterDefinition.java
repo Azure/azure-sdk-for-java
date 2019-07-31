@@ -39,7 +39,7 @@ public class RunCommandParameterDefinition {
     private Boolean required;
 
     /**
-     * Get the name value.
+     * Get the run command parameter name.
      *
      * @return the name value
      */
@@ -48,7 +48,7 @@ public class RunCommandParameterDefinition {
     }
 
     /**
-     * Set the name value.
+     * Set the run command parameter name.
      *
      * @param name the name value to set
      * @return the RunCommandParameterDefinition object itself.
@@ -59,7 +59,7 @@ public class RunCommandParameterDefinition {
     }
 
     /**
-     * Get the type value.
+     * Get the run command parameter type.
      *
      * @return the type value
      */
@@ -68,7 +68,7 @@ public class RunCommandParameterDefinition {
     }
 
     /**
-     * Set the type value.
+     * Set the run command parameter type.
      *
      * @param type the type value to set
      * @return the RunCommandParameterDefinition object itself.
@@ -79,7 +79,7 @@ public class RunCommandParameterDefinition {
     }
 
     /**
-     * Get the defaultValue value.
+     * Get the run command parameter default value.
      *
      * @return the defaultValue value
      */
@@ -88,7 +88,7 @@ public class RunCommandParameterDefinition {
     }
 
     /**
-     * Set the defaultValue value.
+     * Set the run command parameter default value.
      *
      * @param defaultValue the defaultValue value to set
      * @return the RunCommandParameterDefinition object itself.
@@ -99,7 +99,7 @@ public class RunCommandParameterDefinition {
     }
 
     /**
-     * Get the required value.
+     * Get the run command parameter required.
      *
      * @return the required value
      */
@@ -108,7 +108,7 @@ public class RunCommandParameterDefinition {
     }
 
     /**
-     * Set the required value.
+     * Set the run command parameter required.
      *
      * @param required the required value to set
      * @return the RunCommandParameterDefinition object itself.

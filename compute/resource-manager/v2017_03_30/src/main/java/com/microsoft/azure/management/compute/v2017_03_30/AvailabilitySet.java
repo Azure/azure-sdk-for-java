@@ -10,12 +10,12 @@ package com.microsoft.azure.management.compute.v2017_03_30;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.compute.v2017_03_30.implementation.ComputeManager;
 import java.util.List;
@@ -74,41 +74,49 @@ public interface AvailabilitySet extends HasInner<AvailabilitySetInner>, Resourc
         }
 
         /**
-         * The stage of the availabilityset update allowing to specify PlatformFaultDomainCount.
+         * The stage of the availabilityset definition allowing to specify PlatformFaultDomainCount.
          */
         interface WithPlatformFaultDomainCount {
             /**
              * Specifies platformFaultDomainCount.
+             * @param platformFaultDomainCount Fault Domain count
+             * @return the next definition stage
              */
             WithCreate withPlatformFaultDomainCount(Integer platformFaultDomainCount);
         }
 
         /**
-         * The stage of the availabilityset update allowing to specify PlatformUpdateDomainCount.
+         * The stage of the availabilityset definition allowing to specify PlatformUpdateDomainCount.
          */
         interface WithPlatformUpdateDomainCount {
             /**
              * Specifies platformUpdateDomainCount.
+             * @param platformUpdateDomainCount Update Domain count
+             * @return the next definition stage
              */
             WithCreate withPlatformUpdateDomainCount(Integer platformUpdateDomainCount);
         }
 
         /**
-         * The stage of the availabilityset update allowing to specify Sku.
+         * The stage of the availabilityset definition allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku Sku of the availability set
+             * @return the next definition stage
              */
             WithCreate withSku(Sku sku);
         }
 
         /**
-         * The stage of the availabilityset update allowing to specify VirtualMachines.
+         * The stage of the availabilityset definition allowing to specify VirtualMachines.
          */
         interface WithVirtualMachines {
             /**
              * Specifies virtualMachines.
+             * @param virtualMachines A list of references to all virtual machines in the availability set
+             * @return the next definition stage
              */
             WithCreate withVirtualMachines(List<SubResource> virtualMachines);
         }
@@ -132,41 +140,49 @@ public interface AvailabilitySet extends HasInner<AvailabilitySetInner>, Resourc
      */
     interface UpdateStages {
         /**
-         * The stage of the availabilityset {0} allowing to specify PlatformFaultDomainCount.
+         * The stage of the availabilityset update allowing to specify PlatformFaultDomainCount.
          */
         interface WithPlatformFaultDomainCount {
             /**
              * Specifies platformFaultDomainCount.
+             * @param platformFaultDomainCount Fault Domain count
+             * @return the next update stage
              */
             Update withPlatformFaultDomainCount(Integer platformFaultDomainCount);
         }
 
         /**
-         * The stage of the availabilityset {0} allowing to specify PlatformUpdateDomainCount.
+         * The stage of the availabilityset update allowing to specify PlatformUpdateDomainCount.
          */
         interface WithPlatformUpdateDomainCount {
             /**
              * Specifies platformUpdateDomainCount.
+             * @param platformUpdateDomainCount Update Domain count
+             * @return the next update stage
              */
             Update withPlatformUpdateDomainCount(Integer platformUpdateDomainCount);
         }
 
         /**
-         * The stage of the availabilityset {0} allowing to specify Sku.
+         * The stage of the availabilityset update allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku Sku of the availability set
+             * @return the next update stage
              */
             Update withSku(Sku sku);
         }
 
         /**
-         * The stage of the availabilityset {0} allowing to specify VirtualMachines.
+         * The stage of the availabilityset update allowing to specify VirtualMachines.
          */
         interface WithVirtualMachines {
             /**
              * Specifies virtualMachines.
+             * @param virtualMachines A list of references to all virtual machines in the availability set
+             * @return the next update stage
              */
             Update withVirtualMachines(List<SubResource> virtualMachines);
         }
