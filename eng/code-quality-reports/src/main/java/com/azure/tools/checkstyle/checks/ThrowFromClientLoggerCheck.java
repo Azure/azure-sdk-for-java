@@ -28,8 +28,10 @@ import java.util.Deque;
 public class ThrowFromClientLoggerCheck extends AbstractCheck {
     private static final String LOGGER_LOG_AND_THROW = "logger.logAndThrow";
 
-    private Deque<Boolean> classStaticDeque = new ArrayDeque<>();
-    private Deque<Boolean> methodStaticDeque = new ArrayDeque<>();
+    // A container stores the static status of class, skip this ThrowFromClientLoggerCheck if the class is static
+    private final Deque<Boolean> classStaticDeque = new ArrayDeque<>();
+    // A container stores the static status of method, skip this ThrowFromClientLoggerCheck if the method is static
+    private final Deque<Boolean> methodStaticDeque = new ArrayDeque<>();
 
     @Override
     public int[] getDefaultTokens() {
@@ -97,7 +99,10 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
                 }
 
                 DetailAST exprToken = token.getParent();
-                if (exprToken.getNextSibling() == null || exprToken.getNextSibling().getNextSibling() == null
+                // Checking immediately return after 'logger.logAndThrow' statement. Any subsequence call of getNextSibling()
+                // returns null implies there is no return statement immediately after 'logger.logAndThrow'.
+                if (exprToken.getNextSibling() == null
+                    || exprToken.getNextSibling().getNextSibling() == null
                     || exprToken.getNextSibling().getNextSibling().getType() != TokenTypes.LITERAL_RETURN) {
                     log(token, String.format("Always call ''return'' after calling ''%s''.", LOGGER_LOG_AND_THROW));
                 }
