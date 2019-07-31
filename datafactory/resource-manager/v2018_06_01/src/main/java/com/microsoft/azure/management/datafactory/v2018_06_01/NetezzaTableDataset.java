@@ -22,13 +22,28 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.implementation.Dat
 @JsonFlatten
 public class NetezzaTableDataset extends DatasetInner {
     /**
-     * The table name. Type: string (or Expression with resultType string).
+     * The table name of the Netezza which includes both schema and table.
+     * Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /**
-     * Get the table name. Type: string (or Expression with resultType string).
+     * The table name of the Netezza. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "typeProperties.table")
+    private Object table;
+
+    /**
+     * The schema name of the Netezza. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "typeProperties.schema")
+    private Object netezzaTableDatasetSchema;
+
+    /**
+     * Get the table name of the Netezza which includes both schema and table. Type: string (or Expression with resultType string).
      *
      * @return the tableName value
      */
@@ -37,13 +52,53 @@ public class NetezzaTableDataset extends DatasetInner {
     }
 
     /**
-     * Set the table name. Type: string (or Expression with resultType string).
+     * Set the table name of the Netezza which includes both schema and table. Type: string (or Expression with resultType string).
      *
      * @param tableName the tableName value to set
      * @return the NetezzaTableDataset object itself.
      */
     public NetezzaTableDataset withTableName(Object tableName) {
         this.tableName = tableName;
+        return this;
+    }
+
+    /**
+     * Get the table name of the Netezza. Type: string (or Expression with resultType string).
+     *
+     * @return the table value
+     */
+    public Object table() {
+        return this.table;
+    }
+
+    /**
+     * Set the table name of the Netezza. Type: string (or Expression with resultType string).
+     *
+     * @param table the table value to set
+     * @return the NetezzaTableDataset object itself.
+     */
+    public NetezzaTableDataset withTable(Object table) {
+        this.table = table;
+        return this;
+    }
+
+    /**
+     * Get the schema name of the Netezza. Type: string (or Expression with resultType string).
+     *
+     * @return the netezzaTableDatasetSchema value
+     */
+    public Object netezzaTableDatasetSchema() {
+        return this.netezzaTableDatasetSchema;
+    }
+
+    /**
+     * Set the schema name of the Netezza. Type: string (or Expression with resultType string).
+     *
+     * @param netezzaTableDatasetSchema the netezzaTableDatasetSchema value to set
+     * @return the NetezzaTableDataset object itself.
+     */
+    public NetezzaTableDataset withNetezzaTableDatasetSchema(Object netezzaTableDatasetSchema) {
+        this.netezzaTableDatasetSchema = netezzaTableDatasetSchema;
         return this;
     }
 
