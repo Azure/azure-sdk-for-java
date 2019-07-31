@@ -28,7 +28,7 @@ public class VirtualMachineScaleSetVMExtensionsSummary {
     private List<VirtualMachineStatusCodeCount> statusesSummary;
 
     /**
-     * Get the name value.
+     * Get the extension name.
      *
      * @return the name value
      */
@@ -37,7 +37,7 @@ public class VirtualMachineScaleSetVMExtensionsSummary {
     }
 
     /**
-     * Get the statusesSummary value.
+     * Get the extensions information.
      *
      * @return the statusesSummary value
      */
