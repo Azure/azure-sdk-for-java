@@ -81,11 +81,11 @@ public class RetryOptionsTest {
             .tryTimeout(tryTimeout);
 
         // Act
-        final Object clone = original.clone();
-        Assert.assertTrue(clone instanceof RetryOptions);
+        final RetryOptions clone = original.clone();
+        Assert.assertNotNull(clone);
         Assert.assertEquals(original, clone);
 
-        final RetryOptions actual = ((RetryOptions) clone)
+        final RetryOptions actual = clone
             .retryMode(newRetryMode)
             .maxDelay(newMaxDelay)
             .delay(newDelay)

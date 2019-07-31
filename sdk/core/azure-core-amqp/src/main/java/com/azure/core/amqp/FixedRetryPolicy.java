@@ -63,10 +63,9 @@ public final class FixedRetryPolicy extends RetryPolicy {
      *
      * @return A clone of the {@link FixedRetryPolicy} instance.
      */
-    @SuppressWarnings("CloneDoesntCallSuperClone")
     @Override
-    public Object clone() {
-        final RetryOptions cloned = (RetryOptions) getRetryOptions().clone();
+    public RetryPolicy clone() {
+        final RetryOptions cloned = getRetryOptions().clone();
         return new FixedRetryPolicy(cloned);
     }
 }

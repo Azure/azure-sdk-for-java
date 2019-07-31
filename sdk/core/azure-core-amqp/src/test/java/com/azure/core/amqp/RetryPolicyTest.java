@@ -100,5 +100,10 @@ public class RetryPolicyTest {
         protected Duration calculateRetryDelay(int retryCount, Duration baseDelay, Duration baseJitter, ThreadLocalRandom random) {
             return expectedDuration;
         }
+
+        @Override
+        public RetryPolicy clone() {
+            return new MockRetryPolicy(getRetryOptions(), expectedDuration);
+        }
     }
 }

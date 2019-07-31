@@ -71,10 +71,9 @@ public final class ExponentialRetryPolicy extends RetryPolicy {
      *
      * @return A clone of the {@link ExponentialRetryPolicy} instance.
      */
-    @SuppressWarnings("CloneDoesntCallSuperClone")
     @Override
-    public Object clone() {
-        final RetryOptions cloned = (RetryOptions) getRetryOptions().clone();
+    public RetryPolicy clone() {
+        final RetryOptions cloned = getRetryOptions().clone();
         return new ExponentialRetryPolicy(cloned);
     }
 

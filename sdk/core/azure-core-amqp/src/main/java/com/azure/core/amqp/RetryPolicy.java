@@ -15,7 +15,7 @@ import static com.azure.core.amqp.exception.ErrorCondition.SERVER_BUSY_ERROR;
 /**
  * An abstract representation of a policy to govern retrying of messaging operations.
  */
-public abstract class RetryPolicy implements Cloneable {
+public abstract class RetryPolicy {
     static final long NANOS_PER_SECOND = 1000_000_000L;
 
     private static final double JITTER_FACTOR = 0.08;
@@ -111,14 +111,16 @@ public abstract class RetryPolicy implements Cloneable {
     protected abstract Duration calculateRetryDelay(int retryCount, Duration baseDelay, Duration baseJitter,
                                                     ThreadLocalRandom random);
 
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
+    /**
+     * Creates a clone of the retry policy.
+     *
+     * @return A new clone of the retry policy.
+     */
+    public abstract RetryPolicy clone();
 
     @Override
     public int hashCode() {
-        return retryOptions.hashCode();
+        return Objects.hash(retryOptions);
     }
 
     @Override
