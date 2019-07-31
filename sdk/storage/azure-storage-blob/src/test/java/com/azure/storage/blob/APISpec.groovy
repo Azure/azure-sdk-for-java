@@ -324,7 +324,7 @@ class APISpec extends Specification {
      */
     def setupBlobMatchCondition(BlobClient bu, String match) {
         if (match == receivedEtag) {
-            return bu.getProperties().headers().value("ETag")
+            return bu.getPropertiesWithResponse(null,null, null).headers().value("ETag")
         } else {
             return match
         }
@@ -347,7 +347,7 @@ class APISpec extends Specification {
     def setupBlobLeaseCondition(BlobClient bu, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            responseLeaseId = bu.acquireLease(null, -1, null, null).value()
+            responseLeaseId = bu.acquireLease(null, -1, null, null)
         }
         if (leaseID == receivedLeaseID) {
             return responseLeaseId
