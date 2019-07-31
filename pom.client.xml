@@ -393,6 +393,14 @@
                 <title>Azure Storage - Blobs</title>
                 <packages>com.azure.storage.blob*</packages>
               </group>
+              <group>
+                <title>Azure Storage - Files</title>
+                <packages>com.azure.storage.file*</packages>
+              </group>
+              <group>
+                <title>Azure Storage - Queues</title>
+                <packages>com.azure.storage.queue*</packages>
+              </group>
             </groups>
             <links>
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
@@ -537,7 +545,9 @@
                 -snippetpath ${project.basedir}/sdk/eventhubs/azure-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-keys/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-secrets/src/samples/java
-<!--                -snippetpath ${project.basedir}/storage/client/blob/src/samples/java-->
+                -snippetpath ${project.basedir}/storage/client/blob/src/samples/java
+                -snippetpath ${project.basedir}/storage/client/file/src/samples/java
+                -snippetpath ${project.basedir}/storage/client/queue/src/samples/java
               </additionalOptions>
             </configuration>
           </reportSet>
@@ -735,6 +745,8 @@
     <!-- As recommended by Eng Sys team, removing tracing as it is built and released separately -->
     <!--    <module>./sdk/tracing</module>-->
     <module>./sdk/identity/azure-identity</module>
-    <module>./storage/client/blob</module>
+    <module>./sdk/storage/azure-storage-blob</module>
+    <module>./sdk/storage/azure-storage-file</module>
+    <module>./sdk/storage/azure-storage-queue</module>
   </modules>
 </project>

@@ -1,0 +1,17 @@
+trigger: none
+
+jobs:
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: storage
+      EnvVars:
+        AZURE_TEST_MODE: RECORD
+        MICROSOFT_AD_TENANT_ID: $(microsoft-active-directory-tenant-id)
+        PRIMARY_STORAGE_ACCOUNT_NAME: $(java-storage-test-primary-account-name)
+        PRIMARY_STORAGE_ACCOUNT_KEY: $(java-storage-test-primary-account-key)
+        SECONDARY_STORAGE_ACCOUNT_NAME: $(java-storage-test-secondary-account-name)
+        SECONDARY_STORAGE_ACCOUNT_KEY: $(java-storage-test-secondary-account-key)
+        BLOB_STORAGE_ACCOUNT_NAME: $(java-storage-test-blob-account-name)
+        BLOB_STORAGE_ACCOUNT_KEY: $(java-storage-test-blob-account-key)
+        PREMIUM_STORAGE_ACCOUNT_NAME: $(java-storage-test-premium-account-name)
+        PREMIUM_STORAGE_ACCOUNT_KEY: $(java-storage-test-premium-account-key)

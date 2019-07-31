@@ -70,10 +70,14 @@ class ApiDiagnosticsImpl extends WrapperImpl<ApiDiagnosticsInner> implements Api
     public Observable<ApiDiagnosticContract> getAsync(String resourceGroupName, String serviceName, String apiId, String diagnosticId) {
         ApiDiagnosticsInner client = this.inner();
         return client.getAsync(resourceGroupName, serviceName, apiId, diagnosticId)
-        .map(new Func1<DiagnosticContractInner, ApiDiagnosticContract>() {
+        .flatMap(new Func1<DiagnosticContractInner, Observable<ApiDiagnosticContract>>() {
             @Override
-            public ApiDiagnosticContract call(DiagnosticContractInner inner) {
-                return wrapModel(inner);
+            public Observable<ApiDiagnosticContract> call(DiagnosticContractInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ApiDiagnosticContract)wrapModel(inner));
+                }
             }
        });
     }

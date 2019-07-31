@@ -70,10 +70,14 @@ class ApiIssueCommentsImpl extends WrapperImpl<ApiIssueCommentsInner> implements
     public Observable<IssueCommentContract> getAsync(String resourceGroupName, String serviceName, String apiId, String issueId, String commentId) {
         ApiIssueCommentsInner client = this.inner();
         return client.getAsync(resourceGroupName, serviceName, apiId, issueId, commentId)
-        .map(new Func1<IssueCommentContractInner, IssueCommentContract>() {
+        .flatMap(new Func1<IssueCommentContractInner, Observable<IssueCommentContract>>() {
             @Override
-            public IssueCommentContract call(IssueCommentContractInner inner) {
-                return wrapModel(inner);
+            public Observable<IssueCommentContract> call(IssueCommentContractInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((IssueCommentContract)wrapModel(inner));
+                }
             }
        });
     }
