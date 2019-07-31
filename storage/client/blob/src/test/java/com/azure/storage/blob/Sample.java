@@ -30,7 +30,7 @@ public class Sample {
     //@Test
     public void sample() throws IOException {
         // get service client
-        StorageClient serviceClient = new StorageClientBuilder().endpoint(ACCOUNT_ENDPOINT)
+        BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
             .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
@@ -82,7 +82,7 @@ public class Sample {
     //@Test
     public void asyncSample() throws IOException {
         // get service client
-        StorageAsyncClient serviceClient = new StorageClientBuilder().endpoint(ACCOUNT_ENDPOINT)
+        BlobServiceAsyncClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
             .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();
@@ -161,7 +161,7 @@ public class Sample {
         fstream.close();
 
         // get service client
-        StorageClient serviceClient = new StorageClientBuilder().endpoint(ACCOUNT_ENDPOINT)
+        BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
             .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
@@ -191,7 +191,7 @@ public class Sample {
         fstream.close();
 
         // get service client
-        StorageAsyncClient serviceClient = new StorageClientBuilder().endpoint(ACCOUNT_ENDPOINT)
+        BlobServiceAsyncClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
             .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();

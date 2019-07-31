@@ -59,7 +59,7 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  *
  * <p>
  * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient},
- * and operations on the service are available on {@link StorageAsyncClient}.
+ * and operations on the service are available on {@link BlobServiceAsyncClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
@@ -97,7 +97,7 @@ public class BlobAsyncClient {
     public BlockBlobAsyncClient asBlockBlobAsyncClient() {
         return new BlockBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(getBlobUrl().toString())
-            .pipeline(azureBlobStorage.httpPipeline()), snapshot);
+            .pipeline(azureBlobStorage.getHttpPipeline()), snapshot);
     }
 
     /**
@@ -109,7 +109,7 @@ public class BlobAsyncClient {
     public AppendBlobAsyncClient asAppendBlobAsyncClient() {
         return new AppendBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(getBlobUrl().toString())
-            .pipeline(azureBlobStorage.httpPipeline()), snapshot);
+            .pipeline(azureBlobStorage.getHttpPipeline()), snapshot);
     }
 
     /**
@@ -121,7 +121,7 @@ public class BlobAsyncClient {
     public PageBlobAsyncClient asPageBlobAsyncClient() {
         return new PageBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(getBlobUrl().toString())
-            .pipeline(azureBlobStorage.httpPipeline()), snapshot);
+            .pipeline(azureBlobStorage.getHttpPipeline()), snapshot);
     }
 
     /**
@@ -135,7 +135,7 @@ public class BlobAsyncClient {
         BlobURLParts parts = URLParser.parse(getBlobUrl());
         return new ContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(String.format("%s://%s/%s", parts.scheme(), parts.host(), parts.containerName()))
-            .pipeline(azureBlobStorage.httpPipeline()));
+            .pipeline(azureBlobStorage.getHttpPipeline()));
     }
 
     /**
@@ -146,13 +146,13 @@ public class BlobAsyncClient {
      */
     public URL getBlobUrl() {
         try {
-            UrlBuilder urlBuilder = UrlBuilder.parse(azureBlobStorage.url());
+            UrlBuilder urlBuilder = UrlBuilder.parse(azureBlobStorage.getUrl());
             if (snapshot != null) {
                 urlBuilder.query("snapshot=" + snapshot);
             }
             return urlBuilder.toURL();
         } catch (MalformedURLException e) {
-            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.url()), e);
+            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e);
         }
     }
 
@@ -924,7 +924,7 @@ public class BlobAsyncClient {
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
 
         SharedKeyCredential sharedKeyCredential =
-            Utility.getSharedKeyCredential(this.azureBlobStorage.httpPipeline());
+            Utility.getSharedKeyCredential(this.azureBlobStorage.getHttpPipeline());
 
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
@@ -943,7 +943,7 @@ public class BlobAsyncClient {
                                                                  String accountName) {
 
         // Set canonical name
-        serviceSASSignatureValues.canonicalName(this.azureBlobStorage.url(), accountName);
+        serviceSASSignatureValues.canonicalName(this.azureBlobStorage.getUrl(), accountName);
 
         // Set snapshotId
         serviceSASSignatureValues.snapshotId(getSnapshotId());

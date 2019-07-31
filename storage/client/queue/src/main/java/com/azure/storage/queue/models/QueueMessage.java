@@ -4,6 +4,7 @@
 
 package com.azure.storage.queue.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * A Message object which can be stored in a Queue.
  */
 @JacksonXmlRootElement(localName = "QueueMessage")
+@Fluent
 public final class QueueMessage {
     /*
      * The content of the message

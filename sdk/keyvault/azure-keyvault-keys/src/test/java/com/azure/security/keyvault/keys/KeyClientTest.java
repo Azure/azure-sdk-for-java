@@ -86,7 +86,7 @@ public class KeyClientTest extends KeyClientTestBase {
     public void updateKey() {
         updateKeyRunner((original, updated) -> {
             assertKeyEquals(original, client.createKey(original));
-            Key keyToUpdate = client.getKey(original.name()).value();
+            Key keyToUpdate = client.getKey(original.name());
             client.updateKey(keyToUpdate.expires(updated.expires()));
             assertKeyEquals(updated, client.getKey(original.name()));
         });
@@ -98,7 +98,7 @@ public class KeyClientTest extends KeyClientTestBase {
     public void updateDisabledKey() {
         updateDisabledKeyRunner((original, updated) -> {
             assertKeyEquals(original, client.createKey(original));
-            Key keyToUpdate = client.getKey(original.name()).value();
+            Key keyToUpdate = client.getKey(original.name());
             client.updateKey(keyToUpdate.expires(updated.expires()));
             assertKeyEquals(updated, client.getKey(original.name()));
         });
@@ -119,8 +119,8 @@ public class KeyClientTest extends KeyClientTestBase {
      */
     public void getKeySpecificVersion() {
         getKeySpecificVersionRunner((key, keyWithNewVal) -> {
-            Key keyVersionOne = client.createKey(key).value();
-            Key keyVersionTwo = client.createKey(keyWithNewVal).value();
+            Key keyVersionOne = client.createKey(key);
+            Key keyVersionTwo = client.createKey(keyWithNewVal);
             assertKeyEquals(key, client.getKey(keyVersionOne.name(), keyVersionOne.version()));
             assertKeyEquals(keyWithNewVal, client.getKey(keyVersionTwo.name(), keyVersionTwo.version()));
         });
@@ -139,7 +139,7 @@ public class KeyClientTest extends KeyClientTestBase {
     public void deleteKey() {
         deleteKeyRunner((keyToDelete) -> {
             assertKeyEquals(keyToDelete,  client.createKey(keyToDelete));
-            DeletedKey deletedKey = client.deleteKey(keyToDelete.name()).value();
+            DeletedKey deletedKey = client.deleteKey(keyToDelete.name());
             pollOnKeyDeletion(keyToDelete.name());
             assertNotNull(deletedKey.deletedDate());
             assertNotNull(deletedKey.recoveryId());
@@ -169,9 +169,9 @@ public class KeyClientTest extends KeyClientTestBase {
     public void recoverDeletedKey() {
         recoverDeletedKeyRunner((keyToDeleteAndRecover) -> {
             assertKeyEquals(keyToDeleteAndRecover, client.createKey(keyToDeleteAndRecover));
-            assertNotNull(client.deleteKey(keyToDeleteAndRecover.name()).value());
+            assertNotNull(client.deleteKey(keyToDeleteAndRecover.name()));
             pollOnKeyDeletion(keyToDeleteAndRecover.name());
-            Key recoveredKey = client.recoverDeletedKey(keyToDeleteAndRecover.name()).value();
+            Key recoveredKey = client.recoverDeletedKey(keyToDeleteAndRecover.name());
             assertEquals(keyToDeleteAndRecover.name(), recoveredKey.name());
             assertEquals(keyToDeleteAndRecover.notBefore(), recoveredKey.notBefore());
             assertEquals(keyToDeleteAndRecover.expires(), recoveredKey.expires());
@@ -191,7 +191,7 @@ public class KeyClientTest extends KeyClientTestBase {
     public void backupKey() {
         backupKeyRunner((keyToBackup) -> {
             assertKeyEquals(keyToBackup, client.createKey(keyToBackup));
-            byte[] backupBytes = (client.backupKey(keyToBackup.name()).value());
+            byte[] backupBytes = (client.backupKey(keyToBackup.name()));
             assertNotNull(backupBytes);
             assertTrue(backupBytes.length > 0);
         });
@@ -210,7 +210,7 @@ public class KeyClientTest extends KeyClientTestBase {
     public void restoreKey() {
         restoreKeyRunner((keyToBackupAndRestore) -> {
             assertKeyEquals(keyToBackupAndRestore, client.createKey(keyToBackupAndRestore));
-            byte[] backupBytes = (client.backupKey(keyToBackupAndRestore.name()).value());
+            byte[] backupBytes = (client.backupKey(keyToBackupAndRestore.name()));
             assertNotNull(backupBytes);
             assertTrue(backupBytes.length > 0);
             client.deleteKey(keyToBackupAndRestore.name());
@@ -218,7 +218,7 @@ public class KeyClientTest extends KeyClientTestBase {
             client.purgeDeletedKey(keyToBackupAndRestore.name());
             pollOnKeyPurge(keyToBackupAndRestore.name());
             sleepInRecordMode(60000);
-            Key restoredKey = client.restoreKey(backupBytes).value();
+            Key restoredKey = client.restoreKey(backupBytes);
             assertEquals(keyToBackupAndRestore.name(), restoredKey.name());
             assertEquals(keyToBackupAndRestore.expires(), restoredKey.expires());
         });
@@ -261,10 +261,10 @@ public class KeyClientTest extends KeyClientTestBase {
     public void getDeletedKey() {
         getDeletedKeyRunner((keyToDeleteAndGet) -> {
             assertKeyEquals(keyToDeleteAndGet, client.createKey(keyToDeleteAndGet));
-            assertNotNull(client.deleteKey(keyToDeleteAndGet.name()).value());
+            assertNotNull(client.deleteKey(keyToDeleteAndGet.name()));
             pollOnKeyDeletion(keyToDeleteAndGet.name());
             sleepInRecordMode(30000);
-            DeletedKey deletedKey = client.getDeletedKey(keyToDeleteAndGet.name()).value();
+            DeletedKey deletedKey = client.getDeletedKey(keyToDeleteAndGet.name());
             assertNotNull(deletedKey.deletedDate());
             assertNotNull(deletedKey.recoveryId());
             assertNotNull(deletedKey.scheduledPurgeDate());
@@ -343,7 +343,7 @@ public class KeyClientTest extends KeyClientTestBase {
         while (pendingPollCount < 30) {
             DeletedKey deletedKey = null;
             try {
-                deletedKey = client.getDeletedKey(keyName).value();
+                deletedKey = client.getDeletedKey(keyName);
             } catch (ResourceNotFoundException e) {
             }
             if (deletedKey == null) {
@@ -363,7 +363,7 @@ public class KeyClientTest extends KeyClientTestBase {
         while (pendingPollCount < 10) {
             DeletedKey deletedKey = null;
             try {
-                deletedKey = client.getDeletedKey(keyName).value();
+                deletedKey = client.getDeletedKey(keyName);
             } catch (ResourceNotFoundException e) {
             }
             if (deletedKey != null) {

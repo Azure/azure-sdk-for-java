@@ -4,6 +4,7 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
  * Abstract for entries that can be listed from Directory.
  */
 @JacksonXmlRootElement(localName = "Entries")
+@Fluent
 public final class FilesAndDirectoriesListSegment {
     /*
      * The directoryItems property.
