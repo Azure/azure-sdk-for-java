@@ -3,7 +3,6 @@ package com.azure.identity.implementation;
 import com.azure.core.implementation.http.UrlBuilder;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoProcessor;
-import reactor.core.publisher.ReplayProcessor;
 import reactor.netty.DisposableServer;
 import reactor.netty.http.server.HttpServer;
 
@@ -12,9 +11,9 @@ import reactor.netty.http.server.HttpServer;
  */
 public class AuthorizationCodeListener {
     private DisposableServer server;
-    private ReplayProcessor<String> authorizationCodeEmitter;
+    private MonoProcessor<String> authorizationCodeEmitter;
 
-    private AuthorizationCodeListener(DisposableServer server, ReplayProcessor<String> authorizationCodeEmitter) {
+    private AuthorizationCodeListener(DisposableServer server, MonoProcessor<String> authorizationCodeEmitter) {
         this.server = server;
         this.authorizationCodeEmitter = authorizationCodeEmitter;
     }
@@ -25,15 +24,15 @@ public class AuthorizationCodeListener {
      * @return a Publisher emitting the listener instance
      */
     public static Mono<AuthorizationCodeListener> create(int port) {
-        ReplayProcessor<String> replayProcessor = ReplayProcessor.create();
+        MonoProcessor<String> monoProcessor = MonoProcessor.create();
         return HttpServer.create()
             .port(port)
             .handle((inbound, outbound) -> {
-                replayProcessor.onNext(getCodeFromUri(inbound.uri()));
+                monoProcessor.onNext(getCodeFromUri(inbound.uri()));
                 return inbound.receive().then();
             })
             .bind()
-            .map(server -> new AuthorizationCodeListener(server, replayProcessor));
+            .map(server -> new AuthorizationCodeListener(server, monoProcessor));
     }
 
     /**
@@ -49,7 +48,7 @@ public class AuthorizationCodeListener {
      * @return a Publisher emitting an authorization code
      */
     public Mono<String> listen() {
-        return authorizationCodeEmitter.next();
+        return authorizationCodeEmitter;
     }
 
     private static String getCodeFromUri(String uri) {

@@ -21,6 +21,7 @@ import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.awt.*;
 import java.io.FileInputStream;
@@ -252,12 +253,15 @@ public class IdentityClient {
                     return server.dispose().then(Mono.error(e));
                 }
 
-                try {
-                    Desktop.getDesktop().browse(browserUri);
-                } catch (IOException e) {
-                    logger.logAndThrow(new RuntimeException(e));
-                }
                 return server.listen()
+                    .mergeWith(Mono.<String>fromRunnable(() -> {
+                        try {
+                            Desktop.getDesktop().browse(browserUri);
+                        } catch (IOException e) {
+                            logger.logAndThrow(new RuntimeException(e));
+                        }
+                    }).subscribeOn(Schedulers.newSingle("browser")))
+                    .next()
                     .flatMap(code -> authenticateWithAuthorizationCode(scopes, code, redirectUri))
                     .onErrorResume(t -> server.dispose().then(Mono.error(t)))
                     .flatMap(msalToken -> server.dispose().then(Mono.just(msalToken)));
