@@ -92,14 +92,15 @@ jobs:
         displayName: 'Run Public Cosmos DB Emulator'
 
       - powershell: |
-         Import-Module "$env:Temp\Azure Cosmos DB Emulator\SourceDir\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
+          Import-Module "$env:Temp\Azure Cosmos DB Emulator\SourceDir\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
 
-         Write-Host "Sleeping for 240 seconds"
-         sleep 240;
+          Do {
+            sleep 5
+            $cosmosStatus = Get-CosmosDbEmulatorStatus
+            Write-Host "Cosmos Status: $cosmosStatus"
+          } While ($cosmosStatus -ne 'Running')
 
-         Write-Host "Cosmos DB Emulator Status:"
-         Get-CosmosDbEmulatorStatus
-
+          Write-Host "Done"
         displayName: 'Check Public Cosmos DB Emulator Status'
 
       - powershell: |
