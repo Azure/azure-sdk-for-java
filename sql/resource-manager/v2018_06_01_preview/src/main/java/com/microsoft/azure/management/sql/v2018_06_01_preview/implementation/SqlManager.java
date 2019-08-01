@@ -16,8 +16,15 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.DatabaseSecurityAlertPolicies;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedDatabaseSensitivityLabels;
 import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstanceVulnerabilityAssessments;
 import com.microsoft.azure.management.sql.v2018_06_01_preview.ServerVulnerabilityAssessments;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.InstancePools;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.Usages;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstances;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.Databases;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.ElasticPools;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -25,8 +32,15 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure Sql resource management.
  */
 public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClientImpl> {
+    private DatabaseSecurityAlertPolicies databaseSecurityAlertPolicies;
+    private ManagedDatabaseSensitivityLabels managedDatabaseSensitivityLabels;
     private ManagedInstanceVulnerabilityAssessments managedInstanceVulnerabilityAssessments;
     private ServerVulnerabilityAssessments serverVulnerabilityAssessments;
+    private InstancePools instancePools;
+    private Usages usages;
+    private ManagedInstances managedInstances;
+    private Databases databases;
+    private ElasticPools elasticPools;
     /**
     * Get a Configurable instance that can be used to create SqlManager with optional configuration.
     *
@@ -75,6 +89,26 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
     }
 
     /**
+     * @return Entry point to manage DatabaseSecurityAlertPolicies.
+     */
+    public DatabaseSecurityAlertPolicies databaseSecurityAlertPolicies() {
+        if (this.databaseSecurityAlertPolicies == null) {
+            this.databaseSecurityAlertPolicies = new DatabaseSecurityAlertPoliciesImpl(this);
+        }
+        return this.databaseSecurityAlertPolicies;
+    }
+
+    /**
+     * @return Entry point to manage ManagedDatabaseSensitivityLabels.
+     */
+    public ManagedDatabaseSensitivityLabels managedDatabaseSensitivityLabels() {
+        if (this.managedDatabaseSensitivityLabels == null) {
+            this.managedDatabaseSensitivityLabels = new ManagedDatabaseSensitivityLabelsImpl(this);
+        }
+        return this.managedDatabaseSensitivityLabels;
+    }
+
+    /**
      * @return Entry point to manage ManagedInstanceVulnerabilityAssessments.
      */
     public ManagedInstanceVulnerabilityAssessments managedInstanceVulnerabilityAssessments() {
@@ -92,6 +126,56 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
             this.serverVulnerabilityAssessments = new ServerVulnerabilityAssessmentsImpl(this);
         }
         return this.serverVulnerabilityAssessments;
+    }
+
+    /**
+     * @return Entry point to manage InstancePools.
+     */
+    public InstancePools instancePools() {
+        if (this.instancePools == null) {
+            this.instancePools = new InstancePoolsImpl(this);
+        }
+        return this.instancePools;
+    }
+
+    /**
+     * @return Entry point to manage Usages.
+     */
+    public Usages usages() {
+        if (this.usages == null) {
+            this.usages = new UsagesImpl(this);
+        }
+        return this.usages;
+    }
+
+    /**
+     * @return Entry point to manage ManagedInstances.
+     */
+    public ManagedInstances managedInstances() {
+        if (this.managedInstances == null) {
+            this.managedInstances = new ManagedInstancesImpl(this);
+        }
+        return this.managedInstances;
+    }
+
+    /**
+     * @return Entry point to manage Databases.
+     */
+    public Databases databases() {
+        if (this.databases == null) {
+            this.databases = new DatabasesImpl(this);
+        }
+        return this.databases;
+    }
+
+    /**
+     * @return Entry point to manage ElasticPools.
+     */
+    public ElasticPools elasticPools() {
+        if (this.elasticPools == null) {
+            this.elasticPools = new ElasticPoolsImpl(this);
+        }
+        return this.elasticPools;
     }
 
     /**
