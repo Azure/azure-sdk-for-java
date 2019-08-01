@@ -56,7 +56,7 @@ public class DefaultAzureCredentialTest {
             DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
             AccessToken token = credential.getToken(scopes1).block();
             Assert.assertEquals(token1, token.token());
-            Assert.assertEquals(expiresOn, token.expiresOn());
+            Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
         } finally {
             // clean up
             configuration.remove("AZURE_CLIENT_ID");
@@ -81,7 +81,7 @@ public class DefaultAzureCredentialTest {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         AccessToken token = credential.getToken(scopes).block();
         Assert.assertEquals(token1, token.token());
-        Assert.assertEquals(expiresOn, token.expiresOn());
+        Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
     }
 
     @Test

@@ -50,10 +50,10 @@ public class ClientSecretCredentialTest {
         ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(secret).build();
         AccessToken token = credential.getToken(scopes1).block();
         Assert.assertEquals(token1, token.token());
-        Assert.assertEquals(expiresOn, token.expiresOn());
+        Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
         token = credential.getToken(scopes2).block();
         Assert.assertEquals(token2, token.token());
-        Assert.assertEquals(expiresOn, token.expiresOn());
+        Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
     }
 
     @Test
@@ -75,7 +75,7 @@ public class ClientSecretCredentialTest {
         ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(secret).build();
         AccessToken token = credential.getToken(scopes).block();
         Assert.assertEquals(token1, token.token());
-        Assert.assertEquals(expiresOn, token.expiresOn());
+        Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
         try {
             credential = new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(badSecret).build();
             credential.getToken(scopes).block();

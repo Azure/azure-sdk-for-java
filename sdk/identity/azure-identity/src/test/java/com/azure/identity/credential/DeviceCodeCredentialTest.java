@@ -64,9 +64,9 @@ public class DeviceCodeCredentialTest {
         DeviceCodeCredential credential = new DeviceCodeCredentialBuilder().deviceCodeChallengeConsumer(consumer).clientId(clientId).build();
         AccessToken token = credential.getToken(scopes1).block();
         Assert.assertEquals(token1, token.token());
-        Assert.assertEquals(expiresOn, token.expiresOn());
+        Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
         token = credential.getToken(scopes2).block();
         Assert.assertEquals(token2, token.token());
-        Assert.assertEquals(expiresOn, token.expiresOn());
+        Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
     }
 }

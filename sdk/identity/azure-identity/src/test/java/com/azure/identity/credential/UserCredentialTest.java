@@ -51,10 +51,10 @@ public class UserCredentialTest {
         UserCredential credential = new UserCredentialBuilder().tenantId(tenantId).clientId(clientId).username(username).password(password).build();
         AccessToken token = credential.getToken(scopes1).block();
         Assert.assertEquals(token1, token.token());
-        Assert.assertEquals(expiresOn, token.expiresOn());
+        Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
         token = credential.getToken(scopes2).block();
         Assert.assertEquals(token2, token.token());
-        Assert.assertEquals(expiresOn, token.expiresOn());
+        Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
     }
 
     @Test
@@ -77,7 +77,7 @@ public class UserCredentialTest {
         UserCredential credential = new UserCredentialBuilder().tenantId(tenantId).clientId(clientId).username(username).password(password).build();
         AccessToken token = credential.getToken(scopes).block();
         Assert.assertEquals(token1, token.token());
-        Assert.assertEquals(expiresOn, token.expiresOn());
+        Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
         try {
             credential = new UserCredentialBuilder().tenantId(tenantId).clientId(clientId).username(username).password(badPassword).build();
             credential.getToken(scopes).block();

@@ -72,7 +72,7 @@ public class ManagedIdentityCredentialTest {
             ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
             AccessToken token = credential.getToken(scopes1).block();
             Assert.assertEquals(token1, token.token());
-            Assert.assertEquals(expiresOn, token.expiresOn());
+            Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
         } finally {
             // clean up
             configuration.remove("MSI_ENDPOINT");
@@ -96,6 +96,6 @@ public class ManagedIdentityCredentialTest {
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
         AccessToken token = credential.getToken(scopes).block();
         Assert.assertEquals(token1, token.token());
-        Assert.assertEquals(expiresOn, token.expiresOn());
+        Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
     }
 }
