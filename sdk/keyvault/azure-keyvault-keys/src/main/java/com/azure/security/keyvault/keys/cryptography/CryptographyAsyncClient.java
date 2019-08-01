@@ -1,5 +1,6 @@
 package com.azure.security.keyvault.keys.cryptography;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
@@ -8,6 +9,7 @@ import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
@@ -16,6 +18,8 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,7 +34,7 @@ public final class CryptographyAsyncClient {
     private RsaKeyCryptographyClient rsaKeyCryptographyClient;
     private CryptographyServiceClient cryptographyServiceClient;
     private SymmetricKeyCryptographyClient symmetricKeyCryptographyClient;
-
+    private final ClientLogger logger = new ClientLogger(CryptographyAsyncClient.class);
 
     /**
      * Creates a CryptographyAsyncClient that uses {@code pipeline} to service requests
@@ -143,8 +147,10 @@ public final class CryptographyAsyncClient {
     Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context, byte[] iv, byte[] authenticationData) {
         Objects.requireNonNull(algorithm);
 
-        if(key == null){
-            this.key = getKey().block().value().keyMaterial();
+        boolean keyAvailableLocally = ensureValidKeyAvailable();
+
+        if(!keyAvailableLocally) {
+            return cryptographyServiceClient.encrypt(algorithm, plaintext, context);
         }
 
         if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.ENCRYPT)){
@@ -180,7 +186,7 @@ public final class CryptographyAsyncClient {
      * @throws ResourceNotFoundException if the key cannot be found for decryption.
      * @return A {@link Mono} containing the decrypted blob.
      */
-    public Mono<byte[]> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText) {
+    public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText) {
         return withContext(context -> decrypt(algorithm, cipherText, null, null, null, context));
     }
 
@@ -199,14 +205,16 @@ public final class CryptographyAsyncClient {
      * @throws ResourceNotFoundException if the key cannot be found for decryption.
      * @return A {@link Mono} containing the decrypted blob.
      */
-    public Mono<byte[]> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationData, byte[] authenticationTag) {
+    public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationData, byte[] authenticationTag) {
         return withContext(context -> decrypt(algorithm, cipherText, iv, authenticationData, authenticationTag, context));
     }
 
-    Mono<byte[]> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Context context) {
+    Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Context context) {
         Objects.requireNonNull(algorithm);
-        if(key == null){
-            this.key = getKey().block().value().keyMaterial();
+        boolean keyAvailableLocally = ensureValidKeyAvailable();
+
+        if(!keyAvailableLocally) {
+            return cryptographyServiceClient.decrypt(algorithm, cipherText, context);
         }
 
         if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.DECRYPT)){
@@ -248,8 +256,10 @@ public final class CryptographyAsyncClient {
 
     Mono<SignResult> sign(SignatureAlgorithm algorithm, byte[] digest, Context context) {
         Objects.requireNonNull(algorithm);
-        if(key == null){
-            this.key = getKey().block().value().keyMaterial();
+        boolean keyAvailableLocally = ensureValidKeyAvailable();
+
+        if(!keyAvailableLocally) {
+            return cryptographyServiceClient.sign(algorithm, digest, context);
         }
 
         if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.SIGN)){
@@ -287,14 +297,15 @@ public final class CryptographyAsyncClient {
      * @throws ResourceNotFoundException if the key cannot be found for verifying.
      * @return A {@link Mono} containing a {@link Boolean} indicating the signature verification result.
      */
-    public Mono<Boolean> verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature) {
+    public Mono<VerifyResult> verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature) {
         return withContext(context -> verify(algorithm, digest, signature, context));
     }
 
-    Mono<Boolean> verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
+    Mono<VerifyResult> verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
+        boolean keyAvailableLocally = ensureValidKeyAvailable();
 
-        if(key == null){
-            this.key = getKey().block().value().keyMaterial();
+        if(!keyAvailableLocally) {
+            return cryptographyServiceClient.verify(algorithm, digest, signature, context);
         }
 
         if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.VERIFY)){
@@ -334,8 +345,10 @@ public final class CryptographyAsyncClient {
 
     Mono<KeyWrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
 
-        if(this.key == null){
-            this.key = getKey().block().value().keyMaterial();
+        boolean keyAvailableLocally = ensureValidKeyAvailable();
+
+        if(!keyAvailableLocally) {
+            return cryptographyServiceClient.wrapKey(algorithm, key, context);
         }
 
         if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.WRAP_KEY)){
@@ -369,14 +382,16 @@ public final class CryptographyAsyncClient {
      * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
      * @return A {@link Mono} containing a the unwrapped key content.
      */
-    public Mono<byte[]> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey) {
+    public Mono<KeyUnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey) {
         return withContext(context -> unwrapKey(algorithm, encryptedKey, context));
     }
 
-    Mono<byte[]> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
+    Mono<KeyUnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
         Objects.requireNonNull(algorithm);
-        if(key == null){
-            this.key = getKey().block().value().keyMaterial();
+        boolean keyAvailableLocally = ensureValidKeyAvailable();
+
+        if(!keyAvailableLocally) {
+            return cryptographyServiceClient.unwrapKey(algorithm, encryptedKey, context);
         }
 
         if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.WRAP_KEY)){
@@ -418,8 +433,10 @@ public final class CryptographyAsyncClient {
 
     Mono<SignResult> signData(SignatureAlgorithm algorithm, byte[] data, Context context) {
         Objects.requireNonNull(algorithm);
-        if(key == null){
-            this.key = getKey().block().value().keyMaterial();
+        boolean keyAvailableLocally = ensureValidKeyAvailable();
+
+        if(!keyAvailableLocally) {
+            return cryptographyServiceClient.signData(algorithm, data, context);
         }
 
         if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.SIGN)){
@@ -454,14 +471,16 @@ public final class CryptographyAsyncClient {
      * @throws ResourceNotFoundException if the key cannot be found for verifying.
      * @return The {@link Boolean} indicating the signature verification result.
      */
-    public Mono<Boolean> verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature) {
+    public Mono<VerifyResult> verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature) {
         return withContext(context -> verifyData(algorithm, data, signature, context));
     }
 
-    Mono<Boolean> verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context) {
+    Mono<VerifyResult> verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context) {
         Objects.requireNonNull(algorithm);
-        if(key == null){
-            this.key = getKey().block().value().keyMaterial();
+        boolean keyAvailableLocally = ensureValidKeyAvailable();
+
+        if(!keyAvailableLocally) {
+            return cryptographyServiceClient.verifyData(algorithm, data, signature, context);
         }
 
         if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.VERIFY)){
@@ -510,5 +529,18 @@ public final class CryptographyAsyncClient {
         return false;
     }
 
+    private boolean ensureValidKeyAvailable() {
+        boolean keyAvailableLocally = true;
+        if(key == null) {
+            try {
+                this.key = getKey().block().value().keyMaterial();
+                keyAvailableLocally = this.key.isValid();
+            } catch (HttpResponseException e) {
+                logger.info("Failed to retrieve key from key vault");
+                keyAvailableLocally = false;
+            }
+        }
+        return keyAvailableLocally;
+    }
 
 }

@@ -39,7 +39,7 @@ class EcKeyCryptographyClient {
     }
 
 
-    Mono<byte[]> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Context context, JsonWebKey key) {
+    Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Context context, JsonWebKey key) {
 
         throw new UnsupportedOperationException("Decrypt operaiton is not supported for EC key");
     }
@@ -52,7 +52,7 @@ class EcKeyCryptographyClient {
 
         if (baseAlgorithm == null) {
             if(serviceCryptoAvailable()) {
-                return serviceClient.signAsync(algorithm, digest, context);
+                return serviceClient.sign(algorithm, digest, context);
             }
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricSignatureAlgorithm)) {
@@ -61,7 +61,7 @@ class EcKeyCryptographyClient {
 
         if (keyPair.getPrivate() == null){
             if(serviceCryptoAvailable()) {
-                return serviceClient.signAsync(algorithm, digest, context);
+                return serviceClient.sign(algorithm, digest, context);
             }
             return Mono.error(new IllegalArgumentException("Private portion of the key not available to perform sign operation"));
         }
@@ -76,7 +76,7 @@ class EcKeyCryptographyClient {
         }
      }
 
-    Mono<Boolean> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context, JsonWebKey key) {
+    Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context, JsonWebKey key) {
 
         keyPair = getKeyPair(key);
 
@@ -85,7 +85,7 @@ class EcKeyCryptographyClient {
 
         if (baseAlgorithm == null) {
             if(serviceCryptoAvailable()) {
-                return serviceClient.verifyAsync(algorithm, digest, signature, context);
+                return serviceClient.verify(algorithm, digest, signature, context);
             }
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricSignatureAlgorithm)) {
@@ -94,7 +94,7 @@ class EcKeyCryptographyClient {
 
         if (keyPair.getPublic() == null){
             if(serviceCryptoAvailable()) {
-                return serviceClient.verifyAsync(algorithm, digest, signature, context);
+                return serviceClient.verify(algorithm, digest, signature, context);
             }
             return Mono.error(new IllegalArgumentException("Public portion of the key not available to perform verify operation"));
         }
@@ -104,7 +104,7 @@ class EcKeyCryptographyClient {
         ISignatureTransform signer = algo.createSignatureTransform(keyPair, provider);
 
         try {
-            return Mono.just(signer.verify(digest, signature));
+            return Mono.just(new VerifyResult(signer.verify(digest, signature)));
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -115,7 +115,7 @@ class EcKeyCryptographyClient {
         return Mono.error(new UnsupportedOperationException("Wrap key operation is not supported for EC key"));
     }
 
-    Mono<byte[]> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context, JsonWebKey key) {
+    Mono<KeyUnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context, JsonWebKey key) {
 
         throw new UnsupportedOperationException("Unwrap key operation is not supported for Ec key");
     }
@@ -133,7 +133,7 @@ class EcKeyCryptographyClient {
     }
 
 
-    Mono<Boolean> verifyDataAsync(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context, JsonWebKey key) {
+    Mono<VerifyResult> verifyDataAsync(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context, JsonWebKey key) {
         try {
             HashAlgorithm hashAlgorithm = SignatureHashResolver.Default.get(algorithm);
             MessageDigest md = MessageDigest.getInstance(hashAlgorithm.toString());

@@ -70,7 +70,7 @@ class SymmetricKeyCryptographyClient {
         return Mono.just(new EncryptResult(cipherText, authenticationTag, algorithm));
     }
 
-    Mono<byte[]> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Context context, JsonWebKey jsonWebKey) {
+    Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Context context, JsonWebKey jsonWebKey) {
 
         key = getKey(jsonWebKey);
 
@@ -92,7 +92,7 @@ class SymmetricKeyCryptographyClient {
         }
 
         try {
-            return Mono.just(transform.doFinal(cipherText));
+            return Mono.just(new DecryptResult(transform.doFinal(cipherText)));
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -102,7 +102,7 @@ class SymmetricKeyCryptographyClient {
         return Mono.error(new UnsupportedOperationException("Sign operation not supported for OCT/Symmetric key"));
     }
 
-    Mono<Boolean> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context, JsonWebKey key) {
+    Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context, JsonWebKey key) {
         return Mono.error(new UnsupportedOperationException("Verify operation not supported for OCT/Symmetric key"));
     }
 
@@ -142,7 +142,7 @@ class SymmetricKeyCryptographyClient {
         return Mono.just(new KeyWrapResult(encrypted, algorithm));
     }
 
-    Mono<byte[]> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context, JsonWebKey jsonWebKey) {
+    Mono<KeyUnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context, JsonWebKey jsonWebKey) {
 
         key = getKey(jsonWebKey);
 
@@ -170,16 +170,14 @@ class SymmetricKeyCryptographyClient {
             return Mono.error(e);
         }
 
-        return Mono.just(decrypted);
+        return Mono.just(new KeyUnwrapResult(decrypted));
     }
-
 
     Mono<SignResult> signDataAsync(SignatureAlgorithm algorithm, byte[] data, Context context, JsonWebKey key) {
         return signAsync(algorithm, data, context, key);
     }
 
-
-    Mono<Boolean> verifyDataAsync(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context, JsonWebKey key) {
+    Mono<VerifyResult> verifyDataAsync(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context, JsonWebKey key) {
         return verifyAsync(algorithm, data, signature, context, key);
     }
 

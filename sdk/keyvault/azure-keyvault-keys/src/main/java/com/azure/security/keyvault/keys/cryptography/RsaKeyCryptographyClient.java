@@ -46,7 +46,7 @@ class RsaKeyCryptographyClient {
 
         if (baseAlgorithm == null) {
             if(serviceCryptoAvailable()) {
-                return serviceClient.encryptAsync(algorithm, plaintext, context);
+                return serviceClient.encrypt(algorithm, plaintext, context);
             }
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
@@ -55,7 +55,7 @@ class RsaKeyCryptographyClient {
 
         if(keyPair.getPublic() == null){
             if(serviceCryptoAvailable()) {
-                return serviceClient.encryptAsync(algorithm, plaintext, context);
+                return serviceClient.encrypt(algorithm, plaintext, context);
             }
             return Mono.error(new IllegalArgumentException("Public portion of the key not available to perform encrypt operation"));
         }
@@ -72,7 +72,7 @@ class RsaKeyCryptographyClient {
         }
     }
 
-    Mono<byte[]> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Context context, JsonWebKey jsonWebKey) {
+    Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Context context, JsonWebKey jsonWebKey) {
 
         if(iv != null || authenticationData != null || authenticationTag != null){
             return Mono.error(new IllegalArgumentException("iv, authenticationData and authenticationTag parameters are not supported for Rsa decrypt operation"));
@@ -84,7 +84,7 @@ class RsaKeyCryptographyClient {
 
         if (baseAlgorithm == null) {
             if(serviceCryptoAvailable()) {
-                return serviceClient.decryptAsync(algorithm, cipherText, context);
+                return serviceClient.decrypt(algorithm, cipherText, context);
             }
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
@@ -93,7 +93,7 @@ class RsaKeyCryptographyClient {
 
         if(keyPair.getPrivate() == null) {
             if(serviceCryptoAvailable()) {
-                return serviceClient.decryptAsync(algorithm, cipherText, context);
+                return serviceClient.decrypt(algorithm, cipherText, context);
             }
             return Mono.error(new IllegalArgumentException("Private portion of the key not available to perform decrypt operation"));
         }
@@ -104,7 +104,7 @@ class RsaKeyCryptographyClient {
 
         try {
             transform = algo.CreateDecryptor(keyPair);
-            return Mono.just(transform.doFinal(cipherText));
+            return Mono.just(new DecryptResult(transform.doFinal(cipherText)));
         } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
             return Mono.error(e);
         }
@@ -112,12 +112,12 @@ class RsaKeyCryptographyClient {
 
     Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, Context context, JsonWebKey key) {
 
-        return serviceClient.signAsync(algorithm, digest, context);
+        return serviceClient.sign(algorithm, digest, context);
     }
 
-    Mono<Boolean> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context, JsonWebKey key) {
+    Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context, JsonWebKey key) {
 
-        return serviceClient.verifyAsync(algorithm, digest, signature, context);
+        return serviceClient.verify(algorithm, digest, signature, context);
         // do a service call for now.
     }
 
@@ -129,7 +129,7 @@ class RsaKeyCryptographyClient {
 
         if (baseAlgorithm == null) {
             if(serviceCryptoAvailable()) {
-                return serviceClient.wrapKeyAsync(algorithm, key, context);
+                return serviceClient.wrapKey(algorithm, key, context);
             }
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
@@ -138,7 +138,7 @@ class RsaKeyCryptographyClient {
 
         if(keyPair.getPublic() == null) {
             if(serviceCryptoAvailable()) {
-                return serviceClient.wrapKeyAsync(algorithm, key, context);
+                return serviceClient.wrapKey(algorithm, key, context);
             }
             return Mono.error(new IllegalArgumentException("Public portion of the key not available to perform wrap key operation"));
         }
@@ -155,7 +155,7 @@ class RsaKeyCryptographyClient {
         }
     }
 
-    Mono<byte[]> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context, JsonWebKey jsonWebKey) {
+    Mono<KeyUnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context, JsonWebKey jsonWebKey) {
 
         keyPair = getKeyPair(jsonWebKey);
 
@@ -164,7 +164,7 @@ class RsaKeyCryptographyClient {
 
         if (baseAlgorithm == null) {
             if(serviceCryptoAvailable()) {
-                return serviceClient.unwrapKeyAsync(algorithm, encryptedKey, context);
+                return serviceClient.unwrapKey(algorithm, encryptedKey, context);
             }
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
@@ -173,7 +173,7 @@ class RsaKeyCryptographyClient {
 
         if (keyPair.getPrivate() == null){
             if(serviceCryptoAvailable()) {
-                return serviceClient.unwrapKeyAsync(algorithm, encryptedKey, context);
+                return serviceClient.unwrapKey(algorithm, encryptedKey, context);
             }
             return Mono.error(new IllegalArgumentException("Private portion of the key not available to perform unwrap operation"));
         }
@@ -184,7 +184,7 @@ class RsaKeyCryptographyClient {
 
         try {
             transform = algo.CreateDecryptor(keyPair);
-            return Mono.just(transform.doFinal(encryptedKey));
+            return Mono.just(new KeyUnwrapResult(transform.doFinal(encryptedKey)));
         } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
             return Mono.error(e);
         }
@@ -204,7 +204,7 @@ class RsaKeyCryptographyClient {
     }
 
 
-    Mono<Boolean> verifyDataAsync(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context, JsonWebKey key) {
+    Mono<VerifyResult> verifyDataAsync(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context, JsonWebKey key) {
         HashAlgorithm hashAlgorithm = SignatureHashResolver.Default.get(algorithm);
         try {
             MessageDigest md = MessageDigest.getInstance(hashAlgorithm.toString());

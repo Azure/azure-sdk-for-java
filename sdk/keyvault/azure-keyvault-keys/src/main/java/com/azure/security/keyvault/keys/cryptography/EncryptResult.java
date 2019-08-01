@@ -1,7 +1,7 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 /**
- * Represents the details of encryption operation result.
+ * Represents the details of encrypt operation result.
  */
 public class EncryptResult {
 

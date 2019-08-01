@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.security.keyvault.keys.cryptography.ByteExtensions;
 import org.apache.commons.lang3.tuple.Triple;
 
 import javax.crypto.BadPaddingException;

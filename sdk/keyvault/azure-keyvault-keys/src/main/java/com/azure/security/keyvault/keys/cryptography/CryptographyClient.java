@@ -89,7 +89,7 @@ public final class CryptographyClient {
      * @throws ResourceNotFoundException if the key cannot be found for decryption.
      * @return The decrypted blob.
      */
-    public byte[] decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationData, byte[] authenticationTag) {
+    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationData, byte[] authenticationTag) {
         return withContext(context -> client.decrypt(algorithm, cipherText, iv, authenticationData, authenticationTag, context)).block();
     }
 
@@ -108,7 +108,7 @@ public final class CryptographyClient {
      * @throws ResourceNotFoundException if the key cannot be found for decryption.
      * @return The decrypted blob.
      */
-    public byte[] decrypt(EncryptionAlgorithm algorithm, byte[] cipherText) {
+    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] cipherText) {
         return withContext(context -> client.decrypt(algorithm, cipherText, null, null, null, context)).block();
     }
 
@@ -148,7 +148,7 @@ public final class CryptographyClient {
      * @throws ResourceNotFoundException if the key cannot be found for verifying.
      * @return The {@link Boolean} indicating the signature verification result.
      */
-    public Boolean verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature) {
+    public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature) {
         return withContext(context -> client.verify(algorithm, digest, signature, context)).block();
     }
 
@@ -181,7 +181,7 @@ public final class CryptographyClient {
      * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
      * @return The unwrapped key content.
      */
-    public byte[] unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey) {
+    public KeyUnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey) {
         return withContext(context -> client.unwrapKey(algorithm, encryptedKey, context)).block();
     }
 
@@ -221,7 +221,7 @@ public final class CryptographyClient {
      * @throws ResourceNotFoundException if the key cannot be found for verifying.
      * @return The {@link Boolean} indicating the signature verification result.
      */
-    public Boolean verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature) {
+    public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature) {
         return withContext(context -> client.verifyData(algorithm, data, signature, context)).block();
     }
 }
