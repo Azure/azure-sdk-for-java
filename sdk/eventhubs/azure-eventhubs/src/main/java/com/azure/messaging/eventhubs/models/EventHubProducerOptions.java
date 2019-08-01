@@ -15,7 +15,7 @@ import com.azure.messaging.eventhubs.EventHubProducer;
  * @see EventHubAsyncClient#createProducer(EventHubProducerOptions)
  */
 @Fluent
-public class EventHubProducerOptions {
+public class EventHubProducerOptions implements Cloneable {
     private String partitionId;
     private RetryOptions retryOptions;
 
@@ -75,9 +75,16 @@ public class EventHubProducerOptions {
      *
      * @return A shallow clone of this object.
      */
+    @Override
     public EventHubProducerOptions clone() {
-        final EventHubProducerOptions clone = new EventHubProducerOptions()
-            .partitionId(partitionId);
+        EventHubProducerOptions clone;
+        try {
+            clone = (EventHubProducerOptions) super.clone();
+        } catch (CloneNotSupportedException e) {
+            clone = new EventHubProducerOptions();
+        }
+
+        clone.partitionId(partitionId);
 
         if (retryOptions != null) {
             clone.retry(retryOptions.clone());
