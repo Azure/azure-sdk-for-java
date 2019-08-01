@@ -19,7 +19,7 @@ import java.util.Objects;
  * instead, or create a service principal if you want to authenticate silently.
  */
 @Immutable
-public class UserCredential implements TokenCredential {
+public class UsernamePasswordCredential implements TokenCredential {
     private final String username;
     private final String password;
     private final IdentityClient identityClient;
@@ -33,7 +33,7 @@ public class UserCredential implements TokenCredential {
      * @param password the password of the user
      * @param identityClientOptions the options for configuring the identity client
      */
-    UserCredential(String tenantId, String clientId, String username, String password, IdentityClientOptions identityClientOptions) {
+    UsernamePasswordCredential(String tenantId, String clientId, String username, String password, IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(username);
         Objects.requireNonNull(password);
         this.username = username;

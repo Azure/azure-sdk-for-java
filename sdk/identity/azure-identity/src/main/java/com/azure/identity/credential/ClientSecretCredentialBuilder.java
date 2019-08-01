@@ -13,7 +13,18 @@ import java.util.HashMap;
  * @see ClientSecretCredentialBuilder
  */
 public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<ClientSecretCredentialBuilder> {
+    private String tenantId;
     private String clientSecret;
+
+    /**
+     * Sets the tenant ID of the application.
+     * @param tenantId the tenant ID of the application.
+     * @return the ClientSecretCredentialBuilder itself
+     */
+    public ClientSecretCredentialBuilder tenantId(String tenantId) {
+        this.tenantId = tenantId;
+        return this;
+    }
 
     /**
      * Sets the client secret for the authentication.

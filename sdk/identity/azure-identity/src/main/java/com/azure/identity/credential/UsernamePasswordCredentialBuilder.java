@@ -8,20 +8,31 @@ import com.azure.identity.implementation.util.ValidationUtil;
 import java.util.HashMap;
 
 /**
- * Fluent credential builder for instantiating a {@link UserCredential}.
+ * Fluent credential builder for instantiating a {@link UsernamePasswordCredential}.
  *
- * @see UserCredential
+ * @see UsernamePasswordCredential
  */
-public class UserCredentialBuilder extends AadCredentialBuilderBase<UserCredentialBuilder> {
+public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<UsernamePasswordCredentialBuilder> {
+    private String tenantId;
     private String username;
     private String password;
+
+    /**
+     * Sets the tenant ID of the application.
+     * @param tenantId the tenant ID of the application.
+     * @return the UserCredentialBuilder itself
+     */
+    public UsernamePasswordCredentialBuilder tenantId(String tenantId) {
+        this.tenantId = tenantId;
+        return this;
+    }
 
     /**
      * Sets the username of the user.
      * @param username the username of the user
      * @return the UserCredentialBuilder itself
      */
-    public UserCredentialBuilder username(String username) {
+    public UsernamePasswordCredentialBuilder username(String username) {
         this.username = username;
         return this;
     }
@@ -31,21 +42,21 @@ public class UserCredentialBuilder extends AadCredentialBuilderBase<UserCredenti
      * @param password the password of the user
      * @return the UserCredentialBuilder itself
      */
-    public UserCredentialBuilder password(String password) {
+    public UsernamePasswordCredentialBuilder password(String password) {
         this.password = password;
         return this;
     }
 
     /**
-     * @return a {@link UserCredential} with the current configurations.
+     * @return a {@link UsernamePasswordCredential} with the current configurations.
      */
-    public UserCredential build() {
+    public UsernamePasswordCredential build() {
         ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
                 put("clientId", clientId);
                 put("tenantId", tenantId);
                 put("username", username);
                 put("password", password);
             }});
-        return new UserCredential(tenantId, clientId, username, password, identityClientOptions);
+        return new UsernamePasswordCredential(tenantId, clientId, username, password, identityClientOptions);
     }
 }

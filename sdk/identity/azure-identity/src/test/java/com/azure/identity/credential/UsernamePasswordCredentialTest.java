@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(fullyQualifiedNames = "com.azure.identity.*")
 @PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
-public class UserCredentialTest {
+public class UsernamePasswordCredentialTest {
 
     private final String tenantId = "contoso.com";
     private final String clientId = UUID.randomUUID().toString();
@@ -48,7 +48,7 @@ public class UserCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        UserCredential credential = new UserCredentialBuilder().tenantId(tenantId).clientId(clientId).username(username).password(password).build();
+        UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().tenantId(tenantId).clientId(clientId).username(username).password(password).build();
         AccessToken token = credential.getToken(scopes1).block();
         Assert.assertEquals(token1, token.token());
         Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
@@ -74,12 +74,12 @@ public class UserCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        UserCredential credential = new UserCredentialBuilder().tenantId(tenantId).clientId(clientId).username(username).password(password).build();
+        UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().tenantId(tenantId).clientId(clientId).username(username).password(password).build();
         AccessToken token = credential.getToken(scopes).block();
         Assert.assertEquals(token1, token.token());
         Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
         try {
-            credential = new UserCredentialBuilder().tenantId(tenantId).clientId(clientId).username(username).password(badPassword).build();
+            credential = new UsernamePasswordCredentialBuilder().tenantId(tenantId).clientId(clientId).username(username).password(badPassword).build();
             credential.getToken(scopes).block();
             fail();
         } catch (MsalServiceException e) {
@@ -103,28 +103,28 @@ public class UserCredentialTest {
 
         // test
         try {
-            UserCredential credential = new UserCredentialBuilder().clientId(clientId).username(username).password(password).build();
+            UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).password(password).build();
             credential.getToken(scopes).block();
             fail();
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains("tenantId"));
         }
         try {
-            UserCredential credential = new UserCredentialBuilder().tenantId(tenantId).username(username).password(password).build();
+            UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().tenantId(tenantId).username(username).password(password).build();
             credential.getToken(scopes).block();
             fail();
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains("clientId"));
         }
         try {
-            UserCredential credential = new UserCredentialBuilder().tenantId(tenantId).clientId(clientId).username(username).build();
+            UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().tenantId(tenantId).clientId(clientId).username(username).build();
             credential.getToken(scopes).block();
             fail();
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains("password"));
         }
         try {
-            UserCredential credential = new UserCredentialBuilder().tenantId(tenantId).clientId(clientId).password(password).build();
+            UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().tenantId(tenantId).clientId(clientId).password(password).build();
             credential.getToken(scopes).block();
             fail();
         } catch (IllegalArgumentException e) {

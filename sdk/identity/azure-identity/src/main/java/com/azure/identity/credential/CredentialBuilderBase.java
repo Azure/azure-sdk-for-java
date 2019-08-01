@@ -20,17 +20,6 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     }
 
     /**
-     * Specifies the Azure Active Directory endpoint to acquire tokens.
-     * @param authorityHost the Azure Active Directory endpoint
-     * @return {@link <T>} itself
-     */
-    @SuppressWarnings("unchecked")
-    public T authorityHost(String authorityHost) {
-        this.identityClientOptions.authorityHost(authorityHost);
-        return (T) this;
-    }
-
-    /**
      * Specifies the max number of retries when an authentication request fails.
      * @param maxRetry the number of retries
      * @return {@link <T>} itself
