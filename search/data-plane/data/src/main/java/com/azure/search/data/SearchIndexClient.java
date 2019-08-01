@@ -19,14 +19,6 @@ public interface SearchIndexClient {
     String getApiVersion();
 
     /**
-     * Sets Client Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the service client itself.
-     */
-    SearchIndexClient setApiVersion(String apiVersion);
-
-    /**
      * Gets The name of the Azure Search service.
      *
      * @return the searchServiceName value.
