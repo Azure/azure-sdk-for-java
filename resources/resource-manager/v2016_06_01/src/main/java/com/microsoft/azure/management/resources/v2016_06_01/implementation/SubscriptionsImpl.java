@@ -9,27 +9,24 @@
 
 package com.microsoft.azure.management.resources.v2016_06_01.implementation;
 
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import com.microsoft.azure.arm.utils.PagedListConverter;
-import com.microsoft.azure.management.resources.v2016_06_01.Location;
-import com.microsoft.azure.management.resources.v2016_06_01.Subscription;
 import com.microsoft.azure.management.resources.v2016_06_01.Subscriptions;
-import rx.Observable;
 import rx.functions.Func1;
-
+import rx.Observable;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.management.resources.v2016_06_01.Subscription;
 import java.util.List;
+import com.microsoft.azure.management.resources.v2016_06_01.Location;
 
 class SubscriptionsImpl extends WrapperImpl<SubscriptionsInner> implements Subscriptions {
-    private final Manager manager;
+    private final ResourcesManager manager;
 
-    SubscriptionsImpl(Manager manager) {
+    SubscriptionsImpl(ResourcesManager manager) {
         super(manager.inner().subscriptions());
         this.manager = manager;
     }
 
-    public Manager manager() {
+    public ResourcesManager manager() {
         return this.manager;
     }
 
@@ -43,17 +40,6 @@ class SubscriptionsImpl extends WrapperImpl<SubscriptionsInner> implements Subsc
                 return new SubscriptionImpl(inner, manager());
             }
         });
-    }
-
-    @Override
-    public PagedList<Subscription> list() {
-        return new PagedListConverter<SubscriptionInner, Subscription>() {
-
-            @Override
-            public Observable<Subscription> typeConvertAsync(SubscriptionInner subscriptionInner) {
-                return Observable.just((Subscription) new SubscriptionImpl(subscriptionInner, manager()));
-            }
-        }.convert(inner().list());
     }
 
     @Override
