@@ -8,8 +8,8 @@ public class App {
         System.out.println("     AZURE SDK SMOKE TEST");
         System.out.println("================================");
 
-//        KeyVaultSecrets.main(null);
-//        StorageBlob.main(null);
+        KeyVaultSecrets.main(null);
+        StorageBlob.main(null);
         EventHubs.main(null );
     }
 }
