@@ -210,6 +210,9 @@ public class ShareClient {
      *
      * {@codesnippet com.azure.storage.file.shareClient.setQuota}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
+     *
      * @param quotaInGB Size in GB to limit the share's growth. The quota in GB must be between 1 and 5120.
      * @return information about the share
      * @throws StorageErrorException If the share doesn't exist or {@code quotaInGB} is outside the allowed bounds

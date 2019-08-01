@@ -315,6 +315,9 @@ public class FileAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.fileAsyncClient.downloadWithProperties}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
+     *
      * @return A response that only contains headers and response status code
      */
     public Mono<Response<FileDownloadInfo>> downloadWithProperties() {
@@ -329,6 +332,9 @@ public class FileAsyncClient {
      * <p>Download the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
      *
      * {@codesnippet com.azure.storage.file.fileAsyncClient.downloadWithProperties#filerange-boolean}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
      *
      * @param range Optional byte range which returns file data only from the specified range.
      * @param rangeGetContentMD5 Optional boolean which the service returns the MD5 hash for the range when it sets to true, as long as the range is less than or equal to 4 MB in size.
@@ -394,6 +400,9 @@ public class FileAsyncClient {
      * <p>Clear the metadata of the file</p>
      *
      * {@codesnippet com.azure.storage.file.fileAsyncClient.setHttpHeaders#long-filehttpheaders.clearHttpHeaders}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a>.</p>
      *
      * @param newFileSize New file size of the file
      * @param httpHeaders Resizes a file to the specified size. If the specified byte value is less than the current size of the file, then all ranges above the specified byte value are cleared.
@@ -493,6 +502,11 @@ public class FileAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.fileAsyncClient.uploadFromFile#string}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs Create File</a>
+     * and
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs Upload</a>.</p>
+     *
      * @param uploadFilePath The path where store the source file to upload
      * @return An empty response.
      */
@@ -508,6 +522,11 @@ public class FileAsyncClient {
      * <p> Upload the file from the source file path. </p>
      *
      * (@codesnippet com.azure.storage.file.fileAsyncClient.uploadFromFile#string-filerangewritetype}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs Create File</a>
+     * and
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs Upload</a>.</p>
      *
      * @param uploadFilePath The path where store the source file to upload
      * @param type You may specify one of the following options:
