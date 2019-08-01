@@ -12,11 +12,14 @@ import com.azure.messaging.eventhubs.EventProcessorAsyncClient;
  */
 public class EventProcessorSample {
 
+    //    private static final String EH_CONNECTION_STRING = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
+    private static final String EH_CONNECTION_STRING = "Endpoint=sb://eventhubs-ns-playground-standard.servicebus.windows.net/;SharedAccessKeyName=srnagarcspolicy;SharedAccessKey=tm73rARY77e1FakWDVxsm13yfn5A4ypmtDuOXNQ4RvM=;EntityPath=srnagar-hub";
+
     public static void main(String[] args) throws Exception {
         EventProcessorAsyncClient eventProcessorAsyncClient = new EventHubClientBuilder()
-            .connectionString("")
+            .connectionString(EH_CONNECTION_STRING)
             .consumerGroupName(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME)
-            .partitionProcessorFactory(ConsolePartitionProcessor::new)
+            .partitionProcessorFactory(LogPartitionProcessor::new)
             .partitionManager(new InMemoryPartitionManager())
             .buildEventProcessorAsyncClient();
 
@@ -27,10 +30,10 @@ public class EventProcessorSample {
         eventProcessorAsyncClient.start();
 
         // do other stuff
-        Thread.sleep(30000);
+        Thread.sleep(70000);
 
         System.out.println("Stopping event processor");
-        eventProcessorAsyncClient.stop();
+        eventProcessorAsyncClient.stop().subscribe();
         System.out.println("Stopped event processor");
         System.out.println("Exiting process");
     }

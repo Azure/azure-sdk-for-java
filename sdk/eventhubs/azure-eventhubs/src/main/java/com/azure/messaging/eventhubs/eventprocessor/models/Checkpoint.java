@@ -4,9 +4,11 @@
 package com.azure.messaging.eventhubs.eventprocessor.models;
 
 import com.azure.core.implementation.annotation.Fluent;
+import com.azure.messaging.eventhubs.PartitionProcessor;
 
 /**
- * A model class to hold checkpoint data.
+ * A model class to hold checkpoint data. A checkpoint represents the last successfully processed event by a {@link
+ * PartitionProcessor} for a particular partition of an Event Hub.
  */
 @Fluent
 public class Checkpoint {
@@ -20,18 +22,18 @@ public class Checkpoint {
     private String eTag;
 
     /**
-     * Gets the event hub name.
+     * Gets the Event Hub name associated with this checkpoint.
      *
-     * @return The event hub name.
+     * @return The Event Hub name associated with this checkpoint.
      */
     public String eventHubName() {
         return eventHubName;
     }
 
     /**
-     * Sets the event hub name.
+     * Sets the Event Hub name associated with this checkpoint.
      *
-     * @param eventHubName The event hub name.
+     * @param eventHubName The Event Hub name associated with this checkpoint.
      * @return The updated {@link Checkpoint} instance.
      */
     public Checkpoint eventHubName(String eventHubName) {
@@ -40,18 +42,18 @@ public class Checkpoint {
     }
 
     /**
-     * Gets the consumer group name.
+     * Gets the consumer group name associated with this checkpoint.
      *
-     * @return The consumer group name.
+     * @return The consumer group name associated with this checkpoint.
      */
     public String consumerGroupName() {
         return consumerGroupName;
     }
 
     /**
-     * Sets the consumer group name.
+     * Sets the consumer group name associated with this checkpoint.
      *
-     * @param consumerGroupName The consumer group name.
+     * @param consumerGroupName The consumer group name associated with this checkpoint.
      * @return The updated {@link Checkpoint} instance.
      */
     public Checkpoint consumerGroupName(String consumerGroupName) {
@@ -60,18 +62,18 @@ public class Checkpoint {
     }
 
     /**
-     * Gets the partition id.
+     * Gets the partition id associated with this checkpoint.
      *
-     * @return The partition id.
+     * @return The partition id associated with this checkpoint.
      */
     public String partitionId() {
         return partitionId;
     }
 
     /**
-     * Sets the partition id.
+     * Sets the partition id associated with this checkpoint.
      *
-     * @param partitionId The partition id.
+     * @param partitionId The partition id associated with this checkpoint.
      * @return The updated {@link Checkpoint} instance.
      */
     public Checkpoint partitionId(String partitionId) {
@@ -80,18 +82,18 @@ public class Checkpoint {
     }
 
     /**
-     * Sets the unique instance identifier.
+     * Sets the unique event processor identifier that created this checkpoint.
      *
-     * @return The instance identifier.
+     * @return The unique event processor identifier that created this checkpoint.
      */
     public String instanceId() {
         return instanceId;
     }
 
     /**
-     * Returns the instance identifier.
+     * Gets the unique event processor identifier that created this checkpoint.
      *
-     * @param instanceId The instance identifier.
+     * @param instanceId The unique event processor identifier that created this checkpoint.
      * @return The updated {@link Checkpoint} instance.
      */
     public Checkpoint instanceId(String instanceId) {
@@ -100,18 +102,18 @@ public class Checkpoint {
     }
 
     /**
-     * Gets the offset.
+     * Gets the offset of the last successfully processed event to store as checkpoint.
      *
-     * @return The offset.
+     * @return The offset of the last successfully processed event to store as checkpoint.
      */
     public String offset() {
         return offset;
     }
 
     /**
-     * Sets the offset.
+     * Sets the offset of the last successfully processed event to store as checkpoint.
      *
-     * @param offset The offset.
+     * @param offset The offset of the last successfully processed event to store as checkpoint.
      * @return The updated {@link Checkpoint} instance.
      */
     public Checkpoint offset(String offset) {
@@ -120,18 +122,18 @@ public class Checkpoint {
     }
 
     /**
-     * Gets the sequence number.
+     * Gets the sequence number of the last successfully processed event to store as checkpoint.
      *
-     * @return The sequence number.
+     * @return The sequence number of the last successfully processed event to store as checkpoint.
      */
     public Long sequenceNumber() {
         return sequenceNumber;
     }
 
     /**
-     * Sets the sequence number.
+     * Sets the sequence number of the last successfully processed event to store as checkpoint.
      *
-     * @param sequenceNumber The sequence number.
+     * @param sequenceNumber The sequence number of the last successfully processed event to store as checkpoint.
      * @return The updated {@link Checkpoint} instance.
      */
     public Checkpoint sequenceNumber(Long sequenceNumber) {
@@ -140,18 +142,18 @@ public class Checkpoint {
     }
 
     /**
-     * Gets the eTag.
+     * Gets the ETag.
      *
-     * @return The eTag.
+     * @return The ETag.
      */
     public String eTag() {
         return eTag;
     }
 
     /**
-     * Sets the eTag.
+     * Sets the ETag.
      *
-     * @param eTag The eTag.
+     * @param eTag The ETag.
      * @return The updated {@link Checkpoint} instance.
      */
     public Checkpoint eTag(String eTag) {

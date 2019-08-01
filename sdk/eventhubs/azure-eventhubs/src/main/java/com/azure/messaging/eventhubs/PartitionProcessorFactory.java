@@ -7,19 +7,22 @@ import com.azure.messaging.eventhubs.eventprocessor.models.PartitionContext;
 import org.reactivestreams.Subscriber;
 
 /**
- * A functional interface to create new instances of partition processors when provided with a {@link PartitionContext}
- * and {@link CheckpointManager}.
+ * A functional interface to create new instance(s) of {@link PartitionProcessor} when provided with a {@link
+ * PartitionContext} and {@link CheckpointManager}.
  */
 @FunctionalInterface
 public interface PartitionProcessorFactory {
 
     /**
-     * Method to create a new instance of partition processor for a partition
+     * Factory method to create a new instance(s) of {@link PartitionProcessor} for a partition.
      *
-     * @param partitionContext The partition context
-     * @param checkpointManager The checkpoint manager
-     * @return A subscriber that can process {@link EventData} from a single partition of an event hub
+     * @param partitionContext The partition context containing partition and Event Hub information. The new instance of
+     * {@link PartitionProcessor} created by this method will be responsible for processing events only for this
+     * partition.
+     * @param checkpointManager The checkpoint manager for updating checkpoints when events are processed by {@link
+     * PartitionProcessor}.
+     * @return A new instance of {@link PartitionProcessor} responsible for processing events from a single partition.
      */
-    Subscriber<EventData> createPartitionProcessor(PartitionContext partitionContext,
+    PartitionProcessor createPartitionProcessor(PartitionContext partitionContext,
         CheckpointManager checkpointManager);
 }

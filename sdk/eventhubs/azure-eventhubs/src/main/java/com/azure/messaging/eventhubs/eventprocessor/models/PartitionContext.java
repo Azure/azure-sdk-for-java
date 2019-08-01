@@ -19,14 +19,11 @@ public class PartitionContext {
     /**
      * Creates an immutable instance containing the information for processing a partition
      *
-     * @param instanceId The instance identifier
      * @param partitionId The partition id
      * @param eventHubName The event hub name
      * @param consumerGroupName The consumer group name
      */
-    public PartitionContext(String instanceId, String partitionId, String eventHubName,
-        String consumerGroupName) {
-        this.instanceId = instanceId;
+    public PartitionContext(String partitionId, String eventHubName, String consumerGroupName) {
         this.partitionId = partitionId;
         this.eventHubName = eventHubName;
         this.consumerGroupName = consumerGroupName;
@@ -42,18 +39,9 @@ public class PartitionContext {
     }
 
     /**
-     * Gets the instance identifier.
+     * Gets the Event Hub name.
      *
-     * @return The instance identifier.
-     */
-    public String instanceId() {
-        return this.instanceId;
-    }
-
-    /**
-     * Gets the event hub name.
-     *
-     * @return The event hub name.
+     * @return The Event Hub name.
      */
     public String eventHubName() {
         return eventHubName;

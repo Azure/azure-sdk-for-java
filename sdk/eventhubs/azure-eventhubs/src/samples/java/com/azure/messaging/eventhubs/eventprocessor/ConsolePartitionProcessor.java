@@ -25,16 +25,15 @@ public class ConsolePartitionProcessor implements Subscriber<EventData> {
         CheckpointManager checkpointManager) {
         this.partitionContext = partitionContext;
         this.checkpointManager = checkpointManager;
-        logger.info("Initializing partition processor: event hub name = " + partitionContext
-            .eventHubName() + "; consumer group name = " + partitionContext
-            .consumerGroupName() + "; partition id = " + partitionContext.partitionId());
+        logger.info("Creating partition processor: eventhub name = {}; consumer group name = {}; partition id = {}",
+            partitionContext.eventHubName(), partitionContext.consumerGroupName(), partitionContext.partitionId());
+
     }
 
     @Override
     public void onSubscribe(Subscription subscription) {
-        logger.info("Subscribing partition processor: event hub name = " + partitionContext
-            .eventHubName() + "; consumer group name = " + partitionContext
-            .consumerGroupName() + "; partition id = " + partitionContext.partitionId());
+        logger.info("Subscribing partition processor: eventhub name = {}; consumer group name = {}; partition id = {}",
+            partitionContext.eventHubName(), partitionContext.consumerGroupName(), partitionContext.partitionId());
         this.subscription = subscription;
         subscription.request(1);
     }

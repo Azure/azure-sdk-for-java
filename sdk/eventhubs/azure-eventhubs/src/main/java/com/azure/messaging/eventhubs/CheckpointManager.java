@@ -6,49 +6,57 @@ package com.azure.messaging.eventhubs;
 import com.azure.messaging.eventhubs.eventprocessor.models.Checkpoint;
 import com.azure.messaging.eventhubs.eventprocessor.models.PartitionContext;
 
+import java.util.concurrent.atomic.AtomicReference;
 import reactor.core.publisher.Mono;
 
 /**
- * The checkpoint manager that clients should use to update checkpoints to track progress of events processed.
+ * The checkpoint manager that clients should use to update checkpoints to track progress of events processed. Each
+ * instance of a {@link PartitionProcessor} will be provided with a CheckpointManager.
  */
 public class CheckpointManager {
 
     private final PartitionContext partitionContext;
     private final PartitionManager partitionManager;
-    private String eTag;
+    private final AtomicReference<String> eTag;
+    private final String instanceId;
 
     /**
-     * Creates a new checkpoint manager which clients of {@link EventProcessorAsyncClient} can use to update checkpoints
-     * of a partition.
+     * Creates a new checkpoint manager which {@link PartitionProcessor} can use to update checkpoints.
      *
-     * @param partitionContext The partition context.
-     * @param partitionManager The partition manager.
-     * @param eTag The last known eTag for this partition.
+     * @param instanceId
+     * @param partitionContext The partition context providing necessary partition and event hub information for updating
+     * checkpoints.
+     * @param partitionManager The {@link PartitionManager} implementation that will be store the checkpoint information.
+     * @param eTag The last known ETag stored in {@link PartitionManager} for this partition. When the next update
+     * checkpoint is called from this CheckpointManager, this ETag will be used to provide <a
+     * href="https://en.wikipedia.org/wiki/Optimistic_concurrency_control">optimistic
      */
-    CheckpointManager(PartitionContext partitionContext, PartitionManager partitionManager,
+    CheckpointManager(String instanceId, PartitionContext partitionContext, PartitionManager partitionManager,
         String eTag) {
+        this.instanceId = instanceId;
         this.partitionContext = partitionContext;
         this.partitionManager = partitionManager;
-        this.eTag = eTag;
+        this.eTag = new AtomicReference<>(eTag);
     }
 
     /**
      * Updates a checkpoint using the event data.
      *
      * @param eventData The event data to use for updating the checkpoint.
-     * @return A mono void.
+     * @return a representation of deferred execution of this call.
      */
     public Mono<Void> updateCheckpoint(EventData eventData) {
+        String previousETag = this.eTag.get();
         Checkpoint checkpoint = new Checkpoint()
             .consumerGroupName(partitionContext.consumerGroupName())
             .eventHubName(partitionContext.eventHubName())
-            .instanceId(partitionContext.instanceId())
+            .instanceId(instanceId)
             .partitionId(partitionContext.partitionId())
             .sequenceNumber(eventData.sequenceNumber())
             .offset(eventData.offset())
-            .eTag(eTag);
-
-        return this.partitionManager.updateCheckpoint(checkpoint).map(eTag -> this.eTag = eTag)
+            .eTag(previousETag);
+        return this.partitionManager.updateCheckpoint(checkpoint)
+            .map(eTag -> this.eTag.compareAndSet(previousETag, eTag))
             .then();
     }
 
@@ -57,19 +65,21 @@ public class CheckpointManager {
      *
      * @param sequenceNumber The sequence number to update the checkpoint.
      * @param offset The offset to update the checkpoint.
-     * @return A mono void.
+     * @return a representation of deferred execution of this call.
      */
     public Mono<Void> updateCheckpoint(long sequenceNumber, String offset) {
+        String previousETag = this.eTag.get();
         Checkpoint checkpoint = new Checkpoint()
             .consumerGroupName(partitionContext.consumerGroupName())
             .eventHubName(partitionContext.eventHubName())
-            .instanceId(partitionContext.instanceId())
+            .instanceId(instanceId)
             .partitionId(partitionContext.partitionId())
             .sequenceNumber(sequenceNumber)
             .offset(offset)
-            .eTag(eTag);
+            .eTag(previousETag);
 
-        return this.partitionManager.updateCheckpoint(checkpoint).map(eTag -> this.eTag = eTag)
+        return this.partitionManager.updateCheckpoint(checkpoint)
+            .map(eTag -> this.eTag.compareAndSet(previousETag, eTag))
             .then();
     }
 }
