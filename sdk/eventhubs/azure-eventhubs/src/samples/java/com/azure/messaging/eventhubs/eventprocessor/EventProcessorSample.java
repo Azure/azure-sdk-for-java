@@ -13,8 +13,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class EventProcessorSample {
 
-    //    private static final String EH_CONNECTION_STRING = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
-    private static final String EH_CONNECTION_STRING = "Endpoint=sb://eventhubs-ns-playground-standard.servicebus.windows.net/;SharedAccessKeyName=srnagarcspolicy;SharedAccessKey=tm73rARY77e1FakWDVxsm13yfn5A4ypmtDuOXNQ4RvM=;EntityPath=srnagar-hub";
+    private static final String EH_CONNECTION_STRING = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
 
     public static void main(String[] args) throws Exception {
         EventHubClientBuilder eventHubClientBuilder = new EventHubClientBuilder()

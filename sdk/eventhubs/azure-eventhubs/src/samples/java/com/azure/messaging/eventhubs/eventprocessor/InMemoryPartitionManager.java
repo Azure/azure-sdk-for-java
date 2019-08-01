@@ -7,7 +7,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.PartitionManager;
 import com.azure.messaging.eventhubs.eventprocessor.models.Checkpoint;
 import com.azure.messaging.eventhubs.eventprocessor.models.PartitionOwnership;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;

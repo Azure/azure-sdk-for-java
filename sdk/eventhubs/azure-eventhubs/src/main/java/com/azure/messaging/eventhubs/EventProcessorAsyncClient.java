@@ -140,7 +140,7 @@ public class EventProcessorAsyncClient {
             .cache();
         eventHubAsyncClient.getPartitionIds()
             .flatMap(id -> getCandidatePartitions(ownershipFlux, id))
-            .flatMap(ownershipInfo -> claimOwnership(ownershipInfo))
+            .flatMap(this::claimOwnership)
             .subscribe(partitionOwnership -> receiveEvents(partitionOwnership.partitionId()));
     }
 
