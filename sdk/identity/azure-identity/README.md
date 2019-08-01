@@ -15,7 +15,7 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.0-preview.1</version>
+    <version>1.0.0-preview.2</version>
 </dependency>
 ```
 
@@ -42,6 +42,12 @@ Use the [Azure CLI][azure_cli] snippet below to create/get client secret credent
     ```
 * Use the returned credentials above to set  **AZURE_CLIENT_ID**(appId), **AZURE_CLIENT_SECRET**(password) and **AZURE_TENANT_ID**(tenant) [environment variables](#environment-variables).
 
+#### Enable applications for interactive browser oauth 2 flow
+You need register an application in Azure Active Directory with permissions to login on behalf of a user to use InteractiveBrowserCredential. Please refer to [this documentation] on how to create an application for oauth 2 authentications.
+
+#### Whitelisted applications for device code flow
+In order to authenticate a user through device code flow, please refer to [this documentation](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/Device-Code-Flow) on how to give your application permission to device code authentications.
+
 
 ## Key concepts
 ### Credentials
@@ -58,6 +64,8 @@ The credential types in Azure Identity differ in the types of AAD identities the
 |`EnvironmentCredential`|service principal|[environment variables](#environment-variables)
 |`ClientSecretCredential`|service principal|constructor parameters
 |`ClientCertificateCredential`|service principal|constructor parameters
+|`DeviceCodeCredential`|user delegation|constructor parameters
+|`ClientCertificateCredential`|user delegation|constructor parameters
 
 Credentials can be chained together to be tried in turn until one succeeds using the `ChainedTokenCredential`; see [chaining credentials](#chaining-credentials) for details.
 
