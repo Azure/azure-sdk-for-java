@@ -54,10 +54,113 @@ public class TriggerRunsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface TriggerRunsService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactory.v2018_06_01.TriggerRuns rerun" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/triggerRuns/{runId}/rerun")
+        Observable<Response<ResponseBody>> rerun(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Path("triggerName") String triggerName, @Path("runId") String runId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactory.v2018_06_01.TriggerRuns queryByFactory" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/queryTriggerRuns")
         Observable<Response<ResponseBody>> queryByFactory(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Query("api-version") String apiVersion, @Body RunFilterParameters filterParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+    }
+
+    /**
+     * Rerun single trigger instance by runId.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void rerun(String resourceGroupName, String factoryName, String triggerName, String runId) {
+        rerunWithServiceResponseAsync(resourceGroupName, factoryName, triggerName, runId).toBlocking().single().body();
+    }
+
+    /**
+     * Rerun single trigger instance by runId.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> rerunAsync(String resourceGroupName, String factoryName, String triggerName, String runId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(rerunWithServiceResponseAsync(resourceGroupName, factoryName, triggerName, runId), serviceCallback);
+    }
+
+    /**
+     * Rerun single trigger instance by runId.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> rerunAsync(String resourceGroupName, String factoryName, String triggerName, String runId) {
+        return rerunWithServiceResponseAsync(resourceGroupName, factoryName, triggerName, runId).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Rerun single trigger instance by runId.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> rerunWithServiceResponseAsync(String resourceGroupName, String factoryName, String triggerName, String runId) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (factoryName == null) {
+            throw new IllegalArgumentException("Parameter factoryName is required and cannot be null.");
+        }
+        if (triggerName == null) {
+            throw new IllegalArgumentException("Parameter triggerName is required and cannot be null.");
+        }
+        if (runId == null) {
+            throw new IllegalArgumentException("Parameter runId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.rerun(this.client.subscriptionId(), resourceGroupName, factoryName, triggerName, runId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = rerunDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> rerunDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
     }
 
     /**
