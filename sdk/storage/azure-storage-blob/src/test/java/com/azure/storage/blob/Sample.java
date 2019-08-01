@@ -80,74 +80,74 @@ public class Sample {
     }
 
     //@Test
-//    public void asyncSample() throws IOException {
-//        // get service client
-//        BlobServiceAsyncClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
-//            .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
-//            .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
-//            .buildAsyncClient();
-//
-//        // create 5 containers
-//        ContainerAsyncClient containerClient = null;
-//        Mono<Void> createContainerTask = Mono.empty();
-//        for (int i = 0; i < 5; i++) {
-//            String name = "uxtesting" + UUID.randomUUID();
-//            containerClient = serviceClient.getContainerAsyncClient(name);
-//
-//            createContainerTask = createContainerTask.and(containerClient.create().then(Mono.defer(() -> {
-//                System.out.println("Created container: " + name);
-//                return Mono.empty();
-//            })));
-//        }
-//        ContainerAsyncClient finalContainerClient = containerClient; // final variable for lambda usage
-//
-//        createContainerTask
-//            // list containers
-//            .thenMany(Flux.defer(() -> {
-//                System.out.println("Listing containers in account:");
-//                return serviceClient.listContainers()
-//                    .flatMap(containerItem -> {
-//                        System.out.println(containerItem.name());
-//                        return Mono.empty();
-//                    });
-//            }))
-//            // in the last container, create 5 blobs
-//            .then(Mono.defer(() -> {
-//                Mono<Void> finished = Mono.empty();
-//                for (int i = 0; i < 5; i++) {
-//                    BlockBlobAsyncClient blobClient = finalContainerClient.getBlockBlobAsyncClient("testblob-" + i);
-//                    byte[] message = ("test data" + i).getBytes(StandardCharsets.UTF_8);
-//                    Flux<ByteBuf> testdata = Flux.just(ByteBufAllocator.DEFAULT.buffer(message.length).writeBytes(message));
-//
-//                    finished = finished.and(blobClient.upload(testdata, message.length)
-//                        .then(Mono.defer(() -> {
-//                            System.out.println("Uploaded blob.");
-//                            return Mono.empty();
-//                        })));
-//                }
-//
-//                return finished;
-//            }))
-//            // list blobs
-//            .thenMany(Flux.defer(() -> {
-//                System.out.println();
-//                System.out.println("Listing/downloading blobs:");
-//                return finalContainerClient.listBlobsFlat();
-//            }))
-//            // download results
-//            .flatMap(listItem ->
-//                finalContainerClient.getBlobAsyncClient(listItem.name())
-//                    .download()
-//                    .flatMapMany(Response::value)
-//                    .map(buffer -> new String(buffer.array()))
-//                    .doOnNext(string -> System.out.println(listItem.name() + ": " + string)))
-//            // cleanup
-//            .thenMany(serviceClient.listContainers())
-//            .flatMap(containerItem -> serviceClient
-//                .getContainerAsyncClient(containerItem.name())
-//                .delete())
-//            .blockLast();
-//    }
+    public void asyncSample() throws IOException {
+        // get service client
+        BlobServiceAsyncClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
+            .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
+            .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
+            .buildAsyncClient();
+
+        // create 5 containers
+        ContainerAsyncClient containerClient = null;
+        Mono<Void> createContainerTask = Mono.empty();
+        for (int i = 0; i < 5; i++) {
+            String name = "uxtesting" + UUID.randomUUID();
+            containerClient = serviceClient.getContainerAsyncClient(name);
+
+            createContainerTask = createContainerTask.and(containerClient.create().then(Mono.defer(() -> {
+                System.out.println("Created container: " + name);
+                return Mono.empty();
+            })));
+        }
+        ContainerAsyncClient finalContainerClient = containerClient; // final variable for lambda usage
+
+        createContainerTask
+            // list containers
+            .thenMany(Flux.defer(() -> {
+                System.out.println("Listing containers in account:");
+                return serviceClient.listContainers()
+                    .flatMap(containerItem -> {
+                        System.out.println(containerItem.name());
+                        return Mono.empty();
+                    });
+            }))
+            // in the last container, create 5 blobs
+            .then(Mono.defer(() -> {
+                Mono<Void> finished = Mono.empty();
+                for (int i = 0; i < 5; i++) {
+                    BlockBlobAsyncClient blobClient = finalContainerClient.getBlockBlobAsyncClient("testblob-" + i);
+                    byte[] message = ("test data" + i).getBytes(StandardCharsets.UTF_8);
+                    Flux<ByteBuf> testdata = Flux.just(ByteBufAllocator.DEFAULT.buffer(message.length).writeBytes(message));
+
+                    finished = finished.and(blobClient.upload(testdata, message.length)
+                        .then(Mono.defer(() -> {
+                            System.out.println("Uploaded blob.");
+                            return Mono.empty();
+                        })));
+                }
+
+                return finished;
+            }))
+            // list blobs
+            .thenMany(Flux.defer(() -> {
+                System.out.println();
+                System.out.println("Listing/downloading blobs:");
+                return finalContainerClient.listBlobsFlat();
+            }))
+            // download results
+            .flatMap(listItem ->
+                finalContainerClient.getBlobAsyncClient(listItem.name())
+                    .downloadWithResponse(null, null, null, false, null)
+                    .flatMapMany(Response::value)
+                    .map(buffer -> new String(buffer.array()))
+                    .doOnNext(string -> System.out.println(listItem.name() + ": " + string)))
+            // cleanup
+            .thenMany(serviceClient.listContainers())
+            .flatMap(containerItem -> serviceClient
+                .getContainerAsyncClient(containerItem.name())
+                .delete())
+            .blockLast();
+    }
 
     //@Test
     public void uploadDownloadFromFile() throws IOException {

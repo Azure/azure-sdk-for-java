@@ -35,9 +35,9 @@ class AppendBlobAPITest extends APISpec {
 
     def "Create error"() {
         when:
-        bu.create(null, null,
+        bu.createWithResponse(null, null,
             new BlobAccessConditions().modifiedAccessConditions(new ModifiedAccessConditions().ifMatch("garbage")),
-            null)
+            null, null)
 
         then:
         thrown(StorageException)
@@ -47,14 +47,14 @@ class AppendBlobAPITest extends APISpec {
     def "Create headers"() {
         setup:
         BlobHTTPHeaders headers = new BlobHTTPHeaders().blobCacheControl(cacheControl)
-                .blobContentDisposition(contentDisposition)
-                .blobContentEncoding(contentEncoding)
-                .blobContentLanguage(contentLanguage)
-                .blobContentMD5(contentMD5)
-                .blobContentType(contentType)
+            .blobContentDisposition(contentDisposition)
+            .blobContentEncoding(contentEncoding)
+            .blobContentLanguage(contentLanguage)
+            .blobContentMD5(contentMD5)
+            .blobContentType(contentType)
 
         when:
-        bu.create(headers, null, null, null)
+        bu.createWithResponse(headers, null, null, null, null)
         Response<BlobProperties> response = bu.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
@@ -64,9 +64,9 @@ class AppendBlobAPITest extends APISpec {
         validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                                              | contentType
-        null         | null               | null            | null            | null                                                                                                    | null
-        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultText.getBytes()))   | "type"
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                                  | contentType
+        null         | null               | null            | null            | null                                                                                        | null
+        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultText.getBytes())) | "type"
     }
 
     @Unroll
@@ -81,7 +81,7 @@ class AppendBlobAPITest extends APISpec {
         }
 
         when:
-        bu.create(null, metadata, null, null)
+        bu.createWithResponse(null, metadata, null, null, null)
         Response<BlobProperties> response = bu.getPropertiesWithResponse(null, null, null)
 
         then:
@@ -104,7 +104,6 @@ class AppendBlobAPITest extends APISpec {
                 .ifUnmodifiedSince(unmodified)
                 .ifMatch(match)
                 .ifNoneMatch(noneMatch))
-
 
 
         expect:
@@ -178,9 +177,9 @@ class AppendBlobAPITest extends APISpec {
         exceptionType.isInstance(e)
 
         where:
-        data                        | dataSize            | exceptionType
-        null                        | defaultDataSize     | NullPointerException
-        defaultInputStream.get()    | defaultDataSize + 1 | IndexOutOfBoundsException
+        data                     | dataSize            | exceptionType
+        null                     | defaultDataSize     | NullPointerException
+        defaultInputStream.get() | defaultDataSize + 1 | IndexOutOfBoundsException
         // TODO (alzimmer): This doesn't throw an error as the stream is larger than the stated size
         //defaultInputStream.get()    | defaultDataSize - 1 | StorageException
     }
@@ -216,7 +215,6 @@ class AppendBlobAPITest extends APISpec {
                 .ifUnmodifiedSince(unmodified)
                 .ifMatch(match)
                 .ifNoneMatch(noneMatch))
-
 
 
         expect:
@@ -326,8 +324,8 @@ class AppendBlobAPITest extends APISpec {
         destURL.create()
 
         when:
-        destURL.appendBlockFromUrl(bu.getBlobUrl(), null, MessageDigest.getInstance("MD5").digest(data),
-                null, null, null)
+        destURL.appendBlockFromUrlWithResponse(bu.getBlobUrl(), null, MessageDigest.getInstance("MD5").digest(data),
+            null, null, null, null)
 
         then:
         notThrown(StorageException)
@@ -343,8 +341,8 @@ class AppendBlobAPITest extends APISpec {
         destURL.create()
 
         when:
-        destURL.appendBlockFromUrl(bu.getBlobUrl(), null, MessageDigest.getInstance("MD5").digest("garbage".getBytes()),
-                null, null, null)
+        destURL.appendBlockFromUrlWithResponse(bu.getBlobUrl(), null, MessageDigest.getInstance("MD5").digest("garbage".getBytes()),
+            null, null, null, null)
 
         then:
         thrown(StorageException)
@@ -435,10 +433,10 @@ class AppendBlobAPITest extends APISpec {
         sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).statusCode()
 
         def smac = new SourceModifiedAccessConditions()
-                .sourceIfModifiedSince(sourceIfModifiedSince)
-                .sourceIfUnmodifiedSince(sourceIfUnmodifiedSince)
-                .sourceIfMatch(setupBlobMatchCondition(sourceURL, sourceIfMatch))
-                .sourceIfNoneMatch(sourceIfNoneMatch)
+            .sourceIfModifiedSince(sourceIfModifiedSince)
+            .sourceIfUnmodifiedSince(sourceIfUnmodifiedSince)
+            .sourceIfMatch(setupBlobMatchCondition(sourceURL, sourceIfMatch))
+            .sourceIfNoneMatch(sourceIfNoneMatch)
 
         expect:
         bu.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null, null, null, smac, null, null).statusCode() == 201
@@ -455,17 +453,17 @@ class AppendBlobAPITest extends APISpec {
     @Unroll
     def "Append block from URL AC source fail"() {
         setup:
-        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null, null)
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
 
         def sourceURL = cu.getAppendBlobClient(generateBlobName())
         sourceURL.create()
         sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).statusCode()
 
         def smac = new SourceModifiedAccessConditions()
-                .sourceIfModifiedSince(sourceIfModifiedSince)
-                .sourceIfUnmodifiedSince(sourceIfUnmodifiedSince)
-                .sourceIfMatch(sourceIfMatch)
-                .sourceIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch))
+            .sourceIfModifiedSince(sourceIfModifiedSince)
+            .sourceIfUnmodifiedSince(sourceIfUnmodifiedSince)
+            .sourceIfMatch(sourceIfMatch)
+            .sourceIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch))
 
         when:
         bu.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null, null, null, smac, null, null)

@@ -89,7 +89,7 @@ class ServiceAPITest extends APISpec {
         setup:
         Metadata metadata = new Metadata()
         metadata.put("foo", "bar")
-        cu = primaryServiceURL.createContainer("aaa" + generateContainerName(), metadata, null)
+        cu = primaryServiceURL.createContainerWithResponse("aaa" + generateContainerName(), metadata, null, null).value()
 
         expect:
         primaryServiceURL.listContainers(new ListContainersOptions()

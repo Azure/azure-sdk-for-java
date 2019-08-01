@@ -54,10 +54,10 @@ class BlockBlobAPITest extends APISpec {
         exceptionType.isInstance(e)
 
         where:
-        blockID      | data                 | dataSize            | exceptionType
-        null         | defaultInputStream   | defaultDataSize     | StorageException
-        getBlockID() | null                 | defaultDataSize     | NullPointerException
-        getBlockID() | defaultInputStream   | defaultDataSize + 1 | IndexOutOfBoundsException
+        blockID      | data               | dataSize            | exceptionType
+        null         | defaultInputStream | defaultDataSize     | StorageException
+        getBlockID() | null               | defaultDataSize     | NullPointerException
+        getBlockID() | defaultInputStream | defaultDataSize + 1 | IndexOutOfBoundsException
         // TODO (alzimmer): This doesn't throw an error as the stream is larger than the stated size
         //getBlockID() | defaultInputStream   | defaultDataSize - 1 | IllegalArgumentException
     }
@@ -346,7 +346,7 @@ class BlockBlobAPITest extends APISpec {
             .blobContentType(contentType)
 
         when:
-        bu.commitBlockList(ids, headers, null, null, null)
+        bu.commitBlockListWithResponse(ids, headers, null, null, null, null)
         Response<BlobProperties> response = bu.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
@@ -373,7 +373,7 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        bu.commitBlockList(null, null, metadata, null, null)
+        bu.commitBlockListWithResponse(null, null, metadata, null, null, null)
         Response<BlobProperties> response = bu.getPropertiesWithResponse(null, null, null)
 
         then:
@@ -448,8 +448,8 @@ class BlockBlobAPITest extends APISpec {
         bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
-        bu.commitBlockList(new ArrayList<String>(), null, null,
-            new BlobAccessConditions().leaseAccessConditions(new LeaseAccessConditions().leaseId("garbage")), null)
+        bu.commitBlockListWithResponse(new ArrayList<String>(), null, null,
+            new BlobAccessConditions().leaseAccessConditions(new LeaseAccessConditions().leaseId("garbage")), null, null)
 
         then:
         thrown(StorageException)
@@ -513,9 +513,9 @@ class BlockBlobAPITest extends APISpec {
         int uncommitted = 0
         for (BlockItem item : response) {
             if (item.isCommitted()) {
-                committed ++
+                committed++
             } else {
-                uncommitted ++
+                uncommitted++
             }
         }
         committed == committedCount
@@ -600,8 +600,8 @@ class BlockBlobAPITest extends APISpec {
         exceptionType.isInstance(e)
 
         where:
-        data            | dataSize            | exceptionType
-        null            | defaultDataSize     | NullPointerException
+        data                     | dataSize            | exceptionType
+        null                     | defaultDataSize     | NullPointerException
         defaultInputStream.get() | defaultDataSize + 1 | IndexOutOfBoundsException
         // This doesn't error as it isn't reading the entire stream which is valid in the new client
         // defaultInputStream.get() | defaultDataSize - 1 | StorageErrorException
@@ -628,8 +628,8 @@ class BlockBlobAPITest extends APISpec {
             .blobContentType(contentType)
 
         when:
-        bu.upload(defaultInputStream.get(), defaultDataSize, headers, null, null, null)
-        Response<BlobProperties> response = bu.getProperties()
+        bu.uploadWithResponse(defaultInputStream.get(), defaultDataSize, headers, null, null, null, null)
+        Response<BlobProperties> response = bu.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
         contentMD5 = (contentMD5 == null) ? MessageDigest.getInstance("MD5").digest(defaultData.array()) : contentMD5
@@ -639,9 +639,9 @@ class BlockBlobAPITest extends APISpec {
         validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                | contentType
-        null         | null               | null            | null            | null                                                                      | null
-        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array())    | "type"
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
+        null         | null               | null            | null            | null                                                         | null
+        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
     }
 
     @Unroll
@@ -656,7 +656,7 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        bu.upload(defaultInputStream.get(), defaultDataSize, null, metadata, null, null)
+        bu.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, metadata, null, null, null)
         Response<BlobProperties> response = bu.getPropertiesWithResponse(null, null, null)
 
         then:
@@ -710,7 +710,7 @@ class BlockBlobAPITest extends APISpec {
                 .ifNoneMatch(noneMatch))
 
         when:
-        bu.upload(defaultInputStream.get(), defaultDataSize, null, null, bac, null)
+        bu.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, bac, null, null)
 
         then:
         def e = thrown(StorageException)
@@ -731,9 +731,9 @@ class BlockBlobAPITest extends APISpec {
         bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
-        bu.upload(defaultInputStream.get(), defaultDataSize, null, null,
+        bu.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null,
             new BlobAccessConditions().leaseAccessConditions(new LeaseAccessConditions().leaseId("id")),
-            null)
+            null, null)
 
         then:
         thrown(StorageException)

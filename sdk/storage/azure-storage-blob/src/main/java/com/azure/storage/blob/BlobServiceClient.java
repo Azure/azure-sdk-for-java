@@ -20,7 +20,6 @@ import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
-import com.sun.tools.classfile.ConstantPool;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -73,7 +72,7 @@ public final class BlobServiceClient {
      * @return The {@link ContainerClient} used to interact with the container created.
      */
     public ContainerClient createContainer(String containerName) {
-        return createContainer(containerName, null, null);
+        return createContainerWithResponse(containerName, null, null, Context.NONE).value();
     }
 
     /**
@@ -85,21 +84,7 @@ public final class BlobServiceClient {
      * @param metadata {@link Metadata}
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
-     * @return The {@link ContainerClient} used to interact with the container created.
-     */
-    public ContainerClient createContainer(String containerName, Metadata metadata, PublicAccessType accessType) {
-        return createContainerWithResponse(containerName, metadata, accessType, Context.NONE).value();
-    }
-
-    /**
-     * Creates a new container within a storage account. If a container with the same name already exists, the operation
-     * fails. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
-     *
-     * @param containerName Name of the container to create
-     * @param metadata {@link Metadata}
-     * @param accessType Specifies how the data in this container is available to the public. See the
-     * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link ContainerClient} used to interact with the container created.
      */
     public Response<ContainerClient> createContainerWithResponse(String containerName, Metadata metadata, PublicAccessType accessType, Context context) {
@@ -124,6 +109,7 @@ public final class BlobServiceClient {
      * more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure Docs</a>.
      *
      * @param containerName Name of the container to delete
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
     public VoidResponse deleteContainerWithResponse(String containerName, Context context) {
@@ -172,7 +158,7 @@ public final class BlobServiceClient {
      * @return The storage account properties.
      */
     public StorageServiceProperties getProperties() {
-        return getProperties(null);
+        return getPropertiesWithResponse(null, Context.NONE).value();
     }
 
     /**
@@ -180,17 +166,7 @@ public final class BlobServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @return The storage account properties.
-     */
-    public StorageServiceProperties getProperties(Duration timeout) {
-        return getPropertiesWithResponse(timeout, Context.NONE).value();
-    }
-
-    /**
-     * Gets the properties of a storage account’s Blob service. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
-     *
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#value() value} contains the storage account properties.
      */
     public Response<StorageServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
@@ -221,6 +197,7 @@ public final class BlobServiceClient {
      *
      * @param properties Configures the service.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The storage account properties.
      */
     public VoidResponse setPropertiesWithResponse(StorageServiceProperties properties, Duration timeout, Context context) {
@@ -238,7 +215,7 @@ public final class BlobServiceClient {
      * @return The user delegation key.
      */
     public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return getUserDelegationKey(start, expiry, null);
+        return getUserDelegationKeyWithResponse(start, expiry, null, Context.NONE).value();
     }
 
     /**
@@ -248,20 +225,7 @@ public final class BlobServiceClient {
      * @param start Start time for the key's validity. Null indicates immediate start.
      * @param expiry Expiration of the key's validity.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @return The user delegation key.
-     */
-    public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
-                                                            Duration timeout) {
-        return getUserDelegationKeyWithResponse(start, expiry, timeout, Context.NONE).value();
-    }
-
-    /**
-     * Gets a user delegation key for use with this account's blob storage. Note: This method call is only valid when
-     * using {@link TokenCredential} in this object's {@link HttpPipeline}.
-     *
-     * @param start Start time for the key's validity. Null indicates immediate start.
-     * @param expiry Expiration of the key's validity.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#value() value} contains the user delegation key.
      */
     public Response<UserDelegationKey> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
@@ -280,7 +244,7 @@ public final class BlobServiceClient {
      * @return The storage account statistics.
      */
     public StorageServiceStats getStatistics() {
-        return getStatistics(null);
+        return getStatisticsWithResponse(null, Context.NONE).value();
     }
 
     /**
@@ -290,19 +254,7 @@ public final class BlobServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @return The storage account statistics.
-     */
-    public StorageServiceStats getStatistics(Duration timeout) {
-        return getStatisticsWithResponse(timeout, Context.NONE).value();
-    }
-
-    /**
-     * Retrieves statistics related to replication for the Blob service. It is only available on the secondary location
-     * endpoint when read-access geo-redundant replication is enabled for the storage account. For more information, see
-     * the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
-     *
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#value() value} the storage account statistics.
      */
     public Response<StorageServiceStats> getStatisticsWithResponse(Duration timeout, Context context) {
@@ -318,7 +270,7 @@ public final class BlobServiceClient {
      * @return The storage account info.
      */
     public StorageAccountInfo getAccountInfo() {
-        return getAccountInfo(null);
+        return getAccountInfoWithResponse(null, Context.NONE).value();
     }
 
     /**
@@ -326,17 +278,7 @@ public final class BlobServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @return The storage account info.
-     */
-    public StorageAccountInfo getAccountInfo(Duration timeout) {
-        return getAccountInfoWithResponse(timeout, Context.NONE).value();
-    }
-
-    /**
-     * Returns the sku name and account kind for the account. For more information, please see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
-     *
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#value() value} contains the storage account info.
      */
     public Response<StorageAccountInfo> getAccountInfoWithResponse(Duration timeout, Context context) {

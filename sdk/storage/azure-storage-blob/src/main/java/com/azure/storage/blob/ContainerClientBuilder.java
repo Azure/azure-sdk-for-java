@@ -57,7 +57,7 @@ public final class ContainerClientBuilder {
     private static final String ENDPOINT_PROTOCOL = "defaultendpointsprotocol";
     private static final String ENDPOINT_SUFFIX = "endpointsuffix";
 
-    private final List<HttpPipelinePolicy> policies;
+    private final List<HttpPipelinePolicy> additionalPolicies;
 
     private String endpoint;
     private String containerName;
@@ -76,7 +76,7 @@ public final class ContainerClientBuilder {
     public ContainerClientBuilder() {
         retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
-        policies = new ArrayList<>();
+        additionalPolicies = new ArrayList<>();
     }
 
     /**
@@ -114,7 +114,7 @@ public final class ContainerClientBuilder {
         policies.add(new RequestRetryPolicy(retryOptions));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
-        policies.addAll(this.policies);
+        policies.addAll(this.additionalPolicies);
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(logLevel));
@@ -271,7 +271,7 @@ public final class ContainerClientBuilder {
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public ContainerClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.policies.add(Objects.requireNonNull(pipelinePolicy));
+        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy));
         return this;
     }
 

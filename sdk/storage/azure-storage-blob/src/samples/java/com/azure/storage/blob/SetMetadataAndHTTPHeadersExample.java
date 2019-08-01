@@ -23,6 +23,7 @@ public class SetMetadataAndHTTPHeadersExample {
     /**
      * Entry point into the setting metadata examples for Storage blobs.
      * @param args Unused. Arguments to the program.
+     *
      * @throws IOException If an I/O error occurs
      */
     public static void main(String[] args) throws IOException {
@@ -77,7 +78,7 @@ public class SetMetadataAndHTTPHeadersExample {
          */
         String data = "Hello world!";
         InputStream dataStream = new ByteArrayInputStream(data.getBytes());
-        blobClient.upload(dataStream, data.length(), blobHTTPHeaders, blobMetadata, null, null);
+        blobClient.uploadWithResponse(dataStream, data.length(), blobHTTPHeaders, blobMetadata, null, null, null);
 
         /*
          * Clean up the container and blob.

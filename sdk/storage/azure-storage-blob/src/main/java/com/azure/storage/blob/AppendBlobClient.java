@@ -159,32 +159,7 @@ public final class AppendBlobClient extends BlobClient {
      *      The information of the append blob operation.
      */
     public AppendBlobItem appendBlock(InputStream data, long length) {
-        return appendBlock(data, length, null, null);
-    }
-
-    /**
-     * Commits a new block of data to the end of the existing append blob.
-     * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flux} must produce the same data each time it is subscribed to.
-     *
-     * @param data
-     *         The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
-     *         (the default). In other words, the Flux must produce the same data each time it is subscribed to.
-     * @param length
-     *         The exact length of the data. It is important that this value match precisely the length of the data
-     *         emitted by the {@code Flux}.
-     * @param appendBlobAccessConditions
-     *         {@link AppendBlobAccessConditions}
-     * @param timeout
-     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     *
-     * @return
-     *      The information of the append blob operation.
-     */
-    public AppendBlobItem appendBlock(InputStream data, long length,
-                                      AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout) {
-        return appendBlockWithResponse(data, length, appendBlobAccessConditions, timeout, Context.NONE).value();
+        return appendBlockWithResponse(data, length, null, null, Context.NONE).value();
     }
 
     /**
@@ -212,17 +187,17 @@ public final class AppendBlobClient extends BlobClient {
     public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length,
                                                 AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout, Context context) {
         Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) MAX_APPEND_BLOCK_BYTES))
-                                .map(i -> i * MAX_APPEND_BLOCK_BYTES)
-                                .concatMap(pos -> Mono.fromCallable(() -> {
-                                    long count = pos + MAX_APPEND_BLOCK_BYTES > length ? length - pos : MAX_APPEND_BLOCK_BYTES;
-                                    byte[] cache = new byte[(int) count];
-                                    int read = 0;
-                                    while (read < count) {
-                                        read += data.read(cache, read, (int) count - read);
-                                    }
+            .map(i -> i * MAX_APPEND_BLOCK_BYTES)
+            .concatMap(pos -> Mono.fromCallable(() -> {
+                long count = pos + MAX_APPEND_BLOCK_BYTES > length ? length - pos : MAX_APPEND_BLOCK_BYTES;
+                byte[] cache = new byte[(int) count];
+                int read = 0;
+                while (read < count) {
+                    read += data.read(cache, read, (int) count - read);
+                }
 
-                                    return ByteBufAllocator.DEFAULT.buffer((int) count).writeBytes(cache);
-                                }));
+                return ByteBufAllocator.DEFAULT.buffer((int) count).writeBytes(cache);
+            }));
 
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, appendBlobAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);

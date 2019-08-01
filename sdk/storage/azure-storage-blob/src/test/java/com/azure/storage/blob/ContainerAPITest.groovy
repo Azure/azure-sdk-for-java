@@ -118,7 +118,7 @@ class ContainerAPITest extends APISpec {
 
     def "Get properties lease fail"() {
         when:
-        cu.getProperties(new LeaseAccessConditions().leaseId("garbage"), null)
+        cu.getPropertiesWithResponse(new LeaseAccessConditions().leaseId("garbage"), null, null)
 
         then:
         thrown(StorageException)
@@ -129,7 +129,7 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.getContainerClient(generateContainerName())
 
         when:
-        cu.getProperties(null, null)
+        cu.getProperties()
 
         then:
         thrown(StorageException)
@@ -280,12 +280,12 @@ class ContainerAPITest extends APISpec {
     def "Set access policy min ids"() {
         setup:
         SignedIdentifier identifier = new SignedIdentifier()
-                .id("0000")
-                .accessPolicy(new AccessPolicy()
-                    .start(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                    .expiry(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
-                        .plusDays(1))
-                    .permission("r"))
+            .id("0000")
+            .accessPolicy(new AccessPolicy()
+                .start(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .expiry(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
+                    .plusDays(1))
+                .permission("r"))
 
         List<SignedIdentifier> ids = new ArrayList<>()
         ids.push(identifier)
@@ -300,18 +300,18 @@ class ContainerAPITest extends APISpec {
     def "Set access policy ids"() {
         setup:
         SignedIdentifier identifier = new SignedIdentifier()
-                .id("0000")
-                .accessPolicy(new AccessPolicy()
+            .id("0000")
+            .accessPolicy(new AccessPolicy()
                 .start(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
                 .expiry(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
-                .plusDays(1))
+                    .plusDays(1))
                 .permission("r"))
         SignedIdentifier identifier2 = new SignedIdentifier()
-                .id("0001")
-                .accessPolicy(new AccessPolicy()
+            .id("0001")
+            .accessPolicy(new AccessPolicy()
                 .start(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
                 .expiry(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
-                .plusDays(2))
+                    .plusDays(2))
                 .permission("w"))
         List<SignedIdentifier> ids = new ArrayList<>()
         ids.push(identifier)
@@ -406,11 +406,11 @@ class ContainerAPITest extends APISpec {
     def "Get access policy"() {
         setup:
         SignedIdentifier identifier = new SignedIdentifier()
-                .id("0000")
-                .accessPolicy(new AccessPolicy()
+            .id("0000")
+            .accessPolicy(new AccessPolicy()
                 .start(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
                 .expiry(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
-                .plusDays(1))
+                    .plusDays(1))
                 .permission("r"))
         List<SignedIdentifier> ids = new ArrayList<>()
         ids.push(identifier)
@@ -436,7 +436,7 @@ class ContainerAPITest extends APISpec {
 
     def "Get access policy lease fail"() {
         when:
-        cu.getAccessPolicy(new LeaseAccessConditions().leaseId(garbageLeaseID), null)
+        cu.getAccessPolicyWithResponse(new LeaseAccessConditions().leaseId(garbageLeaseID), null, null)
 
         then:
         thrown(StorageException)
@@ -602,7 +602,7 @@ class ContainerAPITest extends APISpec {
 
         PageBlobClient copyBlob = cu.getPageBlobClient(copyName)
 
-        String status = copyBlob.startCopyFromURLWithResponse(normal.getBlobUrl(),null, null, null, null, null).value()
+        String status = copyBlob.startCopyFromURLWithResponse(normal.getBlobUrl(), null, null, null, null, null).value()
         OffsetDateTime start = OffsetDateTime.now()
         while (status != CopyStatusType.SUCCESS.toString()) {
             status = copyBlob.getPropertiesWithResponse(null, null, null).headers().value("x-ms-copy-status")
@@ -616,9 +616,9 @@ class ContainerAPITest extends APISpec {
         PageBlobClient metadataBlob = cu.getPageBlobClient(metadataName)
         Metadata values = new Metadata()
         values.put("foo", "bar")
-        metadataBlob.create(512, null, null, values, null, null)
+        metadataBlob.createWithResponse(512, null, null, values, null, null, null)
 
-        String snapshotTime = normal.createSnapshot().value().getSnapshotId()
+        String snapshotTime = normal.createSnapshot().getSnapshotId()
 
         BlockBlobClient uncommittedBlob = cu.getBlockBlobClient(uncommittedName)
 
@@ -959,7 +959,7 @@ class ContainerAPITest extends APISpec {
     def "List blobs hier options fail"() {
         when:
         def options = new ListBlobsOptions().details(new BlobListDetails().snapshots(snapshots))
-                .maxResults(maxResults)
+            .maxResults(maxResults)
         cu.listBlobsHierarchy(null, options, null).iterator().hasNext()
 
         then:
@@ -1106,7 +1106,7 @@ class ContainerAPITest extends APISpec {
         def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
 
         when:
-        cu.acquireLease(null, -1, mac, null)
+        cu.acquireLeaseWithResponse(null, -1, mac, null, null)
 
         then:
         thrown(StorageException)
@@ -1123,7 +1123,7 @@ class ContainerAPITest extends APISpec {
         ModifiedAccessConditions mac = new ModifiedAccessConditions().ifMatch(match).ifNoneMatch(noneMatch)
 
         when:
-        cu.acquireLease(null, -1, mac, null)
+        cu.acquireLeaseWithResponse(null, -1, mac, null, null)
 
         then:
         thrown(UnsupportedOperationException)
@@ -1139,7 +1139,7 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.getContainerClient(generateContainerName())
 
         when:
-        cu.acquireLease(null, 50, null, null)
+        cu.acquireLease(null, 50)
 
         then:
         thrown(StorageException)
@@ -1364,7 +1364,7 @@ class ContainerAPITest extends APISpec {
         def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
 
         when:
-        cu.breakLease(null, mac, null)
+        cu.breakLeaseWithResponse(null, mac, null, null)
 
         then:
         thrown(StorageException)
@@ -1381,7 +1381,7 @@ class ContainerAPITest extends APISpec {
         ModifiedAccessConditions mac = new ModifiedAccessConditions().ifMatch(match).ifNoneMatch(noneMatch)
 
         when:
-        cu.breakLease(null, mac, null)
+        cu.breakLeaseWithResponse(null, mac, null, null)
 
         then:
         thrown(UnsupportedOperationException)
@@ -1406,7 +1406,7 @@ class ContainerAPITest extends APISpec {
     def "Change lease"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
-        Response<String> changeLeaseResponse = cu.changeLeaseWithResponse(leaseID, UUID.randomUUID().toString(),null, null, null)
+        Response<String> changeLeaseResponse = cu.changeLeaseWithResponse(leaseID, UUID.randomUUID().toString(), null, null, null)
         leaseID = changeLeaseResponse.value()
 
         expect:
@@ -1445,7 +1445,7 @@ class ContainerAPITest extends APISpec {
         def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
 
         when:
-        cu.changeLease(leaseID, UUID.randomUUID().toString(), mac, null)
+        cu.changeLeaseWithResponse(leaseID, UUID.randomUUID().toString(), mac, null, null)
 
         then:
         thrown(StorageException)
@@ -1462,7 +1462,7 @@ class ContainerAPITest extends APISpec {
         ModifiedAccessConditions mac = new ModifiedAccessConditions().ifMatch(match).ifNoneMatch(noneMatch)
 
         when:
-        cu.changeLease(receivedLeaseID, garbageLeaseID, mac, null)
+        cu.changeLeaseWithResponse(receivedLeaseID, garbageLeaseID, mac, null, null)
 
         then:
         thrown(UnsupportedOperationException)
@@ -1508,12 +1508,12 @@ class ContainerAPITest extends APISpec {
         blobs.next().name() == name + "3"
 
         where:
-        name                  | _
+        name          | _
         // "中文"                 | _  TODO: requires blob name to be url encoded, deferred for post preview-1, storage team to decide on encoding story across SDKS
-        "az[]"                | _
+        "az[]"        | _
         // "hello world"         | _  TODO: see previous TODO
-        "hello/world"         | _
-        "hello&world"         | _
+        "hello/world" | _
+        "hello&world" | _
         // "!*'();:@&=+\$,/?#[]" | _  TODO: see previous TODO
     }
 
@@ -1540,10 +1540,10 @@ class ContainerAPITest extends APISpec {
         }
 
         AppendBlobClient bu = new BlobClientBuilder()
-                .credential(primaryCreds)
-                .endpoint("http://" + primaryCreds.accountName() + ".blob.core.windows.net/\$root/rootblob")
-                .httpClient(getHttpClient())
-                .buildAppendBlobClient()
+            .credential(primaryCreds)
+            .endpoint("http://" + primaryCreds.accountName() + ".blob.core.windows.net/\$root/rootblob")
+            .httpClient(getHttpClient())
+            .buildAppendBlobClient()
 
         when:
         Response<AppendBlobItem> createResponse = bu.createWithResponse(null, null, null, null, null)
