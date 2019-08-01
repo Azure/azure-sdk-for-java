@@ -35,8 +35,7 @@ public class KeyVaultSecrets {
         System.out.println("IDENTITY - CREDENTIAL");
         System.out.println("---------------------\n");
 
-        /*
-        DefaultAzureCredential() is expecting the following environment variables:
+        /* DefaultAzureCredential() is expecting the following environment variables:
          * AZURE_CLIENT_ID
          * AZURE_CLIENT_SECRET
          * AZURE_TENANT_ID
