@@ -12,8 +12,10 @@ import reactor.core.publisher.Mono;
  * An instance of partition processor will process events only from a single partition. New instances of partition
  * processors will be created through {@link PartitionProcessorFactory#createPartitionProcessor(PartitionContext,
  * CheckpointManager) PartitionProcessorFactory}.
+ * </p>
  * <p>
  * Implementations of this interface also have the responsibility of updating checkpoints when appropriate.
+ * </p>
  */
 public interface PartitionProcessor {
 

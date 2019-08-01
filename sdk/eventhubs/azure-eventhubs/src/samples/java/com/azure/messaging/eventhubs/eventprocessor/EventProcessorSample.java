@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs.eventprocessor;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventProcessorAsyncClient;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample code to demonstrate how a customer might use {@link EventProcessorAsyncClient}.
@@ -16,25 +17,31 @@ public class EventProcessorSample {
     private static final String EH_CONNECTION_STRING = "Endpoint=sb://eventhubs-ns-playground-standard.servicebus.windows.net/;SharedAccessKeyName=srnagarcspolicy;SharedAccessKey=tm73rARY77e1FakWDVxsm13yfn5A4ypmtDuOXNQ4RvM=;EntityPath=srnagar-hub";
 
     public static void main(String[] args) throws Exception {
-        EventProcessorAsyncClient eventProcessorAsyncClient = new EventHubClientBuilder()
+        EventHubClientBuilder eventHubClientBuilder = new EventHubClientBuilder()
             .connectionString(EH_CONNECTION_STRING)
             .consumerGroupName(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME)
             .partitionProcessorFactory(LogPartitionProcessor::new)
-            .partitionManager(new InMemoryPartitionManager())
-            .buildEventProcessorAsyncClient();
+            .partitionManager(new InMemoryPartitionManager());
 
+        EventProcessorAsyncClient eventProcessorAsyncClient = eventHubClientBuilder.buildEventProcessorAsyncClient();
         System.out.println("Starting event processor");
         eventProcessorAsyncClient.start();
-        System.out.println("Event processor started");
-
-        eventProcessorAsyncClient.start();
+        eventProcessorAsyncClient.start(); // should be a no-op
 
         // do other stuff
         Thread.sleep(70000);
 
         System.out.println("Stopping event processor");
         eventProcessorAsyncClient.stop().subscribe();
-        System.out.println("Stopped event processor");
+
+        Thread.sleep(TimeUnit.SECONDS.toMillis(40));
+        System.out.println("Starting a new instance of event processor");
+        eventProcessorAsyncClient = eventHubClientBuilder.buildEventProcessorAsyncClient();
+        eventProcessorAsyncClient.start();
+        // do other stuff
+        Thread.sleep(70000);
+        System.out.println("Stopping event processor");
+        eventProcessorAsyncClient.stop().subscribe();
         System.out.println("Exiting process");
     }
 }

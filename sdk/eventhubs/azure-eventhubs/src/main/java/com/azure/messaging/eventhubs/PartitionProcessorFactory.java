@@ -4,7 +4,6 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.eventprocessor.models.PartitionContext;
-import org.reactivestreams.Subscriber;
 
 /**
  * A functional interface to create new instance(s) of {@link PartitionProcessor} when provided with a {@link

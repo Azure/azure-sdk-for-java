@@ -142,6 +142,7 @@ public class Checkpoint {
     }
 
     /**
+     * TODO: add more details here
      * Gets the ETag.
      *
      * @return The ETag.
@@ -151,6 +152,7 @@ public class Checkpoint {
     }
 
     /**
+     * TODO: add more details here
      * Sets the ETag.
      *
      * @param eTag The ETag.

@@ -22,18 +22,18 @@ public class PartitionOwnership {
     private String eTag; // can be null
 
     /**
-     * Gets the event hub name.
+     * Gets the Event Hub name associated with this ownership record.
      *
-     * @return The event hub name.
+     * @return The Event Hub name associated with this ownership record.
      */
     public String eventHubName() {
         return eventHubName;
     }
 
     /**
-     * Sets the event hub name.
+     * Sets the Event Hub name associated with this ownership record.
      *
-     * @param eventHubName The event hub name.
+     * @param eventHubName The Event Hub name associated with this ownership record.
      * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership eventHubName(String eventHubName) {
@@ -42,18 +42,18 @@ public class PartitionOwnership {
     }
 
     /**
-     * Gets the consumer group name.
+     * Gets the consumer group name associated with this ownership record.
      *
-     * @return The consumer group name.
+     * @return The consumer group name associated with this ownership record.
      */
     public String consumerGroupName() {
         return consumerGroupName;
     }
 
     /**
-     * Sets the consumer group name.
+     * Sets the consumer group name associated with this ownership record.
      *
-     * @param consumerGroupName The consumer group name.
+     * @param consumerGroupName The consumer group name associated with this ownership record.
      * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership consumerGroupName(String consumerGroupName) {
@@ -62,18 +62,18 @@ public class PartitionOwnership {
     }
 
     /**
-     * Gets the partition id.
+     * Gets the partition id associated with this ownership record.
      *
-     * @return The partition id.
+     * @return The partition id associated with this ownership record.
      */
     public String partitionId() {
         return partitionId;
     }
 
     /**
-     * Sets the partition id.
+     * Sets the partition id associated with this ownership record.
      *
-     * @param partitionId The partition id.
+     * @param partitionId The partition id associated with this ownership record.
      * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership partitionId(String partitionId) {
@@ -82,18 +82,18 @@ public class PartitionOwnership {
     }
 
     /**
-     * Sets the unique instance identifier.
+     * Sets the unique event processor identifier as the owner of the partition id in this ownership record.
      *
-     * @return The instance identifier.
+     * @return The unique event processor identifier as the owner of the partition id in this ownership record.
      */
     public String instanceId() {
         return instanceId;
     }
 
     /**
-     * Returns the instance identifier.
+     * Returns the unique event processor identifier that owns the partition id in this ownership record.
      *
-     * @param instanceId The instance identifier.
+     * @param instanceId The unique event processor identifier that owns the partition id in this ownership record.
      * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership instanceId(String instanceId) {
@@ -102,18 +102,20 @@ public class PartitionOwnership {
     }
 
     /**
-     * Gets the owner level.
+     * Gets the owner level (aka epoch number) for the event processor identified by {@link #instanceId() this instance}.
      *
-     * @return The owner level.
+     * @return The owner level (aka epoch number) for the event processor identified by {@link #instanceId() this
+     * instance}
      */
     public long ownerLevel() {
         return ownerLevel;
     }
 
     /**
-     * Sets the owner level.
+     * Sets the owner level (aka epoch number) for the event processor identified by {@link #instanceId() this instance}.
      *
-     * @param ownerLevel The owner level.
+     * @param ownerLevel The owner level (aka epoch number) for the event processor identified by {@link #instanceId()
+     * this instance}.
      * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership ownerLevel(long ownerLevel) {
@@ -122,18 +124,18 @@ public class PartitionOwnership {
     }
 
     /**
-     * Gets the offset.
+     * Gets the offset that serves as checkpoint for the partition id in this ownership record.
      *
-     * @return The offset.
+     * @return The offset that serves as checkpoint for the partition id in this ownership record.
      */
     public String offset() {
         return offset;
     }
 
     /**
-     * Sets the offset.
+     * Sets the offset that serves as checkpoint for the partition id in this ownership record.
      *
-     * @param offset The offset.
+     * @param offset The offset that serves as checkpoint for the partition id in this ownership record.
      * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership offset(String offset) {
@@ -142,18 +144,18 @@ public class PartitionOwnership {
     }
 
     /**
-     * Gets the sequence number.
+     * Gets the sequence number that serves as checkpoint for the partition id in this ownership record.
      *
-     * @return The sequence number.
+     * @return The sequence number that serves as checkpoint for the partition id in this ownership record.
      */
     public Long sequenceNumber() {
         return sequenceNumber;
     }
 
     /**
-     * Sets the sequence number.
+     * Sets the sequence number that serves as checkpoint for the partition id in this ownership record.
      *
-     * @param sequenceNumber The sequence number.
+     * @param sequenceNumber The sequence number that serves as checkpoint for the partition id in this ownership record.
      * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership sequenceNumber(Long sequenceNumber) {
@@ -162,18 +164,18 @@ public class PartitionOwnership {
     }
 
     /**
-     * Gets the last modified time as epoch millis.
+     * Gets the last modified time of this ownership record as epoch millis.
      *
-     * @return The last modified time.
+     * @return The last modified time of this ownership record as epoch millis.
      */
     public Long lastModifiedTime() {
         return lastModifiedTime;
     }
 
     /**
-     * Sets the last modified time as epoch millis.
+     * Sets the last modified time of this ownership record as epoch millis.
      *
-     * @param lastModifiedTime The last modified time.
+     * @param lastModifiedTime The last modified time of this ownership record as epoch millis.
      * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership lastModifiedTime(Long lastModifiedTime) {
@@ -182,6 +184,7 @@ public class PartitionOwnership {
     }
 
     /**
+     * TODO: add more details here
      * Gets the eTag.
      *
      * @return The eTag.
@@ -191,6 +194,7 @@ public class PartitionOwnership {
     }
 
     /**
+     * TODO: add more details here
      * Sets the eTag.
      *
      * @param eTag The eTag.

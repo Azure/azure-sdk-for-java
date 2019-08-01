@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.eventprocessor.models;
 
 import com.azure.core.implementation.annotation.Immutable;
+import com.azure.messaging.eventhubs.PartitionProcessor;
 
 /**
  * A model class to contain partition information.
@@ -11,7 +12,6 @@ import com.azure.core.implementation.annotation.Immutable;
 @Immutable
 public class PartitionContext {
 
-    private String instanceId;
     private String partitionId;
     private String eventHubName;
     private String consumerGroupName;
@@ -30,27 +30,27 @@ public class PartitionContext {
     }
 
     /**
-     * Gets the partition id.
+     * Gets the partition id associated to an instance of {@link PartitionProcessor}.
      *
-     * @return The partition id.
+     * @return The partition id associated to an instance of {@link PartitionProcessor}.
      */
     public String partitionId() {
         return partitionId;
     }
 
     /**
-     * Gets the Event Hub name.
+     * Gets the Event Hub name associated to an instance of {@link PartitionProcessor}.
      *
-     * @return The Event Hub name.
+     * @return The Event Hub name associated to an instance of {@link PartitionProcessor}.
      */
     public String eventHubName() {
         return eventHubName;
     }
 
     /**
-     * Gets the consumer group name.
+     * Gets the consumer group name associated to an instance of {@link PartitionProcessor}.
      *
-     * @return The consumer group name.
+     * @return The consumer group name associated to an instance of {@link PartitionProcessor}.
      */
     public String consumerGroupName() {
         return consumerGroupName;

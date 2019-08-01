@@ -40,8 +40,7 @@ public class InMemoryPartitionManager implements PartitionManager {
                     .containsKey(partitionOwnership.partitionId())))
             .filter(partitionOwnership -> {
                 return !partitionOwnershipMap.containsKey(partitionOwnership.partitionId())
-                    || (System.currentTimeMillis() - partitionOwnershipMap.get(partitionOwnership.partitionId())
-                    .lastModifiedTime()) > OWNERSHIP_EXPIRATION_TIME_IN_MILLIS;
+                    || partitionOwnershipMap.get(partitionOwnership.partitionId()).eTag().equals(partitionOwnership.eTag());
             })
             .doOnNext(partitionOwnership -> logger
                 .info("Ownership of partition {} claimed by {}", partitionOwnership.partitionId(),

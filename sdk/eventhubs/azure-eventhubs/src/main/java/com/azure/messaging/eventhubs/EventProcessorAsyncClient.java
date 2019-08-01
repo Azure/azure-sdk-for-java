@@ -10,13 +10,13 @@ import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import org.reactivestreams.Publisher;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -34,6 +34,7 @@ public class EventProcessorAsyncClient {
 
     private static final long INTERVAL_IN_SECONDS = 10; // run every 10 seconds
     private static final long INITIAL_DELAY = 0; // start immediately
+    private static final long OWNERSHIP_EXPIRATION_TIME_IN_MILLIS = TimeUnit.SECONDS.toMillis(30);
     private final ClientLogger logger = new ClientLogger(EventProcessorAsyncClient.class);
 
     private final EventHubAsyncClient eventHubAsyncClient;
@@ -85,12 +86,14 @@ public class EventProcessorAsyncClient {
      * <p>
      * Subsequent calls to start will be ignored if this event processor is already running. Calling start after {@link
      * #stop()} is called will restart this event processor.
+     * </p>
      */
     public synchronized void start() {
         if (!started.compareAndSet(false, true)) {
             logger.info("Event processor is already running");
             return;
         }
+        logger.info("Starting a new event processor instance with id {}", this.instanceId);
         scheduler = Schedulers.newElastic("EventProcessorAsyncClient");
         runner = scheduler.schedulePeriodically(this::run, INITIAL_DELAY, INTERVAL_IN_SECONDS, TimeUnit.SECONDS);
     }
@@ -100,6 +103,7 @@ public class EventProcessorAsyncClient {
      * shutdown and any open resources will be closed.
      * <p>
      * Subsequent calls to stop will be ignored if the event processor is not running.
+     * </p>
      */
     public synchronized Mono<Void> stop() {
         if (!started.compareAndSet(true, false)) {
@@ -134,25 +138,54 @@ public class EventProcessorAsyncClient {
         consumers when ownership of this instance has changed */
         final Flux<PartitionOwnership> ownershipFlux = partitionManager.listOwnership(eventHubName, consumerGroupName)
             .cache();
-        eventHubAsyncClient.getPartitionIds().flatMap(id -> {
-            return ownershipFlux.filter(ownership -> id.equals(ownership.partitionId()))
-                // Ownership has never been claimed, so it won't exist in the list, so we provide a default.
-                .single(new PartitionOwnership()
-                    .partitionId(id)
-                    .eventHubName(this.eventHubName)
-                    .instanceId(this.instanceId)
-                    .consumerGroupName(this.consumerGroupName)
-                    .ownerLevel(0L));
-        }).flatMap(ownershipInfo -> {
-            return partitionManager.claimOwnership(Collections.singletonList(ownershipInfo)).doOnComplete(() -> {
-                logger.info("Claimed ownership");
-            }).doOnError(error -> {
-                logger.error("Unable to claim ownership", error);
-            });
-        }).subscribe(partitionOwnership -> receiveEvents(partitionOwnership.partitionId()));
+        eventHubAsyncClient.getPartitionIds()
+            .flatMap(id -> getCandidatePartitions(ownershipFlux, id))
+            .flatMap(ownershipInfo -> claimOwnership(ownershipInfo))
+            .subscribe(partitionOwnership -> receiveEvents(partitionOwnership.partitionId()));
     }
 
-    /**
+    /*
+     * Get the candidate partitions for claiming ownerships
+     */
+    private Publisher<? extends PartitionOwnership> getCandidatePartitions(Flux<PartitionOwnership> ownershipFlux,
+        String id) {
+        return ownershipFlux
+            .doOnNext(ownership -> logger
+                .info("Ownership flux: partitionId = {}; EH: partitionId = {}", ownership.partitionId(), id))
+            // Ownership has never been claimed, so it won't exist in the list, so we provide a default.
+            .filter(ownership -> id.equals(ownership.partitionId()))
+            .single(new PartitionOwnership()
+                .partitionId(id)
+                .eventHubName(this.eventHubName)
+                .instanceId(this.instanceId)
+                .consumerGroupName(this.consumerGroupName)
+                .ownerLevel(0L));
+    }
+
+
+    /*
+     * Claim ownership of the given partition if it's available
+     */
+    private Publisher<? extends PartitionOwnership> claimOwnership(PartitionOwnership ownershipInfo) {
+        // Claim ownership if:
+        // it's not previously owned by any other instance,
+        // or if the last modified time is greater than ownership expiration time
+        // and previous owner is not this instance
+        if (ownershipInfo.lastModifiedTime() == null ||
+            (System.currentTimeMillis() - ownershipInfo.lastModifiedTime() > OWNERSHIP_EXPIRATION_TIME_IN_MILLIS
+                && !ownershipInfo.instanceId().equals(this.instanceId))) {
+            ownershipInfo.instanceId(this.instanceId); // update instance id before claiming ownership
+            return partitionManager.claimOwnership(Collections.singletonList(ownershipInfo)).doOnComplete(() -> {
+                logger.info("Claimed ownership of partition {}", ownershipInfo.partitionId());
+            }).doOnError(error -> {
+                logger.error("Unable to claim ownership of partition {}", ownershipInfo.partitionId(), error);
+            });
+        } else {
+            return Flux.empty();
+        }
+    }
+
+    /*
      * Creates a new consumer for given partition and starts receiving events for that partition.
      */
     private void receiveEvents(String partitionId) {
