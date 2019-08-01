@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Stream;
 
 /**
  * Verify the classes with annotation @ServiceClient should have following rules:
@@ -55,14 +54,16 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
     private static final String COLLECTION_RETURN_TYPE = "ReturnType.COLLECTION";
     private static final String SINGLE_RETURN_TYPE = "ReturnType.SINGLE";
 
+    private static final String JAVA_SPEC_LINK = "https://jogiles.z19.web.core.windows.net/java-spec-draft/JavaSpec.html#sec-common-service-client-patterns";
+
     private static final String PAGED_FLUX = "PagedFlux";
     private static final String MONO = "Mono";
     private static final String RESPONSE = "Response";
     private static final String STREAM = "Stream";
 
-    private static final String COLLECTION_RETURN_ERROR = "%s should either be a ''Flux'' class or class extends it if returns an ''async'' collection, " +
+    private static final String COLLECTION_RETURN_ERROR = "%s should either be a ''PagedFlux''type it if returns an ''async'' collection, " +
         "or a ''Stream'' class if it returns a ''sync'' collection.";
-    private static final String SINGLE_VALUE_RETURN_ERROR = "%s should either be a ''Mono'' class or class extends it if returns an ''async'' single value, " +
+    private static final String SINGLE_VALUE_RETURN_ERROR = "%s should either be a ''Mono'' type if returns an ''async'' single value, " +
         "or a ''Response'' class if it returns a ''sync'' single value.";
 
     private static final Set<String> COMMON_NAMING_PREFIX_SET = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
@@ -242,7 +243,7 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
         }
 
         // Class named <ServiceName>Client, the property 'isAsync' must to be false or use the default value
-        if (className.endsWith(CLIENT) && isAsync) {
+        if (className.endsWith(CLIENT) && !className.endsWith(ASYNC_CLIENT) && isAsync) {
             log(classDefToken, String.format("Synchronous Client, class ''%s'' must set property''%s'' to false or without the property.",
                 className, IS_ASYNC));
         }
@@ -290,13 +291,13 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
      * Verify all methods that have a @ServiceMethod annotation in a class annotated with @ServiceClient should
      *    follow below rules:
      *    1) Follows method naming pattern. Refer to Java Spec.
-     *    2) Methods should not have "Async" added to the method name
+     *    2) Methods should not have "Async" added to the method name.
      *    3) The return type of async and sync clients should be as per guidelines:
-     *      3.1) The return type for async collection should be of type? extends Flux
-     *      3.2) The return type for async single value should be of type? extends Mono
-     *      3.3) The return type for sync collection should be of type? extends Stream
-     *      3.4) The return type for sync single value should be of type? extends Response
-     *    4) naming pattern for 'withResponse'
+     *      3.1) The return type for async collection should be of type? extends Flux.
+     *      3.2) The return type for async single value should be of type? extends Mono.
+     *      3.3) The return type for sync collection should be of type? extends Stream.
+     *      3.4) The return type for sync single value should be of type? extends Response.
+     *    4) naming pattern for 'withResponse'.
      *    5) Synchronous method with annotation @ServiceMethod has to have {@code Context} as a parameter.
      *    Asynchronous method with annotation @ServiceMethod must not has {@code Context} as a parameter.
      *
@@ -314,17 +315,18 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
 
         // 1) Follows method naming pattern. Refer to Java Spec.
         if (!isCommonNamingPattern(methodName)) {
-            log(methodDefToken, String.format("Method name ''%s'' should follow a common vocabulary. Refer to Java Spec. ", methodName));
+            log(methodDefToken, String.format("Method name ''%s'' should follow a common vocabulary. Refer to Java Spec: %s.",
+                methodName, JAVA_SPEC_LINK));
         }
 
         // 2) Methods should not have "Async" added to the method name
         if (methodName.contains(ASYNC)) {
-            log(methodDefToken, String.format("Method name ''%s'' should not contain ''%s'' in the method name",
+            log(methodDefToken, String.format("Method name ''%s'' should not contain ''%s'' in the method name.",
                 methodName, ASYNC));
         }
 
         // 3) The return type of async and sync clients should be as per guidelines
-        checkServiceClientReturnType(methodDefToken, serviceMethodAnnotation);
+        checkServiceClientMethodReturnType(methodDefToken, serviceMethodAnnotation);
 
         // 4) Check 'withResponse' naming pattern
         checkReturnTypeNamingPattern(methodDefToken, methodName);
@@ -425,10 +427,10 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
         String returnType = sb.toString();
 
         if (returnType.startsWith(RESPONSE_GENERIC_START) && !methodName.endsWith(WITH_RESPONSE)) {
-            log(methodDefToken, String.format("Return type is ''%s'', the method name must end with ''%s'' ",
+            log(methodDefToken, String.format("Return type is ''%s'', the method name must end with ''%s''.",
                 RESPONSE, WITH_RESPONSE));
         } else if (returnType.equals(MONO_RESPONSE) && methodName.endsWith(WITH_RESPONSE)) {
-            log(methodDefToken, String.format("Return type is ''%s'', the method name must not end with ''%s'' ",
+            log(methodDefToken, String.format("Return type is ''%s'', the method name must not end with ''%s''.",
                 MONO_RESPONSE, WITH_RESPONSE));
         }
     }
@@ -505,7 +507,7 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
      * @param serviceMethodAnnotation ANNOTATION AST node which used to find the if the annotation has 'return' key,
      * if found. return the value of member'return'.
      */
-    private void checkServiceClientReturnType(DetailAST methodDefToken, DetailAST serviceMethodAnnotation) {
+    private void checkServiceClientMethodReturnType(DetailAST methodDefToken, DetailAST serviceMethodAnnotation) {
         // Find the annotation member 'returns' value
         String returnsAnnotationMemberValue = getAnnotationMemberReturnsValue(serviceMethodAnnotation, "returns");
 
@@ -519,12 +521,6 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
         } else if (COLLECTION_RETURN_TYPE.equals(returnsAnnotationMemberValue)
             && !returnType.startsWith(PAGED_FLUX) && !returnType.startsWith(STREAM)) {
             log(methodDefToken, String.format(COLLECTION_RETURN_ERROR, COLLECTION_RETURN_TYPE));
-        } else {
-            log(serviceMethodAnnotation, String.format("''returns'' value = ''%s'' should match one of below " +
-                "patterns : Return type for (1) asynchronous collection should be type of ''%s''; (2) asynchronous" +
-                    " single should be of type of ''%s''; (3) synchronous collection should be type of ''%s''; (4) " +
-                    "synchronous single should be type of ''s''.",
-                returnsAnnotationMemberValue, PAGED_FLUX, MONO, STREAM, RESPONSE));
         }
     }
 }
