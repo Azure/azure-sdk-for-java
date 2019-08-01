@@ -34,7 +34,7 @@ public interface Resources extends HasInner<ResourcesInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable checkExistenceByIdAsync(String resourceId, String apiVersion);
+    Observable<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion);
 
     /**
      * Deletes a resource by ID.
@@ -121,7 +121,7 @@ public interface Resources extends HasInner<ResourcesInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable checkExistenceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion);
+    Observable<Boolean> checkExistenceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion);
 
     /**
      * Deletes a resource.
