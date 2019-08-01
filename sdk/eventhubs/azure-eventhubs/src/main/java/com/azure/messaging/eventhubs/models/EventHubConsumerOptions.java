@@ -21,7 +21,7 @@ import java.util.Optional;
  * @see EventHubAsyncClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  */
 @Fluent
-public class EventHubConsumerOptions {
+public class EventHubConsumerOptions implements Cloneable {
     /**
      * The maximum length, in characters, for the identifier assigned to an {@link EventHubConsumer}.
      */
@@ -201,9 +201,16 @@ public class EventHubConsumerOptions {
      *
      * @return A shallow clone of this object.
      */
+    @Override
     public EventHubConsumerOptions clone() {
-        final EventHubConsumerOptions clone = new EventHubConsumerOptions()
-            .scheduler(this.scheduler())
+        EventHubConsumerOptions clone;
+        try {
+            clone = (EventHubConsumerOptions) super.clone();
+        } catch (CloneNotSupportedException e) {
+            clone = new EventHubConsumerOptions();
+        }
+
+        clone.scheduler(this.scheduler())
             .identifier(this.identifier())
             .prefetchCount(this.prefetchCount())
             .ownerLevel(this.ownerLevel());
