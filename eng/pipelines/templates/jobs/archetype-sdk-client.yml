@@ -1,14 +1,4 @@
 parameters:
-  BuildMatrix:
-    Java 8:
-      ArtifactName: 'packages'
-      ProfileFlag: ''
-      JavaVersion: '1.8'
-    Java LTS:
-      ArtifactName: 'java-lts-packages'
-      ProfileFlag: '-Djava-lts'
-      JavaVersion: '1.11'
-
   PreTestSteps: []
   TestOptions: '$(DefaultOptions) $(ProfileFlag)'
   TestGoals: test
@@ -54,7 +44,15 @@ jobs:
       vmImage: 'ubuntu-16.04'
 
     strategy:
-      matrix: ${{ parameters.BuildMatrix }}
+      matrix:
+        Java 8:
+          ArtifactName: 'packages'
+          ProfileFlag: ''
+          JavaVersion: '1.8'
+        Java LTS:
+          ArtifactName: 'java-lts-packages'
+          ProfileFlag: '-Djava-lts'
+          JavaVersion: '1.11'
 
     steps:
       - script: |
