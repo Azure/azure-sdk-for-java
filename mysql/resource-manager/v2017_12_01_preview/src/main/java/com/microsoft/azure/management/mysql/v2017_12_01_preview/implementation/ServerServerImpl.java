@@ -20,15 +20,15 @@ import com.microsoft.azure.management.mysql.v2017_12_01_preview.ServerState;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.ServerVersion;
 
 class ServerServerImpl extends WrapperImpl<ServerInner> implements ServerServer {
-    private final MySQLManager manager;
+    private final DBforMySQLManager manager;
 
-    ServerServerImpl(ServerInner inner,  MySQLManager manager) {
+    ServerServerImpl(ServerInner inner,  DBforMySQLManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public MySQLManager manager() {
+    public DBforMySQLManager manager() {
         return this.manager;
     }
 

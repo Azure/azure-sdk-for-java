@@ -18,14 +18,14 @@ import java.util.List;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.FirewallRule;
 
 class FirewallRulesImpl extends WrapperImpl<FirewallRulesInner> implements FirewallRules {
-    private final MySQLManager manager;
+    private final DBforMySQLManager manager;
 
-    FirewallRulesImpl(MySQLManager manager) {
+    FirewallRulesImpl(DBforMySQLManager manager) {
         super(manager.inner().firewallRules());
         this.manager = manager;
     }
 
-    public MySQLManager manager() {
+    public DBforMySQLManager manager() {
         return this.manager;
     }
 

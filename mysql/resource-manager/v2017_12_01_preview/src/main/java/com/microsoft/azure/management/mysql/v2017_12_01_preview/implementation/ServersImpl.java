@@ -23,8 +23,8 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 
-class ServersImpl extends GroupableResourcesCoreImpl<Server, ServerImpl, ServerInner, ServersInner, MySQLManager>  implements Servers {
-    protected ServersImpl(MySQLManager manager) {
+class ServersImpl extends GroupableResourcesCoreImpl<Server, ServerImpl, ServerInner, ServersInner, DBforMySQLManager>  implements Servers {
+    protected ServersImpl(DBforMySQLManager manager) {
         super(manager.inner().servers(), manager);
     }
 
