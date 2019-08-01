@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.eventprocessor.models.PartitionContext;
+import com.azure.messaging.eventhubs.models.PartitionContext;
 import reactor.core.publisher.Mono;
 
 /**
@@ -21,7 +21,7 @@ public interface PartitionProcessor {
 
     /**
      * This method is called when this {@link EventProcessorAsyncClient} takes ownership of a new partition and before any
-     * events from this partition is received.
+     * events from this partition are received.
      */
     void initialize();
 

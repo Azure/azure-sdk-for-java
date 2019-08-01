@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs.eventprocessor.models;
+package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.implementation.annotation.Fluent;
+import java.util.Objects;
 
 /**
  * A model class to hold partition ownership information.
@@ -16,10 +17,10 @@ public class PartitionOwnership {
     private String partitionId;
     private String instanceId;
     private long ownerLevel;
-    private String offset; // can be null
-    private Long sequenceNumber; // can be null
-    private Long lastModifiedTime; // can be null
-    private String eTag; // can be null
+    private String offset; // optional
+    private Long sequenceNumber; // optional
+    private Long lastModifiedTime; // optional
+    private String eTag; // optional
 
     /**
      * Gets the Event Hub name associated with this ownership record.
@@ -37,7 +38,7 @@ public class PartitionOwnership {
      * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership eventHubName(String eventHubName) {
-        this.eventHubName = eventHubName;
+        this.eventHubName = Objects.requireNonNull(eventHubName, "eventHubName cannot be null");
         return this;
     }
 
@@ -57,7 +58,7 @@ public class PartitionOwnership {
      * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership consumerGroupName(String consumerGroupName) {
-        this.consumerGroupName = consumerGroupName;
+        this.consumerGroupName = Objects.requireNonNull(consumerGroupName, "consumerGroupName cannot be null");
         return this;
     }
 
@@ -77,7 +78,7 @@ public class PartitionOwnership {
      * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership partitionId(String partitionId) {
-        this.partitionId = partitionId;
+        this.partitionId = Objects.requireNonNull(partitionId, "partitionId cannot be null");
         return this;
     }
 
@@ -97,7 +98,7 @@ public class PartitionOwnership {
      * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership instanceId(String instanceId) {
-        this.instanceId = instanceId;
+        this.instanceId = Objects.requireNonNull(instanceId, "instanceId cannot be null");
         return this;
     }
 

@@ -4,8 +4,8 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.eventprocessor.models.PartitionContext;
-import com.azure.messaging.eventhubs.eventprocessor.models.PartitionOwnership;
+import com.azure.messaging.eventhubs.models.PartitionContext;
+import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import java.io.IOException;
@@ -25,10 +25,11 @@ import reactor.core.scheduler.Schedulers;
 
 /**
  * This is the starting point for event processor.
- *
+ * <p>
  * Event Processor based application consists of one or more instances of {@link EventProcessorAsyncClient} which are
  * set up to consume events from the same Event Hub + consumer group and to balance the workload across different
  * instances and track progress when events are processed.
+ * </p>
  */
 public class EventProcessorAsyncClient {
 
@@ -54,10 +55,10 @@ public class EventProcessorAsyncClient {
      *
      * @param eventHubAsyncClient The {@link EventHubAsyncClient}.
      * @param consumerGroupName The consumer group name used in this event processor to consumer events.
-     * @param partitionProcessorFactory The factory to create new partition processors.
+     * @param partitionProcessorFactory The factory to create new partition processor(s).
      * @param initialEventPosition Initial event position to start consuming events.
      * @param partitionManager The partition manager.
-     * @param eventHubName The event hub name.
+     * @param eventHubName The Event Hub name.
      */
     EventProcessorAsyncClient(EventHubAsyncClient eventHubAsyncClient, String consumerGroupName,
         PartitionProcessorFactory partitionProcessorFactory, EventPosition initialEventPosition,
@@ -141,6 +142,7 @@ public class EventProcessorAsyncClient {
         eventHubAsyncClient.getPartitionIds()
             .flatMap(id -> getCandidatePartitions(ownershipFlux, id))
             .flatMap(this::claimOwnership)
+            .subscribeOn(Schedulers.newElastic("PartitionPumps"))
             .subscribe(partitionOwnership -> receiveEvents(partitionOwnership.partitionId()));
     }
 

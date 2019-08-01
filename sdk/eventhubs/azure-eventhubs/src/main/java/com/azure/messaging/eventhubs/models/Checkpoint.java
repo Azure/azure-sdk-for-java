@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs.eventprocessor.models;
+package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.implementation.annotation.Fluent;
 import com.azure.messaging.eventhubs.PartitionProcessor;

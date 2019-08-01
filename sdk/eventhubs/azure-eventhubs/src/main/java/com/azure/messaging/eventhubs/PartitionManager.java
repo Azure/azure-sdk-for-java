@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.eventprocessor.models.Checkpoint;
-import com.azure.messaging.eventhubs.eventprocessor.models.PartitionOwnership;
+import com.azure.messaging.eventhubs.models.Checkpoint;
+import com.azure.messaging.eventhubs.models.PartitionOwnership;
 
 import java.util.List;
 

@@ -1,18 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs.eventprocessor;
+package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.CheckpointManager;
-import com.azure.messaging.eventhubs.CloseReason;
-import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.PartitionProcessor;
-import com.azure.messaging.eventhubs.eventprocessor.models.PartitionContext;
+import com.azure.messaging.eventhubs.models.PartitionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+/**
+ * A sample implementation of {@link PartitionProcessor}. This implementation logs the APIs that were called by {@link
+ * EventProcessorAsyncClient} while processing a partition.
+ */
 public class LogPartitionProcessor implements PartitionProcessor {
+
     private final Logger logger = LoggerFactory.getLogger(LogPartitionProcessor.class);
     private final PartitionContext partitionContext;
     private final CheckpointManager checkpointManager;
@@ -27,8 +28,9 @@ public class LogPartitionProcessor implements PartitionProcessor {
 
     @Override
     public void initialize() {
-        logger.info("Initializing partition processor: Event Hub name = {}; consumer group name = {}; partition id = {}",
-            partitionContext.eventHubName(), partitionContext.consumerGroupName(), partitionContext.partitionId());
+        logger
+            .info("Initializing partition processor: Event Hub name = {}; consumer group name = {}; partition id = {}",
+                partitionContext.eventHubName(), partitionContext.consumerGroupName(), partitionContext.partitionId());
     }
 
     @Override

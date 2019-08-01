@@ -3,15 +3,15 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.eventprocessor.models.Checkpoint;
-import com.azure.messaging.eventhubs.eventprocessor.models.PartitionContext;
+import com.azure.messaging.eventhubs.models.Checkpoint;
+import com.azure.messaging.eventhubs.models.PartitionContext;
 
 import java.util.concurrent.atomic.AtomicReference;
 import reactor.core.publisher.Mono;
 
 /**
  * The checkpoint manager that clients should use to update checkpoints to track progress of events processed. Each
- * instance of a {@link PartitionProcessor} will be provided with a CheckpointManager.
+ * instance of a {@link PartitionProcessor} will be provided with it's own instance of a CheckpointManager.
  */
 public class CheckpointManager {
 
@@ -29,7 +29,7 @@ public class CheckpointManager {
      * @param partitionManager The {@link PartitionManager} implementation that will be store the checkpoint information.
      * @param eTag The last known ETag stored in {@link PartitionManager} for this partition. When the next update
      * checkpoint is called from this CheckpointManager, this ETag will be used to provide <a
-     * href="https://en.wikipedia.org/wiki/Optimistic_concurrency_control">optimistic
+     * href="https://en.wikipedia.org/wiki/Optimistic_concurrency_control">optimistic concurrency</a>
      */
     CheckpointManager(String instanceId, PartitionContext partitionContext, PartitionManager partitionManager,
         String eTag) {
@@ -40,7 +40,8 @@ public class CheckpointManager {
     }
 
     /**
-     * Updates a checkpoint using the event data.
+     * Updates the checkpoint for this partition using the event data. This will serve as the last known successfully
+     * processed event in this partition if the update is successful.
      *
      * @param eventData The event data to use for updating the checkpoint.
      * @return a representation of deferred execution of this call.
@@ -61,7 +62,8 @@ public class CheckpointManager {
     }
 
     /**
-     * Updates a checkpoint using the given offset and sequence number.
+     * Updates a checkpoint using the given offset and sequence number. This will serve as the last known successfully
+     * processed event in this partition if the update is successful.
      *
      * @param sequenceNumber The sequence number to update the checkpoint.
      * @param offset The offset to update the checkpoint.

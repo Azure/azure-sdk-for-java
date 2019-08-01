@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs.eventprocessor;
+package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.PartitionManager;
-import com.azure.messaging.eventhubs.eventprocessor.models.Checkpoint;
-import com.azure.messaging.eventhubs.eventprocessor.models.PartitionOwnership;
+import com.azure.messaging.eventhubs.models.Checkpoint;
+import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -19,7 +18,6 @@ import reactor.core.publisher.Mono;
  */
 public class InMemoryPartitionManager implements PartitionManager {
 
-    private static final long OWNERSHIP_EXPIRATION_TIME_IN_MILLIS = 30000; // 30 seconds
     private final Map<String, PartitionOwnership> partitionOwnershipMap = new ConcurrentHashMap<>();
     private final ClientLogger logger = new ClientLogger(InMemoryPartitionManager.class);
 
@@ -34,9 +32,6 @@ public class InMemoryPartitionManager implements PartitionManager {
         List<PartitionOwnership> requestedPartitionOwnerships) {
 
         return Flux.fromIterable(requestedPartitionOwnerships)
-            .doOnNext(partitionOwnership -> logger
-                .info("Is this partition {} already owned? {} ", partitionOwnership.partitionId(), partitionOwnershipMap
-                    .containsKey(partitionOwnership.partitionId())))
             .filter(partitionOwnership -> {
                 return !partitionOwnershipMap.containsKey(partitionOwnership.partitionId())
                     || partitionOwnershipMap.get(partitionOwnership.partitionId()).eTag().equals(partitionOwnership.eTag());
