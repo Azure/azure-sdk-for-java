@@ -57,7 +57,7 @@ public class SendOptions implements Cloneable {
      * @return A shallow clone of this object.
      */
     @Override
-    public Object clone() {
+    public SendOptions clone() {
         SendOptions clone;
         try {
             clone = (SendOptions) super.clone();
@@ -65,8 +65,6 @@ public class SendOptions implements Cloneable {
             clone = new SendOptions();
         }
 
-        clone.partitionKey(partitionKey);
-
-        return clone;
+        return clone.partitionKey(partitionKey);
     }
 }

@@ -180,8 +180,8 @@ public class CosmosClientBuilder {
 
         ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot build client without service endpoint");
         ifThrowIllegalArgException(
-                this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty()),
-                "cannot build client without key or resource token");
+            this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty()) && this.tokenResolver == null,
+            "cannot build client without any one of key, resource token, permissions, and token resolver");
 
         return new CosmosClient(this);
     }
