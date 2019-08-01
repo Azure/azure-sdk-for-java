@@ -33,18 +33,23 @@ public class ManagedIdentityCredentialTest {
 
     @Test
     public void testAppServiceMSICredentialConfigurations() {
-        ConfigurationManager.getConfiguration()
-            .put(BaseConfigurations.MSI_ENDPOINT, "http://foo")
-            .put(BaseConfigurations.MSI_SECRET, "bar");
-        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().build();
-        Assert.assertEquals("http://foo", credential.msiEndpoint());
-        Assert.assertEquals("bar", credential.msiSecret());
+        Configuration configuration = ConfigurationManager.getConfiguration();
+
+        try {
+            configuration
+                .put(BaseConfigurations.MSI_ENDPOINT, "http://foo")
+                .put(BaseConfigurations.MSI_SECRET, "bar");
+            ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().build();
+            Assert.assertEquals("http://foo", credential.msiEndpoint());
+            Assert.assertEquals("bar", credential.msiSecret());
+        } finally {
+            configuration.remove(BaseConfigurations.MSI_ENDPOINT);
+            configuration.remove(BaseConfigurations.MSI_SECRET);
+        }
     }
 
     @Test
     public void testVirtualMachineMSICredentialConfigurations() {
-        ConfigurationManager.getConfiguration().remove(BaseConfigurations.MSI_ENDPOINT);
-        ConfigurationManager.getConfiguration().remove(BaseConfigurations.MSI_SECRET);
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId("foo").build();
         Assert.assertEquals("foo", credential.clientId());
     }
