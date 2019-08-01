@@ -144,7 +144,7 @@ public final class BlobServiceAsyncClient {
     }
 
     Mono<VoidResponse> deleteContainer(String containerName, Context context) {
-        return getContainerAsyncClient(containerName).delete(null, context);
+        return getContainerAsyncClient(containerName).deleteWithResponse(null, context);
     }
 
     /**

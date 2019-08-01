@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -64,17 +65,17 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobAsyncClient#abortCopyFromURL(String)} and
-     * {@link BlobAsyncClient#abortCopyFromURL(String, LeaseAccessConditions)}
+     * {@link BlobAsyncClient#abortCopyFromURLWithResponse(String, LeaseAccessConditions, Context)} (String, LeaseAccessConditions)}
      */
     public void abortCopyFromURL() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURL#String
-        client.abortCopyFromURL(copyId)
+        client.abortCopyFromURLWithResponse(copyId, null, new Context("key1", "value1"))
             .subscribe(response -> System.out.printf("Aborted copy completed with status %d%n", response.statusCode()));
         // END: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURL#String
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURL#String-LeaseAccessConditions
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().leaseId(leaseId);
-        client.abortCopyFromURL(copyId, leaseAccessConditions)
+        client.abortCopyFromURLWithResponse(copyId, leaseAccessConditions)
             .subscribe(response -> System.out.printf("Aborted copy completed with status %d%n", response.statusCode()));
         // END: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURL#String-LeaseAccessConditions
     }
@@ -157,16 +158,16 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobAsyncClient#delete()} and
-     * {@link BlobAsyncClient#delete(DeleteSnapshotsOptionType, BlobAccessConditions)}
+     * {@link BlobAsyncClient#deleteWithResponse(DeleteSnapshotsOptionType, BlobAccessConditions)}
      */
     public void delete() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.delete
-        client.delete()
+        client.deleteWithResponse(null, null)
             .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.statusCode()));
         // END: com.azure.storage.blob.BlobAsyncClient.delete
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.delete#DeleteSnapshotsOptionType-BlobAccessConditions
-        client.delete(DeleteSnapshotsOptionType.INCLUDE, null)
+        client.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, null)
             .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.statusCode()));
         // END: com.azure.storage.blob.BlobAsyncClient.delete#DeleteSnapshotsOptionType-BlobAccessConditions
     }
@@ -260,14 +261,14 @@ public class BlobAsyncClientJavaDocCodeSnippets {
      */
     public void setTier() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.setTier#AccessTier
-        client.setTier(AccessTier.HOT)
+        client.setTierWithResponse(AccessTier.HOT, null)
             .subscribe(response -> System.out.printf("Set tier completed with status code %d%n", response.statusCode()));
         // END: com.azure.storage.blob.BlobAsyncClient.setTier#AccessTier
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.setTier#AccessTier-LeaseAccessConditions
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().leaseId(leaseId);
 
-        client.setTier(AccessTier.HOT, accessConditions)
+        client.setTierWithResponse(AccessTier.HOT, accessConditions)
             .subscribe(response -> System.out.printf("Set tier completed with status code %d%n", response.statusCode()));
         // END: com.azure.storage.blob.BlobAsyncClient.setTier#AccessTier-LeaseAccessConditions
     }

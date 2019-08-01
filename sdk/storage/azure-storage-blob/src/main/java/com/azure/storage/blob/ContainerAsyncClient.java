@@ -315,8 +315,8 @@ public final class ContainerAsyncClient {
      *
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> delete() {
-        return delete(null);
+    public Mono<Void> delete() {
+        return deleteWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -329,11 +329,11 @@ public final class ContainerAsyncClient {
      * @throws UnsupportedOperationException If {@link ContainerAccessConditions#modifiedAccessConditions()} has either
      * {@link ModifiedAccessConditions#ifMatch()} or {@link ModifiedAccessConditions#ifNoneMatch()} set.
      */
-    public Mono<VoidResponse> delete(ContainerAccessConditions accessConditions) {
-        return withContext(context -> delete(accessConditions, context));
+    public Mono<VoidResponse> deleteWithResponse(ContainerAccessConditions accessConditions) {
+        return withContext(context -> deleteWithResponse(accessConditions, context));
     }
 
-    Mono<VoidResponse> delete(ContainerAccessConditions accessConditions, Context context) {
+    Mono<VoidResponse> deleteWithResponse(ContainerAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
 
         if (!validateNoEtag(accessConditions.modifiedAccessConditions())) {

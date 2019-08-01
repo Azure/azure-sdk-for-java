@@ -74,17 +74,17 @@ public class BlobClientJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobClient#abortCopyFromURL(String)} and
-     * {@link BlobClient#abortCopyFromURL(String, LeaseAccessConditions, Duration, Context)}
+     * {@link BlobClient#abortCopyFromURLWithResponse(String, LeaseAccessConditions, Duration, Context)} (String, LeaseAccessConditions, Duration, Context)}
      */
     public void abortCopyFromURL() {
         // BEGIN: com.azure.storage.blob.BlobClient.abortCopyFromURL#String
-        System.out.printf("Aborted copy completed with status %d%n", client.abortCopyFromURL(copyId).statusCode());
+        System.out.printf("Aborted copy completed with status %d%n", client.abortCopyFromURLWithResponse(copyId, null, null, new Context("key1", "value1")).statusCode());
         // END: com.azure.storage.blob.BlobClient.abortCopyFromURL#String
 
         // BEGIN: com.azure.storage.blob.BlobClient.abortCopyFromURL#String-LeaseAccessConditions-Duration
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().leaseId(leaseId);
         System.out.printf("Aborted copy completed with status %d%n",
-            client.abortCopyFromURL(copyId, leaseAccessConditions, timeout, new Context(key1, value1)).statusCode());
+            client.abortCopyFromURLWithResponse(copyId, leaseAccessConditions, timeout, new Context(key1, value1)).statusCode());
         // END: com.azure.storage.blob.BlobClient.abortCopyFromURL#String-LeaseAccessConditions-Duration
     }
 
@@ -149,16 +149,16 @@ public class BlobClientJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobClient#delete()} and
-     * {@link BlobClient#delete(DeleteSnapshotsOptionType, BlobAccessConditions, Duration, Context)}
+     * {@link BlobClient#deleteWithResponse(DeleteSnapshotsOptionType, BlobAccessConditions, Duration, Context)} (DeleteSnapshotsOptionType, BlobAccessConditions, Duration, Context)}
      */
     public void delete() {
         // BEGIN: com.azure.storage.blob.BlobClient.delete
-        System.out.printf("Delete completed with status %d%n", client.delete().statusCode());
+        System.out.printf("Delete completed with status %d%n", client.deleteWithResponse(null, null, null, null).statusCode());
         // END: com.azure.storage.blob.BlobClient.delete
 
         // BEGIN: com.azure.storage.blob.BlobClient.delete#DeleteSnapshotsOptionType-BlobAccessConditions-Duration
         System.out.printf("Delete completed with status %d%n",
-            client.delete(DeleteSnapshotsOptionType.INCLUDE, null, timeout, new Context(key2, value2)).statusCode());
+            client.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, null, timeout, new Context(key2, value2)).statusCode());
         // END: com.azure.storage.blob.BlobClient.delete#DeleteSnapshotsOptionType-BlobAccessConditions-Duration
     }
 
@@ -251,18 +251,18 @@ public class BlobClientJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobClient#setTier(AccessTier)} and
-     * {@link BlobClient#setTier(AccessTier, LeaseAccessConditions, Duration, Context)}
+     * {@link BlobClient#setTierWithResponse(AccessTier, LeaseAccessConditions, Duration, Context)}
      */
     public void setTier() {
         // BEGIN: com.azure.storage.blob.BlobClient.setTier#AccessTier
-        System.out.printf("Set tier completed with status code %d%n", client.setTier(AccessTier.HOT).statusCode());
+        System.out.printf("Set tier completed with status code %d%n", client.setTierWithResponse(AccessTier.HOT, null, null, null).statusCode());
         // END: com.azure.storage.blob.BlobClient.setTier#AccessTier
 
         // BEGIN: com.azure.storage.blob.BlobClient.setTier#AccessTier-LeaseAccessConditions-Duration
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().leaseId(leaseId);
 
         System.out.printf("Set tier completed with status code %d%n",
-            client.setTier(AccessTier.HOT, accessConditions, timeout, new Context(key2, value2)).statusCode());
+            client.setTierWithResponse(AccessTier.HOT, accessConditions, timeout, new Context(key2, value2)).statusCode());
         // END: com.azure.storage.blob.BlobClient.setTier#AccessTier-LeaseAccessConditions-Duration
     }
 

@@ -311,8 +311,8 @@ public class BlobAsyncClient {
      * BlobStartCopyFromURLHeaders} object.
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> abortCopyFromURL(String copyId) {
-        return abortCopyFromURL(copyId, null);
+    public Mono<Void> abortCopyFromURL(String copyId) {
+        return abortCopyFromURLWithResponse(copyId, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -331,11 +331,11 @@ public class BlobAsyncClient {
      * not match the active lease on the blob.
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> abortCopyFromURL(String copyId, LeaseAccessConditions leaseAccessConditions) {
-        return withContext(context -> abortCopyFromURL(copyId, leaseAccessConditions, context));
+    public Mono<VoidResponse> abortCopyFromURLWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions) {
+        return withContext(context -> abortCopyFromURLWithResponse(copyId, leaseAccessConditions, context));
     }
 
-    Mono<VoidResponse> abortCopyFromURL(String copyId, LeaseAccessConditions leaseAccessConditions, Context context) {
+    Mono<VoidResponse> abortCopyFromURLWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions, Context context) {
         return postProcessResponse(this.azureBlobStorage.blobs().abortCopyFromURLWithRestResponseAsync(
             null, null, copyId, null, null, leaseAccessConditions, context))
                    .map(VoidResponse::new);
@@ -655,8 +655,8 @@ public class BlobAsyncClient {
      *
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> delete() {
-        return delete(null, null);
+    public Mono<Void> delete() {
+        return deleteWithResponse(null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -675,11 +675,11 @@ public class BlobAsyncClient {
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> delete(DeleteSnapshotsOptionType deleteBlobSnapshotOptions, BlobAccessConditions accessConditions) {
-        return withContext(context -> delete(deleteBlobSnapshotOptions, accessConditions, context));
+    public Mono<VoidResponse> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions, BlobAccessConditions accessConditions) {
+        return withContext(context -> deleteWithResponse(deleteBlobSnapshotOptions, accessConditions, context));
     }
 
-    Mono<VoidResponse> delete(DeleteSnapshotsOptionType deleteBlobSnapshotOptions, BlobAccessConditions accessConditions, Context context) {
+    Mono<VoidResponse> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions, BlobAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().deleteWithRestResponseAsync(
@@ -902,8 +902,8 @@ public class BlobAsyncClient {
      * @param tier The new tier for the blob.
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> setTier(AccessTier tier) {
-        return setTier(tier, null);
+    public Mono<Void> setTier(AccessTier tier) {
+        return setTierWithResponse(tier, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -924,11 +924,11 @@ public class BlobAsyncClient {
      * not match the active lease on the blob.
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> setTier(AccessTier tier, LeaseAccessConditions leaseAccessConditions) {
-        return withContext(context -> setTier(tier, leaseAccessConditions, context));
+    public Mono<VoidResponse> setTierWithResponse(AccessTier tier, LeaseAccessConditions leaseAccessConditions) {
+        return withContext(context -> setTierWithResponse(tier, leaseAccessConditions, context));
     }
 
-    Mono<VoidResponse> setTier(AccessTier tier, LeaseAccessConditions leaseAccessConditions, Context context) {
+    Mono<VoidResponse> setTierWithResponse(AccessTier tier, LeaseAccessConditions leaseAccessConditions, Context context) {
         Utility.assertNotNull("tier", tier);
         AccessTierRequired accessTierRequired = AccessTierRequired.fromString(tier.toString());
 

@@ -274,8 +274,8 @@ public class BlobClient {
      * BlobStartCopyFromURLHeaders} object.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse abortCopyFromURL(String copyId) {
-        return abortCopyFromURL(copyId, null, null, Context.NONE);
+    public Void abortCopyFromURL(String copyId) {
+        return abortCopyFromURLWithResponse(copyId, null, null, Context.NONE).value();
     }
 
     /**
@@ -295,9 +295,9 @@ public class BlobClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse abortCopyFromURL(String copyId, LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
+    public VoidResponse abortCopyFromURLWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
         Mono<VoidResponse> response = blobAsyncClient
-            .abortCopyFromURL(copyId, leaseAccessConditions, context);
+            .abortCopyFromURLWithResponse(copyId, leaseAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -488,8 +488,8 @@ public class BlobClient {
      *
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse delete() {
-        return delete(null, null, null, Context.NONE);
+    public Void delete() {
+        return deleteWithResponse(null, null, null, Context.NONE).value();
     }
 
     /**
@@ -509,10 +509,10 @@ public class BlobClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse delete(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
+    public VoidResponse deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
                                BlobAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<VoidResponse> response = blobAsyncClient
-            .delete(deleteBlobSnapshotOptions, accessConditions, context);
+            .deleteWithResponse(deleteBlobSnapshotOptions, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -711,8 +711,8 @@ public class BlobClient {
      * @param tier The new tier for the blob.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse setTier(AccessTier tier) {
-        return setTier(tier, null, null, Context.NONE);
+    public Void setTier(AccessTier tier) {
+        return setTierWithResponse(tier, null, null, Context.NONE).value();
     }
 
     /**
@@ -734,8 +734,8 @@ public class BlobClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse setTier(AccessTier tier, LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobAsyncClient.setTier(tier, leaseAccessConditions, context);
+    public VoidResponse setTierWithResponse(AccessTier tier, LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
+        Mono<VoidResponse> response = blobAsyncClient.setTierWithResponse(tier, leaseAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

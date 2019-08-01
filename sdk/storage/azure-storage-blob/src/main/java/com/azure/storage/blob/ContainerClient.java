@@ -259,8 +259,8 @@ public final class ContainerClient {
      *
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse delete() {
-        return this.delete(null, null, Context.NONE);
+    public Void delete() {
+        return deleteWithResponse(null, null, Context.NONE).value();
     }
 
     /**
@@ -272,8 +272,8 @@ public final class ContainerClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse delete(ContainerAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = containerAsyncClient.delete(accessConditions, context);
+    public VoidResponse deleteWithResponse(ContainerAccessConditions accessConditions, Duration timeout, Context context) {
+        Mono<VoidResponse> response = containerAsyncClient.deleteWithResponse(accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
