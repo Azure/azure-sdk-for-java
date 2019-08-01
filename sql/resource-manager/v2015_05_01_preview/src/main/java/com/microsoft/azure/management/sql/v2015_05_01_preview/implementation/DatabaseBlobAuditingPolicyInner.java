@@ -148,8 +148,8 @@ public class DatabaseBlobAuditingPolicyInner extends ProxyResource {
 
     /**
      * Specifies whether audit events are sent to Azure Monitor.
-     * In order to send the events to Azure Monitor, specify 'State' as
-     * 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
+     * In order to send the events to Azure Monitor, specify 'state' as
+     * 'Enabled' and 'isAzureMonitorTargetEnabled' as true.
      *
      * When using REST API to configure auditing, Diagnostic Settings with
      * 'SQLSecurityAuditEvents' diagnostic logs category on the database should
@@ -408,7 +408,7 @@ public class DatabaseBlobAuditingPolicyInner extends ProxyResource {
 
     /**
      * Get specifies whether audit events are sent to Azure Monitor.
-     In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
+     In order to send the events to Azure Monitor, specify 'state' as 'Enabled' and 'isAzureMonitorTargetEnabled' as true.
      When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on the database should be also created.
      Note that for server level audit you should use the 'master' database as {databaseName}.
      Diagnostic Settings URI format:
@@ -424,7 +424,7 @@ public class DatabaseBlobAuditingPolicyInner extends ProxyResource {
 
     /**
      * Set specifies whether audit events are sent to Azure Monitor.
-     In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
+     In order to send the events to Azure Monitor, specify 'state' as 'Enabled' and 'isAzureMonitorTargetEnabled' as true.
      When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on the database should be also created.
      Note that for server level audit you should use the 'master' database as {databaseName}.
      Diagnostic Settings URI format:
