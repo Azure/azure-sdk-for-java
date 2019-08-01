@@ -1,0 +1,17 @@
+
+parameters:
+  Options: '--batch-mode -Dmaven.wagon.http.pool=false --settings eng/settings.xml'
+  MavenOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+
+steps:
+  - task: Maven@3
+    displayName: 'Install reporting tools'
+    inputs:
+      mavenPomFile: ./eng/code-quality-reports/pom.xml
+      options: ${{ parameters.Options }}
+      mavenOptions: ${{ parameters.MavenOptions }}
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.11'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      goals: 'install'
