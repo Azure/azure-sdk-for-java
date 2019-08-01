@@ -3,10 +3,9 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.amqp.Retry;
+import com.azure.core.amqp.RetryOptions;
 import com.azure.core.implementation.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubConsumer;
 import reactor.core.scheduler.Scheduler;
@@ -22,9 +21,7 @@ import java.util.Optional;
  * @see EventHubAsyncClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  */
 @Fluent
-public class EventHubConsumerOptions implements Cloneable {
-    private final ClientLogger logger = new ClientLogger(EventHubConsumerOptions.class);
-
+public class EventHubConsumerOptions {
     /**
      * The maximum length, in characters, for the identifier assigned to an {@link EventHubConsumer}.
      */
@@ -43,7 +40,7 @@ public class EventHubConsumerOptions implements Cloneable {
 
     private String identifier;
     private Long ownerLevel;
-    private Retry retry;
+    private RetryOptions retry;
     private Scheduler scheduler;
     private int prefetchCount;
 
@@ -106,7 +103,7 @@ public class EventHubConsumerOptions implements Cloneable {
      * @param retry The retry policy to use when receiving events.
      * @return The updated {@link EventHubConsumerOptions} object.
      */
-    public EventHubConsumerOptions retry(Retry retry) {
+    public EventHubConsumerOptions retry(RetryOptions retry) {
         this.retry = retry;
         return this;
     }
@@ -158,12 +155,12 @@ public class EventHubConsumerOptions implements Cloneable {
     }
 
     /**
-     * Gets the retry policy when receiving events. If not specified, the retry policy configured on the associated
+     * Gets the retry options when receiving events. If not specified, the retry options configured on the associated
      * {@link EventHubAsyncClient} is used.
      *
-     * @return The retry policy when receiving events.
+     * @return The retry options when receiving events.
      */
-    public Retry retry() {
+    public RetryOptions retry() {
         return retry;
     }
 
@@ -205,26 +202,15 @@ public class EventHubConsumerOptions implements Cloneable {
      * @return A shallow clone of this object.
      */
     public EventHubConsumerOptions clone() {
-        EventHubConsumerOptions clone;
-        try {
-            clone = (EventHubConsumerOptions) super.clone();
-        } catch (CloneNotSupportedException e) {
-            clone = new EventHubConsumerOptions();
-        }
+        final EventHubConsumerOptions clone = new EventHubConsumerOptions()
+            .scheduler(this.scheduler())
+            .identifier(this.identifier())
+            .prefetchCount(this.prefetchCount())
+            .ownerLevel(this.ownerLevel());
 
         if (retry != null) {
-            try {
-                clone.retry((Retry) retry.clone());
-            } catch (CloneNotSupportedException e) {
-                logger.error("Unable to create clone of retry.", e);
-                clone.retry(retry);
-            }
+            clone.retry(retry.clone());
         }
-
-        clone.scheduler(this.scheduler());
-        clone.identifier(this.identifier());
-        clone.prefetchCount(this.prefetchCount());
-        clone.ownerLevel(this.ownerLevel());
 
         return clone;
     }

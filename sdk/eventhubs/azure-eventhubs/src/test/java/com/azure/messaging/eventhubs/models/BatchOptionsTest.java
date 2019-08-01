@@ -1,40 +1,33 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs;
+package com.azure.messaging.eventhubs.models;
 
-import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class SendOptionsTest {
-
+public class BatchOptionsTest {
     /**
      * Verifies that the default values are correctly set when creating an instance.
      */
     @Test
     public void createDefault() {
-        // Arrange
-        SendOptions options = new SendOptions();
-
-        // Act & Assert
+        BatchOptions options = new BatchOptions();
         Assert.assertNull(options.partitionKey());
     }
 
     /**
-     * Verifies we can set partitionKey on the send options.
+     * Verifies we can set maximumSizeInBytes on the batch options.
      */
     @Test
-    public void setPartitionKey() {
-        // Arrange
-        String partitionKey = "My partition key";
-        SendOptions options = new SendOptions();
+    public void setMaximumSize() {
+        int size = 1024;
+        BatchOptions options = new BatchOptions();
 
-        // Act
-        options.partitionKey(partitionKey);
+        options.maximumSizeInBytes(size);
 
-        // Assert
-        Assert.assertEquals(partitionKey, options.partitionKey());
+        Assert.assertEquals(size, options.maximumSizeInBytes());
+        Assert.assertNull(options.partitionKey());
     }
 
     /**
@@ -44,16 +37,19 @@ public class SendOptionsTest {
     public void cloneIdentical() {
         // Arrange
         String partitionKey = "My partition key";
-        SendOptions options = new SendOptions().partitionKey(partitionKey);
+        int size = 800;
+        BatchOptions options = new BatchOptions().partitionKey(partitionKey).maximumSizeInBytes(size);
 
         // Act
-        SendOptions clone = (SendOptions) options.clone();
+        BatchOptions clone = options.clone();
 
         // Assert
         Assert.assertNotSame(clone, options);
-
+        Assert.assertEquals(size, options.maximumSizeInBytes());
         Assert.assertEquals(partitionKey, options.partitionKey());
+
         Assert.assertEquals(partitionKey, clone.partitionKey());
+        Assert.assertEquals(size, clone.maximumSizeInBytes());
     }
 
 
@@ -64,16 +60,23 @@ public class SendOptionsTest {
     public void cloneModifyContents() {
         // Arrange
         String originalPartitionKey = "Some partition key";
-        String partitionKey = "A new partition key";
+        int originalSize = 100;
 
-        SendOptions options = new SendOptions().partitionKey(originalPartitionKey);
-        SendOptions clone = (SendOptions) options.clone();
+        String partitionKey = "A new partition key";
+        int size = 24;
+
+        BatchOptions options = new BatchOptions().partitionKey(originalPartitionKey).maximumSizeInBytes(originalSize);
+        BatchOptions clone = options.clone();
 
         // Act
-        clone.partitionKey(partitionKey);
+        clone.partitionKey(partitionKey)
+            .maximumSizeInBytes(size);
 
         // Assert
         Assert.assertEquals(partitionKey, clone.partitionKey());
+        Assert.assertEquals(size, clone.maximumSizeInBytes());
+
+        Assert.assertEquals(originalSize, options.maximumSizeInBytes());
         Assert.assertEquals(originalPartitionKey, options.partitionKey());
     }
 }

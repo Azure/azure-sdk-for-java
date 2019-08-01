@@ -1,7 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs;
+package com.azure.messaging.eventhubs.models;
+
+import com.azure.messaging.eventhubs.EventDataBatch;
+import com.azure.messaging.eventhubs.EventHubProducer;
 
 /**
  * The set of options that can be specified when creating an {@link EventDataBatch}.
@@ -9,7 +12,7 @@ package com.azure.messaging.eventhubs;
  * @see EventHubProducer#createBatch()
  * @see EventHubProducer#createBatch(BatchOptions)
  */
-public class BatchOptions implements Cloneable {
+public class BatchOptions {
     private int maximumSizeInBytes;
     private String partitionKey;
 
@@ -60,18 +63,9 @@ public class BatchOptions implements Cloneable {
      *
      * @return A shallow clone of this object.
      */
-    @Override
-    public Object clone() {
-        BatchOptions clone;
-        try {
-            clone = (BatchOptions) super.clone();
-        } catch (CloneNotSupportedException e) {
-            clone = new BatchOptions();
-        }
-
-        clone.partitionKey(partitionKey);
-        clone.maximumSizeInBytes(maximumSizeInBytes);
-
-        return clone;
+    public BatchOptions clone() {
+        return new BatchOptions()
+            .partitionKey(partitionKey)
+            .maximumSizeInBytes(maximumSizeInBytes);
     }
 }

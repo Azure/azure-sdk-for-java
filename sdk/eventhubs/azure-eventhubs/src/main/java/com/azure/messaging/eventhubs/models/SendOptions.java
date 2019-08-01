@@ -17,7 +17,7 @@ import reactor.core.publisher.Flux;
  * @see EventHubProducer#send(Flux, SendOptions)
  */
 @Fluent
-public class SendOptions implements Cloneable {
+public class SendOptions {
     private String partitionKey;
 
     /**
@@ -56,17 +56,8 @@ public class SendOptions implements Cloneable {
      *
      * @return A shallow clone of this object.
      */
-    @Override
-    public Object clone() {
-        SendOptions clone;
-        try {
-            clone = (SendOptions) super.clone();
-        } catch (CloneNotSupportedException e) {
-            clone = new SendOptions();
-        }
-
-        clone.partitionKey(partitionKey);
-
-        return clone;
+    public SendOptions clone() {
+        return new SendOptions()
+            .partitionKey(partitionKey);
     }
 }
