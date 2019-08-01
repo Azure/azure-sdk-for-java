@@ -223,8 +223,8 @@ public final class BlockBlobClient extends BlobClient {
      *         provided in the {@link InputStream}.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse stageBlock(String base64BlockID, InputStream data, long length) {
-        return stageBlock(base64BlockID, data, length, null, null, Context.NONE);
+    public Void stageBlock(String base64BlockID, InputStream data, long length) {
+        return stageBlockWithResponse(base64BlockID, data, length, null, null, Context.NONE).value();
     }
 
     /**
@@ -247,7 +247,7 @@ public final class BlockBlobClient extends BlobClient {
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse stageBlock(String base64BlockID, InputStream data, long length,
+    public VoidResponse stageBlockWithResponse(String base64BlockID, InputStream data, long length,
             LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
 
         Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE))
@@ -262,7 +262,7 @@ public final class BlockBlobClient extends BlobClient {
                 return ByteBufAllocator.DEFAULT.buffer((int) count).writeBytes(cache);
             }));
 
-        Mono<VoidResponse> response = blockBlobAsyncClient.stageBlock(base64BlockID,
+        Mono<VoidResponse> response = blockBlobAsyncClient.stageBlockWithResponse(base64BlockID,
             fbb.subscribeOn(Schedulers.elastic()), length, leaseAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -283,9 +283,9 @@ public final class BlockBlobClient extends BlobClient {
      *         {@link BlobRange}
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse stageBlockFromURL(String base64BlockID, URL sourceURL,
+    public Void stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange) {
-        return stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null, null, null, null, Context.NONE);
+        return stageBlockFromURLWithResponse(base64BlockID, sourceURL, sourceRange, null, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -314,10 +314,10 @@ public final class BlockBlobClient extends BlobClient {
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse stageBlockFromURL(String base64BlockID, URL sourceURL,
+    public VoidResponse stageBlockFromURLWithResponse(String base64BlockID, URL sourceURL,
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
             SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = blockBlobAsyncClient.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
+        Mono<VoidResponse> response = blockBlobAsyncClient.stageBlockFromURLWithResponse(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 

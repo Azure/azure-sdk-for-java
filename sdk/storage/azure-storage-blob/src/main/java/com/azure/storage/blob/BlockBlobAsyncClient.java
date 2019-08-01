@@ -234,7 +234,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
                     .doOnNext(chunk -> blockIds.put(chunk.offset(), getBlockID()))
                     .flatMap(chunk -> {
                         String blockId = blockIds.get(chunk.offset());
-                        return stageBlock(blockId, FluxUtil.byteBufStreamFromFile(channel, chunk.offset(), chunk.count()), chunk.count(), null);
+                        return stageBlockWithResponse(blockId, FluxUtil.byteBufStreamFromFile(channel, chunk.offset(), chunk.count()), chunk.count(), null);
                     })
                     .then(Mono.defer(() -> commitBlockList(new ArrayList<>(blockIds.values()), headers, metadata, accessConditions)))
                     .then()
@@ -308,9 +308,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<VoidResponse> stageBlock(String base64BlockID, Flux<ByteBuf> data,
+    public Mono<Void> stageBlock(String base64BlockID, Flux<ByteBuf> data,
                                                          long length) {
-        return stageBlock(base64BlockID, data, length, null);
+        return stageBlockWithResponse(base64BlockID, data, length, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -337,12 +337,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<VoidResponse> stageBlock(String base64BlockID, Flux<ByteBuf> data, long length,
+    public Mono<VoidResponse> stageBlockWithResponse(String base64BlockID, Flux<ByteBuf> data, long length,
                  LeaseAccessConditions leaseAccessConditions) {
-        return withContext(context -> stageBlock(base64BlockID, data, length, leaseAccessConditions, context));
+        return withContext(context -> stageBlockWithResponse(base64BlockID, data, length, leaseAccessConditions, context));
     }
 
-    Mono<VoidResponse> stageBlock(String base64BlockID, Flux<ByteBuf> data, long length,
+    Mono<VoidResponse> stageBlockWithResponse(String base64BlockID, Flux<ByteBuf> data, long length,
                                   LeaseAccessConditions leaseAccessConditions, Context context) {
         return postProcessResponse(this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null,
             null, base64BlockID, length, data, null, null, null,
@@ -368,10 +368,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<VoidResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
+    public Mono<Void> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange) {
-        return stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null,
-                null, null);
+        return stageBlockFromURLWithResponse(base64BlockID, sourceURL, sourceRange, null,
+                null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -400,13 +400,13 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<VoidResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
+    public Mono<VoidResponse> stageBlockFromURLWithResponse(String base64BlockID, URL sourceURL,
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
             SourceModifiedAccessConditions sourceModifiedAccessConditions) {
-        return withContext(context -> stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions));
+        return withContext(context -> stageBlockFromURLWithResponse(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions));
     }
 
-    Mono<VoidResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
+    Mono<VoidResponse> stageBlockFromURLWithResponse(String base64BlockID, URL sourceURL,
                                          BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
                                          SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
         sourceRange = sourceRange == null ? new BlobRange(0) : sourceRange;

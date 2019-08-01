@@ -281,7 +281,7 @@ public final class BlobOutputStream extends OutputStream {
 
         LeaseAccessConditions leaseAccessConditions = accessCondition == null ? null : accessCondition.leaseAccessConditions();
 
-        return blobRef.stageBlock(blockId, blockData, writeLength, leaseAccessConditions)
+        return blobRef.stageBlockWithResponse(blockId, blockData, writeLength, leaseAccessConditions)
             .then()
             .onErrorResume(t -> t instanceof StorageException, e -> {
                 this.lastError = new IOException(e);
