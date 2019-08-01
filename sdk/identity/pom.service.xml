@@ -9,6 +9,7 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
+    <module>../core</module> <!-- NOTE: We need to build core so we can build against the version in the repo. -->
     <module>azure-identity</module>
   </modules>
 </project>
