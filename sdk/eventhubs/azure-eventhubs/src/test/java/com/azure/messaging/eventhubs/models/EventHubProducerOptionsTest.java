@@ -27,7 +27,7 @@ public class EventHubProducerOptionsTest {
             .partitionId(partitionId);
 
         // Act
-        EventHubProducerOptions clone = (EventHubProducerOptions) options.clone();
+        EventHubProducerOptions clone = options.clone();
 
         // Assert
         Assert.assertEquals(partitionId, clone.partitionId());

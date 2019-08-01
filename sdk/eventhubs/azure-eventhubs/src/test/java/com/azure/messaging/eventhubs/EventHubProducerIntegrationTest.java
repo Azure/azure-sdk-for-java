@@ -49,7 +49,7 @@ public class EventHubProducerIntegrationTest extends ApiTestBase {
         final ConnectionStringProperties properties = new ConnectionStringProperties(getConnectionString());
         final ConnectionOptions connectionOptions = new ConnectionOptions(properties.endpoint().getHost(),
             properties.eventHubPath(), getTokenCredential(), getAuthorizationType(), TransportType.AMQP, RETRY_OPTIONS,
-            ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.newSingle("single-threaded"));
+            ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
 
         client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);
     }

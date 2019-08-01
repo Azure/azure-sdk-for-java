@@ -22,6 +22,7 @@ import org.junit.rules.TestName;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
@@ -74,7 +75,7 @@ public class EventHubConsumerIntegrationTest extends ApiTestBase {
         final ConnectionStringProperties properties = new ConnectionStringProperties(getConnectionString());
         final ConnectionOptions connectionOptions = new ConnectionOptions(properties.endpoint().getHost(),
             properties.eventHubPath(), getTokenCredential(), getAuthorizationType(), TransportType.AMQP,
-            RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.newSingle("single-threaded"));
+            RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
 
         client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);
     }

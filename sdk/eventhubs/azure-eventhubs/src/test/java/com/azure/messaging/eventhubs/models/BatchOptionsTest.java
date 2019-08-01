@@ -41,7 +41,7 @@ public class BatchOptionsTest {
         BatchOptions options = new BatchOptions().partitionKey(partitionKey).maximumSizeInBytes(size);
 
         // Act
-        BatchOptions clone = (BatchOptions) options.clone();
+        BatchOptions clone = options.clone();
 
         // Assert
         Assert.assertNotSame(clone, options);
@@ -66,7 +66,7 @@ public class BatchOptionsTest {
         int size = 24;
 
         BatchOptions options = new BatchOptions().partitionKey(originalPartitionKey).maximumSizeInBytes(originalSize);
-        BatchOptions clone = (BatchOptions) options.clone();
+        BatchOptions clone = options.clone();
 
         // Act
         clone.partitionKey(partitionKey)

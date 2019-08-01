@@ -61,7 +61,7 @@ public abstract class ApiTestBase extends TestBase {
     public void setupTest() {
         logger.info("[{}]: Performing test set-up.", testName());
 
-        final Scheduler scheduler = Schedulers.newElastic("AMQPConnection");
+        final Scheduler scheduler = Schedulers.newParallel("AMQPConnection");
         final String connectionString = getTestMode() == TestMode.RECORD
             ? CONNECTION_STRING
             : TEST_CONNECTION_STRING;

@@ -46,7 +46,7 @@ public class SendOptionsTest {
         SendOptions options = new SendOptions().partitionKey(partitionKey);
 
         // Act
-        SendOptions clone = (SendOptions) options.clone();
+        SendOptions clone = options.clone();
 
         // Assert
         Assert.assertNotSame(clone, options);
@@ -66,7 +66,7 @@ public class SendOptionsTest {
         String partitionKey = "A new partition key";
 
         SendOptions options = new SendOptions().partitionKey(originalPartitionKey);
-        SendOptions clone = (SendOptions) options.clone();
+        SendOptions clone = options.clone();
 
         // Act
         clone.partitionKey(partitionKey);
