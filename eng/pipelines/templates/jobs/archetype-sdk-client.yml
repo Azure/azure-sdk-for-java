@@ -36,10 +36,10 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
-      - task: PublishBuildArtifacts@1
+      - publish: $(Build.ArtifactStagingDirectory)
         displayName: 'Publish Artifacts $(ArtifactName)'
-        inputs:
-          artifactName: '$(ArtifactName)'
+        artifact: '$(ArtifactName)'
+
 
   - job: 'Analyze'
 
@@ -174,12 +174,10 @@ jobs:
         displayName: 'Copy reports to artifact staging'
         condition: ne(variables['Build.Reason'], 'PullRequest')
 
-      - task: PublishBuildArtifacts@1
+      - publish: $(Build.ArtifactStagingDirectory)
         condition: succeededOrFailed()
         displayName: 'Publish Report Artifacts'
-        inputs:
-          artifactName: reports
-
+        artifact: reports
 
   - job: 'Test'
 
