@@ -22,6 +22,8 @@ public interface PartitionProcessor {
     /**
      * This method is called when this {@link EventProcessorAsyncClient} takes ownership of a new partition and before any
      * events from this partition are received.
+     *
+     * @return a representation of the deferred computation of this call.
      */
     Mono<Void> initialize();
 
@@ -51,6 +53,7 @@ public interface PartitionProcessor {
      * partition processor is shutdown.
      *
      * @param closeReason The reason for closing this partition processor.
+     * @return a representation of the deferred computation of this call.
      */
     Mono<Void> close(CloseReason closeReason);
 

@@ -178,8 +178,8 @@ public class EventProcessorAsyncClient {
         // it's not previously owned by any other instance,
         // or if the last modified time is greater than ownership expiration time
         // and previous owner is not this instance
-        if (ownershipInfo.lastModifiedTime() == null ||
-            (System.currentTimeMillis() - ownershipInfo.lastModifiedTime() > OWNERSHIP_EXPIRATION_TIME_IN_MILLIS
+        if (ownershipInfo.lastModifiedTime() == null
+            || (System.currentTimeMillis() - ownershipInfo.lastModifiedTime() > OWNERSHIP_EXPIRATION_TIME_IN_MILLIS
                 && !ownershipInfo.ownerId().equals(this.identifier))) {
             ownershipInfo.ownerId(this.identifier); // update instance id before claiming ownership
             return partitionManager.claimOwnership(ownershipInfo).doOnComplete(() -> {
