@@ -17,9 +17,9 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * {@code DownloadResponse} wraps the protocol-layer response from {@link BlobAsyncClient#download(BlobRange,
- * BlobAccessConditions, boolean, ReliableDownloadOptions)} to automatically retry failed reads from the body as
- * appropriate. If the download is interrupted, the {@code DownloadResponse} will make a request to resume the download
+ * {@code DownloadAsyncResponse} wraps the protocol-layer response from {@link BlobAsyncClient#download(BlobRange,
+ * ReliableDownloadOptions, BlobAccessConditions, boolean)} to automatically retry failed reads from the body as
+ * appropriate. If the download is interrupted, the {@code DownloadAsyncResponse} will make a request to resume the download
  * from where it left off, allowing the user to consume the data as one continuous stream, for any interruptions are
  * hidden. The retry behavior is defined by the options passed to the {@link #body(ReliableDownloadOptions)}. The
  * download will also lock on the blob's etag to ensure consistency.
@@ -30,17 +30,17 @@ import java.util.function.Function;
  * network errors; timeouts and unexpected status codes are not retried. Therefore, the behavior of this reader is
  * entirely independent of and in no way coupled to an {@link com.azure.core.http.HttpPipeline}'s retry mechanism.
  */
-public final class DownloadResponse {
+public final class DownloadAsyncResponse {
     private final HTTPGetterInfo info;
 
     private final ResponseBase<BlobDownloadHeaders, Flux<ByteBuf>> rawResponse;
 
-    private final Function<HTTPGetterInfo, Mono<DownloadResponse>> getter;
+    private final Function<HTTPGetterInfo, Mono<DownloadAsyncResponse>> getter;
 
 
     // The constructor is package-private because customers should not be creating their own responses.
-    DownloadResponse(ResponseBase<BlobDownloadHeaders, Flux<ByteBuf>> response,
-            HTTPGetterInfo info, Function<HTTPGetterInfo, Mono<DownloadResponse>> getter) {
+    DownloadAsyncResponse(ResponseBase<BlobDownloadHeaders, Flux<ByteBuf>> response,
+                          HTTPGetterInfo info, Function<HTTPGetterInfo, Mono<DownloadAsyncResponse>> getter) {
         Utility.assertNotNull("getter", getter);
         Utility.assertNotNull("info", info);
         Utility.assertNotNull("info.eTag", info.eTag());
@@ -84,7 +84,6 @@ public final class DownloadResponse {
              */
             try {
                 /*Get a new response and try reading from it.
-
                 Do not compound the number of retries by passing in another set of downloadOptions; just get
                 the raw body.
                 */
@@ -102,9 +101,9 @@ public final class DownloadResponse {
             Update how much data we have received in case we need to retry and propagate to the user the data we
             have received.
              */
-            this.info.offset(this.info.offset() + buffer.readableBytes());
+            this.info.offset(this.info.offset() + buffer.readableBytes()); // was `remaining()` in Rx world
             if (this.info.count() != null) {
-                this.info.count(this.info.count() - buffer.readableBytes());
+                this.info.count(this.info.count() - buffer.readableBytes()); // was `remaining()` in Rx world
             }
         }).onErrorResume(t2 -> {
             // Increment the retry count and try again with the new exception.

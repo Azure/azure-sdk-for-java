@@ -146,11 +146,11 @@ class DownloadResponseMockFlux extends Flux<ByteBuf> {
         }
     }
 
-    Mono<DownloadResponse> getter(HTTPGetterInfo info) {
+    Mono<DownloadAsyncResponse> getter(HTTPGetterInfo info) {
         this.tryNumber++;
         this.info = info;
         BlobsDownloadResponse rawResponse = new BlobsDownloadResponse(null, 200, new HttpHeaders(), this, new BlobDownloadHeaders());
-        DownloadResponse response = new DownloadResponse(rawResponse, info, this::getter);
+        DownloadAsyncResponse response = new DownloadAsyncResponse(rawResponse, info, this::getter);
 
         switch (this.scenario) {
             case DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:

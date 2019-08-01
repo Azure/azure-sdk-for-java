@@ -5,9 +5,7 @@ package com.azure.storage.blob
 
 import com.azure.core.http.rest.Response
 import com.azure.core.http.rest.VoidResponse
-import com.azure.storage.blob.models.AccessPolicy
 import com.azure.storage.blob.models.BlobRange
-import com.azure.storage.blob.models.SignedIdentifier
 import com.azure.storage.blob.models.UserDelegationKey
 import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
@@ -68,59 +66,6 @@ class HelperTest extends APISpec {
         offset | count
         -1     | 5
         0      | -1
-    }
-
-    def "serviceSASSignatureValues network test blob"() {
-        setup:
-        String containerName = generateContainerName()
-        String blobName = generateBlobName()
-        ContainerClient cu = primaryServiceURL.createContainer(containerName).value()
-
-        BlobSASPermission p = new BlobSASPermission()
-            .read(true)
-            .write(true)
-            .create(true)
-            .delete(true)
-            .add(true)
-
-        IPRange ipR = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
-
-        ServiceSASSignatureValues v = new ServiceSASSignatureValues()
-            .permissions(p.toString())
-            .startTime(OffsetDateTime.now().minusDays(1))
-            .expiryTime(OffsetDateTime.now().plusDays(1))
-            .resource(Constants.UrlConstants.SAS_BLOB_CONSTANT)
-            .canonicalName(String.format("/blob/%s/%s/%s", primaryCreds.accountName(), containerName, blobName))
-            .ipRange(ipR)
-            .protocol(SASProtocol.HTTPS_ONLY)
-            .cacheControl("cache")
-            .contentDisposition("disposition")
-            .contentEncoding("encoding")
-            .contentLanguage("language")
-            .contentType("type")
-
-        when:
-        BlobURLParts parts = URLParser.parse(cu.getBlobClient(blobName).getBlobUrl())
-        parts.sasQueryParameters(v.generateSASQueryParameters(primaryCreds)).scheme("https")
-        AppendBlobClient bu = new BlobClientBuilder()
-            .endpoint(parts.toURL().toString())
-            .anonymousCredential()
-            .buildAppendBlobClient()
-
-        then:
-        bu.create()
-
-        and:
-        Response<BlobProperties> properties = bu.getProperties()
-
-        then:
-        properties.value().cacheControl() == "cache"
-        properties.value().contentDisposition() == "disposition"
-        properties.value().contentEncoding() == "encoding"
-        properties.value().contentLanguage() == "language"
-        properties.headers().value("Content-Type") == "type"
     }
 
     def "serviceSASSignatureValues network test blob snapshot"() {
@@ -196,226 +141,6 @@ class HelperTest extends APISpec {
         properties.value().contentEncoding() == "encoding"
         properties.value().contentLanguage() == "language"
         properties.headers().value("Content-Type") == "type"
-    }
-
-    def "serviceSASSignatureValues network test container"() {
-        setup:
-        String containerName = generateContainerName()
-        ContainerClient cu = primaryServiceURL.createContainer(containerName).value()
-        SignedIdentifier id = new SignedIdentifier()
-            .id("0000")
-            .accessPolicy(new AccessPolicy().permission("racwdl")
-                .expiry(OffsetDateTime.now().plusDays(1)))
-        cu.setAccessPolicy(null, Arrays.asList(id))
-
-        // Check id field
-        ServiceSASSignatureValues v = new ServiceSASSignatureValues()
-            .identifier("0000")
-            .resource(Constants.UrlConstants.SAS_CONTAINER_CONSTANT)
-            .canonicalName(String.format("/blob/%s/%s", primaryCreds.accountName(), containerName))
-            .protocol(SASProtocol.HTTPS_ONLY)
-
-        // Check containerSASPermissions
-        ContainerSASPermission p = new ContainerSASPermission()
-            .read(true)
-            .write(true)
-            .create(true)
-            .delete(true)
-            .add(true)
-            .list(true)
-        ServiceSASSignatureValues v2 = new ServiceSASSignatureValues()
-            .permissions(p.toString())
-            .expiryTime(OffsetDateTime.now().plusDays(1))
-            .resource(containerName)
-
-        when:
-        BlobURLParts parts = URLParser.parse(cu.getContainerUrl())
-            .sasQueryParameters(v.generateSASQueryParameters(primaryCreds))
-            .scheme("https")
-        ContainerClient cuSAS = new ContainerClientBuilder()
-            .endpoint(parts.toURL().toString())
-            .anonymousCredential()
-            .buildClient()
-
-        parts.sasQueryParameters(v2.generateSASQueryParameters(primaryCreds))
-        ContainerClient cuSAS2 = new ContainerClientBuilder()
-            .endpoint(parts.toURL().toString())
-            .anonymousCredential()
-            .buildClient()
-
-        then:
-        cuSAS.getProperties()
-        cuSAS2.getProperties()
-        notThrown(StorageException)
-    }
-
-    def "serviceSASSignatureValues network test blob user delegation"() {
-        setup:
-        String containerName = generateContainerName()
-        String blobName = generateBlobName()
-        ContainerClient cu = primaryServiceURL.createContainer(containerName).value()
-
-        BlobSASPermission p = new BlobSASPermission()
-            .read(true)
-            .write(true)
-            .create(true)
-            .delete(true)
-            .add(true)
-
-        IPRange ipR = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
-
-        ServiceSASSignatureValues v = new ServiceSASSignatureValues()
-            .permissions(p.toString())
-            .startTime(OffsetDateTime.now().minusDays(1))
-            .expiryTime(OffsetDateTime.now().plusDays(1))
-            .resource(Constants.UrlConstants.SAS_BLOB_CONSTANT)
-            .canonicalName(String.format("/blob/%s/%s/%s", primaryCreds.accountName(), containerName, blobName))
-            .ipRange(ipR)
-            .protocol(SASProtocol.HTTPS_ONLY)
-            .cacheControl("cache")
-            .contentDisposition("disposition")
-            .contentEncoding("encoding")
-            .contentLanguage("language")
-            .contentType("type")
-
-        UserDelegationKey key = getOAuthServiceURL().getUserDelegationKey(null, OffsetDateTime.now().plusDays(1)).value()
-
-        when:
-        BlobURLParts parts = URLParser.parse(cu.getBlobClient(blobName).getBlobUrl())
-        parts.sasQueryParameters(v.generateSASQueryParameters(key)).scheme("https")
-        AppendBlobClient bu = new BlobClientBuilder()
-            .endpoint(parts.toURL().toString())
-            .anonymousCredential()
-            .buildAppendBlobClient()
-
-        then:
-        bu.create()
-
-        and:
-        Response<BlobProperties> properties = bu.getProperties()
-
-        then:
-        properties.value().cacheControl() == "cache"
-        properties.value().contentDisposition() == "disposition"
-        properties.value().contentEncoding() == "encoding"
-        properties.value().contentLanguage() == "language"
-        properties.headers().value("Content-Type") == "type"
-    }
-
-    def "serviceSASSignatureValues network test blob snapshot user delegation"() {
-        setup:
-        String containerName = generateContainerName()
-        String blobName = generateBlobName()
-        ContainerClient cu = primaryServiceURL.createContainer(containerName).value()
-        BlockBlobClient bu = cu.getBlockBlobClient(blobName)
-        bu.upload(defaultInputStream.get(), defaultDataSize) // need something to snapshot
-        String snapshotId = bu.createSnapshot().value()
-
-        BlobSASPermission p = new BlobSASPermission()
-            .read(true)
-            .write(true)
-            .create(true)
-            .delete(true)
-            .add(true)
-
-        def ipR = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
-
-        ServiceSASSignatureValues v = new ServiceSASSignatureValues()
-            .permissions(p.toString())
-            .startTime(OffsetDateTime.now().minusDays(1))
-            .expiryTime(OffsetDateTime.now().plusDays(1))
-            .resource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
-            .canonicalName(String.format("/blob/%s/%s/%s", primaryCreds.accountName(), containerName, blobName))
-            .snapshotId(snapshotId)
-            .ipRange(ipR)
-            .protocol(SASProtocol.HTTPS_ONLY)
-            .cacheControl("cache")
-            .contentDisposition("disposition")
-            .contentEncoding("encoding")
-            .contentLanguage("language")
-            .contentType("type")
-
-        UserDelegationKey key = getOAuthServiceURL().getUserDelegationKey(null, OffsetDateTime.now().plusDays(1)).value()
-
-        when:
-        BlobURLParts parts = URLParser.parse(bu.getBlobUrl())
-        parts.sasQueryParameters(v.generateSASQueryParameters(key)).scheme("https")
-        // base blob with snapshot SAS
-        AppendBlobClient bsu = new BlobClientBuilder()
-            .endpoint(parts.toURL().toString())
-            .anonymousCredential()
-            .buildAppendBlobClient()
-        bsu.download(new ByteArrayOutputStream())
-
-        then:
-        // snapshot-level SAS shouldn't be able to access base blob
-        thrown(StorageException)
-
-        when:
-        // blob snapshot with snapshot SAS
-        parts.snapshot(snapshotId)
-        bsu = new BlobClientBuilder()
-            .endpoint(parts.toURL().toString())
-            .anonymousCredential()
-            .buildAppendBlobClient()
-
-        ByteArrayOutputStream data = new ByteArrayOutputStream()
-        bsu.download(data)
-
-        then:
-        notThrown(StorageException)
-        data.toByteArray() == defaultData.array()
-
-        and:
-        Response<BlobProperties> properties = bsu.getProperties()
-
-        then:
-        properties.value().cacheControl() == "cache"
-        properties.value().contentDisposition() == "disposition"
-        properties.value().contentEncoding() == "encoding"
-        properties.value().contentLanguage() == "language"
-        properties.headers().value("Content-Type") == "type"
-    }
-
-    def "serviceSASSignatureValues network test container user delegation"() {
-        setup:
-        String containerName = generateContainerName()
-        ContainerClient cu = primaryServiceURL.createContainer(containerName).value()
-
-        ContainerSASPermission p = new ContainerSASPermission()
-            .read(true)
-            .write(true)
-            .create(true)
-            .delete(true)
-            .add(true)
-            .list(true)
-
-        ServiceSASSignatureValues v = new ServiceSASSignatureValues()
-            .resource(Constants.UrlConstants.SAS_CONTAINER_CONSTANT)
-            .canonicalName(String.format("/blob/%s/%s", primaryCreds.accountName(), containerName))
-            .protocol(SASProtocol.HTTPS_HTTP)
-            .expiryTime(OffsetDateTime.now().plusHours(5))
-            .permissions(p.toString())
-
-        UserDelegationKey key = getOAuthServiceURL().getUserDelegationKey(null, OffsetDateTime.now().plusDays(1)).value()
-
-        when:
-        BlobURLParts parts = URLParser.parse(cu.getContainerUrl())
-            .sasQueryParameters(v.generateSASQueryParameters(key))
-            .scheme("http")
-
-        ContainerClient cuSAS = new ContainerClientBuilder()
-            .endpoint(parts.toURL().toString())
-            .anonymousCredential()
-            .buildClient()
-
-        then:
-        cuSAS.getProperties()
-        notThrown(StorageException)
     }
 
     /*
@@ -504,9 +229,14 @@ class HelperTest extends APISpec {
         }
 
         v.startTime(startTime)
-            .expiryTime(expiryTime)
             .canonicalName(String.format("/blob/%s/containerName/blobName", primaryCreds.accountName()))
             .snapshotId(snapId)
+
+        if (expiryTime == null) {
+            v.expiryTime(OffsetDateTime.now())
+        } else {
+            v.expiryTime(expiryTime)
+        }
 
         if (snapId != null) {
             v.resource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)

@@ -42,7 +42,7 @@ class DownloadResponseTest extends APISpec {
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5)
 
         when:
-        DownloadResponse response = flux.getter(info).block()
+        DownloadAsyncResponse response = flux.getter(info).block()
 
         then:
         FluxUtil.collectByteBufStream(response.body(options), false).block().nioBuffer() == flux.getScenarioData()
@@ -64,7 +64,7 @@ class DownloadResponseTest extends APISpec {
         HTTPGetterInfo info = new HTTPGetterInfo().eTag("etag")
 
         when:
-        DownloadResponse response = flux.getter(info).block()
+        DownloadAsyncResponse response = flux.getter(info).block()
         response.body(options).blockFirst()
 
         then:
@@ -92,7 +92,7 @@ class DownloadResponseTest extends APISpec {
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK)
 
         when:
-        new DownloadResponse(flux.getter(info).block().rawResponse(), info, { HTTPGetterInfo newInfo -> flux.getter(newInfo) })
+        new DownloadAsyncResponse(flux.getter(info).block().rawResponse(), info, { HTTPGetterInfo newInfo -> flux.getter(newInfo) })
 
         then:
         thrown(IllegalArgumentException)
@@ -116,7 +116,7 @@ class DownloadResponseTest extends APISpec {
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK)
 
         when:
-        DownloadResponse response = new DownloadResponse(flux.getter(new HTTPGetterInfo()).block()
+        DownloadAsyncResponse response = new DownloadAsyncResponse(flux.getter(new HTTPGetterInfo()).block()
             .rawResponse(), new HTTPGetterInfo().eTag("etag"), null)
         response.body(null).blockFirst()
 
@@ -135,7 +135,7 @@ class DownloadResponseTest extends APISpec {
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5)
 
         when:
-        DownloadResponse response = flux.getter(info).block()
+        DownloadAsyncResponse response = flux.getter(info).block()
         response.body(options).blockFirst()
 
         then:

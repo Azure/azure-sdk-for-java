@@ -380,7 +380,7 @@ public class BlobAsyncClient {
      * "Sample code for BlobAsyncClient.download")] \n For more samples, please see the [Samples
      * file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    Mono<DownloadResponse> download(BlobRange range, BlobAccessConditions accessConditions, boolean rangeGetContentMD5) {
+    Mono<DownloadAsyncResponse> download(BlobRange range, BlobAccessConditions accessConditions, boolean rangeGetContentMD5) {
         range = range == null ? new BlobRange(0) : range;
         Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
@@ -395,11 +395,11 @@ public class BlobAsyncClient {
             null, null, snapshot, null, null, range.toHeaderValue(), getMD5,
             null, null, null, null,
             accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(), Context.NONE))
-            // Convert the autorest response to a DownloadResponse, which enable reliable download.
+            // Convert the autorest response to a DownloadAsyncResponse, which enable reliable download.
             .map(response -> {
                 // If there wasn't an etag originally specified, lock on the one returned.
                 info.eTag(response.deserializedHeaders().eTag());
-                return new DownloadResponse(response, info,
+                return new DownloadAsyncResponse(response, info,
                     // In the event of a stream failure, make a new request to pick up where we left off.
                     newInfo ->
                         this.download(new BlobRange(newInfo.offset(), newInfo.count()),
