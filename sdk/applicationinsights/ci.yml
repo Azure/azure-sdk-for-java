@@ -33,7 +33,7 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: applicationinsights
-      EnableUnifiedPipelines: true
+      EnableUnifiedPipelines: false
       Artifacts:
         - name: microsoft-azure-applicationinsights-query
           safeName: microsoftazureapplicationinsightsquery
