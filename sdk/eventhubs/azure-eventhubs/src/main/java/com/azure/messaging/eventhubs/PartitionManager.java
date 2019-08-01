@@ -28,7 +28,7 @@ public interface PartitionManager {
      * Called to claim ownership of a list of partitions. This will return the list of partitions that were owned
      * successfully.
      *
-     * @param requestedPartitionOwnerships List of partition ownerships this instance is requesting to own.
+     * @param requestedPartitionOwnerships Array of partition ownerships this instance is requesting to own.
      * @return A flux of partitions this instance successfully claimed ownership.
      */
     Flux<PartitionOwnership> claimOwnership(PartitionOwnership... requestedPartitionOwnerships);

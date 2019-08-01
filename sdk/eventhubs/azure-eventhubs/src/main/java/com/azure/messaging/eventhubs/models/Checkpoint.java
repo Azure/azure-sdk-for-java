@@ -15,7 +15,7 @@ public class Checkpoint {
 
     private String eventHubName;
     private String consumerGroupName;
-    private String instanceId;
+    private String ownerId;
     private String partitionId;
     private String offset;
     private long sequenceNumber;
@@ -86,18 +86,18 @@ public class Checkpoint {
      *
      * @return The unique event processor identifier that created this checkpoint.
      */
-    public String instanceId() {
-        return instanceId;
+    public String ownerId() {
+        return ownerId;
     }
 
     /**
      * Gets the unique event processor identifier that created this checkpoint.
      *
-     * @param instanceId The unique event processor identifier that created this checkpoint.
+     * @param ownerId The unique event processor identifier that created this checkpoint.
      * @return The updated {@link Checkpoint} instance.
      */
-    public Checkpoint instanceId(String instanceId) {
-        this.instanceId = instanceId;
+    public Checkpoint ownerId(String ownerId) {
+        this.ownerId = ownerId;
         return this;
     }
 
