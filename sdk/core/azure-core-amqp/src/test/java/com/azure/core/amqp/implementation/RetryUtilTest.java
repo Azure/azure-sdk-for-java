@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs.implementation;
+package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.ExponentialRetryPolicy;
 import com.azure.core.amqp.FixedRetryPolicy;
 import com.azure.core.amqp.RetryMode;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.RetryPolicy;
-import com.azure.messaging.eventhubs.EventData;
+import com.azure.core.amqp.TransportType;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
@@ -55,7 +55,7 @@ public class RetryUtilTest {
 
         final AtomicInteger resubscribe = new AtomicInteger();
         final RetryPolicy retryPolicy = new FixedRetryPolicy(options);
-        final Flux<EventData> neverFlux = Flux.<EventData>never()
+        final Flux<TransportType> neverFlux = Flux.<TransportType>never()
             .doOnSubscribe(s -> resubscribe.incrementAndGet());
 
         // Act & Assert
@@ -79,7 +79,7 @@ public class RetryUtilTest {
 
         final AtomicInteger resubscribe = new AtomicInteger();
         final RetryPolicy retryPolicy = new FixedRetryPolicy(options);
-        final Mono<EventData> neverFlux = Mono.<EventData>never()
+        final Mono<TransportType> neverFlux = Mono.<TransportType>never()
             .doOnSubscribe(s -> resubscribe.incrementAndGet());
 
         // Act & Assert
