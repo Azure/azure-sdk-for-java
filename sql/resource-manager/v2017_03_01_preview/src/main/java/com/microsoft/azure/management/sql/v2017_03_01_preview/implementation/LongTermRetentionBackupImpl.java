@@ -15,6 +15,7 @@ import org.joda.time.DateTime;
 
 class LongTermRetentionBackupImpl extends IndexableRefreshableWrapperImpl<LongTermRetentionBackup, LongTermRetentionBackupInner> implements LongTermRetentionBackup {
     private final SqlManager manager;
+    private String resourceGroupName;
     private String locationName;
     private String longTermRetentionServerName;
     private String longTermRetentionDatabaseName;
@@ -24,6 +25,7 @@ class LongTermRetentionBackupImpl extends IndexableRefreshableWrapperImpl<LongTe
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
+        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.locationName = IdParsingUtils.getValueFromIdByName(inner.id(), "locations");
         this.longTermRetentionServerName = IdParsingUtils.getValueFromIdByName(inner.id(), "longTermRetentionServers");
         this.longTermRetentionDatabaseName = IdParsingUtils.getValueFromIdByName(inner.id(), "longTermRetentionDatabases");
@@ -38,7 +40,7 @@ class LongTermRetentionBackupImpl extends IndexableRefreshableWrapperImpl<LongTe
     @Override
     protected Observable<LongTermRetentionBackupInner> getInnerAsync() {
         LongTermRetentionBackupsInner client = this.manager().inner().longTermRetentionBackups();
-        return client.getAsync(this.locationName, this.longTermRetentionServerName, this.longTermRetentionDatabaseName, this.backupName);
+        return client.getByResourceGroupAsync(this.resourceGroupName, this.locationName, this.longTermRetentionServerName, this.longTermRetentionDatabaseName, this.backupName);
     }
 
 
