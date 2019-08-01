@@ -22,6 +22,7 @@ class DeploymentOperationImpl extends IndexableRefreshableWrapperImpl<Deployment
     DeploymentOperationImpl(DeploymentOperationInner inner,  ResourcesManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourcegroups");
         this.deploymentName = IdParsingUtils.getValueFromIdByName(inner.id(), "deployments");
         this.operationId = IdParsingUtils.getValueFromIdByName(inner.id(), "operations");

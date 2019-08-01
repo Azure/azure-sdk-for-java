@@ -62,10 +62,10 @@ class DeploymentsImpl extends WrapperImpl<DeploymentsInner> implements Deploymen
     }
 
     @Override
-    public Completable checkExistenceAsync(String resourceGroupName, String deploymentName) {
+    public Observable<Boolean> checkExistenceAsync(String resourceGroupName, String deploymentName) {
         DeploymentsInner client = this.inner();
-        return client.checkExistenceAsync(resourceGroupName, deploymentName).toCompletable();
-    }
+        return client.checkExistenceAsync(resourceGroupName, deploymentName)
+    ;}
 
     @Override
     public Completable cancelAsync(String resourceGroupName, String deploymentName) {

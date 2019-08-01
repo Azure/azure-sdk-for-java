@@ -21,6 +21,7 @@ class ProviderImpl extends IndexableRefreshableWrapperImpl<Provider, ProviderInn
     ProviderImpl(ProviderInner inner,  ResourcesManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceProviderNamespace = IdParsingUtils.getValueFromIdByName(inner.id(), "providers");
     }
 
