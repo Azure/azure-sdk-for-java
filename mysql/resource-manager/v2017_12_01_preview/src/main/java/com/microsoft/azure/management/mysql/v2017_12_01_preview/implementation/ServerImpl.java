@@ -22,10 +22,10 @@ import com.microsoft.azure.management.mysql.v2017_12_01_preview.ServerVersion;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.ServerPropertiesForCreate;
 import rx.functions.Func1;
 
-class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerImpl, MySQLManager> implements Server, Server.Definition, Server.Update {
+class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerImpl, DBforMySQLManager> implements Server, Server.Definition, Server.Update {
     private ServerForCreate createParameter;
     private ServerUpdateParameters updateParameter;
-    ServerImpl(String name, ServerInner inner, MySQLManager manager) {
+    ServerImpl(String name, ServerInner inner, DBforMySQLManager manager) {
         super(name, inner, manager);
         this.createParameter = new ServerForCreate();
         this.updateParameter = new ServerUpdateParameters();

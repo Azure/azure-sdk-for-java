@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.Configuration;
 
 class ConfigurationsImpl extends WrapperImpl<ConfigurationsInner> implements Configurations {
-    private final MySQLManager manager;
+    private final DBforMySQLManager manager;
 
-    ConfigurationsImpl(MySQLManager manager) {
+    ConfigurationsImpl(DBforMySQLManager manager) {
         super(manager.inner().configurations());
         this.manager = manager;
     }
 
-    public MySQLManager manager() {
+    public DBforMySQLManager manager() {
         return this.manager;
     }
 

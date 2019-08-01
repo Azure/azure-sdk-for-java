@@ -16,14 +16,14 @@ import rx.functions.Func1;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.ServerSecurityAlertPolicy;
 
 class ServerSecurityAlertPoliciesImpl extends WrapperImpl<ServerSecurityAlertPoliciesInner> implements ServerSecurityAlertPolicies {
-    private final MySQLManager manager;
+    private final DBforMySQLManager manager;
 
-    ServerSecurityAlertPoliciesImpl(MySQLManager manager) {
+    ServerSecurityAlertPoliciesImpl(DBforMySQLManager manager) {
         super(manager.inner().serverSecurityAlertPolicies());
         this.manager = manager;
     }
 
-    public MySQLManager manager() {
+    public DBforMySQLManager manager() {
         return this.manager;
     }
 

@@ -17,14 +17,14 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.MySQLManager;
+import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.DBforMySQLManager;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.ServerInner;
 
 /**
  * Type representing Server.
  */
-public interface Server extends HasInner<ServerInner>, Resource, GroupableResourceCore<MySQLManager, ServerInner>, HasResourceGroup, Refreshable<Server>, Updatable<Server.Update>, HasManager<MySQLManager> {
+public interface Server extends HasInner<ServerInner>, Resource, GroupableResourceCore<DBforMySQLManager, ServerInner>, HasResourceGroup, Refreshable<Server>, Updatable<Server.Update>, HasManager<DBforMySQLManager> {
     /**
      * @return the administratorLogin value.
      */
