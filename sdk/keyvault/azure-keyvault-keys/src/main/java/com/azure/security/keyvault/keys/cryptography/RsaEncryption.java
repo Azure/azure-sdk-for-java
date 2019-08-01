@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-public abstract class RsaEncryption extends AsymmetricEncryptionAlgorithm {
+abstract class RsaEncryption extends AsymmetricEncryptionAlgorithm {
 
     protected RsaEncryption(String name) {
         super(name);

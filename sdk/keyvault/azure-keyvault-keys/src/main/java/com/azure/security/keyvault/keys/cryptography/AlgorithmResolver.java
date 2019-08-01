@@ -26,8 +26,6 @@ class AlgorithmResolver {
         Default.put(Rsa15.ALGORITHM_NAME, new Rsa15());
         Default.put(RsaOaep.ALGORITHM_NAME, new RsaOaep());
 
-        Default.put(Rs256.ALGORITHM_NAME, new Rs256());
-
         Default.put(Es256k.ALGORITHM_NAME, new Es256k());
         Default.put(Es256.ALGORITHM_NAME, new Es256());
         Default.put(Es384.ALGORITHM_NAME, new Es384());

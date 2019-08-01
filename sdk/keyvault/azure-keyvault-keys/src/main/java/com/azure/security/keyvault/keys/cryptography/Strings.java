@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-public final class Strings {
+class Strings {
 
     /**
      * Determines whether the parameter string is either null or empty.

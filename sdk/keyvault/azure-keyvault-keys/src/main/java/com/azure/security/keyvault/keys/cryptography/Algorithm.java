@@ -7,7 +7,7 @@ package com.azure.security.keyvault.keys.cryptography;
  * Abstract base class for all Algorithm objects.
  *
  */
-public abstract class Algorithm {
+abstract class Algorithm {
 
     private final String name;
 

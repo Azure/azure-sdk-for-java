@@ -13,7 +13,7 @@ import java.security.Provider;
  * Abstract base class for all symmetric encryption implementation.
  *
  */
-public abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
+abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
 
     /**
      * Constructor.

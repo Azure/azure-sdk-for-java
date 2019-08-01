@@ -12,7 +12,7 @@ import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 
-public final class Rsa15 extends RsaEncryption {
+class Rsa15 extends RsaEncryption {
 
     static class Rsa15Decryptor implements ICryptoTransform {
 

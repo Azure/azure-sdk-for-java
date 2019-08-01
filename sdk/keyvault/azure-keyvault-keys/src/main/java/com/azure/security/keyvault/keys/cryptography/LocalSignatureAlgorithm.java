@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-public abstract class LocalSignatureAlgorithm extends Algorithm {
+abstract class LocalSignatureAlgorithm extends Algorithm {
 
     protected LocalSignatureAlgorithm(String name) {
         super(name);

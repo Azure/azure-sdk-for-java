@@ -7,7 +7,7 @@ package com.azure.security.keyvault.keys.cryptography;
  * Abstract base class for all encryption implementation.
  *
  */
-public abstract class KeyEncryptionAlgorithm extends Algorithm {
+abstract class KeyEncryptionAlgorithm extends Algorithm {
 
     /**
      * Constructor.

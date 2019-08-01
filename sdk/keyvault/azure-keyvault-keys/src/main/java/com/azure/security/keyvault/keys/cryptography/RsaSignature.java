@@ -11,7 +11,7 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Arrays;
 
-public abstract class RsaSignature extends AsymmetricSignatureAlgorithm {
+abstract class RsaSignature extends AsymmetricSignatureAlgorithm {
 
     private static final BigInteger TWO_FIVE_SIX = new BigInteger("256");
     private static final byte[] SHA_256_PREFIX = new byte[] { 0x30, 0x31, 0x30, 0x0d, 0x06, 0x09, 0x60, (byte) 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01, 0x05, 0x00, 0x04, 0x20 };

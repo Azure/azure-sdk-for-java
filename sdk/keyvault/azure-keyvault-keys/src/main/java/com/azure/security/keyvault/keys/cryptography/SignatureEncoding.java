@@ -11,7 +11,7 @@ import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-public final class SignatureEncoding {
+class SignatureEncoding {
     // SignatureEncoding is intended to be a static class
     private SignatureEncoding() { }
 

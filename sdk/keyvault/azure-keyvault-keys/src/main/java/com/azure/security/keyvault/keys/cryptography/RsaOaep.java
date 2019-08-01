@@ -12,7 +12,7 @@ import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 
-public final class RsaOaep extends RsaEncryption {
+class RsaOaep extends RsaEncryption {
 
     static class RsaOaepDecryptor implements ICryptoTransform {
 
