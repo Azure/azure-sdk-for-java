@@ -5,6 +5,11 @@ package com.azure.security.keyvault.keys.cryptography;
  */
 public class SignResult {
 
+    public SignResult(byte[] signature, SignatureAlgorithm algorithm){
+        this.signature = signature;
+        this.algorithm = algorithm;
+    }
+
     /**
      * The signature created from the digest.
      */

@@ -5,6 +5,12 @@ package com.azure.security.keyvault.keys.cryptography;
  */
 public class EncryptResult {
 
+    public EncryptResult(byte[] cipherText, byte[] authenticationTag, EncryptionAlgorithm algorithm) {
+        this.cipherText = cipherText;
+        this.authenticationTag = authenticationTag;
+        this.algorithm = algorithm;
+    }
+
     /**
      * THe encrypted content.
      */
@@ -29,10 +35,6 @@ public class EncryptResult {
         return cipherText;
     }
 
-    public EncryptResult cipherText(byte[] cipherText) {
-        this.cipherText = cipherText;
-        return this;
-    }
 
     /**
      * Get the authentication tag.
@@ -40,11 +42,6 @@ public class EncryptResult {
      */
     public byte[] authenticationTag() {
         return authenticationTag;
-    }
-
-    public EncryptResult authenticationTag(byte[] authenticationTag) {
-        this.authenticationTag = authenticationTag;
-        return this;
     }
 
     /**
@@ -55,8 +52,4 @@ public class EncryptResult {
         return algorithm;
     }
 
-    public EncryptResult algorithm(EncryptionAlgorithm algorithm) {
-        this.algorithm = algorithm;
-        return this;
-    }
 }

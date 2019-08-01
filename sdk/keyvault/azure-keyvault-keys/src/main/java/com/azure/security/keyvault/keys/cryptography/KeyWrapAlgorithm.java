@@ -9,26 +9,23 @@ import java.util.List;
 /**
  * Defines values for EncryptionAlgorithm.
  */
-public final class KeyWrapAlgorithm {
+public enum KeyWrapAlgorithm {
 
-    /** Static value RSA-OAEP for EncryptionAlgorithm. */
-    public static final KeyWrapAlgorithm RSA_OAEP = new KeyWrapAlgorithm("RSA-OAEP");
-
-    /** Static value RSA-OAEP-256 for EncryptionAlgorithm. */
-    public static final KeyWrapAlgorithm RSA_OAEP_256 = new KeyWrapAlgorithm("RSA-OAEP-256");
-
-    /** Static value RSA1_5 for EncryptionAlgorithm. */
-    public static final KeyWrapAlgorithm RSA1_5 = new KeyWrapAlgorithm("RSA1_5");
+    RSA_OAEP("RSA-OAEP"),
+    RSA_OAEP_256("RSA-OAEP-256"),
+    RSA1_5("RSA1_5"),
+    A192KW("A192KW"),
+    A128KW("A128KW"),
+    A256KW("A256KW");
 
     private String value;
 
     /**
-     * Creates a custom value for EncryptionAlgorithm.
+     * Creates a custom value for KeyWrapAlgorithm.
      *
-     * @param value
-     *            the custom value
+     * @param value the custom value
      */
-    public KeyWrapAlgorithm(String value) {
+    KeyWrapAlgorithm(String value) {
         this.value = value;
     }
 
@@ -38,29 +35,12 @@ public final class KeyWrapAlgorithm {
         return value;
     }
 
-    @Override
-    public int hashCode() {
+    public int hash() {
         return value.hashCode();
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof KeyWrapAlgorithm)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        KeyWrapAlgorithm rhs = (KeyWrapAlgorithm) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
-    }
-
     /**
-     * All the JWK encryption algorithms.
+     * All the JWK encryption implementation.
      */
     public static final List<KeyWrapAlgorithm> ALL_ALGORITHMS = Collections
             .unmodifiableList(Arrays.asList(RSA_OAEP, RSA1_5, RSA_OAEP_256));

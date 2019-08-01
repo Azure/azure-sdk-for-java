@@ -5,6 +5,11 @@ package com.azure.security.keyvault.keys.cryptography;
  */
 public class KeyWrapResult {
 
+    public KeyWrapResult(byte[] encryptedKey, KeyWrapAlgorithm algorithm) {
+        this.encryptedKey = encryptedKey;
+        this.algorithm = algorithm;
+    }
+
     /**
      * The encrypted key content
      */

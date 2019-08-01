@@ -10,7 +10,7 @@ import com.azure.security.keyvault.keys.models.Key;
 import reactor.core.publisher.Mono;
 
 /**
- * The interface defining all the services for {@link CryptographyClient} to be used
+ * The interface defining all the services for {@link CryptographyAsyncClient} to be used
  * by the proxy service to perform REST calls.
  *
  * This is package-private so that these REST calls are transparent to the user.

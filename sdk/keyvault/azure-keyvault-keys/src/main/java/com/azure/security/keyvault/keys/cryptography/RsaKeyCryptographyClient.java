@@ -1,188 +1,223 @@
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Objects;
-
-import static com.azure.core.implementation.util.FluxUtil.withContext;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.*;
 
 class RsaKeyCryptographyClient {
-    static final String API_VERSION = "7.0";
-    static final String ACCEPT_LANGUAGE = "en-US";
-    static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
+    private CryptographyServiceClient serviceClient;
+    private KeyPair keyPair;
 
-    private JsonWebKey key;
-    private final ClientLogger logger = new ClientLogger(RsaKeyCryptographyClient.class);
-    private final CryptographyService service;
-    private String endpoint;
-    private String version;
-    private String keyName;
-
-    /**
-     * Creates a RsaKeyCryptographyClient that uses {@code pipeline} to service requests
+    /*
+     * Creates a RsaKeyCryptographyClient that uses {@code serviceClient) to service requests
      *
-     * @param key the JsonWebKey to use for cryptography operations.
+     * @param keyPair the key pair to use for cryptography operations.
      */
-    RsaKeyCryptographyClient(JsonWebKey key, CryptographyService service) {
-        Objects.requireNonNull(key);
-        this.key = key;
-        this.service = service;
+    RsaKeyCryptographyClient(CryptographyServiceClient serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
-    RsaKeyCryptographyClient(String kid, CryptographyService service) {
-        Objects.requireNonNull(kid);
-        unpackId(kid);
-        this.service = service;
+    RsaKeyCryptographyClient(JsonWebKey key, CryptographyServiceClient serviceClient) {
+        keyPair = key.toEC(key.hasPrivateKey());
+        this.serviceClient = serviceClient;
     }
 
-    Mono<Response<Key>> getKey() {
-        if (version == null) {
-            version = "";
+    private KeyPair getKeyPair(JsonWebKey key) {
+        if(keyPair == null){
+            keyPair = key.toRSA(key.hasPrivateKey());
         }
-        return withContext(context -> getKey(keyName, version, context));
+        return keyPair;
     }
 
-    private Mono<Response<Key>> getKey(String name, String version, Context context) {
-        return service.getKey(endpoint, name, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-                .doOnRequest(ignored -> logger.info("Retrieving key - {}",  name))
-                .doOnSuccess(response -> logger.info("Retrieved key - {}", response.value().name()))
-                .doOnError(error -> logger.warning("Failed to get key - {}", name, error));
-    }
+    Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, byte[] iv, byte[] authenticationData, Context context, JsonWebKey jsonWebKey) {
+        keyPair = getKeyPair(jsonWebKey);
 
-    Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
-
-        if(key == null){
-            this.key = getKey().block().value().keyMaterial();
+        if(iv != null || authenticationData != null) {
+            Mono.error(new IllegalArgumentException("iv and authenticationData parameters are not allowed for Rsa encrypt operation"));
         }
 
-        KeyOperationParameters parameters = new KeyOperationParameters().algorithm(algorithm).value(plaintext);
-        return service.encrypt(endpoint,keyName,version,API_VERSION,ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
-                .flatMap(keyOperationResultResponse ->
-                      Mono.just(new EncryptResult().algorithm(algorithm)
-                            .cipherText(keyOperationResultResponse.value().result())));
+        // Interpret the requested algorithm
+        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
 
-        // plaintext is required
-        // iv is required for some algorithms, for instance AESCBC
-        // authenticationData is never required but it only makes sense in the case of authenticated encryption algorithms, for instance AES-GCM AESCBC-HMAC
-        // algorithm is not required in the case that we have the key locally and know the keytype (in which case we can use the best available algorithm for the keytype), otherwise it would be required
-
-        // this method **could** be performed locally in the case that the public portion of the key is available locally for asymmetric keys, or all the key data in the case of symmetric
-    }
-
-    Mono<byte[]> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, Context context) {
-
-        if(key == null){
-            this.key = getKey().block().value().keyMaterial();
-        }
-
-        KeyOperationParameters parameters = new KeyOperationParameters().algorithm(algorithm).value(cipherText);
-        return service.decrypt(endpoint,keyName,version,API_VERSION,ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
-                .flatMap(keyOperationResultResponse -> Mono.just(keyOperationResultResponse.value().result()));
-
-        // plaintext is required
-        // iv is required for some algorithms, for instance AESCBC
-        // authenticationData is never required but it only makes sense in the case of authenticated encryption algorithms, for instance AES-GCM AESCBC-HMAC
-        // algorithm is not required in the case that we have the key locally and know the keytype (in which case we can use the best available algorithm for the keytype), otherwise it would be required
-
-        // this method **could** be performed locally in the case that the public portion of the key is available locally for asymmetric keys, or all the key data in the case of symmetric
-    }
-
-    Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, Context context) {
-
-        if(key == null){
-            this.key = getKey().block().value().keyMaterial();
-        }
-
-        KeySignRequest parameters = new KeySignRequest().algorithm(algorithm).value(digest);
-        return service.sign(endpoint,keyName,version,API_VERSION,ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
-                .flatMap(keyOperationResultResponse ->
-                        Mono.just(new SignResult().algorithm(algorithm)
-                                .signature(keyOperationResultResponse.value().result())));
-        // plaintext is required
-        // iv is required for some algorithms, for instance AESCBC
-        // authenticationData is never required but it only makes sense in the case of authenticated encryption algorithms, for instance AES-GCM AESCBC-HMAC
-        // algorithm is not required in the case that we have the key locally and know the keytype (in which case we can use the best available algorithm for the keytype), otherwise it would be required
-
-        // this method **could** be performed locally in the case that the public portion of the key is available locally for asymmetric keys, or all the key data in the case of symmetric
-    }
-
-    Mono<Boolean> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
-
-        if(key == null){
-            this.key = getKey().block().value().keyMaterial();
-        }
-
-        KeyVerifyRequest parameters = new KeyVerifyRequest().algorithm(algorithm).digest(digest).signature(signature);
-        return service.verify(endpoint,keyName,version,API_VERSION,ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
-                .flatMap(response ->
-                        Mono.just(response.value().value()));
-        // plaintext is required
-        // iv is required for some algorithms, for instance AESCBC
-        // authenticationData is never required but it only makes sense in the case of authenticated encryption algorithms, for instance AES-GCM AESCBC-HMAC
-        // algorithm is not required in the case that we have the key locally and know the keytype (in which case we can use the best available algorithm for the keytype), otherwise it would be required
-
-        // this method **could** be performed locally in the case that the public portion of the key is available locally for asymmetric keys, or all the key data in the case of symmetric
-    }
-
-    Mono<KeyWrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
-
-        if(key == null){
-            this.key = getKey().block().value().keyMaterial();
-        }
-
-        KeyWrapUnwrapRequest parameters = new KeyWrapUnwrapRequest().algorithm(algorithm).value(key);
-        return service.wrapKey(endpoint,keyName,version,API_VERSION,ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
-                .flatMap(keyOperationResultResponse ->
-                        Mono.just(new KeyWrapResult().algorithm(algorithm)
-                                .encryptedKey(keyOperationResultResponse.value().result())));
-        // plaintext is required
-        // iv is required for some algorithms, for instance AESCBC
-        // authenticationData is never required but it only makes sense in the case of authenticated encryption algorithms, for instance AES-GCM AESCBC-HMAC
-        // algorithm is not required in the case that we have the key locally and know the keytype (in which case we can use the best available algorithm for the keytype), otherwise it would be required
-
-        // this method **could** be performed locally in the case that the public portion of the key is available locally for asymmetric keys, or all the key data in the case of symmetric
-    }
-
-    Mono<byte[]> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
-
-        if(key == null){
-            this.key = getKey().block().value().keyMaterial();
-        }
-
-        KeyWrapUnwrapRequest parameters = new KeyWrapUnwrapRequest().algorithm(algorithm).value(encryptedKey);
-        return service.unwrapKey(endpoint,keyName,version,API_VERSION,ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
-                .flatMap(response ->
-                        Mono.just(response.value().result()));
-        // plaintext is required
-        // iv is required for some algorithms, for instance AESCBC
-        // authenticationData is never required but it only makes sense in the case of authenticated encryption algorithms, for instance AES-GCM AESCBC-HMAC
-        // algorithm is not required in the case that we have the key locally and know the keytype (in which case we can use the best available algorithm for the keytype), otherwise it would be required
-
-        // this method **could** be performed locally in the case that the public portion of the key is available locally for asymmetric keys, or all the key data in the case of symmetric
-    }
-
-    private void unpackId(String keyId) {
-        if (keyId != null && keyId.length() > 0) {
-            try {
-                URL url = new URL(keyId);
-                String[] tokens = url.getPath().split("/");
-                this.endpoint = url.getProtocol() + "://" + url.getHost();
-                this.keyName = (tokens.length >= 3 ? tokens[2] : null);
-                this.version = (tokens.length >= 4 ? tokens[3] : null);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+        if (baseAlgorithm == null) {
+            if(serviceCryptoAvailable()) {
+                return serviceClient.encryptAsync(algorithm, plaintext, context);
             }
+            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+        } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
+            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+        }
+
+        if(keyPair.getPublic() == null){
+            if(serviceCryptoAvailable()) {
+                return serviceClient.encryptAsync(algorithm, plaintext, context);
+            }
+            return Mono.error(new IllegalArgumentException("Public portion of the key not available to perform encrypt operation"));
+        }
+
+        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
+
+        ICryptoTransform transform;
+
+        try {
+            transform = algo.CreateEncryptor(keyPair);
+            return Mono.just(new EncryptResult(transform.doFinal(plaintext), (byte[]) null, algorithm));
+        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
+            return Mono.error(e);
         }
     }
 
+    Mono<byte[]> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Context context, JsonWebKey jsonWebKey) {
+
+        if(iv != null || authenticationData != null || authenticationTag != null){
+            return Mono.error(new IllegalArgumentException("iv, authenticationData and authenticationTag parameters are not supported for Rsa decrypt operation"));
+        }
+
+        keyPair = getKeyPair(jsonWebKey);
+
+        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+
+        if (baseAlgorithm == null) {
+            if(serviceCryptoAvailable()) {
+                return serviceClient.decryptAsync(algorithm, cipherText, context);
+            }
+            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+        } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
+            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+        }
+
+        if(keyPair.getPrivate() == null) {
+            if(serviceCryptoAvailable()) {
+                return serviceClient.decryptAsync(algorithm, cipherText, context);
+            }
+            return Mono.error(new IllegalArgumentException("Private portion of the key not available to perform decrypt operation"));
+        }
+
+        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
+
+        ICryptoTransform transform;
+
+        try {
+            transform = algo.CreateDecryptor(keyPair);
+            return Mono.just(transform.doFinal(cipherText));
+        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
+            return Mono.error(e);
+        }
+    }
+
+    Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, Context context, JsonWebKey key) {
+
+        return serviceClient.signAsync(algorithm, digest, context);
+    }
+
+    Mono<Boolean> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context, JsonWebKey key) {
+
+        return serviceClient.verifyAsync(algorithm, digest, signature, context);
+        // do a service call for now.
+    }
+
+    Mono<KeyWrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, Context context, JsonWebKey jsonWebKey) {
+
+        keyPair = getKeyPair(jsonWebKey);
+
+        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+
+        if (baseAlgorithm == null) {
+            if(serviceCryptoAvailable()) {
+                return serviceClient.wrapKeyAsync(algorithm, key, context);
+            }
+            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+        } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
+            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+        }
+
+        if(keyPair.getPublic() == null) {
+            if(serviceCryptoAvailable()) {
+                return serviceClient.wrapKeyAsync(algorithm, key, context);
+            }
+            return Mono.error(new IllegalArgumentException("Public portion of the key not available to perform wrap key operation"));
+        }
+
+        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
+
+        ICryptoTransform transform;
+
+        try {
+            transform = algo.CreateEncryptor(keyPair);
+            return Mono.just(new KeyWrapResult(transform.doFinal(key), algorithm));
+        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
+            return Mono.error(e);
+        }
+    }
+
+    Mono<byte[]> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context, JsonWebKey jsonWebKey) {
+
+        keyPair = getKeyPair(jsonWebKey);
+
+        // Interpret the requested algorithm
+        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+
+        if (baseAlgorithm == null) {
+            if(serviceCryptoAvailable()) {
+                return serviceClient.unwrapKeyAsync(algorithm, encryptedKey, context);
+            }
+            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+        } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
+            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+        }
+
+        if (keyPair.getPrivate() == null){
+            if(serviceCryptoAvailable()) {
+                return serviceClient.unwrapKeyAsync(algorithm, encryptedKey, context);
+            }
+            return Mono.error(new IllegalArgumentException("Private portion of the key not available to perform unwrap operation"));
+        }
+
+        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
+
+        ICryptoTransform transform;
+
+        try {
+            transform = algo.CreateDecryptor(keyPair);
+            return Mono.just(transform.doFinal(encryptedKey));
+        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
+            return Mono.error(e);
+        }
+    }
+
+
+    Mono<SignResult> signDataAsync(SignatureAlgorithm algorithm, byte[] data, Context context, JsonWebKey key) {
+        try {
+            HashAlgorithm hashAlgorithm = SignatureHashResolver.Default.get(algorithm);
+            MessageDigest md = MessageDigest.getInstance(hashAlgorithm.toString());
+            md.update(data);
+            byte[] digest = md.digest();
+            return signAsync(algorithm, digest, context, key);
+        } catch (NoSuchAlgorithmException e){
+            return Mono.error(e);
+        }
+    }
+
+
+    Mono<Boolean> verifyDataAsync(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context, JsonWebKey key) {
+        HashAlgorithm hashAlgorithm = SignatureHashResolver.Default.get(algorithm);
+        try {
+            MessageDigest md = MessageDigest.getInstance(hashAlgorithm.toString());
+            md.update(data);
+            byte[] digest = md.digest();
+            return verifyAsync(algorithm, digest, signature, context, key);
+        } catch (NoSuchAlgorithmException e){
+            return Mono.error(e);
+        }
+    }
+
+    private boolean serviceCryptoAvailable(){
+        return serviceClient != null ;
+    }
 
 }
