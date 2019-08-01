@@ -60,12 +60,13 @@ The credential types in Azure Identity differ in the types of AAD identities the
 |credential class|identity|configuration
 |-|-|-
 |`DefaultAzureCredential`|service principal or managed identity|none for managed identity; [environment variables](#environment-variables) for service principal
-|`ManagedIdentityCredential`|managed identity|constructor parameters
+|`ManagedIdentityCredential`|managed identity|`ManagedIdentityCredentialBuilder`
 |`EnvironmentCredential`|service principal|[environment variables](#environment-variables)
-|`ClientSecretCredential`|service principal|constructor parameters
-|`ClientCertificateCredential`|service principal|constructor parameters
-|`DeviceCodeCredential`|user delegation|constructor parameters
-|`ClientCertificateCredential`|user delegation|constructor parameters
+|`ClientSecretCredential`|service principal|`ClientSecretCredentialBuilder`
+|`ClientCertificateCredential`|service principal|`ClientCertificateCredentialBuilder`
+|`DeviceCodeCredential`|user account|`DeviceCodeCredentialBuilder`
+|`InteractiveBrowserCredential`|user account|`InteractiveBrowserCredentialBuilder`
+|`UsernamePasswordCredential`|user account|`UsernamePasswordCredentialBuilder`
 
 Credentials can be chained together to be tried in turn until one succeeds using the `ChainedTokenCredential`; see [chaining credentials](#chaining-credentials) for details.
 
@@ -97,9 +98,10 @@ This example demonstrates authenticating the `SecretClient` from the [azure-keyv
 // The default credential first checks environment variables for configuration as described above.
 // If environment configuration is incomplete, it will try managed identity.
 import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 
-DefaultAzureCredential defaultCredential = new DefaultAzureCredential();
+DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 
 // Azure SDK client builders accept the credential as a parameter
 
@@ -115,13 +117,15 @@ This example demonstrates authenticating the `KeyClient` from the [azure-keyvaul
 ```java
 // using a client secret
 import com.azure.identity.credential.ClientSecretCredential;
+import com.azure.identity.credential.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClient;
 
 // authenticate with client secret,
-ClientSecretCredential clientSecretCredential = new ClientSecretCredential()
+ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
 	    .clientId("<YOUR_CLIENT_ID>")
 	    .clientSecret("<YOUR_CLIENT_SECRET>")
-	    .tenantId("<YOUR_TENANT_ID>");
+	    .tenantId("<YOUR_TENANT_ID>")
+	    .build();
 
 KeyClient client = KeyClient.builder()
     .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
@@ -129,27 +133,51 @@ KeyClient client = KeyClient.builder()
     .build();
 ```
 
+## Authenticating a user account with device code flow
+This example demonstrates authenticating the `KeyClient` from the [azure-keyvault-keys][keys_client_library] client library using the `DeviceCodeCredential` on an IoT device.
+```java
+// using a client secret
+import com.azure.identity.credential.DeviceCodeCredential;
+import com.azure.identity.credential.DeviceCodeCredentialBuilder;
+import com.azure.security.keyvault.keys.KeyClient;
+
+// authenticate with client secret,
+DeviceCodeCredential deviceCodeCredential = new DeviceCodeCredentialBuilder()
+	    .deviceCodeChallengeConsumer(challenge -> {
+	        // lets user know of the challenge, e.g., display the message on an IoT device
+	        displayMessage(challenge.message());
+	    })
+	    .build();
+
+KeyClient client = KeyClient.builder()
+    .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+    .credential(clientSecretCredential)
+    .build();
+```
+
+When the challenge is displayed on the IoT device, it will contain the message "Please open the browser to {url} and type in code XXXXXXXX". When the user follows the directions and logs in on another computer, the credential will return the token to the `KeyClient`.
+
 ## Chaining credentials:
 The `ChainedTokenCredential` class provides the ability to link together multiple credential instances to be tried sequentially when authenticating. The following example demonstrates creating a credential which will attempt to authenticate using managed identity, and fall back to certificate authentication if a managed identity is unavailable in the current environment. This example authenticates an `EventHubClient` from the [azure-eventhubs][eventhubs_client_library] client library using the `ChainedTokenCredential`.
 
 ```java
-import com.azure.identity.credential.ClientSecretCredential;
-import com.azure.security.keyvault.secrets.SecretClient;
+ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
+        .clientId("<YOUR_CLIENT_ID>")
+        .build();
 
-ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredential()
-        .clientId("<YOUR_CLIENT_ID>");
-
-ClientSecretcredential secondServicePrincipal = new ClientSecretCredential()
+ClientSecretcredential secondServicePrincipal = new ClientSecretCredentialBuilder()
 	    .clientId("<YOUR_CLIENT_ID>")
 	    .clientSecret("<YOUR_CLIENT_SECRET>")
-	    .tenantId("<YOUR_TENANT_ID>");
+	    .tenantId("<YOUR_TENANT_ID>")
+	    .build();
 
 // when an access token is requested, the chain will try each
 // credential in order, stopping when one provides a token
 
-ChainedTokenCredential credentialChain = new ChainedTokenCredential()
+ChainedTokenCredential credentialChain = new ChainedTokenCredentialBuilder()
 		.addLast(managedIdentityCredential)
-		.addLast(secondServicePrincipal);
+		.addLast(secondServicePrincipal)
+		.build();
 
 // the chain can be used anywhere a credential is required
 
