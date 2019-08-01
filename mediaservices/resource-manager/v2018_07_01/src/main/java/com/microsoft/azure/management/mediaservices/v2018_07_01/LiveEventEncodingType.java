@@ -8,49 +8,40 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for LiveEventEncodingType.
  */
-public enum LiveEventEncodingType {
-    /** Enum value None. */
-    NONE("None"),
+public final class LiveEventEncodingType extends ExpandableStringEnum<LiveEventEncodingType> {
+    /** Static value None for LiveEventEncodingType. */
+    public static final LiveEventEncodingType NONE = fromString("None");
 
-    /** Enum value Basic. */
-    BASIC("Basic"),
+    /** Static value Basic for LiveEventEncodingType. */
+    public static final LiveEventEncodingType BASIC = fromString("Basic");
 
-    /** Enum value Standard. */
-    STANDARD("Standard");
+    /** Static value Standard for LiveEventEncodingType. */
+    public static final LiveEventEncodingType STANDARD = fromString("Standard");
 
-    /** The actual serialized value for a LiveEventEncodingType instance. */
-    private String value;
+    /** Static value Premium1080p for LiveEventEncodingType. */
+    public static final LiveEventEncodingType PREMIUM1080P = fromString("Premium1080p");
 
-    LiveEventEncodingType(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a LiveEventEncodingType from its string representation.
+     * @param name a name to look for
+     * @return the corresponding LiveEventEncodingType
+     */
+    @JsonCreator
+    public static LiveEventEncodingType fromString(String name) {
+        return fromString(name, LiveEventEncodingType.class);
     }
 
     /**
-     * Parses a serialized value to a LiveEventEncodingType instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed LiveEventEncodingType object, or null if unable to parse.
+     * @return known LiveEventEncodingType values
      */
-    @JsonCreator
-    public static LiveEventEncodingType fromString(String value) {
-        LiveEventEncodingType[] items = LiveEventEncodingType.values();
-        for (LiveEventEncodingType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<LiveEventEncodingType> values() {
+        return values(LiveEventEncodingType.class);
     }
 }

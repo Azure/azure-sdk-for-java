@@ -23,10 +23,10 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.Location;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.VirtualNetworkRule;
 import rx.functions.Func1;
 
-class DatabaseAccountImpl extends GroupableResourceCoreImpl<DatabaseAccount, DatabaseAccountInner, DatabaseAccountImpl, DocumentDBManager> implements DatabaseAccount, DatabaseAccount.Definition, DatabaseAccount.Update {
+class DatabaseAccountImpl extends GroupableResourceCoreImpl<DatabaseAccount, DatabaseAccountInner, DatabaseAccountImpl, CosmosDBManager> implements DatabaseAccount, DatabaseAccount.Definition, DatabaseAccount.Update {
     private DatabaseAccountCreateUpdateParameters createParameter;
     private DatabaseAccountPatchParameters updateParameter;
-    DatabaseAccountImpl(String name, DatabaseAccountInner inner, DocumentDBManager manager) {
+    DatabaseAccountImpl(String name, DatabaseAccountInner inner, CosmosDBManager manager) {
         super(name, inner, manager);
         this.createParameter = new DatabaseAccountCreateUpdateParameters();
         this.updateParameter = new DatabaseAccountPatchParameters();
@@ -104,6 +104,11 @@ class DatabaseAccountImpl extends GroupableResourceCoreImpl<DatabaseAccount, Dat
     }
 
     @Override
+    public Boolean enableMultipleWriteLocations() {
+        return this.inner().enableMultipleWriteLocations();
+    }
+
+    @Override
     public List<FailoverPolicy> failoverPolicies() {
         return this.inner().failoverPolicies();
     }
@@ -164,6 +169,12 @@ class DatabaseAccountImpl extends GroupableResourceCoreImpl<DatabaseAccount, Dat
     @Override
     public DatabaseAccountImpl withEnableAutomaticFailover(Boolean enableAutomaticFailover) {
         this.createParameter.withEnableAutomaticFailover(enableAutomaticFailover);
+        return this;
+    }
+
+    @Override
+    public DatabaseAccountImpl withEnableMultipleWriteLocations(Boolean enableMultipleWriteLocations) {
+        this.createParameter.withEnableMultipleWriteLocations(enableMultipleWriteLocations);
         return this;
     }
 

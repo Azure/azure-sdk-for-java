@@ -78,41 +78,22 @@ class FileServersImpl extends GroupableResourcesCoreImpl<FileServer, FileServerI
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<FileServerInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        FileServersInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<FileServerInner>, Observable<Page<FileServerInner>>>() {
-            @Override
-            public Observable<Page<FileServerInner>> call(Page<FileServerInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<FileServer> listByResourceGroupAsync(String resourceGroupName) {
         FileServersInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<FileServerInner>, Observable<Page<FileServerInner>>>() {
-            @Override
-            public Observable<Page<FileServerInner>> call(Page<FileServerInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<FileServerInner>, Iterable<FileServerInner>>() {
             @Override
             public Iterable<FileServerInner> call(Page<FileServerInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<FileServerInner, FileServer>() {
             @Override
             public FileServer call(FileServerInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -121,41 +102,22 @@ class FileServersImpl extends GroupableResourcesCoreImpl<FileServer, FileServerI
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<FileServerInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        FileServersInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<FileServerInner>, Observable<Page<FileServerInner>>>() {
-            @Override
-            public Observable<Page<FileServerInner>> call(Page<FileServerInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<FileServer> listAsync() {
         FileServersInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<FileServerInner>, Observable<Page<FileServerInner>>>() {
-            @Override
-            public Observable<Page<FileServerInner>> call(Page<FileServerInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<FileServerInner>, Iterable<FileServerInner>>() {
             @Override
             public Iterable<FileServerInner> call(Page<FileServerInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<FileServerInner, FileServer>() {
             @Override
             public FileServer call(FileServerInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

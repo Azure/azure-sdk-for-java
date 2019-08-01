@@ -65,6 +65,9 @@ public interface RedisPatchSchedule extends HasInner<RedisPatchScheduleInner>, I
         interface WithRedis {
            /**
             * Specifies resourceGroupName, name.
+            * @param resourceGroupName The name of the resource group
+            * @param name The name of the Redis cache
+            * @return the next definition stage
             */
             WithScheduleEntries withExistingRedis(String resourceGroupName, String name);
         }
@@ -75,6 +78,8 @@ public interface RedisPatchSchedule extends HasInner<RedisPatchScheduleInner>, I
         interface WithScheduleEntries {
            /**
             * Specifies scheduleEntries.
+            * @param scheduleEntries List of patch schedules for a Redis cache
+            * @return the next definition stage
             */
             WithCreate withScheduleEntries(List<ScheduleEntry> scheduleEntries);
         }
@@ -103,6 +108,8 @@ public interface RedisPatchSchedule extends HasInner<RedisPatchScheduleInner>, I
         interface WithScheduleEntries {
             /**
              * Specifies scheduleEntries.
+             * @param scheduleEntries List of patch schedules for a Redis cache
+             * @return the next update stage
              */
             Update withScheduleEntries(List<ScheduleEntry> scheduleEntries);
         }

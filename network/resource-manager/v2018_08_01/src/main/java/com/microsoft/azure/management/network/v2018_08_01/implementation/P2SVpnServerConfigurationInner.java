@@ -27,7 +27,7 @@ public class P2SVpnServerConfigurationInner extends SubResource {
     /**
      * The name of the P2SVpnServerConfiguration that is unique within a
      * VirtualWan in a resource group. This name can be used to access the
-     * resource along with Paren VirtualWan resource name.
+     * resource along with Parent VirtualWan resource name.
      */
     @JsonProperty(value = "properties.name")
     private String p2SVpnServerConfigurationPropertiesName;
@@ -77,7 +77,7 @@ public class P2SVpnServerConfigurationInner extends SubResource {
 
     /**
      * The radius secret property of the P2SVpnServerConfiguration resource for
-     * for point to site client connection.
+     * point to site client connection.
      */
     @JsonProperty(value = "properties.radiusServerSecret")
     private String radiusServerSecret;
@@ -116,7 +116,7 @@ public class P2SVpnServerConfigurationInner extends SubResource {
     private String etag;
 
     /**
-     * Get the name of the P2SVpnServerConfiguration that is unique within a VirtualWan in a resource group. This name can be used to access the resource along with Paren VirtualWan resource name.
+     * Get the name of the P2SVpnServerConfiguration that is unique within a VirtualWan in a resource group. This name can be used to access the resource along with Parent VirtualWan resource name.
      *
      * @return the p2SVpnServerConfigurationPropertiesName value
      */
@@ -125,7 +125,7 @@ public class P2SVpnServerConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the name of the P2SVpnServerConfiguration that is unique within a VirtualWan in a resource group. This name can be used to access the resource along with Paren VirtualWan resource name.
+     * Set the name of the P2SVpnServerConfiguration that is unique within a VirtualWan in a resource group. This name can be used to access the resource along with Parent VirtualWan resource name.
      *
      * @param p2SVpnServerConfigurationPropertiesName the p2SVpnServerConfigurationPropertiesName value to set
      * @return the P2SVpnServerConfigurationInner object itself.
@@ -276,7 +276,7 @@ public class P2SVpnServerConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the radius secret property of the P2SVpnServerConfiguration resource for for point to site client connection.
+     * Get the radius secret property of the P2SVpnServerConfiguration resource for point to site client connection.
      *
      * @return the radiusServerSecret value
      */
@@ -285,7 +285,7 @@ public class P2SVpnServerConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the radius secret property of the P2SVpnServerConfiguration resource for for point to site client connection.
+     * Set the radius secret property of the P2SVpnServerConfiguration resource for point to site client connection.
      *
      * @param radiusServerSecret the radiusServerSecret value to set
      * @return the P2SVpnServerConfigurationInner object itself.

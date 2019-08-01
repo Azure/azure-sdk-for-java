@@ -12,10 +12,12 @@ import rx.Observable;
 import com.microsoft.azure.management.appservice.v2018_02_01.AppServiceEnvironmentResource;
 import rx.Completable;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentDiagnostics;
+import com.microsoft.azure.management.appservice.v2018_02_01.InboundEnvironmentEndpoint;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentResourceMetric;
 import com.microsoft.azure.management.appservice.v2018_02_01.MultiRolePools;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.WorkerPoolResourceInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.Operation;
+import com.microsoft.azure.management.appservice.v2018_02_01.OutboundEnvironmentEndpoint;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentAppServicePlan;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentSite;
 import com.microsoft.azure.management.appservice.v2018_02_01.WorkerPools;
@@ -125,17 +127,6 @@ public interface AppServiceEnvironments {
     Observable<Sites> suspendAsync(final String resourceGroupName, final String name);
 
     /**
-     * Resume an App Service Environment.
-     * Resume an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable syncVirtualNetworkInfoAsync(String resourceGroupName, String name);
-
-    /**
      * Get the used, available, and total worker capacity an App Service Environment.
      * Get the used, available, and total worker capacity an App Service Environment.
      *
@@ -179,6 +170,17 @@ public interface AppServiceEnvironments {
      * @return the observable for the request
      */
     Observable<HostingEnvironmentDiagnostics> listDiagnosticsAsync(String resourceGroupName, String name);
+
+    /**
+     * Get the network endpoints of all inbound dependencies of an App Service Environment.
+     * Get the network endpoints of all inbound dependencies of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<InboundEnvironmentEndpoint> getInboundNetworkDependenciesEndpointsAsync(final String resourceGroupName, final String name);
 
     /**
      * Get global metric definitions of an App Service Environment.
@@ -411,6 +413,17 @@ public interface AppServiceEnvironments {
      * @return the observable for the request
      */
     Observable<Operation> listOperationsAsync(String resourceGroupName, String name);
+
+    /**
+     * Get the network endpoints of all outbound dependencies of an App Service Environment.
+     * Get the network endpoints of all outbound dependencies of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<OutboundEnvironmentEndpoint> getOutboundNetworkDependenciesEndpointsAsync(final String resourceGroupName, final String name);
 
     /**
      * Get all App Service plans in an App Service Environment.

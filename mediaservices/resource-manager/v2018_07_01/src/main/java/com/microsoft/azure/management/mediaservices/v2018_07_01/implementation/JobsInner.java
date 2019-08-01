@@ -232,7 +232,7 @@ public class JobsInner {
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
      * @param filter Restricts the set of items returned.
-     * @param orderby Specifies the the key by which the result collection should be ordered.
+     * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ApiErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -256,7 +256,7 @@ public class JobsInner {
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
      * @param filter Restricts the set of items returned.
-     * @param orderby Specifies the the key by which the result collection should be ordered.
+     * @param orderby Specifies the key by which the result collection should be ordered.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -281,7 +281,7 @@ public class JobsInner {
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
      * @param filter Restricts the set of items returned.
-     * @param orderby Specifies the the key by which the result collection should be ordered.
+     * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;JobInner&gt; object
      */
@@ -303,7 +303,7 @@ public class JobsInner {
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
      * @param filter Restricts the set of items returned.
-     * @param orderby Specifies the the key by which the result collection should be ordered.
+     * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;JobInner&gt; object
      */
@@ -329,7 +329,7 @@ public class JobsInner {
     ServiceResponse<PageImpl<JobInner>> * @param accountName The Media Services account name.
     ServiceResponse<PageImpl<JobInner>> * @param transformName The Transform name.
     ServiceResponse<PageImpl<JobInner>> * @param filter Restricts the set of items returned.
-    ServiceResponse<PageImpl<JobInner>> * @param orderby Specifies the the key by which the result collection should be ordered.
+    ServiceResponse<PageImpl<JobInner>> * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;JobInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */

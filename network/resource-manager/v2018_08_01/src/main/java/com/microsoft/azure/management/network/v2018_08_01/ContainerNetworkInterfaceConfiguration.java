@@ -14,7 +14,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
 
 /**
- * Container network interface configruation child resource.
+ * Container network interface configuration child resource.
  */
 @JsonFlatten
 public class ContainerNetworkInterfaceConfiguration extends SubResource {

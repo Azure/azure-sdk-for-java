@@ -32,7 +32,7 @@ public class ManualScaleSettings {
     private DeallocationOption nodeDeallocationOption;
 
     /**
-     * Get the targetNodeCount value.
+     * Get default is 0. If autoScaleSettings are not specified, then the Cluster starts with this target.
      *
      * @return the targetNodeCount value
      */
@@ -41,7 +41,7 @@ public class ManualScaleSettings {
     }
 
     /**
-     * Set the targetNodeCount value.
+     * Set default is 0. If autoScaleSettings are not specified, then the Cluster starts with this target.
      *
      * @param targetNodeCount the targetNodeCount value to set
      * @return the ManualScaleSettings object itself.
@@ -52,7 +52,7 @@ public class ManualScaleSettings {
     }
 
     /**
-     * Get the nodeDeallocationOption value.
+     * Get the default value is requeue. Possible values include: 'requeue', 'terminate', 'waitforjobcompletion', 'unknown'.
      *
      * @return the nodeDeallocationOption value
      */
@@ -61,7 +61,7 @@ public class ManualScaleSettings {
     }
 
     /**
-     * Set the nodeDeallocationOption value.
+     * Set the default value is requeue. Possible values include: 'requeue', 'terminate', 'waitforjobcompletion', 'unknown'.
      *
      * @param nodeDeallocationOption the nodeDeallocationOption value to set
      * @return the ManualScaleSettings object itself.

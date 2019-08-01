@@ -62,7 +62,7 @@ public class ValidateRequest {
     private Boolean isSpot;
 
     /**
-     * Target capacity of the App Service plan (number of VM's).
+     * Target capacity of the App Service plan (number of VMs).
      */
     @JsonProperty(value = "properties.capacity")
     private Integer capacity;
@@ -215,7 +215,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Get target capacity of the App Service plan (number of VM's).
+     * Get target capacity of the App Service plan (number of VMs).
      *
      * @return the capacity value
      */
@@ -224,7 +224,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Set target capacity of the App Service plan (number of VM's).
+     * Set target capacity of the App Service plan (number of VMs).
      *
      * @param capacity the capacity value to set
      * @return the ValidateRequest object itself.

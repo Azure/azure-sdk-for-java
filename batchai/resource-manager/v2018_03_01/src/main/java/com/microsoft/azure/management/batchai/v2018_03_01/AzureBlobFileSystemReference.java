@@ -111,7 +111,7 @@ public class AzureBlobFileSystemReference {
     }
 
     /**
-     * Get the relativeMountPath value.
+     * Get note that all cluster level blob file systems will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and all job level blob file systems will be mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
      *
      * @return the relativeMountPath value
      */
@@ -120,7 +120,7 @@ public class AzureBlobFileSystemReference {
     }
 
     /**
-     * Set the relativeMountPath value.
+     * Set note that all cluster level blob file systems will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and all job level blob file systems will be mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
      *
      * @param relativeMountPath the relativeMountPath value to set
      * @return the AzureBlobFileSystemReference object itself.

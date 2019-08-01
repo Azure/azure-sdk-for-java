@@ -51,7 +51,7 @@ public class FileInner {
     private Long contentLength;
 
     /**
-     * Get the name value.
+     * Get name of the file.
      *
      * @return the name value
      */
@@ -60,7 +60,7 @@ public class FileInner {
     }
 
     /**
-     * Set the name value.
+     * Set name of the file.
      *
      * @param name the name value to set
      * @return the FileInner object itself.
@@ -71,7 +71,7 @@ public class FileInner {
     }
 
     /**
-     * Get the isDirectory value.
+     * Get indicates if the file is a directory.
      *
      * @return the isDirectory value
      */
@@ -80,7 +80,7 @@ public class FileInner {
     }
 
     /**
-     * Set the isDirectory value.
+     * Set indicates if the file is a directory.
      *
      * @param isDirectory the isDirectory value to set
      * @return the FileInner object itself.
@@ -111,7 +111,7 @@ public class FileInner {
     }
 
     /**
-     * Get the lastModified value.
+     * Get the time at which the file was last modified.
      *
      * @return the lastModified value
      */
@@ -120,7 +120,7 @@ public class FileInner {
     }
 
     /**
-     * Set the lastModified value.
+     * Set the time at which the file was last modified.
      *
      * @param lastModified the lastModified value to set
      * @return the FileInner object itself.
@@ -131,7 +131,7 @@ public class FileInner {
     }
 
     /**
-     * Get the contentLength value.
+     * Get the file size.
      *
      * @return the contentLength value
      */
@@ -140,7 +140,7 @@ public class FileInner {
     }
 
     /**
-     * Set the contentLength value.
+     * Set the file size.
      *
      * @param contentLength the contentLength value to set
      * @return the FileInner object itself.

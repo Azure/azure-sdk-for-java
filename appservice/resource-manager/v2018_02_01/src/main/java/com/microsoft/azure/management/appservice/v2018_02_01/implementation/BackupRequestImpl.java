@@ -27,6 +27,11 @@ class BackupRequestImpl extends WrapperImpl<BackupRequestInner> implements Backu
     }
 
     @Override
+    public String backupName() {
+        return this.inner().backupName();
+    }
+
+    @Override
     public BackupSchedule backupSchedule() {
         return this.inner().backupSchedule();
     }

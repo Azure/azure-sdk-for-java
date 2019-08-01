@@ -67,6 +67,8 @@ public interface VnetGateway extends HasInner<VnetGatewayInner>, Indexable, Refr
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
             Update withKind(String kind);
         }
@@ -77,6 +79,8 @@ public interface VnetGateway extends HasInner<VnetGatewayInner>, Indexable, Refr
         interface WithVnetName {
             /**
              * Specifies vnetName.
+             * @param vnetName The Virtual Network name
+             * @return the next update stage
              */
             Update withVnetName(String vnetName);
         }
