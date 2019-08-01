@@ -84,14 +84,10 @@ class ResourceGroupsImpl extends WrapperImpl<ResourceGroupsInner> implements Res
     public Observable<ResourceGroup> getAsync(String resourceGroupName) {
         ResourceGroupsInner client = this.inner();
         return client.getAsync(resourceGroupName)
-        .flatMap(new Func1<ResourceGroupInner, Observable<ResourceGroup>>() {
+        .map(new Func1<ResourceGroupInner, ResourceGroup>() {
             @Override
-            public Observable<ResourceGroup> call(ResourceGroupInner inner) {
-                if (inner == null) {
-                    return Observable.empty();
-                } else {
-                    return Observable.just((ResourceGroup)wrapModel(inner));
-                }
+            public ResourceGroup call(ResourceGroupInner inner) {
+                return wrapModel(inner);
             }
        });
     }

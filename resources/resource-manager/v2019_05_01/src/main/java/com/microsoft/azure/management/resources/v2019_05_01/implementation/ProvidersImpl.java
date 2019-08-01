@@ -78,14 +78,10 @@ class ProvidersImpl extends WrapperImpl<ProvidersInner> implements Providers {
     public Observable<Provider> getAsync(String resourceProviderNamespace) {
         ProvidersInner client = this.inner();
         return client.getAsync(resourceProviderNamespace)
-        .flatMap(new Func1<ProviderInner, Observable<Provider>>() {
+        .map(new Func1<ProviderInner, Provider>() {
             @Override
-            public Observable<Provider> call(ProviderInner inner) {
-                if (inner == null) {
-                    return Observable.empty();
-                } else {
-                    return Observable.just((Provider)wrapModel(inner));
-                }
+            public Provider call(ProviderInner inner) {
+                return wrapModel(inner);
             }
        });
     }
