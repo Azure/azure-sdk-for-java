@@ -32,9 +32,9 @@ class PolicyDefinitionImpl extends CreatableUpdatableImpl<PolicyDefinition, Poli
         this.manager = manager;
         // Set resource name
         this.policyDefinitionName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.policyDefinitionName = IdParsingUtils.getValueFromIdByName(inner.id(), "policyDefinitions");
-        //
+        // set other parameters for create and update
     }
 
     @Override

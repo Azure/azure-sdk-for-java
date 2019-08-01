@@ -11,7 +11,7 @@ package com.microsoft.azure.management.policy.v2018_03_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Error reponse indicates Azure Resource Manager is not able to process the
+ * Error response indicates Azure Resource Manager is not able to process the
  * incoming request. The reason is provided in the error message.
  */
 public class ErrorResponse {
