@@ -6,8 +6,6 @@ package com.azure.messaging.eventhubs;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 
-import java.util.List;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -33,7 +31,7 @@ public interface PartitionManager {
      * @param requestedPartitionOwnerships List of partition ownerships this instance is requesting to own.
      * @return A flux of partitions this instance successfully claimed ownership.
      */
-    Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships);
+    Flux<PartitionOwnership> claimOwnership(PartitionOwnership... requestedPartitionOwnerships);
 
     /**
      * Updates the checkpoint in the data store for a partition.

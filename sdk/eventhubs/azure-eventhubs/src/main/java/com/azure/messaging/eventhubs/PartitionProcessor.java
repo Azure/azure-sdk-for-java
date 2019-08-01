@@ -23,7 +23,7 @@ public interface PartitionProcessor {
      * This method is called when this {@link EventProcessorAsyncClient} takes ownership of a new partition and before any
      * events from this partition are received.
      */
-    void initialize();
+    Mono<Void> initialize();
 
     /**
      * This method is called when a new event is received for this partition. Processing of this event can happen
@@ -52,6 +52,6 @@ public interface PartitionProcessor {
      *
      * @param closeReason The reason for closing this partition processor.
      */
-    void close(CloseReason closeReason);
+    Mono<Void> close(CloseReason closeReason);
 
 }

@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,17 +27,15 @@ public class InMemoryPartitionManager implements PartitionManager {
     }
 
     @Override
-    public Flux<PartitionOwnership> claimOwnership(
-        List<PartitionOwnership> requestedPartitionOwnerships) {
-
-        return Flux.fromIterable(requestedPartitionOwnerships)
+    public Flux<PartitionOwnership> claimOwnership(PartitionOwnership... requestedPartitionOwnerships) {
+        return Flux.fromArray(requestedPartitionOwnerships)
             .filter(partitionOwnership -> {
                 return !partitionOwnershipMap.containsKey(partitionOwnership.partitionId())
                     || partitionOwnershipMap.get(partitionOwnership.partitionId()).eTag().equals(partitionOwnership.eTag());
             })
             .doOnNext(partitionOwnership -> logger
                 .info("Ownership of partition {} claimed by {}", partitionOwnership.partitionId(),
-                    partitionOwnership.instanceId()))
+                    partitionOwnership.ownerId()))
             .map(partitionOwnership -> {
                 partitionOwnership.eTag(UUID.randomUUID().toString()); // set new etag
                 partitionOwnership.lastModifiedTime(System.currentTimeMillis());

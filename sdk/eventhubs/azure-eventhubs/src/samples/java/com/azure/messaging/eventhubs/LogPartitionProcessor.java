@@ -27,10 +27,11 @@ public class LogPartitionProcessor implements PartitionProcessor {
     }
 
     @Override
-    public void initialize() {
+    public Mono<Void> initialize() {
         logger
             .info("Initializing partition processor: Event Hub name = {}; consumer group name = {}; partition id = {}",
                 partitionContext.eventHubName(), partitionContext.consumerGroupName(), partitionContext.partitionId());
+        return Mono.empty();
     }
 
     @Override
@@ -51,11 +52,11 @@ public class LogPartitionProcessor implements PartitionProcessor {
     }
 
     @Override
-    public void close(CloseReason closeReason) {
+    public Mono<Void> close(CloseReason closeReason) {
         logger.info(
             "Closing partition processor: Event Hub name = {}; consumer group name = {}; partition id = {}; closeReason = {}",
             partitionContext.eventHubName(), partitionContext.consumerGroupName(), partitionContext.partitionId(),
             closeReason);
-
+        return Mono.empty();
     }
 }

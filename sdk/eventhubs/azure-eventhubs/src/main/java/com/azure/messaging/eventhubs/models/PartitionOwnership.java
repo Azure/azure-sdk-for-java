@@ -15,12 +15,12 @@ public class PartitionOwnership {
     private String eventHubName;
     private String consumerGroupName;
     private String partitionId;
-    private String instanceId;
+    private String ownerId;
     private long ownerLevel;
-    private String offset; // optional
-    private Long sequenceNumber; // optional
-    private Long lastModifiedTime; // optional
-    private String eTag; // optional
+    private String offset;
+    private Long sequenceNumber;
+    private Long lastModifiedTime;
+    private String eTag;
 
     /**
      * Gets the Event Hub name associated with this ownership record.
@@ -87,35 +87,35 @@ public class PartitionOwnership {
      *
      * @return The unique event processor identifier as the owner of the partition id in this ownership record.
      */
-    public String instanceId() {
-        return instanceId;
+    public String ownerId() {
+        return ownerId;
     }
 
     /**
      * Returns the unique event processor identifier that owns the partition id in this ownership record.
      *
-     * @param instanceId The unique event processor identifier that owns the partition id in this ownership record.
+     * @param ownerId The unique event processor identifier that owns the partition id in this ownership record.
      * @return The updated {@link PartitionOwnership} instance.
      */
-    public PartitionOwnership instanceId(String instanceId) {
-        this.instanceId = Objects.requireNonNull(instanceId, "instanceId cannot be null");
+    public PartitionOwnership ownerId(String ownerId) {
+        this.ownerId = Objects.requireNonNull(ownerId, "ownerId cannot be null");
         return this;
     }
 
     /**
-     * Gets the owner level (aka epoch number) for the event processor identified by {@link #instanceId() this instance}.
+     * Gets the owner level (aka epoch number) for the event processor identified by {@link #ownerId() this instance}.
      *
-     * @return The owner level (aka epoch number) for the event processor identified by {@link #instanceId() this
-     * instance}
+     * @return The owner level (aka epoch number) for the event processor identified by {@link #ownerId() this
+     * instance}.
      */
     public long ownerLevel() {
         return ownerLevel;
     }
 
     /**
-     * Sets the owner level (aka epoch number) for the event processor identified by {@link #instanceId() this instance}.
+     * Sets the owner level (aka epoch number) for the event processor identified by {@link #ownerId() this instance}.
      *
-     * @param ownerLevel The owner level (aka epoch number) for the event processor identified by {@link #instanceId()
+     * @param ownerLevel The owner level (aka epoch number) for the event processor identified by {@link #ownerId()
      * this instance}.
      * @return The updated {@link PartitionOwnership} instance.
      */

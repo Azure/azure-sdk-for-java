@@ -18,22 +18,22 @@ public class CheckpointManager {
     private final PartitionContext partitionContext;
     private final PartitionManager partitionManager;
     private final AtomicReference<String> eTag;
-    private final String instanceId;
+    private final String ownerId;
 
     /**
      * Creates a new checkpoint manager which {@link PartitionProcessor} can use to update checkpoints.
      *
-     * @param instanceId
+     * @param ownerId The event processor identifier that is responsible for updating checkpoints.
      * @param partitionContext The partition context providing necessary partition and event hub information for updating
      * checkpoints.
      * @param partitionManager The {@link PartitionManager} implementation that will be store the checkpoint information.
-     * @param eTag The last known ETag stored in {@link PartitionManager} for this partition. When the next update
-     * checkpoint is called from this CheckpointManager, this ETag will be used to provide <a
-     * href="https://en.wikipedia.org/wiki/Optimistic_concurrency_control">optimistic concurrency</a>
+     * @param eTag The last known ETag stored in {@link PartitionManager} for this partition. When the  update checkpoint
+     * is called from this CheckpointManager, this ETag will be used to provide <a href="https://en.wikipedia.org/wiki/Optimistic_concurrency_control">optimistic
+     * concurrency</a>.
      */
-    CheckpointManager(String instanceId, PartitionContext partitionContext, PartitionManager partitionManager,
+    CheckpointManager(String ownerId, PartitionContext partitionContext, PartitionManager partitionManager,
         String eTag) {
-        this.instanceId = instanceId;
+        this.ownerId = ownerId;
         this.partitionContext = partitionContext;
         this.partitionManager = partitionManager;
         this.eTag = new AtomicReference<>(eTag);
@@ -51,7 +51,7 @@ public class CheckpointManager {
         Checkpoint checkpoint = new Checkpoint()
             .consumerGroupName(partitionContext.consumerGroupName())
             .eventHubName(partitionContext.eventHubName())
-            .instanceId(instanceId)
+            .instanceId(ownerId)
             .partitionId(partitionContext.partitionId())
             .sequenceNumber(eventData.sequenceNumber())
             .offset(eventData.offset())
@@ -74,7 +74,7 @@ public class CheckpointManager {
         Checkpoint checkpoint = new Checkpoint()
             .consumerGroupName(partitionContext.consumerGroupName())
             .eventHubName(partitionContext.eventHubName())
-            .instanceId(instanceId)
+            .instanceId(ownerId)
             .partitionId(partitionContext.partitionId())
             .sequenceNumber(sequenceNumber)
             .offset(offset)

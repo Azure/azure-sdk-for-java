@@ -9,7 +9,6 @@ import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -19,7 +18,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.reactivestreams.Publisher;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -43,8 +41,8 @@ public class EventProcessorAsyncClient {
     private final EventPosition initialEventPosition;
     private final PartitionProcessorFactory partitionProcessorFactory;
     private final PartitionManager partitionManager;
+    private final String identifier;
     private final Map<String, EventHubConsumer> partitionConsumers = new ConcurrentHashMap<>();
-    private final String instanceId;
     private final String eventHubName;
     private Disposable runner;
     private Scheduler scheduler;
@@ -76,8 +74,17 @@ public class EventProcessorAsyncClient {
             .requireNonNull(initialEventPosition, "initialEventPosition cannot be null");
         this.eventHubName = Objects
             .requireNonNull(eventHubName, "eventHubName cannot be null");
-        this.instanceId = UUID.randomUUID().toString();
-        logger.info("The instance ID for this event processors is {}", this.instanceId);
+        this.identifier = UUID.randomUUID().toString();
+        logger.info("The instance ID for this event processors is {}", this.identifier);
+    }
+
+    /**
+     * The identifier is a unique name given to this event processor instance.
+     *
+     * @return Identifier for this event processor.
+     */
+    public String identifier() {
+        return this.identifier;
     }
 
     /**
@@ -94,7 +101,7 @@ public class EventProcessorAsyncClient {
             logger.info("Event processor is already running");
             return;
         }
-        logger.info("Starting a new event processor instance with id {}", this.instanceId);
+        logger.info("Starting a new event processor instance with id {}", this.identifier);
         scheduler = Schedulers.newElastic("EventProcessorAsyncClient");
         runner = scheduler.schedulePeriodically(this::run, INITIAL_DELAY, INTERVAL_IN_SECONDS, TimeUnit.SECONDS);
     }
@@ -106,25 +113,23 @@ public class EventProcessorAsyncClient {
      * Subsequent calls to stop will be ignored if the event processor is not running.
      * </p>
      */
-    public synchronized Mono<Void> stop() {
+    public synchronized void stop() {
         if (!started.compareAndSet(true, false)) {
             logger.info("Event processor has already stopped");
-            return Mono.empty();
+            return;
         }
-        return Mono.fromRunnable(() -> {
-            this.partitionConsumers.forEach((key, value) -> {
-                try {
-                    logger.info("Closing event hub consumer for partition {}", key);
-                    value.close();
-                    logger.info("Closed event hub consumer for partition {}", key);
-                    partitionConsumers.remove(key);
-                } catch (IOException ex) {
-                    logger.warning("Unable to close event hub consumer for partition {}", key);
-                }
-            });
-            runner.dispose();
-            scheduler.dispose();
+        this.partitionConsumers.forEach((key, value) -> {
+            try {
+                logger.info("Closing event hub consumer for partition {}", key);
+                value.close();
+                logger.info("Closed event hub consumer for partition {}", key);
+                partitionConsumers.remove(key);
+            } catch (IOException ex) {
+                logger.warning("Unable to close event hub consumer for partition {}", key);
+            }
         });
+        runner.dispose();
+        scheduler.dispose();
     }
 
     /*
@@ -159,7 +164,7 @@ public class EventProcessorAsyncClient {
             .single(new PartitionOwnership()
                 .partitionId(id)
                 .eventHubName(this.eventHubName)
-                .instanceId(this.instanceId)
+                .ownerId(this.identifier)
                 .consumerGroupName(this.consumerGroupName)
                 .ownerLevel(0L));
     }
@@ -175,9 +180,9 @@ public class EventProcessorAsyncClient {
         // and previous owner is not this instance
         if (ownershipInfo.lastModifiedTime() == null ||
             (System.currentTimeMillis() - ownershipInfo.lastModifiedTime() > OWNERSHIP_EXPIRATION_TIME_IN_MILLIS
-                && !ownershipInfo.instanceId().equals(this.instanceId))) {
-            ownershipInfo.instanceId(this.instanceId); // update instance id before claiming ownership
-            return partitionManager.claimOwnership(Collections.singletonList(ownershipInfo)).doOnComplete(() -> {
+                && !ownershipInfo.ownerId().equals(this.identifier))) {
+            ownershipInfo.ownerId(this.identifier); // update instance id before claiming ownership
+            return partitionManager.claimOwnership(ownershipInfo).doOnComplete(() -> {
                 logger.info("Claimed ownership of partition {}", ownershipInfo.partitionId());
             }).doOnError(error -> {
                 logger.error("Unable to claim ownership of partition {}", ownershipInfo.partitionId(), error);
@@ -199,7 +204,7 @@ public class EventProcessorAsyncClient {
 
         PartitionContext partitionContext = new PartitionContext(partitionId, this.eventHubName,
             this.consumerGroupName);
-        CheckpointManager checkpointManager = new CheckpointManager(this.instanceId, partitionContext,
+        CheckpointManager checkpointManager = new CheckpointManager(this.identifier, partitionContext,
             this.partitionManager, null);
         logger.info("Subscribing to receive events from partition {}", partitionId);
         PartitionProcessor partitionProcessor = this.partitionProcessorFactory
