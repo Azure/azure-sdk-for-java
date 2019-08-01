@@ -8,9 +8,9 @@
 
 package com.microsoft.azure.management.recoveryservices.v2016_06_01;
 
+import rx.Completable;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.implementation.RegisteredIdentitiesInner;
 import com.microsoft.azure.arm.model.HasInner;
-import rx.Observable;
 
 /**
  * Type representing RegisteredIdentities.
@@ -25,6 +25,6 @@ public interface RegisteredIdentities extends HasInner<RegisteredIdentitiesInner
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<Void> deleteAsync(String resourceGroupName, String vaultName, String identityName);
+    Completable deleteAsync(String resourceGroupName, String vaultName, String identityName);
 
 }
