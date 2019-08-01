@@ -34,9 +34,9 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      */
     public DeviceCodeCredential build() {
         ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-            put("clientId", clientId);
-            put("deviceCodeChallengeConsumer", deviceCodeChallengeConsumer);
-        }});
+                put("clientId", clientId);
+                put("deviceCodeChallengeConsumer", deviceCodeChallengeConsumer);
+            }});
         return new DeviceCodeCredential(clientId, deviceCodeChallengeConsumer, identityClientOptions);
     }
 }

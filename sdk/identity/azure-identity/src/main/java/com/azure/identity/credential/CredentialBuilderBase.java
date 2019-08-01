@@ -22,44 +22,44 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     /**
      * Specifies the Azure Active Directory endpoint to acquire tokens.
      * @param authorityHost the Azure Active Directory endpoint
-     * @return {@link T} itself
+     * @return {@link <T>} itself
      */
     @SuppressWarnings("unchecked")
     public T authorityHost(String authorityHost) {
         this.identityClientOptions.authorityHost(authorityHost);
-        return (T)this;
+        return (T) this;
     }
 
     /**
      * Specifies the max number of retries when an authentication request fails.
      * @param maxRetry the number of retries
-     * @return {@link T} itself
+     * @return {@link <T>} itself
      */
     @SuppressWarnings("unchecked")
     public T maxRetry(int maxRetry) {
         this.identityClientOptions.maxRetry(maxRetry);
-        return (T)this;
+        return (T) this;
     }
 
     /**
      * Specifies a Function to calculate seconds of timeout on every retried request.
      * @param retryTimeout the Function that returns a timeout in seconds given the number of retry
-     * @return {@link T} itself
+     * @return {@link <T>} itself
      */
     @SuppressWarnings("unchecked")
     public T retryTimeout(Function<Integer, Integer> retryTimeout) {
         this.identityClientOptions.retryTimeout(retryTimeout);
-        return (T)this;
+        return (T) this;
     }
 
     /**
      * Specifies he options for proxy configuration.
      * @param proxyOptions the options for proxy configuration
-     * @return {@link T} itself
+     * @return {@link <T>} itself
      */
     @SuppressWarnings("unchecked")
     public T proxyOptions(ProxyOptions proxyOptions) {
         this.identityClientOptions.proxyOptions(proxyOptions);
-        return (T)this;
+        return (T) this;
     }
 }

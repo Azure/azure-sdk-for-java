@@ -32,9 +32,9 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      */
     public InteractiveBrowserCredential build() {
         ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-            put("clientId", clientId);
-            put("port", port);
-        }});
+                put("clientId", clientId);
+                put("port", port);
+            }});
         return new InteractiveBrowserCredential(clientId, port, identityClientOptions);
     }
 }

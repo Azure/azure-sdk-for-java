@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
@@ -10,7 +13,6 @@ import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -23,8 +25,8 @@ import static org.mockito.Mockito.when;
 @PrepareForTest(fullyQualifiedNames = "com.azure.identity.*")
 public class ClientCertificateCredentialTest {
 
-    private static final String tenantId = "contoso.com";
-    private static final String clientId = UUID.randomUUID().toString();
+    private final String tenantId = "contoso.com";
+    private final String clientId = UUID.randomUUID().toString();
 
     @Test
     public void testValidCertificates() throws Exception {

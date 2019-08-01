@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
@@ -25,8 +28,8 @@ import static org.mockito.Mockito.when;
 @PrepareForTest(fullyQualifiedNames = "com.azure.identity.*")
 public class InteractiveBrowserCredentialTest {
 
-    private static final String tenantId = "contoso.com";
-    private static final String clientId = UUID.randomUUID().toString();
+    private final String tenantId = "contoso.com";
+    private final String clientId = UUID.randomUUID().toString();
 
     @Test
     public void testValidInteractive() throws Exception {
@@ -45,7 +48,7 @@ public class InteractiveBrowserCredentialTest {
         when(identityClient.authenticateWithBrowserInteraction(eq(scopes1), eq(port))).thenReturn(TestUtils.getMockMsalToken(token1, expiresOn));
         when(identityClient.authenticateWithUserRefreshToken(any(), any()))
             .thenAnswer(invocation -> {
-                String[] argument = (String[])invocation.getArguments()[0];
+                String[] argument = (String[]) invocation.getArguments()[0];
                 if (argument.length == 1 && argument[0].equals(scopes2[0])) {
                     return TestUtils.getMockMsalToken(token2, expiresOn);
                 } else if (argument.length == 1 && argument[0].equals(scopes1[0])) {

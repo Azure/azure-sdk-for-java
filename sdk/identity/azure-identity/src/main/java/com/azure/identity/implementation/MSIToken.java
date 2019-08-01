@@ -20,7 +20,7 @@ import java.time.format.DateTimeParseException;
 public final class MSIToken extends AccessToken {
 
     private static final OffsetDateTime EPOCH = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
-    private static final ClientLogger logger = new ClientLogger(MSIToken.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MSIToken.class);
 
     @JsonProperty(value = "token_type")
     private String tokenType;
@@ -79,7 +79,7 @@ public final class MSIToken extends AccessToken {
             System.err.println(e.getMessage());
         }
 
-        logger.logAndThrow(new IllegalArgumentException(String.format("Unable to parse date time %s ", dateTime)));
+        LOGGER.logAndThrow(new IllegalArgumentException(String.format("Unable to parse date time %s ", dateTime)));
         return null;
     }
 

@@ -41,11 +41,11 @@ public class UserCredentialBuilder extends AadCredentialBuilderBase<UserCredenti
      */
     public UserCredential build() {
         ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-            put("clientId", clientId);
-            put("tenantId", tenantId);
-            put("username", username);
-            put("password", password);
-        }});
+                put("clientId", clientId);
+                put("tenantId", tenantId);
+                put("username", username);
+                put("password", password);
+            }});
         return new UserCredential(tenantId, clientId, username, password, identityClientOptions);
     }
 }

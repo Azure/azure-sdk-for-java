@@ -20,6 +20,7 @@
     <groupId>com.microsoft.maven</groupId>
     <artifactId>java-8-parent</artifactId>
     <version>8.0.2</version>
+    <relativePath/>
   </parent>
 
   <licenses>

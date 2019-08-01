@@ -45,10 +45,10 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      */
     public ClientCertificateCredential build() {
         ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-            put("clientId", clientId);
-            put("tenantId", tenantId);
-            put("clientCertificate", clientCertificate);
-        }});
+                put("clientId", clientId);
+                put("tenantId", tenantId);
+                put("clientCertificate", clientCertificate);
+            }});
         return new ClientCertificateCredential(tenantId, clientId, clientCertificate, clientCertificatePassword, identityClientOptions);
     }
 }

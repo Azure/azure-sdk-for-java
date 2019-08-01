@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.implementation;
 
 import com.azure.core.implementation.http.UrlBuilder;
@@ -9,7 +12,7 @@ import reactor.netty.http.server.HttpServer;
 /**
  * A local HTTP server that listens to the authorization code response from Azure Active Directory.
  */
-public class AuthorizationCodeListener {
+public final class AuthorizationCodeListener {
     private DisposableServer server;
     private MonoProcessor<String> authorizationCodeEmitter;
 

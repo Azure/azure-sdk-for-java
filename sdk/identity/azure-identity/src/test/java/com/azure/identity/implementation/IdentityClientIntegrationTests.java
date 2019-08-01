@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.implementation;
 
 import com.azure.core.credentials.AccessToken;
@@ -14,7 +17,7 @@ public class IdentityClientIntegrationTests {
     private static final String AZURE_CLI_CLIENT_ID = "AZURE_CLI_CLIENT_ID";
     private static final String AZURE_CLIENT_SECRET = "AZURE_CLIENT_SECRET";
     private static final String AZURE_CLIENT_CERTIFICATE = "AZURE_CLIENT_CERTIFICATE";
-    private static final String[] scopes = new String[] { "https://management.azure.com/.default" };
+    private final String[] scopes = new String[] { "https://management.azure.com/.default" };
 
     @Ignore("Integration test")
     public void clientSecretCanGetToken() {

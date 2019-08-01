@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.util;
 
 import com.azure.core.credentials.AccessToken;
@@ -15,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Utilities for identity tests.
  */
-public class TestUtils {
+public final class TestUtils {
     /**
      * Creates a mock {@link IAuthenticationResult} instance.
      * @param accessToken the access token to return

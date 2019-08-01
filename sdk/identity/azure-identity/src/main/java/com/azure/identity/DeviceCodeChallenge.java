@@ -3,7 +3,6 @@
 
 package com.azure.identity;
 
-import com.azure.core.implementation.annotation.Fluent;
 import com.azure.core.implementation.annotation.Immutable;
 
 import java.time.Duration;
@@ -12,7 +11,6 @@ import java.time.Duration;
  * Response returned from the STS device code endpoint containing information necessary for
  * device code flow.
  */
-@Fluent
 @Immutable
 public class DeviceCodeChallenge {
     /**

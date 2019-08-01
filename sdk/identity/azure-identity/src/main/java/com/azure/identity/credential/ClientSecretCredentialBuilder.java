@@ -30,10 +30,10 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
      */
     public ClientSecretCredential build() {
         ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-            put("clientId", clientId);
-            put("tenantId", tenantId);
-            put("clientSecret", clientSecret);
-        }});
+                put("clientId", clientId);
+                put("tenantId", tenantId);
+                put("clientSecret", clientSecret);
+            }});
         return new ClientSecretCredential(tenantId, clientId, clientSecret, identityClientOptions);
     }
 }

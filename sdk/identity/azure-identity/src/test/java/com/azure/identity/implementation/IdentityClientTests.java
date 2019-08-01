@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.implementation;
 
 import com.azure.core.credentials.AccessToken;
@@ -33,8 +36,8 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 public class IdentityClientTests {
 
     private static final Random RANDOM = new Random();
-    private static final String tenantId = "contoso.com";
-    private static final String clientId = UUID.randomUUID().toString();
+    private final String tenantId = "contoso.com";
+    private final String clientId = UUID.randomUUID().toString();
 
     @Test
     public void testValidSecret() throws Exception {
@@ -136,19 +139,21 @@ public class IdentityClientTests {
     private void mockForClientSecret(String secret, String[] scopes, String accessToken, OffsetDateTime expiresOn) throws Exception {
         ConfidentialClientApplication application = PowerMockito.mock(ConfidentialClientApplication.class);
         when(application.acquireToken(any(ClientCredentialParameters.class))).thenAnswer(invocation -> {
-            ClientCredentialParameters argument = (ClientCredentialParameters)invocation.getArguments()[0];
+            ClientCredentialParameters argument = (ClientCredentialParameters) invocation.getArguments()[0];
             if (argument.scopes().size() == 1 && scopes[0].equals(argument.scopes().iterator().next())) {
                 return TestUtils.getMockAuthenticationResult(accessToken, expiresOn);
             } else {
-                return CompletableFuture.runAsync(() -> { throw new MsalServiceException("Invalid scopes", "InvalidScopes"); });
+                return CompletableFuture.runAsync(() -> {
+                    throw new MsalServiceException("Invalid scopes", "InvalidScopes");
+                });
             }
         });
         ConfidentialClientApplication.Builder builder = PowerMockito.mock(ConfidentialClientApplication.Builder.class);
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         whenNew(ConfidentialClientApplication.Builder.class).withAnyArguments().thenAnswer(invocation -> {
-            String cid = (String)invocation.getArguments()[0];
-            ClientSecret clientSecret = (ClientSecret)invocation.getArguments()[1];
+            String cid = (String) invocation.getArguments()[0];
+            ClientSecret clientSecret = (ClientSecret) invocation.getArguments()[1];
             if (!clientId.equals(cid)) {
                 throw new MsalServiceException("Invalid clientId", "InvalidClientId");
             }
@@ -162,19 +167,21 @@ public class IdentityClientTests {
     private void mockForClientCertificate(String[] scopes, String accessToken, OffsetDateTime expiresOn) throws Exception {
         ConfidentialClientApplication application = PowerMockito.mock(ConfidentialClientApplication.class);
         when(application.acquireToken(any(ClientCredentialParameters.class))).thenAnswer(invocation -> {
-            ClientCredentialParameters argument = (ClientCredentialParameters)invocation.getArguments()[0];
+            ClientCredentialParameters argument = (ClientCredentialParameters) invocation.getArguments()[0];
             if (argument.scopes().size() == 1 && scopes[0].equals(argument.scopes().iterator().next())) {
                 return TestUtils.getMockAuthenticationResult(accessToken, expiresOn);
             } else {
-                return CompletableFuture.runAsync(() -> { throw new MsalServiceException("Invalid scopes", "InvalidScopes"); });
+                return CompletableFuture.runAsync(() -> {
+                    throw new MsalServiceException("Invalid scopes", "InvalidScopes");
+                });
             }
         });
         ConfidentialClientApplication.Builder builder = PowerMockito.mock(ConfidentialClientApplication.Builder.class);
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         whenNew(ConfidentialClientApplication.Builder.class).withAnyArguments().thenAnswer(invocation -> {
-            String cid = (String)invocation.getArguments()[0];
-            AsymmetricKeyCredential keyCredential = (AsymmetricKeyCredential)invocation.getArguments()[1];
+            String cid = (String) invocation.getArguments()[0];
+            AsymmetricKeyCredential keyCredential = (AsymmetricKeyCredential) invocation.getArguments()[1];
             if (!clientId.equals(cid)) {
                 throw new MsalServiceException("Invalid clientId", "InvalidClientId");
             }
@@ -189,7 +196,7 @@ public class IdentityClientTests {
         PublicClientApplication application = PowerMockito.mock(PublicClientApplication.class);
         AtomicBoolean cached = new AtomicBoolean(false);
         when(application.acquireToken(any(DeviceCodeFlowParameters.class))).thenAnswer(invocation -> {
-            DeviceCodeFlowParameters argument = (DeviceCodeFlowParameters)invocation.getArguments()[0];
+            DeviceCodeFlowParameters argument = (DeviceCodeFlowParameters) invocation.getArguments()[0];
             if (argument.scopes().size() != 1 || !scopes[0].equals(argument.scopes().iterator().next())) {
                 return CompletableFuture.runAsync(() -> {
                     throw new MsalServiceException("Invalid scopes", "InvalidScopes");

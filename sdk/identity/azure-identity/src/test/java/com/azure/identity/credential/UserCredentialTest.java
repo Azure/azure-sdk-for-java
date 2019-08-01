@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
@@ -22,8 +25,8 @@ import static org.mockito.Mockito.when;
 @PrepareForTest(fullyQualifiedNames = "com.azure.identity.*")
 public class UserCredentialTest {
 
-    private static final String tenantId = "contoso.com";
-    private static final String clientId = UUID.randomUUID().toString();
+    private final String tenantId = "contoso.com";
+    private final String clientId = UUID.randomUUID().toString();
 
     @Test
     public void testValidUserCredential() throws Exception {

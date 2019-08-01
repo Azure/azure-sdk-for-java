@@ -14,7 +14,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
     /**
      * Sets the client ID of the application.
      * @param clientId the client ID of the application.
-     * @return {@link T} itself
+     * @return {@link <T>} itself
      */
     @SuppressWarnings("unchecked")
     public T clientId(String clientId) {
@@ -25,7 +25,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
     /**
      * Sets the tenant ID of the application.
      * @param tenantId the tenant ID of the application.
-     * @return {@link T} itself
+     * @return {@link <T>} itself
      */
     @SuppressWarnings("unchecked")
     public T tenantId(String tenantId) {

@@ -23,7 +23,7 @@ import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -56,9 +56,9 @@ import java.util.function.Consumer;
  * from various configurations.
  */
 public class IdentityClient {
-    private static final SerializerAdapter adapter = JacksonAdapter.createDefaultSerializerAdapter();
+    private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
     private static final Random RANDOM = new Random();
-    private static final ClientLogger logger = new ClientLogger(IdentityClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IdentityClient.class);
 
     private final IdentityClientOptions options;
     private final PublicClientApplication publicClientApplication;
@@ -90,7 +90,7 @@ public class IdentityClient {
             try {
                 publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
             } catch (MalformedURLException e) {
-                logger.logAndThrow(new RuntimeException(e));
+                LOGGER.logAndThrow(new RuntimeException(e));
             }
             if (options.proxyOptions() != null) {
                 publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.proxyOptions()));
@@ -212,10 +212,10 @@ public class IdentityClient {
      */
     public Mono<MsalToken> authenticateWithDeviceCode(String[] scopes, Consumer<DeviceCodeChallenge> deviceCodeConsumer) {
         return Mono.fromFuture(() -> {
-                DeviceCodeFlowParameters parameters = DeviceCodeFlowParameters.builder(new HashSet<>(Arrays.asList(scopes)),
-                    dc -> deviceCodeConsumer.accept(new DeviceCodeChallenge(dc.userCode(), dc.deviceCode(), dc.verificationUri(), dc.expiresIn(), dc.interval(), dc.message()))).build();
-                return publicClientApplication.acquireToken(parameters);
-            }).map(MsalToken::new);
+            DeviceCodeFlowParameters parameters = DeviceCodeFlowParameters.builder(new HashSet<>(Arrays.asList(scopes)),
+                dc -> deviceCodeConsumer.accept(new DeviceCodeChallenge(dc.userCode(), dc.deviceCode(), dc.verificationUri(), dc.expiresIn(), dc.interval(), dc.message()))).build();
+            return publicClientApplication.acquireToken(parameters);
+        }).map(MsalToken::new);
     }
 
     /**
@@ -258,7 +258,7 @@ public class IdentityClient {
                         try {
                             Desktop.getDesktop().browse(browserUri);
                         } catch (IOException e) {
-                            logger.logAndThrow(new RuntimeException(e));
+                            LOGGER.logAndThrow(new RuntimeException(e));
                         }
                     }).subscribeOn(Schedulers.newSingle("browser")))
                     .next()
@@ -308,7 +308,7 @@ public class IdentityClient {
             Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name()).useDelimiter("\\A");
             String result = s.hasNext() ? s.next() : "";
 
-            return Mono.just(adapter.deserialize(result, MSIToken.class, SerializerEncoding.JSON));
+            return Mono.just(SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON));
         } catch (IOException e) {
             return Mono.error(e);
         } finally {
@@ -357,7 +357,7 @@ public class IdentityClient {
                 Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name()).useDelimiter("\\A");
                 String result = s.hasNext() ? s.next() : "";
 
-                return Mono.just(adapter.deserialize(result, MSIToken.class, SerializerEncoding.JSON));
+                return Mono.just(SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON));
             } catch (IOException exception) {
                 if (connection == null) {
                     return Mono.error(new RuntimeException(String.format("Could not connect to the url: %s.", url), exception));
@@ -395,7 +395,7 @@ public class IdentityClient {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException ex) {
-            logger.logAndThrow(new RuntimeException(ex));
+            LOGGER.logAndThrow(new RuntimeException(ex));
         }
     }
 
