@@ -23,6 +23,8 @@ import com.microsoft.azure.management.logic.v2016_06_01.WorkflowTriggerHistories
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRuns;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunActions;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunActionRepetitions;
+import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunActionRepetitionsRequestHistories;
+import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunActionRequestHistories;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunActionScopedRepetitions;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunOperations;
 import com.microsoft.azure.management.logic.v2016_06_01.IntegrationAccounts;
@@ -48,6 +50,8 @@ public final class LogicManager extends ManagerCore<LogicManager, LogicManagemen
     private WorkflowRuns workflowRuns;
     private WorkflowRunActions workflowRunActions;
     private WorkflowRunActionRepetitions workflowRunActionRepetitions;
+    private WorkflowRunActionRepetitionsRequestHistories workflowRunActionRepetitionsRequestHistories;
+    private WorkflowRunActionRequestHistories workflowRunActionRequestHistories;
     private WorkflowRunActionScopedRepetitions workflowRunActionScopedRepetitions;
     private WorkflowRunOperations workflowRunOperations;
     private IntegrationAccounts integrationAccounts;
@@ -174,6 +178,26 @@ public final class LogicManager extends ManagerCore<LogicManager, LogicManagemen
             this.workflowRunActionRepetitions = new WorkflowRunActionRepetitionsImpl(this);
         }
         return this.workflowRunActionRepetitions;
+    }
+
+    /**
+     * @return Entry point to manage WorkflowRunActionRepetitionsRequestHistories.
+     */
+    public WorkflowRunActionRepetitionsRequestHistories workflowRunActionRepetitionsRequestHistories() {
+        if (this.workflowRunActionRepetitionsRequestHistories == null) {
+            this.workflowRunActionRepetitionsRequestHistories = new WorkflowRunActionRepetitionsRequestHistoriesImpl(this);
+        }
+        return this.workflowRunActionRepetitionsRequestHistories;
+    }
+
+    /**
+     * @return Entry point to manage WorkflowRunActionRequestHistories.
+     */
+    public WorkflowRunActionRequestHistories workflowRunActionRequestHistories() {
+        if (this.workflowRunActionRequestHistories == null) {
+            this.workflowRunActionRequestHistories = new WorkflowRunActionRequestHistoriesImpl(this);
+        }
+        return this.workflowRunActionRequestHistories;
     }
 
     /**

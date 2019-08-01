@@ -140,10 +140,10 @@ class WorkflowsImpl extends GroupableResourcesCoreImpl<Workflow, WorkflowImpl, W
     }
 
     @Override
-    public Completable generateUpgradedDefinitionAsync(String resourceGroupName, String workflowName) {
+    public Observable<Object> generateUpgradedDefinitionAsync(String resourceGroupName, String workflowName) {
         WorkflowsInner client = this.inner();
-        return client.generateUpgradedDefinitionAsync(resourceGroupName, workflowName).toCompletable();
-    }
+        return client.generateUpgradedDefinitionAsync(resourceGroupName, workflowName)
+    ;}
 
     @Override
     public Observable<WorkflowTriggerCallbackUrl> listCallbackUrlAsync(String resourceGroupName, String workflowName, GetCallbackUrlParameters listCallbackUrl) {
@@ -158,10 +158,10 @@ class WorkflowsImpl extends GroupableResourcesCoreImpl<Workflow, WorkflowImpl, W
     }
 
     @Override
-    public Completable listSwaggerAsync(String resourceGroupName, String workflowName) {
+    public Observable<Object> listSwaggerAsync(String resourceGroupName, String workflowName) {
         WorkflowsInner client = this.inner();
-        return client.listSwaggerAsync(resourceGroupName, workflowName).toCompletable();
-    }
+        return client.listSwaggerAsync(resourceGroupName, workflowName)
+    ;}
 
     @Override
     public Completable moveAsync(String resourceGroupName, String workflowName, WorkflowInner move) {
