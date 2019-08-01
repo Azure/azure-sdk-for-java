@@ -282,8 +282,8 @@ public final class ContainerAsyncClient {
      *
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> create() {
-        return create(null, null);
+    public Mono<Void> create() {
+        return createWithResponse(null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -296,11 +296,11 @@ public final class ContainerAsyncClient {
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> create(Metadata metadata, PublicAccessType accessType) {
-       return withContext(context -> create(metadata, accessType, context));
+    public Mono<VoidResponse> createWithResponse(Metadata metadata, PublicAccessType accessType) {
+       return withContext(context -> createWithResponse(metadata, accessType, context));
     }
 
-    Mono<VoidResponse> create(Metadata metadata, PublicAccessType accessType, Context context) {
+    Mono<VoidResponse> createWithResponse(Metadata metadata, PublicAccessType accessType, Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
 
         return postProcessResponse(this.azureBlobStorage.containers().createWithRestResponseAsync(
@@ -396,8 +396,8 @@ public final class ContainerAsyncClient {
      * @param metadata {@link Metadata}
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains signalling completion.
      */
-    public Mono<VoidResponse> setMetadata(Metadata metadata) {
-        return this.setMetadata(metadata, null);
+    public Mono<Void> setMetadata(Metadata metadata) {
+        return setMetadataWithResponse(metadata, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -410,11 +410,11 @@ public final class ContainerAsyncClient {
      * @throws UnsupportedOperationException If {@link ContainerAccessConditions#modifiedAccessConditions()} has
      * anything set other than {@link ModifiedAccessConditions#ifModifiedSince()}.
      */
-    public Mono<VoidResponse> setMetadata(Metadata metadata, ContainerAccessConditions accessConditions) {
-        return withContext(context -> setMetadata(metadata, accessConditions, context));
+    public Mono<VoidResponse> setMetadataWithResponse(Metadata metadata, ContainerAccessConditions accessConditions) {
+        return withContext(context -> setMetadataWithResponse(metadata, accessConditions, context));
     }
 
-    Mono<VoidResponse> setMetadata(Metadata metadata, ContainerAccessConditions accessConditions, Context context) {
+    Mono<VoidResponse> setMetadataWithResponse(Metadata metadata, ContainerAccessConditions accessConditions, Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
         if (!validateNoEtag(accessConditions.modifiedAccessConditions())
@@ -487,9 +487,9 @@ public final class ContainerAsyncClient {
      * for more information. Passing null will clear all access policies.
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> setAccessPolicy(PublicAccessType accessType,
+    public Mono<Void> setAccessPolicy(PublicAccessType accessType,
                                               List<SignedIdentifier> identifiers) {
-        return setAccessPolicy(accessType, identifiers, null);
+        return setAccessPolicyWithResponse(accessType, identifiers, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -509,11 +509,11 @@ public final class ContainerAsyncClient {
      * @throws UnsupportedOperationException If {@link ContainerAccessConditions#modifiedAccessConditions()} has either
      * {@link ModifiedAccessConditions#ifMatch()} or {@link ModifiedAccessConditions#ifNoneMatch()} set.
      */
-    public Mono<VoidResponse> setAccessPolicy(PublicAccessType accessType, List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions) {
-        return withContext(context -> setAccessPolicy(accessType, identifiers, accessConditions, context));
+    public Mono<VoidResponse> setAccessPolicyWithResponse(PublicAccessType accessType, List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions) {
+        return withContext(context -> setAccessPolicyWithResponse(accessType, identifiers, accessConditions, context));
     }
 
-    Mono<VoidResponse> setAccessPolicy(PublicAccessType accessType, List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions, Context context) {
+    Mono<VoidResponse> setAccessPolicyWithResponse(PublicAccessType accessType, List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
 
         if (!validateNoEtag(accessConditions.modifiedAccessConditions())) {
@@ -962,8 +962,8 @@ public final class ContainerAsyncClient {
      * @param leaseID The leaseId of the active lease on the blob.
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> releaseLease(String leaseID) {
-        return releaseLease(leaseID, null);
+    public Mono<Void> releaseLease(String leaseID) {
+        return releaseLeaseWithResponse(leaseID, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -977,11 +977,11 @@ public final class ContainerAsyncClient {
      * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or {@link
      * ModifiedAccessConditions#ifNoneMatch()} is set.
      */
-    public Mono<VoidResponse> releaseLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> releaseLease(leaseID, modifiedAccessConditions, context));
+    public Mono<VoidResponse> releaseLeaseWithResponse(String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
+        return withContext(context -> releaseLeaseWithResponse(leaseID, modifiedAccessConditions, context));
     }
 
-    Mono<VoidResponse> releaseLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    Mono<VoidResponse> releaseLeaseWithResponse(String leaseID, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         if (!this.validateNoEtag(modifiedAccessConditions)) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.

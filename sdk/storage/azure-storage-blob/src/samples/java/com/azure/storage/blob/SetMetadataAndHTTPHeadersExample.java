@@ -58,7 +58,7 @@ public class SetMetadataAndHTTPHeadersExample {
         /*
          * Create a container with the containerMetadata above.
          */
-        containerClient.create(containerMetadata, null, null, new Context("key1", "value1"));
+        containerClient.createWithResponse(containerMetadata, null, null, new Context("key1", "value1"));
 
         /*
          * Create a blob client.

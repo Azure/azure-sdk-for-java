@@ -105,7 +105,7 @@ public final class BlobServiceClient {
     public Response<ContainerClient> createContainerWithResponse(String containerName, Metadata metadata, PublicAccessType accessType, Context context) {
         ContainerClient client = getContainerClient(containerName);
 
-        return new SimpleResponse<>(client.create(metadata, accessType, null, context), client);
+        return new SimpleResponse<>(client.createWithResponse(metadata, accessType, null, context), client);
     }
 
     /**
@@ -115,8 +115,8 @@ public final class BlobServiceClient {
      * @param containerName Name of the container to delete
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse deleteContainer(String containerName) {
-        return deleteContainer(containerName, Context.NONE);
+    public Void deleteContainer(String containerName) {
+        return deleteContainerWithResponse(containerName, Context.NONE).value();
     }
 
     /**
@@ -126,8 +126,8 @@ public final class BlobServiceClient {
      * @param containerName Name of the container to delete
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse deleteContainer(String containerName, Context context) {
-        return blobServiceAsyncClient.deleteContainer(containerName).block();
+    public VoidResponse deleteContainerWithResponse(String containerName, Context context) {
+        return blobServiceAsyncClient.deleteContainerWithResponse(containerName).block();
     }
 
     /**
@@ -209,8 +209,8 @@ public final class BlobServiceClient {
      * @param properties Configures the service.
      * @return The storage account properties.
      */
-    public VoidResponse setProperties(StorageServiceProperties properties) {
-        return setPropertiesWithResponse(properties, null, Context.NONE);
+    public Void setProperties(StorageServiceProperties properties) {
+        return setPropertiesWithResponse(properties, null, Context.NONE).value();
     }
 
     /**
@@ -224,7 +224,7 @@ public final class BlobServiceClient {
      * @return The storage account properties.
      */
     public VoidResponse setPropertiesWithResponse(StorageServiceProperties properties, Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobServiceAsyncClient.setProperties(properties, context);
+        Mono<VoidResponse> response = blobServiceAsyncClient.setPropertiesWithReponse(properties, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

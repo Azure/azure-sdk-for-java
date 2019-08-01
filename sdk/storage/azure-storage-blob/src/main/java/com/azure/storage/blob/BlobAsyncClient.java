@@ -719,7 +719,7 @@ public class BlobAsyncClient {
      * @return A reactive response containing the blob properties and metadata.
      */
     public Mono<BlobProperties> getProperties(BlobAccessConditions accessConditions) {
-        return getProperties(accessConditions);
+        return getPropertiesWithResponse(accessConditions).flatMap(FluxUtil::toMono);
     }
 
     /**

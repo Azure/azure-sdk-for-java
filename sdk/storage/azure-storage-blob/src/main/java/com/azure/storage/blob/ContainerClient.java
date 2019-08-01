@@ -231,8 +231,8 @@ public final class ContainerClient {
      *
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse create() {
-        return this.create(null, null, null, Context.NONE);
+    public Void create() {
+        return createWithResponse(null, null, null, Context.NONE).value();
     }
 
     /**
@@ -246,8 +246,8 @@ public final class ContainerClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse create(Metadata metadata, PublicAccessType accessType, Duration timeout, Context context) {
-        Mono<VoidResponse> response = containerAsyncClient.create(metadata, accessType, context);
+    public VoidResponse createWithResponse(Metadata metadata, PublicAccessType accessType, Duration timeout, Context context) {
+        Mono<VoidResponse> response = containerAsyncClient.createWithResponse(metadata, accessType, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -324,8 +324,8 @@ public final class ContainerClient {
      * @param metadata {@link Metadata}
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse setMetadata(Metadata metadata) {
-        return this.setMetadata(metadata, null, null, Context.NONE);
+    public Void setMetadata(Metadata metadata) {
+        return setMetadataWithResponse(metadata, null, null, Context.NONE).value();
     }
 
     /**
@@ -337,9 +337,9 @@ public final class ContainerClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse setMetadata(Metadata metadata,
+    public VoidResponse setMetadataWithResponse(Metadata metadata,
                                     ContainerAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = containerAsyncClient.setMetadata(metadata, accessConditions, context);
+        Mono<VoidResponse> response = containerAsyncClient.setMetadataWithResponse(metadata, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -403,7 +403,7 @@ public final class ContainerClient {
      */
     public VoidResponse setAccessPolicy(PublicAccessType accessType,
                                         List<SignedIdentifier> identifiers) {
-        return setAccessPolicy(accessType, identifiers, null, null, Context.NONE);
+        return setAccessPolicyWithResponse(accessType, identifiers, null, null, Context.NONE);
     }
 
     /**
@@ -422,10 +422,10 @@ public final class ContainerClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse setAccessPolicy(PublicAccessType accessType,
+    public VoidResponse setAccessPolicyWithResponse(PublicAccessType accessType,
                                         List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions,
                                         Duration timeout, Context context) {
-        Mono<VoidResponse> response = containerAsyncClient.setAccessPolicy(accessType, identifiers, accessConditions, context);
+        Mono<VoidResponse> response = containerAsyncClient.setAccessPolicyWithResponse(accessType, identifiers, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -635,8 +635,8 @@ public final class ContainerClient {
      * @param leaseID The leaseId of the active lease on the blob.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse releaseLease(String leaseID) {
-        return releaseLease(leaseID, null, null, Context.NONE);
+    public Void releaseLease(String leaseID) {
+        return releaseLeaseWithResponse(leaseID, null, null, Context.NONE).value();
     }
 
     /**
@@ -649,10 +649,10 @@ public final class ContainerClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse releaseLease(String leaseID,
+    public VoidResponse releaseLeaseWithResponse(String leaseID,
                                      ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
         Mono<VoidResponse> response = containerAsyncClient
-            .releaseLease(leaseID, modifiedAccessConditions, context);
+            .releaseLeaseWithResponse(leaseID, modifiedAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

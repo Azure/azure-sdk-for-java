@@ -366,7 +366,7 @@ class APISpec extends Specification {
 
     def setupContainerLeaseCondition(ContainerClient cu, String leaseID) {
         if (leaseID == receivedLeaseID) {
-            return cu.acquireLease(null, -1).value()
+            return cu.acquireLeaseWithResponse(null, -1, null, null, null).value()
         } else {
             return leaseID
         }

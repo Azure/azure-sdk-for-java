@@ -128,7 +128,7 @@ public final class BlobServiceAsyncClient {
     Mono<Response<ContainerAsyncClient>> createContainerWithResponse(String containerName, Metadata metadata, PublicAccessType accessType, Context context) {
         ContainerAsyncClient containerAsyncClient = getContainerAsyncClient(containerName);
 
-        return containerAsyncClient.create(metadata, accessType, context)
+        return containerAsyncClient.createWithResponse(metadata, accessType, context)
                    .map(response -> new SimpleResponse<>(response, containerAsyncClient));
     }
 
@@ -139,11 +139,11 @@ public final class BlobServiceAsyncClient {
      * @param containerName Name of the container to delete
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
-    public Mono<VoidResponse> deleteContainer(String containerName) {
-        return withContext(context -> deleteContainer(containerName, context));
+    public Mono<VoidResponse> deleteContainerWithResponse(String containerName) {
+        return withContext(context -> deleteContainerWithResponse(containerName, context));
     }
 
-    Mono<VoidResponse> deleteContainer(String containerName, Context context) {
+    Mono<VoidResponse> deleteContainerWithResponse(String containerName, Context context) {
         return getContainerAsyncClient(containerName).deleteWithResponse(null, context);
     }
 
@@ -261,11 +261,24 @@ public final class BlobServiceAsyncClient {
      * @param properties Configures the service.
      * @return A {@link Mono} containing the storage account properties.
      */
-    public Mono<VoidResponse> setProperties(StorageServiceProperties properties) {
-        return withContext(context -> setProperties(properties, context));
+    public Mono<Void> setProperties(StorageServiceProperties properties) {
+        return setPropertiesWithReponse(properties).flatMap(FluxUtil::toMono);
     }
 
-    Mono<VoidResponse> setProperties(StorageServiceProperties properties, Context context) {
+    /**
+     * Sets properties for a storage account's Blob service endpoint. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
+     * Note that setting the default service version has no effect when using this client because this client explicitly
+     * sets the version header on each request, overriding the default.
+     *
+     * @param properties Configures the service.
+     * @return A {@link Mono} containing the storage account properties.
+     */
+    public Mono<VoidResponse> setPropertiesWithReponse(StorageServiceProperties properties) {
+        return withContext(context -> setPropertiesWithReponse(properties, context));
+    }
+
+    Mono<VoidResponse> setPropertiesWithReponse(StorageServiceProperties properties, Context context) {
         return postProcessResponse(
             this.azureBlobStorage.services().setPropertiesWithRestResponseAsync(properties, null, null, context))
                    .map(VoidResponse::new);

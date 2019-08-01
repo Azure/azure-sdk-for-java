@@ -27,7 +27,7 @@ class SASTest extends APISpec {
      */
     def "Request property"() {
         when:
-        def response = cu.delete()
+        def response = cu.deleteWithResponse(null, null, null)
 
         then:
         response.request() != null
@@ -134,7 +134,7 @@ class SASTest extends APISpec {
 
         def os = new ByteArrayOutputStream()
         client.download(os)
-        def properties = client.getProperties().value()
+        def properties = client.getProperties()
 
         then:
         os.toString() == new String(data)
@@ -187,7 +187,7 @@ class SASTest extends APISpec {
 
         def os = new ByteArrayOutputStream()
         client.download(os)
-        def properties = client.getProperties().value()
+        def properties = client.getProperties()
 
         then:
         os.toString() == new String(data)
