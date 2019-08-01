@@ -19,7 +19,7 @@ trigger:
       - hotfix/*
   paths:
     include:
-      - sdk/${{parameters.ServiceDirectory}}/
+      - sdk/appconfiguration/
 
 pr:
   branches:
@@ -30,12 +30,12 @@ pr:
       - hotfix/*
   paths:
     include:
-      - sdk/${{parameters.ServiceDirectory}}/
+      - sdk/appconfiguration/
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
-      ServiceDirectory: ${{parameters.ServiceDirectory}}
+      ServiceDirectory: appconfiguration
       EnableUnifiedPipelines: true
       Artifacts:
         - name: azure-data-appconfiguration
