@@ -15,18 +15,18 @@ import java.util.List;
  * A wrapper around List&lt;SignedIdentifier&gt; which provides top-level metadata for serialization.
  */
 @JacksonXmlRootElement(localName = "SignedIdentifiers")
-public final class SignedIdentifierWrapper {
+public final class SignedIdentifiersWrapper {
     @JacksonXmlProperty(localName = "SignedIdentifier")
-    private final List<SignedIdentifier> signedIdentifier;
+    private final List<SignedIdentifier> signedIdentifiers;
 
     /**
-     * Creates an instance of SignedIdentifierWrapper.
+     * Creates an instance of SignedIdentifiersWrapper.
      *
-     * @param signedIdentifier the list.
+     * @param signedIdentifiers the list.
      */
     @JsonCreator
-    public SignedIdentifierWrapper(@JsonProperty("SignedIdentifier") List<SignedIdentifier> signedIdentifier) {
-        this.signedIdentifier = signedIdentifier;
+    public SignedIdentifiersWrapper(@JsonProperty("SignedIdentifier") List<SignedIdentifier> signedIdentifiers) {
+        this.signedIdentifiers = signedIdentifiers;
     }
 
     /**
@@ -35,6 +35,6 @@ public final class SignedIdentifierWrapper {
      * @return the List&lt;SignedIdentifier&gt;.
      */
     public List<SignedIdentifier> items() {
-        return signedIdentifier;
+        return signedIdentifiers;
     }
 }

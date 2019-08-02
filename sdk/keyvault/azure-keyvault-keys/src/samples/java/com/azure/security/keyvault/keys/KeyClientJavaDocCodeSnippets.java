@@ -7,7 +7,7 @@ import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
 import com.azure.security.keyvault.keys.models.Key;
@@ -38,7 +38,7 @@ public final class KeyClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.keys.keyclient.instantiation
         KeyClient keyClient = new KeyClientBuilder()
             .endpoint("https://myvault.azure.net/")
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // END: com.azure.security.keyvault.keys.keyclient.instantiation
         return keyClient;
