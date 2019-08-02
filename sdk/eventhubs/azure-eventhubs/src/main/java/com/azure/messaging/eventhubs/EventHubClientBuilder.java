@@ -87,18 +87,18 @@ public class EventHubClientBuilder {
      * Sets the credential information given a connection string to the Event Hub instance.
      *
      * <p>
-     * If the connection string is copied from the Event Hubs namespace, it will likely not contain the path to the
-     * desired Event Hub, which is needed. In this case, the path can be added manually by adding {@literal
+     * If the connection string is copied from the Event Hubs namespace, it will likely not contain the name to the
+     * desired Event Hub, which is needed. In this case, the name can be added manually by adding {@literal
      * "EntityPath=EVENT_HUB_NAME"} to the end of the connection string. For example, "EntityPath=telemetry-hub".
      * </p>
      *
      * <p>
      * If you have defined a shared access policy directly on the Event Hub itself, then copying the connection string
-     * from that Event Hub will result in a connection string that contains the path.
+     * from that Event Hub will result in a connection string that contains the name.
      * </p>
      *
      * @param connectionString The connection string to use for connecting to the Event Hub instance. It is
-     *         expected that the Event Hub path and the shared access key properties are contained in this connection
+     *         expected that the Event Hub name and the shared access key properties are contained in this connection
      *         string.
      * @return The updated {@link EventHubClientBuilder} object.
      * @throws IllegalArgumentException if {@code connectionString} is null or empty. Or, the {@code
@@ -120,7 +120,7 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Sets the credential information given a connection string to the Event Hubs namespace and a path to a specific
+     * Sets the credential information given a connection string to the Event Hubs namespace and name to a specific
      * Event Hub instance.
      *
      * @param connectionString The connection string to use for connecting to the Event Hubs namespace; it is
@@ -129,7 +129,7 @@ public class EventHubClientBuilder {
      * @param eventHubName The name of the Event Hub to connect the client to.
      * @return The updated {@link EventHubClientBuilder} object.
      * @throws IllegalArgumentException if {@code connectionString} or {@code eventHubName} is null or empty.
-     *         Or, if the {@code connectionString} contains the Event Hub path.
+     *         Or, if the {@code connectionString} contains the Event Hub name.
      * @throws AzureException If the shared access signature token credential could not be created using the
      *         connection string.
      */
@@ -149,7 +149,7 @@ public class EventHubClientBuilder {
 
         if (!ImplUtils.isNullOrEmpty(properties.eventHubName())) {
             throw new IllegalArgumentException(String.format(Locale.US,
-                "'connectionString' contains an Event Hub path [%s].  Please use the"
+                "'connectionString' contains an Event Hub name [%s].  Please use the"
                     + " credentials(String connectionString) overload. Or supply a 'connectionString' without"
                     + " 'EntityPath' in it.", properties.eventHubName()));
         }
