@@ -371,7 +371,7 @@ final class Utility {
 
     static URL stripLastPathSegment(URL baseURL) {
         UrlBuilder url = UrlBuilder.parse(baseURL);
-        if (url.path() != null || !url.path().contains("/")) {
+        if (url.path() == null || !url.path().contains("/")) {
             throw new IllegalArgumentException(String.format("URL %s does not contain path segments", baseURL));
         }
 
