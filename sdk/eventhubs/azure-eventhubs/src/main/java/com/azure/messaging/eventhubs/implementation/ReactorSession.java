@@ -6,7 +6,8 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.CBSNode;
-import com.azure.core.amqp.Retry;
+import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubProducer;
@@ -116,11 +117,12 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
     }
 
     @Override
-    public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, Retry retry) {
+    public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, RetryPolicy retry) {
         final ActiveClientTokenManager tokenManager = createTokenManager(entityPath);
 
-        return getConnectionStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE)
-            .timeout(timeout)
+        return RetryUtil.withRetry(
+            getConnectionStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
+            timeout, retry)
             .then(tokenManager.authorize().then(Mono.create(sink -> {
                 final AmqpSendLink existingSender = openSendLinks.get(linkName);
                 if (existingSender != null) {
@@ -156,17 +158,17 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
     }
 
     @Override
-    public Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, Retry retry) {
+    public Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, RetryPolicy retry) {
         return createConsumer(linkName, entityPath, "", timeout, retry, null, null);
     }
 
     @Override
     public Mono<AmqpLink> createConsumer(String linkName, String entityPath, String eventPositionExpression,
-                                         Duration timeout, Retry retry, Long ownerLevel, String consumerIdentifier) {
+                                         Duration timeout, RetryPolicy retry, Long ownerLevel, String consumerIdentifier) {
         final ActiveClientTokenManager tokenManager = createTokenManager(entityPath);
 
-        return getConnectionStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE)
-            .timeout(timeout)
+        return RetryUtil.withRetry(
+            getConnectionStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE), timeout, retry)
             .then(tokenManager.authorize().then(Mono.create(sink -> {
                 final AmqpReceiveLink existingReceiver = openReceiveLinks.get(linkName);
                 if (existingReceiver != null) {

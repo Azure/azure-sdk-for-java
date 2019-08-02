@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 
 /**
- * {@code ProgressReporterImpl} offers a convenient way to add progress tracking to a given Flowable.
+ * {@code ProgressReporter} offers a convenient way to add progress tracking to a given Flux.
  */
 final class ProgressReporter {
 
@@ -35,29 +35,28 @@ final class ProgressReporter {
         }
 
         Flux<ByteBuffer> addProgressReporting(Flux<ByteBuffer> data) {
-            return Mono.just(this)
-                    .flatMapMany(progressReporter -> {
-                    /*
-                    Each time there is a new subscription, we will rewind the progress. This is desirable specifically
-                    for retries, which resubscribe on each try. The first time this flowable is subscribed to, the
-                    rewind will be a noop as there will have been no progress made. Subsequent rewinds will work as
-                    expected.
-                     */
-                        progressReporter.rewindProgress();
-                    /*
-                    Every time we emit some data, report it to the Tracker, which will pass it on to the end user.
-                     */
-                        return data.doOnNext(buffer ->
-                                progressReporter.reportProgress(buffer.remaining()));
-                    });
+            return Mono.just(this).flatMapMany(progressReporter -> {
+                /*
+                Each time there is a new subscription, we will rewind the progress. This is desirable specifically
+                for retries, which resubscribe on each try. The first time this flowable is subscribed to, the
+                rewind will be a noop as there will have been no progress made. Subsequent rewinds will work as
+                expected.
+                 */
+                progressReporter.rewindProgress();
+
+                /*
+                Every time we emit some data, report it to the Tracker, which will pass it on to the end user.
+                 */
+                return data.doOnNext(buffer -> progressReporter.reportProgress(buffer.remaining()));
+            });
         }
     }
 
     /**
-     * This type is used to keep track of the total amount of data transferred for a single request. This is the type
-     * we will use when the customer uses the factory to add progress reporting to their Flowable. We need this
-     * additional type because we can't keep local state directly as lambdas require captured local variables to be
-     * effectively final.
+     * This type is used to keep track of the total amount of data transferred for a single request. This is the type we
+     * will use when the customer uses the factory to add progress reporting to their Flowable. We need this additional
+     * type because we can't keep local state directly as lambdas require captured local variables to be effectively
+     * final.
      */
     private static class SequentialProgressReporter extends ProgressReporterImpl {
         SequentialProgressReporter(IProgressReceiver progressReceiver) {
@@ -129,24 +128,19 @@ final class ProgressReporter {
     }
 
     /**
-     * Adds progress reporting functionality to the given {@code Flux}. Each subscription (and therefore each
-     * retry) will rewind the progress reported so as not to over-report. The data reported will be the total amount
-     * of data emitted so far, or the "current position" of the Flowable.
+     * Adds progress reporting functionality to the given {@code Flux}. Each subscription (and therefore each retry)
+     * will rewind the progress reported so as not to over-report. The data reported will be the total amount of data
+     * emitted so far, or the "current position" of the Flowable.
      *
-     * @param data
-     *         The data whose transfer progress is to be tracked.
-     * @param progressReceiver
-     *         {@link IProgressReceiver}
-     *
-     * @return A {@code Flux} that emits the same data as the source but calls a callback to report the total amount
-     * of data emitted so far.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=progress "Sample code for ProgressReporterFactor.addProgressReporting")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @param data The data whose transfer progress is to be tracked.
+     * @param progressReceiver {@link IProgressReceiver}
+     * @return A {@code Flux} that emits the same data as the source but calls a callback to report the total amount of
+     * data emitted so far.
+     * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=progress
+     * "Sample code for ProgressReporterFactor.addProgressReporting")] \n For more samples, please see the [Samples
+     * file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public static Flux<ByteBuffer> addProgressReporting(Flux<ByteBuffer> data,
-            IProgressReceiver progressReceiver) {
+    public static Flux<ByteBuffer> addProgressReporting(Flux<ByteBuffer> data, IProgressReceiver progressReceiver) {
         if (progressReceiver == null) {
             return data;
         } else {
@@ -155,8 +149,7 @@ final class ProgressReporter {
         }
     }
 
-    static Flux<ByteBuffer> addParallelProgressReporting(Flux<ByteBuffer> data,
-            IProgressReceiver progressReceiver, Lock lock, AtomicLong totalProgress) {
+    static Flux<ByteBuffer> addParallelProgressReporting(Flux<ByteBuffer> data, IProgressReceiver progressReceiver, Lock lock, AtomicLong totalProgress) {
         if (progressReceiver == null) {
             return data;
         } else {

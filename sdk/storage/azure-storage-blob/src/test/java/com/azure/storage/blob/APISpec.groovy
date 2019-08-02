@@ -17,6 +17,7 @@ import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.identity.credential.EnvironmentCredential
 import com.azure.storage.blob.models.*
 import com.azure.storage.common.credentials.SharedKeyCredential
+import io.netty.buffer.ByteBuf
 import org.junit.Assume
 import org.spockframework.lang.ISpecificationContext
 import reactor.core.publisher.Flux
@@ -409,7 +410,7 @@ class APISpec extends Specification {
             response.value().contentEncoding() == contentEncoding &&
             response.value().contentLanguage() == contentLanguage &&
             response.value().contentMD5() == contentMD5 &&
-            response.headers().value("Content-Type") == (contentType == null ? "application/octet-stream" : contentType)
+            response.headers().value("Content-Type") == contentType
     }
 
     static Metadata getMetadataFromHeaders(HttpHeaders headers) {
@@ -502,43 +503,51 @@ class APISpec extends Specification {
     to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
     with than was worth it. Because this type is just for BlobDownload, we don't need to accept a header type.
      */
-    def getStubResponseForBlobDownload(int code, Flux<ByteBuffer> body, String etag) {
-        return new HttpResponse() {
+    static class MockDownloadHttpResponse extends HttpResponse {
+        private final int statusCode
+        private final HttpHeaders headers
+        private final Flux<ByteBuf> body
 
-            @Override
-            int statusCode() {
-                return code
-            }
+        MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuf> body) {
+            this.request(response.request())
+            this.statusCode = statusCode
+            this.headers = response.headers()
+            this.body = body
+        }
 
-            @Override
-            String headerValue(String s) {
-                return null
-            }
+        @Override
+        int statusCode() {
+            return statusCode
+        }
 
-            @Override
-            HttpHeaders headers() {
-                return new HttpHeaders()
-            }
+        @Override
+        String headerValue(String s) {
+            return headers.value(s)
+        }
 
-            @Override
-            Flux<ByteBuffer> body() {
-                return body
-            }
+        @Override
+        HttpHeaders headers() {
+            return headers
+        }
 
-            @Override
-            Mono<byte[]> bodyAsByteArray() {
-                return null
-            }
+        @Override
+        Flux<ByteBuf> body() {
+            return body
+        }
 
-            @Override
-            Mono<String> bodyAsString() {
-                return null
-            }
+        @Override
+        Mono<byte[]> bodyAsByteArray() {
+            return Mono.error(new IOException())
+        }
 
-            @Override
-            Mono<String> bodyAsString(Charset charset) {
-                return null
-            }
+        @Override
+        Mono<String> bodyAsString() {
+            return Mono.error(new IOException())
+        }
+
+        @Override
+        Mono<String> bodyAsString(Charset charset) {
+            return Mono.error(new IOException())
         }
     }
 
@@ -559,6 +568,7 @@ class APISpec extends Specification {
         return new BlobServiceClientBuilder()
             .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCreds.accountName()))
             .credential(new EnvironmentCredential()) // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .buildClient()
     }
 

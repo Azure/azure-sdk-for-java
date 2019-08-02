@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
-import com.azure.core.amqp.Retry;
+import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.implementation.util.ImplUtils;
@@ -36,11 +36,12 @@ import static org.mockito.Mockito.when;
  */
 public abstract class ApiTestBase extends TestBase {
     protected static final Duration TIMEOUT = Duration.ofSeconds(30);
+    protected static final RetryOptions RETRY_OPTIONS = new RetryOptions().tryTimeout(TIMEOUT);
     protected final ClientLogger logger;
 
     private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
     private static final String CONNECTION_STRING = System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
-    private static final String TEST_CONNECTION_STRING = "Endpoint=sb://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=myaccount;SharedAccessKey=ctzMq410TV3wS7upTBcunJTDLEJwMAZuFPfr0mrrA08=;EntityPath=eventhub1;";
+    private static final String TEST_CONNECTION_STRING = "Endpoint=sb://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummyaccount;SharedAccessKey=ctzMq410TV3wS7upTBcunJTDLEJwMAZuFPfr0mrrA08=;EntityPath=non-existent-hub;";
 
     private ConnectionStringProperties properties;
     private Reactor reactor = mock(Reactor.class);
@@ -60,7 +61,7 @@ public abstract class ApiTestBase extends TestBase {
     public void setupTest() {
         logger.info("[{}]: Performing test set-up.", testName());
 
-        final Scheduler scheduler = Schedulers.newElastic("AMQPConnection");
+        final Scheduler scheduler = Schedulers.newParallel("AMQPConnection");
         final String connectionString = getTestMode() == TestMode.RECORD
             ? CONNECTION_STRING
             : TEST_CONNECTION_STRING;
@@ -87,8 +88,8 @@ public abstract class ApiTestBase extends TestBase {
         }
 
         connectionOptions = new ConnectionOptions(properties.endpoint().getHost(), properties.eventHubPath(),
-            tokenCredential, getAuthorizationType(), TIMEOUT, transportType, Retry.getNoRetry(),
-            ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
+            tokenCredential, getAuthorizationType(), transportType, RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS,
+            scheduler);
 
         beforeTest();
     }

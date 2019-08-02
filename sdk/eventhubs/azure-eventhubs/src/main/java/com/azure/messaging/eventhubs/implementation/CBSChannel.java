@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.RetryOptions;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
@@ -13,7 +14,6 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Locale;
@@ -35,29 +35,29 @@ class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
     private final TokenCredential credential;
     private final Mono<RequestResponseChannel> cbsChannelMono;
     private final ReactorProvider provider;
-    private final Duration operationTimeout;
     private final CBSAuthorizationType authorizationType;
+    private final RetryOptions retryOptions;
 
     CBSChannel(AmqpConnection connection, TokenCredential tokenCredential, CBSAuthorizationType authorizationType,
-               ReactorProvider provider, ReactorHandlerProvider handlerProvider, Duration operationTimeout) {
+               ReactorProvider provider, ReactorHandlerProvider handlerProvider, RetryOptions retryOptions) {
         super(new ClientLogger(CBSChannel.class));
 
         Objects.requireNonNull(connection);
         Objects.requireNonNull(tokenCredential);
         Objects.requireNonNull(authorizationType);
         Objects.requireNonNull(provider);
-        Objects.requireNonNull(operationTimeout);
         Objects.requireNonNull(handlerProvider);
+        Objects.requireNonNull(retryOptions);
 
         this.authorizationType = authorizationType;
-        this.operationTimeout = operationTimeout;
+        this.retryOptions = retryOptions;
         this.connection = connection;
         this.credential = tokenCredential;
         this.provider = provider;
         this.cbsChannelMono = connection.createSession(SESSION_NAME)
             .cast(ReactorSession.class)
             .map(session -> new RequestResponseChannel(connection.getIdentifier(), connection.getHost(), LINK_NAME,
-                CBS_ADDRESS, session.session(), handlerProvider))
+                CBS_ADDRESS, session.session(), this.retryOptions, handlerProvider))
             .cache();
     }
 
@@ -81,7 +81,7 @@ class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
 
     @Override
     public void close() {
-        final RequestResponseChannel channel = cbsChannelMono.block(operationTimeout);
+        final RequestResponseChannel channel = cbsChannelMono.block(retryOptions.tryTimeout());
         if (channel != null) {
             channel.close();
         }

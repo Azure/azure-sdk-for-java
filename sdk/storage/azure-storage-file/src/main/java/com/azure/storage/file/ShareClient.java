@@ -8,6 +8,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.ShareInfo;
 import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.ShareSnapshotInfo;
@@ -73,6 +74,19 @@ public class ShareClient {
      */
     public DirectoryClient getDirectoryClient(String directoryName) {
         return new DirectoryClient(client.getDirectoryClient(directoryName));
+    }
+
+    /**
+     * Constructs a {@link FileClient} that interacts with the specified file.
+     *
+     * <p>If the file doesn't exist in the share {@link FileClient#create(long)} ) create} in the client will
+     * need to be called before interaction with the file can happen.</p>
+     *
+     * @param filePath Name of the file
+     * @return a {@link FileClient} that interacts with the file in the share
+     */
+    public FileClient getFileClient(String filePath) {
+        return new FileClient(client.getFileClient(filePath));
     }
 
     /**
@@ -315,11 +329,74 @@ public class ShareClient {
     }
 
     /**
+     * Creates the file in the share with the given name and file max size.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create the file "myfile" with size of 1024 bytes.</p>
+     *
+     * {@codesnippet com.azure.storage.file.shareClient.createFile#string-long}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
+     *
+     * @param fileName Name of the file.
+     * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
+     * @return A response containing a {@link FileClient} to interact with the created file and the
+     * status of its creation.
+     * @throws StorageErrorException If one of the following cases happen:
+     * <ul>
+     *     <li>
+     *         If the share or parent directory does not exist.
+     *     </li>
+     *     <li>
+     *          An attempt to create file on a share snapshot will fail with 400 (InvalidQueryParameterValue).
+     *     </li>
+     * </ul>
+     */
+    public Response<FileClient> createFile(String fileName, long maxSize) {
+        return createFile(fileName, maxSize, null, null);
+    }
+
+    /**
+     * Creates the file in the share with the given name, file max size and associates the passed httpHeaders and metadata to it.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create the file "myfile" with length of 1024 bytes, some headers and metadata</p>
+     *
+     * {@codesnippet com.azure.storage.file.shareClient.createFile#string-long-filehttpheaders-map}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
+     *
+     * @param fileName Name of the file.
+     * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
+     * @param httpHeaders Additional parameters for the operation.
+     * @param metadata Optional metadata to associate with the file.
+     * @return A response containing a {@link FileClient} to interact with the created file and the
+     * status of its creation.
+     * @throws StorageErrorException If one of the following cases happen:
+     * <ul>
+     *     <li>
+     *         If the share or parent directory does not exist.
+     *     </li>
+     *     <li>
+     *          An attempt to create file on a share snapshot will fail with 400 (InvalidQueryParameterValue).
+     *     </li>
+     * </ul>
+     */
+    public Response<FileClient> createFile(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata) {
+        FileClient fileClient = getFileClient(fileName);
+        return new SimpleResponse<>(fileClient.create(maxSize, httpHeaders, metadata), fileClient);
+    }
+
+    /**
      * Deletes the specified directory in the share.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Delete the directory "empty"</p>
+     * <p>Delete the directory "mydirectory"</p>
      *
      * {@codesnippet com.azure.storage.file.shareClient.deleteDirectory#string}
      *
@@ -329,6 +406,26 @@ public class ShareClient {
      */
     public VoidResponse deleteDirectory(String directoryName) {
         return client.deleteDirectory(directoryName).block();
+    }
+
+    /**
+     * Deletes the specified file in the share.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file "myfile"</p>
+     *
+     * {@codesnippet com.azure.storage.file.shareClient.deleteFile#string}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @param fileName Name of the file
+     * @return A response that only contains headers and response status code
+     * @throws StorageErrorException If the share or the file doesn't exist.
+     */
+    public VoidResponse deleteFile(String fileName) {
+        return client.deleteFile(fileName).block();
     }
 
     /**

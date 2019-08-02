@@ -8,7 +8,9 @@ import com.azure.storage.blob.models.BlobGetPropertiesHeaders;
 import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.blob.models.Metadata;
 
-public class BlobProperties {
+import java.time.OffsetDateTime;
+
+public final class BlobProperties {
 
     private final BlobType blobType;
 
@@ -26,7 +28,7 @@ public class BlobProperties {
 
     private final String cacheControl;
 
-    //todo decide datetime representation for last modified time
+    private final OffsetDateTime lastModified;
 
 
     BlobProperties(BlobGetPropertiesHeaders generatedHeaders) {
@@ -38,6 +40,7 @@ public class BlobProperties {
         this.contentDisposition = generatedHeaders.contentDisposition();
         this.contentLanguage = generatedHeaders.contentLanguage();
         this.cacheControl = generatedHeaders.cacheControl();
+        this.lastModified = generatedHeaders.lastModified();
     }
 
 
@@ -95,5 +98,12 @@ public class BlobProperties {
      */
     public String cacheControl() {
         return cacheControl;
+    }
+
+    /**
+     * @return the time this blob was last modified
+     */
+    public OffsetDateTime lastModified() {
+        return lastModified;
     }
 }

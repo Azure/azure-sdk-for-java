@@ -9,7 +9,7 @@ import java.util.Locale;
  * Specifies the set of possible permissions for a shared access signature protocol. Values of this type can be used
  * to set the fields on the {@link AccountSASSignatureValues} and {@link ServiceSASSignatureValues} types.
  */
-enum SASProtocol {
+public enum SASProtocol {
     /**
      * Permission to use SAS only through https granted.
      */

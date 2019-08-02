@@ -57,6 +57,9 @@ class AppendBlobAPITest extends APISpec {
         bu.create(headers, null, null, null)
         Response<BlobProperties> response = bu.getProperties()
 
+        // If the value isn't set the service will automatically set it
+        contentType = (contentType == null) ? "application/octet-stream" : contentType
+
         then:
         validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
