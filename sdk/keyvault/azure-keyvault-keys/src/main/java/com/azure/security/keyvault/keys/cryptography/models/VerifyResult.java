@@ -1,4 +1,4 @@
-package com.azure.security.keyvault.keys.cryptography;
+package com.azure.security.keyvault.keys.cryptography.models;
 
 /**
  * Represents the details of verify operation result.

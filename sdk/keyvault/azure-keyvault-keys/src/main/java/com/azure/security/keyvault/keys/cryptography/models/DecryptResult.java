@@ -1,4 +1,7 @@
-package com.azure.security.keyvault.keys.cryptography;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.security.keyvault.keys.cryptography.models;
 
 /**
  * Represents the details of decrypt operation result.

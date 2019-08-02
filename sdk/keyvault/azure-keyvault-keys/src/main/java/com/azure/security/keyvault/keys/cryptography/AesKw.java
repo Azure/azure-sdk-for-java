@@ -84,25 +84,25 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
     }
 
     @Override
-    public ICryptoTransform CreateEncryptor(byte[] key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+    public ICryptoTransform createEncryptor(byte[] key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
-        return CreateEncryptor(key, null, null);
+        return createEncryptor(key, null, null);
     }
 
     @Override
-    public ICryptoTransform CreateEncryptor(byte[] key, Provider provider) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+    public ICryptoTransform createEncryptor(byte[] key, Provider provider) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
-        return CreateEncryptor(key, null, provider);
+        return createEncryptor(key, null, provider);
     }
 
     @Override
-    public ICryptoTransform CreateEncryptor(byte[] key, byte[] iv) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+    public ICryptoTransform createEncryptor(byte[] key, byte[] iv) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
-        return CreateEncryptor(key, iv, null);
+        return createEncryptor(key, iv, null);
     }
 
     @Override
-    public ICryptoTransform CreateEncryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+    public ICryptoTransform createEncryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
         if (key == null) {
             throw new IllegalArgumentException("key");
@@ -128,24 +128,24 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
     }
 
     @Override
-    public ICryptoTransform CreateDecryptor(byte[] key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+    public ICryptoTransform createDecryptor(byte[] key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
-        return CreateDecryptor(key, null, null);
+        return createDecryptor(key, null, null);
     }
 
     @Override
-    public ICryptoTransform CreateDecryptor(byte[] key, Provider provider) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+    public ICryptoTransform createDecryptor(byte[] key, Provider provider) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
-        return CreateDecryptor(key, null, provider);
+        return createDecryptor(key, null, provider);
     }
 
     @Override
-    public ICryptoTransform CreateDecryptor(byte[] key, byte[] iv) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
-        return CreateDecryptor(key, iv, null);
+    public ICryptoTransform createDecryptor(byte[] key, byte[] iv) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+        return createDecryptor(key, iv, null);
     }
 
     @Override
-    public ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+    public ICryptoTransform createDecryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
         if (key == null) {
             throw new IllegalArgumentException("key");

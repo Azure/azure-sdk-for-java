@@ -1,4 +1,4 @@
-package com.azure.security.keyvault.keys.cryptography;
+package com.azure.security.keyvault.keys.cryptography.models;
 
 import java.util.Arrays;
 import java.util.Collections;

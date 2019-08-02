@@ -1,5 +1,7 @@
 package com.azure.security.keyvault.keys.cryptography;
 
+import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 

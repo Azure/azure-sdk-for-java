@@ -1,6 +1,7 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.util.Context;
+import com.azure.security.keyvault.keys.cryptography.models.*;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 import reactor.core.publisher.Mono;
 
@@ -31,6 +32,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         return this.key;
     }
 
+    @Override
     Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, byte[] iv, byte[] authenticationData, Context context, JsonWebKey jsonWebKey) {
         key = getKey(jsonWebKey);
 
@@ -70,6 +72,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         return Mono.just(new EncryptResult(cipherText, authenticationTag, algorithm));
     }
 
+    @Override
     Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Context context, JsonWebKey jsonWebKey) {
 
         key = getKey(jsonWebKey);
@@ -98,14 +101,17 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
     }
 
+    @Override
     Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, Context context, JsonWebKey key) {
         return Mono.error(new UnsupportedOperationException("Sign operation not supported for OCT/Symmetric key"));
     }
 
+    @Override
     Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context, JsonWebKey key) {
         return Mono.error(new UnsupportedOperationException("Verify operation not supported for OCT/Symmetric key"));
     }
 
+    @Override
     Mono<KeyWrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, Context context, JsonWebKey jsonWebKey) {
 
         this.key = getKey(jsonWebKey);
@@ -126,7 +132,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         ICryptoTransform transform = null;
 
         try {
-            transform = algo.CreateEncryptor(this.key, null, null);
+            transform = algo.createEncryptor(this.key, null, null);
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -142,6 +148,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         return Mono.just(new KeyWrapResult(encrypted, algorithm));
     }
 
+    @Override
     Mono<KeyUnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context, JsonWebKey jsonWebKey) {
 
         key = getKey(jsonWebKey);
@@ -157,7 +164,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         ICryptoTransform transform;
 
         try {
-            transform = algo.CreateDecryptor(key, null, null);
+            transform = algo.createDecryptor(key, null, null);
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -173,10 +180,12 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         return Mono.just(new KeyUnwrapResult(decrypted));
     }
 
+    @Override
     Mono<SignResult> signDataAsync(SignatureAlgorithm algorithm, byte[] data, Context context, JsonWebKey key) {
         return signAsync(algorithm, data, context, key);
     }
 
+    @Override
     Mono<VerifyResult> verifyDataAsync(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context, JsonWebKey key) {
         return verifyAsync(algorithm, data, signature, context, key);
     }

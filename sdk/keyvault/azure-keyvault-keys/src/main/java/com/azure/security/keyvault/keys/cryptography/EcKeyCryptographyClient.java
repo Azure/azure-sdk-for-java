@@ -1,6 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.util.Context;
+import com.azure.security.keyvault.keys.cryptography.models.*;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 import reactor.core.publisher.Mono;
 
@@ -39,16 +43,18 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         return keyPair;
     }
 
+    @Override
     Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, byte[] iv, byte[] authenticationData, Context context, JsonWebKey key) {
         throw new UnsupportedOperationException("Encrypt operation is not supported for EC key");
     }
 
-
+    @Override
     Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Context context, JsonWebKey key) {
 
         throw new UnsupportedOperationException("Decrypt operation is not supported for EC key");
     }
 
+    @Override
     Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, Context context, JsonWebKey key) {
         keyPair = getKeyPair(key);
 
@@ -81,6 +87,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
      }
 
+     @Override
     Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context, JsonWebKey key) {
 
         keyPair = getKeyPair(key);
@@ -115,16 +122,19 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
     }
 
+    @Override
     Mono<KeyWrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, Context context, JsonWebKey webKey) {
 
         return Mono.error(new UnsupportedOperationException("Wrap key operation is not supported for EC key"));
     }
 
+    @Override
     Mono<KeyUnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context, JsonWebKey key) {
 
         throw new UnsupportedOperationException("Unwrap key operation is not supported for Ec key");
     }
 
+    @Override
     Mono<SignResult> signDataAsync(SignatureAlgorithm algorithm, byte[] data, Context context, JsonWebKey key) {
         try {
             HashAlgorithm hashAlgorithm = SignatureHashResolver.Default.get(algorithm);
@@ -137,6 +147,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
     }
 
+    @Override
     Mono<VerifyResult> verifyDataAsync(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context, JsonWebKey key) {
         try {
             HashAlgorithm hashAlgorithm = SignatureHashResolver.Default.get(algorithm);

@@ -4,7 +4,6 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.util.logging.ClientLogger;
-import org.apache.commons.lang3.tuple.Triple;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -35,7 +34,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
 
             // Split the key to get the AES key, the HMAC key and the HMAC
             // object
-            Triple<byte[], byte[], Mac> parameters = getAlgorithmParameters(name, key);
+            Triplet<byte[], byte[], Mac> parameters = getAlgorithmParameters(name, key);
 
             // Save the MAC provider and key
             hmac = parameters.getRight();
@@ -93,7 +92,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
         AesCbcHmacSha2Encryptor(String name, byte[] key, byte[] iv, byte[] authenticationData, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
             // Split the key to get the AES key, the HMAC key and the HMAC
             // object
-            Triple<byte[], byte[], Mac> parameters = getAlgorithmParameters(name, key);
+            Triplet<byte[], byte[], Mac> parameters = getAlgorithmParameters(name, key);
 
             // Save the MAC provider and key
             this.hmac = parameters.getRight();
@@ -189,7 +188,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
         return new AesCbcHmacSha2Encryptor(getName(), key, iv, authenticationData, provider);
     }
 
-    private static Triple<byte[], byte[], Mac> getAlgorithmParameters(String algorithm, byte[] key) throws InvalidKeyException, NoSuchAlgorithmException {
+    private static Triplet<byte[], byte[], Mac> getAlgorithmParameters(String algorithm, byte[] key) throws InvalidKeyException, NoSuchAlgorithmException {
 
         byte[] aesKey;
         byte[] hmacKey;
@@ -244,7 +243,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
             throw new IllegalArgumentException(String.format("Unsupported algorithm: %s", algorithm));
         }
 
-        return Triple.of(aesKey, hmacKey, hmac);
+        return new Triplet<>(aesKey,hmacKey, hmac);
     }
 
     private static byte[] toBigEndian(long i) {
@@ -256,5 +255,4 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
 
         return longRepresentation;
     }
-
 }

@@ -6,11 +6,9 @@ import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.util.Context;
-import com.azure.core.util.configuration.Configuration;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
+import com.azure.security.keyvault.keys.cryptography.models.*;
 import com.azure.security.keyvault.keys.models.Key;
-
-import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
  * The CryptographyClient provides synchronous methods to perform cryptographic operations using asymmetric and
