@@ -60,7 +60,8 @@ public class EventHubs {
 
         System.out.println("Consuming Events... ");
         final int maxSeconds = 5;
-        CountDownLatch countDownLatch = new CountDownLatch(3);
+        final int numOfEventsExpected = 3;
+        CountDownLatch countDownLatch = new CountDownLatch(numOfEventsExpected);
         Disposable consumerSubscription = consumer.receive().subscribe(e -> {
             System.out.println("\tEvent received: " + StandardCharsets.UTF_8.decode(e.body()));
             countDownLatch.countDown();
