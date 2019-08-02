@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * A set of options that can be specified to influence how retry attempts are made.
  */
-public class RetryOptions {
+public class RetryOptions implements Cloneable {
     private int maxRetries;
     private Duration delay;
     private Duration maxDelay;
@@ -134,9 +134,17 @@ public class RetryOptions {
      *
      * @return A new copy of {@link RetryOptions}.
      */
+    @Override
     public RetryOptions clone() {
-        return new RetryOptions()
-            .delay(delay)
+
+        RetryOptions clone;
+        try {
+            clone = (RetryOptions) super.clone();
+        } catch (CloneNotSupportedException e) {
+            clone = new RetryOptions();
+        }
+
+        return clone.delay(delay)
             .maxDelay(maxDelay)
             .maxRetries(maxRetries)
             .tryTimeout(tryTimeout)
