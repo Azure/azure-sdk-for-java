@@ -33,7 +33,7 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
     private final String[] expectedPartitionIds = new String[]{"0", "1"};
     private EventHubAsyncClient client;
     private ReactorHandlerProvider handlerProvider;
-    private String eventHubPath;
+    private String eventHubName;
 
     public EventHubClientMetadataIntegrationTest() {
         super(new ClientLogger(EventHubClientMetadataIntegrationTest.class));
@@ -51,7 +51,7 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
     protected void beforeTest() {
         skipIfNotRecordMode();
 
-        eventHubPath = getConnectionOptions().eventHubPath();
+        eventHubName = getConnectionOptions().eventHubPath();
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
     }
@@ -70,7 +70,7 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
         StepVerifier.create(client.getProperties())
             .assertNext(properties -> {
                 Assert.assertNotNull(properties);
-                Assert.assertEquals(eventHubPath, properties.path());
+                Assert.assertEquals(eventHubName, properties.name());
                 Assert.assertEquals(expectedPartitionIds.length, properties.partitionIds().length);
             }).verifyComplete();
     }
@@ -95,7 +95,7 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
         for (String partitionId : expectedPartitionIds) {
             StepVerifier.create(client.getPartitionProperties(partitionId))
                 .assertNext(properties -> {
-                    Assert.assertEquals(eventHubPath, properties.eventHubPath());
+                    Assert.assertEquals(eventHubName, properties.eventHubPath());
                     Assert.assertEquals(partitionId, properties.id());
                 })
                 .verifyComplete();
@@ -115,8 +115,8 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
 
         // Assert
         StepVerifier.create(partitionProperties)
-            .assertNext(properties -> Assert.assertEquals(eventHubPath, properties.eventHubPath()))
-            .assertNext(properties -> Assert.assertEquals(eventHubPath, properties.eventHubPath()))
+            .assertNext(properties -> Assert.assertEquals(eventHubName, properties.eventHubPath()))
+            .assertNext(properties -> Assert.assertEquals(eventHubName, properties.eventHubPath()))
             .verifyComplete();
     }
 

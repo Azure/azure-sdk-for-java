@@ -26,7 +26,7 @@ public class EventHubPropertiesTest {
         final EventHubProperties eventHubProperties = new EventHubProperties(path, instant, partitionIds);
 
         // Assert
-        Assert.assertEquals(path, eventHubProperties.path());
+        Assert.assertEquals(path, eventHubProperties.name());
         Assert.assertEquals(instant, eventHubProperties.createdAt());
         Assert.assertEquals(partitionIds.length, eventHubProperties.partitionIds().length);
 
@@ -50,7 +50,7 @@ public class EventHubPropertiesTest {
         final EventHubProperties eventHubProperties = new EventHubProperties(path, instant, null);
 
         // Assert
-        Assert.assertEquals(path, eventHubProperties.path());
+        Assert.assertEquals(path, eventHubProperties.name());
         Assert.assertEquals(instant, eventHubProperties.createdAt());
         Assert.assertNotNull(eventHubProperties.partitionIds());
         Assert.assertEquals(0, eventHubProperties.partitionIds().length);
