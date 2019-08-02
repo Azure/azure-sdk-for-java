@@ -148,6 +148,9 @@ public class ShareAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.create}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
+     *
      * @return A response containing information about the share and the status its creation.
      * @throws StorageErrorException If the share already exists with different metadata
      */
@@ -167,6 +170,9 @@ public class ShareAsyncClient {
      * <p>Create the share with a quota of 10 GB</p>
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.create#map-integer.quota}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
      * @param metadata Optional metadata to associate with the share
      * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
@@ -189,6 +195,9 @@ public class ShareAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.createSnapshot}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-share">Azure Docs</a>.</p>
+     *
      * @return A response containing information about the snapshot of share.
      * @throws StorageErrorException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is
      * in progress for the share
@@ -205,6 +214,9 @@ public class ShareAsyncClient {
      * <p>Create a snapshot with metadata "snapshot:metadata"</p>
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.createSnapshot#map}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-share">Azure Docs</a>.</p>
      *
      * @param metadata Optional metadata to associate with the snapshot. If {@code null} the metadata of the share
      * will be copied to the snapshot.
@@ -226,6 +238,9 @@ public class ShareAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.delete}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
+     *
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the share doesn't exist
      */
@@ -244,6 +259,9 @@ public class ShareAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.getProperties}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
+     *
      * @return the properties of the share
      * @throws StorageErrorException If the share doesn't exist
      */
@@ -260,6 +278,9 @@ public class ShareAsyncClient {
      * <p>Set the quota to 1024 GB</p>
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.setQuota}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
      * @param quotaInGB Size in GB to limit the share's growth. The quota in GB must be between 1 and 5120.
      * @return information about the share
@@ -285,6 +306,9 @@ public class ShareAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.clearMetadata#map}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
+     *
      * @param metadata Metadata to set on the share, if null is passed the metadata for the share is cleared
      * @return information about the share
      * @throws StorageErrorException If the share doesn't exist or the metadata contains invalid keys
@@ -303,6 +327,9 @@ public class ShareAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.getAccessPolicy}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
+     *
      * @return The stored access policies specified on the queue.
      * @throws StorageErrorException If the share doesn't exist
      */
@@ -319,6 +346,9 @@ public class ShareAsyncClient {
      * <p>Set a read only stored access policy</p>
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.setAccessPolicy}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
      *
      * @param permissions Access policies to set on the queue
      * @return A response that only contains headers and response status code
@@ -339,6 +369,9 @@ public class ShareAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.getStatistics}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
+     *
      * @return the storage statistics of the share
      */
     public Mono<Response<ShareStatistics>> getStatistics() {
@@ -354,7 +387,10 @@ public class ShareAsyncClient {
      * <p>Create the directory "mydirectory"</p>
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.createDirectory#string}
-     *      *
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
+     *
      * @param directoryName Name of the directory
      * @return A response containing a {@link DirectoryAsyncClient} to interact with the created directory and the
      * status of its creation.
@@ -373,6 +409,9 @@ public class ShareAsyncClient {
      * <p>Create the directory "documents" with metadata "directory:metadata"</p>
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.createDirectory#string-map}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
      * @param metadata Optional metadata to associate with the directory
@@ -458,6 +497,9 @@ public class ShareAsyncClient {
      * <p>Delete the directory "mydirectory"</p>
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.deleteDirectory#string}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
      * @return A response that only contains headers and response status code
