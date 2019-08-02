@@ -18,6 +18,13 @@ public class LogPartitionProcessor implements PartitionProcessor {
     private final PartitionContext partitionContext;
     private final CheckpointManager checkpointManager;
 
+    /**
+     * Creates a new {@link PartitionProcessor} instance that logs every interaction with {@link
+     * EventProcessorAsyncClient}.
+     *
+     * @param partitionContext The partition context to know which partition this processor is receiving events from.
+     * @param checkpointManager The checkpoint manager for updating checkpoints.
+     */
     public LogPartitionProcessor(PartitionContext partitionContext,
         CheckpointManager checkpointManager) {
         this.partitionContext = partitionContext;
@@ -26,6 +33,11 @@ public class LogPartitionProcessor implements PartitionProcessor {
             partitionContext.eventHubName(), partitionContext.consumerGroupName(), partitionContext.partitionId());
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return a representation of the deferred computation of this call.
+     */
     @Override
     public Mono<Void> initialize() {
         logger
@@ -34,6 +46,12 @@ public class LogPartitionProcessor implements PartitionProcessor {
         return Mono.empty();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param eventData {@link EventData} received from this partition.
+     * @return a representation of the deferred computation of this call.
+     */
     @Override
     public Mono<Void> processEvent(EventData eventData) {
         logger.info(
@@ -43,6 +61,11 @@ public class LogPartitionProcessor implements PartitionProcessor {
         return this.checkpointManager.updateCheckpoint(eventData);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param throwable The {@link Throwable} that caused this method to be called.
+     */
     @Override
     public void processError(Throwable throwable) {
         logger
@@ -51,6 +74,12 @@ public class LogPartitionProcessor implements PartitionProcessor {
                 throwable.getMessage());
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param closeReason The reason for closing this partition processor.
+     * @return a representation of the deferred computation of this call.
+     */
     @Override
     public Mono<Void> close(CloseReason closeReason) {
         logger.info(
