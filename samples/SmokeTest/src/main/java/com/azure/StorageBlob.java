@@ -52,8 +52,12 @@ public class StorageBlob {
         containerClient = storageClient.getContainerClient(CONTAINER_NAME);
         blobClient = containerClient.getBlockBlobClient(BLOB_NAME);
 
-        uploadBlob();
-        listBlobsInContainer();
-        deleteBlob();
+        try{
+            uploadBlob();
+            listBlobsInContainer();
+        }
+        finally {
+            deleteBlob();
+        }
     }
 }

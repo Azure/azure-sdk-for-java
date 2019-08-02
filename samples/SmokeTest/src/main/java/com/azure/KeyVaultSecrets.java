@@ -44,9 +44,11 @@ public class KeyVaultSecrets {
             .endpoint("https://azsdk-smoketest.vault.azure.net")
             .credential(new DefaultAzureCredential())
             .build();
-
-        setSecret();
-        getSecret();
-        deleteSecret();
+        try {
+            setSecret();
+            getSecret();
+        } finally {
+            deleteSecret();
+        }
     }
 }
