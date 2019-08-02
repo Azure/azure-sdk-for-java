@@ -7,8 +7,11 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
+import jdk.nashorn.internal.parser.Token;
 
+import java.util.ArrayDeque;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -17,13 +20,29 @@ import java.util.Set;
  * Model Class Method:
  *  Fluent Methods: All methods that return an instance of the class, and that have one parameter.
  *  The method name should not start with {@code avoidStartWords}.
+ *  All methods should not be declared to throws any checked exceptions
  */
 public class FluentMethodNameCheck extends AbstractCheck {
 
     private static final String FLUENT_METHOD_ERR = "\"%s\" fluent method name should not start with keyword \"%s\".";
 
+    /**
+     *  This is a custom defined set which contains all prefixes that are not allowed.
+     */
     private Set<String> avoidStartWords = new HashSet<>();
-    private String className;
+
+    /**
+     *  Use this stack to track the status of the inner class names when traversals the AST tree.
+     */
+    private Deque<String> classNameStack = new ArrayDeque<>();
+
+    /**
+     * Setter to specifies valid identifiers
+     * @param avoidStartWords the starting strings that should not start with in fluent method
+     */
+    public final void setAvoidStartWords(String... avoidStartWords) {
+        Collections.addAll(this.avoidStartWords, avoidStartWords);
+    }
 
     @Override
     public int[] getDefaultTokens() {
@@ -44,51 +63,103 @@ public class FluentMethodNameCheck extends AbstractCheck {
     }
 
     @Override
-    public void visitToken(DetailAST ast) {
-        switch (ast.getType()) {
+    public void visitToken(DetailAST token) {
+        switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
-                className = ast.findFirstToken(TokenTypes.IDENT).getText();
+                classNameStack.push(token.findFirstToken(TokenTypes.IDENT).getText());
                 break;
             case TokenTypes.METHOD_DEF:
-                checkMethodNameStartWith(ast);
+                if (!isFluentMethod(token)) {
+                   return;
+                }
+                checkMethodNamePrefix(token);
+
+                // logs error if the @Fluent method has 'throws' at the method declaration.
+                if (token.findFirstToken(TokenTypes.LITERAL_THROWS) != null) {
+                    log(token, String.format("Fluent Method ''%s'' must not be declared to throw any checked exceptions");
+                }
+                break;
+            default:
+                // Checkstyle complains if there's no default block in switch
+                break;
+        }
+    }
+
+    @Override
+    public void leaveToken(DetailAST token) {
+        switch (token.getType()) {
+            case TokenTypes.CLASS_DEF:
+                if(!classNameStack.isEmpty()) {
+                    classNameStack.pop();
+                }
+                break;
+            default:
+                // Checkstyle complains if there's no default block in switch
                 break;
         }
     }
 
     /**
      * Log the error if the method name is not start with {@code avoidStartWord}
-     * @param ast METHOD_DEF AST node
+     * @param methodDefToken METHOD_DEF AST node
      */
-    private void checkMethodNameStartWith(DetailAST ast) {
+    private void checkMethodNamePrefix(DetailAST methodDefToken) {
         // 1, parameter count should be 1
-        Optional<DetailAST> parametersASTOption = TokenUtil.findFirstTokenByPredicate(ast, c -> c.getType() == TokenTypes.PARAMETERS && c.getChildCount() == 1);
-        if (parametersASTOption.isPresent()) { // one param method
-            // 2, method type should be matched with class name
-            Optional<DetailAST> typeASTOption = TokenUtil.findFirstTokenByPredicate(ast, c -> c.getType() == TokenTypes.TYPE);
-            if (typeASTOption.isPresent()) {
-                Optional<DetailAST> identASTOption = TokenUtil.findFirstTokenByPredicate(typeASTOption.get(), c -> c.getType() == TokenTypes.IDENT && c.getText().equals(className));
-                if (identASTOption.isPresent()) { // return type is self class type
-                    Optional<DetailAST> methodIdentASTOption = TokenUtil.findFirstTokenByPredicate(ast, c -> c.getType() == TokenTypes.IDENT);
-                    if (methodIdentASTOption.isPresent()) {
-                        String methodName = methodIdentASTOption.get().getText();
-                        // 3, log if the method name start with avoid substring
-                        for (String avoidStartWord : avoidStartWords) {
-                            if (methodName.length() >= avoidStartWord.length() && methodName.startsWith(avoidStartWord)) {
-                                log(ast.getLineNo(), String.format(FLUENT_METHOD_ERR, methodName, avoidStartWord));
-                                break;
-                            }
-                        }
-                    }
-                }
+        Optional<DetailAST> parametersASTOption = TokenUtil.findFirstTokenByPredicate(methodDefToken,
+            c -> c.getType() == TokenTypes.PARAMETERS && c.getChildCount() == 1);
+        if (!parametersASTOption.isPresent()) {
+            return;
+        }
+
+        // 2, method type should be matched with class name
+        DetailAST typeToken = methodDefToken.findFirstToken(TokenTypes.TYPE);
+        if (typeToken == null) {
+            return;
+        }
+
+        if (classNameStack.isEmpty()) {
+            return;
+        }
+
+        Optional<DetailAST> identASTOption = TokenUtil.findFirstTokenByPredicate(
+            typeToken, c -> c.getType() == TokenTypes.IDENT && c.getText().equals(classNameStack.peek()));
+        if (!identASTOption.isPresent()) {
+            return;
+        }
+
+        String methodName = methodDefToken.findFirstToken(TokenTypes.IDENT).getText();
+        int methodNameLength = methodName.length();
+        // 3, log if the method name start with avoid substring
+        for (String avoidStartWord : avoidStartWords) {
+            if (methodNameLength >= avoidStartWord.length() && methodName.startsWith(avoidStartWord)) {
+                log(methodDefToken, String.format(FLUENT_METHOD_ERR, methodName, avoidStartWord));
+                return;
             }
         }
     }
 
     /**
-     * Setter to specifies valid identifiers
-     * @param avoidStartWords the starting strings that should not start with in fluent method
+     * Checks if the method is annotated with annotation @Fluent
+     *
+     * @param methodDefToken the METHOD_DEF AST node
+     * @return true if the class is annotated with @Fluent, false otherwise.
      */
-    public final void setAvoidStartWords(String... avoidStartWords) {
-        Collections.addAll(this.avoidStartWords, avoidStartWords);
+    private boolean isFluentMethod(DetailAST methodDefToken) {
+        // Always has MODIFIERS node
+        final DetailAST modifiersToken = methodDefToken.findFirstToken(TokenTypes.MODIFIERS);
+
+        for (DetailAST annotationToken = modifiersToken.getFirstChild(); annotationToken != null;
+             annotationToken = annotationToken.getNextSibling()) {
+            if (annotationToken.getType() != TokenTypes.ANNOTATION) {
+                continue;
+            }
+            // One class could have multiple annotations, return true if found one.
+            final DetailAST annotationIdent = annotationToken.findFirstToken(TokenTypes.IDENT);
+            if (annotationIdent != null && "Fluent".equals(annotationIdent.getText())) {
+                return true;
+            }
+        }
+        // If no @Fluent annotated with this class, return false
+        return false;
     }
 }
