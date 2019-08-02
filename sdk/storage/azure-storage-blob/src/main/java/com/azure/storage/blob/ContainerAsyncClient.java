@@ -681,7 +681,8 @@ public final class ContainerAsyncClient {
         } else {
             prefixes = Flux.empty();
         }
-        Flux<BlobItem> result = blobs.map(item -> item.isPrefix(false)).concatWith(prefixes.map(prefix -> new BlobItem().name(prefix.name()).isPrefix(true)));
+        Flux<BlobItem> result = blobs.map(item -> item.isPrefix(false))
+            .concatWith(prefixes.map(prefix -> new BlobItem().name(prefix.name()).isPrefix(true)));
 
         if (response.value().nextMarker() != null) {
             // Recursively add the continuation items to the observable.

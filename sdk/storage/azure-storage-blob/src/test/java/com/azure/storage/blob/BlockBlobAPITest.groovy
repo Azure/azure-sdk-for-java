@@ -349,13 +349,16 @@ class BlockBlobAPITest extends APISpec {
         bu.commitBlockList(ids, headers, null, null, null)
         Response<BlobProperties> response = bu.getProperties()
 
+        // If the value isn't set the service will automatically set it
+        contentType = (contentType == null) ? "application/octet-stream" : contentType
+
         then:
         validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
         null         | null               | null            | null            | null                                                         | null
-        // "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type" TODO (alzimmer): Figure out why getProperties returns null for this one
+        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
     }
 
     @Unroll
@@ -614,8 +617,7 @@ class BlockBlobAPITest extends APISpec {
         bu.upload(null, 0).statusCode() == 201
     }
 
-    // TODO (alzimmer): Determine why getProperties returns null
-    /*@Unroll
+    @Unroll
     def "Upload headers"() {
         setup:
         BlobHTTPHeaders headers = new BlobHTTPHeaders().blobCacheControl(cacheControl)
@@ -629,14 +631,18 @@ class BlockBlobAPITest extends APISpec {
         bu.upload(defaultInputStream.get(), defaultDataSize, headers, null, null, null)
         Response<BlobProperties> response = bu.getProperties()
 
+        // If the value isn't set the service will automatically set it
+        contentMD5 = (contentMD5 == null) ? MessageDigest.getInstance("MD5").digest(defaultData.array()) : contentMD5
+        contentType = (contentType == null) ? "application/octet-stream" : contentType
+
         then:
         validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
-        null         | null               | null            | null            | null                                                         | null
-        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
-    }*/
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                | contentType
+        null         | null               | null            | null            | null                                                                      | null
+        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array())    | "type"
+    }
 
     @Unroll
     def "Upload metadata"() {
