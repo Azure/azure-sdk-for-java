@@ -100,7 +100,9 @@ public class ConfigurationTests {
         assertNotEquals(initialLogLevel, ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL));
 
         // Cleanup the test
-        System.setProperty(BaseConfigurations.AZURE_LOG_LEVEL, initialLogLevel);
+        if (initialLogLevel != null) {
+            System.setProperty(BaseConfigurations.AZURE_LOG_LEVEL, initialLogLevel);
+        }
     }
 
     @Test
