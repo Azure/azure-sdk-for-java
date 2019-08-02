@@ -8,9 +8,9 @@ import com.azure.identity.implementation.util.ValidationUtil;
 import java.util.HashMap;
 
 /**
- * Fluent credential builder for instantiating a {@link ClientSecretCredentialBuilder}.
+ * Fluent credential builder for instantiating a {@link ClientSecretCredential}.
  *
- * @see ClientSecretCredentialBuilder
+ * @see ClientSecretCredential
  */
 public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<ClientSecretCredentialBuilder> {
     private String tenantId;

@@ -13,19 +13,8 @@ import java.util.HashMap;
  * @see UsernamePasswordCredential
  */
 public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<UsernamePasswordCredentialBuilder> {
-    private String tenantId;
     private String username;
     private String password;
-
-    /**
-     * Sets the tenant ID of the application.
-     * @param tenantId the tenant ID of the application.
-     * @return the UserCredentialBuilder itself
-     */
-    public UsernamePasswordCredentialBuilder tenantId(String tenantId) {
-        this.tenantId = tenantId;
-        return this;
-    }
 
     /**
      * Sets the username of the user.
@@ -53,10 +42,9 @@ public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<
     public UsernamePasswordCredential build() {
         ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
                 put("clientId", clientId);
-                put("tenantId", tenantId);
                 put("username", username);
                 put("password", password);
             }});
-        return new UsernamePasswordCredential(tenantId, clientId, username, password, identityClientOptions);
+        return new UsernamePasswordCredential(clientId, username, password, identityClientOptions);
     }
 }

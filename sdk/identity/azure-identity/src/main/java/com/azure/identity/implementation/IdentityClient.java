@@ -85,7 +85,7 @@ public class IdentityClient {
         if (clientId == null) {
             this.publicClientApplication = null;
         } else {
-            String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
+            String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/organizations/" + tenantId;
             PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
             try {
                 publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
@@ -175,7 +175,7 @@ public class IdentityClient {
      * @param password the password of the user
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateWithUsernamePassword(String[] scopes, String username, String password) {
+    public Mono<MsalToken> authenticateWithUsernamePassword(String[] scopes, String username, String password) {
         return Mono.fromFuture(publicClientApplication.acquireToken(UserNamePasswordParameters.builder(new HashSet<>(Arrays.asList(scopes)), username, password.toCharArray()).build()))
             .map(MsalToken::new);
     }

@@ -4,6 +4,8 @@ The Azure Identity library provides Azure Active Directory token authentication 
  This library is in preview and currently supports:
   - [Service principal authentication](https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals)
   - [Managed identity authentication](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview)
+  - [Device code authentication](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-device-code)
+  - Interactive browser authentication, based on [OAuth2 authentication code](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow)
 
   [Source code][source] | API reference documentation (Coming Soon) | [Azure Active Directory documentation][aad_doc]
 
@@ -42,12 +44,22 @@ Use the [Azure CLI][azure_cli] snippet below to create/get client secret credent
     ```
 * Use the returned credentials above to set  **AZURE_CLIENT_ID**(appId), **AZURE_CLIENT_SECRET**(password) and **AZURE_TENANT_ID**(tenant) [environment variables](#environment-variables).
 
+#### Enable applications for device code flow
+In order to authenticate a user through device code flow, you need to go to Azure Active Directory on Azure Portal and find you app registration and enable the following 2 configurations:
+![device code enable](./images/devicecode-enable.png)
+
+This will let the application authenticate, but the application still doesn't have permission to log you into Active Directory, or access resources on your behalf. Open API Permissions, and enable Microsoft Graph, and the resources you want to access, e.g., Azure Service Management, Key Vault, etc:
+![device code permissions](./images/devicecode-permissions.png)
+
+Note that you also need to be the admin of your tenant to grant consent to your application when you login for the first time. Also note after 2018 your Active Directory may require your application to be multi-tenant. Select "Accounts in any organizational directory" under Authentication panel (where you enabled Device Code) to make your application a multi-tenant app.
+
 #### Enable applications for interactive browser oauth 2 flow
-You need register an application in Azure Active Directory with permissions to login on behalf of a user to use InteractiveBrowserCredential. Please refer to [this documentation] on how to create an application for oauth 2 authentications.
+You need to register an application in Azure Active Directory with permissions to login on behalf of a user to use InteractiveBrowserCredential. Follow all the steps above for device code flow to register your application to support logging you into Active Directory and access certain resources. Note the same limitations apply that an admin of your tenant must grant consent to your application before any user account can login.
 
-#### Whitelisted applications for device code flow
-In order to authenticate a user through device code flow, please refer to [this documentation](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/Device-Code-Flow) on how to give your application permission to device code authentications.
+You may notice in `InteractiveBrowserCredentialBuilder`, a port number is required, and you need to add the redirect URI on this page too:
+![interactive redirect uri](./images/interactive-redirecturi.png)
 
+In this case, the port number is 8765.
 
 ## Key concepts
 ### Credentials
@@ -151,7 +163,7 @@ DeviceCodeCredential deviceCodeCredential = new DeviceCodeCredentialBuilder()
 
 KeyClient client = KeyClient.builder()
     .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-    .credential(clientSecretCredential)
+    .credential(deviceCodeCredential)
     .build();
 ```
 

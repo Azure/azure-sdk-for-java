@@ -34,7 +34,7 @@ public class IdentityClientIntegrationTests {
         Assert.assertFalse(token.isExpired());
     }
 
-    @Ignore("Integration test")
+    @Ignore("Integration tests")
     public void deviceCodeCanGetToken() {
         IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), new IdentityClientOptions().proxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
         MsalToken token = client.authenticateWithDeviceCode(scopes, deviceCode -> {
@@ -56,10 +56,25 @@ public class IdentityClientIntegrationTests {
         Assert.assertFalse(token.isExpired());
     }
 
-    @Ignore("Integration test")
+    @Ignore("Integration tests")
     public void browserCanGetToken() {
-        IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLI_CLIENT_ID), new IdentityClientOptions());
+        IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), new IdentityClientOptions().proxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
         MsalToken token = client.authenticateWithBrowserInteraction(scopes, 8765).block();
+        Assert.assertNotNull(token);
+        Assert.assertNotNull(token.token());
+        Assert.assertNotNull(token.expiresOn());
+        Assert.assertFalse(token.isExpired());
+        token = client.authenticateWithUserRefreshToken(new String[] { "https://vault.azure.net/.default" }, token).block();
+        Assert.assertNotNull(token);
+        Assert.assertNotNull(token.token());
+        Assert.assertNotNull(token.expiresOn());
+        Assert.assertFalse(token.isExpired());
+    }
+
+    @Ignore("Integration tests")
+    public void usernamePasswordCanGetToken() {
+        IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), new IdentityClientOptions().proxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
+        MsalToken token = client.authenticateWithUsernamePassword(scopes, System.getenv("username"), System.getenv("password")).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.token());
         Assert.assertNotNull(token.expiresOn());

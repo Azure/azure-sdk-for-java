@@ -9,9 +9,11 @@ import com.azure.core.implementation.annotation.Immutable;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.MsalToken;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * An AAD credential that acquires a token with a username and a password. Users with 2FA/MFA (Multi-factored auth)
@@ -23,26 +25,37 @@ public class UsernamePasswordCredential implements TokenCredential {
     private final String username;
     private final String password;
     private final IdentityClient identityClient;
+    private final AtomicReference<MsalToken> cachedToken;
 
     /**
      * Creates a UserCredential with the given identity client options.
      *
-     * @param tenantId the tenant ID of the application
      * @param clientId the client ID of the application
      * @param username the username of the user
      * @param password the password of the user
      * @param identityClientOptions the options for configuring the identity client
      */
-    UsernamePasswordCredential(String tenantId, String clientId, String username, String password, IdentityClientOptions identityClientOptions) {
+    UsernamePasswordCredential(String clientId, String username, String password, IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(username);
         Objects.requireNonNull(password);
         this.username = username;
         this.password = password;
-        identityClient = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(identityClientOptions).build();
+        identityClient = new IdentityClientBuilder().tenantId("common").clientId(clientId).identityClientOptions(identityClientOptions).build();
+        cachedToken = new AtomicReference<>();
     }
 
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
-        return identityClient.authenticateWithUsernamePassword(scopes, username, password);
+        return Mono.defer(() -> {
+            if (cachedToken.get() != null) {
+                return identityClient.authenticateWithUserRefreshToken(scopes, cachedToken.get()).onErrorResume(t -> Mono.empty());
+            } else {
+                return Mono.empty();
+            }
+        }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithUsernamePassword(scopes, username, password)))
+            .map(msalToken -> {
+                cachedToken.set(msalToken);
+                return msalToken;
+            });
     }
 }

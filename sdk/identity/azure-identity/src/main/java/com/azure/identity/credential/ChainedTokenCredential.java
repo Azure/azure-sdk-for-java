@@ -14,6 +14,9 @@ import java.util.Deque;
 
 /**
  * A token credential provider that can provide a credential from a list of providers.
+ *
+ * <p><strong>Sample: Construct a ChainedTokenCredential with silent username+password login tried first, then interactive browser login as needed (e.g. when 2FA is turned on in the directory).</strong></p>
+ * {@codesnippet com.azure.identity.credential.chainedtokencredential.construct}
  */
 @Immutable
 public class ChainedTokenCredential implements TokenCredential {

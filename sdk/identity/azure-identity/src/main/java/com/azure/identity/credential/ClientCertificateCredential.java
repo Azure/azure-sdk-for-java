@@ -15,6 +15,12 @@ import java.util.Objects;
 
 /**
  * An AAD credential that acquires a token with a client certificate for an AAD application.
+ *
+ * <p><strong>Sample: Construct a simple ClientCertificateCredential</strong></p>
+ * {@codesnippet com.azure.identity.credential.clientcertificatecredential.construct}
+ *
+ * <p><strong>Sample: Construct a ClientCertificateCredential behind a proxy</strong></p>
+ * {@codesnippet com.azure.identity.credential.clientcertificatecredential.constructwithproxy}
  */
 @Immutable
 public class ClientCertificateCredential implements TokenCredential {
