@@ -5,10 +5,11 @@ package com.azure.data.appconfiguration.models;
 import com.azure.core.implementation.annotation.Immutable;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.ConfigurationClient;
+import com.azure.data.appconfiguration.implementation.ConfigurationSettingPage;
 
 /**
- * A configuration for selecting a range of revisions when retrieving configuration setting revisions from the
- * App Configuration service.
+ * A configuration for selecting a range of revisions that will be returned in a single
+ * {@link ConfigurationSettingPage response page} when retrieving revisions from the App Configuration service.
  *
  * @see ConfigurationAsyncClient#listSettingRevisions(SettingSelector)
  * @see ConfigurationClient#listSettingRevisions(SettingSelector)

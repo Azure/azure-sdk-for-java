@@ -3,10 +3,11 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.Retry;
+import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.messaging.eventhubs.implementation.AmqpSendLink;
+import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.messaging.Section;
@@ -76,7 +77,8 @@ public class EventHubProducerTest {
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         final SendOptions options = new SendOptions();
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
+            .retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
         final EventHubProducer producer = new EventHubProducer(Mono.just(sendLink), producerOptions);
 
         // Act
@@ -103,7 +105,8 @@ public class EventHubProducerTest {
         when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
         final SendOptions options = new SendOptions();
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
+            .retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
         final EventHubProducer producer = new EventHubProducer(Mono.just(sendLink), producerOptions);
 
         // Act
@@ -132,8 +135,7 @@ public class EventHubProducerTest {
 
         final SendOptions options = new SendOptions().partitionKey("Some partition key");
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
-            .retry(Retry.getNoRetry())
-            .timeout(Duration.ofSeconds(30))
+            .retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)))
             .partitionId("my-partition-id");
 
         final EventHubProducer producer = new EventHubProducer(Mono.just(sendLink), producerOptions);
@@ -166,7 +168,7 @@ public class EventHubProducerTest {
         });
 
         final SendOptions options = new SendOptions();
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
         final EventHubProducer producer = new EventHubProducer(Mono.just(link), producerOptions);
 
         // Act & Assert
@@ -199,7 +201,7 @@ public class EventHubProducerTest {
         // This event will be 1025 bytes when serialized.
         final EventData tooLargeEvent = new EventData(new byte[maxEventPayload + 1]);
 
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
         final EventHubProducer producer = new EventHubProducer(Mono.just(link), producerOptions);
 
         // Act & Assert
@@ -237,7 +239,7 @@ public class EventHubProducerTest {
         // This event is 1024 bytes when serialized.
         final EventData event = new EventData(new byte[eventPayload]);
         final BatchOptions options = new BatchOptions().partitionKey("some-key");
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
         final EventHubProducer producer = new EventHubProducer(Mono.just(link), producerOptions);
 
         // Act & Assert
@@ -263,7 +265,7 @@ public class EventHubProducerTest {
 
         // This event is 1024 bytes when serialized.
         final BatchOptions options = new BatchOptions().maximumSizeInBytes(batchSize);
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
         final EventHubProducer producer = new EventHubProducer(Mono.just(link), producerOptions);
 
         // Act & Assert
@@ -296,7 +298,7 @@ public class EventHubProducerTest {
         final EventData tooLargeEvent = new EventData(new byte[maxEventPayload + 1]);
 
         final BatchOptions options = new BatchOptions().maximumSizeInBytes(batchSize);
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
         final EventHubProducer producer = new EventHubProducer(Mono.just(link), producerOptions);
 
         // Act & Assert
@@ -325,7 +327,7 @@ public class EventHubProducerTest {
 
         final String originalKey = "some-key";
         final BatchOptions options = new BatchOptions().partitionKey(originalKey);
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
         final EventHubProducer producer = new EventHubProducer(Mono.just(link), producerOptions);
 
         // Act & Assert
@@ -355,7 +357,7 @@ public class EventHubProducerTest {
         // This event will be 1025 bytes when serialized.
         final EventData tooLargeEvent = new EventData(new byte[maxEventPayload + 1]);
 
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
         final EventHubProducer producer = new EventHubProducer(Mono.just(link), producerOptions);
 
         // Act & Assert

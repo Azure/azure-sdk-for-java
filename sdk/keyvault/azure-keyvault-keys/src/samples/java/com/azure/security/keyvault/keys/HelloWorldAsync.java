@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.keys;
 
+import com.azure.core.http.rest.Response;
 import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
@@ -32,11 +33,13 @@ public class HelloWorldAsync {
 
         // Let's create Cloud Rsa key valid for 1 year. if the key
         // already exists in the key vault, then a new version of the key is created.
-        keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-                .expires(OffsetDateTime.now().plusYears(1))
-                .keySize(2048))
-                .subscribe(keyResponse ->
-                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.name(), keyResponse.keyMaterial().kty()));
+        Response<Key> createKeyResponse = keyAsyncClient.createRsaKeyWithResponse(new RsaKeyCreateOptions("CloudRsaKey")
+                                                                                                .expires(OffsetDateTime.now().plusYears(1))
+                                                                                                .keySize(2048)).block();
+
+        // Let's validate create key operation succeeded using the status code information in the response.
+        System.out.printf("Create Key operation succeeded with status code %s \n", createKeyResponse.statusCode());
+        System.out.printf("Key is created with name %s and type %s \n", createKeyResponse.value().name(), createKeyResponse.value().keyMaterial().kty());
 
         Thread.sleep(2000);
 

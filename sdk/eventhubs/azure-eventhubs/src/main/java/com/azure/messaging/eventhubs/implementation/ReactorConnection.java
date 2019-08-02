@@ -7,6 +7,8 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpExceptionHandler;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler;
 import com.azure.messaging.eventhubs.implementation.handler.SessionHandler;
@@ -38,6 +40,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
     private final Disposable.Composite subscriptions;
     private final Mono<EventHubManagementNode> managementChannelMono;
     private final TokenResourceProvider tokenResourceProvider;
+    private final RetryPolicy retryPolicy;
 
     private ReactorExecutor executor;
     //TODO (conniey): handle failures and recreating the Reactor. Resubscribing the handlers, etc.
@@ -54,15 +57,17 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
      * @param reactorProvider Provides proton-j Reactor instances.
      * @param handlerProvider Provides {@link BaseHandler} to listen to proton-j reactor events.
      */
-    public ReactorConnection(String connectionId, ConnectionOptions connectionOptions,
-                             ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider, AmqpResponseMapper mapper) {
+    public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
+                             ReactorHandlerProvider handlerProvider, AmqpResponseMapper mapper) {
         super(new ClientLogger(ReactorConnection.class));
 
         this.connectionOptions = connectionOptions;
         this.reactorProvider = reactorProvider;
         this.connectionId = connectionId;
         this.handlerProvider = handlerProvider;
-        this.handler = handlerProvider.createConnectionHandler(connectionId, connectionOptions.host(), connectionOptions.transportType());
+        this.handler = handlerProvider.createConnectionHandler(connectionId, connectionOptions.host(),
+            connectionOptions.transportType());
+        this.retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.retry());
 
         this.connectionMono = Mono.fromCallable(() -> getOrCreateConnection())
             .doOnSubscribe(c -> hasConnection.set(true));
@@ -82,7 +87,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
         this.managementChannelMono = connectionMono.then(
             Mono.fromCallable(() -> (EventHubManagementNode) new ManagementChannel(this,
                 connectionOptions.eventHubPath(), connectionOptions.tokenCredential(), tokenResourceProvider,
-                reactorProvider, handlerProvider, mapper))).cache();
+                reactorProvider, connectionOptions.retry(), handlerProvider, mapper))).cache();
     }
 
     /**
@@ -90,8 +95,9 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
      */
     @Override
     public Mono<CBSNode> getCBSNode() {
-        final Mono<CBSNode> cbsNodeMono = getConnectionStates().takeUntil(x -> x == AmqpEndpointState.ACTIVE)
-            .timeout(connectionOptions.timeout())
+        final Mono<CBSNode> cbsNodeMono = RetryUtil.withRetry(
+            getConnectionStates().takeUntil(x -> x == AmqpEndpointState.ACTIVE),
+            connectionOptions.retry().tryTimeout(), retryPolicy)
             .then(Mono.fromCallable(() -> getOrCreateCBSNode()));
 
         return hasConnection.get()
@@ -144,13 +150,13 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
         }
 
         return connectionMono.map(connection -> sessionMap.computeIfAbsent(sessionName, key -> {
-            final SessionHandler handler =
-                handlerProvider.createSessionHandler(connectionId, getHost(), sessionName, connectionOptions.timeout());
+            final SessionHandler handler = handlerProvider.createSessionHandler(connectionId, getHost(), sessionName,
+                connectionOptions.retry().tryTimeout());
             final Session session = connection.session();
 
             BaseHandler.setHandler(session, handler);
-            return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
-                this.getCBSNode(), tokenResourceProvider, connectionOptions.timeout());
+            return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider, getCBSNode(),
+                tokenResourceProvider, connectionOptions.retry().tryTimeout());
         }));
     }
 
@@ -187,8 +193,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
             logger.info("Setting CBS channel.");
 
             cbsChannel = new CBSChannel(this, connectionOptions.tokenCredential(),
-                connectionOptions.authorizationType(), reactorProvider, handlerProvider,
-                connectionOptions.timeout());
+                connectionOptions.authorizationType(), reactorProvider, handlerProvider, connectionOptions.retry());
         }
 
         return cbsChannel;
@@ -203,7 +208,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
 
             reactorExceptionHandler = new ReactorExceptionHandler();
             executor = new ReactorExecutor(reactor, connectionOptions.scheduler(), connectionId,
-                reactorExceptionHandler, connectionOptions.timeout(), connectionOptions.host());
+                reactorExceptionHandler, connectionOptions.retry().tryTimeout(), connectionOptions.host());
 
             executor.start();
         }

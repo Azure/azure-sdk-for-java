@@ -3,9 +3,12 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.RetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.exception.ExceptionUtil;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.handler.ReceiveLinkHandler;
 import com.azure.messaging.eventhubs.implementation.handler.SendLinkHandler;
@@ -28,6 +31,7 @@ import reactor.core.publisher.MonoSink;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -45,14 +49,19 @@ class RequestResponseChannel implements Closeable {
     private final Sender sendLink;
     private final Receiver receiveLink;
     private final String replyTo;
+    private final Duration operationTimeout;
     private final AtomicBoolean hasOpened = new AtomicBoolean();
     private final AtomicLong requestId = new AtomicLong(0);
     private final SendLinkHandler sendLinkHandler;
     private final ReceiveLinkHandler receiveLinkHandler;
     private final Disposable subscription;
+    private final RetryPolicy retryPolicy;
 
     RequestResponseChannel(String connectionId, String host, String linkName, String path, Session session,
-                           ReactorHandlerProvider handlerProvider) {
+                           RetryOptions retryOptions, ReactorHandlerProvider handlerProvider) {
+        this.operationTimeout = retryOptions.tryTimeout();
+        this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+
         this.replyTo = path.replace("$", "") + "-client-reply-to";
         this.sendLink = session.sender(linkName + ":sender");
         final Target target = new Target();
@@ -108,22 +117,23 @@ class RequestResponseChannel implements Closeable {
         message.setMessageId(messageId);
         message.setReplyTo(replyTo);
 
-        //TODO (conniey): timeout here if we can't get the link handlers to pass an "Active" state.
-        return Mono.when(
-            sendLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE),
-            receiveLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE)).then(
-            Mono.create(sink -> {
-                try {
-                    logger.verbose("Scheduling on dispatcher. Message Id {}", messageId);
-                    unconfirmedSends.putIfAbsent(messageId, sink);
+        return RetryUtil.withRetry(
+            Mono.when(sendLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE),
+                receiveLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE)),
+            operationTimeout, retryPolicy)
+            .then(
+                Mono.create(sink -> {
+                    try {
+                        logger.verbose("Scheduling on dispatcher. Message Id {}", messageId);
+                        unconfirmedSends.putIfAbsent(messageId, sink);
 
-                    dispatcher.invoke(() -> {
-                        send(message);
-                    });
-                } catch (IOException e) {
-                    sink.error(e);
-                }
-            }));
+                        dispatcher.invoke(() -> {
+                            send(message);
+                        });
+                    } catch (IOException e) {
+                        sink.error(e);
+                    }
+                }));
     }
 
     private void start() {

@@ -745,8 +745,8 @@
     <!-- As recommended by Eng Sys team, removing tracing as it is built and released separately -->
     <!--    <module>./sdk/tracing</module>-->
     <module>./sdk/identity/azure-identity</module>
-    <module>./storage/client/blob</module>
-    <module>./storage/client/file</module>
-    <module>./storage/client/queue</module>
+    <module>./sdk/storage/azure-storage-blob</module>
+    <module>./sdk/storage/azure-storage-file</module>
+    <module>./sdk/storage/azure-storage-queue</module>
   </modules>
 </project>
