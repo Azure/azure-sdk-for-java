@@ -4,8 +4,10 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpConnection;
+import com.azure.core.amqp.RetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.annotation.ServiceMethod;
@@ -86,15 +88,15 @@ public class EventHubAsyncClient implements Closeable {
         this.eventHubPath = connectionOptions.eventHubPath();
         this.connectionId = StringUtil.getRandomString("MF");
         this.connectionMono = Mono.fromCallable(() -> {
-            return (EventHubConnection) new ReactorConnection(connectionId, connectionOptions, provider, handlerProvider, new ResponseMapper());
+            return (EventHubConnection) new ReactorConnection(connectionId, connectionOptions, provider,
+                handlerProvider, new ResponseMapper());
         }).doOnSubscribe(c -> hasConnection.set(true))
             .cache();
 
         this.defaultProducerOptions = new EventHubProducerOptions()
-            .retry(connectionOptions.retryPolicy())
-            .timeout(connectionOptions.timeout());
+            .retry(connectionOptions.retry());
         this.defaultConsumerOptions = new EventHubConsumerOptions()
-            .retry(connectionOptions.retryPolicy())
+            .retry(connectionOptions.retry())
             .scheduler(connectionOptions.scheduler());
     }
 
@@ -156,12 +158,10 @@ public class EventHubAsyncClient implements Closeable {
     public EventHubProducer createProducer(EventHubProducerOptions options) {
         Objects.requireNonNull(options);
 
-        final EventHubProducerOptions clonedOptions = (EventHubProducerOptions) options.clone();
-        if (clonedOptions.timeout() == null) {
-            clonedOptions.timeout(connectionOptions.timeout());
-        }
+        final EventHubProducerOptions clonedOptions = options.clone();
+
         if (clonedOptions.retry() == null) {
-            clonedOptions.retry(connectionOptions.retryPolicy());
+            clonedOptions.retry(connectionOptions.retry());
         }
 
         final String entityPath;
@@ -175,10 +175,13 @@ public class EventHubAsyncClient implements Closeable {
             linkName = StringUtil.getRandomString("PS");
         }
 
-        final Mono<AmqpSendLink> amqpLinkMono = connectionMono.flatMap(connection -> connection.createSession(entityPath))
+        final Mono<AmqpSendLink> amqpLinkMono = connectionMono
+            .flatMap(connection -> connection.createSession(entityPath))
             .flatMap(session -> {
-                logger.info("Creating producer.");
-                return session.createProducer(linkName, entityPath, clonedOptions.timeout(), clonedOptions.retry())
+                logger.verbose("Creating producer for {}", entityPath);
+                final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(clonedOptions.retry());
+
+                return session.createProducer(linkName, entityPath, clonedOptions.retry().tryTimeout(), retryPolicy)
                     .cast(AmqpSendLink.class);
             });
 
@@ -254,18 +257,24 @@ public class EventHubAsyncClient implements Closeable {
             clonedOptions.scheduler(connectionOptions.scheduler());
         }
         if (clonedOptions.retry() == null) {
-            clonedOptions.retry(connectionOptions.retryPolicy());
+            clonedOptions.retry(connectionOptions.retry());
         }
 
         final String linkName = StringUtil.getRandomString("PR");
-        final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT, eventHubPath, consumerGroup, partitionId);
+        final String entityPath =
+            String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT, eventHubPath, consumerGroup, partitionId);
 
         final Mono<AmqpReceiveLink> receiveLinkMono = connectionMono.flatMap(connection -> {
             return connection.createSession(entityPath).cast(EventHubSession.class);
         }).flatMap(session -> {
-            logger.info("Creating consumer.");
-            return session.createConsumer(linkName, entityPath, getExpression(eventPosition), connectionOptions.timeout(),
-                clonedOptions.retry(), options.ownerLevel(), options.identifier()).cast(AmqpReceiveLink.class);
+            logger.verbose("Creating consumer for path: {}", entityPath);
+
+            logger.verbose("Creating producer for {}", entityPath);
+            final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(clonedOptions.retry());
+
+            return session.createConsumer(linkName, entityPath, getExpression(eventPosition),
+                clonedOptions.retry().tryTimeout(), retryPolicy, options.ownerLevel(), options.identifier())
+                .cast(AmqpReceiveLink.class);
         });
 
         return new EventHubConsumer(receiveLinkMono, clonedOptions);
@@ -279,7 +288,7 @@ public class EventHubAsyncClient implements Closeable {
     public void close() {
         if (hasConnection.getAndSet(false)) {
             try {
-                final AmqpConnection connection = connectionMono.block(connectionOptions.timeout());
+                final AmqpConnection connection = connectionMono.block(connectionOptions.retry().tryTimeout());
                 if (connection != null) {
                     connection.close();
                 }

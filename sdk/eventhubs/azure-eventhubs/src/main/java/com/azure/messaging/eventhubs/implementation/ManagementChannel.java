@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
+import com.azure.core.amqp.RetryOptions;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubProperties;
@@ -66,7 +67,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
      * @param provider The dispatcher to execute work on Reactor.
      */
     ManagementChannel(AmqpConnection connection, String eventHubPath, TokenCredential tokenProvider,
-                      TokenResourceProvider audienceProvider, ReactorProvider provider,
+                      TokenResourceProvider audienceProvider, ReactorProvider provider, RetryOptions retryOptions,
                       ReactorHandlerProvider handlerProvider, AmqpResponseMapper mapper) {
         super(new ClientLogger(ManagementChannel.class));
 
@@ -77,6 +78,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
         Objects.requireNonNull(provider);
         Objects.requireNonNull(handlerProvider);
         Objects.requireNonNull(mapper);
+        Objects.requireNonNull(retryOptions);
 
         this.audienceProvider = audienceProvider;
         this.connection = connection;
@@ -87,7 +89,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
         this.channelMono = connection.createSession(SESSION_NAME)
             .cast(ReactorSession.class)
             .map(session -> new RequestResponseChannel(connection.getIdentifier(), connection.getHost(), LINK_NAME,
-                ADDRESS, session.session(), handlerProvider))
+                ADDRESS, session.session(), retryOptions, handlerProvider))
             .cache();
     }
 

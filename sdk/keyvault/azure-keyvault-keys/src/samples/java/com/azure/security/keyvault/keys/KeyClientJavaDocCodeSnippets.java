@@ -4,10 +4,6 @@
 package com.azure.security.keyvault.keys;
 
 import com.azure.core.credentials.TokenCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
@@ -123,23 +119,23 @@ public final class KeyClientJavaDocCodeSnippets {
         System.out.printf("Key is created with name %s and id %s \n", optionsKey.name(), optionsKey.id());
         // END: com.azure.keyvault.keys.keyclient.createKeyWithResponse#keyCreateOptions-Context
 
-        // BEGIN: com.azure.keyvault.keys.keyclient.createRsaKeyWithResponse#keyOptions
+        // BEGIN: com.azure.keyvault.keys.keyclient.createRsaKeyWithResponse#keyOptions-Context
         RsaKeyCreateOptions rsaKeyCreateOptions = new RsaKeyCreateOptions("keyName")
             .keySize(2048)
             .notBefore(OffsetDateTime.now().plusDays(1))
             .expires(OffsetDateTime.now().plusYears(1));
         Key rsaKey = keyClient.createRsaKeyWithResponse(rsaKeyCreateOptions, new Context(key1, value1)).value();
         System.out.printf("Key is created with name %s and id %s \n", rsaKey.name(), rsaKey.id());
-        // END: com.azure.keyvault.keys.keyclient.createRsaKeyWithResponse#keyOptions
+        // END: com.azure.keyvault.keys.keyclient.createRsaKeyWithResponse#keyOptions-Context
 
-        // BEGIN: com.azure.keyvault.keys.keyclient.createEcKeyWithResponse#keyOptions
+        // BEGIN: com.azure.keyvault.keys.keyclient.createEcKeyWithResponse#keyOptions-Context
         EcKeyCreateOptions ecKeyCreateOptions = new EcKeyCreateOptions("keyName")
             .curve(KeyCurveName.P_384)
             .notBefore(OffsetDateTime.now().plusDays(1))
             .expires(OffsetDateTime.now().plusYears(1));
         Key ecKey = keyClient.createEcKeyWithResponse(ecKeyCreateOptions, new Context(key1, value1)).value();
         System.out.printf("Key is created with name %s and id %s \n", ecKey.name(), ecKey.id());
-        // END: com.azure.keyvault.keys.keyclient.createEcKeyWithResponse#keyOptions
+        // END: com.azure.keyvault.keys.keyclient.createEcKeyWithResponse#keyOptions-Context
     }
 
     /**
@@ -153,6 +149,14 @@ public final class KeyClientJavaDocCodeSnippets {
             new Context(key1, value1)).value();
         System.out.printf("Key is returned with name %s and id %s \n", keyWithVersion.name(), keyWithVersion.id());
         // END: com.azure.keyvault.keys.keyclient.getKeyWithResponse#string-string-Context
+
+        // BEGIN: com.azure.keyvault.keys.keyclient.getKeyWithResponse#KeyBase-Context
+        for (KeyBase key : keyClient.listKeys()) {
+            Key keyResponse = keyClient.getKeyWithResponse(key, new Context(key1, value1)).value();
+            System.out.printf("Received key with name %s and type %s", keyResponse.name(),
+                keyResponse.keyMaterial().kty());
+        }
+        // END: com.azure.keyvault.keys.keyclient.getKeyWithResponse#KeyBase-Context
     }
 
     /**

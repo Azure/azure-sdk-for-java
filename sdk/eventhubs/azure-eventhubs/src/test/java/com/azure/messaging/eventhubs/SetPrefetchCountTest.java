@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.Retry;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
@@ -86,7 +85,7 @@ public class SetPrefetchCountTest extends ApiTestBase {
         final int eventCount = NUMBER_OF_EVENTS;
         final CountDownLatch countDownLatch = new CountDownLatch(eventCount);
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .retry(Retry.getDefaultRetry())
+            .retry(RETRY_OPTIONS)
             .prefetchCount(2000);
 
         consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
@@ -153,7 +152,7 @@ public class SetPrefetchCountTest extends ApiTestBase {
 
         try {
             MESSAGES_PUSHED_INSTANT.set(Instant.now());
-            producer.send(events).block(TIMEOUT);
+            producer.send(events).block(RETRY_OPTIONS.tryTimeout());
         } finally {
             dispose(producer);
         }

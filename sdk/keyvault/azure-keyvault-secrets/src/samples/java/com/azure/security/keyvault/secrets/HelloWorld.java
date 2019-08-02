@@ -36,14 +36,14 @@ public class HelloWorld {
             .expires(OffsetDateTime.now().plusYears(1)));
 
         // Let's Get the bank secret from the key vault.
-        Secret bankSecret = secretClient.getSecret("BankAccountPassword").value();
+        Secret bankSecret = secretClient.getSecret("BankAccountPassword");
         System.out.printf("Secret is returned with name %s and value %s \n", bankSecret.name(), bankSecret.value());
 
         // After one year, the bank account is still active, we need to update the expiry time of the secret.
         // The update method can be used to update the expiry attribute of the secret. It cannot be used to update
         // the value of the secret.
         bankSecret.expires(bankSecret.expires().plusYears(1));
-        SecretBase updatedSecret = secretClient.updateSecret(bankSecret).value();
+        SecretBase updatedSecret = secretClient.updateSecret(bankSecret);
         System.out.printf("Secret's updated expiry time %s \n", updatedSecret.expires());
 
         // Bank forced a password update for security purposes. Let's change the value of the secret in the key vault.
