@@ -51,7 +51,7 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
     protected void beforeTest() {
         skipIfNotRecordMode();
 
-        eventHubName = getConnectionOptions().eventHubPath();
+        eventHubName = getConnectionOptions().eventHubName();
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
     }

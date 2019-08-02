@@ -28,7 +28,7 @@ public class PartitionPropertiesTest {
             lastEnqueuedOffset, lastEnqueuedTime, isEmpty);
 
         // Assert
-        Assert.assertEquals(eventHub, properties.eventHubPath());
+        Assert.assertEquals(eventHub, properties.EntityPath = {eventHubName}"());
         Assert.assertEquals(id, properties.id());
         Assert.assertEquals(beginningSequence, properties.beginningSequenceNumber());
         Assert.assertEquals(endSequence, properties.lastEnqueuedSequenceNumber());
