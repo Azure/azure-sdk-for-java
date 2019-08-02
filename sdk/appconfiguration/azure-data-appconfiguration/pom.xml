@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-data-appconfiguration</artifactId>
-  <version>1.0.0-preview.1</version>
+  <version>1.0.0-preview.2</version>
 
   <name>Microsoft Azure client library for App Configuration</name>
   <description>This package contains the Microsoft Azure App Configuration client library.</description>

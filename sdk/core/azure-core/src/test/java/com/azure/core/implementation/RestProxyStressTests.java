@@ -14,7 +14,7 @@ import com.azure.core.implementation.annotation.Put;
 import com.azure.core.implementation.annotation.PathParam;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -108,7 +108,7 @@ public class RestProxyStressTests {
         polices.add(new HttpLoggingPolicy(HttpLogDetailLevel.BASIC, false));
         //
         service = RestProxy.create(IOService.class,
-            HttpPipeline.builder()
+            new HttpPipelineBuilder()
                 .policies(polices.toArray(new HttpPipelinePolicy[0]))
                 .build());
 
@@ -506,7 +506,7 @@ public class RestProxyStressTests {
         }
 
         final IOService innerService = RestProxy.create(IOService.class,
-            HttpPipeline.builder()
+            new HttpPipelineBuilder()
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .build());
 

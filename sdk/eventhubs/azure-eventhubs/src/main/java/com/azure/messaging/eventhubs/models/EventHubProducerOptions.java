@@ -3,13 +3,10 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.amqp.Retry;
+import com.azure.core.amqp.RetryOptions;
 import com.azure.core.implementation.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducer;
-
-import java.time.Duration;
 
 /**
  * The set of options that can be specified when creating an {@link EventHubProducer} to configure its behavior.
@@ -19,11 +16,8 @@ import java.time.Duration;
  */
 @Fluent
 public class EventHubProducerOptions implements Cloneable {
-    private final ClientLogger logger = new ClientLogger(EventHubProducerOptions.class);
-
     private String partitionId;
-    private Retry retry;
-    private Duration timeout;
+    private RetryOptions retryOptions;
 
     /**
      * Sets the identifier of the Event Hub partition that the {@link EventHubProducer} will be bound to, limiting it to
@@ -43,36 +37,24 @@ public class EventHubProducerOptions implements Cloneable {
     }
 
     /**
-     * Sets the retry policy used to govern retry attempts when an issue is encountered while sending.
+     * Sets the retry options used to govern retry attempts when an issue is encountered while sending.
      *
-     * @param retry The retry policy used to govern retry attempts when an issue is encountered while sending.
+     * @param retry The retry options used to govern retry attempts when an issue is encountered while sending.
      * @return The updated SenderOptions object.
      */
-    public EventHubProducerOptions retry(Retry retry) {
-        this.retry = retry;
+    public EventHubProducerOptions retry(RetryOptions retry) {
+        this.retryOptions = retry;
         return this;
     }
 
     /**
-     * Sets the default timeout to apply when sending events. If the timeout is reached, before the Event Hub
-     * acknowledges receipt of the event data being sent, the attempt will be considered failed and will be retried.
+     * Gets the retry options used to govern retry attempts when an issue is encountered while sending.
      *
-     * @param timeout The timeout to apply when sending events.
-     * @return The updated {@link EventHubProducerOptions} object.
+     * @return the retry options used to govern retry attempts when an issue is encountered while sending. If {@code
+     *         null}, then the retry options configured on the associated {@link EventHubAsyncClient} is used.
      */
-    public EventHubProducerOptions timeout(Duration timeout) {
-        this.timeout = timeout;
-        return this;
-    }
-
-    /**
-     * Gets the retry policy used to govern retry attempts when an issue is encountered while sending.
-     *
-     * @return the retry policy used to govern retry attempts when an issue is encountered while sending. If {@code
-     *         null}, then the retry policy configured on the associated {@link EventHubAsyncClient} is used.
-     */
-    public Retry retry() {
-        return retry;
+    public RetryOptions retry() {
+        return retryOptions;
     }
 
     /**
@@ -89,21 +71,12 @@ public class EventHubProducerOptions implements Cloneable {
     }
 
     /**
-     * Gets the default timeout when sending events.
-     *
-     * @return The default timeout when sending events.
-     */
-    public Duration timeout() {
-        return timeout;
-    }
-
-    /**
      * Creates a clone of this instance.
      *
      * @return A shallow clone of this object.
      */
     @Override
-    public Object clone() {
+    public EventHubProducerOptions clone() {
         EventHubProducerOptions clone;
         try {
             clone = (EventHubProducerOptions) super.clone();
@@ -111,17 +84,11 @@ public class EventHubProducerOptions implements Cloneable {
             clone = new EventHubProducerOptions();
         }
 
-        if (retry != null) {
-            try {
-                clone.retry((Retry) retry.clone());
-            } catch (CloneNotSupportedException e) {
-                logger.error("Unable to create clone of retry.", e);
-                clone.retry(retry);
-            }
-        }
-
         clone.partitionId(partitionId);
-        clone.timeout(timeout);
+
+        if (retryOptions != null) {
+            clone.retry(retryOptions.clone());
+        }
 
         return clone;
     }

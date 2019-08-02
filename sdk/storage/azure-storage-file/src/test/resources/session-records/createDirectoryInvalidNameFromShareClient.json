@@ -1,0 +1,57 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share46557ae3?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D715218861EE83\"",
+      "Last-Modified" : "Tue, 30 Jul 2019 19:10:06 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "7f75e03f-301a-00db-5e0a-4794a0000000",
+      "Date" : "Tue, 30 Jul 2019 19:10:06 GMT"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share46557ae3/test%2fshare?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ParentNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "224",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "7f75e041-301a-00db-5f0a-4794a0000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ParentNotFound</Code><Message>The specified parent path does not exist.\nRequestId:7f75e041-301a-00db-5f0a-4794a0000000\nTime:2019-07-30T19:10:06.3499048Z</Message></Error>",
+      "Date" : "Tue, 30 Jul 2019 19:10:06 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share46557ae3?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "7f75e042-301a-00db-600a-4794a0000000",
+      "Date" : "Tue, 30 Jul 2019 19:10:06 GMT"
+    }
+  } ],
+  "variables" : [ "share46557ae3" ]
+}

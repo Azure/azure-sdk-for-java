@@ -70,10 +70,14 @@ class ApiReleasesImpl extends WrapperImpl<ApiReleasesInner> implements ApiReleas
     public Observable<ApiReleaseContract> getAsync(String resourceGroupName, String serviceName, String apiId, String releaseId) {
         ApiReleasesInner client = this.inner();
         return client.getAsync(resourceGroupName, serviceName, apiId, releaseId)
-        .map(new Func1<ApiReleaseContractInner, ApiReleaseContract>() {
+        .flatMap(new Func1<ApiReleaseContractInner, Observable<ApiReleaseContract>>() {
             @Override
-            public ApiReleaseContract call(ApiReleaseContractInner inner) {
-                return wrapModel(inner);
+            public Observable<ApiReleaseContract> call(ApiReleaseContractInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ApiReleaseContract)wrapModel(inner));
+                }
             }
        });
     }

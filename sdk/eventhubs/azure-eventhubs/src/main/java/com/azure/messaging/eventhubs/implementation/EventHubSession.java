@@ -5,7 +5,7 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpSession;
-import com.azure.core.amqp.Retry;
+import com.azure.core.amqp.RetryPolicy;
 import com.azure.messaging.eventhubs.EventHubConsumer;
 import reactor.core.publisher.Mono;
 
@@ -35,5 +35,5 @@ public interface EventHubSession extends AmqpSession {
      * @return A newly created AMQP link.
      */
     Mono<AmqpLink> createConsumer(String linkName, String entityPath, String eventPositionExpression, Duration timeout,
-                                  Retry retry, Long ownerLevel, String consumerIdentifier);
+                                  RetryPolicy retry, Long ownerLevel, String consumerIdentifier);
 }

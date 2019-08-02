@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.Retry;
+import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.AzureException;
@@ -28,7 +28,6 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.time.Duration;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -50,7 +49,7 @@ import java.util.Objects;
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.connectionstring#string}
  *
- * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hub with no {@link Retry}, different timeout and new
+ * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hub with no retry, different timeout and new
  * Scheduler</strong></p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.retry-timeout-scheduler}
@@ -61,12 +60,13 @@ import java.util.Objects;
 public class EventHubClientBuilder {
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
+    private static final RetryOptions DEFAULT_RETRY = new RetryOptions()
+        .tryTimeout(ClientConstants.OPERATION_TIMEOUT);
 
     private TokenCredential credentials;
     private Configuration configuration;
-    private Duration timeout;
     private ProxyConfiguration proxyConfiguration;
-    private Retry retry;
+    private RetryOptions retryOptions;
     private Scheduler scheduler;
     private TransportType transport;
     private String host;
@@ -160,8 +160,8 @@ public class EventHubClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the service client.
      *
-     * If not specified, the default configuration store is used to configure the {@link EventHubAsyncClient}. Use {@link
-     * Configuration#NONE} to bypass using configuration settings during construction.
+     * If not specified, the default configuration store is used to configure the {@link EventHubAsyncClient}. Use
+     * {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to configure the {@link EventHubAsyncClient}.
      * @return The updated {@link EventHubClientBuilder} object.
@@ -237,31 +237,19 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Sets the default operation timeout for operations performed using {@link EventHubAsyncClient} and {@link
-     * EventHubConsumer} such as starting the communication link with the service and sending messages.
+     * Sets the retry policy for {@link EventHubAsyncClient}. If not specified, the default retry options are used.
      *
-     * @param timeout Duration for operation timeout.
+     * @param retryOptions The retry policy to use.
      * @return The updated {@link EventHubClientBuilder} object.
      */
-    public EventHubClientBuilder timeout(Duration timeout) {
-        this.timeout = timeout;
+    public EventHubClientBuilder retry(RetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
         return this;
     }
 
     /**
-     * Sets the retry policy for {@link EventHubAsyncClient}. If not specified, {@link Retry#getDefaultRetry()} is used.
-     *
-     * @param retry The retry policy to use.
-     * @return The updated {@link EventHubClientBuilder} object.
-     */
-    public EventHubClientBuilder retry(Retry retry) {
-        this.retry = retry;
-        return this;
-    }
-
-    /**
-     * Creates a new {@link EventHubAsyncClient} based on options set on this builder. Every time {@code buildAsyncClient()}
-     * is invoked, a new instance of {@link EventHubAsyncClient} is created.
+     * Creates a new {@link EventHubAsyncClient} based on options set on this builder. Every time {@code
+     * buildAsyncClient()} is invoked, a new instance of {@link EventHubAsyncClient} is created.
      *
      * <p>
      * The following options are used if ones are not specified in the builder:
@@ -271,7 +259,7 @@ public class EventHubClientBuilder {
      * is used to provide any shared configuration values. The configuration values read are the {@link
      * BaseConfigurations#HTTP_PROXY}, {@link ProxyConfiguration#PROXY_USERNAME}, and {@link
      * ProxyConfiguration#PROXY_PASSWORD}.</li>
-     * <li>If no retry is specified, {@link Retry#getDefaultRetry() the default retry} is used.</li>
+     * <li>If no retry is specified, the default retry options are used.</li>
      * <li>If no proxy is specified, the builder checks the {@link ConfigurationManager#getConfiguration() global
      * configuration} for a configured proxy, then it checks to see if a system proxy is configured.</li>
      * <li>If no timeout is specified, a {@link ClientConstants#OPERATION_TIMEOUT timeout of one minute} is used.</li>
@@ -298,12 +286,8 @@ public class EventHubClientBuilder {
             connectionString(connectionString);
         }
 
-        if (timeout == null) {
-            timeout = ClientConstants.OPERATION_TIMEOUT;
-        }
-
-        if (retry == null) {
-            retry = Retry.getDefaultRetry();
+        if (retryOptions == null) {
+            retryOptions = DEFAULT_RETRY;
         }
 
         // If the proxy has been configured by the user but they have overridden the TransportType with something that
@@ -326,8 +310,8 @@ public class EventHubClientBuilder {
         final CBSAuthorizationType authorizationType = credentials instanceof EventHubSharedAccessKeyCredential
             ? CBSAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CBSAuthorizationType.JSON_WEB_TOKEN;
-        final ConnectionOptions parameters = new ConnectionOptions(host, eventHubPath, credentials,
-            authorizationType, timeout, transport, retry, proxyConfiguration, scheduler);
+        final ConnectionOptions parameters = new ConnectionOptions(host, eventHubPath, credentials, authorizationType,
+            transport, retryOptions, proxyConfiguration, scheduler);
 
         return new EventHubAsyncClient(parameters, provider, handlerProvider);
     }

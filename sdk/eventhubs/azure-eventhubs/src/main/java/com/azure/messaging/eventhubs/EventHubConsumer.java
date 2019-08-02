@@ -83,6 +83,8 @@ public class EventHubConsumer implements Closeable {
 
                 link.getErrors().subscribe(error -> {
                     logger.info("Error received in ReceiveLink. {}", error.toString());
+
+                    //TODO (conniey): Surface error to EmitterProcessor.
                 });
 
                 link.getShutdownSignals().subscribe(signal -> {

@@ -70,10 +70,14 @@ class ApiSchemasImpl extends WrapperImpl<ApiSchemasInner> implements ApiSchemas 
     public Observable<SchemaContract> getAsync(String resourceGroupName, String serviceName, String apiId, String schemaId) {
         ApiSchemasInner client = this.inner();
         return client.getAsync(resourceGroupName, serviceName, apiId, schemaId)
-        .map(new Func1<SchemaContractInner, SchemaContract>() {
+        .flatMap(new Func1<SchemaContractInner, Observable<SchemaContract>>() {
             @Override
-            public SchemaContract call(SchemaContractInner inner) {
-                return wrapModel(inner);
+            public Observable<SchemaContract> call(SchemaContractInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((SchemaContract)wrapModel(inner));
+                }
             }
        });
     }
