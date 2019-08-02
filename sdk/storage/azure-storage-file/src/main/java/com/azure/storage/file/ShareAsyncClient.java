@@ -528,7 +528,7 @@ public class ShareAsyncClient {
     }
 
     private Response<ShareStatistics> mapGetStatisticsResponse(SharesGetStatisticsResponse response) {
-        ShareStatistics shareStatistics = new ShareStatistics(response.value().shareUsageBytes() / 1024);
+        ShareStatistics shareStatistics = new ShareStatistics((int) (response.value().shareUsageBytes() / 1024));
 
         return new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), shareStatistics);
     }
