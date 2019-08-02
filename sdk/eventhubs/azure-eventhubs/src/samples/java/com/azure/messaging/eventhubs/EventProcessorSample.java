@@ -9,8 +9,15 @@ import java.util.concurrent.TimeUnit;
  * Sample code to demonstrate how a customer might use {@link EventProcessorAsyncClient}.
  */
 public class EventProcessorSample {
+
     private static final String EH_CONNECTION_STRING = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
 
+    /**
+     * Main method to demonstrate starting and stopping a {@link EventProcessorAsyncClient}.
+     *
+     * @param args The input arguments to this executable.
+     * @throws Exception If there are any errors while running the {@link EventProcessorAsyncClient}.
+     */
     public static void main(String[] args) throws Exception {
         EventHubClientBuilder eventHubClientBuilder = new EventHubClientBuilder()
             .connectionString(EH_CONNECTION_STRING)
