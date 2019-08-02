@@ -148,7 +148,7 @@ public class EventProcessorAsyncClient {
             .flatMap(id -> getCandidatePartitions(ownershipFlux, id))
             .flatMap(this::claimOwnership)
             .subscribeOn(Schedulers.newElastic("PartitionPumps"))
-            .subscribe(partitionOwnership -> receiveEvents(partitionOwnership.partitionId()));
+            .subscribe(this::receiveEvents);
     }
 
     /*
@@ -195,18 +195,22 @@ public class EventProcessorAsyncClient {
     /*
      * Creates a new consumer for given partition and starts receiving events for that partition.
      */
-    private void receiveEvents(String partitionId) {
+    private void receiveEvents(PartitionOwnership partitionOwnership) {
         EventHubConsumerOptions consumerOptions = new EventHubConsumerOptions();
         consumerOptions.ownerLevel(0L);
-        EventHubConsumer consumer = this.eventHubAsyncClient
-            .createConsumer(this.consumerGroupName, partitionId, this.initialEventPosition, consumerOptions);
-        this.partitionConsumers.put(partitionId, consumer);
 
-        PartitionContext partitionContext = new PartitionContext(partitionId, this.eventHubName,
+        EventPosition startFromEventPosition = partitionOwnership.sequenceNumber() == null ? this.initialEventPosition
+            : EventPosition.fromSequenceNumber(partitionOwnership.sequenceNumber(), false);
+
+        EventHubConsumer consumer = this.eventHubAsyncClient
+            .createConsumer(this.consumerGroupName, partitionOwnership.partitionId(), startFromEventPosition, consumerOptions);
+        this.partitionConsumers.put(partitionOwnership.partitionId(), consumer);
+
+        PartitionContext partitionContext = new PartitionContext(partitionOwnership.partitionId(), this.eventHubName,
             this.consumerGroupName);
         CheckpointManager checkpointManager = new CheckpointManager(this.identifier, partitionContext,
             this.partitionManager, null);
-        logger.info("Subscribing to receive events from partition {}", partitionId);
+        logger.info("Subscribing to receive events from partition {}", partitionOwnership.partitionId());
         PartitionProcessor partitionProcessor = this.partitionProcessorFactory
             .createPartitionProcessor(partitionContext, checkpointManager);
         partitionProcessor.initialize();

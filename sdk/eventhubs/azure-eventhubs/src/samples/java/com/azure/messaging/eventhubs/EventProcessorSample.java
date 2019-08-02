@@ -24,7 +24,7 @@ public class EventProcessorSample {
         eventProcessorAsyncClient.start(); // should be a no-op
 
         // do other stuff
-        Thread.sleep(TimeUnit.MINUTES.toMillis(5));
+        Thread.sleep(TimeUnit.MINUTES.toMillis(1));
 
         System.out.println("Stopping event processor");
         eventProcessorAsyncClient.stop();
@@ -34,7 +34,7 @@ public class EventProcessorSample {
         eventProcessorAsyncClient = eventHubClientBuilder.buildEventProcessorAsyncClient();
         eventProcessorAsyncClient.start();
         // do other stuff
-        Thread.sleep(70000);
+        Thread.sleep(TimeUnit.MINUTES.toMillis(1));
         System.out.println("Stopping event processor");
         eventProcessorAsyncClient.stop();
         System.out.println("Exiting process");
