@@ -9,6 +9,26 @@ The Azure Identity library provides Azure Active Directory token authentication 
 
   [Source code][source] | API reference documentation (Coming Soon) | [Azure Active Directory documentation][aad_doc]
 
+## Table of contents
+- [Getting started](#getting-started)
+  - [Adding the package to your project](#adding-the-package-to-your-project)
+  - [Prerequisites](#prerequisites)
+    - [Creating a Service Principal with the Azure CLI](#creating-a-service-principal-with-the-azure-cli)
+    - [Enable applications for device code flow](#enable-applications-for-device-code-flow)
+    - [Enable applications for interactive browser oauth 2 flow](#enable-applications-for-interactive-browser-oauth-2-flow)
+  - [Key concepts](#key-concepts)
+    - [Credentials](#credentials)
+  - [DefaultAzureCredential](#defaultazurecredential)
+  - [Environment variables](#environment-variables)
+- [Examples](#examples)
+  - [Authenticating with `DefaultAzureCredential`](#authenticating-with-defaultazurecredential)
+  - [Authenticating a service principal with a client secret](#authenticating-a-service-principal-with-a-client-secret)
+  - [Authenticating a user account with device code flow](#authenticating-a-user-account-with-device-code-flow)
+  - [Chaining credentials](#chaining-credentials)
+- [Troubleshooting](#troubleshooting)
+- [Next steps](#next-steps)
+- [Contributing](#contributing)
+
 ## Getting started
 ### Adding the package to your project
 
@@ -46,9 +66,11 @@ Use the [Azure CLI][azure_cli] snippet below to create/get client secret credent
 
 #### Enable applications for device code flow
 In order to authenticate a user through device code flow, you need to go to Azure Active Directory on Azure Portal and find you app registration and enable the following 2 configurations:
+
 ![device code enable](./images/devicecode-enable.png)
 
 This will let the application authenticate, but the application still doesn't have permission to log you into Active Directory, or access resources on your behalf. Open API Permissions, and enable Microsoft Graph, and the resources you want to access, e.g., Azure Service Management, Key Vault, etc:
+
 ![device code permissions](./images/devicecode-permissions.png)
 
 Note that you also need to be the admin of your tenant to grant consent to your application when you login for the first time. Also note after 2018 your Active Directory may require your application to be multi-tenant. Select "Accounts in any organizational directory" under Authentication panel (where you enabled Device Code) to make your application a multi-tenant app.
@@ -57,6 +79,7 @@ Note that you also need to be the admin of your tenant to grant consent to your 
 You need to register an application in Azure Active Directory with permissions to login on behalf of a user to use InteractiveBrowserCredential. Follow all the steps above for device code flow to register your application to support logging you into Active Directory and access certain resources. Note the same limitations apply that an admin of your tenant must grant consent to your application before any user account can login.
 
 You may notice in `InteractiveBrowserCredentialBuilder`, a port number is required, and you need to add the redirect URI on this page too:
+
 ![interactive redirect uri](./images/interactive-redirecturi.png)
 
 In this case, the port number is 8765.
@@ -102,9 +125,9 @@ principal authentication with these environment variables:
 |`AZURE_TENANT_ID`|id of the principal's Azure Active Directory tenant
 |`AZURE_CLIENT_SECRET`|one of the service principal's client secrets
 
-# Examples
+## Examples
 
-## Authenticating with `DefaultAzureCredential`
+### Authenticating with `DefaultAzureCredential`
 This example demonstrates authenticating the `SecretClient` from the [azure-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`.
 ```java
 // The default credential first checks environment variables for configuration as described above.
@@ -124,7 +147,7 @@ SecretClient client = SecretClient.builder()
 ```
 When executing this in a development machine you need to first [configure the environment](#environment-variables) setting the variables `AZURE_CLIENT_ID`, `AZURE_TENANT_ID` and `AZURE_CLIENT_SECRET` to the appropriate values for your service principal.
 
-## Authenticating a service principal with a client secret
+### Authenticating a service principal with a client secret
 This example demonstrates authenticating the `KeyClient` from the [azure-keyvault-keys][keys_client_library] client library using the `ClientSecretCredential`.
 ```java
 // using a client secret
@@ -145,7 +168,7 @@ KeyClient client = KeyClient.builder()
     .build();
 ```
 
-## Authenticating a user account with device code flow
+### Authenticating a user account with device code flow
 This example demonstrates authenticating the `KeyClient` from the [azure-keyvault-keys][keys_client_library] client library using the `DeviceCodeCredential` on an IoT device.
 ```java
 // using a client secret
@@ -169,7 +192,7 @@ KeyClient client = KeyClient.builder()
 
 When the challenge is displayed on the IoT device, it will contain the message "Please open the browser to {url} and type in code XXXXXXXX". When the user follows the directions and logs in on another computer, the credential will return the token to the `KeyClient`.
 
-## Chaining credentials:
+### Chaining credentials
 The `ChainedTokenCredential` class provides the ability to link together multiple credential instances to be tried sequentially when authenticating. The following example demonstrates creating a credential which will attempt to authenticate using managed identity, and fall back to certificate authentication if a managed identity is unavailable in the current environment. This example authenticates an `EventHubClient` from the [azure-eventhubs][eventhubs_client_library] client library using the `ChainedTokenCredential`.
 
 ```java
