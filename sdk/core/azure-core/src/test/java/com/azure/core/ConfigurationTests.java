@@ -5,6 +5,7 @@ package com.azure.core;
 
 import com.azure.core.util.configuration.BaseConfigurations;
 import com.azure.core.util.configuration.ConfigurationManager;
+import org.junit.Assume;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -95,7 +96,7 @@ public class ConfigurationTests {
 
     @Test
     public void logLevelAndTracingDisabledUpdateInstantly() {
-        assertNull(ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL));
+        Assume.assumeTrue(ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL) == null);
         System.setProperty(BaseConfigurations.AZURE_LOG_LEVEL, "2");
         assertEquals(2, (int) ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL, 5));
 
