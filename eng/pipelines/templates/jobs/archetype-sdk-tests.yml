@@ -1,28 +1,49 @@
 parameters:
   ServiceDirectory: ''
   EnvVars: {}
+  MaxParallel: 0
+  Matrix:
+    Win2016:
+      OSVmImage: 'vs2017-win2016'
+      DisplayName: 'Run Live tests'
+  PreRunSteps: []
+  TestName: LiveTest
+  TimeoutInMinutes: 60
+  TestStepMavenInputs:
+    options: '--batch-mode -Dmaven.wagon.http.pool=false -Dsurefire.rerunFailingTestsCount=3'
+    mavenOptions: '-Xmx3072m -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    goals: 'test'
+  TestResultsFiles: ''
 
 jobs:
-  - job: 'LiveTest'
+  - job: ${{ parameters.TestName }}
+    timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+
+    strategy:
+      matrix: ${{ parameters.Matrix }}
+      maxParallel: ${{ parameters.MaxParallel }}
 
     pool:
-      vmImage: 'vs2017-win2016'
+      vmImage: $(OSVmImage)
 
     steps:
+      - ${{ parameters.PreRunSteps }}
+
       - task: Maven@3
-        displayName: 'Run Live tests'
+        displayName: $(DisplayName)
         inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.xml
-          options: '--batch-mode -Dmaven.wagon.http.pool=false -Dsurefire.rerunFailingTestsCount=3'
-          mavenOptions: '-Xmx3072m -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.8'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'test'
+          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
+          ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
         env: ${{ parameters.EnvVars }}
+
       - task: PublishTestResults@2
         condition: succeededOrFailed()
         inputs:
           mergeTestResults: true
-          testRunTitle: 'Live tests for ${{ parameters.ServiceDirectory }}'
+          testRunTitle: 'Live tests for ${{ parameters.ServiceDirectory }} $(DisplayName)'
+          ${{ if ne(parameters.TestResultsFiles, '') }}:
+            testResultsFiles: ${{ parameters.TestResultsFiles }}

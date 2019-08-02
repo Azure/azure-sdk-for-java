@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
@@ -133,8 +132,8 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
         final TokenCredential badTokenProvider = new EventHubSharedAccessKeyCredential(
             invalidCredentials.sharedAccessKeyName(), invalidCredentials.sharedAccessKey(), TIMEOUT);
         final ConnectionOptions connectionOptions = new ConnectionOptions(original.endpoint().getHost(),
-            original.eventHubPath(), badTokenProvider, getAuthorizationType(), TIMEOUT,
-            TransportType.AMQP, Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionOptions().scheduler());
+            original.eventHubPath(), badTokenProvider, getAuthorizationType(), TransportType.AMQP, RETRY_OPTIONS,
+            ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionOptions().scheduler());
         final EventHubAsyncClient client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);
 
         // Act & Assert
@@ -158,8 +157,8 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
         final ConnectionOptions connectionOptions = new ConnectionOptions(original.endpoint().getHost(),
-            "invalid-event-hub", getTokenCredential(), getAuthorizationType(), TIMEOUT,
-            TransportType.AMQP, Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionOptions().scheduler());
+            "invalid-event-hub", getTokenCredential(), getAuthorizationType(), TransportType.AMQP,
+            RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionOptions().scheduler());
         final EventHubAsyncClient client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);
 
         // Act & Assert

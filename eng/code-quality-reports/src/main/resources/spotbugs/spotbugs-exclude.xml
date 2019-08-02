@@ -347,7 +347,7 @@
     <Bug pattern="NP_NULL_PARAM_DEREF"/>
   </Match>
 
-  <!-- The switch cases are encoded version of all SAS query parameters, which will further be appended to a request URL it seems like. A default case wouldn't make sense -->
+  <!-- The switch cases are encoded version of all SAS query parameters, which will further be appended to a request URL it seems like. A default case wouldn't make sense -->
   <Match>
     <Class name="com.microsoft.azure.storage.blob.SASQueryParameters"/>
     <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
@@ -368,6 +368,7 @@
   <Match>
     <Or>
       <Package name="com.microsoft.azure.storage.blob"/>
+      <Package name="com.azure.storage.file.models"/>
       <Class name="com.azure.storage.blob.HTTPGetterInfo"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
@@ -439,6 +440,17 @@
     <Or>
       <Class name="com.azure.storage.blob.BlobInputStream"/>
       <Class name="com.azure.storage.blob.BlobOutputStream"/>
+      <Class name="com.azure.storage.queue.QueueServiceClient"/>
+    </Or>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Incorrect flagging, if the response is null a HttpResponseException should be thrown
+  https://github.com/azure/azure-sdk-for-java/issues/4556 -->
+  <Match>
+    <Or>
+      <Class name="com.azure.security.keyvault.keys.KeyClient"/>
+      <Class name="com.azure.security.keyvault.secrets.SecretClient"/>
     </Or>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>

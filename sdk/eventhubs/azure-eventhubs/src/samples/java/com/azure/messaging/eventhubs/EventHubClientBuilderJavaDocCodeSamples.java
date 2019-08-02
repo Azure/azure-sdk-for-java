@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.Retry;
+import com.azure.core.amqp.RetryOptions;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
@@ -54,10 +54,11 @@ public class EventHubClientBuilderJavaDocCodeSamples {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
             + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
 
+        RetryOptions retryOptions = new RetryOptions()
+            .tryTimeout(Duration.ofSeconds(30));
         EventHubAsyncClient client = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .retry(Retry.getNoRetry())
-            .timeout(Duration.ofSeconds(30))
+            .retry(retryOptions)
             .scheduler(Schedulers.newElastic("dedicated-event-hub-scheduler"))
             .buildAsyncClient();
         // END: com.azure.messaging.eventhubs.eventhubclientbuilder.retry-timeout-scheduler

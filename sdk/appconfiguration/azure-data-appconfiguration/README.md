@@ -21,7 +21,7 @@ Use the client library for App Configuration to create and manage application co
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-data-appconfiguration</artifactId>
-    <version>1.0.0-preview.1</version>
+    <version>1.0.0-preview.2</version>
 </dependency>
 ```
 
@@ -106,7 +106,7 @@ An application that has a large set of configurations that it needs to periodica
 ConfigurationAsyncClient client = new ConfigurationClientBuilder()
         .credential(new ConfigurationClientCredentials(appConfigConnectionString))
         .buildAsyncClient();
-        
+
 client.listSettings(new SettingSelection().label(periodicUpdateLabel))
     .subscribe(setting -> updateConfiguration(setting));
 ```

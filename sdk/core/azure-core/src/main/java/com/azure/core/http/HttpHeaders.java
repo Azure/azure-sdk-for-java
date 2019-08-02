@@ -3,12 +3,6 @@
 
 package com.azure.core.http;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializable;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
-
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
@@ -17,7 +11,7 @@ import java.util.Map;
 /**
  * A collection of headers on an HTTP request or response.
  */
-public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
+public class HttpHeaders implements Iterable<HttpHeader> {
     private final Map<String, HttpHeader> headers = new HashMap<>();
 
     /**
@@ -127,15 +121,5 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
     @Override
     public Iterator<HttpHeader> iterator() {
         return headers.values().iterator();
-    }
-
-    @Override
-    public void serialize(JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-        jsonGenerator.writeObject(toMap());
-    }
-
-    @Override
-    public void serializeWithType(JsonGenerator jsonGenerator, SerializerProvider serializerProvider, TypeSerializer typeSerializer) throws IOException {
-        serialize(jsonGenerator, serializerProvider);
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.core.implementation;
 
 import com.azure.core.MyRestException;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.implementation.annotation.BodyParam;
 import com.azure.core.implementation.annotation.Delete;
 import com.azure.core.implementation.annotation.ExpectedResponses;
@@ -1526,7 +1527,7 @@ public abstract class RestProxyTests {
         //
         // Order in which policies applied will be the order in which they added to builder
         //
-        final HttpPipeline httpPipeline = HttpPipeline.builder()
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
             .policies(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS, true))
             .build();
@@ -1611,14 +1612,14 @@ public abstract class RestProxyTests {
     @Test(expected = HttpResponseException.class)
     @Ignore("Decoding is not a policy anymore")
     public void testMissingDecodingPolicyCausesException() {
-        Service25 service = RestProxy.create(Service25.class, HttpPipeline.builder().build());
+        Service25 service = RestProxy.create(Service25.class, new HttpPipelineBuilder().build());
         service.get();
     }
 
     @Test(expected = HttpResponseException.class)
     @Ignore("Decoding is not a policy anymore")
     public void testSingleMissingDecodingPolicyCausesException() {
-        Service25 service = RestProxy.create(Service25.class, HttpPipeline.builder().build());
+        Service25 service = RestProxy.create(Service25.class, new HttpPipelineBuilder().build());
         service.getAsync().block();
         service.getBodyResponseAsync().block();
     }
@@ -1626,7 +1627,7 @@ public abstract class RestProxyTests {
     @Test(expected = HttpResponseException.class)
     @Ignore("Decoding is not a policy anymore")
     public void testSingleBodyResponseMissingDecodingPolicyCausesException() {
-        Service25 service = RestProxy.create(Service25.class, HttpPipeline.builder().build());
+        Service25 service = RestProxy.create(Service25.class, new HttpPipelineBuilder().build());
         service.getBodyResponseAsync().block();
     }
 
@@ -1639,7 +1640,7 @@ public abstract class RestProxyTests {
 
     @Test
     public void postUrlFormEncoded() {
-        Service26 service = RestProxy.create(Service26.class, HttpPipeline.builder().build());
+        Service26 service = RestProxy.create(Service26.class, new HttpPipelineBuilder().build());
         HttpBinFormDataJSON response = service.postForm("Foo", "123", "foo@bar.com", PizzaSize.LARGE, Arrays.asList("Bacon", "Onion"));
         assertNotNull(response);
         assertNotNull(response.form());
@@ -1660,7 +1661,7 @@ public abstract class RestProxyTests {
     }
 
     protected <T> T createService(Class<T> serviceClass, HttpClient httpClient) {
-        final HttpPipeline httpPipeline = HttpPipeline.builder()
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
             .build();
 
