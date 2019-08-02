@@ -1,6 +1,5 @@
 parameters:
   Artifacts: []
-  EnableUnifiedPipelines: false # Off by default for now
   ServiceDirectory: not-specified
   
 stages:
