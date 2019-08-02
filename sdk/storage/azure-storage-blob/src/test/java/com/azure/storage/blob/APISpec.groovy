@@ -568,6 +568,7 @@ class APISpec extends Specification {
         return new BlobServiceClientBuilder()
             .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCreds.accountName()))
             .credential(new EnvironmentCredential()) // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .buildClient()
     }
 

@@ -33,7 +33,6 @@ public class DownloadResponse {
     //TODO (unknown): determine signature(s) to use
     /*public InputStream body(ReliableDownloadOptions options) {
         return new InputStream() {
-
             DownloadAsyncResponse response = asyncResponse;
             @Override
             public int read() throws IOException {
