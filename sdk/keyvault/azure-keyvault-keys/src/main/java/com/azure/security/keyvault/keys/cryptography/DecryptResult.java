@@ -3,7 +3,7 @@ package com.azure.security.keyvault.keys.cryptography;
 /**
  * Represents the details of decrypt operation result.
  */
-public class DecryptResult {
+public final class DecryptResult {
     public DecryptResult(byte[] plainText) {
         this.plainText = plainText;
     }

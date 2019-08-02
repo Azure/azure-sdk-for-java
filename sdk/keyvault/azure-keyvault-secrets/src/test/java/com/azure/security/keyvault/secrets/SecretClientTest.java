@@ -29,20 +29,14 @@ public class SecretClientTest extends SecretClientTestBase {
         beforeTestSetup();
 
         if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(credentials -> new SecretClientBuilder()
-                .credential(credentials)
+            client = clientSetup(pipeline -> new SecretClientBuilder()
+                .pipeline(pipeline)
                 .endpoint(getEndpoint())
-                .httpClient(interceptorManager.getPlaybackClient())
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .buildClient());
         } else {
-            client = clientSetup(credentials -> new SecretClientBuilder()
-                .credential(credentials)
+            client = clientSetup(pipeline -> new SecretClientBuilder()
+                .pipeline(pipeline)
                 .endpoint(getEndpoint())
-                .httpClient(HttpClient.createDefault().wiretap(true))
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy())
                 .buildClient());
         }
     }

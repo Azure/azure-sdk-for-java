@@ -9,8 +9,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.security.*;
 
-class RsaKeyCryptographyClient {
-    private CryptographyServiceClient serviceClient;
+class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
     private KeyPair keyPair;
 
     /*
@@ -19,12 +18,12 @@ class RsaKeyCryptographyClient {
      * @param keyPair the key pair to use for cryptography operations.
      */
     RsaKeyCryptographyClient(CryptographyServiceClient serviceClient) {
-        this.serviceClient = serviceClient;
+        super(serviceClient);
     }
 
     RsaKeyCryptographyClient(JsonWebKey key, CryptographyServiceClient serviceClient) {
-        keyPair = key.toEC(key.hasPrivateKey());
-        this.serviceClient = serviceClient;
+        super(serviceClient);
+        keyPair = key.toRSA(key.hasPrivateKey());
     }
 
     private KeyPair getKeyPair(JsonWebKey key) {

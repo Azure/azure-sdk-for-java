@@ -1,4 +1,4 @@
-package com.azure.security.keyvault.keys;
+package com.azure.security.keyvault.secrets;
 
 import com.azure.core.credentials.AccessToken;
 import reactor.core.publisher.FluxSink;
@@ -20,6 +20,7 @@ class ScopeTokenCache {
     private final FluxSink<AccessToken> sink = emitterProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final Function<String[], Mono<AccessToken>> getNew;
     private String[] scopes;
+
 
     /**
      * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".

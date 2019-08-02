@@ -3,7 +3,7 @@ package com.azure.security.keyvault.keys.cryptography;
 /**
  * Represents the details of verify operation result.
  */
-public class VerifyResult {
+public final class VerifyResult {
     public VerifyResult(Boolean isValid) {
         this.isValid = isValid;
     }

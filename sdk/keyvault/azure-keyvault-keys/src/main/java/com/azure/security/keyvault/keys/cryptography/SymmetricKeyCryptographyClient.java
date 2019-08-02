@@ -6,7 +6,7 @@ import reactor.core.publisher.Mono;
 
 import java.security.NoSuchAlgorithmException;
 
-class SymmetricKeyCryptographyClient {
+class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     private CryptographyServiceClient serviceClient;
     private byte[] key;
 
@@ -16,12 +16,12 @@ class SymmetricKeyCryptographyClient {
      * @param key the key pair to use for cryptography operations.
      */
     SymmetricKeyCryptographyClient(CryptographyServiceClient serviceClient) {
-        this.serviceClient = serviceClient;
+        super(serviceClient);
     }
 
     SymmetricKeyCryptographyClient(JsonWebKey key, CryptographyServiceClient serviceClient) {
+        super(serviceClient);
         this.key = key.toAes().getEncoded();
-        this.serviceClient = serviceClient;
     }
 
     private byte[] getKey(JsonWebKey key) {

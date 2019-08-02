@@ -6,8 +6,7 @@ import reactor.core.publisher.Mono;
 
 import java.security.*;
 
-class EcKeyCryptographyClient {
-
+class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
     private KeyPair keyPair;
     private CryptographyServiceClient serviceClient;
     private Provider provider;
@@ -18,10 +17,12 @@ class EcKeyCryptographyClient {
      * @param serviceClient the client to use for service side cryptography operations.
      */
     EcKeyCryptographyClient( CryptographyServiceClient serviceClient) {
+        super(serviceClient);
         this.serviceClient = serviceClient;
     }
 
     EcKeyCryptographyClient(JsonWebKey key, CryptographyServiceClient serviceClient) {
+        super(serviceClient);
         this.provider = Security.getProvider("SunEC");
         this.keyPair = key.toEC(key.hasPrivateKey(), provider);
         this.serviceClient = serviceClient;
@@ -132,7 +133,6 @@ class EcKeyCryptographyClient {
         }
     }
 
-
     Mono<VerifyResult> verifyDataAsync(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context, JsonWebKey key) {
         try {
             HashAlgorithm hashAlgorithm = SignatureHashResolver.Default.get(algorithm);
@@ -146,10 +146,7 @@ class EcKeyCryptographyClient {
         }
     }
 
-
     private boolean serviceCryptoAvailable(){
         return serviceClient != null ;
     }
-
-
 }

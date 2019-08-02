@@ -3,7 +3,7 @@ package com.azure.security.keyvault.keys.cryptography;
 /**
  * Represents the details of key unwrap operation result.
  */
-public class KeyUnwrapResult {
+public final class KeyUnwrapResult {
     public KeyUnwrapResult(byte[] key) {
         this.key = key;
     }

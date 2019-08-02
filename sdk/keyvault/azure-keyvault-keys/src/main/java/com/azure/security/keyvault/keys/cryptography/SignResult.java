@@ -3,7 +3,7 @@ package com.azure.security.keyvault.keys.cryptography;
 /**
  * Represents the details of sign operation result.
  */
-public class SignResult {
+public final class SignResult {
 
     public SignResult(byte[] signature, SignatureAlgorithm algorithm){
         this.signature = signature;

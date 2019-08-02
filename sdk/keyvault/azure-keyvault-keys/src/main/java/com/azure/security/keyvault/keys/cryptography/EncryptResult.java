@@ -3,7 +3,7 @@ package com.azure.security.keyvault.keys.cryptography;
 /**
  * Represents the details of encrypt operation result.
  */
-public class EncryptResult {
+public final class EncryptResult {
 
     public EncryptResult(byte[] cipherText, byte[] authenticationTag, EncryptionAlgorithm algorithm) {
         this.cipherText = cipherText;

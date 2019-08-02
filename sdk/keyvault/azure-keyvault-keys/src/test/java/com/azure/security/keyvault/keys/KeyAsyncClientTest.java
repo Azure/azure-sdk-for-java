@@ -33,20 +33,14 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         beforeTestSetup();
 
         if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(credentials -> new KeyClientBuilder()
-                .credential(credentials)
+            client = clientSetup(pipeline -> new KeyClientBuilder()
                 .endpoint(getEndpoint())
-                .httpClient(interceptorManager.getPlaybackClient())
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .pipeline(pipeline)
                 .buildAsyncClient());
         } else {
-            client = clientSetup(credentials -> new KeyClientBuilder()
-                .credential(credentials)
+            client = clientSetup(pipeline -> new KeyClientBuilder()
+                .pipeline(pipeline)
                 .endpoint(getEndpoint())
-                .httpClient(HttpClient.createDefault().wiretap(true))
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy())
                 .buildAsyncClient());
         }
     }

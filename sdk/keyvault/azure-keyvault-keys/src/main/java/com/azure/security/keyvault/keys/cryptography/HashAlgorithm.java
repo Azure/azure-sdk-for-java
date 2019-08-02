@@ -11,8 +11,7 @@ enum HashAlgorithm {
     /**
      * Creates a custom value for EncryptionAlgorithm.
      *
-     * @param value
-     *            the custom value
+     * @param value the custom value
      */
     HashAlgorithm(String value) {
         this.value = value;

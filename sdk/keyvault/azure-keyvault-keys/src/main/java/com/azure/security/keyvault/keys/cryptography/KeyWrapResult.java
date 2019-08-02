@@ -3,7 +3,7 @@ package com.azure.security.keyvault.keys.cryptography;
 /**
  * Represents the details of wrap operation result.
  */
-public class KeyWrapResult {
+public final class KeyWrapResult {
 
     public KeyWrapResult(byte[] encryptedKey, KeyWrapAlgorithm algorithm) {
         this.encryptedKey = encryptedKey;

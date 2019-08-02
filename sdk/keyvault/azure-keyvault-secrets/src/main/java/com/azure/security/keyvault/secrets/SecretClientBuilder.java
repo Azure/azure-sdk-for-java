@@ -125,7 +125,7 @@ public final class SecretClientBuilder {
         policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
-        policies.add(new BearerTokenAuthenticationPolicy(credential, SecretAsyncClient.KEY_VAULT_SCOPE));
+        policies.add(new KeyVaultCredentialPolicy(credential));
         policies.addAll(this.policies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));

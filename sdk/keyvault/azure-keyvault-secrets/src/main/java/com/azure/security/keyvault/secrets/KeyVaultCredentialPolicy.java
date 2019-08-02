@@ -1,6 +1,5 @@
-package com.azure.security.keyvault.keys;
+package com.azure.security.keyvault.secrets;
 
-import com.azure.core.credentials.SimpleTokenCache;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;

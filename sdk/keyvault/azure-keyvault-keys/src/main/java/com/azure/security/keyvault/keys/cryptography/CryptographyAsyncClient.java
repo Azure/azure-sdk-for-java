@@ -8,6 +8,7 @@ import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.annotation.ServiceMethod;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
@@ -23,17 +24,17 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Objects;
 
+import static com.azure.core.implementation.util.FluxUtil.toMono;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 @ServiceClient(builder = KeyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
 public final class CryptographyAsyncClient {
+    static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
     private JsonWebKey key;
     private CryptographyService service;
     private String version;
-    private EcKeyCryptographyClient ecKeyCryptographyClient;
-    private RsaKeyCryptographyClient rsaKeyCryptographyClient;
     private CryptographyServiceClient cryptographyServiceClient;
-    private SymmetricKeyCryptographyClient symmetricKeyCryptographyClient;
+    private LocalKeyCryptographyClient localKeyCryptographyClient;
     private final ClientLogger logger = new ClientLogger(CryptographyAsyncClient.class);
 
     /**
@@ -63,29 +64,28 @@ public final class CryptographyAsyncClient {
         unpackAndValidateId(kid);
         service = RestProxy.create(CryptographyService.class, pipeline);
         cryptographyServiceClient = new CryptographyServiceClient(kid, service);
-        ecKeyCryptographyClient = new EcKeyCryptographyClient(cryptographyServiceClient);
-        rsaKeyCryptographyClient = new RsaKeyCryptographyClient(cryptographyServiceClient);
-        symmetricKeyCryptographyClient = new SymmetricKeyCryptographyClient(cryptographyServiceClient);
     }
 
     private void initializeCryptoClients() {
+        if(localKeyCryptographyClient != null) {
+            return;
+        }
         switch(key.kty()){
             case RSA:
             case RSA_HSM:
-                rsaKeyCryptographyClient = new RsaKeyCryptographyClient(key, cryptographyServiceClient);
+                localKeyCryptographyClient = new RsaKeyCryptographyClient(key, cryptographyServiceClient);
                 break;
             case EC:
             case EC_HSM:
-                ecKeyCryptographyClient = new EcKeyCryptographyClient(key, cryptographyServiceClient);
+                localKeyCryptographyClient = new EcKeyCryptographyClient(key, cryptographyServiceClient);
                 break;
             case OCT:
-                symmetricKeyCryptographyClient = new SymmetricKeyCryptographyClient(key, cryptographyServiceClient);
+                localKeyCryptographyClient = new SymmetricKeyCryptographyClient(key, cryptographyServiceClient);
                 break;
             default:
                 throw new IllegalArgumentException(String.format("The Json Web Key Type: %s  is not supported.", key.kty().toString()));
         }
     }
-
 
     /**
      * Gets the public part of the configured key. The get key operation is applicable to all key types and it requires the {@code keys/get} permission.
@@ -94,11 +94,22 @@ public final class CryptographyAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Key>> getKey() {
-        return withContext(context -> getKey(context));
+    public Mono<Response<Key>> getKeyWithResponse() {
+        return withContext(context -> getKeyWithResponse(context));
     }
 
-    Mono<Response<Key>> getKey(Context context) {
+    /**
+     * Gets the public part of the configured key. The get key operation is applicable to all key types and it requires the {@code keys/get} permission.
+     *
+     * @throws ResourceNotFoundException when the configured key doesn't exist in the key vault.
+     * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Key> getKey() {
+        return getKeyWithResponse().flatMap(FluxUtil::toMono);
+    }
+
+    Mono<Response<Key>> getKeyWithResponse(Context context) {
         return cryptographyServiceClient.getKey(context);
     }
 
@@ -156,19 +167,7 @@ public final class CryptographyAsyncClient {
         if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.ENCRYPT)){
             return Mono.error(new UnsupportedOperationException(String.format("Encrypt Operation is not supported for key with id %s", key.kid())));
         }
-
-            switch(key.kty()){
-            case RSA:
-            case RSA_HSM:
-                return rsaKeyCryptographyClient.encryptAsync(algorithm, plaintext, iv, authenticationData, context, key);
-            case EC:
-            case EC_HSM:
-                return ecKeyCryptographyClient.encryptAsync(algorithm, plaintext, iv, authenticationData, context, key);
-            case OCT:
-                return symmetricKeyCryptographyClient.encryptAsync(algorithm, plaintext, iv, authenticationData, context, key);
-            default:
-                throw new UnsupportedOperationException(String.format("Encrypt Async is not allowed for Key Type: %s", key.kty().toString()));
-        }
+        return localKeyCryptographyClient.encryptAsync(algorithm, plaintext, iv, authenticationData, context, key);
     }
 
     /**
@@ -220,19 +219,7 @@ public final class CryptographyAsyncClient {
         if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.DECRYPT)){
             return Mono.error(new UnsupportedOperationException(String.format("Decrypt Operation is not allowed for key with id %s", key.kid())));
         }
-
-        switch(key.kty()){
-            case RSA:
-            case RSA_HSM:
-                return rsaKeyCryptographyClient.decryptAsync(algorithm, cipherText, iv, authenticationData, authenticationTag, context, key);
-            case EC:
-            case EC_HSM:
-                return ecKeyCryptographyClient.decryptAsync(algorithm, cipherText, iv, authenticationData, authenticationTag, context, key);
-            case OCT:
-                return symmetricKeyCryptographyClient.decryptAsync(algorithm, cipherText, iv, authenticationData, authenticationTag, context, key);
-            default:
-                return Mono.error(new UnsupportedOperationException(String.format("Decrypt operation is not supported for Key Type: %s", key.kty().toString())));
-        }
+        return localKeyCryptographyClient.decryptAsync(algorithm, cipherText, iv, authenticationData, authenticationTag, context, key);
      }
 
     /**
@@ -266,19 +253,7 @@ public final class CryptographyAsyncClient {
             return Mono.error(new UnsupportedOperationException(String.format("Sign Operation is not allowed for key with id %s", key.kid())));
         }
 
-        switch(this.key.kty()){
-            case RSA:
-            case RSA_HSM:
-                return rsaKeyCryptographyClient.signAsync(algorithm, digest, context, key);
-            case EC:
-            case EC_HSM:
-                return ecKeyCryptographyClient.signAsync(algorithm, digest, context, key);
-            case OCT:
-                return symmetricKeyCryptographyClient.signAsync(algorithm, digest, context, key);
-            default:
-                return Mono.error(new UnsupportedOperationException(String.format("Sign operaiton is not supported for Key Type: %s", key.kty().toString())));
-        }
-
+        return localKeyCryptographyClient.signAsync(algorithm, digest, context, key);
     }
 
     /**
@@ -304,27 +279,14 @@ public final class CryptographyAsyncClient {
     Mono<VerifyResult> verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
         boolean keyAvailableLocally = ensureValidKeyAvailable();
 
-        if(!keyAvailableLocally) {
+        if (!keyAvailableLocally) {
             return cryptographyServiceClient.verify(algorithm, digest, signature, context);
         }
 
-        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.VERIFY)){
+        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.VERIFY)) {
             return Mono.error(new UnsupportedOperationException(String.format("Verify Operation is not allowed for key with id %s", key.kid())));
         }
-
-        switch(this.key.kty()){
-            case RSA:
-            case RSA_HSM:
-                return rsaKeyCryptographyClient.verifyAsync(algorithm, digest, signature, context, key);
-            case EC:
-            case EC_HSM:
-                return ecKeyCryptographyClient.verifyAsync(algorithm, digest, signature, context, key);
-            case OCT:
-                return symmetricKeyCryptographyClient.verifyAsync(algorithm, digest, signature, context, key);
-            default:
-                return Mono.error(new UnsupportedOperationException(String.format("Verify operation is not supported for Key Type: %s", key.kty().toString())));
-        }
-
+        return localKeyCryptographyClient.verifyAsync(algorithm, digest, signature, context, key);
     }
 
     /**
@@ -355,18 +317,7 @@ public final class CryptographyAsyncClient {
             return Mono.error(new UnsupportedOperationException(String.format("Wrap Key Operation is not allowed for key with id %s", this.key.kid())));
         }
 
-        switch(this.key.kty()){
-            case RSA:
-            case RSA_HSM:
-                return rsaKeyCryptographyClient.wrapKeyAsync(algorithm, key, context, this.key);
-            case EC:
-            case EC_HSM:
-                return ecKeyCryptographyClient.wrapKeyAsync(algorithm, key, context, this.key);
-            case OCT:
-                return symmetricKeyCryptographyClient.wrapKeyAsync(algorithm, key, context, this.key);
-            default:
-                return Mono.error(new UnsupportedOperationException(String.format("Encrypt Async is not supported for Key Type: %s", this.key.kty().toString())));
-        }
+        return localKeyCryptographyClient.wrapKeyAsync(algorithm, key, context, this.key);
     }
 
     /**
@@ -397,19 +348,7 @@ public final class CryptographyAsyncClient {
         if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.WRAP_KEY)){
             return Mono.error(new UnsupportedOperationException(String.format("Unwrap Key Operation is not allowed for key with id %s", this.key.kid())));
         }
-
-        switch(this.key.kty()){
-            case RSA:
-            case RSA_HSM:
-                return rsaKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, context, key);
-            case EC:
-            case EC_HSM:
-                return ecKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, context, key);
-            case OCT:
-                return symmetricKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, context, key);
-            default:
-                return Mono.error(new UnsupportedOperationException(String.format("Encrypt Async is not supported for Key Type: %s", key.kty().toString())));
-        }
+        return localKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, context, key);
     }
 
     /**
@@ -442,17 +381,7 @@ public final class CryptographyAsyncClient {
         if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.SIGN)){
             return Mono.error(new UnsupportedOperationException(String.format("Sign Operation is not allowed for key with id %s", this.key.kid())));
         }
-
-        switch(this.key.kty()){
-            case RSA:
-            case RSA_HSM:
-                return rsaKeyCryptographyClient.signDataAsync(algorithm, data, context, key);
-            case EC:
-            case EC_HSM:
-                return ecKeyCryptographyClient.signDataAsync(algorithm, data, context, key);
-            default:
-                return Mono.error(new UnsupportedOperationException(String.format("Encrypt Async is not supported for Key Type: %s", key.kty().toString())));
-        }
+        return localKeyCryptographyClient.signDataAsync(algorithm, data, context, key);
     }
 
     /**
@@ -486,17 +415,7 @@ public final class CryptographyAsyncClient {
         if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.VERIFY)){
             return Mono.error(new UnsupportedOperationException(String.format("Verify Operation is not allowed for key with id %s", this.key.kid())));
         }
-
-        switch(this.key.kty()){
-            case RSA:
-            case RSA_HSM:
-                return rsaKeyCryptographyClient.verifyDataAsync(algorithm, data, signature, context, key);
-            case EC:
-            case EC_HSM:
-                return ecKeyCryptographyClient.verifyDataAsync(algorithm, data, signature, context, key);
-            default:
-                return Mono.error(new UnsupportedOperationException(String.format("Encrypt Async is not supported for Key Type: %s", key.kty().toString())));
-        }
+        return localKeyCryptographyClient.verifyDataAsync(algorithm, data, signature, context, key);
     }
 
     private void unpackAndValidateId(String keyId) {
@@ -533,8 +452,9 @@ public final class CryptographyAsyncClient {
         boolean keyAvailableLocally = true;
         if(key == null) {
             try {
-                this.key = getKey().block().value().keyMaterial();
+                this.key = getKey().block().keyMaterial();
                 keyAvailableLocally = this.key.isValid();
+                initializeCryptoClients();
             } catch (HttpResponseException e) {
                 logger.info("Failed to retrieve key from key vault");
                 keyAvailableLocally = false;
@@ -543,4 +463,7 @@ public final class CryptographyAsyncClient {
         return keyAvailableLocally;
     }
 
+    CryptographyServiceClient getCryptographyServiceClient() {
+        return cryptographyServiceClient;
+    }
 }
