@@ -1,3 +1,9 @@
+resources:
+  repositories:
+    - repository: azure-sdk-build-tools
+      type: git
+      name: internal/azure-sdk-build-tools
+
 parameters:
   Artifacts: []
   ServiceDirectory: not-specified
