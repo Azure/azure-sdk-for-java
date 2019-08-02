@@ -4,14 +4,13 @@
 
 For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview2-java).
 
-- Merged ConfigurationClientBuilder and ConfigurationAsyncClientBuilder into ConfigurationClientBuilder. Method to build each client were added
-- ConfigurationClientBuilder was made instantiable, static builder method removed from ConfigurationClient and ConfigurationAsyncClient
-- Builder method credentials renamed to credential and serviceEndpoint to endpoint
-- Listing operations return PagedFlux and PagedIterable in their respective clients
-- Non-maximal overloads return response value instead of Response<T>
-- Asynchronous calls check subscriberContext for tracing context
-- Synchronous calls support passing tracing context in maximal overloads
-
+- Merged ConfigurationClientBuilder and ConfigurationAsyncClientBuilder into ConfigurationClientBuilder. Method to build each client were added.
+- ConfigurationClientBuilder was made instantiable, static builder method removed from ConfigurationClient and ConfigurationAsyncClient.
+- Builder method credentials renamed to credential and serviceEndpoint to endpoint.
+- Listing operations return PagedFlux and PagedIterable in their respective clients.
+- Non-maximal overloads return response value instead of Response<T>.
+- Asynchronous calls check subscriberContext for tracing context.
+- Synchronous calls support passing tracing context in maximal overloads.
 
 ## Version 1.0.0-preview.1:
 
