@@ -4,14 +4,14 @@ package com.azure.security.keyvault.keys.cryptography;
  * Represents the details of verify operation result.
  */
 public final class VerifyResult {
-    public VerifyResult(Boolean isValid) {
-        this.isValid = isValid;
-    }
-
     /**
      * THe verify operation result.
      */
     private Boolean isValid;
+
+    public VerifyResult(Boolean isValid) {
+        this.isValid = isValid;
+    }
 
     /**
      * Get the verify operation result.

@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.*;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.security.keyvault.keys.KeyVaultCredentialPolicy;
@@ -146,9 +147,10 @@ public final class CryptographyClientBuilder {
     /**
      * Sets the identifier of the jsonWebKey from Azure Key Vault to be used for cryptography operations.
      *
+     * <p>If {@code jsonWebKey} is provided then that takes precedence over key identifier and gets used for cryptography operations.</p>
+
      * @param keyId The jsonWebKey identifier representing the jsonWebKey stored in jsonWebKey vault.
      * @return the updated {@link CryptographyClientBuilder} object.
-     * @throws IllegalArgumentException if {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
     public CryptographyClientBuilder keyIdentifier(String keyId) {
         this.keyId = keyId;
@@ -156,11 +158,12 @@ public final class CryptographyClientBuilder {
     }
 
     /**
-     * Sets the identifier of the jsonWebKey from Azure Key Vault to be used for cryptography operations.
+     * Sets the jsonWebKey to be used for cryptography operations.
+     *
+     * <p>If {@code jsonWebKey} is provided then it takes precedence over key identifier and gets used for cryptography operations.</p>
      *
      * @param jsonWebKey The Json web jsonWebKey to be used for cryptography operations.
      * @return the updated {@link CryptographyClientBuilder} object.
-     * @throws IllegalArgumentException if {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
     public CryptographyClientBuilder jsonWebKey(JsonWebKey jsonWebKey) {
         this.jsonWebKey = jsonWebKey;

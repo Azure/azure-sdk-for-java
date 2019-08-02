@@ -5,13 +5,13 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-keyvault-parent</artifactId>
-    <version>4.0.0-preview.1</version>
+    <version>4.0.0-preview.2</version>
     <relativePath>../pom.client.xml</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-keyvault-secrets</artifactId>
-  <version>4.0.0-preview.1</version>
+  <version>4.0.0-preview.2</version>
 
   <name>azure-keyvault-secrets</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>

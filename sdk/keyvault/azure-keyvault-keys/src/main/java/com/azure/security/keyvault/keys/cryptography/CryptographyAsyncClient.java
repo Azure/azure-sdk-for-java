@@ -10,6 +10,7 @@ import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
@@ -137,7 +138,7 @@ public final class CryptographyAsyncClient {
      * operation is supported for both symmetric keys and asymmetric keys. In case of asymmetric keys public portion of the key is used
      * for encryption. This operation requires the keys/encrypt permission.
      *
-     * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting the specified encrypted content. Possible values
+     * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for encrypting the specified {@code plaintext}. Possible values
      * for assymetric keys include: {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC} and {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
@@ -157,7 +158,7 @@ public final class CryptographyAsyncClient {
      * operation is supported for both symmetric keys and asymmetric keys. In case of asymmetric keys public portion of the key is used
      * for encryption. This operation requires the keys/encrypt permission.
      *
-     * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting the specified encrypted content. Possible values
+     * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for encrypting the specified {@code plaintext}. Possible values
      * for assymetric keys include: {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC} and {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
@@ -342,7 +343,7 @@ public final class CryptographyAsyncClient {
      * Unwraps a symmetric key using the configured key that was initially used for wrapping that key. This operation is the reverse of the wrap operation.
      * The unwrap operation supports asymmetric and symmetric keys to unwrap. This operation requires the keys/unwrapKey permission.
      *
-     * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for wrapping the specified key content. Possible values for asymmetric keys include:
+     * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for unwrapping the specified encrypted key content. Possible values for asymmetric keys include:
      * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      * Possible values for symmetric keys include: {@link KeyWrapAlgorithm#A128KW A128KW}, {@link KeyWrapAlgorithm#A192KW A192KW} and {@link KeyWrapAlgorithm#A256KW A256KW}</p>
      *
@@ -373,7 +374,7 @@ public final class CryptographyAsyncClient {
      * Creates a signature from the raw data using the configured key. The sign data operation supports both asymmetric and
      * symmetric keys. This operation requires the keys/sign permission.
      *
-     * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to create the signature from the digest. Possible values include:
+     * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to sign the digest. Possible values include:
      * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384}, {@link SignatureAlgorithm#ES512 ES512},
      * {@link SignatureAlgorithm#ES256K ES246K}, {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384 RS384} and
@@ -437,33 +438,29 @@ public final class CryptographyAsyncClient {
     }
 
     private void unpackAndValidateId(String keyId) {
-        if (keyId != null && keyId.length() > 0) {
-            try {
-                URL url = new URL(keyId);
-                String[] tokens = url.getPath().split("/");
-                String endpoint = url.getProtocol() + "://" + url.getHost();
-                String keyName = (tokens.length >= 3 ? tokens[2] : null);
-                version = (tokens.length >= 4 ? tokens[3] : null);
-                if(Strings.isNullOrEmpty(endpoint)) {
-                    throw new IllegalArgumentException("Key endpoint in key id is invalid");
-                } else if (Strings.isNullOrEmpty(keyName)) {
-                    throw new IllegalArgumentException("Key name in key id is invalid");
-                } else if(Strings.isNullOrEmpty(version)) {
-                    throw new IllegalArgumentException("Key version in key id is invalid");
-                }
-            } catch (MalformedURLException e) {
-                throw new IllegalArgumentException("The key identifier is malformed", e);
-            }
-        } else {
+        if(ImplUtils.isNullOrEmpty(keyId)) {
             throw new IllegalArgumentException("Key Id is invalid");
+        }
+        try {
+            URL url = new URL(keyId);
+            String[] tokens = url.getPath().split("/");
+            String endpoint = url.getProtocol() + "://" + url.getHost();
+            String keyName = (tokens.length >= 3 ? tokens[2] : null);
+            version = (tokens.length >= 4 ? tokens[3] : null);
+            if(Strings.isNullOrEmpty(endpoint)) {
+                throw new IllegalArgumentException("Key endpoint in key id is invalid");
+            } else if (Strings.isNullOrEmpty(keyName)) {
+                throw new IllegalArgumentException("Key name in key id is invalid");
+            } else if(Strings.isNullOrEmpty(version)) {
+                throw new IllegalArgumentException("Key version in key id is invalid");
+            }
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("The key identifier is malformed", e);
         }
     }
 
     private boolean checkKeyPermissions(List<KeyOperation> operations, KeyOperation keyOperation) {
-        if (operations.contains(keyOperation)) {
-            return true;
-        }
-        return false;
+        return operations.contains(keyOperation);
     }
 
     private boolean ensureValidKeyAvailable() {

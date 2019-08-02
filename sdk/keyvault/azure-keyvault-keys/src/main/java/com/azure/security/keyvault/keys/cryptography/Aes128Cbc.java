@@ -8,7 +8,7 @@ class Aes128Cbc extends AesCbc {
     private static final int KEY_SIZE = 128;
     public static final String ALGORITHM_NAME = "A128CBC";
 
-    public Aes128Cbc() {
+    Aes128Cbc() {
         super(ALGORITHM_NAME, KEY_SIZE);
     }
 }

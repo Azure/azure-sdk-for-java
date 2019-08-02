@@ -5,6 +5,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.implementation.util.ImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
@@ -19,11 +20,11 @@ import java.util.Objects;
  */
 public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
-    private static final String BEARER_TOKEP_REFIX = "Bearer ";
+    private static final String BEARER_TOKEN_PREFIX = "Bearer ";
     private static final String AUTHORIZATION = "Authorization";
     private final ScopeTokenCache cache;
 
-    private TokenCredential credential;
+    private final TokenCredential credential;
 
     /**
      * Creates KeyVaultCredentialPolicy.
@@ -46,38 +47,35 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return next.clone().process()
-                // Ignore body
-                .doOnNext(HttpResponse::close)
-                .map(res -> res.headerValue(WWW_AUTHENTICATE))
-                .map(header -> extractChallenge(header, BEARER_TOKEP_REFIX))
-                .flatMap(map -> {
-                    cache.scopes(map.get("resource")+"/.default");
-                    return cache.getToken();
-                })
-                .flatMap(token -> {
-                    context.httpRequest().header(AUTHORIZATION, BEARER_TOKEP_REFIX + token.token());
-                    return next.process();
-                });
+            // Ignore body
+            .doOnNext(HttpResponse::close)
+            .map(res -> res.headerValue(WWW_AUTHENTICATE))
+            .map(header -> extractChallenge(header, BEARER_TOKEN_PREFIX))
+            .flatMap(map -> {
+                cache.scopes(map.get("resource") + "/.default");
+                return cache.getToken();
+            })
+            .flatMap(token -> {
+                context.httpRequest().header(AUTHORIZATION, BEARER_TOKEN_PREFIX + token.token());
+                return next.process();
+            });
     }
 
     /**
      * Extracts the challenge off the authentication header.
      *
-     * @param authenticateHeader
-     *            the authentication header containing all the challenges.
-     * @param authChallengePrefix
-     *            the authentication challenge name.
+     * @param authenticateHeader The authentication header containing all the challenges.
+     * @param authChallengePrefix The authentication challenge name.
      * @return a challenge map.
      */
     private static Map<String, String> extractChallenge(String authenticateHeader, String authChallengePrefix) {
         if (!isValidChallenge(authenticateHeader, authChallengePrefix)) {
             return null;
         }
-
         authenticateHeader = authenticateHeader.toLowerCase().replace(authChallengePrefix.toLowerCase(), "");
 
         String[] challenges = authenticateHeader.split(", ");
-        Map<String, String> challengeMap = new HashMap<String, String>();
+        Map<String, String> challengeMap = new HashMap<>();
         for (String pair : challenges) {
             String[] keyValue = pair.split("=");
             challengeMap.put(keyValue[0].replaceAll("\"", ""), keyValue[1].replaceAll("\"", ""));
@@ -85,45 +83,15 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
         return challengeMap;
     }
 
-
-    private String parseWWWAuthenticate(String wwwAuthenticate) {
-        // Parses an authentication message like:
-        // ```
-        // Bearer authorization="some_authorization", resource="https://some.url"
-        // ```
-        String[] authenticateArray = wwwAuthenticate.split(" ");
-
-        // Remove the "Bearer" piece
-        authenticateArray[0] = "";
-
-        // Split the KV comma-separated list
-        String[] commaSep = String.join("", authenticateArray).split(",");
-        for (String item : commaSep) {
-            // Split the key/value pairs
-            String[] kv = item.split("=");
-            if (kv[0].trim() == "resource") {
-                // Remove the quotations around the string
-                String resource = kv[1].trim().replaceAll("[\'\"]+/g", "");
-                return resource;
-            }
-        }
-        return "";
-    }
-
     /**
      * Verifies whether a challenge is bearer or not.
      *
-     * @param authenticateHeader
-     *            the authentication header containing all the challenges.
-     * @param authChallengePrefix
-     *            the authentication challenge name.
-     * @return
+     * @param authenticateHeader The authentication header containing all the challenges.
+     * @param authChallengePrefix The authentication challenge name.
+     * @return A boolean indicating tha challenge is valid or not.
      */
     private static boolean isValidChallenge(String authenticateHeader, String authChallengePrefix) {
-        if (authenticateHeader != null && !authenticateHeader.isEmpty()
-                && authenticateHeader.toLowerCase().startsWith(authChallengePrefix.toLowerCase())) {
-            return true;
-        }
-        return false;
+        return (!ImplUtils.isNullOrEmpty(authenticateHeader)
+            && authenticateHeader.toLowerCase().startsWith(authChallengePrefix.toLowerCase()));
     }
 }

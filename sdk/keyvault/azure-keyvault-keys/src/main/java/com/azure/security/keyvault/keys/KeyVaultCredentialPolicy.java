@@ -5,6 +5,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.implementation.util.ImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
@@ -23,7 +24,7 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
     private static final String AUTHORIZATION = "Authorization";
     private final ScopeTokenCache cache;
 
-    private TokenCredential credential;
+    private final TokenCredential credential;
 
     /**
      * Creates KeyVaultCredentialPolicy.
@@ -46,18 +47,18 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return next.clone().process()
-                // Ignore body
-                .doOnNext(HttpResponse::close)
-                .map(res -> res.headerValue(WWW_AUTHENTICATE))
-                .map(header -> extractChallenge(header, BEARER_TOKEN_PREFIX))
-                .flatMap(map -> {
-                    cache.scopes(map.get("resource") + "/.default");
-                    return cache.getToken();
-                })
-                .flatMap(token -> {
-                    context.httpRequest().header(AUTHORIZATION, BEARER_TOKEN_PREFIX + token.token());
-                    return next.process();
-                });
+            // Ignore body
+            .doOnNext(HttpResponse::close)
+            .map(res -> res.headerValue(WWW_AUTHENTICATE))
+            .map(header -> extractChallenge(header, BEARER_TOKEN_PREFIX))
+            .flatMap(map -> {
+                cache.scopes(map.get("resource") + "/.default");
+                return cache.getToken();
+            })
+            .flatMap(token -> {
+                context.httpRequest().header(AUTHORIZATION, BEARER_TOKEN_PREFIX + token.token());
+                return next.process();
+            });
     }
 
     /**
@@ -85,17 +86,12 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
     /**
      * Verifies whether a challenge is bearer or not.
      *
-     * @param authenticateHeader
-     *            the authentication header containing all the challenges.
-     * @param authChallengePrefix
-     *            the authentication challenge name.
-     * @return
+     * @param authenticateHeader The authentication header containing all the challenges.
+     * @param authChallengePrefix The authentication challenge name.
+     * @return A boolean indicating tha challenge is valid or not.
      */
     private static boolean isValidChallenge(String authenticateHeader, String authChallengePrefix) {
-        if (authenticateHeader != null && !authenticateHeader.isEmpty()
-                && authenticateHeader.toLowerCase().startsWith(authChallengePrefix.toLowerCase())) {
-            return true;
-        }
-        return false;
+        return (!ImplUtils.isNullOrEmpty(authenticateHeader)
+            && authenticateHeader.toLowerCase().startsWith(authChallengePrefix.toLowerCase()));
     }
 }
