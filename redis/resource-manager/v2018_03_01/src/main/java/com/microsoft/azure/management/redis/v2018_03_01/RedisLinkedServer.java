@@ -21,7 +21,7 @@ public class RedisLinkedServer {
     private String id;
 
     /**
-     * Get the id value.
+     * Get linked server Id.
      *
      * @return the id value
      */

@@ -15,37 +15,42 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class NodeStateCounts {
     /**
+     * Idle node count.
      * Number of compute nodes in idle state.
      */
     @JsonProperty(value = "idleNodeCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer idleNodeCount;
 
     /**
+     * Running node count.
      * Number of compute nodes which are running jobs.
      */
     @JsonProperty(value = "runningNodeCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer runningNodeCount;
 
     /**
+     * Preparing node count.
      * Number of compute nodes which are being prepared.
      */
     @JsonProperty(value = "preparingNodeCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer preparingNodeCount;
 
     /**
-     * Number of compute nodes which are unusable.
+     * Unusable node count.
+     * Number of compute nodes which are in unusable state.
      */
     @JsonProperty(value = "unusableNodeCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer unusableNodeCount;
 
     /**
+     * Leaving node count.
      * Number of compute nodes which are leaving the cluster.
      */
     @JsonProperty(value = "leavingNodeCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer leavingNodeCount;
 
     /**
-     * Get the idleNodeCount value.
+     * Get number of compute nodes in idle state.
      *
      * @return the idleNodeCount value
      */
@@ -54,7 +59,7 @@ public class NodeStateCounts {
     }
 
     /**
-     * Get the runningNodeCount value.
+     * Get number of compute nodes which are running jobs.
      *
      * @return the runningNodeCount value
      */
@@ -63,7 +68,7 @@ public class NodeStateCounts {
     }
 
     /**
-     * Get the preparingNodeCount value.
+     * Get number of compute nodes which are being prepared.
      *
      * @return the preparingNodeCount value
      */
@@ -72,7 +77,7 @@ public class NodeStateCounts {
     }
 
     /**
-     * Get the unusableNodeCount value.
+     * Get number of compute nodes which are in unusable state.
      *
      * @return the unusableNodeCount value
      */
@@ -81,7 +86,7 @@ public class NodeStateCounts {
     }
 
     /**
-     * Get the leavingNodeCount value.
+     * Get number of compute nodes which are leaving the cluster.
      *
      * @return the leavingNodeCount value
      */

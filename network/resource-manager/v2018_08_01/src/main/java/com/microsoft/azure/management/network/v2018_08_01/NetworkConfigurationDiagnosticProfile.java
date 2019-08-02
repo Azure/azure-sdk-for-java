@@ -41,7 +41,7 @@ public class NetworkConfigurationDiagnosticProfile {
     private String destination;
 
     /**
-     * Traffice destination port. Accepted values are '*', port (for example,
+     * Traffic destination port. Accepted values are '*', port (for example,
      * 3389) and port range (for example, 80-100).
      */
     @JsonProperty(value = "destinationPort", required = true)
@@ -128,7 +128,7 @@ public class NetworkConfigurationDiagnosticProfile {
     }
 
     /**
-     * Get traffice destination port. Accepted values are '*', port (for example, 3389) and port range (for example, 80-100).
+     * Get traffic destination port. Accepted values are '*', port (for example, 3389) and port range (for example, 80-100).
      *
      * @return the destinationPort value
      */
@@ -137,7 +137,7 @@ public class NetworkConfigurationDiagnosticProfile {
     }
 
     /**
-     * Set traffice destination port. Accepted values are '*', port (for example, 3389) and port range (for example, 80-100).
+     * Set traffic destination port. Accepted values are '*', port (for example, 3389) and port range (for example, 80-100).
      *
      * @param destinationPort the destinationPort value to set
      * @return the NetworkConfigurationDiagnosticProfile object itself.

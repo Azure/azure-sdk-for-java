@@ -1,0 +1,32 @@
+# Instructions for CODEOWNERS file format and automatic build failure notifications:
+# https://github.com/Azure/azure-sdk/blob/master/docs/engineering-system/codeowners.md
+
+###########
+# SDK
+###########
+
+# Catch all
+/sdk/ @joshfree @jonathangiles
+
+# Service teams
+/sdk/appconfiguration/       @alzimmermsft @conniey @sima-zhu
+/sdk/core/                   @alzimmermsft @jianghaolu @srnagar @hemanttanwar
+/sdk/cosmos/                 @moderakh @christopheranderson @kushagraThapar
+/sdk/eventhubs/              @conniey @srnagar @mssfang
+/sdk/identity/               @jianghaolu @g2vinay @hemanttanwar
+/sdk/keyvault/               @g2vinay @samvaity
+/sdk/servicebus/             @yvgopal @nemakam
+/sdk/tracing/                @samvaity @alzimmermsft
+
+/sdk/storage/                @rickle-msft @jaschrep-msft @alzimmermsft @sima-zhu
+
+# Management Plane
+/**/resource-manager/        @yaohaizh
+
+###########
+# Eng Sys
+###########
+/eng/   @weshaggard @mitchdenny @danieljurek
+/eng/code-quality-reports/ @mssfang @JonathanGiles
+/**/tests.yml   @danieljurek
+/**/ci.yml      @mitchdenny

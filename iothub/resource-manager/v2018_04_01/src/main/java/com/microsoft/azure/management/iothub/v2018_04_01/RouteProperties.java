@@ -55,7 +55,7 @@ public class RouteProperties {
     private boolean isEnabled;
 
     /**
-     * Get the name value.
+     * Get the name of the route. The name can only include alphanumeric characters, periods, underscores, hyphens, has a maximum length of 64 characters, and must be unique.
      *
      * @return the name value
      */
@@ -64,7 +64,7 @@ public class RouteProperties {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the route. The name can only include alphanumeric characters, periods, underscores, hyphens, has a maximum length of 64 characters, and must be unique.
      *
      * @param name the name value to set
      * @return the RouteProperties object itself.
@@ -75,7 +75,7 @@ public class RouteProperties {
     }
 
     /**
-     * Get the source value.
+     * Get the source that the routing rule is to be applied to, such as DeviceMessages. Possible values include: 'Invalid', 'DeviceMessages', 'TwinChangeEvents', 'DeviceLifecycleEvents', 'DeviceJobLifecycleEvents'.
      *
      * @return the source value
      */
@@ -84,7 +84,7 @@ public class RouteProperties {
     }
 
     /**
-     * Set the source value.
+     * Set the source that the routing rule is to be applied to, such as DeviceMessages. Possible values include: 'Invalid', 'DeviceMessages', 'TwinChangeEvents', 'DeviceLifecycleEvents', 'DeviceJobLifecycleEvents'.
      *
      * @param source the source value to set
      * @return the RouteProperties object itself.
@@ -95,7 +95,7 @@ public class RouteProperties {
     }
 
     /**
-     * Get the condition value.
+     * Get the condition that is evaluated to apply the routing rule. If no condition is provided, it evaluates to true by default. For grammar, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language.
      *
      * @return the condition value
      */
@@ -104,7 +104,7 @@ public class RouteProperties {
     }
 
     /**
-     * Set the condition value.
+     * Set the condition that is evaluated to apply the routing rule. If no condition is provided, it evaluates to true by default. For grammar, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language.
      *
      * @param condition the condition value to set
      * @return the RouteProperties object itself.
@@ -115,7 +115,7 @@ public class RouteProperties {
     }
 
     /**
-     * Get the endpointNames value.
+     * Get the list of endpoints to which messages that satisfy the condition are routed. Currently only one endpoint is allowed.
      *
      * @return the endpointNames value
      */
@@ -124,7 +124,7 @@ public class RouteProperties {
     }
 
     /**
-     * Set the endpointNames value.
+     * Set the list of endpoints to which messages that satisfy the condition are routed. Currently only one endpoint is allowed.
      *
      * @param endpointNames the endpointNames value to set
      * @return the RouteProperties object itself.
@@ -135,7 +135,7 @@ public class RouteProperties {
     }
 
     /**
-     * Get the isEnabled value.
+     * Get used to specify whether a route is enabled.
      *
      * @return the isEnabled value
      */
@@ -144,7 +144,7 @@ public class RouteProperties {
     }
 
     /**
-     * Set the isEnabled value.
+     * Set used to specify whether a route is enabled.
      *
      * @param isEnabled the isEnabled value to set
      * @return the RouteProperties object itself.

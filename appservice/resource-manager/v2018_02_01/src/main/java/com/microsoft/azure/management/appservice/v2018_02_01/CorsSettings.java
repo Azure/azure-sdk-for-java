@@ -24,6 +24,14 @@ public class CorsSettings {
     private List<String> allowedOrigins;
 
     /**
+     * Gets or sets whether CORS requests with credentials are allowed. See
+     * https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Requests_with_credentials
+     * for more details.
+     */
+    @JsonProperty(value = "supportCredentials")
+    private Boolean supportCredentials;
+
+    /**
      * Get gets or sets the list of origins that should be allowed to make cross-origin
      calls (for example: http://example.com:12345). Use "*" to allow all.
      *
@@ -42,6 +50,30 @@ public class CorsSettings {
      */
     public CorsSettings withAllowedOrigins(List<String> allowedOrigins) {
         this.allowedOrigins = allowedOrigins;
+        return this;
+    }
+
+    /**
+     * Get gets or sets whether CORS requests with credentials are allowed. See
+     https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Requests_with_credentials
+     for more details.
+     *
+     * @return the supportCredentials value
+     */
+    public Boolean supportCredentials() {
+        return this.supportCredentials;
+    }
+
+    /**
+     * Set gets or sets whether CORS requests with credentials are allowed. See
+     https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Requests_with_credentials
+     for more details.
+     *
+     * @param supportCredentials the supportCredentials value to set
+     * @return the CorsSettings object itself.
+     */
+    public CorsSettings withSupportCredentials(Boolean supportCredentials) {
+        this.supportCredentials = supportCredentials;
         return this;
     }
 

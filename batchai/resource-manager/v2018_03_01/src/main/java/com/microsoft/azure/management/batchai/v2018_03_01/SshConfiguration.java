@@ -30,7 +30,7 @@ public class SshConfiguration {
     private UserAccountSettings userAccountSettings;
 
     /**
-     * Get the publicIPsToAllow value.
+     * Get default value is '*' can be used to match all source IPs. Maximum number of IP ranges that can be specified are 400.
      *
      * @return the publicIPsToAllow value
      */
@@ -39,7 +39,7 @@ public class SshConfiguration {
     }
 
     /**
-     * Set the publicIPsToAllow value.
+     * Set default value is '*' can be used to match all source IPs. Maximum number of IP ranges that can be specified are 400.
      *
      * @param publicIPsToAllow the publicIPsToAllow value to set
      * @return the SshConfiguration object itself.

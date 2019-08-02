@@ -62,31 +62,37 @@ public interface Vault extends HasInner<VaultInner>, Resource, GroupableResource
         }
 
         /**
-         * The stage of the vault update allowing to specify ETag.
+         * The stage of the vault definition allowing to specify ETag.
          */
         interface WithETag {
             /**
              * Specifies eTag.
+             * @param eTag Optional ETag
+             * @return the next definition stage
              */
             WithCreate withETag(String eTag);
         }
 
         /**
-         * The stage of the vault update allowing to specify Properties.
+         * The stage of the vault definition allowing to specify Properties.
          */
         interface WithProperties {
             /**
              * Specifies properties.
+             * @param properties the properties parameter value
+             * @return the next definition stage
              */
             WithCreate withProperties(VaultProperties properties);
         }
 
         /**
-         * The stage of the vault update allowing to specify Sku.
+         * The stage of the vault definition allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku the sku parameter value
+             * @return the next definition stage
              */
             WithCreate withSku(Sku sku);
         }
@@ -110,31 +116,37 @@ public interface Vault extends HasInner<VaultInner>, Resource, GroupableResource
      */
     interface UpdateStages {
         /**
-         * The stage of the vault {0} allowing to specify ETag.
+         * The stage of the vault update allowing to specify ETag.
          */
         interface WithETag {
             /**
              * Specifies eTag.
+             * @param eTag Optional ETag
+             * @return the next update stage
              */
             Update withETag(String eTag);
         }
 
         /**
-         * The stage of the vault {0} allowing to specify Properties.
+         * The stage of the vault update allowing to specify Properties.
          */
         interface WithProperties {
             /**
              * Specifies properties.
+             * @param properties the properties parameter value
+             * @return the next update stage
              */
             Update withProperties(VaultProperties properties);
         }
 
         /**
-         * The stage of the vault {0} allowing to specify Sku.
+         * The stage of the vault update allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku the sku parameter value
+             * @return the next update stage
              */
             Update withSku(Sku sku);
         }
