@@ -70,7 +70,7 @@ public class EventHubClientBuilder {
     private Scheduler scheduler;
     private TransportType transport;
     private String host;
-    private String eventHubPath;
+    private String eventHubName;
     private EventPosition initialEventPosition;
     private PartitionProcessorFactory partitionProcessorFactory;
     private String consumerGroupName;
@@ -125,17 +125,17 @@ public class EventHubClientBuilder {
      *
      * @param connectionString The connection string to use for connecting to the Event Hubs namespace; it is
      *         expected that the shared access key properties are contained in this connection string, but not the Event
-     *         Hub path.
-     * @param eventHubPath The path of the specific Event Hub to connect the client to.
+     *         Hub name.
+     * @param eventHubName The name of the Event Hub to connect the client to.
      * @return The updated {@link EventHubClientBuilder} object.
-     * @throws IllegalArgumentException if {@code connectionString} or {@code eventHubPath} is null or empty.
+     * @throws IllegalArgumentException if {@code connectionString} or {@code eventHubName} is null or empty.
      *         Or, if the {@code connectionString} contains the Event Hub path.
      * @throws AzureException If the shared access signature token credential could not be created using the
      *         connection string.
      */
-    public EventHubClientBuilder connectionString(String connectionString, String eventHubPath) {
-        if (ImplUtils.isNullOrEmpty(eventHubPath)) {
-            throw new IllegalArgumentException("'eventHubPath' cannot be null or empty");
+    public EventHubClientBuilder connectionString(String connectionString, String eventHubName) {
+        if (ImplUtils.isNullOrEmpty(eventHubName)) {
+            throw new IllegalArgumentException("'eventHubName' cannot be null or empty");
         }
 
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
@@ -154,7 +154,7 @@ public class EventHubClientBuilder {
                     + " 'EntityPath' in it.", properties.eventHubName()));
         }
 
-        return credential(properties.endpoint().getHost(), eventHubPath, tokenCredential);
+        return credential(properties.endpoint().getHost(), eventHubName, tokenCredential);
     }
 
     /**
@@ -176,26 +176,26 @@ public class EventHubClientBuilder {
      *
      * @param host The fully qualified host name for the Event Hubs namespace. This is likely to be similar to
      *         {@literal "{your-namespace}.servicebus.windows.net}".
-     * @param eventHubPath The path of the specific Event Hub to connect the client to.
+     * @param eventHubName The name of the Event Hub to connect the client to.
      * @param credential The token credential to use for authorization. Access controls may be specified by the
      *         Event Hubs namespace or the requested Event Hub, depending on Azure configuration.
      * @return The updated {@link EventHubClientBuilder} object.
-     * @throws IllegalArgumentException if {@code host} or {@code eventHubPath} is null or empty.
+     * @throws IllegalArgumentException if {@code host} or {@code eventHubName} is null or empty.
      * @throws NullPointerException if {@code credentials} is null.
      */
-    public EventHubClientBuilder credential(String host, String eventHubPath, TokenCredential credential) {
+    public EventHubClientBuilder credential(String host, String eventHubName, TokenCredential credential) {
         if (ImplUtils.isNullOrEmpty(host)) {
             throw new IllegalArgumentException("'host' cannot be null or empty");
         }
-        if (ImplUtils.isNullOrEmpty(eventHubPath)) {
-            throw new IllegalArgumentException("'eventHubPath' cannot be null or empty.");
+        if (ImplUtils.isNullOrEmpty(eventHubName)) {
+            throw new IllegalArgumentException("'eventHubName' cannot be null or empty.");
         }
 
         Objects.requireNonNull(credential);
 
         this.host = host;
         this.credentials = credential;
-        this.eventHubPath = eventHubPath;
+        this.eventHubName = eventHubName;
         return this;
     }
 
@@ -310,7 +310,7 @@ public class EventHubClientBuilder {
         final CBSAuthorizationType authorizationType = credentials instanceof EventHubSharedAccessKeyCredential
             ? CBSAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CBSAuthorizationType.JSON_WEB_TOKEN;
-        final ConnectionOptions parameters = new ConnectionOptions(host, eventHubPath, credentials, authorizationType,
+        final ConnectionOptions parameters = new ConnectionOptions(host, eventHubName, credentials, authorizationType,
             transport, retryOptions, proxyConfiguration, scheduler);
 
         return new EventHubAsyncClient(parameters, provider, handlerProvider);
@@ -422,6 +422,6 @@ public class EventHubClientBuilder {
                 : this.initialEventPosition;
 
         return new EventProcessorAsyncClient(buildAsyncClient(), this.consumerGroupName,
-            this.partitionProcessorFactory, initialEventPosition, partitionManager, eventHubPath);
+            this.partitionProcessorFactory, initialEventPosition, partitionManager, eventHubName);
     }
 }

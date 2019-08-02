@@ -95,7 +95,7 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
         for (String partitionId : expectedPartitionIds) {
             StepVerifier.create(client.getPartitionProperties(partitionId))
                 .assertNext(properties -> {
-                    Assert.assertEquals(eventHubName, properties.eventHubPath());
+                    Assert.assertEquals(eventHubName, properties.eventHubName());
                     Assert.assertEquals(partitionId, properties.id());
                 })
                 .verifyComplete();
@@ -115,8 +115,8 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
 
         // Assert
         StepVerifier.create(partitionProperties)
-            .assertNext(properties -> Assert.assertEquals(eventHubName, properties.eventHubPath()))
-            .assertNext(properties -> Assert.assertEquals(eventHubName, properties.eventHubPath()))
+            .assertNext(properties -> Assert.assertEquals(eventHubName, properties.eventHubName()))
+            .assertNext(properties -> Assert.assertEquals(eventHubName, properties.eventHubName()))
             .verifyComplete();
     }
 
@@ -174,10 +174,11 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
             .verify();
     }
 
-    private static ConnectionStringProperties getCredentials(URI endpoint, String eventHubPath, String sasKeyName, String sasKeyValue) {
+    private static ConnectionStringProperties getCredentials(URI endpoint, String eventHubName, String sasKeyName,
+                                                             String sasKeyValue) {
         final String connectionString = String.format(Locale.ROOT,
             "Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s;", endpoint.toString(),
-            sasKeyName, sasKeyValue, eventHubPath);
+            sasKeyName, sasKeyValue, eventHubName);
 
         return new ConnectionStringProperties(connectionString);
     }

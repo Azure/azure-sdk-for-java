@@ -12,7 +12,7 @@ import java.time.Instant;
  */
 @Immutable
 public final class PartitionProperties {
-    private final String eventHubPath;
+    private final String eventHubName;
     private final String id;
     private final long beginningSequenceNumber;
     private final long lastEnqueuedSequenceNumber;
@@ -21,14 +21,14 @@ public final class PartitionProperties {
     private final boolean isEmpty;
 
     PartitionProperties(
-        final String eventHubPath,
+        final String eventHubName,
         final String id,
         final long beginningSequenceNumber,
         final long lastEnqueuedSequenceNumber,
         final String lastEnqueuedOffset,
         final Instant lastEnqueuedTime,
         final boolean isEmpty) {
-        this.eventHubPath = eventHubPath;
+        this.eventHubName = eventHubName;
         this.id = id;
         this.beginningSequenceNumber = beginningSequenceNumber;
         this.lastEnqueuedSequenceNumber = lastEnqueuedSequenceNumber;
@@ -38,12 +38,12 @@ public final class PartitionProperties {
     }
 
     /**
-     * Gets the Event Hub path that contains the partition, relative to the Event Hubs namespace that contains it.
+     * Gets the name of the Event Hub that contains the partition.
      *
-     * @return The Event Hub path that contains the partition.
+     * @return The name of the Event Hub that contains the partition.
      */
-    public String eventHubPath() {
-        return this.eventHubPath;
+    public String eventHubName() {
+        return this.eventHubName;
     }
 
     /**
@@ -77,8 +77,8 @@ public final class PartitionProperties {
      * Gets the offset of the last enqueued message in the partition's stream.
      *
      * <p>
-     * The offset is the relative position for event in the context of the stream. The offset should not be considered
-     * a stable value, as the same offset may refer to a different event as events reach the age limit for retention and
+     * The offset is the relative position for event in the context of the stream. The offset should not be considered a
+     * stable value, as the same offset may refer to a different event as events reach the age limit for retention and
      * are no longer visible within the stream.
      * </p>
      *

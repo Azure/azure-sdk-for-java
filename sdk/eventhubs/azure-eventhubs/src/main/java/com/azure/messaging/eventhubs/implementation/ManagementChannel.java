@@ -60,7 +60,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
     private final TokenResourceProvider audienceProvider;
 
     /**
-     * Creates an instance that is connected to the {@code eventHubPath}'s management node.
+     * Creates an instance that is connected to the {@code eventHubName}'s management node.
      *
      * @param eventHubName The name of the Event Hub.
      * @param tokenProvider A provider that generates authorization tokens.

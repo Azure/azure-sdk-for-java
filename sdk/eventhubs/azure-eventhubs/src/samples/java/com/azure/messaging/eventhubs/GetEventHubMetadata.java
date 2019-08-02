@@ -40,7 +40,7 @@ public class GetEventHubMetadata {
                 System.out.printf(
                     "Event Hub Name: %s; Partition Id: %s; Is partition empty? %s; First Sequence Number: %s; "
                         + "Last Enqueued Time: %s; Last Enqueued Sequence Number: %s; Last Enqueued Offset: %s",
-                    properties.eventHubPath(), properties.id(), properties.isEmpty(),
+                    properties.eventHubName(), properties.id(), properties.isEmpty(),
                     properties.beginningSequenceNumber(),
                     properties.lastEnqueuedTime(),
                     properties.lastEnqueuedSequenceNumber(),
