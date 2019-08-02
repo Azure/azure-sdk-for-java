@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class EventProcessorSample {
 
-    private static final String EH_CONNECTION_STRING = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
+    private static final String EH_CONNECTION_STRING = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
     /**
      * Main method to demonstrate starting and stopping a {@link EventProcessorAsyncClient}.
