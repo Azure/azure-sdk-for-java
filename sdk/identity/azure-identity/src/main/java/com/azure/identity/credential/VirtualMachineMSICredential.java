@@ -4,12 +4,14 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.identity.IdentityClient;
+import com.azure.core.implementation.annotation.Immutable;
+import com.azure.identity.implementation.IdentityClient;
 import reactor.core.publisher.Mono;
 
 /**
  * The Managed Service Identity credential for Virtual Machines.
  */
+@Immutable
 class VirtualMachineMSICredential {
 
     private final IdentityClient identityClient;
@@ -17,9 +19,11 @@ class VirtualMachineMSICredential {
 
     /**
      * Creates an instance of VirtualMachineMSICredential.
+     * @param clientId the client id of user assigned or system assigned identity
      * @param identityClient the identity client to acquire a token with.
      */
-    VirtualMachineMSICredential(IdentityClient identityClient) {
+    VirtualMachineMSICredential(String clientId, IdentityClient identityClient) {
+        this.clientId = clientId;
         this.identityClient = identityClient;
     }
 
@@ -31,22 +35,11 @@ class VirtualMachineMSICredential {
     }
 
     /**
-     * Specifies the client id of user assigned or system assigned identity.
-     *
-     * @param clientId the client id
-     * @return VirtualMachineMSICredential
-     */
-    public VirtualMachineMSICredential clientId(String clientId) {
-        this.clientId = clientId;
-        return this;
-    }
-
-    /**
      * Gets the token for a list of scopes.
      * @param scopes the scopes to get token for
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticate(String[] scopes) {
-        return identityClient.authenticateToIMDSEndpoint(clientId(), scopes);
+        return identityClient.authenticateToIMDSEndpoint(scopes);
     }
 }

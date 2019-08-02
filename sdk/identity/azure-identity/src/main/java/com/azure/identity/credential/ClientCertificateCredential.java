@@ -4,65 +4,51 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.identity.IdentityClient;
-import com.azure.identity.IdentityClientOptions;
+import com.azure.core.credentials.TokenCredential;
+import com.azure.core.implementation.annotation.Immutable;
+import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientBuilder;
+import com.azure.identity.implementation.IdentityClientOptions;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 /**
  * An AAD credential that acquires a token with a client certificate for an AAD application.
+ *
+ * <p><strong>Sample: Construct a simple ClientCertificateCredential</strong></p>
+ * {@codesnippet com.azure.identity.credential.clientcertificatecredential.construct}
+ *
+ * <p><strong>Sample: Construct a ClientCertificateCredential behind a proxy</strong></p>
+ * {@codesnippet com.azure.identity.credential.clientcertificatecredential.constructwithproxy}
  */
-public class ClientCertificateCredential extends AadCredential<ClientCertificateCredential> {
+@Immutable
+public class ClientCertificateCredential implements TokenCredential {
     private String clientCertificate;
     private String clientCertificatePassword;
     private final IdentityClient identityClient;
 
     /**
      * Creates a ClientSecretCredential with default identity client options.
-     */
-    public ClientCertificateCredential() {
-        this(new IdentityClientOptions());
-    }
-
-    /**
-     * Creates a ClientSecretCredential with default identity client options.
+     * @param tenantId the tenant ID of the application
+     * @param clientId the client ID of the application
+     * @param certificatePath the PEM file / PFX file containing the certificate
+     * @param certificatePassword the password protecting the PFX file
      * @param identityClientOptions the options to configure the identity client
      */
-    public ClientCertificateCredential(IdentityClientOptions identityClientOptions) {
-        this.identityClient = new IdentityClient(identityClientOptions);
-    }
-
-    /**
-     * Sets the client certificate for authenticating to AAD.
-     * @param certificatePath the PEM file containing the certificate
-     * @return the credential itself
-     */
-    public ClientCertificateCredential pemCertificate(String certificatePath) {
+    ClientCertificateCredential(String tenantId, String clientId, String certificatePath, String certificatePassword, IdentityClientOptions identityClientOptions) {
+        Objects.requireNonNull(certificatePath);
         this.clientCertificate = certificatePath;
-        return this;
-    }
-
-    /**
-     * Sets the client certificate for authenticating to AAD.
-     * @param certificatePath the password protected PFX file containing the certificate
-     * @param clientCertificatePassword the password protecting the PFX file
-     * @return the credential itself
-     */
-    public ClientCertificateCredential pfxCertificate(String certificatePath, String clientCertificatePassword) {
-        this.clientCertificate = certificatePath;
-        this.clientCertificatePassword = clientCertificatePassword;
-        return this;
+        this.clientCertificatePassword = certificatePassword;
+        identityClient = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(identityClientOptions).build();
     }
 
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
-        validate();
-        if (clientCertificate == null) {
-            return Mono.error(new IllegalArgumentException("Non-null value must be provided for clientCertificate property in ClientCertificateCredential"));
-        }
         if (clientCertificatePassword != null) {
-            return identityClient.authenticateWithPfxCertificate(tenantId(), clientId(), clientCertificate, clientCertificatePassword, scopes);
+            return identityClient.authenticateWithPfxCertificate(clientCertificate, clientCertificatePassword, scopes);
         } else {
-            return identityClient.authenticateWithPemCertificate(tenantId(), clientId(), clientCertificate, scopes);
+            return identityClient.authenticateWithPemCertificate(clientCertificate, scopes);
         }
     }
 }

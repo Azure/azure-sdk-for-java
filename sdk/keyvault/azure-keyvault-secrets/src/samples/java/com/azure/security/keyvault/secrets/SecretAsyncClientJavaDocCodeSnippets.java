@@ -9,10 +9,10 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
-import reactor.util.context.Context;
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
 import com.azure.security.keyvault.secrets.models.SecretBase;
+import reactor.util.context.Context;
 
 import java.time.OffsetDateTime;
 
@@ -37,7 +37,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         SecretAsyncClient keyClient = new SecretClientBuilder()
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .endpoint("https://myvault.azure.net/")
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .addPolicy(new RecordNetworkCallPolicy(networkData))
             .httpClient(HttpClient.createDefault())
             .buildAsyncClient();
@@ -53,7 +53,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.secrets.async.secretclient.construct
         SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("https://myvault.vault.azure.net/")
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .buildAsyncClient();
@@ -72,7 +72,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
             .pipeline(pipeline)
             .endpoint("https://myvault.azure.net/")
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.secrets.async.secretclient.pipeline.instantiation
         return secretAsyncClient;
