@@ -40,11 +40,10 @@ public final class BlobRange {
      * @param count
      *          the number of bytes to download
      */
-    public BlobRange(long offset, long count) {
+    public BlobRange(long offset, Long count) {
         this(offset);
-        if (count < 0) {
-            throw new IllegalArgumentException(
-                "BlobRange count must be greater than or equal to 0 if specified.");
+        if (count != null || count < 0) {
+            throw new IllegalArgumentException("BlobRange count must be greater than or equal to 0 if specified.");
         }
         this.count = count;
     }

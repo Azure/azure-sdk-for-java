@@ -8,13 +8,16 @@ package com.azure.storage.blob;
  * set if it is not desired to confine the sas permissions to an IP range. Please refer to
  * {@link AccountSASSignatureValues} or {@link ServiceSASSignatureValues} for more information.
  */
-final class IPRange {
+public final class IPRange {
 
     private String ipMin;
 
     private String ipMax;
 
-    IPRange() {
+    /**
+     * Constructs an empty IPRange.
+     */
+    public IPRange() {
     }
 
     /**
@@ -36,14 +39,17 @@ final class IPRange {
     }
 
     /**
-     * The minimum IP address of the range.
+     * @return the minimum IP address of the range.
      */
     public String ipMin() {
         return ipMin;
     }
 
     /**
-     * The minimum IP address of the range.
+     * Sets the minimum IP address of the range.
+     *
+     * @param ipMin Minimum IP of the range
+     * @return the updated IPRange object
      */
     public IPRange ipMin(String ipMin) {
         this.ipMin = ipMin;
@@ -51,14 +57,18 @@ final class IPRange {
     }
 
     /**
-     * The maximum IP address of the range.
+     *
+     * @return the maximum IP address of the range.
      */
     public String ipMax() {
         return ipMax;
     }
 
     /**
-     * The maximum IP address of the range.
+     * Sets the maximum IP address of the range.
+     *
+     * @param ipMax Maximum IP of the range
+     * @return the updated IPRange object
      */
     public IPRange ipMax(String ipMax) {
         this.ipMax = ipMax;

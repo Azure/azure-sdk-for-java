@@ -39,9 +39,8 @@ public final class DownloadAsyncResponse {
 
 
     // The constructor is package-private because customers should not be creating their own responses.
-    // TODO (unknown): resolve comment vs code mismatch
     DownloadAsyncResponse(ResponseBase<BlobDownloadHeaders, Flux<ByteBuf>> response,
-            HTTPGetterInfo info, Function<HTTPGetterInfo, Mono<DownloadAsyncResponse>> getter) {
+                          HTTPGetterInfo info, Function<HTTPGetterInfo, Mono<DownloadAsyncResponse>> getter) {
         Utility.assertNotNull("getter", getter);
         Utility.assertNotNull("info", info);
         Utility.assertNotNull("info.eTag", info.eTag());
@@ -55,10 +54,8 @@ public final class DownloadAsyncResponse {
      * {@code options.maxRetryRequests > 0}. If retries are enabled, if a connection fails while reading, the stream
      * will make additional requests to reestablish a connection and continue reading.
      *
-     * @param options
-     *         {@link ReliableDownloadOptions}
-     *
-     * @return A {@code Flux} which emits the data as {@code ByteBuffer}s.
+     * @param options {@link ReliableDownloadOptions}
+     * @return A {@link Flux} which emits the data as {@link ByteBuf ByteBufs}
      */
     public Flux<ByteBuf> body(ReliableDownloadOptions options) {
         ReliableDownloadOptions optionsReal = options == null ? new ReliableDownloadOptions() : options;
@@ -86,14 +83,11 @@ public final class DownloadAsyncResponse {
             call time rather than at subscription time.
              */
             try {
-                // Get a new response and try reading from it.
-                return getter.apply(this.info)
-                        .flatMapMany(response ->
-                            /*
-                            Do not compound the number of retries by passing in another set of downloadOptions; just get
-                            the raw body.
-                             */
-                            this.applyReliableDownload(this.rawResponse.value(), retryCount, options));
+                /*Get a new response and try reading from it.
+                Do not compound the number of retries by passing in another set of downloadOptions; just get
+                the raw body.
+                */
+                return getter.apply(this.info).flatMapMany(response -> this.applyReliableDownload(this.rawResponse.value(), retryCount, options));
             } catch (Exception e) {
                 // If the getter fails, return the getter failure to the user.
                 return Flux.error(e);
@@ -101,23 +95,20 @@ public final class DownloadAsyncResponse {
         }
     }
 
-    private Flux<ByteBuf> applyReliableDownload(Flux<ByteBuf> data,
-            int currentRetryCount, ReliableDownloadOptions options) {
-        return data
-                .doOnNext(buffer -> {
-                    /*
-                    Update how much data we have received in case we need to retry and propagate to the user the data we
-                    have received.
-                     */
-                    this.info.offset(this.info.offset() + buffer.readableBytes()); // was `remaining()` in Rx world
-                    if (this.info.count() != null) {
-                        this.info.count(this.info.count() - buffer.readableBytes()); // was `remaining()` in Rx world
-                    }
-                })
-                .onErrorResume(t2 -> {
-                    // Increment the retry count and try again with the new exception.
-                    return tryContinueFlux(t2, currentRetryCount + 1, options);
-                });
+    private Flux<ByteBuf> applyReliableDownload(Flux<ByteBuf> data, int currentRetryCount, ReliableDownloadOptions options) {
+        return data.doOnNext(buffer -> {
+            /*
+            Update how much data we have received in case we need to retry and propagate to the user the data we
+            have received.
+             */
+            this.info.offset(this.info.offset() + buffer.readableBytes()); // was `remaining()` in Rx world
+            if (this.info.count() != null) {
+                this.info.count(this.info.count() - buffer.readableBytes()); // was `remaining()` in Rx world
+            }
+        }).onErrorResume(t2 -> {
+            // Increment the retry count and try again with the new exception.
+            return tryContinueFlux(t2, currentRetryCount + 1, options);
+        });
     }
 
     /**

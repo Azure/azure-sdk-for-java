@@ -115,7 +115,7 @@ public class BlobClientJavaDocCodeSnippets {
         // END: com.azure.storage.blob.BlobClient.download#OutputStream
 
         // BEGIN: com.azure.storage.blob.BlobClient.download#OutputStream-BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration
-        BlobRange range = new BlobRange(1024, 2048);
+        BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
         System.out.printf("Download completed with status %d%n",
@@ -134,7 +134,7 @@ public class BlobClientJavaDocCodeSnippets {
         // END: com.azure.storage.blob.BlobClient.downloadToFile#String
 
         // BEGIN: com.azure.storage.blob.BlobClient.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration
-        BlobRange range = new BlobRange(1024, 2048);
+        BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
         client.downloadToFile(file, range, null, options, null, false, timeout);

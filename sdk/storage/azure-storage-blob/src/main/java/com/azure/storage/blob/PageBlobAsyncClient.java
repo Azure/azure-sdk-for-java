@@ -16,6 +16,7 @@ import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PageBlobAccessConditions;
 import com.azure.storage.blob.models.PageBlobItem;
+import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
@@ -336,7 +337,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the cleared pages.
      */
-    public Flux<PageRange> getPageRanges(BlobRange blobRange) {
+    public Mono<Response<PageList>> getPageRanges(BlobRange blobRange) {
         return this.getPageRanges(blobRange, null);
     }
 
@@ -352,7 +353,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response emitting all the page ranges.
      */
-    public Flux<PageRange> getPageRanges(BlobRange blobRange, BlobAccessConditions accessConditions) {
+    public Mono<Response<PageList>> getPageRanges(BlobRange blobRange, BlobAccessConditions accessConditions) {
         blobRange = blobRange == null ? new BlobRange(0) : blobRange;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
@@ -360,7 +361,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
             null, null, snapshot, null, null, blobRange.toHeaderValue(),
             null, accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(),
             Context.NONE))
-            .flatMapMany(response -> Flux.fromIterable(response.value().pageRange()));
+            .map(response -> new SimpleResponse<>(response, response.value()));
     }
 
     /**
@@ -377,7 +378,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response emitting all the different page ranges.
      */
-    public Flux<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
+    public Mono<Response<PageList>> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
         return this.getPageRangesDiff(blobRange, prevSnapshot, null);
     }
 
@@ -397,7 +398,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response emitting all the different page ranges.
      * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
      */
-    public Flux<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot, BlobAccessConditions accessConditions) {
+    public Mono<Response<PageList>> getPageRangesDiff(BlobRange blobRange, String prevSnapshot, BlobAccessConditions accessConditions) {
         blobRange = blobRange == null ? new BlobRange(0) : blobRange;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
@@ -409,7 +410,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
             null, null, snapshot, null, null, prevSnapshot,
             blobRange.toHeaderValue(), null, accessConditions.leaseAccessConditions(),
             accessConditions.modifiedAccessConditions(), Context.NONE))
-            .flatMapMany(response -> Flux.fromIterable(response.value().pageRange()));
+            .map(response -> new SimpleResponse<>(response, response.value()));
     }
 
     /**
