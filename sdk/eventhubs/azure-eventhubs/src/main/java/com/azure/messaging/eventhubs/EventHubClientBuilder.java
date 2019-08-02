@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.Retry;
+import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.AzureException;
@@ -18,6 +18,7 @@ import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.implementation.ReactorProvider;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ProxyAuthenticationType;
 import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import reactor.core.scheduler.Scheduler;
@@ -27,7 +28,6 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.time.Duration;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -49,7 +49,7 @@ import java.util.Objects;
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.connectionstring#string}
  *
- * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hub with no {@link Retry}, different timeout and new
+ * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hub with no retry, different timeout and new
  * Scheduler</strong></p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.retry-timeout-scheduler}
@@ -60,16 +60,21 @@ import java.util.Objects;
 public class EventHubClientBuilder {
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
+    private static final RetryOptions DEFAULT_RETRY = new RetryOptions()
+        .tryTimeout(ClientConstants.OPERATION_TIMEOUT);
 
     private TokenCredential credentials;
     private Configuration configuration;
-    private Duration timeout;
     private ProxyConfiguration proxyConfiguration;
-    private Retry retry;
+    private RetryOptions retryOptions;
     private Scheduler scheduler;
     private TransportType transport;
     private String host;
     private String eventHubPath;
+    private EventPosition initialEventPosition;
+    private PartitionProcessorFactory partitionProcessorFactory;
+    private String consumerGroupName;
+    private PartitionManager partitionManager;
 
     /**
      * Creates a new instance with the default transport {@link TransportType#AMQP}.
@@ -155,8 +160,8 @@ public class EventHubClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the service client.
      *
-     * If not specified, the default configuration store is used to configure the {@link EventHubAsyncClient}. Use {@link
-     * Configuration#NONE} to bypass using configuration settings during construction.
+     * If not specified, the default configuration store is used to configure the {@link EventHubAsyncClient}. Use
+     * {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to configure the {@link EventHubAsyncClient}.
      * @return The updated {@link EventHubClientBuilder} object.
@@ -232,31 +237,19 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Sets the default operation timeout for operations performed using {@link EventHubAsyncClient} and {@link
-     * EventHubConsumer} such as starting the communication link with the service and sending messages.
+     * Sets the retry policy for {@link EventHubAsyncClient}. If not specified, the default retry options are used.
      *
-     * @param timeout Duration for operation timeout.
+     * @param retryOptions The retry policy to use.
      * @return The updated {@link EventHubClientBuilder} object.
      */
-    public EventHubClientBuilder timeout(Duration timeout) {
-        this.timeout = timeout;
+    public EventHubClientBuilder retry(RetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
         return this;
     }
 
     /**
-     * Sets the retry policy for {@link EventHubAsyncClient}. If not specified, {@link Retry#getDefaultRetry()} is used.
-     *
-     * @param retry The retry policy to use.
-     * @return The updated {@link EventHubClientBuilder} object.
-     */
-    public EventHubClientBuilder retry(Retry retry) {
-        this.retry = retry;
-        return this;
-    }
-
-    /**
-     * Creates a new {@link EventHubAsyncClient} based on options set on this builder. Every time {@code buildAsyncClient()}
-     * is invoked, a new instance of {@link EventHubAsyncClient} is created.
+     * Creates a new {@link EventHubAsyncClient} based on options set on this builder. Every time {@code
+     * buildAsyncClient()} is invoked, a new instance of {@link EventHubAsyncClient} is created.
      *
      * <p>
      * The following options are used if ones are not specified in the builder:
@@ -266,7 +259,7 @@ public class EventHubClientBuilder {
      * is used to provide any shared configuration values. The configuration values read are the {@link
      * BaseConfigurations#HTTP_PROXY}, {@link ProxyConfiguration#PROXY_USERNAME}, and {@link
      * ProxyConfiguration#PROXY_PASSWORD}.</li>
-     * <li>If no retry is specified, {@link Retry#getDefaultRetry() the default retry} is used.</li>
+     * <li>If no retry is specified, the default retry options are used.</li>
      * <li>If no proxy is specified, the builder checks the {@link ConfigurationManager#getConfiguration() global
      * configuration} for a configured proxy, then it checks to see if a system proxy is configured.</li>
      * <li>If no timeout is specified, a {@link ClientConstants#OPERATION_TIMEOUT timeout of one minute} is used.</li>
@@ -293,12 +286,8 @@ public class EventHubClientBuilder {
             connectionString(connectionString);
         }
 
-        if (timeout == null) {
-            timeout = ClientConstants.OPERATION_TIMEOUT;
-        }
-
-        if (retry == null) {
-            retry = Retry.getDefaultRetry();
+        if (retryOptions == null) {
+            retryOptions = DEFAULT_RETRY;
         }
 
         // If the proxy has been configured by the user but they have overridden the TransportType with something that
@@ -321,8 +310,8 @@ public class EventHubClientBuilder {
         final CBSAuthorizationType authorizationType = credentials instanceof EventHubSharedAccessKeyCredential
             ? CBSAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CBSAuthorizationType.JSON_WEB_TOKEN;
-        final ConnectionOptions parameters = new ConnectionOptions(host, eventHubPath, credentials,
-            authorizationType, timeout, transport, retry, proxyConfiguration, scheduler);
+        final ConnectionOptions parameters = new ConnectionOptions(host, eventHubPath, credentials, authorizationType,
+            transport, retryOptions, proxyConfiguration, scheduler);
 
         return new EventHubAsyncClient(parameters, provider, handlerProvider);
     }
@@ -351,5 +340,88 @@ public class EventHubClientBuilder {
         final String password = configuration.get(ProxyConfiguration.PROXY_PASSWORD);
 
         return new ProxyConfiguration(authentication, proxy, username, password);
+    }
+
+    /**
+     * This property must be set for building an {@link EventProcessorAsyncClient}.
+     *
+     * Sets the consumer group name from which the {@link EventProcessorAsyncClient} should consume events from.
+     *
+     * @param consumerGroupName The consumer group name this {@link EventProcessorAsyncClient} should consume events
+     *         from.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder consumerGroupName(String consumerGroupName) {
+        this.consumerGroupName = consumerGroupName;
+        return this;
+    }
+
+    /**
+     * This property can be optionally set when building an {@link EventProcessorAsyncClient}.
+     *
+     * Sets the initial event position. If this property is not set and if checkpoint for a partition doesn't exist,
+     * {@link EventPosition#earliest()} will be used as the initial event position to start consuming events.
+     *
+     * @param initialEventPosition The initial event position.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder initialEventPosition(EventPosition initialEventPosition) {
+        this.initialEventPosition = initialEventPosition;
+        return this;
+    }
+
+    /**
+     * This property must be set when building an {@link EventProcessorAsyncClient}.
+     *
+     * Sets the {@link PartitionManager} the {@link EventProcessorAsyncClient} will use for storing partition
+     * ownership and checkpoint information.
+     *
+     * @param partitionManager Implementation of {@link PartitionManager}.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder partitionManager(PartitionManager partitionManager) {
+        // If this is not set, look for classes implementing PartitionManager interface
+        // in the classpath and use it automatically. (To be implemented)
+        this.partitionManager = partitionManager;
+        return this;
+    }
+
+    /**
+     * This property must be set when building an {@link EventProcessorAsyncClient}.
+     *
+     * Sets the partition processor factory for creating new instance(s) of {@link PartitionProcessor}.
+     *
+     * @param partitionProcessorFactory The factory that creates new processor for each partition.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder partitionProcessorFactory(PartitionProcessorFactory partitionProcessorFactory) {
+        this.partitionProcessorFactory = partitionProcessorFactory;
+        return this;
+    }
+
+    /**
+     * This will create a new {@link EventProcessorAsyncClient} configured with the options set in this builder. Each call
+     * to this method will return a new instance of {@link EventProcessorAsyncClient}.
+     *
+     * <p>
+     * A new instance of {@link EventHubAsyncClient} will be created with configured options by calling the {@link
+     * #buildAsyncClient()} that will be used by the {@link EventProcessorAsyncClient}.
+     * </p>
+     *
+     * <p>
+     * If the {@link #initialEventPosition(EventPosition) initial event position} is not set, all partitions processed by
+     * this {@link EventProcessorAsyncClient} will start processing from {@link EventPosition#earliest() earliest}
+     * available event in the respective partitions.
+     * </p>
+     *
+     * @return A new instance of {@link EventProcessorAsyncClient}.
+     */
+    public EventProcessorAsyncClient buildEventProcessorAsyncClient() {
+        EventPosition initialEventPosition =
+            this.initialEventPosition == null ? EventPosition.earliest()
+                : this.initialEventPosition;
+
+        return new EventProcessorAsyncClient(buildAsyncClient(), this.consumerGroupName,
+            this.partitionProcessorFactory, initialEventPosition, partitionManager, eventHubPath);
     }
 }

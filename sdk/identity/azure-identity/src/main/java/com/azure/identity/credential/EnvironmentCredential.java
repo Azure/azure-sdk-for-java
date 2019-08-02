@@ -32,7 +32,7 @@ public class EnvironmentCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     public EnvironmentCredential(IdentityClientOptions identityClientOptions) {
-        this.configuration = ConfigurationManager.getConfiguration();
+        this.configuration = ConfigurationManager.getConfiguration().clone();
         this.identityClientOptions = identityClientOptions;
     }
 
@@ -42,7 +42,7 @@ public class EnvironmentCredential implements TokenCredential {
             if (configuration.contains(BaseConfigurations.AZURE_CLIENT_ID)
                 && configuration.contains(BaseConfigurations.AZURE_CLIENT_SECRET)
                 && configuration.contains(BaseConfigurations.AZURE_TENANT_ID)) {
-                // TODO: support other clouds
+                // TODO: support other clouds.
                 return new ClientSecretCredential(identityClientOptions)
                     .clientId(configuration.get(BaseConfigurations.AZURE_CLIENT_ID))
                     .clientSecret(configuration.get(BaseConfigurations.AZURE_CLIENT_SECRET))

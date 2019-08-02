@@ -21,9 +21,7 @@ import java.util.Set;
  *  No external dependency exposed in public API
  */
 public class ExternalDependencyExposedCheck extends AbstractCheck {
-    private static final String EXTERNAL_DEPENDENCY_ERROR =
-        "Class ''%s'', is a class from external dependency. You should not use it as a return or method argument type.";
-
+    private static final String EXTERNAL_DEPENDENCY_ERROR = "Class ''%s'', is a class from external dependency. You should not use it as a %s type.";
     private static final Set<String> VALID_DEPENDENCY_SET = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         "java", "com.azure", "reactor", "io.netty.buffer.ByteBuf"
     )));
@@ -51,6 +49,7 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
     public int[] getRequiredTokens() {
         return new int[] {
             TokenTypes.IMPORT,
+            TokenTypes.CLASS_DEF,
             TokenTypes.METHOD_DEF
         };
     }
@@ -68,7 +67,7 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
                 // CLASS_DEF always has MODIFIERS
                 final AccessModifier accessModifier = CheckUtil.getAccessModifierFromModifiersToken(
                     token.findFirstToken(TokenTypes.MODIFIERS));
-                isPublicClass = accessModifier.equals(AccessModifier.PUBLIC);
+                isPublicClass = accessModifier.equals(AccessModifier.PUBLIC) || accessModifier.equals(AccessModifier.PROTECTED);
                 break;
             case TokenTypes.METHOD_DEF:
                 if (!isPublicClass) {
@@ -101,14 +100,14 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
         final DetailAST typeToken = methodDefToken.findFirstToken(TokenTypes.TYPE);
         if (typeToken != null) {
             getInvalidReturnTypes(typeToken).forEach(
-                (token, returnTypeName) -> log(token, String.format(EXTERNAL_DEPENDENCY_ERROR, returnTypeName)));
+                (token, returnTypeName) -> log(token, String.format(EXTERNAL_DEPENDENCY_ERROR, returnTypeName, "return")));
         }
 
         // Checks for the parameters of the method
         final DetailAST parametersToken = methodDefToken.findFirstToken(TokenTypes.PARAMETERS);
         if (parametersToken != null) {
             getInvalidParameterTypes(parametersToken).forEach(
-                (token, returnTypeName) -> log(token, String.format(EXTERNAL_DEPENDENCY_ERROR, returnTypeName)));
+                (token, parameterTypeName) -> log(token, String.format(EXTERNAL_DEPENDENCY_ERROR, parameterTypeName, "method argument")));
         }
     }
 
@@ -134,7 +133,7 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
         // TYPE_ARGUMENTS, add all invalid external types to the map
         final DetailAST typeArgumentsToken = typeToken.findFirstToken(TokenTypes.TYPE_ARGUMENTS);
         if (typeArgumentsToken != null) {
-            invalidReturnTypeMap.putAll(getInvalidTypeFromTypeArguments(typeArgumentsToken));
+            getInvalidParameterType(typeArgumentsToken, invalidReturnTypeMap);
         }
 
         return invalidReturnTypeMap;
@@ -150,61 +149,42 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
         final Map<DetailAST, String> invalidParameterTypesMap = new HashMap<>();
         for (DetailAST ast = parametersTypeToken.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
             if (ast.getType() == TokenTypes.PARAMETER_DEF) {
-                invalidParameterTypesMap.putAll(getInvalidTypeFromTypeArguments(ast.findFirstToken(TokenTypes.TYPE)));
+                getInvalidParameterType(ast.findFirstToken(TokenTypes.TYPE), invalidParameterTypesMap);
             }
         }
         return invalidParameterTypesMap;
     }
 
     /**
-     *  A helper function that checks TYPE AST node. Since both return type and input parameter argument type has
-     *  TYPE AST node under. This function applied to both.
+     *  Get all invalid AST nodes from a given token. DFS tree traversal used to find all invalid nodes.
      *
-     * @param typeArgumentsToken TYPE_ARGUMENTS AST node
-     * @return a map that maps all the invalid TYPE_ARGUMENT node and the type name
+     * @param token TYPE_ARGUMENT, TYPE_ARGUMENTS or TYPE AST node
+     * @return a map that maps all the invalid node and the type name
      */
-    private Map<DetailAST, String> getInvalidTypeFromTypeArguments(DetailAST typeArgumentsToken) {
-        final Map<DetailAST, String> invalidTypesMap = new HashMap<>();
-        if (typeArgumentsToken == null) {
+    private Map<DetailAST, String> getInvalidParameterType(DetailAST token, Map<DetailAST, String> invalidTypesMap) {
+        if (token == null) {
             return invalidTypesMap;
         }
-        // Checks multiple type arguments
-        for (DetailAST ast = typeArgumentsToken.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
-            if (ast.getType() != TokenTypes.TYPE_ARGUMENT) {
-                continue;
-            }
 
-            final String invalidTypeName = getInvalidTypeNameFromTypeArgument(ast);
-            if (invalidTypeName != null) {
-                invalidTypesMap.put(ast, invalidTypeName);
+        for (DetailAST ast = token.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
+            final int tokenType = ast.getType();
+            if (tokenType == TokenTypes.IDENT) {
+                final String identName = ast.getText();
+                if (!isValidClassDependency(identName)) {
+                    invalidTypesMap.put(ast, identName);
+                }
+            } else if (tokenType == TokenTypes.TYPE_ARGUMENT || tokenType == TokenTypes.TYPE_ARGUMENTS) {
+                getInvalidParameterType(ast, invalidTypesMap);
             }
         }
         return invalidTypesMap;
     }
 
     /**
-     * Get invalid type name from TYPE_ARGUMENT
-     *
-     * @param typeArgumentToken TYPE_ARGUMENT AST node
-     * @return an invalid type name if it is an invalid library. Otherwise, returns null.
-     */
-    private String getInvalidTypeNameFromTypeArgument(DetailAST typeArgumentToken) {
-        final DetailAST identToken = typeArgumentToken.findFirstToken(TokenTypes.IDENT);
-        // if there is no IDENT token, implies the token is default java types.
-        if (identToken == null) {
-            return null;
-        }
-
-        final String typeName = identToken.getText();
-        // if not exist in the classPathMap, that implies the type is java default types, such as int.
-        return isValidClassDependency(typeName) ? null : typeName;
-    }
-
-    /**
      * A helper function that checks for whether a class is from a valid internal dependency or is a suppression class
      *
      * @param typeName the type name of class
-     * @return true if the class  is a suppression class, otherwise, return false.
+     * @return true if the class is a suppression class, otherwise, return false.
      */
     private boolean isValidClassDependency(String typeName) {
         // If the qualified class name does not exist in the map,
