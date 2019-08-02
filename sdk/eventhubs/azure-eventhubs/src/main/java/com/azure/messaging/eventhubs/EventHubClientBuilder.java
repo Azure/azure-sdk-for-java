@@ -116,7 +116,7 @@ public class EventHubClientBuilder {
             throw new AzureException("Could not create the EventHubSharedAccessKeyCredential.", e);
         }
 
-        return credential(properties.endpoint().getHost(), properties.eventHubPath(), tokenCredential);
+        return credential(properties.endpoint().getHost(), properties.eventHubName(), tokenCredential);
     }
 
     /**
@@ -147,11 +147,11 @@ public class EventHubClientBuilder {
             throw new AzureException("Could not create the EventHubSharedAccessKeyCredential.", e);
         }
 
-        if (!ImplUtils.isNullOrEmpty(properties.eventHubPath())) {
+        if (!ImplUtils.isNullOrEmpty(properties.eventHubName())) {
             throw new IllegalArgumentException(String.format(Locale.US,
                 "'connectionString' contains an Event Hub path [%s].  Please use the"
                     + " credentials(String connectionString) overload. Or supply a 'connectionString' without"
-                    + " 'EntityPath' in it.", properties.eventHubPath()));
+                    + " 'EntityPath' in it.", properties.eventHubName()));
         }
 
         return credential(properties.endpoint().getHost(), eventHubPath, tokenCredential);

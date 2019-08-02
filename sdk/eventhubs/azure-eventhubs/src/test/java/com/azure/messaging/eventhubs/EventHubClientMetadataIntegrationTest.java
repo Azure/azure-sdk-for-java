@@ -127,12 +127,12 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
     public void getPartitionPropertiesInvalidToken() throws InvalidKeyException, NoSuchAlgorithmException {
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
-        final ConnectionStringProperties invalidCredentials = getCredentials(original.endpoint(), original.eventHubPath(),
+        final ConnectionStringProperties invalidCredentials = getCredentials(original.endpoint(), original.eventHubName(),
             original.sharedAccessKeyName(), "invalid-sas-key-value");
         final TokenCredential badTokenProvider = new EventHubSharedAccessKeyCredential(
             invalidCredentials.sharedAccessKeyName(), invalidCredentials.sharedAccessKey(), TIMEOUT);
         final ConnectionOptions connectionOptions = new ConnectionOptions(original.endpoint().getHost(),
-            original.eventHubPath(), badTokenProvider, getAuthorizationType(), TransportType.AMQP, RETRY_OPTIONS,
+            original.eventHubName(), badTokenProvider, getAuthorizationType(), TransportType.AMQP, RETRY_OPTIONS,
             ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionOptions().scheduler());
         final EventHubAsyncClient client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);
 
