@@ -445,13 +445,15 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
     static class KeyValue {
         @JsonProperty("key")
-        private int key;
+        private final int key;
 
         @JsonProperty("value")
-        private String value;
+        private final String value;
 
-        KeyValue() { }
-        KeyValue(int key, String value) {
+        KeyValue() {
+            this(null, null);
+        }
+        KeyValue(Integer key, String value) {
             this.key = key;
             this.value = value;
         }
@@ -467,12 +469,13 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
     static class KeyValuePage implements Page<KeyValue> {
         @JsonProperty()
-        private List<KeyValue> items;
+        private final List<KeyValue> items;
 
         @JsonProperty("nextLink")
-        private String nextLink;
+        private final String nextLink;
 
         KeyValuePage() {
+            this(null, null);
         }
 
         KeyValuePage(List<KeyValue> items, String nextLink) {
@@ -492,8 +495,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     static class ConformingPage<T> implements Page<T> {
-        private List<T> items;
-        private String nextLink;
+        private final List<T> items;
+        private final String nextLink;
 
         ConformingPage(List<T> items, String nextLink) {
             this.items = items;
@@ -516,8 +519,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
      * badItems(), which would result in different JSON.
      */
     static class NonComformingPage<T> {
-        private List<T> badItems;
-        private String nextLink;
+        private final List<T> badItems;
+        private final String nextLink;
 
         NonComformingPage(List<T> items, String nextLink) {
             this.badItems = items;

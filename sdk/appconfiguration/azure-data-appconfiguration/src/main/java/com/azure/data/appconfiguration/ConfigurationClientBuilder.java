@@ -75,13 +75,13 @@ public final class ConfigurationClientBuilder {
     private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
     private final HttpHeaders headers;
+    private final RetryPolicy retryPolicy;
 
     private ConfigurationClientCredentials credential;
     private URL endpoint;
     private HttpClient httpClient;
     private HttpLogDetailLevel httpLogDetailLevel;
     private HttpPipeline pipeline;
-    private RetryPolicy retryPolicy;
     private Configuration configuration;
 
     /**

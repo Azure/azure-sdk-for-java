@@ -15,11 +15,11 @@ import java.util.Map;
  */
 public class OperationDescription implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Serializable pollStrategyData;
-    private Map<String, String> headers;
-    private String httpMethod;
-    private URL url;
-    private String fullyQualifiedMethodName;
+    private final Serializable pollStrategyData;
+    private final Map<String, String> headers;
+    private final String httpMethod;
+    private final URL url;
+    private final String fullyQualifiedMethodName;
 
     /**
      * Create OperationDescription.

@@ -25,7 +25,7 @@ import java.util.function.Supplier;
  * HttpClient that is implemented using reactor-netty.
  */
 class ReactorNettyClient implements HttpClient {
-    private reactor.netty.http.client.HttpClient httpClient;
+    private final reactor.netty.http.client.HttpClient httpClient;
 
     /**
      * Creates default ReactorNettyClient.

@@ -14,7 +14,7 @@ public class HttpResponseException extends AzureException {
     /**
      * The HTTP response value.
      */
-    private Object value;
+    private final Object value;
 
     /**
      * Information about the associated HTTP response.
@@ -30,6 +30,7 @@ public class HttpResponseException extends AzureException {
     public HttpResponseException(final String message, final HttpResponse response) {
         super(message);
         this.response = response;
+        this.value = null;
     }
 
     /**
@@ -54,6 +55,7 @@ public class HttpResponseException extends AzureException {
      */
     public HttpResponseException(final String message, final HttpResponse response, final Throwable cause) {
         super(message, cause);
+        this.value = null;
         this.response = response;
     }
 

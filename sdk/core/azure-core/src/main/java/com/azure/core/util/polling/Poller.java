@@ -69,7 +69,7 @@ public class Poller<T> {
     /*
      * poll interval before next auto poll. This value will be used if the PollResponse does not include retryAfter from the service.
      */
-    private Duration pollInterval;
+    private final Duration pollInterval;
 
     /*
      * This will save last poll response.
@@ -79,7 +79,7 @@ public class Poller<T> {
     /*
      * This will be called when cancel operation is triggered.
      */
-    private Consumer<Poller<T>> cancelOperation;
+    private final Consumer<Poller<T>> cancelOperation;
 
     /*
      * Indicate to poll automatically or not when poller is created.
@@ -92,7 +92,7 @@ public class Poller<T> {
      * This could be shared among many subscriber. One of the subscriber will be this poller itself.
      * Once subscribed, this Flux will continue to poll for status until poll operation is done/complete.
      */
-    private Flux<PollResponse<T>> fluxHandle;
+    private final Flux<PollResponse<T>> fluxHandle;
 
     /*
      * Since constructor create a subscriber and start auto polling.
@@ -138,6 +138,7 @@ public class Poller<T> {
         // auto polling start here
         this.fluxDisposable = fluxHandle.subscribe();
         this.autoPollingEnabled = true;
+        this.cancelOperation = null;
     }
 
     /**
@@ -157,7 +158,6 @@ public class Poller<T> {
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Consumer<Poller<T>> cancelOperation) {
         this(pollInterval, pollOperation);
-        this.cancelOperation = cancelOperation;
     }
 
     /**

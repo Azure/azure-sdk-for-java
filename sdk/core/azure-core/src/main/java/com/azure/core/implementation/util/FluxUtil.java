@@ -261,8 +261,8 @@ public final class FluxUtil {
         volatile boolean isCompleted = false;
         volatile Subscription subscription;
         volatile long pos;
-        AsynchronousFileChannel outFile;
-        MonoSink<Void> emitter;
+        final AsynchronousFileChannel outFile;
+        final MonoSink<Void> emitter;
 
         @Override
         public void onSubscribe(Subscription s) {

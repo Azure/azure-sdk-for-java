@@ -5,16 +5,14 @@ package com.azure.core.implementation;
 
 import com.azure.core.exception.HttpResponseException;
 
-import java.lang.reflect.Method;
-
 /**
  * Contains the information needed to generate a exception type to be thrown or returned when a REST API returns
  * an error status code.
  */
 public class UnexpectedExceptionInformation {
     private static final String EXCEPTION_BODY_METHOD = "value";
-    private Class<? extends HttpResponseException> exceptionType;
-    private Class<?> exceptionBodyType;
+    private final Class<? extends HttpResponseException> exceptionType;
+    private final Class<?> exceptionBodyType;
 
     /**
      * Creates an UnexpectedExceptionInformation object with the given exception type and expected response body.
@@ -22,14 +20,15 @@ public class UnexpectedExceptionInformation {
      */
     public UnexpectedExceptionInformation(Class<? extends HttpResponseException> exceptionType) {
         this.exceptionType = exceptionType;
+        Class<?> exceptionBodyMethodType;
 
         try {
-            final Method exceptionBodyMethod = exceptionType.getDeclaredMethod(EXCEPTION_BODY_METHOD);
-            this.exceptionBodyType = exceptionBodyMethod.getReturnType();
+            exceptionBodyMethodType = exceptionType.getDeclaredMethod(EXCEPTION_BODY_METHOD).getReturnType();
         } catch (NoSuchMethodException e) {
             // Should always have a value() method. Register Object as a fallback plan.
-            this.exceptionBodyType = Object.class;
+            exceptionBodyMethodType = Object.class;
         }
+        this.exceptionBodyType = exceptionBodyMethodType;
     }
 
     /**

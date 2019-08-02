@@ -96,8 +96,8 @@ public class TokenCacheTests {
     }
 
     private static class Token extends AccessToken {
-        private String token;
-        private OffsetDateTime expiry;
+        private final String token;
+        private final OffsetDateTime expiry;
 
         @Override
         public String token() {

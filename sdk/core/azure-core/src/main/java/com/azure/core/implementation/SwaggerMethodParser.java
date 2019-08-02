@@ -66,9 +66,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private Integer bodyContentMethodParameterIndex;
     private String bodyContentType;
     private Type bodyJavaType;
-    private int[] expectedStatusCodes;
-    private Type returnType;
-    private Type returnValueWireType;
+    private final int[] expectedStatusCodes;
+    private final Type returnType;
+    private final Type returnValueWireType;
     private final UnexpectedResponseExceptionType[] unexpectedResponseExceptionTypes;
     private Map<Integer, UnexpectedExceptionInformation> exceptionMapping;
     private UnexpectedExceptionInformation defaultException;
@@ -89,43 +89,71 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         fullyQualifiedMethodName = swaggerInterface.getName() + "." + swaggerMethod.getName();
 
-        if (swaggerMethod.isAnnotationPresent(Get.class)) {
-            setHttpMethodAndRelativePath(HttpMethod.GET, swaggerMethod.getAnnotation(Get.class).value());
-        } else if (swaggerMethod.isAnnotationPresent(Put.class)) {
-            setHttpMethodAndRelativePath(HttpMethod.PUT, swaggerMethod.getAnnotation(Put.class).value());
-        } else if (swaggerMethod.isAnnotationPresent(Head.class)) {
-            setHttpMethodAndRelativePath(HttpMethod.HEAD, swaggerMethod.getAnnotation(Head.class).value());
-        } else if (swaggerMethod.isAnnotationPresent(Delete.class)) {
-            setHttpMethodAndRelativePath(HttpMethod.DELETE, swaggerMethod.getAnnotation(Delete.class).value());
-        } else if (swaggerMethod.isAnnotationPresent(Post.class)) {
-            setHttpMethodAndRelativePath(HttpMethod.POST, swaggerMethod.getAnnotation(Post.class).value());
-        } else if (swaggerMethod.isAnnotationPresent(Patch.class)) {
-            setHttpMethodAndRelativePath(HttpMethod.PATCH, swaggerMethod.getAnnotation(Patch.class).value());
-        } else {
-            final ArrayList<Class<? extends Annotation>> requiredAnnotationOptions = new ArrayList<>();
-            requiredAnnotationOptions.add(Get.class);
-            requiredAnnotationOptions.add(Put.class);
-            requiredAnnotationOptions.add(Head.class);
-            requiredAnnotationOptions.add(Delete.class);
-            requiredAnnotationOptions.add(Post.class);
-            requiredAnnotationOptions.add(Patch.class);
-            throw new MissingRequiredAnnotationException(requiredAnnotationOptions, swaggerMethod);
-        }
+        setHttpMethodAndRelativePath(swaggerMethod);
 
         returnType = swaggerMethod.getGenericReturnType();
 
-        final ReturnValueWireType returnValueWireTypeAnnotation = swaggerMethod.getAnnotation(ReturnValueWireType.class);
-        if (returnValueWireTypeAnnotation != null) {
-            Class<?> returnValueWireType = returnValueWireTypeAnnotation.value();
-            if (returnValueWireType == Base64Url.class || returnValueWireType == UnixTime.class || returnValueWireType == DateTimeRfc1123.class) {
-                this.returnValueWireType = returnValueWireType;
-            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
-                this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];
-            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, Page.class)) {
-                this.returnValueWireType = returnValueWireType;
+        this.returnValueWireType = getReturnValueWireType(swaggerMethod);
+
+        fillHeaders(swaggerMethod);
+
+        final ExpectedResponses expectedResponses = swaggerMethod.getAnnotation(ExpectedResponses.class);
+        expectedStatusCodes = expectedResponses != null ? expectedResponses.value() : null;
+
+        unexpectedResponseExceptionTypes = swaggerMethod.getAnnotationsByType(UnexpectedResponseExceptionType.class);
+
+        fillParameterAnnotations(swaggerMethod);
+    }
+
+    /**
+     * Gets all the annotation parameters from swagger method and use it to populate fields from parser
+     *
+     * @param swaggerMethod swagger method with notations
+     */
+    private void fillParameterAnnotations(Method swaggerMethod) {
+        final Annotation[][] allParametersAnnotations = swaggerMethod.getParameterAnnotations();
+        for (int parameterIndex = 0; parameterIndex < allParametersAnnotations.length; ++parameterIndex) {
+            final Annotation[] parameterAnnotations = allParametersAnnotations[parameterIndex];
+            for (final Annotation annotation : parameterAnnotations) {
+                final Class<? extends Annotation> annotationType = annotation.annotationType();
+                if (annotationType.equals(HostParam.class)) {
+                    final HostParam hostParamAnnotation = (HostParam) annotation;
+                    hostSubstitutions.add(new Substitution(hostParamAnnotation.value(), parameterIndex,
+                        !hostParamAnnotation.encoded()));
+                } else if (annotationType.equals(PathParam.class)) {
+                    final PathParam pathParamAnnotation = (PathParam) annotation;
+                    pathSubstitutions.add(new Substitution(pathParamAnnotation.value(), parameterIndex,
+                        !pathParamAnnotation.encoded()));
+                } else if (annotationType.equals(QueryParam.class)) {
+                    final QueryParam queryParamAnnotation = (QueryParam) annotation;
+                    querySubstitutions.add(new Substitution(queryParamAnnotation.value(), parameterIndex,
+                        !queryParamAnnotation.encoded()));
+                } else if (annotationType.equals(HeaderParam.class)) {
+                    final HeaderParam headerParamAnnotation = (HeaderParam) annotation;
+                    headerSubstitutions.add(new Substitution(headerParamAnnotation.value(), parameterIndex,
+                        false));
+                } else if (annotationType.equals(BodyParam.class)) {
+                    final BodyParam bodyParamAnnotation = (BodyParam) annotation;
+                    bodyContentMethodParameterIndex = parameterIndex;
+                    bodyContentType = bodyParamAnnotation.value();
+                    bodyJavaType = swaggerMethod.getGenericParameterTypes()[parameterIndex];
+                } else if (annotationType.equals(FormParam.class)) {
+                    final FormParam formParamAnnotation = (FormParam) annotation;
+                    formSubstitutions.add(new Substitution(formParamAnnotation.value(), parameterIndex,
+                        !formParamAnnotation.encoded()));
+                    bodyContentType = ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
+                    bodyJavaType = String.class;
+                }
             }
         }
+    }
 
+    /**
+     * Get the headers notation from swagger method and use it to populate field this.headers
+     *
+     * @param swaggerMethod swagger method with notations
+     */
+    private void fillHeaders(Method swaggerMethod) {
         if (swaggerMethod.isAnnotationPresent(Headers.class)) {
             final Headers headersAnnotation = swaggerMethod.getAnnotation(Headers.class);
             final String[] headers = headersAnnotation.value();
@@ -142,44 +170,31 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                 }
             }
         }
+    }
 
-        final ExpectedResponses expectedResponses = swaggerMethod.getAnnotation(ExpectedResponses.class);
-        if (expectedResponses != null) {
-            expectedStatusCodes = expectedResponses.value();
-        }
+    /**
+     * Get the Type for the WireType from a Method swaggerMethod. Return null if type is not found
+     *
+     * @param swaggerMethod Method with a type notation to be used
+     *
+     * @return Type from Method notation
+     */
+    private Type getReturnValueWireType(Method swaggerMethod) {
+        final ReturnValueWireType returnValueWireTypeAnnotation = swaggerMethod
+            .getAnnotation(ReturnValueWireType.class);
 
-        unexpectedResponseExceptionTypes = swaggerMethod.getAnnotationsByType(UnexpectedResponseExceptionType.class);
-
-        final Annotation[][] allParametersAnnotations = swaggerMethod.getParameterAnnotations();
-        for (int parameterIndex = 0; parameterIndex < allParametersAnnotations.length; ++parameterIndex) {
-            final Annotation[] parameterAnnotations = swaggerMethod.getParameterAnnotations()[parameterIndex];
-            for (final Annotation annotation : parameterAnnotations) {
-                final Class<? extends Annotation> annotationType = annotation.annotationType();
-                if (annotationType.equals(HostParam.class)) {
-                    final HostParam hostParamAnnotation = (HostParam) annotation;
-                    hostSubstitutions.add(new Substitution(hostParamAnnotation.value(), parameterIndex, !hostParamAnnotation.encoded()));
-                } else if (annotationType.equals(PathParam.class)) {
-                    final PathParam pathParamAnnotation = (PathParam) annotation;
-                    pathSubstitutions.add(new Substitution(pathParamAnnotation.value(), parameterIndex, !pathParamAnnotation.encoded()));
-                } else if (annotationType.equals(QueryParam.class)) {
-                    final QueryParam queryParamAnnotation = (QueryParam) annotation;
-                    querySubstitutions.add(new Substitution(queryParamAnnotation.value(), parameterIndex, !queryParamAnnotation.encoded()));
-                } else if (annotationType.equals(HeaderParam.class)) {
-                    final HeaderParam headerParamAnnotation = (HeaderParam) annotation;
-                    headerSubstitutions.add(new Substitution(headerParamAnnotation.value(), parameterIndex, false));
-                } else if (annotationType.equals(BodyParam.class)) {
-                    final BodyParam bodyParamAnnotation = (BodyParam) annotation;
-                    bodyContentMethodParameterIndex = parameterIndex;
-                    bodyContentType = bodyParamAnnotation.value();
-                    bodyJavaType = swaggerMethod.getGenericParameterTypes()[parameterIndex];
-                } else if (annotationType.equals(FormParam.class)) {
-                    final FormParam formParamAnnotation = (FormParam) annotation;
-                    formSubstitutions.add(new Substitution(formParamAnnotation.value(), parameterIndex, !formParamAnnotation.encoded()));
-                    bodyContentType = ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
-                    bodyJavaType = String.class;
-                }
+        if (returnValueWireTypeAnnotation != null) {
+            Class<?> returnValueWireType = returnValueWireTypeAnnotation.value();
+            if (returnValueWireType == Base64Url.class || returnValueWireType == UnixTime.class
+                || returnValueWireType == DateTimeRfc1123.class) {
+                return returnValueWireType;
+            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
+                return returnValueWireType.getGenericInterfaces()[0];
+            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, Page.class)) {
+                return returnValueWireType;
             }
         }
+        return null;
     }
 
     /**
@@ -220,7 +235,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @return the final host to use for HTTP requests for this Swagger method.
      */
     public String scheme(Object[] swaggerMethodArguments) {
-        final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments, UrlEscapers.PATH_ESCAPER);
+        final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments,
+            UrlEscapers.PATH_ESCAPER);
         final String[] substitutedHostParts = substitutedHost.split("://");
         return substitutedHostParts.length < 1 ? null : substitutedHostParts[0];
     }
@@ -232,7 +248,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @return the final host to use for HTTP requests for this Swagger method
      */
     public String host(Object[] swaggerMethodArguments) {
-        final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments, UrlEscapers.PATH_ESCAPER);
+        final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments,
+            UrlEscapers.PATH_ESCAPER);
         final String[] substitutedHostParts = substitutedHost.split("://");
         return substitutedHostParts.length < 2 ? substitutedHost : substitutedHost.split("://")[1];
     }
@@ -380,10 +397,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the {@link UnexpectedExceptionInformation} that will be used to generate a RestException if the HTTP response status
-     * code is not one of the expected status codes.
+     * Get the {@link UnexpectedExceptionInformation} that will be used to generate a RestException if the HTTP
+     * response status code is not one of the expected status codes.
      *
-     * If an UnexpectedExceptionInformation is not found for the status code the default UnexpectedExceptionInformation will be returned.
+     * If an UnexpectedExceptionInformation is not found for the status code the default UnexpectedExceptionInformation
+     * will be returned.
      *
      * @param code Exception HTTP status code return from a REST API.
      * @return the UnexpectedExceptionInformation to generate an exception to throw or return.
@@ -475,19 +493,52 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
             result = false;
-        } else if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)) {
+        } else if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class) || TypeUtil.isTypeOrSubTypeOf(returnType,
+            Flux.class)) {
             final ParameterizedType asyncReturnType = (ParameterizedType) returnType;
             final Type syncReturnType = asyncReturnType.getActualTypeArguments()[0];
             if (TypeUtil.isTypeOrSubTypeOf(syncReturnType, Void.class)) {
                 result = false;
             } else if (TypeUtil.isTypeOrSubTypeOf(syncReturnType, Response.class)) {
-                result = TypeUtil.restResponseTypeExpectsBody((ParameterizedType) TypeUtil.getSuperType(syncReturnType, Response.class));
+                result = TypeUtil.restResponseTypeExpectsBody((ParameterizedType) TypeUtil.getSuperType(syncReturnType,
+                    Response.class));
             }
         } else if (TypeUtil.isTypeOrSubTypeOf(returnType, Response.class)) {
             result = TypeUtil.restResponseTypeExpectsBody((ParameterizedType) returnType);
         }
 
         return result;
+    }
+
+    /**
+     * Set both the HTTP method and the path that will be used to complete the Swagger method's
+     * request using a swaggerMethod directly.
+     *
+     * @param swaggerMethod Method containing the annotations and paths to set httpMethod and path
+     */
+    private void setHttpMethodAndRelativePath(Method swaggerMethod) {
+        if (swaggerMethod.isAnnotationPresent(Get.class)) {
+            setHttpMethodAndRelativePath(HttpMethod.GET, swaggerMethod.getAnnotation(Get.class).value());
+        } else if (swaggerMethod.isAnnotationPresent(Put.class)) {
+            setHttpMethodAndRelativePath(HttpMethod.PUT, swaggerMethod.getAnnotation(Put.class).value());
+        } else if (swaggerMethod.isAnnotationPresent(Head.class)) {
+            setHttpMethodAndRelativePath(HttpMethod.HEAD, swaggerMethod.getAnnotation(Head.class).value());
+        } else if (swaggerMethod.isAnnotationPresent(Delete.class)) {
+            setHttpMethodAndRelativePath(HttpMethod.DELETE, swaggerMethod.getAnnotation(Delete.class).value());
+        } else if (swaggerMethod.isAnnotationPresent(Post.class)) {
+            setHttpMethodAndRelativePath(HttpMethod.POST, swaggerMethod.getAnnotation(Post.class).value());
+        } else if (swaggerMethod.isAnnotationPresent(Patch.class)) {
+            setHttpMethodAndRelativePath(HttpMethod.PATCH, swaggerMethod.getAnnotation(Patch.class).value());
+        } else {
+            final ArrayList<Class<? extends Annotation>> requiredAnnotationOptions = new ArrayList<>();
+            requiredAnnotationOptions.add(Get.class);
+            requiredAnnotationOptions.add(Put.class);
+            requiredAnnotationOptions.add(Head.class);
+            requiredAnnotationOptions.add(Delete.class);
+            requiredAnnotationOptions.add(Post.class);
+            requiredAnnotationOptions.add(Patch.class);
+            throw new MissingRequiredAnnotationException(requiredAnnotationOptions, swaggerMethod);
+        }
     }
 
     /**
@@ -529,7 +580,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         return result;
     }
 
-    private String applySubstitutions(String originalValue, Iterable<Substitution> substitutions, Object[] methodArguments, PercentEscaper escaper) {
+    private String applySubstitutions(String originalValue, Iterable<Substitution> substitutions,
+                                      Object[] methodArguments, PercentEscaper escaper) {
         String result = originalValue;
 
         if (methodArguments != null) {
@@ -539,7 +591,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                     final Object methodArgument = methodArguments[substitutionParameterIndex];
 
                     String substitutionValue = serialize(methodArgument);
-                    if (substitutionValue != null && !substitutionValue.isEmpty() && substitution.shouldEncode() && escaper != null) {
+                    if (substitutionValue != null && !substitutionValue.isEmpty() && substitution.shouldEncode()
+                        && escaper != null) {
                         substitutionValue = escaper.escape(substitutionValue);
                     }
                     if (substitutionValue != null) {
