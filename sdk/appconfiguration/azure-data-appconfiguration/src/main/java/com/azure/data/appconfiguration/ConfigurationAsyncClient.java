@@ -625,27 +625,10 @@ public final class ConfigurationAsyncClient {
         return result;
     }
 
-    Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
-        Mono<PagedResponse<ConfigurationSetting>> result;
-
-        if (selector != null) {
-            String fields = ImplUtils.arrayToString(selector.fields(), SettingFields::toStringMapper);
-            String keys = ImplUtils.arrayToString(selector.keys(), key -> key);
-            String labels = ImplUtils.arrayToString(selector.labels(), label -> label);
-            String range = selector.range() != null ? String.format(RANGE_QUERY, selector.range()) : null;
-
-            result = service.listKeyValueRevisions(serviceEndpoint, keys, labels, fields, selector.acceptDateTime(), range, context)
-                .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions - {}", selector))
-                .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions - {}", selector))
-                .doOnError(error -> logger.warning("Failed to list ConfigurationSetting revisions - {}", selector, error));
-        } else {
-            result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null, context)
-                .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions"))
-                .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions"))
-                .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting revisions", error));
-        }
-
-        return result.flatMapMany(r -> extractAndFetchConfigurationSettings(r, context));
+    PagedFlux<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
+        return new PagedFlux<>(() ->
+            listSettingRevisionsFirstPage(selector, context),
+            continuationToken -> listSettingRevisionsNextPage(continuationToken, context));
     }
 
     private Flux<ConfigurationSetting> listSettings(String nextPageLink, Context context) {

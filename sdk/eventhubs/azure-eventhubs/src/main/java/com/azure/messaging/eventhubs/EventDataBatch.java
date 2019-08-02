@@ -9,6 +9,7 @@ import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpConstants;
 import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
+import com.azure.messaging.eventhubs.models.BatchOptions;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;

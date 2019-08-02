@@ -8,7 +8,11 @@
   <artifactId>azure-storage-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
-<!--  <modules>
-    <module>microsoft-azure-servicebus</module>
-  </modules> -->
+  <modules>
+    <module>microsoft-azure-storage-blob</module>
+    <module>../core</module>
+    <module>azure-storage-blob</module>
+    <module>azure-storage-file</module>
+    <module>azure-storage-queue</module>
+  </modules>
 </project>
