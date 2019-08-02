@@ -3,12 +3,13 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
-import com.azure.core.amqp.Retry;
+import com.azure.core.amqp.RetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.amqp.exception.OperationCancelledException;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.handler.SendLinkHandler;
 import org.apache.qpid.proton.Proton;
@@ -44,6 +45,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.messaging.eventhubs.implementation.EventDataUtil.getDataSerializedSize;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -60,17 +62,19 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
     private final AtomicBoolean hasConnected = new AtomicBoolean();
     private final AtomicBoolean hasAuthorized = new AtomicBoolean(true);
+    private final AtomicInteger retryAttempts = new AtomicInteger();
 
     private final Object pendingSendLock = new Object();
     private final ConcurrentHashMap<String, RetriableWorkItem> pendingSendsMap = new ConcurrentHashMap<>();
     private final PriorityQueue<WeightedDeliveryTag> pendingSendsQueue = new PriorityQueue<>(1000, new DeliveryTagComparator());
 
     private final ActiveClientTokenManager tokenManager;
-    private final Retry retry;
+    private final RetryPolicy retry;
     private final Duration timeout;
     private final Timer sendTimeoutTimer = new Timer("SendTimeout-timer");
 
     private final Object errorConditionLock = new Object();
+
     private volatile Exception lastKnownLinkError;
     private volatile Instant lastKnownErrorReportedAt;
 
@@ -81,7 +85,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     private volatile int maxMessageSize;
 
     ReactorSender(String entityPath, Sender sender, SendLinkHandler handler, ReactorProvider reactorProvider,
-                  ActiveClientTokenManager tokenManager, Duration timeout, Retry retry, int maxMessageSize) {
+                  ActiveClientTokenManager tokenManager, Duration timeout, RetryPolicy retry, int maxMessageSize) {
         super(new ClientLogger(ReactorSender.class));
         this.entityPath = entityPath;
         this.sender = sender;
@@ -210,9 +214,9 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             return Mono.just(maxMessageSize);
         }
 
-        return handler.getEndpointStates()
-            .takeUntil(state -> state == EndpointState.ACTIVE)
-            .timeout(timeout)
+        return RetryUtil.withRetry(
+            handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE),
+            timeout, retry)
             .then(Mono.fromCallable(() -> {
                 final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
 
@@ -239,8 +243,9 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
         if (hasConnected.get()) {
             return sendWorkItem;
         } else {
-            return handler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE)
-                .timeout(timeout)
+            return RetryUtil.withRetry(
+                handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE),
+                timeout, retry)
                 .then(sendWorkItem);
         }
     }
@@ -348,8 +353,8 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
         if (outcome instanceof Accepted) {
             synchronized (errorConditionLock) {
-                this.lastKnownLinkError = null;
-                this.retry.resetRetryInterval();
+                lastKnownLinkError = null;
+                retryAttempts.set(0);
             }
 
             workItem.sink().success();
@@ -359,24 +364,27 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             final Exception exception = ExceptionUtil.toException(error.getCondition().toString(),
                 error.getDescription(), handler.getErrorContext(sender));
 
+            final int retryAttempt;
             if (isGeneralSendError(error.getCondition())) {
                 synchronized (errorConditionLock) {
-                    this.lastKnownLinkError = exception;
-                    this.retry.incrementRetryCount();
+                    lastKnownLinkError = exception;
+                    retryAttempt = retryAttempts.incrementAndGet();
                 }
+            } else {
+                retryAttempt = retryAttempts.get();
             }
 
-            final Duration retryInterval = retry.getNextRetryInterval(exception, workItem.timeoutTracker().remaining());
+            final Duration retryInterval = retry.calculateRetryDelay(exception, retryAttempt);
 
-            if (retryInterval == null) {
-                this.cleanupFailedSend(workItem, exception);
+            if (retryInterval.compareTo(workItem.timeoutTracker().remaining()) > 0) {
+                cleanupFailedSend(workItem, exception);
             } else {
                 workItem.lastKnownException(exception);
                 try {
                     reactorProvider.getReactorDispatcher().invoke(() -> send(workItem), retryInterval);
                 } catch (IOException | RejectedExecutionException schedulerException) {
                     exception.initCause(schedulerException);
-                    this.cleanupFailedSend(
+                    cleanupFailedSend(
                         workItem,
                         new AmqpException(false,
                             String.format(Locale.US, "Entity(%s): send operation failed while scheduling a"
@@ -385,10 +393,10 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                 }
             }
         } else if (outcome instanceof Released) {
-            this.cleanupFailedSend(workItem, new OperationCancelledException(outcome.toString(),
+            cleanupFailedSend(workItem, new OperationCancelledException(outcome.toString(),
                 handler.getErrorContext(sender)));
         } else {
-            this.cleanupFailedSend(workItem, new AmqpException(false, outcome.toString(),
+            cleanupFailedSend(workItem, new AmqpException(false, outcome.toString(),
                 handler.getErrorContext(sender)));
         }
     }

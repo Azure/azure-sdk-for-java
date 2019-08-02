@@ -3,6 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.RetryOptions;
+import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import reactor.core.publisher.Flux;
@@ -43,9 +45,11 @@ public class EventHubProducerJavaDocCodeSamples {
      */
     public void instantiatePartitionProducer() throws IOException {
         // BEGIN: com.azure.messaging.eventhubs.eventhubproducer.instantiatePartitionProducer
+        RetryOptions retryOptions = new RetryOptions()
+            .tryTimeout(Duration.ofSeconds(45));
         EventHubProducerOptions options = new EventHubProducerOptions()
             .partitionId("foo")
-            .timeout(Duration.ofSeconds(45));
+            .retry(retryOptions);
 
         EventHubProducer producer = client.createProducer(options);
         // END: com.azure.messaging.eventhubs.eventhubproducer.instantiatePartitionProducer
