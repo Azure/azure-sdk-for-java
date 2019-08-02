@@ -23,13 +23,7 @@ class AesKw128 extends AesKw {
     @Override
     public ICryptoTransform CreateEncryptor(byte[] key, byte[] iv, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
 
-        if (key == null) {
-            throw new IllegalArgumentException("key must not be null");
-        }
-
-        if (key.length < KEY_SIZE_IN_BYTES) {
-            throw new IllegalArgumentException("key must be at least 128 bits long");
-        }
+        CryptoUtil.validate(key, KEY_SIZE_IN_BYTES);
 
         return super.CreateEncryptor(Arrays.copyOfRange(key, 0, KEY_SIZE_IN_BYTES), iv, provider);
     }
@@ -37,13 +31,7 @@ class AesKw128 extends AesKw {
     @Override
     public ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
 
-        if (key == null) {
-            throw new IllegalArgumentException("key must not be null");
-        }
-
-        if (key.length < KEY_SIZE_IN_BYTES) {
-            throw new IllegalArgumentException("key must be at least 128 bits long");
-        }
+        CryptoUtil.validate(key, KEY_SIZE_IN_BYTES);
 
         return super.CreateDecryptor(Arrays.copyOfRange(key, 0, KEY_SIZE_IN_BYTES), iv, provider);
     }

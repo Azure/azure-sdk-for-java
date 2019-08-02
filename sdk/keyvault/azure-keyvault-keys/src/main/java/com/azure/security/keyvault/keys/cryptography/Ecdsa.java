@@ -11,7 +11,7 @@ import java.security.Signature;
 abstract class Ecdsa extends AsymmetricSignatureAlgorithm {
 
     protected Ecdsa() {
-        super("NONEwithEDCSA");
+        super("NONEwithECDSA");
     }
 
     public ISignatureTransform createSignatureTransform(KeyPair key, Provider provider) {

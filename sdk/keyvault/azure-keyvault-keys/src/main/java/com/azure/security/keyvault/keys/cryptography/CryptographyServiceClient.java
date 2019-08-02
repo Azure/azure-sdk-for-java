@@ -32,9 +32,9 @@ class CryptographyServiceClient {
         this.service = service;
     }
 
-    CryptographyServiceClient(String kid, CryptographyService service) {
-        Objects.requireNonNull(kid);
-        unpackId(kid);
+    CryptographyServiceClient(String keyId, CryptographyService service) {
+        Objects.requireNonNull(keyId);
+        unpackId(keyId);
         this.service = service;
     }
 

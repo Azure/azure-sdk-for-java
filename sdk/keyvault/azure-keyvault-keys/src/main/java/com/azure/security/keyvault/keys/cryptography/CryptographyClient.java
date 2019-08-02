@@ -12,6 +12,12 @@ import com.azure.security.keyvault.keys.models.Key;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
+/**
+ * The CryptographyClient provides synchronous methods to perform cryptographic operations using asymmetric and
+ * symmetric keys. The client supports encrypt, decrypt, wrap key, unwrap key, sign and verify operations using the configured key.
+ *
+ * @see CryptographyClientBuilder
+ */
 @ServiceClient(builder = KeyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
 public final class CryptographyClient {
     private CryptographyAsyncClient client;
@@ -271,7 +277,7 @@ public final class CryptographyClient {
      * @return The {@link KeyWrapResult} whose {@link KeyWrapResult#encryptedKey() encrypted key} contains the wrapped key result.
      */
     public KeyWrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key) {
-        return client.wrapKey(algorithm, key, Context.NONE).block();
+        return wrapKey(algorithm, key, Context.NONE);
     }
 
     /**

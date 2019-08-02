@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.commons.lang3.tuple.Triple;
 
 import javax.crypto.BadPaddingException;
@@ -17,13 +18,16 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 
 abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
+    static final long BYTE_TO_BITS = 8L;
+    final ClientLogger logger = new ClientLogger(AesCbcHmacSha2.class);
 
     static class AesCbcHmacSha2Decryptor implements IAuthenticatedCryptoTransform {
 
-        final byte[]           aadLength;
-        final Mac              hmac;
-        final byte[]           hmacKey;
+        final byte[] aadLength;
+        final Mac hmac;
+        final byte[] hmacKey;
         final ICryptoTransform inner;
+        final ClientLogger logger = new ClientLogger(AesCbcHmacSha2Decryptor.class);
 
         byte[] tag;
 
@@ -40,7 +44,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
             // Create the AES provider
             inner = new AesCbc.AesCbcDecryptor(parameters.getLeft(), iv, provider);
 
-            aadLength = toBigEndian(authenticationData.length * 8L);
+            aadLength = toBigEndian(authenticationData.length * BYTE_TO_BITS);
 
             // Save the tag
             tag = authenticationTag;
@@ -70,7 +74,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
             
             // Check the tag before performing the final decrypt
             if (!ByteExtensions.sequenceEqualConstantTime(tag, tag)) {
-                throw new IllegalArgumentException("Data is not authentic");
+                logger.logAndThrow(new IllegalArgumentException("Data is not authentic"));
             }
 
             return inner.doFinal(input);
@@ -79,9 +83,9 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
 
     static class AesCbcHmacSha2Encryptor implements IAuthenticatedCryptoTransform {
 
-        final byte[]           aadLength;
-        final Mac              hmac;
-        final byte[]           hmacKey;
+        final byte[] aadLength;
+        final Mac hmac;
+        final byte[] hmacKey;
         final ICryptoTransform inner;
 
         byte[] tag;
@@ -98,7 +102,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
             // Create the AES encryptor
             this.inner = new AesCbc.AesCbcEncryptor(parameters.getLeft(), iv, provider);
 
-            this.aadLength = toBigEndian(authenticationData.length * 8L);
+            this.aadLength = toBigEndian(authenticationData.length * BYTE_TO_BITS);
 
             // Prime the hash.
             hmac.update(authenticationData);
@@ -109,20 +113,6 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
         public byte[] getTag() {
             return tag;
         }
-
-        // public int TransformBlock(byte[] inputBuffer, int inputOffset, int
-        // inputCount, byte[] outputBuffer, int outputOffset)
-        // {
-        // // Encrypt the block
-        // var result = _inner.TransformBlock(inputBuffer, inputOffset,
-        // inputCount, outputBuffer, outputOffset);
-        //
-        // // Add it to the running hash
-        // _hmac.TransformBlock(outputBuffer, outputOffset, result,
-        // outputBuffer, outputOffset);
-        //
-        // return result;
-        // }
 
         @Override
         public byte[] doFinal(byte[] input) throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException {
@@ -149,26 +139,26 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
     }
 
     @Override
-    public ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
-        return CreateDecryptor(key, iv, authenticationData, authenticationTag, null);
+    public ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
+        return createDecryptor(key, iv, authenticationData, authenticationTag, null);
     }
 
     @Override
-    public ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
+    public ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
         if (key == null) {
-            throw new IllegalArgumentException("No key material");
+            logger.logAndThrow(new IllegalArgumentException("No key material"));
         }
 
         if (iv == null) {
-            throw new IllegalArgumentException("No initialization vector");
+            logger.logAndThrow(new IllegalArgumentException("No initialization vector"));
         }
 
         if (authenticationData == null) {
-            throw new IllegalArgumentException("No authentication data");
+            logger.logAndThrow(new IllegalArgumentException("No authentication data"));
         }
 
         if (authenticationTag == null) {
-            throw new IllegalArgumentException("No authentication tag");
+            logger.logAndThrow(new IllegalArgumentException("No authentication tag"));
         }
 
         // Create the Decryptor
@@ -176,12 +166,12 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
     }
 
     @Override
-    public ICryptoTransform CreateEncryptor(byte[] key, byte[] iv, byte[] authenticationData) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
-        return CreateEncryptor(key, iv, authenticationData, null);
+    public ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] authenticationData) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
+        return createEncryptor(key, iv, authenticationData, null);
     }
 
     @Override
-    public ICryptoTransform CreateEncryptor(byte[] key, byte[] iv, byte[] authenticationData, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
+    public ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] authenticationData, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
 
         if (key == null) {
             throw new IllegalArgumentException("No key material");

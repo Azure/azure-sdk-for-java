@@ -4,14 +4,14 @@ package com.azure.security.keyvault.keys.cryptography;
  * Represents the details of decrypt operation result.
  */
 public final class DecryptResult {
-    public DecryptResult(byte[] plainText) {
-        this.plainText = plainText;
-    }
-
     /**
      * The decrypted content.
      */
     private byte[] plainText;
+
+    public DecryptResult(byte[] plainText) {
+        this.plainText = plainText;
+    }
 
     /**
      * Get the encrypted content.

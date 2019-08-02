@@ -4,7 +4,11 @@ import com.azure.core.util.Context;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 import reactor.core.publisher.Mono;
 
-import java.security.*;
+import java.security.KeyPair;
+import java.security.NoSuchAlgorithmException;
+import java.security.Provider;
+import java.security.Security;
+import java.security.MessageDigest;
 
 class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
     private KeyPair keyPair;
@@ -42,7 +46,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Context context, JsonWebKey key) {
 
-        throw new UnsupportedOperationException("Decrypt operaiton is not supported for EC key");
+        throw new UnsupportedOperationException("Decrypt operation is not supported for EC key");
     }
 
     Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, Context context, JsonWebKey key) {

@@ -3,6 +3,7 @@ package com.azure.security.keyvault.keys.cryptography;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.annotation.ReturnType;
@@ -12,6 +13,7 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
+import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
@@ -27,6 +29,12 @@ import java.util.Objects;
 import static com.azure.core.implementation.util.FluxUtil.toMono;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
+/**
+ * The CryptographyAsyncClient provides asynchronous methods to perform cryptographic operations using asymmetric and
+ * symmetric keys. The client supports encrypt, decrypt, wrap key, unwrap key, sign and verify operations using the configured key.
+ *
+ * @see CryptographyClientBuilder
+ */
 @ServiceClient(builder = KeyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
 public final class CryptographyAsyncClient {
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
@@ -45,6 +53,16 @@ public final class CryptographyAsyncClient {
      */
     CryptographyAsyncClient(JsonWebKey key, HttpPipeline pipeline) {
         Objects.requireNonNull(key);
+        if(!key.isValid()){
+            throw new IllegalArgumentException("Json Web Key is not valid");
+        }
+        if (key.keyOps() == null) {
+            throw new IllegalArgumentException("Json Web Key's key operations property is not configured");
+        }
+
+        if (key.kty() == null) {
+            throw new IllegalArgumentException("Json Web Key's key type property is not configured");
+        }
         this.key = key;
         service = RestProxy.create(CryptographyService.class, pipeline);
         if(!Strings.isNullOrEmpty(key.kid())) {
@@ -102,7 +120,7 @@ public final class CryptographyAsyncClient {
      * Gets the public part of the configured key. The get key operation is applicable to all key types and it requires the {@code keys/get} permission.
      *
      * @throws ResourceNotFoundException when the configured key doesn't exist in the key vault.
-     * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
+     * @return A {@link Mono} containing the requested {@link Key key}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> getKey() {
@@ -434,7 +452,7 @@ public final class CryptographyAsyncClient {
                     throw new IllegalArgumentException("Key version in key id is invalid");
                 }
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                throw new IllegalArgumentException("The key identifier is malformed", e);
             }
         } else {
             throw new IllegalArgumentException("Key Id is invalid");

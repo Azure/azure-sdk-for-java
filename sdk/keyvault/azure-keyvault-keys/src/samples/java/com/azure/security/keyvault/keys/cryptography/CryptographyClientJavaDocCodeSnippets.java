@@ -55,18 +55,21 @@ public final class CryptographyClientJavaDocCodeSnippets {
             (byte) 0x69, (byte) 0x70, (byte) 0x6c, (byte) 0x65, (byte) 0x20, (byte) 0x6f, (byte) 0x66, (byte) 0x20, (byte) 0x41, (byte) 0x75, (byte) 0x67, (byte) 0x75, (byte) 0x73, (byte) 0x74, (byte) 0x65, (byte) 0x20,
             (byte) 0x4b, (byte) 0x65, (byte) 0x72, (byte) 0x63, (byte) 0x6b, (byte) 0x68, (byte) 0x6f, (byte) 0x66, (byte) 0x66, (byte) 0x73
         };
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.cryptographyclient.encrypt#asymmetric
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.cryptographyclient.encrypt#asymmetric-encrypt
         byte[] plainText = new byte[100];
         new Random(0x1234567L).nextBytes(plainText);
         EncryptResult encryptResult = cryptographyClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText);
-        System.out.printf("Received encrypted content of length %d with algorithm %s \n", encryptResult.cipherText().length, encryptResult.algorithm().toString());
-        // END: com.azure.security.keyvault.keys.cryptography.cryptographyclient.encrypt#asymmetric
+        System.out.printf("Received encrypted content of length %d with algorithm %s \n",
+            encryptResult.cipherText().length, encryptResult.algorithm().toString());
+        // END: com.azure.security.keyvault.keys.cryptography.cryptographyclient.encrypt#asymmetric-encrypt
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.cryptographyclient.encrypt#symmetric
-        EncryptResult encryptionResult = cryptographyClient.encrypt(EncryptionAlgorithm.A192CBC_HS384, plainText, iv, authData);
-        System.out.printf("Received encrypted content of length %d with algorithm %s \n", encryptResult.cipherText().length, encryptResult.algorithm().toString());
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.cryptographyclient.encrypt#symmetric-encrypt
+        EncryptResult encryptionResult = cryptographyClient.encrypt(EncryptionAlgorithm.A192CBC_HS384, plainText,
+            iv, authData);
+        System.out.printf("Received encrypted content of length %d with algorithm %s \n",
+            encryptResult.cipherText().length, encryptResult.algorithm().toString());
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.cryptographyclient.encrypt#symmetric
+        // END: com.azure.security.keyvault.keys.cryptography.cryptographyclient.encrypt#symmetric-encrypt
     }
 
     /**
@@ -82,18 +85,20 @@ public final class CryptographyClientJavaDocCodeSnippets {
             (byte) 0x4b, (byte) 0x65, (byte) 0x72, (byte) 0x63, (byte) 0x6b, (byte) 0x68, (byte) 0x6f, (byte) 0x66, (byte) 0x66, (byte) 0x73
         };
         byte[] authTag = {(byte) 0x65, (byte) 0x2c, (byte) 0x3f, (byte) 0xa3, (byte) 0x6b, (byte) 0x0a, (byte) 0x7c, (byte) 0x5b, (byte) 0x32, (byte) 0x19, (byte) 0xfa, (byte) 0xb3, (byte) 0xa3, (byte) 0x0b, (byte) 0xc1, (byte) 0xc4};
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.cryptographyclient.decrypt#asymmetric
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.cryptographyclient.decrypt#asymmetric-decrypt
         byte[] plainText = new byte[100];
         new Random(0x1234567L).nextBytes(plainText);
         DecryptResult decryptResult = cryptographyClient.decrypt(EncryptionAlgorithm.RSA_OAEP, plainText);
         System.out.printf("Received decrypted content of length %d\n", decryptResult.plainText().length);
-        // END: com.azure.security.keyvault.keys.cryptography.cryptographyclient.decrypt#asymmetric
+        // END: com.azure.security.keyvault.keys.cryptography.cryptographyclient.decrypt#asymmetric-decrypt
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.cryptographyclient.decrypt#symmetric
-        DecryptResult decryptionResult = cryptographyClient.decrypt(EncryptionAlgorithm.A192CBC_HS384, plainText, iv, authData, authTag);
-        System.out.printf("Received decrypted content of length %d with algorithm %s \n", decryptionResult.plainText().length);
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.cryptographyclient.decrypt#symmetric-decrypt
+        DecryptResult decryptionResult = cryptographyClient.decrypt(EncryptionAlgorithm.A192CBC_HS384, plainText,
+            iv, authData, authTag);
+        System.out.printf("Received decrypted content of length %d with algorithm %s \n",
+            decryptionResult.plainText().length);
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.cryptographyclient.decrypt#symmetric
+        // END: com.azure.security.keyvault.keys.cryptography.cryptographyclient.decrypt#symmetric-decrypt
     }
 
     /**
@@ -110,7 +115,8 @@ public final class CryptographyClientJavaDocCodeSnippets {
         md.update(data);
         byte[] digest = md.digest();
         SignResult signResult = cryptographyClient.sign(SignatureAlgorithm.ES256, digest);
-        System.out.printf("Received signature of length %d with algorithm %s", signResult.signature().length, signResult.algorithm().toString());
+        System.out.printf("Received signature of length %d with algorithm %s", signResult.signature().length,
+            signResult.algorithm().toString());
         // END: com.azure.security.keyvault.keys.cryptography.cryptographyclient.sign
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.cryptographyclient.verify
@@ -134,7 +140,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
         System.out.printf("Received signature of length %d with algorithm %s", signResult.signature().length);
         // END: com.azure.security.keyvault.keys.cryptography.cryptographyclient.sign-data
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.verify-data
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.cryptographyclient.verify-data
         VerifyResult verifyResult =  cryptographyClient.verify(SignatureAlgorithm.ES256, data, signature);
         System.out.printf("Verification status %s", verifyResult.isValid());
         // END: com.azure.security.keyvault.keys.cryptography.cryptographyclient.verify-data
@@ -151,7 +157,8 @@ public final class CryptographyClientJavaDocCodeSnippets {
         byte[] key = new byte[100];
         new Random(0x1234567L).nextBytes(key);
         KeyWrapResult keyWrapResult = cryptographyClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, key);
-        System.out.printf("Received encypted key of length %d with algorithm %s", keyWrapResult.encryptedKey().length, keyWrapResult.algorithm().toString());
+        System.out.printf("Received encypted key of length %d with algorithm %s", keyWrapResult.encryptedKey().length,
+            keyWrapResult.algorithm().toString());
         // END: com.azure.security.keyvault.keys.cryptography.cryptographyclient.wrap-key
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.cryptographyclient.unwrap-key

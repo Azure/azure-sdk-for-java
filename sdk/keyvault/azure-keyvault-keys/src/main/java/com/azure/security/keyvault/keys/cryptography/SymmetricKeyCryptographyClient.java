@@ -45,7 +45,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         ICryptoTransform transform;
 
         try {
-            transform = algo.CreateEncryptor(key, iv, authenticationData);
+            transform = algo.createEncryptor(key, iv, authenticationData);
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -86,7 +86,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         ICryptoTransform transform;
 
         try {
-            transform = algo.CreateDecryptor(key, iv, authenticationData, authenticationTag);
+            transform = algo.createDecryptor(key, iv, authenticationData, authenticationTag);
         } catch (Exception e) {
             return Mono.error(e);
         }

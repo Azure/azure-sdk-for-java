@@ -13,6 +13,7 @@ import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.security.keyvault.keys.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 
 import java.util.ArrayList;
@@ -27,22 +28,22 @@ import java.util.Objects;
  * <p> The minimal configuration options required by {@link CryptographyClientBuilder cryptographyClientBuilder} to build {@link CryptographyAsyncClient}
  * are ({@link JsonWebKey jsonWebKey} or {@link String jsonWebKey identifier}) and {@link TokenCredential credential}). </p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.async.CryptographyClient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.instantiation}
  *
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link CryptographyClientBuilder}.</p>
 
- * {@codesnippet com.azure.security.keyvault.keys.async.CryptographyClient.withhttpclient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.withhttpclient.instantiation}
  *
  * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies
  * can be specified. It provides finer control over the construction of {@link CryptographyAsyncClient} and {@link CryptographyClient}</p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.async.CryptographyClient.pipeline.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.pipeline.instantiation}
  *
  * <p> The minimal configuration options required by {@link CryptographyClientBuilder cryptographyClientBuilder} to build {@link CryptographyClient}
  * are {@link JsonWebKey jsonWebKey} ot {@link String jsonWebKey identifier}) and {@link TokenCredential credential}). </p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.CryptographyClient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.instantiation}
  *
  * @see CryptographyAsyncClient
  * @see CryptographyClient
@@ -117,7 +118,7 @@ public final class CryptographyClientBuilder {
         }
 
         if (credential == null) {
-            throw new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.CREDENTIAL_REQUIRED));
+            throw new IllegalStateException("Key Vault credentials " + "are required to build the Cryptography async client");
         }
 
         // Closest to API goes first, closest to wire goes last.

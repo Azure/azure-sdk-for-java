@@ -14,6 +14,7 @@ import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.identity.credential.ClientSecretCredential;
+import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
 import org.junit.Rule;
 import org.junit.Test;

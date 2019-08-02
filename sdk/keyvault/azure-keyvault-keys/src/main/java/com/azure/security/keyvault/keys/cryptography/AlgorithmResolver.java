@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -32,7 +33,7 @@ class AlgorithmResolver {
         Default.put(Es512.ALGORITHM_NAME, new Es512());
     }
 
-    private final ConcurrentMap<String, Algorithm> algorithms = new ConcurrentHashMap<String, Algorithm>();
+    private final Map<String, Algorithm> algorithms = new ConcurrentHashMap<>();
 
     /**
      * Returns the implementation for an algorithm name.

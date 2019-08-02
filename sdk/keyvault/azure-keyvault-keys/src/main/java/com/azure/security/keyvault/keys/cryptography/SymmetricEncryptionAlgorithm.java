@@ -39,7 +39,7 @@ abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
      * @throws NoSuchPaddingException
      * @throws InvalidAlgorithmParameterException
      */
-    public abstract ICryptoTransform CreateEncryptor(byte[] key, byte[] iv, byte[] authenticationData) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
+    public abstract ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] authenticationData) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
 
     /**
      * Creates a {@link ICryptoTransform} implementation for encryption
@@ -58,7 +58,7 @@ abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
      * @throws NoSuchPaddingException
      * @throws InvalidAlgorithmParameterException
      */
-    public abstract ICryptoTransform CreateEncryptor(byte[] key, byte[] iv, byte[] authenticationData, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
+    public abstract ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] authenticationData, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
 
     /**
      * Creates a {@link ICryptoTransform} implementation for decryption
@@ -77,7 +77,7 @@ abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
      * @throws NoSuchPaddingException
      * @throws InvalidAlgorithmParameterException
      */
-    public abstract ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
+    public abstract ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
 
     /**
      * Creates a {@link ICryptoTransform} implementation for decryption
@@ -98,6 +98,6 @@ abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
      * @throws NoSuchPaddingException
      * @throws InvalidAlgorithmParameterException
      */
-    public abstract ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
+    public abstract ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
 
 }
