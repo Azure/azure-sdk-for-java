@@ -83,12 +83,12 @@ public final class QueueClientBuilder {
     private String queueName;
     private SASTokenCredential sasTokenCredential;
     private SharedKeyCredential sharedKeyCredential;
+    private TokenCredential bearerTokenCredential;
     private HttpClient httpClient;
     private HttpPipeline pipeline;
     private HttpLogDetailLevel logLevel;
     private RetryPolicy retryPolicy;
     private Configuration configuration;
-    private TokenCredential tokenCredential;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link QueueClient QueueClients}
@@ -140,7 +140,7 @@ public final class QueueClientBuilder {
         Objects.requireNonNull(endpoint);
         Objects.requireNonNull(queueName);
 
-        if (sasTokenCredential == null && sharedKeyCredential == null && tokenCredential == null) {
+        if (sasTokenCredential == null && sharedKeyCredential == null && bearerTokenCredential == null) {
             LOGGER.logAndThrow(new IllegalArgumentException("Credentials are required for authorization"));
             return null;
         }
@@ -157,8 +157,8 @@ public final class QueueClientBuilder {
 
         if (sharedKeyCredential != null) {
             policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
-        } else if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+        } else if (bearerTokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(bearerTokenCredential, String.format("%s/.default", endpoint)));
         } else if (sasTokenCredential != null) {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         }
@@ -208,7 +208,7 @@ public final class QueueClientBuilder {
             this.sasTokenCredential = SASTokenCredential.fromQueryParameters(fullURL.getQuery());
             if (this.sasTokenCredential != null) {
                 this.sharedKeyCredential = null;
-                this.tokenCredential = null;
+                this.bearerTokenCredential = null;
             }
         } catch (MalformedURLException ex) {
             LOGGER.logAndThrow(new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed. Endpoint: " + endpoint));
@@ -240,7 +240,7 @@ public final class QueueClientBuilder {
     public QueueClientBuilder credential(SASTokenCredential credential) {
         this.sasTokenCredential = Objects.requireNonNull(credential);
         this.sharedKeyCredential = null;
-        this.tokenCredential = null;
+        this.bearerTokenCredential = null;
         return this;
     }
 
@@ -254,7 +254,7 @@ public final class QueueClientBuilder {
     public QueueClientBuilder credential(SharedKeyCredential credential) {
         this.sharedKeyCredential = Objects.requireNonNull(credential);
         this.sasTokenCredential = null;
-        this.tokenCredential = null;
+        this.bearerTokenCredential = null;
         return this;
     }
 
@@ -265,7 +265,7 @@ public final class QueueClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}
      */
     public QueueClientBuilder credential(TokenCredential credential) {
-        this.tokenCredential = Objects.requireNonNull(credential);
+        this.bearerTokenCredential = Objects.requireNonNull(credential);
         this.sharedKeyCredential = null;
         this.sasTokenCredential = null;
         return this;
