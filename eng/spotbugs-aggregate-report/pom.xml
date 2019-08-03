@@ -6,7 +6,7 @@
   <parent>
     <artifactId>azure-client-sdk-parent</artifactId>
     <groupId>com.azure</groupId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <relativePath>../../pom.client.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -64,17 +64,18 @@
                 <source>..\..\sdk\eventhubs\azure-eventhubs\src\main\java</source>
                 <source>..\..\sdk\eventhubs\azure-eventhubs\src\samples\java</source>
                 <source>..\..\sdk\identity\azure-identity\src\main\java</source>
-<!--                <source>..\..\sdk\keyvault\azure-keyvault-keys\src\main\java</source>-->
-<!--                <source>..\..\sdk\keyvault\azure-keyvault-keys\src\samples\java</source>-->
-<!--                <source>..\..\sdk\keyvault\azure-keyvault-secrets\src\main\java</source>-->
-<!--                <source>..\..\sdk\keyvault\azure-keyvault-secrets\src\samples\java</source>-->
-<!--                <source>..\..\storage\client\blob\src\main\java</source>-->
-<!--                <source>..\..\storage\client\blob\src\samples\java</source>-->
-<!--                <source>..\..\storage\client\files\src\main\java</source>-->
-<!--                <source>..\..\storage\client\files\src\samples\java</source>-->
-<!--                <source>..\..\storage\client\queues\src\main\java</source>-->
-<!--                <source>..\..\storage\client\queues\src\samples\java</source>-->
-<!--                <source>..\..\sdk\tracing\azure-tracing-opentelemetry\src\main\java</source>-->
+                <source>..\..\sdk\identity\azure-identity\src\samples\java</source>
+                <!--                <source>..\..\sdk\keyvault\azure-keyvault-keys\src\main\java</source>-->
+                <!--                <source>..\..\sdk\keyvault\azure-keyvault-keys\src\samples\java</source>-->
+                <!--                <source>..\..\sdk\keyvault\azure-keyvault-secrets\src\main\java</source>-->
+                <!--                <source>..\..\sdk\keyvault\azure-keyvault-secrets\src\samples\java</source>-->
+                <!--                <source>..\..\storage\client\blob\src\main\java</source>-->
+                <!--                <source>..\..\storage\client\blob\src\samples\java</source>-->
+                <!--                <source>..\..\storage\client\files\src\main\java</source>-->
+                <!--                <source>..\..\storage\client\files\src\samples\java</source>-->
+                <!--                <source>..\..\storage\client\queues\src\main\java</source>-->
+                <!--                <source>..\..\storage\client\queues\src\samples\java</source>-->
+                <!--                <source>..\..\sdk\tracing\azure-tracing-opentelemetry\src\main\java</source>-->
               </sources>
             </configuration>
           </execution>
@@ -179,11 +180,11 @@
           <artifactId>azure-keyvault-secrets</artifactId>
           <version>${azure-keyvault.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--          <groupId>com.azure</groupId>-->
-<!--          <artifactId>azure-storage-blob</artifactId>-->
-<!--          <version>${azure-storage.version}</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--          <groupId>com.azure</groupId>-->
+        <!--          <artifactId>azure-storage-blob</artifactId>-->
+        <!--          <version>${azure-storage.version}</version>-->
+        <!--        </dependency>-->
 
         <dependency>
           <groupId>com.azure</groupId>
