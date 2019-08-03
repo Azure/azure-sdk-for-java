@@ -55,24 +55,24 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
     private final TokenCredential tokenProvider;
     private final Mono<RequestResponseChannel> channelMono;
     private final ReactorProvider provider;
-    private final String eventHubPath;
+    private final String eventHubName;
     private final AmqpResponseMapper mapper;
     private final TokenResourceProvider audienceProvider;
 
     /**
-     * Creates an instance that is connected to the {@code eventHubPath}'s management node.
+     * Creates an instance that is connected to the {@code eventHubName}'s management node.
      *
-     * @param eventHubPath The name of the Event Hub.
+     * @param eventHubName The name of the Event Hub.
      * @param tokenProvider A provider that generates authorization tokens.
      * @param provider The dispatcher to execute work on Reactor.
      */
-    ManagementChannel(AmqpConnection connection, String eventHubPath, TokenCredential tokenProvider,
+    ManagementChannel(AmqpConnection connection, String eventHubName, TokenCredential tokenProvider,
                       TokenResourceProvider audienceProvider, ReactorProvider provider, RetryOptions retryOptions,
                       ReactorHandlerProvider handlerProvider, AmqpResponseMapper mapper) {
         super(new ClientLogger(ManagementChannel.class));
 
         Objects.requireNonNull(connection);
-        Objects.requireNonNull(eventHubPath);
+        Objects.requireNonNull(eventHubName);
         Objects.requireNonNull(tokenProvider);
         Objects.requireNonNull(audienceProvider);
         Objects.requireNonNull(provider);
@@ -84,7 +84,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
         this.connection = connection;
         this.tokenProvider = tokenProvider;
         this.provider = provider;
-        this.eventHubPath = eventHubPath;
+        this.eventHubName = eventHubName;
         this.mapper = mapper;
         this.channelMono = connection.createSession(SESSION_NAME)
             .cast(ReactorSession.class)
@@ -100,7 +100,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
     public Mono<EventHubProperties> getEventHubProperties() {
         final Map<String, Object> properties = new HashMap<>();
         properties.put(MANAGEMENT_ENTITY_TYPE_KEY, MANAGEMENT_EVENTHUB_ENTITY_TYPE);
-        properties.put(MANAGEMENT_ENTITY_NAME_KEY, eventHubPath);
+        properties.put(MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
         properties.put(MANAGEMENT_OPERATION_KEY, READ_OPERATION_VALUE);
 
         return getProperties(properties, mapper::toEventHubProperties);
@@ -113,7 +113,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
         final Map<String, Object> properties = new HashMap<>();
         properties.put(MANAGEMENT_ENTITY_TYPE_KEY, MANAGEMENT_PARTITION_ENTITY_TYPE);
-        properties.put(MANAGEMENT_ENTITY_NAME_KEY, eventHubPath);
+        properties.put(MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
         properties.put(MANAGEMENT_PARTITION_NAME_KEY, partitionId);
         properties.put(MANAGEMENT_OPERATION_KEY, READ_OPERATION_VALUE);
 
@@ -121,7 +121,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
     }
 
     private <T> Mono<T> getProperties(Map<String, Object> properties, Function<Map<?, ?>, T> mapper) {
-        final String tokenAudience = audienceProvider.getResourceString(eventHubPath);
+        final String tokenAudience = audienceProvider.getResourceString(eventHubName);
 
         return tokenProvider.getToken(tokenAudience).flatMap(accessToken -> {
             properties.put(MANAGEMENT_SECURITY_TOKEN_KEY, accessToken.token());
