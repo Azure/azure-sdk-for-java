@@ -40,7 +40,7 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
 
     private volatile Supplier<Integer> creditSupplier;
 
-    ReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler, ActiveClientTokenManager tokenManager) {
+    public ReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler, ActiveClientTokenManager tokenManager) {
         super(new ClientLogger(ReactorReceiver.class));
         this.isDisposed = new AtomicBoolean();
         this.entityPath = entityPath;

@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Manages the re-authorization of the client to the token audience against the CBS node.
  */
-class ActiveClientTokenManager implements Closeable {
+public class ActiveClientTokenManager implements Closeable {
     private final ClientLogger logger = new ClientLogger(ActiveClientTokenManager.class);
     private final AtomicBoolean hasScheduled = new AtomicBoolean();
     private final AtomicBoolean hasDisposed = new AtomicBoolean();
@@ -37,7 +37,7 @@ class ActiveClientTokenManager implements Closeable {
     // last refresh interval in milliseconds.
     private AtomicLong lastRefreshInterval = new AtomicLong();
 
-    ActiveClientTokenManager(Mono<CBSNode> cbsNode, String tokenAudience) {
+    public ActiveClientTokenManager(Mono<CBSNode> cbsNode, String tokenAudience) {
         this.timer = new Timer(tokenAudience + "-tokenManager");
         this.cbsNode = cbsNode;
         this.tokenAudience = tokenAudience;
