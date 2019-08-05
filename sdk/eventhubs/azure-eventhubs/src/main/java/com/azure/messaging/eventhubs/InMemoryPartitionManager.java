@@ -23,8 +23,8 @@ public class InMemoryPartitionManager implements PartitionManager {
     /**
      * {@inheritDoc}
      *
-     * @param eventHubName The Event Hub name to get ownership information.
-     * @param consumerGroupName The consumer group name.
+     * @param eventHubName The name of the Event Hub to list ownership of.
+     * @param consumerGroupName The name of the consumer group to list ownership of.
      * @return A {@link Flux} of partition ownership information.
      */
     @Override
@@ -35,7 +35,7 @@ public class InMemoryPartitionManager implements PartitionManager {
 
     /**
      * Returns a {@link Flux} of partition ownership details for successfully claimed partitions. If a partition is
-     * already claimed by an instance or if the eTag in the request doesn't match the previously stored eTag, then
+     * already claimed by an instance or if the ETag in the request doesn't match the previously stored ETag, then
      * ownership claim is denied.
      *
      * @param requestedPartitionOwnerships Array of partition ownerships this instance is requesting to own.
@@ -61,10 +61,10 @@ public class InMemoryPartitionManager implements PartitionManager {
     }
 
     /**
-     * Updates the checkpoint with new sequence number and offset. A new eTag is generated when the update is successful.
+     * Updates the checkpoint with new sequence number and offset. A new ETag is generated when the update is successful.
      *
      * @param checkpoint Checkpoint information containing sequence number and offset to be stored for this partition.
-     * @return A new eTag associated with the updated checkpoint.
+     * @return A new ETag associated with the updated checkpoint.
      */
     @Override
     public Mono<String> updateCheckpoint(Checkpoint checkpoint) {

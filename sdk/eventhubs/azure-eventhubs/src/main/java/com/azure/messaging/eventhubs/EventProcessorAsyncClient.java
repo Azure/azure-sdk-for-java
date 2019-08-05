@@ -32,7 +32,7 @@ import reactor.core.scheduler.Schedulers;
  * </p>
  *
  * <p><strong>Creating an {@link EventProcessorAsyncClient} instance using Event Hub instance connection
- * string.</strong></p>
+ * string</strong></p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventprocessorasyncclient.instantiation}
  *
@@ -106,7 +106,7 @@ public class EventProcessorAsyncClient {
      * #stop()} is called will restart this event processor.
      * </p>
      *
-     * <p><strong>Starting the processor to consume events from all partitions.</strong></p>
+     * <p><strong>Starting the processor to consume events from all partitions</strong></p>
      * {@codesnippet com.azure.messaging.eventhubs.eventprocessorasyncclient.startstop}
      */
     public synchronized void start() {
@@ -126,7 +126,7 @@ public class EventProcessorAsyncClient {
      * Subsequent calls to stop will be ignored if the event processor is not running.
      * </p>
      *
-     * <p><strong>Stopping the processor.</strong></p>
+     * <p><strong>Stopping the processor</strong></p>
      * {@codesnippet com.azure.messaging.eventhubs.eventprocessorasyncclient.startstop}
      */
     public synchronized void stop() {
@@ -231,8 +231,8 @@ public class EventProcessorAsyncClient {
         partitionProcessor.initialize().subscribe();
 
         consumer.receive().subscribeOn(Schedulers.newElastic("PartitionPump"))
-            .subscribe(eventData -> partitionProcessor.processEvent(eventData).subscribe(unused -> { // do nothing
-                }, partitionProcessor::processError),
+            .subscribe(eventData -> partitionProcessor.processEvent(eventData).subscribe(unused -> {
+            }, partitionProcessor::processError),
                 partitionProcessor::processError,
                 // Currently, there is no way to distinguish if the receiver was closed because
                 // another receiver with higher/same owner level(epoch) connected or because

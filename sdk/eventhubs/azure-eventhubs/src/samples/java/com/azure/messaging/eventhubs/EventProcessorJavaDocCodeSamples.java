@@ -19,7 +19,7 @@ public final class EventProcessorJavaDocCodeSamples {
     public EventProcessorAsyncClient createInstance() {
         // BEGIN: com.azure.messaging.eventhubs.eventprocessorasyncclient.instantiation
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
-            + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
+            + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
         EventProcessorAsyncClient eventProcessorAsyncClient = new EventHubClientBuilder()
             .connectionString(connectionString)
             .partitionProcessorFactory((PartitionProcessorImpl::new))
@@ -45,7 +45,7 @@ public final class EventProcessorJavaDocCodeSamples {
      * No-op partition processor used in code snippet to demo creating an instance of {@link EventProcessorAsyncClient}.
      * This class will not be visible in the code snippet.
      */
-    private static class PartitionProcessorImpl implements PartitionProcessor {
+    private static final class PartitionProcessorImpl implements PartitionProcessor {
 
         PartitionContext partitionContext;
         CheckpointManager checkpointManager;

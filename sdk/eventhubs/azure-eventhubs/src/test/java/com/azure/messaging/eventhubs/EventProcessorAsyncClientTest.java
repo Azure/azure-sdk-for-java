@@ -93,7 +93,6 @@ public class EventProcessorAsyncClientTest {
 
         StepVerifier.create(partitionManager.listOwnership("test-eh", "test-consumer"))
             .assertNext(partitionOwnership -> {
-                System.out.println(partitionOwnership.lastModifiedTime() + " " + beforeTest);
                 assertEquals("Partition", "1", partitionOwnership.partitionId());
                 assertEquals("Consumer", "test-consumer", partitionOwnership.consumerGroupName());
                 assertEquals("EventHub name", "test-eh", partitionOwnership.eventHubName());
@@ -207,7 +206,7 @@ public class EventProcessorAsyncClientTest {
         verify(consumer3, atLeastOnce()).close();
     }
 
-    private static class FaultyPartitionProcessor implements PartitionProcessor {
+    private static final class FaultyPartitionProcessor implements PartitionProcessor {
 
         boolean error;
 
@@ -232,7 +231,7 @@ public class EventProcessorAsyncClientTest {
         }
     }
 
-    private static class TestPartitionProcessor implements PartitionProcessor {
+    private static final class TestPartitionProcessor implements PartitionProcessor {
 
         PartitionContext partitionContext;
         CheckpointManager checkpointManager;
