@@ -14,7 +14,7 @@ Typically, you will not need to install or specifically depend on Azure Core, in
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
-  <version>1.0.0-preview.2</version>
+  <version>1.0.0-preview.3</version>
 </dependency>
 ```
 
