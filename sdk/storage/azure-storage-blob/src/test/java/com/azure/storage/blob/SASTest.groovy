@@ -66,7 +66,7 @@ class SASTest extends APISpec {
         def blobName = generateBlobName()
         def bu = cu.getBlockBlobClient(blobName)
         bu.upload(new ByteArrayInputStream(data), data.length)
-        def snapshotId = bu.createSnapshot().value()
+        def snapshotId = bu.createSnapshot().value().getSnapshotId()
 
         when:
         def snapshotBlob = cu.getBlockBlobClient(blobName, snapshotId)
@@ -82,7 +82,7 @@ class SASTest extends APISpec {
         def blobName = generateBlobName()
         def bu = cu.getBlockBlobClient(blobName)
         bu.upload(new ByteArrayInputStream(data), data.length)
-        def snapshotId = bu.createSnapshot().value()
+        def snapshotId = bu.createSnapshot().value().getSnapshotId()
 
         when:
         def snapshotBlob = cu.getBlockBlobClient(blobName, snapshotId)
@@ -148,7 +148,7 @@ class SASTest extends APISpec {
         def blobName = generateBlobName()
         def bu = cu.getBlockBlobClient(blobName)
         bu.upload(new ByteArrayInputStream(data), data.length)
-        def snapshotId = bu.createSnapshot().value()
+        String snapshotId = bu.createSnapshot().value().getSnapshotId()
 
         def snapshotBlob = cu.getBlockBlobClient(blobName, snapshotId)
 
@@ -296,8 +296,8 @@ class SASTest extends APISpec {
         String blobName = generateBlobName()
         BlockBlobClient bu = cu.getBlockBlobClient(blobName)
         bu.upload(new ByteArrayInputStream(data), data.length)
-        String snapshotId = bu.createSnapshot().value()
-        BlockBlobClient snapshotBlob = cu.getBlockBlobClient(blobName, snapshotId)
+        BlockBlobClient snapshotBlob = bu.createSnapshot().value().asBlockBlobClient()
+        String snapshotId = snapshotBlob.getSnapshotId()
 
         BlobSASPermission permissions = new BlobSASPermission()
             .read(true)
@@ -359,7 +359,7 @@ class SASTest extends APISpec {
         os.toString() == new String(data)
 
         and:
-        def properties = client2.getProperties(null, null).value()
+        def properties = client2.getProperties().value()
 
         then:
         properties.cacheControl() == "cache"

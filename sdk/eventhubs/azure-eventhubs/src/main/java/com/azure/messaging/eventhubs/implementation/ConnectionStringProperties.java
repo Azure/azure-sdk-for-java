@@ -22,10 +22,10 @@ public class ConnectionStringProperties {
     private static final String ENTITY_PATH = "EntityPath";
     private static final String ERROR_MESSAGE_FORMAT = "Could not parse 'connectionString'. Expected format: "
         + "'Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
-        + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}'. Actual: %s";
+        + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}'. Actual: %s";
 
     private final URI endpoint;
-    private final String eventHubPath;
+    private final String eventHubName;
     private final String sharedAccessKeyName;
     private final String sharedAccessKey;
 
@@ -43,7 +43,7 @@ public class ConnectionStringProperties {
 
         final String[] tokenValuePairs = connectionString.split(TOKEN_VALUE_PAIR_DELIMITER);
         URI endpoint = null;
-        String eventHubPath = null;
+        String eventHubName = null;
         String sharedAccessKeyName = null;
         String sharedAccessKeyValue = null;
 
@@ -72,7 +72,7 @@ public class ConnectionStringProperties {
             } else if (key.equalsIgnoreCase(SHARED_ACCESS_KEY)) {
                 sharedAccessKeyValue = value;
             } else if (key.equalsIgnoreCase(ENTITY_PATH)) {
-                eventHubPath = value;
+                eventHubName = value;
             } else {
                 throw new IllegalArgumentException(
                     String.format(Locale.US, "Illegal connection string parameter name: %s", key));
@@ -84,7 +84,7 @@ public class ConnectionStringProperties {
         }
 
         this.endpoint = endpoint;
-        this.eventHubPath = eventHubPath;
+        this.eventHubName = eventHubName;
         this.sharedAccessKeyName = sharedAccessKeyName;
         this.sharedAccessKey = sharedAccessKeyValue;
     }
@@ -103,8 +103,8 @@ public class ConnectionStringProperties {
      *
      * @return The name of the specific Event Hub under the namespace.
      */
-    public String eventHubPath() {
-        return eventHubPath;
+    public String eventHubName() {
+        return eventHubName;
     }
 
     /**

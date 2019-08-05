@@ -1,4 +1,5 @@
 parameters:
+  ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
   PreTestSteps: []
   TestOptions: '$(DefaultOptions) $(ProfileFlag)'
   TestGoals: test

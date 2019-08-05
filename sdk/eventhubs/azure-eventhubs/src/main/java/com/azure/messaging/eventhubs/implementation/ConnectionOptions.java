@@ -21,14 +21,14 @@ public class ConnectionOptions {
     private final ProxyConfiguration proxyConfiguration;
     private final Scheduler scheduler;
     private final String host;
-    private final String eventHubPath;
+    private final String eventHubName;
     private final CBSAuthorizationType authorizationType;
 
-    public ConnectionOptions(String host, String eventHubPath, TokenCredential tokenCredential,
+    public ConnectionOptions(String host, String eventHubName, TokenCredential tokenCredential,
                              CBSAuthorizationType authorizationType, TransportType transport, RetryOptions retryOptions,
                              ProxyConfiguration proxyConfiguration, Scheduler scheduler) {
         Objects.requireNonNull(host);
-        Objects.requireNonNull(eventHubPath);
+        Objects.requireNonNull(eventHubName);
         Objects.requireNonNull(tokenCredential);
         Objects.requireNonNull(transport);
         Objects.requireNonNull(retryOptions);
@@ -36,7 +36,7 @@ public class ConnectionOptions {
         Objects.requireNonNull(scheduler);
 
         this.host = host;
-        this.eventHubPath = eventHubPath;
+        this.eventHubName = eventHubName;
         this.tokenCredential = tokenCredential;
         this.authorizationType = authorizationType;
         this.transport = transport;
@@ -49,8 +49,8 @@ public class ConnectionOptions {
         return host;
     }
 
-    public String eventHubPath() {
-        return eventHubPath;
+    public String eventHubName() {
+        return eventHubName;
     }
 
     public TokenCredential tokenCredential() {

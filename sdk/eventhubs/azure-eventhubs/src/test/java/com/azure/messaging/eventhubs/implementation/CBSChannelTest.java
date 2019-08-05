@@ -83,7 +83,7 @@ public class CBSChannelTest extends ApiTestBase {
     @Test
     public void successfullyAuthorizes() {
         // Arrange
-        final String tokenAudience = tokenResourceProvider.getResourceString(credentials.eventHubPath());
+        final String tokenAudience = tokenResourceProvider.getResourceString(credentials.eventHubName());
 
         // Act & Assert
         StepVerifier.create(cbsChannel.authorize(tokenAudience))
@@ -96,7 +96,7 @@ public class CBSChannelTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        final String tokenAudience = tokenResourceProvider.getResourceString(credentials.eventHubPath());
+        final String tokenAudience = tokenResourceProvider.getResourceString(credentials.eventHubName());
         final Duration duration = Duration.ofMinutes(10);
 
         TokenCredential tokenProvider = null;
