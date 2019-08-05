@@ -5,10 +5,20 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpShutdownSignal;
+import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.ActiveClientTokenManager;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLink;
+import com.azure.messaging.eventhubs.implementation.ReactorReceiver;
+import com.azure.messaging.eventhubs.implementation.handler.ReceiveLinkHandler;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
+import org.apache.qpid.proton.amqp.messaging.Source;
+import org.apache.qpid.proton.codec.ReadableBuffer;
+import org.apache.qpid.proton.codec.WritableBuffer;
+import org.apache.qpid.proton.engine.Delivery;
+import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 import org.junit.After;
 import org.junit.Assert;
@@ -31,8 +41,8 @@ import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -42,7 +52,11 @@ import java.util.function.Supplier;
 import static com.azure.messaging.eventhubs.TestUtils.getMessage;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -59,6 +73,7 @@ public class EventHubConsumerTest {
     private final ClientLogger logger = new ClientLogger(EventHubConsumerTest.class);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
     private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
+    private final FluxSink<Message> messageSink = messageProcessor.sink();
     private final DirectProcessor<Throwable> errorProcessor = DirectProcessor.create();
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final DirectProcessor<AmqpShutdownSignal> shutdownProcessor = DirectProcessor.create();
@@ -69,15 +84,12 @@ public class EventHubConsumerTest {
     @Captor
     private ArgumentCaptor<Supplier<Integer>> creditSupplier;
 
-    private Mono<AmqpReceiveLink> receiveLinkMono;
-    private List<Message> messages = new ArrayList<>();
-    private EventHubConsumerOptions options;
     private EventHubConsumer consumer;
+    private EventHubConsumerOptions options;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        receiveLinkMono = Mono.fromCallable(() -> amqpReceiveLink);
 
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor);
         when(amqpReceiveLink.getErrors()).thenReturn(errorProcessor);
@@ -89,12 +101,11 @@ public class EventHubConsumerTest {
             .prefetchCount(PREFETCH)
             .retry(new RetryOptions())
             .scheduler(Schedulers.elastic());
-        consumer = new EventHubConsumer(receiveLinkMono, options);
+        consumer = new EventHubConsumer(Mono.fromCallable(() -> amqpReceiveLink), options);
     }
 
     @After
     public void teardown() throws IOException {
-        messages.clear();
         Mockito.framework().clearInlineMocks();
         consumer.close();
     }
@@ -381,11 +392,130 @@ public class EventHubConsumerTest {
         }
     }
 
-    private void sendMessages(int numberOfEvents) {
-        // When we start receiving, then send those 10 messages.
-        FluxSink<Message> sink = messageProcessor.sink();
-        for (int i = 0; i < numberOfEvents; i++) {
-            sink.next(getMessage(PAYLOAD_BYTES, messageTrackingUUID));
+    @Test
+    public void onOperatorErrorClosesLink() throws InterruptedException, IOException {
+        // Arrange
+        final int numberOfEvents = 2;
+        final CountDownLatch shutdownReceived = new CountDownLatch(1);
+        final AtomicInteger eventsReceived = new AtomicInteger();
+        final Map<String, String> map = new HashMap<>();
+
+        when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
+
+        consumer.receive()
+            .filter(e -> isMatchingEvent(e, messageTrackingUUID))
+            .subscribe(event -> {
+                final int i = eventsReceived.incrementAndGet();
+                logger.info("Received {}. Sequence #{}", i, event.sequenceNumber());
+
+                // Expecting an NullPointerException.
+                final boolean exists = map.get("non-existent-key").startsWith("something");
+                if (exists) {
+                    Assert.fail("This should not exist.");
+                }
+            }, error -> {
+                logger.info("Exception received: {}", error.toString());
+                Assert.assertEquals(NullPointerException.class, error.getClass());
+                shutdownReceived.countDown();
+            }, () -> Assert.fail("Should not receive a shutdown signal"));
+
+        // Act
+        sendMessages(numberOfEvents);
+        consumer.close();
+
+        // Assert
+        boolean successful = shutdownReceived.await(5, TimeUnit.SECONDS);
+        Assert.assertTrue(successful);
+        Assert.assertEquals(0, shutdownReceived.getCount());
+        verify(amqpReceiveLink, times(1)).close();
+    }
+
+    @Test
+    public void onOperatorErrorClosesReactorReceiver() throws InterruptedException, IOException {
+        // Arrange
+        final Receiver receiver = mock(Receiver.class);
+        final CBSNode cbsNode = mock(CBSNode.class);
+
+        when(cbsNode.authorize(any())).thenReturn(Mono.empty());
+        when(receiver.getRemoteSource()).thenReturn(new Source());
+
+        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(Mono.just(cbsNode),
+            "audience");
+        final String entityPath = "some-entity-path";
+        final String testHost = "some-test-host";
+        final ReceiveLinkHandler handler = new ReceiveLinkHandler("connection", testHost,
+            "some-receiver-name", entityPath);
+        final ReactorReceiver reactorReceiver = new ReactorReceiver(entityPath, receiver, handler, tokenManager);
+        final EventHubConsumer eventHubConsumer = new EventHubConsumer(Mono.fromCallable(() -> reactorReceiver), options);
+
+        final CountDownLatch shutdownReceived = new CountDownLatch(1);
+        final AtomicInteger eventsReceived = new AtomicInteger();
+        final Map<String, String> map = new HashMap<>();
+        map.put("A key", "A value");
+
+        // Act
+        eventHubConsumer.receive()
+            .filter(e -> isMatchingEvent(e, messageTrackingUUID))
+            .subscribe(event -> {
+                final int i = eventsReceived.incrementAndGet();
+                logger.info("Received {}. Sequence #{}", i, event.sequenceNumber());
+
+                // Expecting an NullPointerException.
+                final boolean exists = map.get("non-existent-key").startsWith("something");
+                if (exists) {
+                    Assert.fail("This should not exist.");
+                }
+            }, error -> {
+                logger.info("Exception received: {}", error.toString());
+                Assert.assertEquals(NullPointerException.class, error.getClass());
+                shutdownReceived.countDown();
+            }, () -> Assert.fail("Should not receive an onComplete."));
+
+        sendMessages(2, receiver, handler);
+
+        // Assert
+        Assert.assertTrue(shutdownReceived.await(5, TimeUnit.SECONDS));
+        consumer.close();
+    }
+
+    private void sendMessages(int numberOfMessages) {
+        final Message message = getMessage(PAYLOAD_BYTES, messageTrackingUUID);
+
+        for (int i = 0; i < numberOfMessages; i++) {
+            logger.info("Sending message: {}", i);
+            messageSink.next(message);
+        }
+    }
+
+    private void sendMessages(int numberOfMessages, Receiver receiver, ReceiveLinkHandler handler) {
+        final Message message = getMessage(PAYLOAD_BYTES, messageTrackingUUID);
+        final WritableBuffer.ByteBufferWrapper byteBufferWrapper = WritableBuffer.ByteBufferWrapper.allocate(1024);
+        final ReadableBuffer byteBuffer = byteBufferWrapper.toReadableBuffer();
+        byteBuffer.rewind();
+        final int encodedSize = message.encode(byteBufferWrapper);
+        final byte[] array = byteBuffer.array();
+
+        final Event event = mock(Event.class);
+        final Delivery delivery = mock(Delivery.class);
+        when(event.getDelivery()).thenReturn(delivery);
+        when(event.getLink()).thenReturn(receiver);
+
+        when(delivery.pending()).thenReturn(encodedSize);
+        when(delivery.isPartial()).thenReturn(false);
+        when(delivery.isSettled()).thenReturn(false);
+
+        doAnswer(invocation -> {
+            Object[] args = invocation.getArguments();
+            byte[] buffer = (byte[]) args[0];
+
+            System.arraycopy(array, 0, buffer, 0, buffer.length);
+
+            return buffer.length;
+        }).when(receiver).recv(any(), eq(0), eq(encodedSize));
+
+        for (int i = 0; i < numberOfMessages; i++) {
+            logger.info("Sending message: {}", i);
+            handler.onDelivery(event);
         }
     }
 }
