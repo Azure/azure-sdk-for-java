@@ -15,12 +15,12 @@ import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
+import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -38,8 +38,6 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 
 import static com.azure.core.amqp.exception.ErrorCondition.RESOURCE_LIMIT_EXCEEDED;
 import static com.azure.messaging.eventhubs.EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME;
@@ -118,11 +116,11 @@ public class EventHubConsumerIntegrationTest extends ApiTestBase {
                 final Disposable subscription = consumer.receive().take(numberOfEvents).subscribe(event -> {
                     logger.info("Event[{}] received. partition: {}", event.sequenceNumber(), partitionId);
                 }, error -> {
-                        Assert.fail("An error should not have occurred:" + error.toString());
-                    }, () -> {
-                        logger.info("Disposing of consumer now that the receive is complete.");
-                        countDownLatch.countDown();
-                    });
+                    Assert.fail("An error should not have occurred:" + error.toString());
+                }, () -> {
+                    logger.info("Disposing of consumer now that the receive is complete.");
+                    countDownLatch.countDown();
+                });
 
                 subscriptions.add(subscription);
 
@@ -151,45 +149,59 @@ public class EventHubConsumerIntegrationTest extends ApiTestBase {
     /**
      * Verify that if we set the identifier in the consumer, it shows up in the quota error.
      */
-    @Ignore("Investigate. The sixth receiver is not causing an exception to be thrown.")
     @Test
-    public void consumerIdentifierShowsUpInQuotaErrors() {
+    public void consumerIdentifierShowsUpInQuotaErrors() throws InterruptedException {
         // Arrange
         final String prefix = UUID.randomUUID().toString();
-        final Consumer<AmqpException> validateException = error -> {
-            Assert.assertEquals(RESOURCE_LIMIT_EXCEEDED, error.getErrorCondition());
-
-            final String errorMsg = error.getMessage();
-            for (int i = 0; i < MAX_NUMBER_OF_CONSUMERS; i++) {
-                Assert.assertTrue(errorMsg.contains(prefix + ":" + i));
-            }
-        };
+        final EventHubProducer producer = client.createProducer(
+            new EventHubProducerOptions().partitionId(PARTITION_ID));
 
         final List<EventHubConsumer> consumers = new ArrayList<>();
-        final Disposable.Composite subscriptions = Disposables.composite();
+        final CountDownLatch countDown = new CountDownLatch(MAX_NUMBER_OF_CONSUMERS);
         EventHubConsumer exceededConsumer = null;
         try {
             for (int i = 0; i < MAX_NUMBER_OF_CONSUMERS; i++) {
                 final EventHubConsumerOptions options = new EventHubConsumerOptions().identifier(prefix + ":" + i);
-                final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.earliest(), options);
+                final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
+                    EventPosition.earliest(), options);
                 consumers.add(consumer);
-                subscriptions.add(consumer.receive().take(TIMEOUT).subscribe(eventData -> {
-                    // Received an event. We don't need to log it though.
-                }));
+                consumer.receive()
+                    .subscribe(new BaseSubscriber<EventData>() {
+                        private final AtomicBoolean firstEvent = new AtomicBoolean(true);
+
+                        @Override
+                        protected void hookOnNext(EventData value) {
+                            if (firstEvent.getAndSet(false)) {
+                                countDown.countDown();
+                            }
+
+                            super.hookOnNext(value);
+                        }
+                    });
             }
+
+            producer.send(TestUtils.getEvents(2, MESSAGE_TRACKING_ID)).block();
+
+            // Verify that the consumers have begun to consume before moving to next.
+            Assert.assertTrue(countDown.await(10, TimeUnit.SECONDS));
 
             // Act & Verify
             exceededConsumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.earliest());
             StepVerifier.create(exceededConsumer.receive())
                 .expectErrorSatisfies(exception -> {
                     Assert.assertTrue(exception instanceof AmqpException);
-                    validateException.accept((AmqpException) exception);
+
+                    final AmqpException error = (AmqpException) exception;
+
+                    Assert.assertEquals(RESOURCE_LIMIT_EXCEEDED, error.getErrorCondition());
+
+                    final String errorMsg = exception.getMessage();
+                    for (int i = 0; i < MAX_NUMBER_OF_CONSUMERS; i++) {
+                        Assert.assertTrue(errorMsg.contains(prefix + ":" + i));
+                    }
                 })
                 .verify();
-        } catch (AmqpException e) {
-            validateException.accept(e);
         } finally {
-            subscriptions.dispose();
             dispose(exceededConsumer);
             dispose(consumers.toArray(new EventHubConsumer[0]));
         }

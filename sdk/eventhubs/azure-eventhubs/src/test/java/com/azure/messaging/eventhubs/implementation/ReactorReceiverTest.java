@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.messaging.eventhubs.implementation.handler.ReceiveLinkHandler;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Source;
@@ -95,7 +96,7 @@ public class ReactorReceiverTest {
     }
 
     /**
-     * Verifies on a non-transient AmqpException, closes link.
+     * Verifies on a non-transient AmqpException, closes the link and propagate the error.
      */
     @Test
     public void closesOnNonRetriableError() {
@@ -118,7 +119,7 @@ public class ReactorReceiverTest {
         // Act
         StepVerifier.create(reactorReceiver.receive())
             .then(() -> receiverHandler.onLinkRemoteClose(event))
-            .verifyComplete();
+            .verifyError(AmqpException.class);
 
         // Assert
         verify(link, times(1)).close();
@@ -131,6 +132,9 @@ public class ReactorReceiverTest {
         Assert.assertSame(condition, captor2.getValue());
     }
 
+    /**
+     * Verifies that an exception is propagated when the exception is a non-amqp one.
+     */
     @Test
     public void closesOnNonAmqpException() {
         // Arrange
@@ -148,6 +152,6 @@ public class ReactorReceiverTest {
         // Act & Assert
         StepVerifier.create(reactorReceiver.receive())
             .then(() -> receiverHandler.onLinkRemoteClose(event))
-            .verifyComplete();
+            .verifyError(UnsupportedOperationException.class);
     }
 }

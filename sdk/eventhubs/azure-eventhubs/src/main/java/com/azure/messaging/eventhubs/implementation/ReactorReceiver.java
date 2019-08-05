@@ -63,6 +63,8 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
                 if (!(error instanceof AmqpException)) {
                     logger.error("Error occurred that is not an AmqpException.", error);
                     notifyShutdown(new AmqpShutdownSignal(false, false, error.toString()));
+                    messageSink.error(error);
+
                     close();
                     return;
                 }
@@ -71,6 +73,8 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
                 if (!amqpException.isTransient()) {
                     logger.warning("Error occurred that is not retriable.", amqpException);
                     notifyShutdown(new AmqpShutdownSignal(false, false, amqpException.toString()));
+                    messageSink.error(error);
+
                     close();
                 } else {
                     notifyError(error);
@@ -129,7 +133,9 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
         subscriptions.dispose();
         tokenManager.close();
 
-        messageSink.complete();
+        if (!messageSink.isCancelled()) {
+            messageSink.complete();
+        }
 
         handler.close();
         super.close();
