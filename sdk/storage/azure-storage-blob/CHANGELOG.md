@@ -1,5 +1,20 @@
 # Change Log azure-storage-blob
 
+## Version 12.0.0-preview.2:
+
+For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview2-java).
+
+- Renamed `StorageClient`, `StorageAsyncClient`, and `StorageClientBuilder` to `BlobServiceClient`, `BlobServiceAsyncClient`, and `BlobServiceClientBuilder`.
+- Combined `AppendBlobClientBuilder`, `BlockBlobClientBuilder`, and `PageBlobClientBuilder` into `BlobClientBuilder`. Methods to create each client type were added.
+- Removed static builder method from clients. Builders are now instantiable.
+- Changed return type of `createSnapshot` in `BlobClient` to return a client associated to the blob snapshot instead of the snapshot ID. Use `getSnapshotId` to get snapshot ID and `isSnapshot` to indicate if the client is associated to a blob snapshot.
+- Added `getSnapshotClient` to clients that returns a new client associated to the snapshot.
+- Added SAS token generation to clients.
+- Added `deleteContainer` to `BlobServiceClient` and `BlobServiceAsyncClient`.
+- Added `getAppendBlobClient` with snapshot overload to `ContainerClient`.
+- Removed `AnonymousClientCredential` class.
+- Changed parameter ordering of `BlobClient` and `BlobAsyncClient` `download` and `downloadToFile`.
+
 ## Version 12.0.0-preview.1:
 
 Version 12.0.0-preview.1 is the first preview of our efforts to create a user-friendly and Java client library for Azure Storage Blobs. For more information about this, and preview releases of other Azure SDK libraries, please visit
