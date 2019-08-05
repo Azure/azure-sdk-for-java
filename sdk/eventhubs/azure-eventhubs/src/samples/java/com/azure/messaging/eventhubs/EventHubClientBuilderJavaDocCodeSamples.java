@@ -19,11 +19,11 @@ public class EventHubClientBuilderJavaDocCodeSamples {
     public void instantiation() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubclientbuilder.connectionString#string-string
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
-            + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
-        String eventHubPath = "my-event-hub";
+            + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
+        String eventHubName = "my-event-hub";
 
         EventHubAsyncClient client = new EventHubClientBuilder()
-            .connectionString(connectionString, eventHubPath)
+            .connectionString(connectionString, eventHubName)
             .buildAsyncClient();
         // END: com.azure.messaging.eventhubs.eventhubclientbuilder.connectionString#string-string
 
@@ -36,7 +36,7 @@ public class EventHubClientBuilderJavaDocCodeSamples {
     public void instantiationInstance() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubclientbuilder.connectionstring#string
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
-            + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
+            + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
         EventHubAsyncClient client = new EventHubClientBuilder()
             .connectionString(connectionString)
@@ -52,7 +52,7 @@ public class EventHubClientBuilderJavaDocCodeSamples {
     public void instantiationRetry() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubclientbuilder.retry-timeout-scheduler
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
-            + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
+            + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
         RetryOptions retryOptions = new RetryOptions()
             .tryTimeout(Duration.ofSeconds(30));

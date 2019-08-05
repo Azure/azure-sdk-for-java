@@ -55,9 +55,9 @@ Once the connection string is obtained, create an `EventHubAsyncClient` using th
 
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE EVENT HUBS NAMESPACE >>";
-String eventHubPath = "<< NAME OF THE EVENT HUB >>";
+String eventHubName = "<< NAME OF THE EVENT HUB >>";
 EventHubAsyncClient client = new EventHubClientBuilder()
-    .connectionString(connectionString, eventHubPath)
+    .connectionString(connectionString, eventHubName)
     .buildAsyncClient();
 ```
 
@@ -90,9 +90,9 @@ ClientSecretCredential credential = new ClientSecretCredential()
 // The fully qualified host name for the Event Hubs namespace. This is likely to be similar to:
 // {your-namespace}.servicebus.windows.net
 String host = "<< EVENT HUBS HOST >>"
-String eventHubPath = "<< NAME OF THE EVENT HUB >>";
+String eventHubName = "<< NAME OF THE EVENT HUB >>";
 EventHubAsyncClient client = new EventHubClientBuilder()
-    .credential(host, eventHubPath, credential)
+    .credential(host, eventHubName, credential)
     .buildAsyncClient();
 ```
 

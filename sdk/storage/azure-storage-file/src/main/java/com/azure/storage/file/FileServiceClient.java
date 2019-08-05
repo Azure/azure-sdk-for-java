@@ -75,6 +75,9 @@ public final class FileServiceClient {
      *
      * {@codesnippet com.azure.storage.file.fileServiceClient.listShares}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-shares">Azure Docs</a>.</p>
+     *
      * @return {@link ShareItem Shares} in the storage account without their metadata or snapshots
      */
     public Iterable<ShareItem> listShares() {
@@ -103,6 +106,9 @@ public final class FileServiceClient {
      *
      * {@codesnippet com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-shares">Azure Docs</a>.</p>
+     *
      * @param options Options for listing shares
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
@@ -119,6 +125,9 @@ public final class FileServiceClient {
      * <p>Retrieve File service properties</p>
      *
      * {@codesnippet com.azure.storage.file.fileServiceClient.getProperties}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file-service-properties">Azure Docs</a>.</p>
      *
      * @return Storage account File service properties
      */
@@ -142,6 +151,9 @@ public final class FileServiceClient {
      * <p>Enable Minute and Hour Metrics</p>
      *
      * {@codesnippet com.azure.storage.file.fileServiceClient.setProperties#fileServiceProperties}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-service-properties">Azure Docs</a>.</p>
      *
      * @param properties Storage account File service properties
      * @return A response that only contains headers and response status code
@@ -167,7 +179,11 @@ public final class FileServiceClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Create the share with share name of "myshare"</p>
+     *
      * {@codesnippet com.azure.storage.file.fileServiceClient.createShare#string}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
      * @param shareName Name of the share
      * @return A response containing the ShareClient and the status of creating the share.
@@ -191,6 +207,9 @@ public final class FileServiceClient {
      *
      * {@codesnippet com.azure.storage.file.fileServiceClient.createShare#string-map-integer.quota}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
+     *
      * @param shareName Name of the share
      * @param metadata Optional metadata to associate with the share
      * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
@@ -213,6 +232,9 @@ public final class FileServiceClient {
      *
      * {@codesnippet com.azure.storage.file.fileServiceClient.deleteShare#string}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
+     *
      * @param shareName Name of the share
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the share doesn't exist
@@ -230,6 +252,9 @@ public final class FileServiceClient {
      * <p>Delete the snapshot of share "test" that was created at current time. </p>
      *
      * {@codesnippet com.azure.storage.file.fileServiceClient.deleteShare#string-string}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
      * @param shareName Name of the share
      * @param snapshot Identifier of the snapshot

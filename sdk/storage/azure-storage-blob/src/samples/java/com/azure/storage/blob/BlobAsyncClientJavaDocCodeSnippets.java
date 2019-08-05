@@ -121,7 +121,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         // END: com.azure.storage.blob.BlobAsyncClient.download
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.download#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
-        BlobRange range = new BlobRange(1024, 2048);
+        BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
         client.download(range, options, null, false).subscribe(response -> {
@@ -147,7 +147,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         // END: com.azure.storage.blob.BlobAsyncClient.downloadToFile#String
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean
-        BlobRange range = new BlobRange(1024, 2048);
+        BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
         client.downloadToFile(file, range, null, options, null, false)
@@ -239,7 +239,8 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void createSnapshot() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.createSnapshot
         client.createSnapshot()
-            .subscribe(response -> System.out.printf("Identifier for the snapshot is %s%n", response.value()));
+            .subscribe(response -> System.out.printf("Identifier for the snapshot is %s%n",
+                response.value().getSnapshotId()));
         // END: com.azure.storage.blob.BlobAsyncClient.createSnapshot
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.createSnapshot#Metadata-BlobAccessConditions
@@ -248,7 +249,8 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId));
 
         client.createSnapshot(snapshotMetadata, accessConditions)
-            .subscribe(response -> System.out.printf("Identifier for the snapshot is %s%n", response.value()));
+            .subscribe(response -> System.out.printf("Identifier for the snapshot is %s%n",
+                response.value().getSnapshotId()));
         // END: com.azure.storage.blob.BlobAsyncClient.createSnapshot#Metadata-BlobAccessConditions
     }
 

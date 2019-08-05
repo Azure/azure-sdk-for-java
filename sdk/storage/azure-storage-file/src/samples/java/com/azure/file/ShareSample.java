@@ -4,6 +4,7 @@ package com.azure.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.storage.file.FileClient;
 import com.azure.storage.file.ShareClient;
 import com.azure.storage.file.ShareClientBuilder;
 import com.azure.storage.file.models.ShareProperties;
@@ -39,7 +40,7 @@ public class ShareSample {
             System.out.println("Failed to create snapshot on share. Reasons: " + e.getMessage());
         }
 
-        // Create a share using teh share client
+        // Create a share using the share client
         try {
             shareClient.create();
         } catch (StorageErrorException e) {
@@ -68,6 +69,8 @@ public class ShareSample {
         } catch (StorageErrorException e) {
             System.out.println("Failed to create directory using the share client. Reasons: " + e.getMessage());
         }
+
+
 
         // Get the properties of the share with first snapshot.
         ShareClient shareClientWithSnapshot1 = null;
@@ -100,6 +103,28 @@ public class ShareSample {
             );
         } catch (StorageErrorException e) {
             System.out.println("Failed to delete the share. Reasons: " + e.getMessage());
+        }
+
+        // Create a file with size of 1024 bytes under the share.
+        try {
+            FileClient fileClient = shareClient.getFileClient("myFile");
+            fileClient.create(1024);
+        } catch (StorageErrorException e) {
+            System.out.println("Failed to create a file under the share. Reasons: " + e.getMessage());
+        }
+
+        // Create a file with size of 1024 bytes under the share using createFile API.
+        try {
+            shareClient.createFile(generateRandomName(), 1024);
+        } catch (StorageErrorException e) {
+            System.out.println("Failed to create file using the share client. Reasons: " + e.getMessage());
+        }
+
+        // Delete the file "myFile" using shareClient.
+        try {
+            shareClient.deleteFile("myFile");
+        } catch (StorageErrorException e) {
+            System.out.println("Failed to delete the file named myFile. Reasons: " + e.getMessage());
         }
 
         // Delete the share snapshot 1

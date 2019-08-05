@@ -18,7 +18,7 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-import com.azure.storage.blob.models.PageRange;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -91,7 +91,7 @@ public final class BlobClientBuilder {
         policies = new ArrayList<>();
     }
 
-    private AzureBlobStorageBuilder buildImpl() {
+    private AzureBlobStorageImpl buildImpl() {
         Objects.requireNonNull(endpoint);
         Objects.requireNonNull(containerName);
         Objects.requireNonNull(blobName);
@@ -112,8 +112,6 @@ public final class BlobClientBuilder {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
         } else if (sasTokenCredential != null) {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
-        } else {
-            policies.add(new AnonymousCredentialPolicy());
         }
 
         policies.add(new RequestRetryPolicy(retryOptions));
@@ -128,7 +126,8 @@ public final class BlobClientBuilder {
 
         return new AzureBlobStorageBuilder()
             .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
-            .pipeline(pipeline);
+            .pipeline(pipeline)
+            .build();
     }
 
     /**

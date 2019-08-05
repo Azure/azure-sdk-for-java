@@ -56,10 +56,10 @@ public final class BlobServiceAsyncClient {
     /**
      * Package-private constructor for use by {@link BlobServiceClientBuilder}.
      *
-     * @param azureBlobStorageBuilder the API client builder for blob storage API
+     * @param azureBlobStorage the API client for blob storage
      */
-    BlobServiceAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        this.azureBlobStorage = azureBlobStorageBuilder.build();
+    BlobServiceAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
+        this.azureBlobStorage = azureBlobStorage;
     }
 
     /**
@@ -73,7 +73,8 @@ public final class BlobServiceAsyncClient {
     public ContainerAsyncClient getContainerAsyncClient(String containerName) {
         return new ContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getAccountUrl(), containerName).toString())
-            .pipeline(azureBlobStorage.getHttpPipeline()));
+            .pipeline(azureBlobStorage.getHttpPipeline())
+            .build());
     }
 
     /**

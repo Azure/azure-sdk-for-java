@@ -79,10 +79,16 @@ public final class ContainerClientBuilder {
     }
 
     /**
-     * Constructs an instance of ContainerAsyncClient based on the configurations stored in the appendBlobClientBuilder.
-     * @return a new client instance
+     * @return a {@link ContainerClient} created from the configurations in this builder.
      */
-    private AzureBlobStorageBuilder buildImpl() {
+    public ContainerClient buildClient() {
+        return new ContainerClient(buildAsyncClient());
+    }
+
+    /**
+     * @return a {@link ContainerAsyncClient} created from the configurations in this builder.
+     */
+    public ContainerAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint);
         Objects.requireNonNull(containerName);
 
@@ -102,8 +108,6 @@ public final class ContainerClientBuilder {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
         } else if (sasTokenCredential != null) {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
-        } else {
-            policies.add(new AnonymousCredentialPolicy());
         }
 
         policies.add(new RequestRetryPolicy(retryOptions));
@@ -116,29 +120,10 @@ public final class ContainerClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        return new AzureBlobStorageBuilder()
+        return new ContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(String.format("%s/%s", endpoint, containerName))
-            .pipeline(pipeline);
-    }
-
-    /**
-     * Creates a {@link ContainerClient} based on options set in the Builder.
-     *
-     * @return a {@link ContainerClient} created from the configurations in this builder.
-     * @throws NullPointerException If {@code endpoint} is {@code null} or {@code containerName} is {@code null}.
-     */
-    public ContainerClient buildClient() {
-        return new ContainerClient(buildAsyncClient());
-    }
-
-    /**
-     * Creates a {@link ContainerAsyncClient} based on options set in the Builder.
-     *
-     * @return a {@link ContainerAsyncClient} created from the configurations in this builder.
-     * @throws NullPointerException If {@code endpoint} is {@code null} or {@code containerName} is {@code null}.
-     */
-    public ContainerAsyncClient buildAsyncClient() {
-        return new ContainerAsyncClient(buildImpl());
+            .pipeline(pipeline)
+            .build());
     }
 
     /**

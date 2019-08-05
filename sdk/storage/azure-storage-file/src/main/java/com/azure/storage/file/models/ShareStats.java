@@ -20,7 +20,7 @@ public final class ShareStats {
      * created or recently resized files.
      */
     @JsonProperty(value = "ShareUsageBytes", required = true)
-    private int shareUsageBytes;
+    private long shareUsageBytes;
 
     /**
      * Get the shareUsageBytes property: The approximate size of the data
@@ -29,7 +29,7 @@ public final class ShareStats {
      *
      * @return the shareUsageBytes value.
      */
-    public int shareUsageBytes() {
+    public long shareUsageBytes() {
         return this.shareUsageBytes;
     }
 
@@ -41,7 +41,7 @@ public final class ShareStats {
      * @param shareUsageBytes the shareUsageBytes value to set.
      * @return the ShareStats object itself.
      */
-    public ShareStats shareUsageBytes(int shareUsageBytes) {
+    public ShareStats shareUsageBytes(long shareUsageBytes) {
         this.shareUsageBytes = shareUsageBytes;
         return this;
     }

@@ -86,7 +86,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
 
         this.managementChannelMono = connectionMono.then(
             Mono.fromCallable(() -> (EventHubManagementNode) new ManagementChannel(this,
-                connectionOptions.eventHubPath(), connectionOptions.tokenCredential(), tokenResourceProvider,
+                connectionOptions.eventHubName(), connectionOptions.tokenCredential(), tokenResourceProvider,
                 reactorProvider, connectionOptions.retry(), handlerProvider, mapper))).cache();
     }
 
