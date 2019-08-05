@@ -70,10 +70,14 @@ class ApiTagDescriptionsImpl extends WrapperImpl<ApiTagDescriptionsInner> implem
     public Observable<TagDescriptionContract> getAsync(String resourceGroupName, String serviceName, String apiId, String tagId) {
         ApiTagDescriptionsInner client = this.inner();
         return client.getAsync(resourceGroupName, serviceName, apiId, tagId)
-        .map(new Func1<TagDescriptionContractInner, TagDescriptionContract>() {
+        .flatMap(new Func1<TagDescriptionContractInner, Observable<TagDescriptionContract>>() {
             @Override
-            public TagDescriptionContract call(TagDescriptionContractInner inner) {
-                return wrapModel(inner);
+            public Observable<TagDescriptionContract> call(TagDescriptionContractInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((TagDescriptionContract)wrapModel(inner));
+                }
             }
        });
     }

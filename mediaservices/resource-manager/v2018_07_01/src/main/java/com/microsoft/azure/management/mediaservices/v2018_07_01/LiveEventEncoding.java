@@ -17,7 +17,7 @@ public class LiveEventEncoding {
     /**
      * The encoding type for Live Event.  This value is specified at creation
      * time and cannot be updated. Possible values include: 'None', 'Basic',
-     * 'Standard'.
+     * 'Standard', 'Premium1080p'.
      */
     @JsonProperty(value = "encodingType")
     private LiveEventEncodingType encodingType;
@@ -30,7 +30,7 @@ public class LiveEventEncoding {
     private String presetName;
 
     /**
-     * Get the encoding type for Live Event.  This value is specified at creation time and cannot be updated. Possible values include: 'None', 'Basic', 'Standard'.
+     * Get the encoding type for Live Event.  This value is specified at creation time and cannot be updated. Possible values include: 'None', 'Basic', 'Standard', 'Premium1080p'.
      *
      * @return the encodingType value
      */
@@ -39,7 +39,7 @@ public class LiveEventEncoding {
     }
 
     /**
-     * Set the encoding type for Live Event.  This value is specified at creation time and cannot be updated. Possible values include: 'None', 'Basic', 'Standard'.
+     * Set the encoding type for Live Event.  This value is specified at creation time and cannot be updated. Possible values include: 'None', 'Basic', 'Standard', 'Premium1080p'.
      *
      * @param encodingType the encodingType value to set
      * @return the LiveEventEncoding object itself.

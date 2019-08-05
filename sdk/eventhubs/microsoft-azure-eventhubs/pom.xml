@@ -1,0 +1,59 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-eventhubs-clients</artifactId>
+    <version>3.0.0</version>
+    <relativePath>../pom.data.xml</relativePath>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-eventhubs</artifactId>
+
+  <name>Microsoft Azure SDK for Event Hubs</name>
+  <description>Libraries built on Microsoft Azure Event Hubs</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <distributionManagement>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
+  <scm>
+    <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
+  </scm>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-client-authentication</artifactId>
+      <version>${client-runtime.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>com.microsoft.azure</groupId>
+    	<artifactId>msal4j</artifactId>
+    	<version>0.4.0-preview</version>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>com.microsoft.azure</groupId>
+    	<artifactId>adal4j</artifactId>
+    	<version>${adal4j.version}</version>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>com.nimbusds</groupId>
+    	<artifactId>nimbus-jose-jwt</artifactId>
+    	<version>6.0.1</version>
+    </dependency>
+  </dependencies>
+
+</project>

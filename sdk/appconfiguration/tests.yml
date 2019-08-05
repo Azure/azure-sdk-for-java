@@ -1,0 +1,8 @@
+trigger: none
+
+jobs:
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: appconfiguration
+      EnvVars:
+        AZCONFIG_CONNECTION_STRING: $(java-azconfig-test-connection-string)
