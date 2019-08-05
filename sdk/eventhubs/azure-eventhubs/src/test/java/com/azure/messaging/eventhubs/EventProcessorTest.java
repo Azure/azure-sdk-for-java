@@ -27,6 +27,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+/**
+ * Unit tests for {@link EventProcessor}.
+ */
 public class EventProcessorTest {
 
     @Mock
@@ -135,7 +138,7 @@ public class EventProcessorTest {
             (partitionContext, checkpointManager) -> faultyPartitionProcessor,
             EventPosition.latest(), partitionManager, "test-eh");
         eventProcessor.start();
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1));
+        Thread.sleep(TimeUnit.SECONDS.toMillis(2));
         eventProcessor.stop();
 
         // Assert
