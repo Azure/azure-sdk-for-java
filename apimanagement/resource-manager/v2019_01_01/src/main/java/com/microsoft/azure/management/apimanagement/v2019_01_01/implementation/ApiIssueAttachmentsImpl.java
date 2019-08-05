@@ -70,10 +70,14 @@ class ApiIssueAttachmentsImpl extends WrapperImpl<ApiIssueAttachmentsInner> impl
     public Observable<IssueAttachmentContract> getAsync(String resourceGroupName, String serviceName, String apiId, String issueId, String attachmentId) {
         ApiIssueAttachmentsInner client = this.inner();
         return client.getAsync(resourceGroupName, serviceName, apiId, issueId, attachmentId)
-        .map(new Func1<IssueAttachmentContractInner, IssueAttachmentContract>() {
+        .flatMap(new Func1<IssueAttachmentContractInner, Observable<IssueAttachmentContract>>() {
             @Override
-            public IssueAttachmentContract call(IssueAttachmentContractInner inner) {
-                return wrapModel(inner);
+            public Observable<IssueAttachmentContract> call(IssueAttachmentContractInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((IssueAttachmentContract)wrapModel(inner));
+                }
             }
        });
     }

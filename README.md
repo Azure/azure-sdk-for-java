@@ -29,11 +29,11 @@ New wave of packages that we are currently releasing in **preview**. These libra
 These preview libraries can be easily identified by their folder, package, and namespaces names starting with `azure-`, e.g. `azure-keyvault`.
 
 The libraries released in the July 2019 preview:
-- [App Configuration](appconfiguration/client/README.md)
-- [Event Hubs](eventhubs/client/README.md)
-- [Identity](sdk/identity/azure-identity)
-- [Key Vault Keys](keyvault/client/keys/README.md)
-- [Key Vault Secrets](keyvault/client/secrets/README.md)
+- [App Configuration](sdk/appconfiguration/azure-data-appconfiguration/README.md)
+- [Event Hubs](sdk/eventhubs/azure-eventhubs/README.md)
+- [Identity](sdk/identity/azure-identity/README.md)
+- [Key Vault Keys](sdk/keyvault/azure-keyvault-keys/README.md)
+- [Key Vault Secrets](sdk/keyvault/client/azure-keyvault-secrets/README.md)
 - [Storage Blobs](storage/client/README.md)
 
 >NOTE: If you need to ensure your code is ready for production, use one of the stable libraries.

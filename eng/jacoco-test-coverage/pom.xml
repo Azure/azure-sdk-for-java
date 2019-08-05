@@ -3,14 +3,14 @@
 <!-- Licensed under the MIT License. -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <relativePath>../../pom.client.xml</relativePath>
   </parent>
 
@@ -23,8 +23,17 @@
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
-    <azure-messaging-eventhubs.version>5.0.0-preview.1</azure-messaging-eventhubs.version>
+    <azure-core.version>1.0.0-preview.3</azure-core.version>
+    <azure-core-amqp.version>1.0.0-preview.3</azure-core-amqp.version>
+    <azure-core-management.version>1.0.0-preview.3</azure-core-management.version>
+    <azure-core-test.version>1.0.0-preview.3</azure-core-test.version>
+    <azure-data-appconfiguration.version>1.0.0-preview.2</azure-data-appconfiguration.version>
+    <azure-identity.version>1.0.0-preview.1</azure-identity.version>
     <azure-keyvault.version>4.0.0-preview.1</azure-keyvault.version>
+    <azure-messaging-eventhubs.version>5.0.0-preview.2</azure-messaging-eventhubs.version>
+    <azure-storage-blob.version>12.0.0-preview.1</azure-storage-blob.version>
+    <azure-storage-file.version>12.0.0-preview.2</azure-storage-file.version>
+    <azure-storage-queue.version>12.0.0-preview.2</azure-storage-queue.version>
   </properties>
 
   <distributionManagement>
@@ -44,22 +53,27 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.1</version>
+      <version>${azure-core.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>1.0.0-preview.1</version>
+      <version>${azure-core.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
-      <version>1.0.0-preview.1</version>
+      <version>${azure-core.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>${version}</version>
+      <version>${azure-data-appconfiguration.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>${azure-identity.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -76,22 +90,35 @@
       <artifactId>azure-messaging-eventhubs</artifactId>
       <version>${azure-messaging-eventhubs.version}</version>
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>tracing-opentelemetry</artifactId>
-      <version>${version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-identity</artifactId>
-      <version>1.0.0-preview.1</version>
-    </dependency>
-    <!-- Not required for jacoco test coverage report -->
 <!--    <dependency>-->
 <!--      <groupId>com.azure</groupId>-->
-<!--      <artifactId>azure-core-test</artifactId>-->
-<!--      <version>1.0.0-preview.1</version>-->
+<!--      <artifactId>azure-storage-blob</artifactId>-->
+<!--      <version>${azure-storage-blob.version}</version>-->
 <!--    </dependency>-->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-file</artifactId>
+      <version>${azure-storage-file.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-queue</artifactId>
+      <version>${azure-storage-queue.version}</version>
+    </dependency>
+    <!-- Tracing will be built and released separately. Removing tracing dependency
+     until we finalize dependency composition -->
+    <!--    <dependency>-->
+    <!--      <groupId>com.azure</groupId>-->
+    <!--      <artifactId>tracing-opentelemetry</artifactId>-->
+    <!--      <version>${version}</version>-->
+    <!--    </dependency>-->
+
+    <!-- Not required for jacoco test coverage report -->
+    <!--    <dependency>-->
+    <!--      <groupId>com.azure</groupId>-->
+    <!--      <artifactId>azure-core-test</artifactId>-->
+    <!--      <version>1.0.0-preview.1</version>-->
+    <!--    </dependency>-->
   </dependencies>
 
   <build>

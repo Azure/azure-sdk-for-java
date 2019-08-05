@@ -9,7 +9,8 @@
 
   <!-- These keyvault models are already publicly released APIs with name matching the simple name of superclass -->
   <Match>
-    <Class name="~com\.microsoft\.azure\.keyvault\.models\.(CertificateBundle|CertificateOperation|IssuerBundle|KeyBundle|SecretBundle)"/>
+    <Class
+        name="~com\.microsoft\.azure\.keyvault\.models\.(CertificateBundle|CertificateOperation|IssuerBundle|KeyBundle|SecretBundle)"/>
     <Bug pattern="NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"/>
   </Match>
 
@@ -61,7 +62,10 @@
   <!-- Suppress non-null warning in the case that we change the code and it is possible for
   KeyVaultCredentials.getAuthenticationCredentials to return null. -->
   <Match>
-    <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
+    <Or>
+      <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
+      <Class name="com.azure.storage.blob.implementation.AzureBlobStorageBuilder"/>
+    </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
@@ -104,7 +108,10 @@
   <!-- Known issue in autorest where it will generate a variable with a value of null.
   https://github.com/Azure/autorest.java/issues/324 -->
   <Match>
-    <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
+    <Or>
+      <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
+      <Class name="~com\.azure\.(.+)Impl"/>
+    </Or>
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
   </Match>
 
@@ -215,7 +222,8 @@
     At InMemoryLeaseManager.java:[line 148,155,209,241,268]
       https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs-eph/src/main/java/com/microsoft/azure/eventprocessorhost/InMemoryLeaseManager.java#L155 -->
   <Match>
-    <Class name="~com\.microsoft\.azure\.eventprocessorhost\.(AzureStorageCheckpointLeaseManager|InMemoryLeaseManager)"/>
+    <Class
+        name="~com\.microsoft\.azure\.eventprocessorhost\.(AzureStorageCheckpointLeaseManager|InMemoryLeaseManager)"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
 
@@ -223,7 +231,8 @@
     At EventProcessorOptions.java:[lines 234-237]
       https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs-eph/src/main/java/com/microsoft/azure/eventprocessorhost/EventProcessorOptions.java#L234 -->
   <Match>
-    <Class name="~com\.microsoft.azure\.eventprocessorhost\.EventProcessorOptions\$(EndOfStreamInitialPositionProvider|StartOfStreamInitialPositionProvider)"/>
+    <Class
+        name="~com\.microsoft.azure\.eventprocessorhost\.EventProcessorOptions\$(EndOfStreamInitialPositionProvider|StartOfStreamInitialPositionProvider)"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC"/>
   </Match>
 
@@ -238,7 +247,10 @@
   <!-- Known issue in autorest where it will generate a variable with a value of null then use it in a not null check.
   https://github.com/Azure/autorest.java/issues/328 -->
   <Match>
-    <Class name="~com\.microsoft\.azure\.batch\.protocol\.implementation\.[\w]+Impl"/>
+    <Or>
+      <Class name="~com\.microsoft\.azure\.batch\.protocol\.implementation\.[\w]+Impl"/>
+      <Class name="com.azure.storage.blob.implementation.AzureBlobStorageBuilder"/>
+    </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
 
@@ -264,7 +276,8 @@
   </Match>
 
   <Match>
-    <Class name="~com\.azure\.core\.auth\.credentials\.(MSIConfigurationForAppService|MSIConfigurationForVirtualMachine)"/>
+    <Class
+        name="~com\.azure\.core\.auth\.credentials\.(MSIConfigurationForAppService|MSIConfigurationForVirtualMachine)"/>
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
   </Match>
 
@@ -277,7 +290,8 @@
   <!-- There is no need to make serializer or deserializer classes serializable. Suppress bugs related to these classes.
   -->
   <Match>
-    <Class name="~com\.azure\.core\.implementation\.serializer\.jackson\.(AdditionalPropertiesDeserializer|AdditionalPropertiesSerializer|FlatteningDeserializer|FlatteningSerializer)"/>
+    <Class
+        name="~com\.azure\.core\.implementation\.serializer\.jackson\.(AdditionalPropertiesDeserializer|AdditionalPropertiesSerializer|FlatteningDeserializer|FlatteningSerializer)"/>
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
 
@@ -321,14 +335,16 @@
   <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing
   the class proposed. Suppress the warning for current design. -->
   <Match>
-    <Class name="~com\.azure\.core\.management\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
+    <Class
+        name="~com\.azure\.core\.management\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
 
   <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing
   the class proposed. Suppress the warning for current design. -->
   <Match>
-    <Class name="~com\.azure\.core\.management\.implementation\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
+    <Class
+        name="~com\.azure\.core\.management\.implementation\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
@@ -338,7 +354,7 @@
     <Bug pattern="NP_NULL_PARAM_DEREF"/>
   </Match>
 
-  <!-- The switch cases are encoded version of all SAS query parameters, which will further be appended to a request URL it seems like. A default case wouldn't make sense -->
+  <!-- The switch cases are encoded version of all SAS query parameters, which will further be appended to a request URL it seems like. A default case wouldn't make sense -->
   <Match>
     <Class name="com.microsoft.azure.storage.blob.SASQueryParameters"/>
     <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
@@ -357,7 +373,11 @@
 
   <!-- Exclude the confusing name bugs as it is designed to name the same as autorest. -->
   <Match>
-    <Package name="com.microsoft.azure.storage.blob"/>
+    <Or>
+      <Package name="com.microsoft.azure.storage.blob"/>
+      <Package name="com.azure.storage.file.models"/>
+      <Class name="com.azure.storage.blob.HTTPGetterInfo"/>
+    </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>
 
@@ -422,6 +442,26 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
+  <!-- Incorrect flagging, if the response is null a StorageException would have been thrown -->
+  <Match>
+    <Or>
+      <Class name="com.azure.storage.blob.BlobInputStream"/>
+      <Class name="com.azure.storage.blob.BlobOutputStream"/>
+      <Class name="com.azure.storage.queue.QueueServiceClient"/>
+    </Or>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Incorrect flagging, if the response is null a HttpResponseException should be thrown
+  https://github.com/azure/azure-sdk-for-java/issues/4556 -->
+  <Match>
+    <Or>
+      <Class name="com.azure.security.keyvault.keys.KeyClient"/>
+      <Class name="com.azure.security.keyvault.secrets.SecretClient"/>
+    </Or>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
   <!-- Super doesn't need to be cloned since it is Object -->
   <Match>
     <Class name="com.azure.core.util.configuration.Configuration"/>
@@ -459,11 +499,11 @@
     <Or>
       <And>
         <Class name="com.azure.security.keyvault.keys.models.webkey.Base64UrlJsonDeserializer"/>
-        <Method name="deserialize" />
+        <Method name="deserialize"/>
       </And>
       <And>
         <Class name="com.azure.security.keyvault.keys.models.webkey.ByteExtensions"/>
-        <Method name="clone" />
+        <Method name="clone"/>
       </And>
     </Or>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
@@ -475,6 +515,23 @@
       <Class name="~.*JavaDoc(CodeSnippets|CodeSamples)"/>
     </Or>
     <Bug pattern="DLS_DEAD_LOCAL_STORE,URF_UNREAD_FIELD,SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <!-- These methods are called, SpotBugs just can't see through the specific lambda and static class code -->
+  <Match>
+    <Or>
+      <Class
+          name="com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials$AuthorizationHeaderProvider"/>
+      <Class name="com.azure.messaging.eventhubs.EventData$SystemProperties"/>
+      <Class name="com.azure.messaging.eventhubs.implementation.ReactorSender$WeightedDeliveryTag"/>
+    </Or>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <!-- Names defined in the service. -->
+  <Match>
+    <Class name="com.azure.data.appconfiguration.models.ConfigurationSetting"/>
+    <Bug pattern="NM_CONFUSING"/>
   </Match>
 
 </FindBugsFilter>

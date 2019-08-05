@@ -10,6 +10,7 @@ import java.util.concurrent.CompletableFuture;
 
 import org.junit.Test;
 
+import com.microsoft.azure.servicebus.TestUtils;
 import com.microsoft.azure.servicebus.security.AzureActiveDirectoryTokenProvider.AuthenticationCallback;
 
 public class AadTokenProviderTests {
@@ -18,8 +19,17 @@ public class AadTokenProviderTests {
     @Test
     public void aadCallbackTokenProviderTest() {
         AuthenticationCallback callback = (String audience, String authority, Object state) -> CompletableFuture.completedFuture(TEST_TOKEN);
-        TokenProvider tokenProvider = TokenProvider.createAzureActiveDirectoryTokenProvider(callback, null, null);
-
+        TokenProvider tokenProvider = TokenProvider.createAzureActiveDirectoryTokenProvider(callback, "https://login.microsoftonline.com/common", null);
         assertEquals(TEST_TOKEN, tokenProvider.getSecurityTokenAsync("testAudience").join());
+
+        // Should throw when null callback is provided
+        TestUtils.assertThrows(IllegalArgumentException.class, () -> {
+            TokenProvider.createAzureActiveDirectoryTokenProvider(null, "https://login.microsoftonline.com/common", null);
+        });
+
+        // Should throw when null authority is provided
+        TestUtils.assertThrows(IllegalArgumentException.class, () -> {
+            TokenProvider.createAzureActiveDirectoryTokenProvider(callback, null, null);
+        });
     }
 }
