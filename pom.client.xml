@@ -111,6 +111,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${maven-checkstyle-plugin.version}</version>
         <dependencies>
           <dependency>
             <groupId>com.azure</groupId>
@@ -124,9 +125,9 @@
           </dependency>
         </dependencies>
         <configuration>
-          <configLocation>checkstyle/checkstyle.xml</configLocation>
-          <suppressionsLocation>checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-          <headerLocation>checkstyle/java.header</headerLocation>
+          <configLocation>eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+          <suppressionsLocation>eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+          <headerLocation>eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
           <propertyExpansion>samedir=</propertyExpansion>
           <encoding>UTF-8</encoding>
           <consoleOutput>true</consoleOutput>
@@ -740,7 +741,10 @@
 
   <modules>
     <module>./sdk/appconfiguration/azure-data-appconfiguration</module>
-    <module>./sdk/core</module>
+    <module>./sdk/core/azure-core</module>
+    <module>./sdk/core/azure-core-amqp</module>
+    <module>./sdk/core/azure-core-management</module>
+    <module>./sdk/core/azure-core-test</module>
     <module>./sdk/eventhubs/azure-eventhubs</module>
     <module>./sdk/keyvault/azure-keyvault-secrets</module>
     <module>./sdk/keyvault/azure-keyvault-keys</module>

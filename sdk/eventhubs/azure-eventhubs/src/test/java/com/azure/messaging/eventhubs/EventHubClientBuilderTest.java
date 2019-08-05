@@ -5,16 +5,19 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.TransportType;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ProxyAuthenticationType;
 import com.azure.messaging.eventhubs.models.ProxyConfiguration;
-import org.junit.Assert;
 import org.junit.Test;
+import reactor.core.publisher.Mono;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
+
+import static org.junit.Assert.assertNotNull;
 
 public class EventHubClientBuilderTest {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
@@ -43,7 +46,7 @@ public class EventHubClientBuilderTest {
         final EventHubClientBuilder builder = new EventHubClientBuilder();
         final EventHubAsyncClient client = builder.connectionString(CORRECT_CONNECTION_STRING).buildAsyncClient();
 
-        Assert.assertNotNull(client);
+        assertNotNull(client);
     }
 
     @Test
@@ -59,7 +62,7 @@ public class EventHubClientBuilderTest {
             .transportType(TransportType.AMQP_WEB_SOCKETS);
 
         // Assert
-        Assert.assertNotNull(builder.buildAsyncClient());
+        assertNotNull(builder.buildAsyncClient());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -74,7 +77,7 @@ public class EventHubClientBuilderTest {
             .proxyConfiguration(proxyConfig);
 
         // Assert
-        Assert.assertNotNull(builder.buildAsyncClient());
+        assertNotNull(builder.buildAsyncClient());
     }
 
     private static URI getURI(String endpointFormat, String namespace, String domainName) {
@@ -84,6 +87,48 @@ public class EventHubClientBuilderTest {
             throw new IllegalArgumentException(String.format(Locale.US,
                 "Invalid namespace name: %s", namespace), exception);
         }
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testEventProcessorAsyncClientBuilderMissingProperties() {
+        final EventHubClientBuilder builder = new EventHubClientBuilder().connectionString(CORRECT_CONNECTION_STRING);
+        builder.buildEventProcessorAsyncClient(); // should throw NPE
+    }
+
+    @Test
+    public void testEventProcessorAsyncClientBuilder() {
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .connectionString(CORRECT_CONNECTION_STRING)
+            .partitionProcessorFactory((partitionContext, checkpointManager) -> {
+                // A no-op partition processor for to test builder
+                return new PartitionProcessor() {
+                    @Override
+                    public Mono<Void> initialize() {
+                        System.out.println("Called initialize");
+                        return Mono.empty();
+                    }
+
+                    @Override
+                    public Mono<Void> processEvent(EventData eventData) {
+                        System.out.println("Called process event");
+                        return Mono.empty();
+                    }
+
+                    @Override
+                    public void processError(Throwable throwable) {
+                        // do nothing
+                    }
+
+                    @Override
+                    public Mono<Void> close(CloseReason closeReason) {
+                        return Mono.empty();
+                    }
+                };
+            })
+            .consumerGroupName("test-consumer")
+            .initialEventPosition(EventPosition.latest())
+            .partitionManager(new InMemoryPartitionManager());
+        assertNotNull(builder.buildEventProcessorAsyncClient());
     }
 
     // TODO: add test for retry(), scheduler(), timeout(), transportType()
