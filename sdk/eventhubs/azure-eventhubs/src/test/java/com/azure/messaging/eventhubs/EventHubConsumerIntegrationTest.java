@@ -25,19 +25,25 @@ import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import static com.azure.core.amqp.exception.ErrorCondition.RESOURCE_LIMIT_EXCEEDED;
 import static com.azure.messaging.eventhubs.EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 
 /**
  * Integration tests with Azure Event Hubs service. There are other tests that also test {@link EventHubConsumer} in
@@ -245,6 +251,46 @@ public class EventHubConsumerIntegrationTest extends ApiTestBase {
             subscriptions.dispose();
             isActive.set(false);
             dispose(producer, consumer, consumer2);
+        }
+    }
+
+    @Test
+    public void onOperatorErrorClosesReactorReceiver() throws InterruptedException, IOException {
+        final String partitionId = "1";
+        final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId,
+            EventPosition.latest());
+        final EventHubProducer producer = client.createProducer(new EventHubProducerOptions().partitionId(partitionId));
+        final CountDownLatch shutdownReceived = new CountDownLatch(1);
+        final AtomicInteger eventsReceived = new AtomicInteger();
+        final Map<String, String> map = new HashMap<>();
+        map.put("A key", "A value");
+
+        // Act
+        consumer.receive()
+            .filter(e -> isMatchingEvent(e, MESSAGE_TRACKING_ID))
+            .subscribe(event -> {
+                final int i = eventsReceived.incrementAndGet();
+                logger.info("Received {}. Sequence #{}", i, event.sequenceNumber());
+
+                // Expecting an NullPointerException.
+                final boolean exists = map.get("non-existent-key").startsWith("something");
+                if (exists) {
+                    Assert.fail("This should not exist.");
+                }
+            }, error -> {
+                logger.info("Exception received: {}", error.toString());
+                Assert.assertEquals(NullPointerException.class, error.getClass());
+                shutdownReceived.countDown();
+            }, () -> Assert.fail("Should not receive an onComplete."));
+
+        producer.send(TestUtils.getEvents(1, MESSAGE_TRACKING_ID)).block();
+
+        // Assert
+        try {
+            Assert.assertTrue(shutdownReceived.await(5, TimeUnit.SECONDS));
+        } finally {
+            consumer.close();
+            producer.close();
         }
     }
 
