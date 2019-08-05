@@ -740,7 +740,10 @@
 
   <modules>
     <module>./sdk/appconfiguration/azure-data-appconfiguration</module>
-    <module>./sdk/core</module>
+    <module>./sdk/core/azure-core</module>
+    <module>./sdk/core/azure-core-amqp</module>
+    <module>./sdk/core/azure-core-management</module>
+    <module>./sdk/core/azure-core-test</module>
     <module>./sdk/eventhubs/azure-eventhubs</module>
     <module>./sdk/keyvault/azure-keyvault-secrets</module>
     <module>./sdk/keyvault/azure-keyvault-keys</module>
