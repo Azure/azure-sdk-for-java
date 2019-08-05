@@ -11,7 +11,8 @@ and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-queue/src/samples/java/com/azure/storage/queue)
 demonstrate the new API.
 
-### Major changes from `azure-storage-queue`
+### Features included in `azure-storage-queue`
+- This is initial SDK release for storage queue service.
 - Packages scoped by functionality
     - `azure-storage-queue` contains a `QueueServiceClient`, `QueueServiceAsyncClient`, `QueueClient` and `QueueAsyncClient` for storage queue operations.
 - Client instances are scoped to storage queue service.

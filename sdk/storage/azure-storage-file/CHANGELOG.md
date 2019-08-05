@@ -11,7 +11,8 @@ and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-file/src/samples/java/com/azure/file)
 demonstrate the new API.
 
-### Major changes from `azure-storage-file`
+### Features included in `azure-storage-file`
+- This is initial SDK release for storage file service.
 - Packages scoped by functionality
     - `azure-storage-file` contains a `FileServiceClient`,  `FileServiceAsyncClient`, `ShareClient`, `ShareAsyncClient`, `DirectoryClient`, `DirectoryAsyncClient`, `FileClient` and `FileAsyncClient` for storage file operations. 
 - Client instances are scoped to storage file service.
