@@ -11,6 +11,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -60,21 +61,21 @@ public class EventProcessorAsyncClientTest {
         when(eventData1.offset()).thenReturn("1");
         when(eventData2.offset()).thenReturn("100");
 
-        TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
-        InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
+        final TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
+        final InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
 
-        long beforeTest = System.currentTimeMillis();
+        final long beforeTest = System.currentTimeMillis();
 
         // Act
-        EventProcessorAsyncClient eventProcessorAsyncClient = new EventProcessorAsyncClient(eventHubAsyncClient,
-            "test-consumer1",
+        final EventProcessorAsyncClient eventProcessorAsyncClient = new EventProcessorAsyncClient(eventHubAsyncClient,
+            "test-consumer",
             (partitionContext, checkpointManager) -> {
                 testPartitionProcessor.checkpointManager = checkpointManager;
                 testPartitionProcessor.partitionContext = partitionContext;
                 return testPartitionProcessor;
             }, EventPosition.latest(), partitionManager, "test-eh");
         eventProcessorAsyncClient.start();
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1));
+        Thread.sleep(TimeUnit.SECONDS.toMillis(2));
         eventProcessorAsyncClient.stop();
 
         // Assert
@@ -85,21 +86,22 @@ public class EventProcessorAsyncClientTest {
 
         assertEquals("1", testPartitionProcessor.partitionContext.partitionId());
         assertEquals("test-eh", testPartitionProcessor.partitionContext.eventHubName());
-        assertEquals("test-consumer1", testPartitionProcessor.partitionContext.consumerGroupName());
+        assertEquals("test-consumer", testPartitionProcessor.partitionContext.consumerGroupName());
 
-        StepVerifier.create(partitionManager.listOwnership("test-eh", "test-consumer1"))
+        StepVerifier.create(partitionManager.listOwnership("test-eh", "test-consumer"))
             .expectNextCount(1).verifyComplete();
 
-        StepVerifier.create(partitionManager.listOwnership("test-eh", "test-consumer1"))
+        StepVerifier.create(partitionManager.listOwnership("test-eh", "test-consumer"))
             .assertNext(partitionOwnership -> {
+                System.out.println(partitionOwnership.lastModifiedTime() + " " + beforeTest);
                 assertEquals("Partition", "1", partitionOwnership.partitionId());
-                assertEquals("Consumer", "test-consumer1", partitionOwnership.consumerGroupName());
+                assertEquals("Consumer", "test-consumer", partitionOwnership.consumerGroupName());
                 assertEquals("EventHub name", "test-eh", partitionOwnership.eventHubName());
                 assertEquals("Sequence number", 2, (long) partitionOwnership.sequenceNumber());
                 assertEquals("Offset", "100", partitionOwnership.offset());
                 assertEquals("OwnerId", eventProcessorAsyncClient.identifier(), partitionOwnership.ownerId());
-                assertTrue("LastModifiedTime", partitionOwnership.lastModifiedTime() > beforeTest);
-                assertTrue("LastModifiedTime", partitionOwnership.lastModifiedTime() < System.currentTimeMillis());
+                assertTrue("LastModifiedTime", partitionOwnership.lastModifiedTime() >= beforeTest);
+                assertTrue("LastModifiedTime", partitionOwnership.lastModifiedTime() <= System.currentTimeMillis());
                 assertNotNull(partitionOwnership.eTag());
             }).verifyComplete();
 
@@ -125,12 +127,12 @@ public class EventProcessorAsyncClientTest {
             .thenReturn(consumer1);
         when(consumer1.receive()).thenReturn(Flux.just(eventData1));
 
-        FaultyPartitionProcessor faultyPartitionProcessor = new FaultyPartitionProcessor();
-        InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
+        final FaultyPartitionProcessor faultyPartitionProcessor = new FaultyPartitionProcessor();
+        final InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
 
         // Act
-        EventProcessorAsyncClient eventProcessorAsyncClient = new EventProcessorAsyncClient(eventHubAsyncClient,
-            "test-consumer1",
+        final EventProcessorAsyncClient eventProcessorAsyncClient = new EventProcessorAsyncClient(eventHubAsyncClient,
+            "test-consumer",
             (partitionContext, checkpointManager) -> faultyPartitionProcessor,
             EventPosition.latest(), partitionManager, "test-eh");
         eventProcessorAsyncClient.start();
@@ -174,46 +176,27 @@ public class EventProcessorAsyncClientTest {
         when(eventData4.sequenceNumber()).thenReturn(1L);
         when(eventData4.offset()).thenReturn("1");
 
-        TestPartitionProcessor testPartitionProcessor1 = new TestPartitionProcessor();
-        TestPartitionProcessor testPartitionProcessor2 = new TestPartitionProcessor();
-        TestPartitionProcessor testPartitionProcessor3 = new TestPartitionProcessor();
-        InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
-
-        long beforeTest = System.currentTimeMillis();
-
+        final InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
         // Act
-        EventProcessorAsyncClient eventProcessorAsyncClient = new EventProcessorAsyncClient(eventHubAsyncClient,
-            "test-consumer1",
-            (partitionContext, checkpointManager) -> {
-                if (partitionContext.partitionId().equals("1")) {
-                    testPartitionProcessor1.checkpointManager = checkpointManager;
-                    testPartitionProcessor1.partitionContext = partitionContext;
-                    return testPartitionProcessor1;
-                } else if (partitionContext.partitionId().equals("2")) {
-                    testPartitionProcessor2.checkpointManager = checkpointManager;
-                    testPartitionProcessor2.partitionContext = partitionContext;
-                    return testPartitionProcessor2;
-                } else {
-                    testPartitionProcessor3.checkpointManager = checkpointManager;
-                    testPartitionProcessor3.partitionContext = partitionContext;
-                    return testPartitionProcessor3;
-                }
-            }, EventPosition.latest(), partitionManager, "test-eh");
+        final EventProcessorAsyncClient eventProcessorAsyncClient = new EventProcessorAsyncClient(eventHubAsyncClient,
+            "test-consumer",
+            TestPartitionProcessor::new, EventPosition.latest(), partitionManager, "test-eh");
         eventProcessorAsyncClient.start();
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1));
+        Thread.sleep(TimeUnit.SECONDS.toMillis(2));
         eventProcessorAsyncClient.stop();
 
         // Assert
-        assertEquals("1", testPartitionProcessor1.partitionContext.partitionId());
-        assertEquals("2", testPartitionProcessor2.partitionContext.partitionId());
-        assertEquals("3", testPartitionProcessor3.partitionContext.partitionId());
-
-        StepVerifier.create(partitionManager.listOwnership("test-eh", "test-consumer1"))
+        StepVerifier.create(partitionManager.listOwnership("test-eh", "test-consumer"))
             .expectNextCount(3).verifyComplete();
 
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
-        verify(eventHubAsyncClient, atLeast(3))
-            .createConsumer(anyString(), anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class));
+        verify(eventHubAsyncClient, times(1))
+            .createConsumer(anyString(), eq("1"), any(EventPosition.class), any(EventHubConsumerOptions.class));
+        verify(eventHubAsyncClient, times(1))
+            .createConsumer(anyString(), eq("2"), any(EventPosition.class), any(EventHubConsumerOptions.class));
+        verify(eventHubAsyncClient, times(1))
+            .createConsumer(anyString(), eq("3"), any(EventPosition.class), any(EventHubConsumerOptions.class));
+
         verify(consumer1, atLeastOnce()).receive();
         verify(consumer1, atLeastOnce()).close();
 
@@ -253,6 +236,15 @@ public class EventProcessorAsyncClientTest {
 
         PartitionContext partitionContext;
         CheckpointManager checkpointManager;
+
+        private TestPartitionProcessor() {
+            // default ctr
+        }
+
+        private TestPartitionProcessor(PartitionContext partitionContext, CheckpointManager checkpointManager) {
+            this.partitionContext = partitionContext;
+            this.checkpointManager = checkpointManager;
+        }
 
         @Override
         public Mono<Void> initialize() {
