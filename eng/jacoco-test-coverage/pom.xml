@@ -31,7 +31,7 @@
     <azure-identity.version>1.0.0-preview.1</azure-identity.version>
     <azure-keyvault.version>4.0.0-preview.1</azure-keyvault.version>
     <azure-messaging-eventhubs.version>5.0.0-preview.2</azure-messaging-eventhubs.version>
-    <azure-storage-blob.version>12.0.0-preview.1</azure-storage-blob.version>
+    <azure-storage-blob.version>12.0.0-preview.2</azure-storage-blob.version>
     <azure-storage-file.version>12.0.0-preview.2</azure-storage-file.version>
     <azure-storage-queue.version>12.0.0-preview.2</azure-storage-queue.version>
   </properties>
@@ -90,11 +90,11 @@
       <artifactId>azure-messaging-eventhubs</artifactId>
       <version>${azure-messaging-eventhubs.version}</version>
     </dependency>
-<!--    <dependency>-->
-<!--      <groupId>com.azure</groupId>-->
-<!--      <artifactId>azure-storage-blob</artifactId>-->
-<!--      <version>${azure-storage-blob.version}</version>-->
-<!--    </dependency>-->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-blob</artifactId>
+      <version>${azure-storage-blob.version}</version>
+    </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file</artifactId>
