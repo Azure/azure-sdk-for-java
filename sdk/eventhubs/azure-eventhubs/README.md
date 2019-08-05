@@ -1,5 +1,7 @@
 # Azure Event Hubs client library for Java
 
+**Table of contents**
+
 Azure Event Hubs is a highly scalable publish-subscribe service that can ingest millions of events per second and stream
 them to multiple consumers. This lets you process and analyze the massive amounts of data produced by your connected
 devices and applications. Once Event Hubs has collected the data, you can retrieve, transform, and store it by using any
@@ -132,6 +134,7 @@ are well documented in [OASIS Advanced Messaging Queuing Protocol (AMQP) Version
 
 - [Inspect Event Hub and partition properties][sample_get_event_hubs_metadata]
 - [Publish an event to an Event Hub][sample_publish_event]
+- [Publish an EventDataBatch to an Event Hub][sample_publish_eventdatabatch]
 - [Consume events from an Event Hub partition][sample_consume_event]
 - [Consume events from all Event Hub partitions][sample_event_processor]
 
@@ -370,6 +373,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [sample_get_event_hubs_metadata]: ./src/samples/java/com/azure/messaging/eventhubs/GetEventHubMetadata.java
 [sample_publish_custom_metadata]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithCustomMetadata.java
 [sample_publish_event]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEvent.java
+[sample_publish_eventdatabatch]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventDataBatch.java
 [sample_publish_partitionId]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsToSpecificPartition.java
 [sample_publish_partitionKey]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithPartitionKey.java
 [sample_sequence_number]: ./src/samples/java/com/azure/messaging/eventhubs/ConsumeEventsFromKnownSequenceNumberPosition.java
