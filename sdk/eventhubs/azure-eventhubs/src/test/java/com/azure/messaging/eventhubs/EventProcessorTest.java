@@ -27,7 +27,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-public class EventProcessorAsyncClientTest {
+public class EventProcessorTest {
 
     @Mock
     private EventHubAsyncClient eventHubAsyncClient;
@@ -44,7 +44,7 @@ public class EventProcessorAsyncClientTest {
     }
 
     /**
-     * Tests all the happy cases for {@link EventProcessorAsyncClient}.
+     * Tests all the happy cases for {@link EventProcessor}.
      *
      * @throws Exception if an error occurs while running the test.
      */
@@ -67,19 +67,19 @@ public class EventProcessorAsyncClientTest {
         final long beforeTest = System.currentTimeMillis();
 
         // Act
-        final EventProcessorAsyncClient eventProcessorAsyncClient = new EventProcessorAsyncClient(eventHubAsyncClient,
+        final EventProcessor eventProcessor = new EventProcessor(eventHubAsyncClient,
             "test-consumer",
             (partitionContext, checkpointManager) -> {
                 testPartitionProcessor.checkpointManager = checkpointManager;
                 testPartitionProcessor.partitionContext = partitionContext;
                 return testPartitionProcessor;
             }, EventPosition.latest(), partitionManager, "test-eh");
-        eventProcessorAsyncClient.start();
+        eventProcessor.start();
         Thread.sleep(TimeUnit.SECONDS.toMillis(2));
-        eventProcessorAsyncClient.stop();
+        eventProcessor.stop();
 
         // Assert
-        assertNotNull(eventProcessorAsyncClient.identifier());
+        assertNotNull(eventProcessor.identifier());
 
         assertNotNull(testPartitionProcessor.partitionContext);
         assertNotNull(testPartitionProcessor.checkpointManager);
@@ -98,7 +98,7 @@ public class EventProcessorAsyncClientTest {
                 assertEquals("EventHub name", "test-eh", partitionOwnership.eventHubName());
                 assertEquals("Sequence number", 2, (long) partitionOwnership.sequenceNumber());
                 assertEquals("Offset", "100", partitionOwnership.offset());
-                assertEquals("OwnerId", eventProcessorAsyncClient.identifier(), partitionOwnership.ownerId());
+                assertEquals("OwnerId", eventProcessor.identifier(), partitionOwnership.ownerId());
                 assertTrue("LastModifiedTime", partitionOwnership.lastModifiedTime() >= beforeTest);
                 assertTrue("LastModifiedTime", partitionOwnership.lastModifiedTime() <= System.currentTimeMillis());
                 assertNotNull(partitionOwnership.eTag());
@@ -112,7 +112,7 @@ public class EventProcessorAsyncClientTest {
     }
 
     /**
-     * Tests {@link EventProcessorAsyncClient} with a partition processor that throws an exception when processing an
+     * Tests {@link EventProcessor} with a partition processor that throws an exception when processing an
      * event.
      *
      * @throws Exception if an error occurs while running the test.
@@ -130,20 +130,20 @@ public class EventProcessorAsyncClientTest {
         final InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
 
         // Act
-        final EventProcessorAsyncClient eventProcessorAsyncClient = new EventProcessorAsyncClient(eventHubAsyncClient,
+        final EventProcessor eventProcessor = new EventProcessor(eventHubAsyncClient,
             "test-consumer",
             (partitionContext, checkpointManager) -> faultyPartitionProcessor,
             EventPosition.latest(), partitionManager, "test-eh");
-        eventProcessorAsyncClient.start();
+        eventProcessor.start();
         Thread.sleep(TimeUnit.SECONDS.toMillis(1));
-        eventProcessorAsyncClient.stop();
+        eventProcessor.stop();
 
         // Assert
         assertTrue(faultyPartitionProcessor.error);
     }
 
     /**
-     * Tests {@link EventProcessorAsyncClient} that processes events from an Event Hub configured with multiple
+     * Tests {@link EventProcessor} that processes events from an Event Hub configured with multiple
      * partitions.
      *
      * @throws Exception if an error occurs while running the test.
@@ -177,12 +177,12 @@ public class EventProcessorAsyncClientTest {
 
         final InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
         // Act
-        final EventProcessorAsyncClient eventProcessorAsyncClient = new EventProcessorAsyncClient(eventHubAsyncClient,
+        final EventProcessor eventProcessor = new EventProcessor(eventHubAsyncClient,
             "test-consumer",
             TestPartitionProcessor::new, EventPosition.latest(), partitionManager, "test-eh");
-        eventProcessorAsyncClient.start();
+        eventProcessor.start();
         Thread.sleep(TimeUnit.SECONDS.toMillis(2));
-        eventProcessorAsyncClient.stop();
+        eventProcessor.stop();
 
         // Assert
         StepVerifier.create(partitionManager.listOwnership("test-eh", "test-consumer"))
