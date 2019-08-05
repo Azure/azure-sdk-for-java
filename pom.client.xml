@@ -111,6 +111,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${maven-checkstyle-plugin.version}</version>
         <dependencies>
           <dependency>
             <groupId>com.azure</groupId>
@@ -124,9 +125,9 @@
           </dependency>
         </dependencies>
         <configuration>
-          <configLocation>checkstyle/checkstyle.xml</configLocation>
-          <suppressionsLocation>checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-          <headerLocation>checkstyle/java.header</headerLocation>
+          <configLocation>eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+          <suppressionsLocation>eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+          <headerLocation>eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
           <propertyExpansion>samedir=</propertyExpansion>
           <encoding>UTF-8</encoding>
           <consoleOutput>true</consoleOutput>
@@ -611,6 +612,7 @@
                 <arg>-Xlint:all</arg>
                 <arg>-Xlint:-serial</arg>
                 <arg>-Xlint:-deprecation</arg>
+                <arg>-Xlint:-processing</arg>
               </compilerArgs>
             </configuration>
           </plugin>
@@ -640,6 +642,7 @@
                 <arg>-Xlint:all</arg>
                 <arg>-Xlint:-serial</arg>
                 <arg>-Xlint:-deprecation</arg>
+                <arg>-Xlint:-processing</arg>
               </compilerArgs>
             </configuration>
           </plugin>
@@ -738,15 +741,18 @@
 
   <modules>
     <module>./sdk/appconfiguration/azure-data-appconfiguration</module>
-    <module>./sdk/core</module>
+    <module>./sdk/core/azure-core</module>
+    <module>./sdk/core/azure-core-amqp</module>
+    <module>./sdk/core/azure-core-management</module>
+    <module>./sdk/core/azure-core-test</module>
     <module>./sdk/eventhubs/azure-eventhubs</module>
     <module>./sdk/keyvault/azure-keyvault-secrets</module>
     <module>./sdk/keyvault/azure-keyvault-keys</module>
     <!-- As recommended by Eng Sys team, removing tracing as it is built and released separately -->
     <!--    <module>./sdk/tracing</module>-->
     <module>./sdk/identity/azure-identity</module>
-    <module>./storage/client/blob</module>
-    <module>./storage/client/file</module>
-    <module>./storage/client/queue</module>
+    <module>./sdk/storage/azure-storage-blob</module>
+    <module>./sdk/storage/azure-storage-file</module>
+    <module>./sdk/storage/azure-storage-queue</module>
   </modules>
 </project>

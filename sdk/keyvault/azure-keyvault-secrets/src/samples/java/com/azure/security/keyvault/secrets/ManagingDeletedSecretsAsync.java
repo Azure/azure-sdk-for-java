@@ -3,8 +3,9 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -29,26 +30,26 @@ public class ManagingDeletedSecretsAsync {
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
                 .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-                .credential(new DefaultAzureCredential())
+                .credential(new DefaultAzureCredentialBuilder().build())
                 .buildAsyncClient();
 
         // Let's create secrets holding storage and bank accounts credentials valid for 1 year. if the secret
         // already exists in the key vault, then a new version of the secret is created.
         secretAsyncClient.setSecret(new Secret("BankAccountPassword", "f4G34fMh8v")
                 .expires(OffsetDateTime.now().plusYears(1))).subscribe(secretResponse ->
-                System.out.printf("Secret is created with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
+                System.out.printf("Secret is created with name %s and value %s \n", secretResponse.name(), secretResponse.value()));
 
         Thread.sleep(2000);
 
         secretAsyncClient.setSecret(new Secret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
                 .expires(OffsetDateTime.now().plusYears(1))).subscribe(secretResponse ->
-                System.out.printf("Secret is created with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
+                System.out.printf("Secret is created with name %s and value %s \n", secretResponse.name(), secretResponse.value()));
 
         Thread.sleep(2000);
 
         // The storage account was closed, need to delete its credentials from the key vault.
         secretAsyncClient.deleteSecret("BankAccountPassword").subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.value().recoveryId()));
+                System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.recoveryId()));
 
         //To ensure secret is deleted on server side.
         Thread.sleep(30000);
@@ -56,7 +57,7 @@ public class ManagingDeletedSecretsAsync {
         // We accidentally deleted bank account secret. Let's recover it.
         // A deleted secret can only be recovered if the key vault is soft-delete enabled.
         secretAsyncClient.recoverDeletedSecret("BankAccountPassword").subscribe(recoveredSecretResponse ->
-            System.out.printf("Recovered Secret with name %s \n", recoveredSecretResponse.value().name()));
+            System.out.printf("Recovered Secret with name %s \n", recoveredSecretResponse.name()));
 
         //To ensure secret is recovered on server side.
         Thread.sleep(10000);
@@ -64,10 +65,10 @@ public class ManagingDeletedSecretsAsync {
         // The bank acoount and storage accounts got closed.
         // Let's delete bank and  storage accounts secrets.
         secretAsyncClient.deleteSecret("BankAccountPassword").subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.value().recoveryId()));
+                System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.recoveryId()));
 
         secretAsyncClient.deleteSecret("StorageAccountPassword").subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.value().recoveryId()));
+                System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.recoveryId()));
 
         // To ensure secret is deleted on server side.
         Thread.sleep(30000);

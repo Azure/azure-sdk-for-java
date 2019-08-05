@@ -73,6 +73,7 @@ public class ConfigurationClientCredentials {
      * @param httpMethod the request HTTP method
      * @param contents the body content of the request
      * @return a flux of headers to add for authorization
+     * @throws NoSuchAlgorithmException If the SHA-256 algorithm doesn't exist.
      */
     public Mono<Map<String, String>> getAuthorizationHeadersAsync(URL url, String httpMethod, Flux<ByteBuf> contents) {
         return contents

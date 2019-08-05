@@ -3,8 +3,9 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class BackupAndRestoreOperations {
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         SecretClient client = new SecretClientBuilder()
             .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         // Let's create secrets holding storage account credentials valid for 1 year. if the secret
@@ -42,7 +43,7 @@ public class BackupAndRestoreOperations {
         // Backups are good to have, if in case secrets get accidentally deleted by you.
         // For long term storage, it is ideal to write the backup to a file.
         String backupFilePath = "YOUR_BACKUP_FILE_PATH";
-        byte[] secretBackup = client.backupSecret("StorageAccountPassword").value();
+        byte[] secretBackup = client.backupSecret("StorageAccountPassword");
         writeBackupToFile(secretBackup, backupFilePath);
 
         // The storage account secret is no longer in use, so you delete it.
@@ -59,7 +60,7 @@ public class BackupAndRestoreOperations {
 
         // After sometime, the secret is required again. We can use the backup value to restore it in the key vault.
         byte[] backupFromFile = Files.readAllBytes(new File(backupFilePath).toPath());
-        Secret restoredSecret = client.restoreSecret(backupFromFile).value();
+        Secret restoredSecret = client.restoreSecret(backupFromFile);
     }
 
     private static void writeBackupToFile(byte[] bytes, String filePath) {

@@ -4,6 +4,7 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.credentials.AccessToken;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -18,7 +19,8 @@ import java.time.format.DateTimeParseException;
  */
 public final class MSIToken extends AccessToken {
 
-    private static OffsetDateTime epoch = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+    private static final OffsetDateTime EPOCH = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+    private static final ClientLogger LOGGER = new ClientLogger(MSIToken.class);
 
     @JsonProperty(value = "token_type")
     private String tokenType;
@@ -57,13 +59,13 @@ public final class MSIToken extends AccessToken {
 
     @Override
     public OffsetDateTime expiresOn() {
-        return epoch.plusSeconds(parseDateToEpochSeconds(this.expiresOn));
+        return EPOCH.plusSeconds(parseDateToEpochSeconds(this.expiresOn));
     }
 
     @Override
     public boolean isExpired() {
         OffsetDateTime now = OffsetDateTime.now();
-        OffsetDateTime expireOn = epoch.plusSeconds(parseDateToEpochSeconds(this.expiresOn));
+        OffsetDateTime expireOn = EPOCH.plusSeconds(parseDateToEpochSeconds(this.expiresOn));
         return now.plusMinutes(5).isAfter(expireOn);
     }
 
@@ -81,7 +83,8 @@ public final class MSIToken extends AccessToken {
             System.err.println(e.getMessage());
         }
 
-        throw new IllegalArgumentException(String.format("Unable to parse date time %s ", dateTime));
+        LOGGER.logAndThrow(new IllegalArgumentException(String.format("Unable to parse date time %s ", dateTime)));
+        return null;
     }
 
 }
