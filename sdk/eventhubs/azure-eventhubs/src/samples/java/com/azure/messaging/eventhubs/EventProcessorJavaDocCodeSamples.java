@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import reactor.core.publisher.Mono;
 
@@ -47,8 +48,9 @@ public final class EventProcessorJavaDocCodeSamples {
      */
     private static final class PartitionProcessorImpl implements PartitionProcessor {
 
-        PartitionContext partitionContext;
-        CheckpointManager checkpointManager;
+        private final ClientLogger logger = new ClientLogger(PartitionProcessorImpl.class);
+        private final PartitionContext partitionContext;
+        private final CheckpointManager checkpointManager;
 
         /**
          * Creates new instance.
@@ -68,6 +70,7 @@ public final class EventProcessorJavaDocCodeSamples {
          */
         @Override
         public Mono<Void> initialize() {
+            logger.info("Initializing partition processor for {}", this.partitionContext.partitionId());
             return Mono.empty();
         }
 
@@ -78,6 +81,7 @@ public final class EventProcessorJavaDocCodeSamples {
          */
         @Override
         public Mono<Void> processEvent(EventData eventData) {
+            this.checkpointManager.updateCheckpoint(eventData);
             return Mono.empty();
         }
 
@@ -88,7 +92,7 @@ public final class EventProcessorJavaDocCodeSamples {
          */
         @Override
         public void processError(Throwable throwable) {
-            System.out.println("Error while processing events");
+            logger.warning("Error while processing events");
         }
 
         /**
