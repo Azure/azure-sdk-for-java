@@ -28,8 +28,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      * @param name The name of the Ec key.
      */
     public EcKeyCreateOptions(String name) {
-        super.name = name;
-        this.keyType = KeyType.EC;
+        super(name, KeyType.EC);
     }
 
     /**
@@ -118,7 +117,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      */
     public EcKeyCreateOptions hsm(Boolean hsm) {
         this.hsm = hsm;
-        this.keyType = hsm ? KeyType.EC_HSM : KeyType.EC;
+        this.setKeyType(hsm ? KeyType.EC_HSM : KeyType.EC);
         return this;
     }
 

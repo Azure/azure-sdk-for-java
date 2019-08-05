@@ -19,7 +19,7 @@ import static com.azure.messaging.eventhubs.implementation.AmqpErrorCode.TRACKIN
 abstract class LinkHandler extends Handler {
 
     private final String entityPath;
-    ClientLogger logger;
+    final ClientLogger logger;
 
     LinkHandler(String connectionId, String hostname, String entityPath, ClientLogger logger) {
         super(connectionId, hostname);

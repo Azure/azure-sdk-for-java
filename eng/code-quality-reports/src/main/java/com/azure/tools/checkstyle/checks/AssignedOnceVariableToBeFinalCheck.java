@@ -6,9 +6,9 @@ package com.azure.tools.checkstyle.checks;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
-import jdk.nashorn.internal.parser.Token;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +25,10 @@ import java.util.Set;
 public class AssignedOnceVariableToBeFinalCheck extends AbstractCheck {
     private static final String ERROR_MSG = "Field \"%s\" is only assigned in constructor and it is not final. " +
         "Make field final";
+    private static final Set<Integer> INVALID_FINAL_COMBINATION = new HashSet<>(Arrays.asList(
+        TokenTypes.LITERAL_TRANSIENT,
+        TokenTypes.LITERAL_VOLATILE
+    ));
 
     private static ArrayList<DetailAST> nonFinalFields;
     private static Set<String> assignmentsFromConstructor;
@@ -170,6 +174,22 @@ public class AssignedOnceVariableToBeFinalCheck extends AbstractCheck {
     }
 
     /**
+     * Check if variable modifiers contains any of the illegal combination with final modifier
+     * For instance, we don't want to combine transient or volatile with final
+     *
+     * @param modifiers a DetailAST pointing to a Variable list of modifiers
+     * @return true if there is any modifier that shouldn't be combined with final
+     */
+    private boolean hasIllegalCombination(DetailAST modifiers) {
+        for (DetailAST modifier = modifiers.getFirstChild(); modifier != null; modifier = modifier.getNextSibling()) {
+            if (INVALID_FINAL_COMBINATION.contains(modifier.getType())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Check each non-final field definition from a class and fill nonFinalFields
      *
      * @param classDefinitionAST a class definition AST
@@ -180,7 +200,8 @@ public class AssignedOnceVariableToBeFinalCheck extends AbstractCheck {
              astChild = astChild.getNextSibling()) {
             if (TokenTypes.VARIABLE_DEF == astChild.getType()) {
                 final DetailAST variableModifiersAst = astChild.findFirstToken(TokenTypes.MODIFIERS);
-                if (!variableModifiersAst.branchContains(TokenTypes.FINAL)) {
+                if (!variableModifiersAst.branchContains(TokenTypes.FINAL)
+                    && !hasIllegalCombination(variableModifiersAst)) {
                     nonFinalFields.add(astChild);
                 }
             }

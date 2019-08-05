@@ -45,11 +45,15 @@ class ActiveClientTokenManager implements Closeable {
             if (hasDisposed.get()) {
                 sink.complete();
             } else {
-                this.sink = sink;
+                setSink(sink);
             }
         });
 
         lastRefreshInterval.set(Duration.ofMinutes(1).getSeconds() * 1000);
+    }
+
+    private void setSink(FluxSink<AmqpResponseCode> sink) {
+        this.sink = sink;
     }
 
     /**

@@ -22,7 +22,7 @@ abstract class EndpointStateNotifierBase implements EndpointStateNotifier, Close
     private final DirectProcessor<AmqpShutdownSignal> shutdownSignalProcessor = DirectProcessor.create();
     private final Disposable subscription;
 
-    protected ClientLogger logger;
+    protected final ClientLogger logger;
     private volatile AmqpEndpointState state;
 
     EndpointStateNotifierBase(ClientLogger logger) {

@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
  * variables.
  */
 public class EnvironmentCredential implements TokenCredential {
-    private Configuration configuration;
+    private final Configuration configuration;
     private final IdentityClientOptions identityClientOptions;
 
     /**

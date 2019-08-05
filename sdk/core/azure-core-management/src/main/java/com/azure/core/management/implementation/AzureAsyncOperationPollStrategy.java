@@ -23,7 +23,7 @@ import java.net.URL;
  * running operation.
  */
 public final class AzureAsyncOperationPollStrategy extends PollStrategy {
-    private AzureAsyncOperationPollStrategyData data;
+    private final AzureAsyncOperationPollStrategyData data;
 
     /**
      * The name of the header that indicates that a long running operation will use the

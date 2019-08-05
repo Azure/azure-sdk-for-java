@@ -8,11 +8,11 @@ import com.azure.storage.blob.models.PublicAccessType;
 
 public class ContainerProperties {
 
-    private PublicAccessType blobPublicAccess;
+    private final PublicAccessType blobPublicAccess;
 
-    private boolean hasImmutabilityPolicy;
+    private final boolean hasImmutabilityPolicy;
 
-    private boolean hasLegalHold;
+    private final boolean hasLegalHold;
 
     //todo decide datetime representation for last modified time
 

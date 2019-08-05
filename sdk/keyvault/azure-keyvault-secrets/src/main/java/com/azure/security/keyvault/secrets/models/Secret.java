@@ -22,13 +22,13 @@ public class Secret extends SecretBase {
      * The value of the secret.
      */
     @JsonProperty(value = "value")
-    private String value;
+    private final String value;
 
     /**
      * Creates an empty instance of the Secret.
      */
     public Secret() {
-
+        this(null, null);
     }
 
     /**

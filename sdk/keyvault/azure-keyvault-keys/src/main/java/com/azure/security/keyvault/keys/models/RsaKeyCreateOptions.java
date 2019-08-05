@@ -27,8 +27,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      * @param name The name of the key.
      */
     public RsaKeyCreateOptions(String name) {
-        super.name = name;
-        this.keyType = KeyType.RSA;
+        super(name, KeyType.RSA);
     }
 
     /**
@@ -117,7 +116,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      */
     public RsaKeyCreateOptions hsm(Boolean hsm) {
         this.hsm = hsm;
-        this.keyType = hsm ? KeyType.RSA_HSM : KeyType.RSA;
+        this.setKeyType(hsm ? KeyType.RSA_HSM : KeyType.RSA);
         return this;
     }
 

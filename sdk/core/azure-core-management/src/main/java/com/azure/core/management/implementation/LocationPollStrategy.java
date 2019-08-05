@@ -21,7 +21,7 @@ import java.util.Locale;
  * operation.
  */
 public final class LocationPollStrategy extends PollStrategy {
-    LocationPollStrategyData data;
+    final LocationPollStrategyData data;
 
     /**
      * The name of the header that indicates that a long running operation will use the Location
@@ -39,7 +39,7 @@ public final class LocationPollStrategy extends PollStrategy {
      */
     public static class LocationPollStrategyData extends PollStrategyData {
         private static final long serialVersionUID = 1L;
-        URL locationUrl;
+        private URL locationUrl;
         boolean done;
 
         /**
@@ -72,11 +72,19 @@ public final class LocationPollStrategy extends PollStrategy {
             this.methodParser = methodParser;
             return new LocationPollStrategy(this);
         }
+
+        URL getLocationUrl() {
+            return locationUrl;
+        }
+
+        void setLocationUrl(URL locationUrl) {
+            this.locationUrl = locationUrl;
+        }
     }
 
     @Override
     public HttpRequest createPollRequest() {
-        return new HttpRequest(HttpMethod.GET, data.locationUrl);
+        return new HttpRequest(HttpMethod.GET, data.getLocationUrl());
     }
 
     @Override
@@ -89,7 +97,7 @@ public final class LocationPollStrategy extends PollStrategy {
                         String newLocationUrl = getHeader(response);
                         if (newLocationUrl != null) {
                             try {
-                                data.locationUrl = new URL(newLocationUrl);
+                                data.setLocationUrl(new URL(newLocationUrl));
                             } catch (MalformedURLException mfue) {
                                 throw Exceptions.propagate(mfue);
                             }

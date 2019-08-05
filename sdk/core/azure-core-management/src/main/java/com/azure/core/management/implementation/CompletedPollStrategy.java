@@ -21,7 +21,7 @@ import java.lang.reflect.Type;
  */
 public class CompletedPollStrategy extends PollStrategy {
     private final HttpResponse firstHttpResponse;
-    private CompletedPollStrategyData data;
+    private final CompletedPollStrategyData data;
 
     /**
      * Create a new CompletedPollStrategy.
@@ -38,7 +38,7 @@ public class CompletedPollStrategy extends PollStrategy {
      * The CompletedPollStrategy data.
      */
     public static class CompletedPollStrategyData extends PollStrategyData {
-        HttpResponse firstHttpResponse;
+        final HttpResponse firstHttpResponse;
 
         /**Serial version id for this class*/
         private static final long serialVersionUID = 1L;

@@ -310,8 +310,8 @@ public class PagedListTests {
 
 
     public static class TestPage implements Page<Integer> {
-        private int page;
-        private int max;
+        private final int page;
+        private final int max;
 
         public TestPage(int page, int max) {
             this.page = page;

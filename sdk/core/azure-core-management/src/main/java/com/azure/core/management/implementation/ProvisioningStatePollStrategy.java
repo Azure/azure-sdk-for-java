@@ -22,7 +22,7 @@ import java.io.Serializable;
 public final class ProvisioningStatePollStrategy extends PollStrategy {
 
 
-    private ProvisioningStatePollStrategyData data;
+    private final ProvisioningStatePollStrategyData data;
     ProvisioningStatePollStrategy(ProvisioningStatePollStrategyData data) {
         super(data);
         setStatus(data.provisioningState);
@@ -37,8 +37,8 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
         /**Serial version id for this class*/
         private static final long serialVersionUID = 1L;
 
-        HttpRequest originalRequest;
-        String provisioningState;
+        final HttpRequest originalRequest;
+        final String provisioningState;
 
         /**
          * Create a new ProvisioningStatePollStrategyData.

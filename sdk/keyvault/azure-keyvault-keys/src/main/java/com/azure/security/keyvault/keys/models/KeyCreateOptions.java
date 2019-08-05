@@ -36,7 +36,7 @@ public class KeyCreateOptions {
     /**
      * The type of the key.
      */
-    KeyType keyType;
+    private KeyType keyType;
 
     /**
      * The key operations.
@@ -46,10 +46,14 @@ public class KeyCreateOptions {
     /**
      * The key name.
      */
-    String name;
+    final String name;
 
     KeyCreateOptions() {
+        this(null, null);
+    }
 
+    void setKeyType(KeyType keyType) {
+        this.keyType = keyType;
     }
 
     /**
