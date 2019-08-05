@@ -61,13 +61,13 @@ public class InMemoryPartitionManager implements PartitionManager {
     }
 
     /**
-     * Updates the checkpoint with new sequence number and offset. A new ETag is generated when the update is successful.
+     * Updates the in-memory storage with the provided checkpoint information.
      *
-     * @param checkpoint Checkpoint information containing sequence number and offset to be stored for this partition.
+     * @param checkpoint The checkpoint containing the information to be stored in-memory.
      * @return A new ETag associated with the updated checkpoint.
      */
     @Override
-    public Mono<String> updateCheckpoint(Checkpoint checkpoint) {
+    public Mono<String> updateCheckpoint(final Checkpoint checkpoint) {
         String updatedETag = UUID.randomUUID().toString();
         partitionOwnershipMap.get(checkpoint.partitionId())
             .sequenceNumber(checkpoint.sequenceNumber())
