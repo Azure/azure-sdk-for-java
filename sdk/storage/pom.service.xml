@@ -10,7 +10,8 @@
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
     <module>microsoft-azure-storage-blob</module>
-    <module>../core</module>
+    <module>../core/azure-core</module>
+    <module>../core/azure-core-test</module>
     <module>azure-storage-blob</module>
     <module>azure-storage-file</module>
     <module>azure-storage-queue</module>
