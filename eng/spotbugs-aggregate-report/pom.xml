@@ -64,6 +64,7 @@
                 <source>..\..\sdk\eventhubs\azure-eventhubs\src\main\java</source>
                 <source>..\..\sdk\eventhubs\azure-eventhubs\src\samples\java</source>
                 <source>..\..\sdk\identity\azure-identity\src\main\java</source>
+                <source>..\..\sdk\identity\azure-identity\src\samples\java</source>
 <!--                <source>..\..\sdk\keyvault\azure-keyvault-keys\src\main\java</source>-->
 <!--                <source>..\..\sdk\keyvault\azure-keyvault-keys\src\samples\java</source>-->
 <!--                <source>..\..\sdk\keyvault\azure-keyvault-secrets\src\main\java</source>-->
