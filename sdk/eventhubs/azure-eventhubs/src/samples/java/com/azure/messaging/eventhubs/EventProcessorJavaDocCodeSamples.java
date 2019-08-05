@@ -7,7 +7,7 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import reactor.core.publisher.Mono;
 
 /**
- * Code snippets for {@link EventProcessorAsyncClient}
+ * Code snippets for {@link EventProcessorAsyncClient}.
  */
 public final class EventProcessorJavaDocCodeSamples {
 
@@ -74,7 +74,7 @@ public final class EventProcessorJavaDocCodeSamples {
         /**
          * {@inheritDoc}
          *
-         * @return a representation of deferred initialization.
+         * @return a representation of deferred processing of events.
          */
         @Override
         public Mono<Void> processEvent(EventData eventData) {
@@ -95,7 +95,7 @@ public final class EventProcessorJavaDocCodeSamples {
          * {@inheritDoc}
          *
          * @param closeReason {@link CloseReason} for closing this partition processor.
-         * @return a representation of deferred initialization.
+         * @return a representation of deferred closing of partition processor.
          */
         @Override
         public Mono<Void> close(CloseReason closeReason) {
