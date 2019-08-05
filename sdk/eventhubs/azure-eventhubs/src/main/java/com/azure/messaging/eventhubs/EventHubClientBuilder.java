@@ -54,9 +54,14 @@ import java.util.Objects;
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.retry-timeout-scheduler}
  *
+ * <p><strong>Creating an {@link EventProcessorAsyncClient} instance using Event Hub instance connection
+ *  string</strong></p>
+ * {@codesnippet com.azure.messaging.eventhubs.eventprocessorasyncclient.instantiation}
+ *
  * @see EventHubAsyncClient
+ * @see EventProcessorAsyncClient
  */
-@ServiceClientBuilder(serviceClients = EventHubAsyncClient.class)
+@ServiceClientBuilder(serviceClients = {EventHubAsyncClient.class, EventProcessorAsyncClient.class})
 public class EventHubClientBuilder {
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
