@@ -3,52 +3,54 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import reactor.core.publisher.Mono;
 
 /**
- * Code snippets for {@link EventProcessorAsyncClient}.
+ * Code snippets for {@link EventProcessor}.
  */
 public final class EventProcessorJavaDocCodeSamples {
 
     /**
-     * Code snippet for showing how to create a new instance of {@link EventProcessorAsyncClient}.
+     * Code snippet for showing how to create a new instance of {@link EventProcessor}.
      *
-     * @return An instance of {@link EventProcessorAsyncClient}.
+     * @return An instance of {@link EventProcessor}.
      */
-    public EventProcessorAsyncClient createInstance() {
-        // BEGIN: com.azure.messaging.eventhubs.eventprocessorasyncclient.instantiation
+    public EventProcessor createInstance() {
+        // BEGIN: com.azure.messaging.eventhubs.eventprocessor.instantiation
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
             + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
-        EventProcessorAsyncClient eventProcessorAsyncClient = new EventHubClientBuilder()
+        EventProcessor eventProcessor = new EventHubClientBuilder()
             .connectionString(connectionString)
             .partitionProcessorFactory((PartitionProcessorImpl::new))
             .consumerGroupName("consumer-group")
-            .buildEventProcessorAsyncClient();
-        // END: com.azure.messaging.eventhubs.eventprocessorasyncclient.instantiation
-        return eventProcessorAsyncClient;
+            .buildEventProcessor();
+        // END: com.azure.messaging.eventhubs.eventprocessor.instantiation
+        return eventProcessor;
     }
 
     /**
-     * Code snippet for showing how to start and stop an {@link EventProcessorAsyncClient}.
+     * Code snippet for showing how to start and stop an {@link EventProcessor}.
      */
     public void startStopSample() {
-        EventProcessorAsyncClient eventProcessorAsyncClient = createInstance();
-        // BEGIN: com.azure.messaging.eventhubs.eventprocessorasyncclient.startstop
-        eventProcessorAsyncClient.start();
+        EventProcessor eventProcessor = createInstance();
+        // BEGIN: com.azure.messaging.eventhubs.eventprocessor.startstop
+        eventProcessor.start();
         // do other stuff while the event processor is running
-        eventProcessorAsyncClient.stop();
-        // END: com.azure.messaging.eventhubs.eventprocessorasyncclient.startstop
+        eventProcessor.stop();
+        // END: com.azure.messaging.eventhubs.eventprocessor.startstop
     }
 
     /**
-     * No-op partition processor used in code snippet to demo creating an instance of {@link EventProcessorAsyncClient}.
+     * No-op partition processor used in code snippet to demo creating an instance of {@link EventProcessor}.
      * This class will not be visible in the code snippet.
      */
     private static final class PartitionProcessorImpl implements PartitionProcessor {
 
-        PartitionContext partitionContext;
-        CheckpointManager checkpointManager;
+        private final ClientLogger logger = new ClientLogger(PartitionProcessorImpl.class);
+        private final PartitionContext partitionContext;
+        private final CheckpointManager checkpointManager;
 
         /**
          * Creates new instance.
@@ -68,6 +70,7 @@ public final class EventProcessorJavaDocCodeSamples {
          */
         @Override
         public Mono<Void> initialize() {
+            logger.info("Initializing partition processor for {}", this.partitionContext.partitionId());
             return Mono.empty();
         }
 
@@ -78,6 +81,7 @@ public final class EventProcessorJavaDocCodeSamples {
          */
         @Override
         public Mono<Void> processEvent(EventData eventData) {
+            this.checkpointManager.updateCheckpoint(eventData);
             return Mono.empty();
         }
 
@@ -88,7 +92,7 @@ public final class EventProcessorJavaDocCodeSamples {
          */
         @Override
         public void processError(Throwable throwable) {
-            System.out.println("Error while processing events");
+            logger.warning("Error while processing events");
         }
 
         /**
