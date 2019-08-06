@@ -64,7 +64,7 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
     az keyvault set-policy --name <your-key-vault-name> --spn $AZURE_CLIENT_ID --key-permissions backup delete get list set
     ```
     > --key-permissions:
-    > Accepted values: backup, delete, get, list, purge, recover, restore, set
+    > Accepted values: backup, delete, get, list, purge, recover, restore, create
 
 * Use the above mentioned Key Vault name to retreive details of your Vault which also contains your Key Vault URL:
     ```Bash
