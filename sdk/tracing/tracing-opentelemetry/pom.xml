@@ -18,13 +18,6 @@
   <description>This package contains the OpenTelemetry tracing plugin for Azure client libraries.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
-  <distributionManagement>
-    <site>
-      <id>azure-java-build-docs</id>
-      <url>${site.url}/site/${project.artifactId}</url>
-    </site>
-  </distributionManagement>
-
   <scm>
     <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
     <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
