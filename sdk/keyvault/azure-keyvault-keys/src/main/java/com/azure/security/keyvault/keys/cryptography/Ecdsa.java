@@ -21,13 +21,6 @@ abstract class Ecdsa extends AsymmetricSignatureAlgorithm {
     public abstract int getDigestLength();
     public abstract int getCoordLength();
 
-    private void checkDigestLength(byte[] digest) {
-        if (digest.length != this.getDigestLength()) {
-            throw new IllegalArgumentException("Invalid digest length.");
-        }
-    }
-
-
     class EcdsaSignatureTransform implements ISignatureTransform {
         private static final String ALGORITHM = "NONEwithECDSA";
         private final KeyPair keyPair;
@@ -57,6 +50,12 @@ abstract class Ecdsa extends AsymmetricSignatureAlgorithm {
             verify.initVerify(keyPair.getPublic());
             verify.update(digest);
             return verify.verify(signature);
+        }
+
+        private void checkDigestLength(byte[] digest) {
+            if (digest.length != getDigestLength()) {
+                throw new IllegalArgumentException("Invalid digest length.");
+            }
         }
     }
 }
