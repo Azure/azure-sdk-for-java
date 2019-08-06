@@ -445,14 +445,15 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
     static class KeyValue {
         @JsonProperty("key")
-        private final int key;
+        private int key;
 
         @JsonProperty("value")
-        private final String value;
+        private String value;
 
         KeyValue() {
-            this(null, null);
+
         }
+
         KeyValue(Integer key, String value) {
             this.key = key;
             this.value = value;
@@ -469,13 +470,13 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
     static class KeyValuePage implements Page<KeyValue> {
         @JsonProperty()
-        private final List<KeyValue> items;
+        private List<KeyValue> items;
 
         @JsonProperty("nextLink")
-        private final String nextLink;
+        private String nextLink;
 
         KeyValuePage() {
-            this(null, null);
+
         }
 
         KeyValuePage(List<KeyValue> items, String nextLink) {

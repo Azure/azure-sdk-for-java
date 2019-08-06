@@ -29,6 +29,10 @@ public class AssignedOnceVariableToBeFinalCheck extends AbstractCheck {
         TokenTypes.LITERAL_TRANSIENT,
         TokenTypes.LITERAL_VOLATILE
     ));
+    private static final Set<String> INVALID_FINAL_ANNOTATIONS = new HashSet<>(Arrays.asList(
+        "JsonProperty"
+    ));
+
 
     private static ArrayList<DetailAST> nonFinalFields;
     private static Set<String> assignmentsFromConstructor;
@@ -182,7 +186,14 @@ public class AssignedOnceVariableToBeFinalCheck extends AbstractCheck {
      */
     private boolean hasIllegalCombination(DetailAST modifiers) {
         for (DetailAST modifier = modifiers.getFirstChild(); modifier != null; modifier = modifier.getNextSibling()) {
-            if (INVALID_FINAL_COMBINATION.contains(modifier.getType())) {
+            int modifierType = modifier.getType();
+            // Do not consider field with some annotations
+            if (TokenTypes.ANNOTATION == modifierType) {
+                if (INVALID_FINAL_ANNOTATIONS.contains(modifier.findFirstToken(TokenTypes.IDENT).getText())) {
+                    return true;
+                }
+            }
+            if (INVALID_FINAL_COMBINATION.contains(modifierType)) {
                 return true;
             }
         }
