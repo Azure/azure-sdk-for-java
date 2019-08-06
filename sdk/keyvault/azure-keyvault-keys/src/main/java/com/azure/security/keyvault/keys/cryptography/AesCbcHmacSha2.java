@@ -243,7 +243,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
             throw new IllegalArgumentException(String.format("Unsupported algorithm: %s", algorithm));
         }
 
-        return new Triplet<>(aesKey,hmacKey, hmac);
+        return new Triplet<>(aesKey, hmacKey, hmac);
     }
 
     private static byte[] toBigEndian(long i) {

@@ -3,7 +3,7 @@
     "Method" : "PUT",
     "Uri" : "https://cameravault.vault.azure.net/keys/testRsaKey?api-version=7.0",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,7 +12,7 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 02 Aug 2019 15:41:41 GMT",
+      "Date" : "Tue, 06 Aug 2019 05:04:51 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
@@ -20,17 +20,17 @@
       "x-ms-keyvault-network-info" : "addr=51.143.0.73;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "656",
-      "x-ms-request-id" : "7c12b170-8414-4e41-90da-056b22d8eda4",
-      "x-ms-keyvault-service-version" : "1.1.0.872",
-      "Body" : "{\"key\":{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/5be50a51fdc74cfa91cce5683e093c7a\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"1_6ZtP288hEkKML-L6nFyZh1PD1rmAgwbbwjEvTSDK_008BYWhjp_6ULy9BhWtRIytNkPkm9gzaBTrCpp-vyDXPGa836Htp-w8u5JmxoUZchJh576m3m-8ZYWTmZSAp5SpruyKAmLSxPJHEWPXQntnmuTMjb9HBT9Ltrwc0ZDk-jsMLYunDJrNmrRUxQgb0zQ_Tl5fJjj8j-0KVx2RXtbfWFvf5fRdBYyP3m0aUpoopQPwtXszD2LcSKMJ_TnmnvMWr8MOA5aRlBaGdBk7zBgRafvDPam3Q2AvFA9mfcAVncpfZ3JFm73VARw6MofXtRqOHtZ7y4oNbY95xXwU2r6w\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"created\":1564760502,\"updated\":1564760502,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
+      "x-ms-request-id" : "e19f71c3-5d28-4aa8-8d60-f621691f2baa",
+      "x-ms-keyvault-service-version" : "1.1.0.875",
+      "Body" : "{\"key\":{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/239aa15e13fe42739dc8e7153c84e188\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"1_6ZtP288hEkKML-L6nFyZh1PD1rmAgwbbwjEvTSDK_008BYWhjp_6ULy9BhWtRIytNkPkm9gzaBTrCpp-vyDXPGa836Htp-w8u5JmxoUZchJh576m3m-8ZYWTmZSAp5SpruyKAmLSxPJHEWPXQntnmuTMjb9HBT9Ltrwc0ZDk-jsMLYunDJrNmrRUxQgb0zQ_Tl5fJjj8j-0KVx2RXtbfWFvf5fRdBYyP3m0aUpoopQPwtXszD2LcSKMJ_TnmnvMWr8MOA5aRlBaGdBk7zBgRafvDPam3Q2AvFA9mfcAVncpfZ3JFm73VARw6MofXtRqOHtZ7y4oNbY95xXwU2r6w\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"created\":1565067891,\"updated\":1565067891,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://cameravault.vault.azure.net/keys/testRsaKey/5be50a51fdc74cfa91cce5683e093c7a/decrypt?api-version=7.0",
+    "Uri" : "https://cameravault.vault.azure.net/keys/testRsaKey/239aa15e13fe42739dc8e7153c84e188/decrypt?api-version=7.0",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -39,7 +39,7 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 02 Aug 2019 15:41:41 GMT",
+      "Date" : "Tue, 06 Aug 2019 05:04:51 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
@@ -47,17 +47,17 @@
       "x-ms-keyvault-network-info" : "addr=51.143.0.73;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "239",
-      "x-ms-request-id" : "7a5d5d7e-2e3a-4ea8-b34b-1117932d5d0b",
-      "x-ms-keyvault-service-version" : "1.1.0.872",
-      "Body" : "{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/5be50a51fdc74cfa91cce5683e093c7a\",\"value\":\"G9GT23aoJ9lUS5WtxwlS9igODCiTObv_Z7U9HhTbk99t_24WdBcngS2ycvtJ7_VQ6ESEKt1QdoI8UMRwh2UOMalPrw1leEgbwgpOtCPjmzCk2fhuxCHyinA3x0iGnD2jyYaXiw\"}",
+      "x-ms-request-id" : "b56bd43f-a534-4321-80b0-f894e45983d6",
+      "x-ms-keyvault-service-version" : "1.1.0.875",
+      "Body" : "{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/239aa15e13fe42739dc8e7153c84e188\",\"value\":\"G9GT23aoJ9lUS5WtxwlS9igODCiTObv_Z7U9HhTbk99t_24WdBcngS2ycvtJ7_VQ6ESEKt1QdoI8UMRwh2UOMalPrw1leEgbwgpOtCPjmzCk2fhuxCHyinA3x0iGnD2jyYaXiw\"}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://cameravault.vault.azure.net/keys/testRsaKey/5be50a51fdc74cfa91cce5683e093c7a/encrypt?api-version=7.0",
+    "Uri" : "https://cameravault.vault.azure.net/keys/testRsaKey/239aa15e13fe42739dc8e7153c84e188/encrypt?api-version=7.0",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -66,7 +66,7 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 02 Aug 2019 15:41:41 GMT",
+      "Date" : "Tue, 06 Aug 2019 05:04:51 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
@@ -74,17 +74,17 @@
       "x-ms-keyvault-network-info" : "addr=51.143.0.73;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "447",
-      "x-ms-request-id" : "234523b6-bb59-4c64-be1e-3ec17d0a0882",
-      "x-ms-keyvault-service-version" : "1.1.0.872",
-      "Body" : "{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/5be50a51fdc74cfa91cce5683e093c7a\",\"value\":\"rKJ7ajnr5ipKDVFQaQq05muANwyzBV89K8t-diJZVyvI5TbRAm3W4eV9EBY2ZU0vehv2dU2Gsb_j4Wt4vxjb7eV8QWdi3rWtczYvupwcpRUkgKnw872utBf5vUTeXRjVQQb2Mmt53pm265TBfJOcuoLCDRdYyNs43C8GQf8LcOmzixUe8ah0yzhiQdUaaGHY6DQBIIYUeviyzmy2bYUSaLKyWoQW8s2Zqp1XuGM3IJ6Fyij3pj86dgMrxKemeQqMq8jwWUHtIO_0AMFD-wr5ZGV6cdyA4LYBGfUP8jruoq-_vV_KGXBwcKd1UhRVT67FeGCJ8a5UdKGU33tWXy88Lg\"}",
+      "x-ms-request-id" : "d709251f-8da3-40c4-8b7a-f4fd814ea096",
+      "x-ms-keyvault-service-version" : "1.1.0.875",
+      "Body" : "{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/239aa15e13fe42739dc8e7153c84e188\",\"value\":\"cILD_WRyl5tkQGcOJOiyyhVziBTFlcl25NXvaZ20lkKdQ8C8qwnMQuywE72F657Pb3r7fjWr0HBQ-GdFQUL0zdSKukqfQeJRTi4oFkNTzG2dVvi33_I8TZgEt_AdoM2Gf8jjp29-R8BdI-QnkR6A7cukzKus5sNWn9gIp2B5bCCyPKK_2ybdC0mTATq7jOLv-6x6LIhTI3MAuhC2Ik1M97Y6RlRO-PlS96TLqrGN4M5ZSHekX95iqi6WOIQvRJN06FTQq7dNq_cXG1QGfBxN0rZY9rcwthqKKRE4XCT8Kx9af8Pb68WpiHBwC0AFVZAjqdmMg-N-lbJZ-fbg06ZHAg\"}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://cameravault.vault.azure.net/keys/testRsaKey/5be50a51fdc74cfa91cce5683e093c7a/decrypt?api-version=7.0",
+    "Uri" : "https://cameravault.vault.azure.net/keys/testRsaKey/239aa15e13fe42739dc8e7153c84e188/decrypt?api-version=7.0",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -93,7 +93,7 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 02 Aug 2019 15:41:41 GMT",
+      "Date" : "Tue, 06 Aug 2019 05:04:51 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
@@ -101,17 +101,17 @@
       "x-ms-keyvault-network-info" : "addr=51.143.0.73;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "239",
-      "x-ms-request-id" : "886c693c-9529-47a4-8f82-aa5f3b351097",
-      "x-ms-keyvault-service-version" : "1.1.0.872",
-      "Body" : "{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/5be50a51fdc74cfa91cce5683e093c7a\",\"value\":\"G9GT23aoJ9lUS5WtxwlS9igODCiTObv_Z7U9HhTbk99t_24WdBcngS2ycvtJ7_VQ6ESEKt1QdoI8UMRwh2UOMalPrw1leEgbwgpOtCPjmzCk2fhuxCHyinA3x0iGnD2jyYaXiw\"}",
+      "x-ms-request-id" : "623e1eec-3e07-4783-8913-e1ade90f04a0",
+      "x-ms-keyvault-service-version" : "1.1.0.875",
+      "Body" : "{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/239aa15e13fe42739dc8e7153c84e188\",\"value\":\"G9GT23aoJ9lUS5WtxwlS9igODCiTObv_Z7U9HhTbk99t_24WdBcngS2ycvtJ7_VQ6ESEKt1QdoI8UMRwh2UOMalPrw1leEgbwgpOtCPjmzCk2fhuxCHyinA3x0iGnD2jyYaXiw\"}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://cameravault.vault.azure.net/keys/testRsaKey/5be50a51fdc74cfa91cce5683e093c7a/encrypt?api-version=7.0",
+    "Uri" : "https://cameravault.vault.azure.net/keys/testRsaKey/239aa15e13fe42739dc8e7153c84e188/encrypt?api-version=7.0",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -120,7 +120,7 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 02 Aug 2019 15:41:41 GMT",
+      "Date" : "Tue, 06 Aug 2019 05:04:51 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
@@ -128,17 +128,17 @@
       "x-ms-keyvault-network-info" : "addr=51.143.0.73;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "447",
-      "x-ms-request-id" : "43f1dd0b-38d2-4e36-a47f-cf7c12773c52",
-      "x-ms-keyvault-service-version" : "1.1.0.872",
-      "Body" : "{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/5be50a51fdc74cfa91cce5683e093c7a\",\"value\":\"wzk9C0Fuql6SJ3xHPM-dzSCN7VNyU4rJEwVBoR3ko_Ad-afwFGKosuYJfXeyH9S_zxUSx-XjY0194Ko3CGqj3CDo3OXqA6GDpjFc44-YgkYDA9yX1bm4imQMooyUSSaqY3_ISVTQ2U7Bkw_b9lbrlf7NhexwVO5qnq60Gj1bIAgY1QxZIAHEzJWslwxU0YWHGI5k-5_hHHT5EB775Ux2oeVCfTqRW7-YKfPNHtUyw-mnzOQnhTL7VM-r2j3Y9qEfYWqOH7KpKaEwewx_JuLZp4LMgpA92kJU-4KdgZCYyrDnGzoin872nL2N4FAae39aJc3JU56VI9QDTP6ODfHeNQ\"}",
+      "x-ms-request-id" : "58492b26-9c11-4063-9555-c9f9e352ae69",
+      "x-ms-keyvault-service-version" : "1.1.0.875",
+      "Body" : "{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/239aa15e13fe42739dc8e7153c84e188\",\"value\":\"GjLhGNBcnHFHV1GB-xyhGPfCLppg1ZlCF_ecYQkiLaTbGcX64bxIOZIQzlMcL14mKh34Un715q162hgCEIdiBpwwvpNIOJ7Rba3uotjoyHKJFsJ74Gmy4uLa7EbOkrLp6lv1hDLLLRc-JH6cAKpcrAxYrhWqpJSobq_NoFbdBrizUwx9l7ei-eDeJhk5zb3y4SO5mLlkcfn_ae_yOlTEkSMGFiYcRKXa2nS4V3Ogqc_yogOCQskdhUcR8v7XL9wJVrZMoPRbsagpVFRvWMo44tRitJKIUFNeI6LI_0JKIkCFCZO27iZm-2MYLCVLI5NNicsnzgdjNejsk3FqtlC-ug\"}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://cameravault.vault.azure.net/keys/testRsaKey/5be50a51fdc74cfa91cce5683e093c7a/encrypt?api-version=7.0",
+    "Uri" : "https://cameravault.vault.azure.net/keys/testRsaKey/239aa15e13fe42739dc8e7153c84e188/encrypt?api-version=7.0",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -147,7 +147,7 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 02 Aug 2019 15:41:42 GMT",
+      "Date" : "Tue, 06 Aug 2019 05:04:51 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
@@ -155,17 +155,17 @@
       "x-ms-keyvault-network-info" : "addr=51.143.0.73;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "447",
-      "x-ms-request-id" : "5206524f-573f-4123-a140-4df351fd2db1",
-      "x-ms-keyvault-service-version" : "1.1.0.872",
-      "Body" : "{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/5be50a51fdc74cfa91cce5683e093c7a\",\"value\":\"Z788I9TJWQe5TH3IVXW1vDiOczIPhhpaxQkYRQF5Vyy53ZTyRsD7mvROUBU9oIl9ILQj3E77i1UuEKky-4S3owvjOjmnPVgwCIHnENa0HhcYmZjGta6ZbRIv6w6oI8PjeZ7LHZAj1NfU5-WHPudkMoN-qhX6W85Kh_AMK3uNlgEorBMSit8fVd9L1oq9RkAgkC0JDb1bSAn0nwq1D33nkeTDA_HOJBV4eioThyj8bNl45NZQUSisgWEBkpzv_WmDQD7Gmr658H3R59SaJwdl30Li6bE7FQ8K-06PLKYIiWuCNW5du1rQFQJ8DXvk5fuFq0oOsDmpQGYpABpIMeBaog\"}",
+      "x-ms-request-id" : "518fdea8-5d04-4669-a0fd-7b15edad3b64",
+      "x-ms-keyvault-service-version" : "1.1.0.875",
+      "Body" : "{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/239aa15e13fe42739dc8e7153c84e188\",\"value\":\"e5XNN_HK5AvtaGgLQi8_cFm5_zRUKueBJe9N-GDKzDVFdA27iSWdiRLAzzouFtsqCLIxXQV-y1J68RjlQNR90R-XEX1QhEt7lCxWyqkmlRrk_aCl44eqga1aEBsz1nUyvz6uYdTO33d2wNexKUmcZCvNWIHeL8zg6M9NLs8ncpXAH5LFbVH1YDz73WvaTr1wYUFg2Srl0MHQyHwA0bnnQRP3Gcg55RTCSGzA_ONzXpxKPG2iGukZ9tWA6EBIahaIXBZSsa-_ZK__0Am8zwb2rBRxYLAb3DCSb-xOpZqXpWevJbQDIoYog1byjUJUx1hO5GMhCpqMubhsyCjxO51UJA\"}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://cameravault.vault.azure.net/keys/testRsaKey/5be50a51fdc74cfa91cce5683e093c7a/decrypt?api-version=7.0",
+    "Uri" : "https://cameravault.vault.azure.net/keys/testRsaKey/239aa15e13fe42739dc8e7153c84e188/decrypt?api-version=7.0",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -174,7 +174,7 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 02 Aug 2019 15:41:42 GMT",
+      "Date" : "Tue, 06 Aug 2019 05:04:51 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
@@ -182,17 +182,17 @@
       "x-ms-keyvault-network-info" : "addr=51.143.0.73;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "239",
-      "x-ms-request-id" : "1e2ffb29-5880-44c7-bbb5-9326cc8438d1",
-      "x-ms-keyvault-service-version" : "1.1.0.872",
-      "Body" : "{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/5be50a51fdc74cfa91cce5683e093c7a\",\"value\":\"G9GT23aoJ9lUS5WtxwlS9igODCiTObv_Z7U9HhTbk99t_24WdBcngS2ycvtJ7_VQ6ESEKt1QdoI8UMRwh2UOMalPrw1leEgbwgpOtCPjmzCk2fhuxCHyinA3x0iGnD2jyYaXiw\"}",
+      "x-ms-request-id" : "20d351c8-aedb-44d1-95b8-404f21e0cfd0",
+      "x-ms-keyvault-service-version" : "1.1.0.875",
+      "Body" : "{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/239aa15e13fe42739dc8e7153c84e188\",\"value\":\"G9GT23aoJ9lUS5WtxwlS9igODCiTObv_Z7U9HhTbk99t_24WdBcngS2ycvtJ7_VQ6ESEKt1QdoI8UMRwh2UOMalPrw1leEgbwgpOtCPjmzCk2fhuxCHyinA3x0iGnD2jyYaXiw\"}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://cameravault.vault.azure.net/keys/testRsaKey/5be50a51fdc74cfa91cce5683e093c7a/encrypt?api-version=7.0",
+    "Uri" : "https://cameravault.vault.azure.net/keys/testRsaKey/239aa15e13fe42739dc8e7153c84e188/encrypt?api-version=7.0",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -201,7 +201,7 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 02 Aug 2019 15:41:42 GMT",
+      "Date" : "Tue, 06 Aug 2019 05:04:52 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
@@ -209,17 +209,17 @@
       "x-ms-keyvault-network-info" : "addr=51.143.0.73;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "447",
-      "x-ms-request-id" : "a0f9fca8-e8e8-4ed0-8282-74c5da4d8900",
-      "x-ms-keyvault-service-version" : "1.1.0.872",
-      "Body" : "{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/5be50a51fdc74cfa91cce5683e093c7a\",\"value\":\"s49fJzfsBeQcvjAF5Zxb7oYnfiuDG1Bf76fI64ZMUIocconyHhda7rNqGc1yyisYKuLH6BV9LFkxrWRtzXmHAWxxpzJw6xWIsNQ2UeARtUqbWC5XwYlsOIjSyXX-QxRDZT8COq_WKIjCZYK7ufJElEZqgMMQEJ18S0caD0jBv6lEvwc0d1Q11jJiacbnCTxLdSxbq7cINLNltshwq_fx-kz-PooWC_Ex4denY5cYmBzOCZPRWGalt2c2mhwrCI_3t70kV_33bQLShuURZXgt7zKTvByhFNAm405ceT8ejCKBRlDLBha0LBIpTrSrxGIeaaFyzdDnEOMBWBbyFQAU3w\"}",
+      "x-ms-request-id" : "1ed2f433-43bd-4488-8120-e4dbd5237ffb",
+      "x-ms-keyvault-service-version" : "1.1.0.875",
+      "Body" : "{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/239aa15e13fe42739dc8e7153c84e188\",\"value\":\"fi6752qevRN_Dr9zphO2C4vlHB3UIdzjCHrH5Wo0pBWyhpiPgqBbPL4h2U4JjBaIf-BBiRQpw2pIsIJE-F05LxYPixryvLhZBWQWBq02Hu1lAN0Rjndq5j6Fwgyg_7IWwJS-U75W82FEvnYQF-T0rqEpTOVlEvXsRjfVlyHCcvEbU6vQurPEJ2nia1i8cVA4I5xvjN6-v2vh9v1NVJMxlQGhnAcm3LR9tWwYiqZEcBOXj1CpsmyCKiXDJks9NAj5yJ1vBLzmbqc2q2Kz__CwpVmgPUyZK_bKejbMITi4BM7cAnMGvRrwkhjp18ZWNPR6W2r9WmW7sov1JksrIwT4cA\"}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://cameravault.vault.azure.net/keys/testRsaKey/5be50a51fdc74cfa91cce5683e093c7a/decrypt?api-version=7.0",
+    "Uri" : "https://cameravault.vault.azure.net/keys/testRsaKey/239aa15e13fe42739dc8e7153c84e188/decrypt?api-version=7.0",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -228,7 +228,7 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 02 Aug 2019 15:41:42 GMT",
+      "Date" : "Tue, 06 Aug 2019 05:04:52 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
@@ -236,9 +236,9 @@
       "x-ms-keyvault-network-info" : "addr=51.143.0.73;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "239",
-      "x-ms-request-id" : "0b5082bb-bbca-4e9e-8fb0-0abd9dedcf8d",
-      "x-ms-keyvault-service-version" : "1.1.0.872",
-      "Body" : "{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/5be50a51fdc74cfa91cce5683e093c7a\",\"value\":\"G9GT23aoJ9lUS5WtxwlS9igODCiTObv_Z7U9HhTbk99t_24WdBcngS2ycvtJ7_VQ6ESEKt1QdoI8UMRwh2UOMalPrw1leEgbwgpOtCPjmzCk2fhuxCHyinA3x0iGnD2jyYaXiw\"}",
+      "x-ms-request-id" : "611efd29-0789-42b5-94e6-8929d9a3f8cc",
+      "x-ms-keyvault-service-version" : "1.1.0.875",
+      "Body" : "{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/239aa15e13fe42739dc8e7153c84e188\",\"value\":\"G9GT23aoJ9lUS5WtxwlS9igODCiTObv_Z7U9HhTbk99t_24WdBcngS2ycvtJ7_VQ6ESEKt1QdoI8UMRwh2UOMalPrw1leEgbwgpOtCPjmzCk2fhuxCHyinA3x0iGnD2jyYaXiw\"}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
     }
@@ -246,7 +246,7 @@
     "Method" : "DELETE",
     "Uri" : "https://cameravault.vault.azure.net/keys/testRsaKey?api-version=7.0",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -255,7 +255,7 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 02 Aug 2019 15:41:42 GMT",
+      "Date" : "Tue, 06 Aug 2019 05:04:52 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
@@ -263,9 +263,9 @@
       "x-ms-keyvault-network-info" : "addr=51.143.0.73;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "787",
-      "x-ms-request-id" : "f0570c9e-2b86-48af-9b28-80f6c214ccb1",
-      "x-ms-keyvault-service-version" : "1.1.0.872",
-      "Body" : "{\"recoveryId\":\"https://cameravault.vault.azure.net/deletedkeys/testRsaKey\",\"deletedDate\":1564760503,\"scheduledPurgeDate\":1572536503,\"key\":{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/5be50a51fdc74cfa91cce5683e093c7a\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"1_6ZtP288hEkKML-L6nFyZh1PD1rmAgwbbwjEvTSDK_008BYWhjp_6ULy9BhWtRIytNkPkm9gzaBTrCpp-vyDXPGa836Htp-w8u5JmxoUZchJh576m3m-8ZYWTmZSAp5SpruyKAmLSxPJHEWPXQntnmuTMjb9HBT9Ltrwc0ZDk-jsMLYunDJrNmrRUxQgb0zQ_Tl5fJjj8j-0KVx2RXtbfWFvf5fRdBYyP3m0aUpoopQPwtXszD2LcSKMJ_TnmnvMWr8MOA5aRlBaGdBk7zBgRafvDPam3Q2AvFA9mfcAVncpfZ3JFm73VARw6MofXtRqOHtZ7y4oNbY95xXwU2r6w\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"created\":1564760502,\"updated\":1564760502,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
+      "x-ms-request-id" : "1cc66170-576b-4708-942a-e80f6ec457db",
+      "x-ms-keyvault-service-version" : "1.1.0.875",
+      "Body" : "{\"recoveryId\":\"https://cameravault.vault.azure.net/deletedkeys/testRsaKey\",\"deletedDate\":1565067892,\"scheduledPurgeDate\":1572843892,\"key\":{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/239aa15e13fe42739dc8e7153c84e188\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"1_6ZtP288hEkKML-L6nFyZh1PD1rmAgwbbwjEvTSDK_008BYWhjp_6ULy9BhWtRIytNkPkm9gzaBTrCpp-vyDXPGa836Htp-w8u5JmxoUZchJh576m3m-8ZYWTmZSAp5SpruyKAmLSxPJHEWPXQntnmuTMjb9HBT9Ltrwc0ZDk-jsMLYunDJrNmrRUxQgb0zQ_Tl5fJjj8j-0KVx2RXtbfWFvf5fRdBYyP3m0aUpoopQPwtXszD2LcSKMJ_TnmnvMWr8MOA5aRlBaGdBk7zBgRafvDPam3Q2AvFA9mfcAVncpfZ3JFm73VARw6MofXtRqOHtZ7y4oNbY95xXwU2r6w\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"created\":1565067891,\"updated\":1565067891,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
     }
@@ -273,7 +273,7 @@
     "Method" : "GET",
     "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testRsaKey?api-version=7.0",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -282,7 +282,7 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Fri, 02 Aug 2019 15:41:42 GMT",
+      "Date" : "Tue, 06 Aug 2019 05:04:52 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
@@ -290,8 +290,8 @@
       "x-ms-keyvault-network-info" : "addr=51.143.0.73;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "78",
-      "x-ms-request-id" : "616bb7cf-b9ee-4682-8c52-e31db389f310",
-      "x-ms-keyvault-service-version" : "1.1.0.872",
+      "x-ms-request-id" : "dff91a12-b89a-41db-af08-be3fcbeb5781",
+      "x-ms-keyvault-service-version" : "1.1.0.875",
       "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testRsaKey\"}}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
@@ -300,7 +300,7 @@
     "Method" : "GET",
     "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testRsaKey?api-version=7.0",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -309,7 +309,7 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Fri, 02 Aug 2019 15:41:44 GMT",
+      "Date" : "Tue, 06 Aug 2019 05:04:54 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
@@ -317,8 +317,8 @@
       "x-ms-keyvault-network-info" : "addr=51.143.0.73;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "78",
-      "x-ms-request-id" : "0781f17e-d0c9-43cf-a3e8-885af49f6b19",
-      "x-ms-keyvault-service-version" : "1.1.0.872",
+      "x-ms-request-id" : "d2614df2-46e0-4f1b-82bd-8cc9ec07fc51",
+      "x-ms-keyvault-service-version" : "1.1.0.875",
       "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testRsaKey\"}}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
@@ -327,7 +327,7 @@
     "Method" : "GET",
     "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testRsaKey?api-version=7.0",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -336,7 +336,7 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Fri, 02 Aug 2019 15:41:46 GMT",
+      "Date" : "Tue, 06 Aug 2019 05:04:56 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
@@ -344,8 +344,8 @@
       "x-ms-keyvault-network-info" : "addr=51.143.0.73;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "78",
-      "x-ms-request-id" : "2928c8ee-d161-428e-bc0d-1eeb325824a6",
-      "x-ms-keyvault-service-version" : "1.1.0.872",
+      "x-ms-request-id" : "ce9ec89f-e743-4340-ac08-fd5c4f850bb2",
+      "x-ms-keyvault-service-version" : "1.1.0.875",
       "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testRsaKey\"}}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
@@ -354,7 +354,7 @@
     "Method" : "GET",
     "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testRsaKey?api-version=7.0",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -363,7 +363,7 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Fri, 02 Aug 2019 15:41:48 GMT",
+      "Date" : "Tue, 06 Aug 2019 05:04:58 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
@@ -371,8 +371,8 @@
       "x-ms-keyvault-network-info" : "addr=51.143.0.73;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "78",
-      "x-ms-request-id" : "75f880d0-d705-4744-80dc-0f12fea6aa5b",
-      "x-ms-keyvault-service-version" : "1.1.0.872",
+      "x-ms-request-id" : "30af27df-ebe5-47eb-b9e7-b46bba2cfa61",
+      "x-ms-keyvault-service-version" : "1.1.0.875",
       "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testRsaKey\"}}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
@@ -381,7 +381,7 @@
     "Method" : "GET",
     "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testRsaKey?api-version=7.0",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -390,7 +390,7 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Fri, 02 Aug 2019 15:41:50 GMT",
+      "Date" : "Tue, 06 Aug 2019 05:05:00 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
@@ -398,8 +398,8 @@
       "x-ms-keyvault-network-info" : "addr=51.143.0.73;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "78",
-      "x-ms-request-id" : "d03d3e77-e677-43f3-8b50-6b8fccdceaf4",
-      "x-ms-keyvault-service-version" : "1.1.0.872",
+      "x-ms-request-id" : "9377448e-83b5-4d5f-b097-6eae1d15d043",
+      "x-ms-keyvault-service-version" : "1.1.0.875",
       "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testRsaKey\"}}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
@@ -408,7 +408,7 @@
     "Method" : "GET",
     "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testRsaKey?api-version=7.0",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -417,7 +417,7 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Fri, 02 Aug 2019 15:41:52 GMT",
+      "Date" : "Tue, 06 Aug 2019 05:05:02 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
@@ -425,8 +425,8 @@
       "x-ms-keyvault-network-info" : "addr=51.143.0.73;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "78",
-      "x-ms-request-id" : "2df4a511-968c-495b-920f-5c5f602c19e5",
-      "x-ms-keyvault-service-version" : "1.1.0.872",
+      "x-ms-request-id" : "36cbe3e4-8e83-449f-938d-c3bcb5a8890a",
+      "x-ms-keyvault-service-version" : "1.1.0.875",
       "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testRsaKey\"}}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
@@ -435,34 +435,7 @@
     "Method" : "GET",
     "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testRsaKey?api-version=7.0",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Server" : "Microsoft-IIS/10.0",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 02 Aug 2019 15:41:55 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "X-AspNet-Version" : "4.0.30319",
-      "x-ms-keyvault-region" : "centralus",
-      "x-ms-keyvault-network-info" : "addr=51.143.0.73;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "Content-Length" : "78",
-      "x-ms-request-id" : "bd622a82-4fad-42f4-a87d-7fa7b0246ddf",
-      "x-ms-keyvault-service-version" : "1.1.0.872",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testRsaKey\"}}",
-      "X-Powered-By" : "ASP.NET",
-      "Content-Type" : "application/json; charset=utf-8"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testRsaKey?api-version=7.0",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -471,7 +444,7 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 02 Aug 2019 15:41:57 GMT",
+      "Date" : "Tue, 06 Aug 2019 05:05:04 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
@@ -479,9 +452,9 @@
       "x-ms-keyvault-network-info" : "addr=51.143.0.73;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "787",
-      "x-ms-request-id" : "09574be1-d86a-4505-b171-c83fe52e6d1c",
-      "x-ms-keyvault-service-version" : "1.1.0.872",
-      "Body" : "{\"recoveryId\":\"https://cameravault.vault.azure.net/deletedkeys/testRsaKey\",\"deletedDate\":1564760503,\"scheduledPurgeDate\":1572536503,\"key\":{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/5be50a51fdc74cfa91cce5683e093c7a\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"1_6ZtP288hEkKML-L6nFyZh1PD1rmAgwbbwjEvTSDK_008BYWhjp_6ULy9BhWtRIytNkPkm9gzaBTrCpp-vyDXPGa836Htp-w8u5JmxoUZchJh576m3m-8ZYWTmZSAp5SpruyKAmLSxPJHEWPXQntnmuTMjb9HBT9Ltrwc0ZDk-jsMLYunDJrNmrRUxQgb0zQ_Tl5fJjj8j-0KVx2RXtbfWFvf5fRdBYyP3m0aUpoopQPwtXszD2LcSKMJ_TnmnvMWr8MOA5aRlBaGdBk7zBgRafvDPam3Q2AvFA9mfcAVncpfZ3JFm73VARw6MofXtRqOHtZ7y4oNbY95xXwU2r6w\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"created\":1564760502,\"updated\":1564760502,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
+      "x-ms-request-id" : "b8613a85-8c62-43c5-804e-f40409c13e50",
+      "x-ms-keyvault-service-version" : "1.1.0.875",
+      "Body" : "{\"recoveryId\":\"https://cameravault.vault.azure.net/deletedkeys/testRsaKey\",\"deletedDate\":1565067892,\"scheduledPurgeDate\":1572843892,\"key\":{\"kid\":\"https://cameravault.vault.azure.net/keys/testRsaKey/239aa15e13fe42739dc8e7153c84e188\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"1_6ZtP288hEkKML-L6nFyZh1PD1rmAgwbbwjEvTSDK_008BYWhjp_6ULy9BhWtRIytNkPkm9gzaBTrCpp-vyDXPGa836Htp-w8u5JmxoUZchJh576m3m-8ZYWTmZSAp5SpruyKAmLSxPJHEWPXQntnmuTMjb9HBT9Ltrwc0ZDk-jsMLYunDJrNmrRUxQgb0zQ_Tl5fJjj8j-0KVx2RXtbfWFvf5fRdBYyP3m0aUpoopQPwtXszD2LcSKMJ_TnmnvMWr8MOA5aRlBaGdBk7zBgRafvDPam3Q2AvFA9mfcAVncpfZ3JFm73VARw6MofXtRqOHtZ7y4oNbY95xXwU2r6w\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"created\":1565067891,\"updated\":1565067891,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
     }
@@ -489,7 +462,7 @@
     "Method" : "DELETE",
     "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testRsaKey?api-version=7.0",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -498,22 +471,22 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Fri, 02 Aug 2019 15:41:57 GMT",
+      "Date" : "Tue, 06 Aug 2019 05:05:04 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
       "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "addr=51.143.0.73;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "9bd6c4b0-4008-4fd0-bc14-e4b361927914",
-      "x-ms-keyvault-service-version" : "1.1.0.872",
+      "x-ms-request-id" : "74456005-1861-417d-92b0-e1cd11719a21",
+      "x-ms-keyvault-service-version" : "1.1.0.875",
       "X-Powered-By" : "ASP.NET"
     }
   }, {
     "Method" : "GET",
     "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testRsaKey?api-version=7.0",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0 azsdk-java-Azure-Keyvault/4.0.0-preview.2 1.8.0_211; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -522,7 +495,7 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Fri, 02 Aug 2019 15:41:57 GMT",
+      "Date" : "Tue, 06 Aug 2019 05:05:04 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
@@ -530,8 +503,8 @@
       "x-ms-keyvault-network-info" : "addr=51.143.0.73;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "78",
-      "x-ms-request-id" : "0a65d29b-57c5-4ac1-aa11-99f7f706fb75",
-      "x-ms-keyvault-service-version" : "1.1.0.872",
+      "x-ms-request-id" : "8b3b3e08-1fce-4eaf-875c-72cc11c179fd",
+      "x-ms-keyvault-service-version" : "1.1.0.875",
       "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testRsaKey\"}}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"

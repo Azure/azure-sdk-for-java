@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.exception.HttpResponseException;
@@ -12,8 +15,15 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.security.keyvault.keys.KeyClientBuilder;
-import com.azure.security.keyvault.keys.cryptography.models.*;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.KeyUnwrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.KeyWrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SignResult;
+import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
@@ -30,15 +40,17 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  * The CryptographyAsyncClient provides asynchronous methods to perform cryptographic operations using asymmetric and
  * symmetric keys. The client supports encrypt, decrypt, wrap key, unwrap key, sign and verify operations using the configured key.
  *
+ * <p><strong>Samples to construct the sync client</strong></p>
+ * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.instantiation}
+ *
  * @see CryptographyClientBuilder
  */
-@ServiceClient(builder = KeyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
+@ServiceClient(builder = CryptographyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
 public final class CryptographyAsyncClient {
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
     private JsonWebKey key;
-    private CryptographyService service;
-    private String version;
-    private CryptographyServiceClient cryptographyServiceClient;
+    private final CryptographyService service;
+    private final CryptographyServiceClient cryptographyServiceClient;
     private LocalKeyCryptographyClient localKeyCryptographyClient;
     private final ClientLogger logger = new ClientLogger(CryptographyAsyncClient.class);
 
@@ -50,7 +62,7 @@ public final class CryptographyAsyncClient {
      */
     CryptographyAsyncClient(JsonWebKey key, HttpPipeline pipeline) {
         Objects.requireNonNull(key);
-        if(!key.isValid()){
+        if (!key.isValid()) {
             throw new IllegalArgumentException("Json Web Key is not valid");
         }
         if (key.keyOps() == null) {
@@ -62,9 +74,11 @@ public final class CryptographyAsyncClient {
         }
         this.key = key;
         service = RestProxy.create(CryptographyService.class, pipeline);
-        if(!Strings.isNullOrEmpty(key.kid())) {
+        if (!Strings.isNullOrEmpty(key.kid())) {
             unpackAndValidateId(key.kid());
             cryptographyServiceClient = new CryptographyServiceClient(key.kid(), service);
+        } else {
+            cryptographyServiceClient = null;
         }
         initializeCryptoClients();
     }
@@ -79,13 +93,14 @@ public final class CryptographyAsyncClient {
         unpackAndValidateId(kid);
         service = RestProxy.create(CryptographyService.class, pipeline);
         cryptographyServiceClient = new CryptographyServiceClient(kid, service);
+        this.key = null;
     }
 
     private void initializeCryptoClients() {
-        if(localKeyCryptographyClient != null) {
+        if (localKeyCryptographyClient != null) {
             return;
         }
-        switch(key.kty()){
+        switch (key.kty()) {
             case RSA:
             case RSA_HSM:
                 localKeyCryptographyClient = new RsaKeyCryptographyClient(key, cryptographyServiceClient);
@@ -105,6 +120,10 @@ public final class CryptographyAsyncClient {
     /**
      * Gets the public part of the configured key. The get key operation is applicable to all key types and it requires the {@code keys/get} permission.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets the configured key in the client. Subscribes to the call asynchronously and prints out the returned key details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.getKeyWithResponse}
+     *
      * @throws ResourceNotFoundException when the configured key doesn't exist in the key vault.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
      */
@@ -115,6 +134,10 @@ public final class CryptographyAsyncClient {
 
     /**
      * Gets the public part of the configured key. The get key operation is applicable to all key types and it requires the {@code keys/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets the configured key in the client. Subscribes to the call asynchronously and prints out the returned key details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.getKey}
      *
      * @throws ResourceNotFoundException when the configured key doesn't exist in the key vault.
      * @return A {@link Mono} containing the requested {@link Key key}.
@@ -139,6 +162,10 @@ public final class CryptographyAsyncClient {
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC} and {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.encrypt#asymmetric-encrypt}
+     *
      * @param algorithm The algorithm to be used for encryption.
      * @param plaintext The content to be encrypted.
      * @throws ResourceNotFoundException if the key cannot be found for encryption.
@@ -159,6 +186,10 @@ public final class CryptographyAsyncClient {
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC} and {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.encrypt#symmetric-encrypt}
+     *
      * @param algorithm The algorithm to be used for encryption.
      * @param plaintext The content to be encrypted.
      * @param iv The initialization vector
@@ -175,12 +206,12 @@ public final class CryptographyAsyncClient {
 
         boolean keyAvailableLocally = ensureValidKeyAvailable();
 
-        if(!keyAvailableLocally) {
+        if (!keyAvailableLocally) {
             return cryptographyServiceClient.encrypt(algorithm, plaintext, context);
         }
 
-        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.ENCRYPT)){
-            return Mono.error(new UnsupportedOperationException(String.format("Encrypt Operation is not supported for key with id %s", key.kid())));
+        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.ENCRYPT)) {
+            return Mono.error(new UnsupportedOperationException(String.format("Encrypt Operation is missing permission/not supported for key with id %s", key.kid())));
         }
         return localKeyCryptographyClient.encryptAsync(algorithm, plaintext, iv, authenticationData, context, key);
     }
@@ -194,6 +225,10 @@ public final class CryptographyAsyncClient {
      * for assymetric keys include: {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC} and {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.decrypt#asymmetric-decrypt}
      *
      * @param algorithm The algorithm to be used for decryption.
      * @param cipherText The content to be decrypted.
@@ -214,8 +249,15 @@ public final class CryptographyAsyncClient {
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC} and {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.decrypt#symmetric-decrypt}
+     *
      * @param algorithm The algorithm to be used for decryption.
      * @param cipherText The content to be decrypted.
+     * @param iv The initialization vector.
+     * @param authenticationData The authentication data.
+     * @param authenticationTag The authentication tag.
      * @throws ResourceNotFoundException if the key cannot be found for decryption.
      * @return A {@link Mono} containing the decrypted blob.
      */
@@ -227,15 +269,15 @@ public final class CryptographyAsyncClient {
         Objects.requireNonNull(algorithm);
         boolean keyAvailableLocally = ensureValidKeyAvailable();
 
-        if(!keyAvailableLocally) {
+        if (!keyAvailableLocally) {
             return cryptographyServiceClient.decrypt(algorithm, cipherText, context);
         }
 
-        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.DECRYPT)){
+        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.DECRYPT)) {
             return Mono.error(new UnsupportedOperationException(String.format("Decrypt Operation is not allowed for key with id %s", key.kid())));
         }
         return localKeyCryptographyClient.decryptAsync(algorithm, cipherText, iv, authenticationData, authenticationTag, context, key);
-     }
+    }
 
     /**
      * Creates a signature from a digest using the configured key. The sign operation supports both asymmetric and
@@ -246,6 +288,10 @@ public final class CryptographyAsyncClient {
      * {@link SignatureAlgorithm#ES256K ES246K}, {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384 RS384} and
      * {@link SignatureAlgorithm#RS512 RS512}</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.sign}
      *
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature is to be created.
@@ -260,11 +306,11 @@ public final class CryptographyAsyncClient {
         Objects.requireNonNull(algorithm);
         boolean keyAvailableLocally = ensureValidKeyAvailable();
 
-        if(!keyAvailableLocally) {
+        if (!keyAvailableLocally) {
             return cryptographyServiceClient.sign(algorithm, digest, context);
         }
 
-        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.SIGN)){
+        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.SIGN)) {
             return Mono.error(new UnsupportedOperationException(String.format("Sign Operation is not allowed for key with id %s", key.kid())));
         }
 
@@ -280,6 +326,10 @@ public final class CryptographyAsyncClient {
      * {@link SignatureAlgorithm#ES256K ES246K}, {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384 RS384} and
      * {@link SignatureAlgorithm#RS512 RS512}</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Verifies the signature against the specified digest. Subscribes to the call asynchronously and prints out the verification details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.verify}
      *
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature is to be created.
@@ -311,6 +361,10 @@ public final class CryptographyAsyncClient {
      * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for wrapping the specified key content. Possible values include:
      * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}</p>
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Wraps the key content. Subscribes to the call asynchronously and prints out the wrapped key details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.wrap-key}
+     *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param key The key content to be wrapped
      * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
@@ -324,11 +378,11 @@ public final class CryptographyAsyncClient {
 
         boolean keyAvailableLocally = ensureValidKeyAvailable();
 
-        if(!keyAvailableLocally) {
+        if (!keyAvailableLocally) {
             return cryptographyServiceClient.wrapKey(algorithm, key, context);
         }
 
-        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.WRAP_KEY)){
+        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.WRAP_KEY)) {
             return Mono.error(new UnsupportedOperationException(String.format("Wrap Key Operation is not allowed for key with id %s", this.key.kid())));
         }
 
@@ -343,6 +397,10 @@ public final class CryptographyAsyncClient {
      * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      * Possible values for symmetric keys include: {@link KeyWrapAlgorithm#A128KW A128KW}, {@link KeyWrapAlgorithm#A192KW A192KW} and {@link KeyWrapAlgorithm#A256KW A256KW}</p>
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Unwraps the key content. Subscribes to the call asynchronously and prints out the unwrapped key details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.unwrap-key}
+     *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param encryptedKey The encrypted key content to unwrap.
      * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
@@ -356,11 +414,11 @@ public final class CryptographyAsyncClient {
         Objects.requireNonNull(algorithm);
         boolean keyAvailableLocally = ensureValidKeyAvailable();
 
-        if(!keyAvailableLocally) {
+        if (!keyAvailableLocally) {
             return cryptographyServiceClient.unwrapKey(algorithm, encryptedKey, context);
         }
 
-        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.WRAP_KEY)){
+        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.WRAP_KEY)) {
             return Mono.error(new UnsupportedOperationException(String.format("Unwrap Key Operation is not allowed for key with id %s", this.key.kid())));
         }
         return localKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, context, key);
@@ -376,6 +434,10 @@ public final class CryptographyAsyncClient {
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384 RS384} and
      * {@link SignatureAlgorithm#RS512 RS512}</p>
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Signs the raw data. Subscribes to the call asynchronously and prints out the signature details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.sign-data}
+     *
      * @param algorithm The algorithm to use for signing.
      * @param data The content from which signature is to be created.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
@@ -389,11 +451,11 @@ public final class CryptographyAsyncClient {
         Objects.requireNonNull(algorithm);
         boolean keyAvailableLocally = ensureValidKeyAvailable();
 
-        if(!keyAvailableLocally) {
+        if (!keyAvailableLocally) {
             return cryptographyServiceClient.signData(algorithm, data, context);
         }
 
-        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.SIGN)){
+        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.SIGN)) {
             return Mono.error(new UnsupportedOperationException(String.format("Sign Operation is not allowed for key with id %s", this.key.kid())));
         }
         return localKeyCryptographyClient.signDataAsync(algorithm, data, context, key);
@@ -409,6 +471,10 @@ public final class CryptographyAsyncClient {
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384 RS384} and
      * {@link SignatureAlgorithm#RS512 RS512}</p>
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Verifies the signature against the raw data. Subscribes to the call asynchronously and prints out the verification details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.verify-data}
+     *
      * @param algorithm The algorithm to use for signing.
      * @param data The raw content against which signature is to be verified.
      * @param signature The signature to be verified.
@@ -423,18 +489,18 @@ public final class CryptographyAsyncClient {
         Objects.requireNonNull(algorithm);
         boolean keyAvailableLocally = ensureValidKeyAvailable();
 
-        if(!keyAvailableLocally) {
+        if (!keyAvailableLocally) {
             return cryptographyServiceClient.verifyData(algorithm, data, signature, context);
         }
 
-        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.VERIFY)){
+        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.VERIFY)) {
             return Mono.error(new UnsupportedOperationException(String.format("Verify Operation is not allowed for key with id %s", this.key.kid())));
         }
         return localKeyCryptographyClient.verifyDataAsync(algorithm, data, signature, context, key);
     }
 
     private void unpackAndValidateId(String keyId) {
-        if(ImplUtils.isNullOrEmpty(keyId)) {
+        if (ImplUtils.isNullOrEmpty(keyId)) {
             throw new IllegalArgumentException("Key Id is invalid");
         }
         try {
@@ -442,12 +508,12 @@ public final class CryptographyAsyncClient {
             String[] tokens = url.getPath().split("/");
             String endpoint = url.getProtocol() + "://" + url.getHost();
             String keyName = (tokens.length >= 3 ? tokens[2] : null);
-            version = (tokens.length >= 4 ? tokens[3] : null);
-            if(Strings.isNullOrEmpty(endpoint)) {
+            String version = (tokens.length >= 4 ? tokens[3] : null);
+            if (Strings.isNullOrEmpty(endpoint)) {
                 throw new IllegalArgumentException("Key endpoint in key id is invalid");
             } else if (Strings.isNullOrEmpty(keyName)) {
                 throw new IllegalArgumentException("Key name in key id is invalid");
-            } else if(Strings.isNullOrEmpty(version)) {
+            } else if (Strings.isNullOrEmpty(version)) {
                 throw new IllegalArgumentException("Key version in key id is invalid");
             }
         } catch (MalformedURLException e) {
@@ -461,12 +527,12 @@ public final class CryptographyAsyncClient {
 
     private boolean ensureValidKeyAvailable() {
         boolean keyAvailableLocally = true;
-        if(key == null) {
+        if (this.key == null) {
             try {
                 this.key = getKey().block().keyMaterial();
                 keyAvailableLocally = this.key.isValid();
                 initializeCryptoClients();
-            } catch (HttpResponseException e) {
+            } catch (HttpResponseException | NullPointerException e) {
                 logger.info("Failed to retrieve key from key vault");
                 keyAvailableLocally = false;
             }

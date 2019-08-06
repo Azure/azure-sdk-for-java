@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.keys;
 
 import com.azure.core.credentials.AccessToken;
@@ -31,7 +34,7 @@ class ScopeTokenCache {
         this.getNew = getNew;
     }
 
-    public void scopes(String... scopes){
+    public void scopes(String... scopes) {
         this.scopes = scopes;
     }
 

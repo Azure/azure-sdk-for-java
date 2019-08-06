@@ -5,9 +5,6 @@ package com.azure.security.keyvault.keys;
 
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.KeyBase;

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.secrets;
 
 import com.azure.core.credentials.AccessToken;
@@ -12,8 +15,6 @@ import java.util.function.Function;
  * A token cache that supports caching a token and refreshing it.
  */
 class ScopeTokenCache {
-    private static final int REFRESH_TIMEOUT_SECONDS = 30;
-
     private final AtomicBoolean wip;
     private AccessToken cache;
     private final ReplayProcessor<AccessToken> emitterProcessor = ReplayProcessor.create(1);
@@ -32,7 +33,7 @@ class ScopeTokenCache {
         this.getNew = getNew;
     }
 
-    public void scopes(String... scopes){
+    public void scopes(String... scopes) {
         this.scopes = scopes;
     }
 

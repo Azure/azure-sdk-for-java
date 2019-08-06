@@ -81,7 +81,7 @@ public abstract class KeyClientTestBase extends TestBase {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-        if(interceptorManager.isPlaybackMode()){
+        if (interceptorManager.isPlaybackMode()) {
             httpClient = interceptorManager.getPlaybackClient();
             policies.add(interceptorManager.getRecordPolicy());
         } else {

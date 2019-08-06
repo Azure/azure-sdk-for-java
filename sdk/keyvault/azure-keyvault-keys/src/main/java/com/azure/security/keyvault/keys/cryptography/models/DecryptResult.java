@@ -3,6 +3,8 @@
 
 package com.azure.security.keyvault.keys.cryptography.models;
 
+import com.azure.core.implementation.util.ImplUtils;
+
 /**
  * Represents the details of decrypt operation result.
  */
@@ -12,8 +14,12 @@ public final class DecryptResult {
      */
     private byte[] plainText;
 
+    /**
+     * Creates the instance of Decrypt Result holding decrypted content.
+     * @param plainText The decrypted content.
+     */
     public DecryptResult(byte[] plainText) {
-        this.plainText = plainText;
+        this.plainText = ImplUtils.clone(plainText);
     }
 
     /**
@@ -21,6 +27,6 @@ public final class DecryptResult {
      * @return The decrypted content.
      */
     public byte[] plainText() {
-        return plainText;
+        return ImplUtils.clone(plainText);
     }
 }

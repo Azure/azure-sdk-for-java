@@ -38,10 +38,6 @@ public enum KeyWrapAlgorithm {
         return value;
     }
 
-    public int hash() {
-        return value.hashCode();
-    }
-
     /**
      * All the JWK encryption implementation.
      */

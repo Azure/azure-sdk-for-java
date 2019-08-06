@@ -68,28 +68,28 @@ class RsaOaep extends RsaEncryption {
 
     public static final String ALGORITHM_NAME = "RSA-OAEP";
 
-    public RsaOaep() {
+    RsaOaep() {
         super(ALGORITHM_NAME);
     }
 
     @Override
-    public ICryptoTransform CreateEncryptor(KeyPair keyPair) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
-        return CreateEncryptor(keyPair, null);
+    public ICryptoTransform createEncryptor(KeyPair keyPair) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
+        return createEncryptor(keyPair, null);
     }
 
     @Override
-    public ICryptoTransform CreateEncryptor(KeyPair keyPair, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
+    public ICryptoTransform createEncryptor(KeyPair keyPair, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
 
         return new RsaOaepEncryptor(keyPair, provider);
     }
 
     @Override
-    public ICryptoTransform CreateDecryptor(KeyPair keyPair) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
-        return CreateDecryptor(keyPair, null);
+    public ICryptoTransform createDecryptor(KeyPair keyPair) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
+        return createDecryptor(keyPair, null);
     }
 
     @Override
-    public ICryptoTransform CreateDecryptor(KeyPair keyPair, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
+    public ICryptoTransform createDecryptor(KeyPair keyPair, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
 
         return new RsaOaepDecryptor(keyPair, provider);
     }

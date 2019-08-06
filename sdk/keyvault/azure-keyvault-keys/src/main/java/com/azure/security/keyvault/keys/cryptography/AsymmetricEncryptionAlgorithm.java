@@ -34,7 +34,7 @@ abstract class AsymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
      * @throws NoSuchAlgorithmException
      * @throws NoSuchPaddingException
      */
-    public abstract ICryptoTransform CreateEncryptor(KeyPair keyPair) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException;
+    public abstract ICryptoTransform createEncryptor(KeyPair keyPair) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException;
 
     /**
      * Creates a {@link ICryptoTransform} implementation for encryption that
@@ -47,7 +47,7 @@ abstract class AsymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
      * @throws NoSuchAlgorithmException
      * @throws NoSuchPaddingException
      */
-    public abstract ICryptoTransform CreateEncryptor(KeyPair keyPair, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException;
+    public abstract ICryptoTransform createEncryptor(KeyPair keyPair, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException;
 
     /**
      * Creates a {@link ICryptoTransform} implementation for decryption that
@@ -59,7 +59,7 @@ abstract class AsymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
      * @throws NoSuchAlgorithmException
      * @throws NoSuchPaddingException
      */
-    public abstract ICryptoTransform CreateDecryptor(KeyPair keyPair) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException;
+    public abstract ICryptoTransform createDecryptor(KeyPair keyPair) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException;
 
     /**
      * Creates a {@link ICryptoTransform} implementation for decryption that
@@ -72,5 +72,5 @@ abstract class AsymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
      * @throws NoSuchAlgorithmException
      * @throws NoSuchPaddingException
      */
-    public abstract ICryptoTransform CreateDecryptor(KeyPair keyPair, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException;
+    public abstract ICryptoTransform createDecryptor(KeyPair keyPair, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException;
 }

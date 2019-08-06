@@ -7,7 +7,7 @@ import java.security.GeneralSecurityException;
 
 interface ISignatureTransform {
 
-    byte[] sign(final byte[] digest) throws GeneralSecurityException;
+    byte[] sign(byte[] digest) throws GeneralSecurityException;
 
-    boolean verify(final byte[] digest, final byte[] signature) throws GeneralSecurityException;
+    boolean verify(byte[] digest, byte[] signature) throws GeneralSecurityException;
 }

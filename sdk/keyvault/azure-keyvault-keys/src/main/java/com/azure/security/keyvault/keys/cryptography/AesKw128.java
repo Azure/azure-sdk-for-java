@@ -16,7 +16,7 @@ class AesKw128 extends AesKw {
 
     static final int KEY_SIZE_IN_BYTES = 128 >> 3;
 
-    public AesKw128() {
+    AesKw128() {
         super(ALGORITHM_NAME);
     }
 

@@ -5,13 +5,13 @@ package com.azure.security.keyvault.keys.cryptography;
 
 class CryptoUtil {
 
-    /**
+    /*
      * Determines whether the key is valid and of required size.
      * 
      * @param key The key to be checked.
      * @param keySizeInBytes The minimum size required for the key
      */
-    public static void validate(byte[] key, int keySizeInBytes) {
+    static void validate(byte[] key, int keySizeInBytes) {
         if (key == null) {
             throw new IllegalArgumentException("key must not be null");
         }

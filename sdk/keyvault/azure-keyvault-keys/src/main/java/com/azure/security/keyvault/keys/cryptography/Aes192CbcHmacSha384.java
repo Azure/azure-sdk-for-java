@@ -7,7 +7,7 @@ class Aes192CbcHmacSha384 extends AesCbcHmacSha2 {
 
     public static final String ALGORITHM_NAME = "A192CBC-HS384";
 
-    public Aes192CbcHmacSha384() {
+    Aes192CbcHmacSha384() {
         super(ALGORITHM_NAME);
     }
 }

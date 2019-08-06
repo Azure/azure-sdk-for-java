@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.exception.ResourceNotFoundException;
@@ -6,19 +9,29 @@ import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.util.Context;
-import com.azure.security.keyvault.keys.KeyClientBuilder;
-import com.azure.security.keyvault.keys.cryptography.models.*;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.KeyUnwrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.KeyWrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SignResult;
+import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.models.Key;
 
 /**
  * The CryptographyClient provides synchronous methods to perform cryptographic operations using asymmetric and
  * symmetric keys. The client supports encrypt, decrypt, wrap key, unwrap key, sign and verify operations using the configured key.
  *
+ * <p><strong>Samples to construct the sync client</strong></p>
+ * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.instantiation}
+ *
  * @see CryptographyClientBuilder
  */
-@ServiceClient(builder = KeyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
+@ServiceClient(builder = CryptographyClientBuilder.class, serviceInterfaces = CryptographyService.class)
 public final class CryptographyClient {
-    private CryptographyAsyncClient client;
+    private final CryptographyAsyncClient client;
 
     /**
      * Creates a KeyClient that uses {@code pipeline} to service requests
@@ -32,6 +45,10 @@ public final class CryptographyClient {
     /**
      * Gets the public part of the configured key. The get key operation is applicable to all key types and it requires the {@code keys/get} permission.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets the key configured in the client. Prints out the returned key details.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.getKey}
+     *
      * @throws ResourceNotFoundException when the configured key doesn't exist in the key vault.
      * @return The requested {@link Key key}.
      */
@@ -42,6 +59,10 @@ public final class CryptographyClient {
 
     /**
      * Gets the public part of the configured key. The get key operation is applicable to all key types and it requires the {@code keys/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets the key configured in the client. Prints out the returned key details.</p>
+     * {@codesnippet om.azure.security.keyvault.keys.cryptography.cryptographyclient.getKeyWithResponse#Context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when the configured key doesn't exist in the key vault.
@@ -62,6 +83,10 @@ public final class CryptographyClient {
      * for assymetric keys include: {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC} and {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Encrypts the content. Prints out the encrypted content details.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.encrypt#symmetric-encrypt}
      *
      * @param algorithm The algorithm to be used for encryption.
      * @param plaintext The content to be encrypted.
@@ -84,6 +109,10 @@ public final class CryptographyClient {
      * for assymetric keys include: {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC} and {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.encrypt#symmetric-encrypt-Context}
      *
      * @param algorithm The algorithm to be used for encryption.
      * @param plaintext The content to be encrypted.
@@ -108,6 +137,10 @@ public final class CryptographyClient {
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC} and {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.encrypt#asymmetric-encrypt}
+     *
      * @param algorithm The algorithm to be used for encryption.
      * @param plaintext The content to be encrypted.
      * @throws ResourceNotFoundException if the key cannot be found for encryption.
@@ -126,6 +159,10 @@ public final class CryptographyClient {
      * for assymetric keys include: {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC} and {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.decrypt#symmetric-decrypt}
      *
      * @param algorithm The algorithm to be used for decryption.
      * @param cipherText The content to be decrypted.
@@ -148,6 +185,10 @@ public final class CryptographyClient {
      * for assymetric keys include: {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC} and {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.decrypt#symmetric-decrypt-Context}
      *
      * @param algorithm The algorithm to be used for decryption.
      * @param cipherText The content to be decrypted.
@@ -172,6 +213,10 @@ public final class CryptographyClient {
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC} and {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.decrypt#asymmetric-decrypt}
+     *
      * @param algorithm The algorithm to be used for decryption.
      * @param cipherText The content to be decrypted.
      * @throws ResourceNotFoundException if the key cannot be found for decryption.
@@ -190,6 +235,10 @@ public final class CryptographyClient {
      * {@link SignatureAlgorithm#ES256K ES246K}, {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384 RS384} and
      * {@link SignatureAlgorithm#RS512 RS512}</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.sign#Context}
      *
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature is to be created.
@@ -211,6 +260,10 @@ public final class CryptographyClient {
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384 RS384} and
      * {@link SignatureAlgorithm#RS512 RS512}</p>
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.sign}
+     *
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature is to be created.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
@@ -231,8 +284,12 @@ public final class CryptographyClient {
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384 RS384} and
      * {@link SignatureAlgorithm#RS512 RS512}</p>
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Verifies the signature against the specified digest. Subscribes to the call asynchronously and prints out the verification details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.verify}
+     *
      * @param algorithm The algorithm to use for signing.
-     * @param digest The content from which signature is to be created.
+     * @param digest The content from which signature was created.
      * @param signature The signature to be verified.
      * @throws ResourceNotFoundException if the key cannot be found for verifying.
      * @return The {@link Boolean} indicating the signature verification result.
@@ -250,6 +307,10 @@ public final class CryptographyClient {
      * {@link SignatureAlgorithm#ES256K ES246K}, {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384 RS384} and
      * {@link SignatureAlgorithm#RS512 RS512}</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Verifies the signature against the specified digest. Subscribes to the call asynchronously and prints out the verification details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.verify#Context}
      *
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature is to be created.
@@ -269,6 +330,10 @@ public final class CryptographyClient {
      * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for wrapping the specified key content. Possible values include:
      * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}</p>
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Wraps the key content. Subscribes to the call asynchronously and prints out the wrapped key details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.wrap-key}
+     *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param key The key content to be wrapped
      * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
@@ -284,6 +349,10 @@ public final class CryptographyClient {
      *
      * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for wrapping the specified key content. Possible values include:
      * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Wraps the key content. Subscribes to the call asynchronously and prints out the wrapped key details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.wrap-key#Context}
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param key The key content to be wrapped
@@ -303,6 +372,10 @@ public final class CryptographyClient {
      * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      * Possible values for symmetric keys include: {@link KeyWrapAlgorithm#A128KW A128KW}, {@link KeyWrapAlgorithm#A192KW A192KW} and {@link KeyWrapAlgorithm#A256KW A256KW}</p>
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Unwraps the key content. Subscribes to the call asynchronously and prints out the unwrapped key details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.unwrap-key}
+     *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param encryptedKey The encrypted key content to unwrap.
      * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
@@ -319,6 +392,10 @@ public final class CryptographyClient {
      * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for wrapping the specified key content. Possible values for asymmetric keys include:
      * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      * Possible values for symmetric keys include: {@link KeyWrapAlgorithm#A128KW A128KW}, {@link KeyWrapAlgorithm#A192KW A192KW} and {@link KeyWrapAlgorithm#A256KW A256KW}</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Unwraps the key content. Subscribes to the call asynchronously and prints out the unwrapped key details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.unwrap-key#Context}
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param encryptedKey The encrypted key content to unwrap.
@@ -340,6 +417,10 @@ public final class CryptographyClient {
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384 RS384} and
      * {@link SignatureAlgorithm#RS512 RS512}</p>
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Signs the raw data. Subscribes to the call asynchronously and prints out the signature details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.sign-data}
+     *
      * @param algorithm The algorithm to use for signing.
      * @param data The content from which signature is to be created.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
@@ -358,6 +439,10 @@ public final class CryptographyClient {
      * {@link SignatureAlgorithm#ES256K ES246K}, {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384 RS384} and
      * {@link SignatureAlgorithm#RS512 RS512}</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Signs the raw data. Subscribes to the call asynchronously and prints out the signature details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.sign-data#Context}
      *
      * @param algorithm The algorithm to use for signing.
      * @param data The content from which signature is to be created.
@@ -379,6 +464,10 @@ public final class CryptographyClient {
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384 RS384} and
      * {@link SignatureAlgorithm#RS512 RS512}</p>
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Verifies the signature against the raw data. Subscribes to the call asynchronously and prints out the verification details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.verify-data}
+     *
      * @param algorithm The algorithm to use for signing.
      * @param data The raw content against which signature is to be verified.
      * @param signature The signature to be verified.
@@ -398,6 +487,10 @@ public final class CryptographyClient {
      * {@link SignatureAlgorithm#ES256K ES246K}, {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384 RS384} and
      * {@link SignatureAlgorithm#RS512 RS512}</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Verifies the signature against the raw data. Subscribes to the call asynchronously and prints out the verification details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.verify-data#Context}
      *
      * @param algorithm The algorithm to use for signing.
      * @param data The raw content against which signature is to be verified.

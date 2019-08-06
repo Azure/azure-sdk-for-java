@@ -15,7 +15,6 @@ import com.azure.core.test.TestBase;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.identity.credential.ClientSecretCredential;
 import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
-import com.azure.security.keyvault.keys.models.webkey.KeyType;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -33,7 +32,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -62,7 +60,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
         String tenantId = System.getenv("AZURE_TENANT_ID");
         String clientId = System.getenv("AZURE_CLIENT_ID");
         String clientSecret = System.getenv("AZURE_CLIENT_SECRET");
-        if(!interceptorManager.isPlaybackMode()) {
+        if (!interceptorManager.isPlaybackMode()) {
             assertNotNull(tenantId);
             assertNotNull(clientId);
             assertNotNull(clientSecret);
@@ -84,7 +82,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-        if(interceptorManager.isPlaybackMode()){
+        if (interceptorManager.isPlaybackMode()) {
             httpClient = interceptorManager.getPlaybackClient();
             policies.add(interceptorManager.getRecordPolicy());
         } else {
@@ -119,10 +117,31 @@ public abstract class CryptographyClientTestBase extends TestBase {
     public abstract void wrapUnwraptRsa() throws Exception;
 
     @Test
-    public abstract void SignVerifyRsa() throws Exception;
+    public abstract void signVerifyRsa() throws Exception;
 
     @Test
     public abstract void wrapUnwrapSymmetricKeyAES128Kw();
+
+    @Test
+    public abstract void wrapUnwrapSymmetricKeyAES192Kw();
+
+    @Test
+    public abstract void wrapUnwrapSymmetricKeyAES256Kw();
+
+    @Test
+    public abstract void encryptDecryptSymmetricKeyAes128CbcHmacSha256();
+
+    @Test
+    public abstract void encryptDecryptSymmetricKeyAes128CbcHmacSha384();
+
+    @Test
+    public abstract void encryptDecryptSymmetricKeyAes128CbcHmacSha512();
+
+    @Test
+    public abstract void encryptDecryptSymmetricKeyaes128CbcOneBlock();
+
+    @Test
+    public abstract void encryptDecryptSymmetricKeyaes128CbcTwoBlock();
 
     private static KeyPair getWellKnownKey() throws Exception {
         BigInteger modulus = new BigInteger("27266783713040163753473734334021230592631652450892850648620119914958066181400432364213298181846462385257448168605902438305568194683691563208578540343969522651422088760509452879461613852042845039552547834002168737350264189810815735922734447830725099163869215360401162450008673869707774119785881115044406101346450911054819448375712432746968301739007624952483347278954755460152795801894283389540036131881712321193750961817346255102052653789197325341350920441746054233522546543768770643593655942246891652634114922277138937273034902434321431672058220631825053788262810480543541597284376261438324665363067125951152574540779");

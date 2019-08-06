@@ -16,7 +16,7 @@ class AesKw256 extends AesKw {
 
     static final int KEY_SIZE_IN_BYTES = 256 >> 3;
 
-    public AesKw256() {
+    AesKw256() {
         super(ALGORITHM_NAME);
     }
 

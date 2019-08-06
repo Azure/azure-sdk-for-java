@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
@@ -7,20 +10,20 @@ import java.util.concurrent.ConcurrentMap;
 
 class SignatureHashResolver {
 
-    public static final SignatureHashResolver Default = new SignatureHashResolver();
+    public static final SignatureHashResolver DEFAULT = new SignatureHashResolver();
 
     static {
-        Default.put(SignatureAlgorithm.ES256, HashAlgorithm.SHA_256);
-        Default.put(SignatureAlgorithm.ES256K,HashAlgorithm.SHA_256);
-        Default.put(SignatureAlgorithm.ES384, HashAlgorithm.SHA_384);
+        DEFAULT.put(SignatureAlgorithm.ES256, HashAlgorithm.SHA_256);
+        DEFAULT.put(SignatureAlgorithm.ES256K, HashAlgorithm.SHA_256);
+        DEFAULT.put(SignatureAlgorithm.ES384, HashAlgorithm.SHA_384);
 
-        Default.put(SignatureAlgorithm.ES512, HashAlgorithm.SHA_512);
-        Default.put(SignatureAlgorithm.RS256, HashAlgorithm.SHA_256);
-        Default.put(SignatureAlgorithm.RS384, HashAlgorithm.SHA_384);
-        Default.put(SignatureAlgorithm.RS512, HashAlgorithm.SHA_512);
-        Default.put(SignatureAlgorithm.PS256, HashAlgorithm.SHA_256);
-        Default.put(SignatureAlgorithm.PS512, HashAlgorithm.SHA_512);
-        Default.put(SignatureAlgorithm.PS384, HashAlgorithm.SHA_384);
+        DEFAULT.put(SignatureAlgorithm.ES512, HashAlgorithm.SHA_512);
+        DEFAULT.put(SignatureAlgorithm.RS256, HashAlgorithm.SHA_256);
+        DEFAULT.put(SignatureAlgorithm.RS384, HashAlgorithm.SHA_384);
+        DEFAULT.put(SignatureAlgorithm.RS512, HashAlgorithm.SHA_512);
+        DEFAULT.put(SignatureAlgorithm.PS256, HashAlgorithm.SHA_256);
+        DEFAULT.put(SignatureAlgorithm.PS512, HashAlgorithm.SHA_512);
+        DEFAULT.put(SignatureAlgorithm.PS384, HashAlgorithm.SHA_384);
     }
 
     private final ConcurrentMap<SignatureAlgorithm, HashAlgorithm> algorithms = new ConcurrentHashMap<>();
@@ -48,10 +51,10 @@ class SignatureHashResolver {
     /**
      * Remove a named algorithm implementation.
      *
-     * @param algorithmName The algorithm name
+     * @param algorithm The algorithm to be removed
      */
-    public void remove(String algorithmName) {
-        algorithms.remove(algorithmName);
+    public void remove(SignatureAlgorithm algorithm) {
+        algorithms.remove(algorithm);
     }
 
 }

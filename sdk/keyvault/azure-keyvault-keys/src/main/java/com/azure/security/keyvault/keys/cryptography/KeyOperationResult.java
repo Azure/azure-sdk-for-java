@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.implementation.Base64Url;
@@ -35,7 +38,7 @@ class KeyOperationResult {
      */
     public byte[] result() {
         if (this.result == null) {
-            return null;
+            return new byte[0];
         }
         return this.result.decodedBytes();
     }

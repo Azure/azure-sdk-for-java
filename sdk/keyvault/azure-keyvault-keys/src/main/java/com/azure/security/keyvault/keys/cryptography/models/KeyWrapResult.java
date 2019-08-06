@@ -3,13 +3,20 @@
 
 package com.azure.security.keyvault.keys.cryptography.models;
 
+import com.azure.core.implementation.util.ImplUtils;
+
 /**
  * Represents the details of wrap operation result.
  */
 public final class KeyWrapResult {
 
+    /**
+     * Creates the instance of KeyWrapResult holding the key wrap operation response details.
+     * @param encryptedKey The unwrapped key content.
+     * @param algorithm The algorithm used to wrap the key content.
+     */
     public KeyWrapResult(byte[] encryptedKey, KeyWrapAlgorithm algorithm) {
-        this.encryptedKey = encryptedKey;
+        this.encryptedKey = ImplUtils.clone(encryptedKey);
         this.algorithm = algorithm;
     }
 
@@ -28,12 +35,7 @@ public final class KeyWrapResult {
      * @return The encrypted key.
      */
     public byte[] encryptedKey() {
-        return encryptedKey;
-    }
-
-    public KeyWrapResult encryptedKey(byte[] encryptedKey) {
-        this.encryptedKey = encryptedKey;
-        return this;
+        return ImplUtils.clone(encryptedKey);
     }
 
     /**
@@ -42,10 +44,5 @@ public final class KeyWrapResult {
      */
     public KeyWrapAlgorithm algorithm() {
         return algorithm;
-    }
-
-    public KeyWrapResult algorithm(KeyWrapAlgorithm algorithm) {
-        this.algorithm = algorithm;
-        return this;
     }
 }

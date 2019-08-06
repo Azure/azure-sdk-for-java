@@ -11,12 +11,7 @@ abstract class Algorithm {
 
     private final String name;
 
-    /**
-     * Constructor.
-     * 
-     * @param name The name of the algorithm.
-     */
-    protected Algorithm(String name) {
+    Algorithm(String name) {
         if (Strings.isNullOrWhiteSpace(name)) {
             throw new IllegalArgumentException("name");
         }
@@ -24,7 +19,7 @@ abstract class Algorithm {
         this.name = name;
     }
 
-    /**
+    /*
      * Gets the name of the algorithm.
      * 
      * @return The name of the algorithm.

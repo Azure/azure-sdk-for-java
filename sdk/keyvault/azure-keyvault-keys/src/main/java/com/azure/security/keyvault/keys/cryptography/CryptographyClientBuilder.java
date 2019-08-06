@@ -7,10 +7,13 @@ import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.security.keyvault.keys.KeyVaultCredentialPolicy;
@@ -111,7 +114,7 @@ public final class CryptographyClientBuilder {
         }
 
         if (pipeline != null) {
-            if(jsonWebKey != null) {
+            if (jsonWebKey != null) {
                 return new CryptographyAsyncClient(jsonWebKey, pipeline);
             } else {
                 return new CryptographyAsyncClient(keyId, pipeline);
@@ -137,7 +140,7 @@ public final class CryptographyClientBuilder {
                 .httpClient(httpClient)
                 .build();
 
-        if(jsonWebKey != null) {
+        if (jsonWebKey != null) {
             return new CryptographyAsyncClient(jsonWebKey, pipeline);
         } else {
             return new CryptographyAsyncClient(keyId, pipeline);

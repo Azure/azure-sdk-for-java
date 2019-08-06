@@ -59,7 +59,7 @@ class KeyVerifyRequest {
      */
     public byte[] digest() {
         if (this.digest == null) {
-            return null;
+            return new byte[0];
         }
         return this.digest.decodedBytes();
     }
@@ -86,7 +86,7 @@ class KeyVerifyRequest {
      */
     public byte[] signature() {
         if (this.signature == null) {
-            return null;
+            return new byte[0];
         }
         return this.signature.decodedBytes();
     }

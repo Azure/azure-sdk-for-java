@@ -68,27 +68,27 @@ class Rsa15 extends RsaEncryption {
 
     public static final String ALGORITHM_NAME = "RSA1_5";
 
-    public Rsa15() {
+    Rsa15() {
         super(ALGORITHM_NAME);
     }
 
     @Override
-    public ICryptoTransform CreateEncryptor(KeyPair keyPair) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
-        return CreateEncryptor(keyPair, null);
+    public ICryptoTransform createEncryptor(KeyPair keyPair) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
+        return createEncryptor(keyPair, null);
     }
 
     @Override
-    public ICryptoTransform CreateEncryptor(KeyPair keyPair, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
+    public ICryptoTransform createEncryptor(KeyPair keyPair, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
         return new Rsa15Encryptor(keyPair, provider);
     }
 
     @Override
-    public ICryptoTransform CreateDecryptor(KeyPair keyPair) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
-        return CreateDecryptor(keyPair, null);
+    public ICryptoTransform createDecryptor(KeyPair keyPair) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
+        return createDecryptor(keyPair, null);
     }
 
     @Override
-    public ICryptoTransform CreateDecryptor(KeyPair keyPair, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
+    public ICryptoTransform createDecryptor(KeyPair keyPair, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
         return new Rsa15Decryptor(keyPair, provider);
     }
 

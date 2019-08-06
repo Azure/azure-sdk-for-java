@@ -15,16 +15,16 @@ import java.security.Provider;
  */
 abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
 
-    /**
+    /*
      * Constructor.
      * 
      * @param name The name of the algorithm.
      */
-    protected SymmetricEncryptionAlgorithm(String name) {
+    SymmetricEncryptionAlgorithm(String name) {
         super(name);
     }
 
-    /**
+    /*
      * Creates a {@link ICryptoTransform} implementation for encryption
      * using the supplied initialization vector and the specific provider for the Java Security API.
      * @param key
@@ -34,14 +34,10 @@ abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
      * @param authenticationData
      *          The authentication data to be used with authenticating encryption implementation (ignored for non-authenticating implementation)
      * @return A {@link ICryptoTransform} implementation
-     * @throws InvalidKeyException
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchPaddingException
-     * @throws InvalidAlgorithmParameterException
      */
-    public abstract ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] authenticationData) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
+    abstract ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] authenticationData) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
 
-    /**
+    /*
      * Creates a {@link ICryptoTransform} implementation for encryption
      * using the supplied initialization vector and the specific provider for the Java Security API.
      * @param key
@@ -53,14 +49,10 @@ abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
      * @param provider
      *          The provider to use.
      * @return A {@link ICryptoTransform} implementation
-     * @throws InvalidKeyException
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchPaddingException
-     * @throws InvalidAlgorithmParameterException
      */
-    public abstract ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] authenticationData, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
+    abstract ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] authenticationData, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
 
-    /**
+    /*
      * Creates a {@link ICryptoTransform} implementation for decryption
      * using the supplied initialization vector and the specific provider for the Java Security API.
      * @param key
@@ -72,14 +64,10 @@ abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
      * @param authenticationTag
      *          The authentication tag to verify when using authenticating encryption implementation (ignored for non-authenticating implementation)
      * @return A {@link ICryptoTransform} implementation
-     * @throws InvalidKeyException
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchPaddingException
-     * @throws InvalidAlgorithmParameterException
      */
-    public abstract ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
+    abstract ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
 
-    /**
+    /*
      * Creates a {@link ICryptoTransform} implementation for decryption
      * using the supplied initialization vector and the specific provider for the Java Security API.
      * @param key
@@ -93,11 +81,7 @@ abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
      * @param provider
      *          The provider to use.
      * @return A {@link ICryptoTransform} implementation
-     * @throws InvalidKeyException
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchPaddingException
-     * @throws InvalidAlgorithmParameterException
      */
-    public abstract ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
+    abstract ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
 
 }

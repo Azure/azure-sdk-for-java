@@ -54,10 +54,6 @@ public abstract class SecretClientTestBase extends TestBase {
     }
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
-        final String endpoint = interceptorManager.isPlaybackMode()
-            ? "http://localhost:8080"
-            : System.getenv("AZURE_KEYVAULT_ENDPOINT");
-
         TokenCredential credential;
 
         if (interceptorManager.isPlaybackMode()) {
@@ -77,7 +73,7 @@ public abstract class SecretClientTestBase extends TestBase {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-        if(interceptorManager.isPlaybackMode()){
+        if (interceptorManager.isPlaybackMode()) {
             httpClient = interceptorManager.getPlaybackClient();
             policies.add(interceptorManager.getRecordPolicy());
         } else {

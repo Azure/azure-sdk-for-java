@@ -11,17 +11,17 @@ import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-class SignatureEncoding {
+final class SignatureEncoding {
     // SignatureEncoding is intended to be a static class
     private SignatureEncoding() { }
 
-    /**
+    /*
      * Converts an ASN.1 DER encoded ECDSA signature to a raw signature in the form R|S
      * @param asn1DerSignature An ASN.1 DER encoded signature
      * @param algorithm The algorithm used to produce the given ASN.1 DER encoded signature
      * @return The raw format of the given ASN.1 DER encoded signature in the form R|S
      */
-    public static byte[] fromAsn1Der(byte[] asn1DerSignature, String algorithm) throws NoSuchAlgorithmException {
+    static byte[] fromAsn1Der(byte[] asn1DerSignature, String algorithm) throws NoSuchAlgorithmException {
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
 
         // verify the given algoritm could be resolved
@@ -37,13 +37,13 @@ class SignatureEncoding {
         return SignatureEncoding.fromAsn1Der(asn1DerSignature, (Ecdsa) baseAlgorithm);
     }
 
-    /**
+    /*
      * Converts an ASN.1 DER encoded ECDSA signature to a raw signature in the form R|S
      * @param asn1DerSignature An ASN.1 DER encoded signature
      * @param algorithm The algorithm used to produce the given ASN.1 DER encoded signature
      * @return The raw format of the given ASN.1 DER encoded signature in the form R|S
      */
-    public static byte[] fromAsn1Der(byte[] asn1DerSignature, Ecdsa algorithm) {
+    static byte[] fromAsn1Der(byte[] asn1DerSignature, Ecdsa algorithm) {
 
         try {
             return Asn1DerSignatureEncoding.decode(asn1DerSignature, algorithm);
@@ -53,13 +53,13 @@ class SignatureEncoding {
         }
     }
 
-    /**
+    /*
     * Converts a raw ECDSA signature in the form R|S to an ASN.1 DER encoded signature.
     * @param signature A raw ECDSA signature in the form R|S.
     * @param algorithm The algorithm used to produce the given signature.
     * @return The ASN.1 DER encoded signature of the given signature.
     */
-    public static byte[] toAsn1Der(byte[] signature, String algorithm) throws NoSuchAlgorithmException {
+    static byte[] toAsn1Der(byte[] signature, String algorithm) throws NoSuchAlgorithmException {
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
 
         // verify the given algoritm could be resolved
@@ -75,13 +75,13 @@ class SignatureEncoding {
         return SignatureEncoding.toAsn1Der(signature, (Ecdsa) baseAlgorithm);
     }
 
-    /**
+    /*
     * Converts a raw ECDSA signature in the form R|S to an ASN.1 DER encoded signature.
     * @param signature A raw ECDSA signature in the form R|S.
     * @param algorithm The algorithm used to produce the given signature.
     * @return The ASN.1 DER encoded signature of the given signature.
     */
-    public static byte[] toAsn1Der(byte[] signature, Ecdsa algorithm) {
+    static byte[] toAsn1Der(byte[] signature, Ecdsa algorithm) {
         try {
             return Asn1DerSignatureEncoding.encode(signature, algorithm);
         } catch (IllegalArgumentException ex) {
@@ -109,7 +109,7 @@ final class Asn1DerSignatureEncoding {
 
     }
 
-    public static byte[] encode(byte[] signature, Ecdsa algorithm) {
+    static byte[] encode(byte[] signature, Ecdsa algorithm) {
         int coordLength = algorithm.getCoordLength();
 
         // verify that the signature is the correct length for the given algorithm
@@ -143,7 +143,7 @@ final class Asn1DerSignatureEncoding {
         return asn1DerSignature.toByteArray();
     }
 
-    public static byte[] decode(byte[] bytes, Ecdsa algorithm) {
+    static byte[] decode(byte[] bytes, Ecdsa algorithm) {
         int coordLength = algorithm.getCoordLength();
 
         ByteArrayInputStream asn1DerSignature = new ByteArrayInputStream(bytes);
@@ -172,7 +172,7 @@ final class Asn1DerSignatureEncoding {
         return rawSignature;
     }
 
-    private static byte[] encodeIntField(BigInteger i) {
+    static byte[] encodeIntField(BigInteger i) {
         ByteArrayOutputStream field = new ByteArrayOutputStream();
 
         field.write(0x02);
@@ -189,7 +189,7 @@ final class Asn1DerSignatureEncoding {
         return field.toByteArray();
     }
 
-    private static void writeFieldLength(ByteArrayOutputStream field, int len) {
+    static void writeFieldLength(ByteArrayOutputStream field, int len) {
         // if the length of vi is less then 0x80 we can fit the length in one byte
         if (len < 0x80) {
             field.write(len);
@@ -212,7 +212,7 @@ final class Asn1DerSignatureEncoding {
         }
     }
 
-    private static void decodeIntField(ByteArrayInputStream bytes, byte[] dest, int index, int intlen) {
+    static void decodeIntField(ByteArrayInputStream bytes, byte[] dest, int index, int intlen) {
         // verify the first byte of field is 0x02
         if (bytes.read() != 0x02) {
             throw new IllegalArgumentException("Invalid signature.");
@@ -238,7 +238,7 @@ final class Asn1DerSignatureEncoding {
         bytes.read(dest, index + (intlen - len), len);
     }
 
-    private static int readFieldLength(ByteArrayInputStream bytes) {
+    static int readFieldLength(ByteArrayInputStream bytes) {
         int firstLenByte = bytes.read();
 
         // if the high order bit of len is not set it is a single byte length so return

@@ -1,12 +1,22 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.keys.cryptography.models;
+
+import com.azure.core.implementation.util.ImplUtils;
 
 /**
  * Represents the details of sign operation result.
  */
 public final class SignResult {
 
-    public SignResult(byte[] signature, SignatureAlgorithm algorithm){
-        this.signature = signature;
+    /**
+     * Creates the instance of SignResult holding the sign operation response details.
+     * @param signature The signature created from the digest.
+     * @param algorithm The algorithm used to sign the digest.
+     */
+    public SignResult(byte[] signature, SignatureAlgorithm algorithm) {
+        this.signature = ImplUtils.clone(signature);
         this.algorithm = algorithm;
     }
 
@@ -25,12 +35,7 @@ public final class SignResult {
      * @return The signature.
      */
     public byte[] signature() {
-        return signature;
-    }
-
-    public SignResult signature(byte[] signature) {
-        this.signature = signature;
-        return this;
+        return ImplUtils.clone(signature);
     }
 
     /**
@@ -39,10 +44,5 @@ public final class SignResult {
      */
     public SignatureAlgorithm algorithm() {
         return algorithm;
-    }
-
-    public SignResult algorithm(SignatureAlgorithm algorithm) {
-        this.algorithm = algorithm;
-        return this;
     }
 }

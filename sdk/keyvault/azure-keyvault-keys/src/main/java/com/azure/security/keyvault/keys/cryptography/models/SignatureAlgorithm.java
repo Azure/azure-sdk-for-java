@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.keys.cryptography.models;
 
 import java.util.Arrays;
@@ -11,14 +14,14 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum SignatureAlgorithm {
 
-    PS256 ("PS256"),
+    PS256("PS256"),
     PS384("PS384"),
     PS512("PS512"),
     RS256("RS256"),
     RS384("RS384"),
     RS512("RS512"),
     ES256("ES256"),
-    ES384 ("ES384"),
+    ES384("ES384"),
     ES512("ES512"),
     ES256K("ES256K");
 
@@ -38,10 +41,6 @@ public enum SignatureAlgorithm {
     @Override
     public String toString() {
         return value;
-    }
-
-    public int hash() {
-        return value.hashCode();
     }
 
     /**

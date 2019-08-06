@@ -51,7 +51,7 @@ class KeyWrapUnwrapRequest {
      */
     public byte[] value() {
         if (this.value == null) {
-            return null;
+            return new byte[0];
         }
         return this.value.decodedBytes();
     }

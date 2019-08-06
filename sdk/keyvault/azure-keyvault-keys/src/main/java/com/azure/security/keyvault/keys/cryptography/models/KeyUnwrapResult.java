@@ -3,6 +3,8 @@
 
 package com.azure.security.keyvault.keys.cryptography.models;
 
+import com.azure.core.implementation.util.ImplUtils;
+
 /**
  * Represents the details of key unwrap operation result.
  */
@@ -12,8 +14,12 @@ public final class KeyUnwrapResult {
      */
     private byte[] key;
 
+    /**
+     * Creates the instance of KeyUnwrap Result holding the unwrapped key content.
+     * @param key The unwrapped key content.
+     */
     public KeyUnwrapResult(byte[] key) {
-        this.key = key;
+        this.key = ImplUtils.clone(key);
     }
 
     /**
@@ -21,6 +27,6 @@ public final class KeyUnwrapResult {
      * @return The unwrapped key content.
      */
     public byte[] key() {
-        return key;
+        return ImplUtils.clone(key);
     }
 }

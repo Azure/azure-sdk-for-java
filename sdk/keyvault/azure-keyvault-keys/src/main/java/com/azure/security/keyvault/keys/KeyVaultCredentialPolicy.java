@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.keys;
 
 import com.azure.core.credentials.TokenCredential;
@@ -9,6 +12,7 @@ import com.azure.core.implementation.util.ImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -24,8 +28,6 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
     private static final String AUTHORIZATION = "Authorization";
     private final ScopeTokenCache cache;
 
-    private final TokenCredential credential;
-
     /**
      * Creates KeyVaultCredentialPolicy.
      *
@@ -33,7 +35,6 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
      */
     public KeyVaultCredentialPolicy(TokenCredential credential) {
         Objects.requireNonNull(credential);
-        this.credential = credential;
         this.cache = new ScopeTokenCache((scopes) -> credential.getToken(scopes));
     }
 
@@ -72,7 +73,7 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
         if (!isValidChallenge(authenticateHeader, authChallengePrefix)) {
             return null;
         }
-        authenticateHeader = authenticateHeader.toLowerCase().replace(authChallengePrefix.toLowerCase(), "");
+        authenticateHeader = authenticateHeader.toLowerCase(Locale.ROOT).replace(authChallengePrefix.toLowerCase(Locale.ROOT), "");
 
         String[] challenges = authenticateHeader.split(", ");
         Map<String, String> challengeMap = new HashMap<>();
@@ -92,6 +93,6 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
      */
     private static boolean isValidChallenge(String authenticateHeader, String authChallengePrefix) {
         return (!ImplUtils.isNullOrEmpty(authenticateHeader)
-            && authenticateHeader.toLowerCase().startsWith(authChallengePrefix.toLowerCase()));
+            && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(authChallengePrefix.toLowerCase(Locale.ROOT)));
     }
 }

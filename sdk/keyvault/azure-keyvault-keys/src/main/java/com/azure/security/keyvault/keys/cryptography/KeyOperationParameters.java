@@ -1,5 +1,7 @@
-package com.azure.security.keyvault.keys.cryptography;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
+package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.implementation.Base64Url;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
@@ -49,7 +51,7 @@ class KeyOperationParameters {
      */
     public byte[] value() {
         if (this.value == null) {
-            return null;
+            return new byte[0];
         }
         return this.value.decodedBytes();
     }

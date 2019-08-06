@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.keys.cryptography;
 
 class Triplet<T, U, V> {
@@ -12,7 +15,15 @@ class Triplet<T, U, V> {
         this.right = right;
     }
 
-    public T getLeft() { return left; }
-    public U getMiddle() { return middle; }
-    public V getRight() { return right; }
+    public T getLeft() {
+        return left;
+    }
+
+    public U getMiddle() {
+        return middle;
+    }
+
+    public V getRight() {
+        return right;
+    }
 }

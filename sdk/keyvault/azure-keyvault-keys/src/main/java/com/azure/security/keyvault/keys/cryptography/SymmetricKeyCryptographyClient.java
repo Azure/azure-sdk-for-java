@@ -1,14 +1,24 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.util.Context;
-import com.azure.security.keyvault.keys.cryptography.models.*;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.KeyUnwrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.KeyWrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SignResult;
+import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 import reactor.core.publisher.Mono;
 
 import java.security.NoSuchAlgorithmException;
 
 class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
-    private CryptographyServiceClient serviceClient;
     private byte[] key;
 
     /*
@@ -26,7 +36,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     private byte[] getKey(JsonWebKey key) {
-        if(this.key == null){
+        if (this.key == null) {
             this.key = key.toAes().getEncoded();
         }
         return this.key;
@@ -150,7 +160,6 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     Mono<KeyUnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context, JsonWebKey jsonWebKey) {
-
         key = getKey(jsonWebKey);
 
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
@@ -189,9 +198,4 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     Mono<VerifyResult> verifyDataAsync(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context, JsonWebKey key) {
         return verifyAsync(algorithm, data, signature, context, key);
     }
-
-    private boolean serviceCryptoAvailable(){
-        return serviceClient != null ;
-    }
-
 }
