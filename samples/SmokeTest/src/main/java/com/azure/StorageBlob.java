@@ -7,6 +7,7 @@ import com.azure.storage.blob.models.BlobItem;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.UUID;
 
 public class StorageBlob {
     private static ContainerClient containerClient;
@@ -15,7 +16,7 @@ public class StorageBlob {
     private static final String STORAGE_CONNECTION_STRING = System.getenv("STORAGE_CONNECTION_STRING");
 
     private static final String CONTAINER_NAME = "mycontainer"; //This sample needs an existing container
-    private static final String BLOB_NAME = "javaSmokeTestBlob.txt";
+    private static final String BLOB_NAME = "javaSmokeTestBlob-"+ UUID.randomUUID() +".txt";
 
     private static void uploadBlob() throws IOException {
         System.out.print("Uploading blob... ");

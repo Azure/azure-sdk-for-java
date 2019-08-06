@@ -6,9 +6,11 @@ import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.Secret;
 
+import java.util.UUID;
+
 public class KeyVaultSecrets {
     private static SecretClient secretClient;
-    private static final String SECRET_NAME = "MySecretName";
+    private static final String SECRET_NAME = "MySecretName-" + UUID.randomUUID();
     private static final String SECRET_VALUE = "MySecretValue";
 
     private static void setSecret() {

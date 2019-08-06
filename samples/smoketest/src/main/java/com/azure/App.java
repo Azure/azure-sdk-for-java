@@ -1,3 +1,7 @@
+// ------------------------------------
+// Copyright(c) Microsoft Corporation.
+// Licensed under the MIT License.
+// ------------------------------------
 package com.azure;
 
 import java.io.IOException;
@@ -8,8 +12,8 @@ public class App {
         System.out.println("     AZURE SDK SMOKE TEST");
         System.out.println("================================");
 
-        StorageBlob.main(null);
         KeyVaultSecrets.main(null);
+        StorageBlob.main(null);
         EventHubs.main(null);
         CosmosDB.main(null);
 

@@ -8,10 +8,12 @@ import com.azure.data.cosmos.FeedOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
+import java.util.UUID;
+
 public class CosmosDB {
     private static CosmosClient client;
     private static CosmosContainer container;
-    private static final String dbName = "JavaSolarSystem";
+    private static final String dbName = "JavaSolarSystem-" + UUID.randomUUID();
     private static final String collectionName = "Planets";
 
     private static void createDatabase() {
