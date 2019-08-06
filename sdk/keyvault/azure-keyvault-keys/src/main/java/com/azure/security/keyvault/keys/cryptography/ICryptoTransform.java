@@ -19,10 +19,6 @@ interface ICryptoTransform {
      * 
      * @param input The byte array to be transformed
      * @return The transformed result.
-     * @throws IllegalBlockSizeException
-     * @throws BadPaddingException
-     * @throws InvalidKeyException
-     * @throws NoSuchAlgorithmException
      */
     byte[] doFinal(byte[] input) throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException;
 }
