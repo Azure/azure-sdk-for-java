@@ -344,7 +344,6 @@
               com.microsoft.azure.template:
               *.impl*:
               *.implementation*:
-              com.azure.tracing*:
               com.azure.tools.checkstyle*
             </excludePackageNames>
             <groups>
