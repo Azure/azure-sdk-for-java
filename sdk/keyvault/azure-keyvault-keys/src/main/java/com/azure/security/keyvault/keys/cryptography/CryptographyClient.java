@@ -93,6 +93,7 @@ public final class CryptographyClient {
      * @param iv The initialization vector
      * @param authenticationData The authentication data
      * @throws ResourceNotFoundException if the key cannot be found for encryption.
+     * @throws NullPointerException if {@code algorithm} or  {@code plainText} is null.
      * @return A {@link EncryptResult} whose {@link EncryptResult#cipherText() cipher text} contains the encrypted content.
      */
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, byte[] iv, byte[] authenticationData) {
@@ -120,6 +121,7 @@ public final class CryptographyClient {
      * @param authenticationData The authentication data
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException if the key cannot be found for encryption.
+     * @throws NullPointerException if {@code algorithm} or  {@code plainText} is null.
      * @return A {@link EncryptResult} whose {@link EncryptResult#cipherText() cipher text} contains the encrypted content.
      */
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, byte[] iv, byte[] authenticationData, Context context) {
@@ -144,6 +146,7 @@ public final class CryptographyClient {
      * @param algorithm The algorithm to be used for encryption.
      * @param plaintext The content to be encrypted.
      * @throws ResourceNotFoundException if the key cannot be found for encryption.
+     * @throws NullPointerException if {@code algorithm} or  {@code plainText} is null.
      * @return The {@link EncryptResult} whose {@link EncryptResult#cipherText() cipher text} contains the encrypted content.
      */
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
@@ -170,6 +173,7 @@ public final class CryptographyClient {
      * @param authenticationData The authentication data.
      * @param authenticationTag The authentication tag.
      * @throws ResourceNotFoundException if the key cannot be found for decryption.
+     * @throws NullPointerException if {@code algorithm} or {@code cipherText} is null.
      * @return The decrypted blob.
      */
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationData, byte[] authenticationTag) {
@@ -197,6 +201,7 @@ public final class CryptographyClient {
      * @param authenticationTag The authentication tag.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException if the key cannot be found for decryption.
+     * @throws NullPointerException if {@code algorithm} or {@code cipherText} is null.
      * @return The decrypted blob.
      */
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Context context) {
@@ -220,6 +225,7 @@ public final class CryptographyClient {
      * @param algorithm The algorithm to be used for decryption.
      * @param cipherText The content to be decrypted.
      * @throws ResourceNotFoundException if the key cannot be found for decryption.
+     * @throws NullPointerException if {@code algorithm} or {@code cipherText} is null.
      * @return The decrypted blob.
      */
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] cipherText) {
@@ -244,6 +250,7 @@ public final class CryptographyClient {
      * @param digest The content from which signature is to be created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
+     * @throws NullPointerException if {@code algorithm} or {@code digest} is null.
      * @return A {@link SignResult} whose {@link SignResult#signature() signature} contains the created signature.
      */
     public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, Context context) {
@@ -267,12 +274,12 @@ public final class CryptographyClient {
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature is to be created.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
+     * @throws NullPointerException if {@code algorithm} or {@code digest} is null.
      * @return A {@link SignResult} whose {@link SignResult#signature() signature} contains the created signature.
      */
     public SignResult sign(SignatureAlgorithm algorithm, byte[] digest) {
         return client.sign(algorithm, digest, Context.NONE).block();
     }
-
 
     /**
      * Verifies a signature using the configured key. The verify operation supports both symmetric keys and asymmetric keys.
@@ -292,6 +299,7 @@ public final class CryptographyClient {
      * @param digest The content from which signature was created.
      * @param signature The signature to be verified.
      * @throws ResourceNotFoundException if the key cannot be found for verifying.
+     * @throws NullPointerException if {@code algorithm}, {@code digest} or {@code signature} is null.
      * @return The {@link Boolean} indicating the signature verification result.
      */
     public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature) {
@@ -317,6 +325,7 @@ public final class CryptographyClient {
      * @param signature The signature to be verified.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException if the key cannot be found for verifying.
+     * @throws NullPointerException if {@code algorithm}, {@code digest} or {@code signature} is null.
      * @return The {@link Boolean} indicating the signature verification result.
      */
     public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
@@ -337,6 +346,7 @@ public final class CryptographyClient {
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param key The key content to be wrapped
      * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
+     * @throws NullPointerException if {@code algorithm} or {@code key} is null.
      * @return The {@link KeyWrapResult} whose {@link KeyWrapResult#encryptedKey() encrypted key} contains the wrapped key result.
      */
     public KeyWrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key) {
@@ -358,6 +368,7 @@ public final class CryptographyClient {
      * @param key The key content to be wrapped
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
+     * @throws NullPointerException if {@code algorithm} or {@code key} is null.
      * @return The {@link KeyWrapResult} whose {@link KeyWrapResult#encryptedKey() encrypted key} contains the wrapped key result.
      */
     public KeyWrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
@@ -379,6 +390,7 @@ public final class CryptographyClient {
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param encryptedKey The encrypted key content to unwrap.
      * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
+     * @throws NullPointerException if {@code algorithm} or {@code encryptedKey} is null.
      * @return The unwrapped key content.
      */
     public KeyUnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey) {
@@ -401,6 +413,7 @@ public final class CryptographyClient {
      * @param encryptedKey The encrypted key content to unwrap.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
+     * @throws NullPointerException if {@code algorithm} or {@code encryptedKey} is null.
      * @return The unwrapped key content.
      */
     public KeyUnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
@@ -424,6 +437,7 @@ public final class CryptographyClient {
      * @param algorithm The algorithm to use for signing.
      * @param data The content from which signature is to be created.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
+     * @throws NullPointerException if {@code algorithm} or {@code data} is null.
      * @return A {@link SignResult} whose {@link SignResult#signature() signature} contains the created signature.
      */
     public SignResult signData(SignatureAlgorithm algorithm, byte[] data) {
@@ -448,6 +462,7 @@ public final class CryptographyClient {
      * @param data The content from which signature is to be created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
+     * @throws NullPointerException if {@code algorithm} or {@code data} is null.
      * @return A {@link SignResult} whose {@link SignResult#signature() signature} contains the created signature.
      */
     public SignResult signData(SignatureAlgorithm algorithm, byte[] data, Context context) {
@@ -472,6 +487,7 @@ public final class CryptographyClient {
      * @param data The raw content against which signature is to be verified.
      * @param signature The signature to be verified.
      * @throws ResourceNotFoundException if the key cannot be found for verifying.
+     * @throws NullPointerException if {@code algorithm}, {@code data} or {@code signature} is null.
      * @return The {@link Boolean} indicating the signature verification result.
      */
     public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature) {
@@ -497,6 +513,7 @@ public final class CryptographyClient {
      * @param signature The signature to be verified.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException if the key cannot be found for verifying.
+     * @throws NullPointerException if {@code algorithm}, {@code data} or {@code signature} is null.
      * @return The {@link Boolean} indicating the signature verification result.
      */
     public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context) {

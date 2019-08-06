@@ -169,6 +169,7 @@ public final class CryptographyAsyncClient {
      * @param algorithm The algorithm to be used for encryption.
      * @param plaintext The content to be encrypted.
      * @throws ResourceNotFoundException if the key cannot be found for encryption.
+     * @throws NullPointerException if {@code algorithm} or  {@code plainText} is null.
      * @return A {@link Mono} containing a {@link EncryptResult} whose {@link EncryptResult#cipherText() cipher text} contains the encrypted content.
      */
     public Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
@@ -195,6 +196,7 @@ public final class CryptographyAsyncClient {
      * @param iv The initialization vector
      * @param authenticationData The authentication data
      * @throws ResourceNotFoundException if the key cannot be found for encryption.
+     * @throws NullPointerException if {@code algorithm} or  {@code plainText} is null.
      * @return A {@link Mono} containing a {@link EncryptResult} whose {@link EncryptResult#cipherText() cipher text} contains the encrypted content.
      */
     public Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, byte[] iv, byte[] authenticationData) {
@@ -202,7 +204,8 @@ public final class CryptographyAsyncClient {
     }
 
     Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context, byte[] iv, byte[] authenticationData) {
-        Objects.requireNonNull(algorithm);
+        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
+        Objects.requireNonNull(plaintext, "Plain text content to be encrypted cannot be null.");
 
         boolean keyAvailableLocally = ensureValidKeyAvailable();
 
@@ -233,6 +236,7 @@ public final class CryptographyAsyncClient {
      * @param algorithm The algorithm to be used for decryption.
      * @param cipherText The content to be decrypted.
      * @throws ResourceNotFoundException if the key cannot be found for decryption.
+     * @throws NullPointerException if {@code algorithm} or {@code cipherText} is null.
      * @return A {@link Mono} containing the decrypted blob.
      */
     public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText) {
@@ -259,6 +263,7 @@ public final class CryptographyAsyncClient {
      * @param authenticationData The authentication data.
      * @param authenticationTag The authentication tag.
      * @throws ResourceNotFoundException if the key cannot be found for decryption.
+     * @throws NullPointerException if {@code algorithm} or {@code cipherText} is null.
      * @return A {@link Mono} containing the decrypted blob.
      */
     public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationData, byte[] authenticationTag) {
@@ -266,7 +271,8 @@ public final class CryptographyAsyncClient {
     }
 
     Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Context context) {
-        Objects.requireNonNull(algorithm);
+        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
+        Objects.requireNonNull(cipherText, "Cipher text content to be decrypted cannot be null.");
         boolean keyAvailableLocally = ensureValidKeyAvailable();
 
         if (!keyAvailableLocally) {
@@ -296,6 +302,7 @@ public final class CryptographyAsyncClient {
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature is to be created.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
+     * @throws NullPointerException if {@code algorithm} or {@code digest} is null.
      * @return A {@link Mono} containing a {@link SignResult} whose {@link SignResult#signature() signature} contains the created signature.
      */
     public Mono<SignResult> sign(SignatureAlgorithm algorithm, byte[] digest) {
@@ -303,7 +310,8 @@ public final class CryptographyAsyncClient {
     }
 
     Mono<SignResult> sign(SignatureAlgorithm algorithm, byte[] digest, Context context) {
-        Objects.requireNonNull(algorithm);
+        Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
+        Objects.requireNonNull(digest, "Digest content to be signed cannot be null.");
         boolean keyAvailableLocally = ensureValidKeyAvailable();
 
         if (!keyAvailableLocally) {
@@ -335,6 +343,7 @@ public final class CryptographyAsyncClient {
      * @param digest The content from which signature is to be created.
      * @param signature The signature to be verified.
      * @throws ResourceNotFoundException if the key cannot be found for verifying.
+     * @throws NullPointerException if {@code algorithm}, {@code digest} or {@code signature} is null.
      * @return A {@link Mono} containing a {@link Boolean} indicating the signature verification result.
      */
     public Mono<VerifyResult> verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature) {
@@ -342,6 +351,9 @@ public final class CryptographyAsyncClient {
     }
 
     Mono<VerifyResult> verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
+        Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
+        Objects.requireNonNull(digest, "Digest content cannot be null.");
+        Objects.requireNonNull(signature, "Signature to be verified cannot be null.");
         boolean keyAvailableLocally = ensureValidKeyAvailable();
 
         if (!keyAvailableLocally) {
@@ -368,6 +380,7 @@ public final class CryptographyAsyncClient {
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param key The key content to be wrapped
      * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
+     * @throws NullPointerException if {@code algorithm} or {@code key} is null.
      * @return A {@link Mono} containing a {@link KeyWrapResult} whose {@link KeyWrapResult#encryptedKey() encrypted key} contains the wrapped key result.
      */
     public Mono<KeyWrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key) {
@@ -375,7 +388,8 @@ public final class CryptographyAsyncClient {
     }
 
     Mono<KeyWrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
-
+        Objects.requireNonNull(algorithm, "Key Wrap algorithm cannot be null.");
+        Objects.requireNonNull(key, "Key content to be wrapped cannot be null.");
         boolean keyAvailableLocally = ensureValidKeyAvailable();
 
         if (!keyAvailableLocally) {
@@ -404,6 +418,7 @@ public final class CryptographyAsyncClient {
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param encryptedKey The encrypted key content to unwrap.
      * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
+     * @throws NullPointerException if {@code algorithm} or {@code encryptedKey} is null.
      * @return A {@link Mono} containing a the unwrapped key content.
      */
     public Mono<KeyUnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey) {
@@ -411,7 +426,9 @@ public final class CryptographyAsyncClient {
     }
 
     Mono<KeyUnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
-        Objects.requireNonNull(algorithm);
+        Objects.requireNonNull(algorithm, "Key Wrap algorithm cannot be null.");
+        Objects.requireNonNull(encryptedKey, "Encrypted key content to be unwrapped cannot be null.");
+
         boolean keyAvailableLocally = ensureValidKeyAvailable();
 
         if (!keyAvailableLocally) {
@@ -441,6 +458,7 @@ public final class CryptographyAsyncClient {
      * @param algorithm The algorithm to use for signing.
      * @param data The content from which signature is to be created.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
+     * @throws NullPointerException if {@code algorithm} or {@code data} is null.
      * @return A {@link Mono} containing a {@link SignResult} whose {@link SignResult#signature() signature} contains the created signature.
      */
     public Mono<SignResult> signData(SignatureAlgorithm algorithm, byte[] data) {
@@ -448,7 +466,9 @@ public final class CryptographyAsyncClient {
     }
 
     Mono<SignResult> signData(SignatureAlgorithm algorithm, byte[] data, Context context) {
-        Objects.requireNonNull(algorithm);
+        Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
+        Objects.requireNonNull(data, "Data to be signed cannot be null.");
+
         boolean keyAvailableLocally = ensureValidKeyAvailable();
 
         if (!keyAvailableLocally) {
@@ -479,6 +499,7 @@ public final class CryptographyAsyncClient {
      * @param data The raw content against which signature is to be verified.
      * @param signature The signature to be verified.
      * @throws ResourceNotFoundException if the key cannot be found for verifying.
+     * @throws NullPointerException if {@code algorithm}, {@code data} or {@code signature} is null.
      * @return The {@link Boolean} indicating the signature verification result.
      */
     public Mono<VerifyResult> verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature) {
@@ -486,7 +507,9 @@ public final class CryptographyAsyncClient {
     }
 
     Mono<VerifyResult> verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context) {
-        Objects.requireNonNull(algorithm);
+        Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
+        Objects.requireNonNull(data, "Data cannot be null.");
+        Objects.requireNonNull(signature, "Signature to be verified cannot be null.");
         boolean keyAvailableLocally = ensureValidKeyAvailable();
 
         if (!keyAvailableLocally) {

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
@@ -18,6 +21,7 @@ public class SignVerifyOperationsAsync {
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
      * @throws InterruptedException when the thread is interrupted in sleep mode.
+     * @throws NoSuchAlgorithmException when the specified algorithm doesn't exist.
      */
     public static void main(String[] args) throws InterruptedException, IllegalArgumentException, NoSuchAlgorithmException {
 

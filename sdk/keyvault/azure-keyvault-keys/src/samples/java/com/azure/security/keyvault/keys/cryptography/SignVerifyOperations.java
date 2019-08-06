@@ -1,7 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.keys.cryptography.models.*;
+import com.azure.security.keyvault.keys.cryptography.models.SignResult;
+import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
+import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -18,6 +23,7 @@ public class SignVerifyOperations {
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
      * @throws InterruptedException when the thread is interrupted in sleep mode.
+     * @throws NoSuchAlgorithmException when the specified algorithm doesn't exist.
      */
     public static void main(String[] args) throws InterruptedException, IllegalArgumentException, NoSuchAlgorithmException {
 

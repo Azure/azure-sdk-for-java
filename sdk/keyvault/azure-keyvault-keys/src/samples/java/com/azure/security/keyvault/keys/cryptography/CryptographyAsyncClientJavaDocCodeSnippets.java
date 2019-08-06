@@ -173,6 +173,8 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
     /**
      * Generates a code sample for using {@link CryptographyAsyncClient#sign(SignatureAlgorithm, byte[])} and
      * {@link CryptographyAsyncClient#verify(SignatureAlgorithm, byte[], byte[])}
+     *
+     * @throws NoSuchAlgorithmException when the specified algorithm doesn't exist.
      */
     public void signVerify() throws NoSuchAlgorithmException {
         CryptographyAsyncClient cryptographyAsyncClient = createAsyncClient();
@@ -201,6 +203,8 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
     /**
      * Generates a code sample for using {@link CryptographyAsyncClient#signData(SignatureAlgorithm, byte[])} and
      * {@link CryptographyAsyncClient#verifyData(SignatureAlgorithm, byte[], byte[])}
+     *
+     * @throws NoSuchAlgorithmException when the specified algorithm doesn't exist.
      */
     public void signDataVerifyData() throws NoSuchAlgorithmException {
         CryptographyAsyncClient cryptographyAsyncClient = createAsyncClient();

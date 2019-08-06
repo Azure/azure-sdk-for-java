@@ -7,7 +7,15 @@ import com.azure.core.credentials.TokenCredential;
 import com.azure.core.util.Context;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClient;
-import com.azure.security.keyvault.keys.cryptography.models.*;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.KeyWrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.KeyUnwrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.SignResult;
+import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.models.Key;
 
 import java.security.MessageDigest;
@@ -126,7 +134,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.cryptographyclient.decrypt#symmetric-decrypt-Context
         DecryptResult decryptionResponse = cryptographyClient.decrypt(EncryptionAlgorithm.A192CBC_HS384, plainText,
-            iv, authData, authTag, new Context(key2,value2));
+            iv, authData, authTag, new Context(key2, value2));
         System.out.printf("Received decrypted content of length %d with algorithm %s \n",
             decryptionResponse.plainText().length);
         // END: com.azure.security.keyvault.keys.cryptography.cryptographyclient.decrypt#symmetric-decrypt-Context
@@ -135,6 +143,8 @@ public final class CryptographyClientJavaDocCodeSnippets {
     /**
      * Generates a code sample for using {@link CryptographyClient#sign(SignatureAlgorithm, byte[])} and
      * {@link CryptographyClient#verify(SignatureAlgorithm, byte[], byte[])}
+     *
+     * @throws NoSuchAlgorithmException when the specified algorithm doesn't exist.
      */
     public void signVerify() throws NoSuchAlgorithmException {
         CryptographyClient cryptographyClient = createClient();
@@ -176,6 +186,8 @@ public final class CryptographyClientJavaDocCodeSnippets {
     /**
      * Generates a code sample for using {@link CryptographyClient#signData(SignatureAlgorithm, byte[])} and
      * {@link CryptographyClient#verifyData(SignatureAlgorithm, byte[], byte[])}
+     *
+     * @throws NoSuchAlgorithmException when the specified algorithm doesn't exist.
      */
     public void signDataVerifyData() throws NoSuchAlgorithmException {
         CryptographyClient cryptographyClient = createClient();
