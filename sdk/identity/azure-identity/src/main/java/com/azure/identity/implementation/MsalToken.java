@@ -15,7 +15,7 @@ import java.time.ZoneOffset;
  */
 public final class MsalToken extends AccessToken {
 
-    private IAccount account;
+    private final IAccount account;
 
     /**
      * Creates an access token instance.

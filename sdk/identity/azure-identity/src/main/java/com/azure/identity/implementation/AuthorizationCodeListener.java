@@ -13,8 +13,8 @@ import reactor.netty.http.server.HttpServer;
  * A local HTTP server that listens to the authorization code response from Azure Active Directory.
  */
 public final class AuthorizationCodeListener {
-    private DisposableServer server;
-    private MonoProcessor<String> authorizationCodeEmitter;
+    private final DisposableServer server;
+    private final MonoProcessor<String> authorizationCodeEmitter;
 
     private AuthorizationCodeListener(DisposableServer server, MonoProcessor<String> authorizationCodeEmitter) {
         this.server = server;

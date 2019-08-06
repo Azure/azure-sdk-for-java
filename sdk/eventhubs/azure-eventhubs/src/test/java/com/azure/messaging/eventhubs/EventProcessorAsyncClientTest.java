@@ -238,9 +238,14 @@ public class EventProcessorAsyncClientTest {
 
         private TestPartitionProcessor() {
             // default ctr
+            this(null, null);
         }
 
         private TestPartitionProcessor(PartitionContext partitionContext, CheckpointManager checkpointManager) {
+            setInternalFields(partitionContext, checkpointManager);
+        }
+
+        private void setInternalFields(PartitionContext partitionContext, CheckpointManager checkpointManager) {
             this.partitionContext = partitionContext;
             this.checkpointManager = checkpointManager;
         }
