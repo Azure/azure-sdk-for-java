@@ -747,7 +747,7 @@
     <module>./sdk/eventhubs/azure-eventhubs</module>
     <module>./sdk/keyvault/azure-keyvault-secrets</module>
     <module>./sdk/keyvault/azure-keyvault-keys</module>
-<!--    <module>./sdk/tracing/tracing-opentelemetry</module>-->
+    <module>./sdk/tracing/tracing-opentelemetry</module>
     <module>./sdk/identity/azure-identity</module>
     <module>./sdk/storage/azure-storage-blob</module>
     <module>./sdk/storage/azure-storage-file</module>
