@@ -3,19 +3,19 @@
 
 package com.azure.storage.blob
 
-
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.rest.Response
 import com.azure.storage.blob.models.*
+import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
-import org.junit.Assume
+import com.azure.storage.common.policy.RequestRetryPolicy
 
 import java.time.OffsetDateTime
 
 class ServiceAPITest extends APISpec {
     def setup() {
         RetentionPolicy disabled = new RetentionPolicy().enabled(false)
-        primaryServiceURL.setProperties(new StorageServiceProperties()
+        primaryServiceClient.setProperties(new StorageServiceProperties()
             .staticWebsite(new StaticWebsite().enabled(false))
             .deleteRetentionPolicy(disabled)
             .cors(null)
@@ -29,9 +29,8 @@ class ServiceAPITest extends APISpec {
     }
 
     def cleanup() {
-        Assume.assumeTrue("The test only runs in Live mode.", testMode.equalsIgnoreCase("RECORD"))
         RetentionPolicy disabled = new RetentionPolicy().enabled(false)
-        primaryServiceURL.setProperties(new StorageServiceProperties()
+        primaryServiceClient.setProperties(new StorageServiceProperties()
                 .staticWebsite(new StaticWebsite().enabled(false))
                 .deleteRetentionPolicy(disabled)
                 .cors(null)
@@ -47,7 +46,7 @@ class ServiceAPITest extends APISpec {
     def "List containers"() {
         when:
         Iterable<ContainerItem> response =
-                primaryServiceURL.listContainers(new ListContainersOptions().prefix(containerPrefix), null)
+            primaryServiceClient.listContainers(new ListContainersOptions().prefix(containerPrefix), null)
 
         then:
         for (ContainerItem c : response) {
@@ -65,7 +64,7 @@ class ServiceAPITest extends APISpec {
 
     def "List containers min"() {
         when:
-        primaryServiceURL.listContainers().iterator().hasNext()
+        primaryServiceClient.listContainers().iterator().hasNext()
 
         then:
         notThrown(StorageException)
@@ -74,10 +73,10 @@ class ServiceAPITest extends APISpec {
     def "List containers marker"() {
         setup:
         for (int i = 0; i < 10; i++) {
-            primaryServiceURL.createContainer(generateContainerName())
+            primaryServiceClient.createContainer(generateContainerName())
         }
 
-        Iterator<ContainerItem> listResponse = primaryServiceURL.listContainers().iterator()
+        Iterator<ContainerItem> listResponse = primaryServiceClient.listContainers().iterator()
         String firstContainerName = listResponse.next().name()
 
         expect:
@@ -89,10 +88,10 @@ class ServiceAPITest extends APISpec {
         setup:
         Metadata metadata = new Metadata()
         metadata.put("foo", "bar")
-        cu = primaryServiceURL.createContainer("aaa" + generateContainerName(), metadata, null).value()
+        cu = primaryServiceClient.createContainer("aaa" + generateContainerName(), metadata, null).value()
 
         expect:
-        primaryServiceURL.listContainers(new ListContainersOptions()
+        primaryServiceClient.listContainers(new ListContainersOptions()
                 .details(new ContainerListDetails().metadata(true))
                 .prefix("aaa" + containerPrefix), null)
             .iterator().next().metadata() == metadata
@@ -187,12 +186,12 @@ class ServiceAPITest extends APISpec {
                 .deleteRetentionPolicy(retentionPolicy)
                 .staticWebsite(website)
 
-        HttpHeaders headers = primaryServiceURL.setProperties(sentProperties).headers()
+        HttpHeaders headers = primaryServiceClient.setProperties(sentProperties).headers()
 
         // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
         sleep(30 * 1000)
 
-        StorageServiceProperties receivedProperties = primaryServiceURL.getProperties().value()
+        StorageServiceProperties receivedProperties = primaryServiceClient.getProperties().value()
 
         then:
         headers.value("x-ms-request-id") != null
@@ -229,15 +228,12 @@ class ServiceAPITest extends APISpec {
                 .staticWebsite(website)
 
         expect:
-        primaryServiceURL.setProperties(sentProperties).statusCode() == 202
+        primaryServiceClient.setProperties(sentProperties).statusCode() == 202
     }
 
     def "Set props error"() {
         when:
-        new BlobServiceClientBuilder()
-            .endpoint("https://error.blob.core.windows.net")
-            .credential(primaryCreds)
-            .buildClient()
+        testCommon.getServiceClient(primaryCredential, "https://error.blob.core.windows.net")
             .setProperties(new StorageServiceProperties())
 
         then:
@@ -246,15 +242,12 @@ class ServiceAPITest extends APISpec {
 
     def "Get props min"() {
         expect:
-        primaryServiceURL.getProperties().statusCode() == 200
+        primaryServiceClient.getProperties().statusCode() == 200
     }
 
     def "Get props error"() {
         when:
-        new BlobServiceClientBuilder()
-            .endpoint("https://error.blob.core.windows.net")
-            .credential(primaryCreds)
-            .buildClient()
+        testCommon.getServiceClient(primaryCredential, "https://error.blob.core.windows.net")
             .getProperties()
 
         then:
@@ -305,9 +298,8 @@ class ServiceAPITest extends APISpec {
 
     def "Get stats"() {
         setup:
-        String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCreds.accountName())
-        BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(secondaryEndpoint)
-                                        .credential(primaryCreds).buildClient()
+        String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.accountName())
+        BlobServiceClient serviceClient = testCommon.getServiceClient(primaryCredential, secondaryEndpoint)
         Response<StorageServiceStats> response = serviceClient.getStatistics()
 
         expect:
@@ -320,16 +312,16 @@ class ServiceAPITest extends APISpec {
 
     def "Get stats min"() {
         setup:
-        String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCreds.accountName())
-        BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(secondaryEndpoint)
-            .credential(primaryCreds).buildClient()
+        String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.accountName())
+        BlobServiceClient serviceClient = testCommon.getServiceClient(primaryCredential, secondaryEndpoint)
+
         expect:
         serviceClient.getStatistics().statusCode() == 200
     }
 
     def "Get stats error"() {
         when:
-        primaryServiceURL.getStatistics()
+        primaryServiceClient.getStatistics()
 
         then:
         thrown(StorageException)
@@ -337,7 +329,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get account info"() {
         when:
-        Response<StorageAccountInfo> response = primaryServiceURL.getAccountInfo()
+        Response<StorageAccountInfo> response = primaryServiceClient.getAccountInfo()
 
         then:
         response.headers().value("Date") != null
@@ -349,14 +341,12 @@ class ServiceAPITest extends APISpec {
 
     def "Get account info min"() {
         expect:
-        primaryServiceURL.getAccountInfo().statusCode() == 200
+        primaryServiceClient.getAccountInfo().statusCode() == 200
     }
 
     def "Get account info error"() {
         when:
-        BlobServiceClient serviceURL = new BlobServiceClientBuilder()
-            .endpoint(primaryServiceURL.getAccountUrl().toString())
-            .buildClient()
+        BlobServiceClient serviceURL = testCommon.getServiceClient((SharedKeyCredential) null, primaryServiceClient.getAccountUrl().toString())
         serviceURL.getAccountInfo()
 
         then:
@@ -368,11 +358,8 @@ class ServiceAPITest extends APISpec {
     def "Invalid account name"() {
         setup:
         URL badURL = new URL("http://fake.blobfake.core.windows.net")
-        BlobServiceClient client = new BlobServiceClientBuilder()
-            .endpoint(badURL.toString())
-            .credential(primaryCreds)
-            .retryOptions(new RequestRetryOptions(null, 2, null, null, null, null))
-            .buildClient()
+        BlobServiceClient client = testCommon.getServiceClient(primaryCredential, badURL.toString(),
+            new RequestRetryPolicy(new RequestRetryOptions(null, 2, null, null, null, null)))
 
         when:
         client.getProperties()

@@ -18,7 +18,7 @@ class ContainerAPITest extends APISpec {
     def "Create all null"() {
         setup:
         // Overwrite the existing cu, which has already been created
-        cu = primaryServiceURL.getContainerClient(generateContainerName())
+        cu = primaryServiceClient.getContainerClient(generateContainerName())
 
         when:
         VoidResponse response = cu.create()
@@ -30,13 +30,13 @@ class ContainerAPITest extends APISpec {
 
     def "Create min"() {
         expect:
-        primaryServiceURL.createContainer(generateContainerName()).statusCode() == 201
+        primaryServiceClient.createContainer(generateContainerName()).statusCode() == 201
     }
 
     @Unroll
     def "Create metadata"() {
         setup:
-        cu = primaryServiceURL.getContainerClient(generateContainerName())
+        cu = primaryServiceClient.getContainerClient(generateContainerName())
         Metadata metadata = new Metadata()
         if (key1 != null) {
             metadata.put(key1, value1)
@@ -61,7 +61,7 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Create publicAccess"() {
         setup:
-        cu = primaryServiceURL.getContainerClient(generateContainerName())
+        cu = primaryServiceClient.getContainerClient(generateContainerName())
 
         when:
         cu.create(null, publicAccess, null)
@@ -126,7 +126,7 @@ class ContainerAPITest extends APISpec {
 
     def "Get properties error"() {
         setup:
-        cu = primaryServiceURL.getContainerClient(generateContainerName())
+        cu = primaryServiceClient.getContainerClient(generateContainerName())
 
         when:
         cu.getProperties(null, null)
@@ -137,7 +137,7 @@ class ContainerAPITest extends APISpec {
 
     def "Set metadata"() {
         setup:
-        cu = primaryServiceURL.getContainerClient(generateContainerName())
+        cu = primaryServiceClient.getContainerClient(generateContainerName())
         Metadata metadata = new Metadata()
         metadata.put("key", "value")
         cu.create(metadata, null, null)
@@ -244,7 +244,7 @@ class ContainerAPITest extends APISpec {
 
     def "Set metadata error"() {
         setup:
-        cu = primaryServiceURL.getContainerClient(generateContainerName())
+        cu = primaryServiceClient.getContainerClient(generateContainerName())
 
         when:
         cu.setMetadata(null)
@@ -394,7 +394,7 @@ class ContainerAPITest extends APISpec {
 
     def "Set access policy error"() {
         setup:
-        cu = primaryServiceURL.getContainerClient(generateContainerName())
+        cu = primaryServiceClient.getContainerClient(generateContainerName())
 
         when:
         cu.setAccessPolicy(null, null, null, null)
@@ -444,7 +444,7 @@ class ContainerAPITest extends APISpec {
 
     def "Get access policy error"() {
         setup:
-        cu = primaryServiceURL.getContainerClient(generateContainerName())
+        cu = primaryServiceClient.getContainerClient(generateContainerName())
 
         when:
         cu.getAccessPolicy()
@@ -531,7 +531,7 @@ class ContainerAPITest extends APISpec {
 
     def "Delete error"() {
         setup:
-        cu = primaryServiceURL.getContainerClient(generateContainerName())
+        cu = primaryServiceClient.getContainerClient(generateContainerName())
 
         when:
         cu.delete(null, null)
@@ -802,7 +802,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat error"() {
         setup:
-        cu = primaryServiceURL.getContainerClient(generateContainerName())
+        cu = primaryServiceClient.getContainerClient(generateContainerName())
 
         when:
         cu.listBlobsFlat().iterator().hasNext()
@@ -1050,7 +1050,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs hier error"() {
         setup:
-        cu = primaryServiceURL.getContainerClient(generateContainerName())
+        cu = primaryServiceClient.getContainerClient(generateContainerName())
 
         when:
         cu.listBlobsHierarchy(".").iterator().hasNext()
@@ -1136,7 +1136,7 @@ class ContainerAPITest extends APISpec {
 
     def "Acquire lease error"() {
         setup:
-        cu = primaryServiceURL.getContainerClient(generateContainerName())
+        cu = primaryServiceClient.getContainerClient(generateContainerName())
 
         when:
         cu.acquireLease(null, 50, null, null)
@@ -1219,7 +1219,7 @@ class ContainerAPITest extends APISpec {
 
     def "Renew lease error"() {
         setup:
-        cu = primaryServiceURL.getContainerClient(generateContainerName())
+        cu = primaryServiceClient.getContainerClient(generateContainerName())
 
         when:
         cu.renewLease("id")
@@ -1300,7 +1300,7 @@ class ContainerAPITest extends APISpec {
 
     def "Release lease error"() {
         setup:
-        cu = primaryServiceURL.getContainerClient(generateContainerName())
+        cu = primaryServiceClient.getContainerClient(generateContainerName())
 
         when:
         cu.releaseLease("id")
@@ -1394,7 +1394,7 @@ class ContainerAPITest extends APISpec {
 
     def "Break lease error"() {
         setup:
-        cu = primaryServiceURL.getContainerClient(generateContainerName())
+        cu = primaryServiceClient.getContainerClient(generateContainerName())
 
         when:
         cu.breakLease()
@@ -1475,7 +1475,7 @@ class ContainerAPITest extends APISpec {
 
     def "Change lease error"() {
         setup:
-        cu = primaryServiceURL.getContainerClient(generateContainerName())
+        cu = primaryServiceClient.getContainerClient(generateContainerName())
 
         when:
         cu.changeLease("id", "id")
@@ -1519,7 +1519,7 @@ class ContainerAPITest extends APISpec {
 
     def "Root explicit"() {
         setup:
-        cu = primaryServiceURL.getContainerClient(ContainerClient.ROOT_CONTAINER_NAME)
+        cu = primaryServiceClient.getContainerClient(ContainerClient.ROOT_CONTAINER_NAME)
         // Create root container if not exist.
         if (!cu.exists().value()) {
             cu.create()
@@ -1533,17 +1533,15 @@ class ContainerAPITest extends APISpec {
 
     def "Root explicit in endpoint"() {
         setup:
-        cu = primaryServiceURL.getContainerClient(ContainerClient.ROOT_CONTAINER_NAME)
+        cu = primaryServiceClient.getContainerClient(ContainerClient.ROOT_CONTAINER_NAME)
         // Create root container if not exist.
         if (!cu.exists().value()) {
             cu.create()
         }
 
-        AppendBlobClient bu = new BlobClientBuilder()
-                .credential(primaryCreds)
-                .endpoint("http://" + primaryCreds.accountName() + ".blob.core.windows.net/\$root/rootblob")
-                .httpClient(getHttpClient())
-                .buildAppendBlobClient()
+        AppendBlobClient bu = testCommon.getBlobClient(primaryCredential,
+            String.format("http://%s.blob.core.windows.net/%s/rootblob", primaryCredential.accountName(), ContainerClient.ROOT_CONTAINER_NAME))
+            .asAppendBlobClient()
 
         when:
         Response<AppendBlobItem> createResponse = bu.create()
@@ -1585,7 +1583,7 @@ class ContainerAPITest extends APISpec {
 
     def "Web container"() {
         setup:
-        cu = primaryServiceURL.getContainerClient(ContainerClient.STATIC_WEBSITE_CONTAINER_NAME)
+        cu = primaryServiceClient.getContainerClient(ContainerClient.STATIC_WEBSITE_CONTAINER_NAME)
         // Create root container if not exist.
         try {
             cu.create(null, null, null)
@@ -1595,7 +1593,7 @@ class ContainerAPITest extends APISpec {
                 throw se
             }
         }
-        def webContainer = primaryServiceURL.getContainerClient(ContainerClient.STATIC_WEBSITE_CONTAINER_NAME)
+        def webContainer = primaryServiceClient.getContainerClient(ContainerClient.STATIC_WEBSITE_CONTAINER_NAME)
 
         when:
         // Validate some basic operation.
@@ -1607,7 +1605,7 @@ class ContainerAPITest extends APISpec {
 
     def "Get account info"() {
         when:
-        Response<StorageAccountInfo> response = primaryServiceURL.getAccountInfo()
+        Response<StorageAccountInfo> response = primaryServiceClient.getAccountInfo()
 
         then:
         response.headers().value("Date") != null
@@ -1619,14 +1617,12 @@ class ContainerAPITest extends APISpec {
 
     def "Get account info min"() {
         expect:
-        primaryServiceURL.getAccountInfo().statusCode() == 200
+        primaryServiceClient.getAccountInfo().statusCode() == 200
     }
 
     def "Get account info error"() {
         when:
-        BlobServiceClient serviceURL = new BlobServiceClientBuilder()
-            .endpoint(primaryServiceURL.getAccountUrl().toString())
-            .buildClient()
+        BlobServiceClient serviceURL = testCommon.getServiceClient(primaryServiceClient.getAccountUrl().toString())
 
         serviceURL.getContainerClient(generateContainerName()).getAccountInfo()
 

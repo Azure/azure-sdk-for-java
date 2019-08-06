@@ -112,8 +112,12 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 responseData.put("Body", content);
                 return responseData;
             });
-        } else {
-            return response.bodyAsByteArray().map(bytes -> {
+        } else if ("gzip".equals(response.headerValue("content-encoding"))) {
+            return response.bodyAsByteArray().switchIfEmpty(Mono.just(new byte[0])).map(bytes -> {
+                if (bytes.length == 0) {
+                    return responseData;
+                }
+
                 String content;
                 try (GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(bytes));
                      ByteArrayOutputStream output = new ByteArrayOutputStream()) {
@@ -135,9 +139,11 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 responseData.remove("content-encoding");
                 responseData.put("content-length", Integer.toString(content.length()));
 
-                responseData.put("body", content);
+                responseData.put("Body", content);
                 return responseData;
             });
+        } else {
+            return Mono.just(responseData);
         }
     }
 }

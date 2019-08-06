@@ -106,11 +106,7 @@ class BlobAPITest extends APISpec {
             }
         }
 
-        BlobClient bu2 = new BlobClientBuilder()
-            .endpoint(bu.getBlobUrl().toString())
-            .credential(primaryCreds)
-            .addPolicy(mockPolicy)
-            .buildBlobClient()
+        BlobClient bu2 = testCommon.getBlobClient(primaryCredential, bu.getBlobUrl().toString(), mockPolicy)
 
         when:
         BlobRange range = new BlobRange(2, 5L)
@@ -1258,7 +1254,7 @@ class BlobAPITest extends APISpec {
         // So we don't have to create a SAS.
         cu.setAccessPolicy(PublicAccessType.BLOB, null)
 
-        ContainerClient cu2 = alternateServiceURL.getContainerClient(generateBlobName())
+        ContainerClient cu2 = alternateServiceClient.getContainerClient(generateBlobName())
         cu2.create()
         BlockBlobClient bu2 = cu2.getBlockBlobClient(generateBlobName())
         bu2.upload(defaultInputStream.get(), defaultDataSize)
@@ -1283,7 +1279,7 @@ class BlobAPITest extends APISpec {
         // So we don't have to create a SAS.
         cu.setAccessPolicy(PublicAccessType.BLOB, null)
 
-        ContainerClient cu2 = alternateServiceURL.getContainerClient(generateBlobName())
+        ContainerClient cu2 = alternateServiceClient.getContainerClient(generateBlobName())
         cu2.create()
         BlobClient bu2 = cu2.getBlobClient(generateBlobName())
 
@@ -1308,7 +1304,7 @@ class BlobAPITest extends APISpec {
         // So we don't have to create a SAS.
         cu.setAccessPolicy(PublicAccessType.BLOB, null)
 
-        ContainerClient cu2 = alternateServiceURL.getContainerClient(generateBlobName())
+        ContainerClient cu2 = alternateServiceClient.getContainerClient(generateBlobName())
         cu2.create()
         BlobClient bu2 = cu2.getBlobClient(generateBlobName())
 
@@ -1327,7 +1323,7 @@ class BlobAPITest extends APISpec {
         // So we don't have to create a SAS.
         cu.setAccessPolicy(PublicAccessType.BLOB, null)
 
-        ContainerClient cu2 = alternateServiceURL.getContainerClient(generateContainerName())
+        ContainerClient cu2 = alternateServiceClient.getContainerClient(generateContainerName())
         cu2.create()
         BlockBlobClient bu2 = cu2.getBlockBlobClient(generateBlobName())
         bu2.upload(defaultInputStream.get(), defaultDataSize)
@@ -1645,7 +1641,7 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Set tier block blob"() {
         setup:
-        ContainerClient cu = blobStorageServiceURL.getContainerClient(generateContainerName())
+        ContainerClient cu = blobStorageServiceClient.getContainerClient(generateContainerName())
         BlockBlobClient bu = cu.getBlockBlobClient(generateBlobName())
         cu.create()
         bu.upload(defaultInputStream.get(), defaultData.remaining())
@@ -1671,7 +1667,7 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Set tier page blob"() {
         setup:
-        ContainerClient cu = premiumServiceURL.getContainerClient(generateContainerName())
+        ContainerClient cu = premiumServiceClient.getContainerClient(generateContainerName())
         cu.create()
 
         PageBlobClient bu = cu.getPageBlobClient(generateBlobName())
@@ -1698,7 +1694,7 @@ class BlobAPITest extends APISpec {
 
     def "Set tier min"() {
         setup:
-        ContainerClient cu = blobStorageServiceURL.getContainerClient(generateContainerName())
+        ContainerClient cu = blobStorageServiceClient.getContainerClient(generateContainerName())
         BlockBlobClient bu = cu.getBlockBlobClient(generateBlobName())
         cu.create()
         bu.upload(defaultInputStream.get(), defaultData.remaining())
@@ -1712,7 +1708,7 @@ class BlobAPITest extends APISpec {
 
     def "Set tier inferred"() {
         setup:
-        ContainerClient cu = blobStorageServiceURL.getContainerClient(generateBlobName())
+        ContainerClient cu = blobStorageServiceClient.getContainerClient(generateBlobName())
         BlockBlobClient bu = cu.getBlockBlobClient(generateBlobName())
         cu.create()
         bu.upload(defaultInputStream.get(), defaultDataSize)
@@ -1736,7 +1732,7 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Set tier archive status"() {
         setup:
-        ContainerClient cu = blobStorageServiceURL.getContainerClient(generateBlobName())
+        ContainerClient cu = blobStorageServiceClient.getContainerClient(generateBlobName())
         BlockBlobClient bu = cu.getBlockBlobClient(generateBlobName())
         cu.create()
         bu.upload(defaultInputStream.get(), defaultDataSize)
@@ -1757,7 +1753,7 @@ class BlobAPITest extends APISpec {
 
     def "Set tier error"() {
         setup:
-        ContainerClient cu = blobStorageServiceURL.getContainerClient(generateBlobName())
+        ContainerClient cu = blobStorageServiceClient.getContainerClient(generateBlobName())
         BlockBlobClient bu = cu.getBlockBlobClient(generateBlobName())
         cu.create()
         bu.upload(defaultInputStream.get(), defaultDataSize)
@@ -1780,7 +1776,7 @@ class BlobAPITest extends APISpec {
 
     def "Set tier lease"() {
         setup:
-        ContainerClient cu = blobStorageServiceURL.getContainerClient(generateBlobName())
+        ContainerClient cu = blobStorageServiceClient.getContainerClient(generateBlobName())
         BlockBlobClient bu = cu.getBlockBlobClient(generateBlobName())
         cu.create()
         bu.upload(defaultInputStream.get(), defaultDataSize)
@@ -1795,7 +1791,7 @@ class BlobAPITest extends APISpec {
 
     def "Set tier lease fail"() {
         setup:
-        ContainerClient cu = blobStorageServiceURL.getContainerClient(generateBlobName())
+        ContainerClient cu = blobStorageServiceClient.getContainerClient(generateBlobName())
         BlockBlobClient bu = cu.getBlockBlobClient(generateBlobName())
         cu.create()
         bu.upload(defaultInputStream.get(), defaultDataSize)
@@ -1846,7 +1842,7 @@ class BlobAPITest extends APISpec {
 
     def "Get account info"() {
         when:
-        Response<StorageAccountInfo> response = primaryServiceURL.getAccountInfo()
+        Response<StorageAccountInfo> response = primaryServiceClient.getAccountInfo()
 
         then:
         response.headers().value("Date") != null
@@ -1863,9 +1859,8 @@ class BlobAPITest extends APISpec {
 
     def "Get account info error"() {
         when:
-        BlobServiceClient serviceURL = new BlobServiceClientBuilder()
-            .endpoint(primaryServiceURL.getAccountUrl().toString())
-            .buildClient()
+        BlobServiceClient serviceURL = testCommon.getServiceClient(primaryServiceClient.getAccountUrl().toString())
+
         serviceURL.getContainerClient(generateContainerName()).getBlobClient(generateBlobName())
             .getAccountInfo(null)
 

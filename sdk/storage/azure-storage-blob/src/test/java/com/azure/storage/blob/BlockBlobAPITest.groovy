@@ -230,7 +230,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block from URL error"() {
         setup:
-        cu = primaryServiceURL.getContainerClient(generateContainerName())
+        cu = primaryServiceClient.getContainerClient(generateContainerName())
         bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
