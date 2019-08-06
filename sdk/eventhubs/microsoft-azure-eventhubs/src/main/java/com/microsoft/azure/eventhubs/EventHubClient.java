@@ -51,19 +51,22 @@ public interface EventHubClient {
     }
 
     /**
-     * Synchronous version of {@link #create(String, ScheduledExecutorService)}.
+     * Synchronous version of {@link #createFromConnectionString(String, RetryPolicy, ScheduledExecutorService, ProxyConfiguration)}.
      *
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
      * @param retryPolicy      A custom {@link RetryPolicy} to be used when communicating with EventHub.
      * @param executor         An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
+     * @param configuration    The proxy configuration for this EventHubClient connection; {@code null} or
+     *      {@link ProxyConfiguration#SYSTEM_DEFAULTS} if the system configured proxy settings should be used.
      * @return EventHubClient which can be used to create Senders and Receivers to EventHub
      * @throws EventHubException If Service Bus service encountered problems during connection creation.
      * @throws IOException       If the underlying Proton-J layer encounter network errors.
      */
-    static EventHubClient createSync(final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor,
-                                     final ProxyConfiguration configuration)
+    static EventHubClient createFromConnectionStringSync(final String connectionString, final RetryPolicy retryPolicy,
+                                                         final ScheduledExecutorService executor,
+                                                         final ProxyConfiguration configuration)
         throws EventHubException, IOException {
-        return ExceptionUtil.syncWithIOException(() -> create(connectionString, retryPolicy, executor, configuration).get());
+        return ExceptionUtil.syncWithIOException(() -> createFromConnectionString(connectionString, retryPolicy, executor, configuration).get());
     }
 
 
@@ -101,9 +104,25 @@ public interface EventHubClient {
         return EventHubClientImpl.create(connectionString, retryPolicy, executor, null);
     }
 
-    static CompletableFuture<EventHubClient> create(final String connectionString, final RetryPolicy retryPolicy,
-                                                    final ScheduledExecutorService executor,
-                                                    final ProxyConfiguration proxyConfiguration) throws IOException {
+    /**
+     * Factory method to create an instance of {@link EventHubClient} using the supplied {@code connectionString}. One
+     * EventHubClient instance maps to one connection to the Event Hubs service.
+     *
+     * <p>
+     * The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by
+     * the {@link #send(EventData)} methods.
+     * </p>
+     * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
+     * @param retryPolicy      A custom {@link RetryPolicy} to be used when communicating with EventHub.
+     * @param executor         An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
+     * @param proxyConfiguration The proxy configuration for this EventHubClient connection; {@code null} or
+     *      {@link ProxyConfiguration#SYSTEM_DEFAULTS} if the system configured proxy settings should be used.
+     * @return CompletableFuture{@literal <EventHubClient>} which can be used to create Senders and Receivers to EventHub.
+     * @throws IOException       If the underlying Proton-J layer encounter network errors.
+     */
+    static CompletableFuture<EventHubClient> createFromConnectionString(
+        final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor,
+        final ProxyConfiguration proxyConfiguration) throws IOException {
         return EventHubClientImpl.create(connectionString, retryPolicy, executor, proxyConfiguration);
     }
 
@@ -117,7 +136,7 @@ public interface EventHubClient {
      * @param authCallback  A callback which returns a JSON Web Token obtained from AAD.
      * @param authority        Address of the AAD authority to issue the token.
      * @param executor      An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
-     * @param options        Options {@link EventHubClientOptions} for creating the client. Uses all defaults if null. 
+     * @param options        Options {@link EventHubClientOptions} for creating the client. Uses all defaults if null.
      * @return EventHubClient which can be used to create Senders and Receivers to EventHub
      * @throws EventHubException If the EventHubs service encountered problems during connection creation.
      * @throws IOException If the underlying Proton-J layer encounter network errors.
@@ -132,7 +151,7 @@ public interface EventHubClient {
         ITokenProvider tokenProvider = new AzureActiveDirectoryTokenProvider(authCallback, authority, null);
         return createWithTokenProvider(endpointAddress, eventHubName, tokenProvider, executor, options);
     }
-    
+
     /**
      * Factory method to create an instance of {@link EventHubClient} using the supplied namespace endpoint address, eventhub name and authentication mechanism.
      * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
@@ -142,7 +161,7 @@ public interface EventHubClient {
      * @param eventHubName  EventHub name
      * @param tokenProvider The {@link ITokenProvider} implementation to be used to authenticate
      * @param executor      An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
-     * @param options        Options {@link EventHubClientOptions} for creating the client. Uses all defaults if null. 
+     * @param options        Options {@link EventHubClientOptions} for creating the client. Uses all defaults if null.
      * @return EventHubClient which can be used to create Senders and Receivers to EventHub
      * @throws EventHubException If the EventHubs service encountered problems during connection creation.
      * @throws IOException If the underlying Proton-J layer encounter network errors.
