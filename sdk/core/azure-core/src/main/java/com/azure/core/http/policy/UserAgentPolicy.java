@@ -73,10 +73,17 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         }
     }
 
+    /**
+     * Updates the User-Agent header with the value supplied in the policy.
+     *
+     * When the User-Agent header already has a value and it differs from the value used to create this policy the
+     * User-Agent header is updated by prepending the value in this policy.
+     * {@inheritDoc}
+     */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         String header = context.httpRequest().headers().value("User-Agent");
-        if (header == null || DEFAULT_USER_AGENT_HEADER.equals(header)) {
+        if (header == null || header.startsWith(DEFAULT_USER_AGENT_HEADER)) {
             header = userAgent;
         } else {
             header = userAgent + " " + header;

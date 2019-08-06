@@ -38,13 +38,13 @@ az group create \
 
 ### Authenticate the client
 
-In order to interact with the Storage service (Blob, Queue, Message, MessageId, File) you'll need to create an instance of the Service Client class. 
+In order to interact with the Storage service (Blob, Queue, Message, MessageId, File) you'll need to create an instance of the Service Client class.
 To make this possible you'll need the Account SAS (shared access signature) string of Storage account. Learn more at [SAS Token][sas_token]
 
 #### Get credentials
 
 - **SAS Token**
- 
+
 a. Use the [Azure CLI][azure_cli] snippet below to get the SAS token from the Storage account.
 
 ```Powershell
@@ -125,7 +125,7 @@ Create a ContainerClient if a BlobServiceClient exists.
 ContainerClient containerClient = blobServiceClient.getContainerClient("mycontainer");
 ```
 
-or 
+or
 
 Create the ContainerClient from the builder [`sasToken`](#get-credentials) generated above.
 ```java
@@ -143,7 +143,7 @@ Create a BlobClient if container client exists.
 BlobClient blobClient = containerClient.getBlobClient("myblob");
 ```
 
-or 
+or
 
 Create the BlobClient from the builder [`sasToken`](#get-credentials) generated above.
 ```java
@@ -162,7 +162,7 @@ Create a container from a BlobServiceClient.
 blobServiceClient.createContainer("mycontainer");
 ```
 
-or 
+or
 
 Create a container using ContainerClient.
 ```java
@@ -230,7 +230,7 @@ BlobServiceClient storageClient = BlobServiceClient.storageClientBuilder()
 
 ## Troubleshooting
 
-When interacts with blobs using this Java client library, errors returned by the service correspond to the same HTTP 
+When interacts with blobs using this Java client library, errors returned by the service correspond to the same HTTP
 status codes returned for [REST API][error_codes] requests. For example, if you try to retrieve a container or blob that
 doesn't exist in your Storage Account, a `404` error is returned, indicating `Not Found`.
 
@@ -257,7 +257,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/master/storage/client/blob/src
-[package]: https://repo1.maven.org/maven2/com/azure/azure-storage-blob/12.0.0-preview.1/
+[package]: https://mvnrepository.com/artifact/com.azure/azure-storage-blob
 [docs]: http://azure.github.io/azure-sdk-for-java/
 [rest_docs]: https://docs.microsoft.com/en-us/rest/api/storageservices/blob-service-rest-api
 [product_docs]: https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-overview

@@ -75,7 +75,7 @@ public class EventHubAsyncClient implements Closeable {
     private final Mono<EventHubConnection> connectionMono;
     private final AtomicBoolean hasConnection = new AtomicBoolean(false);
     private final ConnectionOptions connectionOptions;
-    private final String eventHubPath;
+    private final String eventHubName;
     private final EventHubProducerOptions defaultProducerOptions;
     private final EventHubConsumerOptions defaultConsumerOptions;
 
@@ -85,7 +85,7 @@ public class EventHubAsyncClient implements Closeable {
         Objects.requireNonNull(handlerProvider);
 
         this.connectionOptions = connectionOptions;
-        this.eventHubPath = connectionOptions.eventHubPath();
+        this.eventHubName = connectionOptions.eventHubName();
         this.connectionId = StringUtil.getRandomString("MF");
         this.connectionMono = Mono.fromCallable(() -> {
             return (EventHubConnection) new ReactorConnection(connectionId, connectionOptions, provider,
@@ -168,10 +168,10 @@ public class EventHubAsyncClient implements Closeable {
         final String linkName;
 
         if (ImplUtils.isNullOrEmpty(options.partitionId())) {
-            entityPath = eventHubPath;
+            entityPath = eventHubName;
             linkName = StringUtil.getRandomString("EC");
         } else {
-            entityPath = String.format(Locale.US, SENDER_ENTITY_PATH_FORMAT, eventHubPath, options.partitionId());
+            entityPath = String.format(Locale.US, SENDER_ENTITY_PATH_FORMAT, eventHubName, options.partitionId());
             linkName = StringUtil.getRandomString("PS");
         }
 
@@ -262,7 +262,7 @@ public class EventHubAsyncClient implements Closeable {
 
         final String linkName = StringUtil.getRandomString("PR");
         final String entityPath =
-            String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT, eventHubPath, consumerGroup, partitionId);
+            String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT, eventHubName, consumerGroup, partitionId);
 
         final Mono<AmqpReceiveLink> receiveLinkMono = connectionMono.flatMap(connection -> {
             return connection.createSession(entityPath).cast(EventHubSession.class);

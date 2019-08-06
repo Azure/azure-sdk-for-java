@@ -99,7 +99,7 @@ public class ConnectionStringPropertiesTest {
         Assert.assertEquals(HOST, properties.endpoint().getHost());
         Assert.assertEquals(SAS_KEY, properties.sharedAccessKeyName());
         Assert.assertEquals(SAS_VALUE, properties.sharedAccessKey());
-        Assert.assertNull(properties.eventHubPath());
+        Assert.assertNull(properties.eventHubName());
     }
 
     /**
@@ -117,16 +117,16 @@ public class ConnectionStringPropertiesTest {
         Assert.assertEquals(HOST, properties.endpoint().getHost());
         Assert.assertEquals(SAS_KEY, properties.sharedAccessKeyName());
         Assert.assertEquals(SAS_VALUE, properties.sharedAccessKey());
-        Assert.assertEquals(EVENT_HUB, properties.eventHubPath());
+        Assert.assertEquals(EVENT_HUB, properties.eventHubName());
     }
 
-    private static String getConnectionString(String hostname, String eventHubPath, String sasKeyName, String sasKeyValue) {
+    private static String getConnectionString(String hostname, String eventHubName, String sasKeyName, String sasKeyValue) {
         final StringBuilder builder = new StringBuilder();
         if (hostname != null) {
             builder.append(String.format(Locale.US, "Endpoint=%s;", hostname));
         }
-        if (eventHubPath != null) {
-            builder.append(String.format(Locale.US, "EntityPath=%s;", eventHubPath));
+        if (eventHubName != null) {
+            builder.append(String.format(Locale.US, "EntityPath=%s;", eventHubName));
         }
         if (sasKeyName != null) {
             builder.append(String.format(Locale.US, "SharedAccessKeyName=%s;", sasKeyName));

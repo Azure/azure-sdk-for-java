@@ -99,6 +99,9 @@ public final class FileServiceAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.listShares}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-shares">Azure Docs</a>.</p>
+     *
      * @return {@link ShareItem Shares} in the storage account without their metadata or snapshots
      */
     public Flux<ShareItem> listShares() {
@@ -126,6 +129,9 @@ public final class FileServiceAsyncClient {
      * <p>List all shares including their snapshots and metadata</p>
      *
      * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-shares">Azure Docs</a>.</p>
      *
      * @param options Options for listing shares
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
@@ -196,6 +202,9 @@ public final class FileServiceAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.getProperties}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file-service-properties">Azure Docs</a>.</p>
+     *
      * @return Storage account File service properties
      */
     public Mono<Response<FileServiceProperties>> getProperties() {
@@ -219,6 +228,9 @@ public final class FileServiceAsyncClient {
      * <p>Enable Minute and Hour Metrics</p>
      *
      * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.setProperties#fileServiceProperties}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-service-properties">Azure Docs</a>.</p>
      *
      * @param properties Storage account File service properties
      * @return A response that only contains headers and response status code
@@ -248,6 +260,9 @@ public final class FileServiceAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.createShare#string}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
+     *
      * @param shareName Name of the share
      * @return A response containing the ShareAsyncClient and the status of creating the share.
      * @throws StorageErrorException If a share with the same name already exists
@@ -269,6 +284,9 @@ public final class FileServiceAsyncClient {
      * <p>Create the share "test" with a quota of 10 GB</p>
      *
      * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.createShare#string-map-integer.quota}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
      * @param shareName Name of the share
      * @param metadata Optional metadata to associate with the share
@@ -294,6 +312,9 @@ public final class FileServiceAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.deleteShare#string}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
+     *
      * @param shareName Name of the share
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the share doesn't exist
@@ -311,6 +332,9 @@ public final class FileServiceAsyncClient {
      * <p>Delete the snapshot of share "test" that was created at current time.</p>
      *
      * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.deleteShare#string-string}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
      * @param shareName Name of the share
      * @param snapshot Identifier of the snapshot

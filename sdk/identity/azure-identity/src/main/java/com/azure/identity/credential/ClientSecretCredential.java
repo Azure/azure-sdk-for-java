@@ -4,50 +4,47 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.identity.IdentityClient;
-import com.azure.identity.IdentityClientOptions;
+import com.azure.core.credentials.TokenCredential;
+import com.azure.core.implementation.annotation.Immutable;
+import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientBuilder;
+import com.azure.identity.implementation.IdentityClientOptions;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 /**
  * An AAD credential that acquires a token with a client secret for an AAD application.
+ *
+ * <p><strong>Sample: Construct a simple ClientSecretCredential</strong></p>
+ * {@codesnippet com.azure.identity.credential.clientsecretcredential.construct}
+ *
+ * <p><strong>Sample: Construct a ClientSecretCredential behind a proxy</strong></p>
+ * {@codesnippet com.azure.identity.credential.clientsecretcredential.constructwithproxy}
  */
-public class ClientSecretCredential extends AadCredential<ClientSecretCredential> {
+@Immutable
+public class ClientSecretCredential implements TokenCredential {
     /* The client secret value. */
-    private String clientSecret;
+    private final String clientSecret;
     private final IdentityClient identityClient;
-
-    /**
-     * Creates a ClientSecretCredential with default identity client options.
-     */
-    public ClientSecretCredential() {
-        this(new IdentityClientOptions());
-    }
 
     /**
      * Creates a ClientSecretCredential with the given identity client options.
      *
+     * @param tenantId the tenant ID of the application
+     * @param clientId the client ID of the application
+     * @param clientSecret the secret value of the AAD application.
      * @param identityClientOptions the options for configuring the identity client
      */
-    public ClientSecretCredential(IdentityClientOptions identityClientOptions) {
-        identityClient = new IdentityClient(identityClientOptions);
-    }
-
-    /**
-     * Sets the client secret for the authentication.
-     * @param clientSecret the secret value of the AAD application.
-     * @return the credential itself
-     */
-    public ClientSecretCredential clientSecret(String clientSecret) {
+    ClientSecretCredential(String tenantId, String clientId, String clientSecret, IdentityClientOptions identityClientOptions) {
+        Objects.requireNonNull(clientSecret);
+        Objects.requireNonNull(identityClientOptions);
+        identityClient = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(identityClientOptions).build();
         this.clientSecret = clientSecret;
-        return this;
     }
 
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
-        validate();
-        if (clientSecret == null) {
-            return Mono.error(new IllegalArgumentException("Non-null value must be provided for clientSecret property in ClientSecretCredential"));
-        }
-        return identityClient.authenticateWithClientSecret(tenantId(), clientId(), clientSecret, scopes);
+        return identityClient.authenticateWithClientSecret(clientSecret, scopes);
     }
 }

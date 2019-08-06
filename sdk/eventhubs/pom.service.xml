@@ -12,7 +12,9 @@
     <module>microsoft-azure-eventhubs</module>
     <module>microsoft-azure-eventhubs-eph</module>
     <module>microsoft-azure-eventhubs-extensions</module>
-    <module>../core</module>
+    <module>../core/azure-core</module>
+    <module>../core/azure-core-test</module>
+    <module>../core/azure-core-amqp</module>
     <module>azure-eventhubs</module>
   </modules>
 </project>

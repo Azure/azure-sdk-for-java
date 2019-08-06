@@ -18,15 +18,15 @@ public class EventHubPropertiesTest {
     @Test
     public void setsProperties() {
         // Arrange
-        final String path = "Some-event-hub-path";
+        final String name = "Some-event-hub-name";
         final Instant instant = Instant.ofEpochSecond(145620);
         final String[] partitionIds = new String[]{"one-partition", "two-partition", "three-partition"};
 
         // Act
-        final EventHubProperties eventHubProperties = new EventHubProperties(path, instant, partitionIds);
+        final EventHubProperties eventHubProperties = new EventHubProperties(name, instant, partitionIds);
 
         // Assert
-        Assert.assertEquals(path, eventHubProperties.path());
+        Assert.assertEquals(name, eventHubProperties.name());
         Assert.assertEquals(instant, eventHubProperties.createdAt());
         Assert.assertEquals(partitionIds.length, eventHubProperties.partitionIds().length);
 
@@ -43,14 +43,14 @@ public class EventHubPropertiesTest {
     @Test
     public void setsPropertiesNoPartitions() {
         // Arrange
-        final String path = "Some-event-hub-path";
+        final String name = "Some-event-hub-name";
         final Instant instant = Instant.ofEpochSecond(145620);
 
         // Act
-        final EventHubProperties eventHubProperties = new EventHubProperties(path, instant, null);
+        final EventHubProperties eventHubProperties = new EventHubProperties(name, instant, null);
 
         // Assert
-        Assert.assertEquals(path, eventHubProperties.path());
+        Assert.assertEquals(name, eventHubProperties.name());
         Assert.assertEquals(instant, eventHubProperties.createdAt());
         Assert.assertNotNull(eventHubProperties.partitionIds());
         Assert.assertEquals(0, eventHubProperties.partitionIds().length);

@@ -236,16 +236,11 @@ class BlobAPITest extends APISpec {
         ByteArrayOutputStream originalStream = new ByteArrayOutputStream()
         bu.download(originalStream)
 
-        String snapshot = bu.createSnapshot().value()
         BlockBlobClient bu2 = bu.asBlockBlobClient()
+        BlobClient bu3 = bu.createSnapshot().value()
         bu2.upload(new ByteArrayInputStream("ABC".getBytes()), 3)
 
         then:
-        BlobClient bu3 = new BlobClientBuilder()
-            .endpoint(bu.getBlobUrl().toString())
-            .snapshot(snapshot)
-            .credential(primaryCreds)
-            .buildBlobClient()
         ByteArrayOutputStream snapshotStream = new ByteArrayOutputStream()
         bu3.download(snapshotStream)
         snapshotStream.toByteArray() == originalStream.toByteArray()
@@ -985,12 +980,8 @@ class BlobAPITest extends APISpec {
 
     def "Snapshot"() {
         when:
-        Response<String> snapshotResponse = bu.createSnapshot()
-        BlobClient bu2 = new BlobClientBuilder()
-            .endpoint(bu.getBlobUrl().toString())
-            .credential(primaryCreds)
-            .snapshot(snapshotResponse.value())
-            .buildBlobClient()
+        Response<BlobClient> snapshotResponse = bu.createSnapshot()
+        BlobClient bu2 = snapshotResponse.value()
 
         then:
         bu2.getProperties().statusCode() == 200
@@ -1013,12 +1004,8 @@ class BlobAPITest extends APISpec {
             metadata.put(key2, value2)
         }
 
-        Response<String> response = bu.createSnapshot(metadata, null, null)
-        BlobClient bu2 = new BlobClientBuilder()
-            .endpoint(bu.getBlobUrl().toString())
-            .credential(primaryCreds)
-            .snapshot(response.value())
-            .buildBlobClient()
+        Response<BlobClient> response = bu.createSnapshot(metadata, null, null)
+        BlobClient bu2 = response.value()
 
         expect:
         response.statusCode() == 201
