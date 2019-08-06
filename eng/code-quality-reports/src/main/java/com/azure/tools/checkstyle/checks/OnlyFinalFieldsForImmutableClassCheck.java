@@ -91,7 +91,7 @@ public class OnlyFinalFieldsForImmutableClassCheck extends AbstractCheck {
         for (DetailAST ast = objBlockToken.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
             if (TokenTypes.VARIABLE_DEF == ast.getType()) {
                 final DetailAST modifiersToken = ast.findFirstToken(TokenTypes.MODIFIERS);
-                if (!modifiersToken.branchContains(TokenTypes.FINAL)) {
+                if (!modifiersToken.branchContains(TokenTypes.FINAL) && !Utils.hasIllegalCombination(modifiersToken)) {
                     log(modifiersToken, String.format(ERROR_MSG, ast.findFirstToken(TokenTypes.IDENT).getText(),
                         objBlockToken.getPreviousSibling().getText()));
                 }
