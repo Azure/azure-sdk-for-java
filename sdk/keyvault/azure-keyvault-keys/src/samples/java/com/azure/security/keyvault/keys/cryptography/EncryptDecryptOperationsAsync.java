@@ -1,8 +1,6 @@
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
@@ -30,7 +28,7 @@ public class EncryptDecryptOperationsAsync {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         CryptographyAsyncClient cryptoAsyncClient = new CryptographyClientBuilder()
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .keyIdentifier("<Your-Key-Id-From-Keyvault>")
             .buildAsyncClient();
 
@@ -61,7 +59,7 @@ public class EncryptDecryptOperationsAsync {
         // Configure the symmetric key in a new crypto client.
         CryptographyAsyncClient symmetricKeyCryptoAsyncClient = new CryptographyClientBuilder()
             .jsonWebKey(symmetricKey)
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // Note the implementation of A128CBC in this library uses PKCS7 padding.

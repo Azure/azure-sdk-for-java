@@ -87,7 +87,7 @@ public abstract class ApiTestBase extends TestBase {
             reactorProvider = new MockReactorProvider(reactor, reactorDispatcher);
         }
 
-        connectionOptions = new ConnectionOptions(properties.endpoint().getHost(), properties.eventHubPath(),
+        connectionOptions = new ConnectionOptions(properties.endpoint().getHost(), properties.eventHubName(),
             tokenCredential, getAuthorizationType(), transportType, RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS,
             scheduler);
 

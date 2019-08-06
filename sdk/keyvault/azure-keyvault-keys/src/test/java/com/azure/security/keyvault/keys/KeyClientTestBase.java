@@ -14,8 +14,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.configuration.ConfigurationManager;
-import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.KeyCreateOptions;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
@@ -36,9 +36,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public abstract class KeyClientTestBase extends TestBase {
 
@@ -67,7 +65,7 @@ public abstract class KeyClientTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             credential = resource -> Mono.just(new AccessToken("Some fake token", OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofMinutes(30))));
         } else {
-            credential = new DefaultAzureCredential();
+            credential = new DefaultAzureCredentialBuilder().build();
         }
 
         HttpClient httpClient;

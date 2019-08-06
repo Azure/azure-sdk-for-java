@@ -5,7 +5,7 @@ package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.util.Context;
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.cryptography.models.*;
 import com.azure.security.keyvault.keys.models.Key;
@@ -32,7 +32,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.keys.cryptography.cryptographyclient.instantiation
         CryptographyClient cryptographyClient = new CryptographyClientBuilder()
             .keyIdentifier("<YOUR-KEY-IDENTIFIER>")
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // END: com.azure.security.keyvault.keys.cryptography.cryptographyclient.instantiation
         return cryptographyClient;

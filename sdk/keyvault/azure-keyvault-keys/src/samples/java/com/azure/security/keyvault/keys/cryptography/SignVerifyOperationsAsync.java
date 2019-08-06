@@ -1,10 +1,7 @@
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
-import com.azure.security.keyvault.keys.cryptography.models.SignResult;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
-import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -28,7 +25,7 @@ public class SignVerifyOperationsAsync {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         CryptographyAsyncClient cryptoAsyncClient = new CryptographyClientBuilder()
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .keyIdentifier("<Your-Key-Id-From-Keyvault>")
             .buildAsyncClient();
 

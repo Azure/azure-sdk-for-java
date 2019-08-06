@@ -73,7 +73,7 @@ public class EventHubConsumerIntegrationTest extends ApiTestBase {
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         final ConnectionStringProperties properties = new ConnectionStringProperties(getConnectionString());
         final ConnectionOptions connectionOptions = new ConnectionOptions(properties.endpoint().getHost(),
-            properties.eventHubPath(), getTokenCredential(), getAuthorizationType(), TransportType.AMQP,
+            properties.eventHubName(), getTokenCredential(), getAuthorizationType(), TransportType.AMQP,
             RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
 
         client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);

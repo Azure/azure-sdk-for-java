@@ -115,7 +115,7 @@ public class BlobClientJavaDocCodeSnippets {
         // END: com.azure.storage.blob.BlobClient.download#OutputStream
 
         // BEGIN: com.azure.storage.blob.BlobClient.download#OutputStream-BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration
-        BlobRange range = new BlobRange(1024, 2048);
+        BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
         System.out.printf("Download completed with status %d%n",
@@ -134,7 +134,7 @@ public class BlobClientJavaDocCodeSnippets {
         // END: com.azure.storage.blob.BlobClient.downloadToFile#String
 
         // BEGIN: com.azure.storage.blob.BlobClient.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration
-        BlobRange range = new BlobRange(1024, 2048);
+        BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
         client.downloadToFile(file, range, null, options, null, false, timeout);
@@ -231,7 +231,7 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void createSnapshot() {
         // BEGIN: com.azure.storage.blob.BlobClient.createSnapshot
-        System.out.printf("Identifier for the snapshot is %s%n", client.createSnapshot().value());
+        System.out.printf("Identifier for the snapshot is %s%n", client.createSnapshot().value().getSnapshotId());
         // END: com.azure.storage.blob.BlobClient.createSnapshot
 
         // BEGIN: com.azure.storage.blob.BlobClient.createSnapshot#Metadata-BlobAccessConditions-Duration
@@ -240,7 +240,7 @@ public class BlobClientJavaDocCodeSnippets {
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId));
 
         System.out.printf("Identifier for the snapshot is %s%n",
-            client.createSnapshot(snapshotMetadata, accessConditions, timeout).value());
+            client.createSnapshot(snapshotMetadata, accessConditions, timeout).value().getSnapshotId());
         // END: com.azure.storage.blob.BlobClient.createSnapshot#Metadata-BlobAccessConditions-Duration
     }
 

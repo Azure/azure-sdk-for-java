@@ -7706,11 +7706,14 @@
       "description": "a collection of signed identifiers",
       "type": "array",
       "items": {
-        "$ref": "#/definitions/SignedIdentifier"
+        "$ref": "#/definitions/SignedIdentifier",
+        "xml": {
+          "name": "SignedIdentifier"
+        }
       },
       "xml": {
         "wrapped": true,
-        "name": "SignedIdentifier"
+        "name": "SignedIdentifiers"
       }
     },
     "StaticWebsite": {

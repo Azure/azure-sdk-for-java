@@ -1,6 +1,7 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.*;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
@@ -31,7 +32,7 @@ public class KeyWrapUnwrapOperations {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         CryptographyClient cryptoClient = new CryptographyClientBuilder()
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .keyIdentifier("<Your-Key-Id-From-Keyvault")
             .buildClient();
 
@@ -58,7 +59,7 @@ public class KeyWrapUnwrapOperations {
         // Configure the symmetric key in a new crypto client.
         CryptographyClient symmetricKeyCryptoClient = new CryptographyClientBuilder()
             .jsonWebKey(symmetricKey)
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         KeyWrapResult symKeyWrapResult = symmetricKeyCryptoClient.wrapKey(KeyWrapAlgorithm.A128KW, keyContentToWrap);

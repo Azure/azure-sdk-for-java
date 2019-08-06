@@ -15,7 +15,7 @@ public class PartitionPropertiesTest {
     @Test
     public void setsProperties() {
         // Arrange
-        final String eventHub = "The event hub path";
+        final String eventHub = "The event hub name";
         final String id = "the partition id";
         final long beginningSequence = 1235;
         final long endSequence = 8763;
@@ -28,7 +28,7 @@ public class PartitionPropertiesTest {
             lastEnqueuedOffset, lastEnqueuedTime, isEmpty);
 
         // Assert
-        Assert.assertEquals(eventHub, properties.eventHubPath());
+        Assert.assertEquals(eventHub, properties.eventHubName());
         Assert.assertEquals(id, properties.id());
         Assert.assertEquals(beginningSequence, properties.beginningSequenceNumber());
         Assert.assertEquals(endSequence, properties.lastEnqueuedSequenceNumber());

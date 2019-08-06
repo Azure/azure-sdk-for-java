@@ -13,7 +13,7 @@ import com.azure.core.http.policy.*;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.configuration.ConfigurationManager;
-import com.azure.identity.credential.ClientSecretCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
 import org.junit.Rule;
 import org.junit.Test;
@@ -69,7 +69,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             credential = resource -> Mono.just(new AccessToken("Some fake token", OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofMinutes(30))));
         } else {
-            credential = new ClientSecretCredential().clientSecret(clientSecret).clientId(clientId).tenantId(tenantId);
+            credential = new DefaultAzureCredentialBuilder().build();
         }
 
         // Closest to API goes first, closest to wire goes last.

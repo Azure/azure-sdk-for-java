@@ -10,13 +10,11 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
-import com.azure.core.util.Context;
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
-import com.azure.security.keyvault.keys.models.Key;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -41,7 +39,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         RecordedData networkData = new RecordedData();
         CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
             .keyIdentifier("<Your-Key-ID>")
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .addPolicy(new RecordNetworkCallPolicy(networkData))
             .httpClient(HttpClient.createDefault())
@@ -58,7 +56,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.instantiation
         CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
             .keyIdentifier("<YOUR-KEY-ID>")
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.instantiation
         return cryptographyAsyncClient;
@@ -75,7 +73,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
             .pipeline(pipeline)
             .keyIdentifier("<YOUR-KEY-ID")
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.pipeline.instantiation
         return cryptographyAsyncClient;

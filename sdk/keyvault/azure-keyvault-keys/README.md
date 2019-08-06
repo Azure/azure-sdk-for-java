@@ -75,12 +75,12 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
 Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZURE_TENANT_ID** environment variables and replaced **your-vault-url** with the above returned URI, you can create the KeyClient:
 
 ```Java
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClient;
 
 KeyClient client = new KeyClientBuilder()
         .endpoint(<your-vault-url>)
-        .credential(new DefaultAzureCredential())
+        .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient);
 ```
 > NOTE: For using Asynchronous client use KeyAsyncClient instead of KeyClient
@@ -112,13 +112,13 @@ The following sections provide several code snippets covering some of the most c
 Create a Key to be stored in the Azure Key Vault.
 - `setKey` creates a new key in the key vault. if the key with name already exists then a new version of the key is created.
 ```Java
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.KeyClient;
 
 KeyClient keyClient = new KeyClientBuilder()
         .endpoint(<your-vault-url>)
-        .credential(new DefaultAzureCredential())
+        .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
 Key rsaKey = keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
@@ -186,13 +186,13 @@ The following sections provide several code snippets covering some of the most c
 Create a Key to be stored in the Azure Key Vault.
 - `setKey` creates a new key in the key vault. if the key with name already exists then a new version of the key is created.
 ```Java
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 
 KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
         .endpoint(<your-vault-url>)
-        .credential(new DefaultAzureCredential())
+        .credential(new DefaultAzureCredentialBuilder().build())
         .buildAsyncClient();
 
 keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")

@@ -1,19 +1,12 @@
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
-import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.security.keyvault.keys.KeyClient;
-import com.azure.security.keyvault.keys.KeyClientBuilder;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.*;
-import com.azure.security.keyvault.keys.models.Key;
-import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
 
 import javax.crypto.spec.SecretKeySpec;
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -35,7 +28,7 @@ public class EncryptDecryptOperations {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         CryptographyClient cryptoClient = new CryptographyClientBuilder()
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .keyIdentifier("<Your-Key-Id-From-Keyvault")
             .buildClient();
 
@@ -63,7 +56,7 @@ public class EncryptDecryptOperations {
         // Configure the symmetric key in a new crypto client.
         CryptographyClient symmetricKeyCryptoClient = new CryptographyClientBuilder()
             .jsonWebKey(symmetricKey)
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         // Note the implementation of A128CBC in this library uses PKCS7 padding.

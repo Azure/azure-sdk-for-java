@@ -90,7 +90,7 @@ public class ReactorConnectionTest {
 
         final RetryOptions retryOptions = new RetryOptions().tryTimeout(TEST_DURATION);
         final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.endpoint().getHost(),
-            CREDENTIAL_INFO.eventHubPath(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
+            CREDENTIAL_INFO.eventHubName(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
             TransportType.AMQP, retryOptions, ProxyConfiguration.SYSTEM_DEFAULTS, SCHEDULER);
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider, responseMapper);
     }
@@ -290,7 +290,7 @@ public class ReactorConnectionTest {
             .retryMode(RetryMode.FIXED)
             .tryTimeout(timeout);
         ConnectionOptions parameters = new ConnectionOptions(CREDENTIAL_INFO.endpoint().getHost(),
-            CREDENTIAL_INFO.eventHubPath(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
+            CREDENTIAL_INFO.eventHubName(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
             TransportType.AMQP, retryOptions, ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
 
         // Act and Assert
