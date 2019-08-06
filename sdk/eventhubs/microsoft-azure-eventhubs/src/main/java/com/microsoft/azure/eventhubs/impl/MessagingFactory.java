@@ -146,6 +146,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                 .setRetryPolicy(retryPolicy)
                 .setReactorFactory(reactorFactory)
                 .setProxyConfiguration(proxyConfiguration);
+
         return builder.build();
     }
 
@@ -200,6 +201,11 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             return this;
         }
 
+        public MessagingFactoryBuilder setProxyConfiguration(ProxyConfiguration proxyConfiguration) {
+            this.proxyConfiguration = proxyConfiguration;
+            return this;
+        }
+
         public CompletableFuture<MessagingFactory> build() throws IOException {
             final MessagingFactory messagingFactory = new MessagingFactory(this.hostname,
                     this.operationTimeout,
@@ -207,7 +213,8 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                     this.tokenProvider,
                     this.retryPolicy,
                     this.executor,
-                    this.reactorFactory);
+                    this.reactorFactory,
+                    this.proxyConfiguration);
             return MessagingFactory.factoryStartup(messagingFactory);
         }
     }
