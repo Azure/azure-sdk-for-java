@@ -26,25 +26,25 @@ import reactor.core.scheduler.Schedulers;
 /**
  * This is the starting point for event processor.
  * <p>
- * Event Processor based application consists of one or more instances of {@link EventProcessorAsyncClient} which are
+ * Event Processor based application consists of one or more instances of {@link EventProcessor} which are
  * set up to consume events from the same Event Hub + consumer group and to balance the workload across different
  * instances and track progress when events are processed.
  * </p>
  *
- * <p><strong>Creating an {@link EventProcessorAsyncClient} instance using Event Hub instance connection
+ * <p><strong>Creating an {@link EventProcessor} instance using Event Hub instance connection
  * string</strong></p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventprocessorasyncclient.instantiation}
+ * {@codesnippet com.azure.messaging.eventhubs.eventprocessor.instantiation}
  *
  * @see EventHubAsyncClient
  * @see EventHubClientBuilder
  */
-public class EventProcessorAsyncClient {
+public class EventProcessor {
 
     private static final long INTERVAL_IN_SECONDS = 10; // run every 10 seconds
     private static final long INITIAL_DELAY = 0; // start immediately
     private static final long OWNERSHIP_EXPIRATION_TIME_IN_MILLIS = TimeUnit.SECONDS.toMillis(30);
-    private final ClientLogger logger = new ClientLogger(EventProcessorAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(EventProcessor.class);
 
     private final EventHubAsyncClient eventHubAsyncClient;
     private final String consumerGroupName;
@@ -68,7 +68,7 @@ public class EventProcessorAsyncClient {
      * @param partitionManager The partition manager.
      * @param eventHubName The Event Hub name.
      */
-    EventProcessorAsyncClient(EventHubAsyncClient eventHubAsyncClient, String consumerGroupName,
+    EventProcessor(EventHubAsyncClient eventHubAsyncClient, String consumerGroupName,
         PartitionProcessorFactory partitionProcessorFactory, EventPosition initialEventPosition,
         PartitionManager partitionManager,
         String eventHubName) {
@@ -107,7 +107,7 @@ public class EventProcessorAsyncClient {
      * </p>
      *
      * <p><strong>Starting the processor to consume events from all partitions</strong></p>
-     * {@codesnippet com.azure.messaging.eventhubs.eventprocessorasyncclient.startstop}
+     * {@codesnippet com.azure.messaging.eventhubs.eventprocessor.startstop}
      */
     public synchronized void start() {
         if (!started.compareAndSet(false, true)) {
@@ -115,7 +115,7 @@ public class EventProcessorAsyncClient {
             return;
         }
         logger.info("Starting a new event processor instance with id {}", this.identifier);
-        scheduler = Schedulers.newElastic("EventProcessorAsyncClient");
+        scheduler = Schedulers.newElastic("EventProcessor");
         runner = scheduler.schedulePeriodically(this::run, INITIAL_DELAY, INTERVAL_IN_SECONDS, TimeUnit.SECONDS);
     }
 
@@ -127,7 +127,7 @@ public class EventProcessorAsyncClient {
      * </p>
      *
      * <p><strong>Stopping the processor</strong></p>
-     * {@codesnippet com.azure.messaging.eventhubs.eventprocessorasyncclient.startstop}
+     * {@codesnippet com.azure.messaging.eventhubs.eventprocessor.startstop}
      */
     public synchronized void stop() {
         if (!started.compareAndSet(true, false)) {

@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 
 /**
  * A sample implementation of {@link PartitionProcessor}. This implementation logs the APIs that were called by {@link
- * EventProcessorAsyncClient} while processing a partition.
+ * EventProcessor} while processing a partition.
  */
 public class LogPartitionProcessor implements PartitionProcessor {
 
@@ -20,7 +20,7 @@ public class LogPartitionProcessor implements PartitionProcessor {
 
     /**
      * Creates a new {@link PartitionProcessor} instance that logs every interaction with {@link
-     * EventProcessorAsyncClient}.
+     * EventProcessor}.
      *
      * @param partitionContext The partition context to know which partition this processor is receiving events from.
      * @param checkpointManager The checkpoint manager for updating checkpoints.

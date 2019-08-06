@@ -14,7 +14,7 @@ public enum CloseReason {
     LOST_PARTITION_OWNERSHIP,
 
     /**
-     * If the event processor is shutting down by calling {@link EventProcessorAsyncClient#stop()}, the {@link
+     * If the event processor is shutting down by calling {@link EventProcessor#stop()}, the {@link
      * PartitionProcessor#close(CloseReason)} will be called with this reason.
      */
     EVENT_PROCESSOR_SHUTDOWN,
