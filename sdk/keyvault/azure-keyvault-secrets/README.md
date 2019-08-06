@@ -76,12 +76,12 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
 Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZURE_TENANT_ID** environment variables and replaced **your-vault-url** with the above returned URI, you can create the SecretClient:
 
 ```Java
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 
 SecretClient client = new SecretClientBuilder()
         .endpoint(<your-vault-url>)
-        .credential(new DefaultAzureCredential())
+        .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 ```
 > NOTE: For using Asynchronous client use SecretAsyncClient instead of SecretClient
@@ -113,13 +113,13 @@ The following sections provide several code snippets covering some of the most c
 Create a Secret to be stored in the Azure Key Vault.
 - `setSecret` creates a new secret in the key vault. if the secret with name already exists then a new version of the secret is created.
 ```Java
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.Secret;
 
 SecretClient secretClient = new SecretClientBuilder()
         .endpoint(<your-vault-url>)
-        .credential(new DefaultAzureCredential())
+        .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
 Secret secret = secretClient.setSecret("secret_name", "secret_value").value();
@@ -178,13 +178,13 @@ The following sections provide several code snippets covering some of the most c
 Create a Secret to be stored in the Azure Key Vault.
 - `setSecret` creates a new secret in the key vault. if the secret with name already exists then a new version of the secret is created.
 ```Java
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.models.Secret;
 
 SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
         .endpoint(<your-vault-url>)
-        .credential(new DefaultAzureCredential())
+        .credential(new DefaultAzureCredentialBuilder().build())
         .buildAsyncClient();
 
 secretAsyncClient.setSecret("secret_name", "secret_value").subscribe(secretResponse ->

@@ -10,9 +10,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
-import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.KeyBase;
 import com.azure.security.keyvault.keys.models.KeyCreateOptions;
 import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
@@ -42,7 +41,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         RecordedData networkData = new RecordedData();
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
             .endpoint("https://myvault.azure.net/")
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .addPolicy(new RecordNetworkCallPolicy(networkData))
             .httpClient(HttpClient.createDefault())
@@ -59,7 +58,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.instantiation
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
             .endpoint("https://myvault.azure.net/")
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.keys.async.keyclient.instantiation
         return keyAsyncClient;
@@ -76,7 +75,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
             .pipeline(pipeline)
             .endpoint("https://myvault.azure.net/")
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.keys.async.keyclient.pipeline.instantiation
         return keyAsyncClient;
@@ -209,14 +208,6 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
                     keyResponse.value().name(), keyResponse.value().id()));
         // END: com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#string-string
 
-        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#string
-        keyAsyncClient.getKeyWithResponse("keyName")
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(keyResponse ->
-                System.out.printf("Key is created with name %s and id %s \n",
-                    keyResponse.value().name(), keyResponse.value().id()));
-        // END: com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#string
-
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#KeyBase
         keyAsyncClient.listKeys().subscribe(keyBase ->
             keyAsyncClient.getKeyWithResponse(keyBase)
@@ -263,12 +254,11 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
 
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.updateKeyWithResponse#KeyBase-keyOperations
-        keyAsyncClient.getKeyWithResponse("keyName")
+        keyAsyncClient.getKey("keyName")
             .subscribe(keyResponse  -> {
-                Key key = keyResponse.value();
                 //Update the not before time of the key.
-                key.notBefore(OffsetDateTime.now().plusDays(50));
-                keyAsyncClient.updateKeyWithResponse(key, KeyOperation.ENCRYPT, KeyOperation.DECRYPT)
+                keyResponse.notBefore(OffsetDateTime.now().plusDays(50));
+                keyAsyncClient.updateKeyWithResponse(keyResponse, KeyOperation.ENCRYPT, KeyOperation.DECRYPT)
                     .subscriberContext(Context.of(key1, value1, key2, value2))
                     .subscribe(updatedKeyResponse  ->
                         System.out.printf("Key's updated not before time %s \n",
@@ -277,12 +267,11 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.keys.async.keyclient.updateKeyWithResponse#KeyBase-keyOperations
 
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.updateKeyWithResponse#KeyBase
-        keyAsyncClient.getKeyWithResponse("keyName")
+        keyAsyncClient.getKey("keyName")
             .subscribe(keyResponse  -> {
-                Key key = keyResponse.value();
                 //Update the not before time of the key.
-                key.notBefore(OffsetDateTime.now().plusDays(50));
-                keyAsyncClient.updateKeyWithResponse(key)
+                keyResponse.notBefore(OffsetDateTime.now().plusDays(50));
+                keyAsyncClient.updateKeyWithResponse(keyResponse)
                     .subscriberContext(Context.of(key1, value1, key2, value2))
                     .subscribe(updatedKeyResponse  ->
                         System.out.printf("Key's updated not before time %s \n",

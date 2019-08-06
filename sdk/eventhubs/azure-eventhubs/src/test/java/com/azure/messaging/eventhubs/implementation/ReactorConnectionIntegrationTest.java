@@ -66,7 +66,7 @@ public class ReactorConnectionIntegrationTest extends ApiTestBase {
         final TokenResourceProvider provider = new TokenResourceProvider(CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
             getConnectionStringProperties().endpoint().getHost());
 
-        final String tokenAudience = provider.getResourceString(getConnectionStringProperties().eventHubPath());
+        final String tokenAudience = provider.getResourceString(getConnectionStringProperties().eventHubName());
 
         // Act & Assert
         StepVerifier.create(connection.getCBSNode().flatMap(node -> node.authorize(tokenAudience)))

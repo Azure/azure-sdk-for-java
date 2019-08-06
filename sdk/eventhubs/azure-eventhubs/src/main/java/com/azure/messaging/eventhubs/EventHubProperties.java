@@ -19,15 +19,15 @@ import java.util.Arrays;
  */
 @Immutable
 public final class EventHubProperties {
-    private final String path;
+    private final String name;
     private final Instant createdAt;
     private final String[] partitionIds;
 
     EventHubProperties(
-        final String path,
+        final String name,
         final Instant createdAt,
         final String[] partitionIds) {
-        this.path = path;
+        this.name = name;
         this.createdAt = createdAt;
         this.partitionIds = partitionIds != null
             ? Arrays.copyOf(partitionIds, partitionIds.length)
@@ -39,8 +39,8 @@ public final class EventHubProperties {
      *
      * @return Name of the Event Hub.
      */
-    public String path() {
-        return path;
+    public String name() {
+        return name;
     }
 
     /**

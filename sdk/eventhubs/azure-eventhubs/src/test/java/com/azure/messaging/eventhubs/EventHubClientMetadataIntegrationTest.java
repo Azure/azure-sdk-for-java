@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
@@ -34,7 +33,7 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
     private final String[] expectedPartitionIds = new String[]{"0", "1"};
     private EventHubAsyncClient client;
     private ReactorHandlerProvider handlerProvider;
-    private String eventHubPath;
+    private String eventHubName;
 
     public EventHubClientMetadataIntegrationTest() {
         super(new ClientLogger(EventHubClientMetadataIntegrationTest.class));
@@ -52,7 +51,7 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
     protected void beforeTest() {
         skipIfNotRecordMode();
 
-        eventHubPath = getConnectionOptions().eventHubPath();
+        eventHubName = getConnectionOptions().eventHubName();
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
     }
@@ -71,7 +70,7 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
         StepVerifier.create(client.getProperties())
             .assertNext(properties -> {
                 Assert.assertNotNull(properties);
-                Assert.assertEquals(eventHubPath, properties.path());
+                Assert.assertEquals(eventHubName, properties.name());
                 Assert.assertEquals(expectedPartitionIds.length, properties.partitionIds().length);
             }).verifyComplete();
     }
@@ -96,7 +95,7 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
         for (String partitionId : expectedPartitionIds) {
             StepVerifier.create(client.getPartitionProperties(partitionId))
                 .assertNext(properties -> {
-                    Assert.assertEquals(eventHubPath, properties.eventHubPath());
+                    Assert.assertEquals(eventHubName, properties.eventHubName());
                     Assert.assertEquals(partitionId, properties.id());
                 })
                 .verifyComplete();
@@ -116,8 +115,8 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
 
         // Assert
         StepVerifier.create(partitionProperties)
-            .assertNext(properties -> Assert.assertEquals(eventHubPath, properties.eventHubPath()))
-            .assertNext(properties -> Assert.assertEquals(eventHubPath, properties.eventHubPath()))
+            .assertNext(properties -> Assert.assertEquals(eventHubName, properties.eventHubName()))
+            .assertNext(properties -> Assert.assertEquals(eventHubName, properties.eventHubName()))
             .verifyComplete();
     }
 
@@ -128,13 +127,13 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
     public void getPartitionPropertiesInvalidToken() throws InvalidKeyException, NoSuchAlgorithmException {
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
-        final ConnectionStringProperties invalidCredentials = getCredentials(original.endpoint(), original.eventHubPath(),
+        final ConnectionStringProperties invalidCredentials = getCredentials(original.endpoint(), original.eventHubName(),
             original.sharedAccessKeyName(), "invalid-sas-key-value");
         final TokenCredential badTokenProvider = new EventHubSharedAccessKeyCredential(
             invalidCredentials.sharedAccessKeyName(), invalidCredentials.sharedAccessKey(), TIMEOUT);
         final ConnectionOptions connectionOptions = new ConnectionOptions(original.endpoint().getHost(),
-            original.eventHubPath(), badTokenProvider, getAuthorizationType(), TIMEOUT,
-            TransportType.AMQP, Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionOptions().scheduler());
+            original.eventHubName(), badTokenProvider, getAuthorizationType(), TransportType.AMQP, RETRY_OPTIONS,
+            ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionOptions().scheduler());
         final EventHubAsyncClient client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);
 
         // Act & Assert
@@ -158,8 +157,8 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
         final ConnectionOptions connectionOptions = new ConnectionOptions(original.endpoint().getHost(),
-            "invalid-event-hub", getTokenCredential(), getAuthorizationType(), TIMEOUT,
-            TransportType.AMQP, Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionOptions().scheduler());
+            "invalid-event-hub", getTokenCredential(), getAuthorizationType(), TransportType.AMQP,
+            RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionOptions().scheduler());
         final EventHubAsyncClient client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);
 
         // Act & Assert
@@ -175,10 +174,11 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
             .verify();
     }
 
-    private static ConnectionStringProperties getCredentials(URI endpoint, String eventHubPath, String sasKeyName, String sasKeyValue) {
+    private static ConnectionStringProperties getCredentials(URI endpoint, String eventHubName, String sasKeyName,
+                                                             String sasKeyValue) {
         final String connectionString = String.format(Locale.ROOT,
             "Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s;", endpoint.toString(),
-            sasKeyName, sasKeyValue, eventHubPath);
+            sasKeyName, sasKeyValue, eventHubName);
 
         return new ConnectionStringProperties(connectionString);
     }
