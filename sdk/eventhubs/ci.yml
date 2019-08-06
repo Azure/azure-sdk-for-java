@@ -36,9 +36,3 @@ stages:
       Artifacts:
         - name: azure-eventhubs
           safeName: azureeventhubs
-        - name: microsoft-azure-eventhubs
-          safeName: microsoftazureeventhubs
-        - name: microsoft-azure-eventhubs-eph
-          safeName: microsoftazureeventhubseph
-        - name: microsoft-azure-eventhubs-extensions
-          safeName: microsoftazureeventhubsextensions
