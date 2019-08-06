@@ -10,7 +10,6 @@ import com.azure.core.util.configuration.Configuration;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -18,6 +17,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
+import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -126,7 +126,7 @@ public final class KeyClientBuilder {
         policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
-        policies.add(new BearerTokenAuthenticationPolicy(credential, KeyAsyncClient.KEY_VAULT_SCOPE));
+        policies.add(new KeyVaultCredentialPolicy(credential));
         policies.addAll(this.policies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
