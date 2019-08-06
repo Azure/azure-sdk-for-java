@@ -6,6 +6,7 @@ package com.azure.storage.blob
 import com.azure.core.http.*
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
+import com.azure.core.test.TestMode
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.blob.BlobProperties
@@ -299,14 +300,21 @@ class APISpec extends Specification {
     def enableSoftDelete() {
         primaryServiceClient.setProperties(new StorageServiceProperties()
             .deleteRetentionPolicy(new RetentionPolicy().enabled(true).days(2)))
-        sleep(30000) // Wait for the policy to take effect.
+
+        // If running in live mode give the policy time to take effect.
+        if (testCommon.testMode == TestMode.RECORD) {
+            sleep(30000)
+        }
     }
 
     def disableSoftDelete() {
         primaryServiceClient.setProperties(new StorageServiceProperties()
             .deleteRetentionPolicy(new RetentionPolicy().enabled(false)))
 
-        sleep(30000) // Wait for the policy to take effect.
+        // If running in live mode give the policy time to take effect.
+        if (testCommon.testMode == TestMode.RECORD) {
+            sleep(30000)
+        }
     }
 
 

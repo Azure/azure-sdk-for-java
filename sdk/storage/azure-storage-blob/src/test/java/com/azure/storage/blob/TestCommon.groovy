@@ -24,7 +24,7 @@ class TestCommon {
 
     private final InterceptorManager interceptorManager
     private final TestResourceNamer resourceNamer
-    private final TestMode testMode
+    final TestMode testMode
     private final String testName
 
     TestCommon(String testName, boolean includeIteration, int iterationNo) {
