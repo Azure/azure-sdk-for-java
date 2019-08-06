@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public interface PartitionProcessor {
 
     /**
-     * This method is called when this {@link EventProcessorAsyncClient} takes ownership of a new partition and before any
+     * This method is called when this {@link EventProcessor} takes ownership of a new partition and before any
      * events from this partition are received.
      *
      * @return a representation of the deferred computation of this call.

@@ -49,14 +49,14 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
 
             span.end();
         } else {
-            logger.asWarning().log("Failed to find span to end it.");
+            logger.warning("Failed to find span to end it.");
         }
     }
 
     @Override
     public void setAttribute(String key, String value, Context context) {
         if (ImplUtils.isNullOrEmpty(value)) {
-            logger.asInfo().log("Failed to set span attribute since value is null or empty.");
+            logger.info("Failed to set span attribute since value is null or empty.");
             return;
         }
 
@@ -65,7 +65,7 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
             Span span = (Span) spanOptional.get();
             span.putAttribute(key, AttributeValue.stringAttributeValue(value));
         } else {
-            logger.asWarning().log("Failed to find span to add attribute.");
+            logger.warning("Failed to find span to add attribute.");
         }
     }
 
