@@ -34,5 +34,5 @@ stages:
     parameters:
       ServiceDirectory: tracing
       Artifacts:
-        - name: azure-tracing-opentelemetry
-          safeName: azuretracingopentelemetry
+        - name: tracing-opentelemetry
+          safeName: tracingopentelemetry

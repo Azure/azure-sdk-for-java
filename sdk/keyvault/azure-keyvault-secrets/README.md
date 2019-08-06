@@ -15,7 +15,7 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-keyvault-secrets</artifactId>
-    <version>4.0.0-preview.1</version>
+    <version>4.0.0-preview.2</version>
 </dependency>
 ```
 
@@ -84,7 +84,7 @@ SecretClient client = new SecretClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 ```
-> NOTE: For using Asynchronous client use SecretAsyncClient instead of SecretClient
+> NOTE: For using Asynchronous client use SecretAsyncClient instead of SecretClient and call buildAsyncClient()
 
 
 ## Key concepts
