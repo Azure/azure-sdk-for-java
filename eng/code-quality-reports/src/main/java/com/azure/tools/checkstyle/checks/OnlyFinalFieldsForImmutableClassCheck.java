@@ -6,19 +6,23 @@ package com.azure.tools.checkstyle.checks;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.utils.AnnotationUtil;
+import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
+
+import java.util.Optional;
 
 /**
- * Verify the classes with annotation @Immutable should have following rules:
+ * Verify the classes with annotation {@code @Immutable} should have following rules:
  * <ol>
  *   <li>Only final fields allowed</li>
  * </ol>
  */
 public class OnlyFinalFieldsForImmutableClassCheck extends AbstractCheck {
     private static final String IMMUTABLE_NOTATION = "Immutable";
-    private static final String ERROR_MSG = "The variable field ''%s'' of class ''%s'' should be final." +
+    private static final String ERROR_MSG = "The variable field ''%s'' should be final." +
         "Classes annotated with @Immutable are supposed to be immutable.";
 
-    private static boolean hasImmutableAnnotation;
+    private boolean hasImmutableAnnotation;
 
     @Override
     public int[] getDefaultTokens() {
@@ -34,7 +38,6 @@ public class OnlyFinalFieldsForImmutableClassCheck extends AbstractCheck {
     public int[] getRequiredTokens() {
         return new int[] {
             TokenTypes.CLASS_DEF,
-            TokenTypes.VARIABLE_DEF,
             TokenTypes.OBJBLOCK
         };
     }
@@ -61,41 +64,33 @@ public class OnlyFinalFieldsForImmutableClassCheck extends AbstractCheck {
         }
     }
 
-    /**
-     * Checks if the class is annotated with annotation @Immutable. A class could have multiple annotations.
+    /*
+     * Checks if the class is annotated with annotation {@literal @Immutable}. A class could have multiple annotations.
      *
      * @param classDefToken the CLASS_DEF AST node
-     * @return true if the class is annotated with @Immutable, false otherwise.
+     * @return true if the class is annotated with {@literal @Immutable}, false otherwise.
      */
     private boolean hasImmutableAnnotation(DetailAST classDefToken) {
-        // Always has MODIFIERS node
-        final DetailAST modifiersToken = classDefToken.findFirstToken(TokenTypes.MODIFIERS);
-
-        for (DetailAST ast = modifiersToken.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
-            if (ast.getType() == TokenTypes.ANNOTATION) {
-                // One class could have multiple annotations, return true if found Immutable.
-                final DetailAST annotationIdent = ast.findFirstToken(TokenTypes.IDENT);
-                return annotationIdent != null && IMMUTABLE_NOTATION.equals(annotationIdent.getText());
-            }
-        }
-        // If no @Immutable annotated with this class, return false
-        return false;
+        DetailAST immutableAnnotation = AnnotationUtil.getAnnotation(classDefToken, IMMUTABLE_NOTATION);
+        return immutableAnnotation != null;
     }
 
-    /**
+    /*
      * Checks all field definitions within the first level of a class are final
      *
      * @param objBlockToken the OBJBLOCK AST node
      */
     private void checkForOnlyFinalFields(DetailAST objBlockToken) {
-        for (DetailAST ast = objBlockToken.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
-            if (TokenTypes.VARIABLE_DEF == ast.getType()) {
-                final DetailAST modifiersToken = ast.findFirstToken(TokenTypes.MODIFIERS);
-                if (!modifiersToken.branchContains(TokenTypes.FINAL) && !Utils.hasIllegalCombination(modifiersToken)) {
-                    log(modifiersToken, String.format(ERROR_MSG, ast.findFirstToken(TokenTypes.IDENT).getText(),
-                        objBlockToken.getPreviousSibling().getText()));
-                }
+        Optional<DetailAST> nonFinalFieldFound = TokenUtil.findFirstTokenByPredicate(objBlockToken, (node) -> {
+            if (TokenTypes.VARIABLE_DEF == node.getType()) {
+                return !node.branchContains(TokenTypes.FINAL)
+                    && !Utils.hasIllegalCombination(node.findFirstToken(TokenTypes.MODIFIERS));
             }
+            return false;
+        });
+        if (nonFinalFieldFound.isPresent()) {
+            DetailAST field = nonFinalFieldFound.get().findFirstToken(TokenTypes.IDENT);
+            log(field, String.format(ERROR_MSG, field.getText()));
         }
     }
 

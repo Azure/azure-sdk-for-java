@@ -4,22 +4,22 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
 
 /**
  * Common utils amount custom checks
  */
 public class Utils {
-    private static final Set<Integer> INVALID_FINAL_COMBINATION = new HashSet<>(Arrays.asList(
+    private static final Set INVALID_FINAL_COMBINATION = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         TokenTypes.LITERAL_TRANSIENT,
         TokenTypes.LITERAL_VOLATILE
-    ));
+    )));
 
-    private static final Set<String> INVALID_FINAL_ANNOTATIONS = new HashSet<>(Arrays.asList(
+    private static final Set INVALID_FINAL_ANNOTATIONS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         "JsonProperty"
-    ));
+    )));
 
     /**
      * Check if variable modifiers contains any of the illegal combination with final modifier
