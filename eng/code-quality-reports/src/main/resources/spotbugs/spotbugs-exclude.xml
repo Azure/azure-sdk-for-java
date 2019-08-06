@@ -534,4 +534,9 @@
     <Bug pattern="NM_CONFUSING"/>
   </Match>
 
+  <!-- This is a false positive, it is possible for usingUserDelegation to be false. -->
+  <Match>
+    <Class name="com.azure.storage.blob.ServiceSASSignatureValues"/>
+    <Bug pattern="UC_USELESS_CONDITION"/>
+  </Match>
 </FindBugsFilter>

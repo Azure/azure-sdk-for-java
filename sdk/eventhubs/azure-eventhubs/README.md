@@ -204,7 +204,7 @@ consumer.receive().subscribe(event -> {
 });
 ```
 
-### Consume events from all Event Hub partitions
+### Consume events using an Event Processor
 
 To consume events for all partitions of an Event Hub, you'll create an [`EventProcessor`][source_eventprocessor] for a
 specific consumer group. When an Event Hub is created, it provides a default consumer group that can be used to get
