@@ -34,5 +34,5 @@ stages:
     parameters:
       ServiceDirectory: eventhubs
       Artifacts:
-        - name: azure-eventhubs
-          safeName: azureeventhubs
+        - name: azure-messaging-eventhubs
+          safeName: azuremessagingeventhubs
