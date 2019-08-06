@@ -84,7 +84,7 @@ SecretClient client = new SecretClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 ```
-> NOTE: For using Asynchronous client use SecretAsyncClient instead of SecretClient
+> NOTE: For using Asynchronous client use SecretAsyncClient instead of SecretClient and call buildAsyncClient()
 
 
 ## Key concepts
