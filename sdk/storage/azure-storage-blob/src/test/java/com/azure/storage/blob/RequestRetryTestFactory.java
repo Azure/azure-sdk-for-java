@@ -72,9 +72,9 @@ class RequestRetryTestFactory {
 
     private static final Mono<HttpResponse> RETRY_TEST_NOT_FOUND_RESPONSE = Mono.just(new RetryTestResponse(404));
 
-    private int retryTestScenario;
+    private final int retryTestScenario;
 
-    private RequestRetryOptions options;
+    private final RequestRetryOptions options;
 
     /*
     It is atypical and not recommended to have mutable state on the factory itself. However, the tests will need to
@@ -104,7 +104,7 @@ class RequestRetryTestFactory {
 
     // The retry factory only really cares about the status code.
     private static final class RetryTestResponse extends HttpResponse {
-        int statusCode;
+        final int statusCode;
 
         RetryTestResponse(int statusCode) {
             this.statusCode = statusCode;
@@ -147,7 +147,7 @@ class RequestRetryTestFactory {
     }
 
     private final class RetryTestClient implements HttpClient {
-        private RequestRetryTestFactory factory;
+        private final RequestRetryTestFactory factory;
 
         RetryTestClient(RequestRetryTestFactory parent) {
             this.factory = parent;

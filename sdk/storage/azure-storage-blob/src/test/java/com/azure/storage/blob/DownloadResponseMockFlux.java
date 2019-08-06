@@ -28,10 +28,10 @@ class DownloadResponseMockFlux extends Flux<ByteBuf> {
     static final int DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE = 6;
     static final int DR_TEST_SCENARIO_INFO_TEST = 8;
 
-    private int scenario;
+    private final int scenario;
     private int tryNumber;
     private HTTPGetterInfo info;
-    private ByteBuffer scenarioData;
+    private final ByteBuffer scenarioData;
 
     DownloadResponseMockFlux(int scenario) {
         this.scenario = scenario;
@@ -47,6 +47,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuf> {
             case DR_TEST_SCENARIO_NON_RETRYABLE_ERROR:
             case DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
             case DR_TEST_SCENARIO_INFO_TEST:
+                this.scenarioData = null;
                 break;
             default:
                 throw new IllegalArgumentException("Invalid download resource test scenario.");
