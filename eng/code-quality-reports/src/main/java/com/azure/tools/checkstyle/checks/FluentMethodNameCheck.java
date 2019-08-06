@@ -7,7 +7,6 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
-import jdk.nashorn.internal.parser.Token;
 
 import java.util.ArrayDeque;
 import java.util.Collections;
@@ -76,7 +75,7 @@ public class FluentMethodNameCheck extends AbstractCheck {
 
                 // logs error if the @Fluent method has 'throws' at the method declaration.
                 if (token.findFirstToken(TokenTypes.LITERAL_THROWS) != null) {
-                    log(token, String.format("Fluent Method ''%s'' must not be declared to throw any checked exceptions");
+                    log(token, String.format("Fluent Method ''%s'' must not be declared to throw any checked exceptions"));
                 }
                 break;
             default:
