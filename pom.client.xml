@@ -750,5 +750,6 @@
     <module>./sdk/storage/azure-storage-blob</module>
     <module>./sdk/storage/azure-storage-file</module>
     <module>./sdk/storage/azure-storage-queue</module>
+    <module>./search/data-plane/data</module>
   </modules>
 </project>
