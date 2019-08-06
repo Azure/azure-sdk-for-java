@@ -69,7 +69,10 @@ class TestCommon {
             .endpoint(endpoint)
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-            .addPolicy(interceptorManager.getRecordPolicy())
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
@@ -83,44 +86,57 @@ class TestCommon {
     }
 
     BlobServiceClient getServiceClient(SASTokenCredential credential, String endpoint) {
-        return new BlobServiceClientBuilder()
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-            .addPolicy(interceptorManager.getRecordPolicy())
-            .credential(credential)
-            .buildClient()
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildClient()
     }
 
     BlobServiceClient getOAuthServiceClient(String accountName) {
-        return new BlobServiceClientBuilder()
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(String.format("https://%s.blob.core.windows.net/", accountName))
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-            .addPolicy(interceptorManager.getRecordPolicy())
-            .credential(new EnvironmentCredential()) // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            .buildClient()
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+        return builder.credential(new EnvironmentCredential()).buildClient()
     }
 
     ContainerClient getContainerClient(SASTokenCredential credential, String endpoint) {
-        return new ContainerClientBuilder()
+        ContainerClientBuilder builder = new ContainerClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-            .addPolicy(interceptorManager.getRecordPolicy())
-            .credential(credential)
-            .buildClient()
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        builder.credential(credential).buildClient()
     }
 
     BlobAsyncClient getBlobAsyncClient(SharedKeyCredential credential, String endpoint, String blobName) {
-        return new BlobClientBuilder()
+        BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .blobName(blobName)
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-            .addPolicy(interceptorManager.getRecordPolicy())
-            .credential(credential)
-            .buildBlobAsyncClient()
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        builder.credential(credential).buildBlobAsyncClient()
     }
 
     BlobClient getBlobClient(SASTokenCredential credential, String endpoint, String blobName) {
@@ -128,15 +144,18 @@ class TestCommon {
     }
 
     BlobClient getBlobClient(SASTokenCredential credential, String endpoint, String blobName, String snapshotId) {
-        return new BlobClientBuilder()
+        BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .blobName(blobName)
             .snapshot(snapshotId)
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-            .addPolicy(interceptorManager.getRecordPolicy())
-            .credential(credential)
-            .buildBlobClient()
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildBlobClient()
     }
 
     BlobClient getBlobClient(SharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
@@ -144,7 +163,10 @@ class TestCommon {
             .endpoint(endpoint)
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-            .addPolicy(interceptorManager.getRecordPolicy())
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
@@ -154,7 +176,12 @@ class TestCommon {
     }
 
     private HttpClient getHttpClient() {
-        HttpClient client = HttpClient.createDefault().wiretap(true)
+        HttpClient client;
+        if (testMode == TestMode.RECORD) {
+            client = HttpClient.createDefault().wiretap(true)
+        } else {
+            client = interceptorManager.getPlaybackClient()
+        }
 
         if (Boolean.parseBoolean(ConfigurationManager.getConfiguration().get("AZURE_TEST_DEBUGGING"))) {
             return client.proxy(PROXY_OPTIONS)
