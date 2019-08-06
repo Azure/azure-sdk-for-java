@@ -62,7 +62,7 @@ public final class CryptographyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the key configured in the client. Prints out the returned key details.</p>
-     * {@codesnippet om.azure.security.keyvault.keys.cryptography.cryptographyclient.getKeyWithResponse#Context}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.getKeyWithResponse#Context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when the configured key doesn't exist in the key vault.
@@ -112,7 +112,7 @@ public final class CryptographyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.encrypt#symmetric-encrypt-Context}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.encrypt#symmetric-encrypt-Context}
      *
      * @param algorithm The algorithm to be used for encryption.
      * @param plaintext The content to be encrypted.
@@ -139,7 +139,7 @@ public final class CryptographyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.encrypt#asymmetric-encrypt}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.encrypt#asymmetric-encrypt}
      *
      * @param algorithm The algorithm to be used for encryption.
      * @param plaintext The content to be encrypted.
@@ -238,7 +238,7 @@ public final class CryptographyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.sign#Context}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.sign-Context}
      *
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature is to be created.
@@ -310,7 +310,7 @@ public final class CryptographyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the specified digest. Subscribes to the call asynchronously and prints out the verification details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.verify#Context}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.verify-Context}
      *
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature is to be created.
@@ -352,7 +352,7 @@ public final class CryptographyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Wraps the key content. Subscribes to the call asynchronously and prints out the wrapped key details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.wrap-key#Context}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.wrap-key-Context}
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param key The key content to be wrapped
@@ -374,7 +374,7 @@ public final class CryptographyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Unwraps the key content. Subscribes to the call asynchronously and prints out the unwrapped key details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.unwrap-key}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.unwrap-key}
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param encryptedKey The encrypted key content to unwrap.
@@ -395,7 +395,7 @@ public final class CryptographyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Unwraps the key content. Subscribes to the call asynchronously and prints out the unwrapped key details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.unwrap-key#Context}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.unwrap-key-Context}
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param encryptedKey The encrypted key content to unwrap.
@@ -442,7 +442,7 @@ public final class CryptographyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Signs the raw data. Subscribes to the call asynchronously and prints out the signature details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.sign-data#Context}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.sign-data-Context}
      *
      * @param algorithm The algorithm to use for signing.
      * @param data The content from which signature is to be created.
@@ -490,7 +490,7 @@ public final class CryptographyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the raw data. Subscribes to the call asynchronously and prints out the verification details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.verify-data#Context}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.verify-data-Context}
      *
      * @param algorithm The algorithm to use for signing.
      * @param data The raw content against which signature is to be verified.
