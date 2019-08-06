@@ -31,6 +31,9 @@
   <suppress checks="Header" files=".*KeyVaultKeyResolverBCProviderTest.java"/>
   <suppress checks="Header" files=".*KeyVaultKeyResolverDefaultProviderTest.java"/>
 
+  <!-- Cryptography Client exception for service client instantiation as it provides client side crypto and is not entirely based on REST service -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientInstantiationCheck" files=".*CryptographyAsyncClient.java"/>
+
   <!-- Public API already released with incorrect upper-case naming pattern -->
   <suppress checks="MethodName" files="AsymmetricEncryptionAlgorithm.java"/>
   <suppress checks="MethodName" files="ISessionHandler.java"/>
