@@ -996,7 +996,7 @@ class PageBlobAPITest extends APISpec {
             if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long")
             }
-            sleep(1000)
+            sleepIfRecord(1000)
         }
 
         expect:
@@ -1035,7 +1035,7 @@ class PageBlobAPITest extends APISpec {
             if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long")
             }
-            sleep(1000)
+            sleepIfRecord(1000)
         }
 
         snapshot = bu.createSnapshot().value().getSnapshotId()

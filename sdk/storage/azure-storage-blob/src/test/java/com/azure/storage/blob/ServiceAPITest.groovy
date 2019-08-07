@@ -189,7 +189,7 @@ class ServiceAPITest extends APISpec {
         HttpHeaders headers = primaryServiceClient.setProperties(sentProperties).headers()
 
         // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
-        sleep(30 * 1000)
+        sleepIfRecord(30 * 1000)
 
         StorageServiceProperties receivedProperties = primaryServiceClient.getProperties().value()
 

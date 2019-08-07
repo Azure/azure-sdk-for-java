@@ -12,6 +12,7 @@ import com.azure.identity.credential.EnvironmentCredential
 import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
 
+import java.nio.charset.StandardCharsets
 import java.util.function.Supplier
 
 class TestCommon {
@@ -24,7 +25,7 @@ class TestCommon {
 
     private final InterceptorManager interceptorManager
     private final TestResourceNamer resourceNamer
-    final TestMode testMode
+    private final TestMode testMode
     private final String testName
 
     TestCommon(String testName, boolean includeIteration, int iterationNo) {
@@ -38,6 +39,14 @@ class TestCommon {
         }
 
         this.resourceNamer = new TestResourceNamer(testName, testMode, interceptorManager.getRecordedData())
+    }
+
+    TestMode getTestMode() {
+        return testMode
+    }
+
+    String getTestName() {
+        return testName
     }
 
     void stopRecording() {
@@ -192,5 +201,9 @@ class TestCommon {
 
     String generateResourceName(String prefix, int entityNo) {
         return resourceNamer.randomName(prefix + testName + System.currentTimeMillis() + entityNo, 63)
+    }
+
+    String getBlockID() {
+        return Base64.encoder.encodeToString(resourceNamer.randomUuid().getBytes(StandardCharsets.UTF_8))
     }
 }

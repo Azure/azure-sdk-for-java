@@ -3,9 +3,10 @@
 
 package com.azure.storage.blob
 
-
 import com.azure.core.http.rest.Response
 import com.azure.core.http.rest.VoidResponse
+import com.azure.storage.blob.BlobProperties
+import com.azure.storage.blob.ContainerProperties
 import com.azure.storage.blob.models.*
 import spock.lang.Unroll
 
@@ -610,7 +611,7 @@ class ContainerAPITest extends APISpec {
             if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long")
             }
-            sleep(1000)
+            sleepIfRecord(1000)
         }
 
         PageBlobClient metadataBlob = cu.getPageBlobClient(metadataName)
@@ -1149,7 +1150,9 @@ class ContainerAPITest extends APISpec {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
 
-        Thread.sleep(16000) // Wait for the lease to expire to ensure we are actually renewing it
+        // If running in live mode wait for the lease to expire to ensure we are actually renewing it
+        sleepIfRecord(16000)
+
         Response<String> renewLeaseResponse = cu.renewLease(leaseID)
 
         expect:
@@ -1322,7 +1325,8 @@ class ContainerAPITest extends APISpec {
         breakLeaseResponse.value().getSeconds() <= remainingTime
         validateBasicHeaders(breakLeaseResponse.headers())
         if (breakPeriod != null) {
-            sleep(breakPeriod * 1000) // so we can delete the container after the test completes
+            // If running in live mode wait for the lease to break so we can delete the container after the test completes
+            sleepIfRecord(breakPeriod * 1000)
         }
 
         where:

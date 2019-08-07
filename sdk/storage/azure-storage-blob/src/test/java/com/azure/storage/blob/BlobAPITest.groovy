@@ -638,7 +638,9 @@ class BlobAPITest extends APISpec {
         setup:
         String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
 
-        Thread.sleep(16000) // Wait for the lease to expire to ensure we are actually renewing it
+        // If running in live mode wait for the lease to expire to ensure we are actually renewing it
+        sleepIfRecord(16000)
+
         Response<String> renewLeaseResponse = bu.renewLease(leaseID, null, null)
 
         expect:
@@ -1068,7 +1070,7 @@ class BlobAPITest extends APISpec {
 
         when:
         while (bu2.getProperties(null, null).headers().value("x-ms-copy-status") == CopyStatusType.PENDING.toString()) {
-            sleep(1000)
+            sleepIfRecord(1000)
         }
         HttpHeaders headers2 = bu2.getProperties(null, null).headers()
 
@@ -1104,7 +1106,7 @@ class BlobAPITest extends APISpec {
 
         OffsetDateTime start = OffsetDateTime.now()
         while (status != CopyStatusType.SUCCESS.toString()) {
-            sleep(1000)
+            sleepIfRecord(1000)
             status = bu2.getProperties().headers().value("x-ms-copy-status")
             OffsetDateTime currentTime = OffsetDateTime.now()
             if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {

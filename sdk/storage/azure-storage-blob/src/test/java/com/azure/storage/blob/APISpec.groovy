@@ -21,6 +21,7 @@ import spock.lang.Specification
 import java.nio.ByteBuffer
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
+import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.function.Supplier
 
@@ -63,22 +64,34 @@ class APISpec extends Specification {
     }
 
     def cleanup() {
-        testCommon.stopRecording()
-        iterationNo = (specificationContext.currentIteration.estimatedNumIterations > 1) ? iterationNo + 1 : 0
-    }
+        for (ContainerItem container : primaryServiceClient.listContainers(new ListContainersOptions().prefix(testCommon.getTestName()), Duration.ofSeconds(120))) {
+            ContainerClient containerClient = primaryServiceClient.getContainerClient(container.name())
 
-    def cleanupSpec() {
-        BlobServiceClient cleanupClient = testCommon.setClient(primaryCredential)
-        // There should not be more than 5000 containers from these tests
-        for (ContainerItem c : cleanupClient.listContainers()) {
-            ContainerClient containerClient = cleanupClient.getContainerClient(c.name())
-
-            if (c.properties().leaseState() == LeaseStateType.LEASED) {
+            if (container.properties().leaseState() == LeaseStateType.LEASED) {
                 containerClient.breakLease(0, null, null)
             }
 
             containerClient.delete()
         }
+
+        testCommon.stopRecording()
+        iterationNo = (specificationContext.currentIteration.estimatedNumIterations > 1) ? iterationNo + 1 : 0
+    }
+
+    def cleanupSpec() {
+//        TestCommon cleanupCommon = new TestCommon(this.class.getName(), false, 0)
+//        BlobServiceClient cleanupClient = cleanupCommon.setClient(primaryCredential)
+//        // There should not be more than 5000 containers from these tests
+//        for (ContainerItem c : cleanupClient.listContainers()) {
+//            ContainerClient containerClient = cleanupClient.getContainerClient(c.name())
+//
+//            if (c.properties().leaseState() == LeaseStateType.LEASED) {
+//                containerClient.breakLease(0, null, null)
+//            }
+//
+//            containerClient.delete()
+//        }
+//        cleanupCommon.stopRecording()
     }
 
     private SharedKeyCredential getCredential(String accountType) {
@@ -252,7 +265,7 @@ class APISpec extends Specification {
             if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long")
             }
-            sleep(1000)
+            sleepIfRecord(1000)
         }
     }
 
@@ -301,19 +314,20 @@ class APISpec extends Specification {
         primaryServiceClient.setProperties(new StorageServiceProperties()
             .deleteRetentionPolicy(new RetentionPolicy().enabled(true).days(2)))
 
-        // If running in live mode give the policy time to take effect.
-        if (testCommon.testMode == TestMode.RECORD) {
-            sleep(30000)
-        }
+        sleepIfRecord(30000)
     }
 
     def disableSoftDelete() {
         primaryServiceClient.setProperties(new StorageServiceProperties()
             .deleteRetentionPolicy(new RetentionPolicy().enabled(false)))
 
-        // If running in live mode give the policy time to take effect.
-        if (testCommon.testMode == TestMode.RECORD) {
-            sleep(30000)
+        sleepIfRecord(30000)
+    }
+
+    // Only sleep if test is running in live mode
+    def sleepIfRecord(long milliseconds) {
+        if (testCommon.getTestMode() == TestMode.RECORD) {
+            sleep(milliseconds)
         }
     }
 

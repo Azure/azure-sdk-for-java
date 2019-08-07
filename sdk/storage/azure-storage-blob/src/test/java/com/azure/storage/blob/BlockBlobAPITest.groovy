@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+
 package com.azure.storage.blob
 
 import com.azure.core.http.HttpHeaders
@@ -22,7 +23,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     def getBlockID() {
-        return Base64.encoder.encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8))
+        return testCommon.getBlockID()
     }
 
     def "Stage block"() {
@@ -600,8 +601,8 @@ class BlockBlobAPITest extends APISpec {
         exceptionType.isInstance(e)
 
         where:
-        data            | dataSize            | exceptionType
-        null            | defaultDataSize     | NullPointerException
+        data                     | dataSize            | exceptionType
+        null                     | defaultDataSize     | NullPointerException
         defaultInputStream.get() | defaultDataSize + 1 | IndexOutOfBoundsException
         // This doesn't error as it isn't reading the entire stream which is valid in the new client
         // defaultInputStream.get() | defaultDataSize - 1 | StorageErrorException
