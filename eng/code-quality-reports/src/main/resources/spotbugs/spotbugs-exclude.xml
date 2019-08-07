@@ -116,8 +116,8 @@
   </Match>
 
   <!-- Public field already exists in the public API surface area even though no writes were seen to this public field.
-    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/BatchOptions.java#L50
-    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/BatchOptions.java#L57 -->
+    https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/microsoft-azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/BatchOptions.java#L50
+    https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/microsoft-azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/BatchOptions.java#L57 -->
   <Match>
     <Class name="com.microsoft.azure.eventhubs.BatchOptions"/>
     <Field name="~(maxMessageSize|partitionKey)"/>
@@ -125,16 +125,16 @@
   </Match>
 
   <!-- Public method already exists in the public API surface area even though it has confusing name.
-    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/MessageReceiver.java#L247
-    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/MessageReceiver.java#L251
-    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/MessagingFactory.java#L146 -->
+    https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/microsoft-azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/MessageReceiver.java#L247
+    https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/microsoft-azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/MessageReceiver.java#L251
+    https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/microsoft-azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/MessagingFactory.java#L146 -->
   <Match>
     <Class name="~com\.microsoft\.azure\.eventhubs\.impl\.(MessageReceiver|MessagingFactory)"/>
     <Bug pattern="NM_CONFUSING"/>
   </Match>
 
   <!-- Returning a new copy of the object is not necessary
-    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/EventHubRuntimeInformation.java#L62 -->
+    https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/microsoft-azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/EventHubRuntimeInformation.java#L62 -->
   <Match>
     <Class name="com.microsoft.azure.eventhubs.EventHubRuntimeInformation"/>
     <Method name="~(getPartitionIds|onConnectionInit)"/>
@@ -143,7 +143,7 @@
 
   <!-- EventHubRuntimeInformation is populated by the service. There is no user input. Copying partitionId contents is
     not necessary.
-    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/EventHubRuntimeInformation.java#L27 -->
+    https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/microsoft-azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/EventHubRuntimeInformation.java#L27 -->
   <Match>
     <Class name="com.microsoft.azure.eventhubs.EventHubRuntimeInformation"/>
     <Field name="partitionIds"/>
@@ -151,7 +151,7 @@
   </Match>
 
   <!-- Public field already exists in the public API surface area even though it should be final.
-    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/EventHubClientImpl.java#L41 -->
+    https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/microsoft-azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/EventHubClientImpl.java#L41 -->
   <Match>
     <Class name="com.microsoft.azure.eventhubs.impl.EventHubClientImpl"/>
     <Field name="USER_AGENT"/>
@@ -159,7 +159,7 @@
   </Match>
 
   <!-- Values are initialized at runtime
-    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/EventHubClientImpl.java#L47 -->
+    https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/microsoft-azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/EventHubClientImpl.java#L47 -->
   <Match>
     <Class name="com.microsoft.azure.eventhubs.impl.EventHubClientImpl"/>
     <Field name="~(sender|timer|underlyingFactory)"/>
@@ -167,7 +167,7 @@
   </Match>
 
   <!-- Returning a new copy of the object is not necessary
-    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/ReplayableWorkItem.java#L35 -->
+    https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/microsoft-azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/ReplayableWorkItem.java#L35 -->
   <Match>
     <Class name="com.microsoft.azure.eventhubs.impl.ReplayableWorkItem"/>
     <Field name="amqpMessage"/>
@@ -175,8 +175,8 @@
   </Match>
 
   <!-- Return value is fine to not check, if add, it will be a redundant step
-    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/FaultTolerantObject.java#L80
-    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/FaultTolerantObject.java#L123 -->
+    https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/microsoft-azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/FaultTolerantObject.java#L80
+    https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/microsoft-azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/FaultTolerantObject.java#L123 -->
   <Match>
     <Class name="~com\.microsoft\.azure\.eventhubs\.impl\.FaultTolerantObject(\$(1|2))?"/>
     <Method name="~(onEvent|runOnOpenedObject|close)"/>
@@ -184,8 +184,8 @@
   </Match>
 
   <!-- Bytes array are designed to return null if it is null
-    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/EventDataImpl.java#L150
-    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/PartitionReceiverImpl.java#L278 -->
+    https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/microsoft-azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/EventDataImpl.java#L150
+    https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/microsoft-azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/PartitionReceiverImpl.java#L278 -->
   <Match>
     <Class name="~com\.microsoft\.azure\.eventhubs\.impl\.(EventDataImpl|PartitionReceiverImpl)"/>
     <Method name="~(getBytes|getDesiredCapabilities)"/>
@@ -193,7 +193,7 @@
   </Match>
 
   <!-- EventHubClientImpl.USER_AGENT is public and can be set by consumers of the SDK to not be null.
-  https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/ConnectionHandler.java#L88 -->
+  https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/microsoft-azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/ConnectionHandler.java#L88 -->
   <Match>
     <Class name="com.microsoft.azure.eventhubs.impl.ConnectionHandler"/>
     <Method name="onConnectionInit"/>
@@ -511,9 +511,7 @@
 
   <!-- It is fine to have un-used variables, unread fields, anonymous static inner classes in javadoc code samples. -->
   <Match>
-    <Or>
-      <Class name="~.*JavaDoc(CodeSnippets|CodeSamples)"/>
-    </Or>
+    <Class name="~.*JavaDoc(CodeSnippets|CodeSamples)"/>
     <Bug pattern="DLS_DEAD_LOCAL_STORE,URF_UNREAD_FIELD,SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 

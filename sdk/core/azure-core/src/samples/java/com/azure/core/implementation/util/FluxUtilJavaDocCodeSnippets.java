@@ -56,34 +56,4 @@ public class FluxUtilJavaDocCodeSnippets {
     private Mono<String> serviceCallReturnsSingle(String prefix, Context context) {
         return Mono.empty();
     }
-
-    /**
-     * Implementation not provided
-     * @param value The value
-     * @return A {@link Mono} containing a {@link Response} containing a {@link Response#value() value}.
-     */
-    private <T> Mono<Response<T>> getMonoRestResponse(T value) {
-        Response<T> response = new Response<T>() {
-            @Override
-            public int statusCode() {
-                return 200;
-            }
-
-            @Override
-            public HttpHeaders headers() {
-                return null;
-            }
-
-            @Override
-            public HttpRequest request() {
-                return null;
-            }
-
-            @Override
-            public T value() {
-                return value;
-            }
-        };
-        return Mono.just(response);
-    }
 }
