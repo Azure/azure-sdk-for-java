@@ -17,7 +17,7 @@ import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 import reactor.core.publisher.Mono;
 
 abstract class LocalKeyCryptographyClient {
-    CryptographyServiceClient serviceClient;
+    final CryptographyServiceClient serviceClient;
 
     LocalKeyCryptographyClient(CryptographyServiceClient serviceClient) {
         this.serviceClient = serviceClient;

@@ -12,7 +12,7 @@ public final class KeyUnwrapResult {
     /**
      * The unwrapped key content.
      */
-    private byte[] key;
+    private final byte[] key;
 
     /**
      * Creates the instance of KeyUnwrap Result holding the unwrapped key content.

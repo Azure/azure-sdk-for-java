@@ -149,7 +149,8 @@ public class AssignedOnceVariableToBeFinalCheck extends AbstractCheck {
     private DetailAST getAssignedField(final DetailAST assignationToken) {
         final Set<String> scopeParentParameterSet = getParameterSet(scopeParent.findFirstToken(
             TokenTypes.PARAMETERS));
-        final DetailAST assignationWithDot = assignationToken.findFirstToken(TokenTypes.DOT);
+        final DetailAST firstChild = assignationToken.getFirstChild();
+        final DetailAST assignationWithDot = firstChild.getType() == TokenTypes.DOT ? firstChild : null;
 
         if (assignationWithDot != null) {
             if (assignationWithDot.branchContains(TokenTypes.LITERAL_THIS)) {
