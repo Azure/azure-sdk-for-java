@@ -54,14 +54,14 @@ import java.util.Objects;
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.retry-timeout-scheduler}
  *
- * <p><strong>Creating an {@link EventProcessorAsyncClient} instance using Event Hub instance connection
+ * <p><strong>Creating an {@link EventProcessor} instance using Event Hub instance connection
  *  string</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventprocessorasyncclient.instantiation}
+ * {@codesnippet com.azure.messaging.eventhubs.eventprocessor.instantiation}
  *
  * @see EventHubAsyncClient
- * @see EventProcessorAsyncClient
+ * @see EventProcessor
  */
-@ServiceClientBuilder(serviceClients = {EventHubAsyncClient.class, EventProcessorAsyncClient.class})
+@ServiceClientBuilder(serviceClients = {EventHubAsyncClient.class, EventProcessor.class})
 public class EventHubClientBuilder {
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
@@ -348,11 +348,11 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * This property must be set for building an {@link EventProcessorAsyncClient}.
+     * This property must be set for building an {@link EventProcessor}.
      *
-     * Sets the consumer group name from which the {@link EventProcessorAsyncClient} should consume events from.
+     * Sets the consumer group name from which the {@link EventProcessor} should consume events from.
      *
-     * @param consumerGroupName The consumer group name this {@link EventProcessorAsyncClient} should consume events
+     * @param consumerGroupName The consumer group name this {@link EventProcessor} should consume events
      *         from.
      * @return The updated {@link EventHubClientBuilder} object.
      */
@@ -362,7 +362,7 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * This property can be optionally set when building an {@link EventProcessorAsyncClient}.
+     * This property can be optionally set when building an {@link EventProcessor}.
      *
      * Sets the initial event position. If this property is not set and if checkpoint for a partition doesn't exist,
      * {@link EventPosition#earliest()} will be used as the initial event position to start consuming events.
@@ -376,9 +376,9 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * This property must be set when building an {@link EventProcessorAsyncClient}.
+     * This property must be set when building an {@link EventProcessor}.
      *
-     * Sets the {@link PartitionManager} the {@link EventProcessorAsyncClient} will use for storing partition
+     * Sets the {@link PartitionManager} the {@link EventProcessor} will use for storing partition
      * ownership and checkpoint information.
      *
      * @param partitionManager Implementation of {@link PartitionManager}.
@@ -392,7 +392,7 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * This property must be set when building an {@link EventProcessorAsyncClient}.
+     * This property must be set when building an {@link EventProcessor}.
      *
      * Sets the partition processor factory for creating new instance(s) of {@link PartitionProcessor}.
      *
@@ -405,28 +405,28 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * This will create a new {@link EventProcessorAsyncClient} configured with the options set in this builder. Each call
-     * to this method will return a new instance of {@link EventProcessorAsyncClient}.
+     * This will create a new {@link EventProcessor} configured with the options set in this builder. Each call
+     * to this method will return a new instance of {@link EventProcessor}.
      *
      * <p>
      * A new instance of {@link EventHubAsyncClient} will be created with configured options by calling the {@link
-     * #buildAsyncClient()} that will be used by the {@link EventProcessorAsyncClient}.
+     * #buildAsyncClient()} that will be used by the {@link EventProcessor}.
      * </p>
      *
      * <p>
      * If the {@link #initialEventPosition(EventPosition) initial event position} is not set, all partitions processed by
-     * this {@link EventProcessorAsyncClient} will start processing from {@link EventPosition#earliest() earliest}
+     * this {@link EventProcessor} will start processing from {@link EventPosition#earliest() earliest}
      * available event in the respective partitions.
      * </p>
      *
-     * @return A new instance of {@link EventProcessorAsyncClient}.
+     * @return A new instance of {@link EventProcessor}.
      */
-    public EventProcessorAsyncClient buildEventProcessorAsyncClient() {
+    public EventProcessor buildEventProcessor() {
         EventPosition initialEventPosition =
             this.initialEventPosition == null ? EventPosition.earliest()
                 : this.initialEventPosition;
 
-        return new EventProcessorAsyncClient(buildAsyncClient(), this.consumerGroupName,
+        return new EventProcessor(buildAsyncClient(), this.consumerGroupName,
             this.partitionProcessorFactory, initialEventPosition, partitionManager, eventHubName);
     }
 }

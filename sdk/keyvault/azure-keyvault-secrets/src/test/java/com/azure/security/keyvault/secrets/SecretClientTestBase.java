@@ -6,8 +6,14 @@ package com.azure.security.keyvault.secrets;
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.*;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.test.TestBase;
+import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
 import org.junit.Rule;
@@ -45,11 +51,7 @@ public abstract class SecretClientTestBase extends TestBase {
     void beforeTestSetup() {
     }
 
-    <T> T clientSetup(Function<TokenCredential, T> clientBuilder) {
-        final String endpoint = interceptorManager.isPlaybackMode()
-            ? "http://localhost:8080"
-            : System.getenv("AZURE_KEYVAULT_ENDPOINT");
-
+    <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
         TokenCredential credential;
 
         if (interceptorManager.isPlaybackMode()) {
@@ -58,8 +60,32 @@ public abstract class SecretClientTestBase extends TestBase {
             credential = new DefaultAzureCredentialBuilder().build();
         }
 
+        HttpClient httpClient;
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,  ConfigurationManager.getConfiguration().clone()));
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(new RetryPolicy());
+        policies.add(new BearerTokenAuthenticationPolicy(credential, SecretAsyncClient.KEY_VAULT_SCOPE));
+        policies.addAll(policies);
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.add(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS));
+
+        if (interceptorManager.isPlaybackMode()) {
+            httpClient = interceptorManager.getPlaybackClient();
+            policies.add(interceptorManager.getRecordPolicy());
+        } else {
+            httpClient = HttpClient.createDefault().wiretap(true);
+            policies.add(interceptorManager.getRecordPolicy());
+        }
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
+
         T client;
-        client = clientBuilder.apply(credential);
+        client = clientBuilder.apply(pipeline);
 
         return Objects.requireNonNull(client);
     }

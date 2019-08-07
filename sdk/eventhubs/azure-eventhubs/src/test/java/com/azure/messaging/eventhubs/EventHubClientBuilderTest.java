@@ -90,13 +90,13 @@ public class EventHubClientBuilderTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void testEventProcessorAsyncClientBuilderMissingProperties() {
+    public void testEventProcessorBuilderMissingProperties() {
         final EventHubClientBuilder builder = new EventHubClientBuilder().connectionString(CORRECT_CONNECTION_STRING);
-        builder.buildEventProcessorAsyncClient(); // should throw NPE
+        builder.buildEventProcessor(); // should throw NPE
     }
 
     @Test
-    public void testEventProcessorAsyncClientBuilder() {
+    public void testEventProcessorBuilder() {
         final EventHubClientBuilder builder = new EventHubClientBuilder()
             .connectionString(CORRECT_CONNECTION_STRING)
             .partitionProcessorFactory((partitionContext, checkpointManager) -> {
@@ -128,7 +128,7 @@ public class EventHubClientBuilderTest {
             .consumerGroupName("test-consumer")
             .initialEventPosition(EventPosition.latest())
             .partitionManager(new InMemoryPartitionManager());
-        assertNotNull(builder.buildEventProcessorAsyncClient());
+        assertNotNull(builder.buildEventProcessor());
     }
 
     // TODO: add test for retry(), scheduler(), timeout(), transportType()

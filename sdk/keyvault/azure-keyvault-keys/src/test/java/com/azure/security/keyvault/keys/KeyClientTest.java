@@ -5,9 +5,6 @@ package com.azure.security.keyvault.keys;
 
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.KeyBase;
@@ -32,20 +29,14 @@ public class KeyClientTest extends KeyClientTestBase {
         beforeTestSetup();
 
         if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(credentials -> new KeyClientBuilder()
-                .credential(credentials)
+            client = clientSetup(pipeline -> new KeyClientBuilder()
                 .endpoint(getEndpoint())
-                .httpClient(interceptorManager.getPlaybackClient())
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .pipeline(pipeline)
                 .buildClient());
         } else {
-            client = clientSetup(credentials -> new KeyClientBuilder()
-                .credential(credentials)
+            client = clientSetup(pipeline -> new KeyClientBuilder()
                 .endpoint(getEndpoint())
-                .httpClient(HttpClient.createDefault().wiretap(true))
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy())
+                .pipeline(pipeline)
                 .buildClient());
         }
     }

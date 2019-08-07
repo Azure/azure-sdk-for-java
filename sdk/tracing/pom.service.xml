@@ -9,6 +9,6 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
-    <module>azure-tracing-opentelemetry</module>
+    <module>tracing-opentelemetry</module>
   </modules>
 </project>
