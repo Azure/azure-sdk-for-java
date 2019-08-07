@@ -27,6 +27,8 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
     private static final String AUTH_PREFIX = "type=master&ver=1.0&sig=";
     private final CosmosKeyCredential cosmosKeyCredential;
     private Mac macInstance;
+
+    //  stores current master key's hashcode for performance reasons.
     private int masterKeyHashCode;
 
     public BaseAuthorizationTokenProvider(CosmosKeyCredential cosmosKeyCredential) {
@@ -115,7 +117,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
             throw new IllegalArgumentException("headers");
         }
 
-        if (StringUtils.isEmpty(this.cosmosKeyCredential.getMasterKey())) {
+        if (StringUtils.isEmpty(this.cosmosKeyCredential.key())) {
             throw new IllegalArgumentException("key credentials cannot be empty");
         }
 
@@ -241,11 +243,11 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
     }
 
     private Mac getMacInstance() {
-        int masterKeyLatestHashCode = this.cosmosKeyCredential.getMasterKey().hashCode();
+        int masterKeyLatestHashCode = this.cosmosKeyCredential.keyHashCode();
 
         //  Master key has changed, or this is the first time we are getting mac instance
         if (masterKeyLatestHashCode != this.masterKeyHashCode) {
-            byte[] masterKeyBytes = this.cosmosKeyCredential.getMasterKey().getBytes();
+            byte[] masterKeyBytes = this.cosmosKeyCredential.key().getBytes();
             byte[] masterKeyDecodedBytes = Utils.Base64Decoder.decode(masterKeyBytes);
             SecretKey signingKey = new SecretKeySpec(masterKeyDecodedBytes, "HMACSHA256");
             try {

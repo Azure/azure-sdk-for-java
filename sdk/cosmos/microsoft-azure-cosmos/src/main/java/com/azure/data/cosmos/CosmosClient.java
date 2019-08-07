@@ -128,7 +128,7 @@ public class CosmosClient implements AutoCloseable {
      * Gets the cosmos key credential
      * @return cosmos key credential
      */
-    CosmosKeyCredential getCosmosKeyCredential() {
+    CosmosKeyCredential cosmosKeyCredential() {
         return cosmosKeyCredential;
     }
 
@@ -296,7 +296,7 @@ public class CosmosClient implements AutoCloseable {
      */
     public Flux<FeedResponse<CosmosDatabaseProperties>> readAllDatabases(FeedOptions options) {
         return getDocClientWrapper().readDatabases(options)
-                .map(response-> BridgeInternal.createFeedResponse(CosmosDatabaseProperties.getFromV2Results(response.results()),
+                                    .map(response-> BridgeInternal.createFeedResponse(CosmosDatabaseProperties.getFromV2Results(response.results()),
                         response.responseHeaders()));
     }
 
@@ -342,7 +342,7 @@ public class CosmosClient implements AutoCloseable {
      */
     public Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(SqlQuerySpec querySpec, FeedOptions options){
         return getDocClientWrapper().queryDatabases(querySpec, options)
-                .map(response-> BridgeInternal.createFeedResponse(
+                                    .map(response-> BridgeInternal.createFeedResponse(
                         CosmosDatabaseProperties.getFromV2Results(response.results()),
                         response.responseHeaders()));
     }

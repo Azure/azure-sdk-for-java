@@ -203,7 +203,7 @@ public class CosmosClientBuilder {
             this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty())
                 && this.tokenResolver == null && this.cosmosKeyCredential == null,
             "cannot build client without any one of key, resource token, permissions, token resolver, and cosmos key credential");
-        ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getMasterKey()),
+        ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.key()),
             "cannot build client without key credential");
 
         return new CosmosClient(this);

@@ -9,17 +9,27 @@ package com.azure.data.cosmos;
  */
 public class CosmosKeyCredential {
 
-    private String masterKey;
+    private String key;
 
-    public CosmosKeyCredential(String masterKey) {
-        this.masterKey = masterKey;
+    //  Stores key's hashcode for performance improvements
+    private int keyHashCode;
+
+    public CosmosKeyCredential(String key) {
+        this.key = key;
+        this.keyHashCode = key.hashCode();
     }
 
-    public String getMasterKey() {
-        return masterKey;
+    public String key() {
+        return key;
     }
 
-    public void setMasterKey(String masterKey) {
-        this.masterKey = masterKey;
+    public CosmosKeyCredential key(String key) {
+        this.key = key;
+        this.keyHashCode = key.hashCode();
+        return this;
+    }
+
+    public int keyHashCode() {
+        return this.keyHashCode;
     }
 }
