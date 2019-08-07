@@ -61,8 +61,8 @@
                 <source>..\..\core\azure-core-amqp\src\main\java</source>
                 <source>..\..\core\azure-core-management\src\main\java</source>
                 <source>..\..\core\azure-core-test\src\main\java</source>
-                <source>..\..\sdk\eventhubs\azure-eventhubs\src\main\java</source>
-                <source>..\..\sdk\eventhubs\azure-eventhubs\src\samples\java</source>
+                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs\src\main\java</source>
+                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs\src\samples\java</source>
                 <source>..\..\sdk\identity\azure-identity\src\main\java</source>
                 <source>..\..\sdk\identity\azure-identity\src\samples\java</source>
 <!--                <source>..\..\sdk\keyvault\azure-keyvault-keys\src\main\java</source>-->
@@ -95,9 +95,9 @@
             <configuration>
               <sources>
                 <source>..\..\sdk\batch\microsoft-azure-batch\src\main\java</source>
-                <source>..\..\eventhubs\data-plane\azure-eventhubs\src\main\java</source>
-                <source>..\..\eventhubs\data-plane\azure-eventhubs-eph\src\main\java</source>
-                <source>..\..\eventhubs\data-plane\azure-eventhubs-extensions\src\main\java</source>
+                <source>..\..\sdk\eventhubs\microsoft-azure-eventhubs\src\main\java</source>
+                <source>..\..\sdk\eventhubs\microsoft-azure-eventhubs-eph\src\main\java</source>
+                <source>..\..\sdk\eventhubs\microsoft-azure-eventhubs-extensions\src\main\java</source>
                 <!-- Storage is excluded from Spotbugs report as it collides with the storage library
                 dependency in eventhubs code. This issue is under investigation. -->
                 <!--source>..\..\storage\data-plane\src\main\java</source-->
