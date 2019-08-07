@@ -68,16 +68,16 @@ To make this possible you'll need the Account SAS (shared access signature) stri
         1. Click on "Generate SAS and connection string".
 
 - **Shared Key Credential**
-    1. Use account name and account key. Account name is your storage account name.
-    ```
-    // Here is where we get the key
-    Go to your storage account -> Access keys -> Key 1/ Key 2 -> Key
-    ```
-    1. Use the connection string
-    ```
-    // Here is where we get the key
-    Go to your storage account -> Access Keys -> Keys 1/ Key 2 -> Connection string
-    ```
+    * There are two ways to create a shared key credential, the first is using the storage account name and account key. The second is using the storage connection string.
+        1. Use account name and account key.
+            1. The account name is your storage account name.
+            1. Go to your storage account.
+            1. Select "Access keys" tab.
+            1. Copy the "Key" value for either Key 1 or Key 2.
+        1. Use the connection string
+            1. Go to your storage account.
+            1. Select "Access keys" tab.
+            1. Copy the "Connection string" value for either Key 1 or Key 2.
 
 ## Key concepts
 
