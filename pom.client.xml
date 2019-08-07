@@ -542,7 +542,7 @@
               <additionalOptions>-maxLineLength 120
                 -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
-                -snippetpath ${project.basedir}/sdk/eventhubs/azure-eventhubs/src/samples/java
+                -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-keys/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-secrets/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
@@ -744,7 +744,7 @@
     <module>./sdk/core/azure-core-amqp</module>
     <module>./sdk/core/azure-core-management</module>
     <module>./sdk/core/azure-core-test</module>
-    <module>./sdk/eventhubs/azure-eventhubs</module>
+    <module>./sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>./sdk/keyvault/azure-keyvault-secrets</module>
     <module>./sdk/keyvault/azure-keyvault-keys</module>
     <module>./sdk/tracing/tracing-opentelemetry</module>
