@@ -91,9 +91,9 @@ public class SearchIndexClientBuildersTest {
 
     @Before
     public void initialize() {
-        searchServiceName = "";
-        apiKey = "";
-        indexName = "hotels";
+        searchServiceName = "servicename";
+        apiKey = "0123";
+        indexName = "myindex";
         apiVersion = "2019-05-06";
         dnsSuffix = "search.windows.net";
     }
