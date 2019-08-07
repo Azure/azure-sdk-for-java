@@ -545,9 +545,9 @@
                 -snippetpath ${project.basedir}/sdk/eventhubs/azure-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-keys/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-secrets/src/samples/java
-                -snippetpath ${project.basedir}/storage/client/blob/src/samples/java
-                -snippetpath ${project.basedir}/storage/client/file/src/samples/java
-                -snippetpath ${project.basedir}/storage/client/queue/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-file/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
               </additionalOptions>
             </configuration>
           </reportSet>
