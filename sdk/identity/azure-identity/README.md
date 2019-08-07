@@ -2,10 +2,10 @@
 The Azure Identity library provides Azure Active Directory token authentication support across the Azure SDK. It provides a set of TokenCredential implementations which can be used to construct Azure SDK clients which support AAD token authentication.
 
  This library is in preview and currently supports:
-  - [Service principal authentication](https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals)
-  - [Managed identity authentication](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview)
-  - [Device code authentication](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-device-code)
-  - Interactive browser authentication, based on [OAuth2 authentication code](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow)
+  - [Service principal authentication](https://docs.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals)
+  - [Managed identity authentication](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview)
+  - [Device code authentication](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-device-code)
+  - Interactive browser authentication, based on [OAuth2 authentication code](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow)
 
   [Source code][source] | API reference documentation (Coming Soon) | [Azure Active Directory documentation][aad_doc]
 
@@ -112,7 +112,7 @@ The `DefaultAzureCredential` will first attempt to authenticate using credential
 
 If the environment configuration is not present or incomplete, the `DefaultAzureCredential` will then determine if a managed identity is available in the current environment.  Authenticating as a managed identity requires no configuration, but does
 require platform support. See the
-[managed identity documentation](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/services-support-managed-identities) for more details on this.
+[managed identity documentation](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/services-support-managed-identities) for more details on this.
 
 ## Environment variables
 
@@ -247,7 +247,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_sub]: https://azure.microsoft.com/free/
 [source]: ./
-[aad_doc]: https://docs.microsoft.com/en-us/azure/active-directory/
+[aad_doc]: https://docs.microsoft.com/azure/active-directory/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [keys_client_library]: ../../keyvault/azure-keyvault-keys
 [secrets_client_library]: ../../keyvault/azure-keyvault-secrets
