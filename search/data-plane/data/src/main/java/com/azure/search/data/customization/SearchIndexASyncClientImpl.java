@@ -6,7 +6,7 @@ import com.azure.search.data.SearchIndexASyncClient;
 import com.azure.search.data.generated.models.*;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
+import java.util.*;
 
 public class SearchIndexASyncClientImpl extends SearchIndexBaseClientImpl implements SearchIndexASyncClient {
 
@@ -40,14 +40,31 @@ public class SearchIndexASyncClientImpl extends SearchIndexBaseClientImpl implem
     }
 
     @Override
-    public Mono<Object> getDocument(String key) {
-        return restClient.documents().getAsync(key);
+    public Mono<Map<String, Object>> getDocument(String key) {
+        return restClient.documents().getAsync(key).map(res -> convertLinkedHashMapToMap(res));
     }
 
     @Override
-    public Mono<Object> getDocument(String key, List<String> selectedFields,
-                                    SearchRequestOptions searchRequestOptions) {
-        return restClient.documents().getAsync(key, selectedFields, searchRequestOptions);
+    public Mono<Map<String, Object>> getDocument(String key, List<String> selectedFields,
+                                                 SearchRequestOptions searchRequestOptions) {
+        return restClient
+            .documents()
+            .getAsync(key, selectedFields, searchRequestOptions)
+            .map(res -> convertLinkedHashMapToMap(res));
+    }
+
+    private Map<String, Object> convertLinkedHashMapToMap(Object linkedMapObject) {
+        LinkedHashMap<String, Object> linkedMap = (LinkedHashMap<String, Object>) linkedMapObject;
+        Set<Map.Entry<String, Object>> entries = linkedMap.entrySet();
+
+        Map<String, Object> convertedMap = new HashMap<>();
+
+        for (Map.Entry<String, Object> entry : entries) {
+            convertedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return convertedMap;
+
     }
 
     @Override
@@ -79,8 +96,8 @@ public class SearchIndexASyncClientImpl extends SearchIndexBaseClientImpl implem
                                                  SearchRequestOptions searchRequestOptions,
                                                  AutocompleteParameters autocompleteParameters) {
         return restClient.documents().autocompleteGetAsync(searchText,
-                suggesterName,
-                searchRequestOptions,
-                autocompleteParameters);
+            suggesterName,
+            searchRequestOptions,
+            autocompleteParameters);
     }
 }
