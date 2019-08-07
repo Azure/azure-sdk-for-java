@@ -449,7 +449,7 @@ class SASTest extends APISpec {
         def sas = primaryServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def sc = testCommon.getServiceClient(SASTokenCredential.fromSASTokenString(sas), primaryServiceClient.getAccountUrl().toString())
-        sc.createContainer("container")
+        sc.createContainer(generateContainerName())
 
         then:
         notThrown(StorageException)

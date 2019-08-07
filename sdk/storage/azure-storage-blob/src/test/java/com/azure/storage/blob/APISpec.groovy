@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.core.util.logging.ClientLogger
-import com.azure.storage.blob.BlobProperties
 import com.azure.storage.blob.models.*
 import com.azure.storage.common.credentials.SharedKeyCredential
 import io.netty.buffer.ByteBuf
@@ -52,6 +51,17 @@ class APISpec extends Specification {
         String testName = specificationContext.getCurrentFeature().getName().replace(' ', '').toLowerCase()
         boolean appendIteration = specificationContext.currentIteration.estimatedNumIterations > 1
 
+        Integer iterationNo = 0
+        if (appendIteration) {
+            iterationNo = unrollIterationNo.get(testName)
+            if (iterationNo == null) {
+                iterationNo = 0
+                unrollIterationNo.put(testName, iterationNo)
+            } else {
+                unrollIterationNo.put(testName, ++iterationNo)
+            }
+        }
+
         testCommon = new TestCommon(testName.substring(0, (int) Math.min(testName.length(), 32)), appendIteration, iterationNo)
 
         primaryServiceClient = testCommon.setClient(primaryCredential)
@@ -64,7 +74,8 @@ class APISpec extends Specification {
     }
 
     def cleanup() {
-        for (ContainerItem container : primaryServiceClient.listContainers(new ListContainersOptions().prefix(testCommon.getTestName()), Duration.ofSeconds(120))) {
+        for (ContainerItem container : primaryServiceClient.listContainers(new ListContainersOptions()
+            .prefix(containerPrefix + testCommon.getTestName()), Duration.ofSeconds(120))) {
             ContainerClient containerClient = primaryServiceClient.getContainerClient(container.name())
 
             if (container.properties().leaseState() == LeaseStateType.LEASED) {
@@ -75,23 +86,6 @@ class APISpec extends Specification {
         }
 
         testCommon.stopRecording()
-        iterationNo = (specificationContext.currentIteration.estimatedNumIterations > 1) ? iterationNo + 1 : 0
-    }
-
-    def cleanupSpec() {
-//        TestCommon cleanupCommon = new TestCommon(this.class.getName(), false, 0)
-//        BlobServiceClient cleanupClient = cleanupCommon.setClient(primaryCredential)
-//        // There should not be more than 5000 containers from these tests
-//        for (ContainerItem c : cleanupClient.listContainers()) {
-//            ContainerClient containerClient = cleanupClient.getContainerClient(c.name())
-//
-//            if (c.properties().leaseState() == LeaseStateType.LEASED) {
-//                containerClient.breakLease(0, null, null)
-//            }
-//
-//            containerClient.delete()
-//        }
-//        cleanupCommon.stopRecording()
     }
 
     private SharedKeyCredential getCredential(String accountType) {
@@ -110,9 +104,9 @@ class APISpec extends Specification {
         return testCommon.getOAuthServiceClient(primaryCredential.accountName())
     }
 
-
+    // Mapping of stable container names for recording tests with multiple iterations
     @Shared
-    Integer iterationNo = 0 // Used to generate stable container names for recording tests with multiple iterations.
+    Map<String, Integer> unrollIterationNo = new HashMap<>()
 
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 
@@ -330,7 +324,6 @@ class APISpec extends Specification {
             sleep(milliseconds)
         }
     }
-
 
     /*
     This method returns a stub of an HttpResponse. This is for when we want to test policies in isolation but don't care

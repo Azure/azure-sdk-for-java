@@ -203,6 +203,10 @@ class TestCommon {
         return resourceNamer.randomName(prefix + testName + System.currentTimeMillis() + entityNo, 63)
     }
 
+    String getRandomUUID() {
+        return resourceNamer.randomUuid()
+    }
+
     String getBlockID() {
         return Base64.encoder.encodeToString(resourceNamer.randomUuid().getBytes(StandardCharsets.UTF_8))
     }
