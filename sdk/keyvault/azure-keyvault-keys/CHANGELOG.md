@@ -1,5 +1,19 @@
 # Release History
 
+## 4.0.0-preview.2 (2019-08-06)
+For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview2-java).
+
+- Added service side Cryptography Operations support for asymmetric keys (sign, un/wrap, verify, encrypt and decrypt)
+- Added client side Cryptography Operations support both asymmetric and symmetric keys.
+- Added Cryptography clients to `azure-keyvault-keys` package.
+    - `azure-keyvault-keys` contains a `CryptographyClient` and `CryptographyAsyncClient` for cryptography operations and  `KeyClient` and `KeyAsyncClient` for key operations.
+    - see this package's
+  [documentation](https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/README.md) and
+  [samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys) for more information.
+- Added support for HTTP challenge based authentication, allowing clients to interact with vaults in sovereign clouds.
+- Combined KeyClientBuilder, KeyAsyncClientBuilder into KeyClientBuilder. Methods to create both sync and async clients type were added.
+- Removed static builder method from clients. Builders are now instantiable.
+
 ## 4.0.0-preview.1 (2019-06-28)
 Version 4.0.0-preview.1 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide our efforts can be found in the [Azure SDK Design Guidelines for Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
 
