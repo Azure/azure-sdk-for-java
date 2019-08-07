@@ -3,6 +3,7 @@ package com.azure.search.data;
 import com.azure.search.data.generated.models.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * The public (Customer facing) interface for SearchIndexClient.
@@ -77,7 +78,7 @@ public interface SearchIndexClient {
      * @param key the name of the document
      * @return
      */
-    Object getDocument(String key);
+    Map<String, Object> getDocument(String key);
 
     /**
      * Retrieves a document from the Azure Search index.
@@ -87,7 +88,7 @@ public interface SearchIndexClient {
      * @param searchRequestOptions
      * @return
      */
-    Object getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions);
+    Map<String, Object> getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions);
 
     /**
      * Suggests documents in the Azure Search index that match the given partial query text.

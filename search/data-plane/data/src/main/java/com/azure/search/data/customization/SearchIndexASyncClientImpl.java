@@ -1,5 +1,6 @@
 package com.azure.search.data.customization;
 
+import com.azure.search.data.common.DocumentResponseConversions;
 import com.azure.search.data.common.SearchPipelinePolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.search.data.SearchIndexASyncClient;
@@ -41,7 +42,7 @@ public class SearchIndexASyncClientImpl extends SearchIndexBaseClientImpl implem
 
     @Override
     public Mono<Map<String, Object>> getDocument(String key) {
-        return restClient.documents().getAsync(key).map(res -> convertLinkedHashMapToMap(res));
+        return restClient.documents().getAsync(key).map(DocumentResponseConversions::convertLinkedHashMapToMap);
     }
 
     @Override
@@ -50,22 +51,10 @@ public class SearchIndexASyncClientImpl extends SearchIndexBaseClientImpl implem
         return restClient
             .documents()
             .getAsync(key, selectedFields, searchRequestOptions)
-            .map(res -> convertLinkedHashMapToMap(res));
+            .map(DocumentResponseConversions::convertLinkedHashMapToMap);
     }
 
-    private Map<String, Object> convertLinkedHashMapToMap(Object linkedMapObject) {
-        LinkedHashMap<String, Object> linkedMap = (LinkedHashMap<String, Object>) linkedMapObject;
-        Set<Map.Entry<String, Object>> entries = linkedMap.entrySet();
 
-        Map<String, Object> convertedMap = new HashMap<>();
-
-        for (Map.Entry<String, Object> entry : entries) {
-            convertedMap.put(entry.getKey(), entry.getValue());
-        }
-
-        return convertedMap;
-
-    }
 
     @Override
     public PagedFlux<SuggestResult> suggest(String searchText, String suggesterName) {
