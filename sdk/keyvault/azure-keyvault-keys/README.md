@@ -192,7 +192,7 @@ System.out.printf("Deleted Key's deletion date %s", deletedKey.deletedDate().toS
 ### List Keys
 
 List the keys in the key vault by calling `listKeys`.
-```Java
+```java
 // List operations don't return the keys with key material information. So, for each returned key we call getKey to get the key with its key material information.
 for (KeyBase key : keyClient.listKeys()) {
     Key keyWithMaterial = keyClient.getKey(key).value();
@@ -203,7 +203,7 @@ for (KeyBase key : keyClient.listKeys()) {
 ### Encrypt
 
 Encrypt plain text by calling `encrypt`.
-```
+```java
 CryptographyClient cryptoClient = new CryptographyClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .keyIdentifier("<Your-Key-Id-From-Keyvault")
@@ -220,7 +220,8 @@ System.out.printf("Returned cipherText size is %d bytes with algorithm %s \n", e
 ### Decrypt
 
 Decrypt encrypted content by calling `decrypt`.
-```
+
+```java
 byte[] plainText = new byte[100];
 new Random(0x1234567L).nextBytes(plainText);
 EncryptResult encryptResult = cryptoClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText);
@@ -293,7 +294,7 @@ keyAsyncClient.getKey("keyName").subscribe(keyResponse -> {
 ### Delete a Key Asynchronously
 
 Delete an existing Key by calling `deleteKey`.
-```Java
+```java
 keyAsyncClient.deleteKey("keyName").subscribe(deletedKeyResponse ->
    System.out.printf("Deleted Key's deletion time %s \n", deletedKeyResponse.value().deletedDate().toString()));
 ```
@@ -311,7 +312,7 @@ keyAsyncClient.listKeys()
 ### Encrypt Asynchronously
 
 Encrypt plain text by calling `encrypt`.
-```
+```java
 CryptographyAsyncClient cryptoAsyncClient = new CryptographyClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .keyIdentifier("<Your-Key-Id-From-Keyvault>")
@@ -330,7 +331,7 @@ cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
 ### Decrypt Asynchronously
 
 Decrypt encrypted content by calling `decrypt`.
-```
+```java
 byte[] plainText = new byte[100];
 new Random(0x1234567L).nextBytes(plainText);
 
