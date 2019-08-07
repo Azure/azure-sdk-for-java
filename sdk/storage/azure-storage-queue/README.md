@@ -173,12 +173,12 @@ The following sections provide several code snippets covering some of the most c
 - [Create a Queue](#Create-a-queue)
 - [Delete a queue](#Delete-a-queue)
 - [List the queues in account](#List-queues-in-account)
-- [Get propertiesin Queue account](#Get-properties-in-queue-account)
-- [Set propertiesin Queue account](#Set-properties-in-queue-account)
-- [Get statistcs of queue](#Get-queue-service-statistics)
+- [Get properties in Queue account](#Get-properties-in-queue-account)
+- [Set properties in Queue account](#Set-properties-in-queue-account)
+- [Get statistics of queue](#Get-queue-service-statistics)
 - [Enqueue message into a queue](#Enqueue-message-into-a-queue)
-- [Update message into a queue](#Update-message-into-a-queue)
-- [Peek messages into a queue](#Peek-messages-into-a-queue)
+- [Update a message in a queue](#update-a-message-in-a-queue)
+- [Peek messages into a queue](#Peek-messages-from-a-queue)
 - [Dequeue messages from a queue](#Dequeue-messages-from-a-queue)
 - [Delete message from a queue](#Delete-message-from-a-queue)
 - [Get a Queue properties](#Get-a-queue-properties)
@@ -293,7 +293,7 @@ QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).credential
 queueClient.enqueueMessage("myMessage");
 ```
 
-### Update messaged from a queue
+### Update a message in a queue
 The operation updates a message in the message queue. Use `${SASToken}` as credential.
 ```Java
 String queueSURL = String.format("https://%s.queue.core.windows.net", accountName);
@@ -368,14 +368,11 @@ When you interact with queue using this Java client library, errors returned by 
 
 ## Next steps
 
-### More Samples
 Get started with our [Queue samples][samples]:
-- [QueueServiceSample](src/samples/java/queue/QueueServiceSample.java): Create, list and delete queues
-- [MessageSample](src/samples/java/queue/MessageSample.java): Enqueue, peek dequeue, update, clear and delete messages. Get properties of the queue.
-- [QueueExceptionSample](src/samples/java/queue/QueueExceptionSample.java): Handle the exceptions from storage queue service side.
-- [AsyncSample](src/samples/java/queue/AsyncSample.java): Create queue and enqueue message using async queue client call.
-
-[Quickstart: Create a Java Spring app with App Configuration](https://docs.microsoft.com/en-us/azure/azure-app-configuration/quickstart-java-spring-app)
+- [QueueServiceSample][samples_queue_service]: Create, list and delete queues
+- [MessageSample][samples_message]: Enqueue, peek dequeue, update, clear and delete messages. Get properties of the queue.
+- [QueueExceptionSample][samples_queue_exception]: Handle the exceptions from storage queue service side.
+- [AsyncSample][samples_async]: Create queue and enqueue message using async queue client call.
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
@@ -410,3 +407,7 @@ If you would like to become an active contributor to this project please follow 
 [sas_token]: https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1
 [storage_rest]: https://docs.microsoft.com/en-us/rest/api/storageservices/queue-service-error-codes
 [samples]: src/samples
+[samples_queue_service]: src/samples/java/com/azure/storage/queue/QueueServiceSamples.java
+[samples_message]: src/samples/java/com/azure/storage/queue/MessageSamples.java
+[samples_queue_exception]: src/samples/java/com/azure/storage/queue/QueueExceptionSamples.java
+[samples_async]: src/samples/java/com/azure/storage/queue/AsyncSamples.java
