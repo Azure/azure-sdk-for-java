@@ -397,15 +397,15 @@ If you would like to become an active contributor to this project please follow 
 
 <!-- LINKS -->
 [source_code]: src
-[api_documentation]: https://docs.microsoft.com/en-us/rest/api/storageservices/queue-service-rest-api
-[storage_docs]: https://docs.microsoft.com/en-us/azure/storage/queues/storage-queues-introduction
-[jdk]: https://docs.microsoft.com/en-us/java/azure/java-supported-jdk-runtime?view=azure-java-stable
+[api_documentation]: https://docs.microsoft.com/rest/api/storageservices/queue-service-rest-api
+[storage_docs]: https://docs.microsoft.com/azure/storage/queues/storage-queues-introduction
+[jdk]: https://docs.microsoft.com/java/azure/java-supported-jdk-runtime?view=azure-java-stable
 [maven]: https://maven.apache.org/
-[azure_subscription]: https://azure.microsoft.com/en-us/free/
-[storage_account]: https://docs.microsoft.com/en-us/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[azure_subscription]: https://azure.microsoft.com/free/
+[storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [azure_cli]: https://docs.microsoft.com/cli/azure
-[sas_token]: https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1
-[storage_rest]: https://docs.microsoft.com/en-us/rest/api/storageservices/queue-service-error-codes
+[sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+[storage_rest]: https://docs.microsoft.com/rest/api/storageservices/queue-service-error-codes
 [samples]: src/samples
 [samples_queue_service]: src/samples/java/com/azure/storage/queue/QueueServiceSamples.java
 [samples_message]: src/samples/java/com/azure/storage/queue/MessageSamples.java
