@@ -56,11 +56,11 @@
               <sources>
                 <source>..\..\sdk\appconfiguration\azure-data-appconfiguration\src\main\java</source>
                 <source>..\..\sdk\appconfiguration\azure-data-appconfiguration\src\samples\java</source>
-                <source>..\..\core\azure-core\src\main\java</source>
-                <source>..\..\core\azure-core\src\samples\java</source>
-                <source>..\..\core\azure-core-amqp\src\main\java</source>
-                <source>..\..\core\azure-core-management\src\main\java</source>
-                <source>..\..\core\azure-core-test\src\main\java</source>
+                <source>..\..\sdk\core\azure-core\src\main\java</source>
+                <source>..\..\sdk\core\azure-core\src\samples\java</source>
+                <source>..\..\sdk\core\azure-core-amqp\src\main\java</source>
+                <source>..\..\sdk\core\azure-core-management\src\main\java</source>
+                <source>..\..\sdk\core\azure-core-test\src\main\java</source>
                 <source>..\..\sdk\eventhubs\azure-eventhubs\src\main\java</source>
                 <source>..\..\sdk\eventhubs\azure-eventhubs\src\samples\java</source>
                 <source>..\..\sdk\identity\azure-identity\src\main\java</source>
