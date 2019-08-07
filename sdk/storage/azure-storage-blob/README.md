@@ -7,7 +7,7 @@ storage is optimized for storing massive amounts of unstructured data.
 Unstructured data is data that does not adhere to a particular data model or
 definition, such as text or binary data.
 
-[Source code][source] | [Package (Maven)][package] | [API reference documentation][docs] | [REST API documentation][rest_docs] | [Product documentation][product_docs]
+[Source code][source] | [API reference documentation][docs] | [REST API documentation][rest_docs] | [Product documentation][product_docs] | [Samples][samples]
 
 ## Getting started
 
@@ -257,7 +257,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [source]: src
-[package]: https://mvnrepository.com/artifact/com.azure/azure-storage-blob
 [docs]: http://azure.github.io/azure-sdk-for-java/
 [rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
 [product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview

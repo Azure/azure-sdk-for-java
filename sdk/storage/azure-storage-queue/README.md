@@ -2,7 +2,8 @@
 Azure Queue storage is a service for storing large numbers of messages that can be accessed from anywhere in the world via authenticated calls using HTTP or HTTPS. 
 A single queue message can be up to 64 KB in size, and a queue can contain millions of messages, up to the total capacity limit of a storage account.
 
-[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation] | [Product documentation][storage_docs]
+[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][storage_docs] |
+[Samples][samples]
 
 ## Getting started
 
@@ -10,15 +11,15 @@ A single queue message can be up to 64 KB in size, and a queue can contain milli
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
 - [Azure Subscription][azure_subscription]
-- [Create Strorage Account][storage_account]
+- [Create Storage Account][storage_account]
 
 ### Adding the package to your product
 
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
-  <artifactId>azure-storage</artifactId>
-  <version>12.0.0</version>
+  <artifactId>azure-storage-queue</artifactId>
+  <version>12.0.0-preview.2</version>
 </dependency>
 ```
 
@@ -398,8 +399,7 @@ If you would like to become an active contributor to this project please follow 
 5. Create new Pull Request
 
 <!-- LINKS -->
-[source_code]: to-be-continue
-[package]: to-be-continue
+[source_code]: src
 [api_documentation]: https://docs.microsoft.com/en-us/rest/api/storageservices/queue-service-rest-api
 [storage_docs]: https://docs.microsoft.com/en-us/azure/storage/queues/storage-queues-introduction
 [jdk]: https://docs.microsoft.com/en-us/java/azure/java-supported-jdk-runtime?view=azure-java-stable
@@ -409,4 +409,4 @@ If you would like to become an active contributor to this project please follow 
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [sas_token]: https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1
 [storage_rest]: https://docs.microsoft.com/en-us/rest/api/storageservices/queue-service-error-codes
-[samples]: samples/
+[samples]: src/samples
