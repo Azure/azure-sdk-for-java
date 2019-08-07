@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.search.data.env;
 
 import com.azure.search.service.SearchServiceClient;
@@ -25,7 +28,7 @@ public class SearchIndexService {
      * to be used in tests.
      *
      * @param searchServiceName the name of Search Service in Azure.
-     * @param apiAdminKey the Admin Key of Search Service
+     * @param apiAdminKey       the Admin Key of Search Service
      */
     public SearchIndexService(String searchServiceName, String apiAdminKey) {
         this.searchServiceName = searchServiceName;
@@ -49,10 +52,10 @@ public class SearchIndexService {
     }
 
     private void validate() {
-        if(StringUtils.isBlank(this.searchServiceName)){
+        if (StringUtils.isBlank(this.searchServiceName)) {
             throw new IllegalArgumentException("searchServiceName cannot be blank");
         }
-        if(StringUtils.isBlank(this.apiAdminKey)){
+        if (StringUtils.isBlank(this.apiAdminKey)) {
             throw new IllegalArgumentException("apiAdminKey cannot be blank");
         }
     }

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.search.data.env;
 
 import com.microsoft.azure.credentials.AzureTokenCredentials;
@@ -41,9 +44,10 @@ public class AzureSearchResources {
     /**
      * Creates an instance of AzureTokenCredentials to be used in creating a Resource Group and Search service
      * in Azure to be used for tests.
+     *
      * @param azureTokenCredentials includes credentials to connect to Azure.
-     * @param subscriptionId Azure subscription id.
-     * @param location location of the resources to be created in.
+     * @param subscriptionId        Azure subscription id.
+     * @param location              location of the resources to be created in.
      */
     public AzureSearchResources(
         AzureTokenCredentials azureTokenCredentials, String subscriptionId,
@@ -91,7 +95,7 @@ public class AzureSearchResources {
     private void validate() {
         Objects.requireNonNull(this.azureTokenCredentials, "azureTokenCredentials cannot be null");
         Objects.requireNonNull(this.location, "location cannot be null");
-        if(StringUtils.isBlank(this.subscriptionId)){
+        if (StringUtils.isBlank(this.subscriptionId)) {
             throw new IllegalArgumentException("subscriptionId cannot be blank");
         }
     }

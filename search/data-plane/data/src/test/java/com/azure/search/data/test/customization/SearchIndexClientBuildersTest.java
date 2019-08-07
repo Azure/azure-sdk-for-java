@@ -72,7 +72,7 @@ public class SearchIndexClientBuildersTest {
     /**
      * Verify that if the property is invalid the client builder throws exception
      */
-    private void BuildClientAndExpectException(boolean isASync,
+    private void buildClientAndExpectException(boolean isASync,
                                                String expectedMsg,
                                                String searchServiceName,
                                                String indexName,
@@ -132,8 +132,8 @@ public class SearchIndexClientBuildersTest {
      * Verify that if the property is invalid the client builder throws exception
      */
     @Test
-    public void VerifyNullSearchServiceNameIsInvalidASyncTest() throws Exception {
-        BuildClientAndExpectException(true, "Invalid searchServiceName", null,
+    public void verifyNullSearchServiceNameIsInvalidASyncTest() throws Exception {
+        buildClientAndExpectException(true, "Invalid searchServiceName", null,
                 indexName, apiKey, apiVersion, dnsSuffix);
     }
 
@@ -141,8 +141,8 @@ public class SearchIndexClientBuildersTest {
      * Verify that if the property is invalid the client builder throws exception
      */
     @Test
-    public void VerifyNullSearchServiceNameIsInvalidTest() throws Exception {
-        BuildClientAndExpectException(false, "Invalid searchServiceName", null,
+    public void verifyNullSearchServiceNameIsInvalidTest() throws Exception {
+        buildClientAndExpectException(false, "Invalid searchServiceName", null,
                 indexName, apiKey, apiVersion, dnsSuffix);
     }
 
@@ -150,8 +150,8 @@ public class SearchIndexClientBuildersTest {
      * Verify that if the property is invalid the client builder throws exception
      */
     @Test
-    public void VerifyEmptySearchServiceNameIsInvalidASyncTest() throws Exception {
-        BuildClientAndExpectException(false, "Invalid searchServiceName", "",
+    public void verifyEmptySearchServiceNameIsInvalidASyncTest() throws Exception {
+        buildClientAndExpectException(false, "Invalid searchServiceName", "",
                 indexName, apiKey, apiVersion, dnsSuffix);
     }
 
@@ -159,8 +159,8 @@ public class SearchIndexClientBuildersTest {
      * Verify that if the property is invalid the client builder throws exception
      */
     @Test
-    public void VerifyEmptySearchServiceNameIsInvalidTest() throws Exception {
-        BuildClientAndExpectException(false, "Invalid searchServiceName", "",
+    public void verifyEmptySearchServiceNameIsInvalidTest() throws Exception {
+        buildClientAndExpectException(false, "Invalid searchServiceName", "",
                 indexName, apiKey, apiVersion, dnsSuffix);
     }
 
@@ -168,8 +168,8 @@ public class SearchIndexClientBuildersTest {
      * Verify that if the property is invalid the client builder throws exception
      */
     @Test
-    public void VerifyNullIndexNameIsInvalidASyncTest() throws Exception {
-        BuildClientAndExpectException(true, "Invalid indexName", searchServiceName,
+    public void verifyNullIndexNameIsInvalidASyncTest() throws Exception {
+        buildClientAndExpectException(true, "Invalid indexName", searchServiceName,
                 null, apiKey, apiVersion, dnsSuffix);
     }
 
@@ -177,8 +177,8 @@ public class SearchIndexClientBuildersTest {
      * Verify that if the property is invalid the client builder throws exception
      */
     @Test
-    public void VerifyNullIndexNameIsInvalidTest() throws Exception {
-        BuildClientAndExpectException(false, "Invalid indexName", searchServiceName,
+    public void verifyNullIndexNameIsInvalidTest() throws Exception {
+        buildClientAndExpectException(false, "Invalid indexName", searchServiceName,
                 null, apiKey, apiVersion, dnsSuffix);
     }
 
@@ -186,8 +186,8 @@ public class SearchIndexClientBuildersTest {
      * Verify that if the property is invalid the client builder throws exception
      */
     @Test
-    public void VerifyEmptyIndexNameIsInvalidASyncTest() throws Exception {
-        BuildClientAndExpectException(true, "Invalid indexName", searchServiceName,
+    public void verifyEmptyIndexNameIsInvalidASyncTest() throws Exception {
+        buildClientAndExpectException(true, "Invalid indexName", searchServiceName,
                 "", apiKey, apiVersion, dnsSuffix);
     }
 
@@ -195,8 +195,8 @@ public class SearchIndexClientBuildersTest {
      * Verify that if the property is invalid the client builder throws exception
      */
     @Test
-    public void VerifyEmptyIndexNameIsInvalidTest() throws Exception {
-        BuildClientAndExpectException(false, "Invalid indexName", searchServiceName,
+    public void verifyEmptyIndexNameIsInvalidTest() throws Exception {
+        buildClientAndExpectException(false, "Invalid indexName", searchServiceName,
                 "", apiKey, apiVersion, dnsSuffix);
     }
 
@@ -204,8 +204,8 @@ public class SearchIndexClientBuildersTest {
      * Verify that if the property is invalid the client builder throws exception
      */
     @Test
-    public void VerifyNullApiKeyIsInvalidASyncTest() throws Exception {
-        BuildClientAndExpectException(true, "Invalid apiKey", searchServiceName,
+    public void verifyNullApiKeyIsInvalidASyncTest() throws Exception {
+        buildClientAndExpectException(true, "Invalid apiKey", searchServiceName,
                 indexName, null, apiVersion, dnsSuffix);
     }
 
@@ -213,8 +213,8 @@ public class SearchIndexClientBuildersTest {
      * Verify that if the property is invalid the client builder throws exception
      */
     @Test
-    public void VerifyNullApiKeyIsInvalidTest() throws Exception {
-        BuildClientAndExpectException(false, "Invalid apiKey", searchServiceName,
+    public void verifyNullApiKeyIsInvalidTest() throws Exception {
+        buildClientAndExpectException(false, "Invalid apiKey", searchServiceName,
                 indexName, null, apiVersion, dnsSuffix);
     }
 
@@ -222,8 +222,8 @@ public class SearchIndexClientBuildersTest {
      * Verify that if the property is invalid the client builder throws exception
      */
     @Test
-    public void VerifyEmptyApiKeyIsInvalidASyncTest() throws Exception {
-        BuildClientAndExpectException(true, "Invalid apiKey", searchServiceName,
+    public void verifyEmptyApiKeyIsInvalidASyncTest() throws Exception {
+        buildClientAndExpectException(true, "Invalid apiKey", searchServiceName,
                 indexName, "", apiVersion, dnsSuffix);
     }
 
@@ -231,8 +231,8 @@ public class SearchIndexClientBuildersTest {
      * Verify that if the property is invalid the client builder throws exception
      */
     @Test
-    public void VerifyEmptyApiKeyIsInvalidTest() throws Exception {
-        BuildClientAndExpectException(false, "Invalid apiKey", searchServiceName,
+    public void verifyEmptyApiKeyIsInvalidTest() throws Exception {
+        buildClientAndExpectException(false, "Invalid apiKey", searchServiceName,
                 indexName, "", apiVersion, dnsSuffix);
     }
 
@@ -240,8 +240,8 @@ public class SearchIndexClientBuildersTest {
      * Verify that if the property is invalid the client builder throws exception
      */
     @Test
-    public void VerifyNullApiVersionIsInvalidASyncTest() throws Exception {
-        BuildClientAndExpectException(true, "Invalid apiVersion", searchServiceName,
+    public void verifyNullApiVersionIsInvalidASyncTest() throws Exception {
+        buildClientAndExpectException(true, "Invalid apiVersion", searchServiceName,
                 indexName, apiKey, null, dnsSuffix);
     }
 
@@ -249,8 +249,8 @@ public class SearchIndexClientBuildersTest {
      * Verify that if the property is invalid the client builder throws exception
      */
     @Test
-    public void VerifyNullApiVersionIsInvalidTest() throws Exception {
-        BuildClientAndExpectException(false, "Invalid apiVersion", searchServiceName,
+    public void verifyNullApiVersionIsInvalidTest() throws Exception {
+        buildClientAndExpectException(false, "Invalid apiVersion", searchServiceName,
                 indexName, apiKey, null, dnsSuffix);
     }
 
@@ -258,8 +258,8 @@ public class SearchIndexClientBuildersTest {
      * Verify that if the property is invalid the client builder throws exception
      */
     @Test
-    public void VerifyEmptyApiVersionIsInvalidASyncTest() throws Exception {
-        BuildClientAndExpectException(true, "Invalid apiVersion", searchServiceName,
+    public void verifyEmptyApiVersionIsInvalidASyncTest() throws Exception {
+        buildClientAndExpectException(true, "Invalid apiVersion", searchServiceName,
                 indexName, apiKey, "", dnsSuffix);
     }
 
@@ -267,8 +267,8 @@ public class SearchIndexClientBuildersTest {
      * Verify that if the property is invalid the client builder throws exception
      */
     @Test
-    public void VerifyEmptyApiVersionIsInvalidTest() throws Exception {
-        BuildClientAndExpectException(false, "Invalid apiVersion", searchServiceName,
+    public void verifyEmptyApiVersionIsInvalidTest() throws Exception {
+        buildClientAndExpectException(false, "Invalid apiVersion", searchServiceName,
                 indexName, apiKey, "", dnsSuffix);
     }
 
@@ -276,8 +276,8 @@ public class SearchIndexClientBuildersTest {
      * Verify that if the property is invalid the client builder throws exception
      */
     @Test
-    public void VerifyNullDnsSuffixIsInvalidASyncTest() throws Exception {
-        BuildClientAndExpectException(true, "Invalid searchDnsSuffix", searchServiceName,
+    public void verifyNullDnsSuffixIsInvalidASyncTest() throws Exception {
+        buildClientAndExpectException(true, "Invalid searchDnsSuffix", searchServiceName,
                 indexName, apiKey, apiVersion, null);
     }
 
@@ -285,8 +285,8 @@ public class SearchIndexClientBuildersTest {
      * Verify that if the property is invalid the client builder throws exception
      */
     @Test
-    public void VerifyNullDnsSuffixIsInvalidTest() throws Exception {
-        BuildClientAndExpectException(false, "Invalid searchDnsSuffix", searchServiceName,
+    public void verifyNullDnsSuffixIsInvalidTest() throws Exception {
+        buildClientAndExpectException(false, "Invalid searchDnsSuffix", searchServiceName,
                 indexName, apiKey, apiVersion, null);
     }
 
@@ -294,8 +294,8 @@ public class SearchIndexClientBuildersTest {
      * Verify that if the property is invalid the client builder throws exception
      */
     @Test
-    public void VerifyEmptyDnsSuffixIsInvalidAsyncTest() throws Exception {
-        BuildClientAndExpectException(true, "Invalid searchDnsSuffix", searchServiceName,
+    public void verifyEmptyDnsSuffixIsInvalidAsyncTest() throws Exception {
+        buildClientAndExpectException(true, "Invalid searchDnsSuffix", searchServiceName,
                 indexName, apiKey, apiVersion, "");
     }
 
@@ -303,8 +303,8 @@ public class SearchIndexClientBuildersTest {
      * Verify that if the property is invalid the client builder throws exception
      */
     @Test
-    public void VerifyEmptyDnsSuffixIsInvalidTest() throws Exception {
-        BuildClientAndExpectException(false, "Invalid searchDnsSuffix", searchServiceName,
+    public void verifyEmptyDnsSuffixIsInvalidTest() throws Exception {
+        buildClientAndExpectException(false, "Invalid searchDnsSuffix", searchServiceName,
                 indexName, apiKey, apiVersion, "");
     }
 
@@ -312,7 +312,7 @@ public class SearchIndexClientBuildersTest {
      * Verify that there is a default for the dns suffix
      */
     @Test
-    public void VerifyDefaultDnsSuffixIsCorrectTest() throws Exception {
+    public void verifyDefaultDnsSuffixIsCorrectTest() throws Exception {
 
         SearchPipelinePolicy policy = new SearchPipelinePolicy(apiKey);
 
@@ -328,7 +328,7 @@ public class SearchIndexClientBuildersTest {
      * Verify that the index name can be changed after the client was already created
      */
     @Test
-    public void VerifyIndexNameIsChangeableTest() throws Exception {
+    public void verifyIndexNameIsChangeableTest() throws Exception {
 
         String originalIndexName = "firstOne";
         SearchIndexASyncClient client = buildASyncClient(searchServiceName, originalIndexName, apiKey, apiVersion, dnsSuffix);

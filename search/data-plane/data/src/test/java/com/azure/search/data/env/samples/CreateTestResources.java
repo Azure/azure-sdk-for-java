@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.search.data.env.samples;
 
 import com.azure.search.data.env.AzureSearchResources;
@@ -11,6 +14,7 @@ public class CreateTestResources {
     /**
      * This is an example of using {@link AzureSearchResources} to create Search resource in Azure,
      * and {@link SearchIndexService} to create Index in Search Azure.
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -21,10 +25,11 @@ public class CreateTestResources {
             "secret",
             AzureEnvironment.AZURE);
 
-        String subscriptionId="subscription-id";
+        String subscriptionId = "subscription-id";
         Region location = Region.US_EAST;
 
-        AzureSearchResources azureSearchResources = new AzureSearchResources(applicationTokenCredentials, subscriptionId, location);
+        AzureSearchResources azureSearchResources = new AzureSearchResources(
+            applicationTokenCredentials, subscriptionId, location);
         azureSearchResources.initialize();
 
         String serviceName = azureSearchResources.getSearchServiceName();

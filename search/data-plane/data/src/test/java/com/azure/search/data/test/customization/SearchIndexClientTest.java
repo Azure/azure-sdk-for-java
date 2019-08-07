@@ -3,12 +3,7 @@
 
 package com.azure.search.data.test.customization;
 
-import com.azure.search.data.common.SearchPipelinePolicy;
-import com.azure.search.data.SearchIndexASyncClient;
-import com.azure.search.data.SearchIndexClient;
-import com.azure.search.data.customization.SearchIndexClientBuilderImpl;
 import org.junit.Before;
-import org.junit.Test;
 
 public class SearchIndexClientTest {
 
