@@ -99,7 +99,8 @@
                 <source>..\..\sdk\eventhubs\microsoft-azure-eventhubs-eph\src\main\java</source>
                 <source>..\..\sdk\eventhubs\microsoft-azure-eventhubs-extensions\src\main\java</source>
                 <!-- Storage is excluded from Spotbugs report as it collides with the storage library
-                dependency in eventhubs code. This issue is under investigation. -->
+                dependency in eventhubs code. This issue is under investigation.
+                Issue Link: https://github.com/Azure/azure-sdk-for-java/issues/3096 -->
                 <!-- <source>..\..\storage\data-plane\src\main\java</source> -->
                 <source>..\..\sdk\keyvault\microsoft-azure-keyvault\src\main\java</source>
                 <source>..\..\sdk\keyvault\microsoft-azure-keyvault-cryptography\src\main\java</source>
