@@ -1,186 +1,78 @@
 package com.azure.search.data.customization;
 
-import com.azure.core.http.rest.PagedFlux;
+import com.azure.search.data.common.SearchPipelinePolicy;
 import com.azure.search.data.SearchIndexClient;
-import com.azure.search.data.common.credentials.SearchCredentials;
-import com.azure.search.data.generated.Documents;
-import com.azure.search.data.generated.SearchIndexRestClient;
-import com.azure.search.data.generated.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.data.generated.models.*;
-import com.microsoft.azure.AzureServiceClient;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-public class SearchIndexClientImpl extends AzureServiceClient implements SearchIndexClient {
-
-    /** Client Api Version. */
-    private String apiVersion;
-
-    /** The name of the Azure Search service. */
-    private String searchServiceName;
-
-    /** The DNS suffix of the Azure Search service. The default is search.windows.net. */
-    private String searchDnsSuffix;
-
-    /** The name of the Azure Search index. */
-    private String indexName;
-
-    /** Search Service Index Rest Client */
-    private SearchIndexRestClient indexRestClient;
+public class SearchIndexClientImpl extends SearchIndexBaseClientImpl implements SearchIndexClient {
 
     /**
-     * Initializes an instance of SearchIndexClient client.
+     * Constructor
      *
-     * @param searchServiceName name of the Azure Search Service
-     * @param indexName name of the Azure Search Index
-     * @param credentials the management credentials for Azure
+     * @param searchServiceName
+     * @param indexName
+     * @param apiVersion
      */
-    public SearchIndexClientImpl(String searchServiceName, String indexName, String searchDnsSuffix, SearchCredentials credentials) {
-        super(String.format("https://%s.%s/indexes('%s')/", searchServiceName, searchDnsSuffix, indexName), credentials);
-
-        this.apiVersion = "2019-05-06";
-        this.searchDnsSuffix = "search.windows.net";
-        this.searchServiceName = searchServiceName;
-        this.indexName = indexName;
-
-        indexRestClient = new SearchIndexRestClientBuilder().searchServiceName(searchServiceName).searchDnsSuffix(searchDnsSuffix).indexName(indexName).build();
+    public SearchIndexClientImpl(String searchServiceName, String searchDnsSuffix, String indexName, String apiVersion, SearchPipelinePolicy policy) {
+        super(searchServiceName, searchDnsSuffix, indexName, apiVersion, policy);
     }
 
-    /**
-     * Gets the Documents object to access its operations.
-     *
-     * @return the Documents object.
-     */
-    private Documents documents() {
-        return indexRestClient.documents();
-    }
-
-    /**
-     * Gets Client Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    @Override
-    public String getApiVersion() {
-        return this.apiVersion;
-    }
-
-
-    /**
-     * Gets The name of the Azure Search service.
-     *
-     * @return the searchServiceName value.
-     */
-    @Override
-    public String getSearchServiceName() {
-        return this.searchServiceName;
-    }
-
-    /**
-     * Sets The name of the Azure Search service.
-     *
-     * @param searchServiceName the searchServiceName value.
-     * @return the service client itself
-     */
-    @Override
-    public SearchIndexClient setSearchServiceName(String searchServiceName) {
-
-        this.searchServiceName = searchServiceName;
-        return this;
-    }
-
-    /**
-     * Gets The DNS suffix of the Azure Search service. The default is search.windows.net.
-     *
-     * @return the searchDnsSuffix value.
-     */
-    @Override
-    public String getSearchDnsSuffix() {
-        return this.searchDnsSuffix;
-    }
-
-    /**
-     * Sets The DNS suffix of the Azure Search service. The default is search.windows.net.
-     *
-     * @param searchDnsSuffix the searchDnsSuffix value.
-     * @return the service client itself
-     */
-    @Override
-    public SearchIndexClient setSearchDnsSuffix(String searchDnsSuffix) {
-        this.searchDnsSuffix = searchDnsSuffix;
-        return this;
-    }
-
-    /**
-     * Gets The name of the Azure Search index.
-     *
-     * @return the indexName value.
-     */
-    @Override
-    public String getIndexName() {
-        return this.indexName;
-    }
-
-    /**
-     * Sets The name of the Azure Search index.
-     *
-     * @param indexName the indexName value.
-     * @return the service client itself
-     */
     @Override
     public SearchIndexClient setIndexName(String indexName) {
-        this.indexName = indexName;
+        this.setIndexNameInternal(indexName);
         return this;
     }
 
     @Override
-    public Mono<Long> countDocuments() {
+    public Long countDocuments() {
+        return restClient.documents().countAsync().block();
+    }
+
+    @Override
+    public DocumentSearchResult search() {
+        return restClient.documents().searchGetAsync().block();
+    }
+
+    @Override
+    public DocumentSearchResult search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions) {
+        // to be replaced with calling to the async client instead
+        return restClient.documents().searchGetAsync(searchText, searchParameters, searchRequestOptions).block();
+    }
+
+    @Override
+    public Object getDocument(String key) {
         return null;
     }
 
     @Override
-    public PagedFlux<SearchResult> search() {
+    public Object getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions) {
         return null;
     }
 
     @Override
-    public PagedFlux<SearchResult> search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions) {
+    public DocumentSuggestResult suggest(String searchText, String suggesterName) {
         return null;
     }
 
     @Override
-    public Mono<Object> getDocument(String key) {
+    public DocumentSuggestResult suggest(String searchText, String suggesterName, SuggestParameters suggestParameters, SearchRequestOptions searchRequestOptions) {
         return null;
     }
 
     @Override
-    public Mono<Object> getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions) {
+    public DocumentIndexResult index(IndexBatch batch) {
         return null;
     }
 
     @Override
-    public PagedFlux<SuggestResult> suggest(String searchText, String suggesterName) {
+    public AutocompleteResult autocomplete(String searchText, String suggesterName) {
         return null;
     }
 
     @Override
-    public PagedFlux<SuggestResult> suggest(String searchText, String suggesterName, SuggestParameters suggestParameters, SearchRequestOptions searchRequestOptions) {
-        return null;
-    }
-
-    @Override
-    public Mono<DocumentIndexResult> index(IndexBatch batch) {
-        return null;
-    }
-
-    @Override
-    public Mono<AutocompleteResult> autocomplete(String searchText, String suggesterName) {
-        return null;
-    }
-
-    @Override
-    public Mono<AutocompleteResult> autocomplete(String searchText, String suggesterName, SearchRequestOptions searchRequestOptions, AutocompleteParameters autocompleteParameters) {
+    public AutocompleteResult autocomplete(String searchText, String suggesterName, SearchRequestOptions searchRequestOptions, AutocompleteParameters autocompleteParameters) {
         return null;
     }
 }

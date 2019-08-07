@@ -1,14 +1,17 @@
 package com.azure.search.data;
 
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.search.data.generated.models.*;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 /**
- * The public (Customer facing) interface for SearchIndexClient.
+ * The public (Customer facing) interface for SearchIndexASyncClient.
  */
-public interface SearchIndexClient {
+public interface SearchIndexASyncClient {
     // Indices
+
     /**
      * Gets Client Api Version.
      *
@@ -43,7 +46,7 @@ public interface SearchIndexClient {
      * @param indexName the indexName value.
      * @return the service client itself.
      */
-    SearchIndexClient setIndexName(String indexName);
+    SearchIndexASyncClient setIndexName(String indexName);
 
 
     // Index Operations
@@ -53,23 +56,23 @@ public interface SearchIndexClient {
      *
      * @return the number of documents.
      */
-    Long countDocuments();
+    Mono<Long> countDocuments();
 
     /**
      * Searches for documents in the Azure Search index
      *
      * @return the document search result.
      */
-    DocumentSearchResult search();
+    PagedFlux<SearchResult> search();
 
     /**
      * Searches for documents in the Azure Search index
      *
      * @return the document search result.
      */
-    DocumentSearchResult search(String searchText,
-                                SearchParameters searchParameters,
-                                SearchRequestOptions searchRequestOptions);
+    PagedFlux<SearchResult> search(String searchText,
+                                   SearchParameters searchParameters,
+                                   SearchRequestOptions searchRequestOptions);
 
     /**
      * Retrieves a document from the Azure Search index.
@@ -77,7 +80,7 @@ public interface SearchIndexClient {
      * @param key the name of the document
      * @return
      */
-    Object getDocument(String key);
+    Mono<Object> getDocument(String key);
 
     /**
      * Retrieves a document from the Azure Search index.
@@ -87,7 +90,7 @@ public interface SearchIndexClient {
      * @param searchRequestOptions
      * @return
      */
-    Object getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions);
+    Mono<Object> getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions);
 
     /**
      * Suggests documents in the Azure Search index that match the given partial query text.
@@ -96,7 +99,7 @@ public interface SearchIndexClient {
      * @param suggesterName
      * @return
      */
-    DocumentSuggestResult suggest(String searchText, String suggesterName);
+    PagedFlux<SuggestResult> suggest(String searchText, String suggesterName);
 
     /**
      * Suggests documents in the Azure Search index that match the given partial query text.
@@ -107,7 +110,7 @@ public interface SearchIndexClient {
      * @param searchRequestOptions
      * @return
      */
-    DocumentSuggestResult suggest(String searchText, String suggesterName, SuggestParameters suggestParameters, SearchRequestOptions searchRequestOptions);
+    PagedFlux<SuggestResult> suggest(String searchText, String suggesterName, SuggestParameters suggestParameters, SearchRequestOptions searchRequestOptions);
 
     /**
      * Sends a batch of document write actions to the Azure Search index.
@@ -115,7 +118,7 @@ public interface SearchIndexClient {
      * @param batch
      * @return
      */
-    DocumentIndexResult index(IndexBatch batch);
+    Mono<DocumentIndexResult> index(IndexBatch batch);
 
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
@@ -124,7 +127,7 @@ public interface SearchIndexClient {
      * @param suggesterName
      * @return
      */
-    AutocompleteResult autocomplete(String searchText, String suggesterName);
+    Mono<AutocompleteResult> autocomplete(String searchText, String suggesterName);
 
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
@@ -135,5 +138,5 @@ public interface SearchIndexClient {
      * @param autocompleteParameters
      * @return
      */
-    AutocompleteResult autocomplete(String searchText, String suggesterName, SearchRequestOptions searchRequestOptions, AutocompleteParameters autocompleteParameters);
+    Mono<AutocompleteResult> autocomplete(String searchText, String suggesterName, SearchRequestOptions searchRequestOptions, AutocompleteParameters autocompleteParameters);
 }

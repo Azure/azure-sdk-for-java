@@ -206,6 +206,14 @@ public class RestProxy implements InvocationHandler {
 
             final String host = methodParser.host(args);
             urlBuilder.host(host);
+            String previousPath = urlBuilder.path();
+            // Todo: This is a temporary change just to get the CSE team unblocked and
+            // SHOULD NOT be merged back into the main repo
+            if (previousPath.equals("")) {
+                urlBuilder.path(path);
+            } else {
+                urlBuilder.path(previousPath + "/" + path);
+            }
         }
 
         for (final EncodedParameter queryParameter : methodParser.encodedQueryParameters(args)) {
