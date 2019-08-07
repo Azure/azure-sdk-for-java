@@ -1,10 +1,17 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
+<<<<<<< HEAD:sdk/storage/azure-storage-queue/src/test/resources/session-records/QueueServiceAPITestsListQueues0.json
     "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueserviceapitestslistqueues0197608aaded4b7b220",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+=======
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue4678974d",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 11.0.3; Windows 10 10.0"
+>>>>>>> e0117285eed... queue async:sdk/storage/azure-storage-queue/src/test/resources/session-records/createQueueTwiceSameMetadata.json
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -12,6 +19,7 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
+<<<<<<< HEAD:sdk/storage/azure-storage-queue/src/test/resources/session-records/QueueServiceAPITestsListQueues0.json
       "x-ms-request-id" : "b9c9c84f-2003-0008-2b88-532b05000000",
       "Date" : "Thu, 15 Aug 2019 16:40:46 GMT"
     }
@@ -21,6 +29,18 @@
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+=======
+      "x-ms-request-id" : "00c89c6e-a003-00d5-7c2f-4e78ab000000",
+      "Date" : "Thu, 08 Aug 2019 21:26:29 GMT"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue4678974d/messages",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 11.0.3; Windows 10 10.0",
+      "Content-Type" : "application/xml; charset=utf-8"
+>>>>>>> e0117285eed... queue async:sdk/storage/azure-storage-queue/src/test/resources/session-records/createQueueTwiceSameMetadata.json
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -28,6 +48,7 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
+<<<<<<< HEAD:sdk/storage/azure-storage-queue/src/test/resources/session-records/QueueServiceAPITestsListQueues0.json
       "x-ms-request-id" : "b9c9c86a-2003-0008-4488-532b05000000",
       "Date" : "Thu, 15 Aug 2019 16:40:46 GMT"
     }
@@ -37,12 +58,26 @@
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+=======
+      "x-ms-request-id" : "00c89c85-a003-00d5-0e2f-4e78ab000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>9b9bde1a-c2e6-4541-a2a5-7493acc4eaf2</MessageId><InsertionTime>Thu, 08 Aug 2019 21:26:30 GMT</InsertionTime><ExpirationTime>Thu, 15 Aug 2019 21:26:30 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAATnQB8i9O1QE=</PopReceipt><TimeNextVisible>Thu, 08 Aug 2019 21:26:30 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Thu, 08 Aug 2019 21:26:30 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue4678974d",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 11.0.3; Windows 10 10.0"
+>>>>>>> e0117285eed... queue async:sdk/storage/azure-storage-queue/src/test/resources/session-records/createQueueTwiceSameMetadata.json
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
+<<<<<<< HEAD:sdk/storage/azure-storage-queue/src/test/resources/session-records/QueueServiceAPITestsListQueues0.json
       "StatusCode" : "201",
       "x-ms-request-id" : "b9c9c86f-2003-0008-4888-532b05000000",
       "Date" : "Thu, 15 Aug 2019 16:40:46 GMT"
@@ -53,6 +88,18 @@
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+=======
+      "StatusCode" : "204",
+      "x-ms-request-id" : "00c89c90-a003-00d5-182f-4e78ab000000",
+      "Date" : "Thu, 08 Aug 2019 21:26:30 GMT"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue4678974d/messages?peekonly=true",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 11.0.3; Windows 10 10.0"
+>>>>>>> e0117285eed... queue async:sdk/storage/azure-storage-queue/src/test/resources/session-records/createQueueTwiceSameMetadata.json
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -61,6 +108,7 @@
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
+<<<<<<< HEAD:sdk/storage/azure-storage-queue/src/test/resources/session-records/QueueServiceAPITestsListQueues0.json
       "x-ms-request-id" : "b9c9c87b-2003-0008-5188-532b05000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.queue.core.windows.net/\"><Prefix>queueserviceapitestslistqueues</Prefix><Queues><Queue><Name>queueserviceapitestslistqueues0197608aaded4b7b220</Name></Queue><Queue><Name>queueserviceapitestslistqueues0197608aaded4b7b221</Name></Queue><Queue><Name>queueserviceapitestslistqueues0197608aaded4b7b222</Name></Queue></Queues><NextMarker /></EnumerationResults>",
       "Date" : "Thu, 15 Aug 2019 16:40:46 GMT",
@@ -72,11 +120,25 @@
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+=======
+      "x-ms-request-id" : "00c89c99-a003-00d5-202f-4e78ab000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>9b9bde1a-c2e6-4541-a2a5-7493acc4eaf2</MessageId><InsertionTime>Thu, 08 Aug 2019 21:26:30 GMT</InsertionTime><ExpirationTime>Thu, 15 Aug 2019 21:26:30 GMT</ExpirationTime><DequeueCount>0</DequeueCount><MessageText>Testing service client creating the same queue twice does not modify the queue</MessageText></QueueMessage></QueueMessagesList>",
+      "Date" : "Thu, 08 Aug 2019 21:26:30 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net?prefix=queue4678974d&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 11.0.3; Windows 10 10.0"
+>>>>>>> e0117285eed... queue async:sdk/storage/azure-storage-queue/src/test/resources/session-records/createQueueTwiceSameMetadata.json
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
+<<<<<<< HEAD:sdk/storage/azure-storage-queue/src/test/resources/session-records/QueueServiceAPITestsListQueues0.json
       "Content-Length" : "0",
       "StatusCode" : "204",
       "x-ms-request-id" : "b9c9c880-2003-0008-5688-532b05000000",
@@ -88,6 +150,20 @@
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+=======
+      "StatusCode" : "200",
+      "x-ms-request-id" : "00c89ca1-a003-00d5-272f-4e78ab000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.queue.core.windows.net/\"><Prefix>queue4678974d</Prefix><Queues><Queue><Name>queue4678974d</Name></Queue></Queues><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 08 Aug 2019 21:26:30 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue4678974d/messages",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 11.0.3; Windows 10 10.0"
+>>>>>>> e0117285eed... queue async:sdk/storage/azure-storage-queue/src/test/resources/session-records/createQueueTwiceSameMetadata.json
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -95,6 +171,7 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
+<<<<<<< HEAD:sdk/storage/azure-storage-queue/src/test/resources/session-records/QueueServiceAPITestsListQueues0.json
       "x-ms-request-id" : "b9c9c888-2003-0008-5c88-532b05000000",
       "Date" : "Thu, 15 Aug 2019 16:40:46 GMT"
     }
@@ -104,6 +181,17 @@
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+=======
+      "x-ms-request-id" : "00c89cad-a003-00d5-302f-4e78ab000000",
+      "Date" : "Thu, 08 Aug 2019 21:26:30 GMT"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue4678974d",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 11.0.3; Windows 10 10.0"
+>>>>>>> e0117285eed... queue async:sdk/storage/azure-storage-queue/src/test/resources/session-records/createQueueTwiceSameMetadata.json
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -111,9 +199,17 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
+<<<<<<< HEAD:sdk/storage/azure-storage-queue/src/test/resources/session-records/QueueServiceAPITestsListQueues0.json
       "x-ms-request-id" : "b9c9c895-2003-0008-6788-532b05000000",
       "Date" : "Thu, 15 Aug 2019 16:40:46 GMT"
     }
   } ],
   "variables" : [ "queueserviceapitestslistqueues0197608aaded4b7b22" ]
+=======
+      "x-ms-request-id" : "00c89cb4-a003-00d5-362f-4e78ab000000",
+      "Date" : "Thu, 08 Aug 2019 21:26:30 GMT"
+    }
+  } ],
+  "variables" : [ "queue4678974d" ]
+>>>>>>> e0117285eed... queue async:sdk/storage/azure-storage-queue/src/test/resources/session-records/createQueueTwiceSameMetadata.json
 }

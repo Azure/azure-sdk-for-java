@@ -6,6 +6,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -33,6 +34,8 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+
+import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue in Azure Storage Queue.
@@ -114,11 +117,11 @@ public final class QueueAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
      *
-     * @return A response that only contains headers and response status code
+     * @return An empty response
      * @throws StorageErrorException If a queue with the same name already exists in the queue service.
      */
-    public Mono<VoidResponse> create() {
-        return create(null);
+    public Mono<Void> create() {
+        return createWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -128,7 +131,7 @@ public final class QueueAsyncClient {
      *
      * <p>Create a queue with metadata "queue:metadataMap"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.create#map}
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.createWithResponse#map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
@@ -137,8 +140,12 @@ public final class QueueAsyncClient {
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If a queue with the same name and different metadata already exists in the queue service.
      */
-    public Mono<VoidResponse> create(Map<String, String> metadata) {
-        return client.queues().createWithRestResponseAsync(queueName, null, metadata, null, Context.NONE)
+    public Mono<VoidResponse> createWithResponse(Map<String, String> metadata) {
+        return withContext(context -> createWithResponse(metadata, context));
+    }
+
+    Mono<VoidResponse> createWithResponse(Map<String, String> metadata, Context context) {
+        return client.queues().createWithRestResponseAsync(queueName, null, metadata, null, context)
             .map(VoidResponse::new);
     }
 
@@ -154,11 +161,34 @@ public final class QueueAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
      *
+     * @return An empty response
+     * @throws StorageErrorException If the queue doesn't exist
+     */
+    public Mono<Void> delete() {
+        return deleteWithResponse().flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Permanently deletes the queue.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete a queue</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.deleteWithResponse}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
+     *
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the queue doesn't exist
      */
-    public Mono<VoidResponse> delete() {
-        return client.queues().deleteWithRestResponseAsync(queueName, Context.NONE)
+    public Mono<VoidResponse> deleteWithResponse() {
+        return withContext(context -> deleteWithResponse(context));
+    }
+
+    Mono<VoidResponse> deleteWithResponse(Context context) {
+        return client.queues().deleteWithRestResponseAsync(queueName, context)
             .map(VoidResponse::new);
     }
 
@@ -178,7 +208,31 @@ public final class QueueAsyncClient {
      * messages count of the queue.
      * @throws StorageErrorException If the queue doesn't exist
      */
-    public Mono<Response<QueueProperties>> getProperties() {
+    public Mono<QueueProperties> getProperties() {
+        return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Retrieves metadata and approximate message count of the queue.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Get the properties of the queue</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.getPropertiesWithResponse}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-metadata">Azure Docs</a>.</p>
+     *
+     * @return A response containing a {@link QueueProperties} value which contains the metadata and approximate
+     * messages count of the queue.
+     * @throws StorageErrorException If the queue doesn't exist
+     */
+    public Mono<Response<QueueProperties>> getPropertiesWithResponse() {
+        return withContext(context -> getPropertiesWithResponse(context));
+    }
+
+    Mono<Response<QueueProperties>> getPropertiesWithResponse(Context context) {
         return client.queues().getPropertiesWithRestResponseAsync(queueName, Context.NONE)
             .map(this::getQueuePropertiesResponse);
     }
@@ -205,8 +259,38 @@ public final class QueueAsyncClient {
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the queue doesn't exist
      */
-    public Mono<VoidResponse> setMetadata(Map<String, String> metadata) {
-        return client.queues().setMetadataWithRestResponseAsync(queueName, null, metadata, null, Context.NONE)
+    public Mono<Void> setMetadata(Map<String, String> metadata) {
+        return setMetadataWithResponse(metadata).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Sets the metadata of the queue.
+     *
+     * Passing in a {@code null} value for metadata will clear the metadata associated with the queue.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set the queue's metadata to "queue:metadataMap"</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.setMetadataWithResponse#map}
+     *
+     * <p>Clear the queue's metadata</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.clearMetadataWithResponse#map}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-metadata">Azure Docs</a>.</p>
+     *
+     * @param metadata Metadata to set on the queue
+     * @return A response that only contains headers and response status code
+     * @throws StorageErrorException If the queue doesn't exist
+     */
+    public Mono<VoidResponse> setMetadataWithResponse(Map<String, String> metadata) {
+        return withContext(context -> setMetadataWithResponse(metadata, context));
+    }
+
+    Mono<VoidResponse> setMetadataWithResponse(Map<String, String> metadata, Context context) {
+        return client.queues().setMetadataWithRestResponseAsync(queueName, null, metadata, null, context)
             .map(VoidResponse::new);
     }
 
@@ -243,12 +327,37 @@ public final class QueueAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
      *
      * @param permissions Access policies to set on the queue
+     * @return An empty response
+     * @throws StorageErrorException If the queue doesn't exist, a stored access policy doesn't have all fields filled out,
+     * or the queue will have more than five policies.
+     */
+    public Mono<Void> setAccessPolicy(List<SignedIdentifier> permissions) {
+        return setAccessPolicyWithResponse(permissions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Sets stored access policies on the queue.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set a read only stored access policy</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.setAccessPolicyWithResponse}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
+     *
+     * @param permissions Access policies to set on the queue
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the queue doesn't exist, a stored access policy doesn't have all fields filled out,
      * or the queue will have more than five policies.
      */
-    public Mono<VoidResponse> setAccessPolicy(List<SignedIdentifier> permissions) {
-        return client.queues().setAccessPolicyWithRestResponseAsync(queueName, permissions, null,  null, Context.NONE)
+    public Mono<VoidResponse> setAccessPolicyWithResponse(List<SignedIdentifier> permissions) {
+        return withContext(context -> setAccessPolicyWithResponse(permissions, context));
+    }
+
+    Mono<VoidResponse> setAccessPolicyWithResponse(List<SignedIdentifier> permissions, Context context) {
+        return client.queues().setAccessPolicyWithRestResponseAsync(queueName, permissions, null,  null, context)
             .map(VoidResponse::new);
     }
 
@@ -264,11 +373,34 @@ public final class QueueAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/clear-messages">Azure Docs</a>.</p>
      *
+     * @return An empty response
+     * @throws StorageErrorException If the queue doesn't exist
+     */
+    public Mono<Void> clearMessages() {
+        return clearMessagesWithResponse().flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes all messages in the queue.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Clear the messages</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.clearMessagesWithResponse}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/clear-messages">Azure Docs</a>.</p>
+     *
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the queue doesn't exist
      */
-    public Mono<VoidResponse> clearMessages() {
-        return client.messages().clearWithRestResponseAsync(queueName, Context.NONE)
+    public Mono<VoidResponse> clearMessagesWithResponse() {
+        return withContext(context -> clearMessagesWithResponse(context));
+    }
+
+    Mono<VoidResponse> clearMessagesWithResponse(Context context) {
+        return client.messages().clearWithRestResponseAsync(queueName, context)
             .map(VoidResponse::new);
     }
 
@@ -290,8 +422,8 @@ public final class QueueAsyncClient {
      * about the enqueued message.
      * @throws StorageErrorException If the queue doesn't exist
      */
-    public Mono<Response<EnqueuedMessage>> enqueueMessage(String messageText) {
-        return enqueueMessage(messageText, Duration.ofSeconds(0), Duration.ofDays(7));
+    public Mono<EnqueuedMessage> enqueueMessage(String messageText) {
+        return enqueueMessageWithResponse(messageText, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -301,11 +433,11 @@ public final class QueueAsyncClient {
      *
      * <p>Add a message of "Hello, Azure" that has a timeout of 5 seconds</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.enqueueMessage#string-duration-duration}
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.enqueueMessageWithResponse#string-duration-duration}
      *
      * <p>Add a message of "Goodbye, Azure" that has a time to live of 5 seconds</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.enqueueMessageLiveTime#string-duration-duration}
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.enqueueMessageWithResponseLiveTime#string-duration-duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-message">Azure Docs</a>.</p>
@@ -322,12 +454,16 @@ public final class QueueAsyncClient {
      * @throws StorageErrorException If the queue doesn't exist or the {@code visibilityTimeout} or {@code timeToLive}
      * are outside of the allowed limits.
      */
-    public Mono<Response<EnqueuedMessage>> enqueueMessage(String messageText, Duration visibilityTimeout, Duration timeToLive) {
+    public Mono<Response<EnqueuedMessage>> enqueueMessageWithResponse(String messageText, Duration visibilityTimeout, Duration timeToLive) {
+        return withContext(context -> enqueueMessageWithResponse(messageText, visibilityTimeout, timeToLive, context));
+    }
+
+    Mono<Response<EnqueuedMessage>> enqueueMessageWithResponse(String messageText, Duration visibilityTimeout, Duration timeToLive, Context context) {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         Integer timeToLiveInSeconds = (timeToLive == null) ? null : (int) timeToLive.getSeconds();
         QueueMessage message = new QueueMessage().messageText(messageText);
 
-        return client.messages().enqueueWithRestResponseAsync(queueName, message, visibilityTimeoutInSeconds, timeToLiveInSeconds, null, null, Context.NONE)
+        return client.messages().enqueueWithRestResponseAsync(queueName, message, visibilityTimeoutInSeconds, timeToLiveInSeconds, null, null, context)
             .map(response -> new SimpleResponse<>(response, response.value().get(0)));
     }
 
@@ -476,9 +612,39 @@ public final class QueueAsyncClient {
      * @throws StorageErrorException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
      * or the {@code visibilityTimeout} is outside the allowed bounds
      */
-    public Mono<Response<UpdatedMessage>> updateMessage(String messageText, String messageId, String popReceipt, Duration visibilityTimeout) {
+    public Mono<UpdatedMessage> updateMessage(String messageText, String messageId, String popReceipt, Duration visibilityTimeout) {
+        return updateMessageWithResponse(messageText, messageId, popReceipt, visibilityTimeout).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Updates the specific message in the queue with a new message and resets the visibility timeout.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Dequeue the first message and update it to "Hello again, Azure" and hide it for 5 seconds</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.updateMessageWithResponse}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/update-message">Azure Docs</a>.</p>
+     *
+     * @param messageText Updated value for the message
+     * @param messageId Id of the message to update
+     * @param popReceipt Unique identifier that must match for the message to be updated
+     * @param visibilityTimeout The timeout period for how long the message is invisible in the queue in seconds. The
+     * timeout period must be between 1 second and 7 days.
+     * @return A {@link UpdatedMessage} that contains the new {@link UpdatedMessage#popReceipt() popReceipt} to interact
+     * with the message, additionally contains the updated metadata about the message.
+     * @throws StorageErrorException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
+     * or the {@code visibilityTimeout} is outside the allowed bounds
+     */
+    public Mono<Response<UpdatedMessage>> updateMessageWithResponse(String messageText, String messageId, String popReceipt, Duration visibilityTimeout) {
+        return withContext(context -> updateMessageWithResponse(messageText, messageId, popReceipt, visibilityTimeout, context));
+    }
+
+    Mono<Response<UpdatedMessage>> updateMessageWithResponse(String messageText, String messageId, String popReceipt, Duration visibilityTimeout, Context context) {
         QueueMessage message = new QueueMessage().messageText(messageText);
-        return client.messageIds().updateWithRestResponseAsync(queueName, messageId, message, popReceipt, (int) visibilityTimeout.getSeconds(), Context.NONE)
+        return client.messageIds().updateWithRestResponseAsync(queueName, messageId, message, popReceipt, (int) visibilityTimeout.getSeconds(), context)
             .map(this::getUpdatedMessageResponse);
     }
 
@@ -496,11 +662,36 @@ public final class QueueAsyncClient {
      *
      * @param messageId Id of the message to deleted
      * @param popReceipt Unique identifier that must match for the message to be deleted
+     * @return An empty response
+     * @throws StorageErrorException If the queue or messageId don't exist or the popReceipt doesn't match on the message
+     */
+    public Mono<Void> deleteMessage(String messageId, String popReceipt) {
+        return deleteMessageWithResponse(messageId, popReceipt).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes the specified message in the queue
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the first message</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.deleteMessageWithResponse}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-message2">Azure Docs</a>.</p>
+     *
+     * @param messageId Id of the message to deleted
+     * @param popReceipt Unique identifier that must match for the message to be deleted
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the queue or messageId don't exist or the popReceipt doesn't match on the message
      */
-    public Mono<VoidResponse> deleteMessage(String messageId, String popReceipt) {
-        return client.messageIds().deleteWithRestResponseAsync(queueName, messageId, popReceipt, Context.NONE)
+    public Mono<VoidResponse> deleteMessageWithResponse(String messageId, String popReceipt) {
+        return withContext(context -> deleteMessageWithResponse(messageId, popReceipt, context));
+    }
+
+    Mono<VoidResponse> deleteMessageWithResponse(String messageId, String popReceipt, Context context) {
+        return client.messageIds().deleteWithRestResponseAsync(queueName, messageId, popReceipt, context)
             .map(VoidResponse::new);
     }
 
