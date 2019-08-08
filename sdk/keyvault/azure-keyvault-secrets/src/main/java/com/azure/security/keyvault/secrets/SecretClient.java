@@ -475,6 +475,7 @@ public final class SecretClient {
      * call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the {@link Secret secret} with value included of its latest version.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets}
      *
+     * <p><strong>Code Samples to iterate over secrets by page</strong></p>
      * <p>It is possible to get full secrets with values from this information. Loop over all the {@link SecretBase secret} by page and
      * call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the {@link Secret secret} with value included of its latest version.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets.iterableByPage}
@@ -490,6 +491,7 @@ public final class SecretClient {
      * in the list is represented by {@link SecretBase} as only the base secret identifier and its attributes are
      * provided in the response. The secret values and individual secret versions are not listed in the response. This operation requires the {@code secrets/list} permission.
      *
+     * <p><strong>Code Samples to iterate over secrets by page</strong></p>
      * <p>It is possible to get full secrets with values from this information. Loop over the {@link SecretBase secret} and
      * call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the {@link Secret secret} with value included of its latest version.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets#Context}
@@ -524,6 +526,7 @@ public final class SecretClient {
      * <p>Lists the deleted secrets in the key vault and for each deleted secret prints out its recovery id.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listDeletedSecrets}
      *
+     * <p><strong>Code Samples to iterate over secrets by page</strong></p>
      * <p><strong>Samples to iterate DeletedSecret by each page</strong></p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listDeletedSecrets.iterableByPage}
      *
@@ -561,6 +564,7 @@ public final class SecretClient {
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string-Context}
      *
      *
+     * <p><strong>Code Samples to iterate over secret versions by page</strong></p>
      * <p>It is possible to get full Secrets with values for each version from this information. Loop over all the {@link SecretBase secret} by each page and
      * call {@link SecretClient#getSecret(SecretBase)} . This will return the {@link Secret} secrets with values included of the specified versions.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string-Context-iterableByPage}
