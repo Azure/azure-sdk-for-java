@@ -23,7 +23,7 @@
 
 ## Example
 
-See the complete code for the above sample in [`HelloWorldExample.java`](./examples/src/main/java/com/azure/data/cosmos/examples/HelloWorldExample.java)
+See the complete code for the above sample in [`HelloWorldDemo.java`](./microsoft-azure-cosmos-examples/src/main/java/com/azure/data/cosmos/examples/HelloWorldDemo.java)
 
 ```java
 import com.azure.data.cosmos.*;
