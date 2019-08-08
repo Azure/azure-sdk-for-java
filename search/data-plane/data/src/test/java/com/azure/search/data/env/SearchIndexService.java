@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.search.data.env;
 
 import com.azure.search.service.SearchServiceClient;
@@ -17,6 +20,7 @@ public class SearchIndexService {
 
     private String searchServiceName;
     private String apiAdminKey;
+    private String indexName;
 
     private SearchServiceClient searchServiceClient;
 
@@ -25,7 +29,7 @@ public class SearchIndexService {
      * to be used in tests.
      *
      * @param searchServiceName the name of Search Service in Azure.
-     * @param apiAdminKey the Admin Key of Search Service
+     * @param apiAdminKey       the Admin Key of Search Service
      */
     public SearchIndexService(String searchServiceName, String apiAdminKey) {
         this.searchServiceName = searchServiceName;
@@ -35,7 +39,7 @@ public class SearchIndexService {
     /**
      * Creates a new sample Index in Azure Search with configuration retrieved from INDEX_DATA_JSON
      *
-     * @throws IOException If the file in INDEX_DATA_JSON cannot be read.
+     * @throws IOException If the file in INDEX_DATA_JSON is not existing or invalid.
      */
     public void initialize() throws IOException {
         validate();
@@ -49,10 +53,10 @@ public class SearchIndexService {
     }
 
     private void validate() {
-        if(StringUtils.isBlank(this.searchServiceName)){
+        if (StringUtils.isBlank(this.searchServiceName)) {
             throw new IllegalArgumentException("searchServiceName cannot be blank");
         }
-        if(StringUtils.isBlank(this.apiAdminKey)){
+        if (StringUtils.isBlank(this.apiAdminKey)) {
             throw new IllegalArgumentException("apiAdminKey cannot be blank");
         }
     }
@@ -60,7 +64,15 @@ public class SearchIndexService {
     private void addIndexes() throws IOException {
         Reader indexData = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(INDEX_DATA_JSON));
         Index index = new ObjectMapper().readValue(indexData, Index.class);
+        this.indexName = index.name();
         searchServiceClient.indexes().create(index);
     }
 
+    /**
+     *
+     * @return the sample index name
+     */
+    public String indexName(){
+        return this.indexName;
+    }
 }
