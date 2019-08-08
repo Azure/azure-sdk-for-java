@@ -3,11 +3,13 @@
 
 package com.azure.search.data.test.customization;
 
-import com.azure.search.data.common.SearchPipelinePolicy;
-import com.azure.search.data.SearchIndexASyncClient;
+import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.SearchIndexClient;
-import com.azure.search.data.customization.SearchIndexBaseClientImpl;
-import com.azure.search.data.customization.SearchIndexClientBuilderImpl;
+import com.azure.search.data.common.SearchPipelinePolicy;
+import com.azure.search.data.customization.SearchIndexAsyncClientImpl;
+import com.azure.search.data.customization.SearchIndexBaseClient;
+import com.azure.search.data.customization.SearchIndexClientImpl;
+import com.azure.search.data.customization.SearchIndexClientBuilder;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,42 +27,40 @@ public class SearchIndexClientBuildersTest {
     /**
      * Builds a Sync Search Index client
      */
-    private SearchIndexClient buildClient(String searchServiceName, String indexName, String apiKey, String apiVersion, String dnsSuffix) {
+    private SearchIndexClientImpl buildClient(String searchServiceName, String indexName, String apiKey, String apiVersion, String dnsSuffix) {
         SearchPipelinePolicy policy = new SearchPipelinePolicy(apiKey);
 
-        SearchIndexClientBuilderImpl clientBuilder = new SearchIndexClientBuilderImpl();
-        SearchIndexClient client =
-                clientBuilder.serviceName(searchServiceName).indexName(indexName).policy(policy).apiVersion(apiVersion).searchDnsSuffix(dnsSuffix).buildClient();
+        SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
+        SearchIndexClient client = clientBuilder.serviceName(searchServiceName).indexName(indexName).policy(policy).apiVersion(apiVersion).searchDnsSuffix(dnsSuffix).buildClient();
 
         assert (client != null);
-        assert (client.getClass().getSimpleName().equals("SearchIndexClientImpl"));
+        assert (client.getClass().getSimpleName().equals(SearchIndexClientImpl.class.getSimpleName()));
 
-        return client;
+        return (SearchIndexClientImpl) client;
     }
 
     /**
      * Builds an ASync Search Index client
      */
-    private SearchIndexASyncClient buildASyncClient(String searchServiceName, String indexName, String apiKey, String apiVersion, String dnsSuffix) {
+    private SearchIndexAsyncClientImpl buildASyncClient(String searchServiceName, String indexName, String apiKey, String apiVersion, String dnsSuffix) {
         SearchPipelinePolicy policy = new SearchPipelinePolicy(apiKey);
 
-        SearchIndexClientBuilderImpl clientBuilder = new SearchIndexClientBuilderImpl();
-        SearchIndexASyncClient client =
-                clientBuilder.serviceName(searchServiceName).indexName(indexName).policy(policy).apiVersion(apiVersion).searchDnsSuffix(dnsSuffix).buildAsyncClient();
+        SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
+        SearchIndexAsyncClient client = clientBuilder.serviceName(searchServiceName).indexName(indexName).policy(policy).apiVersion(apiVersion).searchDnsSuffix(dnsSuffix).buildAsyncClient();
 
         assert (client != null);
-        assert (client.getClass().getSimpleName().equals("SearchIndexASyncClientImpl"));
+        assert (client.getClass().getSimpleName().equals(SearchIndexAsyncClientImpl.class.getSimpleName()));
 
-        return client;
+        return (SearchIndexAsyncClientImpl) client;
     }
 
     private void buildClientAndVerifyInternal(boolean isASync) {
-        SearchIndexBaseClientImpl client;
+        SearchIndexBaseClient client;
         if (isASync) {
-            client = (SearchIndexBaseClientImpl) buildClient(searchServiceName, indexName, apiKey, apiVersion, dnsSuffix);
+            client = buildClient(searchServiceName, indexName, apiKey, apiVersion, dnsSuffix);
 
         } else {
-            client = (SearchIndexBaseClientImpl) buildASyncClient(searchServiceName, indexName, apiKey, apiVersion, dnsSuffix);
+            client = buildASyncClient(searchServiceName, indexName, apiKey, apiVersion, dnsSuffix);
         }
 
         assert (client.getIndexName().equals(indexName));
@@ -316,8 +316,8 @@ public class SearchIndexClientBuildersTest {
 
         SearchPipelinePolicy policy = new SearchPipelinePolicy(apiKey);
 
-        SearchIndexClientBuilderImpl clientBuilder = new SearchIndexClientBuilderImpl();
-        SearchIndexASyncClient client =
+        SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
+        SearchIndexAsyncClient client =
                 clientBuilder.serviceName(searchServiceName).indexName(indexName).policy(policy).apiVersion(apiVersion).buildAsyncClient();
 
         assert (client != null);
@@ -331,7 +331,7 @@ public class SearchIndexClientBuildersTest {
     public void verifyIndexNameIsChangeableTest() throws Exception {
 
         String originalIndexName = "firstOne";
-        SearchIndexASyncClient client = buildASyncClient(searchServiceName, originalIndexName, apiKey, apiVersion, dnsSuffix);
+        SearchIndexAsyncClientImpl client = buildASyncClient(searchServiceName, originalIndexName, apiKey, apiVersion, dnsSuffix);
         assert (client.getIndexName().equals(originalIndexName));
 
         String otherIndexName = "ImTheSecond";

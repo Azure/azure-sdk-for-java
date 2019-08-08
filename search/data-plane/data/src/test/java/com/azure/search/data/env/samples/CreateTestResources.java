@@ -49,14 +49,14 @@ public class CreateTestResources {
         }
 
         // Uploading Documents:
-        try{
+        try {
             SearchIndexDocs searchIndexDocs = new SearchIndexDocs(serviceName, apiAdminKey,
                 searchIndexService.indexName(),
                 "search.windows.net",
                 "2019-05-06");
             searchIndexDocs.initialize();
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

@@ -1,6 +1,17 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.search.data;
 
-import com.azure.search.data.generated.models.*;
+import com.azure.search.data.generated.models.AutocompleteParameters;
+import com.azure.search.data.generated.models.AutocompleteResult;
+import com.azure.search.data.generated.models.DocumentIndexResult;
+import com.azure.search.data.generated.models.DocumentSearchResult;
+import com.azure.search.data.generated.models.DocumentSuggestResult;
+import com.azure.search.data.generated.models.IndexBatch;
+import com.azure.search.data.generated.models.SearchParameters;
+import com.azure.search.data.generated.models.SearchRequestOptions;
+import com.azure.search.data.generated.models.SuggestParameters;
 
 import java.util.List;
 import java.util.Map;
@@ -65,76 +76,76 @@ public interface SearchIndexClient {
 
     /**
      * Searches for documents in the Azure Search index
-     *
+     * @param searchText Search Test
+     * @param searchParameters Search Parameters
+     * @param  searchRequestOptions Search Request Options
      * @return the document search result.
      */
-    DocumentSearchResult search(String searchText,
-                                SearchParameters searchParameters,
-                                SearchRequestOptions searchRequestOptions);
+    DocumentSearchResult search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions);
 
     /**
      * Retrieves a document from the Azure Search index.
      *
      * @param key the name of the document
-     * @return
+     * @return document object
      */
     Map<String, Object> getDocument(String key);
 
     /**
      * Retrieves a document from the Azure Search index.
      *
-     * @param key
-     * @param selectedFields
-     * @param searchRequestOptions
-     * @return
+     * @param key document key
+     * @param selectedFields selected fields to return
+     * @param searchRequestOptions search request options
+     * @return document object
      */
     Map<String, Object> getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions);
 
     /**
      * Suggests documents in the Azure Search index that match the given partial query text.
      *
-     * @param searchText
-     * @param suggesterName
-     * @return
+     * @param searchText search text
+     * @param suggesterName suggester name
+     * @return suggests result
      */
     DocumentSuggestResult suggest(String searchText, String suggesterName);
 
     /**
      * Suggests documents in the Azure Search index that match the given partial query text.
      *
-     * @param searchText
-     * @param suggesterName
-     * @param suggestParameters
-     * @param searchRequestOptions
-     * @return
+     * @param searchText search text
+     * @param suggesterName suggester name
+     * @param suggestParameters suggest parameters
+     * @param searchRequestOptions search request options
+     * @return suggests results
      */
     DocumentSuggestResult suggest(String searchText, String suggesterName, SuggestParameters suggestParameters, SearchRequestOptions searchRequestOptions);
 
     /**
      * Sends a batch of document write actions to the Azure Search index.
      *
-     * @param batch
-     * @return
+     * @param batch batch of documents to send to the index with the requested action
+     * @return document index result
      */
     DocumentIndexResult index(IndexBatch batch);
 
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
      *
-     * @param searchText
-     * @param suggesterName
-     * @return
+     * @param searchText search text
+     * @param suggesterName suggester name
+     * @return auto complete result
      */
     AutocompleteResult autocomplete(String searchText, String suggesterName);
 
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
      *
-     * @param searchText
-     * @param suggesterName
-     * @param searchRequestOptions
-     * @param autocompleteParameters
-     * @return
+     * @param searchText search text
+     * @param suggesterName suggester name
+     * @param searchRequestOptions search request options
+     * @param autocompleteParameters auto complete parameters
+     * @return auto complete result
      */
     AutocompleteResult autocomplete(String searchText, String suggesterName, SearchRequestOptions searchRequestOptions, AutocompleteParameters autocompleteParameters);
 }

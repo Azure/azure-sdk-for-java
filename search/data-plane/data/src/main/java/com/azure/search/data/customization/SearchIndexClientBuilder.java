@@ -1,10 +1,15 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.search.data.customization;
 
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
+import com.azure.search.data.SearchIndexAsyncClient;
+import com.azure.search.data.SearchIndexClient;
 import com.azure.search.data.common.SearchPipelinePolicy;
-import com.azure.search.data.SearchIndexClientBuilder;
 
 /**
- * Fluent SearchIndexClientBuilder for instantiating a {@link SearchIndexClientImpl} or a {@link SearchIndexASyncClientImpl}
+ * Fluent SearchIndexClientBuilder for instantiating a {@link SearchIndexClientImpl} or a {@link SearchIndexAsyncClientImpl}
  * using {@link SearchIndexClientBuilder#buildClient()} or {@link SearchIndexClientBuilder#buildAsyncClient()}
  *
  * <p>
@@ -13,14 +18,17 @@ import com.azure.search.data.SearchIndexClientBuilder;
  * <ul>
  * <li>the search service name through {@code .serviceName()}
  * <li>the index name through {@code .indexName()}
- * <li>the credentials through {@code .credentials()}
+ * <li>the api version through {@code .apiVersion()}
+ * <li>the api-key though {@code .policy()}</li>
  * </ul>
  *
  * <p>
  * Once all the configurations are set on this builder, call {@code .buildClient()} to create a
- * {@link SearchIndexClientBuilder}
+ * {@link SearchIndexClientImpl} or {@code .buildAsyncClient()} to create a
+ *  * {@link SearchIndexAsyncClientImpl}
  */
-public class SearchIndexClientBuilderImpl implements SearchIndexClientBuilder {
+@ServiceClientBuilder(serviceClients = SearchIndexClientImpl.class)
+public class SearchIndexClientBuilder {
 
     private String apiVersion;
     private String serviceName;
@@ -28,7 +36,10 @@ public class SearchIndexClientBuilderImpl implements SearchIndexClientBuilder {
     private SearchPipelinePolicy policy;
     private String searchDnsSuffix;
 
-    public SearchIndexClientBuilderImpl() {
+    /**
+     * Default Constructor
+     */
+    public SearchIndexClientBuilder() {
         searchDnsSuffix = "search.windows.net";
     }
 
@@ -38,7 +49,7 @@ public class SearchIndexClientBuilderImpl implements SearchIndexClientBuilder {
      * @param apiVersion api version
      * @return the updated SearchIndexClientBuilder object
      */
-    public SearchIndexClientBuilderImpl apiVersion(String apiVersion) {
+    public SearchIndexClientBuilder apiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
         return this;
     }
@@ -49,7 +60,7 @@ public class SearchIndexClientBuilderImpl implements SearchIndexClientBuilder {
      * @param serviceName name of the service
      * @return the updated SearchIndexClientBuilder object
      */
-    public SearchIndexClientBuilderImpl serviceName(String serviceName) {
+    public SearchIndexClientBuilder serviceName(String serviceName) {
         this.serviceName = serviceName;
         return this;
     }
@@ -60,7 +71,7 @@ public class SearchIndexClientBuilderImpl implements SearchIndexClientBuilder {
      * @param indexName name of the index
      * @return the updated SearchIndexClientBuilder object
      */
-    public SearchIndexClientBuilderImpl indexName(String indexName) {
+    public SearchIndexClientBuilder indexName(String indexName) {
         this.indexName = indexName;
         return this;
     }
@@ -71,7 +82,7 @@ public class SearchIndexClientBuilderImpl implements SearchIndexClientBuilder {
      * @param policy value of api-key
      * @return the updated SearchIndexClientBuilder object
      */
-    public SearchIndexClientBuilderImpl policy(SearchPipelinePolicy policy) {
+    public SearchIndexClientBuilder policy(SearchPipelinePolicy policy) {
         this.policy = policy;
         return this;
     }
@@ -82,22 +93,23 @@ public class SearchIndexClientBuilderImpl implements SearchIndexClientBuilder {
      * @param searchDnsSuffix search service dns suffix
      * @return the updated SearchIndexClientBuilder object
      */
-    public SearchIndexClientBuilderImpl searchDnsSuffix(String searchDnsSuffix) {
+    public SearchIndexClientBuilder searchDnsSuffix(String searchDnsSuffix) {
         this.searchDnsSuffix = searchDnsSuffix;
         return this;
     }
 
     /**
-     * @return a {@link SearchIndexClientBuilder} created from the configurations in this builder.
+     * @return a {@link SearchIndexClient} created from the configurations in this builder.
      */
-    public SearchIndexClientImpl buildClient() {
-        return new SearchIndexClientImpl(serviceName, searchDnsSuffix, indexName, apiVersion, policy);
+    public SearchIndexClient buildClient() {
+
+        return new SearchIndexClientImpl(buildAsyncClient());
     }
 
     /**
-     * @return a {@link SearchIndexClientBuilder} created from the configurations in this builder.
+     * @return a {@link SearchIndexAsyncClient} created from the configurations in this builder.
      */
-    public SearchIndexASyncClientImpl buildAsyncClient() {
-        return new SearchIndexASyncClientImpl(serviceName, searchDnsSuffix, indexName, apiVersion, policy);
+    public SearchIndexAsyncClient buildAsyncClient() {
+        return new SearchIndexAsyncClientImpl(serviceName, searchDnsSuffix, indexName, apiVersion, policy);
     }
 }

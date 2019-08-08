@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.search.data.common;
 
 import com.azure.core.http.HttpPipelineCallContext;
@@ -11,6 +14,11 @@ public class SearchPipelinePolicy implements HttpPipelinePolicy {
 
     private String apiKey;
 
+    /**
+     * Constrcutor
+     * @param apiKey Search Service admin api key
+     * @throws IllegalArgumentException when the api key is an empty string
+     */
     public SearchPipelinePolicy(String apiKey) {
         if (StringUtils.isBlank(apiKey)) {
             throw new IllegalArgumentException("Invalid apiKey");

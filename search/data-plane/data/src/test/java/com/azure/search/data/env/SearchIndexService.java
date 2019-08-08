@@ -72,7 +72,7 @@ public class SearchIndexService {
      *
      * @return the sample index name
      */
-    public String indexName(){
+    public String indexName() {
         return this.indexName;
     }
 }

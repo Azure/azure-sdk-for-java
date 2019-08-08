@@ -1,8 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.search.data.env;
 
-import com.azure.search.data.SearchIndexASyncClient;
+import com.azure.search.data.SearchIndexAsyncClient;
+import com.azure.search.data.customization.SearchIndexClientBuilder;
 import com.azure.search.data.common.SearchPipelinePolicy;
-import com.azure.search.data.customization.SearchIndexClientBuilderImpl;
 import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
@@ -27,7 +30,7 @@ public class SearchIndexDocs {
     private String dnsSuffix;
     private String apiVersion;
 
-    private SearchIndexASyncClient searchIndexASyncClient;
+    private SearchIndexAsyncClient searchIndexAsyncClient;
 
     /**
      * Creates an instance of SearchIndexASyncClient to be used in uploading documents to a certain index,
@@ -54,8 +57,8 @@ public class SearchIndexDocs {
      * @throws IOException If the file in HOTELS_DATA_JSON is not existing or invalid.
      */
     public void initialize() throws IOException {
-        if (searchIndexASyncClient == null) {
-            searchIndexASyncClient = new SearchIndexClientBuilderImpl()
+        if (searchIndexAsyncClient == null) {
+            searchIndexAsyncClient = new SearchIndexClientBuilder()
                 .serviceName(searchServiceName)
                 .searchDnsSuffix(dnsSuffix)
                 .indexName(indexName)
@@ -74,7 +77,7 @@ public class SearchIndexDocs {
         List<IndexAction> indexActions = createIndexActions(hotels);
 
         System.out.println("Indexing " + indexActions.size() + " docs");
-        DocumentIndexResult documentIndexResult = searchIndexASyncClient.index(new IndexBatch().actions(indexActions))
+        DocumentIndexResult documentIndexResult = searchIndexAsyncClient.index(new IndexBatch().actions(indexActions))
             .block();
 
         System.out.println("Indexing Results:");

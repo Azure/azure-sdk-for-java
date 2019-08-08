@@ -44,7 +44,7 @@
           <linkXRef>true</linkXRef>
           <failsOnError>true</failsOnError>
           <failOnViolation>true</failOnViolation>
-          <excludes>**/generated/**/*</excludes>
+          <excludes>**/generated/**/*,**/models/*</excludes>
         </configuration>
         <executions>
           <execution>

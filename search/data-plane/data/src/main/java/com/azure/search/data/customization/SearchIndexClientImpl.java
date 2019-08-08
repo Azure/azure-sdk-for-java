@@ -1,62 +1,99 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.search.data.customization;
 
-import com.azure.search.data.common.DocumentResponseConversions;
-import com.azure.search.data.common.SearchPipelinePolicy;
+import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.SearchIndexClient;
-import com.azure.search.data.generated.models.*;
+import com.azure.search.data.generated.models.AutocompleteParameters;
+import com.azure.search.data.generated.models.AutocompleteResult;
+import com.azure.search.data.generated.models.DocumentIndexResult;
+import com.azure.search.data.generated.models.DocumentSearchResult;
+import com.azure.search.data.generated.models.DocumentSuggestResult;
+import com.azure.search.data.generated.models.IndexBatch;
+import com.azure.search.data.generated.models.SearchParameters;
+import com.azure.search.data.generated.models.SearchRequestOptions;
+import com.azure.search.data.generated.models.SuggestParameters;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.Nullable;
+import java.time.Duration;
 
 import java.util.List;
 import java.util.Map;
 
-public class SearchIndexClientImpl extends SearchIndexBaseClientImpl implements SearchIndexClient {
+public class SearchIndexClientImpl extends SearchIndexBaseClient implements SearchIndexClient {
+
+    private SearchIndexAsyncClientImpl asyncClient;
 
     /**
-     * Constructor
-     *
-     * @param searchServiceName
-     * @param indexName
-     * @param apiVersion
+     * Package private constructor to be used by {@link SearchIndexClientBuilder}
+     * @param searchIndexAsyncClient Async SearchIndex Client
      */
-    public SearchIndexClientImpl(String searchServiceName, String searchDnsSuffix, String indexName, String apiVersion, SearchPipelinePolicy policy) {
-        super(searchServiceName, searchDnsSuffix, indexName, apiVersion, policy);
+    public SearchIndexClientImpl(SearchIndexAsyncClient searchIndexAsyncClient) {
+        this.asyncClient = (SearchIndexAsyncClientImpl) searchIndexAsyncClient;
     }
 
     @Override
-    public SearchIndexClient setIndexName(String indexName) {
-        this.setIndexNameInternal(indexName);
+    public String getIndexName() {
+        return asyncClient.getIndexName();
+    }
+
+    @Override
+    public String getApiVersion() {
+
+        return asyncClient.getApiVersion();
+    }
+
+    @Override
+    public String getSearchDnsSuffix() {
+
+        return asyncClient.getSearchDnsSuffix();
+    }
+
+    @Override
+    public String getSearchServiceName() {
+        return asyncClient.getSearchServiceName();
+    }
+
+    @Override
+    public SearchIndexClientImpl setIndexName(String indexName) {
+        asyncClient.setIndexName(indexName);
         return this;
     }
 
     @Override
     public Long countDocuments() {
-        return restClient.documents().countAsync().block();
+        Mono<Long> result = asyncClient.countDocuments();
+        return blockWithOptionalTimeout(result, null);
     }
 
     @Override
     public DocumentSearchResult search() {
-        return restClient.documents().searchGetAsync().block();
+        //PagedFlux<DocumentSearchResult> result = asyncClient.search();
+        //return blockWithOptionalTimeout(result, null);
+        return null;
     }
 
     @Override
     public DocumentSearchResult search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions) {
-        // to be replaced with calling to the async client instead
-        return restClient.documents().searchGetAsync(searchText, searchParameters, searchRequestOptions).block();
+        //PagedFlux<DocumentSearchResult> result = asyncClient.search(searchText, searchParameters, searchRequestOptions);
+        //return blockWithOptionalTimeout(result, null);
+        return null;
     }
 
     @Override
     public Map<String, Object> getDocument(String key) {
-        return restClient.documents().getAsync(key)
-            .map(DocumentResponseConversions::convertLinkedHashMapToMap).block();
+        return asyncClient.getDocument(key).block();
     }
 
     @Override
     public Map<String, Object> getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions) {
-        return restClient.documents().getAsync(key, selectedFields, searchRequestOptions)
-            .map(DocumentResponseConversions::convertLinkedHashMapToMap).block();
+        return asyncClient.getDocument(key, selectedFields, searchRequestOptions).block();
     }
 
     @Override
     public DocumentSuggestResult suggest(String searchText, String suggesterName) {
+
         return null;
     }
 
@@ -67,16 +104,26 @@ public class SearchIndexClientImpl extends SearchIndexBaseClientImpl implements 
 
     @Override
     public DocumentIndexResult index(IndexBatch batch) {
+
         return null;
     }
 
     @Override
     public AutocompleteResult autocomplete(String searchText, String suggesterName) {
+
         return null;
     }
 
     @Override
     public AutocompleteResult autocomplete(String searchText, String suggesterName, SearchRequestOptions searchRequestOptions, AutocompleteParameters autocompleteParameters) {
         return null;
+    }
+
+    private <T> T blockWithOptionalTimeout(Mono<T> response, @Nullable Duration timeout) {
+        if (timeout == null) {
+            return response.block();
+        } else {
+            return response.block(timeout);
+        }
     }
 }
