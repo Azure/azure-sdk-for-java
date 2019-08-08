@@ -344,7 +344,6 @@
               com.microsoft.azure.template:
               *.impl*:
               *.implementation*:
-              com.azure.tracing*:
               com.azure.tools.checkstyle*
             </excludePackageNames>
             <groups>
@@ -542,13 +541,13 @@
                   So, path for aggregate reports have to be defined relative to parent pom -->
               <additionalOptions>-maxLineLength 120
                 -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
-                -snippetpath ${project.basedir}/core/azure-core/src/samples/java
-                -snippetpath ${project.basedir}/sdk/eventhubs/azure-eventhubs/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
+                -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-keys/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-secrets/src/samples/java
-                -snippetpath ${project.basedir}/storage/client/blob/src/samples/java
-                -snippetpath ${project.basedir}/storage/client/file/src/samples/java
-                -snippetpath ${project.basedir}/storage/client/queue/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-file/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
               </additionalOptions>
             </configuration>
           </reportSet>
@@ -745,11 +744,10 @@
     <module>./sdk/core/azure-core-amqp</module>
     <module>./sdk/core/azure-core-management</module>
     <module>./sdk/core/azure-core-test</module>
-    <module>./sdk/eventhubs/azure-eventhubs</module>
+    <module>./sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>./sdk/keyvault/azure-keyvault-secrets</module>
     <module>./sdk/keyvault/azure-keyvault-keys</module>
-    <!-- As recommended by Eng Sys team, removing tracing as it is built and released separately -->
-    <!--    <module>./sdk/tracing</module>-->
+    <module>./sdk/tracing/tracing-opentelemetry</module>
     <module>./sdk/identity/azure-identity</module>
     <module>./sdk/storage/azure-storage-blob</module>
     <module>./sdk/storage/azure-storage-file</module>

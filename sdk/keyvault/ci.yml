@@ -38,17 +38,3 @@ stages:
           safeName: azurekeyvaultkeys
         - name: azure-keyvault-secrets
           safeName: azurekeyvaultsecrets
-        - name: microsoft-azure-keyvault
-          safeName: microsoftazurekeyvault
-        - name: microsoft-azure-keyvault-complete
-          safeName: microsoftazurekeyvaultcomplete
-        - name: microsoft-azure-keyvault-core
-          safeName: microsoftazurekeyvaultcore
-        - name: microsoft-azure-keyvault-cryptography
-          safeName: microsoftazurekeyvaultcryptography
-        - name: microsoft-azure-keyvault-extensions
-          safeName: microsoftazurekeyvaultextensions
-        - name: microsoft-azure-keyvault-test
-          safeName: microsoftazurekeyvaulttest
-        - name: microsoft-azure-keyvault-webkey
-          safeName: microsoftazurekeyvaultwebkey
