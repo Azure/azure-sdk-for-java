@@ -22,18 +22,6 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 class SASTest extends APISpec {
-    /*
-    This test is to validate the workaround for the autorest bug that forgets to set the request property on the
-    response.
-     */
-
-    def "Request property"() {
-        when:
-        def response = cc.deleteWithResponse(null, null, null)
-
-        then:
-        response.request() != null
-    }
 
     @Unroll
     def "Blob range"() {

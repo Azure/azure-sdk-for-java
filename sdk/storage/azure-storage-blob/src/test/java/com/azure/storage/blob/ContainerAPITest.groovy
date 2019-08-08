@@ -48,8 +48,11 @@ class ContainerAPITest extends APISpec {
     }
 
     def "Create min"() {
-        expect:
-        primaryBlobServiceClient.createContainerWithResponse(generateContainerName(), null, null, null).statusCode() == 201
+        when:
+        def cc = primaryBlobServiceClient.createContainer(generateContainerName())
+
+        then:
+        cc.exists()
     }
 
     @Unroll
@@ -124,7 +127,7 @@ class ContainerAPITest extends APISpec {
 
     def "Get properties min"() {
         expect:
-        cc.getPropertiesWithResponse(null, null, null).statusCode() == 200
+        cc.getProperties() != null
     }
 
     def "Get properties lease"() {
@@ -281,7 +284,7 @@ class ContainerAPITest extends APISpec {
 
         expect:
         validateBasicHeaders(response.headers())
-        cc.getPropertiesWithResponse(null, null, null).value().blobPublicAccess() == access
+        cc.getProperties().blobPublicAccess() == access
 
         where:
         access                     | _
@@ -337,7 +340,7 @@ class ContainerAPITest extends APISpec {
         ids.push(identifier2)
 
         when:
-        def response = cc.setAccessPolicyWithResponse(null, ids, null, null, null)
+        def response = cc.setAccessPolicy(null, ids, null, null, null)
         def receivedIdentifiers = cc.getAccessPolicyWithResponse(null, null, null).value().getIdentifiers()
 
         then:
@@ -483,8 +486,11 @@ class ContainerAPITest extends APISpec {
     }
 
     def "Delete min"() {
-        expect:
-        cc.deleteWithResponse(null, null, null).statusCode() == 202
+        when:
+        cc.delete()
+
+        then:
+        !cc.exists()
     }
 
     @Unroll
@@ -1210,10 +1216,10 @@ class ContainerAPITest extends APISpec {
 
         // If running in live mode wait for the lease to expire to ensure we are actually renewing it
         sleepIfRecord(16000)
-        Response<String> renewLeaseResponse = cc.renewLeaseWithResponse(leaseID, null, null, null)
+        def renewedId = cc.renewLease(leaseID)
 
         expect:
-        renewLeaseResponse.value() != null
+        renewedId != null
         cc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-lease-state") == LeaseStateType.LEASED.toString()
         validateBasicHeaders(renewLeaseResponse.headers())
     }

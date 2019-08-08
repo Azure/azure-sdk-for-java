@@ -40,6 +40,8 @@ import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.OffsetDateTime
+import java.util.function.BiConsumer
+import java.util.function.Function
 import java.util.function.Supplier
 
 class APISpec extends Specification {
@@ -50,6 +52,7 @@ class APISpec extends Specification {
     // both sync and async clients point to same container
     @Shared
     ContainerClient cc
+
     @Shared
     ContainerAsyncClient ccAsync
 
@@ -66,6 +69,8 @@ class APISpec extends Specification {
     }
 
     static int defaultDataSize = defaultData.remaining()
+
+    static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData)
 
     // Prefixes for blobs and containers
     String containerPrefix = "jtc" // java test container
@@ -128,7 +133,6 @@ class APISpec extends Specification {
     def setup() {
         String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
         String className = specificationContext.getCurrentSpec().getName()
-
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
         this.testName = fullTestName.substring(0, substringIndex)

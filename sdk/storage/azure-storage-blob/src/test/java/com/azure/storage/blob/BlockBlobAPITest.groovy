@@ -47,8 +47,11 @@ class BlockBlobAPITest extends APISpec {
     }
 
     def "Stage block min"() {
-        expect:
-        bc.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, null, null, null).statusCode() == 201
+        when:
+        bc.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize) == 201
+
+        then:
+        bc.listBlocks(BlockListType.ALL).uncommittedBlocks().size() == 1
     }
 
     @Unroll
@@ -566,15 +569,20 @@ class BlockBlobAPITest extends APISpec {
         response.statusCode() == 201
         def outStream = new ByteArrayOutputStream()
         bc.download(outStream)
-        outStream.toByteArray() == "default".getBytes(StandardCharsets.UTF_8)
+        outStream.toByteArray() == defaultText.getBytes(StandardCharsets.UTF_8)
         validateBasicHeaders(response.headers())
         response.headers().value("Content-MD5") != null
         Boolean.parseBoolean(response.headers().value("x-ms-request-server-encrypted"))
     }
 
     def "Upload min"() {
-        expect:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null).statusCode() == 201
+        when:
+        bc.upload(defaultInputStream.get(), defaultDataSize)
+
+        then:
+        def outStream = new ByteArrayOutputStream()
+        bc.download(outStream)
+        outStream.toByteArray() == defaultText.getBytes(StandardCharsets.UTF_8)
     }
 
     @Unroll
@@ -724,5 +732,31 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    @Unroll
+    def "Async buffered upload"() {
+        when:
+        def data = getRandomData(dataSize)
+        bac.upload(Flux.just(data), bufferSize, numBuffs).block()
+        data.position(0)
+
+        then:
+        // Due to memory issues, this check only runs on small to medium sized data sets.
+        if(dataSize < 100 * 1024 * 1024){
+            assert collectBytesInBuffer(bac.download().block().value(), dataSize).block() == data
+        }
+        bac.listBlocks(BlockListType.ALL).count().block() == blockCount
+
+        where:
+        dataSize          | bufferSize        | numBuffs || blockCount
+        350               | 50                | 2        || 7 // Requires cycling through the same buffers multiple times.
+        350               | 50                | 5        || 7 // Most buffers may only be used once.
+        10 * 1024 * 1024  | 1 * 1024 * 1024   | 2        || 10 // Larger data set.
+        10 * 1024 * 1024  | 1 * 1024 * 1024   | 5        || 10 // Larger number of Buffs.
+        10 * 1024 * 1024  | 1 * 1024 * 1024   | 10       || 10 // Exactly enough buffer space to hold all the data.
+        500 * 1024 * 1024 | 100 * 1024 * 1024 | 2        || 5 // Larger data.
+        100 * 1024 * 1024 | 20 * 1024 * 1024  | 4        || 5
+        10 * 1024 * 1024  | 3 * 512 * 1024    | 3        || 7 // Data does not squarely fit in buffers.
     }
 }
