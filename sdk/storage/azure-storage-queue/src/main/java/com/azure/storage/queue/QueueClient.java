@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.http.rest.IterableResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -33,6 +34,7 @@ import java.util.Map;
  * @see QueueAsyncClient
  * @see SharedKeyCredential
  * @see SASTokenCredential
+ * @see IterableResponse
  */
 public final class QueueClient {
     private final QueueAsyncClient client;
@@ -173,8 +175,8 @@ public final class QueueClient {
      * @return The stored access policies specified on the queue.
      * @throws StorageErrorException If the queue doesn't exist
      */
-    public Iterable<SignedIdentifier> getAccessPolicy() {
-        return client.getAccessPolicy().toIterable();
+    public IterableResponse<SignedIdentifier> getAccessPolicy() {
+        return new IterableResponse<>(client.getAccessPolicy());
     }
 
     /**
@@ -288,7 +290,7 @@ public final class QueueClient {
      * with the message, additionally it contains other metadata about the message.
      * @throws StorageErrorException If the queue doesn't exist
      */
-    public Iterable<DequeuedMessage> dequeueMessages() {
+    public IterableResponse<DequeuedMessage> dequeueMessages() {
         return dequeueMessages(1, Duration.ofSeconds(30));
     }
 
@@ -312,7 +314,7 @@ public final class QueueClient {
      * with the message and other metadata about the message.
      * @throws StorageErrorException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
-    public Iterable<DequeuedMessage> dequeueMessages(Integer maxMessages) {
+    public IterableResponse<DequeuedMessage> dequeueMessages(Integer maxMessages) {
         return dequeueMessages(maxMessages, Duration.ofSeconds(30));
     }
 
@@ -340,8 +342,8 @@ public final class QueueClient {
      * @throws StorageErrorException If the queue doesn't exist or {@code maxMessages} or {@code visibilityTimeout} is
      * outside of the allowed bounds
      */
-    public Iterable<DequeuedMessage> dequeueMessages(Integer maxMessages, Duration visibilityTimeout) {
-        return client.dequeueMessages(maxMessages, visibilityTimeout).toIterable();
+    public IterableResponse<DequeuedMessage> dequeueMessages(Integer maxMessages, Duration visibilityTimeout) {
+        return new IterableResponse<>(client.dequeueMessages(maxMessages, visibilityTimeout));
     }
 
     /**
@@ -361,7 +363,7 @@ public final class QueueClient {
      *
      * @return A {@link PeekedMessage} that contains metadata about the message.
      */
-    public Iterable<PeekedMessage> peekMessages() {
+    public IterableResponse<PeekedMessage> peekMessages() {
         return peekMessages(null);
     }
 
@@ -387,8 +389,8 @@ public final class QueueClient {
      * metadata about the message.
      * @throws StorageErrorException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
-    public Iterable<PeekedMessage> peekMessages(Integer maxMessages) {
-        return client.peekMessages(maxMessages).toIterable();
+    public IterableResponse<PeekedMessage> peekMessages(Integer maxMessages) {
+        return new IterableResponse<>(client.peekMessages(maxMessages));
     }
 
     /**

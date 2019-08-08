@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.IterableResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
@@ -35,6 +36,8 @@ import java.time.OffsetDateTime;
  * <p>
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
  * information on containers.
+ *
+ * @see IterableResponse
  */
 public final class BlobServiceClient {
     private final BlobServiceAsyncClient blobServiceAsyncClient;
@@ -109,29 +112,32 @@ public final class BlobServiceClient {
     }
 
     /**
-     * Returns a lazy loaded list of containers in this account. The returned {@link Iterable} can be iterated through
+     * Returns a lazy loaded list of containers in this account. The returned {@link IterableResponse} can be iterated through
      * while new items are automatically retrieved as needed. For more information, see the <a
      * href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
-     * @return The list of containers.
+     * @return An {@link IterableResponse} of containers.
      */
-    public Iterable<ContainerItem> listContainers() {
+    public IterableResponse<ContainerItem> listContainers() {
         return this.listContainers(new ListContainersOptions(), null);
     }
 
     /**
-     * Returns a lazy loaded list of containers in this account. The returned {@link Iterable} can be iterated through
+     * Returns a lazy loaded list of containers in this account. The returned {@link IterableResponse} can be iterated through
      * while new items are automatically retrieved as needed. For more information, see the <a
      * href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
      * @param options A {@link ListContainersOptions} which specifies what data should be returned by the service.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @return The list of containers.
+     * @return An {@link IterableResponse} of containers.
      */
-    public Iterable<ContainerItem> listContainers(ListContainersOptions options, Duration timeout) {
+    public IterableResponse<ContainerItem> listContainers(ListContainersOptions options, Duration timeout) {
         Flux<ContainerItem> response = blobServiceAsyncClient.listContainers(options);
 
-        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
+        if (timeout != null) {
+            response = response.timeout(timeout);
+        }
+        return new IterableResponse<>(response);
     }
 
     /**

@@ -3,6 +3,7 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.http.rest.IterableResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -37,6 +38,7 @@ import reactor.core.publisher.Flux;
  * @see FileAsyncClient
  * @see SharedKeyCredential
  * @see SASTokenCredential
+ * @see IterableResponse
  */
 public class FileClient {
     private final FileAsyncClient fileAsyncClient;
@@ -402,7 +404,7 @@ public class FileClient {
     }
 
     /**
-     * List of valid ranges for a file.
+     * Iterable list of valid ranges for a file.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -413,14 +415,14 @@ public class FileClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
      *
-     * @return {@link FileRange ranges} in the files.
+     * @return An {@link IterableResponse} of {@link FileRange ranges} in the files.
      */
-    public Iterable<FileRange> listRanges() {
-        return fileAsyncClient.listRanges(null).toIterable();
+    public IterableResponse<FileRange> listRanges() {
+        return new IterableResponse<>(fileAsyncClient.listRanges(null));
     }
 
     /**
-     * List of valid ranges for a file.
+     * Iterable list of valid ranges for a file.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -432,14 +434,14 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
      *
      * @param range Optional byte range which returns file data only from the specified range.
-     * @return {@link FileRange ranges} in the files that satisfy the requirements
+     * @return An {@link IterableResponse} of {@link FileRange ranges} in the files that satisfy the requirements
      */
-    public Iterable<FileRange> listRanges(FileRange range) {
-        return fileAsyncClient.listRanges(range).toIterable();
+    public IterableResponse<FileRange> listRanges(FileRange range) {
+        return new IterableResponse<>(fileAsyncClient.listRanges(range));
     }
 
     /**
-     * List of open handles on a file.
+     * Iterable list of open handles on a file.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -450,14 +452,14 @@ public class FileClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>
      *
-     * @return {@link HandleItem handles} in the files that satisfy the requirements
+     * @return An {@link IterableResponse} of {@link HandleItem handles} in the files that satisfy the requirements
      */
-    public Iterable<HandleItem> listHandles() {
+    public IterableResponse<HandleItem> listHandles() {
         return listHandles(null);
     }
 
     /**
-     * List of open handles on a file.
+     * Iterable list of open handles on a file.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -469,10 +471,10 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>
      *
      * @param maxResults Optional max number of results returned per page
-     * @return {@link HandleItem handles} in the file that satisfy the requirements
+     * @return An {@link IterableResponse} of {@link HandleItem handles} in the file that satisfy the requirements
      */
-    public Iterable<HandleItem> listHandles(Integer maxResults) {
-        return fileAsyncClient.listHandles(maxResults).toIterable();
+    public IterableResponse<HandleItem> listHandles(Integer maxResults) {
+        return new IterableResponse<>(fileAsyncClient.listHandles(maxResults));
     }
 
     /**
@@ -492,8 +494,8 @@ public class FileClient {
      * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all handles.
      * @return The counts of number of handles closed
      */
-    public Iterable<Integer> forceCloseHandles(String handleId) {
-        return fileAsyncClient.forceCloseHandles(handleId).toIterable();
+    public IterableResponse<Integer> forceCloseHandles(String handleId) {
+        return new IterableResponse<>(fileAsyncClient.forceCloseHandles(handleId));
     }
 
     /**

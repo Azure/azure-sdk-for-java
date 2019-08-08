@@ -3,6 +3,7 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.http.rest.IterableResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
@@ -34,6 +35,7 @@ import java.util.Map;
  * @see ShareAsyncClient
  * @see SharedKeyCredential
  * @see SASTokenCredential
+ * @see IterableResponse
  */
 public class ShareClient {
     private final ShareAsyncClient client;
@@ -276,8 +278,8 @@ public class ShareClient {
      * @return The stored access policies specified on the queue.
      * @throws StorageErrorException If the share doesn't exist
      */
-    public Iterable<SignedIdentifier> getAccessPolicy() {
-        return client.getAccessPolicy().toIterable();
+    public IterableResponse<SignedIdentifier> getAccessPolicy() {
+        return new IterableResponse<>(client.getAccessPolicy());
     }
 
     /**

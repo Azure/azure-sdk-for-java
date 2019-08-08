@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.http.rest.IterableResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
@@ -31,6 +32,7 @@ import java.util.Map;
  * @see QueueServiceAsyncClient
  * @see SharedKeyCredential
  * @see SASTokenCredential
+ * @see IterableResponse
  */
 public final class QueueServiceClient {
     private final QueueServiceAsyncClient client;
@@ -119,7 +121,7 @@ public final class QueueServiceClient {
     }
 
     /**
-     * Lists all queues in the storage account without their metadata.
+     * Iterable lists of all queues in the storage account without their metadata.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -130,14 +132,14 @@ public final class QueueServiceClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
      *
-     * @return {@link QueueItem Queues} in the storage account
+     * @return An {@link IterableResponse} of {@link QueueItem Queues} in the storage account
      */
-    public Iterable<QueueItem> listQueues() {
+    public IterableResponse<QueueItem> listQueues() {
         return listQueues(null, null);
     }
 
     /**
-     * Lists the queues in the storage account that pass the filter.
+     * Iterable lists of all the queues in the storage account that pass the filter.
      *
      * Pass true to {@link QueuesSegmentOptions#includeMetadata(boolean) includeMetadata} to have metadata returned for
      * the queues.
@@ -152,24 +154,24 @@ public final class QueueServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
      *
      * @param options Options for listing queues
-     * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
+     * @return An {@link IterableResponse} of {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      */
-    public Iterable<QueueItem> listQueues(QueuesSegmentOptions options) {
+    public IterableResponse<QueueItem> listQueues(QueuesSegmentOptions options) {
         return listQueues(null, options);
     }
 
     /**
-     * Lists the queues in the storage account that pass the filter starting at the specified marker.
+     * Iterable lists of all the queues in the storage account that pass the filter starting at the specified marker.
      *
      * Pass true to {@link QueuesSegmentOptions#includeMetadata(boolean) includeMetadata} to have metadata returned for
      * the queues.
      *
      * @param marker Starting point to list the queues
      * @param options Options for listing queues
-     * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
+     * @return An {@link IterableResponse} of {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      */
-    Iterable<QueueItem> listQueues(String marker, QueuesSegmentOptions options) {
-        return client.listQueues(marker, options).toIterable();
+    IterableResponse<QueueItem> listQueues(String marker, QueuesSegmentOptions options) {
+        return new IterableResponse<>(client.listQueues(marker, options));
     }
 
     /**

@@ -3,6 +3,7 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.http.rest.IterableResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
@@ -31,6 +32,7 @@ import java.util.Map;
  * @see FileServiceAsyncClient
  * @see SharedKeyCredential
  * @see SASTokenCredential
+ * @see IterableResponse
  */
 public final class FileServiceClient {
     private final FileServiceAsyncClient fileServiceAsyncClient;
@@ -67,7 +69,7 @@ public final class FileServiceClient {
     }
 
     /**
-     * Lists all shares in the storage account without their metadata or snapshots.
+     * Iterable list of all shares in the storage account without their metadata or snapshots.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -78,14 +80,14 @@ public final class FileServiceClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-shares">Azure Docs</a>.</p>
      *
-     * @return {@link ShareItem Shares} in the storage account without their metadata or snapshots
+     * @return An {@link IterableResponse} of {@link ShareItem Shares} in the storage account without their metadata or snapshots
      */
-    public Iterable<ShareItem> listShares() {
+    public IterableResponse<ShareItem> listShares() {
         return listShares(null);
     }
 
     /**
-     * Lists the shares in the Storage account that pass the options filter.
+     * Iterable list of all the shares in the Storage account that pass the options filter.
      *
      * <p>Set starts with name filter using {@link ListSharesOptions#prefix(String) prefix} to filter shares that are
      * listed.</p>
@@ -110,10 +112,10 @@ public final class FileServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-shares">Azure Docs</a>.</p>
      *
      * @param options Options for listing shares
-     * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
+     * @return An {@link IterableResponse} of {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
-    public Iterable<ShareItem> listShares(ListSharesOptions options) {
-        return fileServiceAsyncClient.listShares(options).toIterable();
+    public IterableResponse<ShareItem> listShares(ListSharesOptions options) {
+        return new IterableResponse<>(fileServiceAsyncClient.listShares(options));
     }
 
     /**

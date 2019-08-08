@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.IterableResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.storage.blob.models.BlobItem;
@@ -37,6 +38,8 @@ import java.util.List;
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure
  * Docs</a> for more information on containers.
+ *
+ * @see IterableResponse
  */
 public final class ContainerClient {
     private ContainerAsyncClient containerAsyncClient;
@@ -389,7 +392,7 @@ public final class ContainerClient {
 
     /**
      * Returns a lazy loaded list of blobs in this container, with folder structures flattened. The returned {@link
-     * Iterable} can be iterated through while new items are automatically retrieved as needed.
+     * IterableResponse} can be iterated through while new items are automatically retrieved as needed.
      *
      * <p>
      * Blob names are returned in lexicographic order.
@@ -398,15 +401,15 @@ public final class ContainerClient {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
-     * @return The listed blobs, flattened.
+     * @return An {@link IterableResponse} of blobs, flattened.
      */
-    public Iterable<BlobItem> listBlobsFlat() {
+    public IterableResponse<BlobItem> listBlobsFlat() {
         return this.listBlobsFlat(new ListBlobsOptions(), null);
     }
 
     /**
      * Returns a lazy loaded list of blobs in this container, with folder structures flattened. The returned {@link
-     * Iterable} can be iterated through while new items are automatically retrieved as needed.
+     * IterableResponse} can be iterated through while new items are automatically retrieved as needed.
      *
      * <p>
      * Blob names are returned in lexicographic order.
@@ -417,12 +420,15 @@ public final class ContainerClient {
      *
      * @param options {@link ListBlobsOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @return The listed blobs, flattened.
+     * @return An {@link IterableResponse} of blobs, flattened.
      */
-    public Iterable<BlobItem> listBlobsFlat(ListBlobsOptions options, Duration timeout) {
+    public IterableResponse<BlobItem> listBlobsFlat(ListBlobsOptions options, Duration timeout) {
         Flux<BlobItem> response = containerAsyncClient.listBlobsFlat(options);
 
-        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
+        if (timeout != null) {
+            response = response.timeout(timeout);
+        }
+        return new IterableResponse<>(response);
     }
 
     /**
@@ -450,9 +456,9 @@ public final class ContainerClient {
      * </ul>
      *
      * @param directory The directory to list blobs underneath
-     * @return A reactive response emitting the prefixes and blobs.
+     * @return Iterable reactive response emitting the prefixes and blobs.
      */
-    public Iterable<BlobItem> listBlobsHierarchy(String directory) {
+    public IterableResponse<BlobItem> listBlobsHierarchy(String directory) {
         return this.listBlobsHierarchy("/", new ListBlobsOptions().prefix(directory), null);
     }
 
@@ -483,12 +489,15 @@ public final class ContainerClient {
      * @param delimiter The delimiter for blob hierarchy, "/" for hierarchy based on directories
      * @param options {@link ListBlobsOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @return A reactive response emitting the prefixes and blobs.
+     * @return Iterable reactive response emitting the prefixes and blobs.
      */
-    public Iterable<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
+    public IterableResponse<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
         Flux<BlobItem> response = containerAsyncClient.listBlobsHierarchy(delimiter, options);
 
-        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
+        if (timeout != null) {
+            response = response.timeout(timeout);
+        }
+        return new IterableResponse<>(response);
     }
 
     /**

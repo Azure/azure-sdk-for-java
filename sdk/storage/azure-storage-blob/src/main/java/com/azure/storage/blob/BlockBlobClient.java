@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.IterableResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.storage.blob.models.BlobAccessConditions;
@@ -41,6 +42,8 @@ import java.util.List;
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information.
+ *
+ * @see IterableResponse
  */
 public final class BlockBlobClient extends BlobClient {
     private final BlockBlobAsyncClient blockBlobAsyncClient;
@@ -324,9 +327,9 @@ public final class BlockBlobClient extends BlobClient {
      *         Specifies which type of blocks to return.
      *
      * @return
-     *      The list of blocks.
+     *      An {@link IterableResponse} of blocks.
      */
-    public Iterable<BlockItem> listBlocks(BlockListType listType) {
+    public IterableResponse<BlockItem> listBlocks(BlockListType listType) {
         return this.listBlocks(listType, null, null);
     }
 
@@ -344,14 +347,16 @@ public final class BlockBlobClient extends BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return
-     *      The list of blocks.
+     * @return An {@link IterableResponse} of blocks.
      */
-    public Iterable<BlockItem> listBlocks(BlockListType listType,
+    public IterableResponse<BlockItem> listBlocks(BlockListType listType,
                                           LeaseAccessConditions leaseAccessConditions, Duration timeout) {
         Flux<BlockItem> response = blockBlobAsyncClient.listBlocks(listType, leaseAccessConditions);
 
-        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
+        if (timeout != null) {
+            response = response.timeout(timeout);
+        }
+        return new IterableResponse<>(response);
     }
 
     /**
