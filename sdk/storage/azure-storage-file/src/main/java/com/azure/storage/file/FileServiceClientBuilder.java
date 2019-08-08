@@ -14,8 +14,12 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.Constants;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
@@ -24,17 +28,15 @@ import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link FileServiceClient FileServiceClients}
- * and {@link FileServiceAsyncClient FileServiceAsyncClients}, calling {@link FileServiceClientBuilder#buildClient() buildClient}
- * constructs an instance of FileServiceClient and calling {@link FileServiceClientBuilder#buildAsyncClient() buildAsyncClient}
- * constructs an instance of FileServiceAsyncClient.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
+ * FileServiceClient FileServiceClients} and {@link FileServiceAsyncClient FileServiceAsyncClients}, calling {@link
+ * FileServiceClientBuilder#buildClient() buildClient} constructs an instance of FileServiceClient and calling {@link
+ * FileServiceClientBuilder#buildAsyncClient() buildAsyncClient} constructs an instance of FileServiceAsyncClient.
  *
  * <p>The client needs the endpoint of the Azure Storage File service and authorization credential.
  * {@link FileServiceClientBuilder#endpoint(String) endpoint} gives the builder the endpoint and may give the builder a
@@ -54,8 +56,8 @@ import java.util.Objects;
  * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.instantiation.credential}
  *
  * <p>Another way to authenticate the client is using a {@link SharedKeyCredential}. To create a SharedKeyCredential
- * a connection string from the Storage File service must be used. Set the SharedKeyCredential with
- * {@link FileServiceClientBuilder#connectionString(String) connectionString}. If the builder has both a SASTokenCredential and
+ * a connection string from the Storage File service must be used. Set the SharedKeyCredential with {@link
+ * FileServiceClientBuilder#connectionString(String) connectionString}. If the builder has both a SASTokenCredential and
  * SharedKeyCredential the SharedKeyCredential will be preferred when authorizing requests sent to the service.</p>
  *
  * <p><strong>Instantiating a synchronous FileService Client with connection string.</strong></p>
@@ -70,7 +72,8 @@ import java.util.Objects;
  * @see SharedKeyCredential
  */
 public final class FileServiceClientBuilder {
-    private static final String ACCOUNT_NAME = "accountname";
+    private final ClientLogger logger = new ClientLogger(FileServiceClientBuilder.class);
+
     private final List<HttpPipelinePolicy> policies;
 
     private URL endpoint;
@@ -94,19 +97,23 @@ public final class FileServiceClientBuilder {
     }
 
     /**
-     * Creates a {@link FileServiceAsyncClient} based on options set in the builder. Every time {@code buildAsyncClient()} is
-     * called a new instance of {@link FileServiceAsyncClient} is created.
+     * Creates a {@link FileServiceAsyncClient} based on options set in the builder. Every time {@code
+     * buildAsyncClient()} is called a new instance of {@link FileServiceAsyncClient} is created.
      *
      * <p>
-     * If {@link FileServiceClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link FileServiceClientBuilder#endpoint(String) endpoint} are used to create the
-     * {@link FileServiceAsyncClient client}. All other builder settings are ignored.
+     * If {@link FileServiceClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and {@link
+     * FileServiceClientBuilder#endpoint(String) endpoint} are used to create the {@link FileServiceAsyncClient client}.
+     * All other builder settings are ignored.
      * </p>
      *
      * @return A FileServiceAsyncClient with the options set from the builder.
-     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
+     * @throws NullPointerException If {@code endpoint} is {@code null}.
+     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been
+     * set.
      */
     public FileServiceAsyncClient buildAsyncClient() {
+        Objects.requireNonNull(endpoint);
+
         if (pipeline != null) {
             return new FileServiceAsyncClient(endpoint, pipeline);
         }
@@ -149,14 +156,15 @@ public final class FileServiceClientBuilder {
      * called a new instance of {@link FileServiceClient} is created.
      *
      * <p>
-     * If {@link FileServiceClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link FileServiceClientBuilder#endpoint(String) endpoint} are used to create the
-     * {@link FileServiceClient client}. All other builder settings are ignored.
+     * If {@link FileServiceClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and {@link
+     * FileServiceClientBuilder#endpoint(String) endpoint} are used to create the {@link FileServiceClient client}. All
+     * other builder settings are ignored.
      * </p>
      *
      * @return A FileServiceClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} is {@code null}.
-     * @throws IllegalStateException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
+     * @throws IllegalStateException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been
+     * set.
      */
     public FileServiceClient buildClient() {
         return new FileServiceClient(buildAsyncClient());
@@ -165,10 +173,11 @@ public final class FileServiceClientBuilder {
     /**
      * Sets the endpoint for the Azure Storage File instance that the client will interact with.
      *
-     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQuery(String) fromQuery} in an
-     * attempt to generate a {@link SASTokenCredential} to authenticate requests sent to the service.</p>
+     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQueryParameters(Map)} in
+     * an attempt to generate a {@link SASTokenCredential} to authenticate requests sent to the service.</p>
      *
-     * @param endpoint The URL of the Azure Storage File instance to send service requests to and receive responses from.
+     * @param endpoint The URL of the Azure Storage File instance to send service requests to and receive responses
+     * from.
      * @return the updated FileServiceClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} isn't a proper URL
      */
@@ -178,7 +187,7 @@ public final class FileServiceClientBuilder {
             this.endpoint = new URL(fullURL.getProtocol() + "://" + fullURL.getHost());
 
             // Attempt to get the SAS token from the URL passed
-            this.sasTokenCredential = SASTokenCredential.fromQuery(fullURL.getQuery());
+            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
             if (this.sasTokenCredential != null) {
                 this.sharedKeyCredential = null;
             }
@@ -222,27 +231,27 @@ public final class FileServiceClientBuilder {
      * @param connectionString Connection string from the Access Keys section in the Storage account
      * @return the updated FileServiceClientBuilder object
      * @throws NullPointerException If {@code connectionString} is {@code null}.
+     * @throws IllegalArgumentException If {@code connectionString} doesn't contain AccountName or AccountKey.
      */
     public FileServiceClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
-        this.sharedKeyCredential = SharedKeyCredential.fromConnectionString(connectionString);
-        getEndPointFromConnectionString(connectionString);
-        return this;
-    }
 
-    private void getEndPointFromConnectionString(String connectionString) {
-        Map<String, String> connectionStringPieces = new HashMap<>();
-        for (String connectionStringPiece : connectionString.split(";")) {
-            String[] kvp = connectionStringPiece.split("=", 2);
-            connectionStringPieces.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
+        Map<String, String> connectionStringParts = Utility.parseConnectionString(connectionString);
+
+        String accountName = connectionStringParts.get(Constants.ConnectionStringConstants.ACCOUNT_NAME);
+        String accountKey = connectionStringParts.get(Constants.ConnectionStringConstants.ACCOUNT_KEY);
+        String endpointProtocol = connectionStringParts.get(Constants.ConnectionStringConstants.ENDPOINT_PROTOCOL);
+        String endpointSuffix = connectionStringParts.get(Constants.ConnectionStringConstants.ENDPOINT_SUFFIX);
+
+        if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
+            throw new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey");
         }
-        String accountName = connectionStringPieces.get(ACCOUNT_NAME);
-        try {
-            this.endpoint = new URL(String.format("https://%s.file.core.windows.net", accountName));
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(String.format("There is no valid endpoint for the connection string. "
-                                                                 + "Connection String: %s", connectionString));
+
+        if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
+            endpoint(String.format("%s://%s.file%s", endpointProtocol, accountName, endpointSuffix));
         }
+
+        return credential(new SharedKeyCredential(accountName, accountKey));
     }
 
     /**
@@ -250,10 +259,13 @@ public final class FileServiceClientBuilder {
      *
      * @param httpClient The HTTP client to use for requests.
      * @return The updated FileServiceClientBuilder object.
-     * @throws NullPointerException If {@code httpClient} is {@code null}.
      */
     public FileServiceClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = Objects.requireNonNull(httpClient);
+        if (this.httpClient != null && httpClient == null) {
+            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+        }
+
+        this.httpClient = httpClient;
         return this;
     }
 
@@ -275,24 +287,28 @@ public final class FileServiceClientBuilder {
      *
      * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
      * @return The updated FileServiceClientBuilder object.
+     * @throws NullPointerException If {@code logLevel} is {@code null}.
      */
     public FileServiceClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        this.logLevel = logLevel;
+        this.logLevel = Objects.requireNonNull(logLevel);
         return this;
     }
 
     /**
      * Sets the HTTP pipeline to use for the service client.
      *
-     * If {@code pipeline} is set, all other settings are ignored, aside from {@link FileServiceClientBuilder#endpoint(String) endpoint}
-     * when building clients.
+     * If {@code pipeline} is set, all other settings are ignored, aside from {@link
+     * FileServiceClientBuilder#endpoint(String) endpoint} when building clients.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated FileServiceClientBuilder object.
-     * @throws NullPointerException If {@code pipeline} is {@code null}.
      */
     public FileServiceClientBuilder pipeline(HttpPipeline pipeline) {
-        this.pipeline = Objects.requireNonNull(pipeline);
+        if (this.pipeline != null && pipeline == null) {
+            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
+
+        this.pipeline = pipeline;
         return this;
     }
 
@@ -304,10 +320,9 @@ public final class FileServiceClientBuilder {
      *
      * @param configuration The configuration store used to
      * @return The updated FileServiceClientBuilder object.
-     * @throws NullPointerException If {@code configuration} is {@code null}.
      */
     public FileServiceClientBuilder configuration(Configuration configuration) {
-        this.configuration = Objects.requireNonNull(configuration);
+        this.configuration = configuration;
         return this;
     }
 }

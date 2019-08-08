@@ -14,10 +14,13 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
+import com.azure.storage.common.Constants;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -51,10 +54,7 @@ import java.util.Objects;
  * {@link BlobServiceClient} or {@code .buildAsyncClient()} to create a {@link BlobServiceAsyncClient}.
  */
 public final class BlobServiceClientBuilder {
-    private static final String ACCOUNT_NAME = "accountname";
-    private static final String ACCOUNT_KEY = "accountkey";
-    private static final String ENDPOINT_PROTOCOL = "defaultendpointsprotocol";
-    private static final String ENDPOINT_SUFFIX = "endpointsuffix";
+    private final ClientLogger logger = new ClientLogger(BlobServiceClientBuilder.class);
 
     private final List<HttpPipelinePolicy> policies;
 
@@ -63,6 +63,7 @@ public final class BlobServiceClientBuilder {
     private TokenCredential tokenCredential;
     private SASTokenCredential sasTokenCredential;
     private HttpClient httpClient;
+    private HttpPipeline pipeline;
     private HttpLogDetailLevel logLevel;
     private RequestRetryOptions retryOptions;
     private Configuration configuration;
@@ -90,12 +91,20 @@ public final class BlobServiceClientBuilder {
     public BlobServiceAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint);
 
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        if (pipeline != null) {
+            return new BlobServiceAsyncClient(new AzureBlobStorageBuilder()
+                .url(endpoint)
+                .pipeline(pipeline)
+                .build());
+        }
 
         if (configuration == null) {
             configuration = ConfigurationManager.getConfiguration();
         }
+
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
         policies.add(new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, configuration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
@@ -108,9 +117,12 @@ public final class BlobServiceClientBuilder {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         }
 
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+
         policies.add(new RequestRetryPolicy(retryOptions));
 
         policies.addAll(this.policies);
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(logLevel));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -133,9 +145,9 @@ public final class BlobServiceClientBuilder {
     public BlobServiceClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
-            this.endpoint = url.getProtocol() + "://" + url.getAuthority();
+            this.endpoint = url.getProtocol() + "://" + url.getHost();
 
-            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(URLParser.parse(url).sasQueryParameters());
+            this.sasTokenCredential = SASTokenCredential.fromSASTokenString(URLParser.parse(url).sasQueryParameters().encode());
             if (this.sasTokenCredential != null) {
                 this.tokenCredential = null;
                 this.sharedKeyCredential = null;
@@ -216,17 +228,17 @@ public final class BlobServiceClientBuilder {
             connectionKVPs.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
         }
 
-        String accountName = connectionKVPs.get(ACCOUNT_NAME);
-        String accountKey = connectionKVPs.get(ACCOUNT_KEY);
-        String endpointProtocol = connectionKVPs.get(ENDPOINT_PROTOCOL);
-        String endpointSuffix = connectionKVPs.get(ENDPOINT_SUFFIX);
+        String accountName = connectionKVPs.get(Constants.ConnectionStringConstants.ACCOUNT_NAME);
+        String accountKey = connectionKVPs.get(Constants.ConnectionStringConstants.ACCOUNT_KEY);
+        String endpointProtocol = connectionKVPs.get(Constants.ConnectionStringConstants.ENDPOINT_PROTOCOL);
+        String endpointSuffix = connectionKVPs.get(Constants.ConnectionStringConstants.ENDPOINT_SUFFIX);
 
         if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
             throw new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'.");
         }
 
         if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
-            String endpoint = String.format("%s://%s.blob.%s", endpointProtocol, accountName, endpointSuffix.replaceFirst("^\\.", ""));
+            String endpoint = String.format("%s://%s.blob%s", endpointProtocol, accountName, endpointSuffix);
             endpoint(endpoint);
         }
 
@@ -238,10 +250,13 @@ public final class BlobServiceClientBuilder {
      * Sets the http client used to send service requests
      * @param httpClient http client to send requests
      * @return the updated BlobServiceClientBuilder object
-     * @throws NullPointerException If {@code httpClient} is {@code null}.
      */
     public BlobServiceClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = Objects.requireNonNull(httpClient);
+        if (this.httpClient != null && httpClient == null) {
+            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+        }
+
+        this.httpClient = httpClient;
         return this;
     }
 
@@ -260,17 +275,39 @@ public final class BlobServiceClientBuilder {
      * Sets the logging level for service requests
      * @param logLevel logging level
      * @return the updated BlobServiceClientBuilder object
+     * @throws NullPointerException If {@code logLevel} is {@code null}.
      */
     public BlobServiceClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        this.logLevel = logLevel;
+        this.logLevel = Objects.requireNonNull(logLevel);
         return this;
     }
 
     /**
-     * Sets the configuration object used to retrieve environment configuration values used to buildClient the client with
-     * when they are not set in the appendBlobClientBuilder, defaults to Configuration.NONE
-     * @param configuration configuration store
-     * @return the updated BlobServiceClientBuilder object
+     * Sets the HTTP pipeline to use for the service client.
+     *
+     * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint} when
+     * building clients.
+     *
+     * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
+     * @return The updated QueueClientBuilder object.
+     */
+    public BlobServiceClientBuilder pipeline(HttpPipeline pipeline) {
+        if (this.pipeline != null && pipeline == null) {
+            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
+
+        this.pipeline = pipeline;
+        return this;
+    }
+
+    /**
+     * Sets the configuration store that is used during construction of the service client.
+     *
+     * The default configuration store is a clone of the {@link ConfigurationManager#getConfiguration() global
+     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     *
+     * @param configuration The configuration store used to
+     * @return The updated QueueClientBuilder object.
      */
     public BlobServiceClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;

@@ -14,10 +14,13 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
+import com.azure.storage.common.Constants;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -35,26 +38,25 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent ContainerClientBuilder for instantiating a {@link ContainerClient} or {@link ContainerAsyncClient}
- * using {@link ContainerClientBuilder#buildClient()} or {@link ContainerClientBuilder#buildAsyncClient()} respectively.
+ * Fluent ContainerClientBuilder for instantiating a {@link ContainerClient} or {@link ContainerAsyncClient} using
+ * {@link ContainerClientBuilder#buildClient()} or {@link ContainerClientBuilder#buildAsyncClient()} respectively.
  *
  * <p>
  * The following information must be provided on this builder:
  *
  * <ul>
- *     <li>the endpoint through {@code .endpoint()}, including the container name, in the format of {@code https://{accountName}.blob.core.windows.net/{containerName}}.
- *     <li>the credential through {@code .credential()} or {@code .connectionString()} if the container is not publicly accessible.
+ * <li>the endpoint through {@code .endpoint()}, including the container name, in the format of {@code
+ * https://{accountName}.blob.core.windows.net/{containerName}}.
+ * <li>the credential through {@code .credential()} or {@code .connectionString()} if the container is not publicly
+ * accessible.
  * </ul>
  *
  * <p>
- * Once all the configurations are set on this builder, call {@code .buildClient()} to create a
- * {@link ContainerClient} or {@code .buildAsyncClient()} to create a {@link ContainerAsyncClient}.
+ * Once all the configurations are set on this builder, call {@code .buildClient()} to create a {@link ContainerClient}
+ * or {@code .buildAsyncClient()} to create a {@link ContainerAsyncClient}.
  */
 public final class ContainerClientBuilder {
-    private static final String ACCOUNT_NAME = "accountname";
-    private static final String ACCOUNT_KEY = "accountkey";
-    private static final String ENDPOINT_PROTOCOL = "defaultendpointsprotocol";
-    private static final String ENDPOINT_SUFFIX = "endpointsuffix";
+    private final ClientLogger logger = new ClientLogger(ContainerClientBuilder.class);
 
     private final List<HttpPipelinePolicy> policies;
 
@@ -64,13 +66,14 @@ public final class ContainerClientBuilder {
     private TokenCredential tokenCredential;
     private SASTokenCredential sasTokenCredential;
     private HttpClient httpClient;
+    private HttpPipeline pipeline;
     private HttpLogDetailLevel logLevel;
     private RequestRetryOptions retryOptions;
     private Configuration configuration;
 
     /**
-     * Creates a builder instance that is able to configure and construct {@link ContainerClient ContainerClients}
-     * and {@link ContainerAsyncClient ContainerAsyncClients}.
+     * Creates a builder instance that is able to configure and construct {@link ContainerClient ContainerClients} and
+     * {@link ContainerAsyncClient ContainerAsyncClients}.
      */
     public ContainerClientBuilder() {
         retryOptions = new RequestRetryOptions();
@@ -92,12 +95,20 @@ public final class ContainerClientBuilder {
         Objects.requireNonNull(endpoint);
         Objects.requireNonNull(containerName);
 
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        if (pipeline != null) {
+            return new ContainerAsyncClient(new AzureBlobStorageBuilder()
+                .url(String.format("%s/%s", endpoint, containerName))
+                .pipeline(pipeline)
+                .build());
+        }
 
         if (configuration == null) {
             configuration = ConfigurationManager.getConfiguration();
         }
+
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
         policies.add(new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, configuration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
@@ -110,9 +121,12 @@ public final class ContainerClientBuilder {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         }
 
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+
         policies.add(new RequestRetryPolicy(retryOptions));
 
         policies.addAll(this.policies);
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(logLevel));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -128,6 +142,7 @@ public final class ContainerClientBuilder {
 
     /**
      * Sets the service endpoint, additionally parses it for information (SAS token, container name)
+     *
      * @param endpoint URL of the service
      * @return the updated ContainerClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
@@ -140,7 +155,7 @@ public final class ContainerClientBuilder {
             this.endpoint = parts.scheme() + "://" + parts.host();
             this.containerName = parts.containerName();
 
-            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(parts.sasQueryParameters());
+            this.sasTokenCredential = SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode());
             if (this.sasTokenCredential != null) {
                 this.tokenCredential = null;
                 this.sharedKeyCredential = null;
@@ -154,6 +169,7 @@ public final class ContainerClientBuilder {
 
     /**
      * Sets the name of the container this client is connecting to.
+     *
      * @param containerName the name of the container
      * @return the updated ContainerClientBuilder object
      */
@@ -168,6 +184,7 @@ public final class ContainerClientBuilder {
 
     /**
      * Sets the credential used to authorize requests sent to the service
+     *
      * @param credential authorization credential
      * @return the updated ContainerClientBuilder object
      * @throws NullPointerException If {@code credential} is {@code null}.
@@ -181,6 +198,7 @@ public final class ContainerClientBuilder {
 
     /**
      * Sets the credential used to authorize requests sent to the service
+     *
      * @param credential authorization credential
      * @return the updated ContainerClientBuilder object
      * @throws NullPointerException If {@code credential} is {@code null}.
@@ -194,6 +212,7 @@ public final class ContainerClientBuilder {
 
     /**
      * Sets the credential used to authorize requests sent to the service
+     *
      * @param credential authorization credential
      * @return the updated ContainerClientBuilder object
      * @throws NullPointerException If {@code credential} is {@code null}.
@@ -207,6 +226,7 @@ public final class ContainerClientBuilder {
 
     /**
      * Clears the credential used to authorize requests sent to the service
+     *
      * @return the updated ContainerClientBuilder object
      */
     public ContainerClientBuilder anonymousCredential() {
@@ -218,6 +238,7 @@ public final class ContainerClientBuilder {
 
     /**
      * Sets the connection string for the service, parses it for authentication information (account name, account key)
+     *
      * @param connectionString connection string from access keys section
      * @return the updated ContainerClientBuilder object
      * @throws IllegalArgumentException If {@code connectionString} doesn't contain AccountName or AccountKey
@@ -231,10 +252,10 @@ public final class ContainerClientBuilder {
             connectionKVPs.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
         }
 
-        String accountName = connectionKVPs.get(ACCOUNT_NAME);
-        String accountKey = connectionKVPs.get(ACCOUNT_KEY);
-        String endpointProtocol = connectionKVPs.get(ENDPOINT_PROTOCOL);
-        String endpointSuffix = connectionKVPs.get(ENDPOINT_SUFFIX);
+        String accountName = connectionKVPs.get(Constants.ConnectionStringConstants.ACCOUNT_NAME);
+        String accountKey = connectionKVPs.get(Constants.ConnectionStringConstants.ACCOUNT_KEY);
+        String endpointProtocol = connectionKVPs.get(Constants.ConnectionStringConstants.ENDPOINT_PROTOCOL);
+        String endpointSuffix = connectionKVPs.get(Constants.ConnectionStringConstants.ENDPOINT_SUFFIX);
 
         if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
             throw new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'.");
@@ -251,17 +272,22 @@ public final class ContainerClientBuilder {
 
     /**
      * Sets the http client used to send service requests
+     *
      * @param httpClient http client to send requests
      * @return the updated ContainerClientBuilder object
-     * @throws NullPointerException If {@code httpClient} is {@code null}.
      */
     public ContainerClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = Objects.requireNonNull(httpClient);
+        if (this.httpClient != null && httpClient == null) {
+            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+        }
+
+        this.httpClient = httpClient;
         return this;
     }
 
     /**
      * Adds a pipeline policy to apply on each request sent
+     *
      * @param pipelinePolicy a pipeline policy
      * @return the updated ContainerClientBuilder object
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
@@ -273,19 +299,42 @@ public final class ContainerClientBuilder {
 
     /**
      * Sets the logging level for service requests
+     *
      * @param logLevel logging level
      * @return the updated ContainerClientBuilder object
+     * @throws NullPointerException If {@code logLevel} is {@code null}.
      */
     public ContainerClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        this.logLevel = logLevel;
+        this.logLevel = Objects.requireNonNull(logLevel);
         return this;
     }
 
     /**
-     * Sets the configuration object used to retrieve environment configuration values used to buildClient the client with
-     * when they are not set in the appendBlobClientBuilder, defaults to Configuration.NONE
-     * @param configuration configuration store
-     * @return the updated ContainerClientBuilder object
+     * Sets the HTTP pipeline to use for the service client.
+     *
+     * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint} and
+     * {@link #containerName(String) container name} when building clients.
+     *
+     * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
+     * @return The updated QueueClientBuilder object.
+     */
+    public ContainerClientBuilder pipeline(HttpPipeline pipeline) {
+        if (this.pipeline != null && pipeline == null) {
+            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
+
+        this.pipeline = pipeline;
+        return this;
+    }
+
+    /**
+     * Sets the configuration store that is used during construction of the service client.
+     *
+     * The default configuration store is a clone of the {@link ConfigurationManager#getConfiguration() global
+     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     *
+     * @param configuration The configuration store used to
+     * @return The updated QueueClientBuilder object.
      */
     public ContainerClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
@@ -294,6 +343,7 @@ public final class ContainerClientBuilder {
 
     /**
      * Sets the request retry options for all the requests made through the client.
+     *
      * @param retryOptions the options to configure retry behaviors
      * @return the updated ContainerClientBuilder object
      * @throws NullPointerException If {@code retryOptions} is {@code null}.

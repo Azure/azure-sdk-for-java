@@ -5,6 +5,7 @@ package com.azure.storage.blob
 
 import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
@@ -367,7 +368,7 @@ class APISpec extends Specification {
 
     def getMockRequest() {
         HttpHeaders headers = new HttpHeaders()
-        headers.set(Constants.HeaderConstants.CONTENT_ENCODING, "en-US")
+        headers.put("Content-Encoding", "en-US")
         URL url = new URL("http://devtest.blob.core.windows.net/test-container/test-blob")
         HttpRequest request = new HttpRequest(HttpMethod.POST, url, headers, null)
         return request

@@ -12,6 +12,7 @@ import java.io.RandomAccessFile;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -128,7 +129,9 @@ public class FileTransferExample {
         if (dirPath.exists() || dirPath.mkdir()) {
             File f = new File(folderUrl.getPath() + LARGE_TEST_FOLDER + fileName);
             if (!f.exists()) {
-                f.createNewFile();
+                if (!f.createNewFile()) {
+                    throw new RuntimeException("Failed to create file.");
+                }
             }
             return f;
         } else {
@@ -164,9 +167,8 @@ public class FileTransferExample {
                 buf.clear();
                 b = ch.read(buf);
             }
-            ch.close();
-            fis.close();
-            return new String(md.digest());
+
+            return new String(md.digest(), StandardCharsets.UTF_8);
         }
     }
 

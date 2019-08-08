@@ -21,6 +21,8 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.blob.models.StorageServiceStats;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -29,12 +31,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.OffsetDateTime;
 
-import static com.azure.storage.blob.Utility.postProcessResponse;
+import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
 /**
- * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does not
- * hold any state about a particular storage account but is instead a convenient way of sending off appropriate requests
- * to the resource on the service. It may also be used to construct URLs to blobs and containers.
+ * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does
+ * not hold any state about a particular storage account but is instead a convenient way of sending off appropriate
+ * requests to the resource on the service. It may also be used to construct URLs to blobs and containers.
  *
  * <p>
  * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient}
@@ -109,7 +111,8 @@ public final class BlobServiceAsyncClient {
 
     /**
      * Deletes the specified container in the storage account. If the container doesn't exist the operation fails. For
-     * more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure Docs</a>.
+     * more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure
+     * Docs</a>.
      *
      * @param containerName Name of the container to delete
      * @return A response containing status code and HTTP headers
