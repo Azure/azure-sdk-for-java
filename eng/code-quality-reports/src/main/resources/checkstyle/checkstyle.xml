@@ -312,5 +312,16 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!--CUSTOM CHECKS-->
     <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
 <!--    <module name="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck"/>-->
+
+    <!--CUSTOM CHECKS-->
+    <!-- Requirement of Javadoc annotation @codesnippet check:
+      1) Use '{@codesnippet ...}' instead of '<code>', '<pre>'.
+      2) No multiple lines span at the '{@code ...}'.
+      3) naming pattern of @codesnippet:
+          a) For package name, class name, they should all be lower case.
+             For method name,  the first letter of method name should be lower case.
+             For parameters, they should only be letters. Concatenate all parameters with dash character.
+          b) Jonathon will add more requirement specs later. -->
+    <module name="com.azure.tools.checkstyle.checks.JavadocCodeSnippetCheck"/>
   </module>
 </module>
