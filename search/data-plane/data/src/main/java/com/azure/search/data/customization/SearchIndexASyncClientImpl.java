@@ -1,5 +1,6 @@
 package com.azure.search.data.customization;
 
+import com.azure.search.data.common.DocumentResponseConversions;
 import com.azure.search.data.common.SearchPipelinePolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.search.data.SearchIndexASyncClient;
@@ -7,6 +8,7 @@ import com.azure.search.data.generated.models.*;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 
 public class SearchIndexASyncClientImpl extends SearchIndexBaseClientImpl implements SearchIndexASyncClient {
 
@@ -40,15 +42,20 @@ public class SearchIndexASyncClientImpl extends SearchIndexBaseClientImpl implem
     }
 
     @Override
-    public Mono<Object> getDocument(String key) {
-        return restClient.documents().getAsync(key);
+    public Mono<Map<String, Object>> getDocument(String key) {
+        return restClient.documents().getAsync(key).map(DocumentResponseConversions::convertLinkedHashMapToMap);
     }
 
     @Override
-    public Mono<Object> getDocument(String key, List<String> selectedFields,
-                                    SearchRequestOptions searchRequestOptions) {
-        return restClient.documents().getAsync(key, selectedFields, searchRequestOptions);
+    public Mono<Map<String, Object>> getDocument(String key, List<String> selectedFields,
+                                                 SearchRequestOptions searchRequestOptions) {
+        return restClient
+            .documents()
+            .getAsync(key, selectedFields, searchRequestOptions)
+            .map(DocumentResponseConversions::convertLinkedHashMapToMap);
     }
+
+
 
     @Override
     public PagedFlux<SuggestResult> suggest(String searchText, String suggesterName) {
@@ -79,8 +86,8 @@ public class SearchIndexASyncClientImpl extends SearchIndexBaseClientImpl implem
                                                  SearchRequestOptions searchRequestOptions,
                                                  AutocompleteParameters autocompleteParameters) {
         return restClient.documents().autocompleteGetAsync(searchText,
-                suggesterName,
-                searchRequestOptions,
-                autocompleteParameters);
+            suggesterName,
+            searchRequestOptions,
+            autocompleteParameters);
     }
 }

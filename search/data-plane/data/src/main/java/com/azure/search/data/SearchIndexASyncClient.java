@@ -5,6 +5,7 @@ import com.azure.search.data.generated.models.*;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * The public (Customer facing) interface for SearchIndexASyncClient.
@@ -80,7 +81,7 @@ public interface SearchIndexASyncClient {
      * @param key the name of the document
      * @return
      */
-    Mono<Object> getDocument(String key);
+    Mono<Map<String, Object>> getDocument(String key);
 
     /**
      * Retrieves a document from the Azure Search index.
@@ -90,7 +91,7 @@ public interface SearchIndexASyncClient {
      * @param searchRequestOptions
      * @return
      */
-    Mono<Object> getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions);
+    Mono<Map<String, Object>> getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions);
 
     /**
      * Suggests documents in the Azure Search index that match the given partial query text.

@@ -1,10 +1,12 @@
 package com.azure.search.data.customization;
 
+import com.azure.search.data.common.DocumentResponseConversions;
 import com.azure.search.data.common.SearchPipelinePolicy;
 import com.azure.search.data.SearchIndexClient;
 import com.azure.search.data.generated.models.*;
 
 import java.util.List;
+import java.util.Map;
 
 public class SearchIndexClientImpl extends SearchIndexBaseClientImpl implements SearchIndexClient {
 
@@ -42,13 +44,15 @@ public class SearchIndexClientImpl extends SearchIndexBaseClientImpl implements 
     }
 
     @Override
-    public Object getDocument(String key) {
-        return null;
+    public Map<String, Object> getDocument(String key) {
+        return restClient.documents().getAsync(key)
+            .map(DocumentResponseConversions::convertLinkedHashMapToMap).block();
     }
 
     @Override
-    public Object getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions) {
-        return null;
+    public Map<String, Object> getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions) {
+        return restClient.documents().getAsync(key, selectedFields, searchRequestOptions)
+            .map(DocumentResponseConversions::convertLinkedHashMapToMap).block();
     }
 
     @Override
