@@ -26,7 +26,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
     private static final String AUTH_PREFIX = "type=master&ver=1.0&sig=";
     private final CosmosKeyCredential cosmosKeyCredential;
-    private Mac macInstance;
+    private final Mac macInstance;
 
     //  stores current master key's hashcode for performance reasons.
     private int masterKeyHashCode;
