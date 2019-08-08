@@ -156,10 +156,12 @@ public final class BlobOutputStream extends OutputStream {
             accessCondition.modifiedAccessConditions()).leaseAccessConditions(accessCondition.leaseAccessConditions())
                 : new BlobAccessConditions(), accessCondition != null ? accessCondition.appendPositionAccessConditions()
                 : null, null, null, accessCondition != null
-                ? accessCondition.appendPositionAccessConditions().appendPosition() != null
-                ? accessCondition.appendPositionAccessConditions().appendPosition()
-                : parentBlob.getProperties().block().value().blobSize()
-                : null, BlobType.APPEND_BLOB, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
+                ? (
+                    accessCondition.appendPositionAccessConditions().appendPosition() != null
+                    ? accessCondition.appendPositionAccessConditions().appendPosition()
+                    : parentBlob.getProperties().block().value().blobSize()
+                )
+                : 0, BlobType.APPEND_BLOB, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
     }
 
     /**
