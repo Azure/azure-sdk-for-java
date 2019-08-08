@@ -4,10 +4,13 @@
 package com.azure.search.data.env.samples;
 
 import com.azure.search.data.env.AzureSearchResources;
+import com.azure.search.data.env.SearchIndexDocs;
 import com.azure.search.data.env.SearchIndexService;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+
+import java.io.IOException;
 
 public class CreateTestResources {
 
@@ -17,7 +20,7 @@ public class CreateTestResources {
      *
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // Creating Azure Search Resource:
         ApplicationTokenCredentials applicationTokenCredentials = new ApplicationTokenCredentials(
             "app-id",
@@ -36,21 +39,26 @@ public class CreateTestResources {
         String apiAdminKey = azureSearchResources.getSearchAdminKey();
 
         //Creating Index:
+        SearchIndexService searchIndexService;
         try {
-            SearchIndexService searchIndexService = new SearchIndexService(serviceName, apiAdminKey);
+            searchIndexService = new SearchIndexService(serviceName, apiAdminKey);
             searchIndexService.initialize();
         } catch (Exception e) {
             e.printStackTrace();
+            throw e;
         }
 
         // Uploading Documents:
-//        try{
-//            SearchIndexDocs searchIndexDocs = new SearchIndexDocs(serviceName, apiAdminKey);
-//            searchIndexDocs.initialize();
-//
-//        }catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try{
+            SearchIndexDocs searchIndexDocs = new SearchIndexDocs(serviceName, apiAdminKey,
+                searchIndexService.indexName(),
+                "search.windows.net",
+                "2019-05-06");
+            searchIndexDocs.initialize();
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
 
         try {
             System.out.println("Waiting 100 secs before cleaning the created Azure Search resource");

@@ -20,6 +20,7 @@ public class SearchIndexService {
 
     private String searchServiceName;
     private String apiAdminKey;
+    private String indexName;
 
     private SearchServiceClient searchServiceClient;
 
@@ -38,7 +39,7 @@ public class SearchIndexService {
     /**
      * Creates a new sample Index in Azure Search with configuration retrieved from INDEX_DATA_JSON
      *
-     * @throws IOException If the file in INDEX_DATA_JSON cannot be read.
+     * @throws IOException If the file in INDEX_DATA_JSON is not existing or invalid.
      */
     public void initialize() throws IOException {
         validate();
@@ -63,7 +64,15 @@ public class SearchIndexService {
     private void addIndexes() throws IOException {
         Reader indexData = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(INDEX_DATA_JSON));
         Index index = new ObjectMapper().readValue(indexData, Index.class);
+        this.indexName = index.name();
         searchServiceClient.indexes().create(index);
     }
 
+    /**
+     *
+     * @return the sample index name
+     */
+    public String indexName(){
+        return this.indexName;
+    }
 }

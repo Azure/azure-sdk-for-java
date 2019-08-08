@@ -29,14 +29,26 @@ public class AzureSearchResources {
     private ResourceGroup resourceGroup = null;
     private SearchService searchService = null;
 
+    /**
+     *
+     * @return The created Resource Group name
+     */
     public String getResourceGroupName() {
         return resourceGroupName;
     }
 
+    /**
+     *
+     * @return The created Search service name
+     */
     public String getSearchServiceName() {
         return searchServiceName;
     }
 
+    /**
+     *
+     * @return The Search service admin key
+     */
     public String getSearchAdminKey() {
         return searchAdminKey;
     }
