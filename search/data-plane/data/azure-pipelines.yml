@@ -1,6 +1,3 @@
-# External variables Settable at queue time:
-# "pomFile" : "pom.client.xml".   This is the project object model file for Maven.
-
 variables:
     LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=warn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
 
@@ -31,7 +28,7 @@ jobs:
   - task: Maven@3
     displayName: 'Install Azure Core'
     inputs:
-        mavenPomFile: './sdk/core/azure-core/pom.xml'
+        mavenPomFile: './sdk/core/pom.xml'
         goals: 'install'
         options: '-Dmaven.test.skip=true -Dgpg.skip'
         publishJUnitResults: false
