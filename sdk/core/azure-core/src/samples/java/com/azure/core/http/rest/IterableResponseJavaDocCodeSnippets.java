@@ -40,9 +40,9 @@ public class IterableResponseJavaDocCodeSnippets {
         // process the stream
         myIterableResponse.stream().forEach(resp -> {
             if (resp.statusCode() == HttpURLConnection.HTTP_OK) {
-                System.out.printf("Response headers are %s. Url %s \n", resp.deserializedHeaders(), resp.request().url());
+                System.out.printf("Response headers are %s. Url %s%n", resp.deserializedHeaders(), resp.request().url());
                 resp.items().forEach(value -> {
-                    System.out.printf("Response value is %d \n", value);
+                    System.out.printf("Response value is %d%n", value);
                 });
             }
         });
@@ -69,9 +69,9 @@ public class IterableResponseJavaDocCodeSnippets {
         while (ite.hasNext()) {
             PagedResponseBase<String, Integer> resp = ite.next();
             if (resp.statusCode() == HttpURLConnection.HTTP_OK) {
-                System.out.printf("Response headers are %s. Url %s \n", resp.deserializedHeaders(), resp.request().url());
+                System.out.printf("Response headers are %s. Url %s%n", resp.deserializedHeaders(), resp.request().url());
                 resp.items().forEach(value -> {
-                    System.out.printf("Response value is %d \n", value);
+                    System.out.printf("Response value is %d%n", value);
                 });
             }
         }
@@ -97,9 +97,9 @@ public class IterableResponseJavaDocCodeSnippets {
         myIterableResponse.stream().filter(resp -> resp.statusCode() == HttpURLConnection.HTTP_OK)
             .limit(10)
             .forEach(resp -> {
-                System.out.printf("Response headers are %s. Url %s \n", resp.deserializedHeaders(), resp.request().url());
+                System.out.printf("Response headers are %s. Url %s%n", resp.deserializedHeaders(), resp.request().url());
                 resp.items().forEach(value -> {
-                    System.out.printf("Response value is %d \n", value);
+                    System.out.printf("Response value is %d%n", value);
                 });
             });
         // END: com.azure.core.http.rest.iterableResponse.stream.filter
