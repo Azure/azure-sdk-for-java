@@ -420,7 +420,7 @@ public final class KeyClientJavaDocCodeSnippets {
             System.out.printf("Got response headers . Url: %s, Status code: %d %n",
                 resp.request().url(), resp.statusCode());
             resp.items().forEach(value -> {
-                System.out.printf("Response value is %d %n", value);
+                System.out.printf("Key name: %s, Key version: %s %n", value.name(), value.version());
             });
         });
         // END: com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage
