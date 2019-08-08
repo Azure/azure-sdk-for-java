@@ -4,7 +4,6 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -20,7 +19,6 @@ import java.time.format.DateTimeParseException;
 public final class MSIToken extends AccessToken {
 
     private static final OffsetDateTime EPOCH = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
-    private static final ClientLogger LOGGER = new ClientLogger(MSIToken.class);
 
     @JsonProperty(value = "token_type")
     private String tokenType;
@@ -79,8 +77,7 @@ public final class MSIToken extends AccessToken {
             System.err.println(e.getMessage());
         }
 
-        LOGGER.logAndThrow(new IllegalArgumentException(String.format("Unable to parse date time %s ", dateTime)));
-        return null;
+        throw new IllegalArgumentException("Unable to parse date time " + dateTime);
     }
 
 }

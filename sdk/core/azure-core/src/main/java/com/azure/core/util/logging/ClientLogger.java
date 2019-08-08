@@ -151,20 +151,36 @@ public class ClientLogger {
     }
 
     /**
-     * This will log {@link RuntimeException}, if logging is enabled , and throw the runtime exception.
-     * @param runtimeException to be thrown. It will do nothing if {@code null} is provided.
-     * @throws RuntimeException which is requested by this call.
+     * Attempts to log the exception at the warning level and returns it to be thrown.
+     *
+     * @param runtimeException Runtime exception to be logged and returned.
+     * @return the passed {@code RuntimeException}
      */
-    public void logAndThrow(RuntimeException runtimeException) {
+    public RuntimeException logWarningAndThrow(RuntimeException runtimeException) {
+        return logAndThrow(runtimeException, WARNING_LEVEL);
+    }
+
+    /**
+     * Attempts to log the exception at the error level and returns it to be thrown.
+     *
+     * @param runtimeException Runtime exception to be logged and returned.
+     * @return the passed {@code RuntimeException}
+     */
+    public RuntimeException logErrorAndThrow(RuntimeException runtimeException) {
+        return logAndThrow(runtimeException, ERROR_LEVEL);
+    }
+
+    private RuntimeException logAndThrow(RuntimeException runtimeException, int logLevel) {
         if (runtimeException == null) {
-            return;
+            return null;
         }
 
-        // it will only log if error level is enabled in configuration
-        if (canLogAtLevel(ERROR_LEVEL)) {
-            logger.error(runtimeException.getMessage(), runtimeException);
+        // Only log if the level is enabled.
+        if (canLogAtLevel(logLevel)) {
+            log(logLevel, runtimeException.getMessage(), runtimeException);
         }
-        throw runtimeException;
+
+        return runtimeException;
     }
 
     /*
