@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
 import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 
@@ -31,7 +31,7 @@ public class ManagingDeletedKeysAsync {
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
                 .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-                .credential(new DefaultAzureCredential())
+                .credential(new DefaultAzureCredentialBuilder().build())
                 .buildAsyncClient();
 
         // Let's create Ec and Rsa keys valid for 1 year. if the key
@@ -39,20 +39,20 @@ public class ManagingDeletedKeysAsync {
         keyAsyncClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
                 .expires(OffsetDateTime.now().plusYears(1)))
                 .subscribe(keyResponse ->
-                    System.out.printf("Key is created with name %s and type %s \n", keyResponse.value().name(), keyResponse.value().keyMaterial().kty()));
+                    System.out.printf("Key is created with name %s and type %s \n", keyResponse.name(), keyResponse.keyMaterial().kty()));
 
         Thread.sleep(2000);
 
         keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
                 .expires(OffsetDateTime.now().plusYears(1)))
                 .subscribe(keyResponse ->
-                    System.out.printf("Key is created with name %s and type %s \n", keyResponse.value().name(), keyResponse.value().keyMaterial().kty()));
+                    System.out.printf("Key is created with name %s and type %s \n", keyResponse.name(), keyResponse.keyMaterial().kty()));
 
         Thread.sleep(2000);
 
         // The Cloud Rsa Key is no longer needed, need to delete it from the key vault.
         keyAsyncClient.deleteKey("CloudEcKey").subscribe(deletedKeyResponse ->
-            System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.value().recoveryId()));
+            System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.recoveryId()));
 
         //To ensure key is deleted on server side.
         Thread.sleep(30000);
@@ -60,17 +60,17 @@ public class ManagingDeletedKeysAsync {
         // We accidentally deleted Cloud Ec key. Let's recover it.
         // A deleted key can only be recovered if the key vault is soft-delete enabled.
         keyAsyncClient.recoverDeletedKey("CloudEcKey").subscribe(recoveredKeyResponse ->
-            System.out.printf("Recovered Key with name %s \n", recoveredKeyResponse.value().name()));
+            System.out.printf("Recovered Key with name %s \n", recoveredKeyResponse.name()));
 
         //To ensure key is recovered on server side.
         Thread.sleep(10000);
 
         // The Cloud Ec and Rsa keys are no longer needed, need to delete them from the key vault.
         keyAsyncClient.deleteKey("CloudEcKey").subscribe(deletedKeyResponse ->
-            System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.value().recoveryId()));
+            System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.recoveryId()));
 
         keyAsyncClient.deleteKey("CloudRsaKey").subscribe(deletedKeyResponse ->
-                System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.value().recoveryId()));
+                System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.recoveryId()));
 
         // To ensure key is deleted on server side.
         Thread.sleep(30000);

@@ -1,0 +1,42 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue5883546e",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "QueueNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "217",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "1cdd8355-e003-0073-6209-4740b5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:1cdd8355-e003-0073-6209-4740b5000000\nTime:2019-07-30T19:01:07.7774261Z</Message></Error>",
+      "Date" : "Tue, 30 Jul 2019 19:01:06 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net?prefix=queue5883546e&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "1cdd8359-e003-0073-6609-4740b5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.queue.core.windows.net/\"><Prefix>queue5883546e</Prefix><Queues /><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 30 Jul 2019 19:01:06 GMT",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "queue5883546e" ]
+}

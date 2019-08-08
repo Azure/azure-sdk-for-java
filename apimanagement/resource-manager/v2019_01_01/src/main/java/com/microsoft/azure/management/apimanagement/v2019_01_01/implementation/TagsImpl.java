@@ -238,10 +238,14 @@ class TagsImpl extends WrapperImpl<TagsInner> implements Tags {
     public Observable<TagContract> getByOperationAsync(String resourceGroupName, String serviceName, String apiId, String operationId, String tagId) {
         TagsInner client = this.inner();
         return client.getByOperationAsync(resourceGroupName, serviceName, apiId, operationId, tagId)
-        .map(new Func1<TagContractInner, TagContract>() {
+        .flatMap(new Func1<TagContractInner, Observable<TagContract>>() {
             @Override
-            public TagContract call(TagContractInner inner) {
-                return wrapModel(inner);
+            public Observable<TagContract> call(TagContractInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((TagContract)wrapModel(inner));
+                }
             }
        });
     }

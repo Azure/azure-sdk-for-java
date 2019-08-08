@@ -14,17 +14,16 @@ import java.time.format.DateTimeFormatter;
  *
  * <ul>
  *     <li>
- *         Providing {@link SettingSelector#labels() labels} will filter
- *         {@link ConfigurationSetting ConfigurationSettings} that match any label name in conjunction with the keys
- *         that are passed in to the service request.
+ *         Providing {@link #labels() labels} will filter {@link ConfigurationSetting ConfigurationSettings} that match
+ *         any label name in conjunction with the keys that are passed in to the service request.
  *     </li>
  *     <li>
- *         Providing {@link SettingSelector#acceptDateTime() acceptDateTime} will return the representation of matching
+ *         Providing {@link #acceptDateTime() acceptDateTime} will return the representation of matching
  *         {@link ConfigurationSetting} at that given {@link OffsetDateTime}.
  *     </li>
  *     <li>
- *         Providing {@link SettingSelector#fields() fields} will populate only those {@link ConfigurationSetting}
- *         fields in the response. By default, all of the fields are returned.
+ *         Providing {@link #fields() fields} will populate only those {@link ConfigurationSetting} fields in the
+ *         response. By default, all of the fields are returned.
  *     </li>
  * </ul>
  *

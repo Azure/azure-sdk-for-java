@@ -82,6 +82,10 @@
     "source": "specification/datamigration/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "devtestlabs/resource-manager" : {
+    "source": "specification/devtestlabs/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "dns/resource-manager": {
     "source": "specification/dns/resource-manager/readme.md",
     "args": "--multiapi --fluent"

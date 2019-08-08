@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 
@@ -33,7 +33,7 @@ public class BackupAndRestoreOperations {
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         KeyClient keyClient = new KeyClientBuilder()
                 .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-                .credential(new DefaultAzureCredential())
+                .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
         // Let's create a Rsa key valid for 1 year. if the key
@@ -45,7 +45,7 @@ public class BackupAndRestoreOperations {
         // Backups are good to have, if in case keys get accidentally deleted by you.
         // For long term storage, it is ideal to write the backup to a file.
         String backupFilePath = "YOUR_BACKUP_FILE_PATH";
-        byte[] keyBackup = keyClient.backupKey("CloudRsaKey").value();
+        byte[] keyBackup = keyClient.backupKey("CloudRsaKey");
         writeBackupToFile(keyBackup, backupFilePath);
 
         // The Cloud Rsa key is no longer in use, so you delete it.
@@ -62,7 +62,7 @@ public class BackupAndRestoreOperations {
 
         // After sometime, the key is required again. We can use the backup value to restore it in the key vault.
         byte[] backupFromFile = Files.readAllBytes(new File(backupFilePath).toPath());
-        Key restoredKey = keyClient.restoreKey(backupFromFile).value();
+        Key restoredKey = keyClient.restoreKey(backupFromFile);
     }
 
     private static void writeBackupToFile(byte[] bytes, String filePath) {

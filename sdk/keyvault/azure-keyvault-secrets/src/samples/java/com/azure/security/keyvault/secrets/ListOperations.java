@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
 import com.azure.security.keyvault.secrets.models.SecretBase;
 
@@ -26,7 +26,7 @@ public class ListOperations {
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         SecretClient client = new SecretClientBuilder()
                 .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-                .credential(new DefaultAzureCredential())
+                .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
         // Let's create secrets holding storage and bank accounts credentials valid for 1 year. if the secret
@@ -40,7 +40,7 @@ public class ListOperations {
         // You need to check if any of the secrets are sharing same values. Let's list the secrets and print their values.
         // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
         for (SecretBase secret : client.listSecrets()) {
-            Secret secretWithValue  = client.getSecret(secret).value();
+            Secret secretWithValue  = client.getSecret(secret);
             System.out.printf("Received secret with name %s and value %s \n", secretWithValue.name(), secretWithValue.value());
         }
 
@@ -50,7 +50,7 @@ public class ListOperations {
 
         // You need to check all the different values your bank account password secret had previously. Lets print all the versions of this secret.
         for (SecretBase secret : client.listSecretVersions("BankAccountPassword")) {
-            Secret secretWithValue  = client.getSecret(secret).value();
+            Secret secretWithValue  = client.getSecret(secret);
             System.out.printf("Received secret's version with name %s and value %s", secretWithValue.name(), secretWithValue.value());
         }
     }

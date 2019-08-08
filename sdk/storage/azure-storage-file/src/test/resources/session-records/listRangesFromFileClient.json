@@ -1,0 +1,65 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/filesharename/testdir%2ffile62564f32",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D71521501C3184\"",
+      "Last-Modified" : "Tue, 30 Jul 2019 19:08:31 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "7f75df7d-301a-00db-7f0a-4794a0000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 30 Jul 2019 19:08:30 GMT"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/filesharename/testdir%2ffile62564f32?comp=range",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.2 1.8.0_201; Windows 10 10.0",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D715215023D474\"",
+      "Last-Modified" : "Tue, 30 Jul 2019 19:08:31 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "7f75df7e-301a-00db-800a-4794a0000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 30 Jul 2019 19:08:31 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg=="
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/filesharename/testdir%2ffile62564f32?comp=rangelist",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-length" : "512",
+      "ETag" : "\"0x8D715215023D474\"",
+      "Last-Modified" : "Tue, 30 Jul 2019 19:08:31 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "7f75df7f-301a-00db-010a-4794a0000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Ranges><Range><Start>0</Start><End>511</End></Range></Ranges>",
+      "Date" : "Tue, 30 Jul 2019 19:08:31 GMT",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "file62564f32" ]
+}

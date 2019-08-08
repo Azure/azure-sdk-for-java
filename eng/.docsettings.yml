@@ -48,7 +48,7 @@ known_presence_issues:
   - ['sdk/core/azure-core-management', '#2847']
   - ['cosmosdb/data-plane/commons-test-utils', '#2847']
   - ['cosmosdb/data-plane/sdk', '#2847']
-  - ['sdk/cosmos/sdk', '#2847']
+  - ['sdk/cosmos/microsoft-azure-cosmos', '#2847']
   - ['cosmosdb/data-plane/gateway', '#2847']
   - ['cosmosdb/data-plane/commons', '#2847']
   - ['cosmosdb/data-plane/direct-impl', '#2847']
@@ -64,8 +64,8 @@ known_content_issues:
   - ['sdk/keyvault/README.md', '#3113']
   - ['sdk/loganalytics/microsoft-azure-loganalytics/README.md', '#3113']
   - ['sdk/servicebus/README.md', '#3113']
-  - ['storage/data-plane/README.md', '#3113']
-  - ['storage/data-plane/swagger/README.md', '#3113']
+  - ['sdk/storage/microsoft-azure-storage-blob/README.md', '#3113']
+  - ['sdk/storage/microsoft-azure-storage-blob/swagger/README.md', '#3113']
   - ['sdk/core/README.md', '#3113']
   - ['cosmosdb/data-plane/README.md', '#3113']
   - ['cosmosdb/data-plane/benchmark/README.md', '#3113']
@@ -73,7 +73,7 @@ known_content_issues:
   - ['cosmosdb/data-plane/faq/README.md', '#3113']
   - ['sdk/cosmos/faq/README.md', '#3113']
   - ['sdk/cosmos/changelog/README.md', '#3113']
-  - ['sdk/cosmos/benchmark/README.md', '#3113']
+  - ['sdk/cosmos/microsoft-azure-cosmos-benchmark/README.md', '#3113']
   - ['sdk/cosmos/README.md', '#3113']
 package_indexing_exclusion_list:
   - azure-loganalytics-sample

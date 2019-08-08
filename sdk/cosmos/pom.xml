@@ -7,17 +7,17 @@ Licensed under the MIT License.
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-data-sdk-parent</artifactId>
-    <version>1.2.0</version>
+    <version>1.1.0</version>
     <relativePath>../../pom.data.xml</relativePath>
   </parent>
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmos-parent</artifactId>
-  <version>3.0.0</version>
+  <version>3.1.0</version>
   <packaging>pom</packaging>
 
   <name>Microsoft Azure Cosmos DB SQL API</name>
-  <description>This package contains Mircosoft Azure SDK for Azure Cosmos DB SQL API (with Reactive Extension RX support)</description>
+  <description>This package contains Microsoft Azure SDK for Azure Cosmos DB SQL API (with Reactive Extension RX support)</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -34,11 +34,11 @@ Licensed under the MIT License.
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <cosmosdb-sdk-direct-impl.version>3.0.0</cosmosdb-sdk-direct-impl.version>
-    <direct-connectivity-version>3.0.0</direct-connectivity-version>
+    <cosmosdb-sdk-direct-impl.version>3.1.0</cosmosdb-sdk-direct-impl.version>
+    <direct-connectivity-version>3.1.0</direct-connectivity-version>
     <mockito.version>1.10.19</mockito.version>
     <netty.version>4.1.36.Final</netty.version>
-    <sdk-version>3.0.0</sdk-version>
+    <sdk-version>3.1.0</sdk-version>
     <guava.version>27.0.1-jre</guava.version>
     <reactor-core.version>3.2.9.RELEASE</reactor-core.version>
     <netty-tcnative.version>2.0.25.Final</netty-tcnative.version>
@@ -389,9 +389,9 @@ Licensed under the MIT License.
   </developers>
 
   <modules>
-    <module>sdk</module>
-    <module>benchmark</module>
-    <module>examples</module>
+    <module>microsoft-azure-cosmos</module>
+    <module>microsoft-azure-cosmos-benchmark</module>
+    <module>microsoft-azure-cosmos-examples</module>
   </modules>
 
 </project>
