@@ -317,7 +317,7 @@ public final class SecretClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.secretclient.listDeletedSecrets.iterableByPage
         secretClient.listDeletedSecrets().iterableByPage().forEach(resp -> {
-            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.headers(),
+            System.out.printf("Got response headers . Url: %s, Status code: %d %n",
                 resp.request().url(), resp.statusCode());
             resp.items().forEach(value -> {
                 System.out.printf("Deleted secret's recovery Id %s", value.recoveryId());
@@ -349,7 +349,7 @@ public final class SecretClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.secretclient.listSecretVersions#string-Context-iterableByPage
         secretClient.listSecretVersions("secretName", new Context(key1, value2)).iterableByPage().forEach(resp -> {
-            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.headers(),
+            System.out.printf("Got response headers . Url: %s, Status code: %d %n",
                 resp.request().url(), resp.statusCode());
             resp.items().forEach(value -> {
                 Secret secretWithValue  = secretClient.getSecret(value);

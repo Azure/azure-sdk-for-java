@@ -711,7 +711,8 @@ public final class KeyClient {
      * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key key} with key material included of its latest version.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys}
      *
-     * <p><strong>Samples to iterate KeyBase by each page</strong></p>
+     * <p>It is possible to get full keys with key material from this information. Loop over all the {@link KeyBase key} by page and
+     * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key key} with key material included of its latest version.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys.iterableByPage}
      *
      * @return {@link PagedIterable} of {@link KeyBase key} of all the keys in the vault.
@@ -729,7 +730,8 @@ public final class KeyClient {
      * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key key} with key material included of its latest version.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys#Context}
      *
-     * <p><strong>Samples to iterate KeyBase by each page</strong></p>
+     * <p>It is possible to get full keys with key material from this information. Loop over all the {@link KeyBase key} by page and
+     * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key key} with key material included of its latest version.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys.iterableByPage}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -748,7 +750,7 @@ public final class KeyClient {
      * <p>Lists the deleted keys in the key vault and for each deleted key prints out its recovery id.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listDeletedKeys}
      *
-     * <p><strong>Samples to iterate DeletedKey by each page</strong></p>
+     * <p>Iterate over the lists the deleted keys by each page in the key vault and for each deleted key prints out its recovery id.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listDeletedKeys.iterableByPage}
      *
      * @return {@link PagedIterable} of all of the {@link DeletedKey deleted keys} in the vault.
@@ -766,7 +768,7 @@ public final class KeyClient {
      * <p>Lists the deleted keys in the key vault and for each deleted key prints out its recovery id.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listDeletedKeys#Context}
      *
-     * <p><strong>Samples to iterate DeletedKey by each page</strong></p>
+     * <p>Iterate over the lists the deleted keys by each page in the key vault and for each deleted key prints out its recovery id.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listDeletedKeys.iterableByPage}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -785,7 +787,8 @@ public final class KeyClient {
      * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key keys} with key material included of the specified versions.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions}
      *
-     * <p><strong>Samples to iterate KeyBase by each page</strong></p>
+     * <p>It is possible to get full keys with key material for each version from this information. Loop over all the {@link KeyBase key} by page and
+     * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key keys} with key material included of the specified versions.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage}
      *
      * @param name The name of the key.
@@ -806,7 +809,8 @@ public final class KeyClient {
      * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key keys} with key material included of the specified versions.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions}
      *
-     * <p><strong>Samples to iterate KeyBase by each page</strong></p>
+     * <p>It is possible to get full keys with key material for each version from this information. Loop over all the {@link KeyBase key} by page and
+     * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key keys} with key material included of the specified versions.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage}
      *
      * @param name The name of the key.

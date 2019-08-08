@@ -26,6 +26,7 @@ import java.util.List;
  * {@codesnippet com.azure.security.keyvault.secretclient.sync.construct}
  *
  * @see SecretClientBuilder
+ * @see PagedIterable
  */
 @ServiceClient(builder = SecretClientBuilder.class, serviceInterfaces = SecretService.class)
 public final class SecretClient {
@@ -474,7 +475,8 @@ public final class SecretClient {
      * call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the {@link Secret secret} with value included of its latest version.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets}
      *
-     * <p><strong>Samples to iterate SecretBase by each page</strong></p>
+     * <p>It is possible to get full secrets with values from this information. Loop over all the {@link SecretBase secret} by page and
+     * call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the {@link Secret secret} with value included of its latest version.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets.iterableByPage}
      *
      * @return {@link PagedIterable} of {@link SecretBase} of all the secrets in the vault. The {@link SecretBase} contains all the information about the secret, except its value.
@@ -558,7 +560,9 @@ public final class SecretClient {
      * call {@link SecretClient#getSecret(SecretBase)} . This will return the {@link Secret} secrets with values included of the specified versions.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string-Context}
      *
-     * <p><strong>Samples to iterate SecretBase by each page</strong></p>
+     *
+     * <p>It is possible to get full Secrets with values for each version from this information. Loop over all the {@link SecretBase secret} by each page and
+     * call {@link SecretClient#getSecret(SecretBase)} . This will return the {@link Secret} secrets with values included of the specified versions.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string-Context-iterableByPage}
      *
      * @param name The name of the secret.

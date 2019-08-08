@@ -355,7 +355,7 @@ public final class KeyClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeys.iterableByPage
         keyClient.listKeys().iterableByPage().forEach(resp -> {
-            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.headers(),
+            System.out.printf("Got response headers . Url: %s, Status code: %d %n",
                 resp.request().url(), resp.statusCode());
             resp.items().forEach(value -> {
                 Key keyWithMaterial = keyClient.getKey(value);
@@ -385,7 +385,7 @@ public final class KeyClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.keyvault.keys.keyclient.listDeletedKeys.iterableByPage
         keyClient.listDeletedKeys().iterableByPage().forEach(resp -> {
-            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.headers(),
+            System.out.printf("Got response headers . Url: %s, Status code: %d %n",
                 resp.request().url(), resp.statusCode());
             resp.items().forEach(value -> {
                 System.out.printf("Deleted key's recovery Id %s %n", value.recoveryId());
@@ -417,7 +417,7 @@ public final class KeyClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage
         keyClient.listKeyVersions("keyName").iterableByPage().forEach(resp -> {
-            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.headers(),
+            System.out.printf("Got response headers . Url: %s, Status code: %d %n",
                 resp.request().url(), resp.statusCode());
             resp.items().forEach(value -> {
                 System.out.printf("Response value is %d %n", value);
