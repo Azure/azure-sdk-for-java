@@ -25,7 +25,7 @@ import java.util.concurrent.ExecutorService;
  * Implementation for {@link PartitionController}.
  */
 class PartitionControllerImpl implements PartitionController {
-    private final Logger logger = LoggerFactory.getLogger(PartitionControllerImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(PartitionControllerImpl.class);
     private final Map<String, WorkerTask> currentlyOwnedPartitions = new ConcurrentHashMap<>();
 
     private final LeaseContainer leaseContainer;

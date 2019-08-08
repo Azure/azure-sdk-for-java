@@ -31,7 +31,7 @@ import static com.azure.data.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInt
  * Implementation for {@link PartitionProcessor}.
  */
 class PartitionProcessorImpl implements PartitionProcessor {
-    private final Logger logger = LoggerFactory.getLogger(PartitionProcessorImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(PartitionProcessorImpl.class);
 
     private static final int DefaultMaxItemCount = 100;
     private final ProcessorSettings settings;

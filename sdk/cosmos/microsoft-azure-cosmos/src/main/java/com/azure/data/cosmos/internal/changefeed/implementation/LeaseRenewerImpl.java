@@ -17,7 +17,7 @@ import java.time.Duration;
  * Implementation for the {@link LeaseRenewer}.
  */
 class LeaseRenewerImpl implements LeaseRenewer {
-    private final Logger logger = LoggerFactory.getLogger(LeaseRenewerImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(LeaseRenewerImpl.class);
     private final LeaseManager leaseManager;
     private final Duration leaseRenewInterval;
     private Lease lease;

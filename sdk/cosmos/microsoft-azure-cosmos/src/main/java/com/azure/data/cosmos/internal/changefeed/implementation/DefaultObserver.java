@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 class DefaultObserver implements ChangeFeedObserver {
-    private final  Logger log = LoggerFactory.getLogger(DefaultObserver.class);
+    private static final Logger log = LoggerFactory.getLogger(DefaultObserver.class);
     private Consumer<List<CosmosItemProperties>> consumer;
 
     public DefaultObserver(Consumer<List<CosmosItemProperties>> consumer) {
