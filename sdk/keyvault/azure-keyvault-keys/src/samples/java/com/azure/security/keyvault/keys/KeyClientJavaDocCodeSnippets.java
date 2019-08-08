@@ -352,6 +352,18 @@ public final class KeyClientJavaDocCodeSnippets {
                 keyWithMaterial.keyMaterial().kty());
         }
         // END: com.azure.keyvault.keys.keyclient.listKeys#Context
+
+        // BEGIN: com.azure.keyvault.keys.keyclient.listKeys.iterableByPage
+        keyClient.listKeys().iterableByPage().forEach(resp -> {
+            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.headers(),
+                resp.request().url(), resp.statusCode());
+            resp.items().forEach(value -> {
+                Key keyWithMaterial = keyClient.getKey(value);
+                System.out.printf("Received key with name %s and type %s %n", keyWithMaterial.name(),
+                    keyWithMaterial.keyMaterial().kty());
+            });
+        });
+        // END: com.azure.keyvault.keys.keyclient.listKeys.iterableByPage
     }
 
     /**
@@ -370,6 +382,16 @@ public final class KeyClientJavaDocCodeSnippets {
             System.out.printf("Deleted key's recovery Id %s", deletedKey.recoveryId());
         }
         // END: com.azure.keyvault.keys.keyclient.listDeletedKeys#Context
+
+        // BEGIN: com.azure.keyvault.keys.keyclient.listDeletedKeys.iterableByPage
+        keyClient.listDeletedKeys().iterableByPage().forEach(resp -> {
+            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.headers(),
+                resp.request().url(), resp.statusCode());
+            resp.items().forEach(value -> {
+                System.out.printf("Deleted key's recovery Id %s %n", value.recoveryId());
+            });
+        });
+        // END: com.azure.keyvault.keys.keyclient.listDeletedKeys.iterableByPage
     }
 
     /**
@@ -392,6 +414,16 @@ public final class KeyClientJavaDocCodeSnippets {
                     keyWithMaterial.keyMaterial().kty(), keyWithMaterial.version());
         }
         // END: com.azure.keyvault.keys.keyclient.listKeyVersions#Context
+
+        // BEGIN: com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage
+        keyClient.listKeyVersions("keyName").iterableByPage().forEach(resp -> {
+            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.headers(),
+                resp.request().url(), resp.statusCode());
+            resp.items().forEach(value -> {
+                System.out.printf("Response value is %d %n", value);
+            });
+        });
+        // END: com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage
     }
 
     /**

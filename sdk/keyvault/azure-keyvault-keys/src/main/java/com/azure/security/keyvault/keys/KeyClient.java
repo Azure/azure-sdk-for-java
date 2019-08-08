@@ -6,6 +6,7 @@ package com.azure.security.keyvault.keys;
 import com.azure.core.exception.HttpRequestException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.annotation.ServiceClient;
@@ -34,6 +35,7 @@ import java.util.Objects;
  * {@codesnippet com.azure.security.keyvault.keys.keyclient.instantiation}
  *
  * @see KeyClientBuilder
+ * @see PagedIterable
  */
 @ServiceClient(builder = KeyClientBuilder.class, serviceInterfaces = KeyService.class)
 public final class KeyClient {
@@ -709,9 +711,12 @@ public final class KeyClient {
      * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key key} with key material included of its latest version.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys}
      *
-     * @return A {@link List} containing {@link KeyBase key} of all the keys in the vault.
+     * <p><strong>Samples to iterate KeyBase by each page</strong></p>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys.iterableByPage}
+     *
+     * @return {@link PagedIterable} of {@link KeyBase key} of all the keys in the vault.
      */
-    public Iterable<KeyBase> listKeys() {
+    public PagedIterable<KeyBase> listKeys() {
         return listKeys(Context.NONE);
     }
 
@@ -724,11 +729,14 @@ public final class KeyClient {
      * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key key} with key material included of its latest version.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys#Context}
      *
+     * <p><strong>Samples to iterate KeyBase by each page</strong></p>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys.iterableByPage}
+     *
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link List} containing {@link KeyBase key} of all the keys in the vault.
+     * @return {@link PagedIterable} of {@link KeyBase key} of all the keys in the vault.
      */
-    public Iterable<KeyBase> listKeys(Context context) {
-        return client.listKeys(context).toIterable();
+    public PagedIterable<KeyBase> listKeys(Context context) {
+        return  new PagedIterable<>(client.listKeys(context));
     }
 
     /**
@@ -740,9 +748,12 @@ public final class KeyClient {
      * <p>Lists the deleted keys in the key vault and for each deleted key prints out its recovery id.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listDeletedKeys}
      *
-     * @return A {@link List} containing all of the {@link DeletedKey deleted keys} in the vault.
+     * <p><strong>Samples to iterate DeletedKey by each page</strong></p>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.listDeletedKeys.iterableByPage}
+     *
+     * @return {@link PagedIterable} of all of the {@link DeletedKey deleted keys} in the vault.
      */
-    public Iterable<DeletedKey> listDeletedKeys() {
+    public PagedIterable<DeletedKey> listDeletedKeys() {
         return listDeletedKeys(Context.NONE);
     }
 
@@ -755,11 +766,14 @@ public final class KeyClient {
      * <p>Lists the deleted keys in the key vault and for each deleted key prints out its recovery id.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listDeletedKeys#Context}
      *
+     * <p><strong>Samples to iterate DeletedKey by each page</strong></p>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.listDeletedKeys.iterableByPage}
+     *
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link List} containing all of the {@link DeletedKey deleted keys} in the vault.
+     * @return {@link PagedIterable} of all of the {@link DeletedKey deleted keys} in the vault.
      */
-    public Iterable<DeletedKey> listDeletedKeys(Context context) {
-        return client.listDeletedKeys(context).toIterable();
+    public PagedIterable<DeletedKey> listDeletedKeys(Context context) {
+        return new PagedIterable<>(client.listDeletedKeys(context));
     }
 
     /**
@@ -771,12 +785,15 @@ public final class KeyClient {
      * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key keys} with key material included of the specified versions.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions}
      *
+     * <p><strong>Samples to iterate KeyBase by each page</strong></p>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage}
+     *
      * @param name The name of the key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
-     * @return A {@link List} containing {@link KeyBase key} of all the versions of the specified key in the vault. List is empty if key with {@code name} does not exist in key vault.
+     * @return {@link PagedIterable} of {@link KeyBase key} of all the versions of the specified key in the vault. List is empty if key with {@code name} does not exist in key vault.
      */
-    public Iterable<KeyBase> listKeyVersions(String name) {
+    public PagedIterable<KeyBase> listKeyVersions(String name) {
         return listKeyVersions(name, Context.NONE);
     }
 
@@ -789,13 +806,16 @@ public final class KeyClient {
      * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key keys} with key material included of the specified versions.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions}
      *
+     * <p><strong>Samples to iterate KeyBase by each page</strong></p>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage}
+     *
      * @param name The name of the key.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
-     * @return A {@link List} containing {@link KeyBase key} of all the versions of the specified key in the vault. List is empty if key with {@code name} does not exist in key vault.
+     * @return {@link PagedIterable} of {@link KeyBase key} of all the versions of the specified key in the vault. List is empty if key with {@code name} does not exist in key vault.
      */
-    public Iterable<KeyBase> listKeyVersions(String name, Context context) {
-        return client.listKeyVersions(name, context).toIterable();
+    public PagedIterable<KeyBase> listKeyVersions(String name, Context context) {
+        return new PagedIterable<>(client.listKeyVersions(name, context));
     }
 }
