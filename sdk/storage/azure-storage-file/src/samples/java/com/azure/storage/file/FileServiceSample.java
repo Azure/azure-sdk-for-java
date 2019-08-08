@@ -4,10 +4,9 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.configuration.ConfigurationManager;
-import com.azure.storage.file.FileServiceClient;
-import com.azure.storage.file.FileServiceClientBuilder;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.StorageErrorException;
+
 import java.util.UUID;
 
 /**
