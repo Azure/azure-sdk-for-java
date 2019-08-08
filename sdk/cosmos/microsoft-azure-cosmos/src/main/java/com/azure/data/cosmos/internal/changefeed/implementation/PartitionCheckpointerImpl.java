@@ -28,7 +28,7 @@ class PartitionCheckpointerImpl implements PartitionCheckpointer {
         return this.leaseCheckpointer.checkpoint(this.lease, сontinuationToken)
             .map(lease1 -> {
                 self.lease = lease1;
-                logger.info(String.format("Checkpoint: partition %s, new continuation %s", self.lease.getLeaseToken(), self.lease.getContinuationToken()));
+                logger.info("Checkpoint: partition {}, new continuation {}", self.lease.getLeaseToken(), self.lease.getContinuationToken());
                 return lease1;
             })
             .then();

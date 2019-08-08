@@ -44,14 +44,12 @@ class AutoCheckpointer implements ChangeFeedObserver {
 
     @Override
     public Mono<Void> processChanges(ChangeFeedObserverContext context, List<CosmosItemProperties> docs) {
-        AutoCheckpointer self = this;
-
-        return self.observer.processChanges(context, docs)
-            .then(self.afterProcessChanges(context));
+        return this.observer.processChanges(context, docs)
+            .then(this.afterProcessChanges(context));
     }
 
     private Mono<Void> afterProcessChanges(ChangeFeedObserverContext context) {
-        AutoCheckpointer self = this;
+        final AutoCheckpointer self = this;
 
         self.processedDocCount ++;
 

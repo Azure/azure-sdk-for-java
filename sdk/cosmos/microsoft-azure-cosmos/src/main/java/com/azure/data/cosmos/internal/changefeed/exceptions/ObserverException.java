@@ -11,7 +11,7 @@ public class ObserverException extends RuntimeException {
     /**
      * Initializes a new instance of the {@link ObserverException} class using the specified internal exception.
      *
-     * @param originalException {@link Exception} thrown by the user code.
+     * @param originalException {@link Throwable} thrown by the user code.
      */
     public ObserverException(Throwable originalException) {
         super(DefaultMessage, originalException);

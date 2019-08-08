@@ -41,7 +41,7 @@ class BootstrapperImpl implements Bootstrapper {
 
     @Override
     public Mono<Void> initialize() {
-        BootstrapperImpl self = this;
+        final BootstrapperImpl self = this;
         self.isInitialized = false;
 
         return Mono.just(self)
@@ -58,12 +58,7 @@ class BootstrapperImpl implements Bootstrapper {
 
                             if (!self.isLockAcquired) {
                                 logger.info("Another instance is initializing the store");
-                                try {
-                                    Thread.sleep(self.sleepTime.toMillis());
-                                } catch (InterruptedException ex) {
-                                    logger.warn("Unexpected exception caught", ex);
-                                }
-                                return Mono.just(isLockAcquired);
+                                return Mono.just(isLockAcquired).delayElement(self.sleepTime);
                             } else {
                                 return self.synchronizer.createMissingLeases()
                                     .then(self.leaseStore.markInitialized());

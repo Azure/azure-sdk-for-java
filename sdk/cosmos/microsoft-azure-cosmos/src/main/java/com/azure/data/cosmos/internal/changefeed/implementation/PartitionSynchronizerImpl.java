@@ -76,7 +76,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
         String leaseToken = lease.getLeaseToken();
         String lastContinuationToken = lease.getContinuationToken();
 
-        logger.info(String.format("Partition %s is gone due to split.", leaseToken));
+        logger.info("Partition {} is gone due to split.", leaseToken);
 
         // After a split, the children are either all or none available
         return this.enumPartitionKeyRanges()
@@ -85,7 +85,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             .collectList()
             .flatMapMany(addedLeaseTokens -> {
                 if (addedLeaseTokens.size() == 0) {
-                    logger.error(String.format("Partition %s had split but we failed to find at least one child partition", leaseToken));
+                    logger.error("Partition {} had split but we failed to find at least one child partition", leaseToken);
                     throw new RuntimeException(String.format("Partition %s had split but we failed to find at least one child partition", leaseToken));
                 }
                 return Flux.fromIterable(addedLeaseTokens);
@@ -95,7 +95,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                 return self.leaseManager.createLeaseIfNotExist(addedRangeId, lastContinuationToken);
             }, self.degreeOfParallelism)
             .map(newLease -> {
-                logger.info(String.format("Partition %s split into new partition with lease token %s.", leaseToken, newLease.getLeaseToken()));
+                logger.info("Partition %s split into new partition with lease token {}.", leaseToken, newLease.getLeaseToken());
                 return newLease;
             });
     }
