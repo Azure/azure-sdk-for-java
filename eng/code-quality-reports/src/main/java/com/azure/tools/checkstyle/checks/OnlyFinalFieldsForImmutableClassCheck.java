@@ -81,13 +81,10 @@ public class OnlyFinalFieldsForImmutableClassCheck extends AbstractCheck {
      * @param objBlockToken the OBJBLOCK AST node
      */
     private void checkForOnlyFinalFields(DetailAST objBlockToken) {
-        Optional<DetailAST> nonFinalFieldFound = TokenUtil.findFirstTokenByPredicate(objBlockToken, (node) -> {
-            if (TokenTypes.VARIABLE_DEF == node.getType()) {
-                return !node.branchContains(TokenTypes.FINAL)
-                    && !Utils.hasIllegalCombination(node.findFirstToken(TokenTypes.MODIFIERS));
-            }
-            return false;
-        });
+        Optional<DetailAST> nonFinalFieldFound = TokenUtil.findFirstTokenByPredicate(objBlockToken,
+            node -> TokenTypes.VARIABLE_DEF == node.getType() && !node.branchContains(TokenTypes.FINAL)
+                && !Utils.hasIllegalCombination(node.findFirstToken(TokenTypes.MODIFIERS)));
+
         if (nonFinalFieldFound.isPresent()) {
             DetailAST field = nonFinalFieldFound.get().findFirstToken(TokenTypes.IDENT);
             log(field, String.format(ERROR_MSG, field.getText()));

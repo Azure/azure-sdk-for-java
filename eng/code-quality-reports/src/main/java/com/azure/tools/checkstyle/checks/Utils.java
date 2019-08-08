@@ -2,10 +2,12 @@ package com.azure.tools.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -29,18 +31,19 @@ public class Utils {
      * @return true if there is any modifier that shouldn't be combined with final
      */
     protected static boolean hasIllegalCombination(DetailAST modifiers) {
-        for (DetailAST modifier = modifiers.getFirstChild(); modifier != null; modifier = modifier.getNextSibling()) {
-            int modifierType = modifier.getType();
-            // Do not consider field with some annotations
-            if (TokenTypes.ANNOTATION == modifierType) {
-                if (INVALID_FINAL_ANNOTATIONS.contains(modifier.findFirstToken(TokenTypes.IDENT).getText())) {
-                    return true;
-                }
-            }
-            if (INVALID_FINAL_COMBINATION.contains(modifierType)) {
-                return true;
-            }
+        if (modifiers.getType() != TokenTypes.MODIFIERS) {
+            // can't check other node but MODIFIERS
+            return false;
         }
-        return false;
+
+        Optional<DetailAST> illegalCombination = TokenUtil.findFirstTokenByPredicate(modifiers, (node) -> {
+            final int type = node.getType();
+            return INVALID_FINAL_COMBINATION.contains(node.getType()) || (TokenTypes.ANNOTATION == type
+            && INVALID_FINAL_ANNOTATIONS.contains(node.findFirstToken(TokenTypes.IDENT).getText()));
+        });
+
+        return illegalCombination.isPresent();
+
+
     }
 }
