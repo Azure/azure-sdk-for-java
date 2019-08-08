@@ -7,7 +7,8 @@ import com.azure.search.data.SearchIndexASyncClient;
 import com.azure.search.data.generated.models.*;
 import reactor.core.publisher.Mono;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 public class SearchIndexASyncClientImpl extends SearchIndexBaseClientImpl implements SearchIndexASyncClient {
 
