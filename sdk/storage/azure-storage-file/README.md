@@ -180,7 +180,7 @@ FileClient fileClient = new FileClientBuilder().endpoint(fileURL)
 
 The following sections provide several code snippets covering some of the most common Configuration Service tasks, including:
 - [Create a Share](#create-a-share)
-- [Create a snapshot on Share](#create-a-snapshot-on-Share)
+- [Create a snapshot on Share](#create-a-snapshot-on-share)
 - [Create a Directory](#create-a-directory)
 - [Create a Subdirectory](#create-a-subdirectory)
 - [Create a File](#create-a-file)
@@ -196,7 +196,7 @@ The following sections provide several code snippets covering some of the most c
 - [Upload data to Storage File](#upload-data-to-storage)
 - [Upload file to Storage File](#upload-file-to-storage)
 - [Download data from file range](#download-data-from-file-range)
-- [Download file from Storage File](#Download-file-from-storage)
+- [Download file from Storage File](#download-file-from-storage)
 - [Get a file service properties](#get-a-file-service-properties)
 - [Set a file service properties](#set-a-file-service-properties)
 - [Set a Share metadata](#Set-a-share-metadata)
@@ -209,7 +209,7 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a share
 Create a share in the Storage Account. Throws StorageErrorException If the share fails to be created.
-Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services) .
+Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services).
 
 ```Java
 String shareName = "testshare";
@@ -217,7 +217,7 @@ fileServiceClient.createShare(shareName);
 ```
 
 ### Create a snapshot on Share
-Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services) .
+Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services).
 
 ```Java
 String shareName = "testshare";
@@ -226,7 +226,7 @@ shareClient.createSnapshot();
 ```
 
 ### Create a directory
-Taking the [`${shareClient}](#Create-snapshot-on-share) initialized above, [`${shareClient}`](#Share) .
+Taking the [`${shareClient}](#create-a-snapshot-on-share) initialized above, [`${shareClient}`](#share).
 
 ```Java
 String dirName = "testdir";
@@ -234,7 +234,7 @@ shareClient.createDirectory(dirName);
 ```
 
 ### Create a subdirectory
-Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) .
+Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory).
 
 ```Java
 String subDirName = "testsubdir";

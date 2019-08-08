@@ -170,19 +170,19 @@ queueAsyncClient.create(metadata, timeout).subscribe(
 
 The following sections provide several code snippets covering some of the most common Configuration Service tasks, including:
 - [Build a client](#build-a-client)
-- [Create a Queue](#Create-a-queue)
-- [Delete a queue](#Delete-a-queue)
-- [List the queues in account](#List-queues-in-account)
-- [Get properties in Queue account](#Get-properties-in-queue-account)
-- [Set properties in Queue account](#Set-properties-in-queue-account)
-- [Get statistics of queue](#Get-queue-service-statistics)
-- [Enqueue message into a queue](#Enqueue-message-into-a-queue)
+- [Create a Queue](#create-a-queue)
+- [Delete a queue](#delete-a-queue)
+- [List the queues in account](#list-queues-in-account)
+- [Get properties in Queue account](#get-properties-in-queue-account)
+- [Set properties in Queue account](#set-properties-in-queue-account)
+- [Get statistics of queue](#get-queue-service-statistics)
+- [Enqueue message into a queue](#enqueue-message-into-a-queue)
 - [Update a message in a queue](#update-a-message-in-a-queue)
-- [Peek messages into a queue](#Peek-messages-from-a-queue)
-- [Dequeue messages from a queue](#Dequeue-messages-from-a-queue)
-- [Delete message from a queue](#Delete-message-from-a-queue)
-- [Get a Queue properties](#Get-a-queue-properties)
-- [Set/Update a Queue metadata](#Set-a-queue-metadata)
+- [Peek at messages in a queue](#peek-at-messages-in-a-queue)
+- [Dequeue messages from a queue](#dequeue-messages-from-a-queue)
+- [Delete message from a queue](#delete-message-from-a-queue)
+- [Get a Queue properties](#get-a-queue-properties)
+- [Set/Update a Queue metadata](#set-a-queue-metadata)
 
 ### Build a client
 We have two ways of building QueueService or Queue Client. Here will take queueServiceClient as an example. Same things apply to queueClient.
@@ -304,7 +304,7 @@ QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).credential
 queueClient.updateMessage(messageId, "new message", popReceipt, visibilityTimeout);
 ```
 
-### Peek messages from a queue
+### Peek at messages in a queue
 The operation retrieves one or more messages from the front of the queue. Use `${SASToken}` as credential.
 ```Java
 String queueSURL = String.format("https://%s.queue.core.windows.net", accountName);
