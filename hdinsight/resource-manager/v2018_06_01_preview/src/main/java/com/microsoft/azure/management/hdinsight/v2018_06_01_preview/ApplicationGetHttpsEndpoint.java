@@ -40,7 +40,7 @@ public class ApplicationGetHttpsEndpoint {
     private Integer publicPort;
 
     /**
-     * The subDomainSuffix of the application.
+     * The subdomain suffix of the application.
      */
     @JsonProperty(value = "subDomainSuffix")
     private String subDomainSuffix;
@@ -132,7 +132,7 @@ public class ApplicationGetHttpsEndpoint {
     }
 
     /**
-     * Get the subDomainSuffix of the application.
+     * Get the subdomain suffix of the application.
      *
      * @return the subDomainSuffix value
      */
@@ -141,7 +141,7 @@ public class ApplicationGetHttpsEndpoint {
     }
 
     /**
-     * Set the subDomainSuffix of the application.
+     * Set the subdomain suffix of the application.
      *
      * @param subDomainSuffix the subDomainSuffix value to set
      * @return the ApplicationGetHttpsEndpoint object itself.

@@ -13,7 +13,9 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Locations;
 import rx.functions.Func1;
 import rx.Observable;
+import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.CapabilitiesResult;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.UsagesListResult;
+import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.BillingResponseListResult;
 
 class LocationsImpl extends WrapperImpl<LocationsInner> implements Locations {
     private final HDInsightManager manager;
@@ -28,6 +30,18 @@ class LocationsImpl extends WrapperImpl<LocationsInner> implements Locations {
     }
 
     @Override
+    public Observable<CapabilitiesResult> getCapabilitiesAsync(String location) {
+        LocationsInner client = this.inner();
+        return client.getCapabilitiesAsync(location)
+        .map(new Func1<CapabilitiesResultInner, CapabilitiesResult>() {
+            @Override
+            public CapabilitiesResult call(CapabilitiesResultInner inner) {
+                return new CapabilitiesResultImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<UsagesListResult> listUsagesAsync(String location) {
         LocationsInner client = this.inner();
         return client.listUsagesAsync(location)
@@ -35,6 +49,18 @@ class LocationsImpl extends WrapperImpl<LocationsInner> implements Locations {
             @Override
             public UsagesListResult call(UsagesListResultInner inner) {
                 return new UsagesListResultImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<BillingResponseListResult> listBillingSpecsAsync(String location) {
+        LocationsInner client = this.inner();
+        return client.listBillingSpecsAsync(location)
+        .map(new Func1<BillingResponseListResultInner, BillingResponseListResult>() {
+            @Override
+            public BillingResponseListResult call(BillingResponseListResultInner inner) {
+                return new BillingResponseListResultImpl(inner, manager());
             }
         });
     }
