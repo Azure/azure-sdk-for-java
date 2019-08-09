@@ -90,7 +90,7 @@ public class IdentityClient {
             try {
                 publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
             } catch (MalformedURLException e) {
-                throw logger.logWarningAndThrow(new IllegalStateException(e));
+                throw logger.logExceptionAsWarning(new IllegalStateException(e));
             }
             if (options.proxyOptions() != null) {
                 publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.proxyOptions()));
@@ -258,7 +258,7 @@ public class IdentityClient {
                         try {
                             Desktop.getDesktop().browse(browserUri);
                         } catch (IOException e) {
-                            throw logger.logErrorAndThrow(new IllegalStateException(e));
+                            throw logger.logExceptionAsError(new IllegalStateException(e));
                         }
                     }).subscribeOn(Schedulers.newSingle("browser")))
                     .next()

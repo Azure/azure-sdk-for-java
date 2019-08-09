@@ -73,7 +73,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
 
             // Check the tag before performing the final decrypt
             if (!ByteExtensions.sequenceEqualConstantTime(tag, tag)) {
-                throw logger.logWarningAndThrow(new IllegalArgumentException("Data is not authentic"));
+                throw logger.logExceptionAsWarning(new IllegalArgumentException("Data is not authentic"));
             }
 
             return inner.doFinal(input);
@@ -281,19 +281,19 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
     @Override
     public ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
         if (key == null) {
-            throw logger.logWarningAndThrow(new IllegalArgumentException("No key material"));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("No key material"));
         }
 
         if (iv == null) {
-            throw logger.logWarningAndThrow(new IllegalArgumentException("No initialization vector"));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("No initialization vector"));
         }
 
         if (authenticationData == null) {
-            throw logger.logWarningAndThrow(new IllegalArgumentException("No authentication data"));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("No authentication data"));
         }
 
         if (authenticationTag == null) {
-            throw logger.logWarningAndThrow(new IllegalArgumentException("No authentication tag"));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("No authentication tag"));
         }
 
         // Create the Decryptor

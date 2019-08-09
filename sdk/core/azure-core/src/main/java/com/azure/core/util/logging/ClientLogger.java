@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * This is a fluent logger helper class that wraps a plug-able {@link Logger}.
@@ -153,34 +154,34 @@ public class ClientLogger {
     /**
      * Attempts to log the exception at the warning level and returns it to be thrown.
      *
-     * @param runtimeException Runtime exception to be logged and returned.
+     * @param exception Exception to be logged and returned.
      * @return the passed {@code RuntimeException}
+     * @throws NullPointerException If {@code runtimeException} is {@code null}.
      */
-    public RuntimeException logWarningAndThrow(RuntimeException runtimeException) {
-        return logAndThrow(runtimeException, WARNING_LEVEL);
+    public Exception logExceptionAsWarning(Exception exception) {
+        return logException(exception, WARNING_LEVEL);
     }
 
     /**
      * Attempts to log the exception at the error level and returns it to be thrown.
      *
-     * @param runtimeException Runtime exception to be logged and returned.
+     * @param exception Exception to be logged and returned.
      * @return the passed {@code RuntimeException}
+     * @throws NullPointerException If {@code runtimeException} is {@code null}.
      */
-    public RuntimeException logErrorAndThrow(RuntimeException runtimeException) {
-        return logAndThrow(runtimeException, ERROR_LEVEL);
+    public Exception logExceptionAsError(Exception exception) {
+        return logException(exception, ERROR_LEVEL);
     }
 
-    private RuntimeException logAndThrow(RuntimeException runtimeException, int logLevel) {
-        if (runtimeException == null) {
-            return null;
-        }
+    private Exception logException(Exception exception, int logLevel) {
+        Objects.requireNonNull(exception);
 
         // Only log if the level is enabled.
         if (canLogAtLevel(logLevel)) {
-            log(logLevel, runtimeException.getMessage(), runtimeException);
+            log(logLevel, exception.getMessage(), exception);
         }
 
-        return runtimeException;
+        return exception;
     }
 
     /*

@@ -117,10 +117,10 @@ public class Poller<T> {
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation) {
         if (pollInterval == null || pollInterval.toNanos() <= 0) {
-            throw logger.logWarningAndThrow(new IllegalArgumentException("Null, negative or zero value for poll interval is not allowed."));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("Null, negative or zero value for poll interval is not allowed."));
         }
         if (pollOperation == null) {
-            throw logger.logWarningAndThrow(new IllegalArgumentException("Null value for poll operation is not allowed."));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("Null value for poll operation is not allowed."));
         }
 
         this.pollInterval = pollInterval;
@@ -245,10 +245,10 @@ public class Poller<T> {
      */
     public PollResponse<T> blockUntil(OperationStatus statusToBlockFor, Duration timeout) {
         if (statusToBlockFor == null) {
-            throw logger.logWarningAndThrow(new IllegalArgumentException("Null value for status is not allowed."));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("Null value for status is not allowed."));
         }
         if (timeout != null && timeout.toNanos() <= 0) {
-            throw logger.logWarningAndThrow(new IllegalArgumentException("Negative or zero value for timeout is not allowed."));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("Negative or zero value for timeout is not allowed."));
         }
         if (!isAutoPollingEnabled()) {
             setAutoPollingEnabled(true);

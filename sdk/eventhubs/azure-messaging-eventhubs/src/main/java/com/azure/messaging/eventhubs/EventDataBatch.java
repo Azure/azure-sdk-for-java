@@ -18,6 +18,7 @@ import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 
+import java.nio.BufferOverflowException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -81,14 +82,14 @@ public final class EventDataBatch {
      */
     public boolean tryAdd(final EventData eventData) {
         if (eventData == null) {
-            throw logger.logWarningAndThrow(new IllegalArgumentException("eventData cannot be null"));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("eventData cannot be null"));
         }
 
         final int size;
         try {
             size = getSize(eventData, events.isEmpty());
-        } catch (java.nio.BufferOverflowException exception) {
-            throw logger.logWarningAndThrow(new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+        } catch (BufferOverflowException exception) {
+            throw logger.logExceptionAsWarning(new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
                 String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb", maxMessageSize / 1024),
                 contextProvider.getErrorContext()));
         }
@@ -193,7 +194,7 @@ public final class EventDataBatch {
                             message.setReplyToGroupId((String) value);
                             break;
                         default:
-                            throw logger.logWarningAndThrow(new IllegalArgumentException(String.format(Locale.US, "Property is not a recognized reserved property name: %s", key)));
+                            throw logger.logExceptionAsWarning(new IllegalArgumentException(String.format(Locale.US, "Property is not a recognized reserved property name: %s", key)));
                     }
                 } else {
                     final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
