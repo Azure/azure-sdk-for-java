@@ -15,6 +15,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
@@ -98,25 +99,24 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
                         if (cancellationToken.isCancellationRequested()) return Mono.empty();
                         return this.partitionController.addOrUpdateLease(lease);
                     })
-                    .then();
+                    .then(Mono.just(this)
+                        .flatMap(value -> {
+                            if (cancellationToken.isCancellationRequested()) {
+                                return Mono.empty();
+                            }
+
+                            ZonedDateTime stopTimer = ZonedDateTime.now().plus(this.leaseAcquireInterval);
+                            return Mono.just(value)
+                                .delayElement(Duration.ofMillis(100))
+                                .repeat( () -> {
+                                    ZonedDateTime currentTime = ZonedDateTime.now();
+                                    return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
+                                }).last();
+                        })
+                    );
             })
             .repeat(() -> {
-                if (cancellationToken.isCancellationRequested()) return false;
-
-                long remainingWork = this.leaseAcquireInterval.toMillis();
-
-                try {
-                    while (!cancellationToken.isCancellationRequested() && remainingWork > 0) {
-                        Thread.sleep(100);
-                        remainingWork -= 100;
-                    }
-                } catch (InterruptedException ex) {
-                    // exception caught
-                    logger.warn("Partition load balancer caught an interrupted exception", ex);
-                }
-                if (cancellationToken.isCancellationRequested()) return false;
-
-                return true;
+                return !cancellationToken.isCancellationRequested();
             })
             .then()
             .onErrorResume(throwable -> {

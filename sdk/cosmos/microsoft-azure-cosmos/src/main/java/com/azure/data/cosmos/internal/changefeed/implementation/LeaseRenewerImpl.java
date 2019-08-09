@@ -34,18 +34,6 @@ class LeaseRenewerImpl implements LeaseRenewer {
     @Override
     public Mono<Void> run(CancellationToken cancellationToken) {
         logger.info("Partition {}: renewer task started.", this.lease.getLeaseToken());
-        long remainingWork = this.leaseRenewInterval.toMillis();
-
-        try {
-            while (!cancellationToken.isCancellationRequested() && remainingWork > 0) {
-                Thread.sleep(100);
-                remainingWork -= 100;
-            }
-        } catch (InterruptedException ex) {
-            // exception caught
-            logger.info("Partition {}: renewer task stopped.", this.lease.getLeaseToken());
-            return Mono.empty();
-        }
 
         return Mono.just(this)
             .flatMap(value -> {
