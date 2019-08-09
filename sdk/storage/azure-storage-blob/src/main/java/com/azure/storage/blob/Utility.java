@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.storage.blob.models.StorageErrorException;
+import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;

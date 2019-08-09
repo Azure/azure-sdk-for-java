@@ -3,18 +3,13 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.http.HttpClient
-import com.azure.core.http.HttpHeaders
-import com.azure.core.http.HttpPipelineCallContext
-import com.azure.core.http.HttpPipelineNextPolicy
-import com.azure.core.http.HttpRequest
-import com.azure.core.http.HttpResponse
+import com.azure.core.http.*
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.http.ProxyOptions
 import com.azure.core.http.rest.Response
 import com.azure.core.util.configuration.ConfigurationManager
-import com.azure.identity.credential.EnvironmentCredential
+import com.azure.identity.credential.EnvironmentCredentialBuilder
+import com.azure.storage.blob.BlobProperties
 import com.azure.storage.blob.models.*
 import com.azure.storage.common.credentials.SharedKeyCredential
 import io.netty.buffer.ByteBuf
@@ -567,7 +562,7 @@ class APISpec extends Specification {
     def getOAuthServiceURL() {
         return new BlobServiceClientBuilder()
             .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCreds.accountName()))
-            .credential(new EnvironmentCredential()) // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            .credential(new EnvironmentCredentialBuilder().build()) // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .buildClient()
     }

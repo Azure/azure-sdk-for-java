@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.blob.models.UserDelegationKey;
 import reactor.core.publisher.Mono;
 

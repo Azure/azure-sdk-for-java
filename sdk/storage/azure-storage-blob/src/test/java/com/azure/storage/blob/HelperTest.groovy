@@ -6,6 +6,7 @@ package com.azure.storage.blob
 import com.azure.core.http.rest.Response
 import com.azure.core.http.rest.VoidResponse
 import com.azure.storage.blob.models.BlobRange
+import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.models.UserDelegationKey
 import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
