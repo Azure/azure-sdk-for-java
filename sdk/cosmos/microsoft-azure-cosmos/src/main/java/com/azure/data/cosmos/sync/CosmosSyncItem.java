@@ -11,10 +11,10 @@ import com.azure.data.cosmos.CosmosItemRequestOptions;
  * The Cosmos synchronous item.
  */
 public class CosmosSyncItem {
-    private CosmosSyncContainer container;
-    private CosmosItem asyncItem;
-    private String id;
-    private Object partitionKey;
+    private final CosmosSyncContainer container;
+    private final CosmosItem asyncItem;
+    private final String id;
+    private final Object partitionKey;
 
     /**
      * Instantiates a new Cosmos sync item.

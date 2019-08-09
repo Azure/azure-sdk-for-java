@@ -8,8 +8,8 @@ import com.azure.data.cosmos.CosmosItemResponse;
 import com.azure.data.cosmos.PartitionKey;
 
 public class CosmosSyncItemResponse {
-    private CosmosItemResponse responseWrapper;
-    private CosmosSyncItem item;
+    private final CosmosItemResponse responseWrapper;
+    private final CosmosSyncItem item;
 
 
     CosmosSyncItemResponse(CosmosItemResponse response, PartitionKey partitionKey, CosmosSyncContainer container) {

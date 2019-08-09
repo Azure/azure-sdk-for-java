@@ -21,7 +21,7 @@ import java.util.Iterator;
  * Provides a client-side logical representation of the Azure Cosmos database service.
  * SyncClient is used to perform operations in a synchronous way
  */
-public class CosmosSyncClient {
+public class CosmosSyncClient implements AutoCloseable {
     private CosmosClient asyncClientWrapper;
 
     public CosmosSyncClient(CosmosClientBuilder builder) {

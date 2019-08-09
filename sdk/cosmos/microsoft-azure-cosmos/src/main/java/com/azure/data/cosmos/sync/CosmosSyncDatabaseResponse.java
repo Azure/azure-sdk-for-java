@@ -7,8 +7,8 @@ import com.azure.data.cosmos.CosmosDatabaseProperties;
 import com.azure.data.cosmos.CosmosDatabaseResponse;
 
 public class CosmosSyncDatabaseResponse {
-    private CosmosDatabaseResponse responseWrapper;
-    private CosmosSyncDatabase database;
+    private final CosmosDatabaseResponse responseWrapper;
+    private final CosmosSyncDatabase database;
 
     CosmosSyncDatabaseResponse(CosmosDatabaseResponse response, CosmosSyncClient client) {
         this.responseWrapper = response;

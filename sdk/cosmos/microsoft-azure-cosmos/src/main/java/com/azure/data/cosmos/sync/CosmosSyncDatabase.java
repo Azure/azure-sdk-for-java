@@ -24,8 +24,8 @@ import java.util.Iterator;
 public class CosmosSyncDatabase {
 
     private final CosmosDatabase databaseWrapper;
-    private CosmosSyncClient client;
-    private String id;
+    private final CosmosSyncClient client;
+    private final String id;
 
     /**
      * Instantiates a new Cosmos sync database.
@@ -47,18 +47,6 @@ public class CosmosSyncDatabase {
      */
     public String id() {
         return id;
-    }
-
-
-    /**
-     * Id cosmos sync database.
-     *
-     * @param id the id
-     * @return the cosmos sync database
-     */
-    CosmosSyncDatabase id(String id) {
-        this.id = id;
-        return this;
     }
 
     /**

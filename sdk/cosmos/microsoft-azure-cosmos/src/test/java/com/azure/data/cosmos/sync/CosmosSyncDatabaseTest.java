@@ -1,5 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ *
+ */
 
 package com.azure.data.cosmos.sync;
 
@@ -52,7 +55,7 @@ public class CosmosSyncDatabaseTest extends TestSuiteBase {
 
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void createDatabase() throws CosmosClientException {
+    public void createDatabase_withPropertiesAndOptions() throws CosmosClientException {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.id());
 
@@ -63,7 +66,7 @@ public class CosmosSyncDatabaseTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void createDatabase2() throws Exception {
+    public void createDatabase_withProperties() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.id());
         CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseDefinition.id());
@@ -73,7 +76,7 @@ public class CosmosSyncDatabaseTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void createDatabase3() throws Exception {
+    public void createDatabase_withId() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
 
         CosmosSyncDatabaseResponse createResponse = client.createDatabase(databaseDefinition.id());
@@ -81,7 +84,7 @@ public class CosmosSyncDatabaseTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void createDatabase4() throws Exception {
+    public void createDatabase_withPropertiesThroughputAndOptions() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseDefinition.id());
         CosmosDatabaseRequestOptions requestOptions = new CosmosDatabaseRequestOptions();
@@ -95,7 +98,7 @@ public class CosmosSyncDatabaseTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void createDatabase5() throws Exception {
+    public void createDatabase_withPropertiesAndThroughput() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseDefinition.id());
         int throughput = 1000;
@@ -112,7 +115,7 @@ public class CosmosSyncDatabaseTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void createDatabase6() throws Exception {
+    public void createDatabase_withIdAndThroughput() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         int throughput = 1000;
         try {
@@ -182,7 +185,7 @@ public class CosmosSyncDatabaseTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void deleteDatabase1() throws Exception {
+    public void deleteDatabase_withOptions() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseDefinition.id());
         CosmosSyncDatabaseResponse createResponse = client.createDatabase(databaseProperties);

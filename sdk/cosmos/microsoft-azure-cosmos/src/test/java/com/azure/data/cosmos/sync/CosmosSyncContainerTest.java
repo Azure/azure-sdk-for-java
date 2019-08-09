@@ -70,7 +70,7 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void createContainer() throws Exception {
+    public void createContainer_withProperties() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
 
@@ -79,7 +79,7 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void createContainer1() throws Exception {
+    public void createContainer_withThroughput() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
         int throughput = 1000;
@@ -90,7 +90,7 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void createContainer2() throws Exception {
+    public void createContainer_withOptions() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
@@ -100,7 +100,7 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void createContainer3() throws Exception {
+    public void createContainer_withThroughputAndOptions() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
@@ -112,7 +112,7 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void createContainer4() throws Exception {
+    public void createContainer_withNameAndPartitoinKeyPath() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         String partitionKeyPath = "/mypk";
 
@@ -121,7 +121,7 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void createContainer5() throws Exception {
+    public void createContainer_withNamePartitionPathAndThroughput() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         String partitionKeyPath = "/mypk";
         int throughput = 1000;
@@ -161,7 +161,7 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void deleteContainer1() throws Exception {
+    public void deleteContainer_withOptions() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();

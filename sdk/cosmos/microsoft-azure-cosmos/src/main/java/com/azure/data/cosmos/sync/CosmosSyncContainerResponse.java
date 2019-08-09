@@ -16,8 +16,8 @@ import com.azure.data.cosmos.internal.ResourceResponse;
  */
 public class CosmosSyncContainerResponse {
 
-    private CosmosContainerResponse responseWrapper;
-    private CosmosSyncContainer container;
+    private final CosmosContainerResponse responseWrapper;
+    private final CosmosSyncContainer container;
 
     CosmosSyncContainerResponse(CosmosContainerResponse response, CosmosSyncDatabase database, CosmosSyncClient client) {
         this.responseWrapper = response;
