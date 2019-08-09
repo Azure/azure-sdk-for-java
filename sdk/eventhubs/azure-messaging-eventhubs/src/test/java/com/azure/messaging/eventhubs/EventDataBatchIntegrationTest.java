@@ -139,7 +139,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
 
         final CountDownLatch countDownLatch = new CountDownLatch(batch.getSize());
 
-        Flux<EventHubConsumer> consumers;
+        Flux<EventHubAsyncConsumer> consumers;
         Disposable.Composite subscriptions = Disposables.composite();
         try {
 

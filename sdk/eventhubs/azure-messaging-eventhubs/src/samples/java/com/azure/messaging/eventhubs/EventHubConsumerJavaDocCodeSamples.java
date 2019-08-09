@@ -11,7 +11,7 @@ import reactor.core.publisher.BaseSubscriber;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Code snippets demonstrating various {@link EventHubConsumer} scenarios.
+ * Code snippets demonstrating various {@link EventHubAsyncConsumer} scenarios.
  */
 public class EventHubConsumerJavaDocCodeSamples {
     private final EventHubAsyncClient client = new EventHubClientBuilder().connectionString("fake-string").buildAsyncClient();
@@ -24,7 +24,7 @@ public class EventHubConsumerJavaDocCodeSamples {
         // Obtain partitionId from EventHubAsyncClient.getPartitionIds()
         String partitionId = "0";
 
-        EventHubConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
+        EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
             EventPosition.latest());
 
         // Keep a reference to `subscription`. When the program is finished receiving events, call
@@ -44,7 +44,7 @@ public class EventHubConsumerJavaDocCodeSamples {
         // Obtain partitionId from EventHubAsyncClient.getPartitionIds()
         String partitionId = "0";
 
-        EventHubConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
+        EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
             EventPosition.latest());
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumer.receiveBackpressure

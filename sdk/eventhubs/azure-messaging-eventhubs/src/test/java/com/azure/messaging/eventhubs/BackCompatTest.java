@@ -38,7 +38,7 @@ public class BackCompatTest extends ApiTestBase {
 
     private EventHubAsyncClient client;
     private EventHubProducer producer;
-    private EventHubConsumer consumer;
+    private EventHubAsyncConsumer consumer;
 
     public BackCompatTest() {
         super(new ClientLogger(BackCompatTest.class));

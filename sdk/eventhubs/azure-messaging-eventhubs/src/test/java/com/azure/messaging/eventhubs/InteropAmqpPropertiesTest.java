@@ -40,7 +40,7 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
 
     private EventHubAsyncClient client;
     private EventHubProducer producer;
-    private EventHubConsumer consumer;
+    private EventHubAsyncConsumer consumer;
 
     @Rule
     public TestName testName = new TestName();
