@@ -67,7 +67,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
         return Flux.just(this)
             .flatMap(value -> this.documentClient.createDocumentChangeFeedQuery(this.settings.getCollectionSelfLink(), this.options))
             .flatMap(documentFeedResponse -> {
-                if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());//throw Exceptions.propagate(new TaskCancelledException());
+                if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
 
                 this.lastContinuation = documentFeedResponse.continuationToken();
                 if (documentFeedResponse.results() != null && documentFeedResponse.results().size() > 0) {
@@ -75,12 +75,12 @@ class PartitionProcessorImpl implements PartitionProcessor {
                         .doFinally( (Void) -> {
                             this.options.requestContinuation(this.lastContinuation);
 
-                            if (cancellationToken.isCancellationRequested()) throw Exceptions.propagate(new TaskCancelledException());//throw Exceptions.propagate(new TaskCancelledException());
+                            if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         }).flux();
                 }
                 this.options.requestContinuation(this.lastContinuation);
 
-                if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());//throw Exceptions.propagate(new TaskCancelledException());
+                if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
 
                 return Flux.empty();
             })

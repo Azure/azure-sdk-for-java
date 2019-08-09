@@ -70,7 +70,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                             CosmosClientException ex = (CosmosClientException) throwable;
                             if (ex.statusCode() == HTTP_STATUS_CODE_NOT_FOUND) {
                                 // Partition lease no longer exists
-                                throw Exceptions.propagate(new LeaseLostException(arrayLease[0]));
+                                throw new LeaseLostException(arrayLease[0]);
                             }
                         }
                         return Mono.error(throwable);
@@ -86,7 +86,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                             serverLease.getConcurrencyToken());
                         arrayLease[0] = serverLease;
 
-                        throw Exceptions.propagate(new RuntimeException(""));
+                        throw new RuntimeException("");
                     });
             })
             .retry(RETRY_COUNT_ON_CONFLICT, throwable -> {
@@ -108,10 +108,10 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                             return Mono.empty();
                         }
                         case HTTP_STATUS_CODE_CONFLICT: {
-                            throw Exceptions.propagate( new LeaseLostException(lease, ex, false));
+                            throw new LeaseLostException(lease, ex, false);
                         }
                         case HTTP_STATUS_CODE_NOT_FOUND: {
-                            throw Exceptions.propagate( new LeaseLostException(lease, ex, true));
+                            throw new LeaseLostException(lease, ex, true);
                         }
                         default: {
                             return Mono.error(re);
