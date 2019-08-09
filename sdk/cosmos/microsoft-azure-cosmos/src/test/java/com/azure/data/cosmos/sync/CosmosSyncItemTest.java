@@ -48,7 +48,7 @@ public class CosmosSyncItemTest extends TestSuiteBase {
     public void beforeClass() {
         assertThat(this.client).isNull();
         this.client = clientBuilder().buildSyncClient();
-        CosmosContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.getAsyncClient());
+        CosmosContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container = client.getDatabase(asyncContainer.getDatabase().id()).getContainer(asyncContainer.id());
     }
 
@@ -90,7 +90,7 @@ public class CosmosSyncItemTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void testRead() throws Exception {
+    public void readItem() throws Exception {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosSyncItemResponse itemResponse = container.createItem(properties);
 
@@ -102,7 +102,7 @@ public class CosmosSyncItemTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void testReplace() throws Exception{
+    public void replaceItem() throws Exception{
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosSyncItemResponse itemResponse = container.createItem(properties);
         
@@ -117,7 +117,7 @@ public class CosmosSyncItemTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void testDelete() throws Exception {
+    public void deleteItem() throws Exception {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosSyncItemResponse itemResponse = container.createItem(properties);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();

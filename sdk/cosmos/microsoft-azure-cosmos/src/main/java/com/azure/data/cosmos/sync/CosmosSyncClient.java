@@ -22,7 +22,7 @@ import java.util.Iterator;
  * SyncClient is used to perform operations in a synchronous way
  */
 public class CosmosSyncClient implements AutoCloseable {
-    private CosmosClient asyncClientWrapper;
+    private final CosmosClient asyncClientWrapper;
 
     public CosmosSyncClient(CosmosClientBuilder builder) {
         this.asyncClientWrapper = builder.build();
@@ -216,7 +216,7 @@ public class CosmosSyncClient implements AutoCloseable {
         return new CosmosSyncDatabaseResponse(response, this);
     }
 
-    CosmosClient getAsyncClient() {
+    CosmosClient asyncClient() {
         return this.asyncClientWrapper;
     }
 
