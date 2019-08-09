@@ -309,7 +309,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     2) The length of value of property 'name' should be less than 20 characters and without space -->
     <module name="com.azure.tools.checkstyle.checks.ServiceInterfaceCheck"/>
 
-    <!--CUSTOM CHECKS-->
+    <!-- CUSTOM CHECKS -->
     <!-- The @Immutable class should have the following rules:
     1) All fields must be final -->
     <module name="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClassCheck"/>
