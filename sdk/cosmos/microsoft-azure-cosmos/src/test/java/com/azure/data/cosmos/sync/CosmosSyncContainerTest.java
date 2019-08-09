@@ -7,6 +7,7 @@
 package com.azure.data.cosmos.sync;
 
 import com.azure.data.cosmos.CosmosClientBuilder;
+import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.CosmosContainerProperties;
 import com.azure.data.cosmos.CosmosContainerRequestOptions;
 import com.azure.data.cosmos.CosmosDatabaseForTest;
@@ -16,6 +17,7 @@ import com.azure.data.cosmos.IndexingMode;
 import com.azure.data.cosmos.IndexingPolicy;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.SqlQuerySpec;
+import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -76,6 +78,22 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
 
         CosmosSyncContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
         validateContainerResponse(containerProperties, containerResponse);
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void createContainer_alreadyExists() throws Exception {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
+
+        CosmosSyncContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        validateContainerResponse(containerProperties, containerResponse);
+
+        try {
+            createdDatabase.createContainer(containerProperties);
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(CosmosClientException.class);
+            assertThat(((CosmosClientException) e).statusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
+        }
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)

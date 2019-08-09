@@ -8,6 +8,7 @@ package com.azure.data.cosmos.sync;
 
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClientBuilder;
+import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.CosmosDatabaseForTest;
 import com.azure.data.cosmos.CosmosItemProperties;
@@ -16,6 +17,7 @@ import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.SqlQuerySpec;
+import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -28,7 +30,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.testng.Assert.*;
 
 public class CosmosSyncItemTest extends TestSuiteBase {
 
@@ -67,6 +68,25 @@ public class CosmosSyncItemTest extends TestSuiteBase {
         CosmosSyncItemResponse itemResponse1 = container.createItem(properties, new CosmosItemRequestOptions());
         validateItemResponse(properties, itemResponse1);
 
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void createItem_alreadyExists() throws Exception {
+        CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
+        CosmosSyncItemResponse itemResponse = container.createItem(properties);
+        validateItemResponse(properties, itemResponse);
+
+        properties = getDocumentDefinition(UUID.randomUUID().toString());
+        CosmosSyncItemResponse itemResponse1 = container.createItem(properties, new CosmosItemRequestOptions());
+        validateItemResponse(properties, itemResponse1);
+
+        // Test for conflict
+        try {
+            container.createItem(properties, new CosmosItemRequestOptions());
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(CosmosClientException.class);
+            assertThat(((CosmosClientException) e).statusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
+        }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)

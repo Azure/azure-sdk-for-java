@@ -257,7 +257,7 @@ public class CosmosSyncContainer {
     }
 
     private Iterator<FeedResponse<CosmosItemProperties>> getFeedIterator(Flux<FeedResponse<CosmosItemProperties>> itemFlux) {
-        return itemFlux.toIterable().iterator();
+        return itemFlux.toIterable(1).iterator();
     }
 
 }

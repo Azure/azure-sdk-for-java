@@ -76,6 +76,22 @@ public class CosmosSyncDatabaseTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void createDatabase_alreadyExists() throws Exception {
+        CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
+        databases.add(databaseDefinition.id());
+        CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseDefinition.id());
+
+        CosmosSyncDatabaseResponse createResponse = client.createDatabase(databaseProperties);
+        validateDatabaseResponse(databaseDefinition, createResponse);
+        try {
+            client.createDatabase(databaseProperties);
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(CosmosClientException.class);
+            assertThat(((CosmosClientException) e).statusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withId() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
 
