@@ -9,7 +9,6 @@ import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
-import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
 
 /**
