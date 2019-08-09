@@ -44,45 +44,55 @@ public class HttpPipelinePolicyCheck extends AbstractCheck {
     }
 
     @Override
-    public void visitToken(DetailAST ast) {
+    public void visitToken(DetailAST token) {
 
-        switch (ast.getType()) {
+        switch (token.getType()) {
             case TokenTypes.PACKAGE_DEF:
-                final String packageName = FullIdent.createFullIdentBelow(ast).getText();
+                final String packageName = FullIdent.createFullIdentBelow(token).getText();
                 isImplementationPackage = packageName.contains("implementation");
                 break;
             case TokenTypes.CLASS_DEF:
-                // Get all interfaces name
-                final DetailAST implementsClauseToken = ast.findFirstToken(TokenTypes.IMPLEMENTS_CLAUSE);
-                // Skip check if the class doesn't implement any interface
-                if (implementsClauseToken == null) {
-                    return;
-                }
-
-                final Optional<DetailAST> policy = TokenUtil.findFirstTokenByPredicate(implementsClauseToken,
-                    node -> node.getType() == TokenTypes.IDENT && HTTP_PIPELINE_POLICY.equals(node.getText()));
-
-                // Skip check if the class doesn't implement HTTP_PIPELINE_POLICY
-                if (!policy.isPresent()) {
-                    return;
-                }
-
-                final DetailAST modifiersToken = ast.findFirstToken(TokenTypes.MODIFIERS);
-                final AccessModifier accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersToken);
-                final String className = ast.findFirstToken(TokenTypes.IDENT).getText();
-                // Public class check
-                if (!accessModifier.equals(AccessModifier.PUBLIC)) {
-                    log(modifiersToken, String.format("Class ''%s'' implements ''%s'' should be a public class", className, HTTP_PIPELINE_POLICY));
-                }
-
-                // Implementation and sub-package check
-                if (isImplementationPackage) {
-                    log(ast, String.format("Class ''%s'' implements ''%s'' should not be a implementation package or sub-package of it", className, HTTP_PIPELINE_POLICY));
-                }
+                checkPublicNonImplementationPolicyClass(token);
                 break;
             default:
                 // Checkstyle complains if there's no default block in switch
                 break;
+        }
+    }
+
+    /**
+     * Any class implements HttpPipelinePolicy, should be a public class and not live in the implementation package or
+     * any of its sub-packages
+     *
+     * @param classDefToken CLASS_DEF token
+     */
+    private void checkPublicNonImplementationPolicyClass(DetailAST classDefToken) {
+        // Get all interfaces name
+        final DetailAST implementsClauseToken = classDefToken.findFirstToken(TokenTypes.IMPLEMENTS_CLAUSE);
+        // Skip check if the class doesn't implement any interface
+        if (implementsClauseToken == null) {
+            return;
+        }
+
+        final Optional<DetailAST> policy = TokenUtil.findFirstTokenByPredicate(implementsClauseToken,
+            node -> node.getType() == TokenTypes.IDENT && HTTP_PIPELINE_POLICY.equals(node.getText()));
+
+        // Skip check if the class doesn't implement HTTP_PIPELINE_POLICY
+        if (!policy.isPresent()) {
+            return;
+        }
+
+        final DetailAST modifiersToken = classDefToken.findFirstToken(TokenTypes.MODIFIERS);
+        final AccessModifier accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersToken);
+        final String className = classDefToken.findFirstToken(TokenTypes.IDENT).getText();
+        // Public class check
+        if (!accessModifier.equals(AccessModifier.PUBLIC)) {
+            log(modifiersToken, String.format("Class ''%s'' implementing ''%s'' and should be a public class", className, HTTP_PIPELINE_POLICY));
+        }
+
+        // Implementation and sub-package check
+        if (isImplementationPackage) {
+            log(classDefToken, String.format("Class ''%s'' implementing ''%s'' and should not be a implementation package or sub-package of it", className, HTTP_PIPELINE_POLICY));
         }
     }
 }
