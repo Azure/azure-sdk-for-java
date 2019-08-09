@@ -4,16 +4,11 @@
 package com.azure.storage.common.credentials;
 
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.storage.common.Utility;
 import io.netty.handler.codec.http.QueryStringDecoder;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +28,7 @@ public final class SharedKeyCredential {
     private static final String ACCOUNT_KEY = "accountkey";
 
     private final String accountName;
-    private final byte[] accountKey;
+    private final String accountKey;
 
     /**
      * Initializes a new instance of SharedKeyCredential contains an account's name and its primary or secondary
@@ -46,7 +41,7 @@ public final class SharedKeyCredential {
         Objects.requireNonNull(accountName);
         Objects.requireNonNull(accountKey);
         this.accountName = accountName;
-        this.accountKey = Base64.getDecoder().decode(accountKey);
+        this.accountKey = accountKey;
     }
 
     /**
@@ -89,7 +84,8 @@ public final class SharedKeyCredential {
      * @return the SharedKey authorization value
      */
     public String generateAuthorizationHeader(URL requestURL, String httpMethod, Map<String, String> headers) {
-        return computeHMACSHA256(buildStringToSign(requestURL, httpMethod, headers));
+        String signature = Utility.computeHMac256(accountKey, buildStringToSign(requestURL, httpMethod, headers));
+        return String.format(AUTHORIZATION_HEADER_FORMAT, accountName, signature);
     }
 
     /**
@@ -98,23 +94,11 @@ public final class SharedKeyCredential {
      *
      * @param stringToSign The UTF-8-encoded string to sign.
      * @return A {@code String} that contains the HMAC-SHA256-encoded signature.
-     * @throws InvalidKeyException If the accountKey is not a valid Base64-encoded string.
-     * @throws RuntimeException If the {@code HmacSHA256} algorithm isn't supported.
+     * @throws RuntimeException If the HMAC-SHA256 algorithm isn't support, if the key isn't a valid Base64 encoded
+     * string, or the UTF-8 charset isn't supported.
      */
-    public String computeHmac256(final String stringToSign) throws InvalidKeyException {
-        try {
-            /*
-            We must get a new instance of the Mac calculator for each signature calculated because the instances are
-            not threadsafe and there is some suggestion online that they may not even be safe for reuse, so we use a
-            new one each time to be sure.
-             */
-            Mac hmacSha256 = Mac.getInstance("HmacSHA256");
-            hmacSha256.init(new SecretKeySpec(this.accountKey, "HmacSHA256"));
-            byte[] utf8Bytes = stringToSign.getBytes(StandardCharsets.UTF_8);
-            return Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
-        } catch (final  NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+    public String computeHmac256(final String stringToSign) {
+        return Utility.computeHMac256(accountKey, stringToSign);
     }
 
     private String buildStringToSign(URL requestURL, String httpMethod, Map<String, String> headers) {
@@ -215,17 +199,5 @@ public final class SharedKeyCredential {
 
         // append to main string builder the join of completed params with new line
         return canonicalizedResource.toString();
-    }
-
-    private String computeHMACSHA256(String stringToSign) {
-        try {
-            Mac hmacSha256 = Mac.getInstance("HmacSHA256");
-            hmacSha256.init(new SecretKeySpec(accountKey, "HmacSHA256"));
-            byte[] utf8Bytes = stringToSign.getBytes(StandardCharsets.UTF_8);
-            String signature = Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
-            return String.format(AUTHORIZATION_HEADER_FORMAT, accountName, signature);
-        } catch (NoSuchAlgorithmException | InvalidKeyException ex) {
-            throw new Error(ex);
-        }
     }
 }
