@@ -1,0 +1,38 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue511015cb",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "bde0eaba-1003-0066-44fe-4e822c000000",
+      "Date" : "Fri, 09 Aug 2019 22:06:51 GMT"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue511015cb?comp=metadata",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "AuthenticationFailed",
+      "retry-after" : "0",
+      "Content-Length" : "754",
+      "StatusCode" : "403",
+      "x-ms-request-id" : "bde0eac1-1003-0066-49fe-4e822c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:bde0eac1-1003-0066-49fe-4e822c000000\nTime:2019-08-09T22:06:52.4243797Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'ixGefTMmCaCCk/Fs/ENBUwTrAVH2ETLRSHReKTL16AY=' is not the same as any computed signature. Server used following string to sign: 'PUT\n\n\n\n\n\nFri, 09 Aug 2019 22:06:52 GMT\n\n\n\n\n\nx-ms-client-request-id:87fa6e29-f8c1-4fac-af4f-5f03d1d73ad9\nx-ms-meta-invalidmeta:value\nx-ms-version:2018-03-28\n/azstoragesdkaccount/queue511015cb\ncomp:metadata'.</AuthenticationErrorDetail></Error>",
+      "Date" : "Fri, 09 Aug 2019 22:06:52 GMT",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "queue59383d29", "queue02297174", "queue511015cb" ]
+}
