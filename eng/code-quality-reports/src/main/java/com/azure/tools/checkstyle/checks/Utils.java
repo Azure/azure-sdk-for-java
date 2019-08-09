@@ -43,7 +43,5 @@ public class Utils {
         });
 
         return illegalCombination.isPresent();
-
-
     }
 }
