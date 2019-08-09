@@ -7,21 +7,23 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
+import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
+import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Optional;
 
 /**
  * Http Pipeline Policy Checks
  * Any class that implements the HttpPipelinePolicy interface should:
  *  <ol>
- *    <li>must be a public class</li>
- *    <li>not in an implementation package or sub-package</li>
+ *    <li>Be a public class.</li>
+ *    <li>Not live in the implementation package or any of its sub-packages.</li>
  *  </ol>
  */
 public class HttpPipelinePolicyCheck extends AbstractCheck {
     private static final String HTTP_PIPELINE_POLICY = "HttpPipelinePolicy";
-    private boolean isImplePackage;
+    private boolean isImplementationPackage;
 
     @Override
     public int[] getDefaultTokens() {
@@ -46,35 +48,35 @@ public class HttpPipelinePolicyCheck extends AbstractCheck {
 
         switch (ast.getType()) {
             case TokenTypes.PACKAGE_DEF:
-                String packageName = FullIdent.createFullIdentBelow(ast).getText();
-                isImplePackage = packageName.contains("implementation");
+                final String packageName = FullIdent.createFullIdentBelow(ast).getText();
+                isImplementationPackage = packageName.contains("implementation");
                 break;
             case TokenTypes.CLASS_DEF:
-                String className = ast.findFirstToken(TokenTypes.IDENT).getText();
                 // Get all interfaces name
-                DetailAST impleClauseToken = ast.findFirstToken(TokenTypes.IMPLEMENTS_CLAUSE);
+                final DetailAST implementsClauseToken = ast.findFirstToken(TokenTypes.IMPLEMENTS_CLAUSE);
                 // Skip check if the class doesn't implement any interface
-                if (impleClauseToken == null) {
-                    return;
-                }
-                Set<String> interfaces = new HashSet<>();
-                for (DetailAST node = impleClauseToken.getFirstChild(); node != null; node = node.getNextSibling()) {
-                    if (node.getType() == TokenTypes.IDENT) {
-                        interfaces.add(node.getText());
-                    }
-                }
-                // Skip check if the class doesn't implement HTTP_PIPELINE_POLICY
-                if (!interfaces.contains(HTTP_PIPELINE_POLICY)) {
+                if (implementsClauseToken == null) {
                     return;
                 }
 
-                DetailAST modifiersToken = ast.findFirstToken(TokenTypes.MODIFIERS);
+                final Optional<DetailAST> policy = TokenUtil.findFirstTokenByPredicate(implementsClauseToken,
+                    node -> node.getType() == TokenTypes.IDENT && HTTP_PIPELINE_POLICY.equals(node.getText()));
+
+                // Skip check if the class doesn't implement HTTP_PIPELINE_POLICY
+                if (!policy.isPresent()) {
+                    return;
+                }
+
+                final DetailAST modifiersToken = ast.findFirstToken(TokenTypes.MODIFIERS);
+                final AccessModifier accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersToken);
+                final String className = ast.findFirstToken(TokenTypes.IDENT).getText();
                 // Public class check
-                if (!modifiersToken.branchContains(TokenTypes.LITERAL_PUBLIC)) {
+                if (!accessModifier.equals(AccessModifier.PUBLIC)) {
                     log(modifiersToken, String.format("Class ''%s'' implements ''%s'' should be a public class", className, HTTP_PIPELINE_POLICY));
                 }
+
                 // Implementation and sub-package check
-                if (isImplePackage) {
+                if (isImplementationPackage) {
                     log(ast, String.format("Class ''%s'' implements ''%s'' should not be a implementation package or sub-package of it", className, HTTP_PIPELINE_POLICY));
                 }
                 break;
