@@ -195,7 +195,7 @@ blobClient.uploadFromFile("local-file.jpg");
 Download blob to output stream using BlobClient.
 
 ```java
-try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream("downloaded-file.jpg")) {
+try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
     blobClient.download(outputStream);
 }
 ```
