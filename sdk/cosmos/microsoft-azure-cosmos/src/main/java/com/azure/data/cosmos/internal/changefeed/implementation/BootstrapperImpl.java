@@ -41,42 +41,41 @@ class BootstrapperImpl implements Bootstrapper {
 
     @Override
     public Mono<Void> initialize() {
-        final BootstrapperImpl self = this;
-        self.isInitialized = false;
+        this.isInitialized = false;
 
-        return Mono.just(self)
-            .flatMap( value -> self.leaseStore.isInitialized())
+        return Mono.just(this)
+            .flatMap( value -> this.leaseStore.isInitialized())
             .flatMap(initialized -> {
-                self.isInitialized = initialized;
+                this.isInitialized = initialized;
 
                 if (initialized) {
                     return Mono.empty();
                 } else {
-                    return self.leaseStore.acquireInitializationLock(self.lockTime)
+                    return this.leaseStore.acquireInitializationLock(this.lockTime)
                         .flatMap(lockAcquired -> {
-                            self.isLockAcquired = lockAcquired;
+                            this.isLockAcquired = lockAcquired;
 
-                            if (!self.isLockAcquired) {
+                            if (!this.isLockAcquired) {
                                 logger.info("Another instance is initializing the store");
-                                return Mono.just(isLockAcquired).delayElement(self.sleepTime);
+                                return Mono.just(isLockAcquired).delayElement(this.sleepTime);
                             } else {
-                                return self.synchronizer.createMissingLeases()
-                                    .then(self.leaseStore.markInitialized());
+                                return this.synchronizer.createMissingLeases()
+                                    .then(this.leaseStore.markInitialized());
                             }
                         })
                         .onErrorResume(throwable -> {
                             logger.warn("Unexpected exception caught", throwable);
-                            return Mono.just(self.isLockAcquired);
+                            return Mono.just(this.isLockAcquired);
                         })
                         .flatMap(lockAcquired -> {
-                            if (self.isLockAcquired) {
-                                return self.leaseStore.releaseInitializationLock();
+                            if (this.isLockAcquired) {
+                                return this.leaseStore.releaseInitializationLock();
                             }
                             return Mono.just(lockAcquired);
                         });
                 }
             })
-            .repeat( () -> !self.isInitialized)
+            .repeat( () -> !this.isInitialized)
             .then();
     }
 }

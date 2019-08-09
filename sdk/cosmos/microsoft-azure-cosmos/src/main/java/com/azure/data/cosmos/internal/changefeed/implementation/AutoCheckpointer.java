@@ -49,15 +49,13 @@ class AutoCheckpointer implements ChangeFeedObserver {
     }
 
     private Mono<Void> afterProcessChanges(ChangeFeedObserverContext context) {
-        final AutoCheckpointer self = this;
+        this.processedDocCount ++;
 
-        self.processedDocCount ++;
-
-        if (self.isCheckpointNeeded()) {
+        if (this.isCheckpointNeeded()) {
             return context.checkpoint()
                 .doOnSuccess((Void) -> {
-                    self.processedDocCount = 0;
-                    self.lastCheckpointTime = ZonedDateTime.now(ZoneId.of("UTC"));
+                    this.processedDocCount = 0;
+                    this.lastCheckpointTime = ZonedDateTime.now(ZoneId.of("UTC"));
                 });
         }
         return Mono.empty();

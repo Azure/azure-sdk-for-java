@@ -59,8 +59,6 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
 
     @Override
     public Mono<Void> start() {
-        PartitionLoadBalancerImpl self = this;
-
         synchronized (lock) {
             if (this.started) {
                 throw new IllegalStateException("Partition load balancer already started");
@@ -71,7 +69,7 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
         }
 
         return Mono.fromRunnable( () -> {
-            Thread thread = new Thread(() -> self.run(self.cancellationTokenSource.getToken()).subscribe());
+            Thread thread = new Thread(() -> this.run(this.cancellationTokenSource.getToken()).subscribe());
             executorService.execute(thread);
         });
     }
@@ -87,20 +85,18 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
     }
 
     private Mono<Void> run(CancellationToken cancellationToken) {
-        PartitionLoadBalancerImpl self = this;
-
-        return Flux.just(self)
-            .flatMap(value -> self.leaseContainer.getAllLeases())
+        return Flux.just(this)
+            .flatMap(value -> this.leaseContainer.getAllLeases())
             .collectList()
             .flatMap(allLeases -> {
                 if (cancellationToken.isCancellationRequested()) return Mono.empty();
-                List<Lease> leasesToTake = self.partitionLoadBalancingStrategy.selectLeasesToTake(allLeases);
+                List<Lease> leasesToTake = this.partitionLoadBalancingStrategy.selectLeasesToTake(allLeases);
 
                 if (cancellationToken.isCancellationRequested()) return Mono.empty();
                 return Flux.fromIterable(leasesToTake)
                     .flatMap(lease -> {
                         if (cancellationToken.isCancellationRequested()) return Mono.empty();
-                        return self.partitionController.addOrUpdateLease(lease);
+                        return this.partitionController.addOrUpdateLease(lease);
                     })
                     .then();
             })

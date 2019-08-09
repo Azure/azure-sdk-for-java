@@ -44,7 +44,6 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
 
     @Override
     public Mono<Lease> updateLease(Lease cachedLease, CosmosItem itemLink, CosmosItemRequestOptions requestOptions, Function<Lease, Lease> updateLease) {
-        DocumentServiceLeaseUpdaterImpl self = this;
         Lease arrayLease[] = {cachedLease};
         arrayLease[0] = updateLease.apply(cachedLease);
 
@@ -54,7 +53,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
 
         arrayLease[0].setTimestamp(ZonedDateTime.now(ZoneId.of("UTC")));
 
-        return self.tryReplaceLease(arrayLease[0], itemLink)
+        return this.tryReplaceLease(arrayLease[0], itemLink)
             .map(leaseDocument -> {
                 arrayLease[0] = ServiceItemLease.fromDocument(leaseDocument);
                 return arrayLease[0];
@@ -99,7 +98,6 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
     }
 
     private Mono<CosmosItemProperties> tryReplaceLease(Lease lease, CosmosItem itemLink) throws LeaseLostException {
-        DocumentServiceLeaseUpdaterImpl self = this;
         return this.client.replaceItem(itemLink, lease, this.getCreateIfMatchOptions(lease))
             .map(cosmosItemResponse -> cosmosItemResponse.properties())
             .onErrorResume(re -> {

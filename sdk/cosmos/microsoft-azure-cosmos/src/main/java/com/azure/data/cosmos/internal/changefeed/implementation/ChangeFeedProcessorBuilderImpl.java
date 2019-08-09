@@ -82,13 +82,12 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
     @Override
     public Mono<Void> start() {
         if (this.partitionManager == null) {
-            ChangeFeedProcessorBuilderImpl self = this;
             return this.initializeCollectionPropertiesForBuild()
-                .then(self.getLeaseStoreManager()
-                    .flatMap(leaseStoreManager -> self.buildPartitionManager(leaseStoreManager)))
+                .then(this.getLeaseStoreManager()
+                    .flatMap(leaseStoreManager -> this.buildPartitionManager(leaseStoreManager)))
                 .flatMap(partitionManager1 -> {
-                    self.partitionManager = partitionManager1;
-                    return self.partitionManager.start();
+                    this.partitionManager = partitionManager1;
+                    return this.partitionManager.start();
                 });
 
         } else {
@@ -290,8 +289,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      */
     @Override
     public ChangeFeedProcessor build() {
-        ChangeFeedProcessorBuilderImpl self = this;
-
         if (this.hostName == null)
         {
             throw new IllegalArgumentException("Host name was not specified");
@@ -319,8 +316,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
     }
 
     private Mono<Void> initializeCollectionPropertiesForBuild() {
-        ChangeFeedProcessorBuilderImpl self = this;
-
         if (this.changeFeedProcessorOptions == null) {
             this.changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
         }
@@ -328,21 +323,19 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
         return this.feedContextClient
             .readDatabase(this.feedContextClient.getDatabaseClient(), null)
             .map( databaseResourceResponse -> {
-                self.databaseResourceId = databaseResourceResponse.database().id();
-                return self.databaseResourceId;
+                this.databaseResourceId = databaseResourceResponse.database().id();
+                return this.databaseResourceId;
             })
-            .flatMap( id -> self.feedContextClient
-                .readContainer(self.feedContextClient.getContainerClient(), null)
+            .flatMap( id -> this.feedContextClient
+                .readContainer(this.feedContextClient.getContainerClient(), null)
                 .map(documentCollectionResourceResponse -> {
-                    self.collectionResourceId = documentCollectionResourceResponse.container().id();
-                    return self.collectionResourceId;
+                    this.collectionResourceId = documentCollectionResourceResponse.container().id();
+                    return this.collectionResourceId;
                 }))
             .then();
     }
 
     private Mono<LeaseStoreManager> getLeaseStoreManager() {
-        ChangeFeedProcessorBuilderImpl self = this;
-
         if (this.leaseStoreManager == null) {
 
             return this.leaseContextClient.readContainerSettings(this.leaseContextClient.getContainerClient(), null)
@@ -358,18 +351,18 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
 
                     RequestOptionsFactory requestOptionsFactory = new PartitionedByIdCollectionRequestOptionsFactory();
 
-                    String leasePrefix = self.getLeasePrefix();
+                    String leasePrefix = this.getLeasePrefix();
 
                     return LeaseStoreManager.Builder()
                         .leasePrefix(leasePrefix)
-                        .leaseCollectionLink(self.leaseContextClient.getContainerClient())
-                        .leaseContextClient(self.leaseContextClient)
+                        .leaseCollectionLink(this.leaseContextClient.getContainerClient())
+                        .leaseContextClient(this.leaseContextClient)
                         .requestOptionsFactory(requestOptionsFactory)
-                        .hostName(self.hostName)
+                        .hostName(this.hostName)
                         .build()
                         .map(manager -> {
-                            self.leaseStoreManager = manager;
-                            return self.leaseStoreManager;
+                            this.leaseStoreManager = manager;
+                            return this.leaseStoreManager;
                         });
                 });
         }
@@ -395,8 +388,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
     }
 
     private Mono<PartitionManager> buildPartitionManager(LeaseStoreManager leaseStoreManager) {
-        ChangeFeedProcessorBuilderImpl self = this;
-
         CheckpointerObserverFactory factory = new CheckpointerObserverFactory(this.observerFactory, new CheckpointFrequency());
 
         PartitionSynchronizerImpl synchronizer = new PartitionSynchronizerImpl(

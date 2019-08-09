@@ -60,26 +60,25 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
     @Override
     public Mono<Void> run(CancellationToken cancellationToken) {
-        PartitionProcessorImpl self = this;
-        self.lastContinuation = self.settings.getStartContinuation();
+        this.lastContinuation = this.settings.getStartContinuation();
 
-        self.options.requestContinuation(self.lastContinuation);
+        this.options.requestContinuation(this.lastContinuation);
 
-        return Flux.just(self)
-            .flatMap(value -> self.documentClient.createDocumentChangeFeedQuery(self.settings.getCollectionSelfLink(), self.options))
+        return Flux.just(this)
+            .flatMap(value -> this.documentClient.createDocumentChangeFeedQuery(this.settings.getCollectionSelfLink(), this.options))
             .flatMap(documentFeedResponse -> {
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());//throw Exceptions.propagate(new TaskCancelledException());
 
-                self.lastContinuation = documentFeedResponse.continuationToken();
+                this.lastContinuation = documentFeedResponse.continuationToken();
                 if (documentFeedResponse.results() != null && documentFeedResponse.results().size() > 0) {
-                    return self.dispatchChanges(documentFeedResponse)
+                    return this.dispatchChanges(documentFeedResponse)
                         .doFinally( (Void) -> {
-                            self.options.requestContinuation(self.lastContinuation);
+                            this.options.requestContinuation(this.lastContinuation);
 
                             if (cancellationToken.isCancellationRequested()) throw Exceptions.propagate(new TaskCancelledException());//throw Exceptions.propagate(new TaskCancelledException());
                         }).flux();
                 }
-                self.options.requestContinuation(self.lastContinuation);
+                this.options.requestContinuation(this.lastContinuation);
 
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());//throw Exceptions.propagate(new TaskCancelledException());
 
@@ -94,49 +93,49 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 if (throwable instanceof CosmosClientException) {
 
                     CosmosClientException clientException = (CosmosClientException) throwable;
-                    self.logger.warn("Exception: partition {}", self.options.partitionKey().getInternalPartitionKey(), clientException);
+                    this.logger.warn("Exception: partition {}", this.options.partitionKey().getInternalPartitionKey(), clientException);
                     StatusCodeErrorType docDbError = ExceptionClassifier.classifyClientException(clientException);
 
                     switch (docDbError) {
                         case PARTITION_NOT_FOUND: {
-                            self.resultException = new PartitionNotFoundException("Partition not found.", self.lastContinuation);
+                            this.resultException = new PartitionNotFoundException("Partition not found.", this.lastContinuation);
                         }
                         case PARTITION_SPLIT: {
-                            self.resultException = new PartitionSplitException("Partition split.", self.lastContinuation);
+                            this.resultException = new PartitionSplitException("Partition split.", this.lastContinuation);
                         }
                         case UNDEFINED: {
-                            self.resultException = new RuntimeException(clientException);
+                            this.resultException = new RuntimeException(clientException);
                         }
                         case MAX_ITEM_COUNT_TOO_LARGE: {
                             if (this.options.maxItemCount() == null) {
                                 this.options.maxItemCount(DefaultMaxItemCount);
                             } else if (this.options.maxItemCount() <= 1) {
-                                self.logger.error("Cannot reduce maxItemCount further as it's already at {}", self.options.maxItemCount(), clientException);
-                                self.resultException = new RuntimeException(clientException);
+                                this.logger.error("Cannot reduce maxItemCount further as it's already at {}", this.options.maxItemCount(), clientException);
+                                this.resultException = new RuntimeException(clientException);
                             }
 
                             this.options.maxItemCount(this.options.maxItemCount() / 2);
-                            self.logger.warn("Reducing maxItemCount, new value: {}", self.options.maxItemCount());
+                            this.logger.warn("Reducing maxItemCount, new value: {}", this.options.maxItemCount());
                             return Flux.empty();
                         }
                         default: {
-                            self.logger.error("Unrecognized DocDbError enum value {}", docDbError, clientException);
-                            self.resultException = new RuntimeException(clientException);
+                            this.logger.error("Unrecognized DocDbError enum value {}", docDbError, clientException);
+                            this.resultException = new RuntimeException(clientException);
                         }
                     }
                 } else if (throwable instanceof TaskCancelledException) {
-                    self.logger.warn("Exception: partition {}", self.settings.getPartitionKeyRangeId(), throwable);
-                    self.resultException = (TaskCancelledException) throwable;
+                    this.logger.warn("Exception: partition {}", this.settings.getPartitionKeyRangeId(), throwable);
+                    this.resultException = (TaskCancelledException) throwable;
                 }
                 return Flux.error(throwable);
             })
             .repeat(() -> {
                 if (cancellationToken.isCancellationRequested()) {
-                    self.resultException = new TaskCancelledException();
+                    this.resultException = new TaskCancelledException();
                     return false;
                 }
 
-                Duration delay = self.settings.getFeedPollDelay();
+                Duration delay = this.settings.getFeedPollDelay();
                 long remainingWork = delay.toMillis();
 
                 try {
@@ -150,7 +149,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 }
 
                 if (cancellationToken.isCancellationRequested()) {
-                    self.resultException = new TaskCancelledException();
+                    this.resultException = new TaskCancelledException();
                     return false;
                 }
 

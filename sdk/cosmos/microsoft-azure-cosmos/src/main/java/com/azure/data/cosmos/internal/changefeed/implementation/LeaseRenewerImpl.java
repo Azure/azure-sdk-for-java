@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.ZonedDateTime;
 
 /**
  * Implementation for the {@link LeaseRenewer}.
@@ -32,9 +33,7 @@ class LeaseRenewerImpl implements LeaseRenewer {
 
     @Override
     public Mono<Void> run(CancellationToken cancellationToken) {
-        LeaseRenewerImpl self = this;
-
-        logger.info("Partition {}: renewer task started.", self.lease.getLeaseToken());
+        logger.info("Partition {}: renewer task started.", this.lease.getLeaseToken());
         long remainingWork = this.leaseRenewInterval.toMillis();
 
         try {
@@ -44,33 +43,40 @@ class LeaseRenewerImpl implements LeaseRenewer {
             }
         } catch (InterruptedException ex) {
             // exception caught
-            logger.info("Partition {}: renewer task stopped.", self.lease.getLeaseToken());
+            logger.info("Partition {}: renewer task stopped.", this.lease.getLeaseToken());
             return Mono.empty();
         }
 
-        return Mono.just(self)
-            .flatMap(value -> self.renew(cancellationToken))
+        return Mono.just(this)
+            .flatMap(value -> {
+                if (cancellationToken.isCancellationRequested()) {
+                    return Mono.empty();
+                }
+
+                ZonedDateTime stopTimer = ZonedDateTime.now().plus(this.leaseRenewInterval);
+                return Mono.just(value)
+                    .delayElement(Duration.ofMillis(100))
+                    .repeat( () -> {
+                        ZonedDateTime currentTime = ZonedDateTime.now();
+                        return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
+                    }).last();
+            })
+            .flatMap(value -> {
+                if (cancellationToken.isCancellationRequested()) {
+                    return Mono.empty();
+                }
+                return this.renew(cancellationToken);
+            })
             .repeat(() -> {
-                if (cancellationToken.isCancellationRequested()) return false;
-
-                long remainingWorkInLoop = this.leaseRenewInterval.toMillis();
-
-                try {
-                    while (!cancellationToken.isCancellationRequested() && remainingWorkInLoop > 0) {
-                        Thread.sleep(100);
-                        remainingWorkInLoop -= 100;
-                    }
-                } catch (InterruptedException ex) {
-                    // exception caught
-                    logger.info("Partition {}: renewer task stopped.", self.lease.getLeaseToken());
-                    return false;
+                if (cancellationToken.isCancellationRequested()) {
+                    logger.info("Partition {}: renewer task stopped.", this.lease.getLeaseToken());
                 }
 
                 return !cancellationToken.isCancellationRequested();
             })
             .then()
             .onErrorResume(throwable -> {
-                logger.error("Partition {}: renew lease loop failed.", self.lease.getLeaseToken(), throwable);
+                logger.error("Partition {}: renew lease loop failed.", this.lease.getLeaseToken(), throwable);
                 return Mono.error(throwable);
             });
     }
@@ -81,27 +87,25 @@ class LeaseRenewerImpl implements LeaseRenewer {
     }
 
     private Mono<Lease> renew(CancellationToken cancellationToken) {
-        LeaseRenewerImpl self = this;
-
         if (cancellationToken.isCancellationRequested()) return Mono.empty();
 
-        return self.leaseManager.renew(self.lease)
+        return this.leaseManager.renew(this.lease)
             .map(renewedLease -> {
                 if (renewedLease != null) {
-                    self.lease = renewedLease;
+                    this.lease = renewedLease;
                 }
-                logger.info("Partition {}: renewed lease with result {}", self.lease.getLeaseToken(), renewedLease != null);
+                logger.info("Partition {}: renewed lease with result {}", this.lease.getLeaseToken(), renewedLease != null);
                 return renewedLease;
             })
             .onErrorResume(throwable -> {
                 if (throwable instanceof LeaseLostException) {
                     LeaseLostException lle = (LeaseLostException) throwable;
-                    self.resultException = lle;
-                    logger.error("Partition {}: lost lease on renew.", self.lease.getLeaseToken(), lle);
+                    this.resultException = lle;
+                    logger.error("Partition {}: lost lease on renew.", this.lease.getLeaseToken(), lle);
                     return Mono.error(lle);
                 }
 
-                logger.error("Partition {}: failed to renew lease.", self.lease.getLeaseToken(), throwable);
+                logger.error("Partition {}: failed to renew lease.", this.lease.getLeaseToken(), throwable);
                 return Mono.empty();
             });
     }

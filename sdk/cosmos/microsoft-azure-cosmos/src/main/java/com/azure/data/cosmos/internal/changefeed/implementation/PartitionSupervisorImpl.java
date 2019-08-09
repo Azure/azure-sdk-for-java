@@ -51,17 +51,17 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
 
     @Override
     public Mono<Void> run(CancellationToken shutdownToken) {
-        PartitionSupervisorImpl self = this;
         this.resultException = null;
 
-        ChangeFeedObserverContext context = new ChangeFeedObserverContextImpl(self.lease.getLeaseToken());
+        ChangeFeedObserverContext context = new ChangeFeedObserverContextImpl(this.lease.getLeaseToken());
 
-        self.observer.open(context);
+        this.observer.open(context);
 
         ChangeFeedObserverCloseReason closeReason = ChangeFeedObserverCloseReason.UNKNOWN;
 
         try {
-            self.processorCancellation = new CancellationTokenSource();
+            PartitionSupervisorImpl self = this;
+            this.processorCancellation = new CancellationTokenSource();
 
             Thread processorThread = new Thread(new Runnable() {
                 @Override
@@ -71,7 +71,7 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
                 }
             });
 
-            self.renewerCancellation = new CancellationTokenSource();
+            this.renewerCancellation = new CancellationTokenSource();
 
             Thread renewerThread = new Thread(new Runnable() {
                 @Override
@@ -81,10 +81,10 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
                 }
             });
 
-            self.executorService.execute(processorThread);
-            self.executorService.execute(renewerThread);
+            this.executorService.execute(processorThread);
+            this.executorService.execute(renewerThread);
 
-            while (!shutdownToken.isCancellationRequested() && self.processor.getResultException() == null && self.renewer.getResultException() == null) {
+            while (!shutdownToken.isCancellationRequested() && this.processor.getResultException() == null && this.renewer.getResultException() == null) {
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException iex) {
@@ -95,12 +95,12 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
             this.processorCancellation.cancel();
             this.renewerCancellation.cancel();
 
-            if (self.processor.getResultException() != null) {
-                throw self.processor.getResultException();
+            if (this.processor.getResultException() != null) {
+                throw this.processor.getResultException();
             }
 
-            if (self.renewer.getResultException() != null) {
-                throw self.renewer.getResultException();
+            if (this.renewer.getResultException() != null) {
+                throw this.renewer.getResultException();
             }
 
             closeReason = shutdownToken.isCancellationRequested() ?
@@ -109,24 +109,24 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
 
         } catch (LeaseLostException llex) {
             closeReason = ChangeFeedObserverCloseReason.LEASE_LOST;
-            self.resultException = llex;
+            this.resultException = llex;
         } catch (PartitionSplitException pex) {
             closeReason = ChangeFeedObserverCloseReason.LEASE_GONE;
-            self.resultException = pex;
+            this.resultException = pex;
         } catch (TaskCancelledException tcex) {
             closeReason = ChangeFeedObserverCloseReason.SHUTDOWN;
-            self.resultException = null;
+            this.resultException = null;
         } catch (ObserverException oex) {
             closeReason = ChangeFeedObserverCloseReason.OBSERVER_ERROR;
-            self.resultException = oex;
+            this.resultException = oex;
         } catch (Exception ex) {
             closeReason = ChangeFeedObserverCloseReason.UNKNOWN;
         } finally {
-            self.observer.close(context, closeReason);
+            this.observer.close(context, closeReason);
         }
 
-        if (self.resultException != null) {
-            return Mono.error(self.resultException);
+        if (this.resultException != null) {
+            return Mono.error(this.resultException);
         } else {
             return Mono.empty();
         }

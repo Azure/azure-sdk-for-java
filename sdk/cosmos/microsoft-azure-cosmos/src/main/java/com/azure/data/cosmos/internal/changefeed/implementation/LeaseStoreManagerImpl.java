@@ -117,13 +117,12 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             this.settings.getLeaseCollectionLink(),
             this.requestOptionsFactory);
 
-        LeaseStoreManagerImpl self = this;
         if (this.settings.getLeaseCollectionLink() == null)
             throw new IllegalArgumentException("leaseCollectionLink was not specified");
         if (this.requestOptionsFactory == null)
             throw new IllegalArgumentException("requestOptionsFactory was not specified");
 
-        return Mono.just(self);
+        return Mono.just(this);
     }
 
     @Override
@@ -134,9 +133,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
     @Override
     public Flux<Lease> getOwnedLeases() {
-        LeaseStoreManagerImpl self = this;
         return this.getAllLeases()
-            .filter(lease -> lease.getOwner() != null && lease.getOwner().equalsIgnoreCase(self.settings.getHostName()));
+            .filter(lease -> lease.getOwner() != null && lease.getOwner().equalsIgnoreCase(this.settings.getHostName()));
     }
 
     @Override
@@ -226,7 +224,6 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         if (lease == null) throw Exceptions.propagate(new IllegalArgumentException("lease"));
 
         CosmosItem itemForLease = this.createItemForLease(lease.getId());
-        LeaseStoreManagerImpl self = this;
 
         return this.leaseDocumentClient.readItem(itemForLease, this.requestOptionsFactory.createRequestOptions(lease))
             .onErrorResume( ex -> {
@@ -241,10 +238,10 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 return Mono.error(ex);
             })
             .map( documentResourceResponse -> ServiceItemLease.fromDocument(documentResourceResponse.properties()))
-            .flatMap( refreshedLease -> self.leaseUpdater.updateLease(
+            .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
-                self.createItemForLease(refreshedLease.getId()),
-                self.requestOptionsFactory.createRequestOptions(lease),
+                this.createItemForLease(refreshedLease.getId()),
+                this.requestOptionsFactory.createRequestOptions(lease),
                 serverLease ->
                 {
                     if (serverLease.getOwner() != null) {
@@ -268,7 +265,6 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         // Get fresh lease. The assumption here is that check-pointing is done with higher frequency than lease renewal so almost
         // certainly the lease was updated in between.
         CosmosItem itemForLease = this.createItemForLease(lease.getId());
-        LeaseStoreManagerImpl self = this;
 
         return this.leaseDocumentClient.readItem(itemForLease, this.requestOptionsFactory.createRequestOptions(lease))
             .onErrorResume( ex -> {
@@ -283,10 +279,10 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 return Mono.error(ex);
             })
             .map( documentResourceResponse -> ServiceItemLease.fromDocument(documentResourceResponse.properties()))
-            .flatMap( refreshedLease -> self.leaseUpdater.updateLease(
+            .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
-                self.createItemForLease(refreshedLease.getId()),
-                self.requestOptionsFactory.createRequestOptions(lease),
+                this.createItemForLease(refreshedLease.getId()),
+                this.requestOptionsFactory.createRequestOptions(lease),
                 serverLease ->
                 {
                     if (!serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
