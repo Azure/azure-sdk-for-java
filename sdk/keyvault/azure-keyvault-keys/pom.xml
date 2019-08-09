@@ -5,7 +5,7 @@
   <parent>
     <artifactId>azure-keyvault-parent</artifactId>
     <groupId>com.azure</groupId>
-    <version>4.0.0-preview.2</version>
+    <version>4.0.0-preview.3</version>
     <relativePath>../pom.client.xml</relativePath>
   </parent>
 
@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-keyvault-keys</artifactId>
-  <version>4.0.0-preview.2</version>
+  <version>4.0.0-preview.3</version>
 
   <name>azure-keyvault-keys</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -36,7 +36,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.3</version>
+      <version>1.0.0-preview.4</version>
     </dependency>
 
     <dependency>
@@ -59,14 +59,14 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.0.0-preview.3</version>
+      <version>1.0.0-preview.4</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.0.0-preview.2</version>
+      <version>1.0.0-preview.3</version>
       <scope>test</scope>
     </dependency>
 

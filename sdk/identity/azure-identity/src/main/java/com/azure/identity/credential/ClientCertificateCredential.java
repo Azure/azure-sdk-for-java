@@ -24,8 +24,8 @@ import java.util.Objects;
  */
 @Immutable
 public class ClientCertificateCredential implements TokenCredential {
-    private String clientCertificate;
-    private String clientCertificatePassword;
+    private final String clientCertificate;
+    private final String clientCertificatePassword;
     private final IdentityClient identityClient;
 
     /**
