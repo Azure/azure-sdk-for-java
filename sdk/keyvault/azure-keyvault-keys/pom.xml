@@ -5,7 +5,7 @@
   <parent>
     <artifactId>azure-keyvault-parent</artifactId>
     <groupId>com.azure</groupId>
-    <version>4.0.0-preview.1</version>
+    <version>4.0.0-preview.2</version>
     <relativePath>../pom.client.xml</relativePath>
   </parent>
 
@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-keyvault-keys</artifactId>
-  <version>4.0.0-preview.1</version>
+  <version>4.0.0-preview.2</version>
 
   <name>azure-keyvault-keys</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>

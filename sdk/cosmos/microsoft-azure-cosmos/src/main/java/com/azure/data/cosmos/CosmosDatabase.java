@@ -26,7 +26,7 @@ public class CosmosDatabase {
 
     /**
      * Get the id of the CosmosDatabase
-     * 
+     *
      * @return the id of the CosmosDatabase
      */
     public String id() {
@@ -35,7 +35,7 @@ public class CosmosDatabase {
 
     /**
      * Set the id of the CosmosDatabase
-     * 
+     *
      * @param id the id of the CosmosDatabase
      * @return the same CosmosConflict that had the id set
      */
@@ -415,7 +415,7 @@ public class CosmosDatabase {
 
     /**
      * Gets a CosmosContainer object without making a service call
-     * 
+     *
      * @param id id of the container
      * @return Cosmos Container
      */
