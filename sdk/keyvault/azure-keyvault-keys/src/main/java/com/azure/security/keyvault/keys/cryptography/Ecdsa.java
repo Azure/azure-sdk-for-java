@@ -52,11 +52,11 @@ abstract class Ecdsa extends AsymmetricSignatureAlgorithm {
             return verify.verify(signature);
         }
 
-    }
-
-    private void checkDigestLength(byte[] digest) {
-        if (digest.length != getDigestLength()) {
-            throw new IllegalArgumentException("Invalid digest length.");
+        private void checkDigestLength(byte[] digest) {
+            if (digest.length != getDigestLength()) {
+                throw new IllegalArgumentException("Invalid digest length.");
+            }
         }
+
     }
 }
