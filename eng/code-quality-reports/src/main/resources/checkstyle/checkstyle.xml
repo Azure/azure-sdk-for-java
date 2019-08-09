@@ -312,5 +312,11 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!--CUSTOM CHECKS-->
     <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
 <!--    <module name="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck"/>-->
+
+    <!--CUSTOM CHECKS-->
+    <!-- Any class that implements the HttpPipelinePolicy interface should:
+    1) Must be a public class.
+    2) Not in an implementation package or sub-package. -->
+    <module name="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"/>
   </module>
 </module>
