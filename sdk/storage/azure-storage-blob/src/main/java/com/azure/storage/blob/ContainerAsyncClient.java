@@ -244,7 +244,7 @@ public final class ContainerAsyncClient {
     public Mono<Response<Boolean>> exists() {
         return this.getProperties(null)
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
-            .onErrorResume(t -> t instanceof StorageException && ((StorageException) t).statusCode() == 404, t -> {
+            .onErrorResume(t -> t instanceof StorageException && ((StorageException) t).getStatusCode() == 404, t -> {
                 HttpResponse response = ((StorageException) t).response();
                 return Mono.just(new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), false));
             });

@@ -10,7 +10,24 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.http.rest.VoidResponse
 import com.azure.core.implementation.util.ImplUtils
-import com.azure.storage.blob.models.*
+import com.azure.storage.blob.models.AccessTier
+import com.azure.storage.blob.models.ArchiveStatus
+import com.azure.storage.blob.models.BlobAccessConditions
+import com.azure.storage.blob.models.BlobHTTPHeaders
+import com.azure.storage.blob.models.BlobItem
+import com.azure.storage.blob.models.BlobRange
+import com.azure.storage.blob.models.BlobType
+import com.azure.storage.blob.models.DeleteSnapshotsOptionType
+import com.azure.storage.blob.models.LeaseAccessConditions
+import com.azure.storage.blob.models.LeaseStateType
+import com.azure.storage.blob.models.LeaseStatusType
+import com.azure.storage.blob.models.Metadata
+import com.azure.storage.blob.models.ModifiedAccessConditions
+import com.azure.storage.blob.models.PublicAccessType
+import com.azure.storage.blob.models.ReliableDownloadOptions
+import com.azure.storage.blob.models.StorageAccountInfo
+import com.azure.storage.blob.models.StorageErrorCode
+import com.azure.storage.blob.models.StorageException
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Unroll
@@ -1272,7 +1289,7 @@ class BlobAPITest extends APISpec {
 
         then:
         def e = thrown(StorageException)
-        e.statusCode() == 412
+        e.getStatusCode() == 412
         cu2.delete()
     }
 
@@ -1767,7 +1784,7 @@ class BlobAPITest extends APISpec {
 
         then:
         def e = thrown(StorageException)
-        e.errorCode() == StorageErrorCode.INVALID_HEADER_VALUE
+        e.getErrorCode() == StorageErrorCode.INVALID_HEADER_VALUE
     }
 
     def "Set tier illegal argument"() {

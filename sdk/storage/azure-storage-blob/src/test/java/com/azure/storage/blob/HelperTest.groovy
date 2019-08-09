@@ -28,7 +28,7 @@ class HelperTest extends APISpec {
         e.errorCode() == StorageErrorCode.INVALID_QUERY_PARAMETER_VALUE
         e.statusCode() == 400
         e.message().contains("Value for one of the query parameters specified in the request URI is invalid.")
-        e.getMessage().contains("<?xml") // Ensure that the details in the payload are printable
+        e.getServiceMessage().contains("<?xml") // Ensure that the details in the payload are printable
     }*/
 
     /*
