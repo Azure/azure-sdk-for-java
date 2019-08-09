@@ -23,7 +23,7 @@ public class Context {
      */
     public static final Context NONE = new Context(null, null, null);
 
-    private Context parent;
+    private final Context parent;
     private final Object key;
     private final Object value;
 
@@ -59,7 +59,6 @@ public class Context {
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Context addData(Object key, Object value) {
-        parent = null;
         if (key == null) {
             throw new IllegalArgumentException("key cannot be null");
         }
