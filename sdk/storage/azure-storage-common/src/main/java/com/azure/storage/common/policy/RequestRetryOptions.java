@@ -144,7 +144,7 @@ public final class RequestRetryOptions {
      * @return A {@code long} value of how many milliseconds to delay.
      */
     long calculateDelayInMs(int tryCount) {
-        long delay = 0;
+        long delay;
         switch (this.retryPolicyType) {
             case EXPONENTIAL:
                 delay = (pow(2L, tryCount - 1) - 1L) * this.retryDelayInMs;

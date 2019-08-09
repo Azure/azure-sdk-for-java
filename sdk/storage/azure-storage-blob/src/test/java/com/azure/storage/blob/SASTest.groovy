@@ -7,6 +7,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.storage.blob.BlobProperties
 import com.azure.storage.blob.models.*
 import com.azure.storage.common.Constants
+import com.azure.storage.common.IPRange
 import com.azure.storage.common.SASProtocol
 import com.azure.storage.common.Utility
 import com.azure.storage.common.credentials.SASTokenCredential
@@ -612,7 +613,7 @@ class SASTest extends APISpec {
         def token = v.generateSASQueryParameters(key)
 
         then:
-        token.signature() == Utility.computeHMac256(key, expectedStringToSign)
+        token.signature() == Utility.computeHMac256(key.value(), expectedStringToSign)
 
         /*
         We test string to sign functionality directly related to user delegation sas specific parameters

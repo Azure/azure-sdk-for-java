@@ -41,12 +41,10 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        HttpRequest httpRequest = context.httpRequest();
-        boolean considerSecondary = (httpRequest.httpMethod().equals(HttpMethod.GET)
-            || httpRequest.httpMethod().equals(HttpMethod.HEAD))
-            && (this.requestRetryOptions.secondaryHost() != null);
+        boolean considerSecondary = (this.requestRetryOptions.secondaryHost() != null)
+            && (HttpMethod.GET.equals(context.httpRequest().httpMethod()) || HttpMethod.HEAD.equals(context.httpRequest().httpMethod()));
 
-        return this.attemptAsync(httpRequest, next, 1, considerSecondary, 1);
+        return this.attemptAsync(context, next, context.httpRequest(), considerSecondary, 1, 1);
     }
 
     /**
@@ -59,16 +57,18 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
      * secondary gets a 404, don't fail, retry but future retries are only against the primary When retrying against a
      * secondary, ignore the retry count and wait (.1 second * random(0.8, 1.2))
      *
-     * @param httpRequest The request to try.
-     * @param primaryTry This indicates how man tries we've attempted against the primary DC.
+     * @param context The request to try.
+     * @param next The next policy to apply to the request.
+     * @param originalRequest The unmodified original request.
      * @param considerSecondary Before each try, we'll select either the primary or secondary URL if appropriate.
+     * @param primaryTry Number of attempts against the primary DC.
      * @param attempt This indicates the total number of attempts to send the request.
      * @return A single containing either the successful response or an error that was not retryable because either the
      * maxTries was exceeded or retries will not mitigate the issue.
      */
-    private Mono<HttpResponse> attemptAsync(final HttpRequest httpRequest, HttpPipelineNextPolicy next, final int primaryTry,
-                                            final boolean considerSecondary,
-                                            final int attempt) {
+    private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, HttpPipelineNextPolicy next,
+                                            final HttpRequest originalRequest, final boolean considerSecondary,
+                                            final int primaryTry, final int attempt) {
 
         // Determine which endpoint to try. It's primary if there is no secondary or if it is an odd number attempt.
         final boolean tryingPrimary = !considerSecondary || (attempt % 2 != 0);
@@ -91,14 +91,14 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
          ByteBuffers downstream will only actually consume a duplicate so the original is preserved. This only
          duplicates the ByteBuffer object, not the underlying data.
          */
-        Flux<ByteBuf> bufferedBody = httpRequest.body() == null
-            ? null : httpRequest.body().map(ByteBuf::duplicate);
-        httpRequest.body(bufferedBody);
+        context.httpRequest(originalRequest.buffer());
+        Flux<ByteBuf> bufferedBody = (context.httpRequest().body() == null) ? null : context.httpRequest().body().map(ByteBuf::duplicate);
+        context.httpRequest().body(bufferedBody);
         if (!tryingPrimary) {
-            UrlBuilder builder = UrlBuilder.parse(httpRequest.url());
+            UrlBuilder builder = UrlBuilder.parse(context.httpRequest().url());
             builder.host(this.requestRetryOptions.secondaryHost());
             try {
-                httpRequest.url(builder.toURL());
+                context.httpRequest().url(builder.toURL());
             } catch (MalformedURLException e) {
                 return Mono.error(e);
             }
@@ -137,14 +137,11 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                         we do not consider the secondary at all (considerSecondary==false)). This will
                         ensure primaryTry is correct when passed to calculate the delay.
                          */
-                    int newPrimaryTry = !tryingPrimary || !considerSecondary
-                        ? primaryTry + 1 : primaryTry;
-                    return attemptAsync(httpRequest, next, newPrimaryTry, newConsiderSecondary,
-                        attempt + 1);
+                    int newPrimaryTry = (!tryingPrimary || !considerSecondary) ? primaryTry + 1 : primaryTry;
+                    return attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry, attempt +1);
                 }
                 return Mono.just(response);
-            })
-            .onErrorResume(throwable -> {
+            }).onErrorResume(throwable -> {
                     /*
                     It is likely that many users will not realize that their Flux must be replayable and
                     get an error upon retries when the provided data length does not match the length of the exact
@@ -181,10 +178,8 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                         we do not consider the secondary at all (considerSecondary==false)). This will
                         ensure primaryTry is correct when passed to calculate the delay.
                          */
-                    int newPrimaryTry = !tryingPrimary || !considerSecondary
-                        ? primaryTry + 1 : primaryTry;
-                    return attemptAsync(httpRequest, next, newPrimaryTry, considerSecondary,
-                        attempt + 1);
+                    int newPrimaryTry = (!tryingPrimary || !considerSecondary) ? primaryTry + 1 : primaryTry;
+                    return attemptAsync(context, next, originalRequest, considerSecondary, newPrimaryTry, attempt + 1);
                 }
                 return Mono.error(throwable);
             });

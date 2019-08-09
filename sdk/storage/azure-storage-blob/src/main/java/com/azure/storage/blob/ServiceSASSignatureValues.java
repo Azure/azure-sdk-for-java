@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.Constants;
+import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
