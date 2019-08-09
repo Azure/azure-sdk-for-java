@@ -4,12 +4,15 @@
 package com.azure.storage.common.credentials;
 
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.storage.blob.SASQueryParameters;
+
+import java.util.Map;
 
 /**
  * Holds a SAS token used for authenticating requests.
  */
 public final class SASTokenCredential {
+    private static final String SIGNATURE = "sig";
+
     private final String sasToken;
 
     /**
@@ -43,17 +46,27 @@ public final class SASTokenCredential {
     }
 
     /**
-     * Creates a SAS token credential from the passed {@link SASQueryParameters}.
+     * Creates a SAS token credential from the passed query string parameters.
      *
-     * @param queryParameters SAS token query parameters object
+     * @param queryParameters URL query parameters
      * @return a SAS token credential if {@code queryParameters} is not {@code null} and has
-     * {@link SASQueryParameters#signature() signature} set, otherwise returns {@code null}.
+     * the signature ("sig") query parameter, otherwise returns {@code null}.
      */
-    public static SASTokenCredential fromQueryParameters(SASQueryParameters queryParameters) {
-        if (queryParameters == null || ImplUtils.isNullOrEmpty(queryParameters.signature())) {
+    public static SASTokenCredential fromQueryParameters(Map<String, String> queryParameters) {
+        if (ImplUtils.isNullOrEmpty(queryParameters) || !queryParameters.containsKey(SIGNATURE)) {
             return null;
         }
 
-        return new SASTokenCredential(queryParameters.encode());
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, String> kvp : queryParameters.entrySet()) {
+            if (sb.length() != 0) {
+                sb.append("&");
+
+            }
+
+            sb.append(kvp.getKey()).append("=").append(kvp.getValue());
+        }
+
+        return new SASTokenCredential(sb.toString());
     }
 }

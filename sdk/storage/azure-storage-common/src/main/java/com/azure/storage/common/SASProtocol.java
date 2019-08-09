@@ -1,13 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.common;
 
 import java.util.Locale;
 
 /**
- * Specifies the set of possible permissions for a shared access signature protocol. Values of this type can be used
- * to set the fields on the {@link AccountSASSignatureValues} and {@link ServiceSASSignatureValues} types.
+ * Specifies the set of possible permissions for a shared access signature protocol.
  */
 public enum SASProtocol {
     /**
@@ -42,7 +41,7 @@ public enum SASProtocol {
             return SASProtocol.HTTPS_HTTP;
         }
         throw new IllegalArgumentException(String.format(Locale.ROOT,
-                "%s could not be parsed into a SASProtocl value.", str));
+            "%s could not be parsed into a SASProtocol value.", str));
     }
 
     @Override

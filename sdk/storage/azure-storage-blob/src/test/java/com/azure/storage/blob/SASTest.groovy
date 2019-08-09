@@ -8,6 +8,10 @@ import com.azure.storage.blob.models.AccessPolicy
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.SignedIdentifier
 import com.azure.storage.blob.models.UserDelegationKey
+import com.azure.storage.common.Constants
+import com.azure.storage.common.IPRange
+import com.azure.storage.common.SASProtocol
+import com.azure.storage.common.Utility
 import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
 import spock.lang.Unroll
@@ -611,7 +615,7 @@ class SASTest extends APISpec {
         def token = v.generateSASQueryParameters(key)
 
         then:
-        token.signature() == Utility.delegateComputeHmac256(key, expectedStringToSign)
+        token.signature() == Utility.computeHMac256(key.value(), expectedStringToSign)
 
         /*
         We test string to sign functionality directly related to user delegation sas specific parameters
@@ -849,11 +853,11 @@ class SASTest extends APISpec {
 
         where:
         usingUserDelegation | version                                          | canonicalName            | expiryTime                                                | permissions                                   | identifier | resource | snapshotId
-        false               | null                                             | null                     | null                                                      | null                                          | null       | null     | null
-        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | null                     | null                                                      | null                                          | null       | null     | null
-        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | null                                                      | null                                          | null       | null     | null
-        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                          | null       | null     | null
-        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | null                                                      | new BlobSASPermission().read(true).toString() | null       | null     | null
+        false               | null                                             | null                     | null                                                      | null                                          | null | null | null
+        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | null                     | null                                                      | null                                          | null | null | null
+        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | null                                                      | null                                          | null | null | null
+        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                          | null | null | null
+        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | null                                                      | new BlobSASPermission().read(true).toString() | null | null | null
         false               | null                                             | null                     | null                                                      | null                                          | "0000"     | "c"      | "id"
     }
 
@@ -1071,6 +1075,6 @@ class SASTest extends APISpec {
         parts.sasQueryParameters().permissions() == "r"
         parts.sasQueryParameters().version() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
         parts.sasQueryParameters().resource() == "c"
-        parts.sasQueryParameters().signature() == Utility.safeURLDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
+        parts.sasQueryParameters().signature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
     }
 }

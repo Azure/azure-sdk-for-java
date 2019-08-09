@@ -246,7 +246,7 @@ public final class BlobClientBuilder {
             this.blobName = parts.blobName();
             this.snapshot = parts.snapshot();
 
-            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(parts.sasQueryParameters());
+            this.sasTokenCredential = SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode());
             if (this.sasTokenCredential != null) {
                 this.tokenCredential = null;
                 this.sharedKeyCredential = null;

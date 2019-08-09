@@ -750,6 +750,7 @@
     <module>./sdk/tracing/tracing-opentelemetry</module>
     <module>./sdk/identity/azure-identity</module>
     <module>./sdk/storage/azure-storage-blob</module>
+    <module>./sdk/storage/azure-storage-common</module>
     <module>./sdk/storage/azure-storage-file</module>
     <module>./sdk/storage/azure-storage-queue</module>
   </modules>
