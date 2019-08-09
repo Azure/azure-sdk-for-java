@@ -15,6 +15,6 @@
     <module>../core/azure-core</module>
     <module>../core/azure-core-test</module>
     <module>../core/azure-core-amqp</module>
-    <module>azure-eventhubs</module>
+    <module>azure-messaging-eventhubs</module>
   </modules>
 </project>
