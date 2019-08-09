@@ -14,6 +14,7 @@ jobs:
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
         ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
+        SECONDARY_ACCOUNT_KEY: $(java-cosmos-session-singleregion-secondary-key)
       MaxParallel: 1
       Matrix:
         # 59m 59s, timed out
@@ -65,6 +66,7 @@ jobs:
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-session-singleregion-one-host)
         ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-key)
+        SECONDARY_ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-secondary-key)
         DESIRED_CONSISTENCIES: '["Session"]'
         PROTOCOLS: '["Tcp"]'
       MaxParallel: 1
@@ -126,6 +128,7 @@ jobs:
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
         ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
+        SECONDARY_ACCOUNT_KEY: $(java-cosmos-strong-singleregion-secondary-key)
       MaxParallel: 1
       Matrix:
         # 09m 32s, expect passed
@@ -179,6 +182,7 @@ jobs:
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
         ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
+        SECONDARY_ACCOUNT_KEY: $(java-cosmos-strong-singleregion-secondary-key)
       MaxParallel: 1
       Matrix:
         # 59m 58s, timed out
@@ -239,6 +243,7 @@ jobs:
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-multimaster-multiregion-host)
         ACCOUNT_KEY: $(java-cosmos-multimaster-multiregion-key)
+        SECONDARY_ACCOUNT_KEY: $(java-cosmos-multimaster-multiregion-secondary-key)
         DESIRED_CONSISTENCIES: '["Session"]'
         PREFERRED_LOCATIONS: '["East US 2"]'
       MaxParallel: 1
@@ -293,6 +298,7 @@ jobs:
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-multimaster-singleregion-host)
         ACCOUNT_KEY: $(java-cosmos-multimaster-singleregion-key)
+        SECONDARY_ACCOUNT_KEY: $(java-cosmos-multimaster-singleregion-secondary-key)
         DESIRED_CONSISTENCIES: '["Session"]'
         PREFERRED_LOCATIONS: null
       MaxParallel: 1

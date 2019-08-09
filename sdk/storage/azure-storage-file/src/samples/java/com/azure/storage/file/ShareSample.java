@@ -1,14 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.file;
+package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.configuration.ConfigurationManager;
-import com.azure.storage.file.FileClient;
-import com.azure.storage.file.ShareClient;
-import com.azure.storage.file.ShareClientBuilder;
 import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.StorageErrorException;
+
 import java.util.UUID;
 
 /**
