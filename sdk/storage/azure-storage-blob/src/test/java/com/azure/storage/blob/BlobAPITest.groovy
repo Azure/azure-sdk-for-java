@@ -17,8 +17,10 @@ import com.azure.storage.blob.models.BlobHTTPHeaders
 import com.azure.storage.blob.models.BlobItem
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobType
+import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType
 import com.azure.storage.blob.models.LeaseAccessConditions
+import com.azure.storage.blob.models.LeaseDurationType
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
 import com.azure.storage.blob.models.Metadata
@@ -28,6 +30,7 @@ import com.azure.storage.blob.models.ReliableDownloadOptions
 import com.azure.storage.blob.models.StorageAccountInfo
 import com.azure.storage.blob.models.StorageErrorCode
 import com.azure.storage.blob.models.StorageException
+import com.azure.storage.blob.models.SyncCopyStatusType
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Unroll
