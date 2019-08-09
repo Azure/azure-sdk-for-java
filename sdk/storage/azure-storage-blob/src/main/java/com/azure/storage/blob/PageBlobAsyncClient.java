@@ -7,7 +7,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -20,6 +20,7 @@ import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
+import com.azure.storage.common.Constants;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -27,7 +28,7 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static com.azure.storage.blob.Utility.postProcessResponse;
+import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
 /**
  * Client to a page blob. It may only be instantiated through a {@link BlobClientBuilder}, via
@@ -65,10 +66,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
-     * @param azureBlobStorageBuilder the API client builder for blob storage API
+     * @param azureBlobStorage the API client for blob storage
      */
-    PageBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {
-        super(azureBlobStorageBuilder, snapshot);
+    PageBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot) {
+        super(azureBlobStorage, snapshot);
     }
 
     /**

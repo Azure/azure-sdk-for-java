@@ -2,7 +2,8 @@
 Azure Queue storage is a service for storing large numbers of messages that can be accessed from anywhere in the world via authenticated calls using HTTP or HTTPS. 
 A single queue message can be up to 64 KB in size, and a queue can contain millions of messages, up to the total capacity limit of a storage account.
 
-[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation] | [Product documentation][storage_docs]
+[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][storage_docs] |
+[Samples][samples]
 
 ## Getting started
 
@@ -10,15 +11,15 @@ A single queue message can be up to 64 KB in size, and a queue can contain milli
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
 - [Azure Subscription][azure_subscription]
-- [Create Strorage Account][storage_account]
+- [Create Storage Account][storage_account]
 
 ### Adding the package to your product
 
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
-  <artifactId>azure-storage</artifactId>
-  <version>12.0.0</version>
+  <artifactId>azure-storage-queue</artifactId>
+  <version>12.0.0-preview.2</version>
 </dependency>
 ```
 
@@ -169,19 +170,19 @@ queueAsyncClient.create(metadata, timeout).subscribe(
 
 The following sections provide several code snippets covering some of the most common Configuration Service tasks, including:
 - [Build a client](#build-a-client)
-- [Create a Queue](#Create-a-queue)
-- [Delete a queue](#Delete-a-queue)
-- [List the queues in account](#List-queues-in-account)
-- [Get propertiesin Queue account](#Get-properties-in-queue-account)
-- [Set propertiesin Queue account](#Set-properties-in-queue-account)
-- [Get statistcs of queue](#Get-queue-service-statistics)
-- [Enqueue message into a queue](#Enqueue-message-into-a-queue)
-- [Update message into a queue](#Update-message-into-a-queue)
-- [Peek messages into a queue](#Peek-messages-into-a-queue)
-- [Dequeue messages from a queue](#Dequeue-messages-from-a-queue)
-- [Delete message from a queue](#Delete-message-from-a-queue)
-- [Get a Queue properties](#Get-a-queue-properties)
-- [Set/Update a Queue metadata](#Set-a-queue-metadata)
+- [Create a Queue](#create-a-queue)
+- [Delete a queue](#delete-a-queue)
+- [List the queues in account](#list-queues-in-account)
+- [Get properties in Queue account](#get-properties-in-queue-account)
+- [Set properties in Queue account](#set-properties-in-queue-account)
+- [Get statistics of queue](#get-queue-service-statistics)
+- [Enqueue message into a queue](#enqueue-message-into-a-queue)
+- [Update a message in a queue](#update-a-message-in-a-queue)
+- [Peek at messages in a queue](#peek-at-messages-in-a-queue)
+- [Dequeue messages from a queue](#dequeue-messages-from-a-queue)
+- [Delete message from a queue](#delete-message-from-a-queue)
+- [Get a Queue properties](#get-a-queue-properties)
+- [Set/Update a Queue metadata](#set-a-queue-metadata)
 
 ### Build a client
 We have two ways of building QueueService or Queue Client. Here will take queueServiceClient as an example. Same things apply to queueClient.
@@ -292,7 +293,7 @@ QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).credential
 queueClient.enqueueMessage("myMessage");
 ```
 
-### Update messaged from a queue
+### Update a message in a queue
 The operation updates a message in the message queue. Use `${SASToken}` as credential.
 ```Java
 String queueSURL = String.format("https://%s.queue.core.windows.net", accountName);
@@ -303,7 +304,7 @@ QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).credential
 queueClient.updateMessage(messageId, "new message", popReceipt, visibilityTimeout);
 ```
 
-### Peek messages from a queue
+### Peek at messages in a queue
 The operation retrieves one or more messages from the front of the queue. Use `${SASToken}` as credential.
 ```Java
 String queueSURL = String.format("https://%s.queue.core.windows.net", accountName);
@@ -367,14 +368,11 @@ When you interact with queue using this Java client library, errors returned by 
 
 ## Next steps
 
-### More Samples
 Get started with our [Queue samples][samples]:
-- [QueueServiceSample](src/samples/java/queue/QueueServiceSample.java): Create, list and delete queues
-- [MessageSample](src/samples/java/queue/MessageSample.java): Enqueue, peek dequeue, update, clear and delete messages. Get properties of the queue.
-- [QueueExceptionSample](src/samples/java/queue/QueueExceptionSample.java): Handle the exceptions from storage queue service side.
-- [AsyncSample](src/samples/java/queue/AsyncSample.java): Create queue and enqueue message using async queue client call.
-
-[Quickstart: Create a Java Spring app with App Configuration](https://docs.microsoft.com/en-us/azure/azure-app-configuration/quickstart-java-spring-app)
+- [QueueServiceSample][samples_queue_service]: Create, list and delete queues
+- [MessageSample][samples_message]: Enqueue, peek dequeue, update, clear and delete messages. Get properties of the queue.
+- [QueueExceptionSample][samples_queue_exception]: Handle the exceptions from storage queue service side.
+- [AsyncSample][samples_async]: Create queue and enqueue message using async queue client call.
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
@@ -398,15 +396,18 @@ If you would like to become an active contributor to this project please follow 
 5. Create new Pull Request
 
 <!-- LINKS -->
-[source_code]: to-be-continue
-[package]: to-be-continue
-[api_documentation]: https://docs.microsoft.com/en-us/rest/api/storageservices/queue-service-rest-api
-[storage_docs]: https://docs.microsoft.com/en-us/azure/storage/queues/storage-queues-introduction
-[jdk]: https://docs.microsoft.com/en-us/java/azure/java-supported-jdk-runtime?view=azure-java-stable
+[source_code]: src
+[api_documentation]: https://docs.microsoft.com/rest/api/storageservices/queue-service-rest-api
+[storage_docs]: https://docs.microsoft.com/azure/storage/queues/storage-queues-introduction
+[jdk]: https://docs.microsoft.com/java/azure/java-supported-jdk-runtime?view=azure-java-stable
 [maven]: https://maven.apache.org/
-[azure_subscription]: https://azure.microsoft.com/en-us/free/
-[storage_account]: https://docs.microsoft.com/en-us/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[azure_subscription]: https://azure.microsoft.com/free/
+[storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [azure_cli]: https://docs.microsoft.com/cli/azure
-[sas_token]: https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1
-[storage_rest]: https://docs.microsoft.com/en-us/rest/api/storageservices/queue-service-error-codes
-[samples]: samples/
+[sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+[storage_rest]: https://docs.microsoft.com/rest/api/storageservices/queue-service-error-codes
+[samples]: src/samples
+[samples_queue_service]: src/samples/java/com/azure/storage/queue/QueueServiceSamples.java
+[samples_message]: src/samples/java/com/azure/storage/queue/MessageSamples.java
+[samples_queue_exception]: src/samples/java/com/azure/storage/queue/QueueExceptionSamples.java
+[samples_async]: src/samples/java/com/azure/storage/queue/AsyncSamples.java

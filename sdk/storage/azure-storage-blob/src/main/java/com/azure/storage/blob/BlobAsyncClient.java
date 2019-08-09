@@ -25,6 +25,10 @@ import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.Constants;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
@@ -44,7 +48,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.azure.storage.blob.Utility.postProcessResponse;
+import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
 /**
  * Client to a blob of any type: block, append, or page. It may only be instantiated through a {@link BlobClientBuilder}
@@ -81,10 +85,10 @@ public class BlobAsyncClient {
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
      *
-     * @param azureBlobStorageBuilder the API client builder for blob storage API
+     * @param azureBlobStorage the API client for blob storage
      */
-    BlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {
-        this.azureBlobStorage = azureBlobStorageBuilder.build();
+    BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot) {
+        this.azureBlobStorage = azureBlobStorage;
         this.snapshot = snapshot;
     }
 
@@ -97,7 +101,8 @@ public class BlobAsyncClient {
     public BlockBlobAsyncClient asBlockBlobAsyncClient() {
         return new BlockBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(getBlobUrl().toString())
-            .pipeline(azureBlobStorage.getHttpPipeline()), snapshot);
+            .pipeline(azureBlobStorage.getHttpPipeline())
+            .build(), snapshot);
     }
 
     /**
@@ -109,7 +114,8 @@ public class BlobAsyncClient {
     public AppendBlobAsyncClient asAppendBlobAsyncClient() {
         return new AppendBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(getBlobUrl().toString())
-            .pipeline(azureBlobStorage.getHttpPipeline()), snapshot);
+            .pipeline(azureBlobStorage.getHttpPipeline())
+            .build(), snapshot);
     }
 
     /**
@@ -121,7 +127,21 @@ public class BlobAsyncClient {
     public PageBlobAsyncClient asPageBlobAsyncClient() {
         return new PageBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(getBlobUrl().toString())
-            .pipeline(azureBlobStorage.getHttpPipeline()), snapshot);
+            .pipeline(azureBlobStorage.getHttpPipeline())
+            .build(), snapshot);
+    }
+
+    /**
+     * Creates a new {@link BlobAsyncClient} linked to the {@code snapshot} of this blob resource.
+     *
+     * @param snapshot the identifier for a specific snapshot of this blob
+     * @return a {@link BlobAsyncClient} used to interact with the specific snapshot.
+     */
+    public BlobAsyncClient getSnapshotClient(String snapshot) {
+        return new BlobAsyncClient(new AzureBlobStorageBuilder()
+            .url(getBlobUrl().toString())
+            .pipeline(azureBlobStorage.getHttpPipeline())
+            .build(), snapshot);
     }
 
     /**
@@ -135,7 +155,8 @@ public class BlobAsyncClient {
         BlobURLParts parts = URLParser.parse(getBlobUrl());
         return new ContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(String.format("%s://%s/%s", parts.scheme(), parts.host(), parts.containerName()))
-            .pipeline(azureBlobStorage.getHttpPipeline()));
+            .pipeline(azureBlobStorage.getHttpPipeline())
+            .build());
     }
 
     /**
@@ -676,7 +697,7 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Creates a read-only snapshot of a blob.
+     * Creates a read-only snapshot of the blob.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -685,14 +706,15 @@ public class BlobAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
      *
-     * @return A reactive response containing the ID of the new snapshot.
+     * @return A response containing a {@link BlobAsyncClient} which is used to interact with the created snapshot, use
+     * {@link BlobAsyncClient#getSnapshotId()} to get the identifier for the snapshot.
      */
-    public Mono<Response<String>> createSnapshot() {
+    public Mono<Response<BlobAsyncClient>> createSnapshot() {
         return this.createSnapshot(null, null);
     }
 
     /**
-     * Creates a read-only snapshot of a blob.
+     * Creates a read-only snapshot of the blob.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -703,9 +725,10 @@ public class BlobAsyncClient {
      *
      * @param metadata {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
-     * @return A reactive response containing the ID of the new snapshot.
+     * @return A response containing a {@link BlobAsyncClient} which is used to interact with the created snapshot, use
+     * {@link BlobAsyncClient#getSnapshotId()} to get the identifier for the snapshot.
      */
-    public Mono<Response<String>> createSnapshot(Metadata metadata, BlobAccessConditions accessConditions) {
+    public Mono<Response<BlobAsyncClient>> createSnapshot(Metadata metadata, BlobAccessConditions accessConditions) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
@@ -713,7 +736,7 @@ public class BlobAsyncClient {
             null, null, null, metadata, null, null,
             null, null, accessConditions.modifiedAccessConditions(),
             accessConditions.leaseAccessConditions(), Context.NONE))
-            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().snapshot()));
+            .map(rb -> new SimpleResponse<>(rb, this.getSnapshotClient(rb.deserializedHeaders().snapshot())));
     }
 
     /**

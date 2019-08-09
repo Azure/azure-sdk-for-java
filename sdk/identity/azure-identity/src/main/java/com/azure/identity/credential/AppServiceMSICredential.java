@@ -4,34 +4,41 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
+import com.azure.core.implementation.annotation.Immutable;
 import com.azure.core.util.configuration.BaseConfigurations;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
-import com.azure.identity.IdentityClient;
+import com.azure.identity.implementation.IdentityClient;
 import reactor.core.publisher.Mono;
 
 /**
  * The Managed Service Identity credential for App Service.
  */
+@Immutable
 class AppServiceMSICredential {
-    private String msiEndpoint;
-    private String msiSecret;
+    private final String msiEndpoint;
+    private final String msiSecret;
     private final IdentityClient identityClient;
-    private String clientId;
+    private final String clientId;
 
     /**
      * Creates an instance of AppServiceMSICredential.
+     * @param clientId the client id of user assigned or system assigned identity
      * @param identityClient the identity client to acquire a token with.
      */
-    AppServiceMSICredential(IdentityClient identityClient) {
+    AppServiceMSICredential(String clientId, IdentityClient identityClient) {
         Configuration configuration = ConfigurationManager.getConfiguration();
         if (configuration.contains(BaseConfigurations.MSI_ENDPOINT)) {
             msiEndpoint = configuration.get(BaseConfigurations.MSI_ENDPOINT);
-        }
+        } else
+            msiEndpoint = null;
         if (configuration.contains(BaseConfigurations.MSI_SECRET)) {
             msiSecret = configuration.get(BaseConfigurations.MSI_SECRET);
+        } else {
+            msiSecret = null;
         }
         this.identityClient = identityClient;
+        this.clientId = clientId;
     }
 
     /**
@@ -48,41 +55,10 @@ class AppServiceMSICredential {
     }
 
     /**
-     * Specifies the Managed Service Identity endpoint for the App Service.
-     * @param msiEndpoint the end point for acquiring a token on App Service.
-     * @return AppServiceMSICredential
-     */
-    public AppServiceMSICredential msiEndpoint(String msiEndpoint) {
-        this.msiEndpoint = msiEndpoint;
-        return this;
-    }
-
-    /**
-     * Specifies the Managed Service Identity secret for the App Service.
-     * @param msiSecret the secret for acquiring a token on App Service.
-     * @return AppServiceMSICredential
-     */
-    public AppServiceMSICredential msiSecret(String msiSecret) {
-        this.msiSecret = msiSecret;
-        return this;
-    }
-
-    /**
      * @return the client id of user assigned or system assigned identity.
      */
     public String clientId() {
         return this.clientId;
-    }
-
-    /**
-     * Specifies the client id of user assigned or system assigned identity.
-     *
-     * @param clientId the client id
-     * @return VirtualMachineMSICredential
-     */
-    public AppServiceMSICredential clientId(String clientId) {
-        this.clientId = clientId;
-        return this;
     }
 
     /**
@@ -91,6 +67,6 @@ class AppServiceMSICredential {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticate(String[] scopes) {
-        return identityClient.authenticateToManagedIdentityEnpoint(msiEndpoint, msiSecret, clientId(), scopes);
+        return identityClient.authenticateToManagedIdentityEndpoint(msiEndpoint, msiSecret, scopes);
     }
 }

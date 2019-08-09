@@ -6,7 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobAccessConditions;
@@ -14,13 +14,14 @@ import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
+import com.azure.storage.common.Constants;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
 
-import static com.azure.storage.blob.Utility.postProcessResponse;
+import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
 
 /**
@@ -59,10 +60,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
-     * @param azureBlobStorageBuilder the API client builder for blob storage API
+     * @param azureBlobStorage the API client for blob storage
      */
-    AppendBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {
-        super(azureBlobStorageBuilder, snapshot);
+    AppendBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot) {
+        super(azureBlobStorage, snapshot);
     }
 
     /**

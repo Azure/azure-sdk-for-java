@@ -11,6 +11,7 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
         super.desiredConsistencyLevel = builder.desiredConsistencyLevel;
         super.masterKeyOrResourceToken = builder.masterKeyOrResourceToken;
         super.serviceEndpoint = builder.serviceEndpoint;
+        super.cosmosKeyCredential = builder.cosmosKeyCredential;
     }
 
     public SpyClientUnderTestFactory.ClientUnderTest build() {
@@ -19,7 +20,7 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
                 masterKeyOrResourceToken,
                 connectionPolicy,
                 desiredConsistencyLevel,
-                configs);
+                configs, cosmosKeyCredential);
     }
 
     public SpyClientUnderTestFactory.ClientWithGatewaySpy buildWithGatewaySpy() {
@@ -28,7 +29,7 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
                 masterKeyOrResourceToken,
                 connectionPolicy,
                 desiredConsistencyLevel,
-                configs);
+                configs, cosmosKeyCredential);
     }
 
     public SpyClientUnderTestFactory.DirectHttpsClientUnderTest buildWithDirectHttps() {
@@ -36,6 +37,6 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
                 serviceEndpoint,
                 masterKeyOrResourceToken,
                 connectionPolicy,
-                desiredConsistencyLevel);
+                desiredConsistencyLevel, cosmosKeyCredential);
     }
 }

@@ -231,7 +231,7 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void createSnapshot() {
         // BEGIN: com.azure.storage.blob.BlobClient.createSnapshot
-        System.out.printf("Identifier for the snapshot is %s%n", client.createSnapshot().value());
+        System.out.printf("Identifier for the snapshot is %s%n", client.createSnapshot().value().getSnapshotId());
         // END: com.azure.storage.blob.BlobClient.createSnapshot
 
         // BEGIN: com.azure.storage.blob.BlobClient.createSnapshot#Metadata-BlobAccessConditions-Duration
@@ -240,7 +240,7 @@ public class BlobClientJavaDocCodeSnippets {
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId));
 
         System.out.printf("Identifier for the snapshot is %s%n",
-            client.createSnapshot(snapshotMetadata, accessConditions, timeout).value());
+            client.createSnapshot(snapshotMetadata, accessConditions, timeout).value().getSnapshotId());
         // END: com.azure.storage.blob.BlobClient.createSnapshot#Metadata-BlobAccessConditions-Duration
     }
 

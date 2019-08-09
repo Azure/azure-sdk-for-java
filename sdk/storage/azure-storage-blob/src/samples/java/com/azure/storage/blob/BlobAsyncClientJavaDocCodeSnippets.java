@@ -239,7 +239,8 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void createSnapshot() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.createSnapshot
         client.createSnapshot()
-            .subscribe(response -> System.out.printf("Identifier for the snapshot is %s%n", response.value()));
+            .subscribe(response -> System.out.printf("Identifier for the snapshot is %s%n",
+                response.value().getSnapshotId()));
         // END: com.azure.storage.blob.BlobAsyncClient.createSnapshot
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.createSnapshot#Metadata-BlobAccessConditions
@@ -248,7 +249,8 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId));
 
         client.createSnapshot(snapshotMetadata, accessConditions)
-            .subscribe(response -> System.out.printf("Identifier for the snapshot is %s%n", response.value()));
+            .subscribe(response -> System.out.printf("Identifier for the snapshot is %s%n",
+                response.value().getSnapshotId()));
         // END: com.azure.storage.blob.BlobAsyncClient.createSnapshot#Metadata-BlobAccessConditions
     }
 

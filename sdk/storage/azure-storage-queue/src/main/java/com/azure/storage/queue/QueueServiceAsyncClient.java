@@ -220,7 +220,7 @@ public final class QueueServiceAsyncClient {
     private Flux<QueueItem> listQueues(ServicesListQueuesSegmentResponse response, List<ListQueuesIncludeType> include, Context context) {
         ListQueuesSegmentResponse value = response.value();
         Mono<ServicesListQueuesSegmentResponse> result = client.services()
-            .listQueuesSegmentWithRestResponseAsync(value.prefix(), value.marker(), value.maxResults(), include, null, null, context);
+            .listQueuesSegmentWithRestResponseAsync(value.prefix(), value.nextMarker(), value.maxResults(), include, null, null, context);
 
         return result.flatMapMany(r -> extractAndFetchQueues(r, include, context));
     }

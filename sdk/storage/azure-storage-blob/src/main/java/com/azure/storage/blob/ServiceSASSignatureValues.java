@@ -4,11 +4,14 @@
 package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.Constants;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
 
 /**
@@ -410,21 +413,15 @@ final class ServiceSASSignatureValues {
      *
      * @param sharedKeyCredentials A {@link SharedKeyCredential} object used to sign the SAS values.
      * @return {@link SASQueryParameters}
-     * @throws Error If the accountKey is not a valid Base64-encoded string.
+     * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
+     * encoded string, or the UTF-8 charset isn't supported.
      */
     public SASQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
         assertGenerateOK(false);
 
         // Signature is generated on the un-url-encoded values.
-        final String stringToSign = stringToSign();
-
-        String signature;
-        try {
-            signature = sharedKeyCredentials.computeHmac256(stringToSign);
-        } catch (InvalidKeyException e) {
-            throw new Error(e); // The key should have been validated by now. If it is no longer valid here, we fail.
-        }
+        String signature = sharedKeyCredentials.computeHmac256(stringToSign());
 
         return new SASQueryParameters(this.version, null, null,
             this.protocol, this.startTime, this.expiryTime, this.ipRange, this.identifier, resource,
@@ -437,21 +434,15 @@ final class ServiceSASSignatureValues {
      *
      * @param delegationKey A {@link UserDelegationKey} object used to sign the SAS values.
      * @return {@link SASQueryParameters}
-     * @throws Error If the accountKey is not a valid Base64-encoded string.
+     * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
+     * encoded string, or the UTF-8 charset isn't supported.
      */
     public SASQueryParameters generateSASQueryParameters(UserDelegationKey delegationKey) {
         Utility.assertNotNull("delegationKey", delegationKey);
         assertGenerateOK(true);
 
         // Signature is generated on the un-url-encoded values.
-        final String stringToSign = stringToSign(delegationKey);
-
-        String signature;
-        try {
-            signature = Utility.delegateComputeHmac256(delegationKey, stringToSign);
-        } catch (InvalidKeyException e) {
-            throw new Error(e); // The key should have been validated by now. If it is no longer valid here, we fail.
-        }
+        String signature = Utility.computeHMac256(delegationKey.value(), stringToSign(delegationKey));
 
         return new SASQueryParameters(this.version, null, null,
             this.protocol, this.startTime, this.expiryTime, this.ipRange, null /* identifier */, resource,
@@ -487,7 +478,7 @@ final class ServiceSASSignatureValues {
             this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             this.canonicalName == null ? "" : this.canonicalName,
             this.identifier == null ? "" : this.identifier,
-            this.ipRange == null ? (new IPRange()).toString() : this.ipRange.toString(),
+            this.ipRange == null ? "" : this.ipRange.toString(),
             this.protocol == null ? "" : protocol.toString(),
             this.version == null ? "" : this.version,
             this.resource == null ? "" : this.resource,
@@ -512,7 +503,7 @@ final class ServiceSASSignatureValues {
             key.signedExpiry() == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(key.signedExpiry()),
             key.signedService() == null ? "" : key.signedService(),
             key.signedVersion() == null ? "" : key.signedVersion(),
-            this.ipRange == null ? new IPRange().toString() : this.ipRange.toString(),
+            this.ipRange == null ? "" : this.ipRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
             this.version == null ? "" : this.version,
             this.resource == null ? "" : this.resource,
