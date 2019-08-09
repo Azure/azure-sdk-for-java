@@ -152,36 +152,36 @@ public class ClientLogger {
     }
 
     /**
-     * Attempts to log the exception at the warning level and returns it to be thrown.
+     * Attempts to log the {@link RuntimeException} at the warning level and returns it to be thrown.
      *
-     * @param exception Exception to be logged and returned.
+     * @param runtimeException RuntimeException to be logged and returned.
      * @return the passed {@code RuntimeException}
      * @throws NullPointerException If {@code runtimeException} is {@code null}.
      */
-    public Exception logExceptionAsWarning(Exception exception) {
-        return logException(exception, WARNING_LEVEL);
+    public RuntimeException logExceptionAsWarning(RuntimeException runtimeException) {
+        return logException(runtimeException, WARNING_LEVEL);
     }
 
     /**
-     * Attempts to log the exception at the error level and returns it to be thrown.
+     * Attempts to log the {@link RuntimeException} at the error level and returns it to be thrown.
      *
-     * @param exception Exception to be logged and returned.
+     * @param runtimeException RuntimeException to be logged and returned.
      * @return the passed {@code RuntimeException}
      * @throws NullPointerException If {@code runtimeException} is {@code null}.
      */
-    public Exception logExceptionAsError(Exception exception) {
-        return logException(exception, ERROR_LEVEL);
+    public RuntimeException logExceptionAsError(RuntimeException runtimeException) {
+        return logException(runtimeException, ERROR_LEVEL);
     }
 
-    private Exception logException(Exception exception, int logLevel) {
-        Objects.requireNonNull(exception);
+    private RuntimeException logException(RuntimeException runtimeException, int logLevel) {
+        Objects.requireNonNull(runtimeException);
 
         // Only log if the level is enabled.
         if (canLogAtLevel(logLevel)) {
-            log(logLevel, exception.getMessage(), exception);
+            log(logLevel, runtimeException.getMessage(), runtimeException);
         }
 
-        return exception;
+        return runtimeException;
     }
 
     /*

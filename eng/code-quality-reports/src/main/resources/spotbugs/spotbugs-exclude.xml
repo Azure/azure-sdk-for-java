@@ -537,4 +537,9 @@
     <Class name="com.azure.storage.blob.ServiceSASSignatureValues"/>
     <Bug pattern="UC_USELESS_CONDITION"/>
   </Match>
+
+<!--  <Match>-->
+<!--    <Class name="com.azure.core.util.polling.Poller"/>-->
+<!--    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>-->
+<!--  </Match>-->
 </FindBugsFilter>
