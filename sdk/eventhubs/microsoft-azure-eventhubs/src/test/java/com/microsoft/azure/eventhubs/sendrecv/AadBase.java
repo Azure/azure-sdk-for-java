@@ -67,10 +67,15 @@ public abstract class AadBase extends ApiTestBase {
         // Open a receiver
         final PartitionReceiver pReceiver = ehc.createReceiverSync("$Default", "0", EventPositionImpl.fromEndOfStream());
 
-        // Open a sender and do a send.
+        // Do some sends via the EventHubClient
+        for (int i = 0; i < 50; i++) {
+            ehc.send(EventData.create(("blah" + i).getBytes())).get();
+        }
+
+        // Do a send via a sender
         final PartitionSender pSender = ehc.createPartitionSenderSync("0");
-        final String testMessage = "somedata test";
-        pSender.send(EventData.create(testMessage.getBytes()));
+        final String finalMessage = "final message";
+        pSender.send(EventData.create(finalMessage.getBytes()));
 
         // Do some receives.
         int scanned = 0;
@@ -80,7 +85,7 @@ public abstract class AadBase extends ApiTestBase {
             final Iterable<EventData> events = pReceiver.receiveSync(100);
             for (EventData ed : events) {
                 scanned++;
-                if ((new String(ed.getBytes())).equals(testMessage)) {
+                if ((new String(ed.getBytes())).equals(finalMessage)) {
                     found = true;
                     break;
                 }
