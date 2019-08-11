@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 package com.azure.search.data.customization;
-
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.common.DocumentResponseConversions;
@@ -141,16 +140,27 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
 
     @Override
     public Mono<Map<String, Object>> getDocument(String key) {
-        return restClient.documents().getAsync(key).map(DocumentResponseConversions::convertLinkedHashMapToMap);
+        return restClient
+            .documents()
+            .getAsync(key)
+            .map(DocumentResponseConversions::convertLinkedHashMapToMap)
+            .map(DocumentResponseConversions::dropUnnecessaryFields)
+            .onErrorMap(DocumentResponseConversions::exceptionMapper)
+            .doOnSuccess(s -> System.out.println("Retrieved successfully document with key " + key))
+            .doOnError(e -> System.out.println("An error occured in getDocument(key): " + e.getMessage()));
     }
 
     @Override
     public Mono<Map<String, Object>> getDocument(String key, List<String> selectedFields,
-                                    SearchRequestOptions searchRequestOptions) {
+                                                 SearchRequestOptions searchRequestOptions) {
         return restClient
             .documents()
             .getAsync(key, selectedFields, searchRequestOptions)
-            .map(DocumentResponseConversions::convertLinkedHashMapToMap);
+            .map(DocumentResponseConversions::convertLinkedHashMapToMap)
+            .map(DocumentResponseConversions::dropUnnecessaryFields)
+            .onErrorMap(DocumentResponseConversions::exceptionMapper)
+            .doOnSuccess(s -> System.out.println("Retrieved successfully document with key " + key + "and selectedFields: " + selectedFields.toString()))
+            .doOnError(e -> System.out.println("An error occured in getDocument(key, selectedFields, searchRequestOptions): " + e.getMessage()));
     }
 
     @Override
@@ -182,8 +192,8 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
                                                  SearchRequestOptions searchRequestOptions,
                                                  AutocompleteParameters autocompleteParameters) {
         return restClient.documents().autocompleteGetAsync(searchText,
-                suggesterName,
-                searchRequestOptions,
-                autocompleteParameters);
+            suggesterName,
+            searchRequestOptions,
+            autocompleteParameters);
     }
 }
