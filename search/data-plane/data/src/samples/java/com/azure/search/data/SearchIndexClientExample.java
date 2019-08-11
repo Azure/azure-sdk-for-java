@@ -22,6 +22,7 @@ public class SearchIndexClientExample {
 
     /**
      * sample
+     *
      * @param args arguments
      */
     public static void main(String[] args) {
@@ -33,12 +34,12 @@ public class SearchIndexClientExample {
 
 
         SearchIndexClient searchClient = new SearchIndexClientBuilder()
-                .serviceName(searchServiceName)
-                .searchDnsSuffix(dnsSuffix)
-                .indexName(indexName)
-                .apiVersion(apiVersion)
-                .policy(new SearchPipelinePolicy(apiKey))
-                .buildClient();
+            .serviceName(searchServiceName)
+            .searchDnsSuffix(dnsSuffix)
+            .indexName(indexName)
+            .apiVersion(apiVersion)
+            .addPolicy(new SearchPipelinePolicy(apiKey))
+            .buildClient();
 
         searchForAll(searchClient);
 
@@ -50,7 +51,8 @@ public class SearchIndexClientExample {
 
         for (SearchResult searchResult : result.results()) {
             Hotel hotel = getDocument(Hotel.class, searchResult.additionalProperties());
-            System.out.printf("\t score: %s, id: %s, name: %s\n",
+            System.out.printf(
+                "\t score: %s, id: %s, name: %s\n",
                 searchResult.score(),
                 hotel.HotelId,
                 hotel.HotelName);

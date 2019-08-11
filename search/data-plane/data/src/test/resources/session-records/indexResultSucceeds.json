@@ -1,0 +1,26 @@
+{
+    "networkCallRecords" : [ {
+        "Method" : "POST",
+        "Uri" : "https://azs-sdk42222156e7b7.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+        "Headers" : {
+            "Content-Type" : "application/json; charset=utf-8"
+        },
+        "Response" : {
+            "Pragma" : "no-cache",
+            "retry-after" : "0",
+            "request-id" : "2352bde7-245b-41d0-8f5a-f35a88758686",
+            "StatusCode" : "200",
+            "Date" : "Thu, 08 Aug 2019 18:13:40 GMT",
+            "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+            "Cache-Control" : "no-cache",
+            "elapsed-time" : "498",
+            "OData-Version" : "4.0",
+            "Expires" : "-1",
+            "Content-Length" : "227",
+            "Body" : "{\"@odata.context\":\"https://azs-sdk42222156e7b7.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":200}]}",
+            "Preference-Applied" : "odata.include-annotations=\"*\"",
+            "Content-Type" : "application/json; odata.metadata=minimal"
+        }
+    } ],
+    "variables" : [ ]
+}
