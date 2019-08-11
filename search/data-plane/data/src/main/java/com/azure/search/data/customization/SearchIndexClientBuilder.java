@@ -3,10 +3,14 @@
 
 package com.azure.search.data.customization;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.SearchIndexClient;
-import com.azure.search.data.common.SearchPipelinePolicy;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Fluent SearchIndexClientBuilder for instantiating a {@link SearchIndexClientImpl} or a {@link SearchIndexAsyncClientImpl}
@@ -33,14 +37,17 @@ public class SearchIndexClientBuilder {
     private String apiVersion;
     private String serviceName;
     private String indexName;
-    private SearchPipelinePolicy policy;
     private String searchDnsSuffix;
+    private HttpClient httpClient;
+    private List<HttpPipelinePolicy> policies;
 
     /**
      * Default Constructor
      */
     public SearchIndexClientBuilder() {
         searchDnsSuffix = "search.windows.net";
+        httpClient = HttpClient.createDefault();
+        policies = new ArrayList<>();
     }
 
     /**
@@ -77,13 +84,24 @@ public class SearchIndexClientBuilder {
     }
 
     /**
-     * Set the authentication policy (api-key)
+     * Set the http client (optional). If this is not set, a default httpClient will be created
      *
-     * @param policy value of api-key
+     * @param httpClient value of httpClient
      * @return the updated SearchIndexClientBuilder object
      */
-    public SearchIndexClientBuilder policy(SearchPipelinePolicy policy) {
-        this.policy = policy;
+    public SearchIndexClientBuilder httpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
+        return this;
+    }
+
+    /**
+     * Http Pipeline policy
+     *
+     * @param policy policy to add to the pipeline
+     * @return the updated SearchIndexClientBuilder object
+     */
+    public SearchIndexClientBuilder addPolicy(HttpPipelinePolicy policy) {
+        this.policies.add(policy);
         return this;
     }
 
@@ -110,6 +128,6 @@ public class SearchIndexClientBuilder {
      * @return a {@link SearchIndexAsyncClient} created from the configurations in this builder.
      */
     public SearchIndexAsyncClient buildAsyncClient() {
-        return new SearchIndexAsyncClientImpl(serviceName, searchDnsSuffix, indexName, apiVersion, policy);
+        return new SearchIndexAsyncClientImpl(serviceName, searchDnsSuffix, indexName, apiVersion, httpClient, policies);
     }
 }

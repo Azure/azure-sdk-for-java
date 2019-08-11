@@ -31,7 +31,7 @@ public class SearchIndexClientBuildersTest {
         SearchPipelinePolicy policy = new SearchPipelinePolicy(apiKey);
 
         SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
-        SearchIndexClient client = clientBuilder.serviceName(searchServiceName).indexName(indexName).policy(policy).apiVersion(apiVersion).searchDnsSuffix(dnsSuffix).buildClient();
+        SearchIndexClient client = clientBuilder.serviceName(searchServiceName).indexName(indexName).addPolicy(policy).apiVersion(apiVersion).searchDnsSuffix(dnsSuffix).buildClient();
 
         assert (client != null);
         assert (client.getClass().getSimpleName().equals(SearchIndexClientImpl.class.getSimpleName()));
@@ -46,7 +46,7 @@ public class SearchIndexClientBuildersTest {
         SearchPipelinePolicy policy = new SearchPipelinePolicy(apiKey);
 
         SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
-        SearchIndexAsyncClient client = clientBuilder.serviceName(searchServiceName).indexName(indexName).policy(policy).apiVersion(apiVersion).searchDnsSuffix(dnsSuffix).buildAsyncClient();
+        SearchIndexAsyncClient client = clientBuilder.serviceName(searchServiceName).indexName(indexName).addPolicy(policy).apiVersion(apiVersion).searchDnsSuffix(dnsSuffix).buildAsyncClient();
 
         assert (client != null);
         assert (client.getClass().getSimpleName().equals(SearchIndexAsyncClientImpl.class.getSimpleName()));
@@ -318,7 +318,7 @@ public class SearchIndexClientBuildersTest {
 
         SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
         SearchIndexAsyncClient client =
-                clientBuilder.serviceName(searchServiceName).indexName(indexName).policy(policy).apiVersion(apiVersion).buildAsyncClient();
+                clientBuilder.serviceName(searchServiceName).indexName(indexName).addPolicy(policy).apiVersion(apiVersion).buildAsyncClient();
 
         assert (client != null);
         assert (client.getSearchDnsSuffix() == "search.windows.net");

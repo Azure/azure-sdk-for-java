@@ -3,11 +3,12 @@
 
 package com.azure.search.data.customization;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.common.DocumentResponseConversions;
-import com.azure.search.data.common.SearchPipelinePolicy;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.search.data.generated.SearchIndexRestClient;
 import com.azure.search.data.generated.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.data.generated.models.AutocompleteParameters;
@@ -48,19 +49,35 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
     private String indexName;
 
     /**
+     * The Http Client to be used.
+     */
+    private HttpClient httpClient;
+
+    /**
+     * The Http Client to be used.
+     */
+    private List<HttpPipelinePolicy> policies;
+
+
+    /**
      * The underlying REST client to be used to actually interact with the Search service
      */
     private SearchIndexRestClient restClient;
 
     /**
      * Package private constructor to be used by {@link SearchIndexClientBuilder}
+     *
      * @param searchServiceName
      * @param searchDnsSuffix
      * @param indexName
      * @param apiVersion
-     * @param policy
+     * @param httpClient
+     * @param policies
      */
-    SearchIndexAsyncClientImpl(String searchServiceName, String searchDnsSuffix, String indexName, String apiVersion, SearchPipelinePolicy policy) {
+    SearchIndexAsyncClientImpl(
+        String searchServiceName, String searchDnsSuffix, String indexName, String apiVersion,
+        HttpClient httpClient,
+        List<HttpPipelinePolicy> policies) {
         if (StringUtils.isBlank(searchServiceName)) {
             throw new IllegalArgumentException("Invalid searchServiceName");
         }
@@ -73,25 +90,32 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
         if (StringUtils.isBlank(apiVersion)) {
             throw new IllegalArgumentException("Invalid apiVersion");
         }
-        if (policy == null) {
-            throw new IllegalArgumentException("Invalid policy");
+        if (httpClient == null) {
+            throw new IllegalArgumentException("Invalid httpClient");
+        }
+        if (policies == null) {
+            throw new IllegalArgumentException("Invalid policies");
         }
 
         this.searchServiceName = searchServiceName;
         this.searchDnsSuffix = searchDnsSuffix;
         this.indexName = indexName;
         this.apiVersion = apiVersion;
+        this.httpClient = httpClient;
+        this.policies = policies;
 
-        initialize(policy);
+        initialize();
     }
 
-    private void initialize(SearchPipelinePolicy policy) {
+    private void initialize() {
         restClient = new SearchIndexRestClientBuilder()
             .searchServiceName(searchServiceName)
             .indexName(indexName)
             .searchDnsSuffix(searchDnsSuffix)
             .apiVersion(apiVersion)
-            .pipeline(new HttpPipelineBuilder().policies(policy).build())
+            .pipeline(new HttpPipelineBuilder()
+                .httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0])).build())
             .build();
     }
 
@@ -129,14 +153,15 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
 
     @Override
     public PagedFlux<SearchResult> search() {
-        return null; //return restClient.documents().searchGetAsync();
+        return null; //return restClient.documents().searchPostAsync();
     }
 
     @Override
-    public PagedFlux<SearchResult> search(String searchText,
-                                          SearchParameters searchParameters,
-                                          SearchRequestOptions searchRequestOptions) {
-        return null; //return restClient.documents().searchGetAsync(searchText, searchParameters, searchRequestOptions);
+    public PagedFlux<SearchResult> search(
+        String searchText,
+        SearchParameters searchParameters,
+        SearchRequestOptions searchRequestOptions) {
+        return null; //return restClient.documents().searchPostAsync(searchText, searchParameters, searchRequestOptions);
     }
 
     @Override
@@ -145,8 +170,9 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
     }
 
     @Override
-    public Mono<Map<String, Object>> getDocument(String key, List<String> selectedFields,
-                                    SearchRequestOptions searchRequestOptions) {
+    public Mono<Map<String, Object>> getDocument(
+        String key, List<String> selectedFields,
+        SearchRequestOptions searchRequestOptions) {
         return restClient
             .documents()
             .getAsync(key, selectedFields, searchRequestOptions)
@@ -159,10 +185,11 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
     }
 
     @Override
-    public PagedFlux<SuggestResult> suggest(String searchText,
-                                            String suggesterName,
-                                            SuggestParameters suggestParameters,
-                                            SearchRequestOptions searchRequestOptions) {
+    public PagedFlux<SuggestResult> suggest(
+        String searchText,
+        String suggesterName,
+        SuggestParameters suggestParameters,
+        SearchRequestOptions searchRequestOptions) {
         return null;
     }
 
@@ -177,13 +204,15 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
     }
 
     @Override
-    public Mono<AutocompleteResult> autocomplete(String searchText,
-                                                 String suggesterName,
-                                                 SearchRequestOptions searchRequestOptions,
-                                                 AutocompleteParameters autocompleteParameters) {
-        return restClient.documents().autocompleteGetAsync(searchText,
-                suggesterName,
-                searchRequestOptions,
-                autocompleteParameters);
+    public Mono<AutocompleteResult> autocomplete(
+        String searchText,
+        String suggesterName,
+        SearchRequestOptions searchRequestOptions,
+        AutocompleteParameters autocompleteParameters) {
+        return restClient.documents().autocompleteGetAsync(
+            searchText,
+            suggesterName,
+            searchRequestOptions,
+            autocompleteParameters);
     }
 }

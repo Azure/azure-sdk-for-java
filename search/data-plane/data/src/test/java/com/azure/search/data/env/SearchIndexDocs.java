@@ -63,7 +63,7 @@ public class SearchIndexDocs {
                 .searchDnsSuffix(dnsSuffix)
                 .indexName(indexName)
                 .apiVersion(apiVersion)
-                .policy(new SearchPipelinePolicy(apiAdminKey))
+                .addPolicy(new SearchPipelinePolicy(apiAdminKey))
                 .buildAsyncClient();
         }
         addDocsData();
