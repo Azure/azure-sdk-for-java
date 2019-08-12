@@ -3,13 +3,25 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.http.*
+import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpMethod
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpRequest
+import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.core.util.logging.ClientLogger
-import com.azure.storage.blob.models.*
+import com.azure.storage.blob.models.ContainerItem
+import com.azure.storage.blob.models.CopyStatusType
+import com.azure.storage.blob.models.LeaseStateType
+import com.azure.storage.blob.models.ListContainersOptions
+import com.azure.storage.blob.models.Metadata
+import com.azure.storage.blob.models.RetentionPolicy
+import com.azure.storage.blob.models.StorageServiceProperties
+import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
 import io.netty.buffer.ByteBuf
 import reactor.core.publisher.Flux
@@ -155,11 +167,6 @@ class APISpec extends Specification {
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
-    /*
-    Constants for testing that the context parameter is properly passed to the pipeline.
-     */
-    final String defaultContextKey = "Key"
-
     def generateContainerName() {
         testCommon.generateResourceName(containerPrefix, entityNo++)
     }
@@ -168,18 +175,15 @@ class APISpec extends Specification {
         testCommon.generateResourceName(blobPrefix, entityNo++)
     }
 
-    static byte[] getRandomByteArray(int size) {
-        Random rand = new Random(System.currentTimeMillis())
-        byte[] data = new byte[size]
-        rand.nextBytes(data)
-        return data
+    byte[] getRandomByteArray(int size) {
+        return testCommon.getRandomData(size)
     }
 
     /*
     Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
      */
 
-    static ByteBuffer getRandomData(int size) {
+    ByteBuffer getRandomData(int size) {
         return ByteBuffer.wrap(getRandomByteArray(size))
     }
 
@@ -325,64 +329,6 @@ class APISpec extends Specification {
         }
     }
 
-    /*
-    This method returns a stub of an HttpResponse. This is for when we want to test policies in isolation but don't care
-     about the status code, so we stub a response that always returns a given value for the status code. We never care
-     about the number or nature of interactions with this stub.
-     */
-
-    def getStubResponse(int code) {
-        return Stub(HttpResponse) {
-            statusCode() >> code
-        }
-    }
-
-    /*
-    This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
-    to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
-    with than was worth it.
-     */
-
-    def getStubResponse(int code, HttpRequest request) {
-        return new HttpResponse() {
-
-            @Override
-            int statusCode() {
-                return code
-            }
-
-            @Override
-            String headerValue(String s) {
-                return null
-            }
-
-            @Override
-            HttpHeaders headers() {
-                return new HttpHeaders()
-            }
-
-            @Override
-            Flux<ByteBuffer> body() {
-                return Flux.empty()
-            }
-
-            @Override
-            Mono<byte[]> bodyAsByteArray() {
-                return Mono.just(new byte[0])
-            }
-
-            @Override
-            Mono<String> bodyAsString() {
-                return Mono.just("")
-            }
-
-            @Override
-            Mono<String> bodyAsString(Charset charset) {
-                return Mono.just("")
-            }
-        }.request(request)
-    }
-
     class MockRetryRangeResponsePolicy implements HttpPipelinePolicy {
         @Override
         Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
@@ -448,19 +394,6 @@ class APISpec extends Specification {
         @Override
         Mono<String> bodyAsString(Charset charset) {
             return Mono.error(new IOException())
-        }
-    }
-
-    def getContextStubPolicy(int successCode, Class responseHeadersType) {
-        return Mock(HttpPipelinePolicy) {
-            process(_ as HttpPipelineCallContext, _ as HttpPipelineNextPolicy) >> {
-                HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
-                    if (!context.getData(defaultContextKey).isPresent()) {
-                        return Mono.error(new RuntimeException("Context key not present."))
-                    } else {
-                        return Mono.just(getStubResponse(successCode, context.httpRequest()))
-                    }
-            }
         }
     }
 }

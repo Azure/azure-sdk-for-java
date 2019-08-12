@@ -210,4 +210,12 @@ class TestCommon {
     String getBlockID() {
         return Base64.encoder.encodeToString(resourceNamer.randomUuid().getBytes(StandardCharsets.UTF_8))
     }
+
+    byte[] getRandomData(int size) {
+        long seed = UUID.fromString(getRandomUUID()).getMostSignificantBits() & Long.MAX_VALUE
+        Random rand = new Random(seed)
+        byte[] data = new byte[size]
+        rand.nextBytes(data)
+        return data
+    }
 }

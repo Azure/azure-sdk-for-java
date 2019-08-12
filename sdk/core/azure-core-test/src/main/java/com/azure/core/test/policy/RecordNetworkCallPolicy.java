@@ -20,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -63,7 +64,12 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         networkCallRecord.method(context.httpRequest().httpMethod().toString());
         networkCallRecord.uri(context.httpRequest().url().toString().replaceAll("\\?$", ""));
 
-        return next.process().flatMap(httpResponse -> {
+        return next.process()
+            .doOnError(throwable -> {
+                recordedData.addNetworkCall(networkCallRecord);
+                throw Exceptions.propagate(throwable);
+            })
+            .flatMap(httpResponse -> {
             final HttpResponse bufferedResponse = httpResponse.buffer();
 
             return extractResponseData(bufferedResponse).map(responseData -> {
@@ -107,33 +113,42 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         String contentType = response.headerValue("content-type");
         if (contentType == null) {
             return Mono.just(responseData);
+        } else if (contentType.contains("octet-stream")) {
+            return response.bodyAsByteArray().switchIfEmpty(Mono.just(new byte[0])).map(bytes -> {
+                responseData.put("Body", new String(Base64.getDecoder().decode(bytes), StandardCharsets.UTF_8));
+                return responseData;
+            });
         } else if (contentType.contains("json") || response.headerValue("content-encoding") == null) {
-            return response.bodyAsString().switchIfEmpty(Mono.just("")).map(content -> {
+            return response.bodyAsString(StandardCharsets.UTF_8).switchIfEmpty(Mono.just("")).map(content -> {
                 responseData.put("Body", content);
                 return responseData;
             });
-        } else if ("gzip".equals(response.headerValue("content-encoding"))) {
+        } else {
             return response.bodyAsByteArray().switchIfEmpty(Mono.just(new byte[0])).map(bytes -> {
                 if (bytes.length == 0) {
                     return responseData;
                 }
 
                 String content;
-                try (GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(bytes));
-                     ByteArrayOutputStream output = new ByteArrayOutputStream()) {
-                    byte[] buffer = new byte[DEFAULT_BUFFER_LENGTH];
-                    int position = 0;
-                    int bytesRead = gis.read(buffer, position, buffer.length);
+                if ("gzip".equals(response.headerValue("content-encoding"))) {
+                    try (GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(bytes));
+                         ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+                        byte[] buffer = new byte[DEFAULT_BUFFER_LENGTH];
+                        int position = 0;
+                        int bytesRead = gis.read(buffer, position, buffer.length);
 
-                    while (bytesRead != -1) {
-                        output.write(buffer, 0, bytesRead);
-                        position += bytesRead;
-                        bytesRead = gis.read(buffer, position, buffer.length);
+                        while (bytesRead != -1) {
+                            output.write(buffer, 0, bytesRead);
+                            position += bytesRead;
+                            bytesRead = gis.read(buffer, position, buffer.length);
+                        }
+
+                        content = new String(output.toByteArray(), StandardCharsets.UTF_8);
+                    } catch (IOException e) {
+                        throw Exceptions.propagate(e);
                     }
-
-                    content = new String(output.toByteArray(), StandardCharsets.UTF_8);
-                } catch (IOException e) {
-                    throw Exceptions.propagate(e);
+                } else {
+                    content = new String(bytes, StandardCharsets.UTF_8);
                 }
 
                 responseData.remove("content-encoding");
@@ -142,8 +157,6 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 responseData.put("Body", content);
                 return responseData;
             });
-        } else {
-            return Mono.just(responseData);
         }
     }
 }
