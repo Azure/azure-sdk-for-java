@@ -148,6 +148,7 @@
         </configuration>
       </plugin>
 
+      <!-- RestProxyTests is inherited by tests in azure-core-http-netty -->
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
