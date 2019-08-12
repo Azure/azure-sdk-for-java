@@ -23,7 +23,14 @@ import static org.junit.Assert.assertTrue;
 public class HttpPipelineTests {
     @Test
     public void constructorWithNoArguments() {
-        HttpPipeline pipeline = HttpPipeline.builder().build();
+        HttpPipeline pipeline = HttpPipeline.builder()
+            .httpClient(new MockHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    // do nothing
+                    return null;
+                }
+            }).build();
         assertEquals(0, pipeline.getPolicyCount());
         assertNotNull(pipeline.httpClient());
     }
@@ -34,7 +41,13 @@ public class HttpPipelineTests {
             .policies(new PortPolicy(80, true),
                 new ProtocolPolicy("ftp", true),
                 new RetryPolicy())
-            .build();
+            .httpClient(new MockHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    // do nothing
+                    return null;
+                }
+            }).build();
 
         assertEquals(3, pipeline.getPolicyCount());
         assertEquals(PortPolicy.class, pipeline.getPolicy(0).getClass());
@@ -49,7 +62,13 @@ public class HttpPipelineTests {
             .policies(new PortPolicy(80, true),
                 new ProtocolPolicy("ftp", true),
                 new RetryPolicy())
-            .build();
+            .httpClient(new MockHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    // do nothing
+                    return null;
+                }
+            }).build();
 
         HttpPipelineCallContext context = new HttpPipelineCallContext(new HttpRequest(HttpMethod.GET, new URL("http://foo.com")));
         assertNotNull(context);
