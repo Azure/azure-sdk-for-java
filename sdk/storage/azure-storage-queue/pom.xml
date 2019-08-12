@@ -48,12 +48,6 @@
       <version>1.0.0-preview.4</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-identity</artifactId>
-      <version>1.0.0-preview.3</version>
-      <scope>test</scope>
-    </dependency>
     <!-- https://mvnrepository.com/artifact/org.spockframework/spock-core -->
     <dependency>
       <groupId>org.spockframework</groupId>
