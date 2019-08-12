@@ -12,9 +12,7 @@ import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayOutputStream;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -25,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
@@ -143,7 +140,7 @@ public class MockHttpClient implements HttpClient {
                     json.data(createHttpBinResponseDataForRequest(request));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/post")) {
-                    if ("x-www-form-urlencoded".equalsIgnoreCase(contentType)) {
+                    if (contentType != null && contentType.contains("x-www-form-urlencoded")) {
                         Map<String, String> parsed = bodyToMap(request);
                         final HttpBinFormDataJSON json = new HttpBinFormDataJSON();
                         Form form = new Form();
@@ -153,6 +150,7 @@ public class MockHttpClient implements HttpClient {
                         form.pizzaSize(PizzaSize.valueOf(parsed.get("size")));
                         form.toppings(Arrays.asList(parsed.get("toppings").split(",")));
                         json.form(form);
+                        response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json);
                     } else {
                         final HttpBinJSON json = new HttpBinJSON();
                         json.url(request.url().toString());

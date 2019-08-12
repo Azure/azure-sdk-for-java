@@ -1486,30 +1486,24 @@ public abstract class RestProxyTests {
 
     @Test
     public void simpleDownloadTest() {
-//        try (StreamResponse response = createService(DownloadService.class).getBytes()) {
-//            int count = 0;
-//            for (ByteBuffer byteBuf : response.value().doOnNext(b -> b.retain()).toIterable()) {
-//                // assertEquals(1, byteBuf.refCnt());
-//                count += byteBuf.readableBytes();
-//                ReferenceCountUtil.refCnt(byteBuf);
-//            }
-//            assertEquals(30720, count);
-//        }
-
-        Assert.fail("Need to implement this test again");
+        try (StreamResponse response = createService(DownloadService.class).getBytes()) {
+            int count = 0;
+            for (ByteBuffer byteBuf : response.value().toIterable()) {
+                // assertEquals(1, byteBuf.refCnt());
+                count += byteBuf.remaining();
+            }
+            assertEquals(30720, count);
+        }
     }
 
     @Test
     public void rawFlowableDownloadTest() {
-//        Flux<ByteBuffer> response = createService(DownloadService.class).getBytesFlowable();
-//        int count = 0;
-//        for (ByteBuffer byteBuf : response.doOnNext(b -> b.retain()).toIterable()) {
-//            count += byteBuf.readableBytes();
-//            ReferenceCountUtil.refCnt(byteBuf);
-//        }
-//        assertEquals(30720, count);
-
-        Assert.fail("Need to implement this test again");
+        Flux<ByteBuffer> response = createService(DownloadService.class).getBytesFlowable();
+        int count = 0;
+        for (ByteBuffer byteBuf : response.toIterable()) {
+            count += byteBuf.remaining();
+        }
+        assertEquals(30720, count);
     }
 
     @Host("https://httpbin.org")
@@ -1520,37 +1514,33 @@ public abstract class RestProxyTests {
     }
 
     @Test
-    public void flowableUploadTest() throws Exception {
-//        Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
-//        Flux<ByteBuffer> stream = FluxUtil.byteBufferStreamFromFile(AsynchronousFileChannel.open(filePath));
-//
-//        final HttpClient httpClient = createHttpClient();
-//        // Scenario: Log the body so that body buffering/replay behavior is exercised.
-//        //
-//        // Order in which policies applied will be the order in which they added to builder
-//        //
-//        final HttpPipeline httpPipeline = HttpPipeline.builder()
-//            .httpClient(httpClient)
-//            .policies(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS, true))
-//            .build();
-//        //
-//        Response<HttpBinJSON> response = RestProxy.create(FlowableUploadService.class, httpPipeline, SERIALIZER).put(stream, Files.size(filePath));
-//
-//        assertEquals("The quick brown fox jumps over the lazy dog", response.value().data());
+    public void fluxUploadTest() throws Exception {
+        Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
+        Flux<ByteBuffer> stream = FluxUtil.readFile(AsynchronousFileChannel.open(filePath));
 
-        Assert.fail("Need to implement this test again");
+        final HttpClient httpClient = createHttpClient();
+        // Scenario: Log the body so that body buffering/replay behavior is exercised.
+        //
+        // Order in which policies applied will be the order in which they added to builder
+        //
+        final HttpPipeline httpPipeline = HttpPipeline.builder()
+            .httpClient(httpClient)
+            .policies(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS, true))
+            .build();
+        //
+        Response<HttpBinJSON> response = RestProxy.create(FlowableUploadService.class, httpPipeline, SERIALIZER).put(stream, Files.size(filePath));
+
+        assertEquals("The quick brown fox jumps over the lazy dog", response.value().data());
     }
 
     @Test
     public void segmentUploadTest() throws Exception {
-//        Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
-//        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(filePath, StandardOpenOption.READ);
-//        Response<HttpBinJSON> response = createService(FlowableUploadService.class)
-//                .put(FluxUtil.byteBufStreamFromFile(fileChannel, 4, 15), 15);
-//
-//        assertEquals("quick brown fox", response.value().data());
+        Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(filePath, StandardOpenOption.READ);
+        Response<HttpBinJSON> response = createService(FlowableUploadService.class)
+                .put(FluxUtil.readFile(fileChannel, 4, 15), 15);
 
-        Assert.fail("Need to implement this test again");
+        assertEquals("quick brown fox", response.value().data());
     }
 
     @Host("{url}")
@@ -1646,7 +1636,7 @@ public abstract class RestProxyTests {
 
     @Test
     public void postUrlFormEncoded() {
-        Service26 service = RestProxy.create(Service26.class, HttpPipeline.builder().build());
+        Service26 service = createService(Service26.class);
         HttpBinFormDataJSON response = service.postForm("Foo", "123", "foo@bar.com", PizzaSize.LARGE, Arrays.asList("Bacon", "Onion"));
         assertNotNull(response);
         assertNotNull(response.form());
