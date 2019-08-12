@@ -60,7 +60,7 @@ import java.util.Objects;
  * @see EventHubAsyncClient
  * @see EventProcessor
  */
-@ServiceClientBuilder(serviceClients = {EventHubAsyncClient.class, EventProcessor.class})
+@ServiceClientBuilder(serviceClients = {EventHubAsyncClient.class, EventHubClient.class, EventProcessor.class})
 public class EventHubClientBuilder {
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
