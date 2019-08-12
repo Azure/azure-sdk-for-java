@@ -61,7 +61,6 @@ public final class SASTokenCredential {
         for (Map.Entry<String, String> kvp : queryParameters.entrySet()) {
             if (sb.length() != 0) {
                 sb.append("&");
-
             }
 
             sb.append(kvp.getKey()).append("=").append(kvp.getValue());
