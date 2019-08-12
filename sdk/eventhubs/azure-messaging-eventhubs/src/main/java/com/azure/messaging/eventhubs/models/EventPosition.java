@@ -79,8 +79,7 @@ public final class EventPosition {
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromEnqueuedTime(Instant enqueuedDateTime) {
-        EventPosition position = new EventPosition(false, null, null, enqueuedDateTime);
-        return position;
+        return new EventPosition(false, null, null, enqueuedDateTime);
     }
 
     /**
