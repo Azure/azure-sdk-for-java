@@ -172,7 +172,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
             .map(DocumentResponseConversions::convertLinkedHashMapToMap)
             .map(DocumentResponseConversions::dropUnnecessaryFields)
             .onErrorMap(DocumentResponseConversions::exceptionMapper)
-            .doOnSuccess(s -> System.out.println("Retrieved successfully document with key " + key))
+            .doOnSuccess(s -> System.out.println("Document with key: " + key + " was retrieved succesfully"))
             .doOnError(e -> System.out.println("An error occured in getDocument(key): " + e.getMessage()));
     }
 
@@ -186,7 +186,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
             .map(DocumentResponseConversions::convertLinkedHashMapToMap)
             .map(DocumentResponseConversions::dropUnnecessaryFields)
             .onErrorMap(DocumentResponseConversions::exceptionMapper)
-            .doOnSuccess(s -> System.out.println("Retrieved successfully document with key " + key + "and selectedFields: " + selectedFields.toString()))
+            .doOnSuccess(s -> System.out.println("Document with key: " + key + "and selectedFields: " + selectedFields.toString()  + " was retrieved succesfully"))
             .doOnError(e -> System.out.println("An error occured in getDocument(key, selectedFields, searchRequestOptions): " + e.getMessage()));
     }
 

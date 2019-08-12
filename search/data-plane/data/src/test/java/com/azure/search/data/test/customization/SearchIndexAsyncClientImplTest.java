@@ -19,22 +19,25 @@ import org.junit.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
-public class SearchIndexASyncClientImplTest {
+public class SearchIndexAsyncClientImplTest {
 
     private String serviceName = "";
     private String apiAdminKey = "";
     private String indexName = "hotels";
     private AzureSearchResources azureSearchResources;
     private String apiVersion = "2019-05-06";
-    private String dnsSuffix = "search.windows.net";;
+    private String dnsSuffix = "search.windows.net";
+    ;
     private SearchIndexAsyncClient searchClient;
 
     @Before
@@ -82,10 +85,8 @@ public class SearchIndexASyncClientImplTest {
             .searchDnsSuffix(dnsSuffix)
             .indexName(searchIndexService.indexName())
             .apiVersion(apiVersion)
-            .policy(new SearchPipelinePolicy(apiAdminKey))
+            .addPolicy(new SearchPipelinePolicy(apiAdminKey))
             .buildAsyncClient();
-
-
     }
 
     @After
@@ -146,7 +147,6 @@ public class SearchIndexASyncClientImplTest {
         tags.add("air conditioning");
         tags.add("concierge");
 
-
         Map<String, Object> expectedDoc = new HashMap<String, Object>();
         expectedDoc.put("HotelId", "1000000000");
         expectedDoc.put("HotelName", "Secret Point Motel");
@@ -174,7 +174,6 @@ public class SearchIndexASyncClientImplTest {
 
         Mono<Map<String, Object>> futureDoc = searchClient.getDocument("1000000000");
 
-
         StepVerifier
             .create(futureDoc)
             .assertNext(result -> {
@@ -182,7 +181,6 @@ public class SearchIndexASyncClientImplTest {
                 Assert.assertEquals(expectedDoc, result);
             })
             .verifyComplete();
-
     }
 
     @Test
@@ -190,8 +188,7 @@ public class SearchIndexASyncClientImplTest {
         Mono<Map<String, Object>> futureDoc = searchClient.getDocument("1000000001");
         StepVerifier
             .create(futureDoc)
-            .verifyErrorSatisfies(error -> assertEquals(ResourceNotFoundException.class , error.getClass()));
-
+            .verifyErrorSatisfies(error -> assertEquals(ResourceNotFoundException.class, error.getClass()));
     }
 
     @Test
@@ -201,7 +198,7 @@ public class SearchIndexASyncClientImplTest {
         hotelDoc.put("HotelId", "1000000002");
         hotelDoc.put("Description", "Surprisingly expensive");
 
-        ArrayList<String> selectedFields=new ArrayList<String>();
+        ArrayList<String> selectedFields = new ArrayList<String>();
         selectedFields.add("HotelId");
         selectedFields.add("ThisFieldDoesNotExist");
 
@@ -225,9 +222,5 @@ public class SearchIndexASyncClientImplTest {
                 assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error).response().statusCode());
                 assertTrue(error.getMessage().contains("Invalid expression: Could not find a property named 'ThisFieldDoesNotExist' on type 'search.document'."));
             });
-
-
     }
-
-
 }
