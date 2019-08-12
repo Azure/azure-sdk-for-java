@@ -84,8 +84,8 @@ public class SearchIndexDocs {
                 .doOnSuccess(documentIndexResult ->
                     documentIndexResult
                         .results().forEach(
-                        result ->
-                            System.out.println("key:" + result.key() + (result.succeeded() ? " Succeeded" : " Error: " + result.errorMessage()))))
+                            result ->
+                                System.out.println("key:" + result.key() + (result.succeeded() ? " Succeeded" : " Error: " + result.errorMessage()))))
                 .doOnError(e -> System.out.println(e.getMessage()))
                 .block();
 
@@ -100,7 +100,7 @@ public class SearchIndexDocs {
                 .searchDnsSuffix(dnsSuffix)
                 .indexName(indexName)
                 .apiVersion(apiVersion)
-                .policy(new SearchPipelinePolicy(apiAdminKey))
+                .addPolicy(new SearchPipelinePolicy(apiAdminKey))
                 .buildAsyncClient();
         }
 
@@ -116,8 +116,8 @@ public class SearchIndexDocs {
                 .doOnSuccess(documentIndexResult ->
                     documentIndexResult
                         .results().forEach(
-                        result ->
-                            System.out.println("key:" + result.key() + (result.succeeded() ? " Succeeded" : " Error: " + result.errorMessage()))))
+                            result ->
+                                System.out.println("key:" + result.key() + (result.succeeded() ? " Succeeded" : " Error: " + result.errorMessage()))))
                 .doOnError(e -> System.out.println(e.getMessage()))
                 .block();
     }

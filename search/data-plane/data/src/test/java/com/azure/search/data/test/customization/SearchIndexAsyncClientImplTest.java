@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.search.data.test.customization;
 
 import com.azure.core.exception.HttpResponseException;
@@ -18,16 +20,12 @@ import org.junit.Before;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
 
 public class SearchIndexAsyncClientImplTest {
 
@@ -37,7 +35,6 @@ public class SearchIndexAsyncClientImplTest {
     private AzureSearchResources azureSearchResources;
     private String apiVersion = "2019-05-06";
     private String dnsSuffix = "search.windows.net";
-    ;
     private SearchIndexAsyncClient searchClient;
 
     @Before

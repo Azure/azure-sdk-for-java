@@ -53,24 +53,25 @@ public class DocumentResponseConversions {
     /**
      * Drop fields that shouldn't be in the returned object
      *
-     * @param map
+     * @param map to remove fields from
      * @return Map<String, Object>
      */
-    public static Map<String, Object> dropUnnecessaryFields(Map<String, Object> map){
+    public static Map<String, Object> dropUnnecessaryFields(Map<String, Object> map) {
         map.remove("@odata.context");
         return map;
     }
 
     /**
      * Convert Array Object elements
-     * @param array
+     * @param array which elements will be converted
      * @return ArrayList<Object>
      */
     private static ArrayList<Object> convertArray(ArrayList array) {
         ArrayList<Object> convertedArray = new ArrayList<>();
         for (Object arrayValue : array) {
-            if (arrayValue instanceof LinkedHashMap)
+            if (arrayValue instanceof LinkedHashMap) {
                 convertedArray.add(convertLinkedHashMapToMap(arrayValue));
+            }
             else {
                 convertedArray.add(arrayValue);
             }
@@ -80,7 +81,7 @@ public class DocumentResponseConversions {
 
     /**
      * Map exceptions to be more informative
-     * @param throwable
+     * @param throwable to convert
      * @return Throwable
      */
     public static Throwable exceptionMapper(Throwable throwable) {
