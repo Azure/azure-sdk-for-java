@@ -233,7 +233,7 @@ public final class BlobOutputStream extends OutputStream {
             return Mono.empty();
         }
 
-        if (this.streamType == BlobType.PAGE_BLOB && (writeLength % Constants.PAGE_SIZE != 0)) {
+        if (this.streamType == BlobType.PAGE_BLOB && (writeLength % PageBlobAsyncClient.PAGE_BYTES != 0)) {
             return Mono.error(new IOException(String.format(SR.INVALID_NUMBER_OF_BYTES_IN_THE_BUFFER, writeLength)));
         }
 

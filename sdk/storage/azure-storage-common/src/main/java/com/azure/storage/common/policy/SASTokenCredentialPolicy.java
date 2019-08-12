@@ -22,6 +22,7 @@ public final class SASTokenCredentialPolicy implements HttpPipelinePolicy {
 
     /**
      * Creates a SAS token credential policy that appends the SAS token to the request URL's query.
+     *
      * @param credential SAS token credential
      */
     public SASTokenCredentialPolicy(SASTokenCredential credential) {

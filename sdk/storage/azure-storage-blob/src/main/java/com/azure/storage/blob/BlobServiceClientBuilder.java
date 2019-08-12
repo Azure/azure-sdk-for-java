@@ -135,7 +135,7 @@ public final class BlobServiceClientBuilder {
             URL url = new URL(endpoint);
             this.endpoint = url.getProtocol() + "://" + url.getAuthority();
 
-            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(URLParser.parse(url).sasQueryParameters());
+            this.sasTokenCredential = SASTokenCredential.fromSASTokenString(URLParser.parse(url).sasQueryParameters().encode());
             if (this.sasTokenCredential != null) {
                 this.tokenCredential = null;
                 this.sharedKeyCredential = null;

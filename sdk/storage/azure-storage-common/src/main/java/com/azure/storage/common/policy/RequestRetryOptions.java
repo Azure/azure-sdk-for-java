@@ -57,11 +57,6 @@ public final class RequestRetryOptions {
      * webpage</a>
      * @throws IllegalArgumentException If {@code retryDelayInMs} and {@code maxRetryDelayInMs} are not both null or
      * non-null or {@code retryPolicyType} isn't {@link RetryPolicyType#EXPONENTIAL} or {@link RetryPolicyType#FIXED}.
-     *
-     * <p><strong>Sample Code</strong></p>
-     *
-     * <p>For more samples, please see the <a href="https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java">samples
-     * file</a></p>
      */
     public RequestRetryOptions(RetryPolicyType retryPolicyType, Integer maxTries, Integer tryTimeout,
                                Long retryDelayInMs, Long maxRetryDelayInMs, String secondaryHost) {
@@ -103,40 +98,40 @@ public final class RequestRetryOptions {
             }
             this.maxRetryDelayInMs = TimeUnit.SECONDS.toMillis(120);
         }
-
         this.secondaryHost = secondaryHost;
     }
 
     /**
-     * @return the maximum number attempts that will be retried before the operation finally fails.
+     * @return the maximum number of retries that will be attempted.
      */
     public int maxTries() {
         return this.maxTries;
     }
 
     /**
-     * @return the timeout in seconds allowed for each retry operation.
+     * @return the maximum time, in seconds, allowed for a request until it is considered timed out.
      */
     public int tryTimeout() {
         return this.tryTimeout;
     }
 
     /**
-     * @return the secondary host that retries could be attempted against.
+     * @return the URI of the secondary host where retries are attempted. If this is null then there is no secondary
+     * host and all retries are attempted against the original host.
      */
     public String secondaryHost() {
         return this.secondaryHost;
     }
 
     /**
-     * @return the delay in milliseconds between retry attempts.
+     * @return the delay in milliseconds between each retry attempt.
      */
     public long retryDelayInMs() {
         return retryDelayInMs;
     }
 
     /**
-     * @return the maximum delay in milliseconds between retry attempts.
+     * @return the maximum delay in milliseconds allowed between each retry.
      */
     public long maxRetryDelayInMs() {
         return maxRetryDelayInMs;
