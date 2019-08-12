@@ -147,7 +147,7 @@ public class SetPrefetchCountTest extends ApiTestBase {
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
             .partitionId(PARTITION_ID);
-        final EventHubProducer producer = client.createProducer(producerOptions);
+        final EventHubAsyncProducer producer = client.createProducer(producerOptions);
         final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, MESSAGE_TRACKING_VALUE);
 
         try {

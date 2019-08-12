@@ -100,7 +100,7 @@ public class EventHubAsyncConsumerIntegrationTest extends ApiTestBase {
 
         final CountDownLatch countDownLatch = new CountDownLatch(partitionIds.size());
         final EventHubAsyncConsumer[] consumers = new EventHubAsyncConsumer[partitionIds.size()];
-        final EventHubProducer[] producers = new EventHubProducer[partitionIds.size()];
+        final EventHubAsyncProducer[] producers = new EventHubAsyncProducer[partitionIds.size()];
         final Disposable.Composite subscriptions = Disposables.composite();
         try {
             for (int i = 0; i < partitionIds.size(); i++) {
@@ -208,7 +208,7 @@ public class EventHubAsyncConsumerIntegrationTest extends ApiTestBase {
         final AtomicBoolean isActive = new AtomicBoolean(true);
         final Disposable.Composite subscriptions = Disposables.composite();
 
-        final EventHubProducer producer = client.createProducer();
+        final EventHubAsyncProducer producer = client.createProducer();
         subscriptions.add(getEvents(isActive).flatMap(event -> producer.send(event)).subscribe(
             sent -> logger.info("Event sent."),
             error -> logger.error("Error sending event", error)));

@@ -135,7 +135,7 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
             clients[i] = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()));
         }
 
-        final EventHubProducer producer = clients[0].createProducer(new EventHubProducerOptions().partitionId(PARTITION_ID));
+        final EventHubAsyncProducer producer = clients[0].createProducer(new EventHubProducerOptions().partitionId(PARTITION_ID));
         final List<EventHubAsyncConsumer> consumers = new ArrayList<>();
         final Disposable.Composite subscriptions = Disposables.composite();
 
@@ -191,7 +191,7 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
         logger.info("Pushing events to partition. Message tracking value: {}", MESSAGE_TRACKING_VALUE);
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
-        final EventHubProducer producer = client.createProducer(producerOptions);
+        final EventHubAsyncProducer producer = client.createProducer(producerOptions);
         final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, MESSAGE_TRACKING_VALUE);
 
         try {

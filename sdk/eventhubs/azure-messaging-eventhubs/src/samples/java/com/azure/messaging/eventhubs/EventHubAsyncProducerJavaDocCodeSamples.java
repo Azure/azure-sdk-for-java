@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Contains code snippets when generating javadocs through doclets for {@link EventHubProducer}.
+ * Contains code snippets when generating javadocs through doclets for {@link EventHubAsyncProducer}.
  */
 public class EventHubAsyncProducerJavaDocCodeSamples {
     private final EventHubAsyncClient client = new EventHubClientBuilder().connectionString("fake-string").buildAsyncClient();
@@ -32,7 +32,7 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
             .connectionString("event-hubs-namespace-connection-string", "event-hub-name")
             .buildAsyncClient();
 
-        EventHubProducer producer = client.createProducer();
+        EventHubAsyncProducer producer = client.createProducer();
         // END: com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation
 
         producer.close();
@@ -51,7 +51,7 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
             .partitionId("foo")
             .retry(retryOptions);
 
-        EventHubProducer producer = client.createProducer(options);
+        EventHubAsyncProducer producer = client.createProducer(options);
         // END: com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation#partitionId
 
         producer.close();
@@ -68,7 +68,7 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
             new EventData("wheat".getBytes(UTF_8))
         );
 
-        EventHubProducer producer = client.createProducer();
+        EventHubAsyncProducer producer = client.createProducer();
         SendOptions options = new SendOptions()
             .partitionKey("bread");
 
@@ -82,7 +82,7 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
      * Code snippet demonstrating how to create an {@link EventDataBatch} and send it.
      */
     public void sendEventDataBatch() {
-        final EventHubProducer producer = client.createProducer();
+        final EventHubAsyncProducer producer = client.createProducer();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducer.send#eventDataBatch
         final Flux<EventData> telemetryEvents = Flux.just(

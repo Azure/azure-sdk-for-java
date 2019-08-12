@@ -146,7 +146,7 @@ public class EventPositionIntegrationTest extends ApiTestBase {
         final String messageValue = UUID.randomUUID().toString();
         final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
         final EventHubProducerOptions options = new EventHubProducerOptions().partitionId(PARTITION_ID);
-        final EventHubProducer producer = client.createProducer(options);
+        final EventHubAsyncProducer producer = client.createProducer(options);
         final Flux<EventData> events = Flux.range(0, NUMBER_OF_EVENTS).map(number -> {
             final EventData eventData = new EventData(("Event " + number).getBytes(UTF_8));
             eventData.addProperty(MESSAGE_TRACKING_ID, messageValue);
@@ -340,7 +340,7 @@ public class EventPositionIntegrationTest extends ApiTestBase {
         logger.info("Pushing events to partition. Message tracking value: {}", MESSAGE_TRACKING_VALUE);
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
-        final EventHubProducer producer = client.createProducer(producerOptions);
+        final EventHubAsyncProducer producer = client.createProducer(producerOptions);
         final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, MESSAGE_TRACKING_VALUE);
 
         try {

@@ -139,9 +139,9 @@ public class EventHubAsyncClient implements Closeable {
      * Creates an Event Hub producer responsible for transmitting {@link EventData} to the Event Hub, grouped together
      * in batches. Event data is automatically routed to an available partition.
      *
-     * @return A new {@link EventHubProducer}.
+     * @return A new {@link EventHubAsyncProducer}.
      */
-    public EventHubProducer createProducer() {
+    public EventHubAsyncProducer createProducer() {
         return createProducer(defaultProducerOptions);
     }
 
@@ -152,10 +152,10 @@ public class EventHubAsyncClient implements Closeable {
      * partition.
      *
      * @param options The set of options to apply when creating the producer.
-     * @return A new {@link EventHubProducer}.
+     * @return A new {@link EventHubAsyncProducer}.
      * @throws NullPointerException if {@code options} is {@code null}.
      */
-    public EventHubProducer createProducer(EventHubProducerOptions options) {
+    public EventHubAsyncProducer createProducer(EventHubProducerOptions options) {
         Objects.requireNonNull(options);
 
         final EventHubProducerOptions clonedOptions = options.clone();
@@ -185,7 +185,7 @@ public class EventHubAsyncClient implements Closeable {
                     .cast(AmqpSendLink.class);
             });
 
-        return new EventHubProducer(amqpLinkMono, clonedOptions);
+        return new EventHubAsyncProducer(amqpLinkMono, clonedOptions);
     }
 
     /**
@@ -282,7 +282,7 @@ public class EventHubAsyncClient implements Closeable {
 
     /**
      * Closes and disposes of connection to service. Any {@link EventHubAsyncConsumer EventHubConsumers} and {@link
-     * EventHubProducer EventHubProducers} created with this instance will have their connections closed.
+     * EventHubAsyncProducer EventHubProducers} created with this instance will have their connections closed.
      */
     @Override
     public void close() {
