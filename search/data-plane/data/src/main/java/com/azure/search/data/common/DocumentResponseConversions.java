@@ -17,6 +17,8 @@ import java.util.Set;
  */
 public class DocumentResponseConversions {
 
+    private static String[] redundantFields = new String[]{"@odata.context"};
+
     /**
      * Convert a Linked HashMap object to Map object
      *
@@ -57,7 +59,9 @@ public class DocumentResponseConversions {
      * @return Map<String, Object>
      */
     public static Map<String, Object> dropUnnecessaryFields(Map<String, Object> map) {
-        map.remove("@odata.context");
+        for (String field: redundantFields) {
+            map.remove(field);
+        }
         return map;
     }
 
