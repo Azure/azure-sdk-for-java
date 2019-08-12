@@ -140,7 +140,7 @@ public final class ContainerClientBuilder {
             this.endpoint = parts.scheme() + "://" + parts.host();
             this.containerName = parts.containerName();
 
-            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(parts.sasQueryParameters());
+            this.sasTokenCredential = SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode());
             if (this.sasTokenCredential != null) {
                 this.tokenCredential = null;
                 this.sharedKeyCredential = null;

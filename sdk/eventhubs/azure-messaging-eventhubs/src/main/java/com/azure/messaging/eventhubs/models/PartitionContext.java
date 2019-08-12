@@ -13,9 +13,9 @@ import java.util.Objects;
 @Immutable
 public class PartitionContext {
 
-    private String partitionId;
-    private String eventHubName;
-    private String consumerGroupName;
+    private final String partitionId;
+    private final String eventHubName;
+    private final String consumerGroupName;
 
     /**
      * Creates an immutable instance containing the information for processing a partition.

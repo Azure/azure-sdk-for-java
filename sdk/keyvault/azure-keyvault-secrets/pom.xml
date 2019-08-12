@@ -3,15 +3,15 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
+    <artifactId>azure-client-sdk-parent</artifactId>
     <groupId>com.azure</groupId>
-    <artifactId>azure-keyvault-parent</artifactId>
-    <version>4.0.0-preview.2</version>
-    <relativePath>../pom.client.xml</relativePath>
+    <version>1.3.0</version>
+    <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-keyvault-secrets</artifactId>
-  <version>4.0.0-preview.2</version>
+  <version>4.0.0-preview.3</version>
 
   <name>azure-keyvault-secrets</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -34,7 +34,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.3</version>
+      <version>1.0.0-preview.4</version>
     </dependency>
 
     <dependency>
@@ -57,14 +57,14 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.0.0-preview.3</version>
+      <version>1.0.0-preview.4</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.0.0-preview.2</version>
+      <version>1.0.0-preview.3</version>
       <scope>test</scope>
     </dependency>
 

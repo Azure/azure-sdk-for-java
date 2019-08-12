@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
  */
 @Immutable
 public class EnvironmentCredential implements TokenCredential {
-    private Configuration configuration;
+    private final Configuration configuration;
     private final IdentityClientOptions identityClientOptions;
     private final ClientLogger logger = new ClientLogger(EnvironmentCredential.class);
 
