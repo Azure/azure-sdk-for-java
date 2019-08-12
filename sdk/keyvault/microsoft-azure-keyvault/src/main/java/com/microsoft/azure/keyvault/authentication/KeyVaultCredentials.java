@@ -74,6 +74,7 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
                         throw new IOException("Unexpected unauthorized response.");
                     }
                     authenticatedRequestPair = buildAuthenticatedRequest(originalRequest, response);
+                    response.close();
                 }
 
                 response = chain.proceed(authenticatedRequestPair.getLeft());
