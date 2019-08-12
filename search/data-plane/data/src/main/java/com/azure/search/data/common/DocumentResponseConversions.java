@@ -3,8 +3,14 @@
 
 package com.azure.search.data.common;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.implementation.http.PagedResponseBase;
+import com.azure.search.data.generated.models.FacetResult;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 

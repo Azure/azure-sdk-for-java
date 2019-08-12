@@ -3,6 +3,8 @@
 
 package com.azure.search.data;
 
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.search.data.common.SearchPagedResponse;
 import com.azure.search.data.common.SearchPipelinePolicy;
 import com.azure.search.data.customization.SearchIndexClientBuilder;
 import com.azure.search.data.generated.models.DocumentSearchResult;
@@ -13,6 +15,7 @@ import com.azure.search.data.models.Hotel;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,22 +29,32 @@ public class SearchIndexClientExample {
      * @param args arguments
      */
     public static void main(String[] args) {
-        String searchServiceName = "";
-        String apiKey = "";
+        String searchServiceName = "learnaisearch";
+        String apiKey = "A09A17F3A00BBDD62D04958775D73FE3";
         String dnsSuffix = "search.windows.net";
-        String indexName = "hotels";
+        String indexName = "lishakur-test";
         String apiVersion = "2019-05-06";
 
 
-        SearchIndexClient searchClient = new SearchIndexClientBuilder()
+        SearchIndexAsyncClient searchClient = new SearchIndexClientBuilder()
             .serviceName(searchServiceName)
             .searchDnsSuffix(dnsSuffix)
             .indexName(indexName)
             .apiVersion(apiVersion)
             .addPolicy(new SearchPipelinePolicy(apiKey))
-            .buildClient();
+            .buildAsyncClient();
 
-        searchForAll(searchClient);
+        List<SearchResult> results = searchClient
+            .search()
+            .log()
+            .doOnSubscribe(ignoredVal -> System.out.println("Subscribed to paged flux processing items"))
+            .doOnNext(item -> System.out.println("Processing item " + item))
+            .doOnComplete(() -> System.out.println("Completed processing"))
+            .collectList().block();
+
+        List<PagedResponse<SearchResult>> pagedResults = searchClient.search().byPage().collectList().block();
+
+        System.out.println("Oh Yeah");
 
     }
 
