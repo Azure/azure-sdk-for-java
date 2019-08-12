@@ -41,20 +41,27 @@ import java.util.Objects;
  * #credential(String, String, TokenCredential)}, is required in order to construct an {@link EventHubAsyncClient}.
  * </p>
  *
- * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hubs namespace connection string</strong></p>
+ * <p>
+ * <strong>Creating an asynchronous {@link EventHubAsyncClient} using Event Hubs namespace connection string</strong>
+ * </p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.connectionString#string-string}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.instantiation#string-string}
  *
- * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hub instance connection string</strong></p>
+ * <p>
+ * <strong>Creating an asynchronous {@link EventHubAsyncClient} using Event Hub instance connection string</strong>
+ * </p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.connectionstring#string}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.instantiation#string}
  *
- * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hub with no retry, different timeout and new
- * Scheduler</strong></p>
+ * <p>
+ * <strong>Creating a synchronous {@link EventHubClient}</strong>
+ * </p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.retry-timeout-scheduler}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubclient.instantiation}
  *
- * <p><strong>Creating an {@link EventProcessor} instance using Event Hub instance connection string</strong></p>
+ * <p>
+ * <strong>Creating an {@link EventProcessor} using Event Hub instance connection string</strong>
+ * </p>
  * {@codesnippet com.azure.messaging.eventhubs.eventprocessor.instantiation}
  *
  * @see EventHubAsyncClient
@@ -437,10 +444,8 @@ public class EventHubClientBuilder {
             ? CBSAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CBSAuthorizationType.JSON_WEB_TOKEN;
 
-        final ConnectionOptions parameters = new ConnectionOptions(host, eventHubName, credentials, authorizationType,
+        return new ConnectionOptions(host, eventHubName, credentials, authorizationType,
             transport, retryOptions, proxyConfiguration, scheduler);
-
-        return parameters;
     }
 
     private ProxyConfiguration getDefaultProxyConfiguration(Configuration configuration) {
