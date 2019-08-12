@@ -12,6 +12,7 @@ import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -24,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
@@ -170,13 +172,8 @@ public class MockHttpClient implements HttpClient {
                     response = new MockHttpResponse(request, statusCode);
                 }
             } else if ("echo.org".equalsIgnoreCase(requestHost)) {
-                return request.body()
-                    .collectList()
-                    .map(list ->  {
-//                        byte[] bytes = Unpooled.wrappedBuffer(list.toArray(new ByteBuffer[0])).array();
-//                        return new MockHttpResponse(request, 200, new HttpHeaders(request.headers()), bytes);
-                        throw new IllegalStateException("Code needs to be reimplemented");
-                    });
+                return FluxUtil.collectBytesInByteBufferStream(request.body())
+                    .map(bytes -> new MockHttpResponse(request, 200, new HttpHeaders(request.headers()), bytes));
             }
         } catch (Exception ex) {
             return Mono.error(ex);
@@ -216,7 +213,7 @@ public class MockHttpClient implements HttpClient {
     private static String bodyToString(HttpRequest request) {
         String body = "";
         if (request.body() != null) {
-            Mono<String> asyncString = FluxUtil.collectBytesInByteBufferStream(request.body(), true)
+            Mono<String> asyncString = FluxUtil.collectBytesInByteBufferStream(request.body())
                     .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
             body = asyncString.block();
         }
