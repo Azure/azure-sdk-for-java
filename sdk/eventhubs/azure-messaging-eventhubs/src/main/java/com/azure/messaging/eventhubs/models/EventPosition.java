@@ -61,8 +61,8 @@ public final class EventPosition {
 
     /**
      * Corresponds to the end of the partition, where no more events are currently enqueued. Use this position to begin
-     * receiving from the next event to be enqueued in the partition after an {@link EventHubAsyncConsumer} is created with
-     * this position.
+     * receiving from the next event to be enqueued in the partition after an {@link EventHubAsyncConsumer} is created
+     * with this position.
      *
      * @return An {@link EventPosition} set to the end of an Event Hubs stream and listens for new events.
      */
@@ -138,8 +138,8 @@ public final class EventPosition {
     }
 
     /**
-     * Gets the boolean value of if the event is included. If true, the event with the {@code sequenceNumber} is included;
-     * otherwise, the next event will be received.
+     * Gets the boolean value of if the event is included. If true, the event with the {@code sequenceNumber} is
+     * included; otherwise, the next event will be received.
      *
      * @return The boolean if the event will be received.
      */
