@@ -19,8 +19,8 @@ public class PoolUpdatePropertiesParameter {
      * A Task to run on each Compute Node as it joins the Pool. The Task runs
      * when the Compute Node is added to the Pool or when the Compute Node is
      * restarted.
-     * If this element is present, it overwrites any existing start Task. If
-     * omitted, any existing start Task is removed from the Pool.
+     * If this element is present, it overwrites any existing StartTask. If
+     * omitted, any existing StartTask is removed from the Pool.
      */
     @JsonProperty(value = "startTask")
     private StartTask startTask;
@@ -42,16 +42,16 @@ public class PoolUpdatePropertiesParameter {
     private List<CertificateReference> certificateReferences;
 
     /**
-     * The list of Application Packages to be installed on each Compute Compute
-     * Node in the Pool.
+     * The list of Application Packages to be installed on each Compute Node in
+     * the Pool.
      * The list replaces any existing Application Package references on the
      * Pool. Changes to Application Package references affect all new Compute
-     * Nodes joining the Pool, but do not affect Compute Compute Nodes that are
-     * already in the Pool until they are rebooted or reimaged. There is a
-     * maximum of 10 Application Package references on any given Pool. If
-     * omitted, or if you specify an empty collection, any existing Application
-     * Packages references are removed from the Pool. A maximum of 10
-     * references may be specified on a given Pool.
+     * Nodes joining the Pool, but do not affect Compute Nodes that are already
+     * in the Pool until they are rebooted or reimaged. There is a maximum of
+     * 10 Application Package references on any given Pool. If omitted, or if
+     * you specify an empty collection, any existing Application Packages
+     * references are removed from the Pool. A maximum of 10 references may be
+     * specified on a given Pool.
      */
     @JsonProperty(value = "applicationPackageReferences", required = true)
     private List<ApplicationPackageReference> applicationPackageReferences;
@@ -66,7 +66,7 @@ public class PoolUpdatePropertiesParameter {
     private List<MetadataItem> metadata;
 
     /**
-     * Get if this element is present, it overwrites any existing start Task. If omitted, any existing start Task is removed from the Pool.
+     * Get if this element is present, it overwrites any existing StartTask. If omitted, any existing StartTask is removed from the Pool.
      *
      * @return the startTask value
      */
@@ -75,7 +75,7 @@ public class PoolUpdatePropertiesParameter {
     }
 
     /**
-     * Set if this element is present, it overwrites any existing start Task. If omitted, any existing start Task is removed from the Pool.
+     * Set if this element is present, it overwrites any existing StartTask. If omitted, any existing StartTask is removed from the Pool.
      *
      * @param startTask the startTask value to set
      * @return the PoolUpdatePropertiesParameter object itself.
@@ -106,7 +106,7 @@ public class PoolUpdatePropertiesParameter {
     }
 
     /**
-     * Get the list replaces any existing Application Package references on the Pool. Changes to Application Package references affect all new Compute Nodes joining the Pool, but do not affect Compute Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Application Package references on any given Pool. If omitted, or if you specify an empty collection, any existing Application Packages references are removed from the Pool. A maximum of 10 references may be specified on a given Pool.
+     * Get the list replaces any existing Application Package references on the Pool. Changes to Application Package references affect all new Compute Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Application Package references on any given Pool. If omitted, or if you specify an empty collection, any existing Application Packages references are removed from the Pool. A maximum of 10 references may be specified on a given Pool.
      *
      * @return the applicationPackageReferences value
      */
@@ -115,7 +115,7 @@ public class PoolUpdatePropertiesParameter {
     }
 
     /**
-     * Set the list replaces any existing Application Package references on the Pool. Changes to Application Package references affect all new Compute Nodes joining the Pool, but do not affect Compute Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Application Package references on any given Pool. If omitted, or if you specify an empty collection, any existing Application Packages references are removed from the Pool. A maximum of 10 references may be specified on a given Pool.
+     * Set the list replaces any existing Application Package references on the Pool. Changes to Application Package references affect all new Compute Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Application Package references on any given Pool. If omitted, or if you specify an empty collection, any existing Application Packages references are removed from the Pool. A maximum of 10 references may be specified on a given Pool.
      *
      * @param applicationPackageReferences the applicationPackageReferences value to set
      * @return the PoolUpdatePropertiesParameter object itself.
