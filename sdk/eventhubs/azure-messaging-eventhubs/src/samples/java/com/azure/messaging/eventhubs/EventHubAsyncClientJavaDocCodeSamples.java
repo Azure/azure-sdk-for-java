@@ -19,7 +19,7 @@ public class EventHubAsyncClientJavaDocCodeSamples {
     public void instantiation() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncclient.connectionString#string-string
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
-            + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
+            + "SharedAccessKey={sharedAccessKey}";
         String eventHubName = "my-event-hub";
 
         EventHubAsyncClient client = new EventHubClientBuilder()
