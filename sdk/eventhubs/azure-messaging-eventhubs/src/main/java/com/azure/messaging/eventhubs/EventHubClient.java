@@ -38,7 +38,7 @@ public class EventHubClient {
     private final EventHubProducerOptions defaultProducerOptions;
     private final EventHubConsumerOptions defaultConsumerOptions;
 
-    EventHubClient(ConnectionOptions connectionOptions, EventHubAsyncClient client) {
+    EventHubClient(EventHubAsyncClient client, ConnectionOptions connectionOptions) {
         this.retry = connectionOptions.retry();
         this.defaultProducerOptions = new EventHubProducerOptions()
             .retry(connectionOptions.retry());
