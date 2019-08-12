@@ -49,13 +49,13 @@ import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAM
  * the Event Hubs namespace and offers operations for sending event data, receiving events, and inspecting the connected
  * Event Hub.
  *
- * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hubs namespace connection string</strong></p>
+ * <p><strong>Creating an {@link EventHubAsyncClient} using an Event Hubs namespace connection string</strong></p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.connectionString#string-string}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.instantiation#string-string}
  *
- * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hub instance connection string</strong></p>
+ * <p><strong>Creating an {@link EventHubAsyncClient} using an Event Hub instance connection string</strong></p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.connectionstring#string}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.instantiation#string}
  *
  * @see EventHubClientBuilder
  * @see <a href="https://docs.microsoft.com/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>

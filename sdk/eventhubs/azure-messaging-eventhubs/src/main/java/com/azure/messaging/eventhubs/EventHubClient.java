@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.implementation.annotation.ReturnType;
+import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
@@ -19,21 +20,16 @@ import java.io.Closeable;
  * Event Hub.
  *
  * <p>
- * <strong>Creating a synchronous {@link EventHubClient} using Event Hubs namespace connection string</strong>
- * </p>
- *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.connectionString#string-string}
- *
- * <p>
  * <strong>Creating a synchronous {@link EventHubClient} using Event Hub instance connection string</strong>
  * </p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.connectionstring#string}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubclient.instantiation}
  *
  * @see EventHubClientBuilder
- * @see EventHubAsyncClient To communicate with Event Hub using an asynchronous interface.
+ * @see EventHubAsyncClient To communicate with Event Hub using an asynchronous client.
  * @see <a href="https://docs.microsoft.com/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>
  */
+@ServiceClient(builder = EventHubClientBuilder.class)
 public class EventHubClient implements Closeable {
     private final EventHubAsyncClient client;
     private final RetryOptions retry;
