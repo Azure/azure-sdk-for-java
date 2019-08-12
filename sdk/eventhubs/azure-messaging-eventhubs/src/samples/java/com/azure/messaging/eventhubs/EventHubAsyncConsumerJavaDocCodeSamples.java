@@ -13,14 +13,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Code snippets demonstrating various {@link EventHubAsyncConsumer} scenarios.
  */
-public class EventHubConsumerJavaDocCodeSamples {
+public class EventHubAsyncConsumerJavaDocCodeSamples {
     private final EventHubAsyncClient client = new EventHubClientBuilder().connectionString("fake-string").buildAsyncClient();
 
     /**
      * Receives event data
      */
     public void receive() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumer.receive
+        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncconsumer.receive
         // Obtain partitionId from EventHubAsyncClient.getPartitionIds()
         String partitionId = "0";
 
@@ -32,7 +32,7 @@ public class EventHubConsumerJavaDocCodeSamples {
         Disposable subscription = consumer.receive().subscribe(event -> {
             // process event
         }, error -> System.err.print(error.toString()));
-        // END: com.azure.messaging.eventhubs.eventhubconsumer.receive
+        // END: com.azure.messaging.eventhubs.eventhubasyncconsumer.receive
 
         subscription.dispose();
     }
@@ -44,10 +44,10 @@ public class EventHubConsumerJavaDocCodeSamples {
         // Obtain partitionId from EventHubAsyncClient.getPartitionIds()
         String partitionId = "0";
 
-        EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
-            EventPosition.latest());
+        EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
+            partitionId, EventPosition.latest());
 
-        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumer.receiveBackpressure
+        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncconsumer.receive#basesubscriber
         consumer.receive().subscribe(new BaseSubscriber<EventData>() {
             private static final int NUMBER_OF_EVENTS = 5;
             private final AtomicInteger currentNumberOfEvents = new AtomicInteger();
@@ -70,6 +70,6 @@ public class EventHubConsumerJavaDocCodeSamples {
                 }
             }
         });
-        // END: com.azure.messaging.eventhubs.eventhubconsumer.receiveBackpressure
+        // END: com.azure.messaging.eventhubs.eventhubasyncconsumer.receive#basesubscriber
     }
 }

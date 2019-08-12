@@ -34,14 +34,14 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  *
  * <p><strong>Consuming events from Event Hub</strong></p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.receive}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncconsumer.receive}
  *
  * <p><strong>Rate limiting consumption of events from Event Hub</strong></p>
  *
  * For event consumers that need to limit the number of events they receive at a given time, they can use {@link
  * BaseSubscriber#request(long)}.
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.receiveBackpressure}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncconsumer.receive#basesubscriber}
  *
  * @see EventHubAsyncClient#createConsumer(String, String, EventPosition)
  * @see EventHubAsyncClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
@@ -153,7 +153,7 @@ public class EventHubAsyncConsumer implements Closeable {
      *
      * <p><strong>Consuming events from Event Hub</strong></p>
      *
-     * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.receive}
+     * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncconsumer.receive}
      *
      * @return A stream of events for this consumer.
      */
