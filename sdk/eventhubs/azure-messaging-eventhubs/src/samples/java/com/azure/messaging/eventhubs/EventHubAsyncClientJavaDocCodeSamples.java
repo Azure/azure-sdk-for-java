@@ -3,11 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.RetryOptions;
-import reactor.core.scheduler.Schedulers;
-
-import java.time.Duration;
-
 /**
  * Contains code snippets when generating javadocs through doclets for {@link EventHubAsyncClient}.
  */
@@ -42,26 +37,6 @@ public class EventHubAsyncClientJavaDocCodeSamples {
             .connectionString(connectionString)
             .buildAsyncClient();
         // END: com.azure.messaging.eventhubs.eventhubasyncclient.connectionstring#string
-
-        client.close();
-    }
-
-    /**
-     * Demonstrates an {@link EventHubClientBuilder} using retry, timeout and a different scheduler.
-     */
-    public void instantiationRetry() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncclient.retry-timeout-scheduler
-        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
-            + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
-
-        RetryOptions retryOptions = new RetryOptions()
-            .tryTimeout(Duration.ofSeconds(30));
-        EventHubAsyncClient client = new EventHubClientBuilder()
-            .connectionString(connectionString)
-            .retry(retryOptions)
-            .scheduler(Schedulers.newElastic("dedicated-event-hub-scheduler"))
-            .buildAsyncClient();
-        // END: com.azure.messaging.eventhubs.eventhubasyncclient.retry-timeout-scheduler
 
         client.close();
     }

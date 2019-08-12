@@ -54,8 +54,7 @@ import java.util.Objects;
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.retry-timeout-scheduler}
  *
- * <p><strong>Creating an {@link EventProcessor} instance using Event Hub instance connection
- *  string</strong></p>
+ * <p><strong>Creating an {@link EventProcessor} instance using Event Hub instance connection string</strong></p>
  * {@codesnippet com.azure.messaging.eventhubs.eventprocessor.instantiation}
  *
  * @see EventHubAsyncClient
