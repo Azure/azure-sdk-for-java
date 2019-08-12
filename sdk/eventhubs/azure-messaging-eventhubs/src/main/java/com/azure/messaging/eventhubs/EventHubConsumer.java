@@ -3,10 +3,52 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.http.rest.IterableResponse;
+import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
+import com.azure.messaging.eventhubs.models.EventPosition;
+import reactor.core.publisher.Flux;
+
 import java.io.Closeable;
 import java.io.IOException;
+import java.time.Duration;
 
+/**
+ * A consumer responsible for reading {@link EventData} from a specific Event Hub partition in the context of a specific
+ * consumer group.
+ *
+ * <ul>
+ * <li>If {@link EventHubConsumer} is created where {@link EventHubConsumerOptions#ownerLevel()} has a
+ * value, then Event Hubs service will guarantee only one active consumer exists per partitionId and consumer group
+ * combination. This consumer is sometimes referred to as an "Epoch Consumer."</li>
+ * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
+ * {@link EventHubConsumerOptions#ownerLevel()} when creating consumers. This non-exclusive consumer is sometimes
+ * referred to as a "Non-Epoch Consumer."</li>
+ * </ul>
+ *
+ * @see EventHubClient#createConsumer(String, String, EventPosition)
+ * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
+ */
 public class EventHubConsumer implements Closeable {
+    /**
+     * Receives a batch of EventData from the Event Hub partition.
+     *
+     * @param maximumMessageCount The maximum number of messages to receive in this batch.
+     */
+    IterableResponse<EventData> receive(int maximumMessageCount) {
+        return new IterableResponse<>(Flux.empty());
+    }
+
+    /**
+     * Receives a batch of EventData from the Event Hub partition
+     *
+     * @param maximumMessageCount The maximum number of messages to receive in this batch.
+     * @param maximumWaitTime The maximum amount of time to wait to build up the requested message count for the
+     *         batch; if not specified, the default wait time specified when the consumer was created will be used.
+     */
+    IterableResponse<EventData> receive(int maximumMessageCount, Duration maximumWaitTime) {
+        return new IterableResponse<>(Flux.empty());
+    }
+
     /**
      * {@inheritDoc}
      */
