@@ -8,6 +8,8 @@ import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.Objects;
 
@@ -73,7 +75,7 @@ import java.util.Objects;
  * @see EventHubAsyncProducer To asynchronously generate events to an Event Hub, see EventHubAsyncProducer.
  */
 @Immutable
-public class EventHubProducer {
+public class EventHubProducer implements Closeable {
     private final EventHubAsyncProducer producer;
     private final Duration tryTimeout;
 
@@ -184,5 +186,13 @@ public class EventHubProducer {
      */
     public void send(EventDataBatch batch) {
         producer.send(batch).block();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void close() throws IOException {
+        producer.close();
     }
 }

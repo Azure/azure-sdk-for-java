@@ -11,6 +11,8 @@ import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 
+import java.io.Closeable;
+
 /**
  * The main point of interaction with Azure Event Hubs, the client offers a connection to a specific Event Hub within
  * the Event Hubs namespace and offers operations for sending event data, receiving events, and inspecting the connected
@@ -32,7 +34,7 @@ import com.azure.messaging.eventhubs.models.EventPosition;
  * @see EventHubAsyncClient To communicate with Event Hub using an asynchronous interface.
  * @see <a href="https://docs.microsoft.com/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>
  */
-public class EventHubClient {
+public class EventHubClient implements Closeable {
     private final EventHubAsyncClient client;
     private final RetryOptions retry;
     private final EventHubProducerOptions defaultProducerOptions;
@@ -163,5 +165,13 @@ public class EventHubClient {
                                            EventHubConsumerOptions options) {
         final EventHubAsyncConsumer consumer = client.createConsumer(consumerGroup, partitionId, eventPosition, options);
         return new EventHubConsumer();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void close() {
+        client.close();
     }
 }

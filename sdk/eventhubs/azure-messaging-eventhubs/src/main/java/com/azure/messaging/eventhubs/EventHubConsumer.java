@@ -3,5 +3,14 @@
 
 package com.azure.messaging.eventhubs;
 
-public class EventHubConsumer {
+import java.io.Closeable;
+import java.io.IOException;
+
+public class EventHubConsumer implements Closeable {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void close() throws IOException {
+    }
 }
