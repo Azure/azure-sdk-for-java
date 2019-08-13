@@ -14,6 +14,7 @@ import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 
 import java.io.Closeable;
+import java.time.Duration;
 import java.util.Objects;
 
 /**
@@ -103,9 +104,15 @@ public class EventHubClient implements Closeable {
      * @throws NullPointerException if {@code options} is {@code null}.
      */
     public EventHubProducer createProducer(EventHubProducerOptions options) {
+        Objects.requireNonNull(options);
+
         final EventHubAsyncProducer producer = client.createProducer(options);
 
-        return new EventHubProducer(producer, options.retry().tryTimeout());
+        final Duration tryTimeout = options.retry() != null && options.retry().tryTimeout() != null
+            ? options.retry().tryTimeout()
+            : defaultProducerOptions.retry().tryTimeout();
+
+        return new EventHubProducer(producer, tryTimeout);
     }
 
     /**
@@ -157,9 +164,9 @@ public class EventHubClient implements Closeable {
      * @param options The set of options to apply when creating the consumer.
      * @return An new {@link EventHubConsumer} that receives events from the partition with all configured {@link
      *     EventHubConsumerOptions}.
-     * @throws NullPointerException If {@code eventPosition}, or {@code options} is {@code null}.
-     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an empty
-     *     string.
+     * @throws NullPointerException If {@code eventPosition}, {@code consumerGroup}, {@code partitionId}, or {@code
+     *     options} is {@code null}.
+     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
     public EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
                                            EventHubConsumerOptions options) {
