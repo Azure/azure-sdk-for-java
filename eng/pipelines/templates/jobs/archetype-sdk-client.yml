@@ -57,7 +57,7 @@ jobs:
 
     steps:
       - script: |
-          echo "##vso[task.uploadsummary]eng/sample.md"
+          echo "##vso[task.uploadsummary]$(Build.SourcesDirectory)/eng/sample.md"
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
         displayName: 'Tag scheduled builds'
