@@ -21,7 +21,7 @@ import java.io.Closeable;
  * Event Hub.
  *
  * <p>
- * <strong>Creating a synchronous {@link EventHubClient} using Event Hub instance connection string</strong>
+ * <strong>Creating a synchronous {@link EventHubClient} using an Event Hub instance connection string</strong>
  * </p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclient.instantiation}
