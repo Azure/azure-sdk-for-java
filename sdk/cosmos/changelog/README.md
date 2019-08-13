@@ -1,5 +1,40 @@
 ## Changelog
 
+### 3.1.0
+- Added CosmosKeyCredential support in CosmosClientBuilder to support account key rotation.
+
+### 3.0.1
+- Token Resolver null check fix in Cosmos Client Builder
+
+### 3.0.0
+- **Large API Changes**
+- Changed library name to azure-cosmos
+- Changed from Rx1 to Reactor based Async
+- Change API from URI based to "Fluent" style.
+    - Added CosmosDatabase, CosmosContainer, CosmosItem, etc. classes as sub-clients to CosmosClient
+- Dropped attachment/media support
+- Default changed to direct mode
+- Changed name for Collection to Container
+- Changed name for Document to Item
+- Changed name for lots of types
+    - AsyncDocumentClient -> CosmosClient
+    - Document -> CosmosItemProperties
+    - DocumentCollection -> CosmosContainerProperties
+    - Database -> CosmosDatbaseProperties
+    - etc.
+
+### 2.5.1
+- Bug fixes
+
+### 2.5.0
+- Direct mode now uses TCP by default (HTTP can be renabled via JAVA_OPTS)
+
+### 2.4.5
+- Bug fixes
+
+### 2.4.4
+- Bug fixes
+
 ### 2.4.3
 
 - Fixed resource leak issue on closing client

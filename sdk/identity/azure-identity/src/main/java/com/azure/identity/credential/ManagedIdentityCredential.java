@@ -5,39 +5,36 @@ package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
+import com.azure.core.implementation.annotation.Immutable;
 import com.azure.core.util.configuration.BaseConfigurations;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
-import com.azure.identity.IdentityClient;
-import com.azure.identity.IdentityClientOptions;
+import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientBuilder;
+import com.azure.identity.implementation.IdentityClientOptions;
 import reactor.core.publisher.Mono;
 
 /**
  * The base class for Managed Service Identity token based credentials.
  */
+@Immutable
 public final class ManagedIdentityCredential implements TokenCredential {
     private final AppServiceMSICredential appServiceMSICredential;
     private final VirtualMachineMSICredential virtualMachineMSICredential;
 
     /**
-     * Creates an instance of the ManagedIdentityCredential with default identity client options.
-     */
-    public ManagedIdentityCredential() {
-        this(new IdentityClientOptions());
-    }
-
-    /**
      * Creates an instance of the ManagedIdentityCredential.
+     * @param clientId the client id of user assigned or system assigned identity
      * @param identityClientOptions the options for configuring the identity client.
      */
-    public ManagedIdentityCredential(IdentityClientOptions identityClientOptions) {
-        IdentityClient identityClient = new IdentityClient(identityClientOptions);
+    ManagedIdentityCredential(String clientId, IdentityClientOptions identityClientOptions) {
+        IdentityClient identityClient = new IdentityClientBuilder().clientId(clientId).identityClientOptions(identityClientOptions).build();
         Configuration configuration = ConfigurationManager.getConfiguration();
         if (configuration.contains(BaseConfigurations.MSI_ENDPOINT)) {
-            appServiceMSICredential = new AppServiceMSICredential(identityClient);
+            appServiceMSICredential = new AppServiceMSICredential(clientId, identityClient);
             virtualMachineMSICredential = null;
         } else {
-            virtualMachineMSICredential = new VirtualMachineMSICredential(identityClient);
+            virtualMachineMSICredential = new VirtualMachineMSICredential(clientId, identityClient);
             appServiceMSICredential = null;
         }
     }
@@ -47,21 +44,6 @@ public final class ManagedIdentityCredential implements TokenCredential {
      */
     public String clientId() {
         return this.appServiceMSICredential != null ? this.appServiceMSICredential.clientId() : this.virtualMachineMSICredential.clientId();
-    }
-
-    /**
-     * Specifies the client id of user assigned or system assigned identity.
-     *
-     * @param clientId the client id
-     * @return ManagedIdentityCredential
-     */
-    public ManagedIdentityCredential clientId(String clientId) {
-        if (this.appServiceMSICredential != null) {
-            this.appServiceMSICredential.clientId(clientId);
-        } else {
-            this.virtualMachineMSICredential.clientId(clientId);
-        }
-        return this;
     }
 
     /**

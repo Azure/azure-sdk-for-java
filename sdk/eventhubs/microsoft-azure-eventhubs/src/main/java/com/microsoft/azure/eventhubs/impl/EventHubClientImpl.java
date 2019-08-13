@@ -62,11 +62,11 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     public static CompletableFuture<EventHubClient> create(
             final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor)
             throws IOException {
-    	if (StringUtil.isNullOrWhiteSpace(connectionString)) {
-    		throw new IllegalArgumentException("Connection string cannot be null or empty");
-    	}
-    	Objects.requireNonNull(executor, "Executor cannot be null");
-    	
+        if (StringUtil.isNullOrWhiteSpace(connectionString)) {
+            throw new IllegalArgumentException("Connection string cannot be null or empty");
+        }
+        Objects.requireNonNull(executor, "Executor cannot be null");
+        
         final ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
         final EventHubClientImpl eventHubClient = new EventHubClientImpl(connStr.getEventHubName(), executor);
 
@@ -82,24 +82,24 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     }
 
     public static CompletableFuture<EventHubClient> create(
-    		final URI endpoint,
-    		final String eventHubName,
-    		final ITokenProvider tokenProvider,
-    		final ScheduledExecutorService executor,
-    		final EventHubClientOptions options) throws IOException {
-    	if (StringUtil.isNullOrWhiteSpace(endpoint.getHost())) {
-    		throw new IllegalArgumentException("Endpoint must contain a hostname");
-    	}
-    	if (StringUtil.isNullOrWhiteSpace(eventHubName)) {
-    		throw new IllegalArgumentException("Event hub name cannot be null or empty");
-    	}
-    	Objects.requireNonNull(tokenProvider, "Token provider cannot be null");
-    	
+            final URI endpoint,
+            final String eventHubName,
+            final ITokenProvider tokenProvider,
+            final ScheduledExecutorService executor,
+            final EventHubClientOptions options) throws IOException {
+        if (StringUtil.isNullOrWhiteSpace(endpoint.getHost())) {
+            throw new IllegalArgumentException("Endpoint must contain a hostname");
+        }
+        if (StringUtil.isNullOrWhiteSpace(eventHubName)) {
+            throw new IllegalArgumentException("Event hub name cannot be null or empty");
+        }
+        Objects.requireNonNull(tokenProvider, "Token provider cannot be null");
+        
         final EventHubClientImpl eventHubClient = new EventHubClientImpl(eventHubName, executor);
         final MessagingFactoryBuilder builder = new MessagingFactoryBuilder(endpoint.getHost(), tokenProvider, executor);
         if (options != null) {
-    		builder.setOperationTimeout(options.getOperationTimeout()).setTransportType(options.getTransportType()).
-    				setRetryPolicy(options.getRetryPolicy());
+            builder.setOperationTimeout(options.getOperationTimeout()).setTransportType(options.getTransportType()).
+                    setRetryPolicy(options.getRetryPolicy());
         }
 
         return builder.build()
@@ -297,13 +297,13 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         request.put(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY, this.eventHubName);
         request.put(ClientConstants.MANAGEMENT_OPERATION_KEY, ClientConstants.READ_OPERATION_VALUE);
         return addManagementToken(request).thenComposeAsync((requestWithToken) -> managementWithRetry(requestWithToken), this.executor).
-            	thenApplyAsync((rawdata) -> {
-            		return new EventHubRuntimeInformation(
+                thenApplyAsync((rawdata) -> {
+                    return new EventHubRuntimeInformation(
                             (String) rawdata.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY),
                             ((Date) rawdata.get(ClientConstants.MANAGEMENT_RESULT_CREATED_AT)).toInstant(),
                             (int) rawdata.get(ClientConstants.MANAGEMENT_RESULT_PARTITION_COUNT),
                             (String[]) rawdata.get(ClientConstants.MANAGEMENT_RESULT_PARTITION_IDS));
-            	}, this.executor);
+                }, this.executor);
     }
 
     @Override
@@ -316,8 +316,8 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         request.put(ClientConstants.MANAGEMENT_PARTITION_NAME_KEY, partitionId);
         request.put(ClientConstants.MANAGEMENT_OPERATION_KEY, ClientConstants.READ_OPERATION_VALUE);
         return addManagementToken(request).thenComposeAsync((requestWithToken) -> managementWithRetry(requestWithToken), this.executor).
-            	thenApplyAsync((rawdata) -> {
-            		return new PartitionRuntimeInformation(
+                thenApplyAsync((rawdata) -> {
+                    return new PartitionRuntimeInformation(
                             (String) rawdata.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY),
                             (String) rawdata.get(ClientConstants.MANAGEMENT_PARTITION_NAME_KEY),
                             (long) rawdata.get(ClientConstants.MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER),
@@ -325,7 +325,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
                             (String) rawdata.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET),
                             ((Date) rawdata.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant(),
                             (boolean) rawdata.get(ClientConstants.MANAGEMENT_RESULT_PARTITION_IS_EMPTY));
-            	}, this.executor);	
+                }, this.executor);    
     }
 
     private CompletableFuture<Map<String, Object>> addManagementToken(Map<String, Object> request) {

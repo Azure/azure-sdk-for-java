@@ -58,6 +58,6 @@ public class SecurityToken {
      * @return audience
      */
     public String getAudience() {
-    	return this.audience;
+        return this.audience;
     }
 }

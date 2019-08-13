@@ -1,11 +1,11 @@
 ﻿## Azure Batch Libraries for Java
 
-This README is based on the latest released version Azure Batch SDK (6.0.0). If you are looking for other releases, see the [More Information](#more-information) section below.
+This README is based on the latest released version Azure Batch SDK (7.0.0). If you are looking for other releases, see the [More Information](#more-information) section below.
 
 The Azure Batch Libraries for Java is a higher-level, object-oriented API for interacting with the Azure Batch service.
 
 
-> **6.0.0** is a release that supports all features of Azure Batch service with API version "2019-06-01.9.0". We will be adding support for more new features and tweaking the API associated with Azure Batch service newer release.
+> **7.0.0** is a release that supports all features of Azure Batch service with API version "2019-08-01.10.0". We will be adding support for more new features and tweaking the API associated with Azure Batch service newer release.
 
 **Azure Batch Authentication**
 
@@ -58,15 +58,15 @@ You can find sample code that illustrates Batch usage scenarios in https://githu
 # Download
 
 
-**6.0.0**
+**7.0.0**
 
-If you are using released builds from 6.0.0, add the following to your POM file:
+If you are using released builds from 7.0.0, add the following to your POM file:
 
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-batch</artifactId>
-    <version>6.0.0</version>
+    <version>7.0.0</version>
 </dependency>
 <dependency>
     <groupId>com.microsoft.azure</groupId>

@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 
 import java.io.File;
@@ -32,7 +32,7 @@ public class BackupAndRestoreOperationsAsync {
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
             .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // Let's create Cloud Rsa key valid for 1 year. if the key
@@ -41,7 +41,7 @@ public class BackupAndRestoreOperationsAsync {
                 .expires(OffsetDateTime.now().plusYears(1))
                 .keySize(2048))
                 .subscribe(keyResponse ->
-                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.value().name(), keyResponse.value().keyMaterial().kty()));
+                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.name(), keyResponse.keyMaterial().kty()));
 
         Thread.sleep(2000);
 
@@ -49,7 +49,7 @@ public class BackupAndRestoreOperationsAsync {
         // For long term storage, it is ideal to write the backup to a file.
         String backupFilePath = "YOUR_BACKUP_FILE_PATH";
         keyAsyncClient.backupKey("CloudRsaKey").subscribe(backupResponse -> {
-            byte[] backupBytes = backupResponse.value();
+            byte[] backupBytes = backupResponse;
             writeBackupToFile(backupBytes, backupFilePath);
         });
 
@@ -57,7 +57,7 @@ public class BackupAndRestoreOperationsAsync {
 
         // The Cloud Rsa key is no longer in use, so you delete it.
         keyAsyncClient.deleteKey("CloudRsaKey").subscribe(deletedKeyResponse ->
-                System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.value().recoveryId()));
+                System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.recoveryId()));
 
         //To ensure file is deleted on server side.
         Thread.sleep(30000);
@@ -72,7 +72,7 @@ public class BackupAndRestoreOperationsAsync {
         // After sometime, the key is required again. We can use the backup value to restore it in the key vault.
         byte[] backupFromFile = Files.readAllBytes(new File(backupFilePath).toPath());
         keyAsyncClient.restoreKey(backupFromFile).subscribe(keyResponse ->
-            System.out.printf("Restored Key with name %s \n", keyResponse.value().name()));
+            System.out.printf("Restored Key with name %s \n", keyResponse.name()));
 
         //To ensure key is restored on server side.
         Thread.sleep(15000);

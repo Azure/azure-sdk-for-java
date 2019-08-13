@@ -15,7 +15,7 @@ import com.azure.core.entities.HttpBinJSON;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpClient;
@@ -179,7 +179,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     public void serviceErrorWithResponseContentType() {
         ServiceErrorWithCharsetService service = RestProxy.create(
                 ServiceErrorWithCharsetService.class,
-                HttpPipeline.builder().httpClient(new SimpleMockHttpClient() {
+                new HttpPipelineBuilder().httpClient(new SimpleMockHttpClient() {
                     @Override
                     public Mono<HttpResponse> send(HttpRequest request) {
                         HttpHeaders headers = new HttpHeaders().put("Content-Type", "application/json");
@@ -202,7 +202,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     public void serviceErrorWithResponseContentTypeBadJSON() {
         ServiceErrorWithCharsetService service = RestProxy.create(
                 ServiceErrorWithCharsetService.class,
-                HttpPipeline.builder().httpClient(new SimpleMockHttpClient() {
+                new HttpPipelineBuilder().httpClient(new SimpleMockHttpClient() {
                     @Override
                     public Mono<HttpResponse> send(HttpRequest request) {
                         HttpHeaders headers = new HttpHeaders().put("Content-Type", "application/json");
@@ -225,7 +225,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     public void serviceErrorWithResponseContentTypeCharset() {
         ServiceErrorWithCharsetService service = RestProxy.create(
                 ServiceErrorWithCharsetService.class,
-                HttpPipeline.builder().httpClient(new SimpleMockHttpClient() {
+                new HttpPipelineBuilder().httpClient(new SimpleMockHttpClient() {
                     @Override
                     public Mono<HttpResponse> send(HttpRequest request) {
                         HttpHeaders headers = new HttpHeaders().put("Content-Type", "application/json; charset=UTF-8");
@@ -248,7 +248,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     public void serviceErrorWithResponseContentTypeCharsetBadJSON() {
         ServiceErrorWithCharsetService service = RestProxy.create(
                 ServiceErrorWithCharsetService.class,
-                HttpPipeline.builder().httpClient(new SimpleMockHttpClient() {
+                new HttpPipelineBuilder().httpClient(new SimpleMockHttpClient() {
                     @Override
                     public Mono<HttpResponse> send(HttpRequest request) {
                         HttpHeaders headers = new HttpHeaders().put("Content-Type", "application/json; charset=UTF-8");

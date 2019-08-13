@@ -159,14 +159,13 @@ public class JobManagerTask {
 
     /**
      * A list of Application Packages that the Batch service will deploy to the
-     * Compute Compute Node before running the command line.
+     * Compute Node before running the command line.
      * Application Packages are downloaded and deployed to a shared directory,
      * not the Task working directory. Therefore, if a referenced Application
      * Package is already on the Compute Node, and is up to date, then it is
-     * not re-downloaded; the existing copy on the Compute Compute Node is
-     * used. If a referenced Application Package cannot be installed, for
-     * example because the package has been deleted or because download failed,
-     * the Task fails.
+     * not re-downloaded; the existing copy on the Compute Node is used. If a
+     * referenced Application Package cannot be installed, for example because
+     * the package has been deleted or because download failed, the Task fails.
      */
     @JsonProperty(value = "applicationPackageReferences")
     private List<ApplicationPackageReference> applicationPackageReferences;
@@ -414,7 +413,7 @@ public class JobManagerTask {
     }
 
     /**
-     * Get application Packages are downloaded and deployed to a shared directory, not the Task working directory. Therefore, if a referenced Application Package is already on the Compute Node, and is up to date, then it is not re-downloaded; the existing copy on the Compute Compute Node is used. If a referenced Application Package cannot be installed, for example because the package has been deleted or because download failed, the Task fails.
+     * Get application Packages are downloaded and deployed to a shared directory, not the Task working directory. Therefore, if a referenced Application Package is already on the Compute Node, and is up to date, then it is not re-downloaded; the existing copy on the Compute Node is used. If a referenced Application Package cannot be installed, for example because the package has been deleted or because download failed, the Task fails.
      *
      * @return the applicationPackageReferences value
      */
@@ -423,7 +422,7 @@ public class JobManagerTask {
     }
 
     /**
-     * Set application Packages are downloaded and deployed to a shared directory, not the Task working directory. Therefore, if a referenced Application Package is already on the Compute Node, and is up to date, then it is not re-downloaded; the existing copy on the Compute Compute Node is used. If a referenced Application Package cannot be installed, for example because the package has been deleted or because download failed, the Task fails.
+     * Set application Packages are downloaded and deployed to a shared directory, not the Task working directory. Therefore, if a referenced Application Package is already on the Compute Node, and is up to date, then it is not re-downloaded; the existing copy on the Compute Node is used. If a referenced Application Package cannot be installed, for example because the package has been deleted or because download failed, the Task fails.
      *
      * @param applicationPackageReferences the applicationPackageReferences value to set
      * @return the JobManagerTask object itself.

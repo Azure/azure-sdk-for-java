@@ -113,7 +113,7 @@ public interface Applications {
 
     /**
      * Gets information about the specified Application.
-     * This operation returns only Applications and versions that are available for use on Compute Nodes; that is, that can be used in an Package reference. For administrator information about Applications and versions that are not yet available to Compute Compute Nodes, use the Azure portal or the Azure Resource Manager API.
+     * This operation returns only Applications and versions that are available for use on Compute Nodes; that is, that can be used in an Package reference. For administrator information about Applications and versions that are not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationId The ID of the Application.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -125,7 +125,7 @@ public interface Applications {
 
     /**
      * Gets information about the specified Application.
-     * This operation returns only Applications and versions that are available for use on Compute Nodes; that is, that can be used in an Package reference. For administrator information about Applications and versions that are not yet available to Compute Compute Nodes, use the Azure portal or the Azure Resource Manager API.
+     * This operation returns only Applications and versions that are available for use on Compute Nodes; that is, that can be used in an Package reference. For administrator information about Applications and versions that are not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationId The ID of the Application.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -136,7 +136,7 @@ public interface Applications {
 
     /**
      * Gets information about the specified Application.
-     * This operation returns only Applications and versions that are available for use on Compute Nodes; that is, that can be used in an Package reference. For administrator information about Applications and versions that are not yet available to Compute Compute Nodes, use the Azure portal or the Azure Resource Manager API.
+     * This operation returns only Applications and versions that are available for use on Compute Nodes; that is, that can be used in an Package reference. For administrator information about Applications and versions that are not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationId The ID of the Application.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -146,7 +146,7 @@ public interface Applications {
 
     /**
      * Gets information about the specified Application.
-     * This operation returns only Applications and versions that are available for use on Compute Nodes; that is, that can be used in an Package reference. For administrator information about Applications and versions that are not yet available to Compute Compute Nodes, use the Azure portal or the Azure Resource Manager API.
+     * This operation returns only Applications and versions that are available for use on Compute Nodes; that is, that can be used in an Package reference. For administrator information about Applications and versions that are not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationId The ID of the Application.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -155,7 +155,7 @@ public interface Applications {
     Observable<ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders>> getWithServiceResponseAsync(String applicationId);
     /**
      * Gets information about the specified Application.
-     * This operation returns only Applications and versions that are available for use on Compute Nodes; that is, that can be used in an Package reference. For administrator information about Applications and versions that are not yet available to Compute Compute Nodes, use the Azure portal or the Azure Resource Manager API.
+     * This operation returns only Applications and versions that are available for use on Compute Nodes; that is, that can be used in an Package reference. For administrator information about Applications and versions that are not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationId The ID of the Application.
      * @param applicationGetOptions Additional parameters for the operation
@@ -168,7 +168,7 @@ public interface Applications {
 
     /**
      * Gets information about the specified Application.
-     * This operation returns only Applications and versions that are available for use on Compute Nodes; that is, that can be used in an Package reference. For administrator information about Applications and versions that are not yet available to Compute Compute Nodes, use the Azure portal or the Azure Resource Manager API.
+     * This operation returns only Applications and versions that are available for use on Compute Nodes; that is, that can be used in an Package reference. For administrator information about Applications and versions that are not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationId The ID of the Application.
      * @param applicationGetOptions Additional parameters for the operation
@@ -180,7 +180,7 @@ public interface Applications {
 
     /**
      * Gets information about the specified Application.
-     * This operation returns only Applications and versions that are available for use on Compute Nodes; that is, that can be used in an Package reference. For administrator information about Applications and versions that are not yet available to Compute Compute Nodes, use the Azure portal or the Azure Resource Manager API.
+     * This operation returns only Applications and versions that are available for use on Compute Nodes; that is, that can be used in an Package reference. For administrator information about Applications and versions that are not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationId The ID of the Application.
      * @param applicationGetOptions Additional parameters for the operation
@@ -191,7 +191,7 @@ public interface Applications {
 
     /**
      * Gets information about the specified Application.
-     * This operation returns only Applications and versions that are available for use on Compute Nodes; that is, that can be used in an Package reference. For administrator information about Applications and versions that are not yet available to Compute Compute Nodes, use the Azure portal or the Azure Resource Manager API.
+     * This operation returns only Applications and versions that are available for use on Compute Nodes; that is, that can be used in an Package reference. For administrator information about Applications and versions that are not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationId The ID of the Application.
      * @param applicationGetOptions Additional parameters for the operation

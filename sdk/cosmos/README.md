@@ -1,10 +1,9 @@
 # Java SDK for SQL API of Azure Cosmos DB
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb.svg)](https://search.maven.org/artifact/com.microsoft.azure/azure-cosmosdb/2.4.3/jar)
-[![Build Status](https://api.travis-ci.org/Azure/azure-cosmosdb-java.svg?branch=master)](https://travis-ci.org/Azure/azure-cosmosdb-java)
+[![Maven Central](https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmos.svg)](https://search.maven.org/artifact/com.microsoft.azure/azure-cosmos)
 [![Known Vulnerabilities](https://snyk.io/test/github/Azure/azure-cosmosdb-java/badge.svg?targetFile=sdk%2Fpom.xml)](https://snyk.io/test/github/Azure/azure-cosmosdb-java?targetFile=sdk%2Fpom.xml)
 
-<!--[![Coverage Status](https://img.shields.io/codecov/c/github/Azure/azure-cosmosdb-java.svg)](https://codecov.io/gh/Azure/azure-cosmosdb-java)
+<!--[![Coverage Status](https://img.shields.io/codecov/c/github/Azure/azure-cosmos-java.svg)](https://codecov.io/gh/Azure/azure-cosmosdb-java)
 ![](https://img.shields.io/github/issues/azure/azure-cosmosdb-java.svg)
  -->
 
@@ -15,8 +14,6 @@
 - [API Documentation](#api-documentation)
 - [Usage Code Sample](#usage-code-sample)
 - [Guide for Prod](#guide-for-prod)
-- [Future, CompletableFuture, and ListenableFuture](#future-completablefuture-and-listenablefuture)
-- [Checking out the Source Code](#checking-out-the-source-code)
 - [FAQ](#faq)
 - [Release changes](#release-changes)
 - [Contribution and Feedback](#contribution-and-feedback)
@@ -24,20 +21,77 @@
 
 <!-- /TOC -->
 
+## Example
+
+See the complete code for the above sample in [`HelloWorldDemo.java`](./microsoft-azure-cosmos-examples/src/main/java/com/azure/data/cosmos/examples/HelloWorldDemo.java)
+
+```java
+import com.azure.data.cosmos.*;
+import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+
+// ...
+
+    // Create a new CosmosClient via the builder
+    // It only requires endpoint and key, but other useful settings are available
+    CosmosClient client = CosmosClient.builder()
+        .endpoint("<YOUR ENDPOINT HERE>")
+        .key("<YOUR KEY HERE>")
+        .build();
+
+    // Get a reference to the container
+    // This will create (or read) a database and its container.
+    CosmosContainer container = client.createDatabaseIfNotExists("contoso-travel")
+        // TIP: Our APIs are Reactor Core based, so try to chain your calls
+        .flatMap(response -> response.database()
+                .createContainerIfNotExists("passengers", "/id"))
+        .flatMap(response -> Mono.just(response.container()))
+        .block(); // Blocking for demo purposes (avoid doing this in production unless you must)
+
+    // Create an item
+    container.createItem(new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND"))
+        .flatMap(response -> {
+            System.out.println("Created item: " + response.properties().toJson());
+            // Read that item 👓
+            return response.item().read();
+        })
+        .flatMap(response -> {
+            System.out.println("Read item: " + response.properties().toJson());
+            // Replace that item 🔁
+            try {
+                Passenger p = response.properties().getObject(Passenger.class);
+                p.setDestination("SFO");
+                return response.item().replace(p);
+            } catch (IOException e) {
+                System.err.println(e);
+                return Mono.error(e);
+            }
+        })
+        // delete that item 💣
+        .flatMap(response -> response.item().delete())
+        .block(); // Blocking for demo purposes (avoid doing this in production unless you must)
+// ...
+```
+
+We have a get started sample app available [here](https://github.com/Azure-Samples/azure-cosmos-db-sql-api-async-java-getting-started).
+
+Also We have more examples in form of standalone unit tests in [examples project](examples/src/test/java/com/microsoft/azure/cosmosdb/rx/examples).
+
 ## Consuming the official Microsoft Azure Cosmos DB Java SDK
 
 This project provides a SDK library in Java for interacting with [SQL API](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query) of [Azure Cosmos DB
 Database Service](https://azure.microsoft.com/en-us/services/cosmos-db/). This project also includes samples, tools, and utilities.
 
-Jar dependency binary information for maven and gradle can be found here at [maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-cosmosdb/2.4.3).
+Jar dependency binary information for maven and gradle can be found here at [maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-cosmos).
 
 For example, using maven, you can add the following dependency to your maven pom file:
 
 ```xml
 <dependency>
   <groupId>com.microsoft.azure</groupId>
-  <artifactId>azure-cosmosdb</artifactId>
-  <version>2.4.3</version>
+  <artifactId>azure-cosmos</artifactId>
+  <version>3.1.0</version>
 </dependency>
 ```
 
@@ -46,8 +100,7 @@ Useful links:
 - [Sample Get Started APP](https://github.com/Azure-Samples/azure-cosmos-db-sql-api-async-java-getting-started)
 - [Introduction to Resource Model of Azure Cosmos DB Service](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-resources)
 - [Introduction to SQL API of Azure Cosmos DB Service](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query)
-- [SDK JavaDoc API](https://azure.github.io/azure-cosmosdb-java/2.4.0/com/microsoft/azure/cosmosdb/rx/AsyncDocumentClient.html)
-- [RxJava Observable JavaDoc API](http://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html)
+- [Reactor Core JavaDoc API](https://projectreactor.io/docs/core/release/api/)
 - [SDK FAQ](faq/)
 
 ## Prerequisites
@@ -60,52 +113,15 @@ Useful links:
 
 SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will link the SLF4J API with the logging implementation of your choice. See the [SLF4J user manual](http://www.slf4j.org/manual.html) for more information.
 
+<!-- TODO - update once JavaDoc is published
 ## API Documentation
 
 Javadoc is available [here](https://azure.github.io/azure-cosmosdb-java/2.4.0/com/microsoft/azure/cosmosdb/rx/AsyncDocumentClient.html).
 
-The SDK provide Reactive Extension Observable based async API. You can read more about RxJava and [Observable APIs here](http://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html).
+The SDK provides Reactor Core based async APIs. You can read more about Reactor Core and [Flux/Mono types here](https://projectreactor.io/docs/core/release/api/).
+-->
 
-## Usage Code Sample
-
-Code Sample for creating a Document:
-
-```java
-import com.azure.data.cosmos.rx.*;
-import com.azure.data.cosmos.*;
-
-ConnectionPolicy policy = new ConnectionPolicy();
-policy.setConnectionMode(ConnectionMode.Direct);
-
-AsyncDocumentClient asyncClient = new AsyncDocumentClient.Builder()
-				.withServiceEndpoint(HOST)
-				.withMasterKeyOrResourceToken(MASTER_KEY)
-				.withConnectionPolicy(policy)
-				.withConsistencyLevel(ConsistencyLevel.Eventual)
-				.build();
-
-Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
-
-Observable<ResourceResponse<Document>> createDocumentObservable =
-	asyncClient.createDocument(collectionLink, doc, null, false);
-	createDocumentObservable
-	            .single()           // we know there will be one response
-	            .subscribe(
-
-	                documentResourceResponse -> {
-	                    System.out.println(documentResourceResponse.getRequestCharge());
-	                },
-
-	                error -> {
-	                    System.err.println("an error happened: " + error.getMessage());
-	                });
-```
-
-We have a get started sample app available [here](https://github.com/Azure-Samples/azure-cosmos-db-sql-api-async-java-getting-started).
-
-Also We have more examples in form of standalone unit tests in [examples project](examples/src/test/java/com/microsoft/azure/cosmosdb/rx/examples).
-
-## Guide for Prod
+## Guide for Production
 
 To achieve better performance and higher throughput there are a few tips that are helpful to follow:
 
@@ -118,10 +134,10 @@ The Observable returned by API emits the result on one of the shared IO eventloo
 For example the following code executes a cpu intensive work on the eventloop IO netty thread:
 
 ```java
-Observable<ResourceResponse<Document>> createDocObs = asyncDocumentClient.createDocument(
-  collectionLink, document, null, true);
+Mono<CosmosItemResponse> readItemMono = item.read();
 
-createDocObs.subscribe(
+readItemMono
+  .subscribe(
   resourceResponse -> {
     //this is executed on eventloop IO netty thread.
     //the eventloop thread is shared and is meant to return back quickly.
@@ -137,11 +153,11 @@ After result is received if you want to do CPU intensive work on the result you 
 ```java
 import rx.schedulers;
 
-Observable<ResourceResponse<Document>> createDocObs = asyncDocumentClient.createDocument(
-  collectionLink, document, null, true);
+Mono<CosmosItemResponse> readItemMono = item.read();
 
-createDocObs.subscribeOn(Schedulers.computation())
-subscribe(
+readItemMono
+  .subscribeOn(Schedulers.computation())
+  .subscribe(
   resourceResponse -> {
     // this is executed on threads provided by Scheduler.computation()
     // Schedulers.computation() should be used only the work is cpu intensive and you are not doing blocking IO, thread sleep, etc. in this thread against other resources.
@@ -151,7 +167,7 @@ subscribe(
 ```
 
 Based on the type of your work you should use the appropriate existing RxJava Scheduler for your work. Please read here
-[`Schedulers`](http://reactivex.io/RxJava/1.x/javadoc/rx/schedulers/Schedulers.html).
+[`Schedulers`](https://projectreactor.io/docs/core/release/api/reactor/core/scheduler/Schedulers.html).
 
 ### Disable netty's logging
 
@@ -202,7 +218,7 @@ and add the following dependency to your project maven dependencies:
 <dependency>
   <groupId>io.netty</groupId>
   <artifactId>netty-tcnative</artifactId>
-  <version>2.0.20.Final</version>
+  <version>2.0.25.Final</version>
   <classifier>linux-x86_64</classifier>
 </dependency>
 ```
@@ -211,93 +227,7 @@ For other platforms (Redhat, Windows, Mac, etc) please refer to these instructio
 
 ### Common Perf Tips
 
-There is a set of common perf tips written for our sync SDK. The majority of them also apply to the async SDK. It is available [here](https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips-java).
-
-## Future, CompletableFuture, and ListenableFuture
-
-The SDK provide Reactive Extension (Rx) [Observable](http://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html) based async API.
-
-RX API has advantages over Future based APIs. But if you wish to use `Future` you can translate Observables to Java native Futures:
-
-```java
-// You can convert an Observable to a ListenableFuture.
-// ListenableFuture (part of google guava library) is a popular extension
-// of Java's Future which allows registering listener callbacks:
-// https://github.com/google/guava/wiki/ListenableFutureExplained
-
-import rx.observable.ListenableFutureObservable;
-
-Observable<ResourceResponse<Document>> createDocObservable = asyncClient.createDocument(
-  collectionLink, document, null, false);
-
-// NOTE: if you are going to do CPU intensive work
-// on the result thread consider changing the scheduler see Use Proper Scheduler
-// (Avoid Stealing Eventloop IO Netty threads) section
-ListenableFuture<ResourceResponse<Document>> listenableFuture =
-  ListenableFutureObservable.to(createDocObservable);
-
-ResourceResponse<Document> rrd = listenableFuture.get();
-```
-
-For this to work you will need [RxJava Guava library dependency ](https://mvnrepository.com/artifact/io.reactivex/rxjava-guava/1.0.3). More information available here https://github.com/ReactiveX/RxJavaGuava.
-
-You can see more details on how to convert Observables to Futures here:
-https://dzone.com/articles/converting-between
-
-## Checking out the Source Code
-
-The SDK is open source and is available here [sdk](sdk/).
-
-Clone the Repo
-
-```bash
-git clone https://github.com/Azure/azure-cosmosdb-java.git
-cd azure-cosmosdb-java
-```
-
-### How to Build from Command Line
-
-- Run the following maven command to build:
-
-```bash
-maven clean package -DskipTests
-```
-
-### How to generate directory structure for publishing
-
-- Run the following maven command to collect the jars needed for publishing
-
-```bash
-mvn antrun:run -N
-```
-
-Note: the `-N` is required to assert this command is only run in the parent pom.
-
-Afterwards, you can upload the contents of `./target/collectedArtifactsForRelease` for publishing.
-
-#### Running Tests from Command Line
-
-Running tests require Azure Cosmos DB Endpoint credentials:
-
-```bash
-mvn test -DACCOUNT_HOST="https://REPLACE_ME_WITH_YOURS.documents.azure.com:443/" -DACCOUNT_KEY="REPLACE_ME_WITH_YOURS"
-```
-
-### Import into Intellij or Eclipse
-
-- Load the main parent project pom file in Intellij/Eclipse (That should automatically load examples).
-- For running the samples you need a proper Azure Cosmos DB Endpoint. The endpoints are picked up from [TestConfigurations.java](examples/src/test/java/com/microsoft/azure/cosmosdb/rx/examples/TestConfigurations.java). There is a similar endpoint config file for the sdk tests [here](sdk/src/test/java/com/microsoft/azure/cosmosdb/rx/TestConfigurations.java).
-- You can pass your endpoint credentials as VM Arguments in Eclipse JUnit Run Config:
-
-```bash
- -DACCOUNT_HOST="https://REPLACE_ME.documents.azure.com:443/" -DACCOUNT_KEY="REPLACE_ME"
-```
-
-- or you can simply put your endpoint credentials in TestConfigurations.java
-- The SDK tests are written using TestNG framework, if you use Eclipse you may have to
-  add TestNG plugin to your eclipse IDE as explained [here](http://testng.org/doc/eclipse.html).
-  Intellij has builtin support for TestNG.
-- Now you can run the tests in your Intellij/Eclipse IDE.
+There is a set of common perf tips written for our Java SDK. It is available [here](https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips-async-java).
 
 ## FAQ
 
@@ -309,15 +239,12 @@ Release changelog is available [here](changelog/).
 
 ## Contribution and Feedback
 
-This is an open source project and we welcome contributions.
-
-If you would like to become an active contributor to this project please follow the instructions provided in [Azure Projects Contribution Guidelines](http://azure.github.io/guidelines/).
-
-We have [travis build CI](https://travis-ci.org/Azure/azure-cosmosdb-java) which should pass for any PR.
+This is an open source project and we welcome contributions. If you would like to become an active contributor to this project please follow the instructions provided in [Azure Projects Contribution Guidelines](http://azure.github.io/guidelines/). Instructions on how to fetch and build the code can be found in [dev.md](./dev.md). Our PRs have CI that will run after a contributor has reviewed your code. You can run those same tests locally via the instructions in [dev.md](./dev.md). 
 
 If you encounter any bugs with the SDK please file an [issue](https://github.com/Azure/azure-cosmosdb-java/issues) in the Issues section of the project.
 
 ## License
 
-MIT License
+[MIT License](LICENSE)
+
 Copyright (c) 2018 Copyright (c) Microsoft Corporation

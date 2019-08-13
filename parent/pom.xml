@@ -6,7 +6,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.1.0</version>
+  <version>1.2.0</version>
 
   <name>Microsoft Azure SDK for Java Parent</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
@@ -20,6 +20,7 @@
     <groupId>com.microsoft.maven</groupId>
     <artifactId>java-8-parent</artifactId>
     <version>8.0.2</version>
+    <relativePath/>
   </parent>
 
   <licenses>
@@ -99,7 +100,7 @@
 
     <!-- Dependency Versions -->
     <jackson.version>2.9.9</jackson.version>
-    <client-runtime.version>1.6.10</client-runtime.version>
+    <client-runtime.version>1.6.12</client-runtime.version>
     <commons-codec.version>1.10</commons-codec.version>
     <spotbugs.version>4.0.0-beta3</spotbugs.version>
     <spotbugs.maven.version>3.1.12</spotbugs.maven.version>
@@ -109,7 +110,7 @@
     <groovy-eclipse-compiler.version>2.9.3-01</groovy-eclipse-compiler.version>
     <groovy-eclipse-batch.version>2.4.16-03</groovy-eclipse-batch.version>
     <client-runtime.version.v2>2.1.1</client-runtime.version.v2>
-    <slf4j-api.version>1.7.5</slf4j-api.version>
+    <slf4j-api.version>1.7.6</slf4j-api.version>
     <slf4j-log4j12.version>1.7.0</slf4j-log4j12.version>
     <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
     <netty.version>4.1.33.Final</netty.version>
@@ -122,9 +123,19 @@
     <commons-net.version>3.3</commons-net.version>
     <fluentsdk.version>1.14.0</fluentsdk.version>
     <codesnippet4javadoc.version>0.31</codesnippet4javadoc.version>
+    <oauth2-oidc-sdk.version>6.13</oauth2-oidc-sdk.version>
+    <metrics.version>4.0.5</metrics.version>
+    <rxjava2.version>2.2.4</rxjava2.version>
+    <commons-io.version>2.5</commons-io.version>
+    <commons-lang3.version>3.8.1</commons-lang3.version>
+    <commons-text.version>1.6</commons-text.version>
+    <commons-validator.version>1.6</commons-validator.version>
+    <commons-collections4.version>4.2</commons-collections4.version>
+    <jcommander.version>1.58</jcommander.version>
 
     <!-- Test Dependency Versions -->
     <adal4j.version>1.6.3</adal4j.version>
+    <msal4j.version>0.5.0-preview</msal4j.version>
     <bcprov-jdk15on.version>1.60</bcprov-jdk15on.version>
     <azure-mgmt-keyvault.version>1.11.1</azure-mgmt-keyvault.version>
     <azure-mgmt-resources.version>1.3.0</azure-mgmt-resources.version>
@@ -140,7 +151,10 @@
     <jetty-http.version>9.4.11.v20180605</jetty-http.version>
     <jetty-server.version>9.4.11.v20180605</jetty-server.version>
     <junit.version>4.12</junit.version>
-    <commons-io.version>2.4</commons-io.version>
+    <log4j.version>1.2.17</log4j.version>
+    <testng.version>6.14.3</testng.version>
+    <assertj.version>3.11.1</assertj.version>
+    <hamcrest.version>1.3</hamcrest.version>
 
     <!-- Maven Tool Versions -->
     <maven-build-tools.version>1.0.2</maven-build-tools.version>
@@ -153,7 +167,7 @@
     <maven-resources-plugin.version>2.4.3</maven-resources-plugin.version>
     <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
-    <maven-failsafe-plugin.version>2.18.1</maven-failsafe-plugin.version>
+    <maven-failsafe-plugin.version>2.22.0</maven-failsafe-plugin.version>
     <maven-shade-plugin.version>2.4.1</maven-shade-plugin.version>
     <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
     <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
@@ -164,7 +178,11 @@
     <maven-checkstyle-plugin.version>3.1.0</maven-checkstyle-plugin.version>
     <checkstyle.version>8.19</checkstyle.version>
     <mockito-core.version>2.28.2</mockito-core.version>
+    <powermock.version>1.7.4</powermock.version>
     <jacoco-maven-plugin.version>0.8.4</jacoco-maven-plugin.version>
+    <maven-exec-plugin.version>1.2.1</maven-exec-plugin.version>
+    <maven-eclipse-plugin.version>2.8</maven-eclipse-plugin.version>
+    <maven-assembly-plugin.version>2.2</maven-assembly-plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -190,6 +208,12 @@
 
       <dependency>
         <groupId>com.microsoft.azure</groupId>
+        <artifactId>msal4j</artifactId>
+        <version>${msal4j.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-annotations</artifactId>
         <version>${azure-annotations.version}</version>
       </dependency>
@@ -210,8 +234,20 @@
 
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-annotations</artifactId>
         <version>${jackson.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.fasterxml.uuid</groupId>
+        <artifactId>java-uuid-generator</artifactId>
+        <version>${java-uuid-generator.version}</version>
       </dependency>
 
       <dependency>
@@ -245,6 +281,30 @@
         <groupId>commons-codec</groupId>
         <artifactId>commons-codec</artifactId>
         <version>${commons-codec.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>commons-validator</groupId>
+        <artifactId>commons-validator</artifactId>
+        <version>${commons-validator.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-collections4</artifactId>
+        <version>${commons-collections4.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-text</artifactId>
+        <version>${commons-text.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${commons-lang3.version}</version>
       </dependency>
 
       <dependency>
@@ -308,9 +368,45 @@
       </dependency>
 
       <dependency>
+        <groupId>io.reactivex.rxjava2</groupId>
+        <artifactId>rxjava</artifactId>
+        <version>${rxjava2.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.dropwizard.metrics</groupId>
+        <artifactId>metrics-core</artifactId>
+        <version>${metrics.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.dropwizard.metrics</groupId>
+        <artifactId>metrics-jvm</artifactId>
+        <version>${metrics.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.dropwizard.metrics</groupId>
+        <artifactId>metrics-graphite</artifactId>
+        <version>${metrics.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.beust</groupId>
+        <artifactId>jcommander</artifactId>
+        <version>${jcommander.version}</version>
+      </dependency>
+
+      <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
         <version>${guava.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>${log4j.version}</version>
       </dependency>
 
       <dependency>
@@ -331,6 +427,12 @@
         <version>${commons-net.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>com.nimbusds</groupId>
+        <artifactId>oauth2-oidc-sdk</artifactId>
+        <version>${oauth2-oidc-sdk.version}</version>
+      </dependency>
+
       <!-- Test dependencies -->
       <dependency>
         <groupId>com.microsoft.azure</groupId>
@@ -340,9 +442,30 @@
       </dependency>
 
       <dependency>
+        <groupId>org.hamcrest</groupId>
+        <artifactId>hamcrest-all</artifactId>
+        <version>${hamcrest.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-mgmt-graph-rbac</artifactId>
         <version>${azure-mgmt-graph-rbac.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.testng</groupId>
+        <artifactId>testng</artifactId>
+        <version>${testng.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>${assertj.version}</version>
         <scope>test</scope>
       </dependency>
 
@@ -399,7 +522,6 @@
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>${commons-io.version}</version>
-        <scope>test</scope>
       </dependency>
 
       <dependency>
@@ -464,6 +586,20 @@
         <version>${mockito-core.version}</version>
         <scope>test</scope>
       </dependency>
+
+      <dependency>
+        <groupId>org.powermock</groupId>
+        <artifactId>powermock-module-junit4</artifactId>
+        <version>2.0.2</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.powermock</groupId>
+        <artifactId>powermock-api-mockito2</artifactId>
+        <version>2.0.2</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -490,6 +626,27 @@
             </execution>
           </executions>
         </plugin>
+
+        <!-- This plugin lets you create jar with dependencies -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>${maven-assembly-plugin.version}</version>
+        </plugin>
+
+        <!-- This plugin lets you generate project files for eclipse -->
+         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-eclipse-plugin</artifactId>
+          <version>${maven-eclipse-plugin.version}</version>
+        </plugin>
+
+        <!-- This plugin lets you run the main method of a Java class in your project, with project dependencies automatically included in the classpath. -->
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>${maven-exec-plugin.version}</version>
+       </plugin>
 
         <!-- This plugin is used to copy resources of your project. -->
         <plugin>

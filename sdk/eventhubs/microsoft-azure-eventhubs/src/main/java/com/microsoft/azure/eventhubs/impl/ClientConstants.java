@@ -50,7 +50,7 @@ public final class ClientConstants {
     public static final String PUT_TOKEN_EXPIRY = "expiration";
     public static final String PUT_TOKEN_STATUS_CODE = "status-code";
     public static final String PUT_TOKEN_STATUS_DESCRIPTION = "status-description";
-    public final static String EVENTHUBS_AUDIENCE = "https://eventhubs.azure.net/";
+    public static final String EVENTHUBS_AUDIENCE = "https://eventhubs.azure.net/";
     public static final String MANAGEMENT_ADDRESS = "$management";
     public static final String MANAGEMENT_EVENTHUB_ENTITY_TYPE = AmqpConstants.VENDOR + ":eventhub";
     public static final String MANAGEMENT_PARTITION_ENTITY_TYPE = AmqpConstants.VENDOR + ":partition";

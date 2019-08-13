@@ -1,0 +1,72 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.data.cosmos.internal;
+
+import org.mockito.Mockito;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
+
+import java.net.UnknownHostException;
+import java.time.Instant;
+
+import static org.assertj.core.api.Java6Assertions.assertThat;
+
+public class NetworkFailureTest extends TestSuiteBase {
+    private static final int TIMEOUT = ClientRetryPolicy.MaxRetryCount * ClientRetryPolicy.RetryIntervalInMS + 60000;
+    private final DocumentCollection collectionDefinition;
+
+    @Factory(dataProvider = "simpleClientBuildersWithDirect")
+    public NetworkFailureTest(AsyncDocumentClient.Builder clientBuilder) {
+        super(clientBuilder);
+        this.collectionDefinition = getCollectionDefinition();
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void createCollectionWithUnreachableHost() {
+        SpyClientUnderTestFactory.ClientWithGatewaySpy client = null;
+
+        try {
+            client = SpyClientUnderTestFactory.createClientWithGatewaySpy(clientBuilder());
+
+            Database database = SHARED_DATABASE;
+
+            Flux<ResourceResponse<DocumentCollection>> createObservable = client
+                    .createCollection(database.selfLink(), collectionDefinition, null);
+
+
+            final RxGatewayStoreModel origGatewayStoreModel = client.getOrigGatewayStoreModel();
+
+            Mockito.doAnswer(invocation -> {
+                RxDocumentServiceRequest request = invocation.getArgumentAt(0, RxDocumentServiceRequest.class);
+
+                if (request.getResourceType() == ResourceType.DocumentCollection) {
+                    return Flux.error(new UnknownHostException());
+                }
+
+                return origGatewayStoreModel.processMessage(request);
+
+            }).when(client.getSpyGatewayStoreModel()).processMessage(Mockito.any());
+
+
+            FailureValidator validator = new FailureValidator.Builder().instanceOf(UnknownHostException.class).build();
+            Instant start = Instant.now();
+            validateFailure(createObservable, validator, TIMEOUT);
+            Instant after = Instant.now();
+            assertThat(after.toEpochMilli() - start.toEpochMilli())
+                    .isGreaterThanOrEqualTo(ClientRetryPolicy.MaxRetryCount * ClientRetryPolicy.RetryIntervalInMS);
+
+        } finally {
+            safeClose(client);
+        }
+    }
+
+    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    public void afterClass() {
+        AsyncDocumentClient client = createGatewayHouseKeepingDocumentClient().build();
+        safeDeleteCollection(client, collectionDefinition);
+        client.close();
+    }
+}

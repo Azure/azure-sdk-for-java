@@ -1,5 +1,12 @@
 # Release History
 
+## 4.0.0-preview.2 (2019-08-06)
+For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview2-java).
+
+- Added support for HTTP challenge based authentication, allowing clients to interact with vaults in sovereign clouds.
+- Combined SecretClientBuilder, SecretAsyncClientBuilder into SecretClientBuilder. Methods to create both sync and async clients type were added.
+- Removed static builder method from clients. Builders are now instantiable.
+
 ## 4.0.0-preview.1 (2019-06-28)
 Version 4.0.0-preview.1 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide our efforts can be found in the [Azure SDK Design Guidelines for Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
 

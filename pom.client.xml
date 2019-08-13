@@ -6,7 +6,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-client-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.1.0</version>
+  <version>1.3.0</version>
 
   <name>Microsoft Azure SDK for Java - Client Libraries</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <relativePath>./parent/pom.xml</relativePath>
   </parent>
 
@@ -111,6 +111,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${maven-checkstyle-plugin.version}</version>
         <dependencies>
           <dependency>
             <groupId>com.azure</groupId>
@@ -124,9 +125,9 @@
           </dependency>
         </dependencies>
         <configuration>
-          <configLocation>checkstyle/checkstyle.xml</configLocation>
-          <suppressionsLocation>checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-          <headerLocation>checkstyle/java.header</headerLocation>
+          <configLocation>eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+          <suppressionsLocation>eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+          <headerLocation>eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
           <propertyExpansion>samedir=</propertyExpansion>
           <encoding>UTF-8</encoding>
           <consoleOutput>true</consoleOutput>
@@ -343,7 +344,6 @@
               com.microsoft.azure.template:
               *.impl*:
               *.implementation*:
-              com.azure.tracing*:
               com.azure.tools.checkstyle*
             </excludePackageNames>
             <groups>
@@ -392,6 +392,14 @@
               <group>
                 <title>Azure Storage - Blobs</title>
                 <packages>com.azure.storage.blob*</packages>
+              </group>
+              <group>
+                <title>Azure Storage - Files</title>
+                <packages>com.azure.storage.file*</packages>
+              </group>
+              <group>
+                <title>Azure Storage - Queues</title>
+                <packages>com.azure.storage.queue*</packages>
               </group>
             </groups>
             <links>
@@ -468,20 +476,6 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jxr-plugin</artifactId>
-        <version>3.0.0</version>
-        <reportSets>
-          <reportSet>
-            <id>aggregate</id>
-            <inherited>false</inherited>
-            <reports>
-              <report>aggregate</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>${maven-checkstyle-plugin.version}</version>
         <configuration>
@@ -516,21 +510,14 @@
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>${spotbugs.maven.version}</version>
-        <reportSets>
-          <reportSet>
-            <id>non-aggregate</id>
-            <reports>
-              <report>spotbugs</report>
-            </reports>
-          </reportSet>
-          <reportSet>
-            <id>aggregate</id>
-            <inherited>false</inherited>
-            <reports>
-              <report>spotbugs</report>
-            </reports>
-          </reportSet>
-        </reportSets>
+        <configuration>
+          <effort>Max</effort>
+          <threshold>Low</threshold>
+          <xmlOutput>true</xmlOutput>
+          <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
+          <excludeFilterFile>eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+          <failOnError>true</failOnError>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -554,11 +541,13 @@
                   So, path for aggregate reports have to be defined relative to parent pom -->
               <additionalOptions>-maxLineLength 120
                 -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
-                -snippetpath ${project.basedir}/core/azure-core/src/samples/java
-                -snippetpath ${project.basedir}/sdk/eventhubs/azure-eventhubs/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
+                -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-keys/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-secrets/src/samples/java
-<!--                -snippetpath ${project.basedir}/storage/client/blob/src/samples/java-->
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-file/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
               </additionalOptions>
             </configuration>
           </reportSet>
@@ -585,9 +574,6 @@
               <report>ci-management</report>
               <report>dependencies</report>
               <report>issue-management</report>
-              <report>licenses</report>
-              <report>plugins</report>
-              <report>plugin-management</report>
             </reports>
           </reportSet>
         </reportSets>
@@ -625,6 +611,7 @@
                 <arg>-Xlint:all</arg>
                 <arg>-Xlint:-serial</arg>
                 <arg>-Xlint:-deprecation</arg>
+                <arg>-Xlint:-processing</arg>
               </compilerArgs>
             </configuration>
           </plugin>
@@ -654,6 +641,7 @@
                 <arg>-Xlint:all</arg>
                 <arg>-Xlint:-serial</arg>
                 <arg>-Xlint:-deprecation</arg>
+                <arg>-Xlint:-processing</arg>
               </compilerArgs>
             </configuration>
           </plugin>
@@ -752,13 +740,18 @@
 
   <modules>
     <module>./sdk/appconfiguration/azure-data-appconfiguration</module>
-    <module>./sdk/core</module>
-    <module>./sdk/eventhubs/azure-eventhubs</module>
+    <module>./sdk/core/azure-core</module>
+    <module>./sdk/core/azure-core-amqp</module>
+    <module>./sdk/core/azure-core-management</module>
+    <module>./sdk/core/azure-core-test</module>
+    <module>./sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>./sdk/keyvault/azure-keyvault-secrets</module>
     <module>./sdk/keyvault/azure-keyvault-keys</module>
-    <!-- As recommended by Eng Sys team, removing tracing as it is built and released separately -->
-    <!--    <module>./sdk/tracing</module>-->
+    <module>./sdk/tracing/tracing-opentelemetry</module>
     <module>./sdk/identity/azure-identity</module>
-    <module>./storage/client/blob</module>
+    <module>./sdk/storage/azure-storage-blob</module>
+    <module>./sdk/storage/azure-storage-common</module>
+    <module>./sdk/storage/azure-storage-file</module>
+    <module>./sdk/storage/azure-storage-queue</module>
   </modules>
 </project>

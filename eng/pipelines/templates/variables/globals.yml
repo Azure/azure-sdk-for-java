@@ -1,4 +1,4 @@
 variables:
-  DefaultOptions: '--batch-mode -Dmaven.wagon.http.pool=false'
+  DefaultOptions: '--batch-mode -Dmaven.wagon.http.pool=false --settings eng/settings.xml'
   LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
   skipComponentGovernanceDetection: true  
