@@ -100,15 +100,10 @@ public class EventHubClient implements Closeable {
      *
      * @param options The set of options to apply when creating the producer.
      * @return A new {@link EventHubProducer}.
-     * @throws NullPointerException if {@code options}, {@code options.retry()}, or {@code
-     *     options.retry().retryTimeout()} is {@code null}.
+     * @throws NullPointerException if {@code options} is {@code null}.
      */
     public EventHubProducer createProducer(EventHubProducerOptions options) {
-        Objects.requireNonNull(options);
-        Objects.requireNonNull(options.retry(), "'options.retry()' cannot be null.");
-        Objects.requireNonNull(options.retry().tryTimeout(), "'options.retry().tryTimeout()' cannot be null.");
-
-        final EventHubAsyncProducer producer = client.createProducer();
+        final EventHubAsyncProducer producer = client.createProducer(options);
 
         return new EventHubProducer(producer, options.retry().tryTimeout());
     }
