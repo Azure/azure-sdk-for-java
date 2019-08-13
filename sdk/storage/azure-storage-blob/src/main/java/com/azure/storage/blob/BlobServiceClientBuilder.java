@@ -77,7 +77,17 @@ public final class BlobServiceClientBuilder {
         policies = new ArrayList<>();
     }
 
-    private AzureBlobStorageBuilder buildImpl() {
+    /**
+     * @return a {@link BlobServiceClient} created from the configurations in this builder.
+     */
+    public BlobServiceClient buildClient() {
+        return new BlobServiceClient(buildAsyncClient());
+    }
+
+    /**
+     * @return a {@link BlobServiceAsyncClient} created from the configurations in this builder.
+     */
+    public BlobServiceAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint);
 
         // Closest to API goes first, closest to wire goes last.
@@ -108,29 +118,10 @@ public final class BlobServiceClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        return new AzureBlobStorageBuilder()
+        return new BlobServiceAsyncClient(new AzureBlobStorageBuilder()
             .url(endpoint)
-            .pipeline(pipeline);
-    }
-
-    /**
-     * Creates a {@link BlobServiceClient} based on options set in the Builder.
-     *
-     * @return a {@link BlobServiceClient} created from the configurations in this builder.
-     * @throws NullPointerException If {@code endpoint} is {@code null}.
-     */
-    public BlobServiceClient buildClient() {
-        return new BlobServiceClient(buildAsyncClient());
-    }
-
-    /**
-     * Creates a {@link BlobServiceAsyncClient} based on options set in the Builder.
-     *
-     * @return a {@link BlobServiceAsyncClient} created from the configurations in this builder.
-     * @throws NullPointerException If {@code endpoint} is {@code null}.
-     */
-    public BlobServiceAsyncClient buildAsyncClient() {
-        return new BlobServiceAsyncClient(buildImpl());
+            .pipeline(pipeline)
+            .build());
     }
 
     /**
@@ -144,7 +135,7 @@ public final class BlobServiceClientBuilder {
             URL url = new URL(endpoint);
             this.endpoint = url.getProtocol() + "://" + url.getAuthority();
 
-            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(URLParser.parse(url).sasQueryParameters());
+            this.sasTokenCredential = SASTokenCredential.fromSASTokenString(URLParser.parse(url).sasQueryParameters().encode());
             if (this.sasTokenCredential != null) {
                 this.tokenCredential = null;
                 this.sharedKeyCredential = null;

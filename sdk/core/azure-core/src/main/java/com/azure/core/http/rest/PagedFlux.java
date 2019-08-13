@@ -133,6 +133,10 @@ public class PagedFlux<T> extends Flux<T> {
      * @return A {@link Flux} of {@link PagedResponse}
      */
     private Publisher<? extends PagedResponse<T>> extractAndFetchPage(PagedResponse<T> page) {
+        String nextPageLink = page.nextLink();
+        if (nextPageLink == null) {
+            return Flux.just(page);
+        }
         return Flux.just(page).concatWith(byPage(page.nextLink()));
     }
 }

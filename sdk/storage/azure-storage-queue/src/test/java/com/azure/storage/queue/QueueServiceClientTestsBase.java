@@ -54,8 +54,7 @@ public abstract class QueueServiceClientTestsBase extends TestBase {
     @Test
     public abstract void listQueuesWithPrefix();
 
-    // TODO (alzimmer): This test is off for now until we determine how to handle paging with limited results
-    //@Test
+    @Test
     public abstract void listQueuesWithLimit();
 
     @Test

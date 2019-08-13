@@ -42,7 +42,7 @@ public final class BlobRange {
      */
     public BlobRange(long offset, Long count) {
         this(offset);
-        if (count != null || count < 0) {
+        if (count != null && count < 0) {
             throw new IllegalArgumentException("BlobRange count must be greater than or equal to 0 if specified.");
         }
         this.count = count;

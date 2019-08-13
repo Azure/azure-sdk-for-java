@@ -4,6 +4,7 @@ package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.Permission;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class CosmosClientBuilder {
     private ConsistencyLevel desiredConsistencyLevel;
     private List<Permission> permissions;
     private TokenResolver tokenResolver;
+    private CosmosKeyCredential cosmosKeyCredential;
 
     CosmosClientBuilder() {
     }
@@ -137,7 +139,7 @@ public class CosmosClientBuilder {
     }
 
     /**
-     * Gets the (@link ConsistencyLevel) to be used
+     * Gets the {@link ConsistencyLevel} to be used
      * @return the consistency level
      */
     public ConsistencyLevel consistencyLevel() {
@@ -145,7 +147,7 @@ public class CosmosClientBuilder {
     }
 
     /**
-     * Sets the (@link ConsistencyLevel) to be used
+     * Sets the {@link ConsistencyLevel} to be used
      * @param desiredConsistencyLevel {@link ConsistencyLevel}
      * @return current Builder
      */
@@ -163,12 +165,30 @@ public class CosmosClientBuilder {
     }
 
     /**
-     * Sets the (@link ConnectionPolicy) to be used
+     * Sets the {@link ConnectionPolicy} to be used
      * @param connectionPolicy {@link ConnectionPolicy}
      * @return current Builder
      */
     public CosmosClientBuilder connectionPolicy(ConnectionPolicy connectionPolicy) {
         this.connectionPolicy = connectionPolicy;
+        return this;
+    }
+
+    /**
+     * Gets the {@link CosmosKeyCredential} to be used
+     * @return cosmosKeyCredential
+     */
+    public CosmosKeyCredential cosmosKeyCredential() {
+        return cosmosKeyCredential;
+    }
+
+    /**
+     * Sets the {@link CosmosKeyCredential} to be used
+     * @param cosmosKeyCredential {@link CosmosKeyCredential}
+     * @return current builder
+     */
+    public CosmosClientBuilder cosmosKeyCredential(CosmosKeyCredential cosmosKeyCredential) {
+        this.cosmosKeyCredential = cosmosKeyCredential;
         return this;
     }
 
@@ -180,8 +200,11 @@ public class CosmosClientBuilder {
 
         ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot build client without service endpoint");
         ifThrowIllegalArgException(
-            this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty()) && this.tokenResolver == null,
-            "cannot build client without any one of key, resource token, permissions, and token resolver");
+            this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty())
+                && this.tokenResolver == null && this.cosmosKeyCredential == null,
+            "cannot build client without any one of key, resource token, permissions, token resolver, and cosmos key credential");
+        ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.key()),
+            "cannot build client without key credential");
 
         return new CosmosClient(this);
     }

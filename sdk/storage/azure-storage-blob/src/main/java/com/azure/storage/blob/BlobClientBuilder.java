@@ -18,7 +18,7 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-import com.azure.storage.blob.models.PageRange;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -91,7 +91,7 @@ public final class BlobClientBuilder {
         policies = new ArrayList<>();
     }
 
-    private AzureBlobStorageBuilder buildImpl() {
+    private AzureBlobStorageImpl buildImpl() {
         Objects.requireNonNull(endpoint);
         Objects.requireNonNull(containerName);
         Objects.requireNonNull(blobName);
@@ -126,7 +126,8 @@ public final class BlobClientBuilder {
 
         return new AzureBlobStorageBuilder()
             .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
-            .pipeline(pipeline);
+            .pipeline(pipeline)
+            .build();
     }
 
     /**
@@ -245,7 +246,7 @@ public final class BlobClientBuilder {
             this.blobName = parts.blobName();
             this.snapshot = parts.snapshot();
 
-            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(parts.sasQueryParameters());
+            this.sasTokenCredential = SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode());
             if (this.sasTokenCredential != null) {
                 this.tokenCredential = null;
                 this.sharedKeyCredential = null;
