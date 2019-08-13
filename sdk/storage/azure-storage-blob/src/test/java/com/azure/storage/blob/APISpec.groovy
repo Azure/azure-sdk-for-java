@@ -76,7 +76,7 @@ class APISpec extends Specification {
             }
         }
 
-        testCommon = new TestCommon(testName.substring(0, (int) Math.min(testName.length(), 32)), className, appendIteration, iterationNo)
+        testCommon = new TestCommon(testName, className, appendIteration, iterationNo)
 
         primaryServiceClient = testCommon.setClient(primaryCredential)
         alternateServiceClient = testCommon.setClient(alternateCredential)

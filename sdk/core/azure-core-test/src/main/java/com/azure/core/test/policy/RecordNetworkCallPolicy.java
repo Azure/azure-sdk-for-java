@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.test.models.NetworkCallException;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
@@ -62,7 +63,13 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
         networkCallRecord.headers(headers);
         networkCallRecord.method(context.httpRequest().httpMethod().toString());
-        networkCallRecord.uri(context.httpRequest().url().toString().replaceAll("\\?$", ""));
+
+        // Remove sensitive information such as SAS token signatures from the recording.
+        UrlBuilder urlBuilder = UrlBuilder.parse(context.httpRequest().url());
+        if (urlBuilder.query().containsKey("sig")) {
+            urlBuilder.setQueryParameter("sig", "REDACTED");
+        }
+        networkCallRecord.uri(urlBuilder.toString().replaceAll("\\?$", ""));
 
         return next.process()
             .doOnError(throwable -> {

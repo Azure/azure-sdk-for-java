@@ -31,7 +31,7 @@ class TestCommon {
     private final String className
 
     TestCommon(String testName, String className, boolean includeIteration, int iterationNo) {
-        this.testName = testName
+        this.testName = testName.substring(0, (int) Math.min(testName.length(), 50))
         this.className = className
         this.testMode = ConfigurationManager.getConfiguration().get("AZURE_TEST_MODE", TestMode.PLAYBACK)
 
@@ -187,6 +187,37 @@ class TestCommon {
         return builder.credential(credential).buildBlobClient()
     }
 
+    BlobClient getBlobClient(SharedKeyCredential credential, String endpoint, String blobName) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName(blobName)
+            .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildBlobClient()
+    }
+
+    BlobClient getBlobClient(String endpoint, SASTokenCredential credential) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+
+        if (credential != null) {
+            builder.credential(credential)
+        }
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.buildBlobClient()
+    }
+
     private HttpClient getHttpClient() {
         HttpClient client
         if (testMode == TestMode.RECORD) {
@@ -203,7 +234,7 @@ class TestCommon {
     }
 
     String generateResourceName(String prefix, int entityNo) {
-        return resourceNamer.randomName(prefix + testName + System.currentTimeMillis() + entityNo, 63)
+        return resourceNamer.randomName(prefix + testName + entityNo, 63)
     }
 
     String getRandomUUID() {
@@ -215,7 +246,7 @@ class TestCommon {
     }
 
     OffsetDateTime getUTCNow() {
-        return resourceNamer.now();
+        return resourceNamer.now()
     }
 
     byte[] getRandomData(int size) {

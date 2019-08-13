@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
 import org.slf4j.Logger;
@@ -14,8 +15,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,8 +32,8 @@ public final class PlaybackClient implements HttpClient {
     private final RecordedData recordedData;
 
     /**
-     * Creates a PlaybackClient that replays network calls from {@code recordedData} and replaces
-     * {@link NetworkCallRecord#response() response text} for any rules specified in {@code textReplacementRules}.
+     * Creates a PlaybackClient that replays network calls from {@code recordedData} and replaces {@link
+     * NetworkCallRecord#response() response text} for any rules specified in {@code textReplacementRules}.
      *
      * @param recordedData The data to playback.
      * @param textReplacementRules A set of rules to replace text in network call responses.
@@ -147,11 +146,12 @@ public final class PlaybackClient implements HttpClient {
     }
 
     private static String removeHost(String url) {
-        try {
-            URL actualURL = new URL(url);
-            return String.format("%s?%s", actualURL.getPath(), actualURL.getQuery());
-        } catch (MalformedURLException ex) {
-            throw new RuntimeException(ex);
+        UrlBuilder urlBuilder = UrlBuilder.parse(url);
+
+        if (urlBuilder.query().containsKey("sig")) {
+            urlBuilder.setQueryParameter("sig", "REDACTED");
         }
+
+        return String.format("%s?%s", urlBuilder.path(), urlBuilder.queryString());
     }
 }

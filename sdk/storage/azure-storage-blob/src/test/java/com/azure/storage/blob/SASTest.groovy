@@ -101,7 +101,7 @@ class SASTest extends APISpec {
         setup:
         def data = "test".getBytes()
         def blobName = generateBlobName()
-        def bu = cu.getBlockBlobClient(blobName)
+        def bu = testCommon.getBlobClient(primaryCredential, cu.getContainerUrl().toString(), blobName).asBlockBlobClient()
         bu.upload(new ByteArrayInputStream(data), data.length)
 
         def permissions = new BlobSASPermission()
@@ -145,7 +145,7 @@ class SASTest extends APISpec {
 
         def data = "test".getBytes()
         def blobName = generateBlobName()
-        def bu = cu.getBlockBlobClient(blobName)
+        def bu = testCommon.getBlobClient(primaryCredential, cu.getContainerUrl().toString(), blobName).asBlockBlobClient()
         bu.upload(new ByteArrayInputStream(data), data.length)
         String snapshotId = bu.createSnapshot().value().getSnapshotId()
 
@@ -430,7 +430,7 @@ class SASTest extends APISpec {
         def sas = primaryServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def sc = testCommon.getServiceClient(SASTokenCredential.fromSASTokenString(sas), primaryServiceClient.getAccountUrl().toString())
-        sc.createContainer("container")
+        sc.createContainer(generateContainerName())
 
         then:
         thrown(StorageException)
