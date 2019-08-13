@@ -6,7 +6,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.2.0</version>
+  <version>1.2.1</version>
 
   <name>Microsoft Azure SDK for Java Parent</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
@@ -99,7 +99,7 @@
     <issues.url>https://github.com/Azure/azure-sdk-for-java/issues</issues.url>
 
     <!-- Dependency Versions -->
-    <jackson.version>2.9.9</jackson.version>
+    <jackson.version>2.9.9.3</jackson.version>
     <client-runtime.version>1.6.12</client-runtime.version>
     <commons-codec.version>1.10</commons-codec.version>
     <spotbugs.version>4.0.0-beta3</spotbugs.version>
