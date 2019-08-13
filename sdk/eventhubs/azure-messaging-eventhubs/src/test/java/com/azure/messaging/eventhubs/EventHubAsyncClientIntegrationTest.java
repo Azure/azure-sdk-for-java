@@ -41,7 +41,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Tests scenarios on {@link EventHubAsyncClient}.
  */
 @RunWith(Parameterized.class)
-public class EventHubClientIntegrationTest extends ApiTestBase {
+public class EventHubAsyncClientIntegrationTest extends ApiTestBase {
     private static final int NUMBER_OF_EVENTS = 5;
 
     @Parameterized.Parameters(name = "{index}: transportType={0}")
@@ -59,8 +59,8 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
     @Rule
     public TestName testName = new TestName();
 
-    public EventHubClientIntegrationTest(TransportType transportType) {
-        super(new ClientLogger(EventHubClientIntegrationTest.class));
+    public EventHubAsyncClientIntegrationTest(TransportType transportType) {
+        super(new ClientLogger(EventHubAsyncClientIntegrationTest.class));
 
         setTransportType(transportType);
     }
