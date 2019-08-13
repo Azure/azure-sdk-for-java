@@ -9,6 +9,7 @@ import com.azure.storage.queue.models.Metrics
 import com.azure.storage.queue.models.QueueItem
 import com.azure.storage.queue.models.QueuesSegmentOptions
 import com.azure.storage.queue.models.RetentionPolicy
+import com.azure.storage.queue.models.StorageErrorCode
 import com.azure.storage.queue.models.StorageServiceProperties
 import reactor.test.StepVerifier
 import spock.lang.Unroll
@@ -31,7 +32,7 @@ class QueueServiceAsyncAPITests extends APISpec {
         then:
         assertNotNull(queueAsyncClient)
         enqueueMsgVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, "QueueNotFound")
+            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
         }
     }
 
@@ -68,13 +69,13 @@ class QueueServiceAsyncAPITests extends APISpec {
         }
         where:
         queueName      | statusCode | errMesage
-        "a_b"          | 400        | "InvalidResourceName"
-        "-ab"          | 400        | "InvalidResourceName"
-        "a--b"         | 400        | "InvalidResourceName"
+        "a_b"          | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
+        "-ab"          | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
+        "a--b"         | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
         // null | 400 | "InvalidResourceName" TODO: Need to fix the RestProxy before having null parameter
-        "Abc"          | 400        | "InvalidResourceName"
-        "ab"           | 400        | "OutOfRangeInput"
-        "verylong" * 8 | 400        | "OutOfRangeInput"
+        "Abc"          | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
+        "ab"           | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
+        "verylong" * 8 | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
     }
 
     @Unroll
@@ -124,7 +125,7 @@ class QueueServiceAsyncAPITests extends APISpec {
         def createAnotherQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueue(queueName, metadata2))
         then:
         createAnotherQueueVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 409, "QueueAlreadyExists")
+            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 409, StorageErrorCode.QUEUE_ALREADY_EXISTS)
         }
     }
 
@@ -141,7 +142,7 @@ class QueueServiceAsyncAPITests extends APISpec {
             QueueTestHelper.assertResponseStatusCode(it, 204)
         }.verifyComplete()
         enqueueMessageVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, "QueueNotFound")
+            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
         }
     }
 
@@ -150,7 +151,7 @@ class QueueServiceAsyncAPITests extends APISpec {
         def deleteQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.deleteQueue(testResourceName.randomName("queue", 16)))
         then:
         deleteQueueVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, "QueueNotFound")
+            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
         }
     }
 

@@ -6,6 +6,7 @@ package com.azure.storage.queue.spock
 import com.azure.storage.queue.models.AccessPolicy
 import com.azure.storage.queue.models.DequeuedMessage
 import com.azure.storage.queue.models.SignedIdentifier
+import com.azure.storage.queue.models.StorageErrorCode
 import org.junit.Assert
 import org.junit.Ignore
 import reactor.test.StepVerifier
@@ -64,7 +65,7 @@ class QueueAysncAPITests extends APISpec {
         createQueueVerifier1.assertNext { QueueTestHelper.assertResponseStatusCode(it, 201) }
             .verifyComplete()
         createQueueVerifier2.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 409, "QueueAlreadyExists")
+            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 409, StorageErrorCode.QUEUE_ALREADY_EXISTS)
         }
     }
 
@@ -79,7 +80,7 @@ class QueueAysncAPITests extends APISpec {
         deleteQueueVerifier.assertNext { QueueTestHelper.assertResponseStatusCode(it, 204) }
             .verifyComplete()
         errorEnqueueVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, "QueueNotFound")
+            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
         }
     }
 
@@ -88,7 +89,7 @@ class QueueAysncAPITests extends APISpec {
         def deleteQueueVerifier = StepVerifier.create(queueAsyncClient.delete())
         then:
         deleteQueueVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, "QueueNotFound")
+            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404,  StorageErrorCode.QUEUE_NOT_FOUND)
         }
     }
 
@@ -110,7 +111,7 @@ class QueueAysncAPITests extends APISpec {
         def getPropertiesVerifier = StepVerifier.create(queueAsyncClient.getProperties())
         then:
         getPropertiesVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, "QueueNotFound")
+            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404,  StorageErrorCode.QUEUE_NOT_FOUND)
         }
     }
 
@@ -147,7 +148,7 @@ class QueueAysncAPITests extends APISpec {
         def setMetadataVerifier = StepVerifier.create(queueAsyncClient.setMetadata(testMetadata))
         then:
         setMetadataVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, "QueueNotFound")
+            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404,  StorageErrorCode.QUEUE_NOT_FOUND)
         }
     }
 
@@ -164,10 +165,10 @@ class QueueAysncAPITests extends APISpec {
         }
         where:
         invalidKey     | statusCode | errMessage
-        "invalidMeta"  | 403        | "AuthenticationError"
-        "invalid-meta" | 400        | "InvalidMetadata"
-        "12345"        | 400        | "InvalidMetadata"
-        ""             | 400        | "EmptyMetadataKey"
+        "invalidMeta"  | 403        | StorageErrorCode.AUTHENTICATION_ERROR
+        "invalid-meta" | 400        | StorageErrorCode.INVALID_METADATA
+        "12345"        | 400        | StorageErrorCode.INVALID_METADATA
+        ""             | 400        | StorageErrorCode.EMPTY_METADATA_KEY
     }
 
     def "Get access policy from queue async client"() {
@@ -184,7 +185,7 @@ class QueueAysncAPITests extends APISpec {
         def getAccessPolicyVerifier = StepVerifier.create(queueAsyncClient.getAccessPolicy())
         then:
         getAccessPolicyVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, "QueueNotFound")
+            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
         }
     }
 
@@ -223,7 +224,7 @@ class QueueAysncAPITests extends APISpec {
         def setAccessPolicyVerifier = StepVerifier.create(queueAsyncClient.setAccessPolicy(Collections.singletonList(permission)))
         then:
         setAccessPolicyVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, "QueueNotFound")
+            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
         }
     }
 
@@ -242,7 +243,7 @@ class QueueAysncAPITests extends APISpec {
         def setAccessPolicyVerifier = StepVerifier.create(queueAsyncClient.setAccessPolicy(Collections.singletonList(permission)))
         then:
         setAccessPolicyVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, "InvalidXmlDocument")
+            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.INVALID_XML_DOCUMENT)
         }
     }
 
@@ -264,7 +265,7 @@ class QueueAysncAPITests extends APISpec {
         def setAccessPolicyVerifier = StepVerifier.create(queueAsyncClient.setAccessPolicy(permissions))
         then:
         setAccessPolicyVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, "InvalidXmlDocument")
+            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.INVALID_XML_DOCUMENT)
         }
     }
 
@@ -352,7 +353,7 @@ class QueueAysncAPITests extends APISpec {
         def dequeueMsgVerifier = StepVerifier.create(queueAsyncClient.dequeueMessages(33))
         then:
         dequeueMsgVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, "OutOfRangeQueryParameterValue")
+            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE)
         }
     }
 
@@ -361,7 +362,7 @@ class QueueAysncAPITests extends APISpec {
         def dequeueMsgVerifier = StepVerifier.create(queueAsyncClient.dequeueMessages())
         then:
         dequeueMsgVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, "QueueNotFound")
+            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
         }
     }
 
@@ -402,7 +403,7 @@ class QueueAysncAPITests extends APISpec {
         def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessages(33))
         then:
         peekMsgVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, "OutOfRangeQueryParameterValue")
+            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.OutOfRangeQueryParameterValue)
         }
     }
 
@@ -411,7 +412,7 @@ class QueueAysncAPITests extends APISpec {
         def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessages())
         then:
         peekMsgVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, "QueueNotFound")
+            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
         }
     }
 
@@ -444,7 +445,7 @@ class QueueAysncAPITests extends APISpec {
         def clearMsgVerifier = StepVerifier.create(queueAsyncClient.clearMessages())
         then:
         clearMsgVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, "QueueNotFound")
+            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
         }
     }
 
@@ -490,9 +491,9 @@ class QueueAysncAPITests extends APISpec {
         }
         where:
         messageId | popReceipt | statusCode | errMsg
-        true | false | 400 | "InvalidQueryParameterValue"
-        false | true | 404 | "MessageNotFound"
-        false | false | 400 | "InvalidQueryParameterValue"
+        true | false | 400 | StorageErrorCode.INVALID_QUERY_PARAMETER_VALUE
+        false | true | 404 | StorageErrorCode.MESSAGE_NOT_FOUND
+        false | false | 400 | StorageErrorCode.INVALID_QUERY_PARAMETER_VALUE
     }
 
     def "Delete message does not exist from async client"() {
@@ -507,7 +508,7 @@ class QueueAysncAPITests extends APISpec {
             dequeueMsg.popReceipt()))
         then:
         deleteMsgVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, "QueueNotFound")
+            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
         }
     }
 
@@ -548,9 +549,9 @@ class QueueAysncAPITests extends APISpec {
         }
         where:
         messageId | popReceipt | statusCode | errMsg
-        true | false | 400 | "InvalidQueryParameterValue"
-        false | true | 404 | "MessageNotFound"
-        false | false | 400 | "InvalidQueryParameterValue"
+        true | false | 400 | StorageErrorCode.INVALID_QUERY_PARAMETER_VALUE
+        false | true | 404 | StorageErrorCode.MESSAGE_NOT_FOUND
+        false | false | 400 | StorageErrorCode.INVALID_QUERY_PARAMETER_VALUE
     }
 
     def "Update message does not exist from async client"() {
@@ -565,7 +566,7 @@ class QueueAysncAPITests extends APISpec {
             dequeueMsg.popReceipt(), Duration.ofSeconds(1)))
         then:
         updateMsgVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, "QueueNotFound")
+            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
         }
     }
 }

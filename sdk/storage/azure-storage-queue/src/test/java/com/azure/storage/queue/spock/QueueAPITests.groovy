@@ -6,6 +6,7 @@ package com.azure.storage.queue.spock
 import com.azure.storage.queue.models.AccessPolicy
 import com.azure.storage.queue.models.DequeuedMessage
 import com.azure.storage.queue.models.SignedIdentifier
+import com.azure.storage.queue.models.StorageErrorCode
 import com.azure.storage.queue.models.StorageErrorException
 import org.junit.Assert
 import org.junit.Ignore
@@ -61,8 +62,8 @@ class QueueAPITests extends APISpec {
         queueClient.create(testMetadata)
         then:
         QueueTestHelper.assertResponseStatusCode(createQueueResponse1, 201)
-        def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 409, "QueueAlreadyExists")
+        def e = thrown(StorageException)
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 409, StorageErrorCode.QUEUE_ALREADY_EXISTS)
 
     }
 
@@ -76,7 +77,7 @@ class QueueAPITests extends APISpec {
         then:
         QueueTestHelper.assertResponseStatusCode(deleteQueueResponse, 204)
         def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, "QueueNotFound")
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
 
     }
 
@@ -85,7 +86,7 @@ class QueueAPITests extends APISpec {
         queueClient.delete()
         then:
         def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, "QueueNotFound")
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
     def "Get properties from queue client"() {
@@ -104,7 +105,7 @@ class QueueAPITests extends APISpec {
         queueClient.getProperties()
         then:
         def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, "QueueNotFound")
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
     @Unroll
@@ -135,7 +136,7 @@ class QueueAPITests extends APISpec {
         queueClient.setMetadata(testMetadata)
         then:
         def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, "QueueNotFound")
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
     @Unroll
@@ -150,10 +151,10 @@ class QueueAPITests extends APISpec {
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMessage)
         where:
         invalidKey     | statusCode | errMessage
-        "invalidMeta"  | 403        | "AuthenticationError"
-        "invalid-meta" | 400        | "InvalidMetadata"
-        "12345"        | 400        | "InvalidMetadata"
-        ""             | 400        | "EmptyMetadataKey"
+        "invalidMeta"  | 403        | StorageErrorCode.AUTHENTICATION_ERROR
+        "invalid-meta" | 400        | StorageErrorCode.INVALID_METADATA
+        "12345"        | 400        | StorageErrorCode.INVALID_METADATA
+        ""             | 400        | StorageErrorCode.EMPTY_METADATA_KEY
     }
 
     def "Get access policy from queue client"() {
@@ -170,7 +171,7 @@ class QueueAPITests extends APISpec {
         queueClient.getAccessPolicy().iterator().next()
         then:
         def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, "QueueNotFound")
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
     def "Set access policy from queue client"() {
@@ -204,7 +205,7 @@ class QueueAPITests extends APISpec {
         queueClient.setAccessPolicy(Collections.singletonList(permission))
         then:
         def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, "QueueNotFound")
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
     def "Set invalid access policy from queue client"() {
@@ -222,7 +223,7 @@ class QueueAPITests extends APISpec {
         queueClient.setAccessPolicy(Collections.singletonList(permission))
         then:
         def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, "InvalidXmlDocument")
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.INVALID_XML_DOCUMENT)
     }
 
     def "Set too many access policies from queue client"() {
@@ -243,7 +244,7 @@ class QueueAPITests extends APISpec {
         queueClient.setAccessPolicy(permissions)
         then:
         def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, "InvalidXmlDocument")
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.INVALID_XML_DOCUMENT)
 
     }
 
@@ -318,7 +319,7 @@ class QueueAPITests extends APISpec {
         queueClient.dequeueMessages(33).iterator().next()
         then:
         def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, "OutOfRangeQueryParameterValue")
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE)
     }
 
     def "Dequeue messages do not exist from queue client"() {
@@ -326,7 +327,7 @@ class QueueAPITests extends APISpec {
         queueClient.dequeueMessages().iterator().next()
         then:
         def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, "QueueNotFound")
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
     def "Peek message from queue client"() {
@@ -362,7 +363,7 @@ class QueueAPITests extends APISpec {
         queueClient.peekMessages(33).iterator().next()
         then:
         def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, "OutOfRangeQueryParameterValue")
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE)
     }
 
     def "Peek messages do not exist from queue client"() {
@@ -370,7 +371,7 @@ class QueueAPITests extends APISpec {
         queueClient.peekMessages().iterator().next()
         then:
         def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, "QueueNotFound")
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
     def "Clear messages from queue client"() {
@@ -396,7 +397,7 @@ class QueueAPITests extends APISpec {
         StepVerifier.create(queueClient.clearMessages())
         then:
         def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, "QueueNotFound")
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
     def "Delete message from queue client"() {
@@ -434,9 +435,9 @@ class QueueAPITests extends APISpec {
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
         where:
         messageId | popReceipt | statusCode | errMsg
-        true | false | 400 | "InvalidQueryParameterValue"
-        false | true | 404 | "MessageNotFound"
-        false | false | 400 | "InvalidQueryParameterValue"
+        true | false | 400 | StorageErrorCode.INVALID_QUERY_PARAMETER_VALUE
+        false | true | 404 | StorageErrorCode.MESSAGE_NOT_FOUND
+        false | false | 400 | StorageErrorCode.INVALID_QUERY_PARAMETER_VALUE
     }
 
     def "Delete message does not exist from client"() {
@@ -450,7 +451,7 @@ class QueueAPITests extends APISpec {
         queueClient.deleteMessage(dequeueMsg.messageId(), dequeueMsg.popReceipt())
         then:
         def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, "QueueNotFound")
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
     def "Update message from queue client"() {
@@ -486,9 +487,9 @@ class QueueAPITests extends APISpec {
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
         where:
         messageId | popReceipt | statusCode | errMsg
-        true | false | 400 | "InvalidQueryParameterValue"
-        false | true | 404 | "MessageNotFound"
-        false | false | 400 | "InvalidQueryParameterValue"
+        true | false | 400 | StorageErrorCode.INVALID_QUERY_PARAMETER_VALUE
+        false | true | 404 | StorageErrorCode.MESSAGE_NOT_FOUND
+        false | false | 400 | StorageErrorCode.INVALID_QUERY_PARAMETER_VALUE
     }
 
     def "Update message does not exist from client"() {
@@ -502,6 +503,6 @@ class QueueAPITests extends APISpec {
         queueClient.updateMessage("sometext", dequeueMsg.messageId(), dequeueMsg.popReceipt(), Duration.ofSeconds(1))
         then:
         def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, "QueueNotFound")
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 }

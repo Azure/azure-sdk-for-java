@@ -19,7 +19,7 @@ class QueueServiceAPITests extends APISpec {
         queueClient.enqueueMessage("Expecting an exception")
         then:
         def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, "QueueNotFound")
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
     def "Create queue from queue service client"() {
@@ -50,13 +50,13 @@ class QueueServiceAPITests extends APISpec {
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMesage)
         where:
         queueName      | statusCode | errMesage
-        "a_b"          | 400        | "InvalidResourceName"
-        "-ab"          | 400        | "InvalidResourceName"
-        "a--b"         | 400        | "InvalidResourceName"
+        "a_b"          | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
+        "-ab"          | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
+        "a--b"         | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
         // null | 400 | "InvalidResourceName" TODO: Need to fix the RestProxy before having null parameter
-        "Abc"          | 400        | "InvalidResourceName"
-        "ab"           | 400        | "OutOfRangeInput"
-        "verylong" * 8 | 400        | "OutOfRangeInput"
+        "Abc"          | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
+        "ab"           | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
+        "verylong" * 8 | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
     }
 
     @Unroll
@@ -96,7 +96,7 @@ class QueueServiceAPITests extends APISpec {
         primaryQueueServiceClient.createQueue(queueName, metadata2)
         then:
         def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 409, "QueueAlreadyExists")
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 409, StorageErrorCode.QUEUE_ALREADY_EXISTS)
     }
 
     def "Delete queue from queue service client"() {
@@ -109,7 +109,7 @@ class QueueServiceAPITests extends APISpec {
         then:
         QueueTestHelper.assertResponseStatusCode(deleteQueueResponse, 204)
         def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, "QueueNotFound")
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
     def "Delete not exist queue from queue service client"() {
@@ -117,7 +117,7 @@ class QueueServiceAPITests extends APISpec {
         primaryQueueServiceClient.deleteQueue(testResourceName.randomName("queue", 16))
         then:
         def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, "QueueNotFound")
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
     @Unroll
