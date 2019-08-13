@@ -37,11 +37,15 @@ public final class EventPosition {
 
     private final ClientLogger logger = new ClientLogger(EventPosition.class);
     private final boolean isInclusive;
-    private String offset;
-    private Long sequenceNumber;
-    private Instant enqueuedDateTime;
+    private final String offset;
+    private final Long sequenceNumber;
+    private final Instant enqueuedDateTime;
 
-    private EventPosition(boolean isInclusive) {
+    private EventPosition(final boolean isInclusive, final String offset, final Long sequenceNumber,
+                          final Instant enqueuedDateTime) {
+        this.offset = offset;
+        this.sequenceNumber = sequenceNumber;
+        this.enqueuedDateTime = enqueuedDateTime;
         this.isInclusive = isInclusive;
     }
 
@@ -75,8 +79,7 @@ public final class EventPosition {
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromEnqueuedTime(Instant enqueuedDateTime) {
-        EventPosition position = new EventPosition(false);
-        position.enqueuedDateTime = enqueuedDateTime;
+        EventPosition position = new EventPosition(false, null, null, enqueuedDateTime);
         return position;
     }
 
@@ -108,8 +111,7 @@ public final class EventPosition {
     public static EventPosition fromOffset(String offset, boolean isInclusive) {
         Objects.requireNonNull(offset);
 
-        EventPosition position = new EventPosition(isInclusive);
-        position.offset = offset;
+        EventPosition position = new EventPosition(isInclusive, offset, null, null);
         return position;
     }
 
@@ -134,8 +136,7 @@ public final class EventPosition {
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromSequenceNumber(long sequenceNumber, boolean isInclusive) {
-        EventPosition position = new EventPosition(isInclusive);
-        position.sequenceNumber = sequenceNumber;
+        EventPosition position = new EventPosition(isInclusive, null, sequenceNumber, null);
         return position;
     }
 

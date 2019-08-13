@@ -12,42 +12,42 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Information about a start Task running on a Compute Node.
+ * Information about a StartTask running on a Compute Node.
  */
 public class StartTaskInformation {
     /**
-     * The state of the start Task on the Compute Node.
+     * The state of the StartTask on the Compute Node.
      * Possible values include: 'running', 'completed'.
      */
     @JsonProperty(value = "state", required = true)
     private StartTaskState state;
 
     /**
-     * The time at which the start Task started running.
+     * The time at which the StartTask started running.
      * This value is reset every time the Task is restarted or retried (that
-     * is, this is the most recent time at which the start Task started
+     * is, this is the most recent time at which the StartTask started
      * running).
      */
     @JsonProperty(value = "startTime", required = true)
     private DateTime startTime;
 
     /**
-     * The time at which the start Task stopped running.
-     * This is the end time of the most recent run of the start Task, if that
+     * The time at which the StartTask stopped running.
+     * This is the end time of the most recent run of the StartTask, if that
      * run has completed (even if that run failed and a retry is pending). This
-     * element is not present if the start Task is currently running.
+     * element is not present if the StartTask is currently running.
      */
     @JsonProperty(value = "endTime")
     private DateTime endTime;
 
     /**
-     * The exit code of the program specified on the start Task command line.
-     * This property is set only if the start Task is in the completed state.
-     * In general, the exit code for a process reflects the specific convention
+     * The exit code of the program specified on the StartTask command line.
+     * This property is set only if the StartTask is in the completed state. In
+     * general, the exit code for a process reflects the specific convention
      * implemented by the application developer for that process. If you use
      * the exit code value to make decisions in your code, be sure that you
      * know the exit code convention used by the application process. However,
-     * if the Batch service terminates the start Task (due to timeout, or user
+     * if the Batch service terminates the StartTask (due to timeout, or user
      * termination via the API) you may see an operating system-defined exit
      * code.
      */
@@ -120,7 +120,7 @@ public class StartTaskInformation {
     }
 
     /**
-     * Get this value is reset every time the Task is restarted or retried (that is, this is the most recent time at which the start Task started running).
+     * Get this value is reset every time the Task is restarted or retried (that is, this is the most recent time at which the StartTask started running).
      *
      * @return the startTime value
      */
@@ -129,7 +129,7 @@ public class StartTaskInformation {
     }
 
     /**
-     * Set this value is reset every time the Task is restarted or retried (that is, this is the most recent time at which the start Task started running).
+     * Set this value is reset every time the Task is restarted or retried (that is, this is the most recent time at which the StartTask started running).
      *
      * @param startTime the startTime value to set
      * @return the StartTaskInformation object itself.
@@ -140,7 +140,7 @@ public class StartTaskInformation {
     }
 
     /**
-     * Get this is the end time of the most recent run of the start Task, if that run has completed (even if that run failed and a retry is pending). This element is not present if the start Task is currently running.
+     * Get this is the end time of the most recent run of the StartTask, if that run has completed (even if that run failed and a retry is pending). This element is not present if the StartTask is currently running.
      *
      * @return the endTime value
      */
@@ -149,7 +149,7 @@ public class StartTaskInformation {
     }
 
     /**
-     * Set this is the end time of the most recent run of the start Task, if that run has completed (even if that run failed and a retry is pending). This element is not present if the start Task is currently running.
+     * Set this is the end time of the most recent run of the StartTask, if that run has completed (even if that run failed and a retry is pending). This element is not present if the StartTask is currently running.
      *
      * @param endTime the endTime value to set
      * @return the StartTaskInformation object itself.
@@ -160,7 +160,7 @@ public class StartTaskInformation {
     }
 
     /**
-     * Get this property is set only if the start Task is in the completed state. In general, the exit code for a process reflects the specific convention implemented by the application developer for that process. If you use the exit code value to make decisions in your code, be sure that you know the exit code convention used by the application process. However, if the Batch service terminates the start Task (due to timeout, or user termination via the API) you may see an operating system-defined exit code.
+     * Get this property is set only if the StartTask is in the completed state. In general, the exit code for a process reflects the specific convention implemented by the application developer for that process. If you use the exit code value to make decisions in your code, be sure that you know the exit code convention used by the application process. However, if the Batch service terminates the StartTask (due to timeout, or user termination via the API) you may see an operating system-defined exit code.
      *
      * @return the exitCode value
      */
@@ -169,7 +169,7 @@ public class StartTaskInformation {
     }
 
     /**
-     * Set this property is set only if the start Task is in the completed state. In general, the exit code for a process reflects the specific convention implemented by the application developer for that process. If you use the exit code value to make decisions in your code, be sure that you know the exit code convention used by the application process. However, if the Batch service terminates the start Task (due to timeout, or user termination via the API) you may see an operating system-defined exit code.
+     * Set this property is set only if the StartTask is in the completed state. In general, the exit code for a process reflects the specific convention implemented by the application developer for that process. If you use the exit code value to make decisions in your code, be sure that you know the exit code convention used by the application process. However, if the Batch service terminates the StartTask (due to timeout, or user termination via the API) you may see an operating system-defined exit code.
      *
      * @param exitCode the exitCode value to set
      * @return the StartTaskInformation object itself.

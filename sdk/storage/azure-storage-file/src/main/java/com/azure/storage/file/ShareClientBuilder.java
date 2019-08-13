@@ -16,6 +16,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
@@ -173,7 +174,7 @@ public class ShareClientBuilder {
      * <p>The first path segment, if the endpoint contains path segments, will be assumed to be the name of the share
      * that the client will interact with.</p>
      *
-     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQuery(String)}  in an
+     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQueryParameters(Map)} in an
      * attempt to generate a {@link SASTokenCredential} to authenticate requests sent to the service.</p>
      *
      * @param endpoint The URL of the Azure Storage File instance to send service requests to and receive responses from.
@@ -186,7 +187,7 @@ public class ShareClientBuilder {
             this.endpoint = new URL(fullURL.getProtocol() + "://" + fullURL.getHost());
 
             // Attempt to get the SAS token from the URL passed
-            this.sasTokenCredential = SASTokenCredential.fromQuery(fullURL.getQuery());
+            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
             if (this.sasTokenCredential != null) {
                 this.sharedKeyCredential = null;
             }
