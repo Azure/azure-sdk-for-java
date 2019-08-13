@@ -237,6 +237,7 @@ jobs:
 
       - task: Maven@3
         displayName: 'Start Jetty'
+        condition: eq(variables['EnableJetty'], 'true')
         inputs:
           mavenPomFile: pom.client.xml
           options: '$(DefaultOptions) $(ProfileFlag)'
