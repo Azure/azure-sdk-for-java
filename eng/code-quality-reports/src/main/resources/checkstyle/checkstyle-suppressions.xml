@@ -112,6 +112,9 @@
   <!-- Custom checkstyle rules that don't apply to files under samples package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]samples[/\\].*\.java"/>
 
+  <!-- JavaPackage suppression -->
+  <suppress checks="JavadocPackage" files=".*[/\\]samples[/\\].*\.java"/>
+
   <!-- OpenCensus should only be depended on from within the tracing-opencensus module -->
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]tracing[/\\]opentelemetry[/\\]*"/>
 

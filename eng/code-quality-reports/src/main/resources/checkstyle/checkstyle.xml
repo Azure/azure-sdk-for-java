@@ -41,6 +41,12 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <property name="message" value='All TODOs should be named.  e.g. "TODO (johndoe): Refactor when v2 is released."'/>
   </module>
 
+  <!-- Checks that a package-info.java file exists for each package. -->
+  <!-- See http://checkstyle.sf.net/config_javadoc.html#JavadocPackage -->
+  <!-- Remove this comment to enable rule after fixing issues for it
+  <module name="JavadocPackage"/>
+  -->
+
   <!-- All Java AST specific tests live under TreeWalker module. -->
   <module name="TreeWalker">
 
