@@ -285,7 +285,7 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Creates a new {@link EventHubClient} based on options set on this builder. Every time {@code buildAsyncClient()}
+     * Creates a new {@link EventHubClient} based on options set on this builder. Every time {@code buildClient()}
      * is invoked, a new instance of {@link EventHubAsyncClient} is created.
      *
      * <p>
