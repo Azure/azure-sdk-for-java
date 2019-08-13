@@ -227,6 +227,15 @@ public class PoolAddParameter {
     private List<MetadataItem> metadata;
 
     /**
+     * Mount storage using specified file system for the entire lifetime of the
+     * pool.
+     * Mount the storage using Azure fileshare, NFS, CIFS or Blobfuse based
+     * file system.
+     */
+    @JsonProperty(value = "mountConfiguration")
+    private List<MountConfiguration> mountConfiguration;
+
+    /**
      * Get the ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two Pool IDs within an Account that differ only by case).
      *
      * @return the id value
@@ -643,6 +652,26 @@ public class PoolAddParameter {
      */
     public PoolAddParameter withMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get mount the storage using Azure fileshare, NFS, CIFS or Blobfuse based file system.
+     *
+     * @return the mountConfiguration value
+     */
+    public List<MountConfiguration> mountConfiguration() {
+        return this.mountConfiguration;
+    }
+
+    /**
+     * Set mount the storage using Azure fileshare, NFS, CIFS or Blobfuse based file system.
+     *
+     * @param mountConfiguration the mountConfiguration value to set
+     * @return the PoolAddParameter object itself.
+     */
+    public PoolAddParameter withMountConfiguration(List<MountConfiguration> mountConfiguration) {
+        this.mountConfiguration = mountConfiguration;
         return this;
     }
 
