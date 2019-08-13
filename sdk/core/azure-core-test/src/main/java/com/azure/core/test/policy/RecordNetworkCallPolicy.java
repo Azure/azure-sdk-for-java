@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.test.models.NetworkCallException;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -20,7 +21,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -66,6 +66,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
         return next.process()
             .doOnError(throwable -> {
+                networkCallRecord.exception(new NetworkCallException(throwable));
                 recordedData.addNetworkCall(networkCallRecord);
                 throw Exceptions.propagate(throwable);
             })
@@ -113,11 +114,6 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         String contentType = response.headerValue("content-type");
         if (contentType == null) {
             return Mono.just(responseData);
-        } else if (contentType.contains("octet-stream")) {
-            return response.bodyAsByteArray().switchIfEmpty(Mono.just(new byte[0])).map(bytes -> {
-                responseData.put("Body", new String(Base64.getDecoder().decode(bytes), StandardCharsets.UTF_8));
-                return responseData;
-            });
         } else if (contentType.contains("json") || response.headerValue("content-encoding") == null) {
             return response.bodyAsString(StandardCharsets.UTF_8).switchIfEmpty(Mono.just("")).map(content -> {
                 responseData.put("Body", content);

@@ -48,6 +48,7 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     def "Stage block illegal arguments"() {
         when:
+        String blockID = (getBlockId) ? getBlockID() : null
         bu.stageBlock(blockID, data == null ? null : data.get(), dataSize)
 
         then:
@@ -55,12 +56,12 @@ class BlockBlobAPITest extends APISpec {
         exceptionType.isInstance(e)
 
         where:
-        blockID      | data                 | dataSize            | exceptionType
-        null         | defaultInputStream   | defaultDataSize     | StorageException
-        getBlockID() | null                 | defaultDataSize     | NullPointerException
-        getBlockID() | defaultInputStream   | defaultDataSize + 1 | IndexOutOfBoundsException
+        getBlockId   | data                 | dataSize            | exceptionType
+        false        | defaultInputStream   | defaultDataSize     | StorageException
+        true         | null                 | defaultDataSize     | NullPointerException
+        true         | defaultInputStream   | defaultDataSize + 1 | IndexOutOfBoundsException
         // TODO (alzimmer): This doesn't throw an error as the stream is larger than the stated size
-        //getBlockID() | defaultInputStream   | defaultDataSize - 1 | IllegalArgumentException
+        //true         | defaultInputStream   | defaultDataSize - 1 | IllegalArgumentException
     }
 
     def "Stage block empty body"() {
@@ -153,15 +154,16 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     def "Stage block from URL IA"() {
         when:
+        String blockID = (getBlockId) ? getBlockID() : null
         bu.stageBlockFromURL(blockID, sourceURL, null)
 
         then:
         thrown(StorageException)
 
         where:
-        blockID      | sourceURL
-        null         | new URL("http://www.example.com")
-        getBlockID() | null
+        getBlockId   | sourceURL
+        false        | new URL("http://www.example.com")
+        true         | null
     }
 
     def "Stage block from URL range"() {

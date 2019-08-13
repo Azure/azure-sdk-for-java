@@ -8,7 +8,7 @@ import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.configuration.ConfigurationManager
-import com.azure.identity.credential.EnvironmentCredential
+import com.azure.identity.credential.EnvironmentCredentialBuilder
 import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
 
@@ -27,18 +27,20 @@ class TestCommon {
     private final TestResourceNamer resourceNamer
     private final TestMode testMode
     private final String testName
+    private final String className
 
-    TestCommon(String testName, boolean includeIteration, int iterationNo) {
+    TestCommon(String testName, String className, boolean includeIteration, int iterationNo) {
         this.testName = testName
+        this.className = className
         this.testMode = ConfigurationManager.getConfiguration().get("AZURE_TEST_MODE", TestMode.PLAYBACK)
 
         if (includeIteration) {
-            this.interceptorManager = new InterceptorManager(String.format("%s[%d]", testName, iterationNo), testMode)
+            this.interceptorManager = new InterceptorManager(String.format("%s[%d]", className + testName, iterationNo), testMode)
         } else {
-            this.interceptorManager = new InterceptorManager(testName, testMode)
+            this.interceptorManager = new InterceptorManager(className + testName, testMode)
         }
 
-        this.resourceNamer = new TestResourceNamer(testName, testMode, interceptorManager.getRecordedData())
+        this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
     }
 
     TestMode getTestMode() {
@@ -79,12 +81,12 @@ class TestCommon {
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
-
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
+        }
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
         if (credential != null) {
@@ -118,7 +120,7 @@ class TestCommon {
         }
 
         // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-        return builder.credential(new EnvironmentCredential()).buildClient()
+        return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
     }
 
     ContainerClient getContainerClient(SASTokenCredential credential, String endpoint) {
@@ -173,19 +175,19 @@ class TestCommon {
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
-
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
+        }
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
         return builder.credential(credential).buildBlobClient()
     }
 
     private HttpClient getHttpClient() {
-        HttpClient client;
+        HttpClient client
         if (testMode == TestMode.RECORD) {
             client = HttpClient.createDefault().wiretap(true)
         } else {

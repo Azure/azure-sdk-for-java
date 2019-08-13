@@ -61,20 +61,22 @@ class APISpec extends Specification {
 
     def setup() {
         String testName = specificationContext.getCurrentFeature().getName().replace(' ', '').toLowerCase()
+        String className = specificationContext.currentSpec.getFilename().split("\\.")[0]
+        String testFullName = className + testName
         boolean appendIteration = specificationContext.currentIteration.estimatedNumIterations > 1
 
         Integer iterationNo = 0
         if (appendIteration) {
-            iterationNo = unrollIterationNo.get(testName)
+            iterationNo = unrollIterationNo.get(testFullName)
             if (iterationNo == null) {
                 iterationNo = 0
-                unrollIterationNo.put(testName, iterationNo)
+                unrollIterationNo.put(testFullName, iterationNo)
             } else {
-                unrollIterationNo.put(testName, ++iterationNo)
+                unrollIterationNo.put(testFullName, ++iterationNo)
             }
         }
 
-        testCommon = new TestCommon(testName.substring(0, (int) Math.min(testName.length(), 32)), appendIteration, iterationNo)
+        testCommon = new TestCommon(testName.substring(0, (int) Math.min(testName.length(), 32)), className, appendIteration, iterationNo)
 
         primaryServiceClient = testCommon.setClient(primaryCredential)
         alternateServiceClient = testCommon.setClient(alternateCredential)

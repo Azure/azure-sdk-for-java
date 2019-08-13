@@ -1,6 +1,8 @@
 package com.azure.storage.blob
 
+import com.azure.core.test.TestMode
 import com.azure.storage.common.Constants
+import org.junit.Assume
 
 class BlockBlobInputOutputStreamTest extends APISpec {
     BlockBlobClient bu
@@ -11,9 +13,11 @@ class BlockBlobInputOutputStreamTest extends APISpec {
 
     def "Upload download"() {
         when:
+        // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
+        Assume.assumeTrue(testCommon.getTestMode() == TestMode.RECORD)
+
         int length = 30 * Constants.MB
-        byte[] randomBytes = new byte[length]
-        (new Random()).nextBytes(randomBytes)
+        byte[] randomBytes = testCommon.getRandomData(length)
 
         BlobOutputStream outStream = bu.getBlobOutputStream()
         outStream.write(randomBytes)

@@ -11,6 +11,7 @@ import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -94,6 +95,10 @@ public final class PlaybackClient implements HttpClient {
             }
 
             return Mono.error(new IllegalStateException("==> Unexpected request: " + incomingMethod + " " + incomingUrl));
+        }
+
+        if (networkCallRecord.exception() != null) {
+            throw Exceptions.propagate(networkCallRecord.exception().get());
         }
 
         int recordStatusCode = Integer.parseInt(networkCallRecord.response().get("StatusCode"));

@@ -181,6 +181,7 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Upload page IA"() {
         when:
+        def data = (dataSize == null) ? null : new ByteArrayInputStream(getRandomByteArray(dataSize))
         bu.uploadPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES * 2 - 1), data)
 
         then:
@@ -188,10 +189,10 @@ class PageBlobAPITest extends APISpec {
         exceptionType.isInstance(e)
 
         where:
-        data                                                                        | exceptionType
-        null                                                                        | NullPointerException
-        new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES))     | IndexOutOfBoundsException
-        new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES * 3)) | StorageException
+        dataSize                      | exceptionType
+        null                          | NullPointerException
+        PageBlobClient.PAGE_BYTES     | IndexOutOfBoundsException
+        PageBlobClient.PAGE_BYTES * 3 | StorageException
     }
 
     @Unroll
@@ -763,7 +764,7 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Get page ranges diff AC fail"() {
         setup:
-        String snapshot = bu.createSnapshot().value()
+        String snapshot = bu.createSnapshot().value().getSnapshotId()
 
         BlobAccessConditions bac = new BlobAccessConditions()
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))

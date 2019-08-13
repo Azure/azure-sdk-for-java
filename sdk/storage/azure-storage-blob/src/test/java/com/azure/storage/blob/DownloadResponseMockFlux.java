@@ -33,10 +33,8 @@ class DownloadResponseMockFlux extends Flux<ByteBuf> {
     private HTTPGetterInfo info;
     private ByteBuffer scenarioData;
 
-    DownloadResponseMockFlux(int scenario) {
+    DownloadResponseMockFlux(int scenario, APISpec apiSpec) {
         this.scenario = scenario;
-
-        APISpec apiSpec = new APISpec();
 
         switch (this.scenario) {
             case DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK:
