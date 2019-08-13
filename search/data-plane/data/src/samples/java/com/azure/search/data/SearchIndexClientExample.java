@@ -29,10 +29,10 @@ public class SearchIndexClientExample {
      * @param args arguments
      */
     public static void main(String[] args) {
-        String searchServiceName = "";
-        String apiKey = "";
+        String searchServiceName = "learnaisearch";
+        String apiKey = "A09A17F3A00BBDD62D04958775D73FE3";
         String dnsSuffix = "search.windows.net";
-        String indexName = "";
+        String indexName = "lishakur-test";
         String apiVersion = "2019-05-06";
 
 
