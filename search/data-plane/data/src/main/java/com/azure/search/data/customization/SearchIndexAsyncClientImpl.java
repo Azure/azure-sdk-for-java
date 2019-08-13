@@ -166,7 +166,8 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
 
     @Override
     public Mono<Map<String, Object>> getDocument(String key) {
-        return restClient.documents().getAsync(key).map(DocumentResponseConversions::convertLinkedHashMapToMap);
+        return restClient.documents().getAsync(key).map(DocumentResponseConversions::convertLinkedHashMapToMap)
+                .map(DocumentResponseConversions::dropUnnecessaryFields);
     }
 
     @Override
@@ -176,7 +177,8 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
         return restClient
             .documents()
             .getAsync(key, selectedFields, searchRequestOptions)
-            .map(DocumentResponseConversions::convertLinkedHashMapToMap);
+            .map(DocumentResponseConversions::convertLinkedHashMapToMap)
+            .map(DocumentResponseConversions::dropUnnecessaryFields);
     }
 
     @Override

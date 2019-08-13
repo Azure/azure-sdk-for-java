@@ -108,6 +108,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <version>3.2.3.RELEASE</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>com.azure.search</groupId>
       <artifactId>service</artifactId>
       <version>1.0-SNAPSHOT</version>

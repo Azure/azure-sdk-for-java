@@ -16,11 +16,10 @@ import java.io.Reader;
 
 public class SearchIndexService {
 
-    private static final String INDEX_DATA_JSON = "IndexData.json";
-
     private String searchServiceName;
     private String apiAdminKey;
     private String indexName;
+    private String indexDataFileName;
 
     private SearchServiceClient searchServiceClient;
 
@@ -31,7 +30,8 @@ public class SearchIndexService {
      * @param searchServiceName the name of Search Service in Azure.
      * @param apiAdminKey       the Admin Key of Search Service
      */
-    public SearchIndexService(String searchServiceName, String apiAdminKey) {
+    public SearchIndexService(String indexDataFileName, String searchServiceName, String apiAdminKey) {
+        this.indexDataFileName = indexDataFileName;
         this.searchServiceName = searchServiceName;
         this.apiAdminKey = apiAdminKey;
     }
@@ -62,7 +62,7 @@ public class SearchIndexService {
     }
 
     private void addIndexes() throws IOException {
-        Reader indexData = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(INDEX_DATA_JSON));
+        Reader indexData = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(indexDataFileName));
         Index index = new ObjectMapper().readValue(indexData, Index.class);
         this.indexName = index.name();
         searchServiceClient.indexes().create(index);

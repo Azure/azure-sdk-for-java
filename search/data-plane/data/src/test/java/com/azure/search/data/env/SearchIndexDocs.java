@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class SearchIndexDocs {
 
-    private static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
+    public static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
 
     private String searchServiceName;
     private String apiAdminKey;

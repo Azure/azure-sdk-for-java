@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for DataType.
  */
+// NOTE: ALL of the below COLLECTION types were added MANUALLY and not part of the generated code!!!
 public enum DataType {
     /**
      * Enum value Edm.String.
@@ -23,31 +24,37 @@ public enum DataType {
      * Enum value Edm.Int32.
      */
     EDM_INT32("Edm.Int32"),
+    EDM_INT32_COLLECTION("Collection(Edm.Int32)"),
 
     /**
      * Enum value Edm.Int64.
      */
     EDM_INT64("Edm.Int64"),
+    EDM_INT64_COLLECTION("Collection(Edm.Int64)"),
 
     /**
      * Enum value Edm.Double.
      */
     EDM_DOUBLE("Edm.Double"),
+    EDM_DOUBLE_COLLECTION("Collection(Edm.Double)"),
 
     /**
      * Enum value Edm.Boolean.
      */
     EDM_BOOLEAN("Edm.Boolean"),
+    EDM_BOOLEAN_COLLECTION("Collection(Edm.Boolean)"),
 
     /**
      * Enum value Edm.DateTimeOffset.
      */
     EDM_DATE_TIME_OFFSET("Edm.DateTimeOffset"),
+    EDM_DATE_TIME_OFFSET_COLLECTION("Collection(Edm.DateTimeOffset)"),
 
     /**
      * Enum value Edm.GeographyPoint.
      */
     EDM_GEOGRAPHY_POINT("Edm.GeographyPoint"),
+    EDM_GEOGRAPHY_POINT_COLLECTION("Collection(Edm.GeographyPoint)"),
 
     /**
      * Enum value Edm.ComplexType.

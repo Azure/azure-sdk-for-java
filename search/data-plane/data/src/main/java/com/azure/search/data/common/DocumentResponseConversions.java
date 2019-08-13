@@ -13,6 +13,7 @@ import java.util.Set;
  */
 public class DocumentResponseConversions {
 
+    private static final String ODATA_CONTEXT = "@odata.context";
     /**
      * Convert a Linked HashMap object to Map object
      * @param linkedMapObject object to convert
@@ -29,6 +30,16 @@ public class DocumentResponseConversions {
         }
 
         return convertedMap;
+    }
 
+    /**
+     * Drop fields that shouldn't be in the returned object
+     * @param map the map to drop items from
+     * @return the new map
+     */
+    public static Map<String, Object> dropUnnecessaryFields(Map<String, Object> map) {
+        map.remove(ODATA_CONTEXT);
+
+        return map;
     }
 }
