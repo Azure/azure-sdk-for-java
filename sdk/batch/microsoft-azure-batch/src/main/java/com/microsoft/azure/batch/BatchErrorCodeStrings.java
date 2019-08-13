@@ -475,7 +475,7 @@ public final class BatchErrorCodeStrings {
     public static final String MetadataTooLarge = "MetadataTooLarge";
 
     /**
-     * The HTTP Content-Length header was not specified.
+     * The HTTP content-length header was not specified.
      */
     public static final String MissingContentLengthHeader = "MissingContentLengthHeader";
 

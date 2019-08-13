@@ -4,6 +4,7 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
@@ -96,7 +97,7 @@ public class FileJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileClient.instantiation.credential
         FileClient fileClient = new FileClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQuery("${SASTokenQueryParams}"))
+            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
             .shareName("myshare")
             .filePath("myfilepath")
             .buildClient();
@@ -112,7 +113,7 @@ public class FileJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.instantiation.credential
         FileAsyncClient fileAsyncClient = new FileClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQuery("${SASTokenQueryParams}"))
+            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
             .shareName("myshare")
             .filePath("myfilepath")
             .buildAsyncClient();
@@ -758,7 +759,7 @@ public class FileJavaDocCodeSamples {
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         FileClient fileClient = new FileClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQuery("${SASToken}"))
+            .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
             .shareName("myshare")
             .filePath("myfile")
             .snapshot(currentTime.toString())
@@ -775,7 +776,7 @@ public class FileJavaDocCodeSamples {
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         FileAsyncClient fileAsyncClient = new FileClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQuery("${SASToken}"))
+            .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
             .shareName("myshare")
             .filePath("myfiile")
             .snapshot(currentTime.toString())
