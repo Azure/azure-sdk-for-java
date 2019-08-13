@@ -57,6 +57,8 @@ jobs:
 
     steps:
       - script: |
+          echo "##vso[task.uploadsummary]eng/sample.md"
+      - script: |
           echo "##vso[build.addbuildtag]Scheduled"
         displayName: 'Tag scheduled builds'
         condition: and(eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
