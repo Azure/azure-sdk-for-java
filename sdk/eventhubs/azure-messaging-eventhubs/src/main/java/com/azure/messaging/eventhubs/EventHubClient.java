@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.RetryOptions;
+import com.azure.core.http.rest.IterableResponse;
 import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.annotation.ServiceMethod;
@@ -62,8 +63,8 @@ public class EventHubClient implements Closeable {
      * @return The identifiers for all partitions of an Event Hub.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Iterable<String> getPartitionIds() {
-        return client.getPartitionIds().collectList().block(retry.tryTimeout());
+    public IterableResponse<String> getPartitionIds() {
+        return new IterableResponse<>(client.getPartitionIds());
     }
 
     /**
