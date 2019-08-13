@@ -22,7 +22,8 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
     private final EventHubAsyncClient client = new EventHubClientBuilder().connectionString("fake-string").buildAsyncClient();
 
     /**
-     * Code snippet demonstrating how to create an EventHubProducer that automatically routes events to any partition.
+     * Code snippet demonstrating how to create an {@link EventHubAsyncProducer} that automatically routes events to any
+     * partition.
      *
      * @throws IOException if the producer cannot be disposed.
      */
@@ -39,7 +40,8 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
     }
 
     /**
-     * Code snippet demonstrating how to create an EventHubProducer that routes events to a single partition.
+     * Code snippet demonstrating how to create an {@link EventHubAsyncProducer}  that routes events to a single
+     * partition.
      *
      * @throws IOException if the producer cannot be disposed.
      */
@@ -99,14 +101,14 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
 
         // The sample Flux contains three events, but it could be an infinite stream of telemetry events.
         telemetryEvents.subscribe(event -> {
-            final EventDataBatch batch = currentBatch.get();
-            if (!batch.tryAdd(event)) {
-                producer.createBatch(options).map(newBatch -> {
-                    currentBatch.set(newBatch);
-                    return producer.send(batch);
-                }).block();
-            }
-        }, error -> System.err.println("Error received:" + error),
+                final EventDataBatch batch = currentBatch.get();
+                if (!batch.tryAdd(event)) {
+                    producer.createBatch(options).map(newBatch -> {
+                        currentBatch.set(newBatch);
+                        return producer.send(batch);
+                    }).block();
+                }
+            }, error -> System.err.println("Error received:" + error),
             () -> {
                 final EventDataBatch batch = currentBatch.getAndSet(null);
                 if (batch != null) {
