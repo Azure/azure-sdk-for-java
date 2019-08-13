@@ -20,10 +20,12 @@ import org.junit.Before;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -40,12 +42,13 @@ public class SearchIndexAsyncClientImplTest {
     @Before
     public void initialize() throws IOException {
         ApplicationTokenCredentials applicationTokenCredentials = new ApplicationTokenCredentials(
-            "clientId",
-            "domain",
-            "secret",
+            "86384185-e31a-490f-a361-b19f9a378582",
+            "72f988bf-86f1-41af-91ab-2d7cd011db47",
+            "=PGXA_CxqmIJ0@]cewj434At.]KWyLQ5",
             AzureEnvironment.AZURE);
 
-        String subscriptionId = "subscriptionID";
+        String subscriptionId = "73a4ea93-d914-424d-9e64-28adf397e8e3";
+
         Region location = Region.US_EAST;
 
         azureSearchResources = new AzureSearchResources(
@@ -157,6 +160,7 @@ public class SearchIndexAsyncClientImplTest {
         expectedDoc.put("Rating", 3);
         expectedDoc.put("Address", addressDoc);
         expectedDoc.put("Rooms", rooms);
+        //TODO: Support GeoTypes
 
         try {
             SearchIndexDocs searchIndexDocs = new SearchIndexDocs(serviceName, apiAdminKey,
@@ -218,6 +222,7 @@ public class SearchIndexAsyncClientImplTest {
                 assertEquals(HttpResponseException.class, error.getClass());
                 assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error).response().statusCode());
                 assertTrue(error.getMessage().contains("Invalid expression: Could not find a property named 'ThisFieldDoesNotExist' on type 'search.document'."));
+                //TODO: Create Enum for messages
             });
     }
 }
