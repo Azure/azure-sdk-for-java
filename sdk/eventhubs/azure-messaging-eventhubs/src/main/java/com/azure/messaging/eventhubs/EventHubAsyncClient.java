@@ -270,8 +270,6 @@ public class EventHubAsyncClient implements Closeable {
             return connection.createSession(entityPath).cast(EventHubSession.class);
         }).flatMap(session -> {
             logger.verbose("Creating consumer for path: {}", entityPath);
-
-            logger.verbose("Creating producer for {}", entityPath);
             final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(clonedOptions.retry());
 
             return session.createConsumer(linkName, entityPath, getExpression(eventPosition),
