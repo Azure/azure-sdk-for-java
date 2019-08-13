@@ -110,8 +110,8 @@ class SASTest extends APISpec {
             .create(true)
             .delete(true)
             .add(true)
-        def startTime = OffsetDateTime.now().minusDays(1)
-        def expiryTime = OffsetDateTime.now().plusDays(1)
+        def startTime = testCommon.getUTCNow().minusDays(1)
+        def expiryTime = testCommon.getUTCNow().plusDays(1)
         def ipRange = new IPRange()
             .ipMin("0.0.0.0")
             .ipMax("255.255.255.255")
@@ -157,8 +157,8 @@ class SASTest extends APISpec {
             .create(true)
             .delete(true)
             .add(true)
-        def startTime = OffsetDateTime.now().minusDays(1)
-        def expiryTime = OffsetDateTime.now().plusDays(1)
+        def startTime = testCommon.getUTCNow().minusDays(1)
+        def expiryTime = testCommon.getUTCNow().plusDays(1)
         def ipRange = new IPRange()
             .ipMin("0.0.0.0")
             .ipMax("255.255.255.255")
@@ -191,7 +191,7 @@ class SASTest extends APISpec {
         SignedIdentifier identifier = new SignedIdentifier()
             .id("0000")
             .accessPolicy(new AccessPolicy().permission("racwdl")
-                .expiry(OffsetDateTime.now().plusDays(1)))
+                .expiry(testCommon.getUTCNow().plusDays(1)))
         cu.setAccessPolicy(null, Arrays.asList(identifier), null, null)
 
         // Check containerSASPermissions
@@ -202,7 +202,7 @@ class SASTest extends APISpec {
             .delete(true)
             .add(true)
 
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1)
+        OffsetDateTime expiryTime = testCommon.getUTCNow().plusDays(1)
 
         when:
         String sasWithId = cu.generateSAS(identifier.id())
@@ -236,8 +236,8 @@ class SASTest extends APISpec {
             .delete(true)
             .add(true)
 
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1)
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1)
+        OffsetDateTime startTime = testCommon.getUTCNow().minusDays(1)
+        OffsetDateTime expiryTime = testCommon.getUTCNow().plusDays(1)
 
         IPRange ipRange = new IPRange()
             .ipMin("0.0.0.0")
@@ -250,7 +250,7 @@ class SASTest extends APISpec {
         String contentLanguage = "language"
         String contentType = "type"
 
-        UserDelegationKey key = getOAuthServiceURL().getUserDelegationKey(null, OffsetDateTime.now().plusDays(1)).value()
+        UserDelegationKey key = getOAuthServiceURL().getUserDelegationKey(null, testCommon.getUTCNow().plusDays(1)).value()
 
         when:
         String sas = bu.generateUserDelegationSAS(key, primaryCredential.accountName(), permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
@@ -286,8 +286,8 @@ class SASTest extends APISpec {
             .delete(true)
             .add(true)
 
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1)
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1)
+        OffsetDateTime startTime = testCommon.getUTCNow().minusDays(1)
+        OffsetDateTime expiryTime = testCommon.getUTCNow().plusDays(1)
 
         IPRange ipRange = new IPRange()
             .ipMin("0.0.0.0")
@@ -343,9 +343,9 @@ class SASTest extends APISpec {
             .delete(true)
             .add(true)
 
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1)
+        OffsetDateTime expiryTime = testCommon.getUTCNow().plusDays(1)
 
-        UserDelegationKey key = getOAuthServiceURL().getUserDelegationKey(null, OffsetDateTime.now().plusDays(1)).value()
+        UserDelegationKey key = getOAuthServiceURL().getUserDelegationKey(null, testCommon.getUTCNow().plusDays(1)).value()
 
         when:
 
@@ -373,7 +373,7 @@ class SASTest extends APISpec {
             .object(true)
         def permissions = new AccountSASPermission()
             .read(true)
-        def expiryTime = OffsetDateTime.now().plusDays(1)
+        def expiryTime = testCommon.getUTCNow().plusDays(1)
 
         when:
         def sas = primaryServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
@@ -401,7 +401,7 @@ class SASTest extends APISpec {
             .object(true)
         def permissions = new AccountSASPermission()
             .read(true)
-        def expiryTime = OffsetDateTime.now().plusDays(1)
+        def expiryTime = testCommon.getUTCNow().plusDays(1)
 
         when:
         def sas = primaryServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
@@ -424,7 +424,7 @@ class SASTest extends APISpec {
         def permissions = new AccountSASPermission()
             .read(true)
             .create(false)
-        def expiryTime = OffsetDateTime.now().plusDays(1)
+        def expiryTime = testCommon.getUTCNow().plusDays(1)
 
         when:
         def sas = primaryServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
@@ -447,7 +447,7 @@ class SASTest extends APISpec {
         def permissions = new AccountSASPermission()
             .read(true)
             .create(true)
-        def expiryTime = OffsetDateTime.now().plusDays(1)
+        def expiryTime = testCommon.getUTCNow().plusDays(1)
 
         when:
         def sas = primaryServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)

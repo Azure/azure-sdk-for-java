@@ -300,12 +300,12 @@ class ContainerAPITest extends APISpec {
     def "Set access policy min ids"() {
         setup:
         SignedIdentifier identifier = new SignedIdentifier()
-                .id("0000")
-                .accessPolicy(new AccessPolicy()
-                    .start(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                    .expiry(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
-                        .plusDays(1))
-                    .permission("r"))
+            .id("0000")
+            .accessPolicy(new AccessPolicy()
+                .start(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .expiry(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
+                    .plusDays(1))
+                .permission("r"))
 
         List<SignedIdentifier> ids = new ArrayList<>()
         ids.push(identifier)
@@ -320,18 +320,16 @@ class ContainerAPITest extends APISpec {
     def "Set access policy ids"() {
         setup:
         SignedIdentifier identifier = new SignedIdentifier()
-                .id("0000")
-                .accessPolicy(new AccessPolicy()
-                .start(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                .expiry(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
-                .plusDays(1))
+            .id("0000")
+            .accessPolicy(new AccessPolicy()
+                .start(testCommon.getUTCNow())
+                .expiry(testCommon.getUTCNow().plusDays(1))
                 .permission("r"))
         SignedIdentifier identifier2 = new SignedIdentifier()
-                .id("0001")
-                .accessPolicy(new AccessPolicy()
-                .start(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                .expiry(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
-                .plusDays(2))
+            .id("0001")
+            .accessPolicy(new AccessPolicy()
+                .start(testCommon.getUTCNow())
+                .expiry(testCommon.getUTCNow().plusDays(2))
                 .permission("w"))
         List<SignedIdentifier> ids = new ArrayList<>()
         ids.push(identifier)
@@ -426,11 +424,10 @@ class ContainerAPITest extends APISpec {
     def "Get access policy"() {
         setup:
         SignedIdentifier identifier = new SignedIdentifier()
-                .id("0000")
-                .accessPolicy(new AccessPolicy()
-                .start(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                .expiry(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
-                .plusDays(1))
+            .id("0000")
+            .accessPolicy(new AccessPolicy()
+                .start(testCommon.getUTCNow())
+                .expiry(testCommon.getUTCNow().plusDays(1))
                 .permission("r"))
         List<SignedIdentifier> ids = new ArrayList<>()
         ids.push(identifier)
@@ -979,7 +976,7 @@ class ContainerAPITest extends APISpec {
     def "List blobs hier options fail"() {
         when:
         def options = new ListBlobsOptions().details(new BlobListDetails().snapshots(snapshots))
-                .maxResults(maxResults)
+            .maxResults(maxResults)
         cu.listBlobsHierarchy(null, options, null).iterator().hasNext()
 
         then:
@@ -1531,12 +1528,12 @@ class ContainerAPITest extends APISpec {
         blobs.next().name() == name + "3"
 
         where:
-        name                  | _
+        name          | _
         // "中文"                 | _  TODO: requires blob name to be url encoded, deferred for post preview-1, storage team to decide on encoding story across SDKS
-        "az[]"                | _
+        "az[]"        | _
         // "hello world"         | _  TODO: see previous TODO
-        "hello/world"         | _
-        "hello&world"         | _
+        "hello/world" | _
+        "hello&world" | _
         // "!*'();:@&=+\$,/?#[]" | _  TODO: see previous TODO
     }
 

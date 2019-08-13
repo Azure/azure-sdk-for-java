@@ -27,8 +27,8 @@ import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 
 /**
- * HTTP Pipeline policy that keeps track of each HTTP request and response that flows through the pipeline.
- * Data is recorded into {@link RecordedData}.
+ * HTTP Pipeline policy that keeps track of each HTTP request and response that flows through the pipeline. Data is
+ * recorded into {@link RecordedData}.
  */
 public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     private static final int DEFAULT_BUFFER_LENGTH = 1024;
@@ -69,27 +69,26 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 networkCallRecord.exception(new NetworkCallException(throwable));
                 recordedData.addNetworkCall(networkCallRecord);
                 throw Exceptions.propagate(throwable);
-            })
-            .flatMap(httpResponse -> {
-            final HttpResponse bufferedResponse = httpResponse.buffer();
+            }).flatMap(httpResponse -> {
+                final HttpResponse bufferedResponse = httpResponse.buffer();
 
-            return extractResponseData(bufferedResponse).map(responseData -> {
-                networkCallRecord.response(responseData);
-                String body = responseData.get("Body");
+                return extractResponseData(bufferedResponse).map(responseData -> {
+                    networkCallRecord.response(responseData);
+                    String body = responseData.get("Body");
 
-                // Remove pre-added header if this is a waiting or redirection
-                if (body != null && body.contains("<Status>InProgress</Status>")
-                    || Integer.parseInt(responseData.get("StatusCode")) == HttpResponseStatus.TEMPORARY_REDIRECT.code()) {
-                    if (logger.isInfoEnabled()) {
-                        logger.info("Waiting for a response or redirection.");
+                    // Remove pre-added header if this is a waiting or redirection
+                    if (body != null && body.contains("<Status>InProgress</Status>")
+                        || Integer.parseInt(responseData.get("StatusCode")) == HttpResponseStatus.TEMPORARY_REDIRECT.code()) {
+                        if (logger.isInfoEnabled()) {
+                            logger.info("Waiting for a response or redirection.");
+                        }
+                    } else {
+                        recordedData.addNetworkCall(networkCallRecord);
                     }
-                } else {
-                    recordedData.addNetworkCall(networkCallRecord);
-                }
 
-                return bufferedResponse;
+                    return bufferedResponse;
+                });
             });
-        });
     }
 
     private Mono<Map<String, String>> extractResponseData(final HttpResponse response) {
@@ -114,6 +113,23 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         String contentType = response.headerValue("content-type");
         if (contentType == null) {
             return Mono.just(responseData);
+        } else if (contentType.contains("octet-stream")) {
+            return response.bodyAsByteArray().switchIfEmpty(Mono.just(new byte[0])).map(bytes -> {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream(bytes.length);
+                try {
+                    outputStream.write(bytes);
+                } catch (IOException ex) {
+                    throw Exceptions.propagate(ex);
+                }
+
+                String content = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
+
+                responseData.remove("content-encoding");
+                responseData.put("content-length", Integer.toString(content.length()));
+
+                responseData.put("Body", content);
+                return responseData;
+            });
         } else if (contentType.contains("json") || response.headerValue("content-encoding") == null) {
             return response.bodyAsString(StandardCharsets.UTF_8).switchIfEmpty(Mono.just("")).map(content -> {
                 responseData.put("Body", content);

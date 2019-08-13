@@ -14,7 +14,8 @@ import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -146,7 +147,11 @@ public final class PlaybackClient implements HttpClient {
     }
 
     private static String removeHost(String url) {
-        URI uri = URI.create(url);
-        return String.format("%s?%s", uri.getPath(), uri.getQuery());
+        try {
+            URL actualURL = new URL(url);
+            return String.format("%s?%s", actualURL.getPath(), actualURL.getQuery());
+        } catch (MalformedURLException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

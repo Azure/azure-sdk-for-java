@@ -13,6 +13,7 @@ import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
 
 import java.nio.charset.StandardCharsets
+import java.time.OffsetDateTime
 import java.util.function.Supplier
 
 class TestCommon {
@@ -211,6 +212,10 @@ class TestCommon {
 
     String getBlockID() {
         return Base64.encoder.encodeToString(resourceNamer.randomUuid().getBytes(StandardCharsets.UTF_8))
+    }
+
+    OffsetDateTime getUTCNow() {
+        return resourceNamer.now();
     }
 
     byte[] getRandomData(int size) {

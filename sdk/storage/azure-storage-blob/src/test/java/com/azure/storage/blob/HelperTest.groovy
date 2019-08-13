@@ -94,8 +94,8 @@ class HelperTest extends APISpec {
 
         ServiceSASSignatureValues v = new ServiceSASSignatureValues()
             .permissions(p.toString())
-            .startTime(OffsetDateTime.now().minusDays(1))
-            .expiryTime(OffsetDateTime.now().plusDays(1))
+            .startTime(testCommon.getUTCNow())
+            .expiryTime(testCommon.getUTCNow().plusDays(1))
             .resource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
             .canonicalName(String.format("/blob/%s/%s/%s", primaryCredential.accountName(), containerName, blobName))
             .snapshotId(snapshotId)
