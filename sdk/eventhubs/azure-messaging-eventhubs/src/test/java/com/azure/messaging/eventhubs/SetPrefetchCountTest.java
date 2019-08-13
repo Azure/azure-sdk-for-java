@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 
 /**
- * Verifies we can use various prefetch options with {@link EventHubConsumer}.
+ * Verifies we can use various prefetch options with {@link EventHubAsyncConsumer}.
  */
 @Ignore("Set prefetch tests do not work because they try to send very large number of events at once.")
 public class SetPrefetchCountTest extends ApiTestBase {
@@ -45,7 +45,7 @@ public class SetPrefetchCountTest extends ApiTestBase {
     private static final AtomicReference<Instant> MESSAGES_PUSHED_INSTANT = new AtomicReference<>();
 
     private EventHubAsyncClient client;
-    private EventHubConsumer consumer;
+    private EventHubAsyncConsumer consumer;
 
     @Rule
     public TestName testName = new TestName();
@@ -147,7 +147,7 @@ public class SetPrefetchCountTest extends ApiTestBase {
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
             .partitionId(PARTITION_ID);
-        final EventHubProducer producer = client.createProducer(producerOptions);
+        final EventHubAsyncProducer producer = client.createProducer(producerOptions);
         final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, MESSAGE_TRACKING_VALUE);
 
         try {

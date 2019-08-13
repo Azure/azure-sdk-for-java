@@ -45,9 +45,9 @@ public class EnvironmentCredential implements TokenCredential {
                     configuration.get(BaseConfigurations.AZURE_CLIENT_SECRET),
                     identityClientOptions);
             }
+
             // Other environment variables
-            logger.logAndThrow(new ClientAuthenticationException("Cannot create any credentials with the current environment variables", null));
-            return null;
+            throw logger.logExceptionAsError(new ClientAuthenticationException("Cannot create any credentials with the current environment variables", null));
         }).flatMap(cred -> cred.getToken(scopes));
     }
 }

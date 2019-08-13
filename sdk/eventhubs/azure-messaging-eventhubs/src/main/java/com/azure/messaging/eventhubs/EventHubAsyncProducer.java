@@ -57,16 +57,16 @@ import java.util.stream.Collector;
  *
  * <p><strong>Create a producer that routes events to any partition</strong></p>
  * To allow automatic routing of messages to available partition, do not specify the {@link
- * EventHubProducerOptions#partitionId() partitionId} when creating the {@link EventHubProducer}.
+ * EventHubProducerOptions#partitionId() partitionId} when creating the {@link EventHubAsyncProducer}.
  * <p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.instantiate}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation}
  *
  * <p><strong>Create a producer that publishes events to partition "foo" with a timeout of 45 seconds.</strong></p>
  * <p>
  * Developers can push events to a single partition by specifying the {@link EventHubProducerOptions#partitionId(String)
- * partitionId} when creating an {@link EventHubProducer}.
+ * partitionId} when creating an {@link EventHubAsyncProducer}.
  * <p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.instantiatePartitionProducer}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation#partitionId}
  *
  * <p><strong>Publish events to the same partition, grouped together using {@link SendOptions#partitionKey(String)}.</strong></p>
  * <p>
@@ -76,7 +76,7 @@ import java.util.stream.Collector;
  * In the sample below, all the "sandwiches" end up in the same partition, but it could end up in partition 0, 1, etc.
  * of the available partitions. All that matters to the end user is that they are grouped together.
  * <p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.send#publisher-sendOptions}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducer.send#publisher-sendOptions}
  *
  * <p><strong>Publish events using an {@link EventDataBatch}.</strong></p>
  * <p>
@@ -89,11 +89,11 @@ import java.util.stream.Collector;
  * {@link EventDataBatch batches} to be no larger than 256 bytes. The events within the batch also get hashed to the
  * same partition because they all share the same {@link BatchOptions#partitionKey()}.
  * <p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.send#eventdatabatch}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducer.send#eventDataBatch}
  * @see EventHubAsyncClient#createProducer()
  */
 @Immutable
-public class EventHubProducer implements Closeable {
+public class EventHubAsyncProducer implements Closeable {
     private static final int MAX_PARTITION_KEY_LENGTH = 128;
 
     /**
@@ -104,18 +104,18 @@ public class EventHubProducer implements Closeable {
     private static final SendOptions DEFAULT_SEND_OPTIONS = new SendOptions();
     private static final BatchOptions DEFAULT_BATCH_OPTIONS = new BatchOptions();
 
-    private final ClientLogger logger = new ClientLogger(EventHubProducer.class);
+    private final ClientLogger logger = new ClientLogger(EventHubAsyncProducer.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final EventHubProducerOptions senderOptions;
     private final Mono<AmqpSendLink> sendLinkMono;
     private final boolean isPartitionSender;
 
     /**
-     * Creates a new instance of this {@link EventHubProducer} that sends messages to {@link
+     * Creates a new instance of this {@link EventHubAsyncProducer} that sends messages to {@link
      * EventHubProducerOptions#partitionId() options.partitionId()} if it is not {@code null} or an empty string,
      * otherwise, allows the service to load balance the messages amongst available partitions.
      */
-    EventHubProducer(Mono<AmqpSendLink> amqpSendLinkMono, EventHubProducerOptions options) {
+    EventHubAsyncProducer(Mono<AmqpSendLink> amqpSendLinkMono, EventHubProducerOptions options) {
         // Caching the created link so we don't invoke another link creation.
         this.sendLinkMono = amqpSendLinkMono.cache();
         this.senderOptions = options;
@@ -264,8 +264,8 @@ public class EventHubProducer implements Closeable {
      *
      * @return A {@link Mono} that completes when the batch is pushed to the service.
      * @throws NullPointerException if {@code batch} is {@code null}.
-     * @see EventHubProducer#createBatch()
-     * @see EventHubProducer#createBatch(BatchOptions)
+     * @see EventHubAsyncProducer#createBatch()
+     * @see EventHubAsyncProducer#createBatch(BatchOptions)
      */
     public Mono<Void> send(EventDataBatch batch) {
         Objects.requireNonNull(batch);
@@ -329,7 +329,7 @@ public class EventHubProducer implements Closeable {
     }
 
     /**
-     * Disposes of the {@link EventHubProducer} by closing the underlying connection to the service.
+     * Disposes of the {@link EventHubAsyncProducer} by closing the underlying connection to the service.
      * @throws IOException if the underlying transport could not be closed and its resources could not be
      *                     disposed.
      */

@@ -101,7 +101,7 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
         // Arrange
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
             .prefetchCount(2);
-        final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
+        final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
             EventPosition.fromEnqueuedTime(MESSAGES_PUSHED_INSTANT.get()), options);
 
         // Act & Assert
@@ -135,13 +135,13 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
             clients[i] = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()));
         }
 
-        final EventHubProducer producer = clients[0].createProducer(new EventHubProducerOptions().partitionId(PARTITION_ID));
-        final List<EventHubConsumer> consumers = new ArrayList<>();
+        final EventHubAsyncProducer producer = clients[0].createProducer(new EventHubProducerOptions().partitionId(PARTITION_ID));
+        final List<EventHubAsyncConsumer> consumers = new ArrayList<>();
         final Disposable.Composite subscriptions = Disposables.composite();
 
         try {
             for (final EventHubAsyncClient hubClient : clients) {
-                final EventHubConsumer consumer = hubClient.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
+                final EventHubAsyncConsumer consumer = hubClient.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
                 consumers.add(consumer);
 
                 final Disposable subscription = consumer.receive().filter(event -> {
@@ -173,7 +173,7 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
             subscriptions.dispose();
 
             dispose(producer);
-            dispose(consumers.toArray(new EventHubConsumer[0]));
+            dispose(consumers.toArray(new EventHubAsyncConsumer[0]));
             dispose(clients);
         }
     }
@@ -191,7 +191,7 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
         logger.info("Pushing events to partition. Message tracking value: {}", MESSAGE_TRACKING_VALUE);
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
-        final EventHubProducer producer = client.createProducer(producerOptions);
+        final EventHubAsyncProducer producer = client.createProducer(producerOptions);
         final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, MESSAGE_TRACKING_VALUE);
 
         try {

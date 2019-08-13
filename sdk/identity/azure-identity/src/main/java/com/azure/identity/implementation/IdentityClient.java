@@ -58,7 +58,7 @@ import java.util.function.Consumer;
 public class IdentityClient {
     private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
     private static final Random RANDOM = new Random();
-    private static final ClientLogger LOGGER = new ClientLogger(IdentityClient.class);
+    private final ClientLogger logger = new ClientLogger(IdentityClient.class);
 
     private final IdentityClientOptions options;
     private final PublicClientApplication publicClientApplication;
@@ -90,7 +90,7 @@ public class IdentityClient {
             try {
                 publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
             } catch (MalformedURLException e) {
-                LOGGER.logAndThrow(new RuntimeException(e));
+                throw logger.logExceptionAsWarning(new IllegalStateException(e));
             }
             if (options.proxyOptions() != null) {
                 publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.proxyOptions()));
@@ -258,7 +258,7 @@ public class IdentityClient {
                         try {
                             Desktop.getDesktop().browse(browserUri);
                         } catch (IOException e) {
-                            LOGGER.logAndThrow(new RuntimeException(e));
+                            throw logger.logExceptionAsError(new IllegalStateException(e));
                         }
                     }).subscribeOn(Schedulers.newSingle("browser")))
                     .next()
@@ -395,7 +395,7 @@ public class IdentityClient {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException ex) {
-            LOGGER.logAndThrow(new RuntimeException(ex));
+            throw new IllegalStateException(ex);
         }
     }
 

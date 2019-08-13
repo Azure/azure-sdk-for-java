@@ -50,7 +50,7 @@ public class PublishEventsToSpecificPartition {
         EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(firstPartition);
 
         // Create a producer. Consequently, events sent from this producer will deliver to the specific partition ID Event Hub instance.
-        EventHubProducer producer = client.createProducer(producerOptions);
+        EventHubAsyncProducer producer = client.createProducer(producerOptions);
 
         // We will publish three events based on simple sentences.
         Flux<EventData> data = Flux.just(
