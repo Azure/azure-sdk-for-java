@@ -62,7 +62,7 @@ class FileTestHelpers {
 
         ShareClientBuilder shareClientBuilder;
         if (!interceptorManager.isPlaybackMode()) {
-            connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRINGQueueServiceClientBuilder");
+            connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING");
             endpoint = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
             shareClientBuilder = new ShareClientBuilder()
                 .endpoint(endpoint)
