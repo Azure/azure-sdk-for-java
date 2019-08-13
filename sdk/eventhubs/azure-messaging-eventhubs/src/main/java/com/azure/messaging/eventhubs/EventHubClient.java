@@ -14,6 +14,7 @@ import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 
 import java.io.Closeable;
+import java.util.Objects;
 
 /**
  * The main point of interaction with Azure Event Hubs, the client offers a connection to a specific Event Hub within
@@ -38,13 +39,15 @@ public class EventHubClient implements Closeable {
     private final EventHubConsumerOptions defaultConsumerOptions;
 
     EventHubClient(EventHubAsyncClient client, ConnectionOptions connectionOptions) {
+        Objects.requireNonNull(connectionOptions);
+
+        this.client = Objects.requireNonNull(client);
         this.retry = connectionOptions.retry();
         this.defaultProducerOptions = new EventHubProducerOptions()
             .retry(connectionOptions.retry());
         this.defaultConsumerOptions = new EventHubConsumerOptions()
             .retry(connectionOptions.retry())
             .scheduler(connectionOptions.scheduler());
-        this.client = client;
     }
 
     /**
@@ -97,9 +100,14 @@ public class EventHubClient implements Closeable {
      *
      * @param options The set of options to apply when creating the producer.
      * @return A new {@link EventHubProducer}.
-     * @throws NullPointerException if {@code options} is {@code null}.
+     * @throws NullPointerException if {@code options}, {@code options.retry()}, or {@code
+     *     options.retry().retryTimeout()} is {@code null}.
      */
     public EventHubProducer createProducer(EventHubProducerOptions options) {
+        Objects.requireNonNull(options);
+        Objects.requireNonNull(options.retry(), "'options.retry()' cannot be null.");
+        Objects.requireNonNull(options.retry().tryTimeout(), "'options.retry().tryTimeout()' cannot be null.");
+
         final EventHubAsyncProducer producer = client.createProducer();
 
         return new EventHubProducer(producer, options.retry().tryTimeout());
@@ -113,15 +121,15 @@ public class EventHubClient implements Closeable {
      * reading events from the partition. These non-exclusive consumers are sometimes referred to as "Non-epoch
      * Consumers".
      *
-     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in
-     *         the context of this group. The name of the consumer group that is created by default is {@link
-     *         EventHubAsyncClient#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
+     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
+     *     context of this group. The name of the consumer group that is created by default is {@link
+     *     EventHubAsyncClient#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param partitionId The identifier of the Event Hub partition.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @return A new {@link EventHubConsumer} that receives events from the partition at the given position.
      * @throws NullPointerException If {@code eventPosition}, or {@code options} is {@code null}.
-     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an
-     *         empty string.
+     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an empty
+     *     string.
      */
     public EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
         final EventHubAsyncConsumer consumer = client.createConsumer(consumerGroup, partitionId, eventPosition);
@@ -134,8 +142,8 @@ public class EventHubClient implements Closeable {
      *
      * <p>
      * A consumer may be exclusive, which asserts ownership over the partition for the consumer group to ensure that
-     * only one consumer from that group is reading from the partition. These exclusive consumers are sometimes
-     * referred to as "Epoch Consumers."
+     * only one consumer from that group is reading from the partition. These exclusive consumers are sometimes referred
+     * to as "Epoch Consumers."
      *
      * A consumer may also be non-exclusive, allowing multiple consumers from the same consumer group to be actively
      * reading events from the partition. These non-exclusive consumers are sometimes referred to as "Non-epoch
@@ -146,17 +154,17 @@ public class EventHubClient implements Closeable {
      * non-exclusive.
      * </p>
      *
-     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in
-     *         the context of this group. The name of the consumer group that is created by default is {@link
-     *         EventHubAsyncClient#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
+     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
+     *     context of this group. The name of the consumer group that is created by default is {@link
+     *     EventHubAsyncClient#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param partitionId The identifier of the Event Hub partition from which events will be received.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @param options The set of options to apply when creating the consumer.
      * @return An new {@link EventHubConsumer} that receives events from the partition with all configured {@link
-     *         EventHubConsumerOptions}.
+     *     EventHubConsumerOptions}.
      * @throws NullPointerException If {@code eventPosition}, or {@code options} is {@code null}.
-     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an
-     *         empty string.
+     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an empty
+     *     string.
      */
     public EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
                                            EventHubConsumerOptions options) {
