@@ -134,7 +134,7 @@ public class EventHubClient implements Closeable {
      *
      * <p>
      * A consumer may be exclusive, which asserts ownership over the partition for the consumer group to ensure that
-     * only one consumer from that group is reading the from the partition. These exclusive consumers are sometimes
+     * only one consumer from that group is reading from the partition. These exclusive consumers are sometimes
      * referred to as "Epoch Consumers."
      *
      * A consumer may also be non-exclusive, allowing multiple consumers from the same consumer group to be actively
