@@ -30,7 +30,7 @@ import java.util.Objects;
  *
  * @see EventHubAsyncProducer#createBatch()
  * @see EventHubAsyncProducer#createBatch(BatchOptions)
- * @see EventHubAsyncProducer See EventHubProducer for examples.
+ * @see EventHubAsyncProducer See EventHubAsyncProducer for examples.
  */
 public final class EventDataBatch {
     private final ClientLogger logger = new ClientLogger(EventDataBatch.class);
