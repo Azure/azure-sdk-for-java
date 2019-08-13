@@ -43,16 +43,16 @@ import java.util.Objects;
  *
  * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hubs namespace connection string</strong></p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.connectionString#string-string}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.connectionString#string-string}
  *
  * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hub instance connection string</strong></p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.connectionstring#string}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.connectionstring#string}
  *
  * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hub with no retry, different timeout and new
  * Scheduler</strong></p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.retry-timeout-scheduler}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.retry-timeout-scheduler}
  *
  * <p><strong>Creating an {@link EventProcessor} instance using Event Hub instance connection
  *  string</strong></p>

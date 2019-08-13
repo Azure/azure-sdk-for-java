@@ -17,6 +17,7 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -180,7 +182,7 @@ public final class QueueClientBuilder {
      * <p>The first path segment, if the endpoint contains path segments, will be assumed to be the name of the queue
      * that the client will interact with.</p>
      *
-     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQuery(String) fromQuery} in an
+     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQueryParameters(Map)} in an
      * attempt to generate a {@link SASTokenCredential} to authenticate requests sent to the service.</p>
      *
      * @param endpoint The URL of the Azure Storage Queue instance to send service requests to and receive responses from.
@@ -200,7 +202,7 @@ public final class QueueClientBuilder {
             }
 
             // Attempt to get the SAS token from the URL passed
-            SASTokenCredential credential = SASTokenCredential.fromQuery(fullURL.getQuery());
+            SASTokenCredential credential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
             if (credential != null) {
                 this.sasTokenCredential = credential;
             }

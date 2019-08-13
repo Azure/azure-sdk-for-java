@@ -48,15 +48,15 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit tests to verify functionality of {@link EventHubConsumer}.
+ * Unit tests to verify functionality of {@link EventHubAsyncConsumer}.
  */
-public class EventHubConsumerTest {
+public class EventHubAsyncConsumerTest {
     private static final Duration TIMEOUT = Duration.ofSeconds(30);
     private static final String PAYLOAD = "hello";
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
     private static final int PREFETCH = 5;
 
-    private final ClientLogger logger = new ClientLogger(EventHubConsumerTest.class);
+    private final ClientLogger logger = new ClientLogger(EventHubAsyncConsumerTest.class);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
     private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
     private final DirectProcessor<Throwable> errorProcessor = DirectProcessor.create();
@@ -72,7 +72,7 @@ public class EventHubConsumerTest {
     private Mono<AmqpReceiveLink> receiveLinkMono;
     private final List<Message> messages = new ArrayList<>();
     private EventHubConsumerOptions options;
-    private EventHubConsumer consumer;
+    private EventHubAsyncConsumer consumer;
 
     @Before
     public void setup() {
@@ -89,7 +89,7 @@ public class EventHubConsumerTest {
             .prefetchCount(PREFETCH)
             .retry(new RetryOptions())
             .scheduler(Schedulers.elastic());
-        consumer = new EventHubConsumer(receiveLinkMono, options);
+        consumer = new EventHubAsyncConsumer(receiveLinkMono, options);
     }
 
     @After

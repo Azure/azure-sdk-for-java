@@ -26,13 +26,13 @@ import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class EventHubProducerIntegrationTest extends ApiTestBase {
+public class EventHubAsyncProducerIntegrationTest extends ApiTestBase {
     private static final String PARTITION_ID = "1";
 
     private EventHubAsyncClient client;
 
-    public EventHubProducerIntegrationTest() {
-        super(new ClientLogger(EventHubProducerIntegrationTest.class));
+    public EventHubAsyncProducerIntegrationTest() {
+        super(new ClientLogger(EventHubAsyncProducerIntegrationTest.class));
     }
 
     @Rule
@@ -74,14 +74,14 @@ public class EventHubProducerIntegrationTest extends ApiTestBase {
             new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        try (EventHubProducer producer = client.createProducer(producerOptions)) {
+        try (EventHubAsyncProducer producer = client.createProducer(producerOptions)) {
             StepVerifier.create(producer.send(events))
                 .verifyComplete();
         }
     }
 
     /**
-     * Verifies that we can create an {@link EventHubProducer} that does not care about partitions and lets the service
+     * Verifies that we can create an {@link EventHubAsyncProducer} that does not care about partitions and lets the service
      * distribute the events.
      */
     @Test
@@ -95,7 +95,7 @@ public class EventHubProducerIntegrationTest extends ApiTestBase {
             new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        try (EventHubProducer producer = client.createProducer()) {
+        try (EventHubAsyncProducer producer = client.createProducer()) {
             StepVerifier.create(producer.send(events))
                 .verifyComplete();
         }
@@ -114,7 +114,7 @@ public class EventHubProducerIntegrationTest extends ApiTestBase {
             new EventData("Event 2".getBytes(UTF_8)),
             new EventData("Event 3".getBytes(UTF_8)));
 
-        try (EventHubProducer producer = client.createProducer()) {
+        try (EventHubAsyncProducer producer = client.createProducer()) {
             final Mono<EventDataBatch> createBatch = producer.createBatch().map(batch -> {
                 events.forEach(event -> {
                     Assert.assertTrue(batch.tryAdd(event));
@@ -142,7 +142,7 @@ public class EventHubProducerIntegrationTest extends ApiTestBase {
             new EventData("Event 2".getBytes(UTF_8)),
             new EventData("Event 3".getBytes(UTF_8)));
 
-        try (EventHubProducer producer = client.createProducer()) {
+        try (EventHubAsyncProducer producer = client.createProducer()) {
             final BatchOptions options = new BatchOptions().partitionKey("my-partition-key");
             final Mono<EventDataBatch> createBatch = producer.createBatch(options)
                 .map(batch -> {

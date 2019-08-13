@@ -34,7 +34,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
 
     private EventHubAsyncClient client;
-    private EventHubProducer producer;
+    private EventHubAsyncProducer producer;
 
     @Mock
     private ErrorContextProvider contextProvider;
@@ -74,7 +74,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        final EventDataBatch batch = new EventDataBatch(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, null, contextProvider);
+        final EventDataBatch batch = new EventDataBatch(EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES, null, contextProvider);
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -91,14 +91,14 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
     }
 
     /**
-     * Test for sending a message batch that is {@link EventHubProducer#MAX_MESSAGE_LENGTH_BYTES} with partition key.
+     * Test for sending a message batch that is {@link EventHubAsyncProducer#MAX_MESSAGE_LENGTH_BYTES} with partition key.
      */
     @Test
     public void sendSmallEventsFullBatchPartitionKey() {
         skipIfNotRecordMode();
 
         // Arrange
-        final EventDataBatch batch = new EventDataBatch(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
+        final EventDataBatch batch = new EventDataBatch(EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -125,7 +125,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
         final String messageValue = UUID.randomUUID().toString();
 
         final SendOptions sendOptions = new SendOptions().partitionKey(PARTITION_KEY);
-        final EventDataBatch batch = new EventDataBatch(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
+        final EventDataBatch batch = new EventDataBatch(EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
         int count = 0;
         while (count < 10) {
             final EventData data = createData();
@@ -139,7 +139,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
 
         final CountDownLatch countDownLatch = new CountDownLatch(batch.getSize());
 
-        Flux<EventHubConsumer> consumers;
+        Flux<EventHubAsyncConsumer> consumers;
         Disposable.Composite subscriptions = Disposables.composite();
         try {
 

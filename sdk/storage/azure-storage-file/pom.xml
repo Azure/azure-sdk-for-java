@@ -37,6 +37,11 @@
       <artifactId>azure-core</artifactId>
       <version>1.0.0-preview.4</version>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-common</artifactId>
+      <version>12.0.0-preview.3</version>
+    </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -55,11 +60,11 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-identity</artifactId>
-    <version>1.0.0-preview.3</version>
-    <scope>test</scope>
-  </dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.0.0-preview.3</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
