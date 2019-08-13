@@ -31,7 +31,7 @@ public class CheckpointManager {
      * is called from this CheckpointManager, this ETag will be used to provide <a href="https://en.wikipedia.org/wiki/Optimistic_concurrency_control">optimistic
      * concurrency</a>.
      */
-    CheckpointManager(String ownerId, PartitionContext partitionContext, PartitionManager partitionManager,
+    public CheckpointManager(String ownerId, PartitionContext partitionContext, PartitionManager partitionManager,
         String eTag) {
         this.ownerId = ownerId;
         this.partitionContext = partitionContext;
