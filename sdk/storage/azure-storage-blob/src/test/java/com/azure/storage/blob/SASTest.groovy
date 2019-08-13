@@ -216,6 +216,7 @@ class SASTest extends APISpec {
             .create(true)
             .delete(true)
             .add(true)
+            .list(true)
 
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1)
 
@@ -384,6 +385,7 @@ class SASTest extends APISpec {
             .create(true)
             .delete(true)
             .add(true)
+            .list(true)
 
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1)
 

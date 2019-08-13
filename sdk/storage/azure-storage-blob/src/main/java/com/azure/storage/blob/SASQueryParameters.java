@@ -29,10 +29,6 @@ public final class SASQueryParameters {
 
     private final String version;
 
-    private final String services;
-
-    private final String resourceTypes;
-
     private final SASProtocol protocol;
 
     private final OffsetDateTime startTime;
@@ -80,8 +76,6 @@ public final class SASQueryParameters {
      */
     public SASQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSASParametersFromMap) {
         this.version = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SERVICE_VERSION, removeSASParametersFromMap);
-        this.services = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SERVICES, removeSASParametersFromMap);
-        this.resourceTypes = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_RESOURCES_TYPES, removeSASParametersFromMap);
         this.protocol = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_PROTOCOL, removeSASParametersFromMap, SASProtocol::parse);
         this.startTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_START_TIME, removeSASParametersFromMap, Utility::parseDate);
         this.expiryTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_EXPIRY_TIME, removeSASParametersFromMap, Utility::parseDate);
@@ -126,9 +120,6 @@ public final class SASQueryParameters {
      * classes.
      *
      * @param version A {@code String} representing the storage version.
-     * @param services A {@code String} representing the storage services being accessed (only for Account SAS).
-     * @param resourceTypes A {@code String} representing the storage resource types being accessed (only for Account
-     * SAS).
      * @param protocol A {@code String} representing the allowed HTTP protocol(s) or {@code null}.
      * @param startTime A {@code java.util.Date} representing the start time for this SAS token or {@code null}.
      * @param expiryTime A {@code java.util.Date} representing the expiry time for this SAS token.
@@ -139,14 +130,11 @@ public final class SASQueryParameters {
      * @param permissions A {@code String} representing the storage permissions or {@code null}.
      * @param signature A {@code String} representing the signature for the SAS token.
      */
-    SASQueryParameters(String version, String services, String resourceTypes, SASProtocol protocol,
-                       OffsetDateTime startTime, OffsetDateTime expiryTime, IPRange ipRange, String identifier,
-                       String resource, String permissions, String signature, String cacheControl, String contentDisposition,
-                       String contentEncoding, String contentLanguage, String contentType, UserDelegationKey key) {
+    SASQueryParameters(String version, SASProtocol protocol, OffsetDateTime startTime, OffsetDateTime expiryTime,
+        IPRange ipRange, String identifier, String resource, String permissions, String signature, String cacheControl,
+        String contentDisposition, String contentEncoding, String contentLanguage, String contentType, UserDelegationKey key) {
 
         this.version = version;
-        this.services = services;
-        this.resourceTypes = resourceTypes;
         this.protocol = protocol;
         this.startTime = startTime;
         this.expiryTime = expiryTime;
@@ -183,22 +171,6 @@ public final class SASQueryParameters {
      */
     public String version() {
         return version;
-    }
-
-    /**
-     * @return The storage services being accessed (only for Account SAS). Please refer to {@link AccountSASService} for
-     * more details.
-     */
-    public String services() {
-        return services;
-    }
-
-    /**
-     * @return The storage resource types being accessed (only for Account SAS). Please refer to {@link
-     * AccountSASResourceType} for more details.
-     */
-    public String resourceTypes() {
-        return resourceTypes;
     }
 
     /**
@@ -377,8 +349,6 @@ public final class SASQueryParameters {
         StringBuilder sb = new StringBuilder();
 
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SERVICE_VERSION, this.version);
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SERVICES, this.services);
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_RESOURCES_TYPES, this.resourceTypes);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PROTOCOL, this.protocol);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_START_TIME, formatQueryParameterDate(this.startTime));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_EXPIRY_TIME, formatQueryParameterDate(this.expiryTime));

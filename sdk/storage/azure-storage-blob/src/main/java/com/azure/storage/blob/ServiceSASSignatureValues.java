@@ -423,10 +423,9 @@ final class ServiceSASSignatureValues {
         // Signature is generated on the un-url-encoded values.
         String signature = sharedKeyCredentials.computeHmac256(stringToSign());
 
-        return new SASQueryParameters(this.version, null, null,
-            this.protocol, this.startTime, this.expiryTime, this.ipRange, this.identifier, resource,
-            this.permissions, signature, this.cacheControl, this.contentDisposition, this.contentEncoding,
-            this.contentLanguage, this.contentType, null /* delegate */);
+        return new SASQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime, this.ipRange,
+            this.identifier, this.resource, this.permissions, signature, this.cacheControl, this.contentDisposition,
+            this.contentEncoding, this.contentLanguage, this.contentType, null /* delegate */);
     }
 
     /**
@@ -444,10 +443,9 @@ final class ServiceSASSignatureValues {
         // Signature is generated on the un-url-encoded values.
         String signature = Utility.computeHMac256(delegationKey.value(), stringToSign(delegationKey));
 
-        return new SASQueryParameters(this.version, null, null,
-            this.protocol, this.startTime, this.expiryTime, this.ipRange, null /* identifier */, resource,
-            this.permissions, signature, this.cacheControl, this.contentDisposition, this.contentEncoding,
-            this.contentLanguage, this.contentType, delegationKey);
+        return new SASQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime, this.ipRange,
+            null /* identifier */, this.resource, this.permissions, signature, this.cacheControl, this.contentDisposition,
+            this.contentEncoding, this.contentLanguage, this.contentType, delegationKey);
     }
 
     /**
