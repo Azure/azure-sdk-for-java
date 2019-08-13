@@ -313,7 +313,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     1) All fields must be final -->
     <module name="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClassCheck"/>
 
-    <!--CUSTOM CHECKS-->
+    <!-- CUSTOM CHECKS -->
     <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
 <!--    <module name="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck"/>-->
 
