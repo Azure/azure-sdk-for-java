@@ -143,7 +143,7 @@ public final class QueueClientBuilder {
         Objects.requireNonNull(queueName);
 
         if (sasTokenCredential == null && sharedKeyCredential == null && bearerTokenCredential == null) {
-            LOGGER.logAndThrow(new IllegalArgumentException("Credentials are required for authorization"));
+            LOGGER.logExceptionAsError(new IllegalArgumentException("Credentials are required for authorization"));
             return null;
         }
 
@@ -207,14 +207,13 @@ public final class QueueClientBuilder {
             }
 
             // Attempt to get the SAS token from the URL passed
-            SASTokenCredential credential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
-            if (credential != null) {
-                this.sasTokenCredential = credential;
+            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
+            if (this.sasTokenCredential != null) {
                 this.sharedKeyCredential = null;
                 this.bearerTokenCredential = null;
             }
         } catch (MalformedURLException ex) {
-            LOGGER.logAndThrow(new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed. Endpoint: " + endpoint));
+            LOGGER.logExceptionAsError(new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed. Endpoint: " + endpoint));
             return null;
         }
 
@@ -299,7 +298,7 @@ public final class QueueClientBuilder {
         try {
             this.endpoint = new URL(String.format("https://%s.queue.core.windows.net", accountName));
         } catch (MalformedURLException e) {
-            LOGGER.logAndThrow(new IllegalArgumentException(String.format("There is no valid account for the connection string. "
+            LOGGER.logExceptionAsError(new IllegalArgumentException(String.format("There is no valid account for the connection string. "
                 + "Connection String: %s", connectionString)));
         }
     }

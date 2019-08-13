@@ -117,7 +117,7 @@ public final class QueueServiceClientBuilder {
         Objects.requireNonNull(endpoint);
 
         if (sasTokenCredential == null && sharedKeyCredential == null && bearerTokenCredential == null) {
-            LOGGER.logAndThrow(new IllegalArgumentException("Credentials are required for authorization"));
+            LOGGER.logExceptionAsError(new IllegalArgumentException("Credentials are required for authorization"));
             return null;
         }
 
@@ -197,7 +197,7 @@ public final class QueueServiceClientBuilder {
                 this.bearerTokenCredential = null;
             }
         } catch (MalformedURLException ex) {
-            LOGGER.logAndThrow(new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed."));
+            LOGGER.logExceptionAsError(new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed."));
             return null;
         }
 
@@ -269,10 +269,8 @@ public final class QueueServiceClientBuilder {
         try {
             this.endpoint = new URL(String.format("https://%s.queue.core.windows.net", accountName));
         } catch (MalformedURLException e) {
-            LOGGER.error("There is no valid account for the connection string. "
-                + "Connection String: %s", connectionString);
-            throw new IllegalArgumentException(String.format("There is no valid account for the connection string. "
-                + "Connection String: %s", connectionString));
+            LOGGER.logExceptionAsError(new IllegalArgumentException(String.format("There is no valid account for the connection string. "
+                + "Connection String: %s", connectionString)));
         }
     }
 
