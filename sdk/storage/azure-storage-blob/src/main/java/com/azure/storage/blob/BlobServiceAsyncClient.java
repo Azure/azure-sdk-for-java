@@ -291,7 +291,7 @@ public final class BlobServiceAsyncClient {
      * @return A string that represents the SAS token
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
-                                     AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
         return this.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime,
             null /* startTime */, null /* version */, null /* ipRange */, null /* sasProtocol */);
     }
@@ -310,8 +310,8 @@ public final class BlobServiceAsyncClient {
      * @return A string that represents the SAS token
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
-                                     AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version, IPRange ipRange,
-                                     SASProtocol sasProtocol) {
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        IPRange ipRange, SASProtocol sasProtocol) {
 
         AccountSASSignatureValues accountSASSignatureValues = new AccountSASSignatureValues();
         accountSASSignatureValues.services(accountSASService == null ? null : accountSASService.toString());
