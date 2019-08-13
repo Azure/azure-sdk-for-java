@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * consumer group.
  *
  * <ul>
- * <li>If {@link EventHubConsumer} is created where {@link EventHubConsumerOptions#ownerLevel()} has a
+ * <li>If {@link EventHubAsyncConsumer} is created where {@link EventHubConsumerOptions#ownerLevel()} has a
  * value, then Event Hubs service will guarantee only one active consumer exists per partitionId and consumer group
  * combination. This consumer is sometimes referred to as an "Epoch Consumer."</li>
  * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
@@ -34,22 +34,22 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  *
  * <p><strong>Consuming events from Event Hub</strong></p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.receive}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncconsumer.receive}
  *
  * <p><strong>Rate limiting consumption of events from Event Hub</strong></p>
  *
  * For event consumers that need to limit the number of events they receive at a given time, they can use {@link
  * BaseSubscriber#request(long)}.
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.receiveBackpressure}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncconsumer.receive#basesubscriber}
  *
  * @see EventHubAsyncClient#createConsumer(String, String, EventPosition)
  * @see EventHubAsyncClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  */
 @Immutable
-public class EventHubConsumer implements Closeable {
-    private static final AtomicReferenceFieldUpdater<EventHubConsumer, AmqpReceiveLink> RECEIVE_LINK_FIELD_UPDATER =
-        AtomicReferenceFieldUpdater.newUpdater(EventHubConsumer.class, AmqpReceiveLink.class, "receiveLink");
+public class EventHubAsyncConsumer implements Closeable {
+    private static final AtomicReferenceFieldUpdater<EventHubAsyncConsumer, AmqpReceiveLink> RECEIVE_LINK_FIELD_UPDATER =
+        AtomicReferenceFieldUpdater.newUpdater(EventHubAsyncConsumer.class, AmqpReceiveLink.class, "receiveLink");
 
     // We don't want to dump too many credits on the link at once. It's easy enough to ask for more.
     private static final int MINIMUM_REQUEST = 1;
@@ -57,13 +57,13 @@ public class EventHubConsumer implements Closeable {
 
     private final AtomicInteger creditsToRequest = new AtomicInteger(1);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final ClientLogger logger = new ClientLogger(EventHubConsumer.class);
+    private final ClientLogger logger = new ClientLogger(EventHubAsyncConsumer.class);
     private final EmitterProcessor<EventData> emitterProcessor;
     private final Flux<EventData> messageFlux;
 
     private volatile AmqpReceiveLink receiveLink;
 
-    EventHubConsumer(Mono<AmqpReceiveLink> receiveLinkMono, EventHubConsumerOptions options) {
+    EventHubAsyncConsumer(Mono<AmqpReceiveLink> receiveLinkMono, EventHubConsumerOptions options) {
         this.emitterProcessor = EmitterProcessor.create(options.prefetchCount(), false);
 
         // Caching the created link so we don't invoke another link creation.
@@ -153,7 +153,7 @@ public class EventHubConsumer implements Closeable {
      *
      * <p><strong>Consuming events from Event Hub</strong></p>
      *
-     * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.receive}
+     * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncconsumer.receive}
      *
      * @return A stream of events for this consumer.
      */
