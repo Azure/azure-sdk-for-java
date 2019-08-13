@@ -1,0 +1,218 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.storage.file.spock
+
+import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.file.models.CorsRule
+import com.azure.storage.file.models.FileServiceProperties
+import com.azure.storage.file.models.ListSharesOptions
+import com.azure.storage.file.models.Metrics
+import com.azure.storage.file.models.RetentionPolicy
+import com.azure.storage.file.models.ShareItem
+import com.azure.storage.file.models.ShareProperties
+import com.azure.storage.file.models.StorageErrorException
+import spock.lang.Unroll
+
+import java.time.Duration
+
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertFalse
+import static org.junit.Assert.assertNotNull
+
+class FileServiceAPITests extends APISpec {
+    def shareName
+    
+    static def testMetadata = Collections.singletonMap("testmetadata", "value")
+    static def reallyLongString = "thisisareallylongstringthatexceedsthe64characterlimitallowedoncertainproperties"
+    static def TOO_MANY_RULES = new ArrayList<>()
+    static def INVALID_ALLOWED_HEADER = Collections.singletonList(new CorsRule().allowedHeaders(reallyLongString))
+    static def INVALID_EXPOSED_HEADER = Collections.singletonList(new CorsRule().exposedHeaders(reallyLongString))
+    static def INVALID_ALLOWED_ORIGIN = Collections.singletonList(new CorsRule().allowedOrigins(reallyLongString))
+    static def INVALID_ALLOWED_METHOD = Collections.singletonList(new CorsRule().allowedMethods("NOTAREALHTTPMETHOD"))
+    
+    def setup() {
+        shareName = testResourceName.randomName("share", 16)
+        for (int i = 0; i < 6; i++) {
+            TOO_MANY_RULES.add(new CorsRule())
+        }
+    }
+    
+    def "Get file service URL from file service client"() {
+        given:
+        def accoutName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
+        def expectURL = String.format("https://%s.file.core.windows.net", accoutName)
+        when:
+        def fileServiceURL = primaryFileServiceClient.getFileServiceUrl().toString()
+        then:
+        assertEquals(expectURL, fileServiceURL)
+    }
+    
+    def "Get share does not create a share from file service client"() {
+        when:
+        def shareClient = primaryFileServiceClient.getShareClient(shareName)
+        shareClient.getStatistics()
+        then:
+        assertNotNull(shareClient)
+        def e = thrown(StorageErrorException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, "ShareNotFound")
+    }
+    
+    def "Create share from file service client"() {
+        when:
+        def createShareResponse = primaryFileServiceClient.createShare(shareName)
+        then:
+        FileTestHelper.assertResponseStatusCode(createShareResponse, 201)
+    }
+    
+    @Unroll
+    def "Create share with metadata from file service client"() {
+        when:
+        def createShareResponse = primaryFileServiceClient.createShare(shareName, metadata, quota)
+        then:
+        FileTestHelper.assertResponseStatusCode(createShareResponse, 201)
+        where:
+        metadata     | quota
+        null         | null
+        testMetadata | null
+        null         | 1
+        testMetadata | 1
+    }
+    
+    @Unroll
+    def "Create share with invalid args from file service client"() {
+        when:
+        primaryFileServiceClient.createShare(shareName, metadata, quota)
+        then:
+        def e = thrown(StorageErrorException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
+        where:
+        metadata                                      | quota | statusCode | errMsg
+        Collections.singletonMap("invalid#", "value") | 1     | 400        | "InvalidMetadata"
+        testMetadata                                  | -1    | 400        | "InvalidHeaderValue"
+        testMetadata                                  | 0     | 400        | "InvalidHeaderValue"
+        testMetadata                                  | 5200  | 400        | "InvalidHeaderValue"
+    }
+    
+    def "Delete share from file service client"() {
+        given:
+        primaryFileServiceClient.createShare(shareName)
+        when:
+        def deleteShareResponse = primaryFileServiceClient.deleteShare(shareName)
+        then:
+        FileTestHelper.assertResponseStatusCode(deleteShareResponse, 202)
+    }
+    
+    def "Delete share does not exist"() {
+        when:
+        primaryFileServiceClient.deleteShare(testResourceName.randomName("share", 16))
+        then:
+        def e = thrown(StorageErrorException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, "ShareNotFound")
+    }
+    
+    @Unroll
+    def "List shares with filter from file service client"() {
+        given:
+        LinkedList<ShareItem> testShares = new LinkedList<>()
+        for (int i = 0; i < 3; i++) {
+            ShareItem share = new ShareItem().properties(new ShareProperties().quota(i + 1))
+            if (i == 2) {
+                share.name(shareName + i).metadata(testMetadata)
+            } else {
+                share.name("prefix" + shareName + i)
+            }
+            
+            testShares.add(share)
+            primaryFileServiceClient.createShare(share.name(), share.metadata(), share.properties().quota())
+        }
+        when:
+        def shares = primaryFileServiceClient.listShares(options).iterator()
+        then:
+        for (int i = 0; i < limits; i++) {
+            FileTestHelper.assertSharesAreEqual(testShares.pop(), shares.next(), includeMetadata, includeSnapshot)
+        }
+        assertFalse(shares.hasNext())
+        where:
+        options                                        | limits | includeMetadata | includeSnapshot
+        new ListSharesOptions()                        | 3      | false           | true
+        new ListSharesOptions().includeMetadata(true)  | 3      | true            | true
+        new ListSharesOptions().includeMetadata(false) | 3      | false           | true
+        new ListSharesOptions().prefix("prefix")       | 2      | true            | true
+        new ListSharesOptions().maxResults(2)          | 2      | true            | true
+    }
+    
+    @Unroll
+    def "List shares with snapshot and metadata from file service client"() {
+        given:
+        LinkedList<ShareItem> testShares = new LinkedList<>()
+        for (int i = 0; i < 3; i++) {
+            ShareItem share = new ShareItem().name(shareName + i).properties(new ShareProperties().quota(2))
+                .metadata(testMetadata)
+            def shareClient = primaryFileServiceClient.getShareClient(share.name())
+            shareClient.create(share.metadata(), share.properties().quota())
+            if (i == 2) {
+                def snapshot = shareClient.createSnapshot().value().snapshot()
+                testShares.add(new ShareItem().name(share.name()).metadata(share.metadata()).properties(share.properties()).snapshot(snapshot))
+            }
+            testShares.add(share)
+        }
+        when:
+        def shares = primaryFileServiceClient.listShares(options).iterator()
+        then:
+        for (int i = 0; i < limits; i++) {
+            FileTestHelper.assertSharesAreEqual(testShares.pop(), shares.next(), includeMetadata, includeSnapshot)
+        }
+        assertFalse(shares.hasNext())
+        
+        where:
+        options                                                              | limits | includeMetadata | includeSnapshot
+        new ListSharesOptions()                                              | 3      | false           | false
+        new ListSharesOptions().includeMetadata(true)                        | 3      | true            | false
+        new ListSharesOptions().includeMetadata(true).includeSnapshots(true) | 4      | true            | true
+    }
+    
+    def "Set and get properties from file service client"() {
+        given:
+        def originalProperties = primaryFileServiceClient.getProperties().value()
+        def retentionPolicy = new RetentionPolicy().enabled(true).days(3)
+        def metrics = new Metrics().enabled(true).includeAPIs(false)
+            .retentionPolicy(retentionPolicy).version("1.0")
+        def updatedProperties = new FileServiceProperties().hourMetrics(metrics)
+            .minuteMetrics(metrics).cors(new ArrayList<>())
+        when:
+        def getPropertiesBeforeResponse = primaryFileServiceClient.getProperties()
+        def setPropertiesResponse = primaryFileServiceClient.setProperties(updatedProperties)
+        def getPropertiesAfterResponse = primaryFileServiceClient.getProperties()
+        then:
+        FileTestHelper.assertResponseStatusCode(getPropertiesBeforeResponse, 200)
+        FileTestHelper.assertFileServicePropertiesAreEqual(originalProperties, getPropertiesBeforeResponse.value())
+        FileTestHelper.assertResponseStatusCode(setPropertiesResponse, 202)
+        FileTestHelper.assertResponseStatusCode(getPropertiesAfterResponse, 200)
+        FileTestHelper.assertFileServicePropertiesAreEqual(updatedProperties, getPropertiesAfterResponse.value())
+    }
+    
+    @Unroll
+    def "Set and get properties with invalid args from file service client" () {
+        given:
+        def retentionPolicy = new RetentionPolicy().enabled(true).days(3)
+        def metrics = new Metrics().enabled(true).includeAPIs(false)
+            .retentionPolicy(retentionPolicy).version("1.0")
+
+        when:
+        def updatedProperties = new FileServiceProperties().hourMetrics(metrics)
+            .minuteMetrics(metrics).cors(coreList)
+        primaryFileServiceClient.setProperties(updatedProperties)
+        then:
+        def e = thrown(StorageErrorException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
+        where:
+        coreList | statusCode | errMsg
+        TOO_MANY_RULES | 400 | "InvalidXmlDocument"
+        INVALID_ALLOWED_HEADER | 400 | "InvalidXmlDocument"
+        INVALID_EXPOSED_HEADER | 400 | "InvalidXmlDocument"
+        INVALID_ALLOWED_ORIGIN | 400 | "InvalidXmlDocument"
+        INVALID_ALLOWED_METHOD | 400 | "InvalidXmlNodeValue"
+        
+    }
+}

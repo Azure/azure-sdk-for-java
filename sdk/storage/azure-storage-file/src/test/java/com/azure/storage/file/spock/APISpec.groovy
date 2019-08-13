@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.queue.spock
+package com.azure.storage.file.spock
 
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
@@ -25,11 +25,15 @@ class APISpec extends Specification {
     def interceptorManager
     def testResourceName
 
-    // Clients for API tests
-    def primaryQueueServiceClient
-    def primaryQueueServiceAsyncClient
-    def primaryQueueClient
-    def primaryQueueAsyncClient
+    // Primary Clients used for API tests
+    def primaryFileServiceClient
+    def primaryFileServiceAsyncClient
+    def primaryShareClient
+    def primaryShareAsyncClient
+    def primaryDirectoryClient
+    def primaryDirectoryAsyncClient
+    def primaryFileClient
+    def primaryFileAsyncClient
 
 
     // Test name for test method name.
@@ -42,7 +46,7 @@ class APISpec extends Specification {
 
 
     /**
-     * Setup the QueueServiceClient and QueueClient common used for the API tests.
+     * Setup the File service clients commonly used for the API tests.
      */
     def setup() {
         def methodName = testName.getMethodName()
@@ -50,23 +54,27 @@ class APISpec extends Specification {
         interceptorManager = new InterceptorManager(methodName, testMode)
         testResourceName = new TestResourceNamer(methodName, testMode,
             interceptorManager.getRecordedData())
-        primaryQueueServiceClient = queueServiceBuilderHelper(interceptorManager).buildClient()
-        primaryQueueServiceAsyncClient = queueServiceBuilderHelper(interceptorManager).buildAsyncClient()
-        primaryQueueClient = queueBuilderHelper(interceptorManager).buildClient()
-        primaryQueueAsyncClient = queueBuilderHelper(interceptorManager).buildAsyncClient()
+        primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
+        primaryFileServiceAsyncClient = fileServiceBuilderHelper(interceptorManager).buildAsyncClient()
+        primaryShareClient = shareBuilderHelper(interceptorManager).buildClient()
+        primaryShareAsyncClient = shareBuilderHelper(interceptorManager).buildAsyncClient()
+        primaryDirectoryClient = directoryBuilderHelper(interceptorManager).buildClient()
+        primaryDirectoryAsyncClient = directoryBuilderHelper(interceptorManager).buildAsyncClient()
+        primaryFileClient = fileBuilderHelper(interceptorManager).buildClient()
+        primaryFileAsyncClient = fileBuilderHelper(interceptorManager).buildAsyncClient()
     }
 
     /**
-     * Clean up the test queues and messages for the account.
+     * Clean up the test shares, directories and files for the account.
      */
     def cleanup() {
         interceptorManager.close()
         if (getTestMode() == TestMode.RECORD) {
-            FileServiceClient cleanupQueueServiceClient = new FileServiceClientBuilder()
+            FileServiceClient cleanupFileServiceClient = new FileServiceClientBuilder()
                 .connectionString(connectionString)
                 .buildClient()
-            cleanupQueueServiceClient.listQueues().each {
-                queueItem -> primaryQueueServiceClient.deleteQueue(queueItem.name())
+            cleanupFileServiceClient.listShares().each {
+                primaryFileServiceClient.deleteShare(it.name())
             }
         }
     }
@@ -76,6 +84,7 @@ class APISpec extends Specification {
      * certain test mode.
      * @return The TestMode:
      * <ul>
+     *     <li>Record</li>
      *     <li>Playback: (default if no test mode setup)</li>
      * </ul>
      */
@@ -108,41 +117,52 @@ class APISpec extends Specification {
     }
 
     def shareBuilderHelper(final InterceptorManager interceptorManager) {
+        def shareName = testResourceName.randomName("share", 16)
         if (testMode == TestMode.RECORD) {
             return new ShareClientBuilder()
                 .connectionString(connectionString)
-            .shareName()
+                .shareName(shareName)
                 .addPolicy(interceptorManager.getRecordPolicy())
         } else {
             return new ShareClientBuilder()
                 .connectionString(connectionString)
+                .shareName(shareName)
                 .httpClient(interceptorManager.getPlaybackClient())
         }
     }
 
     def directoryBuilderHelper(final InterceptorManager interceptorManager) {
+        def shareName = testResourceName.randomName("share", 16)
+        def directoryPath = testResourceName.randomName("directory", 16)
         if (testMode == TestMode.RECORD) {
             return new DirectoryClientBuilder()
                 .connectionString(connectionString)
+                .shareName(shareName)
+                .directoryPath(directoryPath)
                 .addPolicy(interceptorManager.getRecordPolicy())
         } else {
             return new DirectoryClientBuilder()
                 .connectionString(connectionString)
+                .shareName(shareName)
+                .directoryPath(directoryPath)
                 .httpClient(interceptorManager.getPlaybackClient())
         }
     }
 
     def fileBuilderHelper(final InterceptorManager interceptorManager) {
-        def queueName = testResourceName.randomName("queue", 16)
+        def shareName = testResourceName.randomName("share", 16)
+        def filePath = testResourceName.randomName("file", 16)
         if (testMode == TestMode.RECORD) {
             return new FileClientBuilder()
                 .connectionString(connectionString)
-                .queueName(queueName)
+                .shareName(shareName)
+                .filePath(filePath)
                 .addPolicy(interceptorManager.getRecordPolicy())
         } else {
             return new FileClientBuilder()
                 .connectionString(connectionString)
-                .queueName(queueName)
+                .shareName(shareName)
+                .filePath(filePath)
                 .httpClient(interceptorManager.getPlaybackClient())
         }
     }
