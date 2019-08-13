@@ -1097,15 +1097,15 @@ public class BlobAsyncClient {
                                             SASProtocol sasProtocol, IPRange ipRange, String cacheControl, String contentDisposition,
                                             String contentEncoding, String contentLanguage, String contentType) {
 
-        ServiceSASSignatureValues serviceSASSignatureValues = new ServiceSASSignatureValues(version, sasProtocol,
+        BlobServiceSASSignatureValues blobServiceSASSignatureValues = new BlobServiceSASSignatureValues(version, sasProtocol,
             startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange, null /* identifier*/,
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
 
-        ServiceSASSignatureValues values = configureServiceSASSignatureValues(serviceSASSignatureValues, accountName);
+        BlobServiceSASSignatureValues values = configureServiceSASSignatureValues(blobServiceSASSignatureValues, accountName);
 
-        SASQueryParameters sasQueryParameters = values.generateSASQueryParameters(userDelegationKey);
+        BlobServiceSASQueryParameters blobServiceSasQueryParameters = values.generateSASQueryParameters(userDelegationKey);
 
-        return sasQueryParameters.encode();
+        return blobServiceSasQueryParameters.encode();
     }
 
     /**
@@ -1173,7 +1173,7 @@ public class BlobAsyncClient {
                               OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
                               String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
 
-        ServiceSASSignatureValues serviceSASSignatureValues = new ServiceSASSignatureValues(version, sasProtocol,
+        BlobServiceSASSignatureValues blobServiceSASSignatureValues = new BlobServiceSASSignatureValues(version, sasProtocol,
             startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange, identifier,
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
 
@@ -1182,34 +1182,34 @@ public class BlobAsyncClient {
 
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
-        ServiceSASSignatureValues values = configureServiceSASSignatureValues(serviceSASSignatureValues,
+        BlobServiceSASSignatureValues values = configureServiceSASSignatureValues(blobServiceSASSignatureValues,
             sharedKeyCredential.accountName());
 
-        SASQueryParameters sasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
+        BlobServiceSASQueryParameters blobServiceSasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
 
-        return sasQueryParameters.encode();
+        return blobServiceSasQueryParameters.encode();
     }
 
     /**
-     * Sets serviceSASSignatureValues parameters dependent on the current blob type
+     * Sets blobServiceSASSignatureValues parameters dependent on the current blob type
      */
-    ServiceSASSignatureValues configureServiceSASSignatureValues(ServiceSASSignatureValues serviceSASSignatureValues,
+    BlobServiceSASSignatureValues configureServiceSASSignatureValues(BlobServiceSASSignatureValues blobServiceSASSignatureValues,
                                                                  String accountName) {
 
         // Set canonical name
-        serviceSASSignatureValues.canonicalName(this.azureBlobStorage.getUrl(), accountName);
+        blobServiceSASSignatureValues.canonicalName(this.azureBlobStorage.getUrl(), accountName);
 
         // Set snapshotId
-        serviceSASSignatureValues.snapshotId(getSnapshotId());
+        blobServiceSASSignatureValues.snapshotId(getSnapshotId());
 
         // Set resource
         if (isSnapshot()) {
-            serviceSASSignatureValues.resource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT);
+            blobServiceSASSignatureValues.resource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT);
         } else {
-            serviceSASSignatureValues.resource(Constants.UrlConstants.SAS_BLOB_CONSTANT);
+            blobServiceSASSignatureValues.resource(Constants.UrlConstants.SAS_BLOB_CONSTANT);
         }
 
-        return serviceSASSignatureValues;
+        return blobServiceSASSignatureValues;
     }
 
     /**

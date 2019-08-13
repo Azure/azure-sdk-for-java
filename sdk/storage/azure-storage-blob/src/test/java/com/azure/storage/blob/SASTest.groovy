@@ -536,7 +536,7 @@ class SASTest extends APISpec {
     @Unroll
     def "serviceSasSignatures string to sign"() {
         when:
-        def v = new ServiceSASSignatureValues()
+        def v = new BlobServiceSASSignatureValues()
         def p = new BlobSASPermission()
         p.read(true)
         v.permissions(p.toString())
@@ -587,7 +587,7 @@ class SASTest extends APISpec {
     @Unroll
     def "serviceSasSignatures string to sign user delegation key"() {
         when:
-        def v = new ServiceSASSignatureValues()
+        def v = new BlobServiceSASSignatureValues()
 
         def p = new BlobSASPermission()
         p.read(true)
@@ -653,7 +653,7 @@ class SASTest extends APISpec {
         def bu = cu.getBlockBlobClient(blobName)
 
         when:
-        def serviceSASSignatureValues = bu.blockBlobAsyncClient.configureServiceSASSignatureValues(new ServiceSASSignatureValues(), accountName)
+        def serviceSASSignatureValues = bu.blockBlobAsyncClient.configureServiceSASSignatureValues(new BlobServiceSASSignatureValues(), accountName)
 
         then:
         serviceSASSignatureValues.canonicalName() == "/blob/" + accountName + cu.containerUrl.path + "/" + blobName
@@ -662,7 +662,7 @@ class SASTest extends APISpec {
     @Unroll
     def "serviceSasSignatureValues IA"() {
         setup:
-        def v = new ServiceSASSignatureValues()
+        def v = new BlobServiceSASSignatureValues()
             .snapshotId("2018-01-01T00:00:00.0000000Z")
             .version(version)
 
@@ -838,7 +838,7 @@ class SASTest extends APISpec {
     @Unroll
     def "ServiceSASSignatureValues assertGenerateOk"() {
         when:
-        def serviceSASSignatureValues = new ServiceSASSignatureValues()
+        def serviceSASSignatureValues = new BlobServiceSASSignatureValues()
         serviceSASSignatureValues.version(version)
         serviceSASSignatureValues.canonicalName(canonicalName)
         serviceSASSignatureValues.expiryTime(expiryTime)
@@ -1050,7 +1050,7 @@ class SASTest extends APISpec {
             .containerName("container")
             .blobName("blob")
             .snapshot("snapshot")
-        def sasValues = new ServiceSASSignatureValues()
+        def sasValues = new BlobServiceSASSignatureValues()
             .permissions("r")
             .canonicalName("/containerName/blobName")
             .expiryTime(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))

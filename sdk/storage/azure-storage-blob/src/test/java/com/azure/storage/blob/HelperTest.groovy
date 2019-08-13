@@ -95,7 +95,7 @@ class HelperTest extends APISpec {
             .ipMin("0.0.0.0")
             .ipMax("255.255.255.255")
 
-        ServiceSASSignatureValues v = new ServiceSASSignatureValues()
+        BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
             .permissions(p.toString())
             .startTime(OffsetDateTime.now().minusDays(1))
             .expiryTime(OffsetDateTime.now().plusDays(1))
@@ -159,7 +159,7 @@ class HelperTest extends APISpec {
     @Unroll
     def "serviceSasSignatures string to sign"() {
         when:
-        ServiceSASSignatureValues v = new ServiceSASSignatureValues()
+        BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
         if (permissions != null) {
             v.permissions(new BlobSASPermission().read(true).toString())
         } else {
@@ -194,7 +194,7 @@ class HelperTest extends APISpec {
             .contentLanguage(language)
             .contentType(type)
 
-        SASQueryParameters token = v.generateSASQueryParameters(primaryCreds)
+        BlobServiceSASQueryParameters token = v.generateSASQueryParameters(primaryCreds)
 
         if (startTime != null) {
             expectedStringToSign = String.format(expectedStringToSign,
@@ -235,7 +235,7 @@ class HelperTest extends APISpec {
     @Unroll
     def "serviceSasSignatures string to sign user delegation key"() {
         when:
-        ServiceSASSignatureValues v = new ServiceSASSignatureValues()
+        BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
         if (permissions != null) {
             v.permissions(new BlobSASPermission().read(true).toString())
         } else {
@@ -278,7 +278,7 @@ class HelperTest extends APISpec {
             .signedVersion(keyVersion)
             .value(keyValue)
 
-        SASQueryParameters token = v.generateSASQueryParameters(key)
+        BlobServiceSASQueryParameters token = v.generateSASQueryParameters(key)
 
         expectedStringToSign = String.format(expectedStringToSign, Utility.ISO_8601_UTC_DATE_FORMATTER.format(v.expiryTime()), primaryCreds.accountName())
 
@@ -312,7 +312,7 @@ class HelperTest extends APISpec {
     @Unroll
     def "serviceSASSignatureValues canonicalizedResource"() {
         setup:
-        ServiceSASSignatureValues v = new ServiceSASSignatureValues()
+        BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
             .expiryTime(expiryTime)
             .permissions(new BlobSASPermission().toString())
             .resource(expectedResource)
@@ -328,7 +328,7 @@ class HelperTest extends APISpec {
             primaryCreds.accountName())
 
         when:
-        SASQueryParameters token = v.generateSASQueryParameters(primaryCreds)
+        BlobServiceSASQueryParameters token = v.generateSASQueryParameters(primaryCreds)
 
         then:
         token.signature() == primaryCreds.computeHmac256(expectedStringToSign)
@@ -345,7 +345,7 @@ class HelperTest extends APISpec {
     @Unroll
     def "serviceSasSignatureValues IA"() {
         setup:
-        ServiceSASSignatureValues v = new ServiceSASSignatureValues()
+        BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
             .permissions(new AccountSASPermission().toString())
             .expiryTime(OffsetDateTime.now())
             .resource(containerName)
@@ -706,7 +706,7 @@ class HelperTest extends APISpec {
             .blobName("blob")
             .snapshot("snapshot")
 
-        ServiceSASSignatureValues sasValues = new ServiceSASSignatureValues()
+        BlobServiceSASSignatureValues sasValues = new BlobServiceSASSignatureValues()
             .expiryTime(OffsetDateTime.now(ZoneOffset.UTC).plusDays(1))
             .permissions("r")
             .canonicalName(String.format("/blob/%s/container/blob", primaryCreds.accountName()))
