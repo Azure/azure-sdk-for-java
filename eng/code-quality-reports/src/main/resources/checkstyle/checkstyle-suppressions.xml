@@ -93,10 +93,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" files="(.*[/\\]src[/\\]test[/\\]java[/\\].*)|(.*[/\\]implementation[/\\].*)\.java"/>
 
   <!-- Custom checkstyle rules only check track 2 libraries -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientInstantiationCheck" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
 
   <!-- Custom checkstyle rules that don't apply to files under test package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
