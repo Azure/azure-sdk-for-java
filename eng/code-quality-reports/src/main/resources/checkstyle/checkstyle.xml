@@ -277,33 +277,33 @@ page at http://checkstyle.sourceforge.net/config.html -->
     -->
     <module name="com.azure.tools.checkstyle.checks.ServiceClientChecks"/>
 
-    <!--CUSTOM CHECKS-->
+    <!-- CUSTOM CHECKS -->
     <!--Checks for the public API that should
     1) not return classes in the implementation package
     2) no class of implementation package as method's parameters -->
     <module name="com.azure.tools.checkstyle.checks.NoImplInPublicAPI"/>
 
-    <!--CUSTOM CHECKS-->
+    <!-- CUSTOM CHECKS -->
     <!-- Verify the classes with annotation @ServiceClient should have following rules:
     1) No public or protected constructors
     2) No public static method named 'builder'
     3) Since these classes are supposed to be immutable, all fields in the service client classes should be final -->
     <module name="com.azure.tools.checkstyle.checks.ServiceClientInstantiationCheck"/>
 
-    <!--CUSTOM CHECKS-->
+    <!-- CUSTOM CHECKS -->
     <!-- Checks for no external dependency exposed in the public API.
     We should only return types, and accept argument types, that are from the com.azure namespace.
     All other types should have suppression added if required. -->
     <module name="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"/>
 
-    <!--CUSTOM CHECKS-->
+    <!-- CUSTOM CHECKS -->
     <!-- The @ServiceClientBuilder class should have the following rules:
     1) All service client builder should be named <ServiceName>ClientBuilder and annotated with @ServiceClientBuilder.
     2) Has a method 'buildClient()' to build a synchronous client,
     3) Has a method 'buildAsyncClient()' to build an asynchronous client -->
     <module name="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck"/>
 
-    <!--CUSTOM CHECKS-->
+    <!-- CUSTOM CHECKS -->
     <!-- The @ServiceInterface class should have the following rules:
     1) The annotation property 'name' should be non-empty
     2) The length of value of property 'name' should be less than 20 characters and without space -->
@@ -318,11 +318,11 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
 <!--    <module name="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck"/>-->
 
-    <!--CUSTOM CHECKS-->
+    <!-- CUSTOM CHECKS -->
     <!-- Requirement of Javadoc annotation @codesnippet check:
-      1) Use '{@codesnippet ...}' instead of '<code>', '<pre>'.
-      2) No multiple lines span at the '{@code ...}'.
-      3) naming pattern of @codesnippet:
+      1) Use {@codesnippet ...} instead of '<code>', '<pre>', or '{@code ...}' if these tags span multiple lines.
+         Inline code sample are fine as-is.
+      2) naming pattern of @codesnippet:
           a) For package name, class name, they should all be lower case.
              For method name,  the first letter of method name should be lower case.
              For parameters, they should only be letters. Concatenate all parameters with dash character.
