@@ -11,6 +11,7 @@ import reactor.core.publisher.Flux;
 import java.io.Closeable;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Objects;
 
 /**
  * A consumer responsible for reading {@link EventData} from a specific Event Hub partition in the context of a specific
@@ -29,6 +30,17 @@ import java.time.Duration;
  * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  */
 public class EventHubConsumer implements Closeable {
+    private final EventHubAsyncConsumer consumer;
+    private final EventHubConsumerOptions options;
+
+    EventHubConsumer(EventHubAsyncConsumer consumer, EventHubConsumerOptions options) {
+        this.consumer = Objects.requireNonNull(consumer);
+        this.options = Objects.requireNonNull(options);
+
+        //TODO (conniey): Keep track of the last sequence number as each method invoked.
+        this.consumer.receive().windowTimeout(options.prefetchCount(), this.options.retry().tryTimeout());
+    }
+
     /**
      * Receives a batch of EventData from the Event Hub partition.
      *
@@ -54,5 +66,6 @@ public class EventHubConsumer implements Closeable {
      */
     @Override
     public void close() throws IOException {
+        consumer.close();
     }
 }
