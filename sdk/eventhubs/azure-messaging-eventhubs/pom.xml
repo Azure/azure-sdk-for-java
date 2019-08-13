@@ -37,12 +37,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.4</version>
+      <version>1.0.0-preview.3</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>1.0.0-preview.4</version>
+      <version>1.0.0-preview.3</version>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -52,12 +52,29 @@
       <groupId>org.apache.qpid</groupId>
       <artifactId>proton-j</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.opencensus</groupId>
+      <artifactId>opencensus-api</artifactId>
+      <version>${opencensus.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.opencensus</groupId>
+      <artifactId>opencensus-impl</artifactId>
+      <version>${opencensus.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.opencensus</groupId>
+      <artifactId>opencensus-exporter-trace-zipkin</artifactId>
+      <version>${opencensus.version}</version>
+    </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.0.0-preview.4</version>
+      <version>1.0.0-preview.3</version>
       <scope>test</scope>
     </dependency>
     <dependency>

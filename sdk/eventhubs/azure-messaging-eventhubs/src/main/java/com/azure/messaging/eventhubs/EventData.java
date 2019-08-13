@@ -57,6 +57,7 @@ public class EventData implements Comparable<EventData> {
     private final Map<String, Object> properties;
     private final ByteBuffer body;
     private final SystemProperties systemProperties;
+    private final Map<String, Object> attributes = new HashMap<>();
 
     static {
         final Set<String> properties = new HashSet<>();
@@ -68,6 +69,8 @@ public class EventData implements Comparable<EventData> {
 
         RESERVED_SYSTEM_PROPERTIES = Collections.unmodifiableSet(properties);
     }
+
+    public io.opencensus.trace.SpanContext spanContext;
 
     /**
      * Creates an event containing the {@code data}.
@@ -171,6 +174,13 @@ public class EventData implements Comparable<EventData> {
         return this;
     }
 
+    public EventData addAttributes(String key, Object value) {
+        Objects.requireNonNull(key);
+        Objects.requireNonNull(value);
+
+        attributes.put(key, value);
+        return this;
+    }
     /**
      * The set of free-form event properties which may be used for passing metadata associated with the event with the
      * event body during Event Hubs operations.
@@ -190,6 +200,10 @@ public class EventData implements Comparable<EventData> {
      */
     public Map<String, Object> properties() {
         return properties;
+    }
+
+    public Map<String, Object> attributes() {
+        return attributes;
     }
 
     /**
