@@ -86,14 +86,9 @@ public class JavadocCodeSnippetCheck extends AbstractJavadocCheck {
 
         final String tagNameBracket = "<" + tagName + ">";
         final DetailNode htmlTagNode = htmlElementStartNode.getParent();
-
-        for (final DetailNode child : htmlTagNode.getChildren()) {
-            final int childType = child.getType();
-            if (childType == JavadocTokenTypes.NEWLINE || childType == JavadocTokenTypes.LEADING_ASTERISK) {
-                log(child.getLineNumber(), child.getColumnNumber(),
-                    String.format(MULTIPLE_LINE_SPAN_ERROR, tagNameBracket, tagNameBracket));
-                return;
-            }
+        if (!isInlineCode(htmlTagNode)) {
+            log(htmlTagNode.getLineNumber(), htmlTagNode.getColumnNumber(),
+                String.format(MULTIPLE_LINE_SPAN_ERROR, tagNameBracket, tagNameBracket));
         }
     }
 
@@ -110,14 +105,9 @@ public class JavadocCodeSnippetCheck extends AbstractJavadocCheck {
         }
 
         final String codeLiteral = codeLiteralNode.getText();
-
-        for (final DetailNode child : inlineTagNode.getChildren()) {
-            final int childType = child.getType();
-            if (childType == JavadocTokenTypes.NEWLINE || childType == JavadocTokenTypes.LEADING_ASTERISK) {
-                log(child.getLineNumber(), child.getColumnNumber(),
-                    String.format(MULTIPLE_LINE_SPAN_ERROR, codeLiteral, codeLiteral));
-                return;
-            }
+        if (!isInlineCode(inlineTagNode)) {
+            log(codeLiteralNode.getLineNumber(), codeLiteralNode.getColumnNumber(),
+                String.format(MULTIPLE_LINE_SPAN_ERROR, codeLiteral, codeLiteral));
         }
     }
 
@@ -201,6 +191,21 @@ public class JavadocCodeSnippetCheck extends AbstractJavadocCheck {
             return false;
         }
 
+        return true;
+    }
+
+    /**
+     *  Find if the given tag node is in-line code sample.
+     * @param node A given node that could be HTML_TAG or JAVADOC_INLINE_TAG
+     * @return false if it is a code block, otherwise, return true if it is a in-line code.
+     */
+    private boolean isInlineCode(DetailNode node) {
+        for (final DetailNode child : node.getChildren()) {
+            final int childType = child.getType();
+            if (childType == JavadocTokenTypes.NEWLINE || childType == JavadocTokenTypes.LEADING_ASTERISK) {
+                return false;
+            }
+        }
         return true;
     }
 }
