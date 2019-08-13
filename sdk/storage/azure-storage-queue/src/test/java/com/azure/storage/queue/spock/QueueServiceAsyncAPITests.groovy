@@ -3,7 +3,13 @@
 
 package com.azure.storage.queue.spock
 
-import com.azure.storage.queue.models.*
+
+import com.azure.storage.queue.models.Logging
+import com.azure.storage.queue.models.Metrics
+import com.azure.storage.queue.models.QueueItem
+import com.azure.storage.queue.models.QueuesSegmentOptions
+import com.azure.storage.queue.models.RetentionPolicy
+import com.azure.storage.queue.models.StorageServiceProperties
 import reactor.test.StepVerifier
 import spock.lang.Unroll
 
@@ -12,6 +18,10 @@ import static org.junit.Assert.assertNotNull
 
 class QueueServiceAsyncAPITests extends APISpec {
 
+    def setup() {
+        primaryQueueServiceAsyncClient = queueServiceBuilderHelper(interceptorManager).buildAsyncClient()
+    }
+    
     def "Get queue client from queue service async client"() {
         given:
         def queueName = testResourceName.randomName("queue", 16)
@@ -28,14 +38,12 @@ class QueueServiceAsyncAPITests extends APISpec {
     def "Create queue from queue service async client"() {
         given:
         def queueName = testResourceName.randomName("queue", 16)
-        when:
-        def createQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueue(queueName))
-        def enqueueMessageVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName).enqueueMessage("Testing service client creating a queue"))
-        then:
-        createQueueVerifier.assertNext {
+        expect:
+        StepVerifier.create(primaryQueueServiceAsyncClient.createQueue(queueName)).assertNext {
             QueueTestHelper.assertResponseStatusCode(it, 201)
         }.verifyComplete()
-        enqueueMessageVerifier.assertNext {
+        StepVerifier.create(primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName).enqueueMessage("Testing service client creating a queue"))
+            .assertNext {
             QueueTestHelper.assertResponseStatusCode(it, 201)
         }.verifyComplete()
     }
@@ -44,10 +52,8 @@ class QueueServiceAsyncAPITests extends APISpec {
         given:
         def queueName = testResourceName.randomName("queue", 16)
         primaryQueueServiceAsyncClient.createQueue(queueName).block()
-        when:
-        def createQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueue(queueName))
-        then:
-        createQueueVerifier.assertNext {
+        expect:
+        StepVerifier.create(primaryQueueServiceAsyncClient.createQueue(queueName)).assertNext {
             QueueTestHelper.assertResponseStatusCode(it, 204)
         }.verifyComplete()
     }

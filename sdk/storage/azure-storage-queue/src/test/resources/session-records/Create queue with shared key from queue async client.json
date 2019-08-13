@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue88813938",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue5399496d",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
@@ -12,9 +12,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "bde0dfe9-1003-0066-32fe-4e822c000000",
-      "Date" : "Fri, 09 Aug 2019 22:06:19 GMT"
+      "x-ms-request-id" : "abcae580-9003-00f4-1401-52159a000000",
+      "Date" : "Tue, 13 Aug 2019 18:01:06 GMT"
     }
   } ],
-  "variables" : [ "queue39942551", "queue880184e3", "queue88813938" ]
+  "variables" : [ "queue5399496d" ]
 }

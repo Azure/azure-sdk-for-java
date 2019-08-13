@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue6775382c",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue86987cbc",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
@@ -12,12 +12,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "bde078c7-1003-0066-46fe-4e822c000000",
-      "Date" : "Fri, 09 Aug 2019 22:05:05 GMT"
+      "x-ms-request-id" : "abca90a3-9003-00f4-0a00-52159a000000",
+      "Date" : "Tue, 13 Aug 2019 17:59:50 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue6775382c?comp=acl",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue86987cbc?comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0",
@@ -30,11 +30,11 @@
       "retry-after" : "0",
       "Content-Length" : "294",
       "StatusCode" : "400",
-      "x-ms-request-id" : "bde078dc-1003-0066-5afe-4e822c000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:bde078dc-1003-0066-5afe-4e822c000000\nTime:2019-08-09T22:05:06.2591577Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
-      "Date" : "Fri, 09 Aug 2019 22:05:06 GMT",
+      "x-ms-request-id" : "abca90be-9003-00f4-2100-52159a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:abca90be-9003-00f4-2100-52159a000000\nTime:2019-08-13T17:59:50.7034442Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
+      "Date" : "Tue, 13 Aug 2019 17:59:50 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queue7340554b", "queue665067a0", "queue6775382c" ]
+  "variables" : [ "queue86987cbc" ]
 }

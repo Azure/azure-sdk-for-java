@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue5480705d",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue66211c31",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
@@ -13,9 +13,9 @@
       "Content-Length" : "339",
       "StatusCode" : "400",
       "Body" : "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"\"http://www.w3.org/TR/html4/strict.dtd\">\r\n<HTML><HEAD><TITLE>Bad Request</TITLE>\r\n<META HTTP-EQUIV=\"Content-Type\" Content=\"text/html; charset=us-ascii\"></HEAD>\r\n<BODY><h2>Bad Request - Invalid Header</h2>\r\n<hr><p>HTTP Error 400. The request has an invalid header name.</p>\r\n</BODY></HTML>\r\n",
-      "Date" : "Fri, 09 Aug 2019 22:08:07 GMT",
+      "Date" : "Tue, 13 Aug 2019 18:02:59 GMT",
       "Content-Type" : "text/html; charset=us-ascii"
     }
   } ],
-  "variables" : [ "queue15371c1d", "queue56570f2f", "queue5480705d" ]
+  "variables" : [ "queue66211c31" ]
 }

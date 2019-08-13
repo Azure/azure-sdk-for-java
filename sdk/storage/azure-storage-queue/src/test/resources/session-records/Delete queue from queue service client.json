@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue24531db9",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue64386282",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
@@ -12,12 +12,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "cf52d159-4003-00d4-7cfe-4e7956000000",
-      "Date" : "Fri, 09 Aug 2019 22:08:10 GMT"
+      "x-ms-request-id" : "3f5969f7-f003-0067-6601-5283d1000000",
+      "Date" : "Tue, 13 Aug 2019 18:03:00 GMT"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue24531db9",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue64386282",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
@@ -28,12 +28,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "cf52d15d-4003-00d4-7ffe-4e7956000000",
-      "Date" : "Fri, 09 Aug 2019 22:08:10 GMT"
+      "x-ms-request-id" : "3f596a06-f003-0067-7001-5283d1000000",
+      "Date" : "Tue, 13 Aug 2019 18:03:01 GMT"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue24531db9/messages?visibilitytimeout=0&messagettl=604800",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue64386282/messages?visibilitytimeout=0&messagettl=604800",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0",
@@ -46,11 +46,11 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "cf52d164-4003-00d4-04fe-4e7956000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:cf52d164-4003-00d4-04fe-4e7956000000\nTime:2019-08-09T22:08:11.0429191Z</Message></Error>",
-      "Date" : "Fri, 09 Aug 2019 22:08:10 GMT",
+      "x-ms-request-id" : "3f596a13-f003-0067-7c01-5283d1000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:3f596a13-f003-0067-7c01-5283d1000000\nTime:2019-08-13T18:03:01.1274525Z</Message></Error>",
+      "Date" : "Tue, 13 Aug 2019 18:03:01 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queue04032015", "queue82056fd5", "queue24531db9" ]
+  "variables" : [ "queue64386282" ]
 }

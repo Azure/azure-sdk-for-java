@@ -26,8 +26,6 @@ class APISpec extends Specification {
     // Clients for API tests
     def primaryQueueServiceClient
     def primaryQueueServiceAsyncClient
-    def primaryQueueClient
-    def primaryQueueAsyncClient
 
 
     // Test name for test method name.
@@ -36,7 +34,7 @@ class APISpec extends Specification {
     @Rule
     ExpectedException thrown = ExpectedException.none()
     def testMode = getTestMode()
-    def connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING")
+    def connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
 
 
     /**
@@ -48,10 +46,6 @@ class APISpec extends Specification {
         interceptorManager = new InterceptorManager(methodName, testMode)
         testResourceName = new TestResourceNamer(methodName, testMode,
             interceptorManager.getRecordedData())
-        primaryQueueServiceClient = queueServiceBuilderHelper(interceptorManager).buildClient()
-        primaryQueueServiceAsyncClient = queueServiceBuilderHelper(interceptorManager).buildAsyncClient()
-        primaryQueueClient = queueBuilderHelper(interceptorManager).buildClient()
-        primaryQueueAsyncClient = queueBuilderHelper(interceptorManager).buildAsyncClient()
     }
 
     /**
@@ -64,11 +58,11 @@ class APISpec extends Specification {
                 .connectionString(connectionString)
                 .buildClient()
             cleanupQueueServiceClient.listQueues().each {
-                queueItem -> primaryQueueServiceClient.deleteQueue(queueItem.name())
+                queueItem -> cleanupQueueServiceClient.deleteQueue(queueItem.name())
             }
         }
     }
-
+    
     /**
      * Test mode is initialized whenever test is executed. Helper method which is used to determine what to do under
      * certain test mode.

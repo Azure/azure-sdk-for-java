@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue75775d3f",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue121168c2",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
@@ -12,12 +12,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "cf52d08c-4003-00d4-54fe-4e7956000000",
-      "Date" : "Fri, 09 Aug 2019 22:08:10 GMT"
+      "x-ms-request-id" : "3f5969ab-f003-0067-2301-5283d1000000",
+      "Date" : "Tue, 13 Aug 2019 18:03:00 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue75775d3f",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue121168c2",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
@@ -29,11 +29,11 @@
       "retry-after" : "0",
       "Content-Length" : "222",
       "StatusCode" : "409",
-      "x-ms-request-id" : "cf52d14b-4003-00d4-70fe-4e7956000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueAlreadyExists</Code><Message>The specified queue already exists.\nRequestId:cf52d14b-4003-00d4-70fe-4e7956000000\nTime:2019-08-09T22:08:10.7626618Z</Message></Error>",
-      "Date" : "Fri, 09 Aug 2019 22:08:10 GMT",
+      "x-ms-request-id" : "3f5969be-f003-0067-3201-5283d1000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueAlreadyExists</Code><Message>The specified queue already exists.\nRequestId:3f5969be-f003-0067-3201-5283d1000000\nTime:2019-08-13T18:03:00.7560948Z</Message></Error>",
+      "Date" : "Tue, 13 Aug 2019 18:03:00 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queue71790afe", "queue062636b1", "queue75775d3f" ]
+  "variables" : [ "queue121168c2" ]
 }

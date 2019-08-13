@@ -13,9 +13,9 @@
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "36543df1-6003-0069-45fe-4e6fda000000",
+      "x-ms-request-id" : "603950a1-5003-0084-1001-52665e000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceProperties><Logging><Version>1.0</Version><Read>false</Read><Write>true</Write><Delete>true</Delete><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></Logging><HourMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></HourMetrics><MinuteMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></MinuteMetrics><Cors /></StorageServiceProperties>",
-      "Date" : "Fri, 09 Aug 2019 22:08:17 GMT",
+      "Date" : "Tue, 13 Aug 2019 18:03:08 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
@@ -32,8 +32,8 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "36543df6-6003-0069-48fe-4e6fda000000",
-      "Date" : "Fri, 09 Aug 2019 22:08:17 GMT"
+      "x-ms-request-id" : "603950a7-5003-0084-1601-52665e000000",
+      "Date" : "Tue, 13 Aug 2019 18:03:08 GMT"
     }
   }, {
     "Method" : "GET",
@@ -49,11 +49,11 @@
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "36543e10-6003-0069-57fe-4e6fda000000",
+      "x-ms-request-id" : "603950c3-5003-0084-2c01-52665e000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceProperties><Logging><Version>1.0</Version><Read>false</Read><Write>true</Write><Delete>true</Delete><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></Logging><HourMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></HourMetrics><MinuteMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></MinuteMetrics><Cors /></StorageServiceProperties>",
-      "Date" : "Fri, 09 Aug 2019 22:08:17 GMT",
+      "Date" : "Tue, 13 Aug 2019 18:03:08 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queue25274fbf", "queue61972994" ]
+  "variables" : [ ]
 }

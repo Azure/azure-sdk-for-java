@@ -9,6 +9,10 @@ import spock.lang.Unroll
 
 class QueueServiceAPITests extends APISpec {
 
+    def setup() {
+        primaryQueueServiceClient = queueServiceBuilderHelper(interceptorManager).buildClient()
+    }
+    
     def "Get queue client from queue service client"() {
         when:
         def queueClient = primaryQueueServiceClient.getQueueClient(testResourceName.randomName("queue", 16))

@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue0920385b",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue25431a6d",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
@@ -12,12 +12,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "bde07658-1003-0066-0dfe-4e822c000000",
-      "Date" : "Fri, 09 Aug 2019 22:05:04 GMT"
+      "x-ms-request-id" : "abca8db5-9003-00f4-5c00-52159a000000",
+      "Date" : "Tue, 13 Aug 2019 17:59:48 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue0920385b?comp=metadata",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue25431a6d?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
@@ -29,11 +29,11 @@
       "retry-after" : "0",
       "Content-Length" : "260",
       "StatusCode" : "400",
-      "x-ms-request-id" : "bde0766c-1003-0066-1ffe-4e822c000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:bde0766c-1003-0066-1ffe-4e822c000000\nTime:2019-08-09T22:05:04.7577141Z</Message></Error>",
-      "Date" : "Fri, 09 Aug 2019 22:05:04 GMT",
+      "x-ms-request-id" : "abca8dca-9003-00f4-6e00-52159a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:abca8dca-9003-00f4-6e00-52159a000000\nTime:2019-08-13T17:59:48.5563858Z</Message></Error>",
+      "Date" : "Tue, 13 Aug 2019 17:59:48 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queue4656902d", "queue49596d4a", "queue0920385b" ]
+  "variables" : [ "queue25431a6d" ]
 }

@@ -24,11 +24,11 @@ import static org.junit.Assert.assertNull
 class QueueAPITests extends APISpec {
     def queueClient
 
-    static def dequeueMessageResult = new DequeuedMessage()
     static def testMetadata = Collections.singletonMap("metadata", "value")
     static def createMetadata = Collections.singletonMap("metadata1", "value")
 
     def setup() {
+        primaryQueueServiceClient = queueServiceBuilderHelper(interceptorManager).buildClient()
         queueClient = primaryQueueServiceClient.getQueueClient(testResourceName.randomName("queue", 16))
     }
 

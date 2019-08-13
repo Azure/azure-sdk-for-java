@@ -13,11 +13,11 @@
       "retry-after" : "0",
       "Content-Length" : "243",
       "StatusCode" : "400",
-      "x-ms-request-id" : "bde10696-1003-0066-50fe-4e822c000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:bde10696-1003-0066-50fe-4e822c000000\nTime:2019-08-09T22:08:07.5597209Z</Message></Error>",
-      "Date" : "Fri, 09 Aug 2019 22:08:07 GMT",
+      "x-ms-request-id" : "abcb7896-9003-00f4-4001-52159a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:abcb7896-9003-00f4-4001-52159a000000\nTime:2019-08-13T18:02:59.0879948Z</Message></Error>",
+      "Date" : "Tue, 13 Aug 2019 18:02:58 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queue33143b3e", "queue06678907" ]
+  "variables" : [ ]
 }

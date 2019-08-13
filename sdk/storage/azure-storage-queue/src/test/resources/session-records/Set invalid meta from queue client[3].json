@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue50582193",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue307551a3",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
@@ -12,12 +12,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "bde07710-1003-0066-34fe-4e822c000000",
-      "Date" : "Fri, 09 Aug 2019 22:05:04 GMT"
+      "x-ms-request-id" : "abca8eab-9003-00f4-3b00-52159a000000",
+      "Date" : "Tue, 13 Aug 2019 17:59:49 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue50582193?comp=metadata",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue307551a3?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
@@ -29,11 +29,11 @@
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "bde07732-1003-0066-4efe-4e822c000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:bde07732-1003-0066-4efe-4e822c000000\nTime:2019-08-09T22:05:05.1490899Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Fri, 09 Aug 2019 22:05:04 GMT",
+      "x-ms-request-id" : "abca8eba-9003-00f4-4800-52159a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:abca8eba-9003-00f4-4800-52159a000000\nTime:2019-08-13T17:59:49.1369427Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Tue, 13 Aug 2019 17:59:49 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queue07782186", "queue28498ee0", "queue50582193" ]
+  "variables" : [ "queue307551a3" ]
 }

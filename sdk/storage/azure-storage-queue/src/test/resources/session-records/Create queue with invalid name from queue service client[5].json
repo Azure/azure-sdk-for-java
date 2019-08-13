@@ -13,11 +13,11 @@
       "retry-after" : "0",
       "Content-Length" : "256",
       "StatusCode" : "400",
-      "x-ms-request-id" : "bde106ad-1003-0066-65fe-4e822c000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The specified resource name length is not within the permissible limits.\nRequestId:bde106ad-1003-0066-65fe-4e822c000000\nTime:2019-08-09T22:08:07.8369880Z</Message></Error>",
-      "Date" : "Fri, 09 Aug 2019 22:08:07 GMT",
+      "x-ms-request-id" : "abcb7901-9003-00f4-1b01-52159a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The specified resource name length is not within the permissible limits.\nRequestId:abcb7901-9003-00f4-1b01-52159a000000\nTime:2019-08-13T18:02:59.4113030Z</Message></Error>",
+      "Date" : "Tue, 13 Aug 2019 18:02:59 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queue6240750c", "queue4781213c" ]
+  "variables" : [ ]
 }

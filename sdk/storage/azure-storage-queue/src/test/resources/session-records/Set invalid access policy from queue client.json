@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue80876eae",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue49418cef",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
@@ -12,12 +12,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "bde0788e-1003-0066-11fe-4e822c000000",
-      "Date" : "Fri, 09 Aug 2019 22:05:05 GMT"
+      "x-ms-request-id" : "abca905a-9003-00f4-4b00-52159a000000",
+      "Date" : "Tue, 13 Aug 2019 17:59:50 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue80876eae?comp=acl",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue49418cef?comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0",
@@ -30,11 +30,11 @@
       "retry-after" : "0",
       "Content-Length" : "371",
       "StatusCode" : "400",
-      "x-ms-request-id" : "bde0789f-1003-0066-21fe-4e822c000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:bde0789f-1003-0066-21fe-4e822c000000\nTime:2019-08-09T22:05:06.0919956Z</Message><LineNumber>1</LineNumber><LinePosition>304</LinePosition><Reason>Signed identifier ID cannot be empty or over 64 characters in length</Reason></Error>",
-      "Date" : "Fri, 09 Aug 2019 22:05:05 GMT",
+      "x-ms-request-id" : "abca906c-9003-00f4-5a00-52159a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:abca906c-9003-00f4-5a00-52159a000000\nTime:2019-08-13T17:59:50.4221758Z</Message><LineNumber>1</LineNumber><LinePosition>304</LinePosition><Reason>Signed identifier ID cannot be empty or over 64 characters in length</Reason></Error>",
+      "Date" : "Tue, 13 Aug 2019 17:59:50 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queue55939f77", "queue9248225a", "queue80876eae" ]
+  "variables" : [ "queue49418cef" ]
 }

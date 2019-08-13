@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue78826f95",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue9638156b",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
@@ -12,12 +12,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "bde0ed9c-1003-0066-1efe-4e822c000000",
-      "Date" : "Fri, 09 Aug 2019 22:07:00 GMT"
+      "x-ms-request-id" : "abcb1df3-9003-00f4-7e01-52159a000000",
+      "Date" : "Tue, 13 Aug 2019 18:01:49 GMT"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue78826f95/messages?numofmessages=33&visibilitytimeout=30",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue9638156b/messages?numofmessages=33&visibilitytimeout=30",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
@@ -29,11 +29,11 @@
       "retry-after" : "0",
       "Content-Length" : "456",
       "StatusCode" : "400",
-      "x-ms-request-id" : "bde0eda3-1003-0066-24fe-4e822c000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeQueryParameterValue</Code><Message>One of the query parameters specified in the request URI is outside the permissible range.\nRequestId:bde0eda3-1003-0066-24fe-4e822c000000\nTime:2019-08-09T22:07:00.4781318Z</Message><QueryParameterName>numofmessages</QueryParameterName><QueryParameterValue>33</QueryParameterValue><MinimumAllowed>1</MinimumAllowed><MaximumAllowed>32</MaximumAllowed></Error>",
-      "Date" : "Fri, 09 Aug 2019 22:07:00 GMT",
+      "x-ms-request-id" : "abcb1e1c-9003-00f4-2201-52159a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeQueryParameterValue</Code><Message>One of the query parameters specified in the request URI is outside the permissible range.\nRequestId:abcb1e1c-9003-00f4-2201-52159a000000\nTime:2019-08-13T18:01:49.5087187Z</Message><QueryParameterName>numofmessages</QueryParameterName><QueryParameterValue>33</QueryParameterValue><MinimumAllowed>1</MinimumAllowed><MaximumAllowed>32</MaximumAllowed></Error>",
+      "Date" : "Tue, 13 Aug 2019 18:01:49 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queue00144b97", "queue4248355b", "queue78826f95" ]
+  "variables" : [ "queue9638156b" ]
 }

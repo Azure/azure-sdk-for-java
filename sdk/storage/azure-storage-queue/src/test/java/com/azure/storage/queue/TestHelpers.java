@@ -28,7 +28,7 @@ import static org.junit.Assert.fail;
  * Contains helper methods for unit tests.
  */
 class TestHelpers {
-    private final String azureStorageConnectionString = "AZURE_STORAGE_CONNECTION_STRING";
+    private final String azureStorageConnectionString = "AZURE_STORAGE_QUEUE_CONNECTION_STRING";
     private final String azureStorageQueueEndpoint = "AZURE_STORAGE_QUEUE_ENDPOINT";
 
     <T> T setupClient(BiFunction<String, String, T> clientBuilder, boolean isPlaybackMode, ClientLogger logger) {
