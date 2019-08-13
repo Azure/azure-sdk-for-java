@@ -16,7 +16,7 @@ import java.util.function.Supplier;
  */
 public final class HttpPolicyProviders {
 
-    private static Map<Class<? extends PolicyProvider>, ServiceLoader<? extends PolicyProvider>> serviceLoaders = new HashMap<>();
+    private static final Map<Class<? extends PolicyProvider>, ServiceLoader<? extends PolicyProvider>> SERVICE_LOADERS = new HashMap<>();
 
     private HttpPolicyProviders() {
         // no-op
@@ -51,7 +51,7 @@ public final class HttpPolicyProviders {
     }
 
     private static Iterator<? extends PolicyProvider> getPolicyProviders(boolean reload, Class<? extends PolicyProvider> cls) {
-        ServiceLoader<? extends PolicyProvider> serviceLoader = serviceLoaders.computeIfAbsent(cls, ServiceLoader::load);
+        ServiceLoader<? extends PolicyProvider> serviceLoader = SERVICE_LOADERS.computeIfAbsent(cls, ServiceLoader::load);
 
         if (reload) {
             serviceLoader.reload();

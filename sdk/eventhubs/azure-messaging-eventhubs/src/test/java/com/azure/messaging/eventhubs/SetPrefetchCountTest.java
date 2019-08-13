@@ -48,7 +48,7 @@ public class SetPrefetchCountTest extends ApiTestBase {
     private EventHubConsumer consumer;
 
     @Rule
-    public TestName testName = new TestName();
+    public final TestName testName = new TestName();
 
     public SetPrefetchCountTest() {
         super(new ClientLogger(SetPrefetchCountTest.class));

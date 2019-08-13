@@ -16,7 +16,7 @@ import com.azure.core.util.polling.PollResponse.OperationStatus;
  */
 public final class PollerJavaDocCodeSnippets {
 
-    private boolean debug = true;
+    private static final boolean DEBUG = true;
 
     private Function<PollResponse<String>, Mono<PollResponse<String>>> createPollOperation(
         PollResponse<String> inProResp,

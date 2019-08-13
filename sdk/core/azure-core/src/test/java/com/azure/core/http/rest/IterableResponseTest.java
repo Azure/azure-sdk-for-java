@@ -20,7 +20,7 @@ import reactor.core.publisher.Flux;
 public class IterableResponseTest {
 
     @Rule
-    public TestName testName = new TestName();
+    public final TestName testName = new TestName();
 
     @Before
     public void setup() {

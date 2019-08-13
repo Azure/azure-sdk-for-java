@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ReceiveLinkHandler extends LinkHandler {
     private final String receiverName;
-    private AtomicBoolean isFirstResponse = new AtomicBoolean(true);
+    private final AtomicBoolean isFirstResponse = new AtomicBoolean(true);
     private final Flux<Delivery> deliveries;
     private FluxSink<Delivery> deliverySink;
 

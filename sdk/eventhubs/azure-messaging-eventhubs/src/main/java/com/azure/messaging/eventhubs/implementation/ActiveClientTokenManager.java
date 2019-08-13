@@ -35,7 +35,7 @@ class ActiveClientTokenManager implements Closeable {
     private FluxSink<AmqpResponseCode> sink;
 
     // last refresh interval in milliseconds.
-    private AtomicLong lastRefreshInterval = new AtomicLong();
+    private final AtomicLong lastRefreshInterval = new AtomicLong();
 
     ActiveClientTokenManager(Mono<CBSNode> cbsNode, String tokenAudience) {
         this.timer = new Timer(tokenAudience + "-tokenManager");

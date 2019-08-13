@@ -276,7 +276,7 @@ public final class FluxUtil {
             outFile.write(bytes.nioBuffer(), pos, null, onWriteCompleted);
         }
 
-        CompletionHandler<Integer, Object> onWriteCompleted = new CompletionHandler<Integer, Object>() {
+        final CompletionHandler<Integer, Object> onWriteCompleted = new CompletionHandler<Integer, Object>() {
             @Override
             public void completed(Integer bytesWritten, Object attachment) {
                 isWriting = false;

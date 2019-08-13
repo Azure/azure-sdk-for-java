@@ -37,7 +37,7 @@ public class LargeFileTest extends TestBase {
     private File dirPath;
 
     @Rule
-    public TestName testName = new TestName();
+    public final TestName testName = new TestName();
 
     @Before
     public void setup() {

@@ -25,7 +25,7 @@ public class ProxyConfigurationTest {
     private static final String PROXY_USERNAME = "dummyUsername";
     private static final String PROXY_PASSWORD = "dummyPassword";
 
-    private static Proxy proxyAddress = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
+    private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
 
     @DataPoints("Proxy Configuration Types")
     public static ProxyAuthenticationType[] proxyAuthenticationTypes() {
@@ -43,22 +43,22 @@ public class ProxyConfigurationTest {
 
     @Theory
     public void validateProxyConfiguration(@FromDataPoints("Proxy Configuration Types") ProxyAuthenticationType proxyAuthenticationType) {
-        ProxyConfiguration proxyConfiguration = new ProxyConfiguration(proxyAuthenticationType, proxyAddress, PROXY_USERNAME, PROXY_PASSWORD);
+        ProxyConfiguration proxyConfiguration = new ProxyConfiguration(proxyAuthenticationType, PROXY_ADDRESS, PROXY_USERNAME, PROXY_PASSWORD);
         validateProxyConfiguration(proxyConfiguration, proxyAuthenticationType);
     }
 
     @Theory
     public void testIsProxyAddressConfigured(@FromDataPoints("Proxy Configuration Types") ProxyAuthenticationType proxyAuthenticationType) {
-        ProxyConfiguration proxyConfiguration = new ProxyConfiguration(proxyAuthenticationType, proxyAddress, PROXY_USERNAME, PROXY_PASSWORD);
+        ProxyConfiguration proxyConfiguration = new ProxyConfiguration(proxyAuthenticationType, PROXY_ADDRESS, PROXY_USERNAME, PROXY_PASSWORD);
         Assert.assertTrue(proxyConfiguration.isProxyAddressConfigured());
 
-        proxyConfiguration = new ProxyConfiguration(proxyAuthenticationType, proxyAddress, null, PROXY_PASSWORD);
+        proxyConfiguration = new ProxyConfiguration(proxyAuthenticationType, PROXY_ADDRESS, null, PROXY_PASSWORD);
         Assert.assertTrue(proxyConfiguration.isProxyAddressConfigured());
 
-        proxyConfiguration = new ProxyConfiguration(proxyAuthenticationType, proxyAddress, PROXY_USERNAME, null);
+        proxyConfiguration = new ProxyConfiguration(proxyAuthenticationType, PROXY_ADDRESS, PROXY_USERNAME, null);
         Assert.assertTrue(proxyConfiguration.isProxyAddressConfigured());
 
-        proxyConfiguration = new ProxyConfiguration(proxyAuthenticationType, proxyAddress, null, null);
+        proxyConfiguration = new ProxyConfiguration(proxyAuthenticationType, PROXY_ADDRESS, null, null);
         Assert.assertTrue(proxyConfiguration.isProxyAddressConfigured());
 
         proxyConfiguration = new ProxyConfiguration(proxyAuthenticationType, null, PROXY_USERNAME, PROXY_PASSWORD);
@@ -76,16 +76,16 @@ public class ProxyConfigurationTest {
 
     @Theory
     public void testHasUserDefinedCredentials(@FromDataPoints("Proxy Configuration Types") ProxyAuthenticationType proxyAuthenticationType) {
-        ProxyConfiguration proxyConfiguration = new ProxyConfiguration(proxyAuthenticationType, proxyAddress, PROXY_USERNAME, PROXY_PASSWORD);
+        ProxyConfiguration proxyConfiguration = new ProxyConfiguration(proxyAuthenticationType, PROXY_ADDRESS, PROXY_USERNAME, PROXY_PASSWORD);
         Assert.assertTrue(proxyConfiguration.hasUserDefinedCredentials());
 
-        proxyConfiguration = new ProxyConfiguration(proxyAuthenticationType, proxyAddress, null, PROXY_PASSWORD);
+        proxyConfiguration = new ProxyConfiguration(proxyAuthenticationType, PROXY_ADDRESS, null, PROXY_PASSWORD);
         Assert.assertFalse(proxyConfiguration.hasUserDefinedCredentials());
 
-        proxyConfiguration = new ProxyConfiguration(proxyAuthenticationType, proxyAddress, PROXY_USERNAME, null);
+        proxyConfiguration = new ProxyConfiguration(proxyAuthenticationType, PROXY_ADDRESS, PROXY_USERNAME, null);
         Assert.assertFalse(proxyConfiguration.hasUserDefinedCredentials());
 
-        proxyConfiguration = new ProxyConfiguration(proxyAuthenticationType, proxyAddress, null, null);
+        proxyConfiguration = new ProxyConfiguration(proxyAuthenticationType, PROXY_ADDRESS, null, null);
         Assert.assertFalse(proxyConfiguration.hasUserDefinedCredentials());
 
         proxyConfiguration = new ProxyConfiguration(proxyAuthenticationType, null, PROXY_USERNAME, PROXY_PASSWORD);

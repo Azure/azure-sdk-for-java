@@ -25,11 +25,11 @@ import java.util.Collections;
  */
 @SuppressWarnings("unused")
 public class BlobAsyncClientJavaDocCodeSnippets {
-    private BlobAsyncClient client = JavaDocCodeSnippetsHelpers.getBlobAsyncClient("blobName");
-    private String leaseId = "leaseId";
-    private String copyId = "copyId";
-    private URL url = JavaDocCodeSnippetsHelpers.generateURL("https://sample.com");
-    private String file = "file";
+    private final BlobAsyncClient client = JavaDocCodeSnippetsHelpers.getBlobAsyncClient("blobName");
+    private final String leaseId = "leaseId";
+    private final String copyId = "copyId";
+    private final URL url = JavaDocCodeSnippetsHelpers.generateURL("https://sample.com");
+    private final String file = "file";
 
     /**
      * Code snippet for {@link BlobAsyncClient#exists()}

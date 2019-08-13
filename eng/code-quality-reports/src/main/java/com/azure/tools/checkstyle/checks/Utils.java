@@ -20,7 +20,9 @@ public class Utils {
     )));
 
     private static final Set INVALID_FINAL_ANNOTATIONS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-        "JsonProperty"
+        "JsonProperty",
+        "JsonAlias",
+        "JacksonXmlProperty"
     )));
 
     /**

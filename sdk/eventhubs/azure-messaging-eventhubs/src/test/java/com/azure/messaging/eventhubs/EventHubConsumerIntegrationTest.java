@@ -59,7 +59,7 @@ public class EventHubConsumerIntegrationTest extends ApiTestBase {
     }
 
     @Rule
-    public TestName testName = new TestName();
+    public final TestName testName = new TestName();
 
     @Override
     protected String testName() {

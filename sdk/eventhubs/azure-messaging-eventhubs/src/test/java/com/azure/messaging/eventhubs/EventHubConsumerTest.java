@@ -70,7 +70,7 @@ public class EventHubConsumerTest {
     private ArgumentCaptor<Supplier<Integer>> creditSupplier;
 
     private Mono<AmqpReceiveLink> receiveLinkMono;
-    private List<Message> messages = new ArrayList<>();
+    private final List<Message> messages = new ArrayList<>();
     private EventHubConsumerOptions options;
     private EventHubConsumer consumer;
 

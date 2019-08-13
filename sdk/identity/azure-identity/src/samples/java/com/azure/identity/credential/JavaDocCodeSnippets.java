@@ -13,11 +13,11 @@ import java.net.InetSocketAddress;
  */
 public final class JavaDocCodeSnippets {
 
-    private String tenantId = System.getenv("AZURE_TENANT_ID");
-    private String clientId = System.getenv("AZURE_CLIENT_ID");
-    private String clientSecret = System.getenv("AZURE_CLIENT_SECRET");
-    private String username = "sampleuser";
-    private String password = "Samp1eP@ssw0rd";
+    private final String tenantId = System.getenv("AZURE_TENANT_ID");
+    private final String clientId = System.getenv("AZURE_CLIENT_ID");
+    private final String clientSecret = System.getenv("AZURE_CLIENT_SECRET");
+    private static final String USERNAME = "sampleuser";
+    private static final String PASSWORD = "Samp1eP@ssw0rd";
 
     /**
      * Method to insert code snippets for {@link ClientSecretCredential}
@@ -70,8 +70,8 @@ public final class JavaDocCodeSnippets {
         // BEGIN: com.azure.identity.credential.chainedtokencredential.construct
         UsernamePasswordCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder()
             .clientId(clientId)
-            .username(username)
-            .password(password)
+            .username(USERNAME)
+            .password(PASSWORD)
             .build();
         InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
             .clientId(clientId)

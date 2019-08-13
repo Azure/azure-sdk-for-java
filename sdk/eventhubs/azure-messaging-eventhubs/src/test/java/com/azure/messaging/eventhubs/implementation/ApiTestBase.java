@@ -44,7 +44,7 @@ public abstract class ApiTestBase extends TestBase {
     private static final String TEST_CONNECTION_STRING = "Endpoint=sb://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummyaccount;SharedAccessKey=ctzMq410TV3wS7upTBcunJTDLEJwMAZuFPfr0mrrA08=;EntityPath=non-existent-hub;";
 
     private ConnectionStringProperties properties;
-    private Reactor reactor = mock(Reactor.class);
+    private final Reactor reactor = mock(Reactor.class);
     private TokenCredential tokenCredential;
     private ReactorProvider reactorProvider;
     private ConnectionOptions connectionOptions;

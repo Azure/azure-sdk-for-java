@@ -12,10 +12,10 @@ import org.junit.rules.TestName;
 public abstract class FileServiceClientTestBase extends TestBase {
     String shareName;
 
-    String reallyLongString = "thisisareallylongstringthatexceedsthe64characterlimitallowedoncertainproperties";
+    final String reallyLongString = "thisisareallylongstringthatexceedsthe64characterlimitallowedoncertainproperties";
 
     @Rule
-    public TestName testName = new TestName();
+    public final TestName testName = new TestName();
 
     /**
      * Gets the name of the current test being run.

@@ -55,7 +55,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     String labelPrefix;
 
     @Rule
-    public TestName testName = new TestName();
+    public final TestName testName = new TestName();
 
     @Override
     public String testName() {

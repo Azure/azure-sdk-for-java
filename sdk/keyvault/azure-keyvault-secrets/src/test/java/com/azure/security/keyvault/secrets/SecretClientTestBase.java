@@ -41,7 +41,7 @@ public abstract class SecretClientTestBase extends TestBase {
     private static final String SECRET_VALUE = "Chocolate is hidden in the toothpaste cabinet";
 
     @Rule
-    public TestName testName = new TestName();
+    public final TestName testName = new TestName();
 
     @Override
     protected String testName() {

@@ -27,22 +27,15 @@ import java.util.Set;
 public class AssignedOnceVariableToBeFinalCheck extends AbstractCheck {
     private static final String ERROR_MSG = "Field \"%s\" is only assigned in constructor and it is not final. " +
         "Make field final";
-    private static final Set<Integer> INVALID_FINAL_COMBINATION = Collections
-        .unmodifiableSet(new HashSet<>(Arrays.asList(
-        TokenTypes.LITERAL_TRANSIENT,
-        TokenTypes.LITERAL_VOLATILE
-    )));
-    private static final Set<String> INVALID_FINAL_ANNOTATIONS = Collections
-        .unmodifiableSet(new HashSet<>(Arrays.asList(
-        "JsonProperty"
-    )));
-
+    private static final String ERROR_FIELD_ALONE = "Field \"%s\" is not assigned in constructor or methods." +
+        "Make field final";
 
     private ArrayList<DetailAST> nonFinalFields;
     private Set<String> assignmentsFromConstructor;
     private Set<String> assignmentsFromMethods;
     private DetailAST scopeParent = null;
     private Set<String> currentScopeParameterSet = null;
+    private String currentClassName = null;
 
     @Override
     public int[] getDefaultTokens() {
@@ -90,6 +83,7 @@ public class AssignedOnceVariableToBeFinalCheck extends AbstractCheck {
     public void visitToken(DetailAST token) {
         switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
+                this.currentClassName = token.findFirstToken(TokenTypes.IDENT).getText();
                 fillClassFieldDefinitions(token);
                 break;
             case TokenTypes.ASSIGN:
@@ -137,6 +131,10 @@ public class AssignedOnceVariableToBeFinalCheck extends AbstractCheck {
             final String fieldName = field.findFirstToken(TokenTypes.IDENT).getText();
             if (assignmentsFromConstructor.contains(fieldName) && !assignmentsFromMethods.contains(fieldName)) {
                 log(field, String.format(ERROR_MSG, fieldName));
+            } else if (field.branchContains(TokenTypes.ASSIGN)
+                && !assignmentsFromConstructor.contains(fieldName)
+                && !assignmentsFromMethods.contains(fieldName)) {
+                log(field, String.format(ERROR_FIELD_ALONE, fieldName));
             }
         }
     }
@@ -155,6 +153,10 @@ public class AssignedOnceVariableToBeFinalCheck extends AbstractCheck {
         if (assignationWithDot != null) {
             if (assignationWithDot.branchContains(TokenTypes.LITERAL_THIS)) {
                 return assignationWithDot.findFirstToken(TokenTypes.IDENT);
+            } else if (TokenUtil.findFirstTokenByPredicate(assignationWithDot,
+                token -> token.getText().equals(this.currentClassName)).isPresent()) {
+                // Case when referencing same class for private static fields
+                return assignationWithDot.getLastChild();
             }
         } else {
             final DetailAST variableNameToken = assignationToken.getFirstChild();
@@ -170,7 +172,7 @@ public class AssignedOnceVariableToBeFinalCheck extends AbstractCheck {
     /*
     * Saves a field name to a container depending on the provided type
     */
-    private void saveField(String fieldName, int scopeParentType) {
+    private void saveField(final String fieldName, final int scopeParentType) {
         if (scopeParentType == TokenTypes.METHOD_DEF) {
             assignmentsFromMethods.add(fieldName);
         } else if (scopeParentType == TokenTypes.CTOR_DEF) {
@@ -203,28 +205,6 @@ public class AssignedOnceVariableToBeFinalCheck extends AbstractCheck {
         }
     }
 
-    /*
-     * Check if variable modifiers contains any of the illegal combination with final modifier
-     * For instance, we don't want to combine transient or volatile with final
-     *
-     * @param modifiers a DetailAST pointing to a Variable list of modifiers
-     * @return true if there is any modifier that shouldn't be combined with final
-     */
-    private boolean hasIllegalCombination(DetailAST modifiers) {
-        for (DetailAST modifier = modifiers.getFirstChild(); modifier != null; modifier = modifier.getNextSibling()) {
-            int modifierType = modifier.getType();
-            // Do not consider field with some annotations
-            if (TokenTypes.ANNOTATION == modifierType) {
-                if (INVALID_FINAL_ANNOTATIONS.contains(modifier.findFirstToken(TokenTypes.IDENT).getText())) {
-                    return true;
-                }
-            }
-            if (INVALID_FINAL_COMBINATION.contains(modifierType)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     /*
      * Check each non-final field definition from a class and fill nonFinalFields
@@ -237,7 +217,7 @@ public class AssignedOnceVariableToBeFinalCheck extends AbstractCheck {
         TokenUtil.forEachChild(classObjBlockAst, TokenTypes.VARIABLE_DEF, (definitionToken) -> {
             final DetailAST variableModifiersAst = definitionToken.findFirstToken(TokenTypes.MODIFIERS);
             if (!variableModifiersAst.branchContains(TokenTypes.FINAL)
-                && !hasIllegalCombination(variableModifiersAst)) {
+                && !Utils.hasIllegalCombination(variableModifiersAst)) {
                 nonFinalFields.add(definitionToken);
             }
         });

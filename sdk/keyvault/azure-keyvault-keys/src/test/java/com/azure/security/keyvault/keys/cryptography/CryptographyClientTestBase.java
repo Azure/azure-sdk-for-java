@@ -39,7 +39,7 @@ import static org.junit.Assert.*;
 
 public abstract class CryptographyClientTestBase extends TestBase {
     @Rule
-    public TestName testName = new TestName();
+    public final TestName testName = new TestName();
 
     @Override
     protected String testName() {

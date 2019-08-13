@@ -19,10 +19,10 @@ public abstract class FileClientTestBase extends TestBase {
     final ByteBuf defaultData = Unpooled.wrappedBuffer(DEFAULT_TEXT.getBytes(StandardCharsets.UTF_8));
 
     @Rule
-    public TestName testName = new TestName();
+    public final TestName testName = new TestName();
 
     @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    public final ExpectedException thrown = ExpectedException.none();
 
     /**
      * Gets the name of the current test being run.

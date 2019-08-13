@@ -36,7 +36,7 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
     private final Disposable.Composite subscriptions;
     private final EmitterProcessor<Message> messagesProcessor = EmitterProcessor.create();
     private final AtomicBoolean isDisposed;
-    private FluxSink<Message> messageSink = messagesProcessor.sink();
+    private final FluxSink<Message> messageSink = messagesProcessor.sink();
 
     private volatile Supplier<Integer> creditSupplier;
 

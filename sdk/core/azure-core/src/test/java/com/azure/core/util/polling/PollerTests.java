@@ -22,7 +22,7 @@ import java.util.function.Function;
 
 public class PollerTests {
 
-    private boolean debug = true;
+    private final boolean debug = true;
     int count;
 
     private Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>> createPollOperation(

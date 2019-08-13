@@ -22,7 +22,7 @@ public class ReactorConnectionIntegrationTest extends ApiTestBase {
     private AmqpResponseMapper responseMapper;
 
     @Rule
-    public TestName testName = new TestName();
+    public final TestName testName = new TestName();
     private ReactorConnection connection;
 
     public ReactorConnectionIntegrationTest() {

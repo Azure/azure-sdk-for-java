@@ -43,7 +43,7 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
     private EventHubConsumer consumer;
 
     @Rule
-    public TestName testName = new TestName();
+    public final TestName testName = new TestName();
 
     public InteropAmqpPropertiesTest() {
         super(new ClientLogger(InteropAmqpPropertiesTest.class));

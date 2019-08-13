@@ -13,10 +13,10 @@ public abstract class ShareClientTestBase extends TestBase {
     String shareName;
 
     @Rule
-    public TestName testName = new TestName();
+    public final TestName testName = new TestName();
 
     @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    public final ExpectedException thrown = ExpectedException.none();
 
     /**
      * Gets the name of the current test being run.

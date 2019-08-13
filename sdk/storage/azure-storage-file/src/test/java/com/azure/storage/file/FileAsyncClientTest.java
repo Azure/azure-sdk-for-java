@@ -26,18 +26,18 @@ import static com.azure.storage.file.FileTestHelpers.setupClient;
 public class FileAsyncClientTest extends FileClientTestBase {
     private final ClientLogger fileAsyncLogger = new ClientLogger(FileAsyncClientTest.class);
     String filePath;
-    private static String shareName = "filesharename";
-    private static String dirName = "testdir/";
+    private static final String SHARE_NAME = "filesharename";
+    private static final String DIR_NAME = "testdir/";
     private static ShareClient shareClient;
     private FileAsyncClient fileAsyncClient;
 
     @Override
     public void beforeTest() {
-        filePath = dirName + testResourceNamer.randomName("file", 16);
+        filePath = DIR_NAME + testResourceNamer.randomName("file", 16);
         if (interceptorManager.isPlaybackMode()) {
             fileAsyncClient = setupClient((connectionString, endpoint) -> new FileClientBuilder()
                                                                      .connectionString(connectionString)
-                                                                     .shareName(shareName)
+                                                                     .shareName(SHARE_NAME)
                                                                      .filePath(filePath)
                                                                      .httpClient(interceptorManager.getPlaybackClient())
                                                                      .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
@@ -45,7 +45,7 @@ public class FileAsyncClientTest extends FileClientTestBase {
         } else {
             fileAsyncClient = setupClient((connectionString, endpoint) -> new FileClientBuilder()
                                                                      .connectionString(connectionString)
-                                                                     .shareName(shareName)
+                                                                     .shareName(SHARE_NAME)
                                                                      .filePath(filePath)
                                                                      .httpClient(HttpClient.createDefault().wiretap(true))
                                                                      .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
@@ -61,9 +61,9 @@ public class FileAsyncClientTest extends FileClientTestBase {
         FileServiceClient fileServiceClient = new FileServiceClientBuilder()
                                                   .connectionString(ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING"))
                                                   .buildClient();
-        shareClient = fileServiceClient.getShareClient(shareName);
+        shareClient = fileServiceClient.getShareClient(SHARE_NAME);
         shareClient.create();
-        shareClient.createDirectory(dirName);
+        shareClient.createDirectory(DIR_NAME);
     }
 
     @AfterClass
@@ -98,7 +98,7 @@ public class FileAsyncClientTest extends FileClientTestBase {
     @Override
     public void startCopy() throws Exception {
         fileAsyncClient.create(1024).block();
-        String sourceURL = fileAsyncClient.getFileUrl().toString() + "/" + shareName + "/" + filePath;
+        String sourceURL = fileAsyncClient.getFileUrl().toString() + "/" + SHARE_NAME + "/" + filePath;
         StepVerifier.create(fileAsyncClient.startCopy(sourceURL, null))
             .assertNext(response -> {
                 FileTestHelpers.assertResponseStatusCode(response, 202);

@@ -12,7 +12,7 @@ public abstract class QueueClientTestsBase extends TestBase {
     TestHelpers helper;
 
     @Rule
-    public TestName testName = new TestName();
+    public final TestName testName = new TestName();
 
     @Override
     public String testName() {

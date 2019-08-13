@@ -26,12 +26,12 @@ import java.util.Collections;
  */
 @SuppressWarnings("unused")
 public class BlobClientJavaDocCodeSnippets {
-    private BlobClient client = JavaDocCodeSnippetsHelpers.getBlobClient("blobName");
-    private String leaseId = "leaseId";
-    private String copyId = "copyId";
-    private URL url = JavaDocCodeSnippetsHelpers.generateURL("https://sample.com");
-    private String file = "file";
-    private Duration timeout = Duration.ofSeconds(30);
+    private final BlobClient client = JavaDocCodeSnippetsHelpers.getBlobClient("blobName");
+    private final String leaseId = "leaseId";
+    private final String copyId = "copyId";
+    private final URL url = JavaDocCodeSnippetsHelpers.generateURL("https://sample.com");
+    private final String file = "file";
+    private final Duration timeout = Duration.ofSeconds(30);
 
     /**
      * Code snippets for {@link BlobClient#exists()} and {@link BlobClient#exists(Duration)}

@@ -20,13 +20,17 @@ public abstract class DirectoryClientTestBase extends TestBase {
     final Map<String, String> invalidMetadata = Collections.singletonMap("1", "metadata");
 
     @Rule
-    public TestName testName = new TestName();
+    public final TestName testName = new TestName();
 
     @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    public final ExpectedException thrown = ExpectedException.none();
 
     void beforeDirectoryTest() {
         dirName = testResourceNamer.randomName("directory", 16);
+    }
+
+    void updateFileEndPoint(String azureStorageFileEndpoint) {
+        this.azureStorageFileEndpoint = azureStorageFileEndpoint;
     }
 
     /**

@@ -25,10 +25,10 @@ import java.util.Random;
  */
 public final class CryptographyAsyncClientJavaDocCodeSnippets {
 
-    private String key1 = "key1";
-    private String key2 = "key2";
-    private String value1 = "val1";
-    private String value2 = "val2";
+    private final String key1 = "key1";
+    private final String key2 = "key2";
+    private final String value1 = "val1";
+    private final String value2 = "val2";
 
     /**
      * Generates code sample for creating a {@link KeyAsyncClient}

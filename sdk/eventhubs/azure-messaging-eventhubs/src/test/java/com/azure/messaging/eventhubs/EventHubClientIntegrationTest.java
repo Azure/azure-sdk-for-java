@@ -57,7 +57,7 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
     private EventHubAsyncClient client;
 
     @Rule
-    public TestName testName = new TestName();
+    public final TestName testName = new TestName();
 
     public EventHubClientIntegrationTest(TransportType transportType) {
         super(new ClientLogger(EventHubClientIntegrationTest.class));

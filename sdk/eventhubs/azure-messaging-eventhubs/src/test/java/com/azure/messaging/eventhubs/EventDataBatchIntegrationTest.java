@@ -40,7 +40,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
     private ErrorContextProvider contextProvider;
 
     @Rule
-    public TestName testName = new TestName();
+    public final TestName testName = new TestName();
 
     public EventDataBatchIntegrationTest() {
         super(new ClientLogger(EventDataBatchIntegrationTest.class));

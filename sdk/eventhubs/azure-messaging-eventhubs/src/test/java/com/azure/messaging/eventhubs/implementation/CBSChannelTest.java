@@ -31,7 +31,7 @@ public class CBSChannelTest extends ApiTestBase {
     private AmqpResponseMapper mapper;
 
     @Rule
-    public TestName testName = new TestName();
+    public final TestName testName = new TestName();
 
     private AmqpConnection connection;
     private CBSChannel cbsChannel;

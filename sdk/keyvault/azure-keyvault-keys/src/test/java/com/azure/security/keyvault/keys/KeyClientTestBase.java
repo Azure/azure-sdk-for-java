@@ -45,7 +45,7 @@ public abstract class KeyClientTestBase extends TestBase {
     private static final KeyType EC_KEY_TYPE = KeyType.EC;
 
     @Rule
-    public TestName testName = new TestName();
+    public final TestName testName = new TestName();
 
     @Override
     protected String testName() {
