@@ -8,6 +8,10 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.Constants;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
@@ -30,6 +34,7 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -499,6 +504,74 @@ public final class QueueAsyncClient {
     public Mono<VoidResponse> deleteMessage(String messageId, String popReceipt) {
         return client.messageIds().deleteWithRestResponseAsync(queueName, messageId, popReceipt, Context.NONE)
             .map(VoidResponse::new);
+    }
+
+    /**
+     * Generates a SAS token with the specified parameters
+     *
+     * @param permissions The {@code QueueSASPermission} permission for the SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateSAS(QueueSASPermission permissions, OffsetDateTime expiryTime) {
+        return this.generateSAS(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
+        version */, null /* sasProtocol */, null /* ipRange */);
+    }
+
+    /**
+     * Generates a SAS token with the specified parameters
+     *
+     * @param identifier The {@code String} name of the access policy on the container this SAS references if any
+     * @return A string that represents the SAS token
+     */
+    public String generateSAS(String identifier) {
+        return this.generateSAS(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
+            null /* version */, null /* sasProtocol */, null /* ipRange */);
+    }
+
+    /**
+     * Generates a SAS token with the specified parameters
+     *
+     * @param identifier The {@code String} name of the access policy on the container this SAS references if any
+     * @param permissions The {@code QueueSASPermission} permission for the SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
+     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
+     * @param version An optional {@code String} version for the SAS
+     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateSAS(String identifier, QueueSASPermission permissions, OffsetDateTime expiryTime,
+        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
+
+        QueueServiceSASSignatureValues queueServiceSASSignatureValues = new QueueServiceSASSignatureValues(version, sasProtocol,
+            startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange, identifier);
+
+        SharedKeyCredential sharedKeyCredential =
+            Utility.getSharedKeyCredential(this.client.getHttpPipeline());
+
+        Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
+
+        QueueServiceSASSignatureValues values = configureServiceSASSignatureValues(queueServiceSASSignatureValues,
+            sharedKeyCredential.accountName());
+
+        QueueServiceSASQueryParameters queueServiceSasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
+
+        return queueServiceSasQueryParameters.encode();
+    }
+
+    /**
+     * Sets queueServiceSASSignatureValues parameters dependent on the current queue type
+     */
+    QueueServiceSASSignatureValues configureServiceSASSignatureValues(QueueServiceSASSignatureValues queueServiceSASSignatureValues,
+        String accountName) {
+
+        // Set canonical name
+        queueServiceSASSignatureValues.canonicalName(this.client.getUrl(), accountName);
+
+        queueServiceSASSignatureValues.resource(Constants.UrlConstants.SAS_QUEUE_CONSTANT);
+
+        return queueServiceSASSignatureValues;
     }
 
     /*
