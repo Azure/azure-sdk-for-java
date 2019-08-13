@@ -342,7 +342,6 @@
             </footer>
             <linksource>false</linksource>
             <excludePackageNames>
-              com.microsoft.azure.template:
               *.impl*:
               *.implementation*:
               com.azure.tools.checkstyle*
@@ -760,5 +759,6 @@
     <module>./sdk/storage/azure-storage-common</module>
     <module>./sdk/storage/azure-storage-file</module>
     <module>./sdk/storage/azure-storage-queue</module>
+    <module>./sdk/template/azure-sdk-template</module>
   </modules>
 </project>
