@@ -31,6 +31,9 @@
   <suppress checks="Header" files=".*KeyVaultKeyResolverBCProviderTest.java"/>
   <suppress checks="Header" files=".*KeyVaultKeyResolverDefaultProviderTest.java"/>
 
+  <!-- Cryptography Client exception for service client instantiation as it provides client side crypto and is not entirely based on REST service -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientInstantiationCheck" files=".*CryptographyAsyncClient.java"/>
+
   <!-- Public API already released with incorrect upper-case naming pattern -->
   <suppress checks="MethodName" files="AsymmetricEncryptionAlgorithm.java"/>
   <suppress checks="MethodName" files="ISessionHandler.java"/>
@@ -78,10 +81,6 @@
 
   <!-- All auto generated files need to exclude from checkstyle -->
   <suppress checks="[a-zA-Z0-9]*" files=".*[/\\]storage[/\\].*[/\\](models|implementation)[/\\].*\.java"/>
-
-  <!--  Suppress all Track 1 libraries the CI is not checking track 1 for now. Remove it If there is a solution to check track 1-->
-  <suppress checks="[a-zA-Z0-9]*" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
-
   <suppress checks="UnusedImports" files=".*[/\\]storage[/\\].*Generated.*.java"/>
 
   <!-- The constant name is public static. -->
@@ -127,6 +126,12 @@
 
   <!-- OpenCensus should only be depended on from within the tracing-opencensus module -->
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]tracing[/\\]opentelemetry[/\\]*"/>
+
+  <!-- Suppress warnings for Event Processor until the usage of "Client" is discussed and resolved: https://github.com/Azure/azure-sdk/issues/321 -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*EventHubClientBuilder.java"/>
+
+  <!-- Any code in any package, it should never be a 'throw' keyword in the client library codebase except for in the client logger -->
+<!--  <suppress checks="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck" files=".*[/\\]com[/\\]azure[/\\]core[/\\]util[/\\]logging[/\\]*"/>-->
 
   <!-- Skip ThrowFromClientLoggerCheck on ClientLogger class, ClientLogger is allowed to throw exception directly -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.core.util.logging.ClientLogger.java"/>

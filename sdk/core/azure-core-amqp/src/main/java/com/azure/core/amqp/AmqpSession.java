@@ -32,10 +32,10 @@ public interface AmqpSession extends EndpointStateNotifier, Closeable {
      * @param linkName Name of the link.
      * @param entityPath The entity path this link connects to when producing events.
      * @param timeout Timeout required for creating and opening AMQP link.
-     * @param retry The retry policy to use when sending messages.
+     * @param retryPolicy The retry policy to use when sending messages.
      * @return A newly created AMQP link.
      */
-    Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, Retry retry);
+    Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, RetryPolicy retryPolicy);
 
     /**
      * Creates a new AMQP link that consumes events from the message broker.
@@ -43,10 +43,10 @@ public interface AmqpSession extends EndpointStateNotifier, Closeable {
      * @param linkName Name of the link.
      * @param entityPath The entity path this link connects to, so that it may read events from the message broker.
      * @param timeout Timeout required for creating and opening an AMQP link.
-     * @param retry The retry policy to use when consuming messages.
+     * @param retryPolicy The retry policy to use when consuming messages.
      * @return A newly created AMQP link.
      */
-    Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, Retry retry);
+    Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, RetryPolicy retryPolicy);
 
     /**
      * Removes an {@link AmqpLink} with the given {@code linkName}.

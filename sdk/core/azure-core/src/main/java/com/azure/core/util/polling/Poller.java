@@ -4,16 +4,14 @@
 package com.azure.core.util.polling;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollResponse.OperationStatus;
 import reactor.core.Disposable;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.function.Consumer;
 import java.util.function.Function;
-
-import com.azure.core.util.polling.PollResponse.OperationStatus;
 
 /**
  * This class offers API that simplifies the task of executing long-running operations against Azure service.
@@ -119,10 +117,10 @@ public class Poller<T> {
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation) {
         if (pollInterval == null || pollInterval.toNanos() <= 0) {
-            logger.logAndThrow(new IllegalArgumentException("Null, negative or zero value for poll interval is not allowed."));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("Null, negative or zero value for poll interval is not allowed."));
         }
         if (pollOperation == null) {
-            logger.logAndThrow(new IllegalArgumentException("Null value for poll operation is not allowed."));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("Null value for poll operation is not allowed."));
         }
 
         this.pollInterval = pollInterval;
@@ -170,8 +168,7 @@ public class Poller<T> {
      */
     public void cancelOperation() throws UnsupportedOperationException {
         if (this.cancelOperation == null) {
-            logger.logAndThrow(new UnsupportedOperationException("Cancel operation is not supported on this service/resource."));
-            return;
+            throw new UnsupportedOperationException("Cancel operation is not supported on this service/resource.");
         }
 
         // We can not cancel an operation if it was never started
@@ -248,12 +245,10 @@ public class Poller<T> {
      */
     public PollResponse<T> blockUntil(OperationStatus statusToBlockFor, Duration timeout) {
         if (statusToBlockFor == null) {
-            logger.logAndThrow(new IllegalArgumentException("Null value for status is not allowed."));
-            return null;
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("Null value for status is not allowed."));
         }
         if (timeout != null && timeout.toNanos() <= 0) {
-            logger.logAndThrow(new IllegalArgumentException("Negative or zero value for timeout is not allowed."));
-            return null;
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("Negative or zero value for timeout is not allowed."));
         }
         if (!isAutoPollingEnabled()) {
             setAutoPollingEnabled(true);

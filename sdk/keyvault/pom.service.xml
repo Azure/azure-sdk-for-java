@@ -19,7 +19,8 @@
     <module>microsoft-azure-keyvault-complete</module>
     
     <!-- Track 2 -->
-    <module>../core</module> <!-- NOTE: We need to build core so we can build against the version in the repo. -->
+    <module>../core/azure-core</module> <!-- NOTE: We need to build core so we can build against the version in the repo. -->
+    <module>../core/azure-core-test</module> <!-- NOTE: We need to build core so we can build against the version in the repo. -->
     <module>../identity/azure-identity</module> <!-- NOTE: We need to build identity so we can build against the version in the repo. -->
     <module>azure-keyvault-keys</module>
     <module>azure-keyvault-secrets</module>

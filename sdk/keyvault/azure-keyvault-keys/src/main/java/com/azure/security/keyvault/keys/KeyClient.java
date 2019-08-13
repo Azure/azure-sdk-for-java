@@ -6,6 +6,7 @@ package com.azure.security.keyvault.keys;
 import com.azure.core.exception.HttpRequestException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.annotation.ServiceClient;
@@ -34,6 +35,7 @@ import java.util.Objects;
  * {@codesnippet com.azure.security.keyvault.keys.keyclient.instantiation}
  *
  * @see KeyClientBuilder
+ * @see PagedIterable
  */
 @ServiceClient(builder = KeyClientBuilder.class, serviceInterfaces = KeyService.class)
 public final class KeyClient {
@@ -66,7 +68,7 @@ public final class KeyClient {
      * @return The {@link Key created key}.
      */
     public Key createKey(String name, KeyType keyType) {
-        return client.createKey(name, keyType, Context.NONE).block().value();
+        return client.createKeyWithResponse(name, keyType, Context.NONE).block().value();
     }
 
     /**
@@ -90,7 +92,7 @@ public final class KeyClient {
      * @return The {@link Key created key}.
      */
     public Key createKey(KeyCreateOptions keyCreateOptions) {
-        return this.createKeyWithResponse(keyCreateOptions, Context.NONE).value();
+        return createKeyWithResponse(keyCreateOptions, Context.NONE).value();
     }
 
     /**
@@ -115,7 +117,7 @@ public final class KeyClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
      */
     public Response<Key> createKeyWithResponse(KeyCreateOptions keyCreateOptions, Context context) {
-        return client.createKey(keyCreateOptions, context).block();
+        return client.createKeyWithResponse(keyCreateOptions, context).block();
     }
 
     /**
@@ -140,7 +142,7 @@ public final class KeyClient {
      * @return The {@link Key created key}.
      */
     public Key createRsaKey(RsaKeyCreateOptions rsaKeyCreateOptions) {
-        return this.createKeyWithResponse(rsaKeyCreateOptions, Context.NONE).value();
+        return createRsaKeyWithResponse(rsaKeyCreateOptions, Context.NONE).value();
     }
 
     /**
@@ -156,7 +158,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new RSA key with size 2048 which activates in one day and expires in one year. Prints out the details of the created key.</p>
-     * {@codesnippet com.azure.keyvault.keys.keyclient.createRsaKeyWithResponse#keyOptions}
+     * {@codesnippet com.azure.keyvault.keys.keyclient.createRsaKeyWithResponse#keyOptions-Context}
      *
      * @param rsaKeyCreateOptions The key options object containing information about the rsa key being created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -166,7 +168,7 @@ public final class KeyClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
      */
     public Response<Key> createRsaKeyWithResponse(RsaKeyCreateOptions rsaKeyCreateOptions, Context context) {
-        return client.createRsaKey(rsaKeyCreateOptions, context).block();
+        return client.createRsaKeyWithResponse(rsaKeyCreateOptions, context).block();
     }
 
     /**
@@ -192,7 +194,7 @@ public final class KeyClient {
      * @return The {@link Key created key}.
      */
     public Key createEcKey(EcKeyCreateOptions ecKeyCreateOptions) {
-        return this.createEcKeyWithResponse(ecKeyCreateOptions, Context.NONE).value();
+        return createEcKeyWithResponse(ecKeyCreateOptions, Context.NONE).value();
     }
 
     /**
@@ -209,7 +211,7 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key with P-384 web key curve. The key activates in one day and expires in one year. Prints out
      * the details of the created key.</p>
-     * {@codesnippet com.azure.keyvault.keys.keyclient.createEcKeyWithResponse#keyOptions}
+     * {@codesnippet com.azure.keyvault.keys.keyclient.createEcKeyWithResponse#keyOptions-Context}
      *
      * @param ecKeyCreateOptions The key options object containing information about the ec key being created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -219,7 +221,7 @@ public final class KeyClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
      */
     public Response<Key> createEcKeyWithResponse(EcKeyCreateOptions ecKeyCreateOptions, Context context) {
-        return client.createEcKey(ecKeyCreateOptions, context).block();
+        return client.createEcKeyWithResponse(ecKeyCreateOptions, context).block();
     }
 
     /**
@@ -239,7 +241,7 @@ public final class KeyClient {
      * @return The {@link Key imported key}.
      */
     public Key importKey(String name, JsonWebKey keyMaterial) {
-        return client.importKey(name, keyMaterial, Context.NONE).block().value();
+        return client.importKeyWithResponse(name, keyMaterial, Context.NONE).block().value();
     }
 
     /**
@@ -268,7 +270,7 @@ public final class KeyClient {
      * @return The {@link Key imported key}.
      */
     public Key importKey(KeyImportOptions keyImportOptions) {
-        return this.importKeyWithResponse(keyImportOptions, Context.NONE).value();
+        return importKeyWithResponse(keyImportOptions, Context.NONE).value();
     }
 
     /**
@@ -298,7 +300,7 @@ public final class KeyClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key imported key}.
      */
     public Response<Key> importKeyWithResponse(KeyImportOptions keyImportOptions, Context context) {
-        return client.importKey(keyImportOptions, context).block();
+        return client.importKeyWithResponse(keyImportOptions, context).block();
     }
 
     /**
@@ -315,7 +317,7 @@ public final class KeyClient {
      * @return The requested {@link Key key}.
      */
     public Key getKey(String name, String version) {
-        return this.getKeyWithResponse(name, version, Context.NONE).value();
+        return getKeyWithResponse(name, version, Context.NONE).value();
     }
 
     /**
@@ -333,7 +335,7 @@ public final class KeyClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
      */
     public Response<Key> getKeyWithResponse(String name, String version, Context context) {
-        return client.getKey(name, version, context).block();
+        return client.getKeyWithResponse(name, version, context).block();
     }
 
     /**
@@ -350,7 +352,7 @@ public final class KeyClient {
      * @return The requested {@link Key key}.
      */
     public Key getKey(String name) {
-        return this.getKeyWithResponse(name, "", Context.NONE).value();
+        return getKeyWithResponse(name, "", Context.NONE).value();
     }
 
     /**
@@ -368,11 +370,27 @@ public final class KeyClient {
      * @return The requested {@link Key key}.
      */
     public Key getKey(KeyBase keyBase) {
+        return getKeyWithResponse(keyBase, Context.NONE).value();
+    }
+
+    /**
+     * Get public part of the key which represents {@link KeyBase keyBase} from the key vault. The get key operation is applicable
+     * to all key types and it requires the {@code keys/get} permission.
+     *
+     * <p>The list operations {@link KeyClient#listKeys()} and {@link KeyClient#listKeyVersions(String)} return
+     * the {@link List} containing {@link KeyBase base key} as output excluding the key material of the key.
+     * This operation can then be used to get the full key with its key material from {@code keyBase}. </p>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.getKeyWithResponse#KeyBase-Context}
+     *
+     * @param keyBase The {@link KeyBase base key} holding attributes of the key being requested.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version() version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link KeyBase#name()}  name} or {@link KeyBase#version() version} is empty string.
+     * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
+     */
+    public Response<Key> getKeyWithResponse(KeyBase keyBase, Context context) {
         Objects.requireNonNull(keyBase, "The Key Base parameter cannot be null.");
-        if (keyBase.version() == null) {
-            return getKey(keyBase.name());
-        }
-        return getKeyWithResponse(keyBase.name(), keyBase.version(), Context.NONE).value();
+        return client.getKeyWithResponse(keyBase.name(), keyBase.version() == null ? "" : keyBase.version(), context).block();
     }
 
     /**
@@ -391,7 +409,7 @@ public final class KeyClient {
      * @return The {@link KeyBase updated key}.
      */
     public Key updateKey(KeyBase key) {
-        return this.updateKeyWithResponse(key, Context.NONE).value();
+        return client.updateKeyWithResponse(key, Context.NONE).block().value();
     }
 
     /**
@@ -411,7 +429,7 @@ public final class KeyClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
      */
     public Key updateKey(KeyBase key, KeyOperation... keyOperations) {
-        return this.updateKeyWithResponse(key, Context.NONE, keyOperations).value();
+        return updateKeyWithResponse(key, Context.NONE, keyOperations).value();
     }
 
     /**
@@ -432,7 +450,7 @@ public final class KeyClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
      */
     public Response<Key> updateKeyWithResponse(KeyBase key,  Context context, KeyOperation... keyOperations) {
-        return client.updateKey(key, context, keyOperations).block();
+        return client.updateKeyWithResponse(key, context, keyOperations).block();
     }
 
     /**
@@ -452,7 +470,7 @@ public final class KeyClient {
      * @return The {@link DeletedKey deleted key}.
      */
     public DeletedKey deleteKey(String name) {
-        return this.deleteKeyWithResponse(name, Context.NONE).value();
+        return deleteKeyWithResponse(name, Context.NONE).value();
     }
 
     /**
@@ -473,7 +491,7 @@ public final class KeyClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link DeletedKey deleted key}.
      */
     public Response<DeletedKey> deleteKeyWithResponse(String name, Context context) {
-        return client.deleteKey(name, context).block();
+        return client.deleteKeyWithResponse(name, context).block();
     }
 
     /**
@@ -483,7 +501,6 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the deleted key from the key vault enabled for soft-delete. Prints out the details of the deleted key
      * returned in the response.</p>
-     * <pre>
      * //Assuming key is deleted on a soft-delete enabled key vault.
      * {@codesnippet com.azure.keyvault.keys.keyclient.getDeletedKey#string}
      * </pre>
@@ -494,7 +511,7 @@ public final class KeyClient {
      * @return The {@link DeletedKey deleted key}.
      */
     public DeletedKey getDeletedKey(String name) {
-        return this.getDeletedKeyWithResponse(name, Context.NONE).value();
+        return getDeletedKeyWithResponse(name, Context.NONE).value();
     }
 
     /**
@@ -504,7 +521,6 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the deleted key from the key vault enabled for soft-delete. Prints out the details of the deleted key
      * returned in the response.</p>
-     * <pre>
      * //Assuming key is deleted on a soft-delete enabled key vault.
      * {@codesnippet com.azure.keyvault.keys.keyclient.getDeletedKeyWithResponse#string-Context}
      *
@@ -515,7 +531,7 @@ public final class KeyClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link DeletedKey deleted key}.
      */
     public Response<DeletedKey> getDeletedKeyWithResponse(String name, Context context) {
-        return client.getDeletedKey(name, context).block();
+        return client.getDeletedKeyWithResponse(name, context).block();
     }
 
     /**
@@ -533,7 +549,7 @@ public final class KeyClient {
      * @return A {@link VoidResponse}.
      */
     public VoidResponse purgeDeletedKey(String name) {
-        return client.purgeDeletedKey(name, Context.NONE).block();
+        return purgeDeletedKey(name, Context.NONE);
     }
 
     /**
@@ -571,7 +587,7 @@ public final class KeyClient {
      * @return The {@link Key recovered key}.
      */
     public Key recoverDeletedKey(String name) {
-        return this.recoverDeletedKeyWithResponse(name, Context.NONE).value();
+        return recoverDeletedKeyWithResponse(name, Context.NONE).value();
     }
 
     /**
@@ -591,7 +607,7 @@ public final class KeyClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key recovered key}.
      */
     public Response<Key> recoverDeletedKeyWithResponse(String name, Context context) {
-        return client.recoverDeletedKey(name, context).block();
+        return client.recoverDeletedKeyWithResponse(name, context).block();
     }
 
     /**
@@ -614,7 +630,7 @@ public final class KeyClient {
      * @return The backed up key blob.
      */
     public byte[] backupKey(String name) {
-        return this.backupKeyWithResponse(name, Context.NONE).value();
+        return backupKeyWithResponse(name, Context.NONE).value();
     }
 
     /**
@@ -638,7 +654,7 @@ public final class KeyClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the backed up key blob.
      */
     public Response<byte[]> backupKeyWithResponse(String name, Context context) {
-        return client.backupKey(name, context).block();
+        return client.backupKeyWithResponse(name, context).block();
     }
 
     /**
@@ -660,7 +676,7 @@ public final class KeyClient {
      * @return The {@link Key restored key}.
      */
     public Key restoreKey(byte[] backup) {
-        return this.restoreKeyWithResponse(backup, Context.NONE).value();
+        return restoreKeyWithResponse(backup, Context.NONE).value();
     }
 
     /**
@@ -683,7 +699,7 @@ public final class KeyClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key restored key}.
      */
     public Response<Key> restoreKeyWithResponse(byte[] backup, Context context) {
-        return client.restoreKey(backup, context).block();
+        return client.restoreKeyWithResponse(backup, context).block();
     }
 
     /**
@@ -695,10 +711,15 @@ public final class KeyClient {
      * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key key} with key material included of its latest version.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys}
      *
-     * @return A {@link List} containing {@link KeyBase key} of all the keys in the vault.
+     * <p><strong>Code Samples to iterate keys by page</strong></p>
+     * <p>It is possible to get full keys with key material from this information. Iterate over all the {@link KeyBase key} by page and
+     * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key key} with key material included of its latest version.</p>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys.iterableByPage}
+     *
+     * @return {@link PagedIterable} of {@link KeyBase key} of all the keys in the vault.
      */
-    public Iterable<KeyBase> listKeys() {
-        return client.listKeys(Context.NONE).toIterable();
+    public PagedIterable<KeyBase> listKeys() {
+        return listKeys(Context.NONE);
     }
 
     /**
@@ -710,11 +731,16 @@ public final class KeyClient {
      * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key key} with key material included of its latest version.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys#Context}
      *
+     * <p><strong>Code Samples to iterate keys by page</strong></p>
+     * <p>It is possible to get full keys with key material from this information. Iterate over all the {@link KeyBase key} by page and
+     * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key key} with key material included of its latest version.</p>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys.iterableByPage}
+     *
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link List} containing {@link KeyBase key} of all the keys in the vault.
+     * @return {@link PagedIterable} of {@link KeyBase key} of all the keys in the vault.
      */
-    public Iterable<KeyBase> listKeys(Context context) {
-        return client.listKeys(context).toIterable();
+    public PagedIterable<KeyBase> listKeys(Context context) {
+        return  new PagedIterable<>(client.listKeys(context));
     }
 
     /**
@@ -726,10 +752,14 @@ public final class KeyClient {
      * <p>Lists the deleted keys in the key vault and for each deleted key prints out its recovery id.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listDeletedKeys}
      *
-     * @return A {@link List} containing all of the {@link DeletedKey deleted keys} in the vault.
+     * <p><strong>Code Samples to iterate over deleted keys by page</strong></p>
+     * <p>Iterate over the lists the deleted keys by each page in the key vault and for each deleted key prints out its recovery id.</p>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.listDeletedKeys.iterableByPage}
+     *
+     * @return {@link PagedIterable} of all of the {@link DeletedKey deleted keys} in the vault.
      */
-    public Iterable<DeletedKey> listDeletedKeys() {
-        return client.listDeletedKeys().toIterable();
+    public PagedIterable<DeletedKey> listDeletedKeys() {
+        return listDeletedKeys(Context.NONE);
     }
 
     /**
@@ -741,11 +771,15 @@ public final class KeyClient {
      * <p>Lists the deleted keys in the key vault and for each deleted key prints out its recovery id.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listDeletedKeys#Context}
      *
+     * <p><strong>Code Samples to iterate over deleted keys by page</strong></p>
+     * <p>Iterate over the lists the deleted keys by each page in the key vault and for each deleted key prints out its recovery id.</p>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.listDeletedKeys.iterableByPage}
+     *
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link List} containing all of the {@link DeletedKey deleted keys} in the vault.
+     * @return {@link PagedIterable} of all of the {@link DeletedKey deleted keys} in the vault.
      */
-    public Iterable<DeletedKey> listDeletedKeys(Context context) {
-        return client.listDeletedKeys(context).toIterable();
+    public PagedIterable<DeletedKey> listDeletedKeys(Context context) {
+        return new PagedIterable<>(client.listDeletedKeys(context));
     }
 
     /**
@@ -757,13 +791,18 @@ public final class KeyClient {
      * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key keys} with key material included of the specified versions.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions}
      *
+     * <p><strong>Code Samples to iterate over key versions by page</strong></p>
+     * <p>It is possible to get full keys with key material for each version from this information. Iterate over all the {@link KeyBase key} by page and
+     * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key keys} with key material included of the specified versions.</p>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage}
+     *
      * @param name The name of the key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
-     * @return A {@link List} containing {@link KeyBase key} of all the versions of the specified key in the vault. List is empty if key with {@code name} does not exist in key vault.
+     * @return {@link PagedIterable} of {@link KeyBase key} of all the versions of the specified key in the vault. List is empty if key with {@code name} does not exist in key vault.
      */
-    public Iterable<KeyBase> listKeyVersions(String name) {
-        return client.listKeyVersions(name).toIterable();
+    public PagedIterable<KeyBase> listKeyVersions(String name) {
+        return listKeyVersions(name, Context.NONE);
     }
 
     /**
@@ -775,13 +814,18 @@ public final class KeyClient {
      * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key keys} with key material included of the specified versions.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions}
      *
+     * <p><strong>Code Samples to iterate over key versions by page</strong></p>
+     * <p>It is possible to get full keys with key material for each version from this information. Iterate over all the {@link KeyBase key} by page and
+     * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key keys} with key material included of the specified versions.</p>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage}
+     *
      * @param name The name of the key.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
-     * @return A {@link List} containing {@link KeyBase key} of all the versions of the specified key in the vault. List is empty if key with {@code name} does not exist in key vault.
+     * @return {@link PagedIterable} of {@link KeyBase key} of all the versions of the specified key in the vault. List is empty if key with {@code name} does not exist in key vault.
      */
-    public Iterable<KeyBase> listKeyVersions(String name, Context context) {
-        return client.listKeyVersions(name, context).toIterable();
+    public PagedIterable<KeyBase> listKeyVersions(String name, Context context) {
+        return new PagedIterable<>(client.listKeyVersions(name, context));
     }
 }

@@ -10,7 +10,6 @@ import com.azure.core.util.configuration.Configuration;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -18,7 +17,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -56,8 +55,6 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = KeyClient.class)
 public final class KeyClientBuilder {
-    private final ClientLogger logger = new ClientLogger(KeyClientBuilder.class);
-
     private final List<HttpPipelinePolicy> policies;
     private TokenCredential credential;
     private HttpPipeline pipeline;
@@ -93,7 +90,7 @@ public final class KeyClientBuilder {
     public KeyClient buildClient() {
         return new KeyClient(buildAsyncClient());
     }
-    
+
     /**
      * Creates a {@link KeyAsyncClient} based on options set in the builder.
      * Every time {@code buildAsyncClient()} is called, a new instance of {@link KeyAsyncClient} is created.
@@ -113,8 +110,7 @@ public final class KeyClientBuilder {
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            logger.logAndThrow(new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
-            return null;
+            throw new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
         if (pipeline != null) {
@@ -122,8 +118,7 @@ public final class KeyClientBuilder {
         }
 
         if (credential == null) {
-            logger.logAndThrow(new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.CREDENTIAL_REQUIRED)));
-            return null;
+            throw new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.CREDENTIAL_REQUIRED));
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -131,7 +126,7 @@ public final class KeyClientBuilder {
         policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
-        policies.add(new BearerTokenAuthenticationPolicy(credential, KeyAsyncClient.KEY_VAULT_SCOPE));
+        policies.add(new KeyVaultCredentialPolicy(credential));
         policies.addAll(this.policies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
@@ -155,8 +150,7 @@ public final class KeyClientBuilder {
         try {
             this.endpoint = new URL(endpoint);
         } catch (MalformedURLException e) {
-            logger.logAndThrow(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed."));
-            return null;
+            throw new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.");
         }
         return this;
     }

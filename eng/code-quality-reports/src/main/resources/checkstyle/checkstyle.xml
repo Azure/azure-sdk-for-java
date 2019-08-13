@@ -169,7 +169,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
     <!-- Checks for braces around if and else blocks -->
     <module name="NeedBraces">
-      <property name="severity" value="warning"/>
       <property name="tokens" value="LITERAL_IF, LITERAL_ELSE, LITERAL_FOR, LITERAL_WHILE, LITERAL_DO"/>
     </module>
 
@@ -308,6 +307,11 @@ page at http://checkstyle.sourceforge.net/config.html -->
     1) The annotation property 'name' should be non-empty
     2) The length of value of property 'name' should be less than 20 characters and without space -->
     <module name="com.azure.tools.checkstyle.checks.ServiceInterfaceCheck"/>
+
+    <!-- CUSTOM CHECKS -->
+    <!-- The @Immutable class should have the following rules:
+    1) All fields must be final -->
+    <module name="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClassCheck"/>
 
     <!--CUSTOM CHECKS-->
     <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
