@@ -10,7 +10,7 @@ import com.azure.core.amqp.RetryPolicy;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubProducer;
+import com.azure.messaging.eventhubs.EventHubAsyncProducer;
 import com.azure.messaging.eventhubs.implementation.handler.ReceiveLinkHandler;
 import com.azure.messaging.eventhubs.implementation.handler.SendLinkHandler;
 import com.azure.messaging.eventhubs.implementation.handler.SessionHandler;
@@ -147,7 +147,7 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
                 try {
                     provider.getReactorDispatcher().invoke(() -> {
                         sender.open();
-                        final ReactorSender reactorSender = new ReactorSender(entityPath, sender, sendLinkHandler, provider, tokenManager, timeout, retry, EventHubProducer.MAX_MESSAGE_LENGTH_BYTES);
+                        final ReactorSender reactorSender = new ReactorSender(entityPath, sender, sendLinkHandler, provider, tokenManager, timeout, retry, EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES);
                         openSendLinks.put(linkName, reactorSender);
                         sink.success(reactorSender);
                     });
