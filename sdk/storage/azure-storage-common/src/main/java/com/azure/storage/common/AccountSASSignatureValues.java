@@ -1,12 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.common;
 
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
 import java.time.OffsetDateTime;
@@ -14,7 +10,7 @@ import java.time.OffsetDateTime;
 /**
  * AccountSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account. Once
  * all the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS
- * which can actually be applied to blob urls. Note: that both this class and {@link SASQueryParameters} exist because
+ * which can actually be applied to blob urls. Note: that both this class and {@link AccountSASQueryParameters} exist because
  * the former is mutable and a logical representation while the latter is immutable and used to generate actual REST
  * requests.
  * <p>
@@ -31,7 +27,7 @@ import java.time.OffsetDateTime;
  * <a href=https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java>here</a>
  * for additional samples.</p>
  */
-final class AccountSASSignatureValues {
+public final class AccountSASSignatureValues {
 
     private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
@@ -53,7 +49,7 @@ final class AccountSASSignatureValues {
      * Initializes an {@code AccountSASSignatureValues} object with the version number set to the default and all
      * other values empty.
      */
-    AccountSASSignatureValues() {
+    public AccountSASSignatureValues() {
     }
 
     /**
@@ -208,16 +204,16 @@ final class AccountSASSignatureValues {
     }
 
     /**
-     * Generates a {@link SASQueryParameters} object which contains all SAS query parameters needed to make an actual
+     * Generates a {@link AccountSASQueryParameters} object which contains all SAS query parameters needed to make an actual
      * REST request.
      *
      * @param sharedKeyCredentials
      *         Credentials for the storage account and corresponding primary or secondary key.
      *
-     * @return {@link SASQueryParameters}
+     * @return {@link AccountSASQueryParameters}
      * @throws RuntimeException If the HMAC-SHA256 signature for {@code sharedKeyCredentials} fails to generate.
      */
-    public SASQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
+    public AccountSASQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("SharedKeyCredential", sharedKeyCredentials);
         Utility.assertNotNull("services", this.services);
         Utility.assertNotNull("resourceTypes", this.resourceTypes);
@@ -228,9 +224,8 @@ final class AccountSASSignatureValues {
         // Signature is generated on the un-url-encoded values.
         String signature = sharedKeyCredentials.computeHmac256(stringToSign(sharedKeyCredentials));
 
-        return new SASQueryParameters(this.version, this.services, resourceTypes,
-                this.protocol, this.startTime, this.expiryTime, this.ipRange, null,
-                null, this.permissions, signature, null, null, null, null, null, null);
+        return new AccountSASQueryParameters(this.version, this.services, resourceTypes,
+                this.protocol, this.startTime, this.expiryTime, this.ipRange, this.permissions, signature);
     }
 
     private String stringToSign(final SharedKeyCredential sharedKeyCredentials) {

@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.common.SR;
+
 import java.util.Locale;
 
 /**

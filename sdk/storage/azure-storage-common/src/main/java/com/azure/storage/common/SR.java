@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.common;
 
 /**
  * RESERVED FOR INTERNAL USE. Provides a standard set of errors that could be thrown from the client library.
  */
-final class SR {
+public final class SR {
     // TODO: Do we want to keep any of what's left?
     public static final String ACCOUNT_NAME_NULL_OR_EMPTY = "The account name is null or empty.";
     public static final String ACCOUNT_NAME_MISMATCH = "The account name does not match the existing account name on the credentials.";
