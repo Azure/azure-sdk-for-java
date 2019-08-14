@@ -65,7 +65,9 @@ class PartitionProcessorImpl implements PartitionProcessor {
         this.options.requestContinuation(this.lastContinuation);
 
         return Flux.just(this)
-            .flatMap(value -> this.documentClient.createDocumentChangeFeedQuery(this.settings.getCollectionSelfLink(), this.options))
+            .flatMap(value -> this.documentClient.createDocumentChangeFeedQuery(this.settings.getCollectionSelfLink(), this.options)
+                .limitRequest(1)
+            )
             .flatMap(documentFeedResponse -> {
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
 
