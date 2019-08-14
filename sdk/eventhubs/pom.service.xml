@@ -7,8 +7,6 @@
   <artifactId>azure-eventhubs-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
-  <modules>
-  </modules>
   <profiles>
     <profile>
       <id>data</id>
