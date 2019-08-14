@@ -3,6 +3,7 @@
 
 package com.azure.data.cosmos.internal.directconnectivity;
 
+import com.azure.data.cosmos.CosmosKeyCredential;
 import com.azure.data.cosmos.internal.AsyncDocumentClient;
 import com.azure.data.cosmos.internal.AsyncDocumentClient.Builder;
 import com.azure.data.cosmos.BridgeInternal;
@@ -56,7 +57,7 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
         client = clientBuilder().build();
         SpyClientUnderTestFactory.ClientUnderTest clientUnderTest = SpyClientUnderTestFactory.createClientUnderTest(this.clientBuilder());
         HttpClient httpClient = clientUnderTest.getSpyHttpClient();
-        baseAuthorizationTokenProvider = new BaseAuthorizationTokenProvider(TestConfigurations.MASTER_KEY);
+        baseAuthorizationTokenProvider = new BaseAuthorizationTokenProvider(new CosmosKeyCredential(TestConfigurations.MASTER_KEY));
         connectionPolicy = ConnectionPolicy.defaultPolicy();
         mockHttpClient = Mockito.mock(HttpClient.class);
         mockGatewayServiceConfigurationReader = new GatewayServiceConfigurationReader(new URI(TestConfigurations.HOST),

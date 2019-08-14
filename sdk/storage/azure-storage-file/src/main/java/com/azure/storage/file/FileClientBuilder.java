@@ -16,6 +16,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
@@ -178,7 +179,7 @@ public class FileClientBuilder {
      * that the client will interact with. Rest of the path segments should be the path of the file.
      * It mush end up with the file name if more segments exist.</p>
      *
-     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQuery(String)} in an
+     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQueryParameters(Map)} in an
      * attempt to generate a {@link SASTokenCredential} to authenticate requests sent to the service.</p>
      *
      * @param endpoint The URL of the Azure Storage File instance to send service requests to and receive responses from.
@@ -198,7 +199,7 @@ public class FileClientBuilder {
             this.filePath = filePathParams != null ? String.join("/", filePathParams) : this.filePath;
 
             // Attempt to get the SAS token from the URL passed
-            this.sasTokenCredential = SASTokenCredential.fromQuery(fullURL.getQuery());
+            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
             if (this.sasTokenCredential != null) {
                 this.sharedKeyCredential = null;
             }

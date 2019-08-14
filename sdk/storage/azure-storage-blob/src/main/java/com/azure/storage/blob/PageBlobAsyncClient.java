@@ -20,6 +20,7 @@ import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
+import com.azure.storage.common.Constants;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -27,7 +28,7 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static com.azure.storage.blob.Utility.postProcessResponse;
+import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
 /**
  * Client to a page blob. It may only be instantiated through a {@link BlobClientBuilder}, via

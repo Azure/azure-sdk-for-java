@@ -5,17 +5,24 @@ package com.azure.storage.blob
 
 import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
+import com.azure.core.http.ProxyOptions
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.http.ProxyOptions
 import com.azure.core.http.rest.Response
 import com.azure.core.util.configuration.ConfigurationManager
-import com.azure.identity.credential.EnvironmentCredential
-import com.azure.storage.blob.models.*
+import com.azure.identity.credential.EnvironmentCredentialBuilder
+import com.azure.storage.blob.models.ContainerItem
+import com.azure.storage.blob.models.CopyStatusType
+import com.azure.storage.blob.models.LeaseStateType
+import com.azure.storage.blob.models.Metadata
+import com.azure.storage.blob.models.RetentionPolicy
+import com.azure.storage.blob.models.StorageServiceProperties
+import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
 import io.netty.buffer.ByteBuf
 import org.junit.Assume
@@ -367,7 +374,7 @@ class APISpec extends Specification {
 
     def getMockRequest() {
         HttpHeaders headers = new HttpHeaders()
-        headers.set(Constants.HeaderConstants.CONTENT_ENCODING, "en-US")
+        headers.put(Constants.HeaderConstants.CONTENT_ENCODING, "en-US")
         URL url = new URL("http://devtest.blob.core.windows.net/test-container/test-blob")
         HttpRequest request = new HttpRequest(HttpMethod.POST, url, headers, null)
         return request
@@ -567,7 +574,7 @@ class APISpec extends Specification {
     def getOAuthServiceURL() {
         return new BlobServiceClientBuilder()
             .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCreds.accountName()))
-            .credential(new EnvironmentCredential()) // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            .credential(new EnvironmentCredentialBuilder().build()) // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .buildClient()
     }

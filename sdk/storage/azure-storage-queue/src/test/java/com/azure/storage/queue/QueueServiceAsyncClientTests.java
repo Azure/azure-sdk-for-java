@@ -204,6 +204,9 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         }
 
         StepVerifier.create(serviceClient.listQueues(defaultSegmentOptions().maxResults(2)))
+            .assertNext(queueItem -> helper.assertQueuesAreEqual(queueItem, testQueues.pop()))
+            .assertNext(queueItem -> helper.assertQueuesAreEqual(queueItem, testQueues.pop()))
+            .assertNext(queueItem -> helper.assertQueuesAreEqual(queueItem, testQueues.pop()))
             .verifyComplete();
     }
 
