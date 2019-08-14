@@ -8,6 +8,7 @@ the MIT License. See License.txt in the project root for license information. --
     <artifactId>azure-keyvault-parent</artifactId>
     <version>1.2.1</version>
     <relativePath>../pom.data.xml</relativePath>
+    
   </parent>
 
   <groupId>com.microsoft.azure</groupId>
