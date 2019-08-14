@@ -3,6 +3,8 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.util.IterableStream;
+
 import java.util.stream.Stream;
 
 /**
@@ -20,11 +22,11 @@ import java.util.stream.Stream;
  *
  * {@codesnippet com.azure.core.http.rest.pagedIterable.iterableByPage.while}
  *
- * @param  <T> The type of value contained in this {@link IterableResponse}.
+ * @param  <T> The type of value contained in this {@link IterableStream}.
  * @see PagedResponse
- * @see IterableResponse
+ * @see IterableStream
  */
-public class PagedIterable<T> extends IterableResponse<T>  {
+public class PagedIterable<T> extends IterableStream<T> {
     private final PagedFlux<T> pagedFlux;
 
     /**
