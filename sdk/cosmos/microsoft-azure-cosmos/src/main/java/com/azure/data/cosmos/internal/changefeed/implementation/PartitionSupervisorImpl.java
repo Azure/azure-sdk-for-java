@@ -19,6 +19,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -57,40 +58,27 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
 
         this.observer.open(context);
 
+        this.processorCancellation = new CancellationTokenSource();
+
+        executorService.execute(() -> this.processor.run(this.processorCancellation.getToken())
+            .subscribe());
+
+        this.renewerCancellation = new CancellationTokenSource();
+
+        executorService.execute(() -> this.renewer.run(this.renewerCancellation.getToken())
+            .subscribe());
+
+        return Mono.just(this)
+            .delayElement(Duration.ofMillis(100))
+            .repeat( () -> !shutdownToken.isCancellationRequested() && this.processor.getResultException() == null && this.renewer.getResultException() == null)
+            .last()
+            .flatMap( value -> this.afterRun(context, shutdownToken));
+    }
+
+    private Mono<Void> afterRun(ChangeFeedObserverContext context, CancellationToken shutdownToken) {
         ChangeFeedObserverCloseReason closeReason = ChangeFeedObserverCloseReason.UNKNOWN;
 
         try {
-            PartitionSupervisorImpl self = this;
-            this.processorCancellation = new CancellationTokenSource();
-
-            Thread processorThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    self.processor.run(self.processorCancellation.getToken())
-                        .subscribe();
-                }
-            });
-
-            this.renewerCancellation = new CancellationTokenSource();
-
-            Thread renewerThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    self.renewer.run(self.renewerCancellation.getToken())
-                        .subscribe();
-                }
-            });
-
-            this.executorService.execute(processorThread);
-            this.executorService.execute(renewerThread);
-
-            while (!shutdownToken.isCancellationRequested() && this.processor.getResultException() == null && this.renewer.getResultException() == null) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException iex) {
-                    break;
-                }
-            }
 
             this.processorCancellation.cancel();
             this.renewerCancellation.cancel();

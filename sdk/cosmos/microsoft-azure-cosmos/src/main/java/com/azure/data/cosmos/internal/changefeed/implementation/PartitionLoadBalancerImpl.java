@@ -70,8 +70,7 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
         }
 
         return Mono.fromRunnable( () -> {
-            Thread thread = new Thread(() -> this.run(this.cancellationTokenSource.getToken()).subscribe());
-            executorService.execute(thread);
+            executorService.execute(() -> this.run(this.cancellationTokenSource.getToken()).subscribe());
         });
     }
 

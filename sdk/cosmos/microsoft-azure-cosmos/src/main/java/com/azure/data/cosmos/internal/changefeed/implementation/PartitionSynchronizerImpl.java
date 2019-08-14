@@ -92,7 +92,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                 return this.leaseManager.createLeaseIfNotExist(addedRangeId, lastContinuationToken);
             }, this.degreeOfParallelism)
             .map(newLease -> {
-                logger.info("Partition %s split into new partition with lease token {}.", leaseToken, newLease.getLeaseToken());
+                logger.info("Partition {} split into new partition with lease token {}.", leaseToken, newLease.getLeaseToken());
                 return newLease;
             });
     }
