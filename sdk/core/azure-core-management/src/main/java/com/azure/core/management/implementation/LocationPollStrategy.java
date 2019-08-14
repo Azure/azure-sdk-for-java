@@ -76,10 +76,6 @@ public final class LocationPollStrategy extends PollStrategy {
         URL getLocationUrl() {
             return locationUrl;
         }
-
-        void setLocationUrl(URL locationUrl) {
-            this.locationUrl = locationUrl;
-        }
     }
 
     @Override
@@ -97,7 +93,7 @@ public final class LocationPollStrategy extends PollStrategy {
                         String newLocationUrl = getHeader(response);
                         if (newLocationUrl != null) {
                             try {
-                                data.setLocationUrl(new URL(newLocationUrl));
+                                data.locationUrl = new URL(newLocationUrl);
                             } catch (MalformedURLException mfue) {
                                 throw Exceptions.propagate(mfue);
                             }

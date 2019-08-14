@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 public class DirectoryClientTests extends DirectoryClientTestBase {
     private final ClientLogger directoryLogger = new ClientLogger(DirectoryClientTests.class);
-    private static final String SHARE_NAME = "dirsharename";
+    private static String shareName = "dirsharename";
     private static ShareClient shareClient;
     private DirectoryClient directoryClient;
 
@@ -31,7 +31,7 @@ public class DirectoryClientTests extends DirectoryClientTestBase {
         if (interceptorManager.isPlaybackMode()) {
             directoryClient = setupClient((connectionString, endpoint) -> new DirectoryClientBuilder()
                              .connectionString(connectionString)
-                             .shareName(SHARE_NAME)
+                             .shareName(shareName)
                              .directoryPath(dirName)
                              .httpClient(interceptorManager.getPlaybackClient())
                              .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
@@ -39,7 +39,7 @@ public class DirectoryClientTests extends DirectoryClientTestBase {
         } else {
             directoryClient = setupClient((connectionString, endpoint) -> new DirectoryClientBuilder()
                              .connectionString(connectionString)
-                             .shareName(SHARE_NAME)
+                             .shareName(shareName)
                              .directoryPath(dirName)
                              .httpClient(HttpClient.createDefault().wiretap(true))
                              .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
@@ -56,7 +56,7 @@ public class DirectoryClientTests extends DirectoryClientTestBase {
         FileServiceClient fileServiceClient = new FileServiceClientBuilder()
                                                   .connectionString(ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING"))
                                                   .buildClient();
-        shareClient = fileServiceClient.getShareClient(SHARE_NAME);
+        shareClient = fileServiceClient.getShareClient(shareName);
         shareClient.create();
     }
 
@@ -72,7 +72,7 @@ public class DirectoryClientTests extends DirectoryClientTestBase {
     @Override
     public void urlFromDirClient() {
         if (interceptorManager.isPlaybackMode()) {
-            updateFileEndPoint("https://teststorage.file.core.windows.net/");
+            azureStorageFileEndpoint = "https://teststorage.file.core.windows.net/";
         }
         UrlBuilder urlBuilder = UrlBuilder.parse(azureStorageFileEndpoint);
         String endpointURL = new UrlBuilder().scheme(urlBuilder.scheme()).host(urlBuilder.host()).toString();

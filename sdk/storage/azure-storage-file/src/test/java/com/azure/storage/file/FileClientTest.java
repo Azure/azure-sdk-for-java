@@ -27,8 +27,8 @@ import static com.azure.storage.file.FileTestHelpers.setupClient;
 
 public class FileClientTest extends FileClientTestBase {
     private final ClientLogger fileLogger = new ClientLogger(FileClientTest.class);
-    private static final String SHARE_NAME = "filesharename";
-    private static final String DIR_NAME = "testdir/";
+    private static String shareName = "filesharename";
+    private static String dirName = "testdir/";
     private static ShareClient shareClient;
     String filePath;
 
@@ -36,11 +36,11 @@ public class FileClientTest extends FileClientTestBase {
 
     @Override
     public void beforeTest() {
-        filePath = DIR_NAME + testResourceNamer.randomName("file", 16);
+        filePath = dirName + testResourceNamer.randomName("file", 16);
         if (interceptorManager.isPlaybackMode()) {
             fileClient = setupClient((connectionString, endpoint) -> new FileClientBuilder()
                              .connectionString(connectionString)
-                             .shareName(SHARE_NAME)
+                             .shareName(shareName)
                              .filePath(filePath)
                              .httpClient(interceptorManager.getPlaybackClient())
                              .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
@@ -48,7 +48,7 @@ public class FileClientTest extends FileClientTestBase {
         } else {
             fileClient = setupClient((connectionString, endpoint) -> new FileClientBuilder()
                              .connectionString(connectionString)
-                             .shareName(SHARE_NAME)
+                             .shareName(shareName)
                              .filePath(filePath)
                              .httpClient(HttpClient.createDefault().wiretap(true))
                              .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
@@ -64,9 +64,9 @@ public class FileClientTest extends FileClientTestBase {
         FileServiceClient fileServiceClient = new FileServiceClientBuilder()
                                                   .connectionString(ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING"))
                                                   .buildClient();
-        shareClient = fileServiceClient.getShareClient(SHARE_NAME);
+        shareClient = fileServiceClient.getShareClient(shareName);
         shareClient.create();
-        shareClient.createDirectory(DIR_NAME);
+        shareClient.createDirectory(dirName);
     }
 
     @AfterClass
@@ -93,7 +93,7 @@ public class FileClientTest extends FileClientTestBase {
     @Override
     public void startCopy() throws Exception {
         FileTestHelpers.assertResponseStatusCode(fileClient.create(1024, null, null), 201);
-        String sourceURL = fileClient.getFileUrl().toString() + "/" + SHARE_NAME + "/" + filePath;
+        String sourceURL = fileClient.getFileUrl().toString() + "/" + shareName + "/" + filePath;
         Response<FileCopyInfo> copyInfoResponse = fileClient.startCopy(sourceURL, null);
         FileTestHelpers.assertResponseStatusCode(copyInfoResponse, 202);
         Assert.assertTrue(copyInfoResponse.value().copyId() != null);

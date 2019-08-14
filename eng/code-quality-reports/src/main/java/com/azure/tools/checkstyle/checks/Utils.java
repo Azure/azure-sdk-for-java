@@ -19,7 +19,9 @@ public class Utils {
      */
     private static final Set INVALID_FINAL_COMBINATION = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         TokenTypes.LITERAL_TRANSIENT,
-        TokenTypes.LITERAL_VOLATILE
+        TokenTypes.LITERAL_VOLATILE,
+        TokenTypes.LITERAL_DEFAULT,
+        TokenTypes.LITERAL_PROTECTED
     )));
 
     /*
