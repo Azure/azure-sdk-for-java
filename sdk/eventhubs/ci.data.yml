@@ -18,7 +18,7 @@ trigger:
     include:
       - sdk/eventhubs/
     exclude:
-      - sdk/eventhubs/microsoft-azure
+      - sdk/eventhubs/azure
 
 pr:
   branches:
@@ -31,12 +31,16 @@ pr:
     include:
       - sdk/eventhubs/
     exclude:
-      - sdk/eventhubs/microsoft-azure
+      - sdk/eventhubs/azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: eventhubs
       Artifacts:
-        - name: azure-messaging-eventhubs
-          safeName: azuremessagingeventhubs
+        - name: azure-eventhubs
+          safeName: azureeventhubs
+        - name: azure-eventhubs-eph
+          safeName: azureeventhubseph
+        - name: azure-eventhubs-extensions
+          safeName: azureeventhubsextensions
