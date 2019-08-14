@@ -66,7 +66,7 @@ jobs:
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
           goals: 'package'
-          options: '$(DefaultOptions) $(ProfileFlag) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -Dmaven.test.skip=true -Dinclude-template -T 1.5C' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) $(ProfileFlag) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -Dmaven.test.skip=true -Dinclude-template -T 1C' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
@@ -129,7 +129,7 @@ jobs:
         displayName: 'Run SpotBugs and CheckStyle'
         inputs:
           mavenPomFile: pom.client.xml
-          options: '-Djava-lts -DskipTests -Dgpg.skip -T 1.5C'
+          options: '-Djava-lts -DskipTests -Dgpg.skip -T 1C'
           mavenOptions: ''
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -144,7 +144,7 @@ jobs:
         condition: ne(variables['Build.Reason'], 'PullRequest')
         inputs:
           mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -Djava-lts -DskipTests -Dgpg.skip -T 1.5C'
+          options: '$(DefaultOptions) -Djava-lts -DskipTests -Dgpg.skip -T 1C'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -159,7 +159,7 @@ jobs:
         condition: ne(variables['Build.Reason'], 'PullRequest')
         inputs:
           mavenPomFile: eng/spotbugs-aggregate-report/pom.xml
-          options: '--batch-mode -Djava-lts -DskipTests -Dgpg.skip -T 1.5C'
+          options: '--batch-mode -Djava-lts -DskipTests -Dgpg.skip -T 1C'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -176,7 +176,7 @@ jobs:
         displayName: 'Install azure-sdk-parent'
         inputs:
           mavenPomFile: parent/pom.xml
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -T 1.5C'
+          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -T 1C'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
