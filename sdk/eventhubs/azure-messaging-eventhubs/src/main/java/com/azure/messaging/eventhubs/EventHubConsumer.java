@@ -46,7 +46,7 @@ public class EventHubConsumer implements Closeable {
      *
      * @param maximumMessageCount The maximum number of messages to receive in this batch.
      */
-    IterableResponse<EventData> receive(int maximumMessageCount) {
+    public IterableResponse<EventData> receive(int maximumMessageCount) {
         return new IterableResponse<>(Flux.empty());
     }
 
@@ -57,7 +57,7 @@ public class EventHubConsumer implements Closeable {
      * @param maximumWaitTime The maximum amount of time to wait to build up the requested message count for the
      *         batch; if not specified, the default wait time specified when the consumer was created will be used.
      */
-    IterableResponse<EventData> receive(int maximumMessageCount, Duration maximumWaitTime) {
+    public IterableResponse<EventData> receive(int maximumMessageCount, Duration maximumWaitTime) {
         return new IterableResponse<>(Flux.empty());
     }
 
