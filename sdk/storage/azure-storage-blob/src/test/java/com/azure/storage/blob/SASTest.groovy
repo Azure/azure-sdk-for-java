@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob
 
-
+import com.azure.core.test.TestMode
 import com.azure.storage.blob.models.AccessPolicy
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.SignedIdentifier
@@ -14,6 +14,7 @@ import com.azure.storage.common.SASProtocol
 import com.azure.storage.common.Utility
 import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
+import org.junit.Assume
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -188,6 +189,8 @@ class SASTest extends APISpec {
 
     def "serviceSASSignatureValues network test container"() {
         setup:
+        Assume.assumeTrue(testCommon.getTestMode() == TestMode.RECORD)
+
         SignedIdentifier identifier = new SignedIdentifier()
             .id("0000")
             .accessPolicy(new AccessPolicy().permission("racwdl")
@@ -224,6 +227,8 @@ class SASTest extends APISpec {
 
     def "serviceSASSignatureValues network test blob user delegation"() {
         setup:
+        Assume.assumeTrue(testCommon.getTestMode() == TestMode.RECORD)
+
         byte[] data = "test".getBytes()
         String blobName = generateBlobName()
         BlockBlobClient bu = cu.getBlockBlobClient(blobName)
@@ -272,6 +277,8 @@ class SASTest extends APISpec {
 
     def "serviceSASSignatureValues network test blob snapshot user delegation"() {
         setup:
+        Assume.assumeTrue(testCommon.getTestMode() == TestMode.RECORD)
+
         byte[] data = "test".getBytes()
         String blobName = generateBlobName()
         BlockBlobClient bu = cu.getBlockBlobClient(blobName)
@@ -336,6 +343,8 @@ class SASTest extends APISpec {
 
     def "serviceSASSignatureValues network test container user delegation"() {
         setup:
+        Assume.assumeTrue(testCommon.getTestMode() == TestMode.RECORD)
+
         ContainerSASPermission permissions = new ContainerSASPermission()
             .read(true)
             .write(true)

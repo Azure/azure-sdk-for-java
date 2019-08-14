@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -117,7 +118,7 @@ public final class PlaybackClient implements HttpClient {
         }
 
         String rawBody = networkCallRecord.response().get("Body");
-        byte[] bytes = new byte[0];
+        byte[] bytes = null;
 
         if (rawBody != null) {
             for (Map.Entry<String, String> rule : textReplacementRules.entrySet()) {
@@ -126,7 +127,20 @@ public final class PlaybackClient implements HttpClient {
                 }
             }
 
-            bytes = rawBody.getBytes(StandardCharsets.UTF_8);
+            String contentType = networkCallRecord.response().get("Content-Type");
+
+            // octet-stream's are written to disk using Arrays.toString() which creates an output such as "[12, -1]".
+            if (contentType != null && contentType.contains("octet-stream")) {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                for (String piece : rawBody.substring(1, rawBody.length() - 1).split(", ")) {
+                    outputStream.write(Byte.parseByte(piece));
+                }
+
+                bytes = outputStream.toByteArray();
+            } else {
+                bytes = rawBody.getBytes(StandardCharsets.UTF_8);
+            }
+
             if (bytes.length > 0) {
                 headers.put("Content-Length", String.valueOf(bytes.length));
             }
@@ -152,6 +166,6 @@ public final class PlaybackClient implements HttpClient {
             urlBuilder.setQueryParameter("sig", "REDACTED");
         }
 
-        return String.format("%s?%s", urlBuilder.path(), urlBuilder.queryString());
+        return String.format("%s%s", urlBuilder.path(), urlBuilder.queryString());
     }
 }

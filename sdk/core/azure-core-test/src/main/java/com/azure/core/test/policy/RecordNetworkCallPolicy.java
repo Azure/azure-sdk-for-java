@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -117,27 +118,19 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
             responseData.put("retry-after", "0");
         }
 
-        String contentType = response.headerValue("content-type");
+        String contentType = response.headerValue("Content-Type");
         if (contentType == null) {
             return Mono.just(responseData);
         } else if (contentType.contains("octet-stream")) {
             return response.bodyAsByteArray().switchIfEmpty(Mono.just(new byte[0])).map(bytes -> {
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream(bytes.length);
-                try {
-                    outputStream.write(bytes);
-                } catch (IOException ex) {
-                    throw Exceptions.propagate(ex);
+                if (bytes.length == 0) {
+                    return responseData;
                 }
 
-                String content = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
-
-                responseData.remove("content-encoding");
-                responseData.put("content-length", Integer.toString(content.length()));
-
-                responseData.put("Body", content);
+                responseData.put("Body", Arrays.toString(bytes));
                 return responseData;
             });
-        } else if (contentType.contains("json") || response.headerValue("content-encoding") == null) {
+        } else if (contentType.contains("json") || response.headerValue("Content-Encoding") == null) {
             return response.bodyAsString(StandardCharsets.UTF_8).switchIfEmpty(Mono.just("")).map(content -> {
                 responseData.put("Body", content);
                 return responseData;
@@ -149,7 +142,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 }
 
                 String content;
-                if ("gzip".equals(response.headerValue("content-encoding"))) {
+                if ("gzip".equals(response.headerValue("Content-Encoding"))) {
                     try (GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(bytes));
                          ByteArrayOutputStream output = new ByteArrayOutputStream()) {
                         byte[] buffer = new byte[DEFAULT_BUFFER_LENGTH];
@@ -170,8 +163,8 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                     content = new String(bytes, StandardCharsets.UTF_8);
                 }
 
-                responseData.remove("content-encoding");
-                responseData.put("content-length", Integer.toString(content.length()));
+                responseData.remove("Content-Encoding");
+                responseData.put("Content-Length", Integer.toString(content.length()));
 
                 responseData.put("Body", content);
                 return responseData;
