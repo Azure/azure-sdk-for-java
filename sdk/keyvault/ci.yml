@@ -33,8 +33,6 @@ pr:
     exclude:
       - sdk/keyvault/microsoft-azure
 
-
-
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
