@@ -171,7 +171,7 @@ public final class BlobsImpl {
     }
 
     /**
-     * The Download operation reads or downloads a blob from the system, including its metadata and properties. You can also call Download to read a snapshot or verison.
+     * The Download operation reads or downloads a blob from the system, including its metadata and properties. You can also call Download to read a snapshot or version.
      *
      * @param containerName The container name.
      * @param blob The blob name.
@@ -199,7 +199,7 @@ public final class BlobsImpl {
     }
 
     /**
-     * The Download operation reads or downloads a blob from the system, including its metadata and properties. You can also call Download to read a snapshot or verison.
+     * The Download operation reads or downloads a blob from the system, including its metadata and properties. You can also call Download to read a snapshot or version.
      *
      * @param containerName The container name.
      * @param blob The blob name.

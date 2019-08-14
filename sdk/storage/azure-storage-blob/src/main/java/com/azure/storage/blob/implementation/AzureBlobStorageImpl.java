@@ -29,9 +29,11 @@ public final class AzureBlobStorageImpl {
      * Sets The URL of the service account, container, or blob that is the targe of the desired operation.
      *
      * @param url the url value.
+     * @return the service client itself.
      */
-    void setUrl(String url) {
+    AzureBlobStorageImpl setUrl(String url) {
         this.url = url;
+        return this;
     }
 
     /**
@@ -52,9 +54,11 @@ public final class AzureBlobStorageImpl {
      * Sets Specifies the version of the operation to use for this request.
      *
      * @param version the version value.
+     * @return the service client itself.
      */
-    void setVersion(String version) {
+    AzureBlobStorageImpl setVersion(String version) {
         this.version = version;
+        return this;
     }
 
     /**

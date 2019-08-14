@@ -241,14 +241,6 @@ public final class BlobDownloadHeaders {
     private Boolean isServerEncrypted;
 
     /*
-     * The SHA-256 hash of the encryption key used to encrypt the blob. This
-     * header is only returned when the blob was encrypted with a
-     * customer-provided key.
-     */
-    @JsonProperty(value = "x-ms-encryption-key-sha256")
-    private String encryptionKeySha256;
-
-    /*
      * If the blob has a MD5 hash, and if request contains range header (Range
      * or x-ms-range), this response header is returned with the value of the
      * whole blob's MD5 value. This value may or may not be equal to the value
@@ -257,6 +249,14 @@ public final class BlobDownloadHeaders {
      */
     @JsonProperty(value = "x-ms-blob-content-md5")
     private byte[] blobContentMD5;
+
+    /*
+     * The SHA-256 hash of the encryption key used to encrypt the blob. This
+     * header is only returned when the blob was encrypted with a
+     * customer-provided key.
+     */
+    @JsonProperty(value = "x-ms-encryption-key-sha256")
+    private String encryptionKeySha256;
 
     /*
      * The errorCode property.
@@ -972,30 +972,6 @@ public final class BlobDownloadHeaders {
     }
 
     /**
-     * Get the encryptionKeySha256 property: The SHA-256 hash of the encryption
-     * key used to encrypt the blob. This header is only returned when the blob
-     * was encrypted with a customer-provided key.
-     *
-     * @return the encryptionKeySha256 value.
-     */
-    public String encryptionKeySha256() {
-        return this.encryptionKeySha256;
-    }
-
-    /**
-     * Set the encryptionKeySha256 property: The SHA-256 hash of the encryption
-     * key used to encrypt the blob. This header is only returned when the blob
-     * was encrypted with a customer-provided key.
-     *
-     * @param encryptionKeySha256 the encryptionKeySha256 value to set.
-     * @return the BlobDownloadHeaders object itself.
-     */
-    public BlobDownloadHeaders encryptionKeySha256(String encryptionKeySha256) {
-        this.encryptionKeySha256 = encryptionKeySha256;
-        return this;
-    }
-
-    /**
      * Get the blobContentMD5 property: If the blob has a MD5 hash, and if
      * request contains range header (Range or x-ms-range), this response
      * header is returned with the value of the whole blob's MD5 value. This
@@ -1020,6 +996,30 @@ public final class BlobDownloadHeaders {
      */
     public BlobDownloadHeaders blobContentMD5(byte[] blobContentMD5) {
         this.blobContentMD5 = ImplUtils.clone(blobContentMD5);
+        return this;
+    }
+
+    /**
+     * Get the encryptionKeySha256 property: The SHA-256 hash of the encryption
+     * key used to encrypt the blob. This header is only returned when the blob
+     * was encrypted with a customer-provided key.
+     *
+     * @return the encryptionKeySha256 value.
+     */
+    public String encryptionKeySha256() {
+        return this.encryptionKeySha256;
+    }
+
+    /**
+     * Set the encryptionKeySha256 property: The SHA-256 hash of the encryption
+     * key used to encrypt the blob. This header is only returned when the blob
+     * was encrypted with a customer-provided key.
+     *
+     * @param encryptionKeySha256 the encryptionKeySha256 value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders encryptionKeySha256(String encryptionKeySha256) {
+        this.encryptionKeySha256 = encryptionKeySha256;
         return this;
     }
 

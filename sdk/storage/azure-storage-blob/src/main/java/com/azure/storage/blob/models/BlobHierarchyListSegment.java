@@ -6,9 +6,7 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +14,6 @@ import java.util.List;
  * The BlobHierarchyListSegment model.
  */
 @JacksonXmlRootElement(localName = "Blobs")
-@JsonDeserialize(using = CustomHierarchicalListingDeserializer.class)
 @Fluent
 public final class BlobHierarchyListSegment {
     /*
