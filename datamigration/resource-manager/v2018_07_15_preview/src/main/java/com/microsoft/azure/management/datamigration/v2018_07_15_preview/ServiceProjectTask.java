@@ -19,9 +19,9 @@ import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.datamigration.v2018_07_15_preview.implementation.DataMigrationManager;
 
 /**
- * Type representing ProjectTask.
+ * Type representing ServiceProjectTask.
  */
-public interface ProjectTask extends HasInner<ProjectTaskInner>, Indexable, Refreshable<ProjectTask>, Updatable<ProjectTask.Update>, HasManager<DataMigrationManager> {
+public interface ServiceProjectTask extends HasInner<ProjectTaskInner>, Indexable, Refreshable<ServiceProjectTask>, Updatable<ServiceProjectTask.Update>, HasManager<DataMigrationManager> {
     /**
      * @return the etag value.
      */
@@ -48,37 +48,36 @@ public interface ProjectTask extends HasInner<ProjectTaskInner>, Indexable, Refr
     String type();
 
     /**
-     * The entirety of the ProjectTask definition.
+     * The entirety of the ServiceProjectTask definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithProject, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithService, DefinitionStages.WithCreate {
     }
 
     /**
-     * Grouping of ProjectTask definition stages.
+     * Grouping of ServiceProjectTask definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of a ProjectTask definition.
+         * The first stage of a ServiceProjectTask definition.
          */
-        interface Blank extends WithProject {
+        interface Blank extends WithService {
         }
 
         /**
-         * The stage of the projecttask definition allowing to specify Project.
+         * The stage of the serviceprojecttask definition allowing to specify Service.
          */
-        interface WithProject {
+        interface WithService {
            /**
-            * Specifies groupName, serviceName, projectName.
+            * Specifies groupName, serviceName.
             * @param groupName Name of the resource group
             * @param serviceName Name of the service
-            * @param projectName Name of the project
             * @return the next definition stage
             */
-            WithCreate withExistingProject(String groupName, String serviceName, String projectName);
+            WithCreate withExistingService(String groupName, String serviceName);
         }
 
         /**
-         * The stage of the projecttask definition allowing to specify Etag.
+         * The stage of the serviceprojecttask definition allowing to specify Etag.
          */
         interface WithEtag {
             /**
@@ -90,7 +89,7 @@ public interface ProjectTask extends HasInner<ProjectTaskInner>, Indexable, Refr
         }
 
         /**
-         * The stage of the projecttask definition allowing to specify Properties.
+         * The stage of the serviceprojecttask definition allowing to specify Properties.
          */
         interface WithProperties {
             /**
@@ -106,21 +105,21 @@ public interface ProjectTask extends HasInner<ProjectTaskInner>, Indexable, Refr
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<ProjectTask>, DefinitionStages.WithEtag, DefinitionStages.WithProperties {
+        interface WithCreate extends Creatable<ServiceProjectTask>, DefinitionStages.WithEtag, DefinitionStages.WithProperties {
         }
     }
     /**
-     * The template for a ProjectTask update operation, containing all the settings that can be modified.
+     * The template for a ServiceProjectTask update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ProjectTask>, UpdateStages.WithEtag, UpdateStages.WithProperties {
+    interface Update extends Appliable<ServiceProjectTask>, UpdateStages.WithEtag, UpdateStages.WithProperties {
     }
 
     /**
-     * Grouping of ProjectTask update stages.
+     * Grouping of ServiceProjectTask update stages.
      */
     interface UpdateStages {
         /**
-         * The stage of the projecttask update allowing to specify Etag.
+         * The stage of the serviceprojecttask update allowing to specify Etag.
          */
         interface WithEtag {
             /**
@@ -132,7 +131,7 @@ public interface ProjectTask extends HasInner<ProjectTaskInner>, Indexable, Refr
         }
 
         /**
-         * The stage of the projecttask update allowing to specify Properties.
+         * The stage of the serviceprojecttask update allowing to specify Properties.
          */
         interface WithProperties {
             /**
