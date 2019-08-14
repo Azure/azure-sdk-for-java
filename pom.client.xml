@@ -164,7 +164,7 @@
           </dependency>
         </dependencies>
         <configuration>
-          <effort>min</effort>
+          <effort>max</effort>
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
@@ -439,7 +439,7 @@
             </dependency>
           </dependencies>
           <configuration>
-            <effort>min</effort>
+            <effort>max</effort>
             <threshold>Low</threshold>
             <xmlOutput>true</xmlOutput>
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
@@ -513,7 +513,7 @@
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>${spotbugs.maven.version}</version>
         <configuration>
-          <effort>min</effort>
+          <effort>max</effort>
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
