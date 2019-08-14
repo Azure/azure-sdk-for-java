@@ -26,7 +26,7 @@ import java.util.Set;
  */
 public class AssignedOnceVariableToBeFinalCheck extends AbstractCheck {
     private static final String ERROR_MSG = "Field \"%s\" is only assigned in constructor and it is not final. " +
-        "Make field final";
+        "You should consider making the field final, or suppressing the warning.";
     private static final String ERROR_FIELD_ALONE = "Field \"%s\" is not assigned in constructor or methods." +
         "Make field final";
 
