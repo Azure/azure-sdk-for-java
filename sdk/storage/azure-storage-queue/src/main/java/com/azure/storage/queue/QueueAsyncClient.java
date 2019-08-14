@@ -81,6 +81,7 @@ public final class QueueAsyncClient {
      * @param queueName Name of the queue
      */
     QueueAsyncClient(URL endpoint, HttpPipeline httpPipeline, String queueName) {
+        Objects.requireNonNull(queueName);
         this.queueName = queueName;
 
         this.client = new AzureQueueStorageBuilder().pipeline(httpPipeline)
