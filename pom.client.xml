@@ -730,18 +730,6 @@
         <module>./eng/jacoco-test-coverage</module>
       </modules>
     </profile>
-
-    <profile>
-      <id>template-module</id>
-      <activation>
-        <property>
-          <name>include-template</name>
-        </property>
-      </activation>
-      <modules>
-        <module>./sdk/template/azure-sdk-template</module>
-      </modules>
-    </profile>
   </profiles>
 
   <modules>
