@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * Sample demonstrates how to create a SearchIndexClient and issue search API
@@ -29,10 +30,10 @@ public class SearchIndexClientExample {
      * @param args arguments
      */
     public static void main(String[] args) {
-        String searchServiceName = "learnaisearch";
-        String apiKey = "A09A17F3A00BBDD62D04958775D73FE3";
+        String searchServiceName = "";
+        String apiKey = "";
         String dnsSuffix = "search.windows.net";
-        String indexName = "lishakur-test";
+        String indexName = "";
         String apiVersion = "2019-05-06";
 
 
@@ -52,7 +53,8 @@ public class SearchIndexClientExample {
             .doOnComplete(() -> System.out.println("Completed processing"))
             .collectList().block();
 
-        List<PagedResponse<SearchResult>> pagedResults = searchClient.search().byPage().collectList().block();
+        Stream<PagedResponse<SearchResult>> pagedResults = searchClient.search()
+            .byPage().toStream();
 
         System.out.println("Oh Yeah");
 

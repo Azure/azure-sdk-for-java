@@ -13,7 +13,18 @@ import com.azure.search.data.common.DocumentResponseConversions;
 import com.azure.search.data.common.SearchPagedResponse;
 import com.azure.search.data.generated.SearchIndexRestClient;
 import com.azure.search.data.generated.implementation.SearchIndexRestClientBuilder;
-import com.azure.search.data.generated.models.*;
+
+
+import com.azure.search.data.generated.models.AutocompleteParameters;
+import com.azure.search.data.generated.models.AutocompleteResult;
+import com.azure.search.data.generated.models.DocumentIndexResult;
+import com.azure.search.data.generated.models.IndexBatch;
+import com.azure.search.data.generated.models.SearchParameters;
+import com.azure.search.data.generated.models.SearchRequest;
+import com.azure.search.data.generated.models.SearchRequestOptions;
+import com.azure.search.data.generated.models.SearchResult;
+import com.azure.search.data.generated.models.SuggestParameters;
+import com.azure.search.data.generated.models.SuggestResult;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
 
@@ -154,12 +165,17 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
             .searchPostWithRestResponseAsync(new SearchRequest().includeTotalResultCount(true))
             .map(res -> {
                 skip = res.value().nextPageParameters().skip();
-                return SearchPagedResponse.fromDocumentSearchResultResponse(res);
+                return new SearchPagedResponse(res);
             });
-        return new PagedFlux(() -> first, nextLink -> searchPostNextWithRestResponseAsync((String) nextLink));
+        return new PagedFlux<SearchResult>(() -> first, nextLink -> searchPostNextWithRestResponseAsync((String) nextLink));
 
     }
 
+    /**
+     * Search for next page
+     * @param nextLink next page link
+     * @return Mono<PagedResponse<SearchResult>> next page response with results
+     */
     public Mono<PagedResponse<SearchResult>> searchPostNextWithRestResponseAsync(String nextLink) {
         if (nextLink == null || nextLink.isEmpty()) {
             return Mono.empty();
@@ -175,7 +191,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
                 } else {
                     skip = res.value().nextPageParameters().skip();
                 }
-                return SearchPagedResponse.fromDocumentSearchResultResponse(res);
+                return new SearchPagedResponse(res);
             });
     }
 
