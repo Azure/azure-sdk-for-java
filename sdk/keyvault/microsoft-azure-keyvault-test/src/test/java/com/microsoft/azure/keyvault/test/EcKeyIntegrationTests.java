@@ -110,21 +110,25 @@ public class EcKeyIntegrationTests {
     }
 
     @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/4993")
     public void testSignVerifyIntegrationES256() throws Exception {
         validateSignVerifyInterop(importTestKey("itwkk-p256", P256TestKey()), JsonWebKeySignatureAlgorithm.ES256, "SHA-256");
     }
 
     @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/4993")
     public void testSignVerifyIntegrationES256K() throws Exception {
         validateSignVerifyInterop(importTestKey("itwkk-p256k", P256KTestKey()), JsonWebKeySignatureAlgorithm.ES256K, "SHA-256");
     }
 
     @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/4993")
     public void testSignVerifyIntegrationES384() throws Exception {
         validateSignVerifyInterop(importTestKey("itwkk-p384", P384TestKey()), JsonWebKeySignatureAlgorithm.ES384, "SHA-384");
     }
 
     @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/4993")
     public void testSignVerifyIntegrationES521() throws Exception {
         validateSignVerifyInterop(importTestKey("itwkk-p521", P521TestKey()), JsonWebKeySignatureAlgorithm.ES512, "SHA-512");
     }
