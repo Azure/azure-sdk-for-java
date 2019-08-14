@@ -8,19 +8,18 @@
 
 package com.microsoft.azure.management.datamigration.v2018_07_15_preview.implementation;
 
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.ProjectTask;
+import com.microsoft.azure.management.datamigration.v2018_07_15_preview.ServiceProjectTask;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.datamigration.v2018_07_15_preview.ProjectTaskProperties;
 
-class ProjectTaskImpl extends CreatableUpdatableImpl<ProjectTask, ProjectTaskInner, ProjectTaskImpl> implements ProjectTask, ProjectTask.Definition, ProjectTask.Update {
+class ServiceProjectTaskImpl extends CreatableUpdatableImpl<ServiceProjectTask, ProjectTaskInner, ServiceProjectTaskImpl> implements ServiceProjectTask, ServiceProjectTask.Definition, ServiceProjectTask.Update {
     private final DataMigrationManager manager;
     private String groupName;
     private String serviceName;
-    private String projectName;
     private String taskName;
 
-    ProjectTaskImpl(String name, DataMigrationManager manager) {
+    ServiceProjectTaskImpl(String name, DataMigrationManager manager) {
         super(name, new ProjectTaskInner());
         this.manager = manager;
         // Set resource name
@@ -28,7 +27,7 @@ class ProjectTaskImpl extends CreatableUpdatableImpl<ProjectTask, ProjectTaskInn
         //
     }
 
-    ProjectTaskImpl(ProjectTaskInner inner, DataMigrationManager manager) {
+    ServiceProjectTaskImpl(ProjectTaskInner inner, DataMigrationManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -36,8 +35,7 @@ class ProjectTaskImpl extends CreatableUpdatableImpl<ProjectTask, ProjectTaskInn
         // set resource ancestor and positional variables
         this.groupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.serviceName = IdParsingUtils.getValueFromIdByName(inner.id(), "services");
-        this.projectName = IdParsingUtils.getValueFromIdByName(inner.id(), "projects");
-        this.taskName = IdParsingUtils.getValueFromIdByName(inner.id(), "tasks");
+        this.taskName = IdParsingUtils.getValueFromIdByName(inner.id(), "serviceTasks");
         //
     }
 
@@ -47,23 +45,23 @@ class ProjectTaskImpl extends CreatableUpdatableImpl<ProjectTask, ProjectTaskInn
     }
 
     @Override
-    public Observable<ProjectTask> createResourceAsync() {
-        TasksInner client = this.manager().inner().tasks();
-        return client.createOrUpdateAsync(this.groupName, this.serviceName, this.projectName, this.taskName, this.inner())
+    public Observable<ServiceProjectTask> createResourceAsync() {
+        ServiceTasksInner client = this.manager().inner().serviceTasks();
+        return client.createOrUpdateAsync(this.groupName, this.serviceName, this.taskName, this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
-    public Observable<ProjectTask> updateResourceAsync() {
-        TasksInner client = this.manager().inner().tasks();
-        return client.updateAsync(this.groupName, this.serviceName, this.projectName, this.taskName, this.inner())
+    public Observable<ServiceProjectTask> updateResourceAsync() {
+        ServiceTasksInner client = this.manager().inner().serviceTasks();
+        return client.updateAsync(this.groupName, this.serviceName, this.taskName, this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Observable<ProjectTaskInner> getInnerAsync() {
-        TasksInner client = this.manager().inner().tasks();
-        return client.getAsync(this.groupName, this.serviceName, this.projectName, this.taskName);
+        ServiceTasksInner client = this.manager().inner().serviceTasks();
+        return client.getAsync(this.groupName, this.serviceName, this.taskName);
     }
 
     @Override
@@ -98,21 +96,20 @@ class ProjectTaskImpl extends CreatableUpdatableImpl<ProjectTask, ProjectTaskInn
     }
 
     @Override
-    public ProjectTaskImpl withExistingProject(String groupName, String serviceName, String projectName) {
+    public ServiceProjectTaskImpl withExistingService(String groupName, String serviceName) {
         this.groupName = groupName;
         this.serviceName = serviceName;
-        this.projectName = projectName;
         return this;
     }
 
     @Override
-    public ProjectTaskImpl withEtag(String etag) {
+    public ServiceProjectTaskImpl withEtag(String etag) {
         this.inner().withEtag(etag);
         return this;
     }
 
     @Override
-    public ProjectTaskImpl withProperties(ProjectTaskProperties properties) {
+    public ServiceProjectTaskImpl withProperties(ProjectTaskProperties properties) {
         this.inner().withProperties(properties);
         return this;
     }

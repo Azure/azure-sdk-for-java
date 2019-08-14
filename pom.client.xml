@@ -164,12 +164,13 @@
           </dependency>
         </dependencies>
         <configuration>
-          <effort>Max</effort>
+          <effort>max</effort>
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
           <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
           <failOnError>true</failOnError>
+          <fork>false</fork>
         </configuration>
         <executions>
           <execution>
@@ -401,6 +402,10 @@
                 <title>Azure Storage - Queues</title>
                 <packages>com.azure.storage.queue*</packages>
               </group>
+              <group>
+                <title>Azure Telemetry</title>
+                <packages>com.azure.tracing.opentelemetry*</packages>
+              </group>
             </groups>
             <links>
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
@@ -438,12 +443,13 @@
             </dependency>
           </dependencies>
           <configuration>
-            <effort>Max</effort>
+            <effort>max</effort>
             <threshold>Low</threshold>
             <xmlOutput>true</xmlOutput>
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
             <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
             <failOnError>true</failOnError>
+            <fork>false</fork>
           </configuration>
         </plugin>
 
@@ -511,12 +517,13 @@
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>${spotbugs.maven.version}</version>
         <configuration>
-          <effort>Max</effort>
+          <effort>max</effort>
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
           <excludeFilterFile>eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
           <failOnError>true</failOnError>
+          <fork>false</fork>
         </configuration>
       </plugin>
       <plugin>
