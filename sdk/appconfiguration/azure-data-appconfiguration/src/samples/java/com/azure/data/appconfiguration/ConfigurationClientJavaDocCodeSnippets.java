@@ -4,6 +4,7 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
@@ -34,7 +35,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
             String connectionString = getConnectionString();
             // BEGIN: com.azure.data.applicationconfig.configurationclient.pipeline.instantiation
             RecordedData networkData = new RecordedData();
-            HttpPipeline pipeline = HttpPipeline.builder().policies(new RecordNetworkCallPolicy(networkData)).build();
+            HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RecordNetworkCallPolicy(networkData)).build();
 
             ConfigurationClient configurationClient = new ConfigurationClientBuilder()
                 .pipeline(pipeline)
@@ -274,45 +275,57 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      */
     public void listSettings() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettings#SettingSelector
-        for (ConfigurationSetting setting : configurationClient.listSettings(new SettingSelector()
-            .keys("prodDBConnection"))) {
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector
+        SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
+        configurationClient.listSettings(settingSelector).forEach(setting -> {
             System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
-        }
-        // END: com.azure.data.applicationconfig.configurationclient.listSettings#SettingSelector
+        });
+        // END: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector
+    }
 
-        /**
-         * Generates code sample for using {@link ConfigurationClient#listSettings(SettingSelector, Context)}
-         */
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettings#SettingSelector-Context
-        for (ConfigurationSetting setting : configurationClient.listSettings(new SettingSelector()
-            .keys("prodDBConnection"), new Context(key1, value1))) {
+    /**
+     * Generates code sample for using {@link ConfigurationClient#listSettings(SettingSelector, Context)}
+     */
+    public void listSettingsContext() {
+        ConfigurationClient configurationClient = createSyncConfigurationClient();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector-context
+        SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
+        Context ctx = new Context(key2, value2);
+        configurationClient.listSettings(settingSelector, ctx).forEach(setting -> {
             System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
-        }
-        // END: com.azure.data.applicationconfig.configurationclient.listSettings#SettingSelector-Context
+        });
+        // END: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector-context
     }
 
     /**
      * Generates code sample for using {@link ConfigurationClient#listSettingRevisions(SettingSelector)}
      */
     public void listSettingRevisions() {
-        ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#SettingSelector
-        for (ConfigurationSetting revision : configurationClient.listSettingRevisions(new SettingSelector()
-            .keys("prodDBConnection"))) {
-            System.out.printf("Key: %s, Value: %s", revision.key(), revision.value());
-        }
-        // END: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#SettingSelector
+        ConfigurationClient client = createSyncConfigurationClient();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector
+        SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
+        client.listSettingRevisions(settingSelector).streamByPage().forEach(resp -> {
+            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.headers(),
+                resp.request().url(), resp.statusCode());
+            resp.items().forEach(value -> {
+                System.out.printf("Response value is %d %n", value);
+            });
+        });
+        // END: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector
+    }
 
-        /**
-         * Generates code sample for using {@link ConfigurationClient#listSettingRevisions(SettingSelector, Context)}
-         */
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#SettingSelector-Context
-        for (ConfigurationSetting revision : configurationClient.listSettingRevisions(new SettingSelector()
-            .keys("prodDBConnection"), new Context(key2, value2))) {
-            System.out.printf("Key: %s, Value: %s", revision.key(), revision.value());
-        }
-        // END: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#SettingSelector-Context
+    /**
+     * Generates code sample for using {@link ConfigurationClient#listSettingRevisions(SettingSelector, Context)}
+     */
+    public void listSettingRevisionsContext() {
+        ConfigurationClient configurationClient = createSyncConfigurationClient();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector-context
+        SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
+        Context ctx = new Context(key2, value2);
+        configurationClient.listSettingRevisions(settingSelector, ctx).forEach(setting -> {
+            System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
+        });
+        // END: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector-context
     }
 
     /**

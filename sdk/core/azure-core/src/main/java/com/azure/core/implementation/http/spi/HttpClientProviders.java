@@ -5,6 +5,7 @@ package com.azure.core.implementation.http.spi;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.Iterator;
 import java.util.ServiceLoader;
 
 /**
@@ -25,7 +26,10 @@ public final class HttpClientProviders {
 
     public static HttpClient createInstance() {
         if (defaultProvider == null) {
-            defaultProvider = serviceLoader.iterator().next();
+            Iterator<HttpClientProvider> it = serviceLoader.iterator();
+            if (it.hasNext()) {
+                defaultProvider = it.next();
+            }
         }
 
         // we return the first item found in the service loader iterator

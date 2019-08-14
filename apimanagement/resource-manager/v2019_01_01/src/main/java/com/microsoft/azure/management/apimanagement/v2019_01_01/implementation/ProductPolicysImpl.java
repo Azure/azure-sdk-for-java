@@ -64,10 +64,14 @@ class ProductPolicysImpl extends WrapperImpl<ProductPolicysInner> implements Pro
     public Observable<ProductPolicyContract> getAsync(String resourceGroupName, String serviceName, String productId) {
         ProductPolicysInner client = this.inner();
         return client.getAsync(resourceGroupName, serviceName, productId)
-        .map(new Func1<PolicyContractInner, ProductPolicyContract>() {
+        .flatMap(new Func1<PolicyContractInner, Observable<ProductPolicyContract>>() {
             @Override
-            public ProductPolicyContract call(PolicyContractInner inner) {
-                return wrapModel(inner);
+            public Observable<ProductPolicyContract> call(PolicyContractInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ProductPolicyContract)wrapModel(inner));
+                }
             }
        });
     }

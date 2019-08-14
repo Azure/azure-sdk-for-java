@@ -7,6 +7,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -36,18 +37,18 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             client = clientSetup(credentials -> new ConfigurationClientBuilder()
-                .credential(credentials)
-                .httpClient(interceptorManager.getPlaybackClient())
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .buildAsyncClient());
+                    .credential(credentials)
+                    .httpClient(interceptorManager.getPlaybackClient())
+                    .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                    .buildAsyncClient());
         } else {
             client = clientSetup(credentials -> new ConfigurationClientBuilder()
-                .credential(credentials)
-                .httpClient(HttpClient.createDefault().wiretap(true))
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy())
-                .buildAsyncClient());
+                    .credential(credentials)
+                    .httpClient(HttpClient.createDefault().wiretap(true))
+                    .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .addPolicy(new RetryPolicy())
+                    .buildAsyncClient());
         }
     }
 
@@ -55,11 +56,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     protected void afterTest() {
         logger.info("Cleaning up created key values.");
         client.listSettings(new SettingSelector().keys(keyPrefix + "*"))
-            .flatMap(configurationSetting -> {
-                logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
-                return client.deleteSetting(configurationSetting);
-            })
-            .blockLast();
+                .flatMap(configurationSetting -> {
+                    logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
+                    return client.deleteSetting(configurationSetting);
+                })
+                .blockLast();
 
         logger.info("Finished cleaning up values.");
     }
@@ -121,8 +122,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void setSetting() {
         setSettingRunner((expected, update) ->
             StepVerifier.create(client.setSetting(expected))
-                .assertNext(response -> assertConfigurationEquals(expected, response))
-                .verifyComplete());
+                    .assertNext(response -> assertConfigurationEquals(expected, response))
+                    .verifyComplete());
     }
 
     /**
@@ -139,15 +140,15 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             final String etag = client.addSetting(initial).block().etag();
 
             StepVerifier.create(client.setSetting(update.etag(etag)))
-                .assertNext(response -> assertConfigurationEquals(update, response))
-                .verifyComplete();
+                    .assertNext(response -> assertConfigurationEquals(update, response))
+                    .verifyComplete();
 
             StepVerifier.create(client.setSetting(initial))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
             StepVerifier.create(client.getSetting(update))
-                .assertNext(response -> assertConfigurationEquals(update, response))
-                .verifyComplete();
+                    .assertNext(response -> assertConfigurationEquals(update, response))
+                    .verifyComplete();
         });
     }
 
@@ -200,8 +201,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void updateSetting() {
         updateSettingRunner((initial, update) ->
             StepVerifier.create(client.addSetting(initial))
-                .assertNext(response -> assertConfigurationEquals(initial, response))
-                .verifyComplete());
+                    .assertNext(response -> assertConfigurationEquals(initial, response))
+                    .verifyComplete());
     }
 
     /**
@@ -483,14 +484,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setSetting(original))
-            .assertNext(response -> assertConfigurationEquals(original, response))
-            .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(original, response))
+                .verifyComplete();
         StepVerifier.create(client.setSetting(updated).delayElement(Duration.ofSeconds(2)))
-            .assertNext(response -> assertConfigurationEquals(updated, response))
-            .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(updated, response))
+                .verifyComplete();
         StepVerifier.create(client.setSetting(updated2))
-            .assertNext(response -> assertConfigurationEquals(updated2, response))
-            .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(updated2, response))
+                .verifyComplete();
 
         // Gets all versions of this value so we can get the one we want at that particular date.
         List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().keys(keyName)).collectList().block();
@@ -501,8 +502,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         // We want to fetch the configuration setting when we first updated its value.
         SettingSelector options = new SettingSelector().keys(keyName).acceptDatetime(revisions.get(1).lastModified());
         StepVerifier.create(client.listSettings(options))
-            .assertNext(response -> assertConfigurationEquals(updated, response))
-            .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(updated, response))
+                .verifyComplete();
     }
 
     /**
@@ -517,28 +518,28 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setSetting(original))
-            .assertNext(response -> assertConfigurationEquals(original, response))
-            .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(original, response))
+                .verifyComplete();
         StepVerifier.create(client.setSetting(updated))
-            .assertNext(response -> assertConfigurationEquals(updated, response))
-            .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(updated, response))
+                .verifyComplete();
         StepVerifier.create(client.setSetting(updated2))
-            .assertNext(response -> assertConfigurationEquals(updated2, response))
-            .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(updated2, response))
+                .verifyComplete();
 
         // Get all revisions for a key, they are listed in descending order.
         StepVerifier.create(client.listSettingRevisions(new SettingSelector().keys(keyName)))
-            .assertNext(response -> assertConfigurationEquals(updated2, response))
-            .assertNext(response -> assertConfigurationEquals(updated, response))
-            .assertNext(response -> assertConfigurationEquals(original, response))
-            .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(updated2, response))
+                .assertNext(response -> assertConfigurationEquals(updated, response))
+                .assertNext(response -> assertConfigurationEquals(original, response))
+                .verifyComplete();
 
         // Verifies that we can select specific fields.
         StepVerifier.create(client.listSettingRevisions(new SettingSelector().keys(keyName).fields(SettingFields.KEY, SettingFields.ETAG)))
-            .assertNext(response -> validateListRevisions(updated2, response))
-            .assertNext(response -> validateListRevisions(updated, response))
-            .assertNext(response -> validateListRevisions(original, response))
-            .verifyComplete();
+                .assertNext(response -> validateListRevisions(updated2, response))
+                .assertNext(response -> validateListRevisions(updated, response))
+                .assertNext(response -> validateListRevisions(original, response))
+                .verifyComplete();
     }
 
     /**
@@ -669,14 +670,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setSetting(original))
-            .assertNext(response -> assertConfigurationEquals(original, response))
-            .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(original, response))
+                .verifyComplete();
         StepVerifier.create(client.setSetting(updated).delayElement(Duration.ofSeconds(2)))
-            .assertNext(response -> assertConfigurationEquals(updated, response))
-            .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(updated, response))
+                .verifyComplete();
         StepVerifier.create(client.setSetting(updated2))
-            .assertNext(response -> assertConfigurationEquals(updated2, response))
-            .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(updated2, response))
+                .verifyComplete();
 
         // Gets all versions of this value.
         List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().keys(keyName)).collectList().block();
@@ -688,9 +689,9 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         // Revisions are returned in descending order from creation date.
         SettingSelector options = new SettingSelector().keys(keyName).acceptDatetime(revisions.get(1).lastModified());
         StepVerifier.create(client.listSettingRevisions(options))
-            .assertNext(response -> assertConfigurationEquals(updated, response))
-            .assertNext(response -> assertConfigurationEquals(original, response))
-            .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(updated, response))
+                .assertNext(response -> assertConfigurationEquals(original, response))
+                .verifyComplete();
     }
 
     /**
@@ -717,6 +718,63 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .verifyComplete();
     }
 
+    /**
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and stream is invoked multiple times.
+     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
+     */
+    public void listRevisionsWithPaginationAndRepeatStream() {
+        final int numberExpected = 50;
+        List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
+        List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
+        for (int value = 0; value < numberExpected; value++) {
+            ConfigurationSetting setting = new ConfigurationSetting().key(keyPrefix).value("myValue" + value).label(labelPrefix);
+            settings.add(setting);
+            results.add(client.setSettingWithResponse(setting));
+        }
+
+        SettingSelector filter = new SettingSelector().keys(keyPrefix).labels(labelPrefix);
+
+        Flux.merge(results).blockLast();
+
+        List<ConfigurationSetting> configurationSettingList1 = new ArrayList<>();
+        List<ConfigurationSetting> configurationSettingList2 = new ArrayList<>();
+
+        PagedFlux<ConfigurationSetting> configurationSettingPagedFlux = client.listSettingRevisions(filter);
+        configurationSettingPagedFlux.toStream().forEach(configurationSetting -> configurationSettingList1.add(configurationSetting));
+        assertEquals(numberExpected, configurationSettingList1.size());
+
+        configurationSettingPagedFlux.toStream().forEach(configurationSetting -> configurationSettingList2.add(configurationSetting));
+        assertEquals(numberExpected, configurationSettingList2.size());
+    }
+
+    /**
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and stream is invoked multiple times.
+     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
+     */
+    public void listRevisionsWithPaginationAndRepeatIterator() {
+        final int numberExpected = 50;
+        List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
+        List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
+        for (int value = 0; value < numberExpected; value++) {
+            ConfigurationSetting setting = new ConfigurationSetting().key(keyPrefix).value("myValue" + value).label(labelPrefix);
+            settings.add(setting);
+            results.add(client.setSettingWithResponse(setting));
+        }
+
+        SettingSelector filter = new SettingSelector().keys(keyPrefix).labels(labelPrefix);
+
+        Flux.merge(results).blockLast();
+
+        List<ConfigurationSetting> configurationSettingList1 = new ArrayList<>();
+        List<ConfigurationSetting> configurationSettingList2 = new ArrayList<>();
+
+        PagedFlux<ConfigurationSetting> configurationSettingPagedFlux = client.listSettingRevisions(filter);
+        configurationSettingPagedFlux.toIterable().forEach(configurationSetting -> configurationSettingList1.add(configurationSetting));
+        assertEquals(numberExpected, configurationSettingList1.size());
+
+        configurationSettingPagedFlux.toIterable().forEach(configurationSetting -> configurationSettingList2.add(configurationSetting));
+        assertEquals(numberExpected, configurationSettingList2.size());
+    }
     /**
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.

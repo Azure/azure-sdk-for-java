@@ -1,5 +1,11 @@
 ## Changelog
 
+### 3.1.0
+- Added CosmosKeyCredential support in CosmosClientBuilder to support account key rotation.
+
+### 3.0.1
+- Token Resolver null check fix in Cosmos Client Builder
+
 ### 3.0.0
 - **Large API Changes**
 - Changed library name to azure-cosmos

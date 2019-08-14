@@ -46,6 +46,11 @@ public class JacksonAdapter implements SerializerAdapter {
      */
     private static SerializerAdapter serializerAdapter;
 
+    /*
+     * BOM header from some response bodies. To be removed in deserialization.
+     */
+    private static final String BOM = "\uFEFF";
+
     /**
      * Creates a new JacksonAdapter instance with default mapper settings.
      */
@@ -135,8 +140,12 @@ public class JacksonAdapter implements SerializerAdapter {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T deserialize(String value, final Type type, SerializerEncoding encoding) throws IOException {
-        if (value == null || value.isEmpty()) {
+        if (value == null || value.isEmpty() || value.equals(BOM)) {
             return null;
+        }
+        // Remove BOM
+        if (value.startsWith(BOM)) {
+            value = value.replaceFirst(BOM, "");
         }
 
         final JavaType javaType = createJavaType(type);
@@ -170,7 +179,8 @@ public class JacksonAdapter implements SerializerAdapter {
                 .registerModule(Base64UrlSerializer.getModule())
                 .registerModule(DateTimeSerializer.getModule())
                 .registerModule(DateTimeRfc1123Serializer.getModule())
-                .registerModule(DurationSerializer.getModule());
+                .registerModule(DurationSerializer.getModule())
+                .registerModule(HttpHeadersSerializer.getModule());
         mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
                 .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
                 .withSetterVisibility(JsonAutoDetect.Visibility.NONE)

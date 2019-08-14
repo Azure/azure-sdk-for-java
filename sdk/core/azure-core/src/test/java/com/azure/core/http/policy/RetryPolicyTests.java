@@ -6,6 +6,7 @@ package com.azure.core.http.policy;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.clients.MockHttpClient;
 import com.azure.core.http.MockHttpResponse;
@@ -21,7 +22,7 @@ import java.time.temporal.ChronoUnit;
 public class RetryPolicyTests {
     @Test
     public void exponentialRetryEndOn501() throws Exception {
-        final HttpPipeline pipeline = HttpPipeline.builder()
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {
                 // Send 408, 500, 502, all retried, with a 501 ending
                 private final int[] codes = new int[]{408, 500, 502, 501};
@@ -44,7 +45,7 @@ public class RetryPolicyTests {
     @Test
     public void exponentialRetryMax() throws Exception {
         final int maxRetries = 5;
-        final HttpPipeline pipeline = HttpPipeline.builder()
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {
                 int count = -1;
 

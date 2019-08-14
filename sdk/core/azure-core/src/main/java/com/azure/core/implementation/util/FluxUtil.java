@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -98,6 +99,16 @@ public final class FluxUtil {
         return Mono.subscriberContext()
             .map(FluxUtil::toAzureContext)
             .flatMap(serviceCall);
+    }
+
+    /**
+     * Converts the incoming content to Mono.
+     *
+     * @param response whose {@link Response#value() value} is to be converted
+     * @return The converted {@link Mono}
+     */
+    public static <T> Mono<T> toMono(Response<T> response) {
+        return Mono.justOrEmpty(response.value());
     }
 
     /**
@@ -341,7 +352,7 @@ public final class FluxUtil {
                     } else {
                         // use local variable to perform fewer volatile reads
                         long pos = position;
-                        int bytesWanted = (int) Math.min(bytesRead, maxRequired(pos));
+                        int bytesWanted = Math.min(bytesRead, maxRequired(pos));
                         long position2 = pos + bytesWanted;
                         //noinspection NonAtomicOperationOnVolatileField
                         position = position2;

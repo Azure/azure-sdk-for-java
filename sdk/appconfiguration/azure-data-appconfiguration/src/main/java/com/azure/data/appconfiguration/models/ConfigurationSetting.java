@@ -11,9 +11,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * ConfigurationSetting is a resource identified by unique combination of {@link ConfigurationSetting#key() key} and
- * {@link ConfigurationSetting#label() label}. By default, the label is {@code null}. To explicitly reference the
- * default label use {@link ConfigurationSetting#NO_LABEL}.
+ * ConfigurationSetting is a resource identified by unique combination of {@link #key() key} and {@link #label() label}.
+ * By default, the label is {@code null}. To explicitly reference the default label use {@link #NO_LABEL}.
  */
 @Fluent
 public class ConfigurationSetting {
@@ -84,8 +83,8 @@ public class ConfigurationSetting {
     }
 
     /**
-     * Sets the label of this configuration setting. {@link ConfigurationSetting#NO_LABEL} is the default label used
-     * when this value is not set.
+     * Sets the label of this configuration setting. {@link #NO_LABEL} is the default label used when this value is
+     * not set.
      *
      * @param label The label of this configuration setting.
      * @return The updated ConfigurationSetting object.

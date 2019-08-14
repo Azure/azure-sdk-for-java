@@ -3,7 +3,8 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.core.http.rest.Response;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 
@@ -27,22 +28,24 @@ public class HelloWorldAsync {
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
             .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // Let's create Cloud Rsa key valid for 1 year. if the key
         // already exists in the key vault, then a new version of the key is created.
-        keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-                .expires(OffsetDateTime.now().plusYears(1))
-                .keySize(2048))
-                .subscribe(keyResponse ->
-                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.value().name(), keyResponse.value().keyMaterial().kty()));
+        Response<Key> createKeyResponse = keyAsyncClient.createRsaKeyWithResponse(new RsaKeyCreateOptions("CloudRsaKey")
+                                                                                                .expires(OffsetDateTime.now().plusYears(1))
+                                                                                                .keySize(2048)).block();
+
+        // Let's validate create key operation succeeded using the status code information in the response.
+        System.out.printf("Create Key operation succeeded with status code %s \n", createKeyResponse.statusCode());
+        System.out.printf("Key is created with name %s and type %s \n", createKeyResponse.value().name(), createKeyResponse.value().keyMaterial().kty());
 
         Thread.sleep(2000);
 
         // Let's Get the Cloud Rsa Key from the key vault.
         keyAsyncClient.getKey("CloudRsaKey").subscribe(keyResponse ->
-                System.out.printf("Key returned with name %s and type %s \n", keyResponse.value().name(), keyResponse.value().keyMaterial().kty()));
+                System.out.printf("Key returned with name %s and type %s \n", keyResponse.name(), keyResponse.keyMaterial().kty()));
 
         Thread.sleep(2000);
 
@@ -50,11 +53,11 @@ public class HelloWorldAsync {
         // After one year, the Cloud Rsa Key is still required, we need to update the expiry time of the key.
         // The update method can be used to update the expiry attribute of the key.
         keyAsyncClient.getKey("CloudRsaKey").subscribe(keyResponse -> {
-            Key key = keyResponse.value();
+            Key key = keyResponse;
             //Update the expiry time of the key.
             key.expires(key.expires().plusYears(1));
             keyAsyncClient.updateKey(key).subscribe(updatedKeyResponse ->
-                System.out.printf("Key's updated expiry time %s \n", updatedKeyResponse.value().expires().toString()));
+                System.out.printf("Key's updated expiry time %s \n", updatedKeyResponse.expires().toString()));
         });
 
         Thread.sleep(2000);
@@ -65,13 +68,13 @@ public class HelloWorldAsync {
                 .expires(OffsetDateTime.now().plusYears(1))
                 .keySize(4096))
                 .subscribe(keyResponse ->
-                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.value().name(), keyResponse.value().keyMaterial().kty()));
+                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.name(), keyResponse.keyMaterial().kty()));
 
         Thread.sleep(2000);
 
         // The Cloud Rsa Key is no longer needed, need to delete it from the key vault.
         keyAsyncClient.deleteKey("CloudRsaKey").subscribe(deletedKeyResponse ->
-            System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.value().recoveryId()));
+            System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.recoveryId()));
 
         //To ensure key is deleted on server side.
         Thread.sleep(30000);

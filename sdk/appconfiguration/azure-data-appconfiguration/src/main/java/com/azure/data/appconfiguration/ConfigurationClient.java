@@ -3,6 +3,7 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.annotation.ServiceMethod;
@@ -14,7 +15,6 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-
 
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
@@ -447,14 +447,14 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve all settings that use the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettings#SettingSelector}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector}
      *
      * @param options Optional. Options to filter configuration setting results from the service.
-     * @return A List of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
+     * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
      * contains all of the current settings in the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Iterable<ConfigurationSetting> listSettings(SettingSelector options) {
+    public PagedIterable<ConfigurationSetting> listSettings(SettingSelector options) {
         return listSettings(options, Context.NONE);
     }
 
@@ -466,16 +466,16 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve all settings that use the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettings#SettingSelector-Context}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector-context}
      *
      * @param options Optional. Options to filter configuration setting results from the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A List of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
+     * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code options}. If no options were provided, the {@link PagedIterable}
      * contains all of the current settings in the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Iterable<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
-        return client.listSettings(options, context).collectList().block();
+    public PagedIterable<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
+        return new PagedIterable<>(client.listSettings(options, context));
     }
 
     /**
@@ -490,13 +490,13 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve all revisions of the setting that has the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettingRevisions#SettingSelector}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector}
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
-     * @return Revisions of the ConfigurationSetting
+     * @return {@link PagedIterable} of {@link ConfigurationSetting} revisions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Iterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
+    public PagedIterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
         return listSettingRevisions(selector, Context.NONE);
     }
 
@@ -512,14 +512,14 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve all revisions of the setting that has the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettingRevisions#SettingSelector-Context}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector-context}
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return Revisions of the ConfigurationSetting
+     * @return {@link PagedIterable} of {@link ConfigurationSetting} revisions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Iterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
-        return client.listSettingRevisions(selector, context).collectList().block();
+    public PagedIterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
+        return new PagedIterable<>(client.listSettingRevisions(selector, context));
     }
 }

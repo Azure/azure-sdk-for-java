@@ -142,7 +142,7 @@ public class ComputeNode {
     private StartTask startTask;
 
     /**
-     * Runtime information about the execution of the start Task on the Compute
+     * Runtime information about the execution of the StartTask on the Compute
      * Node.
      */
     @JsonProperty(value = "startTaskInfo")

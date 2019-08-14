@@ -53,5 +53,4 @@ public class FluxUtilJavaDocCodeSnippets {
     private Mono<String> serviceCallReturnsSingle(String prefix, Context context) {
         return Mono.empty();
     }
-
 }

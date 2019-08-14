@@ -5,16 +5,12 @@ package com.azure.security.keyvault.secrets;
 
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.Secret;
 import com.azure.security.keyvault.secrets.models.SecretBase;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -30,20 +26,14 @@ public class SecretClientTest extends SecretClientTestBase {
         beforeTestSetup();
 
         if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(credentials -> new SecretClientBuilder()
-                .credential(credentials)
+            client = clientSetup(pipeline -> new SecretClientBuilder()
+                .pipeline(pipeline)
                 .endpoint(getEndpoint())
-                .httpClient(interceptorManager.getPlaybackClient())
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .buildClient());
         } else {
-            client = clientSetup(credentials -> new SecretClientBuilder()
-                .credential(credentials)
+            client = clientSetup(pipeline -> new SecretClientBuilder()
+                .pipeline(pipeline)
                 .endpoint(getEndpoint())
-                .httpClient(HttpClient.createDefault().wiretap(true))
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy())
                 .buildClient());
         }
     }
@@ -85,7 +75,7 @@ public class SecretClientTest extends SecretClientTestBase {
     public void updateSecret() {
         updateSecretRunner((original, updated) -> {
             assertSecretEquals(original, client.setSecret(original));
-            Secret secretToUpdate = client.getSecret(original.name()).value();
+            Secret secretToUpdate = client.getSecret(original.name());
             client.updateSecret(secretToUpdate.expires(updated.expires()));
             assertSecretEquals(updated, client.getSecret(original.name()));
         });
@@ -116,8 +106,8 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     public void getSecretSpecificVersion() {
         getSecretSpecificVersionRunner((secret, secretWithNewVal) -> {
-            Secret secretVersionOne = client.setSecret(secret).value();
-            Secret secretVersionTwo = client.setSecret(secretWithNewVal).value();
+            Secret secretVersionOne = client.setSecret(secret);
+            Secret secretVersionTwo = client.setSecret(secretWithNewVal);
             assertSecretEquals(secret, client.getSecret(secretVersionOne.name(), secretVersionOne.version()));
             assertSecretEquals(secretWithNewVal, client.getSecret(secretVersionTwo.name(), secretVersionTwo.version()));
         });
@@ -136,7 +126,7 @@ public class SecretClientTest extends SecretClientTestBase {
     public void deleteSecret() {
         deleteSecretRunner((secretToDelete) -> {
             assertSecretEquals(secretToDelete,  client.setSecret(secretToDelete));
-            DeletedSecret deletedSecret = client.deleteSecret(secretToDelete.name()).value();
+            DeletedSecret deletedSecret = client.deleteSecret(secretToDelete.name());
             pollOnSecretDeletion(secretToDelete.name());
             assertNotNull(deletedSecret.deletedDate());
             assertNotNull(deletedSecret.recoveryId());
@@ -157,10 +147,10 @@ public class SecretClientTest extends SecretClientTestBase {
     public void getDeletedSecret() {
         getDeletedSecretRunner((secretToDeleteAndGet) -> {
             assertSecretEquals(secretToDeleteAndGet, client.setSecret(secretToDeleteAndGet));
-            assertNotNull(client.deleteSecret(secretToDeleteAndGet.name()).value());
+            assertNotNull(client.deleteSecret(secretToDeleteAndGet.name()));
             pollOnSecretDeletion(secretToDeleteAndGet.name());
             sleepInRecordMode(30000);
-            DeletedSecret deletedSecret = client.getDeletedSecret(secretToDeleteAndGet.name()).value();
+            DeletedSecret deletedSecret = client.getDeletedSecret(secretToDeleteAndGet.name());
             assertNotNull(deletedSecret.deletedDate());
             assertNotNull(deletedSecret.recoveryId());
             assertNotNull(deletedSecret.scheduledPurgeDate());
@@ -185,9 +175,9 @@ public class SecretClientTest extends SecretClientTestBase {
     public void recoverDeletedSecret() {
         recoverDeletedSecretRunner((secretToDeleteAndRecover) -> {
             assertSecretEquals(secretToDeleteAndRecover, client.setSecret(secretToDeleteAndRecover));
-            assertNotNull(client.deleteSecret(secretToDeleteAndRecover.name()).value());
+            assertNotNull(client.deleteSecret(secretToDeleteAndRecover.name()));
             pollOnSecretDeletion(secretToDeleteAndRecover.name());
-            Secret recoveredSecret = client.recoverDeletedSecret(secretToDeleteAndRecover.name()).value();
+            Secret recoveredSecret = client.recoverDeletedSecret(secretToDeleteAndRecover.name());
             assertEquals(secretToDeleteAndRecover.name(), recoveredSecret.name());
             assertEquals(secretToDeleteAndRecover.notBefore(), recoveredSecret.notBefore());
             assertEquals(secretToDeleteAndRecover.expires(), recoveredSecret.expires());
@@ -207,7 +197,7 @@ public class SecretClientTest extends SecretClientTestBase {
     public void backupSecret() {
         backupSecretRunner((secretToBackup) -> {
             assertSecretEquals(secretToBackup, client.setSecret(secretToBackup));
-            byte[] backupBytes = (client.backupSecret(secretToBackup.name()).value());
+            byte[] backupBytes = (client.backupSecret(secretToBackup.name()));
             assertNotNull(backupBytes);
             assertTrue(backupBytes.length > 0);
         });
@@ -226,7 +216,7 @@ public class SecretClientTest extends SecretClientTestBase {
     public synchronized void restoreSecret() {
         restoreSecretRunner((secretToBackupAndRestore) -> {
             assertSecretEquals(secretToBackupAndRestore, client.setSecret(secretToBackupAndRestore));
-            byte[] backupBytes = (client.backupSecret(secretToBackupAndRestore.name()).value());
+            byte[] backupBytes = (client.backupSecret(secretToBackupAndRestore.name()));
             assertNotNull(backupBytes);
             assertTrue(backupBytes.length > 0);
             client.deleteSecret(secretToBackupAndRestore.name());
@@ -234,7 +224,7 @@ public class SecretClientTest extends SecretClientTestBase {
             client.purgeDeletedSecret(secretToBackupAndRestore.name());
             pollOnSecretPurge(secretToBackupAndRestore.name());
             sleepInRecordMode(60000);
-            Secret restoredSecret = client.restoreSecret(backupBytes).value();
+            Secret restoredSecret = client.restoreSecret(backupBytes);
             assertEquals(secretToBackupAndRestore.name(), restoredSecret.name());
             assertEquals(secretToBackupAndRestore.expires(), restoredSecret.expires());
         });
@@ -253,13 +243,12 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     public void listSecrets() {
         listSecretsRunner((secrets) -> {
-            HashMap<String, Secret> secretsToList = secrets;
-            for (Secret secret :  secretsToList.values()) {
+            for (Secret secret :  secrets.values()) {
                 assertSecretEquals(secret, client.setSecret(secret));
             }
 
             for (SecretBase actualSecret : client.listSecrets()) {
-                if (secretsToList.containsKey(actualSecret.name())) {
+                if (secrets.containsKey(actualSecret.name())) {
                     Secret expectedSecret = secrets.get(actualSecret.name());
                     assertEquals(expectedSecret.expires(), actualSecret.expires());
                     assertEquals(expectedSecret.notBefore(), actualSecret.notBefore());
@@ -277,12 +266,11 @@ public class SecretClientTest extends SecretClientTestBase {
     public void listDeletedSecrets() {
         listDeletedSecretsRunner((secrets) -> {
 
-            HashMap<String, Secret> secretsToDelete = secrets;
-            for (Secret secret : secretsToDelete.values()) {
+            for (Secret secret : secrets.values()) {
                 assertSecretEquals(secret, client.setSecret(secret));
             }
 
-            for (Secret secret : secretsToDelete.values()) {
+            for (Secret secret : secrets.values()) {
                 client.deleteSecret(secret.name());
                 pollOnSecretDeletion(secret.name());
             }
@@ -290,14 +278,14 @@ public class SecretClientTest extends SecretClientTestBase {
             sleepInRecordMode(60000);
             Iterable<DeletedSecret> deletedSecrets =  client.listDeletedSecrets();
             for (DeletedSecret actualSecret : deletedSecrets) {
-                if (secretsToDelete.containsKey(actualSecret.name())) {
+                if (secrets.containsKey(actualSecret.name())) {
                     assertNotNull(actualSecret.deletedDate());
                     assertNotNull(actualSecret.recoveryId());
-                    secretsToDelete.remove(actualSecret.name());
+                    secrets.remove(actualSecret.name());
                 }
             }
 
-            assertEquals(0, secretsToDelete.size());
+            assertEquals(0, secrets.size());
 
             for (DeletedSecret deletedSecret : deletedSecrets) {
                 client.purgeDeletedSecret(deletedSecret.name());
@@ -334,43 +322,39 @@ public class SecretClientTest extends SecretClientTestBase {
 
     }
 
-    private DeletedSecret pollOnSecretDeletion(String secretName) {
+    private void pollOnSecretDeletion(String secretName) {
         int pendingPollCount = 0;
         while (pendingPollCount < 30) {
             DeletedSecret deletedSecret = null;
             try {
-                deletedSecret = client.getDeletedSecret(secretName).value();
+                deletedSecret = client.getDeletedSecret(secretName);
             } catch (ResourceNotFoundException e) {
             }
             if (deletedSecret == null) {
                 sleepInRecordMode(2000);
                 pendingPollCount += 1;
-                continue;
             } else {
-                return deletedSecret;
+                return;
             }
         }
         System.err.printf("Deleted Secret %s not found \n", secretName);
-        return null;
     }
 
-    private DeletedSecret pollOnSecretPurge(String secretName) {
+    private void pollOnSecretPurge(String secretName) {
         int pendingPollCount = 0;
         while (pendingPollCount < 10) {
             DeletedSecret deletedSecret = null;
             try {
-                deletedSecret = client.getDeletedSecret(secretName).value();
+                deletedSecret = client.getDeletedSecret(secretName);
             } catch (ResourceNotFoundException e) {
             }
             if (deletedSecret != null) {
                 sleepInRecordMode(2000);
                 pendingPollCount += 1;
-                continue;
             } else {
-                return deletedSecret;
+                return;
             }
         }
         System.err.printf("Deleted Secret %s was not purged \n", secretName);
-        return null;
     }
 }
