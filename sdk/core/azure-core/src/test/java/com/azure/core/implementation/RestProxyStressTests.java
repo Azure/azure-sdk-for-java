@@ -67,6 +67,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.fail;
 
 public class RestProxyStressTests {
     private static IOService service;
@@ -81,9 +82,6 @@ public class RestProxyStressTests {
         Assume.assumeTrue(
                 "Set the environment variable JAVA_SDK_STRESS_TESTS to \"true\" to run stress tests",
                 Boolean.parseBoolean(System.getenv("JAVA_SDK_STRESS_TESTS")));
-
-//        ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.PARANOID);
-//        LoggerFactory.getLogger(RestProxyStressTests.class).info("ResourceLeakDetector level: " + ResourceLeakDetector.getLevel());
 
         String tempFolderPath = System.getenv("JAVA_STRESS_TEST_TEMP_PATH");
         if (tempFolderPath == null || tempFolderPath.isEmpty()) {
@@ -262,7 +260,7 @@ public class RestProxyStressTests {
 //        }
 
         // TODO
-        throw new IllegalStateException("This method is not yet re-implemented");
+        fail("This method is not yet re-implemented");
     }
 
     @Test

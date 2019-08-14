@@ -127,10 +127,4 @@ public abstract class HttpResponse implements Closeable {
     @Override
     public void close() {
     }
-
-    // package private for test purpose
-    // FIXME
-//    Connection internConnection() {
-//        return null;
-//    }
 }

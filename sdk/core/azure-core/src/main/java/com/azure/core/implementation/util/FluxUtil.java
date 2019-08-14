@@ -141,7 +141,7 @@ public final class FluxUtil {
      *
      * @param content the Flux content
      * @param outFile the file channel
-     * @return a Mono<Void> which performs the write operation when subscribed
+     * @return a Mono which performs the write operation when subscribed
      */
     public static Mono<Void> writeFile(Flux<ByteBuffer> content, AsynchronousFileChannel outFile) {
         return writeFile(content, outFile, 0);
@@ -154,7 +154,7 @@ public final class FluxUtil {
      * @param content the Flux content
      * @param outFile the file channel
      * @param position the position in the file to begin writing
-     * @return a Mono<Void> which performs the write operation when subscribed
+     * @return a Mono which performs the write operation when subscribed
      */
     public static Mono<Void> writeFile(Flux<ByteBuffer> content, AsynchronousFileChannel outFile, long position) {
         return Mono.create(emitter -> content.subscribe(new Subscriber<ByteBuffer>() {

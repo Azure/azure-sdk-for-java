@@ -8,7 +8,8 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.MockHttpClient;
+import com.azure.core.http.clients.MockHttpClient;
+import com.azure.core.http.clients.NoOpHttpClient;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
@@ -63,7 +64,7 @@ public class RequestIdPolicyTests {
     @Test
     public void newRequestIdForEachCall() throws Exception {
         HttpPipeline pipeline = HttpPipeline.builder()
-            .httpClient(new MockHttpClient() {
+            .httpClient(new NoOpHttpClient() {
                 String firstRequestId = null;
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
@@ -90,7 +91,7 @@ public class RequestIdPolicyTests {
     @Test
     public void sameRequestIdForRetry() throws Exception {
         final HttpPipeline pipeline = HttpPipeline.builder()
-            .httpClient(new MockHttpClient() {
+            .httpClient(new NoOpHttpClient() {
                 String firstRequestId = null;
 
                 @Override
