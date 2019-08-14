@@ -56,6 +56,9 @@ jobs:
           JavaVersion: '1.11'
 
     steps:
+      - checkout: self
+        fetchDepth: 1
+        
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
         displayName: 'Tag scheduled builds'
