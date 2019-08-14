@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue53188450",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue68396859",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -12,15 +12,15 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "abcb12b8-9003-00f4-1b01-52159a000000",
-      "Date" : "Tue, 13 Aug 2019 18:01:42 GMT"
+      "x-ms-request-id" : "7b7ed45a-0003-00b5-7d38-523d89000000",
+      "Date" : "Wed, 14 Aug 2019 00:34:33 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue53188450?comp=acl",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue68396859?comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -30,11 +30,11 @@
       "retry-after" : "0",
       "Content-Length" : "294",
       "StatusCode" : "400",
-      "x-ms-request-id" : "abcb12d3-9003-00f4-3201-52159a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:abcb12d3-9003-00f4-3201-52159a000000\nTime:2019-08-13T18:01:42.4479950Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
-      "Date" : "Tue, 13 Aug 2019 18:01:42 GMT",
+      "x-ms-request-id" : "7b7ed45c-0003-00b5-7e38-523d89000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:7b7ed45c-0003-00b5-7e38-523d89000000\nTime:2019-08-14T00:34:33.9842591Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
+      "Date" : "Wed, 14 Aug 2019 00:34:33 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queue53188450" ]
+  "variables" : [ "queue68396859" ]
 }

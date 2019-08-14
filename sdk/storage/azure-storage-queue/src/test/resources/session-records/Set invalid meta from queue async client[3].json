@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue021466ee",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue039131ce",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -12,15 +12,15 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "abcb10f1-9003-00f4-1b01-52159a000000",
-      "Date" : "Tue, 13 Aug 2019 18:01:40 GMT"
+      "x-ms-request-id" : "7b7ed3fb-0003-00b5-2d38-523d89000000",
+      "Date" : "Wed, 14 Aug 2019 00:34:32 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue021466ee?comp=metadata",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue039131ce?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -29,11 +29,11 @@
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "abcb1108-9003-00f4-2f01-52159a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:abcb1108-9003-00f4-2f01-52159a000000\nTime:2019-08-13T18:01:41.1127233Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Tue, 13 Aug 2019 18:01:40 GMT",
+      "x-ms-request-id" : "7b7ed400-0003-00b5-3138-523d89000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:7b7ed400-0003-00b5-3138-523d89000000\nTime:2019-08-14T00:34:32.9242397Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Wed, 14 Aug 2019 00:34:32 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queue021466ee" ]
+  "variables" : [ "queue039131ce" ]
 }

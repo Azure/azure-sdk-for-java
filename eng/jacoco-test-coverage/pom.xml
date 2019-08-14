@@ -137,10 +137,6 @@
             <configuration>
               <!-- Sets the output directory for the code coverage report. -->
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-              <excludes>
-                <exclude>**/model/.*</exclude>
-                <exclude>**/implementation/.*</exclude>
-              </excludes>
             </configuration>
           </execution>
         </executions>

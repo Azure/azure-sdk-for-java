@@ -3,7 +3,7 @@
 
 package com.azure.storage.queue.spock
 
-
+import com.azure.storage.queue.QueueAsyncClient
 import com.azure.storage.queue.models.Logging
 import com.azure.storage.queue.models.Metrics
 import com.azure.storage.queue.models.QueueItem
@@ -14,26 +14,17 @@ import com.azure.storage.queue.models.StorageServiceProperties
 import reactor.test.StepVerifier
 import spock.lang.Unroll
 
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertNotNull
-
 class QueueServiceAsyncAPITests extends APISpec {
 
     def setup() {
         primaryQueueServiceAsyncClient = queueServiceBuilderHelper(interceptorManager).buildAsyncClient()
     }
-    
+
     def "Get queue client from queue service async client"() {
         given:
-        def queueName = testResourceName.randomName("queue", 16)
-        when:
-        def queueAsyncClient = primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName)
-        def enqueueMsgVerifier = StepVerifier.create(queueAsyncClient.enqueueMessage("Expecting an exception"))
-        then:
-        assertNotNull(queueAsyncClient)
-        enqueueMsgVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
-        }
+        def queueAsyncClient = primaryQueueServiceAsyncClient.getQueueAsyncClient(testResourceName.randomName("queue", 16))
+        expect:
+        queueAsyncClient instanceof QueueAsyncClient
     }
 
     def "Create queue from queue service async client"() {
@@ -45,18 +36,8 @@ class QueueServiceAsyncAPITests extends APISpec {
         }.verifyComplete()
         StepVerifier.create(primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName).enqueueMessage("Testing service client creating a queue"))
             .assertNext {
-            QueueTestHelper.assertResponseStatusCode(it, 201)
-        }.verifyComplete()
-    }
-
-    def "Create queues with duplicate name from queue service async client"() {
-        given:
-        def queueName = testResourceName.randomName("queue", 16)
-        primaryQueueServiceAsyncClient.createQueue(queueName).block()
-        expect:
-        StepVerifier.create(primaryQueueServiceAsyncClient.createQueue(queueName)).assertNext {
-            QueueTestHelper.assertResponseStatusCode(it, 204)
-        }.verifyComplete()
+                QueueTestHelper.assertResponseStatusCode(it, 201)
+            }.verifyComplete()
     }
 
     @Unroll
@@ -72,10 +53,16 @@ class QueueServiceAsyncAPITests extends APISpec {
         "a_b"          | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
         "-ab"          | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
         "a--b"         | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
-        // null | 400 | "InvalidResourceName" TODO: Need to fix the RestProxy before having null parameter
         "Abc"          | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
         "ab"           | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
         "verylong" * 8 | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
+    }
+
+    def "Create null from queue service async client"() {
+        when:
+        primaryQueueServiceAsyncClient.createQueue(null)
+        then:
+        thrown(NullPointerException)
     }
 
     @Unroll
@@ -113,22 +100,6 @@ class QueueServiceAsyncAPITests extends APISpec {
         }
     }
 
-    def "Create queues with same name and different metadata from queue service async client"() {
-        given:
-        def queueName = testResourceName.randomName("queue", 16)
-        def metadata1 = new HashMap<>()
-        metadata1.put("metadata1", "value1")
-        def metadata2 = new HashMap<>()
-        metadata2.put("metadata2", "value2")
-        primaryQueueServiceAsyncClient.createQueue(queueName, metadata1).block()
-        when:
-        def createAnotherQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueue(queueName, metadata2))
-        then:
-        createAnotherQueueVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 409, StorageErrorCode.QUEUE_ALREADY_EXISTS)
-        }
-    }
-
     def "Delete queue from queue service async client"() {
         given:
         def queueName = testResourceName.randomName("queue", 16)
@@ -146,7 +117,7 @@ class QueueServiceAsyncAPITests extends APISpec {
         }
     }
 
-    def "Delete not exist queue from queue service async client"() {
+    def "Delete queue error from queue service async client"() {
         when:
         def deleteQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.deleteQueue(testResourceName.randomName("queue", 16)))
         then:
@@ -159,7 +130,7 @@ class QueueServiceAsyncAPITests extends APISpec {
     def "List queues from queue service async client"() {
         given:
         def queueName = testResourceName.randomName("queue", 16)
-        LinkedList<QueueItem> testQueues = new LinkedList<>();
+        LinkedList<QueueItem> testQueues = new LinkedList<>()
         for (int i = 0; i < 3; i++) {
             String version = Integer.toString(i)
             QueueItem queue = new QueueItem().name(queueName + version)
@@ -189,7 +160,7 @@ class QueueServiceAsyncAPITests extends APISpec {
         def listQueueVerifier = StepVerifier.create((primaryQueueServiceAsyncClient.listQueues(new QueuesSegmentOptions())))
         then:
         listQueueVerifier.assertNext {
-            assertFalse(it.iterator().hasNext())
+            !it.iterator().hasNext()
         }
     }
 

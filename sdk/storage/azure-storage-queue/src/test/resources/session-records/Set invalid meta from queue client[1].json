@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue25431a6d",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue79100231",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -12,15 +12,15 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "abca8db5-9003-00f4-5c00-52159a000000",
-      "Date" : "Tue, 13 Aug 2019 17:59:48 GMT"
+      "x-ms-request-id" : "7b7eb5d5-0003-00b5-4b37-523d89000000",
+      "Date" : "Wed, 14 Aug 2019 00:32:50 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue25431a6d?comp=metadata",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue79100231?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -29,11 +29,11 @@
       "retry-after" : "0",
       "Content-Length" : "260",
       "StatusCode" : "400",
-      "x-ms-request-id" : "abca8dca-9003-00f4-6e00-52159a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:abca8dca-9003-00f4-6e00-52159a000000\nTime:2019-08-13T17:59:48.5563858Z</Message></Error>",
-      "Date" : "Tue, 13 Aug 2019 17:59:48 GMT",
+      "x-ms-request-id" : "7b7eb5da-0003-00b5-4e37-523d89000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:7b7eb5da-0003-00b5-4e37-523d89000000\nTime:2019-08-14T00:32:50.6823224Z</Message></Error>",
+      "Date" : "Wed, 14 Aug 2019 00:32:50 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queue25431a6d" ]
+  "variables" : [ "queue79100231" ]
 }

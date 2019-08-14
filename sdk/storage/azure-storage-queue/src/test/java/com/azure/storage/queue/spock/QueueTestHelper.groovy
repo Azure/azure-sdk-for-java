@@ -6,11 +6,21 @@ package com.azure.storage.queue.spock
 import com.azure.core.http.rest.Response
 import com.azure.core.implementation.util.ImplUtils
 import com.azure.core.util.configuration.ConfigurationManager
-import com.azure.storage.queue.models.*
+import com.azure.storage.queue.models.CorsRule
+import com.azure.storage.queue.models.Logging
+import com.azure.storage.queue.models.Metrics
+import com.azure.storage.queue.models.QueueItem
+import com.azure.storage.queue.models.RetentionPolicy
+import com.azure.storage.queue.models.SignedIdentifier
+import com.azure.storage.queue.models.StorageErrorCode
+import com.azure.storage.queue.models.StorageErrorException
+import com.azure.storage.queue.models.StorageServiceProperties
 
 import java.time.Duration
 
-import static org.junit.Assert.*
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertNull
+import static org.junit.Assert.assertTrue
 
 class QueueTestHelper {
     static void assertResponseStatusCode(Response<?> response, int expectedStatusCode) {
@@ -21,16 +31,26 @@ class QueueTestHelper {
         assertExceptionStatusCode(throwable, expectedStatusCode)
         assertExceptionErrorMessage(throwable, errMessage)
     }
-
+    
+    static void assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode, StorageErrorCode errMessage) {
+        assertExceptionStatusCode(throwable, expectedStatusCode)
+        assertExceptionErrorMessage(throwable, errMessage)
+    }
+    
     static void assertExceptionStatusCode(Throwable throwable, int expectedStatusCode) {
         assertTrue(throwable instanceof StorageErrorException)
         StorageErrorException storageErrorException = (StorageErrorException) throwable
         assertEquals(expectedStatusCode, storageErrorException.response().statusCode())
     }
-
+    
     static void assertExceptionErrorMessage(Throwable throwable, String errMessage) {
         assertTrue(throwable instanceof StorageErrorException)
         assertTrue(throwable.getMessage().contains(errMessage))
+    }
+    
+    static void assertExceptionErrorMessage(Throwable throwable, StorageErrorCode errMessage) {
+        assertTrue(throwable instanceof StorageErrorException)
+        assertTrue(throwable.getMessage().contains(errMessage.toString()))
     }
 
     static void assertQueuesAreEqual(QueueItem expected, QueueItem actual) {

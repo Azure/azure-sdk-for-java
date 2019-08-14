@@ -35,8 +35,7 @@ class APISpec extends Specification {
     ExpectedException thrown = ExpectedException.none()
     def testMode = getTestMode()
     def connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
-
-
+    
     /**
      * Setup the QueueServiceClient and QueueClient common used for the API tests.
      */
@@ -72,7 +71,7 @@ class APISpec extends Specification {
      * </ul>
      */
     def getTestMode() {
-        def azureTestMode = ConfigurationManager.getConfiguration().get("AZURE_TEST_MODE")
+        def azureTestMode = ConfigurationManager.getConfiguration().get(AZURE_TEST_MODE)
 
         if (azureTestMode != null) {
             try {
