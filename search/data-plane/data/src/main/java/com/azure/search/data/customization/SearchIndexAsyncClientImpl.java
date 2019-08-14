@@ -167,7 +167,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
                 skip = res.value().nextPageParameters().skip();
                 return new SearchPagedResponse(res);
             });
-        return new PagedFlux<SearchResult>(() -> first, nextLink -> searchPostNextWithRestResponseAsync((String) nextLink));
+        return new PagedFlux<>(() -> first, this::searchPostNextWithRestResponseAsync);
 
     }
 

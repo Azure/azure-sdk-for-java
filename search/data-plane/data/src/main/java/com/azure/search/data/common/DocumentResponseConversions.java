@@ -18,6 +18,7 @@ public class DocumentResponseConversions {
      * @param linkedMapObject object to convert
      * @return Map<String, Object>
      */
+    @SuppressWarnings (value="unchecked")
     public static Map<String, Object> convertLinkedHashMapToMap(Object linkedMapObject) {
         LinkedHashMap<String, Object> linkedMap = (LinkedHashMap<String, Object>) linkedMapObject;
         Set<Map.Entry<String, Object>> entries = linkedMap.entrySet();
