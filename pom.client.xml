@@ -164,12 +164,13 @@
           </dependency>
         </dependencies>
         <configuration>
-          <effort>Max</effort>
+          <effort>min</effort>
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
           <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
           <failOnError>true</failOnError>
+          <fork>false</fork>
         </configuration>
         <executions>
           <execution>
@@ -438,12 +439,13 @@
             </dependency>
           </dependencies>
           <configuration>
-            <effort>Max</effort>
+            <effort>min</effort>
             <threshold>Low</threshold>
             <xmlOutput>true</xmlOutput>
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
             <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
             <failOnError>true</failOnError>
+            <fork>false</fork>
           </configuration>
         </plugin>
 
@@ -511,12 +513,13 @@
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>${spotbugs.maven.version}</version>
         <configuration>
-          <effort>Max</effort>
+          <effort>min</effort>
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
           <excludeFilterFile>eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
           <failOnError>true</failOnError>
+          <fork>false</fork>
         </configuration>
       </plugin>
       <plugin>
