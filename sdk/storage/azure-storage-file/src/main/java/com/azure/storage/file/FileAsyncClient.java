@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeoutException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -93,6 +94,8 @@ public class FileAsyncClient {
      * @param snapshot The snapshot of the share
      */
     FileAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String filePath, String snapshot) {
+        Objects.requireNonNull(shareName);
+        Objects.requireNonNull(filePath);
         this.shareName = shareName;
         this.filePath = filePath;
         this.snapshot = snapshot;
@@ -109,6 +112,8 @@ public class FileAsyncClient {
      * @param snapshot Optional snapshot of the share
      */
     FileAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String filePath, String snapshot) {
+        Objects.requireNonNull(shareName);
+        Objects.requireNonNull(filePath);
         this.shareName = shareName;
         this.filePath = filePath;
         this.snapshot = snapshot;

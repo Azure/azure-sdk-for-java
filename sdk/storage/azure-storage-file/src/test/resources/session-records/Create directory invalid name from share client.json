@@ -1,0 +1,41 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share99879e59?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D720D6B9179FFA\"",
+      "Last-Modified" : "Wed, 14 Aug 2019 16:44:49 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "5e0891bd-a01a-005d-7fbf-52c072000000",
+      "Date" : "Wed, 14 Aug 2019 16:44:49 GMT"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share99879e59/test%2fdirectory?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ParentNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "224",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "5e0891bf-a01a-005d-80bf-52c072000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ParentNotFound</Code><Message>The specified parent path does not exist.\nRequestId:5e0891bf-a01a-005d-80bf-52c072000000\nTime:2019-08-14T16:44:49.7078371Z</Message></Error>",
+      "Date" : "Wed, 14 Aug 2019 16:44:49 GMT",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "share44752803", "share27374231", "directory042770", "share94874fff", "directory651280", "share64046899", "file846127c4", "share8468880a", "file37414b66", "share99879e59" ]
+}

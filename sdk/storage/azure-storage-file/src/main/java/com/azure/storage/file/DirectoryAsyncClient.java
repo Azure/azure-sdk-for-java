@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -66,6 +67,8 @@ public class DirectoryAsyncClient {
      * @param snapshot The snapshot of the share
      */
     DirectoryAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String directoryPath, String snapshot) {
+        Objects.requireNonNull(shareName);
+        Objects.requireNonNull(directoryPath);
         this.shareName = shareName;
         this.directoryPath = directoryPath;
         this.snapshot = snapshot;
@@ -82,6 +85,8 @@ public class DirectoryAsyncClient {
      * @param snapshot Optional snapshot of the share
      */
     DirectoryAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String directoryPath, String snapshot) {
+        Objects.requireNonNull(shareName);
+        Objects.requireNonNull(directoryPath);
         this.shareName = shareName;
         this.directoryPath = directoryPath;
         this.snapshot = snapshot;

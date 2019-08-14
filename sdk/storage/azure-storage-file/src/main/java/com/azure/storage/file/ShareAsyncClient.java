@@ -30,6 +30,7 @@ import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -62,6 +63,7 @@ public class ShareAsyncClient {
      * @param shareName Name of the share
      */
     ShareAsyncClient(AzureFileStorageImpl client, String shareName) {
+        Objects.requireNonNull(shareName);
         this.shareName = shareName;
         this.snapshot = null;
 
@@ -78,6 +80,7 @@ public class ShareAsyncClient {
      * @param snapshot Optional specific snapshot of the share
      */
     ShareAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String snapshot) {
+        Objects.requireNonNull(shareName);
         this.shareName = shareName;
         this.snapshot = snapshot;
 

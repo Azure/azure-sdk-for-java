@@ -4,6 +4,7 @@
 package com.azure.storage.file.spock
 
 import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.file.ShareClient
 import com.azure.storage.file.models.CorsRule
 import com.azure.storage.file.models.FileServiceProperties
 import com.azure.storage.file.models.ListSharesOptions
@@ -11,10 +12,9 @@ import com.azure.storage.file.models.Metrics
 import com.azure.storage.file.models.RetentionPolicy
 import com.azure.storage.file.models.ShareItem
 import com.azure.storage.file.models.ShareProperties
+import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageErrorException
 import spock.lang.Unroll
-
-import java.time.Duration
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertFalse
@@ -33,6 +33,7 @@ class FileServiceAPITests extends APISpec {
     
     def setup() {
         shareName = testResourceName.randomName("share", 16)
+        primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
         for (int i = 0; i < 6; i++) {
             TOO_MANY_RULES.add(new CorsRule())
         }
@@ -45,17 +46,14 @@ class FileServiceAPITests extends APISpec {
         when:
         def fileServiceURL = primaryFileServiceClient.getFileServiceUrl().toString()
         then:
-        assertEquals(expectURL, fileServiceURL)
+        expectURL.equals(fileServiceURL)
     }
     
     def "Get share does not create a share from file service client"() {
-        when:
+        given:
         def shareClient = primaryFileServiceClient.getShareClient(shareName)
-        shareClient.getStatistics()
-        then:
-        assertNotNull(shareClient)
-        def e = thrown(StorageErrorException)
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, "ShareNotFound")
+        expect:
+        shareClient instanceof ShareClient
     }
     
     def "Create share from file service client"() {
@@ -65,18 +63,11 @@ class FileServiceAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(createShareResponse, 201)
     }
     
-    @Unroll
-    def "Create share with metadata from file service client"() {
+    def "Create share max overloads from file service client"() {
         when:
-        def createShareResponse = primaryFileServiceClient.createShare(shareName, metadata, quota)
+        def createShareResponse = primaryFileServiceClient.createShare(shareName, testMetadata, 1)
         then:
         FileTestHelper.assertResponseStatusCode(createShareResponse, 201)
-        where:
-        metadata     | quota
-        null         | null
-        testMetadata | null
-        null         | 1
-        testMetadata | 1
     }
     
     @Unroll
@@ -88,10 +79,8 @@ class FileServiceAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
         where:
         metadata                                      | quota | statusCode | errMsg
-        Collections.singletonMap("invalid#", "value") | 1     | 400        | "InvalidMetadata"
-        testMetadata                                  | -1    | 400        | "InvalidHeaderValue"
-        testMetadata                                  | 0     | 400        | "InvalidHeaderValue"
-        testMetadata                                  | 5200  | 400        | "InvalidHeaderValue"
+        Collections.singletonMap("invalid#", "value") | 1     | 400        | StorageErrorCode.INVALID_METADATA
+        testMetadata                                  | -1    | 400        | StorageErrorCode.INVALID_HEADER_VALUE
     }
     
     def "Delete share from file service client"() {
@@ -108,7 +97,7 @@ class FileServiceAPITests extends APISpec {
         primaryFileServiceClient.deleteShare(testResourceName.randomName("share", 16))
         then:
         def e = thrown(StorageErrorException)
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, "ShareNotFound")
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.SHARE_NOT_FOUND)
     }
     
     @Unroll
@@ -208,11 +197,11 @@ class FileServiceAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
         where:
         coreList | statusCode | errMsg
-        TOO_MANY_RULES | 400 | "InvalidXmlDocument"
-        INVALID_ALLOWED_HEADER | 400 | "InvalidXmlDocument"
-        INVALID_EXPOSED_HEADER | 400 | "InvalidXmlDocument"
-        INVALID_ALLOWED_ORIGIN | 400 | "InvalidXmlDocument"
-        INVALID_ALLOWED_METHOD | 400 | "InvalidXmlNodeValue"
+        TOO_MANY_RULES | 400 | StorageErrorCode.INVALID_XML_DOCUMENT
+        INVALID_ALLOWED_HEADER | 400 | StorageErrorCode.INVALID_XML_DOCUMENT
+        INVALID_EXPOSED_HEADER | 400 | StorageErrorCode.INVALID_XML_DOCUMENT
+        INVALID_ALLOWED_ORIGIN | 400 | StorageErrorCode.INVALID_XML_DOCUMENT
+        INVALID_ALLOWED_METHOD | 400 | StorageErrorCode.INVALID_XML_NODE_VALUE
         
     }
 }

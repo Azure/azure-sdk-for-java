@@ -4,6 +4,7 @@
 package com.azure.storage.file.spock
 
 import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.file.ShareAsyncClient
 import com.azure.storage.file.models.CorsRule
 import com.azure.storage.file.models.FileServiceProperties
 import com.azure.storage.file.models.ListSharesOptions
@@ -11,6 +12,7 @@ import com.azure.storage.file.models.Metrics
 import com.azure.storage.file.models.RetentionPolicy
 import com.azure.storage.file.models.ShareItem
 import com.azure.storage.file.models.ShareProperties
+import com.azure.storage.file.models.StorageErrorCode
 import reactor.test.StepVerifier
 import spock.lang.Unroll
 
@@ -30,6 +32,7 @@ class FileServiceAsyncAPITests extends APISpec {
     
     def setup() {
         shareName = testResourceName.randomName("share", 16)
+        primaryFileServiceAsyncClient = fileServiceBuilderHelper(interceptorManager).buildAsyncClient()
         for (int i = 0; i < 6; i++) {
             TOO_MANY_RULES.add(new CorsRule())
         }
@@ -48,12 +51,8 @@ class FileServiceAsyncAPITests extends APISpec {
     def "Get share does not create a share from file service async client"() {
         when:
         def shareAsyncClient = primaryFileServiceAsyncClient.getShareAsyncClient(shareName)
-        def getStatisticsVerifier = StepVerifier.create(shareAsyncClient.getStatistics())
         then:
-        assertNotNull(shareAsyncClient)
-        getStatisticsVerifier.verifyErrorSatisfies {
-            FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, "ShareNotFound")
-        }
+        shareAsyncClient instanceof ShareAsyncClient
     }
     
     def "Create share from file service client"() {
@@ -91,10 +90,10 @@ class FileServiceAsyncAPITests extends APISpec {
         }
         where:
         metadata                                      | quota | statusCode | errMsg
-        Collections.singletonMap("invalid#", "value") | 1     | 400        | "InvalidMetadata"
-        testMetadata                                  | -1    | 400        | "InvalidHeaderValue"
-        testMetadata                                  | 0     | 400        | "InvalidHeaderValue"
-        testMetadata                                  | 5200  | 400        | "InvalidHeaderValue"
+        Collections.singletonMap("invalid#", "value") | 1     | 400        | StorageErrorCode.INVALID_METADATA
+        testMetadata                                  | -1    | 400        | StorageErrorCode.INVALID_HEADER_VALUE
+        testMetadata                                  | 0     | 400        | StorageErrorCode.INVALID_HEADER_VALUE
+        testMetadata                                  | 5200  | 400        | StorageErrorCode.INVALID_HEADER_VALUE
     }
     
     def "Delete share from file service client"() {
@@ -223,11 +222,11 @@ class FileServiceAsyncAPITests extends APISpec {
         }
         where:
         coreList | statusCode | errMsg
-        TOO_MANY_RULES | 400 | "InvalidXmlDocument"
-        INVALID_ALLOWED_HEADER | 400 | "InvalidXmlDocument"
-        INVALID_EXPOSED_HEADER | 400 | "InvalidXmlDocument"
-        INVALID_ALLOWED_ORIGIN | 400 | "InvalidXmlDocument"
-        INVALID_ALLOWED_METHOD | 400 | "InvalidXmlNodeValue"
+        TOO_MANY_RULES | 400 | StorageErrorCode.INVALID_XML_DOCUMENT
+        INVALID_ALLOWED_HEADER | 400 | StorageErrorCode.INVALID_XML_DOCUMENT
+        INVALID_EXPOSED_HEADER | 400 | StorageErrorCode.INVALID_XML_DOCUMENT
+        INVALID_ALLOWED_ORIGIN | 400 | StorageErrorCode.INVALID_XML_DOCUMENT
+        INVALID_ALLOWED_METHOD | 400 | StorageErrorCode.INVALID_XML_NODE_VALUE
         
     }
 }

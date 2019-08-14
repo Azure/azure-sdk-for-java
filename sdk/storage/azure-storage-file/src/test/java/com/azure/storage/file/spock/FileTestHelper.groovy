@@ -11,6 +11,7 @@ import com.azure.storage.file.models.FileServiceProperties
 import com.azure.storage.file.models.Metrics
 import com.azure.storage.file.models.RetentionPolicy
 import com.azure.storage.file.models.ShareItem
+import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageErrorException
 
 import java.time.Duration
@@ -22,17 +23,27 @@ class FileTestHelper {
         assertEquals(expectedStatusCode, response.statusCode())
     }
 
+    static void assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode, StorageErrorCode errMessage) {
+        assertExceptionStatusCode(throwable, expectedStatusCode)
+        assertExceptionErrorMessage(throwable, errMessage)
+    }
+    
     static void assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode, String errMessage) {
         assertExceptionStatusCode(throwable, expectedStatusCode)
         assertExceptionErrorMessage(throwable, errMessage)
     }
-
+    
     static void assertExceptionStatusCode(Throwable throwable, int expectedStatusCode) {
         assertTrue(throwable instanceof StorageErrorException)
         StorageErrorException storageErrorException = (StorageErrorException) throwable
         assertEquals(expectedStatusCode, storageErrorException.response().statusCode())
     }
-
+    
+    static void assertExceptionErrorMessage(Throwable throwable, StorageErrorCode errMessage) {
+        assertTrue(throwable instanceof StorageErrorException)
+        assertTrue(throwable.getMessage().contains(errMessage.toString()))
+    }
+    
     static void assertExceptionErrorMessage(Throwable throwable, String errMessage) {
         assertTrue(throwable instanceof StorageErrorException)
         assertTrue(throwable.getMessage().contains(errMessage))

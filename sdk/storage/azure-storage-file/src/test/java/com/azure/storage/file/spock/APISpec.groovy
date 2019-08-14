@@ -42,7 +42,7 @@ class APISpec extends Specification {
     @Rule
     ExpectedException thrown = ExpectedException.none()
     def testMode = getTestMode()
-    def connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING")
+    def connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
 
 
     /**
@@ -54,9 +54,7 @@ class APISpec extends Specification {
         interceptorManager = new InterceptorManager(methodName, testMode)
         testResourceName = new TestResourceNamer(methodName, testMode,
             interceptorManager.getRecordedData())
-        primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
-        primaryFileServiceAsyncClient = fileServiceBuilderHelper(interceptorManager).buildAsyncClient()
-        primaryShareClient = shareBuilderHelper(interceptorManager).buildClient()
+        
         primaryShareAsyncClient = shareBuilderHelper(interceptorManager).buildAsyncClient()
         primaryDirectoryClient = directoryBuilderHelper(interceptorManager).buildClient()
         primaryDirectoryAsyncClient = directoryBuilderHelper(interceptorManager).buildAsyncClient()
@@ -74,7 +72,7 @@ class APISpec extends Specification {
                 .connectionString(connectionString)
                 .buildClient()
             cleanupFileServiceClient.listShares().each {
-                primaryFileServiceClient.deleteShare(it.name())
+                cleanupFileServiceClient.deleteShare(it.name())
             }
         }
     }
