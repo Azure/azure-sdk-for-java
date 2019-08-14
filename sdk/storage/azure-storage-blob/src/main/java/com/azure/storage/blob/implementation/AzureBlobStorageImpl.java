@@ -6,6 +6,7 @@ package com.azure.storage.blob.implementation;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
+import com.azure.storage.blob.models.PathRenameMode;
 
 /**
  * Initializes a new instance of the AzureBlobStorage type.
@@ -62,6 +63,56 @@ public final class AzureBlobStorageImpl {
     }
 
     /**
+     * The filter parameter enables the caller to query blobs whose tags match a given expression. The given expression must evaluate to true for a blob to be returned in the results.
+     */
+    private String filter;
+
+    /**
+     * Gets The filter parameter enables the caller to query blobs whose tags match a given expression. The given expression must evaluate to true for a blob to be returned in the results.
+     *
+     * @return the filter value.
+     */
+    public String getFilter() {
+        return this.filter;
+    }
+
+    /**
+     * Sets The filter parameter enables the caller to query blobs whose tags match a given expression. The given expression must evaluate to true for a blob to be returned in the results.
+     *
+     * @param filter the filter value.
+     * @return the service client itself.
+     */
+    AzureBlobStorageImpl setFilter(String filter) {
+        this.filter = filter;
+        return this;
+    }
+
+    /**
+     * Determines the behavior of the rename operation. Possible values include: 'legacy', 'posix'.
+     */
+    private PathRenameMode pathRenameMode;
+
+    /**
+     * Gets Determines the behavior of the rename operation. Possible values include: 'legacy', 'posix'.
+     *
+     * @return the pathRenameMode value.
+     */
+    public PathRenameMode getPathRenameMode() {
+        return this.pathRenameMode;
+    }
+
+    /**
+     * Sets Determines the behavior of the rename operation. Possible values include: 'legacy', 'posix'.
+     *
+     * @param pathRenameMode the pathRenameMode value.
+     * @return the service client itself.
+     */
+    AzureBlobStorageImpl setPathRenameMode(PathRenameMode pathRenameMode) {
+        this.pathRenameMode = pathRenameMode;
+        return this;
+    }
+
+    /**
      * The HTTP pipeline to send requests through.
      */
     private HttpPipeline httpPipeline;
@@ -101,6 +152,20 @@ public final class AzureBlobStorageImpl {
      */
     public ContainersImpl containers() {
         return this.containers;
+    }
+
+    /**
+     * The DirectorysImpl object to access its operations.
+     */
+    private DirectorysImpl directorys;
+
+    /**
+     * Gets the DirectorysImpl object to access its operations.
+     *
+     * @return the DirectorysImpl object.
+     */
+    public DirectorysImpl directorys() {
+        return this.directorys;
     }
 
     /**
@@ -175,6 +240,7 @@ public final class AzureBlobStorageImpl {
         this.httpPipeline = httpPipeline;
         this.services = new ServicesImpl(this);
         this.containers = new ContainersImpl(this);
+        this.directorys = new DirectorysImpl(this);
         this.blobs = new BlobsImpl(this);
         this.pageBlobs = new PageBlobsImpl(this);
         this.appendBlobs = new AppendBlobsImpl(this);

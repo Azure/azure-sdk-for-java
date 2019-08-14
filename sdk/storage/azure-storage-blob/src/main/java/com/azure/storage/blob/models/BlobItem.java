@@ -7,7 +7,6 @@ package com.azure.storage.blob.models;
 import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import java.util.Map;
 
 /**
  * An Azure Storage blob.
@@ -34,6 +33,12 @@ public final class BlobItem {
     private String snapshot;
 
     /*
+     * The versionId property.
+     */
+    @JsonProperty(value = "VersionId", required = true)
+    private String versionId;
+
+    /*
      * The properties property.
      */
     @JsonProperty(value = "Properties", required = true)
@@ -43,19 +48,13 @@ public final class BlobItem {
      * The metadata property.
      */
     @JsonProperty(value = "Metadata")
-    private Map<String, String> metadata;
+    private BlobMetadata metadata;
 
     /*
-     * The versionId property.
+     * The tags property.
      */
-    @JsonProperty(value = "VersionId", required = true)
-    private String versionId;
-
-    /*
-     * The isPrefix property.
-     */
-    @JsonProperty(value = "IsPrefix")
-    private Boolean isPrefix;
+    @JsonProperty(value = "Tags")
+    private BlobTags tags;
 
     /**
      * Get the name property: The name property.
@@ -118,6 +117,26 @@ public final class BlobItem {
     }
 
     /**
+     * Get the versionId property: The versionId property.
+     *
+     * @return the versionId value.
+     */
+    public String versionId() {
+        return this.versionId;
+    }
+
+    /**
+     * Set the versionId property: The versionId property.
+     *
+     * @param versionId the versionId value to set.
+     * @return the BlobItem object itself.
+     */
+    public BlobItem versionId(String versionId) {
+        this.versionId = versionId;
+        return this;
+    }
+
+    /**
      * Get the properties property: The properties property.
      *
      * @return the properties value.
@@ -142,7 +161,7 @@ public final class BlobItem {
      *
      * @return the metadata value.
      */
-    public Map<String, String> metadata() {
+    public BlobMetadata metadata() {
         return this.metadata;
     }
 
@@ -152,48 +171,28 @@ public final class BlobItem {
      * @param metadata the metadata value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem metadata(Map<String, String> metadata) {
+    public BlobItem metadata(BlobMetadata metadata) {
         this.metadata = metadata;
         return this;
     }
 
     /**
-     * Get the versionId property: The versionId property.
+     * Get the tags property: The tags property.
      *
-     * @return the versionId value.
+     * @return the tags value.
      */
-    public String versionId() {
-        return this.versionId;
+    public BlobTags tags() {
+        return this.tags;
     }
 
     /**
-     * Set the versionId property: The versionId property.
+     * Set the tags property: The tags property.
      *
-     * @param versionId the versionId value to set.
+     * @param tags the tags value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem versionId(String versionId) {
-        this.versionId = versionId;
-        return this;
-    }
-
-    /**
-     * Get the isPrefix property: The isPrefix property.
-     *
-     * @return the isPrefix value.
-     */
-    public Boolean isPrefix() {
-        return this.isPrefix;
-    }
-
-    /**
-     * Set the isPrefix property: The isPrefix property.
-     *
-     * @param isPrefix the isPrefix value to set.
-     * @return the BlobItem object itself.
-     */
-    public BlobItem isPrefix(Boolean isPrefix) {
-        this.isPrefix = isPrefix;
+    public BlobItem tags(BlobTags tags) {
+        this.tags = tags;
         return this;
     }
 }

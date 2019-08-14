@@ -210,6 +210,13 @@ public final class BlobGetPropertiesHeaders {
     private Long blobSequenceNumber;
 
     /*
+     * If a client request id header is sent in the request, this header will
+     * be present in the response with the same value.
+     */
+    @JsonProperty(value = "x-ms-client-request-id")
+    private String clientRequestId;
+
+    /*
      * This header uniquely identifies the request that was made and can be
      * used for troubleshooting the request.
      */
@@ -254,6 +261,22 @@ public final class BlobGetPropertiesHeaders {
     private Boolean isServerEncrypted;
 
     /*
+     * The SHA-256 hash of the encryption key used to encrypt the metadata.
+     * This header is only returned when the metadata was encrypted with a
+     * customer-provided key.
+     */
+    @JsonProperty(value = "x-ms-encryption-key-sha256")
+    private String encryptionKeySha256;
+
+    /*
+     * The encryption scope used to encrypt the metadata. This header is only
+     * returned when the metadata was encrypted with customer specified
+     * encryption.
+     */
+    @JsonProperty(value = "x-ms-encryption-scope")
+    private String encryptionScope;
+
+    /*
      * The tier of page blob on a premium storage account or tier of block blob
      * on blob storage LRS accounts. For a list of allowed premium page blob
      * tiers, see
@@ -288,12 +311,10 @@ public final class BlobGetPropertiesHeaders {
     private DateTimeRfc1123 accessTierChangeTime;
 
     /*
-     * The SHA-256 hash of the encryption key used to encrypt the metadata.
-     * This header is only returned when the metadata was encrypted with a
-     * customer-provided key.
+     * The number of tags corresponding to the blob.
      */
-    @JsonProperty(value = "x-ms-encryption-key-sha256")
-    private String encryptionKeySha256;
+    @JsonProperty(value = "x-ms-tag-count")
+    private Integer tagCount;
 
     /*
      * The errorCode property.
@@ -915,6 +936,30 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
+     * Get the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
+     *
+     * @return the clientRequestId value.
+     */
+    public String clientRequestId() {
+        return this.clientRequestId;
+    }
+
+    /**
+     * Set the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
+     *
+     * @param clientRequestId the clientRequestId value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders clientRequestId(String clientRequestId) {
+        this.clientRequestId = clientRequestId;
+        return this;
+    }
+
+    /**
      * Get the requestId property: This header uniquely identifies the request
      * that was made and can be used for troubleshooting the request.
      *
@@ -1062,6 +1107,54 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
+     * Get the encryptionKeySha256 property: The SHA-256 hash of the encryption
+     * key used to encrypt the metadata. This header is only returned when the
+     * metadata was encrypted with a customer-provided key.
+     *
+     * @return the encryptionKeySha256 value.
+     */
+    public String encryptionKeySha256() {
+        return this.encryptionKeySha256;
+    }
+
+    /**
+     * Set the encryptionKeySha256 property: The SHA-256 hash of the encryption
+     * key used to encrypt the metadata. This header is only returned when the
+     * metadata was encrypted with a customer-provided key.
+     *
+     * @param encryptionKeySha256 the encryptionKeySha256 value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders encryptionKeySha256(String encryptionKeySha256) {
+        this.encryptionKeySha256 = encryptionKeySha256;
+        return this;
+    }
+
+    /**
+     * Get the encryptionScope property: The encryption scope used to encrypt
+     * the metadata. This header is only returned when the metadata was
+     * encrypted with customer specified encryption.
+     *
+     * @return the encryptionScope value.
+     */
+    public String encryptionScope() {
+        return this.encryptionScope;
+    }
+
+    /**
+     * Set the encryptionScope property: The encryption scope used to encrypt
+     * the metadata. This header is only returned when the metadata was
+     * encrypted with customer specified encryption.
+     *
+     * @param encryptionScope the encryptionScope value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders encryptionScope(String encryptionScope) {
+        this.encryptionScope = encryptionScope;
+        return this;
+    }
+
+    /**
      * Get the accessTier property: The tier of page blob on a premium storage
      * account or tier of block blob on blob storage LRS accounts. For a list
      * of allowed premium page blob tiers, see
@@ -1175,26 +1268,22 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the encryptionKeySha256 property: The SHA-256 hash of the encryption
-     * key used to encrypt the metadata. This header is only returned when the
-     * metadata was encrypted with a customer-provided key.
+     * Get the tagCount property: The number of tags corresponding to the blob.
      *
-     * @return the encryptionKeySha256 value.
+     * @return the tagCount value.
      */
-    public String encryptionKeySha256() {
-        return this.encryptionKeySha256;
+    public Integer tagCount() {
+        return this.tagCount;
     }
 
     /**
-     * Set the encryptionKeySha256 property: The SHA-256 hash of the encryption
-     * key used to encrypt the metadata. This header is only returned when the
-     * metadata was encrypted with a customer-provided key.
+     * Set the tagCount property: The number of tags corresponding to the blob.
      *
-     * @param encryptionKeySha256 the encryptionKeySha256 value to set.
+     * @param tagCount the tagCount value to set.
      * @return the BlobGetPropertiesHeaders object itself.
      */
-    public BlobGetPropertiesHeaders encryptionKeySha256(String encryptionKeySha256) {
-        this.encryptionKeySha256 = encryptionKeySha256;
+    public BlobGetPropertiesHeaders tagCount(Integer tagCount) {
+        this.tagCount = tagCount;
         return this;
     }
 
