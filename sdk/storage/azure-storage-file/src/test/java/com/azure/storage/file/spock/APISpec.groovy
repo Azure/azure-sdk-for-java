@@ -54,12 +54,6 @@ class APISpec extends Specification {
         interceptorManager = new InterceptorManager(methodName, testMode)
         testResourceName = new TestResourceNamer(methodName, testMode,
             interceptorManager.getRecordedData())
-        
-        primaryShareAsyncClient = shareBuilderHelper(interceptorManager).buildAsyncClient()
-        primaryDirectoryClient = directoryBuilderHelper(interceptorManager).buildClient()
-        primaryDirectoryAsyncClient = directoryBuilderHelper(interceptorManager).buildAsyncClient()
-        primaryFileClient = fileBuilderHelper(interceptorManager).buildClient()
-        primaryFileAsyncClient = fileBuilderHelper(interceptorManager).buildAsyncClient()
     }
 
     /**
@@ -114,8 +108,7 @@ class APISpec extends Specification {
         }
     }
 
-    def shareBuilderHelper(final InterceptorManager interceptorManager) {
-        def shareName = testResourceName.randomName("share", 16)
+    def shareBuilderHelper(final InterceptorManager interceptorManager, final String shareName) {
         if (testMode == TestMode.RECORD) {
             return new ShareClientBuilder()
                 .connectionString(connectionString)
@@ -129,9 +122,7 @@ class APISpec extends Specification {
         }
     }
 
-    def directoryBuilderHelper(final InterceptorManager interceptorManager) {
-        def shareName = testResourceName.randomName("share", 16)
-        def directoryPath = testResourceName.randomName("directory", 16)
+    def directoryBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String directoryPath) {
         if (testMode == TestMode.RECORD) {
             return new DirectoryClientBuilder()
                 .connectionString(connectionString)
@@ -147,9 +138,7 @@ class APISpec extends Specification {
         }
     }
 
-    def fileBuilderHelper(final InterceptorManager interceptorManager) {
-        def shareName = testResourceName.randomName("share", 16)
-        def filePath = testResourceName.randomName("file", 16)
+    def fileBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String filePath) {
         if (testMode == TestMode.RECORD) {
             return new FileClientBuilder()
                 .connectionString(connectionString)

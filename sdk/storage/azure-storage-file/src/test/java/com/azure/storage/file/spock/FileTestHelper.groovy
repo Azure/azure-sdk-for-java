@@ -16,7 +16,9 @@ import com.azure.storage.file.models.StorageErrorException
 
 import java.time.Duration
 
-import static org.junit.Assert.*
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertNull
+import static org.junit.Assert.assertTrue
 
 class FileTestHelper {
     static void assertResponseStatusCode(Response<?> response, int expectedStatusCode) {
@@ -27,23 +29,23 @@ class FileTestHelper {
         assertExceptionStatusCode(throwable, expectedStatusCode)
         assertExceptionErrorMessage(throwable, errMessage)
     }
-    
+
     static void assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode, String errMessage) {
         assertExceptionStatusCode(throwable, expectedStatusCode)
         assertExceptionErrorMessage(throwable, errMessage)
     }
-    
+
     static void assertExceptionStatusCode(Throwable throwable, int expectedStatusCode) {
         assertTrue(throwable instanceof StorageErrorException)
         StorageErrorException storageErrorException = (StorageErrorException) throwable
         assertEquals(expectedStatusCode, storageErrorException.response().statusCode())
     }
-    
+
     static void assertExceptionErrorMessage(Throwable throwable, StorageErrorCode errMessage) {
         assertTrue(throwable instanceof StorageErrorException)
         assertTrue(throwable.getMessage().contains(errMessage.toString()))
     }
-    
+
     static void assertExceptionErrorMessage(Throwable throwable, String errMessage) {
         assertTrue(throwable instanceof StorageErrorException)
         assertTrue(throwable.getMessage().contains(errMessage))
@@ -63,18 +65,7 @@ class FileTestHelper {
             }
         }
     }
-//    static void assertQueuesAreEqual(QueueItem expected, QueueItem actual) {
-//        if (expected == null) {
-//            assertNull(actual)
-//        } else {
-//            assertEquals(expected.name(), actual.name())
-//
-//            if (expected.metadata() != null && !ImplUtils.isNullOrEmpty(actual.metadata())) {
-//                assertEquals(expected.metadata(), actual.metadata())
-//            }
-//        }
-//    }
-//
+
     static void assertFileServicePropertiesAreEqual(FileServiceProperties expected, FileServiceProperties actual) {
         if (expected == null) {
             assertNull(actual)
@@ -145,7 +136,7 @@ class FileTestHelper {
 
     private static void sleep(Duration duration) {
         try {
-            Thread.sleep(duration.toMillis());
+            Thread.sleep(duration.toMillis())
         } catch (InterruptedException ex) {
             // Ignore the error
         }
