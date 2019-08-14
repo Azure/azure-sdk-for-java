@@ -47,7 +47,7 @@ public class Office365Source extends CopySource {
     private Object startTime;
 
     /**
-     * End time of the requested range for thsi dataset. Type: string (or
+     * End time of the requested range for this dataset. Type: string (or
      * Expression with resultType string).
      */
     @JsonProperty(value = "endTime")
@@ -134,7 +134,7 @@ public class Office365Source extends CopySource {
     }
 
     /**
-     * Get end time of the requested range for thsi dataset. Type: string (or Expression with resultType string).
+     * Get end time of the requested range for this dataset. Type: string (or Expression with resultType string).
      *
      * @return the endTime value
      */
@@ -143,7 +143,7 @@ public class Office365Source extends CopySource {
     }
 
     /**
-     * Set end time of the requested range for thsi dataset. Type: string (or Expression with resultType string).
+     * Set end time of the requested range for this dataset. Type: string (or Expression with resultType string).
      *
      * @param endTime the endTime value to set
      * @return the Office365Source object itself.
