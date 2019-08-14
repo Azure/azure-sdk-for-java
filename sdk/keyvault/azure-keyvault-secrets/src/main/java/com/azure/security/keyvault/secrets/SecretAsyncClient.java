@@ -405,10 +405,9 @@ public final class SecretAsyncClient {
      * <p> Gets the deleted secret from the key vault enabled for soft-delete. Subscribes to the call
      * asynchronously and prints out the
      * deleted secret details when a response is received.</p>
-     * <pre>
+     *
      * //Assuming secret is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.keyvault.secrets.secretclient.getDeletedSecret#string}
-     * </pre>
      *
      * @param name The name of the deleted secret.
      * @return A {@link Mono} containing the {@link DeletedSecret deleted secret}.
@@ -429,10 +428,9 @@ public final class SecretAsyncClient {
      * <p> Gets the deleted secret from the key vault enabled for soft-delete. Subscribes to the call
      * asynchronously and prints out the
      * deleted secret details when a response is received.</p>
-     * <pre>
+     *
      * //Assuming secret is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.keyvault.secrets.secretclient.getDeletedSecretWithResponse#string}
-     * </pre>
      *
      * @param name The name of the deleted secret.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value}
@@ -462,10 +460,9 @@ public final class SecretAsyncClient {
      * <p>Purges the deleted secret from the key vault enabled for soft-delete. Subscribes to the call
      * asynchronously and prints out the
      * status code from the server response when a response is received.</p>
-     * <pre>
+     *
      * //Assuming secret is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.keyvault.secrets.secretclient.purgeDeletedSecret#string}
-     * </pre>
      *
      * @param name The name of the secret.
      * @return A {@link Mono} containing a {@link VoidResponse}.
@@ -492,10 +489,9 @@ public final class SecretAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Recovers the deleted secret from the key vault enabled for soft-delete. Subscribes to the call asynchronously and prints out the
      * recovered secret details when a response is received.</p>
-     * <pre>
+     *
      * //Assuming secret is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#string}
-     * </pre>
      *
      * @param name The name of the deleted secret to be recovered.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
@@ -514,10 +510,9 @@ public final class SecretAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Recovers the deleted secret from the key vault enabled for soft-delete. Subscribes to the call asynchronously and prints out the
      * recovered secret details when a response is received.</p>
-     * <pre>
+     *
      * //Assuming secret is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.keyvault.secrets.secretclient.recoverDeletedSecretWithResponse#string}
-     * </pre>
      *
      * @param name The name of the deleted secret to be recovered.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
@@ -544,9 +539,8 @@ public final class SecretAsyncClient {
      * <p>Backs up the secret from the key vault. Subscribes to the call asynchronously and prints out
      * the
      * length of the secret's backup byte array returned in the response.</p>
-     * <pre>
+     *
      * {@codesnippet com.azure.keyvault.secrets.secretclient.backupSecret#string}
-     * </pre>
      *
      * @param name The name of the secret.
      * @return A {@link Mono} containing the backed up secret blob.
@@ -598,10 +592,9 @@ public final class SecretAsyncClient {
      * <p>Restores the secret in the key vault from its backup. Subscribes to the call asynchronously
      * and prints out the
      * restored secret details when a response is received.</p>
-     * <pre>
+     *
      * //Pass the Secret Backup Byte array to the restore operation.
      * {@codesnippet com.azure.keyvault.secrets.secretclient.restoreSecret#byte}
-     * </pre>
      *
      * @param backup The backup blob associated with the secret.
      * @return A {@link Mono} containing the {@link Secret restored secret}.
@@ -620,10 +613,9 @@ public final class SecretAsyncClient {
      * <p>Restores the secret in the key vault from its backup. Subscribes to the call asynchronously
      * and prints out the
      * restored secret details when a response is received.</p>
-     * <pre>
+     *
      * //Pass the Secret Backup Byte array to the restore operation.
      * {@codesnippet com.azure.keyvault.secrets.secretclient.restoreSecretWithResponse#byte}
-     * </pre>
      *
      * @param backup The backup blob associated with the secret.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value}

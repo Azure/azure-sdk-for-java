@@ -62,7 +62,7 @@ public class EventHubAsyncProducerTest {
     }
 
     /**
-     * Verifies that sending multiple events will result in calling {@code producer.send(List<Message>)}.
+     * Verifies that sending multiple events will result in calling producer.send(List<Message>).
      */
     @Test
     public void sendMultipleMessages() {

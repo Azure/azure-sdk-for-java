@@ -9,7 +9,7 @@ import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 
 /**
- *  Description text should only have one space character after the parameter name or '@return' statement.
+ *  Description text should only have one space character after the parameter name or {@code @return} statement.
  *  Text should not start on a new line or have any additional spacing or indentation.
  */
 public class JavaDocFormatting extends AbstractJavadocCheck {
@@ -18,7 +18,6 @@ public class JavaDocFormatting extends AbstractJavadocCheck {
     private static final String JAVA_DOC_PARAMETER = "javadoc parameter";
     private static final String JAVA_DOC_THROW = "javadoc throw";
 
-    private static final String ERROR_THROW_WRONG_FORMAT = "Wrong format for javadoc throw statement";
     private static final String ERROR_DESCRIPTION_ON_NEW_LINE = "Description for %s must be on same the same line";
     private static final String ERROR_NO_DESCRIPTION = "Description is missing for %s. Consider adding a description";
     private static final String ERROR_NO_WS_AFTER_IDENT = "No white space after %s. Consider fixing format";
@@ -54,9 +53,6 @@ public class JavaDocFormatting extends AbstractJavadocCheck {
             case JavadocTokenTypes.THROWS_LITERAL:
                 // Evaluate what is the format after the CLASS_NAME of a @throw
                 DetailNode throwFormat = JavadocUtil.getNextSibling(javaDocTag, JavadocTokenTypes.CLASS_NAME);
-                if (throwFormat == null) {
-                    log(javaDocTag.getLineNumber(), ERROR_THROW_WRONG_FORMAT);
-                }
                 evaluateValidFormat(throwFormat, JAVA_DOC_THROW);
             default:
                 break;
