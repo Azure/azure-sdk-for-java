@@ -12,8 +12,8 @@
       <id>data</id>
       <activation>
         <property>
-          <name>env.ENABLEJETTY</name>
-          <value>true</value>
+          <name>env.SDKTYPE</name>
+          <value>data</value>
         </property>
       </activation>
       <modules>
@@ -30,8 +30,8 @@
       <id>client</id>
       <activation>
         <property>
-          <name>env.ENABLEJETTY</name>
-          <value>!true</value>
+          <name>env.SDKTYPE</name>
+          <value>!data</value>
         </property>
       </activation>
       <modules>
