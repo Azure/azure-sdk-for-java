@@ -13,7 +13,6 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
