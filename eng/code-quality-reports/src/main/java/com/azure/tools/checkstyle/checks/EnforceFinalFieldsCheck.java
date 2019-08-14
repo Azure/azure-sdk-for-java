@@ -8,10 +8,9 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
-import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,13 +23,15 @@ import java.util.Set;
  * On finish tree, check what non-final fields get a value only in constructor and nowhere else by looking for
  * strings inside nonFinalFields AND assignmentsFromConstructor but NOT in assignmentsFromMethods
  */
-public class AssignedOnceVariableToBeFinalCheck extends AbstractCheck {
+public class EnforceFinalFieldsCheck extends AbstractCheck {
+    private static final String ERROR_SUGGESTION = "You should consider making the field final, " +
+        "or suppressing the warning.";
     private static final String ERROR_MSG = "Field \"%s\" is only assigned in constructor and it is not final. " +
-        "You should consider making the field final, or suppressing the warning.";
+        ERROR_SUGGESTION;
     private static final String ERROR_FIELD_ALONE = "Field \"%s\" is not assigned in constructor or methods." +
-        "Make field final";
+        ERROR_SUGGESTION;
 
-    private ArrayList<DetailAST> nonFinalFields;
+    private List<DetailAST> nonFinalFields;
     private Set<String> assignmentsFromConstructor;
     private Set<String> assignmentsFromMethods;
     private DetailAST scopeParent = null;
