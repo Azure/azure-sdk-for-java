@@ -187,7 +187,7 @@ public class EventHubAsyncProducer implements Closeable {
      * For more information regarding the maximum event size allowed, see
      * <a href="https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and
      * Limits</a>.
-     * @param event   Event to send to the service.
+     * @param event Event to send to the service.
      * @param options The set of options to consider when sending this event.
      *
      * @return A {@link Mono} that completes when the event is pushed to the service.
@@ -217,7 +217,7 @@ public class EventHubAsyncProducer implements Closeable {
      * Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
      * size is the max amount allowed on the link.
-     * @param events  Events to send to the service.
+     * @param events Events to send to the service.
      * @param options The set of options to consider when sending this batch.
      *
      * @return A {@link Mono} that completes when all events are pushed to the service.
@@ -246,7 +246,7 @@ public class EventHubAsyncProducer implements Closeable {
      * Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
      * size is the max amount allowed on the link.
-     * @param events  Events to send to the service.
+     * @param events Events to send to the service.
      * @param options The set of options to consider when sending this batch.
      *
      * @return A {@link Mono} that completes when all events are pushed to the service.

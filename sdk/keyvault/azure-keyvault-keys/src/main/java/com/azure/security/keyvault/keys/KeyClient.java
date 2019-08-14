@@ -501,6 +501,7 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the deleted key from the key vault enabled for soft-delete. Prints out the details of the deleted key
      * returned in the response.</p>
+     * <pre>
      * //Assuming key is deleted on a soft-delete enabled key vault.
      * {@codesnippet com.azure.keyvault.keys.keyclient.getDeletedKey#string}
      * </pre>

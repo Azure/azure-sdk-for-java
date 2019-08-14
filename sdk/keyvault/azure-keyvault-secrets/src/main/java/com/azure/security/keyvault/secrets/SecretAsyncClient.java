@@ -408,6 +408,7 @@ public final class SecretAsyncClient {
      * <pre>
      * //Assuming secret is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.keyvault.secrets.secretclient.getDeletedSecret#string}
+     * </pre>
      *
      * @param name The name of the deleted secret.
      * @return A {@link Mono} containing the {@link DeletedSecret deleted secret}.
@@ -431,6 +432,7 @@ public final class SecretAsyncClient {
      * <pre>
      * //Assuming secret is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.keyvault.secrets.secretclient.getDeletedSecretWithResponse#string}
+     * </pre>
      *
      * @param name The name of the deleted secret.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value}
@@ -463,6 +465,7 @@ public final class SecretAsyncClient {
      * <pre>
      * //Assuming secret is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.keyvault.secrets.secretclient.purgeDeletedSecret#string}
+     * </pre>
      *
      * @param name The name of the secret.
      * @return A {@link Mono} containing a {@link VoidResponse}.
@@ -492,6 +495,7 @@ public final class SecretAsyncClient {
      * <pre>
      * //Assuming secret is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#string}
+     * </pre>
      *
      * @param name The name of the deleted secret to be recovered.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
@@ -513,6 +517,7 @@ public final class SecretAsyncClient {
      * <pre>
      * //Assuming secret is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.keyvault.secrets.secretclient.recoverDeletedSecretWithResponse#string}
+     * </pre>
      *
      * @param name The name of the deleted secret to be recovered.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
@@ -541,6 +546,7 @@ public final class SecretAsyncClient {
      * length of the secret's backup byte array returned in the response.</p>
      * <pre>
      * {@codesnippet com.azure.keyvault.secrets.secretclient.backupSecret#string}
+     * </pre>
      *
      * @param name The name of the secret.
      * @return A {@link Mono} containing the backed up secret blob.
@@ -595,6 +601,7 @@ public final class SecretAsyncClient {
      * <pre>
      * //Pass the Secret Backup Byte array to the restore operation.
      * {@codesnippet com.azure.keyvault.secrets.secretclient.restoreSecret#byte}
+     * </pre>
      *
      * @param backup The backup blob associated with the secret.
      * @return A {@link Mono} containing the {@link Secret restored secret}.
@@ -616,6 +623,7 @@ public final class SecretAsyncClient {
      * <pre>
      * //Pass the Secret Backup Byte array to the restore operation.
      * {@codesnippet com.azure.keyvault.secrets.secretclient.restoreSecretWithResponse#byte}
+     * </pre>
      *
      * @param backup The backup blob associated with the secret.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value}
@@ -714,7 +722,7 @@ public final class SecretAsyncClient {
      * {@link SecretAsyncClient#listDeletedSecrets()}.
      *
      * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the list operations.
-     * @return A {@link Mono} of {@link PagedResponse<DeletedSecret>} from the next page of results.
+     * @return A {@link Mono} of {@link PagedResponse} that contains {@link DeletedSecret} from the next page of results.
      */
     private Mono<PagedResponse<DeletedSecret>> listDeletedSecretsNextPage(String continuationToken, Context context) {
         return service.getDeletedSecrets(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)

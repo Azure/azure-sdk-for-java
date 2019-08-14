@@ -20,7 +20,7 @@ import java.util.List;
  *      "items": [{ serialized(T) }, ... ]
  * }
  * or any other cases where the property names of that type are swapped
- * @param <T>
+ * @param <T> a generic type
  */
 class ItemPage<T> implements Page<T> {
     @JsonAlias({"items", "value"})

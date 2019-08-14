@@ -6,7 +6,7 @@ package com.azure.core.management.implementation;
 /**
  * A container for a generic type. Serves a similar purpose as pointers in C/C++. It's a workaround
  * for the fact that Java doesn't allow mutation of local variables in closure.
- * @param <T>
+ * @param <T> a generic type
  */
 public class Value<T> {
     private T value;
@@ -19,7 +19,7 @@ public class Value<T> {
 
     /**
      * Create a new Value with the provided inner value.
-     * @param value
+     * @param value a generic type
      */
     Value(T value) {
         set(value);
