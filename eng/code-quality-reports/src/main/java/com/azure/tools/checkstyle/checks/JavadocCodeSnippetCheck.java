@@ -3,8 +3,10 @@
 
 package com.azure.tools.checkstyle.checks;
 
+import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.DetailNode;
 import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
+import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 
@@ -17,8 +19,9 @@ import java.util.regex.Pattern;
 /**
  * Requirement of Javadoc annotation {@literal @codesnippet}  check:
  * <ol>
- *   <li>Use {@literal {@codesnippet ...}} instead of '<code>', '<pre>', or {@literal {@code ...}) if these tags span
- *       multiple lines. Inline code sample are fine as-is</li>
+ *   <li>Use {@literal {@codesnippet ...}} instead of '<code>', '<pre>', or {@literal {@code ...}} if these tags span
+ *   multiple lines. Inline code sample are fine as-is</li>
+ *   <li>No check on class-level Javadoc</li>
  *   <ol>Naming pattern of {@literal {@codesnippet}}:
  *     <li>For package name, class name, they should all be lower case;
  *         For method name, the first letter of method name should be lower case;
@@ -57,6 +60,16 @@ public class JavadocCodeSnippetCheck extends AbstractJavadocCheck {
 
     @Override
     public void visitJavadocToken(DetailNode token) {
+        DetailAST blockCommentToken = getBlockCommentAst();
+        // corner case such as package-info.java
+        if (blockCommentToken.getParent() == null || blockCommentToken.getParent().getParent() == null) {
+            return;
+        }
+
+        DetailAST grandparentToken = blockCommentToken.getParent().getParent();
+        if (grandparentToken.getType() == TokenTypes.CLASS_DEF) {
+            return;
+        }
         switch (token.getType()) {
             case JavadocTokenTypes.HTML_ELEMENT_START:
                 checkHtmlElementStart(token);
