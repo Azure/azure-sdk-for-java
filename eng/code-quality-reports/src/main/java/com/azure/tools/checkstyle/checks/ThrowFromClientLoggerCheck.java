@@ -12,7 +12,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- * To throw an exception, Must throw it through a 'logger.logExceptionAsError', rather than by directly calling 'throw exception'</li>.
+ * To throw an exception, Must throw it through a 'logger.logExceptionAsError', rather than by directly calling 'throw exception'.
  *
  * Skip check if throwing exception from
  * <ol>
