@@ -37,11 +37,12 @@ public class CreateTestResources {
 
         String serviceName = azureSearchResources.getSearchServiceName();
         String apiAdminKey = azureSearchResources.getSearchAdminKey();
+        String indexFileName = azureSearchResources.getIndexFileName();
 
         //Creating Index:
         SearchIndexService searchIndexService;
         try {
-            searchIndexService = new SearchIndexService(serviceName, apiAdminKey);
+            searchIndexService = new SearchIndexService(indexFileName, serviceName, apiAdminKey);
             searchIndexService.initialize();
         } catch (Exception e) {
             e.printStackTrace();

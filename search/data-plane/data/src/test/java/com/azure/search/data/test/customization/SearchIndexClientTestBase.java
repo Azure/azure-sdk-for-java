@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.data;
+package com.azure.search.data.test.customization;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -10,16 +10,26 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.common.SearchPipelinePolicy;
 import com.azure.search.data.customization.SearchIndexClientBuilder;
 import com.azure.search.data.env.AzureSearchResources;
-import com.azure.search.data.env.SearchIndexDocs;
 import com.azure.search.data.env.SearchIndexService;
+import com.azure.search.data.generated.models.DocumentIndexResult;
+import com.azure.search.data.generated.models.IndexAction;
+import com.azure.search.data.generated.models.IndexActionType;
+import com.azure.search.data.generated.models.IndexBatch;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.Rule;
 import org.junit.rules.TestName;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.Map;
 
 
 public class SearchIndexClientTestBase extends TestBase {
@@ -30,6 +40,8 @@ public class SearchIndexClientTestBase extends TestBase {
     private static final String AZURE_SUBSCRIPTION_ID = "AZURE_SUBSCRIPTION_ID";
     private static final String AZURE_SERVICE_PRINCIPAL_APP_ID = "AZURE_SERVICE_PRINCIPAL_APP_ID";
     private static final String AZURE_SERVICE_PRINCIPAL_APP_SECRET = "AZURE_SERVICE_PRINCIPAL_APP_SECRET";
+    private static final String INDEX_FILE_NAME = "INDEX_FILE_NAME";
+
 
     private static String searchServiceName;
     private static String apiKey;
@@ -43,6 +55,55 @@ public class SearchIndexClientTestBase extends TestBase {
     @Override
     public String testName() {
         return testName.getMethodName();
+    }
+
+    /**
+     * Add a given document to the index actions list
+     * @param indexActions object to be modified
+     * @param document the document to be added
+     */
+    private void addDocumentToIndexActions(List<IndexAction> indexActions, HashMap<String, Object> document) {
+        indexActions.add(new IndexAction()
+            .actionType(IndexActionType.UPLOAD)
+            .additionalProperties(document));
+    }
+
+    /**
+     * index the given index actions against the search service
+     * @param client
+     * @param indexActions
+     * @return
+     */
+    protected DocumentIndexResult index(SearchIndexAsyncClient client, List<IndexAction> indexActions) {
+        return client.index(
+            new IndexBatch().actions(indexActions))
+            .block();
+    }
+
+    /**
+     * Index the document into the search service
+     */
+    protected DocumentIndexResult indexDocument(SearchIndexAsyncClient client, HashMap<String, Object> document) {
+        List<IndexAction> indexActions = new LinkedList<>();
+        addDocumentToIndexActions(indexActions, document);
+        System.out.println("Indexing " + indexActions.size() + " docs");
+
+        return index(client, indexActions);
+    }
+
+    /**
+     * Index the documents into the search service
+     */
+    protected DocumentIndexResult indexDocuments(SearchIndexAsyncClient client, List<Map> documents) {
+        List<IndexAction> indexActions = new ArrayList<>();
+        assert documents != null;
+        documents.forEach(h -> {
+            HashMap<String, Object> hotel = new HashMap<String, Object>(h);
+            addDocumentToIndexActions(indexActions, hotel);
+        });
+
+        System.out.println("Indexing " + indexActions.size() + " docs");
+        return index(client, indexActions);
     }
 
     public SearchIndexClientBuilder builderSetup() {
@@ -63,7 +124,6 @@ public class SearchIndexClientTestBase extends TestBase {
             return new SearchIndexClientBuilder()
                 .serviceName("searchServiceName")
                 .searchDnsSuffix("search.windows.net")
-                .indexName("hotels")
                 .apiVersion("2019-05-06")
                 .httpClient(interceptorManager.getPlaybackClient())
                 .addPolicy(new SearchPipelinePolicy("apiKey"))
@@ -82,6 +142,7 @@ public class SearchIndexClientTestBase extends TestBase {
         String azureDomainId = ConfigurationManager.getConfiguration().get(AZURE_DOMAIN_ID);
         String secret = ConfigurationManager.getConfiguration().get(AZURE_SERVICE_PRINCIPAL_APP_SECRET);
         String subscriptionId = ConfigurationManager.getConfiguration().get(AZURE_SUBSCRIPTION_ID);
+        String indexFileName = ConfigurationManager.getConfiguration().get(INDEX_FILE_NAME);
 
         ApplicationTokenCredentials applicationTokenCredentials = new ApplicationTokenCredentials(
             appId,
@@ -98,16 +159,9 @@ public class SearchIndexClientTestBase extends TestBase {
 
         try {
             //Creating Index:
-            SearchIndexService searchIndexService = new SearchIndexService(searchServiceName, apiKey);
+            SearchIndexService searchIndexService = new SearchIndexService(indexFileName, searchServiceName, apiKey);
             searchIndexService.initialize();
             indexName = searchIndexService.indexName();
-
-            // Uploading Documents:
-            SearchIndexDocs searchIndexDocs = new SearchIndexDocs(searchServiceName, apiKey,
-                indexName,
-                "search.windows.net",
-                "2019-05-06");
-            searchIndexDocs.initialize();
 
         } catch (Exception e) {
             e.printStackTrace();

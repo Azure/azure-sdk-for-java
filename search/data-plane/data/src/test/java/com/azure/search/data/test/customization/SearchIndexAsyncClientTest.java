@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.data;
+package com.azure.search.data.test.customization;
 
+import com.azure.search.data.SearchIndexAsyncClient;
+import com.azure.search.data.env.SearchIndexDocs;
 import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
@@ -22,11 +24,33 @@ public class SearchIndexAsyncClientTest extends SearchIndexClientTestBase {
 
     private SearchIndexAsyncClient searchIndexAsyncClient;
     private static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
+    private static final String INDEX_NAME = "hotels";
+
+    private void addDocsData() throws IOException {
+
+        Reader docsData = new InputStreamReader(
+                getClass().getClassLoader().getResourceAsStream(SearchIndexDocs.HOTELS_DATA_JSON));
+        List<Map> hotels = new ObjectMapper().readValue(docsData, List.class);
+        DocumentIndexResult documentIndexResult  = indexDocuments(searchIndexAsyncClient, hotels);
+
+        System.out.println("Indexing Results:");
+        assert documentIndexResult != null;
+        documentIndexResult.results().forEach(result ->
+                System.out.println(
+                        "key:" + result.key() + (result.succeeded() ? " Succeeded" : " Error: " + result.errorMessage()))
+        );
+    }
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        searchIndexAsyncClient = builderSetup().buildAsyncClient();
+        searchIndexAsyncClient = builderSetup().indexName(INDEX_NAME).buildAsyncClient();
+
+        try {
+            addDocsData();
+        } catch (IOException exc) {
+
+        }
     }
 
     @Test
@@ -55,6 +79,4 @@ public class SearchIndexAsyncClientTest extends SearchIndexClientTestBase {
 
         return hotels;
     }
-
-
 }
