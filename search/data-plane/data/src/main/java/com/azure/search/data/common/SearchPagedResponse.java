@@ -8,14 +8,17 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.search.data.generated.models.DocumentSearchResult;
 import com.azure.search.data.generated.models.FacetResult;
 import com.azure.search.data.generated.models.SearchResult;
+
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SearchPagedResponse extends PagedResponseBase<String, SearchResult> {
 
     /**
      * Get facets
-     * @return  Map<String, List<FacetResult>>
+     *
+     * @return Map<String, List < FacetResult>>
      */
     public Map<String, List<FacetResult>> getFacets() {
         return facets;
@@ -25,6 +28,7 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
 
     /**
      * Get count
+     *
      * @return Long
      */
     public Long getCount() {
@@ -35,6 +39,7 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
 
     /**
      * Get coverage
+     *
      * @return Double
      */
     public Double getCoverage() {
@@ -45,6 +50,7 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
 
     /**
      * Constructor
+     *
      * @param documentSearchResponse an http response with the results
      */
     public SearchPagedResponse(SimpleResponse<DocumentSearchResult> documentSearchResponse) {
@@ -61,12 +67,9 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
     }
 
     private static String deserializeHeaders(HttpHeaders headers) {
-        String deserializedHeaders = "";
-        for (Map.Entry<String, String> entry: headers.toMap().entrySet()) {
-            deserializedHeaders += "," + entry.getKey() + "," + entry.getValue();
-        }
-
-        return deserializedHeaders;
+        return headers.toMap().entrySet().stream().map((entry) ->
+            entry.getKey() + "," + entry.getValue()
+        ).collect(Collectors.joining(","));
     }
 
 }
