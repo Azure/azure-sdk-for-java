@@ -328,14 +328,17 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"/>
 
     <!-- CUSTOM CHECKS -->
-    <!-- Requirement of Javadoc annotation @codesnippet check:
-      1) Use {@codesnippet ...} instead of '<code>', '<pre>', or '{@code ...}' if these tags span multiple lines.
-         Inline code sample are fine as-is.
-      2) naming pattern of @codesnippet:
-          a) For package name, class name, they should all be lower case.
-             For method name,  the first letter of method name should be lower case.
-             For parameters, they should only be letters. Concatenate all parameters with dash character.
-          b) Jonathon will add more requirement specs later. -->
+    <!-- Javadoc inline check should:
+    1) Use {@codesnippet ...} instead of '<code>', '<pre>', or '{@code ...}' if these tags span multiple lines.
+       Inline code sample are fine as-is.
+    2) No check on class-level Javadoc. -->
+    <module name="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck"/>
+
+    <!-- CUSTOM CHECKS -->
+    <!-- @codesnippet description should match naming pattern requirement below:
+    1) Package, class and method names should be concatenated by dot '.'. Ex. packageName.className.methodName
+    2) Methods arguments should be concatenated by dash '-'. Ex. string-string  for methodName(String s, String s2)
+    3) Use '#' to concatenate 1) and 2), ex packageName.className.methodName#string-string -->
     <module name="com.azure.tools.checkstyle.checks.JavadocCodeSnippetCheck"/>
   </module>
 </module>
