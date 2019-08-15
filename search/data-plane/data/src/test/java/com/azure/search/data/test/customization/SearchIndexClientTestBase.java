@@ -64,8 +64,8 @@ public class SearchIndexClientTestBase extends TestBase {
      */
     private void addDocumentToIndexActions(List<IndexAction> indexActions, HashMap<String, Object> document) {
         indexActions.add(new IndexAction()
-                .actionType(IndexActionType.UPLOAD)
-                .additionalProperties(document));
+            .actionType(IndexActionType.UPLOAD)
+            .additionalProperties(document));
     }
 
     /**
@@ -76,8 +76,8 @@ public class SearchIndexClientTestBase extends TestBase {
      */
     protected DocumentIndexResult index(SearchIndexAsyncClient client, List<IndexAction> indexActions) {
         return client.index(
-                new IndexBatch().actions(indexActions))
-                .block();
+            new IndexBatch().actions(indexActions))
+            .block();
     }
 
     /**
@@ -106,7 +106,7 @@ public class SearchIndexClientTestBase extends TestBase {
         return index(client, indexActions);
     }
 
-    SearchIndexClientBuilder builderSetup() {
+    public SearchIndexClientBuilder builderSetup() {
         if (!interceptorManager.isPlaybackMode()) {
             createAzureTestEnvironment();
 
