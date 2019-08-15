@@ -160,7 +160,7 @@ public final class BlobOutputStream extends OutputStream {
             accessCondition.appendPositionAccessConditions().appendPosition() != null
                 ? accessCondition.appendPositionAccessConditions().appendPosition()
                 : parentBlob.getProperties().block().value().blobSize()
-        )
+            )
             : 0, BlobType.APPEND_BLOB, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
     }
 
