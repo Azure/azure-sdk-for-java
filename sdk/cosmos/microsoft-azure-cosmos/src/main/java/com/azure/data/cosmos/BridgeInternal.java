@@ -21,6 +21,7 @@ import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.micrometer.core.instrument.MeterRegistry;
 
 import java.net.URI;
 import java.time.OffsetDateTime;
@@ -50,6 +51,10 @@ public class BridgeInternal {
 
     public static Document documentFromObject(Object document, ObjectMapper mapper) {
         return Document.FromObject(document, mapper);
+    }
+
+    public static void monitorTelemetry(MeterRegistry registry) {
+        CosmosClient.monitorTelemetry(registry);
     }
 
     public static <T extends Resource> ResourceResponse<T> toResourceResponse(RxDocumentServiceResponse response,
@@ -380,7 +385,7 @@ public class BridgeInternal {
     public static void setTimestamp(Resource resource, OffsetDateTime date) {
         resource.timestamp(date);
     }
-    
+
     public static CosmosResponseDiagnostics createCosmosResponseDiagnostics() {
         return new CosmosResponseDiagnostics();
     }

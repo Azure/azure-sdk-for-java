@@ -21,6 +21,7 @@ import com.codahale.metrics.graphite.GraphiteReporter;
 import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
 import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
@@ -113,6 +114,18 @@ abstract class AsyncBenchmark<T> {
         } else {
             reporter = ConsoleReporter.forRegistry(metricsRegistry).convertRatesTo(TimeUnit.SECONDS)
                                       .convertDurationsTo(TimeUnit.MILLISECONDS).build();
+        }
+
+        MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
+
+        if (registry != null) {
+            BridgeInternal.monitorTelemetry(registry);
+        }
+
+        registry = configuration.getGraphiteMeterRegistry();
+
+        if (registry != null) {
+            BridgeInternal.monitorTelemetry(registry);
         }
     }
 
