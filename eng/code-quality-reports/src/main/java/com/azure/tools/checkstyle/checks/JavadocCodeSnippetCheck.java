@@ -3,80 +3,101 @@
 
 package com.azure.tools.checkstyle.checks;
 
+import com.puppycrawl.tools.checkstyle.DetailNodeTreeStringPrinter;
+import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.DetailNode;
+import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
-import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
+import com.puppycrawl.tools.checkstyle.utils.BlockCommentPosition;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.regex.Pattern;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 /**
- * Requirement of Javadoc annotation {@literal @codesnippet}  check:
+ * @codesnippet description should match naming pattern requirement below:
  * <ol>
- *   <li>Use {@literal {@codesnippet ...}} instead of '<code>', '<pre>', or {@literal {@code ...}} if these tags span
- *   multiple lines. Inline code sample are fine as-is</li>
- *   <li>No check on class-level Javadoc</li>
- *   <ol>Naming pattern of {@literal {@codesnippet}}:
- *     <li>For package name, class name, they should all be lower case;
- *         For method name, the first letter of method name should be lower case;
- *         For parameters, they should only be letters. Concatenate all parameters with dash character.</li>
- *     <li>Jonathan will add more requirement specs later.</li>
- *   </ol>
+ *   <li>Package, class and method names should be concatenated by dot '.'. Ex., packageName.className.methodName</li>
+ *   <li>Methods arguments should be concatenated by dash '-'. Ex. string-string  for methodName(String s, String s2)</li>
+ *   <li>Use '#' to concatenate 1) and 2), ex packageName.className.methodName#string-string</li>
  * </ol>
+ *
  */
-public class JavadocCodeSnippetCheck extends AbstractJavadocCheck {
-    // Code snippet annotation naming pattern:
-    // Check package name, class name, method name, parameters names' naming patterns.
-    private static final String CLASS_PATH_REGEX = "[a-z.]+";
-    private static final String METHOD_NAME_REGEX = "^[a-z][a-zA-Z]+";
-    private static final String PARAMETERS_REGEX = "[a-zA-Z-]+";
+public class JavadocCodeSnippetCheck extends AbstractCheck {
 
     private static final String CODE_SNIPPET_ANNOTATION = "@codesnippet";
-    private static final String MULTIPLE_LINE_SPAN_ERROR = "Tag '%s' span in multiple lines. Use @codesnippet annotation" +
-        " instead of '%s' to ensure that the code block always compiles.";
+    private static final String MISSING_CODESNIPPET_TAG_MESSAGE = "Javadoc @codesnippet tag required description.";
 
-    // HTML tag set that need to be checked to see if there tags span on multiple lines.
-    private static final Set<String> CHECK_TAGS = Collections.unmodifiableSet(new HashSet<>(
-        Arrays.asList("pre", "code")));
+
+    private static final int[] TOKENS = new int[] {
+        TokenTypes.PACKAGE_DEF,
+        TokenTypes.BLOCK_COMMENT_BEGIN,
+        TokenTypes.CLASS_DEF,
+        TokenTypes.METHOD_DEF
+    };
+
+    private String packageName;
+    // A container to contains all class name visited, remove the class name when leave the same token
+    private Deque<String> classNameStack = new ArrayDeque<>();
+    // A container to contains all METHOD_DEF node visited, remove the node whenever leave the same token
+    private Deque<DetailAST> methodDefStack = new ArrayDeque<>();
 
     @Override
-    public int[] getDefaultJavadocTokens() {
-        return getRequiredJavadocTokens();
+    public int[] getDefaultTokens() {
+        return getRequiredTokens();
     }
 
     @Override
-    public int[] getRequiredJavadocTokens() {
-        return new int[] {
-            JavadocTokenTypes.HTML_ELEMENT_START,
-            JavadocTokenTypes.JAVADOC_INLINE_TAG
-        };
+    public int[] getAcceptableTokens() {
+        return getRequiredTokens();
     }
 
     @Override
-    public void visitJavadocToken(DetailNode token) {
-        DetailAST blockCommentToken = getBlockCommentAst();
-        // corner case such as package-info.java
-        if (blockCommentToken.getParent() == null || blockCommentToken.getParent().getParent() == null) {
-            return;
-        }
+    public int[] getRequiredTokens() {
+        return TOKENS;
+    }
 
-        DetailAST grandparentToken = blockCommentToken.getParent().getParent();
-        if (grandparentToken.getType() == TokenTypes.CLASS_DEF) {
-            return;
-        }
+    @Override
+    public boolean isCommentNodesRequired() {
+        return true;
+    }
+
+    @Override
+    public void leaveToken(DetailAST token) {
         switch (token.getType()) {
-            case JavadocTokenTypes.HTML_ELEMENT_START:
-                checkHtmlElementStart(token);
+            case TokenTypes.CLASS_DEF:
+                if (!classNameStack.isEmpty()) {
+                    classNameStack.pop();
+                }
                 break;
-            case JavadocTokenTypes.JAVADOC_INLINE_TAG:
-                checkJavadocInlineTag(token);
-                checkCodeSnippetNaming(token);
+            case TokenTypes.METHOD_DEF:
+                if (!methodDefStack.isEmpty()) {
+                    methodDefStack.pop();
+                }
+                break;
+            default:
+                // Checkstyle complains if there's no default block in switch
+                break;
+        }
+    }
+
+    @Override
+    public void visitToken(DetailAST token) {
+        switch (token.getType()) {
+            case TokenTypes.PACKAGE_DEF:
+                packageName = FullIdent.createFullIdent(token.findFirstToken(TokenTypes.DOT)).getText();
+                break;
+            case TokenTypes.CLASS_DEF:
+                classNameStack.push(token.findFirstToken(TokenTypes.IDENT).getText());
+                break;
+            case TokenTypes.METHOD_DEF:
+                methodDefStack.push(token);
+                break;
+            case TokenTypes.BLOCK_COMMENT_BEGIN:
+                checkNamingPattern(token);
+                break;
             default:
                 // Checkstyle complains if there's no default block in switch
                 break;
@@ -84,141 +105,86 @@ public class JavadocCodeSnippetCheck extends AbstractJavadocCheck {
     }
 
     /**
-     * Use {@literal {@codesnippet ...}} instead of '<code>', '<pre>', or {@literal {@code ...}) if these tags span
-     * multiple lines. Inline code sample are fine as-is.
+     * Check if the given block comment is on method. If not, skip the check.
+     * Otherwise, check if the {@literal {@codesnippet}} has matching the naming pattern
      *
-     * @param htmlElementStartNode HTML_ELEMENT_START node
+     * @param blockCommentToken BLOCK_COMMENT_BEGIN token
      */
-    private void checkHtmlElementStart(DetailNode htmlElementStartNode) {
-        final DetailNode tagNameNode = JavadocUtil.findFirstToken(htmlElementStartNode, JavadocTokenTypes.HTML_TAG_NAME);
-        // HTML tags are case-insensitive
-        final String tagName = tagNameNode.getText().toLowerCase();
-        if (!CHECK_TAGS.contains(tagName)) {
+    private void checkNamingPattern(DetailAST blockCommentToken) {
+        if (!BlockCommentPosition.isOnMethod(blockCommentToken)) {
             return;
         }
 
-        final String tagNameBracket = "<" + tagName + ">";
-        final DetailNode htmlTagNode = htmlElementStartNode.getParent();
-        if (!isInlineCode(htmlTagNode)) {
-            log(htmlTagNode.getLineNumber(), htmlTagNode.getColumnNumber(),
-                String.format(MULTIPLE_LINE_SPAN_ERROR, tagNameBracket, tagNameBracket));
+        // Turn the DetailAST into a Javadoc DetailNode.
+        DetailNode javadocNode = null;
+        try {
+            javadocNode = DetailNodeTreeStringPrinter.parseJavadocAsDetailNode(blockCommentToken);
+        } catch (IllegalArgumentException ex) {
+            // Exceptions are thrown if the JavaDoc has invalid formatting.
         }
-    }
 
-    /**
-     * Check to see if the JAVADOC_INLINE_TAG node is {@literal @code} tag. If it is, check if the tag contains a new line
-     * or a leading asterisk, which implies the tag has spanned in multiple lines.
-     *
-     * @param inlineTagNode JAVADOC_INLINE_TAG javadoc node
-     */
-    private void checkJavadocInlineTag(DetailNode inlineTagNode) {
-        final DetailNode codeLiteralNode = JavadocUtil.findFirstToken(inlineTagNode, JavadocTokenTypes.CODE_LITERAL);
-        if (codeLiteralNode == null) {
+        if (javadocNode == null) {
             return;
         }
 
-        final String codeLiteral = codeLiteralNode.getText();
-        if (!isInlineCode(inlineTagNode)) {
-            log(codeLiteralNode.getLineNumber(), codeLiteralNode.getColumnNumber(),
-                String.format(MULTIPLE_LINE_SPAN_ERROR, codeLiteral, codeLiteral));
-        }
-    }
+        // Iterate through all the top level nodes in the Javadoc, looking for the @throws statements.
+        for (DetailNode node : javadocNode.getChildren()) {
+            if (node.getType() != JavadocTokenTypes.JAVADOC_INLINE_TAG) {
+                continue;
+            }
+            // Skip if not codesnippet annotation
+            DetailNode customNameNode = JavadocUtil.findFirstToken(node, JavadocTokenTypes.CUSTOM_NAME);
+            if (customNameNode == null || !CODE_SNIPPET_ANNOTATION.equals(customNameNode.getText())) {
+                return;
+            }
+            // Missing Description
+            DetailNode descriptionNode = JavadocUtil.findFirstToken(node, JavadocTokenTypes.DESCRIPTION);
+            if (descriptionNode == null) {
+                log(node.getLineNumber(), MISSING_CODESNIPPET_TAG_MESSAGE);
+                return;
+            }
 
-    /**
-     * Check to see if the code snippet name matched the naming pattern.
-     * A valid example of naming pattern could be:
-     *   com.azure.security.keyvault.keys.cryptography.cryptographyclient.encrypt#symmetric-encrypt
-     *
-     * For more detail, please refers to this class description javadoc.
-     *
-     * @param inlineTagNode JAVADOC_INLINE_TAG javadoc node
-     */
-    private void checkCodeSnippetNaming(DetailNode inlineTagNode) {
-        // Only checks on @codesnippet annotation
-        final DetailNode customNameNode = JavadocUtil.findFirstToken(inlineTagNode, JavadocTokenTypes.CUSTOM_NAME);
-        if (customNameNode == null || !CODE_SNIPPET_ANNOTATION.equals(customNameNode.getText())) {
-            return;
-        }
+            String description = JavadocUtil.findFirstToken(descriptionNode, JavadocTokenTypes.TEXT).getText();
 
-        final DetailNode descriptionNode = JavadocUtil.findFirstToken(inlineTagNode, JavadocTokenTypes.DESCRIPTION);
-        if (descriptionNode == null) {
-            log(descriptionNode.getLineNumber(), descriptionNode.getColumnNumber(),
-                String.format("%s has no description.", CODE_SNIPPET_ANNOTATION));
-            return;
-        }
-        // DESCRIPTION always has child TEXT
-        final DetailNode textNode = JavadocUtil.findFirstToken(descriptionNode, JavadocTokenTypes.TEXT);
-        final String namingPattern = textNode.getText();
-        // Verify naming pattern spec:
-        // 1. For package name, class name, they should all be lower case;
-        //    For method name,  the first letter of method name should be lower case.
-        //    For parameters, they should only be letters. Concatenate all parameters with dash character
-        // 2. Jonathon will add more requirement specs later
-        if (!isNamingMatch(namingPattern)) {
-            log(textNode.getLineNumber(), textNode.getColumnNumber(),
-                String.format("Naming pattern mismatch. It should only contain lower case for the package path and class name for matching regular expression ''%s''" +
-                    " and the first letter of method name must be small case for matching regular expression ''%s'', and the parameters should be all small case for matching " +
-                    "regular expression ''%s''.", CLASS_PATH_REGEX, METHOD_NAME_REGEX, PARAMETERS_REGEX));
-        }
-    }
+            // Find method name
+            DetailAST methodDefToken = methodDefStack.peek();
+            final String methodName = methodDefToken.findFirstToken(TokenTypes.IDENT).getText();
+            final String className = classNameStack.isEmpty() ? "" : classNameStack.peek();
+            final String parameters = constructParametersString(methodDefToken);
+            String fullPath = packageName + "." + className + "." + methodName;
 
-    /**
-     *  Find if the given name of code snippet matched the naming pattern specs.
-     *
-     * @param name code snippet name
-     * @return true if match, otherwise, false
-     */
-    private boolean isNamingMatch(String name) {
-        final String[] str = name.split("#");
+            if (parameters != null) {
+                fullPath = fullPath + "#" + parameters;
+            }
 
-        // invalid naming pattern
-        if (str.length == 0 || str.length > 2) {
-            return false;
-        }
-
-        final String classPath = str[0];
-        // corner case: empty string will also be false
-        if (classPath.isEmpty()) {
-            return false;
-        }
-
-        final int lastIndexOf = classPath.lastIndexOf(".");
-        if (lastIndexOf == -1) {
-            return false;
-        }
-
-        // full path of the class, check to see if there path only has lower case letters and dot
-        final String className = classPath.substring(0, lastIndexOf);
-        if (!Pattern.compile(CLASS_PATH_REGEX).matcher(className).matches()) {
-            return false;
-        }
-
-        // method name
-        final String methodName = classPath.substring(lastIndexOf + 1);
-        if (!Pattern.compile(METHOD_NAME_REGEX).matcher(methodName).matches()) {
-            return false;
-        }
-
-        // parameters of method function
-        if (str.length == 2 && !Pattern.compile(PARAMETERS_REGEX).matcher(str[1]).matches()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     *  Find if the given tag node is in-line code sample.
-     * @param node A given node that could be HTML_TAG or JAVADOC_INLINE_TAG
-     * @return false if it is a code block, otherwise, return true if it is a in-line code.
-     */
-    private boolean isInlineCode(DetailNode node) {
-        for (final DetailNode child : node.getChildren()) {
-            final int childType = child.getType();
-            if (childType == JavadocTokenTypes.NEWLINE || childType == JavadocTokenTypes.LEADING_ASTERISK) {
-                return false;
+            // Check for CodeSnippet naming pattern matching
+            if (!description.equalsIgnoreCase(fullPath)) {
+                log(node.getLineNumber(), String.format("Naming pattern mismatch. The @codeSnippet description " +
+                    "''%s'' doesn't match ''%s''. Case Insensitive.", description, fullPath));
             }
         }
-        return true;
+    }
+
+    /**
+     * Construct a parameters string if the method has arguments.
+     * @param methodDefToken METHOD_DEF token
+     * @return a valid parameter string or null if no method arguments exist.
+     */
+    private String constructParametersString(DetailAST methodDefToken) {
+        StringBuilder sb = new StringBuilder();
+        // Checks for the parameters of the method
+        final DetailAST parametersToken = methodDefToken.findFirstToken(TokenTypes.PARAMETERS);
+        for (DetailAST ast = parametersToken.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
+            if (ast.getType() != TokenTypes.PARAMETER_DEF) {
+                continue;
+            }
+            String parameterType = ast.findFirstToken(TokenTypes.TYPE).getFirstChild().getText();
+            sb.append(parameterType).append("-");
+        }
+        int size = sb.length();
+        if (size == 0) {
+            return null;
+        }
+        return sb.substring(0, size - 1);
     }
 }
