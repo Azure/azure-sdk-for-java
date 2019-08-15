@@ -39,7 +39,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private final ChangeFeedObserver observer;
     private final ChangeFeedOptions options;
     private final ChangeFeedContextClient documentClient;
-    private RuntimeException resultException;
+    private volatile RuntimeException resultException;
 
     private String lastContinuation;
 

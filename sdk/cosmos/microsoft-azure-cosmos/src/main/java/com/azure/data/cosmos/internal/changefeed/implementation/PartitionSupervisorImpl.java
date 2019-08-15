@@ -34,7 +34,7 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
     private CancellationTokenSource renewerCancellation;
     private CancellationTokenSource processorCancellation;
 
-    private RuntimeException resultException;
+    private volatile RuntimeException resultException;
 
     private Scheduler scheduler;
 
