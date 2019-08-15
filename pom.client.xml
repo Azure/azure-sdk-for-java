@@ -735,7 +735,8 @@
       <id>template-module</id>
       <activation>
         <property>
-          <name>include-template</name>
+          <name>env.ENABLETEMPLATEDOCS</name>
+          <value>true</value>
         </property>
       </activation>
       <modules>
@@ -759,6 +760,5 @@
     <module>./sdk/storage/azure-storage-common</module>
     <module>./sdk/storage/azure-storage-file</module>
     <module>./sdk/storage/azure-storage-queue</module>
-    <module>./sdk/template/azure-sdk-template</module>
   </modules>
 </project>
