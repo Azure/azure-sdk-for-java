@@ -210,6 +210,13 @@ public final class BlobGetPropertiesHeaders {
     private Long blobSequenceNumber;
 
     /*
+     * If a client request id header is sent in the request, this header will
+     * be present in the response with the same value.
+     */
+    @JsonProperty(value = "x-ms-client-request-id")
+    private String clientRequestId;
+
+    /*
      * This header uniquely identifies the request that was made and can be
      * used for troubleshooting the request.
      */
@@ -262,6 +269,14 @@ public final class BlobGetPropertiesHeaders {
     private String encryptionKeySha256;
 
     /*
+     * The encryption scope used to encrypt the metadata. This header is only
+     * returned when the metadata was encrypted with customer specified
+     * encryption.
+     */
+    @JsonProperty(value = "x-ms-encryption-scope")
+    private String encryptionScope;
+
+    /*
      * The tier of page blob on a premium storage account or tier of block blob
      * on blob storage LRS accounts. For a list of allowed premium page blob
      * tiers, see
@@ -294,6 +309,12 @@ public final class BlobGetPropertiesHeaders {
      */
     @JsonProperty(value = "x-ms-access-tier-change-time")
     private DateTimeRfc1123 accessTierChangeTime;
+
+    /*
+     * The number of tags corresponding to the blob.
+     */
+    @JsonProperty(value = "x-ms-tag-count")
+    private Integer tagCount;
 
     /*
      * The errorCode property.
@@ -915,6 +936,30 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
+     * Get the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
+     *
+     * @return the clientRequestId value.
+     */
+    public String clientRequestId() {
+        return this.clientRequestId;
+    }
+
+    /**
+     * Set the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
+     *
+     * @param clientRequestId the clientRequestId value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders clientRequestId(String clientRequestId) {
+        this.clientRequestId = clientRequestId;
+        return this;
+    }
+
+    /**
      * Get the requestId property: This header uniquely identifies the request
      * that was made and can be used for troubleshooting the request.
      *
@@ -1086,6 +1131,30 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
+     * Get the encryptionScope property: The encryption scope used to encrypt
+     * the metadata. This header is only returned when the metadata was
+     * encrypted with customer specified encryption.
+     *
+     * @return the encryptionScope value.
+     */
+    public String encryptionScope() {
+        return this.encryptionScope;
+    }
+
+    /**
+     * Set the encryptionScope property: The encryption scope used to encrypt
+     * the metadata. This header is only returned when the metadata was
+     * encrypted with customer specified encryption.
+     *
+     * @param encryptionScope the encryptionScope value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders encryptionScope(String encryptionScope) {
+        this.encryptionScope = encryptionScope;
+        return this;
+    }
+
+    /**
      * Get the accessTier property: The tier of page blob on a premium storage
      * account or tier of block blob on blob storage LRS accounts. For a list
      * of allowed premium page blob tiers, see
@@ -1195,6 +1264,26 @@ public final class BlobGetPropertiesHeaders {
         } else {
             this.accessTierChangeTime = new DateTimeRfc1123(accessTierChangeTime);
         }
+        return this;
+    }
+
+    /**
+     * Get the tagCount property: The number of tags corresponding to the blob.
+     *
+     * @return the tagCount value.
+     */
+    public Integer tagCount() {
+        return this.tagCount;
+    }
+
+    /**
+     * Set the tagCount property: The number of tags corresponding to the blob.
+     *
+     * @param tagCount the tagCount value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders tagCount(Integer tagCount) {
+        this.tagCount = tagCount;
         return this;
     }
 

@@ -278,7 +278,7 @@ public final class ContainerAsyncClient {
         metadata = metadata == null ? new Metadata() : metadata;
 
         return postProcessResponse(this.azureBlobStorage.containers().createWithRestResponseAsync(
-            null, null, metadata, accessType, null, Context.NONE))
+            null, null, metadata, accessType, null, null, null, Context.NONE))
             .map(VoidResponse::new);
     }
 

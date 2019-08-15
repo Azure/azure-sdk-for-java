@@ -114,6 +114,9 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]samples[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck" files=".*[/\\]samples[/\\].*\.java"/>
 
+  <!-- Don't apply custom Checkstyle rules to files under checkstyle package. -->
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]tools[/\\]checkstyle[/\\].*"/>
+
   <!-- JavaPackage suppression -->
   <suppress checks="JavadocPackage" files=".*[/\\]samples[/\\].*\.java"/>
 
