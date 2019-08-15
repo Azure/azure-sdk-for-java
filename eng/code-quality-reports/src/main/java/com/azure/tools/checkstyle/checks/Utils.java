@@ -28,7 +28,7 @@ public class Utils {
     )));
 
     /*
-     * Set of annotations that can not be combined with modifier 'final' b/c it would break serialization
+     * Set of annotations that cannot be combined with modifier 'final' because it would break serialization.
      */
     private static final Set INVALID_FINAL_ANNOTATIONS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         "JsonProperty",
