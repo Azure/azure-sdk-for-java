@@ -24,13 +24,14 @@ public class Configuration implements Cloneable {
 
     private final ClientLogger logger = new ClientLogger(Configuration.class);
 
-    private ConcurrentMap<String, String> configurations = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, String> configurations;
     private boolean loadedBaseConfigurations = false;
 
     /**
      * Constructs an empty configuration.
      */
     public Configuration() {
+        this.configurations = new ConcurrentHashMap<>();
     }
 
     private Configuration(ConcurrentMap<String, String> configurations) {
