@@ -9,22 +9,13 @@ import java.util.List;
 import java.util.UUID;
 
 public class CosmosDB {
-//    private static final String dbName = "JavaSolarSystem-" + UUID.randomUUID();
-    private static final String dbName = "JavaSolarSystem-";
+    private static final String dbName = "JavaSolarSystem-" + UUID.randomUUID();
     private static final String collectionName = "Planets";
 
     private static Mono<Void> createDatabase(CosmosClient client) {
         System.out.println("Creating database... ");
         return client.createDatabaseIfNotExists(dbName).then();
     }
-
-//    private static Void createDatabase(CosmosClient client) {
-//        System.out.println("Creating database... " + dbName);
-//        client.createDatabaseIfNotExists(dbName).block();
-//        System.out.println("DONE");
-//        return null;
-//    }
-
 
     private static Mono<CosmosContainer> createCollection(CosmosClient client) {
         System.out.println("Creating collection... ");
@@ -76,43 +67,28 @@ public class CosmosDB {
         System.out.println("COSMOS DB");
         System.out.println("---------------------\n");
 
-
         CosmosClient client = CosmosClient
             .builder().endpoint(System.getenv("COSMOS_ENDPOINT"))
             .key(System.getenv("COSMOS_KEY"))
             .build();
 
-
-
-//        try {
-//            //if the database already exists, it is going to be deleted with all its content.
-//            deleteDatabase(client);
-//        } catch (Exception e) {
-//            //This means that the database does not exists already, it's fine
-//        }
+        try {
+            //if the database already exists, it is going to be deleted with all its content.
+            deleteDatabase(client).block();
+        } catch (Exception e) {
+            //This means that the database does not exists already, it's fine
+        }
 
         try {
-//            createDatabase(client);
-//            createDatabase(client).flatMap(database -> {
-//                System.out.println("HEEY");
-//                return createCollection(client).map(container ->
-//                     createDocuments(container).map(document ->
-//                         simpleQuery(container).block()
-//                    )
-//                );
-//            });
-
-            createDatabase(client).then(
-                createCollection(client).map(container ->
-                     createDocuments(container)).block()
-            );
-
-
-
-
+            createDatabase(client)
+                .then(createCollection(client))
+                .flatMap(collection -> createDocuments(collection)
+                    .then(simpleQuery(collection))
+                )
+                .block();
         } finally {
-           // deleteDatabase(client);
-           // client.close();
+           deleteDatabase(client).block();
+           client.close();
         }
     }
 }
