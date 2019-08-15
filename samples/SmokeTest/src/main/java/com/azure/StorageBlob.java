@@ -1,8 +1,9 @@
 package com.azure;
 
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlockBlobClient;
 import com.azure.storage.blob.ContainerClient;
-import com.azure.storage.blob.StorageClient;
 import com.azure.storage.blob.models.BlobItem;
 
 import java.io.ByteArrayInputStream;
@@ -45,12 +46,8 @@ public class StorageBlob {
         System.out.println("STORAGE - BLOB");
         System.out.println("---------------------\n");
 
-        StorageClient storageClient = StorageClient
-            .storageClientBuilder()
-            .connectionString(STORAGE_CONNECTION_STRING)
-            .buildClient();
-
-        containerClient = storageClient.getContainerClient(CONTAINER_NAME);
+        BlobServiceClient serviceClient = new BlobServiceClientBuilder().connectionString(STORAGE_CONNECTION_STRING).buildClient();
+        containerClient = serviceClient.getContainerClient(CONTAINER_NAME);
         blobClient = containerClient.getBlockBlobClient(BLOB_NAME);
 
         try{

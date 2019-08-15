@@ -1,37 +1,40 @@
 package com.azure;
 
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.FeedOptions;
+import com.azure.data.cosmos.*;
 import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Schedulers;
+import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 public class CosmosDB {
-    private static CosmosClient client;
-    private static CosmosContainer container;
-    private static final String dbName = "JavaSolarSystem-" + UUID.randomUUID();
+//    private static final String dbName = "JavaSolarSystem-" + UUID.randomUUID();
+    private static final String dbName = "JavaSolarSystem-";
     private static final String collectionName = "Planets";
 
-    private static void createDatabase() {
-        System.out.print("Creating database... ");
-        client.createDatabaseIfNotExists(dbName).block();
-        System.out.println("\tDONE.");
+    private static Mono<Void> createDatabase(CosmosClient client) {
+        System.out.println("Creating database... ");
+        return client.createDatabaseIfNotExists(dbName).then();
     }
 
-    private static void createCollection() {
-        System.out.print("Creating Collection... ");
-        client.getDatabase(dbName).createContainer(collectionName, "/id").block();
-        container = client.getDatabase(dbName).getContainer(collectionName);
-        System.out.println("\tDONE.");
+//    private static Void createDatabase(CosmosClient client) {
+//        System.out.println("Creating database... " + dbName);
+//        client.createDatabaseIfNotExists(dbName).block();
+//        System.out.println("DONE");
+//        return null;
+//    }
+
+
+    private static Mono<CosmosContainer> createCollection(CosmosClient client) {
+        System.out.println("Creating collection... ");
+        return client.getDatabase(dbName).createContainer(collectionName, "/id")
+            .map(response -> response.container());
     }
 
-    private static void createDocuments() {
+    private static Mono<Void> createDocuments(CosmosContainer container) {
         System.out.println("Inserting Items... ");
-        Planet[] planets = new Planet[]{
+        List<Planet> planets = Arrays.asList(
             new Planet(
                 "Earth",
                 false,
@@ -47,31 +50,25 @@ public class CosmosDB {
                     new Moon("Phobos"),
                     new Moon("Deimos")
                 })
-        };
+        );
 
-        for (Planet planet : planets) {
-            System.out.println("\tInserting '" + planet.id + "'...");
-            container.createItem(planet).block();
-        }
-
-        System.out.println("DONE.");
+        return Flux.fromIterable(planets).flatMap(planet -> container.createItem(planet)).then();
     }
 
-    private static void simpleQuery() {
+    private static Mono<Void> simpleQuery(CosmosContainer container) {
         System.out.println("Querying collection...");
         FeedOptions options = new FeedOptions().enableCrossPartitionQuery(true);
         Flux<FeedResponse<CosmosItemProperties>> queryResults = container.queryItems("SELECT c.id FROM c", options);
 
-        queryResults.publishOn(Schedulers.elastic()).toIterable().forEach(cosmosItemPropertiesFeedResponse -> {
+        return queryResults.map(cosmosItemPropertiesFeedResponse -> {
             System.out.println('\t' + cosmosItemPropertiesFeedResponse.results().toString());
-        });
-        System.out.println("\tDONE.");
+            return cosmosItemPropertiesFeedResponse;
+        }).then();
     }
 
-    private static void deleteDatabase() {
+    private static Mono<Void> deleteDatabase(CosmosClient client) {
         System.out.print("Cleaning up the resource...");
-        client.getDatabase(dbName).delete().block();
-        System.out.println("\tDONE.");
+        return client.getDatabase(dbName).delete().then();
     }
 
     public static void main(String[] args) {
@@ -79,27 +76,43 @@ public class CosmosDB {
         System.out.println("COSMOS DB");
         System.out.println("---------------------\n");
 
-        client = CosmosClient
-            .builder()
-            .endpoint(System.getenv("COSMOS_ENDPOINT"))
+
+        CosmosClient client = CosmosClient
+            .builder().endpoint(System.getenv("COSMOS_ENDPOINT"))
             .key(System.getenv("COSMOS_KEY"))
             .build();
 
-        try {
-            //if the database already exists, it is going to be deleted with all its content.
-            deleteDatabase();
-        } catch (Exception e) {
-            //This means that the database does not exists already, it's fine
-        }
+
+
+//        try {
+//            //if the database already exists, it is going to be deleted with all its content.
+//            deleteDatabase(client);
+//        } catch (Exception e) {
+//            //This means that the database does not exists already, it's fine
+//        }
 
         try {
-            createDatabase();
-            createCollection();
-            createDocuments();
-            simpleQuery();
+//            createDatabase(client);
+//            createDatabase(client).flatMap(database -> {
+//                System.out.println("HEEY");
+//                return createCollection(client).map(container ->
+//                     createDocuments(container).map(document ->
+//                         simpleQuery(container).block()
+//                    )
+//                );
+//            });
+
+            createDatabase(client).then(
+                createCollection(client).map(container ->
+                     createDocuments(container)).block()
+            );
+
+
+
+
         } finally {
-            deleteDatabase();
-            client.close();
+           // deleteDatabase(client);
+           // client.close();
         }
     }
 }

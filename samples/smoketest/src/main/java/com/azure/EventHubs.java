@@ -1,6 +1,8 @@
 package com.azure;
 
 import com.azure.messaging.eventhubs.*;
+import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
@@ -15,7 +17,7 @@ import java.util.Date;
 
 public class EventHubs {
     private static final String EVENT_HUBS_CONNECTION_STRING = System.getenv("EVENT_HUBS_CONNECTION_STRING");
-    private static EventHubClient client;
+    private static EventHubAsyncClient client;
 
     private static String getPartitionID() {
         System.out.print("Getting partition id... ");
@@ -28,7 +30,7 @@ public class EventHubs {
     private static void sendAndReceiveEvents(String partitionId) {
         System.out.print("Creating consumer... ");
         EventHubConsumer consumer = client.createConsumer(
-            EventHubClient.DEFAULT_CONSUMER_GROUP_NAME,
+            EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
             partitionId,
             EventPosition.latest());
         System.out.println("\tDONE.");
