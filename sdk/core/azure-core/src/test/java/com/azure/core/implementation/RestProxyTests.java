@@ -1637,7 +1637,7 @@ public abstract class RestProxyTests {
 
     @Test
     public void postUrlFormEncoded() {
-        Service26 service = RestProxy.create(Service26.class, new HttpPipelineBuilder().build());
+        Service26 service = createService(Service26.class);
         HttpBinFormDataJSON response = service.postForm("Foo", "123", "foo@bar.com", PizzaSize.LARGE, Arrays.asList("Bacon", "Onion"));
         assertNotNull(response);
         assertNotNull(response.form());

@@ -22,7 +22,14 @@ import static org.junit.Assert.assertNotNull;
 public class HttpPipelineTests {
     @Test
     public void constructorWithNoArguments() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().build();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    // do nothing
+                    return null;
+                }
+            }).build();
         assertEquals(0, pipeline.getPolicyCount());
         assertNotNull(pipeline.httpClient());
     }
