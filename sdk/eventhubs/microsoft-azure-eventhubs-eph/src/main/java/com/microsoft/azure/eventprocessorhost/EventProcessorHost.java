@@ -676,12 +676,14 @@ public final class EventProcessorHost {
                 EventHubClientFactory ehcFactory = null;
                 if (this.eventHubConnectionString != null) {
                     normalizeConnectionStringAndEventHubPath();
-                    ehcFactory = new EventHubClientFactory.EHCFWithConnectionString(this.eventHubConnectionString, this.retryPolicy);
+                    ehcFactory = new EventHubClientFactory.EHCFWithConnectionString(this.eventHubConnectionString,
+                        this.retryPolicy, this.proxyConfiguration);
                 } else if (this.authCallback != null) {
                     ehcFactory = new EventHubClientFactory.EHCFWithAuthCallback(this.endpoint, this.eventHubPath,
                             this.authCallback, this.authority, packOptions());
                 } else if (this.tokenProvider != null) {
-                    ehcFactory = new EventHubClientFactory.EHCFWithTokenProvider(this.endpoint, this.eventHubPath, this.tokenProvider, packOptions());
+                    ehcFactory = new EventHubClientFactory.EHCFWithTokenProvider(this.endpoint, this.eventHubPath,
+                        this.tokenProvider, packOptions());
                 }
                 return new EventProcessorHost(this.hostName,
                         this.eventHubPath,
