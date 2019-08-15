@@ -28,7 +28,7 @@ public final class CloudError {
     /**
      * Details for the error.
      */
-    private List<CloudError> details;
+    private final List<CloudError> details;
 
     /**
      * Initializes a new instance of CloudError.
