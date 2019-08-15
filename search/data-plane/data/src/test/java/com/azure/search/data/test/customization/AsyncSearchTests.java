@@ -22,7 +22,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.*;
 
-public class SearchTests extends SearchIndexClientTestBase {
+public class AsyncSearchTests extends SearchIndexClientTestBase {
 
     private SearchIndexAsyncClient asyncClient;
     private List<Map<String, Object>> hotels;

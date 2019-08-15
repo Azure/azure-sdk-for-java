@@ -18,8 +18,12 @@ public class DocumentResponseConversions {
      * @param linkedMapObject object to convert
      * @return Map<String, Object>
      */
-    @SuppressWarnings (value = "unchecked")
     public static Map<String, Object> convertLinkedHashMapToMap(Object linkedMapObject) {
+        /** This SuppressWarnings is for the checkstyle
+            it is used because api return type can be anything and therefore is an Object
+            in our case we know and we use it only when the return type is LinkedHashMap
+         **/
+        @SuppressWarnings (value = "unchecked")
         LinkedHashMap<String, Object> linkedMap = (LinkedHashMap<String, Object>) linkedMapObject;
         Set<Map.Entry<String, Object>> entries = linkedMap.entrySet();
 

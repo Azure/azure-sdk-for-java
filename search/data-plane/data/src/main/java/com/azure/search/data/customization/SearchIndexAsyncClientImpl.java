@@ -164,7 +164,9 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
         Mono<PagedResponse<SearchResult>> first = restClient.documents()
             .searchPostWithRestResponseAsync(new SearchRequest())
             .map(res -> {
-                skip = res.value().nextPageParameters().skip();
+                if (res.value().nextPageParameters() != null) {
+                    skip = res.value().nextPageParameters().skip();
+                }
                 return new SearchPagedResponse(res);
             });
         return new PagedFlux<>(() -> first, this::searchPostNextWithRestResponseAsync);
@@ -239,8 +241,9 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
 
     /**
      * Search for next page
+     *
      * @param nextLink next page link
-     * @return Mono<PagedResponse<SearchResult>> next page response with results
+     * @return Mono<PagedResponse < SearchResult>> next page response with results
      */
     public Mono<PagedResponse<SearchResult>> searchPostNextWithRestResponseAsync(String nextLink) {
         if (nextLink == null || nextLink.isEmpty()) {
@@ -264,7 +267,8 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
 
     /**
      * Create search request from search text and parameters
-     * @param searchText search text
+     *
+     * @param searchText       search text
      * @param searchParameters search parameters
      * @return SearchRequest
      */
