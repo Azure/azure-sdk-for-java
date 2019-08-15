@@ -26,7 +26,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
     private String containerNamePrefix;
     private CosmosContainer leaseCollectionLink;
     private RequestOptionsFactory requestOptionsFactory;
-    private String lockETag;
+    private volatile String lockETag;
 
     //  TODO: rename to LeaseStoreImpl
     public DocumentServiceLeaseStore(
