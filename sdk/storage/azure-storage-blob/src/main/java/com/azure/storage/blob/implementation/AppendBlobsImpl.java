@@ -32,11 +32,12 @@ import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageErrorException;
 import io.netty.buffer.ByteBuf;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.Map;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -78,7 +79,7 @@ public final class AppendBlobsImpl {
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<AppendBlobsAppendBlockResponse> appendBlock(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") Flux<ByteBuf> body, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64, @QueryParam("x-ms-encryption-key") String xMsEncryptionKey, @QueryParam("x-ms-encryption-key-sha256") String xMsEncryptionKeySha256, @QueryParam("x-ms-encryption-algorithm") EncryptionAlgorithmType xMsEncryptionAlgorithm, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-blob-condition-maxsize") Long maxSize, @HeaderParam("x-ms-blob-condition-appendpos") Long appendPosition, @QueryParam("x-ms-encryption-scope") String encryptionScope, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+        Mono<AppendBlobsAppendBlockResponse> appendBlock(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @BodyParam("application/octet-stream") Flux<ByteBuf> body, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64, @QueryParam("x-ms-encryption-key") String xMsEncryptionKey, @QueryParam("x-ms-encryption-key-sha256") String xMsEncryptionKeySha256, @QueryParam("x-ms-encryption-algorithm") EncryptionAlgorithmType xMsEncryptionAlgorithm, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-blob-condition-maxsize") Long maxSize, @HeaderParam("x-ms-blob-condition-appendpos") Long appendPosition, @QueryParam("x-ms-encryption-scope") String encryptionScope, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})

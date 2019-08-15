@@ -22,6 +22,8 @@ cd <swagger-folder>
 autorest --use=C:/work/autorest.java --use=C:/work/autorest.modeler --version=2.0.4280
 ```
 
+Due to limitations, after generation has completed add the `@JsonDeserialize(using = CustomHierarchicalListingDeserializer.class)` annotation to `BlobHierarchyListSegment`.
+
 ### Code generation settings
 ``` yaml
 input-file: ./blob-2019-02-02.json
@@ -227,6 +229,15 @@ directive:
       $.put.parameters.splice(0, 0, { "$ref":  path + "ContainerName" });
       $.put.parameters.splice(1, 0, { "$ref":  path + "Blob" });
     }
+```
+
+### /{containerName}/{blob}?comp=appendblock
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=appendblock"]
+  transform: >
+    $.put.consumes = ["application/octet-stream"];
 ```
 
 ### /{containerName}/{blob}?BlockBlob
@@ -661,8 +672,18 @@ directive:
       $.properties.Metadata.additionalProperties = { "type": "string" };
       delete $.properties.Metadata.$ref;
       $.properties.VersionId = { "type": "string" };
-      $.properties.IsPrefix = { "type": "boolean" };
     }
+    $.properties.IsPrefix = { "type": "boolean" };
+```
+
+### BlobMetadata
+Deleting out Encryption until https://github.com/Azure/azure-sdk-for-java/issues/5000 is determined.
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.BlobMetadata
+  transform: >
+    delete $.properties
 ```
 
 ### BlobProperties

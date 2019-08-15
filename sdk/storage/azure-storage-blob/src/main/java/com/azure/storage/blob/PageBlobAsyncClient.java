@@ -127,8 +127,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         metadata = metadata == null ? new Metadata() : metadata;
 
         return postProcessResponse(this.azureBlobStorage.pageBlobs().createWithRestResponseAsync(null,
-            null, 0, size, null, metadata, null, null,
-            null, sequenceNumber, null, headers, accessConditions.leaseAccessConditions(),
+            null, 0, size, null, metadata, null, null, null,
+            null, sequenceNumber, null, headers, accessConditions.leaseAccessConditions(), null,
             accessConditions.modifiedAccessConditions(), Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.deserializedHeaders())));
     }
@@ -189,9 +189,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         String pageRangeStr = pageRangeToString(pageRange);
 
         return postProcessResponse(this.azureBlobStorage.pageBlobs().uploadPagesWithRestResponseAsync(null,
-            null, body, pageRange.end() - pageRange.start() + 1, null,
+            null, body, pageRange.end() - pageRange.start() + 1, null, null,
             null, pageRangeStr, null, null, null, null,
-            pageBlobAccessConditions.leaseAccessConditions(), pageBlobAccessConditions.sequenceNumberAccessConditions(),
+            pageBlobAccessConditions.leaseAccessConditions(), null, pageBlobAccessConditions.sequenceNumberAccessConditions(),
             pageBlobAccessConditions.modifiedAccessConditions(), Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.deserializedHeaders())));
     }
@@ -272,7 +272,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         destAccessConditions = destAccessConditions == null ? new PageBlobAccessConditions() : destAccessConditions;
 
         return postProcessResponse(this.azureBlobStorage.pageBlobs().uploadPagesFromURLWithRestResponseAsync(
-            null, null, sourceURL, sourceRangeString, 0, rangeString, sourceContentMD5,
+            null, null, sourceURL, sourceRangeString, 0, rangeString, sourceContentMD5, null,
             null, null, destAccessConditions.leaseAccessConditions(),
             destAccessConditions.sequenceNumberAccessConditions(), destAccessConditions.modifiedAccessConditions(),
             sourceAccessConditions, Context.NONE))
