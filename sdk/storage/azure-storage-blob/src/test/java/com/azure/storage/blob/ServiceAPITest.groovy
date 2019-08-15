@@ -233,7 +233,7 @@ class ServiceAPITest extends APISpec {
 
     def "Set props error"() {
         when:
-        testCommon.getServiceClient(primaryCredential, "https://error.blob.core.windows.net")
+        getServiceClient(primaryCredential, "https://error.blob.core.windows.net")
             .setProperties(new StorageServiceProperties())
 
         then:
@@ -247,7 +247,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get props error"() {
         when:
-        testCommon.getServiceClient(primaryCredential, "https://error.blob.core.windows.net")
+        getServiceClient(primaryCredential, "https://error.blob.core.windows.net")
             .getProperties()
 
         then:
@@ -259,7 +259,7 @@ class ServiceAPITest extends APISpec {
         def start = OffsetDateTime.now()
         def expiry = start.plusDays(1)
 
-        Response<UserDelegationKey> response = getOAuthServiceURL().getUserDelegationKey(start, expiry, null)
+        Response<UserDelegationKey> response = getOAuthServiceClient().getUserDelegationKey(start, expiry, null)
 
         expect:
         response.statusCode() == 200
@@ -277,7 +277,7 @@ class ServiceAPITest extends APISpec {
         setup:
         def expiry = OffsetDateTime.now().plusDays(1)
 
-        def response = getOAuthServiceURL().getUserDelegationKey(null, expiry)
+        def response = getOAuthServiceClient().getUserDelegationKey(null, expiry)
 
         expect:
         response.statusCode() == 200
@@ -285,7 +285,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get UserDelegationKey error"() {
         when:
-        getOAuthServiceURL().getUserDelegationKey(start, expiry)
+        getOAuthServiceClient().getUserDelegationKey(start, expiry)
 
         then:
         thrown(exception)
@@ -299,7 +299,7 @@ class ServiceAPITest extends APISpec {
     def "Get stats"() {
         setup:
         String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.accountName())
-        BlobServiceClient serviceClient = testCommon.getServiceClient(primaryCredential, secondaryEndpoint)
+        BlobServiceClient serviceClient = getServiceClient(primaryCredential, secondaryEndpoint)
         Response<StorageServiceStats> response = serviceClient.getStatistics()
 
         expect:
@@ -313,7 +313,7 @@ class ServiceAPITest extends APISpec {
     def "Get stats min"() {
         setup:
         String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.accountName())
-        BlobServiceClient serviceClient = testCommon.getServiceClient(primaryCredential, secondaryEndpoint)
+        BlobServiceClient serviceClient = getServiceClient(primaryCredential, secondaryEndpoint)
 
         expect:
         serviceClient.getStatistics().statusCode() == 200
@@ -346,7 +346,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get account info error"() {
         when:
-        BlobServiceClient serviceURL = testCommon.getServiceClient((SharedKeyCredential) null, primaryServiceClient.getAccountUrl().toString())
+        BlobServiceClient serviceURL = getServiceClient((SharedKeyCredential) null, primaryServiceClient.getAccountUrl().toString())
         serviceURL.getAccountInfo()
 
         then:
@@ -358,7 +358,7 @@ class ServiceAPITest extends APISpec {
     def "Invalid account name"() {
         setup:
         URL badURL = new URL("http://fake.blobfake.core.windows.net")
-        BlobServiceClient client = testCommon.getServiceClient(primaryCredential, badURL.toString(),
+        BlobServiceClient client = getServiceClient(primaryCredential, badURL.toString(),
             new RequestRetryPolicy(new RequestRetryOptions(null, 2, null, null, null, null)))
 
         when:

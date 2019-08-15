@@ -318,17 +318,12 @@ class PageBlobAPITest extends APISpec {
         outputStream.toByteArray() == Arrays.copyOfRange(data, PageBlobClient.PAGE_BYTES * 2, PageBlobClient.PAGE_BYTES * 4)
     }
 
-    @Unroll
     def "Upload page from URL IA"() {
         when:
-        bu.uploadPagesFromURL(range, bu.getBlobUrl(), sourceOffset)
+        bu.uploadPagesFromURL(null, bu.getBlobUrl(), (Long) PageBlobClient.PAGE_BYTES)
 
         then:
         thrown(IllegalArgumentException)
-
-        where:
-        sourceOffset                     | range
-        (Long) PageBlobClient.PAGE_BYTES | null
     }
 
     def "Upload page from URL MD5"() {

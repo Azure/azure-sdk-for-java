@@ -6,8 +6,8 @@ package com.azure.storage.blob
 import com.azure.core.test.TestMode
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
-import org.junit.Assume
 import reactor.core.publisher.Flux
+import spock.lang.IgnoreIf
 
 import java.nio.ByteBuffer
 import java.util.concurrent.atomic.AtomicLong
@@ -37,10 +37,9 @@ class ProgressReporterTest extends APISpec {
         0 * mockReceiver.reportProgress({it > 30})
     }
 
+    @IgnoreIf({ testMode == TestMode.PLAYBACK })
     def "Report progress sequential network test"() {
         setup:
-        Assume.assumeTrue(testCommon.getTestMode() == TestMode.RECORD)
-
         IProgressReceiver mockReceiver = Mock(IProgressReceiver)
 
         ByteBuffer buffer = getRandomData(1 * 1024 * 1024)
@@ -48,7 +47,7 @@ class ProgressReporterTest extends APISpec {
             .map({ it -> Unpooled.wrappedBuffer(it) })
 
         when:
-        BlockBlobAsyncClient bu = testCommon.getBlobAsyncClient(primaryCredential, cu.getContainerUrl().toString(), generateBlobName())
+        BlockBlobAsyncClient bu = getBlobAsyncClient(primaryCredential, cu.getContainerUrl().toString(), generateBlobName())
             .asBlockBlobAsyncClient()
 
         bu.upload(data, buffer.remaining()).block()

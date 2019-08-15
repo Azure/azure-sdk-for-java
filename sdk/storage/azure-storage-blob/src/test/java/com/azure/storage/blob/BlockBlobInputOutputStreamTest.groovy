@@ -2,7 +2,7 @@ package com.azure.storage.blob
 
 import com.azure.core.test.TestMode
 import com.azure.storage.common.Constants
-import org.junit.Assume
+import spock.lang.IgnoreIf
 
 class BlockBlobInputOutputStreamTest extends APISpec {
     BlockBlobClient bu
@@ -11,13 +11,12 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         bu = cu.getBlockBlobClient(generateBlobName())
     }
 
+    // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
+    @IgnoreIf({ testMode == TestMode.PLAYBACK })
     def "Upload download"() {
         when:
-        // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
-        Assume.assumeTrue(testCommon.getTestMode() == TestMode.RECORD)
-
         int length = 30 * Constants.MB
-        byte[] randomBytes = testCommon.getRandomData(length)
+        byte[] randomBytes = getRandomByteArray(length)
 
         BlobOutputStream outStream = bu.getBlobOutputStream()
         outStream.write(randomBytes)

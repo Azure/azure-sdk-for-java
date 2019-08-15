@@ -12,6 +12,7 @@ import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.test.models.NetworkCallException;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
+import com.sun.org.apache.xml.internal.security.utils.Base64;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -36,6 +39,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     private static final int DEFAULT_BUFFER_LENGTH = 1024;
     private final Logger logger = LoggerFactory.getLogger(RecordNetworkCallPolicy.class);
     private final RecordedData recordedData;
+    private final Pattern StorageUserDelegationKeyRedactionPattern = Pattern.compile("<UserDelegationKey>.*<Value>(.*)</Value>.*</UserDelegationKey>");
 
     /**
      * Creates a policy that records network calls into {@code recordedData}.
@@ -132,6 +136,11 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
             });
         } else if (contentType.contains("json") || response.headerValue("Content-Encoding") == null) {
             return response.bodyAsString(StandardCharsets.UTF_8).switchIfEmpty(Mono.just("")).map(content -> {
+                Matcher matcher = StorageUserDelegationKeyRedactionPattern.matcher(content);
+                if (matcher.matches()) {
+                    String test = matcher.replaceAll(Base64.encode("REDACTED".getBytes(StandardCharsets.UTF_8)));
+                }
+
                 responseData.put("Body", content);
                 return responseData;
             });

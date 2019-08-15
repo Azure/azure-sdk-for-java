@@ -8,7 +8,26 @@ import com.azure.core.http.rest.Response
 import com.azure.core.http.rest.VoidResponse
 import com.azure.core.implementation.util.ImplUtils
 import com.azure.storage.blob.BlobProperties
-import com.azure.storage.blob.models.*
+import com.azure.storage.blob.models.AccessTier
+import com.azure.storage.blob.models.ArchiveStatus
+import com.azure.storage.blob.models.BlobAccessConditions
+import com.azure.storage.blob.models.BlobHTTPHeaders
+import com.azure.storage.blob.models.BlobItem
+import com.azure.storage.blob.models.BlobRange
+import com.azure.storage.blob.models.BlobType
+import com.azure.storage.blob.models.CopyStatusType
+import com.azure.storage.blob.models.DeleteSnapshotsOptionType
+import com.azure.storage.blob.models.LeaseAccessConditions
+import com.azure.storage.blob.models.LeaseDurationType
+import com.azure.storage.blob.models.LeaseStateType
+import com.azure.storage.blob.models.LeaseStatusType
+import com.azure.storage.blob.models.Metadata
+import com.azure.storage.blob.models.ModifiedAccessConditions
+import com.azure.storage.blob.models.PublicAccessType
+import com.azure.storage.blob.models.ReliableDownloadOptions
+import com.azure.storage.blob.models.StorageAccountInfo
+import com.azure.storage.blob.models.StorageErrorCode
+import com.azure.storage.blob.models.SyncCopyStatusType
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -87,7 +106,7 @@ class BlobAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
-        BlobClient bu2 = testCommon.getBlobClient(primaryCredential, bu.getBlobUrl().toString(), new MockRetryRangeResponsePolicy())
+        BlobClient bu2 = getBlobClient(primaryCredential, bu.getBlobUrl().toString(), new MockRetryRangeResponsePolicy())
 
         when:
         BlobRange range = new BlobRange(2, 5L)
@@ -1842,7 +1861,7 @@ class BlobAPITest extends APISpec {
 
     def "Get account info error"() {
         when:
-        BlobServiceClient serviceURL = testCommon.getServiceClient(primaryServiceClient.getAccountUrl().toString())
+        BlobServiceClient serviceURL = getServiceClient(primaryServiceClient.getAccountUrl().toString())
 
         serviceURL.getContainerClient(generateContainerName()).getBlobClient(generateBlobName())
             .getAccountInfo(null)

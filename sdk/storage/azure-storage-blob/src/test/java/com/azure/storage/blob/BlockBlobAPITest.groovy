@@ -22,10 +22,6 @@ class BlockBlobAPITest extends APISpec {
         bu.upload(defaultInputStream.get(), defaultDataSize)
     }
 
-    def getBlockID() {
-        return testCommon.getBlockID()
-    }
-
     def "Stage block"() {
         setup:
         VoidResponse response = bu.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize)

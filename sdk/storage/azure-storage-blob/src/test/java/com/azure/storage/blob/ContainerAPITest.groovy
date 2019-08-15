@@ -322,14 +322,14 @@ class ContainerAPITest extends APISpec {
         SignedIdentifier identifier = new SignedIdentifier()
             .id("0000")
             .accessPolicy(new AccessPolicy()
-                .start(testCommon.getUTCNow())
-                .expiry(testCommon.getUTCNow().plusDays(1))
+                .start(getUTCNow())
+                .expiry(getUTCNow().plusDays(1))
                 .permission("r"))
         SignedIdentifier identifier2 = new SignedIdentifier()
             .id("0001")
             .accessPolicy(new AccessPolicy()
-                .start(testCommon.getUTCNow())
-                .expiry(testCommon.getUTCNow().plusDays(2))
+                .start(getUTCNow())
+                .expiry(getUTCNow().plusDays(2))
                 .permission("w"))
         List<SignedIdentifier> ids = new ArrayList<>()
         ids.push(identifier)
@@ -426,8 +426,8 @@ class ContainerAPITest extends APISpec {
         SignedIdentifier identifier = new SignedIdentifier()
             .id("0000")
             .accessPolicy(new AccessPolicy()
-                .start(testCommon.getUTCNow())
-                .expiry(testCommon.getUTCNow().plusDays(1))
+                .start(getUTCNow())
+                .expiry(getUTCNow().plusDays(1))
                 .permission("r"))
         List<SignedIdentifier> ids = new ArrayList<>()
         ids.push(identifier)
@@ -1559,7 +1559,7 @@ class ContainerAPITest extends APISpec {
             cu.create()
         }
 
-        AppendBlobClient bu = testCommon.getBlobClient(primaryCredential,
+        AppendBlobClient bu = getBlobClient(primaryCredential,
             String.format("http://%s.blob.core.windows.net/%s/rootblob", primaryCredential.accountName(), ContainerClient.ROOT_CONTAINER_NAME))
             .asAppendBlobClient()
 
@@ -1642,7 +1642,7 @@ class ContainerAPITest extends APISpec {
 
     def "Get account info error"() {
         when:
-        BlobServiceClient serviceURL = testCommon.getServiceClient(primaryServiceClient.getAccountUrl().toString())
+        BlobServiceClient serviceURL = getServiceClient(primaryServiceClient.getAccountUrl().toString())
 
         serviceURL.getContainerClient(generateContainerName()).getAccountInfo()
 

@@ -3,17 +3,22 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
+import com.azure.core.http.ProxyOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
+import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
+import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.core.util.logging.ClientLogger
+import com.azure.identity.credential.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.ContainerItem
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
@@ -22,6 +27,7 @@ import com.azure.storage.blob.models.Metadata
 import com.azure.storage.blob.models.RetentionPolicy
 import com.azure.storage.blob.models.StorageServiceProperties
 import com.azure.storage.common.Constants
+import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
 import io.netty.buffer.ByteBuf
 import reactor.core.publisher.Flux
@@ -38,89 +44,6 @@ import java.util.function.Supplier
 
 class APISpec extends Specification {
     private final ClientLogger logger = new ClientLogger(APISpec.class)
-
-    @Shared
-    protected TestCommon testCommon
-
-    static SharedKeyCredential primaryCredential
-    static SharedKeyCredential alternateCredential
-    static SharedKeyCredential blobCredential
-    static SharedKeyCredential premiumCredential
-
-    BlobServiceClient primaryServiceClient
-    BlobServiceClient alternateServiceClient
-    BlobServiceClient blobStorageServiceClient
-    BlobServiceClient premiumServiceClient
-
-    def setupSpec() {
-        primaryCredential = getCredential("PRIMARY_STORAGE_")
-        alternateCredential = getCredential("SECONDARY_STORAGE_")
-        blobCredential = getCredential("BLOB_STORAGE_")
-        premiumCredential = getCredential("PREMIUM_STORAGE_")
-    }
-
-    def setup() {
-        String testName = specificationContext.getCurrentFeature().getName().replace(' ', '').toLowerCase()
-        String className = specificationContext.currentSpec.getFilename().split("\\.")[0]
-        String testFullName = className + testName
-        boolean appendIteration = specificationContext.currentIteration.estimatedNumIterations > 1
-
-        Integer iterationNo = 0
-        if (appendIteration) {
-            iterationNo = unrollIterationNo.get(testFullName)
-            if (iterationNo == null) {
-                iterationNo = 0
-                unrollIterationNo.put(testFullName, iterationNo)
-            } else {
-                unrollIterationNo.put(testFullName, ++iterationNo)
-            }
-        }
-
-        testCommon = new TestCommon(testName, className, appendIteration, iterationNo)
-
-        primaryServiceClient = testCommon.setClient(primaryCredential)
-        alternateServiceClient = testCommon.setClient(alternateCredential)
-        blobStorageServiceClient = testCommon.setClient(blobCredential)
-        premiumServiceClient = testCommon.setClient(premiumCredential)
-
-        cu = primaryServiceClient.getContainerClient(generateContainerName())
-        cu.create()
-    }
-
-    def cleanup() {
-        for (ContainerItem container : primaryServiceClient.listContainers(new ListContainersOptions()
-            .prefix(containerPrefix + testCommon.getTestName()), Duration.ofSeconds(120))) {
-            ContainerClient containerClient = primaryServiceClient.getContainerClient(container.name())
-
-            if (container.properties().leaseState() == LeaseStateType.LEASED) {
-                containerClient.breakLease(0, null, null)
-            }
-
-            containerClient.delete()
-        }
-
-        testCommon.stopRecording()
-    }
-
-    private SharedKeyCredential getCredential(String accountType) {
-        String accountName = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_NAME")
-        String accountKey = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_KEY")
-
-        if (accountName == null || accountKey == null) {
-            logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
-            return null
-        }
-
-        return new SharedKeyCredential(accountName, accountKey)
-    }
-
-    def getOAuthServiceURL() {
-        return testCommon.getOAuthServiceClient(primaryCredential.accountName())
-    }
-
-    // Mapping of stable container names for recording tests with multiple iterations
-    @Shared
-    Map<String, Integer> unrollIterationNo = new HashMap<>()
 
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 
@@ -169,16 +92,297 @@ class APISpec extends Specification {
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
+    static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
+    static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
+    static def SECONDARY_STORAGE = "SECONDARY_STORAGE_"
+    static def BLOB_STORAGE = "BLOB_STORAGE_"
+    static def PREMIUM_STORAGE = "PREMIUM_STORAGE_"
+
+    static SharedKeyCredential primaryCredential
+    static SharedKeyCredential alternateCredential
+    static SharedKeyCredential blobCredential
+    static SharedKeyCredential premiumCredential
+    static TestMode testMode
+
+    BlobServiceClient primaryServiceClient
+    BlobServiceClient alternateServiceClient
+    BlobServiceClient blobStorageServiceClient
+    BlobServiceClient premiumServiceClient
+
+    private InterceptorManager interceptorManager
+    private TestResourceNamer resourceNamer
+    private String testName
+
+    def setupSpec() {
+        primaryCredential = getCredential(PRIMARY_STORAGE)
+        alternateCredential = getCredential(SECONDARY_STORAGE)
+        blobCredential = getCredential(BLOB_STORAGE)
+        premiumCredential = getCredential(PREMIUM_STORAGE)
+        testMode = setupTestMode()
+    }
+
+    def setup() {
+        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
+        String className = specificationContext.getCurrentSpec().getName()
+
+        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
+        this.resourceNamer = new TestResourceNamer(className + fullTestName, testMode, interceptorManager.getRecordedData())
+
+        int iterationIndex = fullTestName.lastIndexOf("[")
+        int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
+        this.testName = fullTestName.substring(0, substringIndex)
+
+        primaryServiceClient = setClient(primaryCredential)
+        alternateServiceClient = setClient(alternateCredential)
+        blobStorageServiceClient = setClient(blobCredential)
+        premiumServiceClient = setClient(premiumCredential)
+
+        cu = primaryServiceClient.getContainerClient(generateContainerName())
+        cu.create()
+    }
+
+    def cleanup() {
+        for (ContainerItem container : primaryServiceClient.listContainers(new ListContainersOptions()
+            .prefix(containerPrefix + testName), Duration.ofSeconds(120))) {
+            ContainerClient containerClient = primaryServiceClient.getContainerClient(container.name())
+
+            if (container.properties().leaseState() == LeaseStateType.LEASED) {
+                containerClient.breakLease(0, null, null)
+            }
+
+            containerClient.delete()
+        }
+
+        interceptorManager.close()
+    }
+
+    private static TestMode setupTestMode() {
+        String testMode = ConfigurationManager.getConfiguration().get(AZURE_TEST_MODE)
+
+        if (testMode != null) {
+            try {
+                return TestMode.valueOf(testMode.toUpperCase(Locale.US))
+            } catch (IllegalArgumentException ex) {
+                return TestMode.PLAYBACK
+            }
+        }
+
+        return TestMode.PLAYBACK
+    }
+
+    private SharedKeyCredential getCredential(String accountType) {
+        String accountName = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_NAME")
+        String accountKey = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_KEY")
+
+        if (accountName == null || accountKey == null) {
+            logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
+            return null
+        }
+
+        return new SharedKeyCredential(accountName, accountKey)
+    }
+
+    BlobServiceClient setClient(SharedKeyCredential credential) {
+        try {
+            return getServiceClient(credential)
+        } catch (Exception ex) {
+            return null
+        }
+    }
+
+    def getOAuthServiceClient() {
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
+            .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCredential.accountName()))
+            .httpClient(getHttpClient())
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+        return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
+    }
+
+    BlobServiceClient getServiceClient(String endpoint) {
+        return getServiceClient(null, endpoint, null)
+    }
+
+    BlobServiceClient getServiceClient(SharedKeyCredential credential) {
+        return getServiceClient(credential, String.format("https://%s.blob.core.windows.net", credential.accountName()), null)
+    }
+
+    BlobServiceClient getServiceClient(SharedKeyCredential credential, String endpoint) {
+        return getServiceClient(credential, endpoint, null)
+    }
+
+    BlobServiceClient getServiceClient(SharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        if (credential != null) {
+            builder.credential(credential)
+        }
+
+        return builder.buildClient()
+    }
+
+    BlobServiceClient getServiceClient(SASTokenCredential credential, String endpoint) {
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildClient()
+    }
+
+    ContainerClient getContainerClient(SASTokenCredential credential, String endpoint) {
+        ContainerClientBuilder builder = new ContainerClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        builder.credential(credential).buildClient()
+    }
+
+    BlobAsyncClient getBlobAsyncClient(SharedKeyCredential credential, String endpoint, String blobName) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName(blobName)
+            .httpClient(getHttpClient())
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        builder.credential(credential).buildBlobAsyncClient()
+    }
+
+    BlobClient getBlobClient(SASTokenCredential credential, String endpoint, String blobName) {
+        return getBlobClient(credential, endpoint, blobName, null)
+    }
+
+    BlobClient getBlobClient(SASTokenCredential credential, String endpoint, String blobName, String snapshotId) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName(blobName)
+            .snapshot(snapshotId)
+            .httpClient(getHttpClient())
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildBlobClient()
+    }
+
+    BlobClient getBlobClient(SharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildBlobClient()
+    }
+
+    BlobClient getBlobClient(SharedKeyCredential credential, String endpoint, String blobName) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName(blobName)
+            .httpClient(getHttpClient())
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildBlobClient()
+    }
+
+    BlobClient getBlobClient(String endpoint, SASTokenCredential credential) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+
+        if (credential != null) {
+            builder.credential(credential)
+        }
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.buildBlobClient()
+    }
+
+    private HttpClient getHttpClient() {
+        HttpClient client
+        if (testMode == TestMode.RECORD) {
+            client = HttpClient.createDefault().wiretap(true)
+        } else {
+            client = interceptorManager.getPlaybackClient()
+        }
+
+        if (Boolean.parseBoolean(ConfigurationManager.getConfiguration().get("AZURE_TEST_DEBUGGING"))) {
+            return client.proxy(PROXY_OPTIONS)
+        } else {
+            return client
+        }
+    }
+
+    private Supplier<ProxyOptions> PROXY_OPTIONS = new Supplier<ProxyOptions>() {
+        @Override
+        ProxyOptions get() {
+            return new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
+        }
+    }
+
     def generateContainerName() {
-        testCommon.generateResourceName(containerPrefix, entityNo++)
+        generateResourceName(containerPrefix, entityNo++)
     }
 
     def generateBlobName() {
-        testCommon.generateResourceName(blobPrefix, entityNo++)
+        generateResourceName(blobPrefix, entityNo++)
+    }
+
+    private String generateResourceName(String prefix, int entityNo) {
+        return resourceNamer.randomName(prefix + testName + entityNo, 63)
+    }
+
+    String getBlockID() {
+        return Base64.encoder.encodeToString(resourceNamer.randomUuid().getBytes(StandardCharsets.UTF_8))
+    }
+
+    OffsetDateTime getUTCNow() {
+        return resourceNamer.now()
     }
 
     byte[] getRandomByteArray(int size) {
-        return testCommon.getRandomData(size)
+        long seed = UUID.fromString(resourceNamer.randomUuid()).getMostSignificantBits() & Long.MAX_VALUE
+        Random rand = new Random(seed)
+        byte[] data = new byte[size]
+        rand.nextBytes(data)
+        return data
     }
 
     /*
@@ -326,7 +530,7 @@ class APISpec extends Specification {
 
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
-        if (testCommon.getTestMode() == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD) {
             sleep(milliseconds)
         }
     }
@@ -350,7 +554,6 @@ class APISpec extends Specification {
     to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
     with than was worth it. Because this type is just for BlobDownload, we don't need to accept a header type.
      */
-
     class MockDownloadHttpResponse extends HttpResponse {
         private final int statusCode
         private final HttpHeaders headers

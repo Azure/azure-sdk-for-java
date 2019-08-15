@@ -94,8 +94,8 @@ class HelperTest extends APISpec {
 
         ServiceSASSignatureValues v = new ServiceSASSignatureValues()
             .permissions(p.toString())
-            .startTime(testCommon.getUTCNow())
-            .expiryTime(testCommon.getUTCNow().plusDays(1))
+            .startTime(getUTCNow())
+            .expiryTime(getUTCNow().plusDays(1))
             .resource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
             .canonicalName(String.format("/blob/%s/%s/%s", primaryCredential.accountName(), containerName, blobName))
             .snapshotId(snapshotId)
@@ -111,7 +111,7 @@ class HelperTest extends APISpec {
         BlobURLParts parts = URLParser.parse(bu.getBlobUrl())
         parts.sasQueryParameters(v.generateSASQueryParameters(primaryCredential)).scheme("https")
         // base blob with snapshot SAS
-        AppendBlobClient bsu = testCommon.getBlobClient(parts.toURL().toString(), null).asAppendBlobClient()
+        AppendBlobClient bsu = getBlobClient(parts.toURL().toString(), null).asAppendBlobClient()
 
         bsu.download(new ByteArrayOutputStream())
 
@@ -122,7 +122,7 @@ class HelperTest extends APISpec {
         when:
         // blob snapshot with snapshot SAS
         parts.snapshot(snapshotId)
-        bsu = testCommon.getBlobClient(parts.toURL().toString(), SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode()))
+        bsu = getBlobClient(parts.toURL().toString(), SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode()))
             .asAppendBlobClient()
 
         ByteArrayOutputStream data = new ByteArrayOutputStream()
