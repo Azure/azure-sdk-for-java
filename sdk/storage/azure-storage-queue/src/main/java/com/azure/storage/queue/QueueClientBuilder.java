@@ -137,7 +137,6 @@ public final class QueueClientBuilder {
      */
     public QueueAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint);
-        Objects.requireNonNull(queueName);
 
         if (sasTokenCredential == null && sharedKeyCredential == null) {
             LOGGER.error("Credentials are required for authorization");

@@ -15,139 +15,144 @@ import com.azure.storage.queue.models.SignedIdentifier
 import com.azure.storage.queue.models.StorageErrorCode
 import com.azure.storage.queue.models.StorageErrorException
 import com.azure.storage.queue.models.StorageServiceProperties
-
 import java.time.Duration
 
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNull
-import static org.junit.Assert.assertTrue
-
 class QueueTestHelper {
-    static void assertResponseStatusCode(Response<?> response, int expectedStatusCode) {
-        assertEquals(expectedStatusCode, response.statusCode())
+    static boolean assertResponseStatusCode(Response<?> response, int expectedStatusCode) {
+        return expectedStatusCode == response.statusCode()
     }
 
-    static void assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode, String errMessage) {
-        assertExceptionStatusCode(throwable, expectedStatusCode)
-        assertExceptionErrorMessage(throwable, errMessage)
+    static boolean assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode, String errMessage) {
+        return assertExceptionStatusCode(throwable, expectedStatusCode) && assertExceptionErrorMessage(throwable, errMessage)
     }
     
-    static void assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode, StorageErrorCode errMessage) {
-        assertExceptionStatusCode(throwable, expectedStatusCode)
-        assertExceptionErrorMessage(throwable, errMessage)
+    static boolean assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode, StorageErrorCode errMessage) {
+        return assertExceptionStatusCode(throwable, expectedStatusCode) && assertExceptionErrorMessage(throwable, errMessage)
     }
     
-    static void assertExceptionStatusCode(Throwable throwable, int expectedStatusCode) {
-        assertTrue(throwable instanceof StorageErrorException)
+    static boolean assertExceptionStatusCode(Throwable throwable, int expectedStatusCode) {
+        if (!throwable instanceof StorageErrorException) {
+            return false
+        }
         StorageErrorException storageErrorException = (StorageErrorException) throwable
-        assertEquals(expectedStatusCode, storageErrorException.response().statusCode())
+        return expectedStatusCode == storageErrorException.response().statusCode()
     }
     
-    static void assertExceptionErrorMessage(Throwable throwable, String errMessage) {
-        assertTrue(throwable instanceof StorageErrorException)
-        assertTrue(throwable.getMessage().contains(errMessage))
+    static boolean assertExceptionErrorMessage(Throwable throwable, String errMessage) {
+        return throwable instanceof StorageErrorException && throwable.getMessage().contains(errMessage)
     }
     
-    static void assertExceptionErrorMessage(Throwable throwable, StorageErrorCode errMessage) {
-        assertTrue(throwable instanceof StorageErrorException)
-        assertTrue(throwable.getMessage().contains(errMessage.toString()))
+    static boolean assertExceptionErrorMessage(Throwable throwable, StorageErrorCode errMessage) {
+        return throwable instanceof StorageErrorException && throwable.getMessage().contains(errMessage.toString())
     }
 
-    static void assertQueuesAreEqual(QueueItem expected, QueueItem actual) {
+    static boolean assertQueuesAreEqual(QueueItem expected, QueueItem actual) {
         if (expected == null) {
-            assertNull(actual)
-        } else {
-            assertEquals(expected.name(), actual.name())
-
-            if (expected.metadata() != null && !ImplUtils.isNullOrEmpty(actual.metadata())) {
-                assertEquals(expected.metadata(), actual.metadata())
+            return actual == null
+        }  else {
+            if (!Objects.equals(expected.name(), actual.name())) {
+                return false
             }
+            if (expected.metadata() != null && !ImplUtils.isNullOrEmpty(actual.metadata())) {
+                return expected.metadata().equals(actual.metadata())
+            }
+            return true
         }
     }
 
-    static void assertQueueServicePropertiesAreEqual(StorageServiceProperties expected, StorageServiceProperties actual) {
+    static boolean assertQueueServicePropertiesAreEqual(StorageServiceProperties expected, StorageServiceProperties actual) {
         if (expected == null) {
-            assertNull(actual)
+            return actual == null
         } else {
-            assertMetricsAreEqual(expected.hourMetrics(), actual.hourMetrics())
-            assertMetricsAreEqual(expected.minuteMetrics(), actual.minuteMetrics())
-            assertLoggingAreEqual(expected.logging(), actual.logging())
+            return assertMetricsAreEqual(expected.hourMetrics(), actual.hourMetrics()) &&
+            assertMetricsAreEqual(expected.minuteMetrics(), actual.minuteMetrics()) &&
+            assertLoggingAreEqual(expected.logging(), actual.logging()) &&
             assertCorsAreEqual(expected.cors(), actual.cors())
         }
     }
 
-    static void assertMetricsAreEqual(Metrics expected, Metrics actual) {
+    static boolean assertMetricsAreEqual(Metrics expected, Metrics actual) {
         if (expected == null) {
-            assertNull(actual)
+            return actual == null
         } else {
-            assertEquals(expected.enabled(), actual.enabled())
-            assertEquals(expected.includeAPIs(), actual.includeAPIs())
-            assertEquals(expected.version(), actual.version())
-            assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy())
+            return Objects.equals(expected.enabled(), actual.enabled()) &&
+                    Objects.equals(expected.includeAPIs(), actual.includeAPIs()) &&
+                    Objects.equals(expected.version(), actual.version())
+                    assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy())
         }
     }
 
-    static void assertLoggingAreEqual(Logging expected, Logging actual) {
+    static boolean assertLoggingAreEqual(Logging expected, Logging actual) {
         if (expected == null) {
-            assertNull(actual)
+            return actual == null
         } else {
-            assertEquals(expected.read(), actual.read())
-            assertEquals(expected.write(), actual.write())
-            assertEquals(expected.delete(), actual.delete())
-            assertEquals(expected.version(), actual.version())
-            assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy())
+            return Objects.equals(expected.read(), actual.read()) &&
+                    Objects.equals(expected.write(), actual.write()) &&
+                    Objects.equals(expected.delete(), actual.delete()) &&
+                    Objects.equals(expected.version(), actual.version())
+                    assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy())
         }
     }
 
-    static void assertRetentionPoliciesAreEqual(RetentionPolicy expected, RetentionPolicy actual) {
+    static boolean assertRetentionPoliciesAreEqual(RetentionPolicy expected, RetentionPolicy actual) {
         if (expected == null) {
-            assertNull(actual)
+            return actual == null
         } else {
-            assertEquals(expected.days(), actual.days())
-            assertEquals(expected.enabled(), actual.enabled())
+            return Objects.equals(expected.days(), actual.days()) &&
+                Objects.equals(expected.enabled(), actual.enabled())
         }
     }
 
-    static void assertCorsAreEqual(List<CorsRule> expected, List<CorsRule> actual) {
+    static boolean assertCorsAreEqual(List<CorsRule> expected, List<CorsRule> actual) {
         if (expected == null) {
-            assertTrue(ImplUtils.isNullOrEmpty(actual))
+            return actual == null
         } else {
-            assertEquals(expected.size(), actual.size())
-            for (int i = 0; i < expected.size(); i++) {
-                assertCorRulesAreEqual(expected.get(i), actual.get(i))
+            if (expected.size() != actual.size()) {
+                return false
             }
+            for (int i = 0; i < expected.size(); i++) {
+                if (!assertCorRulesAreEqual(expected.get(i), actual.get(i))) {
+                    return false
+                }
+            }
+            return true
         }
     }
 
-    static void assertCorRulesAreEqual(CorsRule expected, CorsRule actual) {
+    static boolean assertCorRulesAreEqual(CorsRule expected, CorsRule actual) {
         if (expected == null) {
-            assertNull(actual)
+            return actual == null
         } else {
-            assertEquals(expected.allowedHeaders(), actual.allowedHeaders())
-            assertEquals(expected.allowedMethods(), actual.allowedMethods())
-            assertEquals(expected.allowedOrigins(), actual.allowedOrigins())
-            assertEquals(expected.exposedHeaders(), actual.exposedHeaders())
-            assertEquals(expected.maxAgeInSeconds(), actual.maxAgeInSeconds())
+            return Objects.equals(expected.allowedHeaders(), actual.allowedHeaders()) &&
+                Objects.equals(expected.allowedMethods(), actual.allowedMethods()) &&
+                Objects.equals(expected.allowedOrigins(), actual.allowedOrigins()) &&
+                Objects.equals(expected.maxAgeInSeconds(), actual.maxAgeInSeconds())
         }
     }
 
-    static void sleepInRecordMode(Duration duration) {
+    static boolean assertPermissionsAreEqual(SignedIdentifier expected, SignedIdentifier actual) {
+        if (expected == null) {
+            return actual == null
+        }
+        if (expected.accessPolicy() == null) {
+            return actual.accessPolicy() == null
+        }
+        return Objects.equals(expected.id(), actual.id()) &&
+                Objects.equals(expected.accessPolicy().permission(), actual.accessPolicy().permission()) &&
+                Objects.equals(expected.accessPolicy().start(), actual.accessPolicy().start()) &&
+                Objects.equals(expected.accessPolicy().expiry(), actual.accessPolicy().expiry())
+    }
+
+    static void sleepInRecord(Duration time) {
         String azureTestMode = ConfigurationManager.getConfiguration().get("AZURE_TEST_MODE")
         if ("RECORD".equalsIgnoreCase(azureTestMode)) {
-            sleep(duration)
+            sleep(time)
         }
     }
 
-    static void assertPermissionsAreEqual(SignedIdentifier expected, SignedIdentifier actual) {
-        assertEquals(expected.id(), actual.id());
-        assertEquals(expected.accessPolicy().permission(), actual.accessPolicy().permission());
-        assertEquals(expected.accessPolicy().start(), actual.accessPolicy().start());
-        assertEquals(expected.accessPolicy().expiry(), actual.accessPolicy().expiry());
-    }
-
-    private static void sleep(Duration duration) {
+    private static void sleep(Duration time) {
         try {
-            Thread.sleep(duration.toMillis());
+            Thread.sleep(time.toMillis());
         } catch (InterruptedException ex) {
             // Ignore the error
         }

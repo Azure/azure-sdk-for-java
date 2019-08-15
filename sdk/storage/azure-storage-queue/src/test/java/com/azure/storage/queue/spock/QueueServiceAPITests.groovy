@@ -3,7 +3,6 @@
 
 package com.azure.storage.queue.spock
 
-
 import com.azure.storage.queue.QueueClient
 import com.azure.storage.queue.models.Logging
 import com.azure.storage.queue.models.Metrics
@@ -21,16 +20,16 @@ class QueueServiceAPITests extends APISpec {
         primaryQueueServiceClient = queueServiceBuilderHelper(interceptorManager).buildClient()
     }
 
-    def "Get queue client from queue service client"() {
+    def "Get queue client"() {
         given:
-        def queueClient = primaryQueueServiceClient.getQueueClient(testResourceName.randomName("queue", 16))
+        def queueClient = primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 60))
         expect:
         queueClient instanceof QueueClient
     }
 
-    def "Create queue from queue service client"() {
+    def "Create queue"() {
         when:
-        def queueClientResponse = primaryQueueServiceClient.createQueue(testResourceName.randomName("queue", 16))
+        def queueClientResponse = primaryQueueServiceClient.createQueue(testResourceName.randomName(methodName, 60))
         def enqueueMessageResponse = queueClientResponse.value().enqueueMessage("Testing service client creating a queue")
         then:
         QueueTestHelper.assertResponseStatusCode(queueClientResponse, 201)
@@ -38,7 +37,7 @@ class QueueServiceAPITests extends APISpec {
     }
 
     @Unroll
-    def "Create queue with invalid name from queue service client"() {
+    def "Create queue with invalid name"() {
         when:
         primaryQueueServiceClient.createQueue(queueName)
         then:
@@ -54,7 +53,7 @@ class QueueServiceAPITests extends APISpec {
         "verylong" * 8 | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
     }
 
-    def "Create null from queue service client"() {
+    def "Create null"() {
         when:
         primaryQueueServiceClient.createQueue(null)
         then:
@@ -62,9 +61,9 @@ class QueueServiceAPITests extends APISpec {
     }
 
     @Unroll
-    def "Create queue maxOverload from queue service client"() {
+    def "Create queue maxOverload"() {
         when:
-        def queueClientResponse = primaryQueueServiceClient.createQueue(testResourceName.randomName("queue", 16), metadata)
+        def queueClientResponse = primaryQueueServiceClient.createQueue(testResourceName.randomName(methodName, 60), metadata)
         def enqueueMessageResponse = queueClientResponse.value().enqueueMessage("Testing service client creating a queue")
         then:
         QueueTestHelper.assertResponseStatusCode(queueClientResponse, 201)
@@ -76,9 +75,9 @@ class QueueServiceAPITests extends APISpec {
         Collections.singletonMap("metadata", "va@lue") | _
     }
 
-    def "Create queue with invalid metadata from queue service client"() {
+    def "Create queue with invalid metadata"() {
         given:
-        def queueName = testResourceName.randomName("queue", 16)
+        def queueName = testResourceName.randomName(methodName, 16)
         when:
         primaryQueueServiceClient.createQueue(queueName, Collections.singletonMap("meta@data", "value"))
         then:
@@ -86,9 +85,9 @@ class QueueServiceAPITests extends APISpec {
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, "Bad Request")
     }
 
-    def "Delete queue from queue service client"() {
+    def "Delete queue"() {
         given:
-        def queueName = testResourceName.randomName("queue", 16)
+        def queueName = testResourceName.randomName(methodName, 60)
         when:
         def queueClient = primaryQueueServiceClient.createQueue(queueName).value()
         def deleteQueueResponse = primaryQueueServiceClient.deleteQueue(queueName)
@@ -99,18 +98,18 @@ class QueueServiceAPITests extends APISpec {
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
-    def "Delete queue error from queue service client"() {
+    def "Delete queue error"() {
         when:
-        primaryQueueServiceClient.deleteQueue(testResourceName.randomName("queue", 16))
+        primaryQueueServiceClient.deleteQueue(testResourceName.randomName(methodName, 60))
         then:
         def e = thrown(StorageErrorException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
     @Unroll
-    def "List queues from queue service client"() {
+    def "List queues"() {
         given:
-        def queueName = testResourceName.randomName("queue", 16)
+        def queueName = testResourceName.randomName(methodName, 60)
         LinkedList<QueueItem> testQueues = new LinkedList<>()
         for (int i = 0; i < 3; i++) {
             String version = Integer.toString(i)
@@ -120,26 +119,28 @@ class QueueServiceAPITests extends APISpec {
             primaryQueueServiceClient.createQueue(queue.name(), queue.metadata())
         }
         when:
-        def queueListIter = primaryQueueServiceClient.listQueues(new QueuesSegmentOptions().maxResults(2))
+        def queueListIter = primaryQueueServiceClient.listQueues(options)
         then:
         queueListIter.each {
-            queueItem -> QueueTestHelper.assertQueuesAreEqual(queueItem, testQueues.pop())
+            QueueTestHelper.assertQueuesAreEqual(it, testQueues.pop())
+            primaryQueueServiceClient.deleteQueue(it.name())
         }
+        testQueues.size() == 0
         where:
         options                                          | _
-        new QueuesSegmentOptions().prefix("queue")       | _
-        new QueuesSegmentOptions().maxResults(2)         | _
-        new QueuesSegmentOptions().includeMetadata(true) | _
+        new QueuesSegmentOptions().prefix("queueserviceapitestslistqueues")       | _
+        new QueuesSegmentOptions().prefix("queueserviceapitestslistqueues").maxResults(2)         | _
+        new QueuesSegmentOptions().prefix("queueserviceapitestslistqueues").includeMetadata(true) | _
     }
 
-    def "List empty queues from queue service client"() {
+    def "List empty queues"() {
         when:
-        primaryQueueServiceClient.getQueueClient(testResourceName.randomName("queue", 16))
+        primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 60))
         then:
-        !primaryQueueServiceClient.listQueues(new QueuesSegmentOptions()).iterator().hasNext()
+        !primaryQueueServiceClient.listQueues(new QueuesSegmentOptions().prefix(methodName)).iterator().hasNext()
     }
 
-    def "Get and set properties from queue service client"() {
+    def "Get and set properties"() {
         given:
         def originalProperties = primaryQueueServiceClient.getProperties().value()
         def retentionPolicy = new RetentionPolicy().enabled(true)

@@ -20,16 +20,16 @@ class QueueServiceAsyncAPITests extends APISpec {
         primaryQueueServiceAsyncClient = queueServiceBuilderHelper(interceptorManager).buildAsyncClient()
     }
 
-    def "Get queue client from queue service async client"() {
+    def "Get queue client"() {
         given:
-        def queueAsyncClient = primaryQueueServiceAsyncClient.getQueueAsyncClient(testResourceName.randomName("queue", 16))
+        def queueAsyncClient = primaryQueueServiceAsyncClient.getQueueAsyncClient(testResourceName.randomName(methodName, 60))
         expect:
         queueAsyncClient instanceof QueueAsyncClient
     }
 
-    def "Create queue from queue service async client"() {
+    def "Create queue"() {
         given:
-        def queueName = testResourceName.randomName("queue", 16)
+        def queueName = testResourceName.randomName(methodName, 60)
         expect:
         StepVerifier.create(primaryQueueServiceAsyncClient.createQueue(queueName)).assertNext {
             QueueTestHelper.assertResponseStatusCode(it, 201)
@@ -41,7 +41,7 @@ class QueueServiceAsyncAPITests extends APISpec {
     }
 
     @Unroll
-    def "Create queue with invalid name from queue service async client"() {
+    def "Create queue with invalid name"() {
         when:
         def createQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueue(queueName))
         then:
@@ -58,7 +58,7 @@ class QueueServiceAsyncAPITests extends APISpec {
         "verylong" * 8 | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
     }
 
-    def "Create null from queue service async client"() {
+    def "Create null"() {
         when:
         primaryQueueServiceAsyncClient.createQueue(null)
         then:
@@ -66,9 +66,9 @@ class QueueServiceAsyncAPITests extends APISpec {
     }
 
     @Unroll
-    def "Create queue maxOverload from queue service async client"() {
+    def "Create queue maxOverload"() {
         given:
-        def queueName = testResourceName.randomName("queue", 16)
+        def queueName = testResourceName.randomName(methodName, 60)
         when:
         def createQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueue(queueName, metadata))
         def enqueueMessageVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName)
@@ -89,9 +89,9 @@ class QueueServiceAsyncAPITests extends APISpec {
         Collections.singletonMap("metadata", "va@lue") | _
     }
 
-    def "Create queue with invalid metadata from queue service async client"() {
+    def "Create queue with invalid metadata"() {
         given:
-        def queueName = testResourceName.randomName("queue", 16)
+        def queueName = testResourceName.randomName(methodName, 60)
         when:
         def createQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueue(queueName, Collections.singletonMap("meta@data", "value")))
         then:
@@ -100,9 +100,9 @@ class QueueServiceAsyncAPITests extends APISpec {
         }
     }
 
-    def "Delete queue from queue service async client"() {
+    def "Delete queue"() {
         given:
-        def queueName = testResourceName.randomName("queue", 16)
+        def queueName = testResourceName.randomName(methodName, 60)
         primaryQueueServiceAsyncClient.createQueue(queueName).block()
         when:
         def deleteQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.deleteQueue(queueName))
@@ -117,9 +117,9 @@ class QueueServiceAsyncAPITests extends APISpec {
         }
     }
 
-    def "Delete queue error from queue service async client"() {
+    def "Delete queue error"() {
         when:
-        def deleteQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.deleteQueue(testResourceName.randomName("queue", 16)))
+        def deleteQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.deleteQueue(testResourceName.randomName(methodName, 16)))
         then:
         deleteQueueVerifier.verifyErrorSatisfies {
             QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
@@ -127,9 +127,9 @@ class QueueServiceAsyncAPITests extends APISpec {
     }
 
     @Unroll
-    def "List queues from queue service async client"() {
+    def "List queues"() {
         given:
-        def queueName = testResourceName.randomName("queue", 16)
+        def queueName = testResourceName.randomName(methodName, 60)
         LinkedList<QueueItem> testQueues = new LinkedList<>()
         for (int i = 0; i < 3; i++) {
             String version = Integer.toString(i)
@@ -139,7 +139,7 @@ class QueueServiceAsyncAPITests extends APISpec {
             primaryQueueServiceAsyncClient.createQueue(queue.name(), queue.metadata()).block()
         }
         when:
-        def queueListVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.listQueues(new QueuesSegmentOptions().maxResults(2)))
+        def queueListVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.listQueues(options))
         then:
         queueListVerifier.assertNext {
             QueueTestHelper.assertQueuesAreEqual(it, testQueues.pop())
@@ -150,12 +150,12 @@ class QueueServiceAsyncAPITests extends APISpec {
         }.verifyComplete()
         where:
         options                                          | _
-        new QueuesSegmentOptions().prefix("queue")       | _
-        new QueuesSegmentOptions().maxResults(2)         | _
-        new QueuesSegmentOptions().includeMetadata(true) | _
+        new QueuesSegmentOptions().prefix("queueserviceasyncapitestslistqueues")       | _
+        new QueuesSegmentOptions().prefix("queueserviceasyncapitestslistqueues").maxResults(2)         | _
+        new QueuesSegmentOptions().prefix("queueserviceasyncapitestslistqueues").includeMetadata(true) | _
     }
 
-    def "List empty queues from queue service async client"() {
+    def "List empty queues"() {
         when:
         def listQueueVerifier = StepVerifier.create((primaryQueueServiceAsyncClient.listQueues(new QueuesSegmentOptions())))
         then:
@@ -164,7 +164,7 @@ class QueueServiceAsyncAPITests extends APISpec {
         }
     }
 
-    def "Get and set properties from queue service async client"() {
+    def "Get and set properties"() {
         given:
         def originalProperties = primaryQueueServiceAsyncClient.getProperties().block().value()
         def retentionPolicy = new RetentionPolicy().enabled(true)
