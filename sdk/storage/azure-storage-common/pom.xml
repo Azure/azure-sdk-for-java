@@ -15,7 +15,8 @@
   <artifactId>azure-storage-common</artifactId>
   <version>12.0.0-preview.3</version>
 
-  <name>azure-storage-common</name>
+  <name>Microsoft Azure common module for Storage</name>
+  <description>This module contains common code based for all Microsoft Azure Storage client libraries.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>

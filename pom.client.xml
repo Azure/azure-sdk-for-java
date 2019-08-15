@@ -1,7 +1,7 @@
 <!-- Copyright (c) Microsoft Corporation. All rights reserved.
      Licensed under the MIT License. -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
   <artifactId>azure-client-sdk-parent</artifactId>
@@ -164,12 +164,13 @@
           </dependency>
         </dependencies>
         <configuration>
-          <effort>Max</effort>
+          <effort>max</effort>
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
           <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
           <failOnError>true</failOnError>
+          <fork>false</fork>
         </configuration>
         <executions>
           <execution>
@@ -341,7 +342,6 @@
             </footer>
             <linksource>false</linksource>
             <excludePackageNames>
-              com.microsoft.azure.template:
               *.impl*:
               *.implementation*:
               com.azure.tools.checkstyle*
@@ -401,6 +401,10 @@
                 <title>Azure Storage - Queues</title>
                 <packages>com.azure.storage.queue*</packages>
               </group>
+              <group>
+                <title>Azure Telemetry</title>
+                <packages>com.azure.tracing.opentelemetry*</packages>
+              </group>
             </groups>
             <links>
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
@@ -438,12 +442,13 @@
             </dependency>
           </dependencies>
           <configuration>
-            <effort>Max</effort>
+            <effort>max</effort>
             <threshold>Low</threshold>
             <xmlOutput>true</xmlOutput>
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
             <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
             <failOnError>true</failOnError>
+            <fork>false</fork>
           </configuration>
         </plugin>
 
@@ -511,12 +516,13 @@
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>${spotbugs.maven.version}</version>
         <configuration>
-          <effort>Max</effort>
+          <effort>max</effort>
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
           <excludeFilterFile>eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
           <failOnError>true</failOnError>
+          <fork>false</fork>
         </configuration>
       </plugin>
       <plugin>
@@ -724,12 +730,13 @@
         <module>./eng/jacoco-test-coverage</module>
       </modules>
     </profile>
-
+    
     <profile>
       <id>template-module</id>
       <activation>
         <property>
-          <name>include-template</name>
+          <name>env.ENABLETEMPLATEDOCS</name>
+          <value>true</value>
         </property>
       </activation>
       <modules>

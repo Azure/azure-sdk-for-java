@@ -41,6 +41,10 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <property name="message" value='All TODOs should be named.  e.g. "TODO (johndoe): Refactor when v2 is released."'/>
   </module>
 
+  <!-- Checks that a package-info.java file exists for each package. -->
+  <!-- See http://checkstyle.sf.net/config_javadoc.html#JavadocPackage -->
+  <module name="JavadocPackage"/>
+
   <!-- All Java AST specific tests live under TreeWalker module. -->
   <module name="TreeWalker">
 
@@ -316,5 +320,11 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!--CUSTOM CHECKS-->
     <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
     <module name="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"/>
+
+    <!--CUSTOM CHECKS-->
+    <!-- Any class that implements the HttpPipelinePolicy interface should:
+    1) Must be a public class.
+    2) Not in an implementation package or sub-package. -->
+    <module name="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"/>
   </module>
 </module>
