@@ -25,17 +25,17 @@ public final class EncryptResult {
     /**
      * THe encrypted content.
      */
-    private byte[] cipherText;
+    private final byte[] cipherText;
 
     /**
      * The authentication tag.
      */
-    private byte[] authenticationTag;
+    private final byte[] authenticationTag;
 
     /**
      * The encrypyion algorithm used for the encryption operation.
      */
-    private EncryptionAlgorithm algorithm;
+    private final EncryptionAlgorithm algorithm;
 
     /**
      * Get the encrypted content.

@@ -49,6 +49,11 @@ public class Utils {
             return false;
         }
 
+        if (modifiers.getChildCount() == 0) {
+            // no modifier for field. Means it is using default and we don't want those to be final
+            return true;
+        }
+
         Optional<DetailAST> illegalCombination = TokenUtil.findFirstTokenByPredicate(modifiers, (node) -> {
             final int type = node.getType();
             return INVALID_FINAL_COMBINATION.contains(node.getType()) || (TokenTypes.ANNOTATION == type
