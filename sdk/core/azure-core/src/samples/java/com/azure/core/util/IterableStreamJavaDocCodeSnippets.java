@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.rest;
+package com.azure.core.util;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * Code snippets for {@link IterableResponse}
+ * Code snippets for {@link IterableStream}
  */
-public class IterableResponseJavaDocCodeSnippets {
+public class IterableStreamJavaDocCodeSnippets {
 
     /**
      * Iterate over {@link java.util.stream.Stream}
@@ -33,12 +33,12 @@ public class IterableResponseJavaDocCodeSnippets {
 
         String deserializedHeaders = "header1,value1,header2,value2";
 
-        IterableResponse<PagedResponseBase<String, Integer>> myIterableResponse =
-            new IterableResponse<>(Flux.just(createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, 1, 3)));
+        IterableStream<PagedResponseBase<String, Integer>> myIterableStream =
+            new IterableStream<>(Flux.just(createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, 1, 3)));
 
-        // BEGIN: com.azure.core.http.rest.iterableResponse.stream
+        // BEGIN: com.azure.core.util.iterableStream.stream
         // process the stream
-        myIterableResponse.stream().forEach(resp -> {
+        myIterableStream.stream().forEach(resp -> {
             if (resp.statusCode() == HttpURLConnection.HTTP_OK) {
                 System.out.printf("Response headers are %s. Url %s%n", resp.deserializedHeaders(), resp.request().url());
                 resp.items().forEach(value -> {
@@ -46,7 +46,7 @@ public class IterableResponseJavaDocCodeSnippets {
                 });
             }
         });
-        // END: com.azure.core.http.rest.iterableResponse.stream
+        // END: com.azure.core.util.iterableStream.stream
     }
 
     /**
@@ -60,12 +60,12 @@ public class IterableResponseJavaDocCodeSnippets {
 
         String deserializedHeaders = "header1,value1,header2,value2";
 
-        IterableResponse<PagedResponseBase<String, Integer>> myIterableResponse =
-            new IterableResponse<>(Flux.just(createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, 1, 3)));
+        IterableStream<PagedResponseBase<String, Integer>> myIterableStream =
+            new IterableStream<>(Flux.just(createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, 1, 3)));
 
-        // BEGIN: com.azure.core.http.rest.iterableResponse.iterator.while
+        // BEGIN: com.azure.core.util.iterableStream.iterator.while
         // Iterate over iterator
-        Iterator<PagedResponseBase<String, Integer>> ite = myIterableResponse.iterator();
+        Iterator<PagedResponseBase<String, Integer>> ite = myIterableStream.iterator();
         while (ite.hasNext()) {
             PagedResponseBase<String, Integer> resp = ite.next();
             if (resp.statusCode() == HttpURLConnection.HTTP_OK) {
@@ -75,7 +75,7 @@ public class IterableResponseJavaDocCodeSnippets {
                 });
             }
         }
-        // END: com.azure.core.http.rest.iterableResponse.iterator.while
+        // END: com.azure.core.util.iterableStream.iterator.while
     }
 
     /**
@@ -89,12 +89,12 @@ public class IterableResponseJavaDocCodeSnippets {
 
         String deserializedHeaders = "header1,value1,header2,value2";
 
-        IterableResponse<PagedResponseBase<String, Integer>> myIterableResponse =
-            new IterableResponse<>(Flux.just(createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, 1, 3)));
+        IterableStream<PagedResponseBase<String, Integer>> myIterableStream =
+            new IterableStream<>(Flux.just(createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, 1, 3)));
 
-        // BEGIN: com.azure.core.http.rest.iterableResponse.stream.filter
+        // BEGIN: com.azure.core.util.iterableStream.stream.filter
         // process the stream
-        myIterableResponse.stream().filter(resp -> resp.statusCode() == HttpURLConnection.HTTP_OK)
+        myIterableStream.stream().filter(resp -> resp.statusCode() == HttpURLConnection.HTTP_OK)
             .limit(10)
             .forEach(resp -> {
                 System.out.printf("Response headers are %s. Url %s%n", resp.deserializedHeaders(), resp.request().url());
@@ -102,7 +102,7 @@ public class IterableResponseJavaDocCodeSnippets {
                     System.out.printf("Response value is %d%n", value);
                 });
             });
-        // END: com.azure.core.http.rest.iterableResponse.stream.filter
+        // END: com.azure.core.util.iterableStream.stream.filter
     }
 
     private PagedResponseBase<String, Integer> createPagedResponse(HttpRequest httpRequest, HttpHeaders httpHeaders,
