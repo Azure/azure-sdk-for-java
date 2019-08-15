@@ -45,7 +45,7 @@ public class SearchIndexClientTestBase extends TestBase {
         return testName.getMethodName();
     }
 
-    SearchIndexClientBuilder builderSetup() {
+    public SearchIndexClientBuilder builderSetup() {
         if (!interceptorManager.isPlaybackMode()) {
             createAzureTestEnvironment();
 
