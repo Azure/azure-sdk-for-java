@@ -63,8 +63,8 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
     private ChangeFeedContextClient feedContextClient;
     private ChangeFeedProcessorOptions changeFeedProcessorOptions;
     private ChangeFeedObserverFactory observerFactory;
-    private String databaseResourceId;
-    private String collectionResourceId;
+    private volatile String databaseResourceId;
+    private volatile String collectionResourceId;
     private ChangeFeedContextClient leaseContextClient;
     private PartitionLoadBalancingStrategy loadBalancingStrategy;
     private PartitionProcessorFactory partitionProcessorFactory;
