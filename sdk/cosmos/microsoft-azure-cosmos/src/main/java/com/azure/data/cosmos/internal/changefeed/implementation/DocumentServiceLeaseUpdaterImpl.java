@@ -86,7 +86,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                             serverLease.getConcurrencyToken());
                         arrayLease[0] = serverLease;
 
-                        throw new RuntimeException("");
+                        throw new RuntimeException("Partition update failed");
                     });
             })
             .retry(RETRY_COUNT_ON_CONFLICT, throwable -> {
