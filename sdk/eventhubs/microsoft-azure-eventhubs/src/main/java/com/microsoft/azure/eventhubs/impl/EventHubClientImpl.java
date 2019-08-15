@@ -100,8 +100,10 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         final EventHubClientImpl eventHubClient = new EventHubClientImpl(eventHubName, executor);
         final MessagingFactoryBuilder builder = new MessagingFactoryBuilder(endpoint.getHost(), tokenProvider, executor);
         if (options != null) {
-            builder.setOperationTimeout(options.getOperationTimeout()).setTransportType(options.getTransportType()).
-                    setRetryPolicy(options.getRetryPolicy());
+            builder.setOperationTimeout(options.getOperationTimeout())
+                .setTransportType(options.getTransportType())
+                .setRetryPolicy(options.getRetryPolicy())
+                .setProxyConfiguration(options.getProxyConfiguration());
         }
 
         return builder.build()
