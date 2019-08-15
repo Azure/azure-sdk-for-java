@@ -5,7 +5,6 @@ package com.azure.search.data.test.customization;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.search.data.SearchIndexAsyncClient;
-import com.azure.search.data.SearchIndexClientTestBase;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.IndexBatch;
@@ -16,7 +15,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.test.StepVerifier;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;

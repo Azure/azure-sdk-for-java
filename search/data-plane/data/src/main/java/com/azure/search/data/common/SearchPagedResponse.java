@@ -7,7 +7,6 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.search.data.generated.models.DocumentSearchResult;
 import com.azure.search.data.generated.models.FacetResult;
 import com.azure.search.data.generated.models.SearchResult;
-
 import java.util.List;
 import java.util.Map;
 
