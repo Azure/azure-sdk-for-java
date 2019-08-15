@@ -62,6 +62,13 @@ public final class ContainerGetPropertiesHeaders {
     private LeaseStatusType leaseStatus;
 
     /*
+     * If a client request id header is sent in the request, this header will
+     * be present in the response with the same value.
+     */
+    @JsonProperty(value = "x-ms-client-request-id")
+    private String clientRequestId;
+
+    /*
      * This header uniquely identifies the request that was made and can be
      * used for troubleshooting the request.
      */
@@ -89,6 +96,18 @@ public final class ContainerGetPropertiesHeaders {
      */
     @JsonProperty(value = "x-ms-blob-public-access")
     private PublicAccessType blobPublicAccess;
+
+    /*
+     * Default encryption scope on this container
+     */
+    @JsonProperty(value = "x-ms-default-encryption-scope")
+    private String defaultEncryptionScope;
+
+    /*
+     * Whether to reject the write request with encryption scope
+     */
+    @JsonProperty(value = "x-ms-deny-encryption-scope-override")
+    private Boolean denyEncryptionScopeOverride;
 
     /*
      * Indicates whether the container has an immutability policy set on it.
@@ -254,6 +273,30 @@ public final class ContainerGetPropertiesHeaders {
     }
 
     /**
+     * Get the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
+     *
+     * @return the clientRequestId value.
+     */
+    public String clientRequestId() {
+        return this.clientRequestId;
+    }
+
+    /**
+     * Set the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
+     *
+     * @param clientRequestId the clientRequestId value to set.
+     * @return the ContainerGetPropertiesHeaders object itself.
+     */
+    public ContainerGetPropertiesHeaders clientRequestId(String clientRequestId) {
+        this.clientRequestId = clientRequestId;
+        return this;
+    }
+
+    /**
      * Get the requestId property: This header uniquely identifies the request
      * that was made and can be used for troubleshooting the request.
      *
@@ -349,6 +392,51 @@ public final class ContainerGetPropertiesHeaders {
      */
     public ContainerGetPropertiesHeaders blobPublicAccess(PublicAccessType blobPublicAccess) {
         this.blobPublicAccess = blobPublicAccess;
+        return this;
+    }
+
+    /**
+     * Get the defaultEncryptionScope property: Default encryption scope on
+     * this container.
+     *
+     * @return the defaultEncryptionScope value.
+     */
+    public String defaultEncryptionScope() {
+        return this.defaultEncryptionScope;
+    }
+
+    /**
+     * Set the defaultEncryptionScope property: Default encryption scope on
+     * this container.
+     *
+     * @param defaultEncryptionScope the defaultEncryptionScope value to set.
+     * @return the ContainerGetPropertiesHeaders object itself.
+     */
+    public ContainerGetPropertiesHeaders defaultEncryptionScope(String defaultEncryptionScope) {
+        this.defaultEncryptionScope = defaultEncryptionScope;
+        return this;
+    }
+
+    /**
+     * Get the denyEncryptionScopeOverride property: Whether to reject the
+     * write request with encryption scope.
+     *
+     * @return the denyEncryptionScopeOverride value.
+     */
+    public Boolean denyEncryptionScopeOverride() {
+        return this.denyEncryptionScopeOverride;
+    }
+
+    /**
+     * Set the denyEncryptionScopeOverride property: Whether to reject the
+     * write request with encryption scope.
+     *
+     * @param denyEncryptionScopeOverride the denyEncryptionScopeOverride value
+     * to set.
+     * @return the ContainerGetPropertiesHeaders object itself.
+     */
+    public ContainerGetPropertiesHeaders denyEncryptionScopeOverride(Boolean denyEncryptionScopeOverride) {
+        this.denyEncryptionScopeOverride = denyEncryptionScopeOverride;
         return this;
     }
 

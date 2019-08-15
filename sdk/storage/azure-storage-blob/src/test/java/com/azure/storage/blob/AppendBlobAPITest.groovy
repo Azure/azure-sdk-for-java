@@ -157,7 +157,7 @@ class AppendBlobAPITest extends APISpec {
 
         downloadStream.toByteArray() == defaultData.array()
         validateBasicHeaders(appendResponse.headers())
-        appendResponse.value().contentMD5() != null
+        appendResponse.headers().value("x-ms-content-crc64") != null
         appendResponse.value().blobAppendOffset() != null
         appendResponse.value().blobCommittedBlockCount() != null
         Integer.parseInt(bu.getProperties().headers().value("x-ms-blob-committed-block-count")) == 1
