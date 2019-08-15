@@ -33,13 +33,13 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
     private final int maxBatchSize;
 
     public PartitionSynchronizerImpl(
-        ChangeFeedContextClient documentClient,
-        CosmosContainer collectionSelfLink,
-        LeaseContainer leaseContainer,
-        LeaseManager leaseManager,
-        int degreeOfParallelism,
-        int maxBatchSize)
-    {
+            ChangeFeedContextClient documentClient,
+            CosmosContainer collectionSelfLink,
+            LeaseContainer leaseContainer,
+            LeaseManager leaseManager,
+            int degreeOfParallelism,
+            int maxBatchSize) {
+
         this.documentClient = documentClient;
         this.collectionSelfLink = collectionSelfLink;
         this.leaseContainer = leaseContainer;
@@ -68,7 +68,9 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
     @Override
     public Flux<Lease> splitPartition(Lease lease) {
-        if (lease == null) throw new IllegalArgumentException("lease");
+        if (lease == null) {
+            throw new IllegalArgumentException("lease");
+        }
 
         String leaseToken = lease.getLeaseToken();
         String lastContinuationToken = lease.getContinuationToken();

@@ -24,12 +24,22 @@ class BootstrapperImpl implements Bootstrapper {
     private volatile boolean isInitialized;
     private volatile boolean isLockAcquired;
 
-    public BootstrapperImpl(PartitionSynchronizer synchronizer, LeaseStore leaseStore, Duration lockTime, Duration sleepTime)
-    {
-        if (synchronizer == null) throw new IllegalArgumentException("synchronizer");
-        if (leaseStore == null) throw new IllegalArgumentException("leaseStore");
-        if (lockTime == null || lockTime.isNegative() || lockTime.isZero()) throw new IllegalArgumentException("lockTime should be non-null and positive");
-        if (sleepTime == null || sleepTime.isNegative() || sleepTime.isZero()) throw new IllegalArgumentException("sleepTime should be non-null and positive");
+    public BootstrapperImpl(PartitionSynchronizer synchronizer, LeaseStore leaseStore, Duration lockTime, Duration sleepTime) {
+        if (synchronizer == null) {
+            throw new IllegalArgumentException("synchronizer");
+        }
+
+        if (leaseStore == null) {
+            throw new IllegalArgumentException("leaseStore");
+        }
+
+        if (lockTime == null || lockTime.isNegative() || lockTime.isZero()) {
+            throw new IllegalArgumentException("lockTime should be non-null and positive");
+        }
+
+        if (sleepTime == null || sleepTime.isNegative() || sleepTime.isZero()) {
+            throw new IllegalArgumentException("sleepTime should be non-null and positive");
+        }
 
         this.synchronizer = synchronizer;
         this.leaseStore = leaseStore;

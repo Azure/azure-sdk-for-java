@@ -30,10 +30,10 @@ class DocumentServiceLeaseStore implements LeaseStore {
 
     //  TODO: rename to LeaseStoreImpl
     public DocumentServiceLeaseStore(
-        ChangeFeedContextClient client,
-        String containerNamePrefix,
-        CosmosContainer leaseCollectionLink,
-        RequestOptionsFactory requestOptionsFactory) {
+            ChangeFeedContextClient client,
+            String containerNamePrefix,
+            CosmosContainer leaseCollectionLink,
+            RequestOptionsFactory requestOptionsFactory) {
 
         this.client = client;
         this.containerNamePrefix = containerNamePrefix;

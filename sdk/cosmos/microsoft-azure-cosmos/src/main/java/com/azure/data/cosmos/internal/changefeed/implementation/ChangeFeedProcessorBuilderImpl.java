@@ -22,13 +22,12 @@ import com.azure.data.cosmos.internal.changefeed.PartitionProcessorFactory;
 import com.azure.data.cosmos.internal.changefeed.PartitionSupervisorFactory;
 import com.azure.data.cosmos.internal.changefeed.RequestOptionsFactory;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 /**
@@ -72,7 +71,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
     private HealthMonitor healthMonitor;
     private PartitionManager partitionManager;
 
-    private ExecutorService executorService;
+    private Scheduler scheduler;
 
     /**
      * Start listening for changes asynchronously.
@@ -289,18 +288,16 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      */
     @Override
     public ChangeFeedProcessor build() {
-        if (this.hostName == null)
-        {
+        if (this.hostName == null) {
             throw new IllegalArgumentException("Host name was not specified");
         }
 
-        if (this.observerFactory == null)
-        {
+        if (this.observerFactory == null) {
             throw new IllegalArgumentException("Observer was not specified");
         }
 
-        if (this.executorService == null) {
-            this.executorService = Executors.newCachedThreadPool();
+        if (this.scheduler == null) {
+            this.scheduler = Schedulers.elastic();
         }
 
         return this;
@@ -409,7 +406,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
                 leaseStoreManager,
                 this.feedContextClient.getContainerClient()),
             this.changeFeedProcessorOptions,
-            executorService
+            this.scheduler
         );
 
         if (this.loadBalancingStrategy == null) {
@@ -420,7 +417,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
                 this.changeFeedProcessorOptions.leaseExpirationInterval());
         }
 
-        PartitionController partitionController = new PartitionControllerImpl(leaseStoreManager, leaseStoreManager, partitionSupervisorFactory, synchronizer, executorService);
+        PartitionController partitionController = new PartitionControllerImpl(leaseStoreManager, leaseStoreManager, partitionSupervisorFactory, synchronizer, scheduler);
 
         if (this.healthMonitor == null) {
             this.healthMonitor = new TraceHealthMonitor();
@@ -433,7 +430,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
             leaseStoreManager,
             this.loadBalancingStrategy,
             this.changeFeedProcessorOptions.leaseAcquireInterval(),
-            this.executorService
+            this.scheduler
         );
 
         PartitionManager partitionManager = new PartitionManagerImpl(bootstrapper, partitionController, partitionLoadBalancer);

@@ -21,7 +21,6 @@ import com.azure.data.cosmos.internal.changefeed.ServiceItemLeaseUpdater;
 import com.azure.data.cosmos.internal.changefeed.exceptions.LeaseLostException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -101,12 +100,30 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
     @Override
     public Mono<LeaseStoreManager> build() {
-        if (this.settings == null) throw new IllegalArgumentException("properties");
-        if (this.settings.getContainerNamePrefix() == null) throw new IllegalArgumentException("properties.containerNamePrefix");
-        if (this.settings.getLeaseCollectionLink() == null) throw new IllegalArgumentException("properties.leaseCollectionLink");
-        if (this.settings.getHostName() == null || this.settings.getHostName().isEmpty()) throw new IllegalArgumentException("properties.hostName");
-        if (this.leaseDocumentClient == null) throw new IllegalArgumentException("leaseDocumentClient");
-        if (this.requestOptionsFactory == null) throw new IllegalArgumentException("requestOptionsFactory");
+        if (this.settings == null) {
+            throw new IllegalArgumentException("properties");
+        }
+
+        if (this.settings.getContainerNamePrefix() == null) {
+            throw new IllegalArgumentException("properties.containerNamePrefix");
+        }
+
+        if (this.settings.getLeaseCollectionLink() == null) {
+            throw new IllegalArgumentException("properties.leaseCollectionLink");
+        }
+
+        if (this.settings.getHostName() == null || this.settings.getHostName().isEmpty()) {
+            throw new IllegalArgumentException("properties.hostName");
+        }
+
+        if (this.leaseDocumentClient == null) {
+            throw new IllegalArgumentException("leaseDocumentClient");
+        }
+
+        if (this.requestOptionsFactory == null) {
+            throw new IllegalArgumentException("requestOptionsFactory");
+        }
+
         if (this.leaseUpdater == null) {
             this.leaseUpdater = new DocumentServiceLeaseUpdaterImpl(leaseDocumentClient);
         }
@@ -117,10 +134,13 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             this.settings.getLeaseCollectionLink(),
             this.requestOptionsFactory);
 
-        if (this.settings.getLeaseCollectionLink() == null)
+        if (this.settings.getLeaseCollectionLink() == null) {
             throw new IllegalArgumentException("leaseCollectionLink was not specified");
-        if (this.requestOptionsFactory == null)
+        }
+
+        if (this.requestOptionsFactory == null) {
             throw new IllegalArgumentException("requestOptionsFactory was not specified");
+        }
 
         return Mono.just(this);
     }
@@ -139,7 +159,9 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
     @Override
     public Mono<Lease> createLeaseIfNotExist(String leaseToken, String continuationToken) {
-        if (leaseToken == null) throw new IllegalArgumentException("leaseToken");
+        if (leaseToken == null) {
+            throw new IllegalArgumentException("leaseToken");
+        }
 
         String leaseDocId = this.getDocumentId(leaseToken);
         ServiceItemLease documentServiceLease = new ServiceItemLease()
@@ -160,7 +182,9 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 return Mono.error(ex);
             })
             .map(documentResourceResponse -> {
-                if (documentResourceResponse == null) return null;
+                if (documentResourceResponse == null) {
+                    return null;
+                }
 
                 CosmosItemProperties document = documentResourceResponse.properties();
 
@@ -175,7 +199,9 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
     @Override
     public Mono<Void> delete(Lease lease) {
-        if (lease == null || lease.getId() == null) throw new IllegalArgumentException("lease");
+        if (lease == null || lease.getId() == null) {
+            throw new IllegalArgumentException("lease");
+        }
 
         CosmosItem itemForLease = this.createItemForLease(lease.getId());
 
@@ -199,7 +225,9 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
     @Override
     public Mono<Lease> acquire(Lease lease) {
-        if (lease == null) throw new IllegalArgumentException("lease");
+        if (lease == null) {
+            throw new IllegalArgumentException("lease");
+        }
 
         String oldOwner = lease.getOwner();
 
@@ -221,7 +249,9 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
     @Override
     public Mono<Void> release(Lease lease) {
-        if (lease == null) throw new IllegalArgumentException("lease");
+        if (lease == null) {
+            throw new IllegalArgumentException("lease");
+        }
 
         CosmosItem itemForLease = this.createItemForLease(lease.getId());
 
@@ -260,7 +290,9 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
     @Override
     public Mono<Lease> renew(Lease lease) {
-        if (lease == null) throw new IllegalArgumentException("lease");
+        if (lease == null) {
+            throw new IllegalArgumentException("lease");
+        }
 
         // Get fresh lease. The assumption here is that check-pointing is done with higher frequency than lease renewal so almost
         // certainly the lease was updated in between.
@@ -297,10 +329,11 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
     @Override
     public Mono<Lease> updateProperties(Lease lease) {
-        if (lease == null) throw new IllegalArgumentException("lease");
+        if (lease == null) {
+            throw new IllegalArgumentException("lease");
+        }
 
-        if (!lease.getOwner().equalsIgnoreCase(this.settings.getHostName()))
-        {
+        if (!lease.getOwner().equalsIgnoreCase(this.settings.getHostName())) {
             logger.info("Partition '{}' lease was taken over by owner '{}' before lease item update", lease.getLeaseToken(), lease.getOwner());
             throw new LeaseLostException(lease);
         }
@@ -321,7 +354,9 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
     @Override
     public Mono<Lease> checkpoint(Lease lease, String continuationToken) {
-        if (lease == null) throw new IllegalArgumentException("lease");
+        if (lease == null) {
+            throw new IllegalArgumentException("lease");
+        }
 
         if (continuationToken == null || continuationToken.isEmpty()) {
             throw new IllegalArgumentException("continuationToken must be a non-empty string");

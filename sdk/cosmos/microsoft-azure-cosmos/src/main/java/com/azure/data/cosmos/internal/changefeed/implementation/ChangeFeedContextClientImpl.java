@@ -45,8 +45,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
      * Initializes a new instance of the {@link ChangeFeedContextClient} interface.
      * @param cosmosContainer existing client.
      */
-    public ChangeFeedContextClientImpl(CosmosContainer cosmosContainer)
-    {
+    public ChangeFeedContextClientImpl(CosmosContainer cosmosContainer) {
         if (cosmosContainer == null) {
             throw new IllegalArgumentException("cosmosContainer");
         }
@@ -61,8 +60,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
      * @param cosmosContainer existing client.
      * @param rxScheduler the RX Java scheduler to observe on.
      */
-    public ChangeFeedContextClientImpl(CosmosContainer cosmosContainer, Scheduler rxScheduler)
-    {
+    public ChangeFeedContextClientImpl(CosmosContainer cosmosContainer, Scheduler rxScheduler) {
         if (cosmosContainer == null) {
             throw new IllegalArgumentException("cosmosContainer");
         }

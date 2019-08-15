@@ -15,7 +15,6 @@ import com.azure.data.cosmos.internal.changefeed.ServiceItemLeaseUpdater;
 import com.azure.data.cosmos.internal.changefeed.exceptions.LeaseLostException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.time.ZoneId;

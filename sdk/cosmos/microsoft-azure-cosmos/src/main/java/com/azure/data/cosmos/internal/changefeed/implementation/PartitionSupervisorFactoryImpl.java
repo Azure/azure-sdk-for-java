@@ -12,6 +12,7 @@ import com.azure.data.cosmos.internal.changefeed.PartitionProcessor;
 import com.azure.data.cosmos.internal.changefeed.PartitionProcessorFactory;
 import com.azure.data.cosmos.internal.changefeed.PartitionSupervisor;
 import com.azure.data.cosmos.internal.changefeed.PartitionSupervisorFactory;
+import reactor.core.scheduler.Scheduler;
 
 import java.util.concurrent.ExecutorService;
 
@@ -23,35 +24,49 @@ class PartitionSupervisorFactoryImpl  implements PartitionSupervisorFactory {
     private final LeaseManager leaseManager;
     private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
     private final PartitionProcessorFactory partitionProcessorFactory;
-    private final ExecutorService executorService;
+    private final Scheduler scheduler;
 
 
     public PartitionSupervisorFactoryImpl(
-        ChangeFeedObserverFactory observerFactory,
-        LeaseManager leaseManager,
-        PartitionProcessorFactory partitionProcessorFactory,
-        ChangeFeedProcessorOptions options,
-        ExecutorService executorService) {
-        if (observerFactory == null) throw new IllegalArgumentException("observerFactory");
-        if (leaseManager == null) throw new IllegalArgumentException("leaseManager");
-        if (options == null) throw new IllegalArgumentException("options");
-        if (partitionProcessorFactory == null) throw new IllegalArgumentException("partitionProcessorFactory");
+            ChangeFeedObserverFactory observerFactory,
+            LeaseManager leaseManager,
+            PartitionProcessorFactory partitionProcessorFactory,
+            ChangeFeedProcessorOptions options,
+            Scheduler scheduler) {
+
+        if (observerFactory == null) {
+            throw new IllegalArgumentException("observerFactory");
+        }
+
+        if (leaseManager == null) {
+            throw new IllegalArgumentException("leaseManager");
+        }
+
+        if (options == null) {
+            throw new IllegalArgumentException("options");
+        }
+
+        if (partitionProcessorFactory == null) {
+            throw new IllegalArgumentException("partitionProcessorFactory");
+        }
 
         this.observerFactory = observerFactory;
         this.leaseManager = leaseManager;
         this.changeFeedProcessorOptions = options;
         this.partitionProcessorFactory = partitionProcessorFactory;
-        this.executorService = executorService;
+        this.scheduler = scheduler;
     }
 
     @Override
     public PartitionSupervisor create(Lease lease) {
-        if (lease == null) throw new IllegalArgumentException("lease");
+        if (lease == null) {
+            throw new IllegalArgumentException("lease");
+        }
 
         ChangeFeedObserver changeFeedObserver = this.observerFactory.createObserver();
         PartitionProcessor processor = this.partitionProcessorFactory.create(lease, changeFeedObserver);
         LeaseRenewer renewer = new LeaseRenewerImpl(lease, this.leaseManager, this.changeFeedProcessorOptions.leaseRenewInterval());
 
-        return new PartitionSupervisorImpl(lease, changeFeedObserver, processor, renewer, this.executorService);
+        return new PartitionSupervisorImpl(lease, changeFeedObserver, processor, renewer, this.scheduler);
     }
 }

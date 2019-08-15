@@ -18,7 +18,9 @@ class RemainingPartitionWorkImpl implements RemainingPartitionWork {
      * @param remainingWork the amount of documents remaining to be processed.
      */
     public RemainingPartitionWorkImpl(String partitionKeyRangeId, long remainingWork) {
-        if (partitionKeyRangeId == null || partitionKeyRangeId.isEmpty()) throw new IllegalArgumentException("partitionKeyRangeId");
+        if (partitionKeyRangeId == null || partitionKeyRangeId.isEmpty()) {
+            throw new IllegalArgumentException("partitionKeyRangeId");
+        }
 
         this.partitionKeyRangeId = partitionKeyRangeId;
         this.remainingWork = remainingWork;

@@ -26,7 +26,10 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
     private final Duration leaseExpirationInterval;
 
     public EqualPartitionsBalancingStrategy(String hostName, int minPartitionCount, int maxPartitionCount, Duration leaseExpirationInterval) {
-        if (hostName == null) throw new IllegalArgumentException("hostName");
+        if (hostName == null) {
+            throw new IllegalArgumentException("hostName");
+        }
+
         this.hostName = hostName;
         this.minPartitionCount = minPartitionCount;
         this.maxPartitionCount = maxPartitionCount;
@@ -43,8 +46,10 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
 
         int partitionCount = allPartitions.size();
         int workerCount = workerToPartitionCount.size();
-        if (partitionCount <= 0)
+
+        if (partitionCount <= 0) {
             return new ArrayList<Lease>();
+        }
 
         int target = this.calculateTargetPartitionCount(partitionCount, workerCount);
         int myCount = workerToPartitionCount.get(this.hostName);
@@ -102,6 +107,7 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
 
     private static Map.Entry<String, Integer> findWorkerWithMostPartitions(Map<String, Integer> workerToPartitionCount) {
         Map.Entry<String, Integer> workerToStealFrom = new ChangeFeedHelper.KeyValuePair<>("", 0);
+
         for (Map.Entry<String, Integer> entry : workerToPartitionCount.entrySet()) {
             if (workerToStealFrom.getValue() <= entry.getValue()) {
                 workerToStealFrom = entry;
@@ -113,6 +119,7 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
 
     private int calculateTargetPartitionCount(int partitionCount, int workerCount) {
         int target = 1;
+
         if (partitionCount > workerCount) {
             target = (int)Math.ceil((double)partitionCount / workerCount);
         }
@@ -163,6 +170,7 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
         if (lease.getOwner() == null || lease.getOwner().isEmpty() || lease.getTimestamp() == null) {
             return true;
         }
+
         ZonedDateTime time = ZonedDateTime.parse(lease.getTimestamp());
         return time.plus(this.leaseExpirationInterval).isBefore(ZonedDateTime.now(ZoneId.of("UTC")));
     }

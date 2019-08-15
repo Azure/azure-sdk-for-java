@@ -13,11 +13,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
 /**
  * Implementation for {@link PartitionLoadBalancer}.
@@ -28,7 +28,7 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
     private final LeaseContainer leaseContainer;
     private final PartitionLoadBalancingStrategy partitionLoadBalancingStrategy;
     private final Duration leaseAcquireInterval;
-    private final ExecutorService executorService;
+    private final Scheduler scheduler;
 
     private CancellationTokenSource cancellationTokenSource;
 
@@ -37,22 +37,33 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
     private final Object lock;
 
     public PartitionLoadBalancerImpl(
-        PartitionController partitionController,
-        LeaseContainer leaseContainer,
-        PartitionLoadBalancingStrategy partitionLoadBalancingStrategy,
-        Duration leaseAcquireInterval,
-        ExecutorService executorService) {
+            PartitionController partitionController,
+            LeaseContainer leaseContainer,
+            PartitionLoadBalancingStrategy partitionLoadBalancingStrategy,
+            Duration leaseAcquireInterval,
+            Scheduler scheduler) {
 
-        if (partitionController == null) throw new IllegalArgumentException("partitionController");
-        if (leaseContainer == null) throw new IllegalArgumentException("leaseContainer");
-        if (partitionLoadBalancingStrategy == null) throw new IllegalArgumentException("partitionLoadBalancingStrategy");
-        if (executorService == null) throw new IllegalArgumentException("executorService");
+        if (partitionController == null) {
+            throw new IllegalArgumentException("partitionController");
+        }
+
+        if (leaseContainer == null) {
+            throw new IllegalArgumentException("leaseContainer");
+        }
+
+        if (partitionLoadBalancingStrategy == null) {
+            throw new IllegalArgumentException("partitionLoadBalancingStrategy");
+        }
+
+        if (scheduler == null) {
+            throw new IllegalArgumentException("executorService");
+        }
 
         this.partitionController = partitionController;
         this.leaseContainer = leaseContainer;
         this.partitionLoadBalancingStrategy = partitionLoadBalancingStrategy;
         this.leaseAcquireInterval = leaseAcquireInterval;
-        this.executorService = executorService;
+        this.scheduler = scheduler;
 
         this.started = false;
         this.lock = new Object();
@@ -70,7 +81,7 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
         }
 
         return Mono.fromRunnable( () -> {
-            executorService.execute(() -> this.run(this.cancellationTokenSource.getToken()).subscribe());
+            scheduler.schedule(() -> this.run(this.cancellationTokenSource.getToken()).subscribe());
         });
     }
 

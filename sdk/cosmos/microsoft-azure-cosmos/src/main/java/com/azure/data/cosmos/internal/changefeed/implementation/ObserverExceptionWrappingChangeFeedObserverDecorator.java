@@ -21,15 +21,13 @@ class ObserverExceptionWrappingChangeFeedObserverDecorator implements ChangeFeed
 
     private ChangeFeedObserver changeFeedObserver;
 
-    public ObserverExceptionWrappingChangeFeedObserverDecorator(ChangeFeedObserver changeFeedObserver)
-    {
+    public ObserverExceptionWrappingChangeFeedObserverDecorator(ChangeFeedObserver changeFeedObserver) {
         this.changeFeedObserver = changeFeedObserver;
     }
 
     @Override
     public void open(ChangeFeedObserverContext context) {
-        try
-        {
+        try {
             this.changeFeedObserver.open(context);
         }
         catch (RuntimeException userException)
@@ -41,8 +39,7 @@ class ObserverExceptionWrappingChangeFeedObserverDecorator implements ChangeFeed
 
     @Override
     public void close(ChangeFeedObserverContext context, ChangeFeedObserverCloseReason reason) {
-        try
-        {
+        try {
             this.changeFeedObserver.close(context, reason);
         }
         catch (RuntimeException userException)

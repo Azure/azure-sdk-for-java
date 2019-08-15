@@ -16,10 +16,10 @@ import com.azure.data.cosmos.internal.changefeed.exceptions.TaskCancelledExcepti
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
 
 /**
  * Implementation for {@link PartitionController}.
@@ -34,20 +34,20 @@ class PartitionControllerImpl implements PartitionController {
     private final PartitionSynchronizer synchronizer;
     private CancellationTokenSource shutdownCts;
 
-    private final ExecutorService executorService;
+    private final Scheduler scheduler;
 
     public PartitionControllerImpl(
-        LeaseContainer leaseContainer,
-        LeaseManager leaseManager,
-        PartitionSupervisorFactory partitionSupervisorFactory,
-        PartitionSynchronizer synchronizer,
-        ExecutorService executorService) {
+            LeaseContainer leaseContainer,
+            LeaseManager leaseManager,
+            PartitionSupervisorFactory partitionSupervisorFactory,
+            PartitionSynchronizer synchronizer,
+            Scheduler scheduler) {
 
         this.leaseContainer = leaseContainer;
         this.leaseManager = leaseManager;
         this.partitionSupervisorFactory = partitionSupervisorFactory;
         this.synchronizer = synchronizer;
-        this.executorService = executorService;
+        this.scheduler = scheduler;
     }
 
     @Override
@@ -138,7 +138,7 @@ class PartitionControllerImpl implements PartitionController {
                 .then(this.removeLease(lease)).subscribe();
         });
 
-        this.executorService.execute(partitionSupervisorTask);
+        this.scheduler.schedule(partitionSupervisorTask);
 
         return partitionSupervisorTask;
     }

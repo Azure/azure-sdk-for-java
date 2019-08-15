@@ -17,8 +17,13 @@ class HealthMonitoringPartitionControllerDecorator implements PartitionControlle
     private final HealthMonitor monitor;
 
     public HealthMonitoringPartitionControllerDecorator(PartitionController inner, HealthMonitor monitor) {
-        if (inner == null) throw new IllegalArgumentException("inner");
-        if (monitor == null) throw new IllegalArgumentException("monitor");
+        if (inner == null) {
+            throw new IllegalArgumentException("inner");
+        }
+
+        if (monitor == null) {
+            throw new IllegalArgumentException("monitor");
+        }
 
         this.inner = inner;
         this.monitor = monitor;

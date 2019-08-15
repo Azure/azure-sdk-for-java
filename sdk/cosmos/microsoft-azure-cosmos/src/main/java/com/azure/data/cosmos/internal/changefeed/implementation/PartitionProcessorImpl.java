@@ -82,7 +82,9 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 }
                 this.options.requestContinuation(this.lastContinuation);
 
-                if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
+                if (cancellationToken.isCancellationRequested()) {
+                    return Flux.error(new TaskCancelledException());
+                }
 
                 return Flux.empty();
             })

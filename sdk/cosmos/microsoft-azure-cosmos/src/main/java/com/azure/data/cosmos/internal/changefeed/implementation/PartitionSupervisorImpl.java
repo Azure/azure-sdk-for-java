@@ -16,12 +16,12 @@ import com.azure.data.cosmos.internal.changefeed.exceptions.ObserverException;
 import com.azure.data.cosmos.internal.changefeed.exceptions.PartitionSplitException;
 import com.azure.data.cosmos.internal.changefeed.exceptions.TaskCancelledException;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Implementation for {@link PartitionSupervisor}.
@@ -36,17 +36,17 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
 
     private RuntimeException resultException;
 
-    private ExecutorService executorService;
+    private Scheduler scheduler;
 
-    public PartitionSupervisorImpl(Lease lease, ChangeFeedObserver observer, PartitionProcessor processor, LeaseRenewer renewer, ExecutorService executorService) {
+    public PartitionSupervisorImpl(Lease lease, ChangeFeedObserver observer, PartitionProcessor processor, LeaseRenewer renewer, Scheduler scheduler) {
         this.lease = lease;
         this.observer = observer;
         this.processor = processor;
         this.renewer = renewer;
-        this.executorService = executorService;
+        this.scheduler = scheduler;
 
-        if (executorService == null) {
-            this.executorService = Executors.newFixedThreadPool(3);
+        if (scheduler == null) {
+            this.scheduler = Schedulers.elastic();
         }
     }
 
@@ -60,12 +60,12 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
 
         this.processorCancellation = new CancellationTokenSource();
 
-        executorService.execute(() -> this.processor.run(this.processorCancellation.getToken())
+        this.scheduler.schedule(() -> this.processor.run(this.processorCancellation.getToken())
             .subscribe());
 
         this.renewerCancellation = new CancellationTokenSource();
 
-        executorService.execute(() -> this.renewer.run(this.renewerCancellation.getToken())
+        this.scheduler.schedule(() -> this.renewer.run(this.renewerCancellation.getToken())
             .subscribe());
 
         return Mono.just(this)

@@ -24,8 +24,13 @@ class AutoCheckpointer implements ChangeFeedObserver {
     private volatile ZonedDateTime lastCheckpointTime;
 
     public AutoCheckpointer(CheckpointFrequency checkpointFrequency, ChangeFeedObserver observer) {
-        if (checkpointFrequency == null) throw new IllegalArgumentException("checkpointFrequency");
-        if (observer == null) throw new IllegalArgumentException("observer");
+        if (checkpointFrequency == null) {
+            throw new IllegalArgumentException("checkpointFrequency");
+        }
+
+        if (observer == null) {
+            throw new IllegalArgumentException("observer");
+        }
 
         this.checkpointFrequency = checkpointFrequency;
         this.observer = observer;
@@ -72,10 +77,6 @@ class AutoCheckpointer implements ChangeFeedObserver {
 
         Duration delta = Duration.between(this.lastCheckpointTime, ZonedDateTime.now(ZoneId.of("UTC")));
 
-        if (delta.compareTo(this.checkpointFrequency.getTimeInterval()) >= 0) {
-            return true;
-        }
-
-        return false;
+        return delta.compareTo(this.checkpointFrequency.getTimeInterval()) >= 0;
     }
 }

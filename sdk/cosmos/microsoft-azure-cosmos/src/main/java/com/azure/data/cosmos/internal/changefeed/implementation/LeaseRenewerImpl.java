@@ -24,8 +24,7 @@ class LeaseRenewerImpl implements LeaseRenewer {
     private Lease lease;
     private RuntimeException resultException;
 
-    public LeaseRenewerImpl(Lease lease, LeaseManager leaseManager, Duration leaseRenewInterval)
-    {
+    public LeaseRenewerImpl(Lease lease, LeaseManager leaseManager, Duration leaseRenewInterval) {
         this.lease = lease;
         this.leaseManager = leaseManager;
         this.leaseRenewInterval = leaseRenewInterval;
@@ -75,7 +74,9 @@ class LeaseRenewerImpl implements LeaseRenewer {
     }
 
     private Mono<Lease> renew(CancellationToken cancellationToken) {
-        if (cancellationToken.isCancellationRequested()) return Mono.empty();
+        if (cancellationToken.isCancellationRequested()) {
+            return Mono.empty();
+        }
 
         return this.leaseManager.renew(this.lease)
             .map(renewedLease -> {
