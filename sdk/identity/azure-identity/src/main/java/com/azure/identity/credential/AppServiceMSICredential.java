@@ -16,10 +16,10 @@ import reactor.core.publisher.Mono;
  */
 @Immutable
 class AppServiceMSICredential {
-    private String msiEndpoint;
-    private String msiSecret;
+    private final String msiEndpoint;
+    private final String msiSecret;
     private final IdentityClient identityClient;
-    private String clientId;
+    private final String clientId;
 
     /**
      * Creates an instance of AppServiceMSICredential.
@@ -30,9 +30,13 @@ class AppServiceMSICredential {
         Configuration configuration = ConfigurationManager.getConfiguration();
         if (configuration.contains(BaseConfigurations.MSI_ENDPOINT)) {
             msiEndpoint = configuration.get(BaseConfigurations.MSI_ENDPOINT);
+        } else {
+            msiEndpoint = null;
         }
         if (configuration.contains(BaseConfigurations.MSI_SECRET)) {
             msiSecret = configuration.get(BaseConfigurations.MSI_SECRET);
+        } else {
+            msiSecret = null;
         }
         this.identityClient = identityClient;
         this.clientId = clientId;

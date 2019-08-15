@@ -172,6 +172,19 @@ public class DataMigrationServiceClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ServiceTasksInner object to access its operations.
+     */
+    private ServiceTasksInner serviceTasks;
+
+    /**
+     * Gets the ServiceTasksInner object to access its operations.
+     * @return the ServiceTasksInner object.
+     */
+    public ServiceTasksInner serviceTasks() {
+        return this.serviceTasks;
+    }
+
+    /**
      * The ProjectsInner object to access its operations.
      */
     private ProjectsInner projects;
@@ -261,6 +274,7 @@ public class DataMigrationServiceClientImpl extends AzureServiceClient {
         this.resourceSkus = new ResourceSkusInner(restClient().retrofit(), this);
         this.services = new ServicesInner(restClient().retrofit(), this);
         this.tasks = new TasksInner(restClient().retrofit(), this);
+        this.serviceTasks = new ServiceTasksInner(restClient().retrofit(), this);
         this.projects = new ProjectsInner(restClient().retrofit(), this);
         this.usages = new UsagesInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);

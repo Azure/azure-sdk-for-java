@@ -15,10 +15,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for StartTaskState.
  */
 public enum StartTaskState {
-    /** The start Task is currently running. */
+    /** The StartTask is currently running. */
     RUNNING("running"),
 
-    /** The start Task has exited with exit code 0, or the start Task has failed and the retry limit has reached, or the start Task process did not run due to Task preparation errors (such as resource file download failures). */
+    /** The StartTask has exited with exit code 0, or the StartTask has failed and the retry limit has reached, or the StartTask process did not run due to Task preparation errors (such as resource file download failures). */
     COMPLETED("completed");
 
     /** The actual serialized value for a StartTaskState instance. */

@@ -49,13 +49,13 @@ import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAM
  * the Event Hubs namespace and offers operations for sending event data, receiving events, and inspecting the connected
  * Event Hub.
  *
- * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hubs namespace connection string</strong></p>
+ * <p><strong>Creating an {@link EventHubAsyncClient} using an Event Hubs namespace connection string</strong></p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.connectionString#string-string}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.instantiation#string-string}
  *
- * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hub instance connection string</strong></p>
+ * <p><strong>Creating an {@link EventHubAsyncClient} using an Event Hub instance connection string</strong></p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.connectionstring#string}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.instantiation#string}
  *
  * @see EventHubClientBuilder
  * @see <a href="https://docs.microsoft.com/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>
@@ -139,9 +139,9 @@ public class EventHubAsyncClient implements Closeable {
      * Creates an Event Hub producer responsible for transmitting {@link EventData} to the Event Hub, grouped together
      * in batches. Event data is automatically routed to an available partition.
      *
-     * @return A new {@link EventHubProducer}.
+     * @return A new {@link EventHubAsyncProducer}.
      */
-    public EventHubProducer createProducer() {
+    public EventHubAsyncProducer createProducer() {
         return createProducer(defaultProducerOptions);
     }
 
@@ -152,10 +152,10 @@ public class EventHubAsyncClient implements Closeable {
      * partition.
      *
      * @param options The set of options to apply when creating the producer.
-     * @return A new {@link EventHubProducer}.
+     * @return A new {@link EventHubAsyncProducer}.
      * @throws NullPointerException if {@code options} is {@code null}.
      */
-    public EventHubProducer createProducer(EventHubProducerOptions options) {
+    public EventHubAsyncProducer createProducer(EventHubProducerOptions options) {
         Objects.requireNonNull(options);
 
         final EventHubProducerOptions clonedOptions = options.clone();
@@ -185,7 +185,7 @@ public class EventHubAsyncClient implements Closeable {
                     .cast(AmqpSendLink.class);
             });
 
-        return new EventHubProducer(amqpLinkMono, clonedOptions);
+        return new EventHubAsyncProducer(amqpLinkMono, clonedOptions);
     }
 
     /**
@@ -201,12 +201,12 @@ public class EventHubAsyncClient implements Closeable {
      *         #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param partitionId The identifier of the Event Hub partition.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
-     * @return A new {@link EventHubConsumer} that receives events from the partition at the given position.
+     * @return A new {@link EventHubAsyncConsumer} that receives events from the partition at the given position.
      * @throws NullPointerException If {@code eventPosition}, or {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an
      *         empty string.
      */
-    public EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
+    public EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
         return createConsumer(consumerGroup, partitionId, eventPosition, defaultConsumerOptions);
     }
 
@@ -234,22 +234,24 @@ public class EventHubAsyncClient implements Closeable {
      * @param partitionId The identifier of the Event Hub partition from which events will be received.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @param options The set of options to apply when creating the consumer.
-     * @return An new {@link EventHubConsumer} that receives events from the partition with all configured {@link
+     * @return An new {@link EventHubAsyncConsumer} that receives events from the partition with all configured {@link
      *         EventHubConsumerOptions}.
-     * @throws NullPointerException If {@code eventPosition}, or {@code options} is {@code null}.
-     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an
-     *         empty string.
+     * @throws NullPointerException If {@code eventPosition}, {@code consumerGroup}, {@code partitionId}, or {@code
+     *     options} is {@code null}.
+     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
-    public EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
-                                           EventHubConsumerOptions options) {
+    public EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
+                                                EventHubConsumerOptions options) {
         Objects.requireNonNull(eventPosition);
         Objects.requireNonNull(options);
+        Objects.requireNonNull(consumerGroup);
+        Objects.requireNonNull(partitionId);
 
         if (ImplUtils.isNullOrEmpty(consumerGroup)) {
-            throw new IllegalArgumentException("'consumerGroup' cannot be null or empty.");
+            throw new IllegalArgumentException("'consumerGroup' cannot be an empty string.");
         }
         if (ImplUtils.isNullOrEmpty(partitionId)) {
-            throw new IllegalArgumentException("'partitionId' cannot be null or empty.");
+            throw new IllegalArgumentException("'partitionId' cannot be an empty string.");
         }
 
         final EventHubConsumerOptions clonedOptions = options.clone();
@@ -268,8 +270,6 @@ public class EventHubAsyncClient implements Closeable {
             return connection.createSession(entityPath).cast(EventHubSession.class);
         }).flatMap(session -> {
             logger.verbose("Creating consumer for path: {}", entityPath);
-
-            logger.verbose("Creating producer for {}", entityPath);
             final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(clonedOptions.retry());
 
             return session.createConsumer(linkName, entityPath, getExpression(eventPosition),
@@ -277,12 +277,12 @@ public class EventHubAsyncClient implements Closeable {
                 .cast(AmqpReceiveLink.class);
         });
 
-        return new EventHubConsumer(receiveLinkMono, clonedOptions);
+        return new EventHubAsyncConsumer(receiveLinkMono, clonedOptions);
     }
 
     /**
-     * Closes and disposes of connection to service. Any {@link EventHubConsumer EventHubConsumers} and {@link
-     * EventHubProducer EventHubProducers} created with this instance will have their connections closed.
+     * Closes and disposes of connection to service. Any {@link EventHubAsyncConsumer EventHubConsumers} and {@link
+     * EventHubAsyncProducer EventHubProducers} created with this instance will have their connections closed.
      */
     @Override
     public void close() {
