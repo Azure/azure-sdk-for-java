@@ -24,6 +24,7 @@ import com.azure.storage.queue.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.models.SignedIdentifier;
 import com.azure.storage.queue.models.StorageErrorException;
 import com.azure.storage.queue.models.UpdatedMessage;
+import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -62,6 +63,7 @@ public final class QueueAsyncClient {
      * @param queueName Name of the queue
      */
     QueueAsyncClient(AzureQueueStorageImpl client, String queueName) {
+        Objects.requireNonNull(queueName);
         this.queueName = queueName;
 
         this.client = new AzureQueueStorageBuilder().pipeline(client.getHttpPipeline())
@@ -79,6 +81,7 @@ public final class QueueAsyncClient {
      * @param queueName Name of the queue
      */
     QueueAsyncClient(URL endpoint, HttpPipeline httpPipeline, String queueName) {
+        Objects.requireNonNull(queueName);
         this.queueName = queueName;
 
         this.client = new AzureQueueStorageBuilder().pipeline(httpPipeline)
