@@ -21,8 +21,8 @@ class BootstrapperImpl implements Bootstrapper {
     private final Duration lockTime;
     private final Duration sleepTime;
 
-    private boolean isInitialized;
-    private boolean isLockAcquired;
+    private volatile boolean isInitialized;
+    private volatile boolean isLockAcquired;
 
     public BootstrapperImpl(PartitionSynchronizer synchronizer, LeaseStore leaseStore, Duration lockTime, Duration sleepTime)
     {

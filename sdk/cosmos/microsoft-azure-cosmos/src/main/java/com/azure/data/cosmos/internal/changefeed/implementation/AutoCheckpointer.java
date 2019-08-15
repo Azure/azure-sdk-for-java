@@ -20,8 +20,8 @@ import java.util.List;
 class AutoCheckpointer implements ChangeFeedObserver {
     private final CheckpointFrequency checkpointFrequency;
     private final ChangeFeedObserver observer;
-    private int processedDocCount;
-    private ZonedDateTime lastCheckpointTime;
+    private volatile int processedDocCount;
+    private volatile ZonedDateTime lastCheckpointTime;
 
     public AutoCheckpointer(CheckpointFrequency checkpointFrequency, ChangeFeedObserver observer) {
         if (checkpointFrequency == null) throw new IllegalArgumentException("checkpointFrequency");
