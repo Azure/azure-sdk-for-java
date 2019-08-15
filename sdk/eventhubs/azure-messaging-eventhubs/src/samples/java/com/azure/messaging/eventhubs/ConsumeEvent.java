@@ -51,6 +51,11 @@ public class ConsumeEvent {
         // TimeoutException is thrown.
         String firstPartition = client.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
 
+        // This shouldn't happen, but if we are unable to get the partitions within the timeout period.
+        if (firstPartition == null) {
+            firstPartition = "0";
+        }
+
         // Create a consumer.
         // The "$Default" consumer group is created by default. This value can be found by going to the Event Hub
         // instance you are connecting to, and selecting the "Consumer groups" page. EventPosition.latest() tells the
