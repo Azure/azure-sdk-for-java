@@ -26,6 +26,30 @@ public interface Tracer {
     String OPENTELEMETRY_SPAN_NAME_KEY = "opentelemetry-span-name";
 
     /**
+     * Key for {@link Context} which indicates that the context contains the Entity Path, remote endpoint path.
+     *
+     */
+    String OPENTELEMETRY_AMQP_ENTITY_PATH = "entityPath";
+
+    /**
+     * Key for {@link Context} which indicates that the context contains the hostname.
+     *
+     */
+    String OPENTELEMETRY_AMQP_HOST_NAME = "hostName";
+
+    /**
+     * Key for {@link Context} which indicates that the context contains message Span Context.
+     *
+     */
+    String OPENTELEMETRY_AMQP_EVENT_SPAN_CONTEXT = "spanContext";
+
+    /**
+     * Key for {@link Context} which indicates that the context contains the Diagnostic Id for the service call.
+     *
+     */
+    String OPENTELEMETRY_DIAGNOSTIC_ID_KEY = "Diagnostic-Id";
+
+    /**
      * Creates a new tracing span.
      *
      * The {@code context} will be checked for containing information about a parent span. If a parent span is found the
@@ -95,4 +119,11 @@ public interface Tracer {
      * @return An updated context object.
      */
     Context setSpanName(String spanName, Context context);
+
+    /**
+     * Completes the current AMQP tracing span.
+     *
+     */
+    void endAmqp(String errorCondition, Context context, Throwable throwable);
+
 }

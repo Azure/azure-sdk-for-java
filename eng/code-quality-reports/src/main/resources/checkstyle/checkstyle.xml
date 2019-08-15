@@ -50,10 +50,10 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
     <!-- IMPORT CHECKS -->
     <!-- See http://checkstyle.sf.net/config_import.html -->
-<!--    <module name="AvoidStarImport"/>-->
+    <module name="AvoidStarImport"/>
     <module name="IllegalImport">
       <property name="regexp" value="true"/>
-<!--      <property name="illegalPkgs" value="^(com\.)?sun\.\w*, ^io\.opencensus"/>-->
+      <property name="illegalPkgs" value="^(com\.)?sun\.\w*, ^io\.opencensus"/>
     </module>
     <module name="RedundantImport"/>
     <module name="UnusedImports"/>
@@ -63,7 +63,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="ConstantName"/>
     <module name="LocalFinalVariableName"/>
     <module name="LocalVariableName"/>
-<!--    <module name="MemberName"/>-->
+    <module name="MemberName"/>
     <module name="MethodName">
       <!-- Use default MethodName but block the use of 'builder' as method name -->
       <property name="format" value="(?=^[a-z][a-zA-Z0-9]*$)(?!^(?i)builder$)"/>
@@ -247,10 +247,10 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- See http://checkstyle.sf.net/config_design.html -->
     <module name="FinalClass"/>
     <module name="InterfaceIsType"/>
-<!--    <module name="VisibilityModifier">-->
-<!--      <property name="protectedAllowed" value="true"/>-->
-<!--      <property name="packageAllowed" value="true"/>-->
-<!--    </module>-->
+    <module name="VisibilityModifier">
+      <property name="protectedAllowed" value="true"/>
+      <property name="packageAllowed" value="true"/>
+    </module>
 
 
     <!-- Miscellaneous other checks.                   -->
@@ -267,9 +267,9 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
     <!-- Javadoc checks                                   -->
     <!-- See http://checkstyle.sf.net/config_javadoc.html -->
-    <!--<module name="JavadocMethod">-->
-    <!--  <property name="scope" value="protected"/>-->
-    <!--</module>-->
+    <module name="JavadocMethod">
+      <property name="scope" value="protected"/>
+    </module>
 
     <!-- Verifies that all throws in the public API have JavaDocs explaining why and when they are thrown. -->
     <!-- The check verifies both checked (in the throws clause) and unchecked throws -->
@@ -317,7 +317,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- CUSTOM CHECKS -->
     <!-- The @Immutable class should have the following rules:
     1) All fields must be final -->
-<!--    <module name="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClassCheck"/>-->
+    <module name="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClassCheck"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- Verify the whenever a field is assigned just once in constructor to be final -->

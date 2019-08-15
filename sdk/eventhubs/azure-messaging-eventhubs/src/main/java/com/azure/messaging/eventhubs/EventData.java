@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Data;
@@ -57,7 +58,7 @@ public class EventData implements Comparable<EventData> {
     private final Map<String, Object> properties;
     private final ByteBuffer body;
     private final SystemProperties systemProperties;
-    private final Map<String, Object> attributes = new HashMap<>();
+    private Context context;
 
     static {
         final Set<String> properties = new HashSet<>();
@@ -69,8 +70,6 @@ public class EventData implements Comparable<EventData> {
 
         RESERVED_SYSTEM_PROPERTIES = Collections.unmodifiableSet(properties);
     }
-
-    public io.opencensus.trace.SpanContext spanContext;
 
     /**
      * Creates an event containing the {@code data}.
@@ -93,6 +92,7 @@ public class EventData implements Comparable<EventData> {
         this.body = body;
         this.properties = new HashMap<>();
         this.systemProperties = new SystemProperties(Collections.emptyMap());
+        this.context = Context.NONE;
     }
 
     /*
@@ -174,13 +174,17 @@ public class EventData implements Comparable<EventData> {
         return this;
     }
 
-    public EventData addAttributes(String key, Object value) {
-        Objects.requireNonNull(key);
-        Objects.requireNonNull(value);
-
-        attributes.put(key, value);
+    /**
+     * Creates a new {@link Context} object with all the keys and values provided
+     *
+     * @param context The key value pair object
+     * @return The updated EventData object.
+     */
+    public EventData context(Context context) {
+        this.context = context;
         return this;
     }
+
     /**
      * The set of free-form event properties which may be used for passing metadata associated with the event with the
      * event body during Event Hubs operations.
@@ -202,8 +206,13 @@ public class EventData implements Comparable<EventData> {
         return properties;
     }
 
-    public Map<String, Object> attributes() {
-        return attributes;
+    /**
+     * A specified key-value pair of type {@link Context}.
+     *
+     * @return the new {@link Context} object
+     */
+    public Context context() {
+        return context;
     }
 
     /**

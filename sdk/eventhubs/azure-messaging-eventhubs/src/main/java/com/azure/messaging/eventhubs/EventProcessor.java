@@ -17,12 +17,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import io.opencensus.common.Scope;
-import io.opencensus.trace.*;
 import org.reactivestreams.Publisher;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -60,8 +57,6 @@ public class EventProcessor {
     private final AtomicBoolean started = new AtomicBoolean(false);
     private Disposable runner;
     private Scheduler scheduler;
-    private static final Tracer TRACER = Tracing.getTracer();
-
 
     /**
      * Package-private constructor. Use {@link EventHubClientBuilder} to create an instance.
@@ -215,9 +210,6 @@ public class EventProcessor {
      * Creates a new consumer for given partition and starts receiving events for that partition.
      */
     private void receiveEvents(PartitionOwnership partitionOwnership) {
-        // Span parentSpan = (Span) events.blockFirst().attributes().get("traceContext");
-        SpanBuilder spanBuilder = TRACER.spanBuilderWithExplicitParent("Azure.EventHubs.process", TRACER.getCurrentSpan()).setSpanKind(Span.Kind.SERVER); //This should be kind PRODUCER
-
         EventHubConsumerOptions consumerOptions = new EventHubConsumerOptions();
         consumerOptions.ownerLevel(0L);
 
@@ -238,32 +230,13 @@ public class EventProcessor {
             .createPartitionProcessor(partitionContext, checkpointManager);
         partitionProcessor.initialize().subscribe();
 
-        Flux<EventData> test = consumer.receive().subscribeOn(Schedulers.newElastic("PartitionPump"));
-        test.map(eventData -> {
-            SpanContext msgContext = AmqpPropagationFormat.extractContext(eventData);
-            // if message has context, link it to the span
-            if (msgContext.isValid()) {
-                // spanBuilder.addLink(msgContext);
-            }
-            return eventData;
-        });
-        Span span = spanBuilder.startSpan();
-        Scope scope = TRACER.withSpan(span);
-        if (span.getOptions().contains(Span.Options.RECORD_EVENTS)) {
-            addSpanRequestAttributes(span); // Adds HTTP method, URL, & user-agent
-        }
-        test.subscribe(eventData -> partitionProcessor.processEvent(eventData).subscribe(unused -> { },
-            partitionProcessor::processError),
-            partitionProcessor::processError,
-            // Currently, there is no way to distinguish if the receiver was closed because
-            // another receiver with higher/same owner level(epoch) connected or because
-            // this event processor explicitly called close on this consumer.
-            () -> partitionProcessor.close(CloseReason.LOST_PARTITION_OWNERSHIP));
-    }
-
-    private static void addSpanRequestAttributes(Span span) {
-        span.putAttribute("component", AttributeValue.stringAttributeValue("eventhubs"));
-        span.putAttribute("message_bus.destination", AttributeValue.stringAttributeValue("eventPath"));
-        span.putAttribute("peer.address", AttributeValue.stringAttributeValue("this.endPoint"));
+        consumer.receive().subscribeOn(Schedulers.newElastic("PartitionPump"))
+            .subscribe(eventData -> partitionProcessor.processEvent(eventData).subscribe(unused -> {
+            }, partitionProcessor::processError),
+                partitionProcessor::processError,
+                // Currently, there is no way to distinguish if the receiver was closed because
+                // another receiver with higher/same owner level(epoch) connected or because
+                // this event processor explicitly called close on this consumer.
+                () -> partitionProcessor.close(CloseReason.LOST_PARTITION_OWNERSHIP));
     }
 }
