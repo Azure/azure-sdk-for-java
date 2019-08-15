@@ -43,7 +43,7 @@ public class SearchIndexClientLookupTest extends SearchIndexClientTestBase {
         // Creating the document to be indexed
         HashMap<String, Object> document = new HashMap<String, Object>();
         document.put("Key", docKey);
-        document.put("Dates", new Object[]{});
+        document.put("Dates", new Object[]{"2019-08-13T14:30:00Z"});
         document.put("Doubles", new Double[]{0.0, 5.8, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN});
         document.put("Bools", new boolean[]{true, false});
         document.put("Longs", new Long[]{9999999999999999L, 832372345832523L});
@@ -59,9 +59,14 @@ public class SearchIndexClientLookupTest extends SearchIndexClientTestBase {
         expectedDocument.put("Longs", Arrays.asList(9999999999999999L, 832372345832523L));
         expectedDocument.put("Strings", Arrays.asList("hello", "bye"));
         expectedDocument.put("Ints", Arrays.asList(1, 2, 3, 4, -13, 5, 0));
-        // Todo: fix below 2 items
+
+        // Todo: The decision is to support DateTime as string until we support user supplying the concrete class
+        // in order to avoid trying to parse every string to a datetime (performance penalty)
+        expectedDocument.put("Dates", Arrays.asList("2019-08-13T14:30:00Z"));
+
+        // Todo: Support Geographic point
         expectedDocument.put("Points", Arrays.asList());
-        expectedDocument.put("Dates", Arrays.asList());
+
 
         // Index the document
         indexDocument(client, document);
@@ -69,33 +74,6 @@ public class SearchIndexClientLookupTest extends SearchIndexClientTestBase {
         // Get the indexed document
         getAndVerifyDoc(client, docKey, expectedDocument);
     }
-
-    /**
-     * This test verifies that sometimes the converted type is not the right one and its by design
-     */
-    //@Test
-    //public void getDynamicDocumentCannotAlwaysDetermineCorrectType() {
-        // Todo: Uncomment test, when task 574 is done
-        /*client.setIndexName(INDEX_NAME);
-        String docKey = "2";
-
-        // Creating the document to be indexed
-        // Set a String field to a valid datetime string
-        HashMap<String, Object> document = new HashMap<String, Object>();
-        document.put("Key", docKey);
-        document.put("Strings", Arrays.asList("2015-02-11T12:58:00Z"));
-
-        // This is the expected document when querying the document later
-        // Expect that the returned String field is actually converted to DateTime... which is wrong, but, by design.
-        HashMap<String, Object> expectedDocument = new HashMap<String, Object>();
-        expectedDocument.put("Key", docKey);
-        expectedDocument.put("Strings", Arrays.asList(DateTime.parse("2015-02-11T12:58:00Z")));
-
-        // Index the document
-        indexDocument(client, document);
-
-        getAndVerifyDoc(client, docKey, expectedDocument);*/
-    //}
 
     @Test
     public void emptyDynamicallyTypedPrimitiveCollectionsRoundtripAsObjectArrays() {
@@ -132,7 +110,36 @@ public class SearchIndexClientLookupTest extends SearchIndexClientTestBase {
     }
 
     /**
+     * This test verifies our current assumption that uploaded DateTime, when requested
+     * returned as String. this test will be removed when the datetime type is handled
+     */
+    @Test
+    public void dateTimeTypeIsReturnedAsString() {
+        final String indexName = "datetime-data-type-test-index";
+        client.setIndexName(indexName);
+        String docKey = "4";
+
+        // Creating the document to be indexed with a datetime field
+        HashMap<String, Object> document = new HashMap<String, Object>();
+        document.put("Key", docKey);
+        document.put("Date", "2019-08-13T14:30:00Z");
+
+        // This is the expected document when querying the document later
+        // we expect the converted type to remain string instead of DateTime
+        HashMap<String, Object> expectedDocument = new HashMap<String, Object>();
+        expectedDocument.put("Key", docKey);
+        expectedDocument.put("Date", "2019-08-13T14:30:00Z");
+
+        // Index the document
+        indexDocument(client, document);
+
+        // Get the indexed document
+        getAndVerifyDoc(client, docKey, expectedDocument);
+    }
+
+    /**
      * Retrieve and verify the document
+     *
      * @param client
      * @param docKey
      * @param expectedDocument
