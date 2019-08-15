@@ -28,7 +28,8 @@ class QueueAysncAPITests extends APISpec {
 
     def "Create queue with shared key"() {
         expect:
-        StepVerifier.create(queueAsyncClient.create()).assertNext { QueueTestHelper.assertResponseStatusCode(it, 201) }
+        StepVerifier.create(queueAsyncClient.create()).assertNext {
+            assert QueueTestHelper.assertResponseStatusCode(it, 201) }
             .verifyComplete()
     }
 
@@ -44,7 +45,8 @@ class QueueAysncAPITests extends APISpec {
         when:
         def deleteQueueVerifier = StepVerifier.create(queueAsyncClient.delete())
         then:
-        deleteQueueVerifier.assertNext { QueueTestHelper.assertResponseStatusCode(it, 204) }
+        deleteQueueVerifier.assertNext {
+            assert QueueTestHelper.assertResponseStatusCode(it, 204) }
             .verifyComplete()
     }
 
@@ -53,7 +55,7 @@ class QueueAysncAPITests extends APISpec {
         def deleteQueueVerifier = StepVerifier.create(queueAsyncClient.delete())
         then:
         deleteQueueVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
+            assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
         }
     }
 
@@ -64,7 +66,7 @@ class QueueAysncAPITests extends APISpec {
         def getPropertiesVerifier = StepVerifier.create(queueAsyncClient.getProperties())
         then:
         getPropertiesVerifier.assertNext {
-            QueueTestHelper.assertResponseStatusCode(it, 200)
+            assert QueueTestHelper.assertResponseStatusCode(it, 200)
             assert it.value().approximateMessagesCount() == 0
             assert testMetadata.equals(it.value().metadata())
         }.verifyComplete()
@@ -75,7 +77,7 @@ class QueueAysncAPITests extends APISpec {
         def getPropertiesVerifier = StepVerifier.create(queueAsyncClient.getProperties())
         then:
         getPropertiesVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
+            assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
         }
     }
 
@@ -89,13 +91,14 @@ class QueueAysncAPITests extends APISpec {
         def getPropertiesVerifierAfter = StepVerifier.create(queueAsyncClient.getProperties())
         then:
         getPropertiesVerifierBefore.assertNext {
-            QueueTestHelper.assertResponseStatusCode(it, 200)
+            assert QueueTestHelper.assertResponseStatusCode(it, 200)
             assert expectMetadataInCreate.equals(it.value().metadata())
         }.verifyComplete()
-        setMetadataVerifier.assertNext { QueueTestHelper.assertResponseStatusCode(it, 204) }
+        setMetadataVerifier.assertNext {
+            assert QueueTestHelper.assertResponseStatusCode(it, 204) }
             .verifyComplete()
         getPropertiesVerifierAfter.assertNext {
-            QueueTestHelper.assertResponseStatusCode(it, 200)
+            assert QueueTestHelper.assertResponseStatusCode(it, 200)
             assert expectMetadataInSet.equals(it.value().metadata)
         }.verifyComplete()
         where:
@@ -112,7 +115,7 @@ class QueueAysncAPITests extends APISpec {
         def setMetadataVerifier = StepVerifier.create(queueAsyncClient.setMetadata(testMetadata))
         then:
         setMetadataVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
+            assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
         }
     }
 
@@ -125,7 +128,7 @@ class QueueAysncAPITests extends APISpec {
         def setMetadataVerifier = StepVerifier.create(queueAsyncClient.setMetadata(invalidMetadata))
         then:
         setMetadataVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMessage)
+            assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMessage)
         }
         where:
         invalidKey     | statusCode | errMessage
@@ -149,7 +152,7 @@ class QueueAysncAPITests extends APISpec {
         def getAccessPolicyVerifier = StepVerifier.create(queueAsyncClient.getAccessPolicy())
         then:
         getAccessPolicyVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
+            assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
         }
     }
 
@@ -168,10 +171,10 @@ class QueueAysncAPITests extends APISpec {
         def getAccessPolicyVerifier = StepVerifier.create(queueAsyncClient.getAccessPolicy())
         then:
         setAccessPolicyVerifier.assertNext {
-            QueueTestHelper.assertResponseStatusCode(it, 204)
+            assert QueueTestHelper.assertResponseStatusCode(it, 204)
         }.verifyComplete()
         getAccessPolicyVerifier.assertNext {
-            QueueTestHelper.assertPermissionsAreEqual(permission, it)
+            assert QueueTestHelper.assertPermissionsAreEqual(permission, it)
         }.verifyComplete()
     }
 
@@ -190,7 +193,7 @@ class QueueAysncAPITests extends APISpec {
         def setAccessPolicyVerifier = StepVerifier.create(queueAsyncClient.setAccessPolicy(Collections.singletonList(permission)))
         then:
         setAccessPolicyVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.INVALID_XML_DOCUMENT)
+            assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.INVALID_XML_DOCUMENT)
         }
     }
 
@@ -213,14 +216,14 @@ class QueueAysncAPITests extends APISpec {
         def getAccessPolicyVerifier = StepVerifier.create(queueAsyncClient.getAccessPolicy())
         then:
         setAccessPolicyVerifier.assertNext {
-            QueueTestHelper.assertResponseStatusCode(it, 204)
+            assert QueueTestHelper.assertResponseStatusCode(it, 204)
         }.verifyComplete()
         getAccessPolicyVerifier.assertNext {
-            QueueTestHelper.assertPermissionsAreEqual(permissions[0], it)
+            assert QueueTestHelper.assertPermissionsAreEqual(permissions[0], it)
         }.assertNext {
-            QueueTestHelper.assertPermissionsAreEqual(permissions[1], it)
+            assert QueueTestHelper.assertPermissionsAreEqual(permissions[1], it)
         }.assertNext {
-            QueueTestHelper.assertPermissionsAreEqual(permissions[2], it)
+            assert QueueTestHelper.assertPermissionsAreEqual(permissions[2], it)
         }.verifyComplete()
     }
 
@@ -242,7 +245,7 @@ class QueueAysncAPITests extends APISpec {
         def setAccessPolicyVerifier = StepVerifier.create(queueAsyncClient.setAccessPolicy(permissions))
         then:
         setAccessPolicyVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.INVALID_XML_DOCUMENT)
+            assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.INVALID_XML_DOCUMENT)
         }
     }
 
@@ -255,7 +258,7 @@ class QueueAysncAPITests extends APISpec {
         def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessages())
         then:
         enqueueMsgVerifier.assertNext {
-            QueueTestHelper.assertResponseStatusCode(it, 201)
+            assert QueueTestHelper.assertResponseStatusCode(it, 201)
         }.verifyComplete()
         peekMsgVerifier.assertNext {
             assert expectMsg.equals(it.messageText())
@@ -271,7 +274,7 @@ class QueueAysncAPITests extends APISpec {
         def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessages())
         then:
         enqueueMsgVerifier.assertNext {
-            QueueTestHelper.assertResponseStatusCode(it, 201)
+            assert QueueTestHelper.assertResponseStatusCode(it, 201)
         }.verifyComplete()
         peekMsgVerifier.assertNext {
             assert it.messageText() == null
@@ -287,7 +290,7 @@ class QueueAysncAPITests extends APISpec {
             Duration.ofSeconds(0), Duration.ofSeconds(2)))
         then:
         enqueueMsgVerifier.assertNext {
-            QueueTestHelper.assertResponseStatusCode(it, 201)
+            assert QueueTestHelper.assertResponseStatusCode(it, 201)
         }.verifyComplete()
     }
 
@@ -328,7 +331,7 @@ class QueueAysncAPITests extends APISpec {
         def dequeueMsgVerifier = StepVerifier.create(queueAsyncClient.dequeueMessages(33))
         then:
         dequeueMsgVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE)
+            assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE)
         }
     }
 
@@ -369,7 +372,7 @@ class QueueAysncAPITests extends APISpec {
         def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessages(33))
         then:
         peekMsgVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE)
+            assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE)
         }
     }
 
@@ -378,7 +381,7 @@ class QueueAysncAPITests extends APISpec {
         def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessages())
         then:
         peekMsgVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
+            assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
         }
     }
 
@@ -394,14 +397,14 @@ class QueueAysncAPITests extends APISpec {
         def getPropertiesAfterVerifier = StepVerifier.create(queueAsyncClient.getProperties())
         then:
         getPropertiesVerifier.assertNext {
-            QueueTestHelper.assertResponseStatusCode(it, 200)
+            assert QueueTestHelper.assertResponseStatusCode(it, 200)
             assert it.value().approximateMessagesCount() == 3
         }.verifyComplete()
         clearMsgVerifier.assertNext {
-            QueueTestHelper.assertResponseStatusCode(it, 204)
+            assert QueueTestHelper.assertResponseStatusCode(it, 204)
         }.verifyComplete()
         getPropertiesAfterVerifier.assertNext {
-            QueueTestHelper.assertResponseStatusCode(it, 200)
+            assert QueueTestHelper.assertResponseStatusCode(it, 200)
             assert it.value().approximateMessagesCount() == 0
         }.verifyComplete()
     }
@@ -411,7 +414,7 @@ class QueueAysncAPITests extends APISpec {
         def clearMsgVerifier = StepVerifier.create(queueAsyncClient.clearMessages())
         then:
         clearMsgVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
+            assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
         }
     }
 
@@ -428,15 +431,15 @@ class QueueAysncAPITests extends APISpec {
         def getPropertiesAfterVerifier = StepVerifier.create(queueAsyncClient.getProperties())
         then:
         getPropertiesVerifier.assertNext {
-            QueueTestHelper.assertResponseStatusCode(it, 200)
+            assert QueueTestHelper.assertResponseStatusCode(it, 200)
             assert it.value().approximateMessagesCount() == 3
 
         }.verifyComplete()
         deleteMsgVerifier.assertNext {
-            QueueTestHelper.assertResponseStatusCode(it, 204)
+            assert QueueTestHelper.assertResponseStatusCode(it, 204)
         }.verifyComplete()
         getPropertiesAfterVerifier.assertNext {
-            QueueTestHelper.assertResponseStatusCode(it, 200)
+            assert QueueTestHelper.assertResponseStatusCode(it, 200)
             assert it.value().approximateMessagesCount() == 2
         }.verifyComplete()
     }
@@ -454,7 +457,7 @@ class QueueAysncAPITests extends APISpec {
         def deleteMsgVerifier = StepVerifier.create(queueAsyncClient.deleteMessage(deleteMessageId, deletePopReceipt))
         then:
         deleteMsgVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMsg)
+            assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMsg)
         }
         where:
         messageId | popReceipt | statusCode | errMsg
@@ -476,7 +479,7 @@ class QueueAysncAPITests extends APISpec {
         def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessages().delaySubscription(Duration.ofSeconds(2)))
         then:
         updateMsgVerifier.assertNext {
-            QueueTestHelper.assertResponseStatusCode(it, 204)
+            assert QueueTestHelper.assertResponseStatusCode(it, 204)
         }.verifyComplete()
         peekMsgVerifier.assertNext {
             assert updateMsg.equals(it.messageText())
@@ -496,7 +499,7 @@ class QueueAysncAPITests extends APISpec {
         def updateMsgVerifier = StepVerifier.create(queueAsyncClient.updateMessage(updateMsg, updateMessageId, updatePopReceipt, Duration.ofSeconds(1)))
         then:
         updateMsgVerifier.verifyErrorSatisfies {
-            QueueTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMsg)
+            assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMsg)
         }
         where:
         messageId | popReceipt | statusCode | errMsg

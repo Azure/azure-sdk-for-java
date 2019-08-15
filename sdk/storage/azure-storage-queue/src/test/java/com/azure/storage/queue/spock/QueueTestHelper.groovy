@@ -78,8 +78,8 @@ class QueueTestHelper {
         } else {
             return Objects.equals(expected.enabled(), actual.enabled()) &&
                 Objects.equals(expected.includeAPIs(), actual.includeAPIs()) &&
-                Objects.equals(expected.version(), actual.version())
-            assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy())
+                Objects.equals(expected.version(), actual.version()) &&
+                assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy())
         }
     }
 
@@ -90,8 +90,8 @@ class QueueTestHelper {
             return Objects.equals(expected.read(), actual.read()) &&
                 Objects.equals(expected.write(), actual.write()) &&
                 Objects.equals(expected.delete(), actual.delete()) &&
-                Objects.equals(expected.version(), actual.version())
-            assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy())
+                Objects.equals(expected.version(), actual.version()) &&
+                assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy())
         }
     }
 
