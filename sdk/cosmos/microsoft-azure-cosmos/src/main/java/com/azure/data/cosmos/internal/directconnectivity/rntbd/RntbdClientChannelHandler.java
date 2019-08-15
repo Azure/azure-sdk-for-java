@@ -7,27 +7,31 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoop;
+import io.netty.channel.pool.ChannelHealthChecker;
 import io.netty.channel.pool.ChannelPool;
 import io.netty.channel.pool.ChannelPoolHandler;
 import io.netty.handler.logging.LoggingHandler;
-import io.netty.handler.ssl.SslHandler;
-import io.netty.handler.timeout.ReadTimeoutHandler;
-import io.netty.handler.timeout.WriteTimeoutHandler;
+import io.netty.handler.timeout.IdleStateHandler;
+import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.net.ssl.SSLEngine;
 import java.util.concurrent.TimeUnit;
 
+import static com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdEndpoint.Config;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class RntbdClientChannelHandler extends ChannelInitializer<Channel> implements ChannelPoolHandler {
 
-    private static Logger logger = LoggerFactory.getLogger(RntbdClientChannelHandler.class);
-    private final RntbdEndpoint.Config config;
+    private static final AttributeKey<RntbdRequestManager> REQUEST_MANAGER = AttributeKey.newInstance("requestManager");
+    private static final Logger logger = LoggerFactory.getLogger(RntbdClientChannelHandler.class);
+    private final ChannelHealthChecker healthChecker;
+    private final Config config;
 
-    RntbdClientChannelHandler(final RntbdEndpoint.Config config) {
+    RntbdClientChannelHandler(final Config config, final ChannelHealthChecker healthChecker) {
+        checkNotNull(healthChecker, "healthChecker");
         checkNotNull(config, "config");
+        this.healthChecker = healthChecker;
         this.config = config;
     }
 
@@ -74,13 +78,13 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
      * This method constructs this pipeline:
      * <pre>{@code
      * ChannelPipeline {
-     *     (ReadTimeoutHandler#0 = io.netty.handler.timeout.ReadTimeoutHandler),
      *     (SslHandler#0 = io.netty.handler.ssl.SslHandler),
-     *     (RntbdContextNegotiator#0 = com.microsoft.azure.cosmosdb.internal.directconnectivity.rntbd.RntbdContextNegotiator),
-     *     (RntbdResponseDecoder#0 = com.microsoft.azure.cosmosdb.internal.directconnectivity.rntbd.RntbdResponseDecoder),
-     *     (RntbdRequestEncoder#0 = com.microsoft.azure.cosmosdb.internal.directconnectivity.rntbd.RntbdRequestEncoder),
-     *     (WriteTimeoutHandler#0 = io.netty.handler.timeout.WriteTimeoutHandler),
-     *     (RntbdRequestManager#0 = com.microsoft.azure.cosmosdb.internal.directconnectivity.rntbd.RntbdRequestManager),
+     *     (IdleTimeoutHandler#0 = io.netty.handler.timeout.IdleTimeoutHandler),
+     *     (LoggingHandler#0 = io.netty.handler.logging.LoggingHandler),  // iff RntbdClientChannelHandler.config.wireLogLevel != null
+     *     (RntbdContextNegotiator#0 = com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdContextNegotiator),
+     *     (RntbdResponseDecoder#0 = com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdResponseDecoder),
+     *     (RntbdRequestEncoder#0 = com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdRequestEncoder),
+     *     (RntbdRequestManager#0 = com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdRequestManager),
      * }
      * }</pre>
      *
@@ -91,28 +95,28 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
 
         checkNotNull(channel);
 
-        final RntbdRequestManager requestManager = new RntbdRequestManager(this.config.getMaxRequestsPerChannel());
-        final long readerIdleTime = this.config.getReceiveHangDetectionTime();
-        final long writerIdleTime = this.config.getSendHangDetectionTime();
+        final RntbdRequestManager requestManager = new RntbdRequestManager(this.healthChecker, this.config.maxRequestsPerChannel());
+        final long readerIdleTime = this.config.receiveHangDetectionTime();
+        final long writerIdleTime = this.config.sendHangDetectionTime();
+        final long allIdleTime = this.config.idleConnectionTimeout();
         final ChannelPipeline pipeline = channel.pipeline();
 
         pipeline.addFirst(
-            new RntbdContextNegotiator(requestManager, this.config.getUserAgent()),
+            new RntbdContextNegotiator(requestManager, this.config.userAgent()),
             new RntbdResponseDecoder(),
             new RntbdRequestEncoder(),
-            new WriteTimeoutHandler(writerIdleTime, TimeUnit.NANOSECONDS),
             requestManager
         );
 
-        if (this.config.getWireLogLevel() != null) {
-            pipeline.addFirst(new LoggingHandler(this.config.getWireLogLevel()));
+        if (this.config.wireLogLevel() != null) {
+            pipeline.addFirst(new LoggingHandler(this.config.wireLogLevel()));
         }
 
-        final SSLEngine sslEngine = this.config.getSslContext().newEngine(channel.alloc());
-
         pipeline.addFirst(
-            new ReadTimeoutHandler(readerIdleTime, TimeUnit.NANOSECONDS),
-            new SslHandler(sslEngine)
+            this.config.sslContext().newHandler(channel.alloc()),
+            new IdleStateHandler(readerIdleTime, writerIdleTime, allIdleTime, TimeUnit.NANOSECONDS)
         );
+
+        channel.attr(REQUEST_MANAGER).set(requestManager);
     }
 }

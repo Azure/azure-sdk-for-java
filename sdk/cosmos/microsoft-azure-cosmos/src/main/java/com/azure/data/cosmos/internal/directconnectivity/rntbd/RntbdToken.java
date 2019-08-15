@@ -10,11 +10,13 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.PropertyWriter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.google.common.base.Strings;
 import io.netty.buffer.ByteBuf;
 
 import static com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdConstants.RntbdHeader;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 @JsonPropertyOrder({ "id", "name", "type", "present", "required", "value" })
 final class RntbdToken {
@@ -86,8 +88,9 @@ final class RntbdToken {
     @JsonProperty
     public void setValue(final Object value) {
         this.ensureValid(value);
-        this.length = Integer.MIN_VALUE;
+        this.releaseBuffer();
         this.value = value;
+        this.length = Integer.MIN_VALUE;
     }
 
     @JsonIgnore
@@ -117,7 +120,7 @@ final class RntbdToken {
 
         if (this.value instanceof ByteBuf) {
             final ByteBuf buffer = (ByteBuf)this.value;
-            assert buffer.readerIndex() == 0;
+            checkState(buffer.readerIndex() == 0);
             return HEADER_LENGTH + buffer.readableBytes();
         }
 
@@ -140,7 +143,7 @@ final class RntbdToken {
             ((ByteBuf)this.value).release();
         }
 
-        this.value = this.header.type().codec().readSlice(in).retain(); // No data transfer until the first call to RntbdToken.getValue
+        this.value = this.header.type().codec().readSlice(in).retain(); // No data transfer until first call to RntbdToken.getValue
     }
 
     public void encode(final ByteBuf out) {
@@ -149,7 +152,7 @@ final class RntbdToken {
 
         if (!this.isPresent()) {
             if (this.isRequired()) {
-                final String message = String.format("Missing value for required header: %s", this);
+                final String message = Strings.lenientFormat("Missing value for required header: %s", this);
                 throw new IllegalStateException(message);
             }
             return;
@@ -166,16 +169,13 @@ final class RntbdToken {
         }
     }
 
-    public void releaseBuffer() {
-        if (this.value instanceof ByteBuf) {
-            final ByteBuf buffer = (ByteBuf)this.value;
-            buffer.release();
-        }
+    public boolean releaseBuffer() {
+        return this.value instanceof ByteBuf && ((ByteBuf)this.value).release();
     }
 
     @Override
     public String toString() {
-        return RntbdObjectMapper.toJson(this);
+        return RntbdObjectMapper.toString(this);
     }
 
     // endregion
@@ -183,8 +183,8 @@ final class RntbdToken {
     // region Privates
 
     private void ensureValid(final Object value) {
-        checkNotNull(value, "value");
-        checkArgument(this.header.type().codec().isValid(value), "value: %s", value.getClass());
+        checkArgument(value != null, "value: null");
+        checkArgument(this.header.type().codec().isValid(value), "value: %s = %s", value.getClass().getName(), value);
     }
 
     // endregion

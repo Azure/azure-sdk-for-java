@@ -3,6 +3,7 @@
 
 package com.azure.data.cosmos.internal.directconnectivity.rntbd;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
@@ -16,17 +17,20 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @SuppressWarnings("UnstableApiUsage")
 abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> {
 
+    final ByteBuf in;
     final ImmutableMap<Short, T> headers;
     final ImmutableMap<T, RntbdToken> tokens;
 
-    RntbdTokenStream(final ImmutableSet<T> headers, final ImmutableMap<Short, T> ids) {
+    RntbdTokenStream(final ImmutableSet<T> headers, final ImmutableMap<Short, T> ids, final ByteBuf in) {
 
         checkNotNull(headers, "headers");
         checkNotNull(ids, "ids");
+        checkNotNull(in, "in");
 
         final Collector<T, ?, ImmutableMap<T, RntbdToken>> collector = Maps.toImmutableEnumMap(h -> h, RntbdToken::create);
         this.tokens = headers.stream().collect(collector);
         this.headers = ids;
+        this.in = in.retain();
     }
 
     final int computeCount() {
@@ -53,7 +57,9 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> {
         return total;
     }
 
-    static <T extends RntbdTokenStream<?>> T decode(final ByteBuf in, final T stream) {
+    static <T extends RntbdTokenStream<?>> T decode(final T stream) {
+
+        ByteBuf in = stream.in;
 
         while (in.readableBytes() > 0) {
 
@@ -71,7 +77,7 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> {
 
         for (final RntbdToken token : stream.tokens.values()) {
             if (!token.isPresent() && token.isRequired()) {
-                final String reason = String.format("Required token not found on RNTBD stream: type: %s, identifier: %s",
+                final String reason = Strings.lenientFormat("Required token not found on token stream: type=%s, identifier=%s",
                     token.getTokenType(), token.getId());
                 throw new IllegalStateException(reason);
             }
@@ -94,6 +100,7 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> {
         for (final RntbdToken token : this.tokens.values()) {
             token.releaseBuffer();
         }
+        in.release();
     }
 
     private static final class UndefinedHeader implements RntbdHeader {
