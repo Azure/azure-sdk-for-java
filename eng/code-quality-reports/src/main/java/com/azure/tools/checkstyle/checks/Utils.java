@@ -18,7 +18,7 @@ import java.util.Set;
  */
 public class Utils {
     /*
-     * Set of modifiers that can not be combined with final b/c causes a violation
+     * Set of modifiers that cannot be combined with final because it causes a violation.
      */
     private static final Set INVALID_FINAL_COMBINATION = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         TokenTypes.LITERAL_TRANSIENT,
