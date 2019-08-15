@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.data.common;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.search.data.generated.models.DocumentSearchResult;
@@ -52,11 +53,20 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
             documentSearchResponse.headers(),
             documentSearchResponse.value().results(),
             documentSearchResponse.value().nextLink(),
-            "");
+            deserializeHeaders(documentSearchResponse.headers()));
 
         this.facets = documentSearchResponse.value().facets();
         this.count = documentSearchResponse.value().count();
         this.coverage = documentSearchResponse.value().coverage();
+    }
+
+    private static String deserializeHeaders(HttpHeaders headers) {
+        String deserializedHeaders = "";
+        for (Map.Entry<String, String> entry: headers.toMap().entrySet()) {
+            deserializedHeaders += "," + entry.getKey() + "," + entry.getValue();
+        }
+
+        return deserializedHeaders;
     }
 
 }
