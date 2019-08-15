@@ -34,25 +34,25 @@ public final class BlobOutputStream extends OutputStream {
     /**
      * Holds the {@link BlobAccessConditions} object that represents the access conditions for the blob.
      */
-    private BlobAccessConditions accessCondition;
+    private final BlobAccessConditions accessCondition;
 
     private AppendPositionAccessConditions appendPositionAccessConditions;
 
     /**
      * Used for block blobs, holds the block id prefix.
      */
-    private String blockIdPrefix;
+    private final String blockIdPrefix;
 
     /**
      * Used for block blobs, holds the block list.
      */
-    private TreeMap<Long, String> blockList;
+    private final TreeMap<Long, String> blockList;
 
     /**
      * Holds the write threshold of number of bytes to buffer prior to dispatching a write. For block blob this is the
      * block size, for page blob this is the Page commit size.
      */
-    private int internalWriteThreshold = -1;
+    private final int internalWriteThreshold;
 
     /**
      * Holds the last exception this stream encountered.
@@ -60,7 +60,7 @@ public final class BlobOutputStream extends OutputStream {
     private volatile IOException lastError = null;
 
 
-    private long initialBlobOffset;
+    private final long initialBlobOffset;
 
     /**
      * Holds the reference to the blob this stream is associated with.
@@ -70,41 +70,38 @@ public final class BlobOutputStream extends OutputStream {
     /**
      * Determines if this stream is used against a page blob or block blob.
      */
-    private BlobType streamType = BlobType.BLOCK_BLOB;
+    private final BlobType streamType;
 
     /**
      * Initializes a new instance of the BlobOutputStream class.
      *
-     * @param parentBlob
-     *            A {@link BlobAsyncClient} object which represents the blob that this stream is associated with.
+     * @param blobClient A {@link BlobAsyncClient} object which represents the blob that this stream is associated with
+     * @param accessCondition An {@link BlobAccessConditions} object which represents the access conditions for the blob
+     * @param appendPositionAccessConditions A {@Link AppendPositionAccessConditions}
+     * @param blockIdPrefix A <code>String</code>
+     * @param blockList
+     * @param initialBlobOffset
+     * @param streamType
+     * @param internalWriteThreshold  A <code>long</code> which represents the length of the page blob in bytes,
+     * which must be a multiple of 512.
      *
-     * @throws StorageException
-     *             An exception representing any error which occurred during the operation.
+     * @throws StorageException An exception representing any error which occurred during the operation.
      */
-    private BlobOutputStream(final BlobAsyncClient parentBlob) throws StorageException {
-        this.blobClient = parentBlob;
-//        completion = Flux.defer(() -> {
-//            if (this.streamType == BlobType.APPEND_BLOB) {
-//                return writeProcessor.concatMap(b -> {
-//                    long offset = currentOffset.getAndAdd(b.length);
-//                    return dispatchWrite(b, offset);
-//                });
-//            } else {
-//                return writeProcessor.map(b -> Tuples.of(b, currentOffset.getAndAdd(b.length)))
-//                .flatMap(chunk -> dispatchWrite(chunk.getT1(), chunk.getT2()));
-//            }
-//        })
-//        .doOnError(t -> {
-//            if (t instanceof IOException) {
-//                lastError = (IOException) t;
-//            } else {
-//                lastError = new IOException(t);
-//            }
-//            completionSink.error(t);
-//        })
-//        .doOnNext(length -> completionSink.next(length))
-//        .doOnComplete(() -> completionSink.complete());
+    private BlobOutputStream(final BlobAsyncClient blobClient, final BlobAccessConditions accessCondition,
+                             final AppendPositionAccessConditions appendPositionAccessConditions,
+                             final String blockIdPrefix, final TreeMap<Long, String> blockList,
+                             final long initialBlobOffset, final BlobType streamType,
+                             final int internalWriteThreshold) throws StorageException {
+        this.blobClient = blobClient;
+        this.accessCondition = accessCondition;
+        this.appendPositionAccessConditions = appendPositionAccessConditions;
+        this.blockIdPrefix = blockIdPrefix;
+        this.blockList = blockList;
+        this.initialBlobOffset = initialBlobOffset;
+        this.streamType = streamType;
+        this.internalWriteThreshold = internalWriteThreshold;
     }
+
 
     /**
      * Initializes a new instance of the BlobOutputStream class for a CloudBlockBlob
@@ -118,14 +115,8 @@ public final class BlobOutputStream extends OutputStream {
      *             An exception representing any error which occurred during the operation.
      */
     BlobOutputStream(final BlockBlobAsyncClient parentBlob, final BlobAccessConditions accessCondition) throws StorageException {
-        this((BlobAsyncClient) parentBlob);
-
-        this.accessCondition = accessCondition;
-        this.blockList = new TreeMap<>();
-        this.blockIdPrefix = UUID.randomUUID().toString() + "-";
-
-        this.streamType = BlobType.BLOCK_BLOB;
-        this.internalWriteThreshold = (int) BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+        this(parentBlob, accessCondition, null, UUID.randomUUID().toString() + "-", new TreeMap<>(), 0,
+            BlobType.BLOCK_BLOB, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
     }
 
     /**
@@ -144,10 +135,8 @@ public final class BlobOutputStream extends OutputStream {
      */
     BlobOutputStream(final PageBlobAsyncClient parentBlob, final long length, final BlobAccessConditions accessCondition)
         throws StorageException {
-        this((BlobAsyncClient) parentBlob);
-        this.streamType = BlobType.PAGE_BLOB;
-        this.accessCondition = accessCondition;
-        this.internalWriteThreshold = (int) Math.min(BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, length);
+        this(parentBlob, accessCondition, null, null, null, 0,
+            BlobType.PAGE_BLOB, (int) Math.min(BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, length));
     }
 
     /**
@@ -163,21 +152,16 @@ public final class BlobOutputStream extends OutputStream {
      */
     BlobOutputStream(final AppendBlobAsyncClient parentBlob, final AppendBlobAccessConditions accessCondition)
         throws StorageException {
-        this((BlobAsyncClient) parentBlob);
-        this.streamType = BlobType.APPEND_BLOB;
-
-        this.accessCondition = new BlobAccessConditions();
-        if (accessCondition != null) {
-            this.appendPositionAccessConditions = accessCondition.appendPositionAccessConditions();
-            this.accessCondition = new BlobAccessConditions().modifiedAccessConditions(accessCondition.modifiedAccessConditions()).leaseAccessConditions(accessCondition.leaseAccessConditions());
-            if (accessCondition.appendPositionAccessConditions().appendPosition() != null) {
-                this.initialBlobOffset = accessCondition.appendPositionAccessConditions().appendPosition();
-            } else {
-                this.initialBlobOffset = parentBlob.getProperties().block().value().blobSize();
-            }
-        }
-
-        this.internalWriteThreshold = (int) BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+        this(parentBlob, accessCondition != null ? new BlobAccessConditions().modifiedAccessConditions(
+            accessCondition.modifiedAccessConditions()).leaseAccessConditions(accessCondition.leaseAccessConditions())
+            : new BlobAccessConditions(), accessCondition != null ? accessCondition.appendPositionAccessConditions()
+            : null, null, null, accessCondition != null
+            ? (
+            accessCondition.appendPositionAccessConditions().appendPosition() != null
+                ? accessCondition.appendPositionAccessConditions().appendPosition()
+                : parentBlob.getProperties().block().value().blobSize()
+        )
+            : 0, BlobType.APPEND_BLOB, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
     }
 
     /**
