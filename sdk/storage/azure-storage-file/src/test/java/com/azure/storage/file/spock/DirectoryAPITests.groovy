@@ -12,8 +12,6 @@ import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
-import static org.junit.Assert.assertEquals
-
 class DirectoryAPITests extends APISpec {
     def shareClient
     def primaryDirectoryClient
@@ -22,15 +20,15 @@ class DirectoryAPITests extends APISpec {
     static def testMetadata
 
     def setup() {
-        shareName = testResourceName.randomName("share", 16)
-        directoryPath = testResourceName.randomName("directory", 16)
+        shareName = testResourceName.randomName(methodName, 60)
+        directoryPath = testResourceName.randomName(methodName, 60)
         shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
         shareClient.create()
         primaryDirectoryClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).buildClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
     }
 
-    def "Get directory URL from directory client"() {
+    def "Get directory URL"() {
         given:
         def accoutName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accoutName)
@@ -40,28 +38,28 @@ class DirectoryAPITests extends APISpec {
         expectURL.equals(directoryURL)
     }
 
-    def "Get sub directory client from directory client"() {
+    def "Get sub directory client"() {
         given:
         def subDirectoryClient = primaryDirectoryClient.getSubDirectoryClient("testSubDirectory")
         expect:
         subDirectoryClient instanceof DirectoryClient
     }
 
-    def "Get file client from directory client"() {
+    def "Get file client"() {
         given:
         def fileClient = primaryDirectoryClient.getFileClient("testFile")
         expect:
         fileClient instanceof FileClient
     }
 
-    def "Create directory from directory client"() {
+    def "Create directory"() {
         expect:
         FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.create(), 201)
     }
 
-    def "Create directory error from directory client"() {
+    def "Create directory error"() {
         given:
-        def testShareName = testResourceName.randomName("share", 16)
+        def testShareName = testResourceName.randomName(methodName, 60)
         when:
         directoryBuilderHelper(interceptorManager, testShareName, directoryPath).buildClient().create()
         then:
@@ -69,12 +67,12 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.SHARE_NOT_FOUND)
     }
 
-    def "Create directory with metadata from directory client"() {
+    def "Create directory with metadata"() {
         expect:
         FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.create(testMetadata), 201)
     }
 
-    def "Create directory error with metadata from directory client"() {
+    def "Create directory error with metadata"() {
         given:
         def errorMetadata = Collections.singletonMap("testMeta", "value")
         when:
@@ -84,14 +82,14 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 403, StorageErrorCode.AUTHENTICATION_FAILED)
     }
 
-    def "Delete directory from directory client"() {
+    def "Delete directory"() {
         given:
         primaryDirectoryClient.create()
         expect:
         FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.delete(), 202)
     }
 
-    def "Delete directory error from directory client"() {
+    def "Delete directory error"() {
         when:
         primaryDirectoryClient.delete()
         then:
@@ -99,7 +97,7 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
     }
 
-    def "Get properties from directory client"() {
+    def "Get properties"() {
         given:
         primaryDirectoryClient.create()
         def getPropertiesResponse = primaryDirectoryClient.getProperties()
@@ -108,7 +106,7 @@ class DirectoryAPITests extends APISpec {
         getPropertiesResponse.value().eTag()
     }
 
-    def "Get properties error from directory client"() {
+    def "Get properties error"() {
         when:
         primaryDirectoryClient.getProperties()
         then:
@@ -116,7 +114,7 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
     }
 
-    def "Set metadata from directory client"() {
+    def "Set metadata"() {
         given:
         primaryDirectoryClient.create(testMetadata)
         def updatedMetadata = Collections.singletonMap("update", "value")
@@ -130,7 +128,7 @@ class DirectoryAPITests extends APISpec {
         updatedMetadata.equals(getPropertiesAfter.metadata())
     }
 
-    def "Set metadata error from directory client"() {
+    def "Set metadata error"() {
         given:
         primaryDirectoryClient.create()
         def errorMetadata = Collections.singletonMap("", "value")
@@ -149,11 +147,11 @@ class DirectoryAPITests extends APISpec {
      *                               -> listOp6 (file)
      *              -> listOp2 (file)
      */
-    def "List files and directories from directory client"() {
+    def "List files and directories"() {
         given:
         primaryDirectoryClient.create()
         def nameList = new LinkedList()
-        def dirPrefix = testResourceName.randomName("listOp", 16)
+        def dirPrefix = testResourceName.randomName(methodName, 60)
         for (int i = 0; i < 2; i++) {
             def subDirClient = primaryDirectoryClient.getSubDirectoryClient(dirPrefix + i)
             subDirClient.create()
@@ -171,7 +169,7 @@ class DirectoryAPITests extends APISpec {
         def fileRefIter = primaryDirectoryClient.listFilesAndDirectories().iterator()
         then:
         while (fileRefIter.hasNext()) {
-            assertEquals(nameList.pop(), fileRefIter.next().name())
+            Objects.equals(nameList.pop(), fileRefIter.next().name())
         }
         nameList.isEmpty()
     }
@@ -185,11 +183,11 @@ class DirectoryAPITests extends APISpec {
      *              -> listOp2 (file)
      */
     @Unroll
-    def "List files and directories args from directory client"() {
+    def "List files and directories args"() {
         given:
         primaryDirectoryClient.create()
         def nameList = new LinkedList()
-        def dirPrefix = testResourceName.randomName("listOp", 16)
+        def dirPrefix = testResourceName.randomName(methodName, 60)
         for (int i = 0; i < 2; i++) {
             def subDirClient = primaryDirectoryClient.getSubDirectoryClient(dirPrefix + i)
             subDirClient.create()
@@ -208,7 +206,7 @@ class DirectoryAPITests extends APISpec {
 
         then:
         for (int i = 0; i < numOfResults; i++) {
-            assertEquals(nameList.pop(), fileRefIter.next().name())
+            Objects.equals(nameList.pop(), fileRefIter.next().name())
         }
         !fileRefIter.hasNext()
 
@@ -220,7 +218,7 @@ class DirectoryAPITests extends APISpec {
     }
 
     @Unroll
-    def "List handles from directory client"() {
+    def "List handles"() {
         given:
         primaryDirectoryClient.create()
         expect:
@@ -231,7 +229,7 @@ class DirectoryAPITests extends APISpec {
         null      | false
     }
 
-    def "List handles error from directory client"() {
+    def "List handles error"() {
         when:
         primaryDirectoryClient.getHandles(null, true)
         then:
@@ -239,11 +237,11 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
     }
 
-    def "Force close handles from directory client"() {
+    def "Force close handles"() {
         // TODO: Need to find a way of mocking handles.
     }
 
-    def "Force close handles error from directory client"() {
+    def "Force close handles error"() {
         given:
         primaryDirectoryClient.create()
         when:
@@ -253,7 +251,7 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.INVALID_HEADER_VALUE)
     }
 
-    def "Create sub directory from directory client"() {
+    def "Create sub directory"() {
         given:
         primaryDirectoryClient.create()
         expect:
@@ -261,7 +259,7 @@ class DirectoryAPITests extends APISpec {
             primaryDirectoryClient.createSubDirectory("testCreateSubDirectory"), 201)
     }
 
-    def "Create sub directory invalid name from directory client"() {
+    def "Create sub directory invalid name"() {
         given:
         primaryDirectoryClient.create()
         when:
@@ -271,7 +269,7 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.PARENT_NOT_FOUND)
     }
 
-    def "Create sub directory metadata from directory client"() {
+    def "Create sub directory metadata"() {
         given:
         primaryDirectoryClient.create()
         expect:
@@ -279,7 +277,7 @@ class DirectoryAPITests extends APISpec {
             primaryDirectoryClient.createSubDirectory("testCreateSubDirectory", testMetadata), 201)
     }
 
-    def "Create sub directory metadata error from directory client"() {
+    def "Create sub directory metadata error"() {
         given:
         primaryDirectoryClient.create()
         when:
@@ -289,7 +287,7 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.EMPTY_METADATA_KEY)
     }
 
-    def "Delete sub directory from directory client"() {
+    def "Delete sub directory"() {
         given:
         def subDirectoryName = "testSubCreateDirectory"
         primaryDirectoryClient.create()
@@ -298,7 +296,7 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.deleteSubDirectory(subDirectoryName), 202)
     }
 
-    def "Delete sub directory error from directory client"() {
+    def "Delete sub directory error"() {
         given:
         primaryDirectoryClient.create()
         when:
@@ -309,7 +307,7 @@ class DirectoryAPITests extends APISpec {
     }
 
 
-    def "Create file from directory client"() {
+    def "Create file"() {
         given:
         primaryDirectoryClient.create()
         expect:
@@ -318,7 +316,7 @@ class DirectoryAPITests extends APISpec {
     }
 
     @Unroll
-    def "Create file invalid args from directory client"() {
+    def "Create file invalid args"() {
         given:
         primaryDirectoryClient.create()
         when:
@@ -333,7 +331,7 @@ class DirectoryAPITests extends APISpec {
 
     }
 
-    def "Create file maxOverload from directory client"() {
+    def "Create file maxOverload"() {
         given:
         primaryDirectoryClient.create()
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
@@ -344,7 +342,7 @@ class DirectoryAPITests extends APISpec {
     }
 
     @Unroll
-    def "Create file maxOverload invalid args from directory client"() {
+    def "Create file maxOverload invalid args"() {
         given:
         primaryDirectoryClient.create()
         when:
@@ -361,7 +359,7 @@ class DirectoryAPITests extends APISpec {
 
     }
 
-    def "Delete file from directory client"() {
+    def "Delete file"() {
         given:
         def fileName = "testCreateFile"
         primaryDirectoryClient.create()
@@ -371,7 +369,7 @@ class DirectoryAPITests extends APISpec {
             primaryDirectoryClient.deleteFile(fileName), 202)
     }
 
-    def "Delete file error from directory client"() {
+    def "Delete file error"() {
         given:
         primaryDirectoryClient.create()
         when:
@@ -381,7 +379,7 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
     }
 
-    def "Get snapshot id from directory client"() {
+    def "Get snapshot id"() {
         given:
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
             1, 1), ZoneOffset.UTC).toString()

@@ -16,8 +16,6 @@ import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageErrorException
 import spock.lang.Unroll
 
-import static org.junit.Assert.assertFalse
-
 class FileServiceAPITests extends APISpec {
     def shareName
 
@@ -30,14 +28,14 @@ class FileServiceAPITests extends APISpec {
     static def INVALID_ALLOWED_METHOD = Collections.singletonList(new CorsRule().allowedMethods("NOTAREALHTTPMETHOD"))
 
     def setup() {
-        shareName = testResourceName.randomName("share", 16)
+        shareName = testResourceName.randomName(methodName, 60)
         primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
         for (int i = 0; i < 6; i++) {
             TOO_MANY_RULES.add(new CorsRule())
         }
     }
 
-    def "Get file service URL from file service client"() {
+    def "Get file service URL"() {
         given:
         def accoutName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accoutName)
@@ -47,21 +45,21 @@ class FileServiceAPITests extends APISpec {
         expectURL.equals(fileServiceURL)
     }
 
-    def "Get share does not create a share from file service client"() {
+    def "Get share does not create a share"() {
         given:
         def shareClient = primaryFileServiceClient.getShareClient(shareName)
         expect:
         shareClient instanceof ShareClient
     }
 
-    def "Create share from file service client"() {
+    def "Create share"() {
         when:
         def createShareResponse = primaryFileServiceClient.createShare(shareName)
         then:
         FileTestHelper.assertResponseStatusCode(createShareResponse, 201)
     }
 
-    def "Create share max overloads from file service client"() {
+    def "Create share max overloads"() {
         when:
         def createShareResponse = primaryFileServiceClient.createShare(shareName, testMetadata, 1)
         then:
@@ -69,7 +67,7 @@ class FileServiceAPITests extends APISpec {
     }
 
     @Unroll
-    def "Create share with invalid args from file service client"() {
+    def "Create share with invalid args"() {
         when:
         primaryFileServiceClient.createShare(shareName, metadata, quota)
         then:
@@ -81,7 +79,7 @@ class FileServiceAPITests extends APISpec {
         testMetadata                                  | -1    | 400        | StorageErrorCode.INVALID_HEADER_VALUE
     }
 
-    def "Delete share from file service client"() {
+    def "Delete share"() {
         given:
         primaryFileServiceClient.createShare(shareName)
         when:
@@ -92,22 +90,20 @@ class FileServiceAPITests extends APISpec {
 
     def "Delete share does not exist"() {
         when:
-        primaryFileServiceClient.deleteShare(testResourceName.randomName("share", 16))
+        primaryFileServiceClient.deleteShare(testResourceName.randomName(methodName, 60))
         then:
         def e = thrown(StorageErrorException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.SHARE_NOT_FOUND)
     }
 
     @Unroll
-    def "List shares with filter from file service client"() {
+    def "List shares with filter"() {
         given:
         LinkedList<ShareItem> testShares = new LinkedList<>()
         for (int i = 0; i < 3; i++) {
-            ShareItem share = new ShareItem().properties(new ShareProperties().quota(i + 1))
+            ShareItem share = new ShareItem().properties(new ShareProperties().quota(i + 1)).name(shareName + i)
             if (i == 2) {
-                share.name(shareName + i).metadata(testMetadata)
-            } else {
-                share.name("prefix" + shareName + i)
+                share.metadata(testMetadata)
             }
 
             testShares.add(share)
@@ -119,18 +115,18 @@ class FileServiceAPITests extends APISpec {
         for (int i = 0; i < limits; i++) {
             FileTestHelper.assertSharesAreEqual(testShares.pop(), shares.next(), includeMetadata, includeSnapshot)
         }
-        assertFalse(shares.hasNext())
+        !shares.hasNext()
         where:
         options                                        | limits | includeMetadata | includeSnapshot
-        new ListSharesOptions()                        | 3      | false           | true
-        new ListSharesOptions().includeMetadata(true)  | 3      | true            | true
-        new ListSharesOptions().includeMetadata(false) | 3      | false           | true
-        new ListSharesOptions().prefix("prefix")       | 2      | true            | true
-        new ListSharesOptions().maxResults(2)          | 2      | true            | true
+        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter")                         | 3      | false           | true
+        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter").includeMetadata(true)  | 3      | true            | true
+        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter").includeMetadata(false) | 3      | false           | true
+        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilterprefix")       | 2      | true            | true
+        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter").maxResults(2)          | 2      | true            | true
     }
 
     @Unroll
-    def "List shares with snapshot and metadata from file service client"() {
+    def "List shares with snapshot and metadata"() {
         given:
         LinkedList<ShareItem> testShares = new LinkedList<>()
         for (int i = 0; i < 3; i++) {
@@ -150,7 +146,7 @@ class FileServiceAPITests extends APISpec {
         for (int i = 0; i < limits; i++) {
             FileTestHelper.assertSharesAreEqual(testShares.pop(), shares.next(), includeMetadata, includeSnapshot)
         }
-        assertFalse(shares.hasNext())
+        !shares.hasNext()
 
         where:
         options                                                              | limits | includeMetadata | includeSnapshot
@@ -159,7 +155,7 @@ class FileServiceAPITests extends APISpec {
         new ListSharesOptions().includeMetadata(true).includeSnapshots(true) | 4      | true            | true
     }
 
-    def "Set and get properties from file service client"() {
+    def "Set and get properties"() {
         given:
         def originalProperties = primaryFileServiceClient.getProperties().value()
         def retentionPolicy = new RetentionPolicy().enabled(true).days(3)
@@ -180,7 +176,7 @@ class FileServiceAPITests extends APISpec {
     }
 
     @Unroll
-    def "Set and get properties with invalid args from file service client"() {
+    def "Set and get properties with invalid args"() {
         given:
         def retentionPolicy = new RetentionPolicy().enabled(true).days(3)
         def metrics = new Metrics().enabled(true).includeAPIs(false)

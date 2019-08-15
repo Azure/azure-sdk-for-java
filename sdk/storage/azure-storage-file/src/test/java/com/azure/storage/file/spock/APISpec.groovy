@@ -13,9 +13,7 @@ import com.azure.storage.file.FileClientBuilder
 import com.azure.storage.file.FileServiceClient
 import com.azure.storage.file.FileServiceClientBuilder
 import com.azure.storage.file.ShareClientBuilder
-import org.junit.Rule
-import org.junit.rules.ExpectedException
-import org.junit.rules.TestName
+import com.azure.storage.file.models.ListSharesOptions
 import spock.lang.Specification
 
 class APISpec extends Specification {
@@ -28,19 +26,10 @@ class APISpec extends Specification {
     // Primary Clients used for API tests
     def primaryFileServiceClient
     def primaryFileServiceAsyncClient
-    def primaryShareClient
-    def primaryShareAsyncClient
-    def primaryDirectoryClient
-    def primaryDirectoryAsyncClient
-    def primaryFileClient
-    def primaryFileAsyncClient
 
 
     // Test name for test method name.
-    @Rule
-    TestName testName = new TestName()
-    @Rule
-    ExpectedException thrown = ExpectedException.none()
+    def methodName
     def testMode = getTestMode()
     def connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
 
@@ -49,7 +38,9 @@ class APISpec extends Specification {
      * Setup the File service clients commonly used for the API tests.
      */
     def setup() {
-        def methodName = testName.getMethodName()
+        String testName = reformat(specificationContext.currentIteration.getName())
+        String className = specificationContext.currentSpec.getFilename().split("\\.")[0]
+        methodName = className + testName
         logger.info("Test Mode: {}, Name: {}", testMode, methodName)
         interceptorManager = new InterceptorManager(methodName, testMode)
         testResourceName = new TestResourceNamer(methodName, testMode,
@@ -65,7 +56,7 @@ class APISpec extends Specification {
             FileServiceClient cleanupFileServiceClient = new FileServiceClientBuilder()
                 .connectionString(connectionString)
                 .buildClient()
-            cleanupFileServiceClient.listShares().each {
+            cleanupFileServiceClient.listShares(new ListSharesOptions().prefix(methodName)).each {
                 cleanupFileServiceClient.deleteShare(it.name())
             }
         }
@@ -81,7 +72,7 @@ class APISpec extends Specification {
      * </ul>
      */
     def getTestMode() {
-        def azureTestMode = ConfigurationManager.getConfiguration().get("AZURE_TEST_MODE")
+        def azureTestMode = ConfigurationManager.getConfiguration().get(AZURE_TEST_MODE)
 
         if (azureTestMode != null) {
             try {
@@ -152,5 +143,15 @@ class APISpec extends Specification {
                 .filePath(filePath)
                 .httpClient(interceptorManager.getPlaybackClient())
         }
+    }
+
+    private def reformat(String text) {
+        def fullName = text.split(" ").collect { it.capitalize() }.join("")
+        def matcher = (fullName =~ /(.*)(\[)(.*)(\])/)
+
+        if (!matcher.find()) {
+            return fullName
+        }
+        return matcher[0][1] + matcher[0][3]
     }
 }
