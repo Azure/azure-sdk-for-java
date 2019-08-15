@@ -20,6 +20,7 @@ public class AzureSearchResources {
     private String resourceGroupName;
     private String searchServiceName;
     private String searchAdminKey;
+    private String indexFileName;
 
     private AzureTokenCredentials azureTokenCredentials;
     private String subscriptionId;
@@ -35,6 +36,14 @@ public class AzureSearchResources {
      */
     public String getResourceGroupName() {
         return resourceGroupName;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getIndexFileName() {
+        return indexFileName;
     }
 
     /**

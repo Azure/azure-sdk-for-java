@@ -1,26 +1,48 @@
 {
-    "networkCallRecords" : [ {
-        "Method" : "POST",
-        "Uri" : "https://azs-sdk42222156e7b7.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
-        "Headers" : {
-            "Content-Type" : "application/json; charset=utf-8"
-        },
-        "Response" : {
-            "Pragma" : "no-cache",
-            "retry-after" : "0",
-            "request-id" : "2352bde7-245b-41d0-8f5a-f35a88758686",
-            "StatusCode" : "200",
-            "Date" : "Thu, 08 Aug 2019 18:13:40 GMT",
-            "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-            "Cache-Control" : "no-cache",
-            "elapsed-time" : "498",
-            "OData-Version" : "4.0",
-            "Expires" : "-1",
-            "Content-Length" : "227",
-            "Body" : "{\"@odata.context\":\"https://azs-sdk42222156e7b7.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":200}]}",
-            "Preference-Applied" : "odata.include-annotations=\"*\"",
-            "Content-Type" : "application/json; odata.metadata=minimal"
-        }
-    } ],
-    "variables" : [ ]
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk9dd11496e6ae.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "403333b1-598a-455a-b226-fe0292811436",
+      "StatusCode" : "200",
+      "Date" : "Mon, 12 Aug 2019 15:06:04 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "209",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "795",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk9dd11496e6ae.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"3\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"4\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"5\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"6\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"7\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"8\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"9\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"10\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk9dd11496e6ae.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "db106e28-f9e0-45d7-83e4-4a594f13d8ee",
+      "StatusCode" : "200",
+      "Date" : "Mon, 12 Aug 2019 15:06:04 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "25",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "227",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk9dd11496e6ae.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":200}]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    }
+  } ],
+  "variables" : [ ]
 }

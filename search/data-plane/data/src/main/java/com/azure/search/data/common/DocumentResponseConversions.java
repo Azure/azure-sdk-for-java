@@ -49,7 +49,17 @@ public class DocumentResponseConversions {
         }
 
         return convertedMap;
+    }
 
+    /**
+     * Drop fields that shouldn't be in the returned object
+     * @param map the map to drop items from
+     * @return the new map
+     */
+    public static Map<String, Object> dropUnnecessaryFields(Map<String, Object> map) {
+        map.remove(ODATA_CONTEXT);
+
+        return map;
     }
 
     /**
