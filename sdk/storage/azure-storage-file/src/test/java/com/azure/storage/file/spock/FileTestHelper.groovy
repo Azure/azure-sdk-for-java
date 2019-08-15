@@ -67,7 +67,7 @@ class FileTestHelper {
             return Objects.equals(expected.enabled(), actual.enabled()) &&
                 Objects.equals(expected.includeAPIs(), actual.includeAPIs()) &&
                 Objects.equals(expected.version(), actual.version()) &&
-            assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy())
+                assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy())
         }
     }
 
@@ -79,7 +79,7 @@ class FileTestHelper {
                 Objects.equals(expected.write(), actual.write()) &&
                 Objects.equals(expected.delete(), actual.delete()) &&
                 Objects.equals(expected.version(), actual.version()) &&
-            assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy())
+                assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy())
         }
     }
 
@@ -155,11 +155,11 @@ class FileTestHelper {
             if (expected.properties() == null) {
                 return actual.properties() == null
             }
-            if(!Objects.equals(expected.properties().quota(), actual.properties().quota())){
+            if (!Objects.equals(expected.properties().quota(), actual.properties().quota())) {
                 return false
             }
             if (includeMetadata) {
-                if(!Objects.equals(expected.metadata(), actual.metadata())) {
+                if (!Objects.equals(expected.metadata(), actual.metadata())) {
                     return false
                 }
             }
@@ -177,8 +177,8 @@ class FileTestHelper {
             return actual == null
         } else {
             return assertMetricsAreEqual(expected.hourMetrics(), actual.hourMetrics()) &&
-                    assertMetricsAreEqual(expected.minuteMetrics(), actual.minuteMetrics()) &&
-                    assertCorsAreEqual(expected.cors(), actual.cors())
+                assertMetricsAreEqual(expected.minuteMetrics(), actual.minuteMetrics()) &&
+                assertCorsAreEqual(expected.cors(), actual.cors())
         }
     }
 }

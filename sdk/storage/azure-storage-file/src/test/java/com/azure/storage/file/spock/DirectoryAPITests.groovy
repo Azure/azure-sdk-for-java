@@ -211,10 +211,10 @@ class DirectoryAPITests extends APISpec {
         !fileRefIter.hasNext()
 
         where:
-        prefix   | maxResults | numOfResults
-        null     | null       | 3
-        "listOp" | 1          | 3
-        "noOp"   | 3          | 0
+        prefix                                         | maxResults | numOfResults
+        null                                           | null       | 3
+        "directoryapitestslistfilesanddirectoriesargs" | 1          | 3
+        "noOp"                                         | 3          | 0
     }
 
     @Unroll

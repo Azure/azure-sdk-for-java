@@ -131,20 +131,20 @@ class FileServiceAsyncAPITests extends APISpec {
         when:
         def sharesVerifier = StepVerifier.create(primaryFileServiceAsyncClient.listShares(options))
         then:
-        sharesVerifier.assertNext {
+        sharesVerifier.thenConsumeWhile {
             assert FileTestHelper.assertSharesAreEqual(testShares.pop(), it, includeMetadata, includeSnapshot)
-        }.expectNextCount(limits - 1).verifyComplete()
+        }.verifyComplete()
         where:
-        options                                        | limits | includeMetadata | includeSnapshot
-        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter")                       | 3      | false           | true
+        options                                                                                          | limits | includeMetadata | includeSnapshot
+        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter")                        | 3      | false           | true
         new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter").includeMetadata(true)  | 3      | true            | true
         new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter").includeMetadata(false) | 3      | false           | true
-        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilterprefix")    | 2      | true            | true
+        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilterprefix")                  | 2      | true            | true
         new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter").maxResults(2)          | 2      | true            | true
     }
 
     @Unroll
-    def "List shares with snapshot and metadata"() {
+    def "List shares with args"() {
         given:
         LinkedList<ShareItem> testShares = new LinkedList<>()
         for (int i = 0; i < 3; i++) {
@@ -169,10 +169,10 @@ class FileServiceAsyncAPITests extends APISpec {
         }.expectNextCount(limits - 1).verifyComplete()
 
         where:
-        options                                                              | limits | includeMetadata | includeSnapshot
-        new ListSharesOptions()                                              | 3      | false           | false
-        new ListSharesOptions().includeMetadata(true)                        | 3      | true            | false
-        new ListSharesOptions().includeMetadata(true).includeSnapshots(true) | 4      | true            | true
+        options                                                                                                                             | limits | includeMetadata | includeSnapshot
+        new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithargs")                                              | 3      | false           | false
+        new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithargs").includeMetadata(true)                        | 3      | true            | false
+        new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithargs").includeMetadata(true).includeSnapshots(true) | 4      | true            | true
     }
 
     def "Set and get properties"() {

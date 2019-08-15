@@ -117,16 +117,15 @@ class FileServiceAPITests extends APISpec {
         }
         !shares.hasNext()
         where:
-        options                                        | limits | includeMetadata | includeSnapshot
-        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter")                         | 3      | false           | true
+        options                                                                                          | limits | includeMetadata | includeSnapshot
+        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter")                        | 3      | false           | true
         new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter").includeMetadata(true)  | 3      | true            | true
         new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter").includeMetadata(false) | 3      | false           | true
-        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilterprefix")       | 2      | true            | true
         new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter").maxResults(2)          | 2      | true            | true
     }
 
     @Unroll
-    def "List shares with snapshot and metadata"() {
+    def "List shares with args"() {
         given:
         LinkedList<ShareItem> testShares = new LinkedList<>()
         for (int i = 0; i < 3; i++) {
@@ -149,10 +148,10 @@ class FileServiceAPITests extends APISpec {
         !shares.hasNext()
 
         where:
-        options                                                              | limits | includeMetadata | includeSnapshot
-        new ListSharesOptions()                                              | 3      | false           | false
-        new ListSharesOptions().includeMetadata(true)                        | 3      | true            | false
-        new ListSharesOptions().includeMetadata(true).includeSnapshots(true) | 4      | true            | true
+        options                                                                                                                              | limits | includeMetadata | includeSnapshot
+        new ListSharesOptions().prefix("fileserviceapitestslistshareswithargs")                                               | 3      | false           | false
+        new ListSharesOptions().prefix("fileserviceapitestslistshareswithargs") .includeMetadata(true)                        | 3      | true            | false
+        new ListSharesOptions().prefix("fileserviceapitestslistshareswithargs") .includeMetadata(true).includeSnapshots(true) | 4      | true            | true
     }
 
     def "Set and get properties"() {

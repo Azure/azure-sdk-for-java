@@ -39,7 +39,7 @@ class APISpec extends Specification {
      */
     def setup() {
         String testName = reformat(specificationContext.currentIteration.getName())
-        String className = specificationContext.currentSpec.getFilename().split("\\.")[0]
+        String className = specificationContext.getCurrentSpec().getName()
         methodName = className + testName
         logger.info("Test Mode: {}, Name: {}", testMode, methodName)
         interceptorManager = new InterceptorManager(methodName, testMode)
@@ -56,7 +56,7 @@ class APISpec extends Specification {
             FileServiceClient cleanupFileServiceClient = new FileServiceClientBuilder()
                 .connectionString(connectionString)
                 .buildClient()
-            cleanupFileServiceClient.listShares(new ListSharesOptions().prefix(methodName)).each {
+            cleanupFileServiceClient.listShares(new ListSharesOptions().prefix(methodName.toLowerCase())).each {
                 cleanupFileServiceClient.deleteShare(it.name())
             }
         }
