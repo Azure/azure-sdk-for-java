@@ -17,13 +17,23 @@ import java.util.Set;
  * Common utils amount custom checks
  */
 public class Utils {
+    /*
+     * Set of modifiers that can not be combined with final b/c causes a violation
+     */
     private static final Set INVALID_FINAL_COMBINATION = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         TokenTypes.LITERAL_TRANSIENT,
-        TokenTypes.LITERAL_VOLATILE
+        TokenTypes.LITERAL_VOLATILE,
+        TokenTypes.LITERAL_DEFAULT,
+        TokenTypes.LITERAL_PROTECTED
     )));
 
+    /*
+     * Set of annotations that can not be combined with modifier 'final' b/c it would break serialization
+     */
     private static final Set INVALID_FINAL_ANNOTATIONS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-        "JsonProperty"
+        "JsonProperty",
+        "JsonAlias",
+        "JacksonXmlProperty"
     )));
 
     /**
