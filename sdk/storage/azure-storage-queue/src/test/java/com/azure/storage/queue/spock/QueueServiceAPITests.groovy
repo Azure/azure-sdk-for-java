@@ -127,8 +127,8 @@ class QueueServiceAPITests extends APISpec {
         }
         testQueues.size() == 0
         where:
-        options                                          | _
-        new QueuesSegmentOptions().prefix("queueserviceapitestslistqueues")       | _
+        options                                                                                   | _
+        new QueuesSegmentOptions().prefix("queueserviceapitestslistqueues")                       | _
         new QueuesSegmentOptions().prefix("queueserviceapitestslistqueues").maxResults(2)         | _
         new QueuesSegmentOptions().prefix("queueserviceapitestslistqueues").includeMetadata(true) | _
     }

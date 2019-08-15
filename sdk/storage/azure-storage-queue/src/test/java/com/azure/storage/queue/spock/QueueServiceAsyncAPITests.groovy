@@ -149,8 +149,8 @@ class QueueServiceAsyncAPITests extends APISpec {
             QueueTestHelper.assertQueuesAreEqual(it, testQueues.pop())
         }.verifyComplete()
         where:
-        options                                          | _
-        new QueuesSegmentOptions().prefix("queueserviceasyncapitestslistqueues")       | _
+        options                                                                                        | _
+        new QueuesSegmentOptions().prefix("queueserviceasyncapitestslistqueues")                       | _
         new QueuesSegmentOptions().prefix("queueserviceasyncapitestslistqueues").maxResults(2)         | _
         new QueuesSegmentOptions().prefix("queueserviceasyncapitestslistqueues").includeMetadata(true) | _
     }

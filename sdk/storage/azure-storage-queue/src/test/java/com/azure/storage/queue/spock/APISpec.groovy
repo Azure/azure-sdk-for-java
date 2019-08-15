@@ -11,7 +11,6 @@ import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.queue.QueueClientBuilder
 import com.azure.storage.queue.QueueServiceClient
 import com.azure.storage.queue.QueueServiceClientBuilder
-import com.azure.storage.queue.models.QueuesSegmentOptions
 import spock.lang.Specification
 
 class APISpec extends Specification {
@@ -30,7 +29,7 @@ class APISpec extends Specification {
     def methodName
     def testMode = getTestMode()
     def connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
-    
+
     /**
      * Setup the QueueServiceClient and QueueClient common used for the API tests.
      */
@@ -58,7 +57,7 @@ class APISpec extends Specification {
             }
         }
     }
-    
+
     /**
      * Test mode is initialized whenever test is executed. Helper method which is used to determine what to do under
      * certain test mode.
@@ -111,7 +110,7 @@ class APISpec extends Specification {
     }
 
     private def refactorName(String text) {
-        def fullName = text.split(" ").collect{it.capitalize()}.join("")
+        def fullName = text.split(" ").collect { it.capitalize() }.join("")
         def matcher = (fullName =~ /(.*)(\[)(.*)(\])/)
 
         if (!matcher.find()) {

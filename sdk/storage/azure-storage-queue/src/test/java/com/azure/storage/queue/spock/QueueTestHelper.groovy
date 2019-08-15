@@ -15,6 +15,7 @@ import com.azure.storage.queue.models.SignedIdentifier
 import com.azure.storage.queue.models.StorageErrorCode
 import com.azure.storage.queue.models.StorageErrorException
 import com.azure.storage.queue.models.StorageServiceProperties
+
 import java.time.Duration
 
 class QueueTestHelper {
@@ -25,11 +26,11 @@ class QueueTestHelper {
     static boolean assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode, String errMessage) {
         return assertExceptionStatusCode(throwable, expectedStatusCode) && assertExceptionErrorMessage(throwable, errMessage)
     }
-    
+
     static boolean assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode, StorageErrorCode errMessage) {
         return assertExceptionStatusCode(throwable, expectedStatusCode) && assertExceptionErrorMessage(throwable, errMessage)
     }
-    
+
     static boolean assertExceptionStatusCode(Throwable throwable, int expectedStatusCode) {
         if (!throwable instanceof StorageErrorException) {
             return false
@@ -37,11 +38,11 @@ class QueueTestHelper {
         StorageErrorException storageErrorException = (StorageErrorException) throwable
         return expectedStatusCode == storageErrorException.response().statusCode()
     }
-    
+
     static boolean assertExceptionErrorMessage(Throwable throwable, String errMessage) {
         return throwable instanceof StorageErrorException && throwable.getMessage().contains(errMessage)
     }
-    
+
     static boolean assertExceptionErrorMessage(Throwable throwable, StorageErrorCode errMessage) {
         return throwable instanceof StorageErrorException && throwable.getMessage().contains(errMessage.toString())
     }
@@ -49,7 +50,7 @@ class QueueTestHelper {
     static boolean assertQueuesAreEqual(QueueItem expected, QueueItem actual) {
         if (expected == null) {
             return actual == null
-        }  else {
+        } else {
             if (!Objects.equals(expected.name(), actual.name())) {
                 return false
             }
@@ -65,9 +66,9 @@ class QueueTestHelper {
             return actual == null
         } else {
             return assertMetricsAreEqual(expected.hourMetrics(), actual.hourMetrics()) &&
-            assertMetricsAreEqual(expected.minuteMetrics(), actual.minuteMetrics()) &&
-            assertLoggingAreEqual(expected.logging(), actual.logging()) &&
-            assertCorsAreEqual(expected.cors(), actual.cors())
+                assertMetricsAreEqual(expected.minuteMetrics(), actual.minuteMetrics()) &&
+                assertLoggingAreEqual(expected.logging(), actual.logging()) &&
+                assertCorsAreEqual(expected.cors(), actual.cors())
         }
     }
 
@@ -76,9 +77,9 @@ class QueueTestHelper {
             return actual == null
         } else {
             return Objects.equals(expected.enabled(), actual.enabled()) &&
-                    Objects.equals(expected.includeAPIs(), actual.includeAPIs()) &&
-                    Objects.equals(expected.version(), actual.version())
-                    assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy())
+                Objects.equals(expected.includeAPIs(), actual.includeAPIs()) &&
+                Objects.equals(expected.version(), actual.version())
+            assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy())
         }
     }
 
@@ -87,10 +88,10 @@ class QueueTestHelper {
             return actual == null
         } else {
             return Objects.equals(expected.read(), actual.read()) &&
-                    Objects.equals(expected.write(), actual.write()) &&
-                    Objects.equals(expected.delete(), actual.delete()) &&
-                    Objects.equals(expected.version(), actual.version())
-                    assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy())
+                Objects.equals(expected.write(), actual.write()) &&
+                Objects.equals(expected.delete(), actual.delete()) &&
+                Objects.equals(expected.version(), actual.version())
+            assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy())
         }
     }
 
@@ -138,9 +139,9 @@ class QueueTestHelper {
             return actual.accessPolicy() == null
         }
         return Objects.equals(expected.id(), actual.id()) &&
-                Objects.equals(expected.accessPolicy().permission(), actual.accessPolicy().permission()) &&
-                Objects.equals(expected.accessPolicy().start(), actual.accessPolicy().start()) &&
-                Objects.equals(expected.accessPolicy().expiry(), actual.accessPolicy().expiry())
+            Objects.equals(expected.accessPolicy().permission(), actual.accessPolicy().permission()) &&
+            Objects.equals(expected.accessPolicy().start(), actual.accessPolicy().start()) &&
+            Objects.equals(expected.accessPolicy().expiry(), actual.accessPolicy().expiry())
     }
 
     static void sleepInRecord(Duration time) {
@@ -152,7 +153,7 @@ class QueueTestHelper {
 
     private static void sleep(Duration time) {
         try {
-            Thread.sleep(time.toMillis());
+            Thread.sleep(time.toMillis())
         } catch (InterruptedException ex) {
             // Ignore the error
         }
