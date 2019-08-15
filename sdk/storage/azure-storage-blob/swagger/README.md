@@ -229,6 +229,15 @@ directive:
     }
 ```
 
+### /{containerName}/{blob}?comp=appendblock
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=appendblock"]
+  transform: >
+    $.put.consumes = ["application/octet-stream"];
+```
+
 ### /{containerName}/{blob}?BlockBlob
 ``` yaml
 directive:
