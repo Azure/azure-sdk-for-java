@@ -30,11 +30,11 @@ These preview libraries can be easily identified by their folder, package, and n
 
 The libraries released in the July 2019 preview:
 - [App Configuration](sdk/appconfiguration/azure-data-appconfiguration/README.md)
-- [Event Hubs](sdk/eventhubs/azure-eventhubs/README.md)
+- [Event Hubs](sdk/eventhubs/azure-messaging-eventhubs/README.md)
 - [Identity](sdk/identity/azure-identity/README.md)
 - [Key Vault Keys](sdk/keyvault/azure-keyvault-keys/README.md)
 - [Key Vault Secrets](sdk/keyvault/client/azure-keyvault-secrets/README.md)
-- [Storage Blobs](storage/client/README.md)
+- [Storage Blobs](sdk/storage/azure-storage-blob/README.md)
 
 >NOTE: If you need to ensure your code is ready for production, use one of the stable libraries.
 

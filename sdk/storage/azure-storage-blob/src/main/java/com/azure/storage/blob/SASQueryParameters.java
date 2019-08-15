@@ -4,12 +4,14 @@
 package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.Constants;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.Utility;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.function.Function;
-
-import static com.azure.storage.blob.Utility.safeURLEncode;
 
 /**
  * Represents the components that make up an Azure Storage SAS' query parameters. This type is not constructed directly
@@ -346,7 +348,7 @@ public final class SASQueryParameters {
             if (sb.length() != 0) {
                 sb.append('&');
             }
-            sb.append(safeURLEncode(param)).append('=').append(safeURLEncode(value.toString()));
+            sb.append(Utility.urlEncode(param)).append('=').append(Utility.urlEncode(value.toString()));
         }
     }
 

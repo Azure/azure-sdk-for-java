@@ -7,7 +7,7 @@ storage is optimized for storing massive amounts of unstructured data.
 Unstructured data is data that does not adhere to a particular data model or
 definition, such as text or binary data.
 
-[Source code][source] | [Package (Maven)][package] | [API reference documentation][docs] | [REST API documentation][rest_docs] | [Product documentation][product_docs]
+[Source code][source] | [API reference documentation][docs] | [REST API documentation][rest_docs] | [Product documentation][product_docs] | [Samples][samples]
 
 ## Getting started
 
@@ -38,13 +38,13 @@ az group create \
 
 ### Authenticate the client
 
-In order to interact with the Storage service (Blob, Queue, Message, MessageId, File) you'll need to create an instance of the Service Client class. 
+In order to interact with the Storage service (Blob, Queue, Message, MessageId, File) you'll need to create an instance of the Service Client class.
 To make this possible you'll need the Account SAS (shared access signature) string of Storage account. Learn more at [SAS Token][sas_token]
 
 #### Get credentials
 
 - **SAS Token**
- 
+
 a. Use the [Azure CLI][azure_cli] snippet below to get the SAS token from the Storage account.
 
 ```Powershell
@@ -125,7 +125,7 @@ Create a ContainerClient if a BlobServiceClient exists.
 ContainerClient containerClient = blobServiceClient.getContainerClient("mycontainer");
 ```
 
-or 
+or
 
 Create the ContainerClient from the builder [`sasToken`](#get-credentials) generated above.
 ```java
@@ -143,7 +143,7 @@ Create a BlobClient if container client exists.
 BlobClient blobClient = containerClient.getBlobClient("myblob");
 ```
 
-or 
+or
 
 Create the BlobClient from the builder [`sasToken`](#get-credentials) generated above.
 ```java
@@ -162,7 +162,7 @@ Create a container from a BlobServiceClient.
 blobServiceClient.createContainer("mycontainer");
 ```
 
-or 
+or
 
 Create a container using ContainerClient.
 ```java
@@ -195,7 +195,7 @@ blobClient.uploadFromFile("local-file.jpg");
 Download blob to output stream using BlobClient.
 
 ```java
-try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream("downloaded-file.jpg")) {
+try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
     blobClient.download(outputStream);
 }
 ```
@@ -230,7 +230,7 @@ BlobServiceClient storageClient = BlobServiceClient.storageClientBuilder()
 
 ## Troubleshooting
 
-When interacts with blobs using this Java client library, errors returned by the service correspond to the same HTTP 
+When interacts with blobs using this Java client library, errors returned by the service correspond to the same HTTP
 status codes returned for [REST API][error_codes] requests. For example, if you try to retrieve a container or blob that
 doesn't exist in your Storage Account, a `404` error is returned, indicating `Not Found`.
 
@@ -238,12 +238,12 @@ doesn't exist in your Storage Account, a `404` error is returned, indicating `No
 
 Get started with our [Blob samples][samples]:
 
-1. [Basic Examples](src/samples/java/BasicExample.java): Create storage, container, blob clients, Upload, download, and list blobs.
-1. [File Transfer Examples](src/samples/java/FileTransferExample.java): Upload and download a large file through blobs.
-1. [Storage Error Examples](src/samples/java/StorageErrorHandlingExample.java): Handle the exceptions from storage blob service side.
-1. [List Container Examples](src/samples/java/ListContainersExample.java): Create, list and delete containers.
-1. [Set metadata and HTTPHeaders Examples](src/samples/java/SetMetadataAndHTTPHeadersExample.java): Set metadata for container and blob, and set HTTPHeaders for blob.
-1. [Azure Identity Examples](src/samples/java/AzureIdentityExample.java): Use DefaultAzureCredential to do the authentication.
+1. [Basic Examples][samples_basic]: Create storage, container, blob clients, Upload, download, and list blobs.
+1. [File Transfer Examples][samples_file_transfer]: Upload and download a large file through blobs.
+1. [Storage Error Examples][samples_storage_error]: Handle the exceptions from storage blob service side.
+1. [List Container Examples][samples_list_containers]: Create, list and delete containers.
+1. [Set metadata and HTTPHeaders Examples][samples_metadata]: Set metadata for container and blob, and set HTTPHeaders for blob.
+1. [Azure Identity Examples][samples_identity]: Use DefaultAzureCredential to do the authentication.
 
 ## Contributing
 
@@ -256,24 +256,29 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2FAzure.Storage.Blobs%2FREADME.png)
 
 <!-- LINKS -->
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/storage/client/blob/src
-[package]: https://repo1.maven.org/maven2/com/azure/azure-storage-blob/12.0.0-preview.1/
+[source]: src
 [docs]: http://azure.github.io/azure-sdk-for-java/
-[rest_docs]: https://docs.microsoft.com/en-us/rest/api/storageservices/blob-service-rest-api
-[product_docs]: https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-overview
-[sas_token]: https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1
-[jdk]: https://docs.microsoft.com/en-us/java/azure/java-supported-jdk-runtime?view=azure-java-stable
+[rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
+[product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
+[sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+[jdk]: https://docs.microsoft.com/java/azure/java-supported-jdk-runtime?view=azure-java-stable
 [maven]: https://maven.apache.org/
-[azure_subscription]: https://azure.microsoft.com/en-us/free/
-[storage_account]: https://docs.microsoft.com/en-us/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
-[storage_account_create_ps]: https://docs.microsoft.com/en-us/azure/storage/common/storage-quickstart-create-account?tabs=azure-powershell
-[storage_account_create_cli]: https://docs.microsoft.com/en-us/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
-[storage_account_create_portal]: https://docs.microsoft.com/en-us/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[azure_subscription]: https://azure.microsoft.com/free/
+[storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[storage_account_create_ps]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-powershell
+[storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
+[storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_sub]: https://azure.microsoft.com/free/
 [identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md
-[error_codes]: https://docs.microsoft.com/en-us/rest/api/storageservices/blob-service-error-codes
-[samples]: ./src/samples/
+[error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
+[samples]: src/samples
+[samples_basic]: src/samples/java/com/azure/storage/blob/BasicExample.java
+[samples_file_transfer]: src/samples/java/com/azure/storage/blob/FileTransferExample.java
+[samples_storage_error]: src/samples/java/com/azure/storage/blob/StorageErrorHandlingExample.java
+[samples_list_containers]: src/samples/java/com/azure/storage/blob/ListContainersExample.java
+[samples_metadata]: src/samples/java/com/azure/storage/blob/SetMetadataAndHTTPHeadersExample.java
+[samples_identity]: src/samples/java/com/azure/storage/blob/AzureIdentityExample.java
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
