@@ -244,7 +244,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
      * @param nextLink next page link
      * @return Mono<PagedResponse < SearchResult>> next page response with results
      */
-    public Mono<PagedResponse<SearchResult>> searchPostNextWithRestResponseAsync(String nextLink) {
+    private Mono<PagedResponse<SearchResult>> searchPostNextWithRestResponseAsync(String nextLink) {
         if (nextLink == null || nextLink.isEmpty()) {
             return Mono.empty();
         }
