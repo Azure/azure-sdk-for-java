@@ -13,8 +13,35 @@ import java.util.Map;
 
 public class SearchPagedResponse extends PagedResponseBase<String, SearchResult> {
 
+    /**
+     * Get facets
+     * @return  Map<String, List<FacetResult>>
+     */
+    public Map<String, List<FacetResult>> getFacets() {
+        return facets;
+    }
+
     private final Map<String, List<FacetResult>> facets;
+
+    /**
+     * Get count
+     * @return Long
+     */
+    public Long getCount() {
+        return count;
+    }
+
     private final Long count;
+
+    /**
+     * Get coverage
+     * @return Double
+     */
+    public Double getCoverage() {
+        return coverage;
+    }
+
+    private final Double coverage;
 
     /**
      * Constructor
@@ -30,6 +57,7 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
 
         this.facets = documentSearchResponse.value().facets();
         this.count = documentSearchResponse.value().count();
+        this.coverage = documentSearchResponse.value().coverage();
     }
 
 }
