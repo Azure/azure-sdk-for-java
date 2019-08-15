@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.tools.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
@@ -39,7 +42,7 @@ public class Utils {
         Optional<DetailAST> illegalCombination = TokenUtil.findFirstTokenByPredicate(modifiers, (node) -> {
             final int type = node.getType();
             return INVALID_FINAL_COMBINATION.contains(node.getType()) || (TokenTypes.ANNOTATION == type
-            && INVALID_FINAL_ANNOTATIONS.contains(node.findFirstToken(TokenTypes.IDENT).getText()));
+                && INVALID_FINAL_ANNOTATIONS.contains(node.findFirstToken(TokenTypes.IDENT).getText()));
         });
 
         return illegalCombination.isPresent();
