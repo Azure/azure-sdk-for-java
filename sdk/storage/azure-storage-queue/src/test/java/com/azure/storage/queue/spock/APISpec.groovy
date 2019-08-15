@@ -36,7 +36,7 @@ class APISpec extends Specification {
      */
     def setup() {
         String testName = refactorName(specificationContext.currentIteration.getName())
-        String className = specificationContext.currentSpec.getFilename().split("\\.")[0]
+        String className = specificationContext.getCurrentSpec().getName()
         methodName = className + testName
         logger.info("Test Mode: {}, Name: {}", testMode, methodName)
         interceptorManager = new InterceptorManager(methodName, testMode)
