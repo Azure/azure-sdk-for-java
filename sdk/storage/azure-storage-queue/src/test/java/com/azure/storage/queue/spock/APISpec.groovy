@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.queue.QueueClientBuilder
 import com.azure.storage.queue.QueueServiceClient
 import com.azure.storage.queue.QueueServiceClientBuilder
+import com.azure.storage.queue.models.QueuesSegmentOptions
 import spock.lang.Specification
 
 class APISpec extends Specification {
@@ -47,12 +48,13 @@ class APISpec extends Specification {
      * Clean up the test queues and messages for the account.
      */
     def cleanup() {
+
         interceptorManager.close()
         if (getTestMode() == TestMode.RECORD) {
             QueueServiceClient cleanupQueueServiceClient = new QueueServiceClientBuilder()
                 .connectionString(connectionString)
                 .buildClient()
-            cleanupQueueServiceClient.listQueues().each {
+            cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().prefix(methodName.toLowerCase())).each {
                 queueItem -> cleanupQueueServiceClient.deleteQueue(queueItem.name())
             }
         }
