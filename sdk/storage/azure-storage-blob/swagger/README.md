@@ -661,8 +661,18 @@ directive:
       $.properties.Metadata.additionalProperties = { "type": "string" };
       delete $.properties.Metadata.$ref;
       $.properties.VersionId = { "type": "string" };
-      $.properties.IsPrefix = { "type": "boolean" };
     }
+    $.properties.IsPrefix = { "type": "boolean" };
+```
+
+### BlobMetadata
+Deleting out Encryption until https://github.com/Azure/azure-sdk-for-java/issues/5000 is determined.
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.BlobMetadata
+  transform: >
+    delete $.properties
 ```
 
 ### BlobProperties

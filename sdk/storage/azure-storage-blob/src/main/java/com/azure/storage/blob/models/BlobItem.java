@@ -7,6 +7,7 @@ package com.azure.storage.blob.models;
 import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.Map;
 
 /**
  * An Azure Storage blob.
@@ -48,13 +49,19 @@ public final class BlobItem {
      * The metadata property.
      */
     @JsonProperty(value = "Metadata")
-    private BlobMetadata metadata;
+    private Map<String, String> metadata;
 
     /*
      * The tags property.
      */
     @JsonProperty(value = "Tags")
     private BlobTags tags;
+
+    /*
+     * The isPrefix property.
+     */
+    @JsonProperty(value = "IsPrefix")
+    private Boolean isPrefix;
 
     /**
      * Get the name property: The name property.
@@ -161,7 +168,7 @@ public final class BlobItem {
      *
      * @return the metadata value.
      */
-    public BlobMetadata metadata() {
+    public Map<String, String> metadata() {
         return this.metadata;
     }
 
@@ -171,7 +178,7 @@ public final class BlobItem {
      * @param metadata the metadata value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem metadata(BlobMetadata metadata) {
+    public BlobItem metadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -193,6 +200,26 @@ public final class BlobItem {
      */
     public BlobItem tags(BlobTags tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the isPrefix property: The isPrefix property.
+     *
+     * @return the isPrefix value.
+     */
+    public Boolean isPrefix() {
+        return this.isPrefix;
+    }
+
+    /**
+     * Set the isPrefix property: The isPrefix property.
+     *
+     * @param isPrefix the isPrefix value to set.
+     * @return the BlobItem object itself.
+     */
+    public BlobItem isPrefix(Boolean isPrefix) {
+        this.isPrefix = isPrefix;
         return this;
     }
 }
