@@ -72,8 +72,11 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
                         return response;
                     }
 
-                    authenticatedRequestPair = buildAuthenticatedRequest(originalRequest, response);
-                    response.close();
+                    try {
+                        authenticatedRequestPair = buildAuthenticatedRequest(originalRequest, response);
+                    } finally {
+                        response.close();
+                    }
                 }
 
                 response = chain.proceed(authenticatedRequestPair.getLeft());
