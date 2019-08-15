@@ -159,8 +159,7 @@ public class JacksonAdapter implements SerializerAdapter {
                 return (T) serializer().readValue(value, javaType);
             }
         } catch (JsonParseException jpe) {
-            logger.logAndThrow(new MalformedValueException(jpe.getMessage(), jpe));
-            return null;
+            throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));
         }
     }
 

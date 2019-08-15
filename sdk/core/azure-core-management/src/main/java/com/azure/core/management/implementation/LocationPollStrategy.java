@@ -94,8 +94,7 @@ public final class LocationPollStrategy extends PollStrategy {
                             try {
                                 data.locationUrl = new URL(newLocationUrl);
                             } catch (MalformedURLException mfue) {
-                                logger.logAndThrow(Exceptions.propagate(mfue));
-                                return null;
+                                throw logger.logExceptionAsError(Exceptions.propagate(mfue));
                             }
                         }
                     } else {

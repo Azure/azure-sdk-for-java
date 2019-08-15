@@ -111,8 +111,7 @@ public final class SecretClientBuilder {
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            logger.logAndThrow(new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
-            return null;
+            throw logger.logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
         }
 
         if (pipeline != null) {
@@ -120,8 +119,7 @@ public final class SecretClientBuilder {
         }
 
         if (credential == null) {
-            logger.logAndThrow(new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.CREDENTIAL_REQUIRED)));
-            return null;
+            throw logger.logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.CREDENTIAL_REQUIRED)));
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -153,8 +151,7 @@ public final class SecretClientBuilder {
         try {
             this.endpoint = new URL(endpoint);
         } catch (MalformedURLException e) {
-            logger.logAndThrow(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed."));
-            return null;
+            throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed."));
         }
         return this;
     }

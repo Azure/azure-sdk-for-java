@@ -68,8 +68,7 @@ public class CompletedPollStrategy extends PollStrategy {
 
     @Override
     public HttpRequest createPollRequest() {
-        logger.logAndThrow(new UnsupportedOperationException());
-        return null;
+        throw logger.logExceptionAsError(new UnsupportedOperationException());
     }
 
     @Override

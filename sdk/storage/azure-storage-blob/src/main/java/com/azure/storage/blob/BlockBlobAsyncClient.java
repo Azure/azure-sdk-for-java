@@ -9,6 +9,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -66,6 +67,8 @@ import static com.azure.storage.blob.PostProcessor.postProcessResponse;
  * object through {@link Mono#toFuture()}.
  */
 public final class BlockBlobAsyncClient extends BlobAsyncClient {
+    private final ClientLogger logger = new ClientLogger(BlockBlobAsyncClient.class);
+
     static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
     static final int BLOB_MAX_UPLOAD_BLOCK_SIZE = 100 * Constants.MB;
 
@@ -183,7 +186,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
     public Mono<Void> uploadFromFile(String filePath, Integer blockSize, BlobHTTPHeaders headers, Metadata metadata,
                                      BlobAccessConditions accessConditions) {
         if (blockSize < 0 || blockSize > BLOB_MAX_UPLOAD_BLOCK_SIZE) {
-            throw new IllegalArgumentException("Block size should not exceed 100MB");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Block size should not exceed 100MB"));
         }
 
         return Mono.using(() -> uploadFileResourceSupplier(filePath),

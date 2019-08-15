@@ -132,14 +132,12 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
 
             return channelMono.flatMap(x -> x.sendWithAck(request, provider.getReactorDispatcher())).map(message -> {
                 if (!(message.getBody() instanceof AmqpValue)) {
-                    logger.logAndThrow(new IllegalArgumentException("Expected message.getBody() to be AmqpValue, but is: " + message.getBody()));
-                    return null;
+                    throw logger.logExceptionAsError(new IllegalArgumentException("Expected message.getBody() to be AmqpValue, but is: " + message.getBody()));
                 }
 
                 AmqpValue body = (AmqpValue) message.getBody();
                 if (!(body.getValue() instanceof Map)) {
-                    logger.logAndThrow(new IllegalArgumentException("Expected message.getBody().getValue() to be of type Map"));
-                    return null;
+                    throw logger.logExceptionAsError(new IllegalArgumentException("Expected message.getBody().getValue() to be of type Map"));
                 }
 
                 Map<?, ?> map = (Map<?, ?>) body.getValue();

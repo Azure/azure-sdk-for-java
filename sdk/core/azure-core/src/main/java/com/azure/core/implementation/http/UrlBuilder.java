@@ -194,8 +194,7 @@ public final class UrlBuilder {
                             if (nameValue.length == 2) {
                                 setQueryParameter(nameValue[0], nameValue[1]);
                             } else {
-                                logger.logAndThrow(new IllegalArgumentException("Malformed query entry: " + entry));
-                                return null;
+                                throw logger.logExceptionAsError(new IllegalArgumentException("Malformed query entry: " + entry));
                             }
                         }
                     }

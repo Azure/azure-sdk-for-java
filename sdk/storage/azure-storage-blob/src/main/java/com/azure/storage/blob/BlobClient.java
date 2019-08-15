@@ -6,6 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -51,6 +52,7 @@ import java.time.OffsetDateTime;
  */
 public class BlobClient {
     private final BlobAsyncClient blobAsyncClient;
+    private final ClientLogger logger = new ClientLogger(BlobClient.class);
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
@@ -355,7 +357,7 @@ public class BlobClient {
                     try {
                         stream.write(bf.array());
                     } catch (IOException e) {
-                        throw new UncheckedIOException(e);
+                        throw logger.logExceptionAsError(new UncheckedIOException(e));
                     }
                 }).map(bf -> res))
             .last()

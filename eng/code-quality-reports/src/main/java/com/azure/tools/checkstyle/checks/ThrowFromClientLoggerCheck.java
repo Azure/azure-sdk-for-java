@@ -12,11 +12,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- * To throw an exception,
- * <ol>
- *   <li>Must do it through a 'logger.logAndThrow', rather than by directly calling 'throw exception'</li>
- *   <li>Always call return after calling 'logger.logAndThrow'.</li>
- * </ol>
+ * To throw an exception, Must throw it through a 'logger.logExceptionAsError', rather than by directly calling 'throw exception'</li>.
  *
  * Skip check if throwing exception from
  * <ol>
@@ -26,12 +22,16 @@ import java.util.Deque;
  * </ol>
  */
 public class ThrowFromClientLoggerCheck extends AbstractCheck {
-    private static final String LOGGER_LOG_AND_THROW = "logger.logAndThrow";
+    private static final String LOGGER_LOG_EXCEPTION_AS_ERROR = "logger.logExceptionAsError";
+    private static final String LOGGER_LOG_EXCEPTION_AS_WARNING = "logger.logExceptionAsWarning";
+    private static final String THROW_lOGGER_EXCEPTION_MESSAGE = "Directly throwing an exception is disallowed. Must throw through either ''%s'' or ''%s''.";
 
     // A container stores the static status of class, skip this ThrowFromClientLoggerCheck if the class is static
     private final Deque<Boolean> classStaticDeque = new ArrayDeque<>();
     // A container stores the static status of method, skip this ThrowFromClientLoggerCheck if the method is static
     private final Deque<Boolean> methodStaticDeque = new ArrayDeque<>();
+    // The variable is used to indicate if current node is still inside of constructor.
+    private boolean isInConstructor = false;
 
     @Override
     public int[] getDefaultTokens() {
@@ -47,9 +47,9 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
     public int[] getRequiredTokens() {
         return new int[] {
             TokenTypes.CLASS_DEF,
+            TokenTypes.CTOR_DEF,
             TokenTypes.LITERAL_THROW,
-            TokenTypes.METHOD_DEF,
-            TokenTypes.METHOD_CALL
+            TokenTypes.METHOD_DEF
         };
     }
 
@@ -58,6 +58,9 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
         switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
                 classStaticDeque.pop();
+                break;
+            case TokenTypes.CTOR_DEF:
+                isInConstructor = false;
                 break;
             case TokenTypes.METHOD_DEF:
                 methodStaticDeque.pop();
@@ -75,36 +78,28 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
                 DetailAST modifiersToken = token.findFirstToken(TokenTypes.MODIFIERS);
                 classStaticDeque.addLast(modifiersToken.branchContains(TokenTypes.LITERAL_STATIC));
                 break;
+            case TokenTypes.CTOR_DEF:
+                isInConstructor = true;
+                break;
             case TokenTypes.METHOD_DEF:
                 DetailAST methodModifiersToken = token.findFirstToken(TokenTypes.MODIFIERS);
                 methodStaticDeque.addLast(methodModifiersToken.branchContains(TokenTypes.LITERAL_STATIC));
                 break;
             case TokenTypes.LITERAL_THROW:
-                if (classStaticDeque.isEmpty() || methodStaticDeque.isEmpty()
-                    || classStaticDeque.peekLast() || methodStaticDeque.peekLast()) {
+                // Skip check if the throw exception from static class, constructor or static method
+                if (classStaticDeque.isEmpty() || classStaticDeque.peekLast() || isInConstructor
+                    || methodStaticDeque.isEmpty() || methodStaticDeque.peekLast()) {
                     return;
                 }
-                log(token, String.format("Directly throwing an exception is disallowed. Replace the throw statement with" +
-                    " a call to ''%s''.", LOGGER_LOG_AND_THROW));
-                break;
-            case TokenTypes.METHOD_CALL:
-                String methodCall = FullIdent.createFullIdent(token.findFirstToken(TokenTypes.DOT)).getText();
-                if (!LOGGER_LOG_AND_THROW.equals(methodCall)) {
-                    return;
-                }
-
-                if (classStaticDeque.isEmpty() || methodStaticDeque.isEmpty() ||
-                    classStaticDeque.peekLast() || methodStaticDeque.peekLast()) {
+                DetailAST methodCallToken = token.findFirstToken(TokenTypes.EXPR).findFirstToken(TokenTypes.METHOD_CALL);
+                if (methodCallToken == null) {
+                    log(token, String.format(THROW_lOGGER_EXCEPTION_MESSAGE, LOGGER_LOG_EXCEPTION_AS_ERROR, LOGGER_LOG_EXCEPTION_AS_WARNING));
                     return;
                 }
 
-                DetailAST exprToken = token.getParent();
-                // Checking immediately return after 'logger.logAndThrow' statement. Any subsequence call of getNextSibling()
-                // returns null implies there is no return statement immediately after 'logger.logAndThrow'.
-                if (exprToken.getNextSibling() == null
-                    || exprToken.getNextSibling().getNextSibling() == null
-                    || exprToken.getNextSibling().getNextSibling().getType() != TokenTypes.LITERAL_RETURN) {
-                    log(token, String.format("Always call ''return'' after calling ''%s''.", LOGGER_LOG_AND_THROW));
+                String methodCallName = FullIdent.createFullIdent(methodCallToken.findFirstToken(TokenTypes.DOT)).getText();
+                if (!LOGGER_LOG_EXCEPTION_AS_ERROR.equals(methodCallName) && !LOGGER_LOG_EXCEPTION_AS_WARNING.equals(methodCallName)) {
+                    log(token, String.format(THROW_lOGGER_EXCEPTION_MESSAGE, LOGGER_LOG_EXCEPTION_AS_ERROR, LOGGER_LOG_EXCEPTION_AS_WARNING));
                 }
                 break;
             default:

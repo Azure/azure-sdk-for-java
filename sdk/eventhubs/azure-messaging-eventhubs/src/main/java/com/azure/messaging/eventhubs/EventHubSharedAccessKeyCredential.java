@@ -90,8 +90,7 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
         if (scopes.length != 1) {
-            logger.logAndThrow(new IllegalArgumentException("'scopes' should only contain a single argument that is the token audience or resource name."));
-            return null;
+            throw logger.logExceptionAsError(new IllegalArgumentException("'scopes' should only contain a single argument that is the token audience or resource name."));
         }
 
         return Mono.fromCallable(() -> generateSharedAccessSignature(scopes[0]));
@@ -99,8 +98,7 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
 
     private AccessToken generateSharedAccessSignature(final String resource) throws UnsupportedEncodingException {
         if (ImplUtils.isNullOrEmpty(resource)) {
-            logger.logAndThrow(new IllegalArgumentException("resource cannot be empty"));
-            return null;
+            throw logger.logExceptionAsError(new IllegalArgumentException("resource cannot be empty"));
         }
 
         final String utf8Encoding = UTF_8.name();

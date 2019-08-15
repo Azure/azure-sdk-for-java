@@ -59,8 +59,7 @@ public class ReactorProvider {
         Objects.requireNonNull(globalHandler);
 
         if (maxFrameSize <= 0) {
-            logger.logAndThrow(new IllegalArgumentException("'maxFrameSize' must be a positive number."));
-            return null;
+            throw logger.logExceptionAsError(new IllegalArgumentException("'maxFrameSize' must be a positive number."));
         }
 
         final ReactorOptions reactorOptions = new ReactorOptions();

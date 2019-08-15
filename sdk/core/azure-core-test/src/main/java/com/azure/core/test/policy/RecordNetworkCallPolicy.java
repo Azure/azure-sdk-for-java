@@ -127,8 +127,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
                     content = new String(output.toByteArray(), StandardCharsets.UTF_8);
                 } catch (IOException e) {
-                    logger.logAndThrow(Exceptions.propagate(e));
-                    return null;
+                    throw logger.logExceptionAsError(Exceptions.propagate(e));
                 }
 
                 responseData.remove("content-encoding");

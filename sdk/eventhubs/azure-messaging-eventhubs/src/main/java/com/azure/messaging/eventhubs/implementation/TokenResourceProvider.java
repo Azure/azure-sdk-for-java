@@ -34,9 +34,8 @@ class TokenResourceProvider {
             case SHARED_ACCESS_SIGNATURE:
                 return String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, host, resource);
             default:
-                logger.logAndThrow(new IllegalArgumentException(String.format(Locale.US,
+                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
                     "'%s' is not supported authorization type for token audience.", authorizationType)));
-                return null;
         }
     }
 }

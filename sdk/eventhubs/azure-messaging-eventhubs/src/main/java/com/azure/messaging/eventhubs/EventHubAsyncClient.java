@@ -248,10 +248,10 @@ public class EventHubAsyncClient implements Closeable {
         Objects.requireNonNull(partitionId);
 
         if (ImplUtils.isNullOrEmpty(consumerGroup)) {
-            throw new IllegalArgumentException("'consumerGroup' cannot be an empty string.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("'consumerGroup' cannot be an empty string."));
         }
         if (ImplUtils.isNullOrEmpty(partitionId)) {
-            throw new IllegalArgumentException("'partitionId' cannot be an empty string.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("'partitionId' cannot be an empty string."));
         }
 
         final EventHubConsumerOptions clonedOptions = options.clone();
@@ -293,8 +293,8 @@ public class EventHubAsyncClient implements Closeable {
                     connection.close();
                 }
             } catch (IOException exception) {
-                throw new AmqpException(false, "Unable to close connection to service", exception,
-                    new ErrorContext(connectionOptions.host()));
+                throw logger.logExceptionAsError(new AmqpException(false, "Unable to close connection to service", exception,
+                    new ErrorContext(connectionOptions.host())));
             }
         }
     }

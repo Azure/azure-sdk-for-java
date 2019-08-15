@@ -450,14 +450,11 @@ public class JsonWebKey {
         try {
             return mapper.writeValueAsString(this);
         } catch (JsonGenerationException e) {
-            logger.logAndThrow(new IllegalStateException(e));
-            return "";
+            throw logger.logExceptionAsError(new IllegalStateException(e));
         } catch (JsonMappingException e) {
-            logger.logAndThrow(new IllegalStateException(e));
-            return "";
+            throw logger.logExceptionAsError(new IllegalStateException(e));
         } catch (IOException e) {
-            logger.logAndThrow(new IllegalStateException(e));
-            return "";
+            throw logger.logExceptionAsError(new IllegalStateException(e));
         }
     }
 
@@ -564,8 +561,7 @@ public class JsonWebKey {
 
             return factory.generatePublic(publicKeySpec);
         } catch (GeneralSecurityException e) {
-            logger.logAndThrow(new IllegalStateException(e));
-            return null;
+            throw logger.logExceptionAsError(new IllegalStateException(e));
         }
     }
 
@@ -584,8 +580,7 @@ public class JsonWebKey {
 
             return factory.generatePrivate(privateKeySpec);
         } catch (GeneralSecurityException e) {
-            logger.logAndThrow(new IllegalStateException(e));
-            return null;
+            throw logger.logExceptionAsError(new IllegalStateException(e));
         }
     }
 
@@ -617,8 +612,7 @@ public class JsonWebKey {
      */
     private void checkRSACompatible() {
         if (!KeyType.RSA.equals(kty) && !KeyType.RSA_HSM.equals(kty)) {
-            logger.logAndThrow(new UnsupportedOperationException("Not an RSA key"));
-            return;
+            throw logger.logExceptionAsError(new UnsupportedOperationException("Not an RSA key"));
         }
     }
 
@@ -754,8 +748,7 @@ public class JsonWebKey {
         }
 
         if (!KeyType.EC.equals(kty) && !KeyType.EC_HSM.equals(kty)) {
-            logger.logAndThrow(new IllegalArgumentException("Not an EC key."));
-            return null;
+            throw logger.logExceptionAsError(new IllegalArgumentException("Not an EC key."));
         }
 
         try {
@@ -782,8 +775,7 @@ public class JsonWebKey {
 
             return realKeyPair;
         } catch (GeneralSecurityException e) {
-            logger.logAndThrow(new IllegalStateException(e));
-            return null;
+            throw logger.logExceptionAsError(new IllegalStateException(e));
         }
     }
 

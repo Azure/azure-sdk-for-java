@@ -53,8 +53,7 @@ public class CookiePolicy implements HttpPipelinePolicy {
                 try {
                     cookies.put(uri, responseHeaders);
                 } catch (IOException e) {
-                    logger.logAndThrow(Exceptions.propagate(e));
-                    return null;
+                    throw logger.logExceptionAsError(Exceptions.propagate(e));
                 }
                 return httpResponse;
             });

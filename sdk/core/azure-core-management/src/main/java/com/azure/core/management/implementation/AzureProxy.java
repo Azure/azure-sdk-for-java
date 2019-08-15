@@ -228,8 +228,7 @@ public final class AzureProxy extends RestProxy {
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)) {
             final Type operationStatusType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
             if (!TypeUtil.isTypeOrSubTypeOf(operationStatusType, OperationStatus.class)) {
-                logger.logAndThrow(new InvalidReturnTypeException("AzureProxy only supports swagger interface methods that return Flux (such as " + methodParser.fullyQualifiedMethodName() + "()) if the Flux's inner type that is OperationStatus (not " + returnType.toString() + ")."));
-                return null;
+                throw logger.logExceptionAsError(new InvalidReturnTypeException("AzureProxy only supports swagger interface methods that return Flux (such as " + methodParser.fullyQualifiedMethodName() + "()) if the Flux's inner type that is OperationStatus (not " + returnType.toString() + ")."));
             } else {
                 // Get ResultTypeT in OperationStatus<ResultTypeT>
                 final Type operationStatusResultType = ((ParameterizedType) operationStatusType).getActualTypeArguments()[0];
@@ -260,8 +259,7 @@ public final class AzureProxy extends RestProxy {
                                            Context context) {
         final Type operationStatusType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
         if (!TypeUtil.isTypeOrSubTypeOf(operationStatusType, OperationStatus.class)) {
-            logger.logAndThrow(new InvalidReturnTypeException("AzureProxy only supports swagger interface methods that return Flux (such as " + methodParser.fullyQualifiedMethodName() + "()) if the Flux's inner type that is OperationStatus (not " + returnType.toString() + ")."));
-            return null;
+            throw logger.logExceptionAsError(new InvalidReturnTypeException("AzureProxy only supports swagger interface methods that return Flux (such as " + methodParser.fullyQualifiedMethodName() + "()) if the Flux's inner type that is OperationStatus (not " + returnType.toString() + ")."));
         }
 
         PollStrategy.PollStrategyData pollStrategyData =
@@ -311,8 +309,7 @@ public final class AzureProxy extends RestProxy {
                                         if (pollStrategy == null) {
                                             pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
                                             if (pollStrategy == null) {
-                                                logger.logAndThrow(new CloudException("Response does not contain an Azure-AsyncOperation or Location header.", originalHttpResponse));
-                                                return null;
+                                                throw logger.logExceptionAsError(new CloudException("Response does not contain an Azure-AsyncOperation or Location header.", originalHttpResponse));
                                             }
                                         }
                                     }
@@ -347,8 +344,7 @@ public final class AzureProxy extends RestProxy {
             pollStrategyMono = bufferedOriginalHttpResponse.bodyAsString()
                     .map(originalHttpResponseBody -> {
                         if (originalHttpResponseBody == null || originalHttpResponseBody.isEmpty()) {
-                            logger.logAndThrow(new CloudException("The HTTP response does not contain a body.", bufferedOriginalHttpResponse));
-                            return null;
+                            throw logger.logExceptionAsError(new CloudException("The HTTP response does not contain a body.", bufferedOriginalHttpResponse));
                         }
                         PollStrategy pollStrategy;
                         try {
@@ -364,8 +360,7 @@ public final class AzureProxy extends RestProxy {
                                                 AzureProxy.this, methodParser, bufferedOriginalHttpResponse));
                             }
                         } catch (IOException e) {
-                            logger.logAndThrow(Exceptions.propagate(e));
-                            return null;
+                            throw logger.logExceptionAsError(Exceptions.propagate(e));
                         }
                         return pollStrategy;
                     });

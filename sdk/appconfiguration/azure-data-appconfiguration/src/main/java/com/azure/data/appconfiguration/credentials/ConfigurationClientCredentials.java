@@ -84,8 +84,7 @@ public class ConfigurationClientCredentials {
                 try {
                     return MessageDigest.getInstance("SHA-256");
                 } catch (NoSuchAlgorithmException e) {
-                    logger.logAndThrow(Exceptions.propagate(e));
-                    return null;
+                    throw logger.logExceptionAsError(Exceptions.propagate(e));
                 }
             }, (messageDigest, byteBuffer) -> {
                     if (messageDigest != null) {

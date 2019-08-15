@@ -150,8 +150,7 @@ public class RestProxy implements InvocationHandler {
             }
 
         } catch (Exception e) {
-            logger.logAndThrow(Exceptions.propagate(e));
-            return null;
+            throw logger.logExceptionAsError(Exceptions.propagate(e));
         }
     }
 
@@ -423,8 +422,7 @@ public class RestProxy implements InvocationHandler {
             cls = (Class<? extends Response<?>>) (Object) PagedResponseBase.class;
 
             if (bodyAsObject != null && !TypeUtil.isTypeOrSubTypeOf(bodyAsObject.getClass(), Page.class)) {
-                logger.logAndThrow(new RuntimeException("Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class));
-                return null;
+                throw logger.logExceptionAsError(new RuntimeException("Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class));
             }
         }
 
@@ -441,8 +439,7 @@ public class RestProxy implements InvocationHandler {
             .collect(Collectors.toList());
 
         if (constructors.isEmpty()) {
-            logger.logAndThrow(new RuntimeException("Cannot find suitable constructor for class " + cls));
-            return null;
+            throw logger.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + cls));
         }
 
         // try to create an instance using our list of potential candidates
@@ -460,17 +457,14 @@ public class RestProxy implements InvocationHandler {
                     case 5:
                         return ctor.newInstance(httpRequest, responseStatusCode, responseHeaders, bodyAsObject, response.decodedHeaders().block());
                     default:
-                        logger.logAndThrow(new IllegalStateException("Response constructor with expected parameters not found."));
-                        return null;
+                        throw logger.logExceptionAsError(new IllegalStateException("Response constructor with expected parameters not found."));
                 }
             } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                logger.logAndThrow(reactor.core.Exceptions.propagate(e));
-                return null;
+                throw logger.logExceptionAsError(reactor.core.Exceptions.propagate(e));
             }
         }
         // error
-        logger.logAndThrow(new RuntimeException("Cannot find suitable constructor for class " + cls));
-        return null;
+        throw logger.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + cls));
     }
 
     protected final Mono<?> handleBodyReturnType(final HttpDecodedResponse response, final SwaggerMethodParser methodParser, final Type entityType) {
@@ -507,8 +501,7 @@ public class RestProxy implements InvocationHandler {
 
     protected Object handleResumeOperation(HttpRequest httpRequest, OperationDescription operationDescription, SwaggerMethodParser methodParser, Type returnType, Context context)
         throws Exception {
-        logger.logAndThrow(new RuntimeException("The resume operation is not available in the base RestProxy class."));
-        return null;
+        throw logger.logExceptionAsError(new RuntimeException("The resume operation is not available in the base RestProxy class."));
     }
 
     /**

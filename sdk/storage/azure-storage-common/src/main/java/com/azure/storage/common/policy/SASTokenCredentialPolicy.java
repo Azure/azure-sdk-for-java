@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import reactor.core.publisher.Mono;
 
@@ -18,6 +19,8 @@ import java.net.URL;
  * Policy that adds the SAS token to the request URL's query.
  */
 public final class SASTokenCredentialPolicy implements HttpPipelinePolicy {
+    private final ClientLogger logger = new ClientLogger(SASTokenCredentialPolicy.class);
+
     private final SASTokenCredential credential;
 
     /**
@@ -38,7 +41,7 @@ public final class SASTokenCredentialPolicy implements HttpPipelinePolicy {
             String newURL = requestURL.toString() + delimiter + credential.sasToken();
             context.httpRequest().url(new URL(newURL));
         } catch (MalformedURLException ex) {
-            throw new IllegalStateException(ex);
+            throw logger.logExceptionAsError(new IllegalStateException(ex));
         }
 
         return next.process();

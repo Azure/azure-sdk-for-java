@@ -47,8 +47,7 @@ public class BasicAuthenticationCredential implements TokenCredential {
             encodedCredential = Base64Util.encodeToString(credential.getBytes("UTF8"));
         } catch (UnsupportedEncodingException e) {
             // The encoding is hard-coded, so if it's unsupported, it needs to be fixed right here.
-            logger.logAndThrow(new RuntimeException(e));
-            return null;
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
 
         return Mono.just(new AccessToken(encodedCredential, OffsetDateTime.MAX));

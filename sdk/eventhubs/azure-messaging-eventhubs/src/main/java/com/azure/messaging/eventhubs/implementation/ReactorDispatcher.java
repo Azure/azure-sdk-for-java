@@ -83,15 +83,13 @@ public final class ReactorDispatcher {
         final RejectedExecutionException rejectedException = this.reactor.attachments()
             .get(RejectedExecutionException.class, RejectedExecutionException.class);
         if (rejectedException != null) {
-            logger.logAndThrow(new RejectedExecutionException(rejectedException.getMessage(), rejectedException));
-            return;
+            throw logger.logExceptionAsError(new RejectedExecutionException(rejectedException.getMessage(), rejectedException));
         }
 
         // throw when the pipe is in closed state - in which case,
         // signalling the new event-dispatch will fail
         if (!this.ioSignal.sink().isOpen()) {
-            logger.logAndThrow(new RejectedExecutionException("ReactorDispatcher instance is closed."));
-            return;
+            throw logger.logExceptionAsError(new RejectedExecutionException("ReactorDispatcher instance is closed."));
         }
     }
 
@@ -120,8 +118,7 @@ public final class ReactorDispatcher {
                 logger.info("WorkScheduler.run() failed with an error: %s", ignorePipeClosedDuringReactorShutdown);
             } catch (IOException ioException) {
                 logger.error("WorkScheduler.run() failed with an error: %s", ioException);
-                logger.logAndThrow(new RuntimeException(ioException));
-                return;
+                throw logger.logExceptionAsError(new RuntimeException(ioException));
             }
 
             Work topWork;
