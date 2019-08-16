@@ -9,10 +9,9 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.http.UrlBuilder;
-import com.azure.core.test.models.NetworkCallException;
+import com.azure.core.test.models.NetworkCallError;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +23,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
@@ -37,9 +38,12 @@ import java.util.zip.GZIPInputStream;
  */
 public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     private static final int DEFAULT_BUFFER_LENGTH = 1024;
+    private static final Pattern DELEGATIONKEY_KEY_PATTERN = Pattern.compile("(?:<Value>)(.*)(?:</Value>)");
+    private static final Pattern DELEGATIONKEY_CLIENTID_PATTERN = Pattern.compile("(?:<SignedOid>)(.*)(?:</SignedOid>)");
+    private static final Pattern DELEGATIONKEY_TENANTID_PATTERN = Pattern.compile("(?:<SignedTid>)(.*)(?:</SignedTid>)");
+
     private final Logger logger = LoggerFactory.getLogger(RecordNetworkCallPolicy.class);
     private final RecordedData recordedData;
-    private final Pattern StorageUserDelegationKeyRedactionPattern = Pattern.compile("<UserDelegationKey>.*<Value>(.*)</Value>.*</UserDelegationKey>");
 
     /**
      * Creates a policy that records network calls into {@code recordedData}.
@@ -78,7 +82,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
         return next.process()
             .doOnError(throwable -> {
-                networkCallRecord.exception(new NetworkCallException(throwable));
+                networkCallRecord.exception(new NetworkCallError(throwable));
                 recordedData.addNetworkCall(networkCallRecord);
                 throw Exceptions.propagate(throwable);
             }).flatMap(httpResponse -> {
@@ -136,12 +140,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
             });
         } else if (contentType.contains("json") || response.headerValue("Content-Encoding") == null) {
             return response.bodyAsString(StandardCharsets.UTF_8).switchIfEmpty(Mono.just("")).map(content -> {
-                Matcher matcher = StorageUserDelegationKeyRedactionPattern.matcher(content);
-                if (matcher.matches()) {
-                    String test = matcher.replaceAll(Base64.encode("REDACTED".getBytes(StandardCharsets.UTF_8)));
-                }
-
-                responseData.put("Body", content);
+                responseData.put("Body", redactUserDelegationKey(content));
                 return responseData;
             });
         } else {
@@ -179,5 +178,25 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 return responseData;
             });
         }
+    }
+
+    private String redactUserDelegationKey(String content) {
+        if (!content.contains("UserDelegationKey")) {
+            return content;
+        }
+
+        content = redactionReplacement(content, DELEGATIONKEY_KEY_PATTERN.matcher(content), Base64.getEncoder().encodeToString("REDACTED".getBytes(StandardCharsets.UTF_8)));
+        content = redactionReplacement(content, DELEGATIONKEY_CLIENTID_PATTERN.matcher(content), UUID.randomUUID().toString());
+        content = redactionReplacement(content, DELEGATIONKEY_TENANTID_PATTERN.matcher(content), UUID.randomUUID().toString());
+
+        return content;
+    }
+
+    private String redactionReplacement(String content, Matcher matcher, String replacement) {
+        while (matcher.find()) {
+            content = content.replace(matcher.group(1), replacement);
+        }
+
+        return content;
     }
 }

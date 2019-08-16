@@ -46,7 +46,7 @@ class BlobOutputStreamTest extends APISpec {
         AppendBlobClient appendBlobClient = cu.getAppendBlobClient(generateBlobName())
         appendBlobClient.create()
 
-        then:
+        when:
         BlobOutputStream outputStream = appendBlobClient.getBlobOutputStream()
         for (int i = 0; i != 64; i++) {
             outputStream.write(Arrays.copyOfRange(data, i * FOUR_MB, ((i + 1) * FOUR_MB) - 1))

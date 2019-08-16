@@ -11,7 +11,7 @@ import java.net.UnknownHostException;
  * This class represents a caught throwable during a network call. It is used to serialize exceptions that were thrown
  * during the pipeline and deserialize them back into their actual throwable class when running in playback mode.
  */
-public class NetworkCallException {
+public class NetworkCallError {
     @JsonProperty("Throwable")
     private Throwable throwable;
 
@@ -21,7 +21,7 @@ public class NetworkCallException {
     /**
      * Empty constructor used by deserialization.
      */
-    public NetworkCallException() {
+    public NetworkCallError() {
     }
 
     /**
@@ -29,7 +29,7 @@ public class NetworkCallException {
      *
      * @param throwable Throwable thrown during a network call.
      */
-    public NetworkCallException(Throwable throwable) {
+    public NetworkCallError(Throwable throwable) {
         this.throwable = throwable;
         this.className = throwable.getClass().getName();
     }
