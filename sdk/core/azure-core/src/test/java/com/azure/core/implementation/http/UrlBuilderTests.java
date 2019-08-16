@@ -469,8 +469,8 @@ public class UrlBuilderTests {
             .host("www.example.com/site")
             .path("index.html");
         assertEquals("www.example.com", builder.host());
-        assertEquals("/site/index.html", builder.path());
-        assertEquals("www.example.com/site/index.html", builder.toString());
+        assertEquals("index.html", builder.path());
+        assertEquals("www.example.com/index.html", builder.toString());
     }
 
     @Test
@@ -479,8 +479,28 @@ public class UrlBuilderTests {
             .path("index.html")
             .host("www.example.com/site");
         assertEquals("www.example.com", builder.host());
-        assertEquals("/site/index.html", builder.path());
-        assertEquals("www.example.com/site/index.html", builder.toString());
+        assertEquals("/site", builder.path());
+        assertEquals("www.example.com/site", builder.toString());
+    }
+
+    @Test
+    public void emptyPathWhenHostContainsPath() {
+        final UrlBuilder builder = new UrlBuilder()
+            .path("")
+            .host("www.example.com/site");
+        assertEquals("www.example.com", builder.host());
+        assertEquals("/site", builder.path());
+        assertEquals("www.example.com/site", builder.toString());
+    }
+
+    @Test
+    public void slashPathWhenHostContainsPath() {
+        final UrlBuilder builder = new UrlBuilder()
+            .path("//")
+            .host("www.example.com/site");
+        assertEquals("www.example.com", builder.host());
+        assertEquals("/site", builder.path());
+        assertEquals("www.example.com/site", builder.toString());
     }
 
     @Test
