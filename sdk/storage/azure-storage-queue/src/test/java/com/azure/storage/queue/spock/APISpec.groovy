@@ -29,7 +29,7 @@ class APISpec extends Specification {
     // Test name for test method name.
     def methodName
     def testMode = getTestMode()
-    def connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
+    def connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING")
 
     /**
      * Setup the QueueServiceClient and QueueClient common used for the API tests.

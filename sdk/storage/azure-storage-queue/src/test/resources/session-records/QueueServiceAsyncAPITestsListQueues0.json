@@ -1,17 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-<<<<<<< HEAD:sdk/storage/azure-storage-queue/src/test/resources/session-records/QueueServiceAsyncAPITestsListQueues0.json
     "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueserviceasyncapitestslistqueues009680da03558a90",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
-=======
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue11138203",
-    "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 11.0.3; Windows 10 10.0"
->>>>>>> e0117285eed... queue async:sdk/storage/azure-storage-queue/src/test/resources/session-records/deleteExistingQueue.json
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -19,7 +12,6 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-<<<<<<< HEAD:sdk/storage/azure-storage-queue/src/test/resources/session-records/QueueServiceAsyncAPITestsListQueues0.json
       "x-ms-request-id" : "b9c9cbdd-2003-0008-3088-532b05000000",
       "Date" : "Thu, 15 Aug 2019 16:40:51 GMT"
     }
@@ -29,24 +21,12 @@
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
-=======
-      "x-ms-request-id" : "66e680df-f003-0127-5831-4eec6a000000",
-      "Date" : "Thu, 08 Aug 2019 21:34:19 GMT"
-    }
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue11138203",
-    "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 11.0.3; Windows 10 10.0"
->>>>>>> e0117285eed... queue async:sdk/storage/azure-storage-queue/src/test/resources/session-records/deleteExistingQueue.json
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
-<<<<<<< HEAD:sdk/storage/azure-storage-queue/src/test/resources/session-records/QueueServiceAsyncAPITestsListQueues0.json
       "StatusCode" : "201",
       "x-ms-request-id" : "b9c9cbe6-2003-0008-3788-532b05000000",
       "Date" : "Thu, 15 Aug 2019 16:40:51 GMT"
@@ -57,25 +37,11 @@
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
-=======
-      "StatusCode" : "204",
-      "x-ms-request-id" : "66e68114-f003-0127-0831-4eec6a000000",
-      "Date" : "Thu, 08 Aug 2019 21:34:21 GMT"
-    }
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue11138203/messages",
-    "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 11.0.3; Windows 10 10.0",
-      "Content-Type" : "application/xml; charset=utf-8"
->>>>>>> e0117285eed... queue async:sdk/storage/azure-storage-queue/src/test/resources/session-records/deleteExistingQueue.json
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-<<<<<<< HEAD:sdk/storage/azure-storage-queue/src/test/resources/session-records/QueueServiceAsyncAPITestsListQueues0.json
       "Content-Length" : "0",
       "StatusCode" : "201",
       "x-ms-request-id" : "b9c9cbf2-2003-0008-3f88-532b05000000",
@@ -87,21 +53,6 @@
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
-=======
-      "Content-Length" : "217",
-      "StatusCode" : "404",
-      "x-ms-request-id" : "66e682d8-f003-0127-3431-4eec6a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:66e682d8-f003-0127-3431-4eec6a000000\nTime:2019-08-08T21:34:22.4851899Z</Message></Error>",
-      "Date" : "Thu, 08 Aug 2019 21:34:21 GMT",
-      "Content-Type" : "application/xml"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net?prefix=queue11138203&include=&comp=list",
-    "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.2 11.0.3; Windows 10 10.0"
->>>>>>> e0117285eed... queue async:sdk/storage/azure-storage-queue/src/test/resources/session-records/deleteExistingQueue.json
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -110,7 +61,6 @@
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-<<<<<<< HEAD:sdk/storage/azure-storage-queue/src/test/resources/session-records/QueueServiceAsyncAPITestsListQueues0.json
       "x-ms-request-id" : "b9c9cbfa-2003-0008-4688-532b05000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.queue.core.windows.net/\"><Prefix>queueserviceasyncapitestslistqueues</Prefix><Queues><Queue><Name>queueserviceasyncapitestslistqueues009680da03558a90</Name></Queue><Queue><Name>queueserviceasyncapitestslistqueues009680da03558a91</Name></Queue><Queue><Name>queueserviceasyncapitestslistqueues009680da03558a92</Name></Queue></Queues><NextMarker /></EnumerationResults>",
       "Date" : "Thu, 15 Aug 2019 16:40:51 GMT",
@@ -118,13 +68,4 @@
     }
   } ],
   "variables" : [ "queueserviceasyncapitestslistqueues009680da03558a9" ]
-=======
-      "x-ms-request-id" : "66e682e9-f003-0127-4531-4eec6a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.queue.core.windows.net/\"><Prefix>queue11138203</Prefix><Queues /><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 08 Aug 2019 21:34:21 GMT",
-      "Content-Type" : "application/xml"
-    }
-  } ],
-  "variables" : [ "queue11138203" ]
->>>>>>> e0117285eed... queue async:sdk/storage/azure-storage-queue/src/test/resources/session-records/deleteExistingQueue.json
 }
