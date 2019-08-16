@@ -1,7 +1,7 @@
 jobs:
   - job: SmokeTest
     variables:
-      - template: ./variables/globals.yml
+      - template: ./templates/variables/globals.yml
       - name: PomFile
         value: eng/smoke-tests/pom.xml
 
