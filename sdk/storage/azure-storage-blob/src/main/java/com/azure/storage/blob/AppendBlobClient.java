@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobAccessConditions;
@@ -95,8 +96,8 @@ public final class AppendBlobClient extends BlobClient {
      * @return
      *      The information of the created appended blob.
      */
-    public Response<AppendBlobItem> create() {
-        return this.create(null, null, null, null);
+    public AppendBlobItem create() {
+        return create(null, null, null, null);
     }
 
     /**
@@ -114,9 +115,31 @@ public final class AppendBlobClient extends BlobClient {
      * @return
      *      The information of the created appended blob.
      */
-    public Response<AppendBlobItem> create(BlobHTTPHeaders headers, Metadata metadata,
+    public AppendBlobItem create(BlobHTTPHeaders headers, Metadata metadata,
                                           BlobAccessConditions accessConditions, Duration timeout) {
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.create(headers, metadata, accessConditions);
+        return createWithResponse(headers, metadata, accessConditions, timeout, Context.NONE).value();
+    }
+
+    /**
+     * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
+     *
+     * @param headers
+     *         {@link BlobHTTPHeaders}
+     * @param metadata
+     *         {@link Metadata}
+     * @param accessConditions
+     *         {@link BlobAccessConditions}
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context
+     *         Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return
+     *      A {@link Response} whose {@link Response#value() value} contains the created appended blob.
+     */
+    public Response<AppendBlobItem> createWithResponse(BlobHTTPHeaders headers, Metadata metadata,
+                                           BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.createWithResponse(headers, metadata, accessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -135,8 +158,8 @@ public final class AppendBlobClient extends BlobClient {
      * @return
      *      The information of the append blob operation.
      */
-    public Response<AppendBlobItem> appendBlock(InputStream data, long length) {
-        return this.appendBlock(data, length, null, null);
+    public AppendBlobItem appendBlock(InputStream data, long length) {
+        return appendBlockWithResponse(data, length, null, null, Context.NONE).value();
     }
 
     /**
@@ -155,12 +178,14 @@ public final class AppendBlobClient extends BlobClient {
      *         {@link AppendBlobAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context
+     *         Additional context that is passed through the Http pipeline during the service call.
      *
      * @return
-     *      The information of the append blob operation.
+     *      A {@link Response} whose {@link Response#value() value} contains the append blob operation.
      */
-    public Response<AppendBlobItem> appendBlock(InputStream data, long length,
-                                                           AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout) {
+    public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length,
+                                                AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout, Context context) {
         Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) MAX_APPEND_BLOCK_BYTES))
             .map(i -> i * MAX_APPEND_BLOCK_BYTES)
             .concatMap(pos -> Mono.fromCallable(() -> {
@@ -174,7 +199,7 @@ public final class AppendBlobClient extends BlobClient {
                 return ByteBufAllocator.DEFAULT.buffer((int) count).writeBytes(cache);
             }));
 
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlock(fbb.subscribeOn(Schedulers.elastic()), length, appendBlobAccessConditions);
+        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, appendBlobAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -192,9 +217,8 @@ public final class AppendBlobClient extends BlobClient {
      * @return
      *      The information of the append blob operation.
      */
-    public Response<AppendBlobItem> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
-        return this.appendBlockFromUrl(sourceURL, sourceRange, null, null,
-                 null, null);
+    public AppendBlobItem appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
+        return appendBlockFromUrl(sourceURL, sourceRange, null, null, null, null);
     }
 
     /**
@@ -220,10 +244,41 @@ public final class AppendBlobClient extends BlobClient {
      * @return
      *      The information of the append blob operation.
      */
-    public Response<AppendBlobItem> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
+    public AppendBlobItem appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
             byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
             SourceModifiedAccessConditions sourceAccessConditions, Duration timeout) {
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockFromUrl(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions);
+        return this.appendBlockFromUrlWithResponse(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, timeout, Context.NONE).value();
+    }
+
+    /**
+     * Commits a new block of data from another blob to the end of this append blob.
+     *
+     * @param sourceURL
+     *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can
+     *          be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
+     *          must either be public or must be authenticated via a shared access signature. If the source blob is
+     *          public, no authentication is required to perform the operation.
+     * @param sourceRange
+     *          {@link BlobRange}
+     * @param sourceContentMD5
+     *          An MD5 hash of the block content from the source blob. If specified, the service will calculate the MD5
+     *          of the received data and fail the request if it does not match the provided MD5.
+     * @param destAccessConditions
+     *          {@link AppendBlobAccessConditions}
+     * @param sourceAccessConditions
+     *          {@link SourceModifiedAccessConditions}
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context
+     *         Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return
+     *      The information of the append blob operation.
+     */
+    public Response<AppendBlobItem> appendBlockFromUrlWithResponse(URL sourceURL, BlobRange sourceRange,
+                                                       byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
+                                                       SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
+        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockFromUrlWithResponse(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }

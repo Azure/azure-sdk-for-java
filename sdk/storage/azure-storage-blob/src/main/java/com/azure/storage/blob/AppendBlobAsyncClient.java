@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
@@ -22,6 +23,7 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 
 import static com.azure.storage.blob.PostProcessor.postProcessResponse;
+import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 
 /**
@@ -69,16 +71,14 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
     /**
      * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
      *
-     * @return
-     *      A reactive response containing the information of the created appended blob.
+     * @return A {@link Mono} containing the information of the created appended blob.
      */
-    public Mono<Response<AppendBlobItem>> create() {
-        return this.create(null, null, null);
+    public Mono<AppendBlobItem> create() {
+        return createWithResponse(null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
-     *
      * @param headers
      *         {@link BlobHTTPHeaders}
      * @param metadata
@@ -87,16 +87,20 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *         {@link BlobAccessConditions}
      *
      * @return
-     *      A reactive response containing the information of the created appended blob.
+     *      A {@link Mono} containing {@link Response} whose {@link Response#value() value} contains the created appended blob.
      */
-    public Mono<Response<AppendBlobItem>> create(BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
+    public Mono<Response<AppendBlobItem>> createWithResponse(BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
+        return withContext(context -> createWithResponse(headers, metadata, accessConditions, context));
+    }
+
+    Mono<Response<AppendBlobItem>> createWithResponse(BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         metadata = (metadata == null) ? new Metadata() : metadata;
         accessConditions = (accessConditions == null) ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null,
             null, 0, null, metadata, null, null, null,
             null, null, headers, accessConditions.leaseAccessConditions(), null,
-            accessConditions.modifiedAccessConditions(), Context.NONE))
+            accessConditions.modifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
     }
 
@@ -105,19 +109,18 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
-     *
      * @param data
      *         The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      *         (the default). In other words, the Flux must produce the same data each time it is subscribed to.
      * @param length
-     *         The exact length of the data. It is important that this value match precisely the length of the data
-     *         emitted by the {@code Flux}.
+     *          The exact length of the data. It is important that this value match precisely the length of the data
+     *          emitted by the {@code Flux}.
      *
      * @return
-     *      A reactive response containing the information of the append blob operation.
+     *      {@link Mono} containing the information of the append blob operation.
      */
-    public Mono<Response<AppendBlobItem>> appendBlock(Flux<ByteBuf> data, long length) {
-        return this.appendBlock(data, length, null);
+    public Mono<AppendBlobItem> appendBlock(Flux<ByteBuf> data, long length) {
+        return appendBlockWithResponse(data, length, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -125,7 +128,6 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
-     *
      * @param data
      *         The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      *         (the default). In other words, the Flux must produce the same data each time it is subscribed to.
@@ -136,10 +138,15 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *         {@link AppendBlobAccessConditions}
      *
      * @return
-     *      A reactive response containing the information of the append blob operation.
+     *      A {@link Mono} containing {@link Response} whose {@link Response#value() value} contains the append blob operation.
      */
-    public Mono<Response<AppendBlobItem>> appendBlock(Flux<ByteBuf> data, long length,
-                                                      AppendBlobAccessConditions appendBlobAccessConditions) {
+    public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuf> data, long length,
+                                                                  AppendBlobAccessConditions appendBlobAccessConditions) {
+        return withContext(context -> appendBlockWithResponse(data, length, appendBlobAccessConditions, context));
+    }
+
+    Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuf> data, long length,
+                                                           AppendBlobAccessConditions appendBlobAccessConditions, Context context) {
         appendBlobAccessConditions = appendBlobAccessConditions == null ? new AppendBlobAccessConditions()
             : appendBlobAccessConditions;
 
@@ -148,13 +155,13 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
             null, null, null, null,
             appendBlobAccessConditions.leaseAccessConditions(),
             appendBlobAccessConditions.appendPositionAccessConditions(), null,
-            appendBlobAccessConditions.modifiedAccessConditions(), Context.NONE))
+            appendBlobAccessConditions.modifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
+
     }
 
     /**
      * Commits a new block of data from another blob to the end of this append blob.
-     *
      * @param sourceURL
      *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can
      *          be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
@@ -164,16 +171,14 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *          The source {@link BlobRange} to copy.
      *
      * @return
-     *      A reactive response containing the information of the append blob operation.
+     *      {@link Mono} containing the information of the append blob operation.
      */
-    public Mono<Response<AppendBlobItem>> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
-        return this.appendBlockFromUrl(sourceURL, sourceRange, null, null,
-                 null);
+    public Mono<AppendBlobItem> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
+        return appendBlockFromUrlWithResponse(sourceURL, sourceRange, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Commits a new block of data from another blob to the end of this append blob.
-     *
      * @param sourceURL
      *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can
      *          be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
@@ -190,11 +195,18 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *          {@link SourceModifiedAccessConditions}
      *
      * @return
-     *      A reactive response containing the information of the append blob operation.
+     *      A {@link Mono} containing {@link Response} whose {@link Response#value() value} contains the append blob operation.
      */
-    public Mono<Response<AppendBlobItem>> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
-            byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
-            SourceModifiedAccessConditions sourceAccessConditions) {
+    public Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(URL sourceURL, BlobRange sourceRange,
+                                                                         byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
+                                                                         SourceModifiedAccessConditions sourceAccessConditions) {
+        return withContext(context -> appendBlockFromUrlWithResponse(sourceURL, sourceRange, sourceContentMD5,
+            destAccessConditions, sourceAccessConditions, context));
+    }
+
+    Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(URL sourceURL, BlobRange sourceRange,
+                                                                  byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
+                                                                  SourceModifiedAccessConditions sourceAccessConditions, Context context) {
         sourceRange = sourceRange == null ? new BlobRange(0) : sourceRange;
         destAccessConditions = destAccessConditions == null
             ? new AppendBlobAccessConditions() : destAccessConditions;
@@ -204,7 +216,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
                 sourceURL, 0, sourceRange.toString(), sourceContentMD5, null, null, null, null,
                 destAccessConditions.leaseAccessConditions(),
                 destAccessConditions.appendPositionAccessConditions(),
-                destAccessConditions.modifiedAccessConditions(), sourceAccessConditions, Context.NONE))
+                destAccessConditions.modifiedAccessConditions(), sourceAccessConditions, context))
             .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
     }
 }

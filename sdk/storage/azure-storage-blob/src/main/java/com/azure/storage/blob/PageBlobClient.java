@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -112,9 +113,10 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The information of the created page blob.
      */
-    public Response<PageBlobItem> create(long size) {
-        return this.create(size, null, null, null, null, null);
+    public PageBlobItem create(long size) {
+        return createWithResponse(size, null, null, null, null, null, Context.NONE).value();
     }
+
 
     /**
      * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob.
@@ -135,13 +137,15 @@ public final class PageBlobClient extends BlobClient {
      *         {@link BlobAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context
+     *         Additional context that is passed through the Http pipeline during the service call.
      *
      * @return
      *      The information of the created page blob.
      */
-    public Response<PageBlobItem> create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
-                                         Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) {
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.create(size, sequenceNumber, headers, metadata, accessConditions);
+    public Response<PageBlobItem> createWithResponse(long size, Long sequenceNumber, BlobHTTPHeaders headers,
+                                                     Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.createWithResponse(size, sequenceNumber, headers, metadata, accessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -163,8 +167,8 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The information of the uploaded pages.
      */
-    public Response<PageBlobItem> uploadPages(PageRange pageRange, InputStream body) {
-        return this.uploadPages(pageRange, body, null, null);
+    public PageBlobItem uploadPages(PageRange pageRange, InputStream body) {
+        return uploadPagesWithResponse(pageRange, body, null, null, Context.NONE).value();
     }
 
     /**
@@ -185,12 +189,14 @@ public final class PageBlobClient extends BlobClient {
      *         {@link PageBlobAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context
+     *         Additional context that is passed through the Http pipeline during the service call.
      *
      * @return
      *      The information of the uploaded pages.
      */
-    public Response<PageBlobItem> uploadPages(PageRange pageRange, InputStream body,
-            PageBlobAccessConditions pageBlobAccessConditions, Duration timeout) {
+    public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body,
+            PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
         long length = pageRange.end() - pageRange.start();
         Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) PAGE_BYTES))
             .map(i -> i * PAGE_BYTES)
@@ -204,9 +210,9 @@ public final class PageBlobClient extends BlobClient {
                 return ByteBufAllocator.DEFAULT.buffer(read).writeBytes(cache);
             }));
 
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPages(pageRange,
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponse(pageRange,
             fbb.subscribeOn(Schedulers.elastic()),
-            pageBlobAccessConditions);
+            pageBlobAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -232,9 +238,8 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The information of the uploaded pages.
      */
-    public Response<PageBlobItem> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
-        return this.uploadPagesFromURL(range, sourceURL, sourceOffset, null, null,
-                null, null);
+    public PageBlobItem uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
+        return uploadPagesFromURLWithResponse(range, sourceURL, sourceOffset, null, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -264,15 +269,17 @@ public final class PageBlobClient extends BlobClient {
      *          {@link SourceModifiedAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context
+     *         Additional context that is passed through the Http pipeline during the service call.
      *
      * @return
      *      The information of the uploaded pages.
      */
-    public Response<PageBlobItem> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset,
+    public Response<PageBlobItem> uploadPagesFromURLWithResponse(PageRange range, URL sourceURL, Long sourceOffset,
             byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
-            SourceModifiedAccessConditions sourceAccessConditions, Duration timeout) {
+            SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
 
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromURL(range, sourceURL, sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions);
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromURLWithResponse(range, sourceURL, sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -289,8 +296,8 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The information of the cleared pages.
      */
-    public Response<PageBlobItem> clearPages(PageRange pageRange) {
-        return this.clearPages(pageRange, null, null);
+    public PageBlobItem clearPages(PageRange pageRange) {
+        return clearPagesWithResponse(pageRange, null, null, Context.NONE).value();
     }
 
     /**
@@ -306,13 +313,15 @@ public final class PageBlobClient extends BlobClient {
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param pageBlobAccessConditions
      *         {@link PageBlobAccessConditions}
+     * @param context
+     *         Additional context that is passed through the Http pipeline during the service call.
      *
      * @return
      *      The information of the cleared pages.
      */
-    public Response<PageBlobItem> clearPages(PageRange pageRange,
-            PageBlobAccessConditions pageBlobAccessConditions, Duration timeout) {
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.clearPages(pageRange, pageBlobAccessConditions);
+    public Response<PageBlobItem> clearPagesWithResponse(PageRange pageRange,
+            PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.clearPagesWithResponse(pageRange, pageBlobAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -327,8 +336,8 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The information of the cleared pages.
      */
-    public Response<PageList> getPageRanges(BlobRange blobRange) {
-        return this.getPageRanges(blobRange, null, null);
+    public PageList getPageRanges(BlobRange blobRange) {
+        return getPageRangesWithResponse(blobRange, null, null, Context.NONE).value();
     }
 
     /**
@@ -341,12 +350,14 @@ public final class PageBlobClient extends BlobClient {
      *         {@link BlobAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context
+     *         Additional context that is passed through the Http pipeline during the service call.
      *
      * @return
      *      All the page ranges.
      */
-    public Response<PageList> getPageRanges(BlobRange blobRange, BlobAccessConditions accessConditions, Duration timeout) {
-        return Utility.blockWithOptionalTimeout(pageBlobAsyncClient.getPageRanges(blobRange, accessConditions), timeout);
+    public Response<PageList> getPageRangesWithResponse(BlobRange blobRange, BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        return Utility.blockWithOptionalTimeout(pageBlobAsyncClient.getPageRangesWithResponse(blobRange, accessConditions, context), timeout);
     }
 
     /**
@@ -363,8 +374,8 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      All the different page ranges.
      */
-    public Response<PageList> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
-        return this.getPageRangesDiff(blobRange, prevSnapshot, null, null);
+    public PageList getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
+        return getPageRangesDiffWithResponse(blobRange, prevSnapshot, null, null, Context.NONE).value();
     }
 
     /**
@@ -381,12 +392,14 @@ public final class PageBlobClient extends BlobClient {
      *         {@link BlobAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context
+     *         Additional context that is passed through the Http pipeline during the service call.
      *
      * @return
      *      All the different page ranges.
      */
-    public Response<PageList> getPageRangesDiff(BlobRange blobRange, String prevSnapshot, BlobAccessConditions accessConditions, Duration timeout) {
-        return Utility.blockWithOptionalTimeout(pageBlobAsyncClient.getPageRangesDiff(blobRange, prevSnapshot, accessConditions), timeout);
+    public Response<PageList> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot, BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        return Utility.blockWithOptionalTimeout(pageBlobAsyncClient.getPageRangesDiffWithResponse(blobRange, prevSnapshot, accessConditions, context), timeout);
     }
 
     /**
@@ -400,8 +413,8 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The resized page blob.
      */
-    public Response<PageBlobItem> resize(long size) {
-        return this.resize(size, null, null);
+    public PageBlobItem resize(long size) {
+        return resizeWithResponse(size, null, null, Context.NONE).value();
     }
 
     /**
@@ -415,12 +428,14 @@ public final class PageBlobClient extends BlobClient {
      *         {@link BlobAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context
+     *         Additional context that is passed through the Http pipeline during the service call.
      *
      * @return
      *      The resized page blob.
      */
-    public Response<PageBlobItem> resize(long size, BlobAccessConditions accessConditions, Duration timeout) {
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.resize(size, accessConditions);
+    public Response<PageBlobItem> resizeWithResponse(long size, BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.resizeWithResponse(size, accessConditions);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -437,9 +452,9 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The updated page blob.
      */
-    public Response<PageBlobItem> updateSequenceNumber(SequenceNumberActionType action,
+    public PageBlobItem updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber) {
-        return this.updateSequenceNumber(action, sequenceNumber, null, null);
+        return updateSequenceNumberWithResponse(action, sequenceNumber, null, null, Context.NONE).value();
     }
 
     /**
@@ -455,13 +470,15 @@ public final class PageBlobClient extends BlobClient {
      *         {@link BlobAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context
+     *         Additional context that is passed through the Http pipeline during the service call.
      *
      * @return
      *      The updated page blob.
      */
-    public Response<PageBlobItem> updateSequenceNumber(SequenceNumberActionType action,
-            Long sequenceNumber, BlobAccessConditions accessConditions, Duration timeout) {
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.updateSequenceNumber(action, sequenceNumber, accessConditions);
+    public Response<PageBlobItem> updateSequenceNumberWithResponse(SequenceNumberActionType action,
+            Long sequenceNumber, BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.updateSequenceNumberWithResponse(action, sequenceNumber, accessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -481,8 +498,8 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The copy status.
      */
-    public Response<CopyStatusType> copyIncremental(URL source, String snapshot) {
-        return this.copyIncremental(source, snapshot, null, null);
+    public CopyStatusType copyIncremental(URL source, String snapshot) {
+        return copyIncrementalWithResponse(source, snapshot, null, null, Context.NONE).value();
     }
 
     /**
@@ -503,13 +520,15 @@ public final class PageBlobClient extends BlobClient {
      *         will fail if the specified condition is not satisfied.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context
+     *         Additional context that is passed through the Http pipeline during the service call.
      *
      * @return
      *      The copy status.
      */
-    public Response<CopyStatusType> copyIncremental(URL source, String snapshot,
-            ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
-        Mono<Response<CopyStatusType>> response = pageBlobAsyncClient.copyIncremental(source, snapshot, modifiedAccessConditions);
+    public Response<CopyStatusType> copyIncrementalWithResponse(URL source, String snapshot,
+            ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
+        Mono<Response<CopyStatusType>> response = pageBlobAsyncClient.copyIncrementalWithResponse(source, snapshot, modifiedAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }
