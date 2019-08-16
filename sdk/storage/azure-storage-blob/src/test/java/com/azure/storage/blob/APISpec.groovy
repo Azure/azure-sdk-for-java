@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.ProxyOptions
+import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.test.InterceptorManager
@@ -125,12 +126,11 @@ class APISpec extends Specification {
         String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
         String className = specificationContext.getCurrentSpec().getName()
 
-        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
-        this.resourceNamer = new TestResourceNamer(className + fullTestName, testMode, interceptorManager.getRecordedData())
-
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
         this.testName = fullTestName.substring(0, substringIndex)
+        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
+        this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
 
         primaryServiceClient = setClient(primaryCredential)
         alternateServiceClient = setClient(alternateCredential)
@@ -156,7 +156,7 @@ class APISpec extends Specification {
         interceptorManager.close()
     }
 
-    private static TestMode setupTestMode() {
+    static TestMode setupTestMode() {
         String testMode = ConfigurationManager.getConfiguration().get(AZURE_TEST_MODE)
 
         if (testMode != null) {
@@ -168,6 +168,10 @@ class APISpec extends Specification {
         }
 
         return TestMode.PLAYBACK
+    }
+
+    static boolean liveMode() {
+        return setupTestMode() == TestMode.RECORD
     }
 
     private SharedKeyCredential getCredential(String accountType) {
@@ -194,6 +198,7 @@ class APISpec extends Specification {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCredential.accountName()))
             .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
         if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
@@ -219,6 +224,7 @@ class APISpec extends Specification {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
@@ -239,6 +245,7 @@ class APISpec extends Specification {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
         if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
@@ -251,6 +258,7 @@ class APISpec extends Specification {
         ContainerClientBuilder builder = new ContainerClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
         if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
@@ -264,6 +272,7 @@ class APISpec extends Specification {
             .endpoint(endpoint)
             .blobName(blobName)
             .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
         if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
@@ -282,6 +291,7 @@ class APISpec extends Specification {
             .blobName(blobName)
             .snapshot(snapshotId)
             .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
         if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
@@ -294,6 +304,7 @@ class APISpec extends Specification {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
@@ -311,6 +322,7 @@ class APISpec extends Specification {
             .endpoint(endpoint)
             .blobName(blobName)
             .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
         if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
@@ -323,6 +335,7 @@ class APISpec extends Specification {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
         if (credential != null) {
             builder.credential(credential)

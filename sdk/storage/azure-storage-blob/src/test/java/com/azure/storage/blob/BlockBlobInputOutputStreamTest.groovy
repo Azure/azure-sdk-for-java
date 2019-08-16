@@ -1,8 +1,7 @@
 package com.azure.storage.blob
 
-import com.azure.core.test.TestMode
 import com.azure.storage.common.Constants
-import spock.lang.IgnoreIf
+import spock.lang.Requires
 
 class BlockBlobInputOutputStreamTest extends APISpec {
     BlockBlobClient bu
@@ -12,7 +11,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
-    @IgnoreIf({ testMode == TestMode.PLAYBACK })
+    @Requires({ APISpec.liveMode() })
     def "Upload download"() {
         when:
         int length = 30 * Constants.MB

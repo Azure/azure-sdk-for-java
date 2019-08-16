@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.test.TestMode
+
 import com.azure.storage.blob.models.AccessPolicy
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.SignedIdentifier
@@ -14,7 +14,7 @@ import com.azure.storage.common.SASProtocol
 import com.azure.storage.common.Utility
 import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
-import spock.lang.IgnoreIf
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -187,7 +187,7 @@ class SASTest extends APISpec {
         properties.contentLanguage() == "language"
     }
 
-    @IgnoreIf({ testMode == TestMode.PLAYBACK })
+    @Requires({ APISpec.liveMode() })
     def "serviceSASSignatureValues network test container"() {
         setup:
         SignedIdentifier identifier = new SignedIdentifier()
@@ -224,7 +224,7 @@ class SASTest extends APISpec {
     }
 
 
-    @IgnoreIf({ testMode == TestMode.PLAYBACK })
+    @Requires({ APISpec.liveMode() })
     def "serviceSASSignatureValues network test blob user delegation"() {
         setup:
         byte[] data = "test".getBytes()
@@ -273,7 +273,7 @@ class SASTest extends APISpec {
         notThrown(StorageException)
     }
 
-    @IgnoreIf({ testMode == TestMode.PLAYBACK })
+    @Requires({ APISpec.liveMode() })
     def "serviceSASSignatureValues network test blob snapshot user delegation"() {
         setup:
         byte[] data = "test".getBytes()
@@ -338,7 +338,7 @@ class SASTest extends APISpec {
         properties.contentLanguage() == "language"
     }
 
-    @IgnoreIf({ testMode == TestMode.PLAYBACK })
+    @Requires({ APISpec.liveMode() })
     def "serviceSASSignatureValues network test container user delegation"() {
         setup:
         ContainerSASPermission permissions = new ContainerSASPermission()

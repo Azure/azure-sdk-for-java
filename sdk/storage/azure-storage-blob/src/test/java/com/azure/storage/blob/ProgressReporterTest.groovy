@@ -3,11 +3,11 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.test.TestMode
+
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import reactor.core.publisher.Flux
-import spock.lang.IgnoreIf
+import spock.lang.Requires
 
 import java.nio.ByteBuffer
 import java.util.concurrent.atomic.AtomicLong
@@ -37,7 +37,7 @@ class ProgressReporterTest extends APISpec {
         0 * mockReceiver.reportProgress({it > 30})
     }
 
-    @IgnoreIf({ testMode == TestMode.PLAYBACK })
+    @Requires({ APISpec.liveMode() })
     def "Report progress sequential network test"() {
         setup:
         IProgressReceiver mockReceiver = Mock(IProgressReceiver)
