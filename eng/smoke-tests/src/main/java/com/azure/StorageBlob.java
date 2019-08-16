@@ -23,35 +23,34 @@ public class StorageBlob {
     private static final String CONTAINER_NAME = "mycontainer"; //This sample needs an existing container
     private static final String BLOB_NAME = "javaSmokeTestBlob-"+ UUID.randomUUID() +".txt";
 
-    private static final Logger logger = LoggerFactory.getLogger(CosmosDB.class);
-
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDB.class);
+    
     private static void uploadBlob() throws IOException {
-        logger.info("Uploading blob... ");
+        LOGGER.info("Uploading blob... ");
         String text = "This is a sample block blob created for SDK Smoke Test in Java!";
         ByteArrayInputStream data = new ByteArrayInputStream(text.getBytes());
         blobClient.upload(data, text.length());
-        logger.info("\tDONE.");
+        LOGGER.info("\tDONE.");
 
     }
 
     private static void listBlobsInContainer() {
-        logger.info("Listing all blobs in container...");
+        LOGGER.info("Listing all blobs in container...");
         Iterable<BlobItem> storageResponse = containerClient.listBlobsFlat();
-        storageResponse.forEach(blobItem -> logger.info("\t{}",blobItem.name()));
-        logger.info("DONE.");
+        storageResponse.forEach(blobItem -> LOGGER.info("\t{}",blobItem.name()));
+        LOGGER.info("DONE.");
     }
 
     private static void deleteBlob() {
-        logger.info("Deleting blob... ");
+        LOGGER.info("Deleting blob... ");
         blobClient.delete();
-        logger.info("\tDONE.");
+        LOGGER.info("\tDONE.");
     }
 
     public static void main(String[] args) throws IOException {
-        logger.info("---------------------");
-        logger.info("STORAGE - BLOB");
-        logger.info("---------------------");
+        LOGGER.info("---------------------");
+        LOGGER.info("STORAGE - BLOB");
+        LOGGER.info("---------------------");
 
         BlobServiceClient serviceClient = new BlobServiceClientBuilder().connectionString(STORAGE_CONNECTION_STRING).buildClient();
         containerClient = serviceClient.getContainerClient(CONTAINER_NAME);

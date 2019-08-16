@@ -19,21 +19,21 @@ public class CosmosDB {
     private static final String AZURE_COSMOS_ENDPOINT = System.getenv("AZURE_COSMOS_ENDPOINT");
     private static final String AZURE_COSMOS_KEY= System.getenv("AZURE_COSMOS_KEY");
 
-    private static final Logger logger = LoggerFactory.getLogger(CosmosDB.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDB.class);
 
     private static Mono<Void> createDatabase(CosmosClient client) {
-        logger.info("Creating database '{}'... ", DB_NAME);
+        LOGGER.info("Creating database '{}'... ", DB_NAME);
         return client.createDatabaseIfNotExists(DB_NAME).then();
     }
 
     private static Mono<CosmosContainer> createCollection(CosmosClient client) {
-        logger.info("Creating collection '{}'... ", COLLECTION_NAME);
+        LOGGER.info("Creating collection '{}'... ", COLLECTION_NAME);
         return client.getDatabase(DB_NAME).createContainer(COLLECTION_NAME, "/id")
             .map(response -> response.container());
     }
 
     private static Mono<Void> createDocuments(CosmosContainer container) {
-        logger.info("Inserting Items... ");
+        LOGGER.info("Inserting Items... ");
         List<Planet> planets = Arrays.asList(
             new Planet(
                 "Earth",
@@ -56,25 +56,25 @@ public class CosmosDB {
     }
 
     private static Mono<Void> simpleQuery(CosmosContainer container) {
-        logger.info("Querying collection...");
+        LOGGER.info("Querying collection...");
         FeedOptions options = new FeedOptions().enableCrossPartitionQuery(true);
         Flux<FeedResponse<CosmosItemProperties>> queryResults = container.queryItems("SELECT c.id FROM c", options);
 
         return queryResults.map(cosmosItemPropertiesFeedResponse -> {
-            logger.info("\t{}",cosmosItemPropertiesFeedResponse.results().toString());
+            LOGGER.info("\t{}",cosmosItemPropertiesFeedResponse.results().toString());
             return cosmosItemPropertiesFeedResponse;
         }).then();
     }
 
     private static Mono<Void> deleteDatabase(CosmosClient client) {
-        logger.info("Cleaning up the resource...");
+        LOGGER.info("Cleaning up the resource...");
         return client.getDatabase(DB_NAME).delete().then();
     }
 
     public static void main(String[] args) {
-        logger.info("---------------------");
-        logger.info("COSMOS DB");
-        logger.info("---------------------");
+        LOGGER.info("---------------------");
+        LOGGER.info("COSMOS DB");
+        LOGGER.info("---------------------");
 
         CosmosClient client = CosmosClient
             .builder().endpoint(AZURE_COSMOS_ENDPOINT)

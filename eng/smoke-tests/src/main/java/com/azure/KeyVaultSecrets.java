@@ -17,31 +17,31 @@ public class KeyVaultSecrets {
     private static final String SECRET_NAME = "MySecretName-" + UUID.randomUUID();
     private static final String SECRET_VALUE = "MySecretValue";
 
-    private static final Logger logger = LoggerFactory.getLogger(KeyVaultSecrets.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultSecrets.class);
 
     private static void setSecret() {
-        logger.info("Setting a secret...");
+        LOGGER.info("Setting a secret...");
         Secret response = secretClient.setSecret(SECRET_NAME, SECRET_VALUE);
-        logger.info("\tDONE: ({},{}).", response.name(), response.value());
+        LOGGER.info("\tDONE: ({},{}).", response.name(), response.value());
     }
 
     private static void getSecret() {
-        logger.info("Getting the secret... ");
+        LOGGER.info("Getting the secret... ");
         Secret response = secretClient.getSecret(SECRET_NAME);
-        logger.info("\tDONE: secret ({},{}) retrieved.", response.name(), response.value());
+        LOGGER.info("\tDONE: secret ({},{}) retrieved.", response.name(), response.value());
     }
 
     private static void deleteSecret() {
-        logger.info("Deleting the secret... ");
+        LOGGER.info("Deleting the secret... ");
         DeletedSecret response = secretClient.deleteSecret(SECRET_NAME);
-        logger.info("\tDONE: '{}' deleted.", response.name());
+        LOGGER.info("\tDONE: '{}' deleted.", response.name());
     }
 
     public static void main(String[] args) {
-        logger.info("---------------------");
-        logger.info("KEY VAULT - SECRETS");
-        logger.info("IDENTITY - CREDENTIAL");
-        logger.info("---------------------");
+        LOGGER.info("---------------------");
+        LOGGER.info("KEY VAULT - SECRETS");
+        LOGGER.info("IDENTITY - CREDENTIAL");
+        LOGGER.info("---------------------");
 
         /* DefaultAzureCredentialBuilder() is expecting the following environment variables:
          * AZURE_CLIENT_ID
