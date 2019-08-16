@@ -113,11 +113,10 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.deleteQueue#string}
      *
      * @param queueName Name of the queue
-     * @return An empty response
      * @throws StorageErrorException If the queue doesn't exist
      */
-    public Void deleteQueue(String queueName) {
-        return deleteQueueWithResponse(queueName, Context.NONE).value();
+    public void deleteQueue(String queueName) {
+         deleteQueueWithResponse(queueName, Context.NONE);
     }
 
     /**
@@ -252,7 +251,6 @@ public final class QueueServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure Docs</a>.</p>
      *
      * @param properties Storage account Queue service properties
-     * @return A response that only contains headers and response status code
      * @throws StorageErrorException When one of the following is true
      * <ul>
      *     <li>A CORS rule is missing one of its fields</li>
@@ -265,8 +263,8 @@ public final class QueueServiceClient {
      *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
      * </ul>
      */
-    public Void setProperties(StorageServiceProperties properties) {
-        return setPropertiesWithResponse(properties, Context.NONE).value();
+    public void setProperties(StorageServiceProperties properties) {
+        setPropertiesWithResponse(properties, Context.NONE);
     }
 
     /**

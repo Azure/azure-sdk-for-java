@@ -68,11 +68,10 @@ public final class QueueClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
      *
-     * @return An empty response
      * @throws StorageErrorException If a queue with the same name already exists in the queue service.
      */
-    public Void create() {
-        return createWithResponse(null, Context.NONE).value();
+    public void create() {
+        createWithResponse(null, Context.NONE);
     }
 
     /**
@@ -108,11 +107,10 @@ public final class QueueClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
      *
-     * @return An empty response
      * @throws StorageErrorException If the queue doesn't exist
      */
-    public Void delete() {
-        return deleteWithResponse(Context.NONE).value();
+    public void delete() {
+        deleteWithResponse(Context.NONE);
     }
 
     /**
@@ -195,11 +193,10 @@ public final class QueueClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-metadata">Azure Docs</a>.</p>
      *
      * @param metadata Metadata to set on the queue
-     * @return An empty response
      * @throws StorageErrorException If the queue doesn't exist
      */
-    public Void setMetadata(Map<String, String> metadata) {
-        return setMetadataWithResponse(metadata, Context.NONE).value();
+    public void setMetadata(Map<String, String> metadata) {
+        setMetadataWithResponse(metadata, Context.NONE);
     }
 
     /**
@@ -261,12 +258,11 @@ public final class QueueClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
      *
      * @param permissions Access policies to set on the queue
-     * @return An empty response
      * @throws StorageErrorException If the queue doesn't exist, a stored access policy doesn't have all fields filled out,
      * or the queue will have more than five policies.
      */
-    public Void setAccessPolicy(List<SignedIdentifier> permissions) {
-        return setAccessPolicyWithResponse(permissions, Context.NONE).value();
+    public void setAccessPolicy(List<SignedIdentifier> permissions) {
+        setAccessPolicyWithResponse(permissions, Context.NONE);
     }
 
     /**
@@ -303,11 +299,10 @@ public final class QueueClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/clear-messages">Azure Docs</a>.</p>
      *
-     * @return An empty response
      * @throws StorageErrorException If the queue doesn't exist
      */
-    public Void clearMessages() {
-        return clearMessagesWithResponse(Context.NONE).value();
+    public void clearMessages() {
+        clearMessagesWithResponse(Context.NONE);
     }
 
     /**
@@ -572,11 +567,10 @@ public final class QueueClient {
      *
      * @param messageId Id of the message to deleted
      * @param popReceipt Unique identifier that must match for the message to be deleted
-     * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the queue or messageId don't exist or the popReceipt doesn't match on the message
      */
-    public Void deleteMessage(String messageId, String popReceipt) {
-        return deleteMessageWithResponse(messageId, popReceipt, Context.NONE).value();
+    public void deleteMessage(String messageId, String popReceipt) {
+        deleteMessageWithResponse(messageId, popReceipt, Context.NONE);
     }
 
     /**
