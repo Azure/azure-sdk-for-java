@@ -318,8 +318,9 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClassCheck"/>
 
     <!-- CUSTOM CHECKS -->
-    <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
-<!--    <module name="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck"/>-->
+    <!-- Javadoc format: 'param / return / throws' descriptions text should only have one space character after the
+     parameter name or return -->
+    <module name="com.azure.tools.checkstyle.checks.JavaDocFormatting"/>
 
     <!--CUSTOM CHECKS-->
     <!-- Any class that implements the HttpPipelinePolicy interface should:

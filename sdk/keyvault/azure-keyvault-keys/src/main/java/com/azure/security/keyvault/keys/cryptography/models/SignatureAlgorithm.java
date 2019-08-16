@@ -30,8 +30,7 @@ public enum SignatureAlgorithm {
     /**
      * Creates a custom value for SignatureAlgorithm.
      *
-     * @param value
-     *            the custom value
+     * @param value the custom value
      */
     SignatureAlgorithm(String value) {
         this.value = value;
