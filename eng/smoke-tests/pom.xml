@@ -6,8 +6,7 @@
   <artifactId>smoke-test</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>smoke-test</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
