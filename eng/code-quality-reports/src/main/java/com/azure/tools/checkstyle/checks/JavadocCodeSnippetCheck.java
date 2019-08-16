@@ -142,7 +142,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
                 return;
             }
 
-            String description = JavadocUtil.findFirstToken(descriptionNode, JavadocTokenTypes.TEXT).getText();
+            String customDescription = JavadocUtil.findFirstToken(descriptionNode, JavadocTokenTypes.TEXT).getText();
 
             // Find method name
             DetailAST methodDefToken = methodDefStack.peek();
@@ -156,9 +156,10 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
             }
 
             // Check for CodeSnippet naming pattern matching
-            if (!description.equalsIgnoreCase(fullPath)) {
+            if (customDescription == null || customDescription.isEmpty() ||
+                !isNamingMatched(customDescription.toLowerCase(), fullPath.toLowerCase(), parameters)) {
                 log(node.getLineNumber(), String.format("Naming pattern mismatch. The @codeSnippet description "
-                    + "''%s'' does not match ''%s''. Case Insensitive.", description, fullPath));
+                    + "''%s'' does not match ''%s''. Case Insensitive.", customDescription, fullPath));
             }
         }
     }
@@ -209,5 +210,40 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
             return null;
         }
         return sb.substring(0, size - 1);
+    }
+
+    /**
+     *  Check if the given customDescription from codesnippet matched the naming pattern rules:
+     *  All rules now are case-insensitive.
+     *  <ol>
+     *    <li>Method names from codesnippet should have started with actual method name where the codesnippet javadoc represents</li>
+     *    <li>Parameters should match correctly in terms of ordering and naming.</li>
+     *  </ol>
+     * @param customDescription
+     * @param fullPath
+     * @param parameters
+     * @return
+     */
+    private boolean isNamingMatched(String customDescription, String fullPath, String parameters) {
+        String[] descriptionSegments = customDescription.split("#");
+        // One JavaDoc could have twe codesnippet. For example, for method name methodName(string, string),
+        // There are two codescippet, (1) packagename.classname.methodname#string-string
+        // (2) packagename.classname.methodname123#string-string.
+        // These two codesnippet samples are all valid at the same Javadoc.
+        if (!fullPath.startsWith(descriptionSegments[0])) {
+            return false;
+        }
+
+        // There exists parameters in the actual Java sample, but there is no custom parameters exist.
+        if (parameters != null && descriptionSegments.length != 2) {
+            return false;
+        }
+
+        // Both custom description and actual java sample has parameter strings exist, but not equal.
+        if (descriptionSegments.length == 2 && !descriptionSegments[1].equalsIgnoreCase(parameters)) {
+            return false;
+        }
+
+        return true;
     }
 }
