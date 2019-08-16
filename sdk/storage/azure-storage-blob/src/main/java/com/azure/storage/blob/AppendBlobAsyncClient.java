@@ -83,8 +83,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @param metadata {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
      *
-     * @return
-     *      A {@link Mono} containing {@link Response} whose {@link Response#value() value} contains the created appended blob.
+     * @return A {@link Mono} containing {@link Response} whose {@link Response#value() value} contains the created appended blob.
      */
     public Mono<Response<AppendBlobItem>> createWithResponse(BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
         return withContext(context -> createWithResponse(headers, metadata, accessConditions, context));

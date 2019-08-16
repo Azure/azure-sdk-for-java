@@ -130,6 +130,7 @@ public final class BlockBlobClient extends BlobClient {
      * @param metadata {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The information of the uploaded block blob.
      * @throws IOException If an I/O error occurs
@@ -170,11 +171,11 @@ public final class BlockBlobClient extends BlobClient {
 
     /**
      * Creates a new block blob, or updates the content of an existing block blob.
-     * @param filePath         Path of the file to upload
-     * @param headers          {@link BlobHTTPHeaders}
-     * @param metadata         {@link Metadata}
+     * @param filePath Path of the file to upload
+     * @param headers {@link BlobHTTPHeaders}
+     * @param metadata {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
-     * @param timeout          An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
      * @throws IOException If an I/O error occurs
      */
@@ -199,7 +200,6 @@ public final class BlockBlobClient extends BlobClient {
      * @param data The data to write to the block.
      * @param length The exact length of the data. It is important that this value match precisely the length of the data
      *         provided in the {@link InputStream}.
-     * @return A response containing status code and HTTP headers
      */
     public void stageBlock(String base64BlockID, InputStream data, long length) {
         stageBlockWithResponse(base64BlockID, data, length, null, null, Context.NONE);
@@ -218,6 +218,8 @@ public final class BlockBlobClient extends BlobClient {
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A response containing status code and HTTP headers
      */
     public VoidResponse stageBlockWithResponse(String base64BlockID, InputStream data, long length,
@@ -251,7 +253,6 @@ public final class BlockBlobClient extends BlobClient {
      *         either be public or must be authenticated via a shared access signature. If the source blob is public, no
      *         authentication is required to perform the operation.
      * @param sourceRange {@link BlobRange}
-     * @return A response containing status code and HTTP headers
      */
     public void stageBlockFromURL(String base64BlockID, URL sourceURL, BlobRange sourceRange) {
         stageBlockFromURLWithResponse(base64BlockID, sourceURL, sourceRange, null, null, null, null, Context.NONE);
@@ -274,12 +275,14 @@ public final class BlockBlobClient extends BlobClient {
      *         lease on the blob.
      * @param sourceModifiedAccessConditions {@link SourceModifiedAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A response containing status code and HTTP headers
      */
     public VoidResponse stageBlockFromURLWithResponse(String base64BlockID, URL sourceURL, BlobRange sourceRange,
-        byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions, 
+        byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
         SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = blockBlobAsyncClient.stageBlockFromURLWithResponse(base64BlockID, sourceURL, 
+        Mono<VoidResponse> response = blockBlobAsyncClient.stageBlockFromURLWithResponse(base64BlockID, sourceURL,
             sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -347,11 +350,12 @@ public final class BlockBlobClient extends BlobClient {
      * @param metadata {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The information of the block blob.
      */
     public Response<BlockBlobItem> commitBlockListWithResponse(List<String> base64BlockIDs,
-            BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, 
+            BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Duration timeout,
             Context context) {
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.commitBlockListWithResponse(
             base64BlockIDs, headers, metadata, accessConditions, context);

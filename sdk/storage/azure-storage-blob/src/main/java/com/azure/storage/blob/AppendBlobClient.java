@@ -114,19 +114,13 @@ public final class AppendBlobClient extends BlobClient {
     /**
      * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
      *
-     * @param headers
-     *         {@link BlobHTTPHeaders}
-     * @param metadata
-     *         {@link Metadata}
-     * @param accessConditions
-     *         {@link BlobAccessConditions}
-     * @param timeout
-     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         Additional context that is passed through the Http pipeline during the service call.
+     * @param headers {@link BlobHTTPHeaders}
+     * @param metadata {@link Metadata}
+     * @param accessConditions {@link BlobAccessConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return
-     *      A {@link Response} whose {@link Response#value() value} contains the created appended blob.
+     * @return A {@link Response} whose {@link Response#value() value} contains the created appended blob.
      */
     public Response<AppendBlobItem> createWithResponse(BlobHTTPHeaders headers, Metadata metadata,
                                            BlobAccessConditions accessConditions, Duration timeout, Context context) {
@@ -225,27 +219,19 @@ public final class AppendBlobClient extends BlobClient {
     /**
      * Commits a new block of data from another blob to the end of this append blob.
      *
-     * @param sourceURL
-     *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can
+     * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage account can
      *          be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      *          must either be public or must be authenticated via a shared access signature. If the source blob is
      *          public, no authentication is required to perform the operation.
-     * @param sourceRange
-     *          {@link BlobRange}
-     * @param sourceContentMD5
-     *          An MD5 hash of the block content from the source blob. If specified, the service will calculate the MD5
+     * @param sourceRange {@link BlobRange}
+     * @param sourceContentMD5 An MD5 hash of the block content from the source blob. If specified, the service will calculate the MD5
      *          of the received data and fail the request if it does not match the provided MD5.
-     * @param destAccessConditions
-     *          {@link AppendBlobAccessConditions}
-     * @param sourceAccessConditions
-     *          {@link SourceModifiedAccessConditions}
-     * @param timeout
-     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         Additional context that is passed through the Http pipeline during the service call.
+     * @param destAccessConditions {@link AppendBlobAccessConditions}
+     * @param sourceAccessConditions {@link SourceModifiedAccessConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return
-     *      The information of the append blob operation.
+     * @return The information of the append blob operation.
      */
     public Response<AppendBlobItem> appendBlockFromUrlWithResponse(URL sourceURL, BlobRange sourceRange,
                                                        byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,

@@ -167,10 +167,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
 
     /**
      * Creates a new block blob, or updates the content of an existing block blob, with the content of the specified file.
-     * @param filePath         Path to the upload file
-     * @param blockSize        Size of the blocks to upload
-     * @param headers          {@link BlobHTTPHeaders}
-     * @param metadata         {@link Metadata}
+     * @param filePath Path to the upload file
+     * @param blockSize Size of the blocks to upload
+     * @param headers {@link BlobHTTPHeaders}
+     * @param metadata {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
      *
      * @return An empty response

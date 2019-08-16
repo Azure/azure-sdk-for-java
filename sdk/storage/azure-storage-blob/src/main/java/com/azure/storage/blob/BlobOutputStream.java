@@ -373,7 +373,7 @@ public final class BlobOutputStream extends OutputStream {
 
     /**
      * Writes the data to the buffer and triggers writes to the service as needed.
-     * @param data   A <code>byte</code> array which represents the data to write.
+     * @param data A <code>byte</code> array which represents the data to write.
      * @param offset An <code>int</code> which represents the start offset in the data.
      * @param length An <code>int</code> which represents the number of bytes to write.
      *
