@@ -3,7 +3,6 @@
 package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.internal.directconnectivity.Protocol;
-import com.google.common.base.Strings;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslProvider;
@@ -13,11 +12,19 @@ import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLException;
 
+import static com.google.common.base.MoreObjects.firstNonNull;
+import static com.google.common.base.Strings.emptyToNull;
+
 public class Configs {
     private static final Logger logger = LoggerFactory.getLogger(Configs.class);
     private final SslContext sslContext;
 
-    private static final String PROTOCOL = "cosmos.directModeProtocol";
+    // The names we use are consistent with the:
+    // * Azure environment variable naming conventions documented at https://azure.github.io/azure-sdk/java_implementation.html and
+    // * Java property naming conventions as illustrated by the name/value pairs returned by System.getProperties.
+
+    private static final String PROTOCOL_ENVIRONMENT_VARIABLE = "AZURE_COSMOS_DIRECT_MODE_PROTOCOL";
+    private static final String PROTOCOL_PROPERTY = "azure.cosmos.directModeProtocol";
     private static final Protocol DEFAULT_PROTOCOL = Protocol.TCP;
 
     private static final String UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = "COSMOS.UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS";
@@ -69,8 +76,8 @@ public class Configs {
     }
 
     public Protocol getProtocol() {
-        String protocol = System.getProperty(PROTOCOL, StringUtils.defaultString(
-            Strings.emptyToNull(System.getenv().get("DIRECT_MODE_PROTOCOL")),
+        String protocol = System.getProperty(PROTOCOL_PROPERTY, firstNonNull(
+            emptyToNull(System.getenv().get(PROTOCOL_ENVIRONMENT_VARIABLE)),
             DEFAULT_PROTOCOL.name()));
         try {
             return Protocol.valueOf(protocol.toUpperCase());

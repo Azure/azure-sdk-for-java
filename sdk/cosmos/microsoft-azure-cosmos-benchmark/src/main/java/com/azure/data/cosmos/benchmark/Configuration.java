@@ -262,14 +262,14 @@ class Configuration {
     }
 
     public MeterRegistry getAzureMonitorMeterRegistry() {
-        String instrumentationKey = System.getProperty("cosmos.monitoring.azureMonitor.instrumentationKey",
+        String instrumentationKey = System.getProperty("azure.cosmos.monitoring.azureMonitor.instrumentationKey",
             StringUtils.defaultString(Strings.emptyToNull(
                 System.getenv().get("AZURE_INSTRUMENTATION_KEY")), null));
         return instrumentationKey == null ? null : this.azureMonitorMeterRegistry(instrumentationKey);
     }
 
     public MeterRegistry getGraphiteMeterRegistry() {
-        String serviceAddress = System.getProperty("cosmos.monitoring.graphite.serviceAddress",
+        String serviceAddress = System.getProperty("azure.cosmos.monitoring.graphite.serviceAddress",
             StringUtils.defaultString(Strings.emptyToNull(
                 System.getenv().get("GRAPHITE_SERVICE_ADDRESS")), null));
         return serviceAddress == null ? null : this.graphiteMeterRegistry(serviceAddress);
@@ -340,8 +340,8 @@ class Configuration {
 
         if (this.azureMonitorMeterRegistry == null) {
 
-            Duration step = Duration.ofSeconds(Integer.getInteger("cosmos.monitoring.azureMonitor.step", this.printingInterval));
-            boolean enabled = !Boolean.getBoolean("cosmos.monitoring.azureMonitor.disabled");
+            Duration step = Duration.ofSeconds(Integer.getInteger("azure.cosmos.monitoring.azureMonitor.step", this.printingInterval));
+            boolean enabled = !Boolean.getBoolean("azure.cosmos.monitoring.azureMonitor.disabled");
 
             final AzureMonitorConfig config = new AzureMonitorConfig() {
 
@@ -383,8 +383,8 @@ class Configuration {
 
             String host = address.getHost();
             int port = address.getPortOrDefault(DEFAULT_GRAPHITE_SERVER_PORT);
-            boolean enabled = !Boolean.getBoolean("cosmos.monitoring.graphite.disabled");
-            Duration step = Duration.ofSeconds(Integer.getInteger("cosmos.monitoring.graphite.step", this.printingInterval));
+            boolean enabled = !Boolean.getBoolean("azure.cosmos.monitoring.graphite.disabled");
+            Duration step = Duration.ofSeconds(Integer.getInteger("azure.cosmos.monitoring.graphite.step", this.printingInterval));
 
             final GraphiteConfig config = new GraphiteConfig() {
 

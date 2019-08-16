@@ -38,7 +38,7 @@ public final class RntbdMetrics {
     private static final PercentEscaper escaper = new PercentEscaper("_-", false);
     private static final CompositeMeterRegistry registry = new CompositeMeterRegistry();
 
-    private static final String prefix = "cosmos.directTcp.";
+    private static final String prefix = "azure.cosmos.directTcp.";
     private static MeterRegistry consoleLoggingRegistry;
 
     private final RntbdTransportClient transportClient;
@@ -50,7 +50,7 @@ public final class RntbdMetrics {
     private final Tags tags;
 
     static {
-        int step = Integer.getInteger("cosmos.monitoring.consoleLogging.step", 0);
+        int step = Integer.getInteger("azure.cosmos.monitoring.consoleLogging.step", 0);
         if (step > 0) {
             RntbdMetrics.add(RntbdMetrics.consoleLoggingRegistry(step));
         }

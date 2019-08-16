@@ -25,7 +25,7 @@ public class ConfigsTests {
     @Test(groups = { "unit" })
     public void getProtocol() {
         Configs config = new Configs();
-        assertThat(config.getProtocol()).isEqualTo(Protocol.valueOf(System.getProperty("cosmos.directModeProtocol", "TCP").toUpperCase()));
+        assertThat(config.getProtocol()).isEqualTo(Protocol.valueOf(System.getProperty("azure.cosmos.directModeProtocol", "TCP").toUpperCase()));
     }
 
     @Test(groups = { "unit" })
