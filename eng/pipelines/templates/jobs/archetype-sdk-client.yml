@@ -1,3 +1,40 @@
+parameters:
+  ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
+  PreTestSteps: []
+  TestOptions: '$(DefaultOptions) $(ProfileFlag)'
+  TestGoals: test
+  TestMatrix:
+    Linux - Java 8:
+      OSName: 'Linux'
+      OSVmImage: 'ubuntu-16.04'
+      JavaVersion: '1.8'
+      ProfileFlag: ''
+    macOS - Java 8:
+      OSName: 'macOS'
+      OSVmImage: 'macOS-10.13'
+      JavaVersion: '1.8'
+      ProfileFlag: ''
+    Windows - Java 8:
+      OSName: 'Windows'
+      OSVmImage: 'vs2017-win2016'
+      JavaVersion: '1.8'
+      ProfileFlag: ''
+    Linux - Java LTS:
+      OSName: 'Linux'
+      OSVmImage: 'ubuntu-16.04'
+      JavaVersion: '1.11'
+      ProfileFlag: '-Djava-lts'
+    macOS - Java LTS:
+      OSName: 'macOS'
+      OSVmImage: 'macOS-10.13'
+      JavaVersion: '1.11'
+      ProfileFlag: '-Djava-lts'
+    Windows - Java LTS:
+      OSName: 'Windows'
+      OSVmImage: 'vs2017-win2016'
+      JavaVersion: '1.11'
+      ProfileFlag: '-Djava-lts'
+
 jobs:
   - job: 'Build'
 
@@ -36,10 +73,10 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
-      - task: PublishBuildArtifacts@1
+      - publish: $(Build.ArtifactStagingDirectory)
         displayName: 'Publish Artifacts $(ArtifactName)'
-        inputs:
-          artifactName: '$(ArtifactName)'
+        artifact: '$(ArtifactName)'
+
 
   - job: 'Analyze'
 
@@ -69,17 +106,11 @@ jobs:
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-      - task: Maven@3
-        displayName: 'Install reporting tools'
-        inputs:
-          mavenPomFile: eng/code-quality-reports/pom.xml
-          options: '--batch-mode'
-          mavenOptions: '$(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'install'
+
+      - template: ../steps/install-reporting-tools.yml
+        parameters:
+          Options: --batch-mode
+          MavenOptions: $(LoggingOptions)
 
       - task: Maven@3
         displayName: 'Install all client libraries (for SpotBugs analysis)'
@@ -104,7 +135,7 @@ jobs:
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          goals: 'spotbugs:spotbugs checkstyle:checkstyle'
+          goals: 'spotbugs:check checkstyle:checkstyle-aggregate'
 
       # Generate the Maven site report, including SpotBugs, JavaDoc, CheckStyle, Jacoco, etc only when we are not
       # running as a PR check.
@@ -174,12 +205,10 @@ jobs:
         displayName: 'Copy reports to artifact staging'
         condition: ne(variables['Build.Reason'], 'PullRequest')
 
-      - task: PublishBuildArtifacts@1
+      - publish: $(Build.ArtifactStagingDirectory)
         condition: succeededOrFailed()
         displayName: 'Publish Report Artifacts'
-        inputs:
-          artifactName: reports
-
+        artifact: reports
 
   - job: 'Test'
 
@@ -187,56 +216,19 @@ jobs:
       - template: ../variables/globals.yml
 
     strategy:
-      matrix:
-        Linux - Java 8:
-          OSName: 'Linux'
-          OSVmImage: 'ubuntu-16.04'
-          JavaVersion: '1.8'
-          ProfileFlag: ''
-        macOS - Java 8:
-          OSName: 'macOS'
-          OSVmImage: 'macOS-10.13'
-          JavaVersion: '1.8'
-          ProfileFlag: ''
-        Windows - Java 8:
-          OSName: 'Windows'
-          OSVmImage: 'vs2017-win2016'
-          JavaVersion: '1.8'
-          ProfileFlag: ''
-        Linux - Java LTS:
-          OSName: 'Linux'
-          OSVmImage: 'ubuntu-16.04'
-          JavaVersion: '1.11'
-          ProfileFlag: '-Djava-lts'
-        macOS - Java LTS:
-          OSName: 'macOS'
-          OSVmImage: 'macOS-10.13'
-          JavaVersion: '1.11'
-          ProfileFlag: '-Djava-lts'
-        Windows - Java LTS:
-          OSName: 'Windows'
-          OSVmImage: 'vs2017-win2016'
-          JavaVersion: '1.11'
-          ProfileFlag: '-Djava-lts'
+      matrix: ${{ parameters.TestMatrix }}
 
     pool:
       vmImage: $(OSVmImage)
 
     steps:
-      - powershell: |
-          Invoke-WebRequest -Uri "https://github.com/Azure/azure-sdk-tools/releases/download/sdk-tools_14793/sdk-tools.zip" `
-          -OutFile "sdk-tools.zip" | Wait-Process; Expand-Archive -Path "sdk-tools.zip" -DestinationPath "./sdk-tools/"
-        workingDirectory: '$(Build.BinariesDirectory)'
-        displayName: 'Download Tools Archive From Github Release and Extract it'
-
-      - task: PythonScript@0
-        displayName: 'Run VerifyAgentOS script'
-        inputs:
-          scriptPath: '$(Build.BinariesDirectory)/sdk-tools/scripts/python/verify_agent_os.py'
-          arguments: $(OSName)
+      - template: ../steps/verify-agent-os.yml
+        parameters:
+          OSName: $(OSName)
 
       - task: Maven@3
         displayName: 'Start Jetty'
+        condition: ne(variables['SdkType'], 'client')
         inputs:
           mavenPomFile: pom.client.xml
           options: '$(DefaultOptions) $(ProfileFlag)'
@@ -247,17 +239,19 @@ jobs:
           publishJUnitResults: false
           goals: 'jetty:run-forked'
 
+      - ${{ parameters.PreTestSteps }}
+
       - task: Maven@3
         displayName: 'Run tests'
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
-          options: '$(DefaultOptions) $(ProfileFlag)'
+          options: ${{ parameters.TestOptions }}
           mavenOptions: '-Xmx3072m $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          goals: 'test'
+          goals: ${{ parameters.TestGoals }}
 
       - task: PublishTestResults@2
         condition: succeededOrFailed()

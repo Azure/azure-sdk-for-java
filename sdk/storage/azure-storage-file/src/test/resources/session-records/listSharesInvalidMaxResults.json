@@ -1,0 +1,60 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=share85200d7d&maxresults=-1&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "OutOfRangeQueryParameterValue",
+      "retry-after" : "0",
+      "Content-Length" : "461",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "9ebed237-b01a-000d-2f0a-47df7a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeQueryParameterValue</Code><Message>One of the query parameters specified in the request URI is outside the permissible range.\nRequestId:9ebed237-b01a-000d-2f0a-47df7a000000\nTime:2019-07-30T19:13:34.7895274Z</Message><QueryParameterName>maxresults</QueryParameterName><QueryParameterValue>-1</QueryParameterValue><MinimumAllowed>1</MinimumAllowed><MaximumAllowed>2147483647</MaximumAllowed></Error>",
+      "Date" : "Tue, 30 Jul 2019 19:13:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=share85200d7d&maxresults=0&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "OutOfRangeQueryParameterValue",
+      "retry-after" : "0",
+      "Content-Length" : "460",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "9ebed238-b01a-000d-300a-47df7a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeQueryParameterValue</Code><Message>One of the query parameters specified in the request URI is outside the permissible range.\nRequestId:9ebed238-b01a-000d-300a-47df7a000000\nTime:2019-07-30T19:13:34.8155527Z</Message><QueryParameterName>maxresults</QueryParameterName><QueryParameterValue>0</QueryParameterValue><MinimumAllowed>1</MinimumAllowed><MaximumAllowed>2147483647</MaximumAllowed></Error>",
+      "Date" : "Tue, 30 Jul 2019 19:13:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=share85200d7d&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.2 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "9ebed239-b01a-000d-310a-47df7a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>share85200d7d</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 30 Jul 2019 19:13:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "share85200d7d" ]
+}

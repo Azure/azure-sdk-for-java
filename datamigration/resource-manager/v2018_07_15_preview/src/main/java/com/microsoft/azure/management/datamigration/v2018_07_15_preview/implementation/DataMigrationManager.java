@@ -19,6 +19,7 @@ import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.datamigration.v2018_07_15_preview.ResourceSkus;
 import com.microsoft.azure.management.datamigration.v2018_07_15_preview.Services;
 import com.microsoft.azure.management.datamigration.v2018_07_15_preview.Tasks;
+import com.microsoft.azure.management.datamigration.v2018_07_15_preview.ServiceTasks;
 import com.microsoft.azure.management.datamigration.v2018_07_15_preview.Projects;
 import com.microsoft.azure.management.datamigration.v2018_07_15_preview.Usages;
 import com.microsoft.azure.management.datamigration.v2018_07_15_preview.Operations;
@@ -33,6 +34,7 @@ public final class DataMigrationManager extends ManagerCore<DataMigrationManager
     private ResourceSkus resourceSkus;
     private Services services;
     private Tasks tasks;
+    private ServiceTasks serviceTasks;
     private Projects projects;
     private Usages usages;
     private Operations operations;
@@ -112,6 +114,16 @@ public final class DataMigrationManager extends ManagerCore<DataMigrationManager
             this.tasks = new TasksImpl(this);
         }
         return this.tasks;
+    }
+
+    /**
+     * @return Entry point to manage ServiceTasks.
+     */
+    public ServiceTasks serviceTasks() {
+        if (this.serviceTasks == null) {
+            this.serviceTasks = new ServiceTasksImpl(this);
+        }
+        return this.serviceTasks;
     }
 
     /**

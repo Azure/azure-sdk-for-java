@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TaskSchedulingPolicy {
     /**
-     * How Tasks are distributed across Compute Compute Nodes in a Pool.
+     * How Tasks are distributed across Compute Nodes in a Pool.
      * If not specified, the default is spread. Possible values include:
      * 'spread', 'pack'.
      */

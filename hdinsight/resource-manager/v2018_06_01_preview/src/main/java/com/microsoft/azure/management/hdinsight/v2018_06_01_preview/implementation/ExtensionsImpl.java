@@ -56,10 +56,14 @@ class ExtensionsImpl extends WrapperImpl<ExtensionsInner> implements Extensions 
     public Observable<Extension> getAsync(String resourceGroupName, String clusterName, String extensionName) {
         ExtensionsInner client = this.inner();
         return client.getAsync(resourceGroupName, clusterName, extensionName)
-        .map(new Func1<ExtensionInner, Extension>() {
+        .flatMap(new Func1<ExtensionInner, Observable<Extension>>() {
             @Override
-            public Extension call(ExtensionInner inner) {
-                return wrapModel(inner);
+            public Observable<Extension> call(ExtensionInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Extension)wrapModel(inner));
+                }
             }
        });
     }

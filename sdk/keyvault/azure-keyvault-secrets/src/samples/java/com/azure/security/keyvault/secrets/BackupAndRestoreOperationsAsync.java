@@ -3,8 +3,9 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class BackupAndRestoreOperationsAsync {
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
             .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // Let's create secrets holding storage account credentials valid for 1 year. if the secret
@@ -39,7 +40,7 @@ public class BackupAndRestoreOperationsAsync {
         secretAsyncClient.setSecret(new Secret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
             .expires(OffsetDateTime.now().plusYears(1)))
             .subscribe(secretResponse ->
-                System.out.printf("Secret is created with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
+                System.out.printf("Secret is created with name %s and value %s \n", secretResponse.name(), secretResponse.value()));
 
         Thread.sleep(2000);
 
@@ -47,7 +48,7 @@ public class BackupAndRestoreOperationsAsync {
         // For long term storage, it is ideal to write the backup to a file.
         String backupFilePath = "YOUR_BACKUP_FILE_PATH";
         secretAsyncClient.backupSecret("StorageAccountPassword").subscribe(backupResponse -> {
-            byte[] backupBytes = backupResponse.value();
+            byte[] backupBytes = backupResponse;
             writeBackupToFile(backupBytes, backupFilePath);
         });
 
@@ -55,7 +56,7 @@ public class BackupAndRestoreOperationsAsync {
 
         // The storage account secret is no longer in use, so you delete it.
         secretAsyncClient.deleteSecret("StorageAccountPassword").subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.value().recoveryId()));
+                System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.recoveryId()));
 
         //To ensure file is deleted on server side.
         Thread.sleep(30000);
@@ -70,7 +71,7 @@ public class BackupAndRestoreOperationsAsync {
         // After sometime, the secret is required again. We can use the backup value to restore it in the key vault.
         byte[] backupFromFile = Files.readAllBytes(new File(backupFilePath).toPath());
         secretAsyncClient.restoreSecret(backupFromFile).subscribe(secretResponse ->
-            System.out.printf("Restored Secret with name %s \n", secretResponse.value().name()));
+            System.out.printf("Restored Secret with name %s \n", secretResponse.name()));
 
         //To ensure secret is restored on server side.
         Thread.sleep(15000);

@@ -3,7 +3,9 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 
@@ -28,14 +30,17 @@ public class HelloWorld {
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         KeyClient keyClient = new KeyClientBuilder()
                 .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-                .credential(new DefaultAzureCredential())
+                .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
         // Let's create a Rsa key valid for 1 year. if the key
         // already exists in the key vault, then a new version of the key is created.
-        keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-                .expires(OffsetDateTime.now().plusYears(1))
-                .keySize(2048));
+        Response<Key> createKeyResponse = keyClient.createRsaKeyWithResponse(new RsaKeyCreateOptions("CloudRsaKey")
+                                                                                 .expires(OffsetDateTime.now().plusYears(1))
+                                                                                 .keySize(2048), new Context("key1", "value1"));
+
+        // Let's validate create key operation succeeded using the status code information in the response.
+        System.out.printf("Create Key operation succeeded with status code %s \n", createKeyResponse.statusCode());
 
         // Let's Get the Cloud Rsa Key from the key vault.
         Key cloudRsaKey = keyClient.getKey("CloudRsaKey");

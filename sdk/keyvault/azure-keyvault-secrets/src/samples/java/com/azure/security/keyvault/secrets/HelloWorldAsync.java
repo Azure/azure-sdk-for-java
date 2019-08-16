@@ -3,8 +3,9 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -25,20 +26,20 @@ public class HelloWorldAsync {
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
             .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // Let's create a secret holding bank account credentials valid for 1 year. if the secret
         // already exists in the key vault, then a new version of the secret is created.
         secretAsyncClient.setSecret(new Secret("BankAccountPassword", "f4G34fMh8v")
             .expires(OffsetDateTime.now().plusYears(1))).subscribe(secretResponse ->
-                System.out.printf("Secret is created with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
+                System.out.printf("Secret is created with name %s and value %s \n", secretResponse.name(), secretResponse.value()));
 
         Thread.sleep(2000);
 
         // Let's Get the bank secret from the key vault.
         secretAsyncClient.getSecret("BankAccountPassword").subscribe(secretResponse ->
-                System.out.printf("Secret returned with name %s , value %s \n", secretResponse.value().name(), secretResponse.value().value()));
+                System.out.printf("Secret returned with name %s , value %s \n", secretResponse.name(), secretResponse.value()));
 
         Thread.sleep(2000);
 
@@ -46,11 +47,11 @@ public class HelloWorldAsync {
         // The update method can be used to update the expiry attribute of the secret. It cannot be used to update
         // the value of the secret.
         secretAsyncClient.getSecret("BankAccountPassword").subscribe(secretResponse -> {
-            Secret secret = secretResponse.value();
+            Secret secret = secretResponse;
             //Update the expiry time of the secret.
             secret.expires(secret.expires().plusYears(1));
             secretAsyncClient.updateSecret(secret).subscribe(updatedSecretResponse ->
-                System.out.printf("Secret's updated expiry time %s \n", updatedSecretResponse.value().expires().toString()));
+                System.out.printf("Secret's updated expiry time %s \n", updatedSecretResponse.expires().toString()));
         });
 
         Thread.sleep(2000);
@@ -59,13 +60,13 @@ public class HelloWorldAsync {
         // To achieve this, we need to create a new version of the secret in the key vault. The update operation cannot
         // change the value of the secret.
         secretAsyncClient.setSecret("BankAccountPassword", "bhjd4DDgsa").subscribe(secretResponse ->
-            System.out.printf("Secret is created with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
+            System.out.printf("Secret is created with name %s and value %s \n", secretResponse.name(), secretResponse.value()));
 
         Thread.sleep(2000);
 
         // The bank account was closed, need to delete its credentials from the key vault.
         secretAsyncClient.deleteSecret("BankAccountPassword").subscribe(deletedSecretResponse ->
-            System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.value().recoveryId()));
+            System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.recoveryId()));
 
         //To ensure secret is deleted on server side.
         Thread.sleep(30000);

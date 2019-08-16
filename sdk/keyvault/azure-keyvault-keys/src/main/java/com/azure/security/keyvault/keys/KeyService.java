@@ -3,20 +3,21 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.core.implementation.annotation.Post;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.implementation.annotation.BodyParam;
+import com.azure.core.implementation.annotation.Delete;
 import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.implementation.annotation.Get;
+import com.azure.core.implementation.annotation.HeaderParam;
+import com.azure.core.implementation.annotation.Host;
 import com.azure.core.implementation.annotation.HostParam;
+import com.azure.core.implementation.annotation.Patch;
+import com.azure.core.implementation.annotation.Post;
+import com.azure.core.implementation.annotation.Put;
 import com.azure.core.implementation.annotation.PathParam;
 import com.azure.core.implementation.annotation.QueryParam;
-import com.azure.core.implementation.annotation.HeaderParam;
-import com.azure.core.implementation.annotation.BodyParam;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.Delete;
-import com.azure.core.implementation.annotation.Patch;
 import com.azure.core.implementation.annotation.ReturnValueWireType;
+import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -66,7 +67,7 @@ interface KeyService {
                                      @HeaderParam("Content-Type") String type,
                                      Context context);
 
-    @Post("keys/{key-name}")
+    @Put("keys/{key-name}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<Key>> importKey(@HostParam("url") String url,
