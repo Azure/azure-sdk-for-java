@@ -24,7 +24,8 @@ import java.util.Deque;
 public class ThrowFromClientLoggerCheck extends AbstractCheck {
     private static final String LOGGER_LOG_EXCEPTION_AS_ERROR = "logger.logExceptionAsError";
     private static final String LOGGER_LOG_EXCEPTION_AS_WARNING = "logger.logExceptionAsWarning";
-    private static final String THROW_lOGGER_EXCEPTION_MESSAGE = "Directly throwing an exception is disallowed. Must throw through either ''%s'' or ''%s''.";
+    private static final String THROW_lOGGER_EXCEPTION_MESSAGE = "Directly throwing an exception is disallowed. Must "
+        + "throw through ''ClientLogger'' API, either of ''%s'' or ''%s'' where ''logger'' is type of ClientLogger from Azure Core package.";
 
     // A container stores the static status of class, skip this ThrowFromClientLoggerCheck if the class is static
     private final Deque<Boolean> classStaticDeque = new ArrayDeque<>();

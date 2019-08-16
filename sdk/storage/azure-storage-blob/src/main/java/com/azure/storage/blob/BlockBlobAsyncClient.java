@@ -199,7 +199,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
                         try {
                             channel.close();
                         } catch (IOException e) {
-                            throw new UncheckedIOException(e);
+                            throw logger.logExceptionAsError(new UncheckedIOException(e));
                         }
                     });
             }, this::uploadFileCleanup);
@@ -210,7 +210,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         try {
             return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ);
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
@@ -218,7 +218,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         try {
             channel.close();
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
