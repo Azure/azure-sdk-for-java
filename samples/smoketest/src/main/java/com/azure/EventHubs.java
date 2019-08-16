@@ -52,7 +52,7 @@ public class EventHubs {
 
         producer.send(events).subscribe(
             (ignored) -> logger.info("sent"),
-            error -> System.err.println("Error received:" + error),
+            error -> logger.error("Error received:" + error),
             () -> {
                 //Closing the producer once is done with sending the events
                 try {
