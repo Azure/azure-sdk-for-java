@@ -30,8 +30,9 @@ class AppServiceMSICredential {
         Configuration configuration = ConfigurationManager.getConfiguration();
         if (configuration.contains(BaseConfigurations.MSI_ENDPOINT)) {
             msiEndpoint = configuration.get(BaseConfigurations.MSI_ENDPOINT);
-        } else
+        } else {
             msiEndpoint = null;
+        }
         if (configuration.contains(BaseConfigurations.MSI_SECRET)) {
             msiSecret = configuration.get(BaseConfigurations.MSI_SECRET);
         } else {

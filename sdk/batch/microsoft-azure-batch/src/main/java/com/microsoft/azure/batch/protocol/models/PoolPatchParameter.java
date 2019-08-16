@@ -19,8 +19,8 @@ public class PoolPatchParameter {
      * A Task to run on each Compute Node as it joins the Pool. The Task runs
      * when the Compute Node is added to the Pool or when the Compute Node is
      * restarted.
-     * If this element is present, it overwrites any existing start Task. If
-     * omitted, any existing start Task is left unchanged.
+     * If this element is present, it overwrites any existing StartTask. If
+     * omitted, any existing StartTask is left unchanged.
      */
     @JsonProperty(value = "startTask")
     private StartTask startTask;
@@ -63,7 +63,7 @@ public class PoolPatchParameter {
     private List<MetadataItem> metadata;
 
     /**
-     * Get if this element is present, it overwrites any existing start Task. If omitted, any existing start Task is left unchanged.
+     * Get if this element is present, it overwrites any existing StartTask. If omitted, any existing StartTask is left unchanged.
      *
      * @return the startTask value
      */
@@ -72,7 +72,7 @@ public class PoolPatchParameter {
     }
 
     /**
-     * Set if this element is present, it overwrites any existing start Task. If omitted, any existing start Task is left unchanged.
+     * Set if this element is present, it overwrites any existing StartTask. If omitted, any existing StartTask is left unchanged.
      *
      * @param startTask the startTask value to set
      * @return the PoolPatchParameter object itself.

@@ -8,6 +8,10 @@ import com.azure.core.http.rest.VoidResponse
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.models.UserDelegationKey
+import com.azure.storage.common.Constants
+import com.azure.storage.common.IPRange
+import com.azure.storage.common.SASProtocol
+import com.azure.storage.common.Utility
 import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
 import spock.lang.Unroll
@@ -37,7 +41,7 @@ class HelperTest extends APISpec {
      */
     def "Request property"() {
         when:
-        VoidResponse response = cu.delete()
+        VoidResponse response = cu.deleteWithResponse(null, null, null)
 
         then:
         response.request() != null
@@ -73,10 +77,10 @@ class HelperTest extends APISpec {
         setup:
         String containerName = generateContainerName()
         String blobName = generateBlobName()
-        ContainerClient cu = primaryServiceURL.createContainer(containerName).value()
+        ContainerClient cu = primaryServiceURL.createContainer(containerName)
         BlockBlobClient bu = cu.getBlockBlobClient(blobName)
         bu.upload(defaultInputStream.get(), defaultDataSize) // need something to snapshot
-        String snapshotId = bu.createSnapshot().value().getSnapshotId()
+        String snapshotId = bu.createSnapshot().getSnapshotId()
 
         BlobSASPermission p = new BlobSASPermission()
             .read(true)
@@ -123,7 +127,7 @@ class HelperTest extends APISpec {
         parts.snapshot(snapshotId)
         bsu = new BlobClientBuilder()
             .endpoint(parts.toURL().toString())
-            .credential(SASTokenCredential.fromQueryParameters(parts.sasQueryParameters()))
+            .credential(SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode()))
             .buildAppendBlobClient()
 
         ByteArrayOutputStream data = new ByteArrayOutputStream()
@@ -277,7 +281,7 @@ class HelperTest extends APISpec {
         expectedStringToSign = String.format(expectedStringToSign, Utility.ISO_8601_UTC_DATE_FORMATTER.format(v.expiryTime()), primaryCreds.accountName())
 
         then:
-        token.signature() == Utility.delegateComputeHmac256(key, expectedStringToSign)
+        token.signature() == Utility.computeHMac256(key.value(), expectedStringToSign)
 
         /*
         We test string to sign functionality directly related to user delegation sas specific parameters
@@ -733,6 +737,6 @@ class HelperTest extends APISpec {
         parts.sasQueryParameters().permissions() == "r"
         parts.sasQueryParameters().version() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
         parts.sasQueryParameters().resource() == "c"
-        parts.sasQueryParameters().signature() == Utility.safeURLDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
+        parts.sasQueryParameters().signature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
     }
 }

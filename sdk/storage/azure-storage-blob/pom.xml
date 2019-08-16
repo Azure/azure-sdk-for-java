@@ -15,7 +15,8 @@
   <artifactId>azure-storage-blob</artifactId>
   <version>12.0.0-preview.3</version>
 
-  <name>azure-storage-blob</name>
+  <name>Microsoft Azure client library for Blob Storage</name>
+  <description>This module contains client library for Microsoft Azure Blob Storage.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -50,6 +51,11 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.0.0-preview.4</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-common</artifactId>
+      <version>12.0.0-preview.3</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>

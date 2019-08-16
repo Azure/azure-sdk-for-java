@@ -35,9 +35,11 @@ public class JobUpdateParameter {
      * The Pool on which the Batch service runs the Job's Tasks.
      * You may change the Pool for a Job only when the Job is disabled. The
      * Update Job call will fail if you include the poolInfo element and the
-     * Job is not disabled. If you specify an autoPoolSpecification
-     * specification in the poolInfo, only the keepAlive property can be
-     * updated, and then only if the auto Pool has a poolLifetimeOption of Job.
+     * Job is not disabled. If you specify an autoPoolSpecification in the
+     * poolInfo, only the keepAlive property of the autoPoolSpecification can
+     * be updated, and then only if the autoPoolSpecification has a
+     * poolLifetimeOption of Job (other job properties can be updated as
+     * normal).
      */
     @JsonProperty(value = "poolInfo", required = true)
     private PoolInformation poolInfo;
@@ -108,7 +110,7 @@ public class JobUpdateParameter {
     }
 
     /**
-     * Get you may change the Pool for a Job only when the Job is disabled. The Update Job call will fail if you include the poolInfo element and the Job is not disabled. If you specify an autoPoolSpecification specification in the poolInfo, only the keepAlive property can be updated, and then only if the auto Pool has a poolLifetimeOption of Job.
+     * Get you may change the Pool for a Job only when the Job is disabled. The Update Job call will fail if you include the poolInfo element and the Job is not disabled. If you specify an autoPoolSpecification in the poolInfo, only the keepAlive property of the autoPoolSpecification can be updated, and then only if the autoPoolSpecification has a poolLifetimeOption of Job (other job properties can be updated as normal).
      *
      * @return the poolInfo value
      */
@@ -117,7 +119,7 @@ public class JobUpdateParameter {
     }
 
     /**
-     * Set you may change the Pool for a Job only when the Job is disabled. The Update Job call will fail if you include the poolInfo element and the Job is not disabled. If you specify an autoPoolSpecification specification in the poolInfo, only the keepAlive property can be updated, and then only if the auto Pool has a poolLifetimeOption of Job.
+     * Set you may change the Pool for a Job only when the Job is disabled. The Update Job call will fail if you include the poolInfo element and the Job is not disabled. If you specify an autoPoolSpecification in the poolInfo, only the keepAlive property of the autoPoolSpecification can be updated, and then only if the autoPoolSpecification has a poolLifetimeOption of Job (other job properties can be updated as normal).
      *
      * @param poolInfo the poolInfo value to set
      * @return the JobUpdateParameter object itself.
