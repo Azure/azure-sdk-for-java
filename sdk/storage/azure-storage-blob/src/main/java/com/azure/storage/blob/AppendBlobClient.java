@@ -67,8 +67,7 @@ public final class AppendBlobClient extends BlobClient {
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      *
-     * @throws StorageException
-     *             If a storage service error occurred.
+     * @throws StorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream() {
         return getBlobOutputStream(null);
@@ -78,13 +77,11 @@ public final class AppendBlobClient extends BlobClient {
      * Creates and opens an output stream to write data to the append blob. If the blob already exists on the service,
      * it will be overwritten.
      *
-     * @param accessConditions
-     *            A {@link BlobAccessConditions} object that represents the access conditions for the blob.
+     * @param accessConditions A {@link BlobAccessConditions} object that represents the access conditions for the blob.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      *
-     * @throws StorageException
-     *             If a storage service error occurred.
+     * @throws StorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(AppendBlobAccessConditions accessConditions) {
         return new BlobOutputStream(appendBlobAsyncClient, accessConditions);
@@ -93,8 +90,7 @@ public final class AppendBlobClient extends BlobClient {
     /**
      * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
      *
-     * @return
-     *      The information of the created appended blob.
+     * @return The information of the created appended blob.
      */
     public AppendBlobItem create() {
         return create(null, null, null, null);
@@ -103,17 +99,12 @@ public final class AppendBlobClient extends BlobClient {
     /**
      * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
      *
-     * @param headers
-     *         {@link BlobHTTPHeaders}
-     * @param metadata
-     *         {@link Metadata}
-     * @param accessConditions
-     *         {@link BlobAccessConditions}
-     * @param timeout
-     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param headers {@link BlobHTTPHeaders}
+     * @param metadata {@link Metadata}
+     * @param accessConditions {@link BlobAccessConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return
-     *      The information of the created appended blob.
+     * @return The information of the created appended blob.
      */
     public AppendBlobItem create(BlobHTTPHeaders headers, Metadata metadata,
                                           BlobAccessConditions accessConditions, Duration timeout) {
@@ -123,19 +114,13 @@ public final class AppendBlobClient extends BlobClient {
     /**
      * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
      *
-     * @param headers
-     *         {@link BlobHTTPHeaders}
-     * @param metadata
-     *         {@link Metadata}
-     * @param accessConditions
-     *         {@link BlobAccessConditions}
-     * @param timeout
-     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         Additional context that is passed through the Http pipeline during the service call.
+     * @param headers {@link BlobHTTPHeaders}
+     * @param metadata {@link Metadata}
+     * @param accessConditions {@link BlobAccessConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return
-     *      A {@link Response} whose {@link Response#value() value} contains the created appended blob.
+     * @return A {@link Response} whose {@link Response#value() value} contains the created appended blob.
      */
     public Response<AppendBlobItem> createWithResponse(BlobHTTPHeaders headers, Metadata metadata,
                                            BlobAccessConditions accessConditions, Duration timeout, Context context) {
@@ -149,14 +134,11 @@ public final class AppendBlobClient extends BlobClient {
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
-     * @param data
-     *         The data to write to the blob.
-     * @param length
-     *         The exact length of the data. It is important that this value match precisely the length of the data
+     * @param data The data to write to the blob.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the data
      *         emitted by the {@code Flux}.
      *
-     * @return
-     *      The information of the append blob operation.
+     * @return The information of the append blob operation.
      */
     public AppendBlobItem appendBlock(InputStream data, long length) {
         return appendBlockWithResponse(data, length, null, null, Context.NONE).value();
@@ -168,21 +150,15 @@ public final class AppendBlobClient extends BlobClient {
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
-     * @param data
-     *         The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
+     * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      *         (the default). In other words, the Flux must produce the same data each time it is subscribed to.
-     * @param length
-     *         The exact length of the data. It is important that this value match precisely the length of the data
+     * @param length The exact length of the data. It is important that this value match precisely the length of the data
      *         emitted by the {@code Flux}.
-     * @param appendBlobAccessConditions
-     *         {@link AppendBlobAccessConditions}
-     * @param timeout
-     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         Additional context that is passed through the Http pipeline during the service call.
+     * @param appendBlobAccessConditions {@link AppendBlobAccessConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return
-     *      A {@link Response} whose {@link Response#value() value} contains the append blob operation.
+     * @return A {@link Response} whose {@link Response#value() value} contains the append blob operation.
      */
     public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length,
                                                 AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout, Context context) {
@@ -206,16 +182,13 @@ public final class AppendBlobClient extends BlobClient {
     /**
      * Commits a new block of data from another blob to the end of this append blob.
      *
-     * @param sourceURL
-     *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can
+     * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage account can
      *          be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      *          must either be public or must be authenticated via a shared access signature. If the source blob is
      *          public, no authentication is required to perform the operation.
-     * @param sourceRange
-     *          The source {@link BlobRange} to copy.
+     * @param sourceRange The source {@link BlobRange} to copy.
      *
-     * @return
-     *      The information of the append blob operation.
+     * @return The information of the append blob operation.
      */
     public AppendBlobItem appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
         return appendBlockFromUrl(sourceURL, sourceRange, null, null, null, null);
@@ -224,25 +197,18 @@ public final class AppendBlobClient extends BlobClient {
     /**
      * Commits a new block of data from another blob to the end of this append blob.
      *
-     * @param sourceURL
-     *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can
+     * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage account can
      *          be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      *          must either be public or must be authenticated via a shared access signature. If the source blob is
      *          public, no authentication is required to perform the operation.
-     * @param sourceRange
-     *          {@link BlobRange}
-     * @param sourceContentMD5
-     *          An MD5 hash of the block content from the source blob. If specified, the service will calculate the MD5
+     * @param sourceRange {@link BlobRange}
+     * @param sourceContentMD5 An MD5 hash of the block content from the source blob. If specified, the service will calculate the MD5
      *          of the received data and fail the request if it does not match the provided MD5.
-     * @param destAccessConditions
-     *          {@link AppendBlobAccessConditions}
-     * @param sourceAccessConditions
-     *          {@link SourceModifiedAccessConditions}
-     * @param timeout
-     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param destAccessConditions {@link AppendBlobAccessConditions}
+     * @param sourceAccessConditions {@link SourceModifiedAccessConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return
-     *      The information of the append blob operation.
+     * @return The information of the append blob operation.
      */
     public AppendBlobItem appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
             byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
@@ -253,27 +219,19 @@ public final class AppendBlobClient extends BlobClient {
     /**
      * Commits a new block of data from another blob to the end of this append blob.
      *
-     * @param sourceURL
-     *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can
+     * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage account can
      *          be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      *          must either be public or must be authenticated via a shared access signature. If the source blob is
      *          public, no authentication is required to perform the operation.
-     * @param sourceRange
-     *          {@link BlobRange}
-     * @param sourceContentMD5
-     *          An MD5 hash of the block content from the source blob. If specified, the service will calculate the MD5
+     * @param sourceRange {@link BlobRange}
+     * @param sourceContentMD5 An MD5 hash of the block content from the source blob. If specified, the service will calculate the MD5
      *          of the received data and fail the request if it does not match the provided MD5.
-     * @param destAccessConditions
-     *          {@link AppendBlobAccessConditions}
-     * @param sourceAccessConditions
-     *          {@link SourceModifiedAccessConditions}
-     * @param timeout
-     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         Additional context that is passed through the Http pipeline during the service call.
+     * @param destAccessConditions {@link AppendBlobAccessConditions}
+     * @param sourceAccessConditions {@link SourceModifiedAccessConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return
-     *      The information of the append blob operation.
+     * @return The information of the append blob operation.
      */
     public Response<AppendBlobItem> appendBlockFromUrlWithResponse(URL sourceURL, BlobRange sourceRange,
                                                        byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
