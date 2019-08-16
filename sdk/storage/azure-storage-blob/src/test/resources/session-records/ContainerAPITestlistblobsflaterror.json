@@ -1,0 +1,83 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtclistblobsflaterror089020818575cbc7e34ca0a8?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D7226EC8CD4E38\"",
+      "Last-Modified" : "Fri, 16 Aug 2019 17:25:50 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f1d80d87-301e-0118-3457-545bb6000000",
+      "Date" : "Fri, 16 Aug 2019 17:25:50 GMT",
+      "x-ms-client-request-id" : "593cb79a-85ee-4e89-aafa-ea3e5f78c865"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtclistblobsflaterror13998481b9a38949f7461e9e?include=&restype=container&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ContainerNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "225",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "f1d80dbb-301e-0118-6457-545bb6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:f1d80dbb-301e-0118-6457-545bb6000000\nTime:2019-08-16T17:25:50.7350053Z</Message></Error>",
+      "Date" : "Fri, 16 Aug 2019 17:25:50 GMT",
+      "x-ms-client-request-id" : "f195d318-bb48-472d-957b-8dcc69567157",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net?prefix=jtclistblobsflaterror&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "f1d80deb-301e-0118-1057-545bb6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtclistblobsflaterror</Prefix><Containers><Container><Name>jtclistblobsflaterror089020818575cbc7e34ca0a8</Name><Properties><Last-Modified>Fri, 16 Aug 2019 17:25:50 GMT</Last-Modified><Etag>\"0x8D7226EC8CD4E38\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 16 Aug 2019 17:25:50 GMT",
+      "x-ms-client-request-id" : "a617b5ae-1fd6-4f7a-9f8a-9ef6e0b0805a",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtclistblobsflaterror089020818575cbc7e34ca0a8?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "f1d80e0c-301e-0118-2f57-545bb6000000",
+      "Date" : "Fri, 16 Aug 2019 17:25:50 GMT",
+      "x-ms-client-request-id" : "d0527961-ddc5-4b29-aff4-7b124f7be1fc"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtclistblobsflaterror089020818575cbc7e34ca0a8", "jtclistblobsflaterror13998481b9a38949f7461e9e" ]
+}

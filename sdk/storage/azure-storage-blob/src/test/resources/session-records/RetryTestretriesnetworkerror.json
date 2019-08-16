@@ -1,0 +1,62 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcretriesnetworkerror0retrytestretriesnetworkerror13064455f0?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D7226F5B75AAEA\"",
+      "Last-Modified" : "Fri, 16 Aug 2019 17:29:56 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "06e6afb2-701e-00dc-6858-546225000000",
+      "Date" : "Fri, 16 Aug 2019 17:29:56 GMT",
+      "x-ms-client-request-id" : "74be34bd-aabb-4461-83fa-9a8e144e8df0"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net?prefix=jtcretriesnetworkerror&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "06e6b403-701e-00dc-2d58-546225000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcretriesnetworkerror</Prefix><Containers><Container><Name>jtcretriesnetworkerror0retrytestretriesnetworkerror13064455f0</Name><Properties><Last-Modified>Fri, 16 Aug 2019 17:29:56 GMT</Last-Modified><Etag>\"0x8D7226F5B75AAEA\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 16 Aug 2019 17:29:58 GMT",
+      "x-ms-client-request-id" : "f4b126ee-9c76-4c90-bfcf-d0f1658a0138",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcretriesnetworkerror0retrytestretriesnetworkerror13064455f0?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "06e6b41f-701e-00dc-4658-546225000000",
+      "Date" : "Fri, 16 Aug 2019 17:29:58 GMT",
+      "x-ms-client-request-id" : "5866efcf-0a91-44ab-a3ec-bee46a5b719e"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcretriesnetworkerror0retrytestretriesnetworkerror13064455f0" ]
+}
