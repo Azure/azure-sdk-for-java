@@ -52,7 +52,7 @@ public class EventProcessor {
     private final PartitionProcessorFactory partitionProcessorFactory;
     private final PartitionManager partitionManager;
     private final String identifier;
-    private final Map<String, EventHubConsumer> partitionConsumers = new ConcurrentHashMap<>();
+    private final Map<String, EventHubAsyncConsumer> partitionConsumers = new ConcurrentHashMap<>();
     private final String eventHubName;
     private final AtomicBoolean started = new AtomicBoolean(false);
     private Disposable runner;
@@ -216,7 +216,7 @@ public class EventProcessor {
         EventPosition startFromEventPosition = partitionOwnership.sequenceNumber() == null ? this.initialEventPosition
             : EventPosition.fromSequenceNumber(partitionOwnership.sequenceNumber(), false);
 
-        EventHubConsumer consumer = this.eventHubAsyncClient
+        EventHubAsyncConsumer consumer = this.eventHubAsyncClient
             .createConsumer(this.consumerGroupName, partitionOwnership.partitionId(), startFromEventPosition,
                 consumerOptions);
         this.partitionConsumers.put(partitionOwnership.partitionId(), consumer);

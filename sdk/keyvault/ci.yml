@@ -17,6 +17,8 @@ trigger:
   paths:
     include:
       - sdk/keyvault/
+    exclude:
+      - sdk/keyvault/microsoft-azure
 
 pr:
   branches:
@@ -28,6 +30,8 @@ pr:
   paths:
     include:
       - sdk/keyvault/
+    exclude:
+      - sdk/keyvault/microsoft-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -36,5 +40,7 @@ stages:
       Artifacts:
         - name: azure-keyvault-keys
           safeName: azurekeyvaultkeys
+          stagingProfileId: 88192f04117501
         - name: azure-keyvault-secrets
           safeName: azurekeyvaultsecrets
+          stagingProfileId: 88192f04117501

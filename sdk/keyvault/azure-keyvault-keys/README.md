@@ -150,14 +150,12 @@ KeyClient keyClient = new KeyClientBuilder()
 
 Key rsaKey = keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
                 .expires(OffsetDateTime.now().plusYears(1))
-                .keySize(2048))
-                .value();
+                .keySize(2048));
 System.out.printf("Key is created with name %s and id %s \n", rsaKey.name(), rsaKey.id());
 
 Key ecKey = keyClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
                 .curve(KeyCurveName.P_256)
-                .expires(OffsetDateTime.now().plusYears(1)))
-                .value();
+                .expires(OffsetDateTime.now().plusYears(1)));
 System.out.printf("Key is created with name %s and id %s \n", ecKey.name(), ecKey.id());
 ```
 
@@ -165,7 +163,7 @@ System.out.printf("Key is created with name %s and id %s \n", ecKey.name(), ecKe
 
 Retrieve a previously stored Key by calling `getKey`.
 ```Java
-Key key = keyClient.getKey("key_name").value();
+Key key = keyClient.getKey("key_name");
 System.out.printf("Key is returned with name %s and id %s \n", key.name(), key.id());
 ```
 
@@ -174,10 +172,10 @@ System.out.printf("Key is returned with name %s and id %s \n", key.name(), key.i
 Update an existing Key by calling `updateKey`.
 ```Java
 // Get the key to update.
-Key key = keyClient.getKey("key_name").value();
+Key key = keyClient.getKey("key_name");
 // Update the expiry time of the key.
 key.expires(OffsetDateTime.now().plusDays(30));
-Key updatedKey = keyClient.updateKey(key).value();
+Key updatedKey = keyClient.updateKey(key);
 System.out.printf("Key's updated expiry time %s \n", updatedKey.expires().toString());
 ```
 
@@ -185,7 +183,7 @@ System.out.printf("Key's updated expiry time %s \n", updatedKey.expires().toStri
 
 Delete an existing Key by calling `deleteKey`.
 ```Java
-DeletedKey deletedKey = client.deleteKey("key_name").value();
+DeletedKey deletedKey = client.deleteKey("key_name");
 System.out.printf("Deleted Key's deletion date %s", deletedKey.deletedDate().toString());
 ```
 
@@ -195,7 +193,7 @@ List the keys in the key vault by calling `listKeys`.
 ```java
 // List operations don't return the keys with key material information. So, for each returned key we call getKey to get the key with its key material information.
 for (KeyBase key : keyClient.listKeys()) {
-    Key keyWithMaterial = keyClient.getKey(key).value();
+    Key keyWithMaterial = keyClient.getKey(key);
     System.out.printf("Received key with name %s and type %s", keyWithMaterial.name(), keyWithMaterial.keyMaterial().kty());
 }
 ```
@@ -259,22 +257,21 @@ KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
 keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
     .expires(OffsetDateTime.now().plusYears(1))
     .keySize(2048))
-    .subscribe(keyResponse ->
-       System.out.printf("Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
+    .subscribe(key ->
+       System.out.printf("Key is created with name %s and id %s \n", key.name(), key.id()));
 
 keyAsyncClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
     .expires(OffsetDateTime.now().plusYears(1)))
-    .subscribe(keyResponse ->
-      System.out.printf("Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
+    .subscribe(key ->
+      System.out.printf("Key is created with name %s and id %s \n", key.name(), key.id()));
 ```
 
 ### Retrieve a Key Asynchronously
 
 Retrieve a previously stored Key by calling `getKey`.
 ```Java
-keyAsyncClient.getKey("keyName").subscribe(keyResponse ->
-  System.out.printf("Key is returned with name %s and id %s \n", keyResponse.value().name(),
-  keyResponse.value().id()));
+keyAsyncClient.getKey("keyName").subscribe(key ->
+  System.out.printf("Key is returned with name %s and id %s \n", key.name(), key.id()));
 ```
 
 ### Update an existing Key Asynchronously
@@ -283,11 +280,11 @@ Update an existing Key by calling `updateKey`.
 ```Java
 keyAsyncClient.getKey("keyName").subscribe(keyResponse -> {
      // Get the Key
-     Key key = keyResponse.value();
+     Key key = keyResponse;
      // Update the expiry time of the key.
      key.expires(OffsetDateTime.now().plusDays(50));
-     keyAsyncClient.updateKey(key).subscribe(keyResponse ->
-         System.out.printf("Key's updated expiry time %s \n", keyResponse.value().expires().toString()));
+     keyAsyncClient.updateKey(key).subscribe(updatedKey ->
+         System.out.printf("Key's updated expiry time %s \n", updatedKey.expires().toString()));
    });
 ```
 
@@ -295,8 +292,8 @@ keyAsyncClient.getKey("keyName").subscribe(keyResponse -> {
 
 Delete an existing Key by calling `deleteKey`.
 ```java
-keyAsyncClient.deleteKey("keyName").subscribe(deletedKeyResponse ->
-   System.out.printf("Deleted Key's deletion time %s \n", deletedKeyResponse.value().deletedDate().toString()));
+keyAsyncClient.deleteKey("keyName").subscribe(deletedKey ->
+   System.out.printf("Deleted Key's deletion time %s \n", deletedKey.deletedDate().toString()));
 ```
 
 ### List Keys Asynchronously
@@ -305,8 +302,8 @@ List the keys in the key vault by calling `listKeys`.
 ```Java
 // The List Keys operation returns keys without their value, so for each key returned we call `getKey` to get its // value as well.
 keyAsyncClient.listKeys()
-  .flatMap(keyAsyncClient::getKey).subscribe(keyResponse ->
-    System.out.printf("Key returned with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
+  .flatMap(keyAsyncClient::getKey).subscribe(key ->
+    System.out.printf("Key returned with name %s and id %s \n", key.name(), key.id()));
 ```
 
 ### Encrypt Asynchronously

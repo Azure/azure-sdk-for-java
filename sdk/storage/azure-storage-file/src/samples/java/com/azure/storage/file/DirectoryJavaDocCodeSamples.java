@@ -4,6 +4,7 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.DirectoryInfo;
@@ -11,6 +12,7 @@ import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.HandleItem;
+
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -84,7 +86,7 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryClient.instantiation.credential
         DirectoryClient directoryClient = new DirectoryClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQuery("${SASTokenQueryParams}"))
+            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
             .shareName("myshare")
             .directoryPath("mydirectory")
             .buildClient();
@@ -100,7 +102,7 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryAsyncClient.instantiation.credential
         DirectoryAsyncClient direcotryAsyncClient = new DirectoryClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQuery("${SASTokenQueryParams}"))
+            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
             .shareName("myshare")
             .directoryPath("mydirectory")
             .buildAsyncClient();
@@ -190,7 +192,7 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#createSubDirectory(String)
+     * Generates a code sample for using {@link DirectoryClient#createSubDirectory(String)}
      */
     public void createSubDirectory() {
         DirectoryClient directoryClient = createClientWithSASToken();
@@ -558,7 +560,7 @@ public class DirectoryJavaDocCodeSamples {
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         DirectoryClient directoryClient = new DirectoryClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQuery("${SASToken}"))
+            .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
             .shareName("myshare")
             .directoryPath("mydirectory")
             .snapshot(currentTime.toString())
@@ -575,7 +577,7 @@ public class DirectoryJavaDocCodeSamples {
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         DirectoryAsyncClient directoryAsyncClient = new DirectoryClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQuery("${SASToken}"))
+            .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
             .shareName("myshare")
             .directoryPath("mydirectory")
             .snapshot(currentTime.toString())

@@ -18,9 +18,7 @@ import java.time.format.DateTimeParseException;
  * Type representing response from the local MSI token provider.
  */
 public final class MSIToken extends AccessToken {
-
     private static final OffsetDateTime EPOCH = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
-    private static final ClientLogger LOGGER = new ClientLogger(MSIToken.class);
 
     @JsonProperty(value = "token_type")
     private String tokenType;
@@ -34,7 +32,7 @@ public final class MSIToken extends AccessToken {
     /**
      * Creates an access token instance.
      *
-     * @param token     the token string.
+     * @param token the token string.
      * @param expiresOn the expiration time.
      */
     public MSIToken(String token, OffsetDateTime expiresOn) {
@@ -66,6 +64,7 @@ public final class MSIToken extends AccessToken {
     }
 
     private static Long parseDateToEpochSeconds(String dateTime) {
+        ClientLogger logger = new ClientLogger(MSIToken.class);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss XXX");
         try {
             return Long.parseLong(dateTime);
@@ -79,8 +78,7 @@ public final class MSIToken extends AccessToken {
             System.err.println(e.getMessage());
         }
 
-        LOGGER.logAndThrow(new IllegalArgumentException(String.format("Unable to parse date time %s ", dateTime)));
-        return null;
+        throw logger.logExceptionAsError(new IllegalArgumentException("Unable to parse date time " + dateTime));
     }
 
 }
