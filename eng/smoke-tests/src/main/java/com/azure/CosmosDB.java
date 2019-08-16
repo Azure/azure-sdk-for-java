@@ -106,13 +106,13 @@ public class CosmosDB {
 class Planet {
     public String id;
     public boolean hasRings;
-    public int radious;
+    public int radius;
     public Moon[] moons;
 
     public Planet(String id, boolean hasRings, int radius, Moon[] moons) {
         this.id = id;
         this.hasRings = hasRings;
-        this.radious = radius;
+        this.radius = radius;
         this.moons = moons;
     }
 }

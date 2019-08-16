@@ -2,7 +2,11 @@
 // Licensed under the MIT License.
 package com.azure;
 
-import com.azure.messaging.eventhubs.*;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.messaging.eventhubs.EventHubAsyncClient;
+import com.azure.messaging.eventhubs.EventHubConsumer;
+import com.azure.messaging.eventhubs.EventHubProducer;
+import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import org.slf4j.Logger;
