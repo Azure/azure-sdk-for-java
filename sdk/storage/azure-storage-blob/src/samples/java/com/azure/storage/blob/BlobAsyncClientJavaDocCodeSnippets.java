@@ -259,7 +259,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient##startCopyFromURLWithResponse(URL, Metadata, ModifiedAccessConditions, BlobAccessConditions}
+     * Code snippets for {@link BlobAsyncClient#startCopyFromURLWithResponse(URL, Metadata, ModifiedAccessConditions, BlobAccessConditions)}
      */
     public void startCopyFromURLWithResponseCodeSnippets() {
 
@@ -277,7 +277,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#abortCopyFromURLWithResponse(String, LeaseAccessConditions}
+     * Code snippets for {@link BlobAsyncClient#abortCopyFromURLWithResponse(String, LeaseAccessConditions)}
      */
     public void abortCopyFromURLWithResponseCodeSnippets() {
 
@@ -289,7 +289,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#copyFromURLWithResponse(URL, Metadata, ModifiedAccessConditions, BlobAccessConditions}
+     * Code snippets for {@link BlobAsyncClient#copyFromURLWithResponse(URL, Metadata, ModifiedAccessConditions, BlobAccessConditions)}
      */
     public void copyFromURLWithResponseCodeSnippets() {
 
