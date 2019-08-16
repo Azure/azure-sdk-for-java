@@ -3,6 +3,8 @@ package com.azure;
 import com.azure.messaging.eventhubs.*;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
@@ -13,33 +15,35 @@ import java.util.concurrent.TimeUnit;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import java.util.Date;
 
 public class EventHubs {
     private static final String EVENT_HUBS_CONNECTION_STRING = System.getenv("EVENT_HUBS_CONNECTION_STRING");
     private static EventHubAsyncClient client;
 
+    private static final Logger logger = LoggerFactory.getLogger(EventHubs.class);
+
+
     private static String getPartitionID() {
-        System.out.print("Getting partition id... ");
+        logger.info("Getting partition id... ");
         Flux<String> partitions = client.getPartitionIds();
-        System.out.println("\tDONE.");
+        logger.info("\tDONE.");
         //In ths sample, the events are going to be send and consume from the first partition.
         return partitions.blockFirst();
     }
 
     private static void sendAndReceiveEvents(String partitionId) {
-        System.out.print("Creating consumer... ");
+        logger.info("Creating consumer... ");
         EventHubConsumer consumer = client.createConsumer(
             EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
             partitionId,
             EventPosition.latest());
-        System.out.println("\tDONE.");
+        logger.info("\tDONE.");
 
-        System.out.print("Creating producer... ");
+        logger.info("Creating producer... ");
         EventHubProducer producer = client.createProducer(new EventHubProducerOptions().partitionId(partitionId));
-        System.out.println("\tDONE.");
+        logger.info("\tDONE.");
 
-        System.out.print("Sending Events... ");
+        logger.info("Sending Events... ");
         Flux<EventData> events = Flux.just(
             new EventData(("Test event 1 in Java").getBytes(StandardCharsets.UTF_8)),
             new EventData(("Test event 2 in Java").getBytes(StandardCharsets.UTF_8)),
@@ -47,7 +51,7 @@ public class EventHubs {
         );
 
         producer.send(events).subscribe(
-            (ignored) -> System.out.println("sent"),
+            (ignored) -> logger.info("sent"),
             error -> System.err.println("Error received:" + error),
             () -> {
                 //Closing the producer once is done with sending the events
@@ -58,14 +62,14 @@ public class EventHubs {
                 }
             }
         );
-        System.out.println("\tDONE.");
+        logger.info("\tDONE.");
 
-        System.out.println("Consuming Events... ");
+        logger.info("Consuming Events... ");
         final int maxSeconds = 5;
         final int numOfEventsExpected = 3;
         CountDownLatch countDownLatch = new CountDownLatch(numOfEventsExpected);
         Disposable consumerSubscription = consumer.receive().subscribe(e -> {
-            System.out.println("\tEvent received: " + StandardCharsets.UTF_8.decode(e.body()));
+            logger.info("\tEvent received: " + StandardCharsets.UTF_8.decode(e.body()));
             countDownLatch.countDown();
         });
 
@@ -89,14 +93,14 @@ public class EventHubs {
             client.close();
         }
 
-        System.out.println("DONE.");
+        logger.info("DONE.");
 
     }
 
     public static void main(String[] args) {
-        System.out.println("\n---------------------");
-        System.out.println("EVENT HUBS");
-        System.out.println("---------------------\n");
+        logger.info("---------------------");
+        logger.info("EVENT HUBS");
+        logger.info("---------------------");
 
         client = new EventHubClientBuilder().connectionString(EVENT_HUBS_CONNECTION_STRING).buildAsyncClient();
 
