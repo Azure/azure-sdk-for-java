@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -73,7 +74,6 @@ public final class BlockBlobClient extends BlobClient {
     /**
      * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service,
      * it will be overwritten.
-     *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      *
      * @throws StorageException If a storage service error occurred.
@@ -111,8 +111,8 @@ public final class BlockBlobClient extends BlobClient {
      * @return The information of the uploaded block blob.
      * @throws IOException If an I/O error occurs
      */
-    public Response<BlockBlobItem> upload(InputStream data, long length) throws IOException {
-        return this.upload(data, length, null, null, null, null);
+    public BlockBlobItem upload(InputStream data, long length) throws IOException {
+        return uploadWithResponse(data, length, null, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -134,8 +134,8 @@ public final class BlockBlobClient extends BlobClient {
      * @return The information of the uploaded block blob.
      * @throws IOException If an I/O error occurs
      */
-    public Response<BlockBlobItem> upload(InputStream data, long length, BlobHTTPHeaders headers,
-                                Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) throws IOException {
+    public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHTTPHeaders headers,
+                                                      Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) throws IOException {
         Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE))
             .map(i -> i * BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
             .concatMap(pos -> Mono.fromCallable(() -> {
@@ -149,7 +149,7 @@ public final class BlockBlobClient extends BlobClient {
             }));
 
         Mono<Response<BlockBlobItem>> upload = blockBlobAsyncClient
-            .upload(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, accessConditions);
+            .uploadWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, accessConditions, context);
 
         try {
             return Utility.blockWithOptionalTimeout(upload, timeout);
@@ -160,26 +160,26 @@ public final class BlockBlobClient extends BlobClient {
 
     /**
      * Creates a new block blob, or updates the content of an existing block blob.
-     *
      * @param filePath Path of the file to upload
+     *
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile(String filePath) throws IOException {
-        this.uploadFromFile(filePath, null, null, null, null);
+        uploadFromFile(filePath, null, null, null, null);
     }
 
     /**
      * Creates a new block blob, or updates the content of an existing block blob.
-     *
-     * @param filePath Path of the file to upload
-     * @param headers {@link BlobHTTPHeaders}
-     * @param metadata {@link Metadata}
+     * @param filePath         Path of the file to upload
+     * @param headers          {@link BlobHTTPHeaders}
+     * @param metadata         {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout          An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     *
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
-            BlobAccessConditions accessConditions, Duration timeout) throws IOException {
+                               BlobAccessConditions accessConditions, Duration timeout) throws IOException {
         Mono<Void> upload = this.blockBlobAsyncClient.uploadFromFile(filePath, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, headers, metadata, accessConditions);
 
         try {
@@ -201,8 +201,8 @@ public final class BlockBlobClient extends BlobClient {
      *         provided in the {@link InputStream}.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse stageBlock(String base64BlockID, InputStream data, long length) {
-        return this.stageBlock(base64BlockID, data, length, null, null);
+    public void stageBlock(String base64BlockID, InputStream data, long length) {
+        stageBlockWithResponse(base64BlockID, data, length, null, null, Context.NONE);
     }
 
     /**
@@ -220,8 +220,8 @@ public final class BlockBlobClient extends BlobClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse stageBlock(String base64BlockID, InputStream data, long length,
-            LeaseAccessConditions leaseAccessConditions, Duration timeout) {
+    public VoidResponse stageBlockWithResponse(String base64BlockID, InputStream data, long length,
+        LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
 
         Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE))
             .map(i -> i * BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
@@ -235,8 +235,8 @@ public final class BlockBlobClient extends BlobClient {
                 return ByteBufAllocator.DEFAULT.buffer((int) count).writeBytes(cache);
             }));
 
-        Mono<VoidResponse> response = blockBlobAsyncClient.stageBlock(base64BlockID,
-            fbb.subscribeOn(Schedulers.elastic()), length, leaseAccessConditions);
+        Mono<VoidResponse> response = blockBlobAsyncClient.stageBlockWithResponse(base64BlockID,
+            fbb.subscribeOn(Schedulers.elastic()), length, leaseAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -253,10 +253,8 @@ public final class BlockBlobClient extends BlobClient {
      * @param sourceRange {@link BlobRange}
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse stageBlockFromURL(String base64BlockID, URL sourceURL,
-            BlobRange sourceRange) {
-        return this.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null,
-                null, null, null);
+    public void stageBlockFromURL(String base64BlockID, URL sourceURL, BlobRange sourceRange) {
+        stageBlockFromURLWithResponse(base64BlockID, sourceURL, sourceRange, null, null, null, null, Context.NONE);
     }
 
     /**
@@ -278,10 +276,11 @@ public final class BlockBlobClient extends BlobClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse stageBlockFromURL(String base64BlockID, URL sourceURL,
-            BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
-            SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout) {
-        Mono<VoidResponse> response = blockBlobAsyncClient.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions);
+    public VoidResponse stageBlockFromURLWithResponse(String base64BlockID, URL sourceURL, BlobRange sourceRange,
+        byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions, 
+        SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout, Context context) {
+        Mono<VoidResponse> response = blockBlobAsyncClient.stageBlockFromURLWithResponse(base64BlockID, sourceURL, 
+            sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -299,7 +298,6 @@ public final class BlockBlobClient extends BlobClient {
     }
 
     /**
-     *
      * Returns the list of blocks that have been uploaded as part of a block blob using the specified block list filter.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-block-list">Azure Docs</a>.
@@ -331,8 +329,8 @@ public final class BlockBlobClient extends BlobClient {
      *
      * @return The information of the block blob.
      */
-    public Response<BlockBlobItem> commitBlockList(List<String> base64BlockIDs) {
-        return this.commitBlockList(base64BlockIDs, null, null, null, null);
+    public BlockBlobItem commitBlockList(List<String> base64BlockIDs) {
+        return commitBlockListWithResponse(base64BlockIDs, null, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -352,9 +350,11 @@ public final class BlockBlobClient extends BlobClient {
      *
      * @return The information of the block blob.
      */
-    public Response<BlockBlobItem> commitBlockList(List<String> base64BlockIDs,
-            BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) {
-        Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.commitBlockList(base64BlockIDs, headers, metadata, accessConditions);
+    public Response<BlockBlobItem> commitBlockListWithResponse(List<String> base64BlockIDs,
+            BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, 
+            Context context) {
+        Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.commitBlockListWithResponse(
+            base64BlockIDs, headers, metadata, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
