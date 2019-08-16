@@ -223,11 +223,11 @@ public final class ContainerClient {
      * Creates a new container within a storage account. If a container with the same name already exists, the operation
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
-     * @param metadata   {@link Metadata}
+     * @param metadata {@link Metadata}
      * @param accessType Specifies how the data in this container is available to the public. See the
      *                   x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
-     * @param timeout    An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context    Additional context that is passed through the Http pipeline during the service call.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A response containing status code and HTTP headers
      */
@@ -251,8 +251,8 @@ public final class ContainerClient {
      * during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
      * @param accessConditions {@link ContainerAccessConditions}
-     * @param timeout          An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context          Additional context that is passed through the Http pipeline during the service call.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A response containing status code and HTTP headers
      */
@@ -276,8 +276,8 @@ public final class ContainerClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
      *                              not match the active lease on the blob.
-     * @param timeout               An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context               Additional context that is passed through the Http pipeline during the service call.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The container properties.
      */
@@ -301,10 +301,10 @@ public final class ContainerClient {
     /**
      * Sets the container's metadata. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-metadata">Azure Docs</a>.
-     * @param metadata         {@link Metadata}
+     * @param metadata {@link Metadata}
      * @param accessConditions {@link ContainerAccessConditions}
-     * @param timeout          An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context          Additional context that is passed through the Http pipeline during the service call.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A response containing status code and HTTP headers
      */
@@ -331,8 +331,8 @@ public final class ContainerClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
      *                              not match the active lease on the blob.
-     * @param timeout               An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context               Additional context that is passed through the Http pipeline during the service call.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The container access policy.
      */
@@ -348,7 +348,7 @@ public final class ContainerClient {
      * Note that, for each signed identifier, we will truncate the start and expiry times to the nearest second to
      * ensure the time formatting is compatible with the service. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
-     * @param accessType  Specifies how the data in this container is available to the public. See the
+     * @param accessType Specifies how the data in this container is available to the public. See the
      *                    x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @param identifiers A list of {@link SignedIdentifier} objects that specify the permissions for the container.
      *                    Please see
@@ -365,15 +365,15 @@ public final class ContainerClient {
      * Note that, for each signed identifier, we will truncate the start and expiry times to the nearest second to
      * ensure the time formatting is compatible with the service. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
-     * @param accessType       Specifies how the data in this container is available to the public. See the
+     * @param accessType Specifies how the data in this container is available to the public. See the
      *                         x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
-     * @param identifiers      A list of {@link SignedIdentifier} objects that specify the permissions for the container.
+     * @param identifiers A list of {@link SignedIdentifier} objects that specify the permissions for the container.
      *                         Please see
      *                         <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      *                         for more information. Passing null will clear all access policies.
      * @param accessConditions {@link ContainerAccessConditions}
-     * @param timeout          An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context          Additional context that is passed through the Http pipeline during the service call.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A response containing status code and HTTP headers
      */
@@ -477,8 +477,8 @@ public final class ContainerClient {
      * <li>foo/foo2 (isPrefix = false)
      * </ul>
      * @param delimiter The delimiter for blob hierarchy, "/" for hierarchy based on directories
-     * @param options   {@link ListBlobsOptions}
-     * @param timeout   An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param options {@link ListBlobsOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
      * @return A reactive response emitting the prefixes and blobs.
      */
@@ -492,7 +492,7 @@ public final class ContainerClient {
      * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
      * seconds, or infinite (-1).
      * @param proposedId A {@code String} in any valid GUID format. May be null.
-     * @param duration   The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
+     * @param duration The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
      *                   non-infinite lease can be between 15 and 60 seconds.
      *
      * @return The lease ID.
@@ -504,14 +504,14 @@ public final class ContainerClient {
     /**
      * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
      * seconds, or infinite (-1).
-     * @param proposedID               A {@code String} in any valid GUID format. May be null.
-     * @param duration                 The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
+     * @param proposedID A {@code String} in any valid GUID format. May be null.
+     * @param duration The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
      *                                 non-infinite lease can be between 15 and 60 seconds.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      *                                 LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
      *                                 request. The request will fail if the specified condition is not satisfied.
-     * @param timeout                  An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context                  Additional context that is passed through the Http pipeline during the service call.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The lease ID.
      */
@@ -535,11 +535,11 @@ public final class ContainerClient {
 
     /**
      * Renews the blob's previously-acquired lease.
-     * @param leaseID                  The leaseId of the active lease on the blob.
+     * @param leaseID The leaseId of the active lease on the blob.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      *                                 LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
      *                                 request. The request will fail if the specified condition is not satisfied.
-     * @param timeout                  An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
      * @return The renewed lease ID.
      */
@@ -550,12 +550,12 @@ public final class ContainerClient {
 
     /**
      * Renews the blob's previously-acquired lease.
-     * @param leaseID                  The leaseId of the active lease on the blob.
+     * @param leaseID The leaseId of the active lease on the blob.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      *                                 LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
      *                                 request. The request will fail if the specified condition is not satisfied.
-     * @param timeout                  An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context                  Additional context that is passed through the Http pipeline during the service call.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The renewed lease ID.
      */
@@ -578,12 +578,12 @@ public final class ContainerClient {
 
     /**
      * Releases the blob's previously-acquired lease.
-     * @param leaseID                  The leaseId of the active lease on the blob.
+     * @param leaseID The leaseId of the active lease on the blob.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      *                                 LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
      *                                 request. The request will fail if the specified condition is not satisfied.
-     * @param timeout                  An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context                  Additional context that is passed through the Http pipeline during the service call.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A response containing status code and HTTP headers.
      */
@@ -607,7 +607,7 @@ public final class ContainerClient {
     /**
      * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
      * to break a fixed-duration lease when it expires or an infinite lease immediately.
-     * @param breakPeriodInSeconds     An optional {@code Integer} representing the proposed duration of seconds that the
+     * @param breakPeriodInSeconds An optional {@code Integer} representing the proposed duration of seconds that the
      *                                 lease should continue before it is broken, between 0 and 60 seconds. This break period is only used if it is
      *                                 shorter than the time remaining on the lease. If longer, the time remaining on the lease is used. A new lease
      *                                 will not be available before the break period has expired, but the lease may be held for longer than the break
@@ -615,8 +615,8 @@ public final class ContainerClient {
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      *                                 LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
      *                                 request. The request will fail if the specified condition is not satisfied.
-     * @param timeout                  An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context                  Additional context that is passed through the Http pipeline during the service call.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The remaining time in the broken lease.
      */
@@ -630,7 +630,7 @@ public final class ContainerClient {
 
     /**
      * ChangeLease changes the blob's lease ID.
-     * @param leaseId    The leaseId of the active lease on the blob.
+     * @param leaseId The leaseId of the active lease on the blob.
      * @param proposedID A {@code String} in any valid GUID format.
      *
      * @return The new lease ID.
@@ -642,13 +642,13 @@ public final class ContainerClient {
     /**
      * ChangeLease changes the blob's lease ID.  For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure
      * Docs</a>.
-     * @param leaseId                  The leaseId of the active lease on the blob.
-     * @param proposedID               A {@code String} in any valid GUID format.
+     * @param leaseId The leaseId of the active lease on the blob.
+     * @param proposedID A {@code String} in any valid GUID format.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      *                                 LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
      *                                 request. The request will fail if the specified condition is not satisfied.
-     * @param timeout                  An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context                  Additional context that is passed through the Http pipeline during the service call.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The new lease ID.
      */
@@ -688,9 +688,9 @@ public final class ContainerClient {
     /**
      * Generates a user delegation SAS token with the specified parameters
      * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
-     * @param accountName       The {@code String} account name for the SAS
-     * @param permissions       The {@code ContainerSASPermissions} permission for the SAS
-     * @param expiryTime        The {@code OffsetDateTime} expiry time for the SAS
+     * @param accountName The {@code String} account name for the SAS
+     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      *
      * @return A string that represents the SAS token
      */
@@ -703,13 +703,13 @@ public final class ContainerClient {
     /**
      * Generates a user delegation SAS token with the specified parameters
      * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
-     * @param accountName       The {@code String} account name for the SAS
-     * @param permissions       The {@code ContainerSASPermissions} permission for the SAS
-     * @param expiryTime        The {@code OffsetDateTime} expiry time for the SAS
-     * @param startTime         An optional {@code OffsetDateTime} start time for the SAS
-     * @param version           An optional {@code String} version for the SAS
-     * @param sasProtocol       An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange           An optional {@code IPRange} ip address range for the SAS
+     * @param accountName The {@code String} account name for the SAS
+     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
+     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
+     * @param version An optional {@code String} version for the SAS
+     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param ipRange An optional {@code IPRange} ip address range for the SAS
      *
      * @return A string that represents the SAS token
      */
@@ -722,19 +722,19 @@ public final class ContainerClient {
 
     /**
      * Generates a user delegation SAS token with the specified parameters
-     * @param userDelegationKey  The {@code UserDelegationKey} user delegation key for the SAS
-     * @param accountName        The {@code String} account name for the SAS
-     * @param permissions        The {@code ContainerSASPermissions} permission for the SAS
-     * @param expiryTime         The {@code OffsetDateTime} expiry time for the SAS
-     * @param startTime          An optional {@code OffsetDateTime} start time for the SAS
-     * @param version            An optional {@code String} version for the SAS
-     * @param sasProtocol        An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange            An optional {@code IPRange} ip address range for the SAS
-     * @param cacheControl       An optional {@code String} cache-control header for the SAS.
+     * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
+     * @param accountName The {@code String} account name for the SAS
+     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
+     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
+     * @param version An optional {@code String} version for the SAS
+     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @param cacheControl An optional {@code String} cache-control header for the SAS.
      * @param contentDisposition An optional {@code String} content-disposition header for the SAS.
-     * @param contentEncoding    An optional {@code String} content-encoding header for the SAS.
-     * @param contentLanguage    An optional {@code String} content-language header for the SAS.
-     * @param contentType        An optional {@code String} content-type header for the SAS.
+     * @param contentEncoding An optional {@code String} content-encoding header for the SAS.
+     * @param contentLanguage An optional {@code String} content-language header for the SAS.
+     * @param contentType An optional {@code String} content-type header for the SAS.
      *
      * @return A string that represents the SAS token
      */
@@ -750,7 +750,7 @@ public final class ContainerClient {
     /**
      * Generates a SAS token with the specified parameters
      * @param permissions The {@code ContainerSASPermissions} permission for the SAS
-     * @param expiryTime  The {@code OffsetDateTime} expiry time for the SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      *
      * @return A string that represents the SAS token
      */
@@ -770,13 +770,13 @@ public final class ContainerClient {
 
     /**
      * Generates a SAS token with the specified parameters
-     * @param identifier  The {@code String} name of the access policy on the container this SAS references if any
+     * @param identifier The {@code String} name of the access policy on the container this SAS references if any
      * @param permissions The {@code ContainerSASPermissions} permission for the SAS
-     * @param expiryTime  The {@code OffsetDateTime} expiry time for the SAS
-     * @param startTime   An optional {@code OffsetDateTime} start time for the SAS
-     * @param version     An optional {@code String} version for the SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
+     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
+     * @param version An optional {@code String} version for the SAS
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange     An optional {@code IPRange} ip address range for the SAS
+     * @param ipRange An optional {@code IPRange} ip address range for the SAS
      *
      * @return A string that represents the SAS token
      */
@@ -788,18 +788,18 @@ public final class ContainerClient {
 
     /**
      * Generates a SAS token with the specified parameters
-     * @param identifier         The {@code String} name of the access policy on the container this SAS references if any
-     * @param permissions        The {@code ContainerSASPermissions} permission for the SAS
-     * @param expiryTime         The {@code OffsetDateTime} expiry time for the SAS
-     * @param startTime          An optional {@code OffsetDateTime} start time for the SAS
-     * @param version            An optional {@code String} version for the SAS
-     * @param sasProtocol        An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange            An optional {@code IPRange} ip address range for the SAS
-     * @param cacheControl       An optional {@code String} cache-control header for the SAS.
+     * @param identifier The {@code String} name of the access policy on the container this SAS references if any
+     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
+     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
+     * @param version An optional {@code String} version for the SAS
+     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @param cacheControl An optional {@code String} cache-control header for the SAS.
      * @param contentDisposition An optional {@code String} content-disposition header for the SAS.
-     * @param contentEncoding    An optional {@code String} content-encoding header for the SAS.
-     * @param contentLanguage    An optional {@code String} content-language header for the SAS.
-     * @param contentType        An optional {@code String} content-type header for the SAS.
+     * @param contentEncoding An optional {@code String} content-encoding header for the SAS.
+     * @param contentLanguage An optional {@code String} content-language header for the SAS.
+     * @param contentType An optional {@code String} content-type header for the SAS.
      *
      * @return A string that represents the SAS token
      */

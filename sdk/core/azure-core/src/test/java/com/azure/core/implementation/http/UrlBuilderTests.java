@@ -464,6 +464,26 @@ public class UrlBuilderTests {
     }
 
     @Test
+    public void pathWhenHostContainsPath() {
+        final UrlBuilder builder = new UrlBuilder()
+            .host("www.example.com/site")
+            .path("index.html");
+        assertEquals("www.example.com", builder.host());
+        assertEquals("/site/index.html", builder.path());
+        assertEquals("www.example.com/site/index.html", builder.toString());
+    }
+
+    @Test
+    public void pathFirstWhenHostContainsPath() {
+        final UrlBuilder builder = new UrlBuilder()
+            .path("index.html")
+            .host("www.example.com/site");
+        assertEquals("www.example.com", builder.host());
+        assertEquals("/site/index.html", builder.path());
+        assertEquals("www.example.com/site/index.html", builder.toString());
+    }
+
+    @Test
     public void withAbsolutePath() {
         final UrlBuilder builder = new UrlBuilder()
                 .scheme("http")

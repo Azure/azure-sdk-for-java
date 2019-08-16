@@ -250,7 +250,7 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient##startCopyFromURLWithResponse(URL, Metadata, ModifiedAccessConditions, BlobAccessConditions}
+     * Code snippets for {@link BlobClient#startCopyFromURLWithResponse(URL, Metadata, ModifiedAccessConditions, BlobAccessConditions, Duration, Context)}
      */
     public void startCopyFromURLWithResponseCodeSnippets() {
 
