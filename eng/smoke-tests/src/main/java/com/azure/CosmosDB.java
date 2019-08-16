@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class CosmosDB {
-    private static final String dbName = "JavaSolarSystem-" + UUID.randomUUID();
-    private static final String collectionName = "Planets";
+    private static final String DB_NAME = "JavaSolarSystem-" + UUID.randomUUID();
+    private static final String COLLECTION_NAME = "Planets";
 
     private static final String AZURE_COSMOS_ENDPOINT = System.getenv("AZURE_COSMOS_ENDPOINT");
     private static final String AZURE_COSMOS_KEY= System.getenv("AZURE_COSMOS_KEY");
@@ -22,13 +22,13 @@ public class CosmosDB {
     private static final Logger logger = LoggerFactory.getLogger(CosmosDB.class);
 
     private static Mono<Void> createDatabase(CosmosClient client) {
-        logger.info("Creating database '{}'... ", dbName);
-        return client.createDatabaseIfNotExists(dbName).then();
+        logger.info("Creating database '{}'... ", DB_NAME);
+        return client.createDatabaseIfNotExists(DB_NAME).then();
     }
 
     private static Mono<CosmosContainer> createCollection(CosmosClient client) {
-        logger.info("Creating collection '{}'... ", collectionName);
-        return client.getDatabase(dbName).createContainer(collectionName, "/id")
+        logger.info("Creating collection '{}'... ", COLLECTION_NAME);
+        return client.getDatabase(DB_NAME).createContainer(COLLECTION_NAME, "/id")
             .map(response -> response.container());
     }
 
@@ -68,7 +68,7 @@ public class CosmosDB {
 
     private static Mono<Void> deleteDatabase(CosmosClient client) {
         logger.info("Cleaning up the resource...");
-        return client.getDatabase(dbName).delete().then();
+        return client.getDatabase(DB_NAME).delete().then();
     }
 
     public static void main(String[] args) {
