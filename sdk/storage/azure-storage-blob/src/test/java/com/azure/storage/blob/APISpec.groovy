@@ -115,11 +115,11 @@ class APISpec extends Specification {
     private String testName
 
     def setupSpec() {
+        testMode = setupTestMode()
         primaryCredential = getCredential(PRIMARY_STORAGE)
         alternateCredential = getCredential(SECONDARY_STORAGE)
         blobCredential = getCredential(BLOB_STORAGE)
         premiumCredential = getCredential(PREMIUM_STORAGE)
-        testMode = setupTestMode()
     }
 
     def setup() {
@@ -175,8 +175,16 @@ class APISpec extends Specification {
     }
 
     private SharedKeyCredential getCredential(String accountType) {
-        String accountName = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_NAME")
-        String accountKey = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_KEY")
+        String accountName
+        String accountKey
+
+        if (testMode == TestMode.RECORD) {
+            accountName = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_NAME")
+            accountKey = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_KEY")
+        } else {
+            accountName = "playback"
+            accountKey = "playback"
+        }
 
         if (accountName == null || accountKey == null) {
             logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
