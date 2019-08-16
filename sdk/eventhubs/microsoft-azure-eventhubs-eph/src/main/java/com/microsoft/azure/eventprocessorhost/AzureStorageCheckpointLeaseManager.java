@@ -4,8 +4,10 @@
 package com.microsoft.azure.eventprocessorhost;
 
 import com.google.gson.Gson;
+import com.microsoft.azure.eventhubs.ProxyConfiguration;
 import com.microsoft.azure.storage.AccessCondition;
 import com.microsoft.azure.storage.CloudStorageAccount;
+import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageException;
@@ -25,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.PasswordAuthentication;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -60,6 +63,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     private Gson gson;
 
     private Hashtable<String, Checkpoint> latestCheckpoint = new Hashtable<String, Checkpoint>();
+    private ProxyConfiguration proxyConfiguration;
 
     AzureStorageCheckpointLeaseManager(String storageConnectionString, String storageContainerName, String storageBlobPrefix) {
         if ((storageConnectionString == null) || storageConnectionString.trim().isEmpty()) {
@@ -67,7 +71,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         }
         this.storageConnectionString = storageConnectionString;
         this.storageCredentials = null;
-        
+
         if ((storageContainerName != null) && storageContainerName.trim().isEmpty()) {
             throw new IllegalArgumentException("Azure Storage container name must be a valid container name or null to use the default");
         }
@@ -77,14 +81,14 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         // Then the rest of the code only has one case to worry about.
         this.storageBlobPrefix = (storageBlobPrefix != null) ? storageBlobPrefix.trim() : "";
     }
-    
+
     AzureStorageCheckpointLeaseManager(StorageCredentials storageCredentials, String storageContainerName, String storageBlobPrefix) {
         if (storageCredentials == null) {
             throw new IllegalArgumentException("Provide valid Azure Storage credentials when using Azure Storage");
         }
         this.storageConnectionString = null;
         this.storageCredentials = storageCredentials;
-        
+
         if ((storageContainerName != null) && storageContainerName.trim().isEmpty()) {
             throw new IllegalArgumentException("Azure Storage container name must be a valid container name or null to use the default");
         }
@@ -93,6 +97,10 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         // Convert all-whitespace prefix to empty string. Convert null prefix to empty string.
         // Then the rest of the code only has one case to worry about.
         this.storageBlobPrefix = (storageBlobPrefix != null) ? storageBlobPrefix.trim() : "";
+    }
+
+    void setProxyConfiguration(ProxyConfiguration proxyConfiguration) {
+        this.proxyConfiguration = proxyConfiguration;
     }
 
     // The EventProcessorHost can't pass itself to the AzureStorageCheckpointLeaseManager constructor
@@ -118,7 +126,18 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
                     + "Must be from 3 to 63 characters long.");
         }
 
-        CloudStorageAccount storageAccount = null;
+        if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()) {
+            OperationContext.setDefaultProxy(proxyConfiguration.proxyAddress());
+
+            if (proxyConfiguration.hasUserDefinedCredentials()) {
+                final PasswordAuthentication credentials = proxyConfiguration.credentials();
+
+                OperationContext.setDefaultProxyUsername(credentials.getUserName());
+                OperationContext.setDefaultProxyPassword(String.valueOf(credentials.getPassword()));
+            }
+        }
+
+        CloudStorageAccount storageAccount;
         if (this.storageConnectionString != null) {
             storageAccount = CloudStorageAccount.parse(this.storageConnectionString);
         } else {
@@ -148,7 +167,6 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         return storeExistsInternal(this.checkpointOperationOptions, EventProcessorHostActionStrings.CHECKING_CHECKPOINT_STORE,
             "Failure while checking checkpoint store existence");
     }
-
 
     //
     // In this implementation, checkpoints are data that's actually in the lease blob, so checkpoint operations
