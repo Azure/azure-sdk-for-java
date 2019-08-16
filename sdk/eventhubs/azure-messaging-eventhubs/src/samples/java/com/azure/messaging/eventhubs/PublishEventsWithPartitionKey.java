@@ -35,7 +35,7 @@ public class PublishEventsWithPartitionKey {
             .buildAsyncClient();
 
         // Create a producer. This overload of `createProducer` does not accept any arguments
-        EventHubProducer producer = client.createProducer();
+        EventHubAsyncProducer producer = client.createProducer();
 
         // We will publish three events based on simple sentences.
         Flux<EventData> data = Flux.just(

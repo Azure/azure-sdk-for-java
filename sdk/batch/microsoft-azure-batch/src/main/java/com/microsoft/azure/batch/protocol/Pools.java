@@ -639,7 +639,7 @@ public interface Pools {
 
     /**
      * Updates the properties of the specified Pool.
-     * This only replaces the Pool properties specified in the request. For example, if the Pool has a start Task associated with it, and a request does not specify a start Task element, then the Pool keeps the existing start Task.
+     * This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask associated with it, and a request does not specify a StartTask element, then the Pool keeps the existing StartTask.
      *
      * @param poolId The ID of the Pool to update.
      * @param poolPatchParameter The parameters for the request.
@@ -651,7 +651,7 @@ public interface Pools {
 
     /**
      * Updates the properties of the specified Pool.
-     * This only replaces the Pool properties specified in the request. For example, if the Pool has a start Task associated with it, and a request does not specify a start Task element, then the Pool keeps the existing start Task.
+     * This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask associated with it, and a request does not specify a StartTask element, then the Pool keeps the existing StartTask.
      *
      * @param poolId The ID of the Pool to update.
      * @param poolPatchParameter The parameters for the request.
@@ -663,7 +663,7 @@ public interface Pools {
 
     /**
      * Updates the properties of the specified Pool.
-     * This only replaces the Pool properties specified in the request. For example, if the Pool has a start Task associated with it, and a request does not specify a start Task element, then the Pool keeps the existing start Task.
+     * This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask associated with it, and a request does not specify a StartTask element, then the Pool keeps the existing StartTask.
      *
      * @param poolId The ID of the Pool to update.
      * @param poolPatchParameter The parameters for the request.
@@ -674,7 +674,7 @@ public interface Pools {
 
     /**
      * Updates the properties of the specified Pool.
-     * This only replaces the Pool properties specified in the request. For example, if the Pool has a start Task associated with it, and a request does not specify a start Task element, then the Pool keeps the existing start Task.
+     * This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask associated with it, and a request does not specify a StartTask element, then the Pool keeps the existing StartTask.
      *
      * @param poolId The ID of the Pool to update.
      * @param poolPatchParameter The parameters for the request.
@@ -684,7 +684,7 @@ public interface Pools {
     Observable<ServiceResponseWithHeaders<Void, PoolPatchHeaders>> patchWithServiceResponseAsync(String poolId, PoolPatchParameter poolPatchParameter);
     /**
      * Updates the properties of the specified Pool.
-     * This only replaces the Pool properties specified in the request. For example, if the Pool has a start Task associated with it, and a request does not specify a start Task element, then the Pool keeps the existing start Task.
+     * This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask associated with it, and a request does not specify a StartTask element, then the Pool keeps the existing StartTask.
      *
      * @param poolId The ID of the Pool to update.
      * @param poolPatchParameter The parameters for the request.
@@ -697,7 +697,7 @@ public interface Pools {
 
     /**
      * Updates the properties of the specified Pool.
-     * This only replaces the Pool properties specified in the request. For example, if the Pool has a start Task associated with it, and a request does not specify a start Task element, then the Pool keeps the existing start Task.
+     * This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask associated with it, and a request does not specify a StartTask element, then the Pool keeps the existing StartTask.
      *
      * @param poolId The ID of the Pool to update.
      * @param poolPatchParameter The parameters for the request.
@@ -710,7 +710,7 @@ public interface Pools {
 
     /**
      * Updates the properties of the specified Pool.
-     * This only replaces the Pool properties specified in the request. For example, if the Pool has a start Task associated with it, and a request does not specify a start Task element, then the Pool keeps the existing start Task.
+     * This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask associated with it, and a request does not specify a StartTask element, then the Pool keeps the existing StartTask.
      *
      * @param poolId The ID of the Pool to update.
      * @param poolPatchParameter The parameters for the request.
@@ -722,7 +722,7 @@ public interface Pools {
 
     /**
      * Updates the properties of the specified Pool.
-     * This only replaces the Pool properties specified in the request. For example, if the Pool has a start Task associated with it, and a request does not specify a start Task element, then the Pool keeps the existing start Task.
+     * This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask associated with it, and a request does not specify a StartTask element, then the Pool keeps the existing StartTask.
      *
      * @param poolId The ID of the Pool to update.
      * @param poolPatchParameter The parameters for the request.
@@ -1187,7 +1187,7 @@ public interface Pools {
 
     /**
      * Updates the properties of the specified Pool.
-     * This fully replaces all the updatable properties of the Pool. For example, if the Pool has a start Task associated with it and if start Task is not specified with this request, then the Batch service will remove the existing start Task.
+     * This fully replaces all the updatable properties of the Pool. For example, if the Pool has a StartTask associated with it and if StartTask is not specified with this request, then the Batch service will remove the existing StartTask.
      *
      * @param poolId The ID of the Pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
@@ -1199,7 +1199,7 @@ public interface Pools {
 
     /**
      * Updates the properties of the specified Pool.
-     * This fully replaces all the updatable properties of the Pool. For example, if the Pool has a start Task associated with it and if start Task is not specified with this request, then the Batch service will remove the existing start Task.
+     * This fully replaces all the updatable properties of the Pool. For example, if the Pool has a StartTask associated with it and if StartTask is not specified with this request, then the Batch service will remove the existing StartTask.
      *
      * @param poolId The ID of the Pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
@@ -1211,7 +1211,7 @@ public interface Pools {
 
     /**
      * Updates the properties of the specified Pool.
-     * This fully replaces all the updatable properties of the Pool. For example, if the Pool has a start Task associated with it and if start Task is not specified with this request, then the Batch service will remove the existing start Task.
+     * This fully replaces all the updatable properties of the Pool. For example, if the Pool has a StartTask associated with it and if StartTask is not specified with this request, then the Batch service will remove the existing StartTask.
      *
      * @param poolId The ID of the Pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
@@ -1222,7 +1222,7 @@ public interface Pools {
 
     /**
      * Updates the properties of the specified Pool.
-     * This fully replaces all the updatable properties of the Pool. For example, if the Pool has a start Task associated with it and if start Task is not specified with this request, then the Batch service will remove the existing start Task.
+     * This fully replaces all the updatable properties of the Pool. For example, if the Pool has a StartTask associated with it and if StartTask is not specified with this request, then the Batch service will remove the existing StartTask.
      *
      * @param poolId The ID of the Pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
@@ -1232,7 +1232,7 @@ public interface Pools {
     Observable<ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders>> updatePropertiesWithServiceResponseAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter);
     /**
      * Updates the properties of the specified Pool.
-     * This fully replaces all the updatable properties of the Pool. For example, if the Pool has a start Task associated with it and if start Task is not specified with this request, then the Batch service will remove the existing start Task.
+     * This fully replaces all the updatable properties of the Pool. For example, if the Pool has a StartTask associated with it and if StartTask is not specified with this request, then the Batch service will remove the existing StartTask.
      *
      * @param poolId The ID of the Pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
@@ -1245,7 +1245,7 @@ public interface Pools {
 
     /**
      * Updates the properties of the specified Pool.
-     * This fully replaces all the updatable properties of the Pool. For example, if the Pool has a start Task associated with it and if start Task is not specified with this request, then the Batch service will remove the existing start Task.
+     * This fully replaces all the updatable properties of the Pool. For example, if the Pool has a StartTask associated with it and if StartTask is not specified with this request, then the Batch service will remove the existing StartTask.
      *
      * @param poolId The ID of the Pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
@@ -1258,7 +1258,7 @@ public interface Pools {
 
     /**
      * Updates the properties of the specified Pool.
-     * This fully replaces all the updatable properties of the Pool. For example, if the Pool has a start Task associated with it and if start Task is not specified with this request, then the Batch service will remove the existing start Task.
+     * This fully replaces all the updatable properties of the Pool. For example, if the Pool has a StartTask associated with it and if StartTask is not specified with this request, then the Batch service will remove the existing StartTask.
      *
      * @param poolId The ID of the Pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
@@ -1270,7 +1270,7 @@ public interface Pools {
 
     /**
      * Updates the properties of the specified Pool.
-     * This fully replaces all the updatable properties of the Pool. For example, if the Pool has a start Task associated with it and if start Task is not specified with this request, then the Batch service will remove the existing start Task.
+     * This fully replaces all the updatable properties of the Pool. For example, if the Pool has a StartTask associated with it and if StartTask is not specified with this request, then the Batch service will remove the existing StartTask.
      *
      * @param poolId The ID of the Pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.

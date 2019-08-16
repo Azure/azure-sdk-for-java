@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Settings which will be used by the data disks associated to Compute Nodes in
- * the Pool.
+ * the Pool. When using attached data disks, you need to mount and format the
+ * disks from within a VM to use them.
  */
 public class DataDisk {
     /**

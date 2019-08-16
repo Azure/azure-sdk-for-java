@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.AccessTierRequired;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -245,7 +246,7 @@ public class BlobAsyncClient {
             .sourceIfNoneMatch(sourceModifiedAccessConditions.ifNoneMatch());
 
         return postProcessResponse(this.azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(
-            null, null, sourceURL, null, metadata, null, sourceConditions,
+            null, null, sourceURL, null, metadata, null, null, null, null, sourceConditions,
             destAccessConditions.modifiedAccessConditions(), destAccessConditions.leaseAccessConditions(), Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().copyId()));
     }
@@ -340,7 +341,7 @@ public class BlobAsyncClient {
             .sourceIfNoneMatch(sourceModifiedAccessConditions.ifNoneMatch());
 
         return postProcessResponse(this.azureBlobStorage.blobs().copyFromURLWithRestResponseAsync(
-            null, null, copySource, null, metadata, null, sourceConditions,
+            null, null, copySource, null, metadata, null, null, null, sourceConditions,
             destAccessConditions.modifiedAccessConditions(), destAccessConditions.leaseAccessConditions(), Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().copyId()));
     }
@@ -413,7 +414,7 @@ public class BlobAsyncClient {
         // TODO: range is BlobRange but expected as String
         // TODO: figure out correct response
         return postProcessResponse(this.azureBlobStorage.blobs().downloadWithRestResponseAsync(
-            null, null, snapshot, null, null, range.toHeaderValue(), getMD5,
+            null, null, snapshot, null, null, range.toHeaderValue(), getMD5, null,
             null, null, null, null,
             accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(), Context.NONE))
             // Convert the autorest response to a DownloadAsyncResponse, which enable reliable download.
@@ -691,7 +692,7 @@ public class BlobAsyncClient {
 
         return postProcessResponse(this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
             null, null, null, metadata, null, null,
-            null, null, accessConditions.leaseAccessConditions(),
+            null, null, accessConditions.leaseAccessConditions(), null,
             accessConditions.modifiedAccessConditions(), Context.NONE))
             .map(VoidResponse::new);
     }
@@ -734,7 +735,7 @@ public class BlobAsyncClient {
 
         return postProcessResponse(this.azureBlobStorage.blobs().createSnapshotWithRestResponseAsync(
             null, null, null, metadata, null, null,
-            null, null, accessConditions.modifiedAccessConditions(),
+            null, null, null, accessConditions.modifiedAccessConditions(),
             accessConditions.leaseAccessConditions(), Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, this.getSnapshotClient(rb.deserializedHeaders().snapshot())));
     }
@@ -779,9 +780,10 @@ public class BlobAsyncClient {
      */
     public Mono<VoidResponse> setTier(AccessTier tier, LeaseAccessConditions leaseAccessConditions) {
         Utility.assertNotNull("tier", tier);
+        AccessTierRequired accessTierRequired = AccessTierRequired.fromString(tier.toString());
 
         return postProcessResponse(this.azureBlobStorage.blobs().setTierWithRestResponseAsync(
-            null, null, tier, null, null, leaseAccessConditions, Context.NONE))
+            null, null, accessTierRequired, null, null, null, leaseAccessConditions, Context.NONE))
             .map(VoidResponse::new);
     }
 

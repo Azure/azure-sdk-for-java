@@ -133,6 +133,7 @@ public class FilesImpl implements Files {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Files listFromComputeNodeNext" })
         @GET
         Observable<Response<ResponseBody>> listFromComputeNodeNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+
     }
 
     // CUSTOM METHOD

@@ -167,7 +167,7 @@ class PageBlobAPITest extends APISpec {
         then:
         response.statusCode() == 201
         validateBasicHeaders(response.headers())
-        response.value().contentMD5() != null
+        response.headers().value("x-ms-content-crc64") != null
         response.value().blobSequenceNumber() == 0
         response.value().isServerEncrypted()
     }

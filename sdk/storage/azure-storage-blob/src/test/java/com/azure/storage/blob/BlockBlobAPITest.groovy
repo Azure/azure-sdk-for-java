@@ -29,7 +29,7 @@ class BlockBlobAPITest extends APISpec {
 
         expect:
         response.statusCode() == 201
-        headers.value("Content-MD5") != null
+        headers.value("x-ms-content-crc64") != null
         headers.value("x-ms-request-id") != null
         headers.value("x-ms-version") != null
         headers.value("Date") != null
@@ -126,7 +126,7 @@ class BlockBlobAPITest extends APISpec {
         then:
         headers.value("x-ms-request-id") != null
         headers.value("x-ms-version") != null
-        headers.value("Content-MD5") != null
+        headers.value("x-ms-content-crc64") != null
         headers.value("x-ms-request-server-encrypted") != null
 
 
@@ -310,7 +310,7 @@ class BlockBlobAPITest extends APISpec {
         then:
         response.statusCode() == 201
         validateBasicHeaders(headers)
-        headers.value("Content-MD5")
+        headers.value("x-ms-content-crc64")
         Boolean.parseBoolean(headers.value("x-ms-request-server-encrypted"))
     }
 
