@@ -40,7 +40,7 @@ The following environment variables are needed:
   * AZURE_COSMOS_ENDPOINT: URI.
   * AZURE_COSMOS_KEY: Primary or secondary key.
 
-```
+```bash
 # Bash code to create the environment variables
 export AZURE_CLIENT_ID=""
 export AZURE_CLIENT_SECRET=""
