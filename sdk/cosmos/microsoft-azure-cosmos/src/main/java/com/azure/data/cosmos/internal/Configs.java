@@ -3,6 +3,7 @@
 package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.internal.directconnectivity.Protocol;
+import com.google.common.base.Strings;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslProvider;
@@ -68,9 +69,11 @@ public class Configs {
     }
 
     public Protocol getProtocol() {
-        String protocol = getJVMConfigAsString(PROTOCOL, DEFAULT_PROTOCOL.toString());
+        String protocol = System.getProperty(PROTOCOL, StringUtils.defaultString(
+            Strings.emptyToNull(System.getenv().get("DIRECT_MODE_PROTOCOL")),
+            DEFAULT_PROTOCOL.name()));
         try {
-            return Protocol.valueOf(StringUtils.upperCase(protocol.toLowerCase()));
+            return Protocol.valueOf(protocol.toUpperCase());
         } catch (Exception e) {
             logger.error("Parsing protocol {} failed. Using the default {}.", protocol, DEFAULT_PROTOCOL, e);
             return DEFAULT_PROTOCOL;

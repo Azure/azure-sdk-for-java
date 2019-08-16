@@ -43,7 +43,7 @@ public class CosmosClientException extends Exception {
     String resourceAddress;
 
     CosmosClientException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
-        super(message, cause, /* enableSuppression */ true, /* writableStackTrace */ false);
+        super(message, cause);
         this.statusCode = statusCode;
         this.responseHeaders = responseHeaders == null ? new HashMap<>() : new HashMap<>(responseHeaders);
     }
@@ -107,7 +107,7 @@ public class CosmosClientException extends Exception {
 
     /**
      * Creates a new instance of the CosmosClientException class.
-     * 
+     *
      * @param message         the string message.
      * @param statusCode      the http status code of the response.
      * @param exception       the exception object.
