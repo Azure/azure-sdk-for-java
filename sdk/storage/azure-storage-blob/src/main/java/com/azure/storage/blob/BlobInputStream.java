@@ -131,7 +131,7 @@ public final class BlobInputStream extends InputStream {
             throw new IndexOutOfBoundsException();
         }
 
-        BlobProperties properties = blobClient.getProperties().block().value();
+        BlobProperties properties = blobClient.getProperties().block();
         this.streamLength = blobRangeLength == null
             ? properties.blobSize() - this.blobRangeOffset
             : Math.min(properties.blobSize() - this.blobRangeOffset, blobRangeLength);

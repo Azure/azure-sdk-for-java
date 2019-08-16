@@ -14,6 +14,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
@@ -60,7 +61,8 @@ public final class BlobServiceClientBuilder {
     private static final String ENDPOINT_SUFFIX = "endpointsuffix";
 
     private final ClientLogger logger = new ClientLogger(BlobServiceClientBuilder.class);
-    private final List<HttpPipelinePolicy> policies;
+
+    private final List<HttpPipelinePolicy> additionalPolicies;
 
     private String endpoint;
     private SharedKeyCredential sharedKeyCredential;
@@ -78,7 +80,7 @@ public final class BlobServiceClientBuilder {
     public BlobServiceClientBuilder() {
         retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
-        policies = new ArrayList<>();
+        additionalPolicies = new ArrayList<>();
     }
 
     /**
@@ -111,10 +113,12 @@ public final class BlobServiceClientBuilder {
         } else if (sasTokenCredential != null) {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         }
-
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RequestRetryPolicy(retryOptions));
 
-        policies.addAll(this.policies);
+        policies.addAll(this.additionalPolicies);
+
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(logLevel));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -256,7 +260,7 @@ public final class BlobServiceClientBuilder {
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public BlobServiceClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.policies.add(Objects.requireNonNull(pipelinePolicy));
+        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy));
         return this;
     }
 
