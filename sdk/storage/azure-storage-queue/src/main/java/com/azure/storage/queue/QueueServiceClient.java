@@ -116,7 +116,7 @@ public final class QueueServiceClient {
      * @throws StorageErrorException If the queue doesn't exist
      */
     public void deleteQueue(String queueName) {
-         deleteQueueWithResponse(queueName, Context.NONE);
+        deleteQueueWithResponse(queueName, Context.NONE);
     }
 
     /**
