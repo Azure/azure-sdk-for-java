@@ -18,7 +18,7 @@ class BlobOutputStreamTest extends APISpec {
         outputStream.close()
 
         then:
-        blockBlobClient.getProperties().value().blobSize() == data.length
+        blockBlobClient.getProperties().blobSize() == data.length
         convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
     }
 
@@ -54,7 +54,7 @@ class BlobOutputStreamTest extends APISpec {
         outputStream.close()
 
         then:
-        appendBlobClient.getProperties().value().blobSize() == data.length
+        appendBlobClient.getProperties().blobSize() == data.length
         convertInputStreamToByteArray(appendBlobClient.openInputStream()) == data
     }
 

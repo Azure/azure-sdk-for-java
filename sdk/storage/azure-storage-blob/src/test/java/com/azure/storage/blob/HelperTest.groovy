@@ -40,7 +40,7 @@ class HelperTest extends APISpec {
      */
     def "Request property"() {
         when:
-        VoidResponse response = cu.delete()
+        VoidResponse response = cu.deleteWithResponse(null, null, null)
 
         then:
         response.request() != null
@@ -76,10 +76,10 @@ class HelperTest extends APISpec {
         setup:
         String containerName = generateContainerName()
         String blobName = generateBlobName()
-        ContainerClient cu = primaryServiceClient.createContainer(containerName).value()
+        ContainerClient cu = primaryServiceClient.createContainer(containerName)
         BlockBlobClient bu = cu.getBlockBlobClient(blobName)
         bu.upload(defaultInputStream.get(), defaultDataSize) // need something to snapshot
-        String snapshotId = bu.createSnapshot().value().getSnapshotId()
+        String snapshotId = bu.createSnapshot().getSnapshotId()
 
         BlobSASPermission p = new BlobSASPermission()
             .read(true)
@@ -133,7 +133,7 @@ class HelperTest extends APISpec {
         data.toByteArray() == defaultData.array()
 
         and:
-        Response<BlobProperties> properties = bsu.getProperties()
+        Response<BlobProperties> properties = bsu.getPropertiesWithResponse(null, null, null)
 
         then:
         properties.value().cacheControl() == "cache"

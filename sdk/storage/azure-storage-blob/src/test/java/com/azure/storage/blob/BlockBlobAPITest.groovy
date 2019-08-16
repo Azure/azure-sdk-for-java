@@ -24,7 +24,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block"() {
         setup:
-        VoidResponse response = bu.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize)
+        VoidResponse response = bu.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, null, null, null)
         HttpHeaders headers = response.headers()
 
         expect:
@@ -38,7 +38,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block min"() {
         expect:
-        bu.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize).statusCode() == 201
+        bu.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, null, null, null).statusCode() == 201
     }
 
     @Unroll
@@ -81,8 +81,8 @@ class BlockBlobAPITest extends APISpec {
         String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
 
         expect:
-        bu.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize, new LeaseAccessConditions().leaseId(leaseID),
-            null).statusCode() == 201
+        bu.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, new LeaseAccessConditions().leaseId(leaseID),
+            null, null).statusCode() == 201
     }
 
     def "Stage block lease fail"() {
@@ -90,8 +90,8 @@ class BlockBlobAPITest extends APISpec {
         setupBlobLeaseCondition(bu, receivedLeaseID)
 
         when:
-        bu.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize, new LeaseAccessConditions()
-            .leaseId(garbageLeaseID), null)
+        bu.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, new LeaseAccessConditions()
+            .leaseId(garbageLeaseID), null, null)
 
         then:
         def e = thrown(StorageException)
@@ -116,7 +116,7 @@ class BlockBlobAPITest extends APISpec {
         def blockID = getBlockID()
 
         when:
-        HttpHeaders headers = bu2.stageBlockFromURL(blockID, bu.getBlobUrl(), null).headers()
+        HttpHeaders headers = bu2.stageBlockFromURLWithResponse(blockID, bu.getBlobUrl(), null, null, null, null, null, null).headers()
         Iterator<BlockItem> listResponse = bu2.listBlocks(BlockListType.ALL).iterator()
         BlockItem block = listResponse.next()
         bu2.commitBlockList(Arrays.asList(blockID))
@@ -144,7 +144,7 @@ class BlockBlobAPITest extends APISpec {
         def blockID = getBlockID()
 
         expect:
-        bu2.stageBlockFromURL(blockID, bu.getBlobUrl(), null).statusCode() == 201
+        bu2.stageBlockFromURLWithResponse(blockID, bu.getBlobUrl(), null, null, null, null, null, null).statusCode() == 201
     }
 
     @Unroll
@@ -183,8 +183,8 @@ class BlockBlobAPITest extends APISpec {
         def destURL = cu.getBlockBlobClient(generateBlobName())
 
         when:
-        destURL.stageBlockFromURL(getBlockID(), bu.getBlobUrl(), null,
-            MessageDigest.getInstance("MD5").digest(defaultData.array()), null, null, null)
+        destURL.stageBlockFromURLWithResponse(getBlockID(), bu.getBlobUrl(), null,
+            MessageDigest.getInstance("MD5").digest(defaultData.array()), null, null, null, null)
 
         then:
         notThrown(StorageException)
@@ -196,8 +196,8 @@ class BlockBlobAPITest extends APISpec {
         def destURL = cu.getBlockBlobClient(generateBlobName())
 
         when:
-        destURL.stageBlockFromURL(getBlockID(), bu.getBlobUrl(), null, "garbage".getBytes(),
-            null, null, null)
+        destURL.stageBlockFromURLWithResponse(getBlockID(), bu.getBlobUrl(), null, "garbage".getBytes(),
+            null, null, null, null)
 
         then:
         thrown(StorageException)
@@ -209,7 +209,7 @@ class BlockBlobAPITest extends APISpec {
         def lease = new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, receivedLeaseID))
 
         when:
-        bu.stageBlockFromURL(getBlockID(), bu.getBlobUrl(), null, null, lease, null, null)
+        bu.stageBlockFromURLWithResponse(getBlockID(), bu.getBlobUrl(), null, null, lease, null, null, null)
 
         then:
         notThrown(StorageException)
@@ -221,7 +221,7 @@ class BlockBlobAPITest extends APISpec {
         def lease = new LeaseAccessConditions().leaseId("garbage")
 
         when:
-        bu.stageBlockFromURL(getBlockID(), bu.getBlobUrl(), null, null, lease, null, null)
+        bu.stageBlockFromURLWithResponse(getBlockID(), bu.getBlobUrl(), null, null, lease, null, null, null)
 
         then:
         thrown(StorageException)
@@ -256,7 +256,7 @@ class BlockBlobAPITest extends APISpec {
             .sourceIfNoneMatch(sourceIfNoneMatch)
 
         expect:
-        bu.stageBlockFromURL(blockID, sourceURL.getBlobUrl(), null, null, null, smac, null).statusCode() == 201
+        bu.stageBlockFromURLWithResponse(blockID, sourceURL.getBlobUrl(), null, null, null, smac, null, null).statusCode() == 201
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
@@ -283,7 +283,7 @@ class BlockBlobAPITest extends APISpec {
             .sourceIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch))
 
         when:
-        bu.stageBlockFromURL(blockID, sourceURL.getBlobUrl(), null, null, null, smac, null).statusCode() == 201
+        bu.stageBlockFromURLWithResponse(blockID, sourceURL.getBlobUrl(), null, null, null, smac, null, null).statusCode() == 201
 
         then:
         thrown(StorageException)
@@ -304,7 +304,7 @@ class BlockBlobAPITest extends APISpec {
         ids.add(blockID)
 
         when:
-        Response<BlockBlobItem> response = bu.commitBlockList(ids)
+        Response<BlockBlobItem> response = bu.commitBlockListWithResponse(ids, null, null, null, null, null)
         HttpHeaders headers = response.headers()
 
         then:
@@ -322,12 +322,12 @@ class BlockBlobAPITest extends APISpec {
         ids.add(blockID)
 
         expect:
-        bu.commitBlockList(ids).value() != null
+        bu.commitBlockList(ids) != null
     }
 
     def "Commit block list null"() {
         expect:
-        bu.commitBlockList(null).statusCode() == 201
+        bu.commitBlockListWithResponse(null, null, null, null, null, null).statusCode() == 201
     }
 
     @Unroll
@@ -345,8 +345,8 @@ class BlockBlobAPITest extends APISpec {
             .blobContentType(contentType)
 
         when:
-        bu.commitBlockList(ids, headers, null, null, null)
-        Response<BlobProperties> response = bu.getProperties()
+        bu.commitBlockListWithResponse(ids, headers, null, null, null, null)
+        Response<BlobProperties> response = bu.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType
@@ -372,8 +372,8 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        bu.commitBlockList(null, null, metadata, null, null)
-        Response<BlobProperties> response = bu.getProperties()
+        bu.commitBlockListWithResponse(null, null, metadata, null, null, null)
+        Response<BlobProperties> response = bu.getPropertiesWithResponse(null, null, null)
 
         then:
         response.statusCode() == 200
@@ -400,7 +400,7 @@ class BlockBlobAPITest extends APISpec {
 
 
         expect:
-        bu.commitBlockList(null, null, null, bac, null).statusCode() == 201
+        bu.commitBlockListWithResponse(null, null, null, bac, null, null).statusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -426,7 +426,7 @@ class BlockBlobAPITest extends APISpec {
                 .ifNoneMatch(noneMatch))
 
         when:
-        bu.commitBlockList(null, null, null, bac, null)
+        bu.commitBlockListWithResponse(null, null, null, bac, null, null)
 
         then:
         def e = thrown(StorageException)
@@ -447,8 +447,8 @@ class BlockBlobAPITest extends APISpec {
         bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
-        bu.commitBlockList(new ArrayList<String>(), null, null,
-            new BlobAccessConditions().leaseAccessConditions(new LeaseAccessConditions().leaseId("garbage")), null)
+        bu.commitBlockListWithResponse(new ArrayList<String>(), null, null,
+            new BlobAccessConditions().leaseAccessConditions(new LeaseAccessConditions().leaseId("garbage")), null, null)
 
         then:
         thrown(StorageException)
@@ -571,7 +571,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload"() {
         when:
-        Response<BlockBlobItem> response = bu.upload(defaultInputStream.get(), defaultDataSize)
+        Response<BlockBlobItem> response = bu.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null)
         HttpHeaders headers = response.headers()
 
         then:
@@ -586,7 +586,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload min"() {
         expect:
-        bu.upload(defaultInputStream.get(), defaultDataSize).statusCode() == 201
+        bu.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null).statusCode() == 201
     }
 
     @Unroll
@@ -608,12 +608,12 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload empty body"() {
         expect:
-        bu.upload(new ByteArrayInputStream(new byte[0]), 0).statusCode() == 201
+        bu.uploadWithResponse(new ByteArrayInputStream(new byte[0]), 0, null, null, null, null, null).statusCode() == 201
     }
 
     def "Upload null body"() {
         expect:
-        bu.upload(null, 0).statusCode() == 201
+        bu.uploadWithResponse(null, 0, null, null, null, null, null).statusCode() == 201
     }
 
     @Unroll
@@ -627,8 +627,8 @@ class BlockBlobAPITest extends APISpec {
             .blobContentType(contentType)
 
         when:
-        bu.upload(defaultInputStream.get(), defaultDataSize, headers, null, null, null)
-        Response<BlobProperties> response = bu.getProperties()
+        bu.uploadWithResponse(defaultInputStream.get(), defaultDataSize, headers, null, null, null, null)
+        Response<BlobProperties> response = bu.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
         contentMD5 = (contentMD5 == null) ? MessageDigest.getInstance("MD5").digest(defaultData.array()) : contentMD5
@@ -655,8 +655,8 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        bu.upload(defaultInputStream.get(), defaultDataSize, null, metadata, null, null)
-        Response<BlobProperties> response = bu.getProperties()
+        bu.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, metadata, null, null, null)
+        Response<BlobProperties> response = bu.getPropertiesWithResponse(null, null, null)
 
         then:
         response.statusCode() == 200
@@ -683,7 +683,7 @@ class BlockBlobAPITest extends APISpec {
 
 
         expect:
-        bu.upload(defaultInputStream.get(), defaultDataSize, null, null, bac, null).statusCode() == 201
+        bu.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, bac, null, null).statusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -709,7 +709,7 @@ class BlockBlobAPITest extends APISpec {
                 .ifNoneMatch(noneMatch))
 
         when:
-        bu.upload(defaultInputStream.get(), defaultDataSize, null, null, bac, null)
+        bu.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, bac, null, null)
 
         then:
         def e = thrown(StorageException)
@@ -730,9 +730,9 @@ class BlockBlobAPITest extends APISpec {
         bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
-        bu.upload(defaultInputStream.get(), defaultDataSize, null, null,
+        bu.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null,
             new BlobAccessConditions().leaseAccessConditions(new LeaseAccessConditions().leaseId("id")),
-            null)
+            null, null)
 
         then:
         thrown(StorageException)

@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcaccountsaspermissionstostring0733666f4a8de375bb?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcaccountsaspermissionstostring0774074592c9ab3aef?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -9,14 +9,14 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7226F241CA274\"",
-      "Last-Modified" : "Fri, 16 Aug 2019 17:28:23 GMT",
+      "ETag" : "\"0x8D7228068D3A90F\"",
+      "Last-Modified" : "Fri, 16 Aug 2019 19:32:00 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "f1da2ed2-301e-0118-8058-545bb6000000",
-      "Date" : "Fri, 16 Aug 2019 17:28:23 GMT",
-      "x-ms-client-request-id" : "e57dd746-325f-4e06-bf9d-b44371f46622"
+      "x-ms-request-id" : "214e5792-401e-009b-3669-54bd4e000000",
+      "Date" : "Fri, 16 Aug 2019 19:32:00 GMT",
+      "x-ms-client-request-id" : "c20c4522-5cb6-4597-a6d7-cea797f56ed6"
     },
     "Exception" : null
   }, {
@@ -32,16 +32,16 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "f1da2ef4-301e-0118-1f58-545bb6000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcaccountsaspermissionstostring</Prefix><Containers><Container><Name>jtcaccountsaspermissionstostring0733666f4a8de375bb</Name><Properties><Last-Modified>Fri, 16 Aug 2019 17:28:23 GMT</Last-Modified><Etag>\"0x8D7226F241CA274\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 16 Aug 2019 17:28:23 GMT",
-      "x-ms-client-request-id" : "f241db6a-725a-4329-a230-d939f2091b29",
+      "x-ms-request-id" : "214e57a6-401e-009b-4969-54bd4e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcaccountsaspermissionstostring</Prefix><Containers><Container><Name>jtcaccountsaspermissionstostring0774074592c9ab3aef</Name><Properties><Last-Modified>Fri, 16 Aug 2019 19:32:00 GMT</Last-Modified><Etag>\"0x8D7228068D3A90F\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 16 Aug 2019 19:32:00 GMT",
+      "x-ms-client-request-id" : "d0e90413-99da-4fb4-97a0-207d636d4199",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcaccountsaspermissionstostring0733666f4a8de375bb?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcaccountsaspermissionstostring0774074592c9ab3aef?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -52,11 +52,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "f1da2f12-301e-0118-3858-545bb6000000",
-      "Date" : "Fri, 16 Aug 2019 17:28:23 GMT",
-      "x-ms-client-request-id" : "a5afe188-f09c-4831-998c-0a2c41333a8a"
+      "x-ms-request-id" : "214e57b0-401e-009b-5369-54bd4e000000",
+      "Date" : "Fri, 16 Aug 2019 19:32:00 GMT",
+      "x-ms-client-request-id" : "a72b4868-be4a-46c1-ace6-2a9c96bd0869"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcaccountsaspermissionstostring0733666f4a8de375bb" ]
+  "variables" : [ "jtcaccountsaspermissionstostring0774074592c9ab3aef" ]
 }

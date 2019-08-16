@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcsetaccesspolicyacillegal050269200c679c4f2f4e5?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcsetaccesspolicyacillegal0549946fd40653030b401?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -9,14 +9,14 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7226E9C85D997\"",
-      "Last-Modified" : "Fri, 16 Aug 2019 17:24:36 GMT",
+      "ETag" : "\"0x8D7227FDF4F1E1B\"",
+      "Last-Modified" : "Fri, 16 Aug 2019 19:28:09 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "f1d6d862-301e-0118-4557-545bb6000000",
-      "Date" : "Fri, 16 Aug 2019 17:24:35 GMT",
-      "x-ms-client-request-id" : "9bb3991d-af4b-4173-9760-07ddfdaf54d6"
+      "x-ms-request-id" : "214d2dbc-401e-009b-5068-54bd4e000000",
+      "Date" : "Fri, 16 Aug 2019 19:28:08 GMT",
+      "x-ms-client-request-id" : "a924d965-cf86-4a7a-9063-7362d0cdaa9e"
     },
     "Exception" : null
   }, {
@@ -32,16 +32,16 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "f1d6d87e-301e-0118-5e57-545bb6000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcsetaccesspolicyacillegal</Prefix><Containers><Container><Name>jtcsetaccesspolicyacillegal050269200c679c4f2f4e5</Name><Properties><Last-Modified>Fri, 16 Aug 2019 17:24:36 GMT</Last-Modified><Etag>\"0x8D7226E9C85D997\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 16 Aug 2019 17:24:35 GMT",
-      "x-ms-client-request-id" : "236307d9-e5d8-4db4-b74f-9579d99df68f",
+      "x-ms-request-id" : "214d2dce-401e-009b-6168-54bd4e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcsetaccesspolicyacillegal</Prefix><Containers><Container><Name>jtcsetaccesspolicyacillegal0549946fd40653030b401</Name><Properties><Last-Modified>Fri, 16 Aug 2019 19:28:09 GMT</Last-Modified><Etag>\"0x8D7227FDF4F1E1B\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 16 Aug 2019 19:28:08 GMT",
+      "x-ms-client-request-id" : "7589cf6d-4f59-43b4-8662-0bf7bbe61a9b",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcsetaccesspolicyacillegal050269200c679c4f2f4e5?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcsetaccesspolicyacillegal0549946fd40653030b401?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -52,11 +52,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "f1d6d8a9-301e-0118-0657-545bb6000000",
-      "Date" : "Fri, 16 Aug 2019 17:24:35 GMT",
-      "x-ms-client-request-id" : "868b1315-9970-40f1-8b45-5bbe521f680b"
+      "x-ms-request-id" : "214d2ddb-401e-009b-6e68-54bd4e000000",
+      "Date" : "Fri, 16 Aug 2019 19:28:09 GMT",
+      "x-ms-client-request-id" : "68238692-b2c5-43bf-b2ad-68730cf3f601"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcsetaccesspolicyacillegal050269200c679c4f2f4e5" ]
+  "variables" : [ "jtcsetaccesspolicyacillegal0549946fd40653030b401" ]
 }

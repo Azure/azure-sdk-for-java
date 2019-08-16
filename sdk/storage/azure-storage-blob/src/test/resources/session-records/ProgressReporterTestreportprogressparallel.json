@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcreportprogressparallel0836613e1c14cf8ef54562?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcreportprogressparallel09510645b2d2065d1c406d?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -9,14 +9,14 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7226F4E3326BD\"",
-      "Last-Modified" : "Fri, 16 Aug 2019 17:29:34 GMT",
+      "ETag" : "\"0x8D7228096987C46\"",
+      "Last-Modified" : "Fri, 16 Aug 2019 19:33:17 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "06e67f0a-701e-00dc-5b58-546225000000",
-      "Date" : "Fri, 16 Aug 2019 17:29:34 GMT",
-      "x-ms-client-request-id" : "4dbe6984-fc7e-4c27-aab9-42ea9bbb2d44"
+      "x-ms-request-id" : "69a50b9b-401e-00df-1169-546122000000",
+      "Date" : "Fri, 16 Aug 2019 19:33:16 GMT",
+      "x-ms-client-request-id" : "c7697f5d-c907-45e9-8815-d98d797f69be"
     },
     "Exception" : null
   }, {
@@ -32,16 +32,16 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "06e68568-701e-00dc-3858-546225000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcreportprogressparallel</Prefix><Containers><Container><Name>jtcreportprogressparallel0836613e1c14cf8ef54562</Name><Properties><Last-Modified>Fri, 16 Aug 2019 17:29:34 GMT</Last-Modified><Etag>\"0x8D7226F4E3326BD\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 16 Aug 2019 17:29:37 GMT",
-      "x-ms-client-request-id" : "94a0db9b-3db6-45ad-a60c-a4aca6526dbc",
+      "x-ms-request-id" : "69a517f5-401e-00df-0769-546122000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcreportprogressparallel</Prefix><Containers><Container><Name>jtcreportprogressparallel09510645b2d2065d1c406d</Name><Properties><Last-Modified>Fri, 16 Aug 2019 19:33:17 GMT</Last-Modified><Etag>\"0x8D7228096987C46\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 16 Aug 2019 19:33:19 GMT",
+      "x-ms-client-request-id" : "5229441e-9a89-4d8a-8ded-78b00578c2c9",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcreportprogressparallel0836613e1c14cf8ef54562?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcreportprogressparallel09510645b2d2065d1c406d?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -52,11 +52,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "06e6857f-701e-00dc-4d58-546225000000",
-      "Date" : "Fri, 16 Aug 2019 17:29:37 GMT",
-      "x-ms-client-request-id" : "97b14642-b8ce-4471-a9fb-6f8cf441535c"
+      "x-ms-request-id" : "69a5180f-401e-00df-2069-546122000000",
+      "Date" : "Fri, 16 Aug 2019 19:33:19 GMT",
+      "x-ms-client-request-id" : "d67f0dfc-5a83-405c-bc85-857c9218d5ec"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcreportprogressparallel0836613e1c14cf8ef54562", "e97559a7-c2c8-44c9-a6e3-1227be93baa9", "26c4ebe4-b879-4d9f-be41-b10955506810", "d022313d-9aec-4c00-99eb-d3a5c06ddb5a" ]
+  "variables" : [ "jtcreportprogressparallel09510645b2d2065d1c406d", "8c76f961-977a-4e8f-9df2-6ec656f7d87a", "38cdae2a-f081-4c8b-ab90-a2a3e92051f9", "488431b9-692d-4a6e-8cd7-eb227dad02cf" ]
 }

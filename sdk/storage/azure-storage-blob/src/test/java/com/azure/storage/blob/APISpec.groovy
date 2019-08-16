@@ -147,7 +147,7 @@ class APISpec extends Specification {
             ContainerClient containerClient = primaryServiceClient.getContainerClient(container.name())
 
             if (container.properties().leaseState() == LeaseStateType.LEASED) {
-                containerClient.breakLease(0, null, null)
+                containerClient.breakLeaseWithResponse(0, null, null, null)
             }
 
             containerClient.delete()
@@ -382,6 +382,10 @@ class APISpec extends Specification {
         return resourceNamer.randomName(prefix + testName + entityNo, 63)
     }
 
+    String getRandomUUID() {
+        return resourceNamer.randomUuid()
+    }
+
     String getBlockID() {
         return Base64.encoder.encodeToString(resourceNamer.randomUuid().getBytes(StandardCharsets.UTF_8))
     }
@@ -432,7 +436,11 @@ class APISpec extends Specification {
      * The appropriate etag value to run the current test.
      */
     def setupBlobMatchCondition(BlobClient bu, String match) {
-        return (match == receivedEtag) ? bu.getProperties().headers().value("ETag") : match
+        if (match == receivedEtag) {
+            bu.getPropertiesWithResponse(null, null, null).headers().value("ETag")
+        } else {
+            return match
+        }
     }
 
     /**
@@ -452,7 +460,7 @@ class APISpec extends Specification {
     def setupBlobLeaseCondition(BlobClient bu, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            responseLeaseId = bu.acquireLease(null, -1, null, null).value()
+            responseLeaseId = bu.acquireLease(null, -1)
         }
 
         return (leaseID == receivedLeaseID) ? responseLeaseId : leaseID
@@ -463,7 +471,11 @@ class APISpec extends Specification {
     }
 
     def setupContainerLeaseCondition(ContainerClient cu, String leaseID) {
-        return (leaseID == receivedLeaseID) ? cu.acquireLease(null, -1).value() : leaseID
+        if (leaseID == receivedLeaseID) {
+            return cu.acquireLeaseWithResponse(null, -1, null, null, null).value()
+        } else {
+            return leaseID
+        }
     }
 
     def getMockRequest() {
