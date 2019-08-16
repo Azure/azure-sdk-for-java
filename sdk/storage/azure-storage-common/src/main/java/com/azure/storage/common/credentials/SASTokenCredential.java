@@ -42,6 +42,10 @@ public final class SASTokenCredential {
             return null;
         }
 
+        if (sasToken.charAt(0) == '?') {
+            sasToken = sasToken.substring(1);
+        }
+
         return new SASTokenCredential(sasToken);
     }
 
