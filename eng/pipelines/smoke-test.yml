@@ -21,7 +21,6 @@ jobs:
           mavenPomFile: $(PomFile)
           goals: 'package'
           options: '$(DefaultOptions) $(ProfileFlag) -Dmaven.test.skip=true'
-          mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
           jdkArchitectureOption: 'x64'
@@ -33,7 +32,6 @@ jobs:
           mavenPomFile: $(PomFile)
           goals: 'exec:java'
           options: '$(DefaultOptions) $(ProfileFlag) -Dexec.mainClass="com.azure.App"'
-          mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
           jdkArchitectureOption: 'x64'
