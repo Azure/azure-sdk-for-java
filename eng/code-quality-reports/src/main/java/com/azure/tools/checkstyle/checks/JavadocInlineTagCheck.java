@@ -24,8 +24,8 @@ import java.util.Set;
  * </ol>
  */
 public class JavadocInlineTagCheck extends AbstractJavadocCheck {
-    private static final String MULTIPLE_LINE_SPAN_ERROR = "Tag '%s' span in multiple lines. Use @codesnippet annotation" +
-        " instead of '%s' to ensure that the code block always compiles.";
+    private static final String MULTIPLE_LINE_SPAN_ERROR = "Tag '%s' spans multiple lines. Use @codesnippet annotation"
+        + " instead of '%s' to ensure that the code block always compiles.";
 
     // HTML tag set that need to be checked to see if there tags span on multiple lines.
     private static final Set<String> CHECK_TAGS = Collections.unmodifiableSet(new HashSet<>(
@@ -58,6 +58,7 @@ public class JavadocInlineTagCheck extends AbstractJavadocCheck {
                 break;
             case JavadocTokenTypes.JAVADOC_INLINE_TAG:
                 checkJavadocInlineTag(token);
+                break;
             default:
                 // Checkstyle complains if there's no default block in switch
                 break;

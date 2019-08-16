@@ -17,19 +17,17 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- * @codesnippet description should match naming pattern requirement below:
+ * Codesnippet description should match naming pattern requirement below:
  * <ol>
  *   <li>Package, class and method names should be concatenated by dot '.'. Ex., packageName.className.methodName</li>
  *   <li>Methods arguments should be concatenated by dash '-'. Ex. string-string  for methodName(String s, String s2)</li>
  *   <li>Use '#' to concatenate 1) and 2), ex packageName.className.methodName#string-string</li>
  * </ol>
- *
  */
 public class JavadocCodeSnippetCheck extends AbstractCheck {
 
     private static final String CODE_SNIPPET_ANNOTATION = "@codesnippet";
-    private static final String MISSING_CODESNIPPET_TAG_MESSAGE = "Javadoc @codesnippet tag required description.";
-
+    private static final String MISSING_CODESNIPPET_TAG_MESSAGE = "There is a @codesnippet block in the JavaDoc, but it does not refer to any sample.";
 
     private static final int[] TOKENS = new int[] {
         TokenTypes.PACKAGE_DEF,
@@ -106,7 +104,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
 
     /**
      * Check if the given block comment is on method. If not, skip the check.
-     * Otherwise, check if the {@literal {@codesnippet}} has matching the naming pattern
+     * Otherwise, check if the codesnippet has matching the naming pattern
      *
      * @param blockCommentToken BLOCK_COMMENT_BEGIN token
      */
@@ -132,7 +130,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
             if (node.getType() != JavadocTokenTypes.JAVADOC_INLINE_TAG) {
                 continue;
             }
-            // Skip if not codesnippet annotation
+            // Skip if not codesnippet
             DetailNode customNameNode = JavadocUtil.findFirstToken(node, JavadocTokenTypes.CUSTOM_NAME);
             if (customNameNode == null || !CODE_SNIPPET_ANNOTATION.equals(customNameNode.getText())) {
                 return;
@@ -159,8 +157,8 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
 
             // Check for CodeSnippet naming pattern matching
             if (!description.equalsIgnoreCase(fullPath)) {
-                log(node.getLineNumber(), String.format("Naming pattern mismatch. The @codeSnippet description " +
-                    "''%s'' doesn't match ''%s''. Case Insensitive.", description, fullPath));
+                log(node.getLineNumber(), String.format("Naming pattern mismatch. The @codeSnippet description "
+                    + "''%s'' does not match ''%s''. Case Insensitive.", description, fullPath));
             }
         }
     }
@@ -178,7 +176,32 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
             if (ast.getType() != TokenTypes.PARAMETER_DEF) {
                 continue;
             }
-            String parameterType = ast.findFirstToken(TokenTypes.TYPE).getFirstChild().getText();
+
+            final DetailAST typeToken = ast.findFirstToken(TokenTypes.TYPE);
+            final DetailAST identToken = typeToken.findFirstToken(TokenTypes.IDENT);
+            String parameterType = "";
+            if (identToken != null) {
+                // For example, Map, String, Mono types
+                parameterType = identToken.getText();
+            } else {
+
+                DetailAST arrayDeclarator = typeToken.findFirstToken(TokenTypes.ARRAY_DECLARATOR);
+                if (arrayDeclarator == null) {
+                    // For example, int, boolean, byte primitive types
+                    parameterType = typeToken.getFirstChild().getText();
+                }
+
+                DetailAST arrayDeclaratorIterator = arrayDeclarator;
+                while (arrayDeclaratorIterator != null) {
+                    DetailAST temp = arrayDeclaratorIterator.findFirstToken(TokenTypes.ARRAY_DECLARATOR);
+                    if (temp == null) {
+                        // For example, int[][], byte[] types
+                        parameterType = arrayDeclaratorIterator.getFirstChild().getText();
+                        break;
+                    }
+                    arrayDeclaratorIterator = temp;
+                }
+            }
             sb.append(parameterType).append("-");
         }
         int size = sb.length();
