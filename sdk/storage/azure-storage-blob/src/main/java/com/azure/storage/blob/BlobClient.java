@@ -235,10 +235,9 @@ public class BlobClient {
      *
      * @param copyId The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
      * BlobStartCopyFromURLHeaders} object.
-     * @return A response containing status code and HTTP headers.
      */
-    public Void abortCopyFromURL(String copyId) {
-        return abortCopyFromURLWithResponse(copyId, null, null, Context.NONE).value();
+    public void abortCopyFromURL(String copyId) {
+        abortCopyFromURLWithResponse(copyId, null, null, Context.NONE);
     }
 
     /**
@@ -323,11 +322,10 @@ public class BlobClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
-     * @return A response containing status code and HTTP headers.
      * @throws UncheckedIOException If an I/O error occurs.
      */
-    public Void download(OutputStream stream) {
-        return downloadWithResponse(stream, null, null, null, false, null, Context.NONE).value();
+    public void download(OutputStream stream) {
+        downloadWithResponse(stream, null, null, null, false, null, Context.NONE);
     }
 
     /**
@@ -427,10 +425,9 @@ public class BlobClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-blob">Azure Docs</a></p>
      *
-     * @return A response containing status code and HTTP headers.
      */
-    public Void delete() {
-        return deleteWithResponse(null, null, null, Context.NONE).value();
+    public void delete() {
+        deleteWithResponse(null, null, null, Context.NONE);
     }
 
     /**
@@ -508,10 +505,9 @@ public class BlobClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
      * @param headers {@link BlobHTTPHeaders}
-     * @return A response containing status code and HTTP headers.
      */
-    public Void setHTTPHeaders(BlobHTTPHeaders headers) {
-        return setHTTPHeadersWithResponse(headers, null, null, Context.NONE).value();
+    public void setHTTPHeaders(BlobHTTPHeaders headers) {
+        setHTTPHeadersWithResponse(headers, null, null, Context.NONE);
     }
 
     /**
@@ -551,10 +547,9 @@ public class BlobClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
      *
      * @param metadata {@link Metadata}
-     * @return A response containing status code and HTTP headers.
      */
-    public Void setMetadata(Metadata metadata) {
-        return setMetadataWithResponse(metadata, null, null, Context.NONE).value();
+    public void setMetadata(Metadata metadata) {
+        setMetadataWithResponse(metadata, null, null, Context.NONE);
     }
 
     /**
@@ -637,10 +632,9 @@ public class BlobClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
      *
      * @param tier The new tier for the blob.
-     * @return A response containing status code and HTTP headers.
      */
-    public Void setTier(AccessTier tier) {
-        return setTierWithResponse(tier, null, null, Context.NONE).value();
+    public void setTier(AccessTier tier) {
+        setTierWithResponse(tier, null, null, Context.NONE);
     }
 
     /**
@@ -679,10 +673,9 @@ public class BlobClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/undelete-blob">Azure Docs</a></p>
      *
-     * @return A response containing status code and HTTP headers.
      */
-    public Void undelete() {
-        return undeleteWithResponse(null, Context.NONE).value();
+    public void undelete() {
+        undeleteWithResponse(null, Context.NONE);
     }
 
     /**
@@ -806,10 +799,9 @@ public class BlobClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
      *
      * @param leaseId The leaseId of the active lease on the blob.
-     * @return A response containing status code and HTTP headers.
      */
-    public Void releaseLease(String leaseId) {
-        return releaseLeaseWithResponse(leaseId, null, null, Context.NONE).value();
+    public void releaseLease(String leaseId) {
+        releaseLeaseWithResponse(leaseId, null, null, Context.NONE);
     }
 
     /**

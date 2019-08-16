@@ -98,10 +98,9 @@ public final class BlobServiceClient {
      * more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure Docs</a>.
      *
      * @param containerName Name of the container to delete
-     * @return A response containing status code and HTTP headers
      */
-    public Void deleteContainer(String containerName) {
-        return deleteContainerWithResponse(containerName, Context.NONE).value();
+    public void deleteContainer(String containerName) {
+        deleteContainerWithResponse(containerName, Context.NONE);
     }
 
     /**
@@ -183,10 +182,9 @@ public final class BlobServiceClient {
      * sets the version header on each request, overriding the default.
      *
      * @param properties Configures the service.
-     * @return The storage account properties.
      */
-    public Void setProperties(StorageServiceProperties properties) {
-        return setPropertiesWithResponse(properties, null, Context.NONE).value();
+    public void setProperties(StorageServiceProperties properties) {
+        setPropertiesWithResponse(properties, null, Context.NONE);
     }
 
     /**

@@ -214,10 +214,9 @@ public final class ContainerClient {
      * Creates a new container within a storage account. If a container with the same name already exists, the operation
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
-     * @return A response containing status code and HTTP headers
      */
-    public Void create() {
-        return createWithResponse(null, null, null, Context.NONE).value();
+    public void create() {
+        createWithResponse(null, null, null, Context.NONE);
     }
 
     /**
@@ -242,10 +241,9 @@ public final class ContainerClient {
      * Marks the specified container for deletion. The container and any blobs contained within it are later deleted
      * during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
-     * @return A response containing status code and HTTP headers
      */
-    public Void delete() {
-        return deleteWithResponse(null, null, Context.NONE).value();
+    public void delete() {
+        deleteWithResponse(null, null, Context.NONE);
     }
 
     /**
@@ -295,10 +293,9 @@ public final class ContainerClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-metadata">Azure Docs</a>.
      * @param metadata {@link Metadata}
      *
-     * @return A response containing status code and HTTP headers
      */
-    public Void setMetadata(Metadata metadata) {
-        return setMetadataWithResponse(metadata, null, null, Context.NONE).value();
+    public void setMetadata(Metadata metadata) {
+        setMetadataWithResponse(metadata, null, null, Context.NONE);
     }
 
     /**
@@ -357,12 +354,10 @@ public final class ContainerClient {
      *                    Please see
      *                    <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      *                    for more information. Passing null will clear all access policies.
-     *
-     * @return A response containing status code and HTTP headers
      */
-    public Void setAccessPolicy(PublicAccessType accessType,
+    public void setAccessPolicy(PublicAccessType accessType,
                                 List<SignedIdentifier> identifiers) {
-        return setAccessPolicyWithResponse(accessType, identifiers, null, null, Context.NONE).value();
+        setAccessPolicyWithResponse(accessType, identifiers, null, null, Context.NONE);
     }
 
     /**
@@ -576,10 +571,9 @@ public final class ContainerClient {
      * Releases the blob's previously-acquired lease.
      * @param leaseID The leaseId of the active lease on the blob.
      *
-     * @return A response containing status code and HTTP headers
      */
-    public Void releaseLease(String leaseID) {
-        return releaseLeaseWithResponse(leaseID, null, null, Context.NONE).value();
+    public void releaseLease(String leaseID) {
+        releaseLeaseWithResponse(leaseID, null, null, Context.NONE);
     }
 
     /**

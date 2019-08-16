@@ -62,7 +62,8 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void abortCopyFromURL() {
         // BEGIN: com.azure.storage.blob.BlobClient.abortCopyFromURL#String
-        System.out.printf("Aborted copy completed.", client.abortCopyFromURL(copyId));
+        client.abortCopyFromURL(copyId);
+        System.out.printf("Aborted copy completed.");
         // END: com.azure.storage.blob.BlobClient.abortCopyFromURL#String
     }
 
@@ -80,7 +81,8 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void download() {
         // BEGIN: com.azure.storage.blob.BlobClient.download#OutputStream
-        System.out.printf("Download completed.", client.download(new ByteArrayOutputStream()));
+        client.download(new ByteArrayOutputStream());
+        System.out.printf("Download completed.");
         // END: com.azure.storage.blob.BlobClient.download#OutputStream
     }
 
@@ -108,7 +110,8 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void delete() {
         // BEGIN: com.azure.storage.blob.BlobClient.delete
-        System.out.printf("Delete completed.", client.delete());
+        client.delete();
+        System.out.printf("Delete completed.");
         // END: com.azure.storage.blob.BlobClient.delete
     }
 
@@ -127,10 +130,10 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void setHTTPHeaders() {
         // BEGIN: com.azure.storage.blob.BlobClient.setHTTPHeaders#BlobHTTPHeaders
-        System.out.printf("Set HTTP headers completed",
-            client.setHTTPHeaders(new BlobHTTPHeaders()
-                .blobContentLanguage("en-US")
-                .blobContentType("binary")));
+        client.setHTTPHeaders(new BlobHTTPHeaders()
+            .blobContentLanguage("en-US")
+            .blobContentType("binary"));
+        System.out.printf("Set HTTP headers completed");
         // END: com.azure.storage.blob.BlobClient.setHTTPHeaders#BlobHTTPHeaders
     }
 
@@ -139,8 +142,8 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void setMetadata() {
         // BEGIN: com.azure.storage.blob.BlobClient.setMetadata#Metadata
-        System.out.printf("Set metadata completed",
-            client.setMetadata(new Metadata(Collections.singletonMap("metadata", "value"))));
+        client.setMetadata(new Metadata(Collections.singletonMap("metadata", "value")));
+        System.out.printf("Set metadata completed");
         // END: com.azure.storage.blob.BlobClient.setMetadata#Metadata
     }
 
@@ -171,7 +174,8 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void undelete() {
         // BEGIN: com.azure.storage.blob.BlobClient.undelete
-        System.out.printf("Undelete completed", client.undelete());
+        client.undelete();
+        System.out.printf("Undelete completed");
         // END: com.azure.storage.blob.BlobClient.undelete
     }
 
@@ -198,7 +202,8 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void releaseLease() {
         // BEGIN: com.azure.storage.blob.BlobClient.releaseLease#String
-        System.out.printf("Release lease completed", client.releaseLease(leaseId));
+        client.releaseLease(leaseId);
+        System.out.printf("Release lease completed");
         // END: com.azure.storage.blob.BlobClient.releaseLease#String
 
 

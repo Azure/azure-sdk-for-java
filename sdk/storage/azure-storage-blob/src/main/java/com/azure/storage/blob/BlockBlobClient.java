@@ -195,10 +195,9 @@ public final class BlockBlobClient extends BlobClient {
      * @param length        The exact length of the data. It is important that this value match precisely the length of the data
      *                      provided in the {@link InputStream}.
      *
-     * @return A response containing status code and HTTP headers
      */
-    public Void stageBlock(String base64BlockID, InputStream data, long length) {
-        return stageBlockWithResponse(base64BlockID, data, length, null, null, Context.NONE).value();
+    public void stageBlock(String base64BlockID, InputStream data, long length) {
+        stageBlockWithResponse(base64BlockID, data, length, null, null, Context.NONE);
     }
 
     /**
@@ -248,10 +247,9 @@ public final class BlockBlobClient extends BlobClient {
      *                      authentication is required to perform the operation.
      * @param sourceRange   {@link BlobRange}
      *
-     * @return A response containing status code and HTTP headers
      */
-    public Void stageBlockFromURL(String base64BlockID, URL sourceURL, BlobRange sourceRange) {
-        return stageBlockFromURLWithResponse(base64BlockID, sourceURL, sourceRange, null, null, null, null, Context.NONE).value();
+    public void stageBlockFromURL(String base64BlockID, URL sourceURL, BlobRange sourceRange) {
+        stageBlockFromURLWithResponse(base64BlockID, sourceURL, sourceRange, null, null, null, null, Context.NONE);
     }
 
     /**
