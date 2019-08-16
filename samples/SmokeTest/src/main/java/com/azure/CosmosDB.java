@@ -14,6 +14,9 @@ public class CosmosDB {
     private static final String dbName = "JavaSolarSystem-" + UUID.randomUUID();
     private static final String collectionName = "Planets";
 
+    private static final String AZURE_COSMOS_ENDPOINT = System.getenv("AZURE_COSMOS_ENDPOINT");
+    private static final String AZURE_COSMOS_KEY= System.getenv("AZURE_COSMOS_KEY");
+
     private static final Logger logger = LoggerFactory.getLogger(CosmosDB.class);
 
     private static Mono<Void> createDatabase(CosmosClient client) {
@@ -72,8 +75,8 @@ public class CosmosDB {
         logger.info("---------------------");
 
         CosmosClient client = CosmosClient
-            .builder().endpoint(System.getenv("COSMOS_ENDPOINT"))
-            .key(System.getenv("COSMOS_KEY"))
+            .builder().endpoint(AZURE_COSMOS_ENDPOINT)
+            .key(AZURE_COSMOS_KEY)
             .build();
 
         try {

@@ -16,7 +16,7 @@ public class StorageBlob {
     private static ContainerClient containerClient;
     private static BlockBlobClient blobClient;
 
-    private static final String STORAGE_CONNECTION_STRING = System.getenv("STORAGE_CONNECTION_STRING");
+    private static final String STORAGE_CONNECTION_STRING = System.getenv("AZURE_STORAGE_CONNECTION_STRING");
 
     private static final String CONTAINER_NAME = "mycontainer"; //This sample needs an existing container
     private static final String BLOB_NAME = "javaSmokeTestBlob-"+ UUID.randomUUID() +".txt";

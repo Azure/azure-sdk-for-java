@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 
 
 public class EventHubs {
-    private static final String EVENT_HUBS_CONNECTION_STRING = System.getenv("EVENT_HUBS_CONNECTION_STRING");
+    private static final String EVENT_HUBS_CONNECTION_STRING = System.getenv("AZURE_EVENT_HUBS_CONNECTION_STRING");
     private static EventHubAsyncClient client;
 
     private static final Logger logger = LoggerFactory.getLogger(EventHubs.class);
