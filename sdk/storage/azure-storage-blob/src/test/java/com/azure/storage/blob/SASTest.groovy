@@ -27,7 +27,7 @@ class SASTest extends APISpec {
      */
     def "Request property"() {
         when:
-        def response = cu.delete()
+        def response = cu.deleteWithResponse(null, null, null)
 
         then:
         response.request() != null
@@ -70,7 +70,7 @@ class SASTest extends APISpec {
         def blobName = generateBlobName()
         def bu = cu.getBlockBlobClient(blobName)
         bu.upload(new ByteArrayInputStream(data), data.length)
-        def snapshotId = bu.createSnapshot().value().getSnapshotId()
+        def snapshotId = bu.createSnapshot().getSnapshotId()
 
         when:
         def snapshotBlob = cu.getBlockBlobClient(blobName, snapshotId)
@@ -86,7 +86,7 @@ class SASTest extends APISpec {
         def blobName = generateBlobName()
         def bu = cu.getBlockBlobClient(blobName)
         bu.upload(new ByteArrayInputStream(data), data.length)
-        def snapshotId = bu.createSnapshot().value().getSnapshotId()
+        def snapshotId = bu.createSnapshot().getSnapshotId()
 
         when:
         def snapshotBlob = cu.getBlockBlobClient(blobName, snapshotId)
@@ -134,7 +134,7 @@ class SASTest extends APISpec {
 
         def os = new ByteArrayOutputStream()
         client.download(os)
-        def properties = client.getProperties().value()
+        def properties = client.getProperties()
 
         then:
         os.toString() == new String(data)
@@ -152,7 +152,7 @@ class SASTest extends APISpec {
         def blobName = generateBlobName()
         def bu = cu.getBlockBlobClient(blobName)
         bu.upload(new ByteArrayInputStream(data), data.length)
-        String snapshotId = bu.createSnapshot().value().getSnapshotId()
+        String snapshotId = bu.createSnapshot().getSnapshotId()
 
         def snapshotBlob = cu.getBlockBlobClient(blobName, snapshotId)
 
@@ -187,7 +187,7 @@ class SASTest extends APISpec {
 
         def os = new ByteArrayOutputStream()
         client.download(os)
-        def properties = client.getProperties().value()
+        def properties = client.getProperties()
 
         then:
         os.toString() == new String(data)
@@ -203,7 +203,7 @@ class SASTest extends APISpec {
             .id("0000")
             .accessPolicy(new AccessPolicy().permission("racwdl")
                 .expiry(OffsetDateTime.now().plusDays(1)))
-        cu.setAccessPolicy(null, Arrays.asList(identifier), null, null)
+        cu.setAccessPolicy(null, Arrays.asList(identifier))
 
         // Check containerSASPermissions
         ContainerSASPermission permissions = new ContainerSASPermission()
@@ -269,7 +269,7 @@ class SASTest extends APISpec {
         String contentLanguage = "language"
         String contentType = "type"
 
-        UserDelegationKey key = getOAuthServiceURL().getUserDelegationKey(null, OffsetDateTime.now().plusDays(1)).value()
+        UserDelegationKey key = getOAuthServiceURL().getUserDelegationKey(null, OffsetDateTime.now().plusDays(1))
 
         when:
         String sas = bu.generateUserDelegationSAS(key, primaryCreds.accountName(), permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
@@ -300,7 +300,7 @@ class SASTest extends APISpec {
         String blobName = generateBlobName()
         BlockBlobClient bu = cu.getBlockBlobClient(blobName)
         bu.upload(new ByteArrayInputStream(data), data.length)
-        BlockBlobClient snapshotBlob = bu.createSnapshot().value().asBlockBlobClient()
+        BlockBlobClient snapshotBlob = bu.createSnapshot().asBlockBlobClient()
         String snapshotId = snapshotBlob.getSnapshotId()
 
         BlobSASPermission permissions = new BlobSASPermission()
@@ -324,7 +324,7 @@ class SASTest extends APISpec {
         String contentLanguage = "language"
         String contentType = "type"
 
-        UserDelegationKey key = getOAuthServiceURL().getUserDelegationKey(startTime, expiryTime).value()
+        UserDelegationKey key = getOAuthServiceURL().getUserDelegationKey(startTime, expiryTime)
 
         when:
 
@@ -363,7 +363,7 @@ class SASTest extends APISpec {
         os.toString() == new String(data)
 
         and:
-        def properties = client2.getProperties().value()
+        def properties = client2.getProperties()
 
         then:
         properties.cacheControl() == "cache"
@@ -383,7 +383,7 @@ class SASTest extends APISpec {
 
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1)
 
-        UserDelegationKey key = getOAuthServiceURL().getUserDelegationKey(null, OffsetDateTime.now().plusDays(1)).value()
+        UserDelegationKey key = getOAuthServiceURL().getUserDelegationKey(null, OffsetDateTime.now().plusDays(1))
 
         when:
 
