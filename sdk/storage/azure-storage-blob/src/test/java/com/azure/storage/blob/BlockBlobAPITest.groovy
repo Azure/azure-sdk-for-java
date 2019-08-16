@@ -34,7 +34,6 @@ import spock.lang.Unroll
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
-import java.util.function.Function
 
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient bc
@@ -949,23 +948,23 @@ class BlockBlobAPITest extends APISpec {
         // We should receive exactly one notification of the completed progress.
         1 * mockReceiver.reportProgress(data.remaining()) */
 
-        /*
-        We should receive at least one notification reporting an intermediary value per block, but possibly more
-        notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
-        will be the total size as above. Finally, we assert that the number reported monotonically increases.
-         */
-        /*(numBlocks - 1.._) * mockReceiver.reportProgress(!data.remaining()) >> { long bytesTransferred ->
-            if (!(bytesTransferred > prevCount)) {
-                throw new IllegalArgumentException("Reported progress should monotonically increase")
-            } else {
-                prevCount = bytesTransferred
-            }
+    /*
+    We should receive at least one notification reporting an intermediary value per block, but possibly more
+    notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
+    will be the total size as above. Finally, we assert that the number reported monotonically increases.
+     */
+    /*(numBlocks - 1.._) * mockReceiver.reportProgress(!data.remaining()) >> { long bytesTransferred ->
+        if (!(bytesTransferred > prevCount)) {
+            throw new IllegalArgumentException("Reported progress should monotonically increase")
+        } else {
+            prevCount = bytesTransferred
         }
+    }
 
-        // We should receive no notifications that report more progress than the size of the file.
-        0 * mockReceiver.reportProgress({ it > data.remaining() })
-        notThrown(IllegalArgumentException)
-    }*/
+    // We should receive no notifications that report more progress than the size of the file.
+    0 * mockReceiver.reportProgress({ it > data.remaining() })
+    notThrown(IllegalArgumentException)
+}*/
 
     def "Buffered upload network error"() {
         setup:
@@ -979,25 +978,19 @@ class BlockBlobAPITest extends APISpec {
         // Mock a response that will always be retried.
         def mockHttpResponse = getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com")))
 
-
         // Mock a policy that will always then check that the data is still the same and return a retryable error.
         def mockPolicy = Mock(HttpPipelinePolicy) {
             process(*_) >> { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
                 return collectBytesInBuffer(context.httpRequest().body(), defaultDataSize)
-                .map(new Function<ByteBuffer, Boolean>() {
-                    @Override
-                    Boolean apply(ByteBuffer b) {
-                        return b == defaultData
+                    .map { b ->
+                    return b == defaultData
+                }
+                .flatMap { b ->
+                    if (b) {
+                        return Mono.just(mockHttpResponse)
                     }
-                }).flatMap(new Function<Boolean, Mono<HttpResponse>>() {
-                    @Override
-                    Mono<HttpResponse> apply(Boolean b) {
-                        if (b) {
-                            return Mono.just(mockHttpResponse)
-                        }
-                        return Mono.error(new IllegalArgumentException())
-                    }
-                })
+                    return Mono.error(new IllegalArgumentException())
+                }
             }
         }
 

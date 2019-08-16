@@ -62,12 +62,13 @@ class APISpec extends Specification {
 
     public static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.getBytes(StandardCharsets.UTF_8))
 
-    static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>() {
+    static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>(){
         @Override
         InputStream get() {
             return new ByteArrayInputStream(defaultText.getBytes(StandardCharsets.UTF_8))
         }
     }
+
 
     static int defaultDataSize = defaultData.remaining()
 
@@ -170,24 +171,15 @@ class APISpec extends Specification {
     }
 
     //TODO: Should this go in core. Are we leaking ByteBufs when we copy to ByteBuffers?
-    static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content, int size) {
-        return content.collect(new Supplier<ByteBuffer>() {
-            @Override
-            ByteBuffer get() {
-                return ByteBuffer.allocate(size)
-            }
-        }, new BiConsumer<ByteBuffer, ByteBuffer>() {
-            @Override
-            void accept(ByteBuffer byteBuffer, ByteBuffer byteBuffer2) {
-                byteBuffer.put(byteBuffer2)
-            }
-        }).map(new Function<ByteBuffer, ByteBuffer>() {
-            @Override
-            ByteBuffer apply(ByteBuffer byteBuffer) {
-                byteBuffer.position(0)
-                return byteBuffer
-            }
-        })
+     static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content, int size) {
+         return content.collect({
+                 return ByteBuffer.allocate(size)},
+             { byteBuffer, byteBuffer2 ->
+                 byteBuffer.put(byteBuffer2)
+         }).map({ byteBuffer ->
+                 byteBuffer.position(0)
+                 return byteBuffer
+         })
     }
 
     static TestMode setupTestMode() {

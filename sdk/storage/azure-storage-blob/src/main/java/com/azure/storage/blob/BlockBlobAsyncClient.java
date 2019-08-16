@@ -280,7 +280,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         });
 
         /*
-         Write to the pool an upload the output.
+         Write to the pool and upload the output.
          */
         return chunkedSource.concatMap(pool::write)
             .concatWith(Flux.defer(pool::flush))
@@ -293,7 +293,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
                     UUID.randomUUID().toString().getBytes(UTF_8));
 
 
-                return this.stageBlock(blockId, Flux.just(buffer), buffer.remaining())
+                return this.stageBlockWithResponse(blockId, Flux.just(buffer), buffer.remaining(),
+                    accessConditionsFinal.leaseAccessConditions())
+                    // We only care about the stageBlock insofar as it was successful, but we need to collect the ids.
                     .map(x -> {
                         pool.returnBuffer(buffer);
                         return blockId;

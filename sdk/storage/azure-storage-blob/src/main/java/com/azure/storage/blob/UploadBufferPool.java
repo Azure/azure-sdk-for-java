@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.common.Utility;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -67,7 +68,7 @@ final class UploadBufferPool {
 
     /*
     Note that the upload method will be calling write sequentially as there is only one worker reading from the source
-    and calling write.
+    and calling write. This means operations like currentBuf.remaining() will not result in race conditions.
      */
     public Flux<ByteBuffer> write(ByteBuffer buf) {
         // Check if there's a buffer holding any data from a previous call to write. If not, get a new one.
