@@ -28,8 +28,7 @@ public enum SASProtocol {
     /**
      * Parses a {@code String} into a {@code SASProtocl} value if possible.
      *
-     * @param str
-     *         The value to try to parse.
+     * @param str The value to try to parse.
      *
      * @return A {@code SASProtocol} value that represents the string if possible.
      * @throws IllegalArgumentException If {@code str} doesn't equal "https" or "https,http"

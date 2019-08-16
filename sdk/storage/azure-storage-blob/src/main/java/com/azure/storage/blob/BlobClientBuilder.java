@@ -14,11 +14,14 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -68,7 +71,7 @@ public final class BlobClientBuilder {
     private static final String ENDPOINT_PROTOCOL = "defaultendpointsprotocol";
     private static final String ENDPOINT_SUFFIX = "endpointsuffix";
 
-    private final List<HttpPipelinePolicy> policies;
+    private final List<HttpPipelinePolicy> additionalPolicies;
 
     private String endpoint;
     private String containerName;
@@ -88,7 +91,7 @@ public final class BlobClientBuilder {
     public BlobClientBuilder() {
         retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
-        policies = new ArrayList<>();
+        additionalPolicies = new ArrayList<>();
     }
 
     private AzureBlobStorageImpl buildImpl() {
@@ -113,10 +116,11 @@ public final class BlobClientBuilder {
         } else if (sasTokenCredential != null) {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         }
-
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RequestRetryPolicy(retryOptions));
 
-        policies.addAll(this.policies);
+        policies.addAll(this.additionalPolicies);
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(logLevel));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -194,7 +198,7 @@ public final class BlobClientBuilder {
     /**
      * Creates a {@link BlockBlobAsyncClient} based on options set in the Builder. BlockBlobAsyncClients are used to
      * perform generic upload operations such as {@link BlockBlobAsyncClient#uploadFromFile(String) upload from file}
-     * and block blob specific operations such as {@link BlockBlobAsyncClient#stageBlock(String, Flux, long) stage block}
+     * and block blob specific operations such as {@link BlockBlobAsyncClient#stageBlockWithResponse(String, Flux, long, LeaseAccessConditions) stage block}
      * and {@link BlockBlobAsyncClient#commitBlockList(List) commit block list}, only use this when the blob is known to
      * be a block blob.
      *
@@ -392,7 +396,7 @@ public final class BlobClientBuilder {
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}
      */
     public BlobClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.policies.add(Objects.requireNonNull(pipelinePolicy));
+        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy));
         return this;
     }
 

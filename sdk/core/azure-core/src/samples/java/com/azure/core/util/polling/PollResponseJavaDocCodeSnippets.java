@@ -11,7 +11,7 @@ import com.azure.core.util.polling.PollResponse.OperationStatus;
 /**
  * Code snipper for PollResponse
  *
- * @param <T>
+ * @param <T> The type of the object stored within the {@link PollResponseJavaDocCodeSnippets} instance
  */
 
 

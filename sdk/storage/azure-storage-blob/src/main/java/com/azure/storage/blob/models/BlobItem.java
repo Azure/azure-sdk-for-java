@@ -52,6 +52,12 @@ public final class BlobItem {
     private Map<String, String> metadata;
 
     /*
+     * The tags property.
+     */
+    @JsonProperty(value = "Tags")
+    private BlobTags tags;
+
+    /*
      * The isPrefix property.
      */
     @JsonProperty(value = "IsPrefix")
@@ -174,6 +180,26 @@ public final class BlobItem {
      */
     public BlobItem metadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the tags property: The tags property.
+     *
+     * @return the tags value.
+     */
+    public BlobTags tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: The tags property.
+     *
+     * @param tags the tags value to set.
+     * @return the BlobItem object itself.
+     */
+    public BlobItem tags(BlobTags tags) {
+        this.tags = tags;
         return this;
     }
 
