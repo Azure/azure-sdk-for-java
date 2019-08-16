@@ -47,3 +47,4 @@ jobs:
           AZURE_STORAGE_CONNECTION_STRING: $(smoke-tests-storage-connection-string)
           AZURE_COSMOS_KEY: $(smoke-tests-cosmos-key)
           AZURE_COSMOS_ENDPOINT: $(smoke-tests-cosmos-endpoint)
+          AZURE_LOG_LEVEL: 2
