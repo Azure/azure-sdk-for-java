@@ -166,6 +166,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
 
     /**
      * Construct a parameters string if the method has arguments.
+     *
      * @param methodDefToken METHOD_DEF token
      * @return a valid parameter string or null if no method arguments exist.
      */
@@ -219,10 +220,11 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
      *    <li>Method names from codesnippet should have started with actual method name where the codesnippet javadoc represents</li>
      *    <li>Parameters should match correctly in terms of ordering and naming.</li>
      *  </ol>
-     * @param customDescription
-     * @param fullPath
-     * @param parameters
-     * @return
+     *
+     * @param customDescription full sample code reference name from annotation codesnippet
+     * @param fullPath a string contains package name, class name, method name and parameters if exist.
+     * @param parameters parameters string which concatenate of argument types
+     * @return false if the given custom description not matched with naming rule. Otherwise, return true.
      */
     private boolean isNamingMatched(String customDescription, String fullPath, String parameters) {
         String[] descriptionSegments = customDescription.split("#");
