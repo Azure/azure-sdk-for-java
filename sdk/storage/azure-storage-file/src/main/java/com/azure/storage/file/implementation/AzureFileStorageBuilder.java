@@ -30,6 +30,22 @@ public final class AzureFileStorageBuilder {
     }
 
     /*
+     * Only update is supported: - Update: Writes the bytes downloaded from the source url into the specified range.
+     */
+    private String fileRangeWriteFromUrl;
+
+    /**
+     * Sets Only update is supported: - Update: Writes the bytes downloaded from the source url into the specified range.
+     *
+     * @param fileRangeWriteFromUrl the fileRangeWriteFromUrl value.
+     * @return the AzureFileStorageBuilder.
+     */
+    public AzureFileStorageBuilder fileRangeWriteFromUrl(String fileRangeWriteFromUrl) {
+        this.fileRangeWriteFromUrl = fileRangeWriteFromUrl;
+        return this;
+    }
+
+    /*
      * The URL of the service account, share, directory or file that is the target of the desired operation.
      */
     private String url;
@@ -68,7 +84,10 @@ public final class AzureFileStorageBuilder {
      */
     public AzureFileStorageImpl build() {
         if (version == null) {
-            this.version = "2018-11-09";
+            this.version = "2019-02-02";
+        }
+        if (fileRangeWriteFromUrl == null) {
+            this.fileRangeWriteFromUrl = "update";
         }
         if (pipeline == null) {
             this.pipeline = RestProxy.createDefaultPipeline();
@@ -76,6 +95,9 @@ public final class AzureFileStorageBuilder {
         AzureFileStorageImpl client = new AzureFileStorageImpl(pipeline);
         if (this.version != null) {
             client.setVersion(this.version);
+        }
+        if (this.fileRangeWriteFromUrl != null) {
+            client.setFileRangeWriteFromUrl(this.fileRangeWriteFromUrl);
         }
         if (this.url != null) {
             client.setUrl(this.url);

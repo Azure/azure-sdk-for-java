@@ -24,7 +24,7 @@ autorest --use=C:/work/autorest.java --use=C:/work/autorest.modeler --version=2.
 
 ### Code generation settings
 ``` yaml
-input-file: ./file-2018-11-09.json
+input-file: ./file-2019-02-02.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file
@@ -75,7 +75,7 @@ directive:
     }
 ```
 
-### FileServiceProperties
+### /?restype=service&comp=properties
 ``` yaml
 directive:
 - from: swagger-document
@@ -123,6 +123,19 @@ directive:
         $.put.parameters.splice(0, 0, { "$ref": path });
         $.get.parameters.splice(0, 0, { "$ref": path });
         $.delete.parameters.splice(0, 0, { "$ref": path });
+    }
+```
+
+### /{shareName}?restype=share&comp=filepermission
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=filepermission"]
+  transform: >
+    let param = $.put.parameters[0];
+    if (!param["$ref"].endsWith("ShareName")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
+        $.put.parameters.splice(0, 0, { "$ref": path });
     }
 ```
 
@@ -209,6 +222,21 @@ directive:
         op.delete.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.delete.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
         delete $["/{shareName}/{directory}?restype=directory"];
+    }
+```
+
+### /{shareName}/{directoryPath}?restype=directory&comp=properties
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    if (!$["/{shareName}/{directoryPath}?restype=directory&comp=properties"]) {
+        const op = $["/{shareName}/{directoryPath}?restype=directory&comp=properties"] = $["/{shareName}/{directory}?restype=directory&comp=properties"];
+        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
+        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
+        op.put.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
+        delete $["/{shareName}/{directory}?restype=directory&comp=properties"];
     }
 ```
 
@@ -339,6 +367,21 @@ directive:
     }
 ```
 
+### /{shareName}/{filePath}?comp=range&fromURL
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    if (!$["/{shareName}/{filePath}?comp=range&fromURL"]) {
+        const op = $["/{shareName}/{filePath}?comp=range&fromURL"] = $["/{shareName}/{directory}/{fileName}?comp=range&fromURL"];
+        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
+        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
+        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
+        delete $["/{shareName}/{directory}/{fileName}?comp=range&fromURL"];
+    }
+```
+
 ### /{shareName}/{filePath}?comp=rangelist
 ``` yaml
 directive:
@@ -442,5 +485,5 @@ directive:
 - from: swagger-document
   where: $.parameters.ApiVersionParameter
   transform: >
-    $.enum = [ "2018-11-09" ];
+    $.enum = [ "2019-02-02" ];
 ```

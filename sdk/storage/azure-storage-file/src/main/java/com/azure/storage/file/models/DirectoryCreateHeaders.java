@@ -61,6 +61,48 @@ public final class DirectoryCreateHeaders {
     private Boolean isServerEncrypted;
 
     /*
+     * Key of the permission set for the directory.
+     */
+    @JsonProperty(value = "x-ms-file-permission-key")
+    private String filePermissonKey;
+
+    /*
+     * Attributes set for the directory.
+     */
+    @JsonProperty(value = "x-ms-file-attributes")
+    private String fileAttributes;
+
+    /*
+     * Creation time for the directory.
+     */
+    @JsonProperty(value = "x-ms-file-creation-time")
+    private DateTimeRfc1123 fileCreationTime;
+
+    /*
+     * Last write time for the directory.
+     */
+    @JsonProperty(value = "x-ms-file-last-write-time")
+    private DateTimeRfc1123 fileLastWriteTime;
+
+    /*
+     * Change time for the directory.
+     */
+    @JsonProperty(value = "x-ms-file-change-time")
+    private DateTimeRfc1123 fileChangeTime;
+
+    /*
+     * The fileId of the directory.
+     */
+    @JsonProperty(value = "x-ms-file-id")
+    private String fileId;
+
+    /*
+     * The parent fileId of the directory.
+     */
+    @JsonProperty(value = "x-ms-file-parent-id")
+    private String fileParentId;
+
+    /*
      * The errorCode property.
      */
     @JsonProperty(value = "x-ms-error-code")
@@ -215,6 +257,169 @@ public final class DirectoryCreateHeaders {
      */
     public DirectoryCreateHeaders isServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
+        return this;
+    }
+
+    /**
+     * Get the filePermissonKey property: Key of the permission set for the
+     * directory.
+     *
+     * @return the filePermissonKey value.
+     */
+    public String filePermissonKey() {
+        return this.filePermissonKey;
+    }
+
+    /**
+     * Set the filePermissonKey property: Key of the permission set for the
+     * directory.
+     *
+     * @param filePermissonKey the filePermissonKey value to set.
+     * @return the DirectoryCreateHeaders object itself.
+     */
+    public DirectoryCreateHeaders filePermissonKey(String filePermissonKey) {
+        this.filePermissonKey = filePermissonKey;
+        return this;
+    }
+
+    /**
+     * Get the fileAttributes property: Attributes set for the directory.
+     *
+     * @return the fileAttributes value.
+     */
+    public String fileAttributes() {
+        return this.fileAttributes;
+    }
+
+    /**
+     * Set the fileAttributes property: Attributes set for the directory.
+     *
+     * @param fileAttributes the fileAttributes value to set.
+     * @return the DirectoryCreateHeaders object itself.
+     */
+    public DirectoryCreateHeaders fileAttributes(String fileAttributes) {
+        this.fileAttributes = fileAttributes;
+        return this;
+    }
+
+    /**
+     * Get the fileCreationTime property: Creation time for the directory.
+     *
+     * @return the fileCreationTime value.
+     */
+    public OffsetDateTime fileCreationTime() {
+        if (this.fileCreationTime == null) {
+            return null;
+        }
+        return this.fileCreationTime.dateTime();
+    }
+
+    /**
+     * Set the fileCreationTime property: Creation time for the directory.
+     *
+     * @param fileCreationTime the fileCreationTime value to set.
+     * @return the DirectoryCreateHeaders object itself.
+     */
+    public DirectoryCreateHeaders fileCreationTime(OffsetDateTime fileCreationTime) {
+        if (fileCreationTime == null) {
+            this.fileCreationTime = null;
+        } else {
+            this.fileCreationTime = new DateTimeRfc1123(fileCreationTime);
+        }
+        return this;
+    }
+
+    /**
+     * Get the fileLastWriteTime property: Last write time for the directory.
+     *
+     * @return the fileLastWriteTime value.
+     */
+    public OffsetDateTime fileLastWriteTime() {
+        if (this.fileLastWriteTime == null) {
+            return null;
+        }
+        return this.fileLastWriteTime.dateTime();
+    }
+
+    /**
+     * Set the fileLastWriteTime property: Last write time for the directory.
+     *
+     * @param fileLastWriteTime the fileLastWriteTime value to set.
+     * @return the DirectoryCreateHeaders object itself.
+     */
+    public DirectoryCreateHeaders fileLastWriteTime(OffsetDateTime fileLastWriteTime) {
+        if (fileLastWriteTime == null) {
+            this.fileLastWriteTime = null;
+        } else {
+            this.fileLastWriteTime = new DateTimeRfc1123(fileLastWriteTime);
+        }
+        return this;
+    }
+
+    /**
+     * Get the fileChangeTime property: Change time for the directory.
+     *
+     * @return the fileChangeTime value.
+     */
+    public OffsetDateTime fileChangeTime() {
+        if (this.fileChangeTime == null) {
+            return null;
+        }
+        return this.fileChangeTime.dateTime();
+    }
+
+    /**
+     * Set the fileChangeTime property: Change time for the directory.
+     *
+     * @param fileChangeTime the fileChangeTime value to set.
+     * @return the DirectoryCreateHeaders object itself.
+     */
+    public DirectoryCreateHeaders fileChangeTime(OffsetDateTime fileChangeTime) {
+        if (fileChangeTime == null) {
+            this.fileChangeTime = null;
+        } else {
+            this.fileChangeTime = new DateTimeRfc1123(fileChangeTime);
+        }
+        return this;
+    }
+
+    /**
+     * Get the fileId property: The fileId of the directory.
+     *
+     * @return the fileId value.
+     */
+    public String fileId() {
+        return this.fileId;
+    }
+
+    /**
+     * Set the fileId property: The fileId of the directory.
+     *
+     * @param fileId the fileId value to set.
+     * @return the DirectoryCreateHeaders object itself.
+     */
+    public DirectoryCreateHeaders fileId(String fileId) {
+        this.fileId = fileId;
+        return this;
+    }
+
+    /**
+     * Get the fileParentId property: The parent fileId of the directory.
+     *
+     * @return the fileParentId value.
+     */
+    public String fileParentId() {
+        return this.fileParentId;
+    }
+
+    /**
+     * Set the fileParentId property: The parent fileId of the directory.
+     *
+     * @param fileParentId the fileParentId value to set.
+     * @return the DirectoryCreateHeaders object itself.
+     */
+    public DirectoryCreateHeaders fileParentId(String fileParentId) {
+        this.fileParentId = fileParentId;
         return this;
     }
 

@@ -868,3 +868,18 @@ directive:
       $.put.parameters.splice(1, 0, { "$ref": path + "Path" });
     }
 ```
+
+### Add the CustomHierarchicalListingDeserializer attribute
+``` yaml
+directive:
+- from: BlobHierarchyListSegment.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "import com.fasterxml.jackson.annotation.JsonProperty;",
+        "import com.fasterxml.jackson.annotation.JsonProperty;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;").
+      replace(
+        "public final class BlobHierarchyListSegment {",
+        "@JsonDeserialize(using = CustomHierarchicalListingDeserializer.class)\npublic final class BlobHierarchyListSegment {");
+```
