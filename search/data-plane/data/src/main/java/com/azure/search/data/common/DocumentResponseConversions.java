@@ -17,17 +17,18 @@ import java.util.Set;
  */
 public class DocumentResponseConversions {
 
-    private static String[] redundantFields = new String[]{"@odata.context"};
-
+    private static final String ODATA_CONTEXT = "@odata.context";
     /**
      * Convert a Linked HashMap object to Map object
-     *
      * @param linkedMapObject object to convert
      * @return Map<String, Object>
      */
     public static Map<String, Object> convertLinkedHashMapToMap(Object linkedMapObject) {
-
-
+        /** This SuppressWarnings is for the checkstyle
+            it is used because api return type can be anything and therefore is an Object
+            in our case we know and we use it only when the return type is LinkedHashMap
+         **/
+        @SuppressWarnings (value = "unchecked")
         LinkedHashMap<String, Object> linkedMap = (LinkedHashMap<String, Object>) linkedMapObject;
 
         Set<Map.Entry<String, Object>> entries = linkedMap.entrySet();
@@ -49,21 +50,19 @@ public class DocumentResponseConversions {
         }
 
         return convertedMap;
-
     }
 
     /**
      * Drop fields that shouldn't be in the returned object
-     *
-     * @param map to remove fields from
-     * @return Map<String, Object>
+     * @param map the map to drop items from
+     * @return the new map
      */
     public static Map<String, Object> dropUnnecessaryFields(Map<String, Object> map) {
-        for (String field: redundantFields) {
-            map.remove(field);
-        }
+        map.remove(ODATA_CONTEXT);
+
         return map;
     }
+
 
     /**
      * Convert Array Object elements

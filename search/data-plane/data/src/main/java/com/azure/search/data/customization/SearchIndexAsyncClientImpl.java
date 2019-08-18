@@ -7,8 +7,10 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.common.DocumentResponseConversions;
+import com.azure.search.data.common.SearchPagedResponse;
 import com.azure.search.data.generated.SearchIndexRestClient;
 import com.azure.search.data.generated.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.data.generated.models.AutocompleteParameters;
@@ -16,13 +18,13 @@ import com.azure.search.data.generated.models.AutocompleteResult;
 import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.generated.models.SearchParameters;
+import com.azure.search.data.generated.models.SearchRequest;
 import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
 import com.azure.search.data.generated.models.SuggestParameters;
 import com.azure.search.data.generated.models.SuggestResult;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
-
 import java.util.List;
 import java.util.Map;
 
@@ -57,6 +59,8 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
      * The Http Client to be used.
      */
     private List<HttpPipelinePolicy> policies;
+
+    private Integer skip;
 
 
     /**
@@ -103,6 +107,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
         this.apiVersion = apiVersion;
         this.httpClient = httpClient;
         this.policies = policies;
+        this.skip = 0;
 
         initialize();
     }
@@ -153,15 +158,30 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
 
     @Override
     public PagedFlux<SearchResult> search() {
-        return null; //return restClient.documents().searchPostAsync();
+        Mono<PagedResponse<SearchResult>> first = restClient.documents()
+            .searchPostWithRestResponseAsync(new SearchRequest())
+            .map(res -> {
+                if (res.value().nextPageParameters() != null) {
+                    skip = res.value().nextPageParameters().skip();
+                }
+                return new SearchPagedResponse(res);
+            });
+        return new PagedFlux<>(() -> first, this::searchPostNextWithRestResponseAsync);
+
     }
 
+
     @Override
-    public PagedFlux<SearchResult> search(
-        String searchText,
-        SearchParameters searchParameters,
-        SearchRequestOptions searchRequestOptions) {
-        return null; //return restClient.documents().searchPostAsync(searchText, searchParameters, searchRequestOptions);
+    public PagedFlux<SearchResult> search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions) {
+        Mono<PagedResponse<SearchResult>> first = restClient.documents()
+            .searchPostWithRestResponseAsync(createSearchRequest(searchText, searchParameters), searchRequestOptions)
+            .map(res -> {
+                if (res.value().nextPageParameters() != null) {
+                    skip = res.value().nextPageParameters().skip();
+                }
+                return new SearchPagedResponse(res);
+            });
+        return new PagedFlux<>(() -> first, this::searchPostNextWithRestResponseAsync);
     }
 
     @Override
@@ -225,5 +245,71 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
             suggesterName,
             searchRequestOptions,
             autocompleteParameters);
+    }
+
+    /**
+     * Search for next page
+     *
+     * @param nextLink next page link
+     * @return Mono<PagedResponse < SearchResult>> next page response with results
+     */
+    private Mono<PagedResponse<SearchResult>> searchPostNextWithRestResponseAsync(String nextLink) {
+        if (nextLink == null || nextLink.isEmpty()) {
+            return Mono.empty();
+        }
+        if (skip == null) {
+            return Mono.empty();
+        }
+        return restClient.documents()
+            .searchPostWithRestResponseAsync(new SearchRequest().skip(skip).includeTotalResultCount(true))
+            .map(res -> {
+                if (res.value().nextPageParameters() == null || res.value().nextPageParameters().skip() == null) {
+                    skip = null;
+                } else {
+                    skip = res.value().nextPageParameters().skip();
+                }
+                return new SearchPagedResponse(res);
+            });
+    }
+
+
+    /**
+     * Create search request from search text and parameters
+     *
+     * @param searchText       search text
+     * @param searchParameters search parameters
+     * @return SearchRequest
+     */
+    private SearchRequest createSearchRequest(String searchText, SearchParameters searchParameters) {
+        SearchRequest searchRequest = new SearchRequest().searchText(searchText);
+        if (searchParameters != null) {
+            searchRequest.
+                searchMode(searchParameters.searchMode()).
+                facets(searchParameters.facets()).
+                filter(searchParameters.filter()).
+                highlightPostTag(searchParameters.highlightPostTag()).
+                highlightPreTag(searchParameters.highlightPreTag()).
+                includeTotalResultCount(searchParameters.includeTotalResultCount()).
+                minimumCoverage(searchParameters.minimumCoverage()).
+                queryType(searchParameters.queryType()).
+                scoringParameters(searchParameters.scoringParameters()).
+                scoringProfile(searchParameters.scoringProfile()).
+                skip(searchParameters.skip()).
+                top(searchParameters.top());
+            if (searchParameters.highlightFields() != null) {
+                searchRequest.highlightFields(String.join(",", searchParameters.highlightFields()));
+            }
+            if (searchParameters.searchFields() != null) {
+                searchRequest.searchFields(String.join(",", searchParameters.searchFields()));
+            }
+            if (searchParameters.orderBy() != null) {
+                searchRequest.orderBy(String.join(",", searchParameters.orderBy()));
+            }
+            if (searchParameters.select() != null) {
+                searchRequest.select(String.join(",", searchParameters.select()));
+            }
+        }
+
+        return searchRequest;
     }
 }

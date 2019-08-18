@@ -1,8 +1,11 @@
 variables:
+    DefaultOptions: '--batch-mode -Dmaven.wagon.http.pool=false --settings eng/settings.xml'
     LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=warn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+    MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
+    MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
 
 jobs:
-- job: 'Package'
+- job: 'Build'
 
   pool:
       vmImage: 'ubuntu-16.04'
@@ -11,12 +14,26 @@ jobs:
       matrix:
           Java 8:
               ArtifactName: 'packages'
+              ProfileFlag: ''
               JavaVersion: '1.8'
+#          Java LTS:
+#              ArtifactName: 'java-lts-packages'
+#              ProfileFlag: '-Djava-lts'
+#              JavaVersion: '1.11'
+
   steps:
+
+# DOESN'T WORK...
+#  - task: CacheBeta@0
+#    inputs:
+#        key: $(Build.SourcesDirectory)/search/data-plane/data/pom.xml
+#        path: $(MAVEN_CACHE_FOLDER)
+#    displayName: Cache Maven local repo
+
   - task: Maven@3
     displayName: 'Install code quality tools'
     inputs:
-        mavenPomFile: './eng/code-quality-reports/pom.xml'
+        mavenPomFile: $(Build.SourcesDirectory)/eng/code-quality-reports/pom.xml
         goals: 'install'
         options: '-Dmaven.test.skip=true'
         publishJUnitResults: false
@@ -28,7 +45,7 @@ jobs:
   - task: Maven@3
     displayName: 'Install Azure Core'
     inputs:
-        mavenPomFile: './sdk/core/pom.xml'
+        mavenPomFile: $(Build.SourcesDirectory)/sdk/core/pom.xml
         goals: 'install'
         options: '-Dmaven.test.skip=true -Dgpg.skip'
         publishJUnitResults: false
@@ -36,14 +53,22 @@ jobs:
         jdkVersionOption: $(JavaVersion)
         jdkArchitectureOption: 'x64'
         mavenVersionOption: 'Default'
-        
-  - task: Maven@3
-    displayName: 'Package'
-    inputs:
-        mavenPomFile: ./search/data-plane/data/pom.xml
-        goals: 'package'
-        mavenOptions: '$(LoggingOptions)'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: $(JavaVersion)
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: false
+
+  -   task: Maven@3
+      displayName: 'Build and Package'
+      inputs:
+          mavenPomFile: $(Build.SourcesDirectory)/search/data-plane/data/pom.xml
+          goals: 'package'
+          options: '$(DefaultOptions) $(ProfileFlag) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -Dinclude-template' # We include template-module so we ensure it always builds in CI
+          mavenOptions: '$(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+
+  -   task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+          mergeTestResults: true
+          testRunTitle: '$(OSName) on Java $(JavaVersion)'
+

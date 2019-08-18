@@ -1,0 +1,16 @@
+{
+    "name": "datetime-data-type-test-index",
+    "fields": [
+        {
+            "name": "Key",
+            "type": "Edm.String",
+            "key": true,
+            "retrievable": true
+        },
+        {
+            "name": "Date",
+            "type": "Edm.DateTimeOffset",
+            "retrievable": true
+        }
+    ]
+}
