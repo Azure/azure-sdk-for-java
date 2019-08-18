@@ -3,14 +3,15 @@
 
 package com.azure.search.data;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.search.data.generated.models.AutocompleteParameters;
 import com.azure.search.data.generated.models.AutocompleteResult;
 import com.azure.search.data.generated.models.DocumentIndexResult;
-import com.azure.search.data.generated.models.DocumentSearchResult;
 import com.azure.search.data.generated.models.DocumentSuggestResult;
 import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.generated.models.SearchParameters;
 import com.azure.search.data.generated.models.SearchRequestOptions;
+import com.azure.search.data.generated.models.SearchResult;
 import com.azure.search.data.generated.models.SuggestParameters;
 
 import java.util.List;
@@ -70,18 +71,18 @@ public interface SearchIndexClient {
     /**
      * Searches for documents in the Azure Search index
      *
-     * @return the document search result.
+     * @return A {@link PagedIterable} of SearchResults
      */
-    DocumentSearchResult search();
+    PagedIterable<SearchResult> search();
 
     /**
      * Searches for documents in the Azure Search index
      * @param searchText Search Test
      * @param searchParameters Search Parameters
      * @param  searchRequestOptions Search Request Options
-     * @return the document search result.
+     * @return A {@link PagedIterable} of SearchResults
      */
-    DocumentSearchResult search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions);
+    PagedIterable<SearchResult> search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions);
 
     /**
      * Retrieves a document from the Azure Search index.
