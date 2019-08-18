@@ -4,6 +4,7 @@ package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Constants;
 import reactor.netty.ByteBufFlux;
 

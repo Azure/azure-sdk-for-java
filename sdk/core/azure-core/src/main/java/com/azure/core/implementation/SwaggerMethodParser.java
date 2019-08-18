@@ -276,7 +276,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         if (substitutions == null) {
             return Collections.emptyList();
         }
-        
+
         final List<EncodedParameter> result = new ArrayList<>();
         final PercentEscaper escaper = UrlEscapers.QUERY_ESCAPER;
         for (Substitution substitution : substitutions) {
@@ -542,9 +542,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                     if (substitutionValue != null && !substitutionValue.isEmpty() && substitution.shouldEncode() && escaper != null) {
                         substitutionValue = escaper.escape(substitutionValue);
                     }
-                    if (substitutionValue != null) {
-                        result = result.replace("{" + substitution.urlParameterName() + "}", substitutionValue);
+                    // if a parameter is null, we treat it as empty string. This is
+                    // assuming no {...} will be allowed otherwise in a path template
+                    if (substitutionValue == null) {
+                        substitutionValue = "";
                     }
+                    result = result.replace("{" + substitution.urlParameterName() + "}", substitutionValue);
                 }
             }
         }

@@ -153,7 +153,6 @@ public final class UrlBuilder {
 
     private UrlBuilder with(String text, UrlTokenizerState startState) {
         final UrlTokenizer tokenizer = new UrlTokenizer(text, startState);
-        boolean parsedFromHost = false;
 
         while (tokenizer.next()) {
             final UrlToken token = tokenizer.current();
@@ -166,8 +165,6 @@ public final class UrlBuilder {
 
                 case HOST:
                     host = emptyToNull(tokenText);
-                    // everything else in this method call comes from host
-                    parsedFromHost = true;
                     break;
 
                 case PORT:
@@ -176,15 +173,8 @@ public final class UrlBuilder {
 
                 case PATH:
                     final String tokenPath = emptyToNull(tokenText);
-                    if (path == null || path.equals("/")) {
+                    if (path == null || path.equals("/") || !tokenPath.equals("/")) {
                         path = tokenPath;
-                    } else if (tokenPath != null && !tokenPath.equals("/")) {
-                        if (parsedFromHost) {
-                            // Prepend as host paths are before other paths
-                            path = String.join("/", tokenPath, path);
-                        } else {
-                            path = String.join("/", path, tokenPath);
-                        }
                     }
                     break;
 
