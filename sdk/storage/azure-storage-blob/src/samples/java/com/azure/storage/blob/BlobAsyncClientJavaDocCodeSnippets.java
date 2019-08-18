@@ -36,81 +36,47 @@ public class BlobAsyncClientJavaDocCodeSnippets {
      */
     public void existsCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.exists
-        client.exists().subscribe(response -> System.out.printf("Exists? %b%n", response.value()));
+        client.exists().subscribe(response -> System.out.printf("Exists? %b%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.exists
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#startCopyFromURL(URL)} and
-     * {@link BlobAsyncClient#startCopyFromURL(URL, Metadata, ModifiedAccessConditions, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#startCopyFromURL(URL)}
      */
-    public void startCopyFromURL() {
+    public void startCopyFromURLCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.startCopyFromURL#URL
         client.startCopyFromURL(url)
-            .subscribe(response -> System.out.printf("Copy identifier: %s%n", response.value()));
+            .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.startCopyFromURL#URL
-
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.startCopyFromURL#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
-            .ifUnmodifiedSince(OffsetDateTime.now().minusDays(7));
-        BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId));
-
-        client.startCopyFromURL(url, metadata, modifiedAccessConditions, blobAccessConditions)
-            .subscribe(response -> System.out.printf("Copy identifier: %s%n", response.value()));
-        // END: com.azure.storage.blob.BlobAsyncClient.startCopyFromURL#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#abortCopyFromURL(String)} and
-     * {@link BlobAsyncClient#abortCopyFromURL(String, LeaseAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#abortCopyFromURL(String)}
      */
-    public void abortCopyFromURL() {
+    public void abortCopyFromURLCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURL#String
-        client.abortCopyFromURL(copyId)
-            .subscribe(response -> System.out.printf("Aborted copy completed with status %d%n", response.statusCode()));
+        client.abortCopyFromURL(copyId).doOnSuccess(response -> System.out.println("Aborted copy from URL"));
         // END: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURL#String
-
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURL#String-LeaseAccessConditions
-        LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().leaseId(leaseId);
-        client.abortCopyFromURL(copyId, leaseAccessConditions)
-            .subscribe(response -> System.out.printf("Aborted copy completed with status %d%n", response.statusCode()));
-        // END: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURL#String-LeaseAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#copyFromURL(URL)} and
-     * {@link BlobAsyncClient#copyFromURL(URL, Metadata, ModifiedAccessConditions, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#copyFromURL(URL)}
      */
-    public void copyFromURL() {
+    public void copyFromURLCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURL#URL
-        client.copyFromURL(url).subscribe(response -> System.out.printf("Copy identifier: %s%n", response.value()));
+        client.copyFromURL(url).subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.copyFromURL#URL
-
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURL#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
-            .ifUnmodifiedSince(OffsetDateTime.now().minusDays(7));
-        BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId));
-
-        client.copyFromURL(url, metadata, modifiedAccessConditions, blobAccessConditions)
-            .subscribe(response -> System.out.printf("Copy identifier: %s%n", response.value()));
-        // END: com.azure.storage.blob.BlobAsyncClient.copyFromURL#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#download()} and
-     * {@link BlobAsyncClient#download(BlobRange, ReliableDownloadOptions, BlobAccessConditions, boolean)}
-     *
+     * Code snippets for {@link BlobAsyncClient#download()}
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public void download() {
+    public void downloadCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.download
         client.download().subscribe(response -> {
             ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
-            response.value().subscribe(piece -> {
+            response.subscribe(piece -> {
                 try {
                     downloadData.write(piece.array());
                 } catch (IOException ex) {
@@ -124,7 +90,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
-        client.download(range, options, null, false).subscribe(response -> {
+        client.downloadWithResponse(range, options, null, false).subscribe(response -> {
             ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
             response.value().subscribe(piece -> {
                 try {
@@ -141,7 +107,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
      * Code snippets for {@link BlobAsyncClient#downloadToFile(String)} and
      * {@link BlobAsyncClient#downloadToFile(String, BlobRange, Integer, ReliableDownloadOptions, BlobAccessConditions, boolean)}
      */
-    public void downloadToFile() {
+    public void downloadToFileCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadToFile#String
         client.downloadToFile(file).subscribe(response -> System.out.println("Completed download to file"));
         // END: com.azure.storage.blob.BlobAsyncClient.downloadToFile#String
@@ -156,237 +122,390 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#delete()} and
-     * {@link BlobAsyncClient#delete(DeleteSnapshotsOptionType, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#delete()}
      */
-    public void delete() {
+    public void deleteCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.delete
-        client.delete()
-            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.statusCode()));
+        client.delete().doOnSuccess(response -> System.out.println("Completed delete"));
         // END: com.azure.storage.blob.BlobAsyncClient.delete
-
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.delete#DeleteSnapshotsOptionType-BlobAccessConditions
-        client.delete(DeleteSnapshotsOptionType.INCLUDE, null)
-            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.statusCode()));
-        // END: com.azure.storage.blob.BlobAsyncClient.delete#DeleteSnapshotsOptionType-BlobAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#getProperties()} and
-     * {@link BlobAsyncClient#getProperties(BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#getProperties()}
      */
-    public void getProperties() {
+    public void getPropertiesCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.getProperties
         client.getProperties().subscribe(response ->
-            System.out.printf("Type: %s, Size: %d%n", response.value().blobType(), response.value().blobSize()));
+            System.out.printf("Type: %s, Size: %d%n", response.blobType(), response.blobSize()));
         // END: com.azure.storage.blob.BlobAsyncClient.getProperties
-
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.getProperties#BlobAccessConditions
-        BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId));
-
-        client.getProperties(accessConditions).subscribe(response ->
-            System.out.printf("Type: %s, Size: %d%n", response.value().blobType(), response.value().blobSize()));
-        // END: com.azure.storage.blob.BlobAsyncClient.getProperties#BlobAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#setHTTPHeaders(BlobHTTPHeaders)} and
-     * {@link BlobAsyncClient#setHTTPHeaders(BlobHTTPHeaders, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#setHTTPHeaders(BlobHTTPHeaders)}
      */
-    public void setHTTPHeaders() {
+    public void setHTTPHeadersCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.setHTTPHeaders#BlobHTTPHeaders
         client.setHTTPHeaders(new BlobHTTPHeaders()
             .blobContentLanguage("en-US")
-            .blobContentType("binary")).subscribe(response ->
-            System.out.printf("Set HTTP headers completed with status %d%n", response.statusCode()));
+            .blobContentType("binary"));
         // END: com.azure.storage.blob.BlobAsyncClient.setHTTPHeaders#BlobHTTPHeaders
-
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.setHTTPHeaders#BlobHTTPHeaders-BlobAccessConditions
-        BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId));
-
-        client.setHTTPHeaders(new BlobHTTPHeaders()
-            .blobContentLanguage("en-US")
-            .blobContentType("binary"), accessConditions).subscribe(response ->
-            System.out.printf("Set HTTP headers completed with status %d%n", response.statusCode()));
-        // END: com.azure.storage.blob.BlobAsyncClient.setHTTPHeaders#BlobHTTPHeaders-BlobAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#setMetadata(Metadata)} and
-     * {@link BlobAsyncClient#setMetadata(Metadata, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#setMetadata(Metadata)}
      */
-    public void setMetadata() {
+    public void setMetadataCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.setMetadata#Metadata
-        client.setMetadata(new Metadata(Collections.singletonMap("metadata", "value")))
-            .subscribe(response -> System.out.printf("Set metadata completed with status %d%n", response.statusCode()));
+        client.setMetadata(new Metadata(Collections.singletonMap("metadata", "value")));
         // END: com.azure.storage.blob.BlobAsyncClient.setMetadata#Metadata
-
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.setMetadata#Metadata-BlobAccessConditions
-        BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId));
-
-        client.setMetadata(new Metadata(Collections.singletonMap("metadata", "value")), accessConditions)
-            .subscribe(response -> System.out.printf("Set metadata completed with status %d%n", response.statusCode()));
-        // END: com.azure.storage.blob.BlobAsyncClient.setMetadata#Metadata-BlobAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#createSnapshot()} and
-     * {@link BlobAsyncClient#createSnapshot(Metadata, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#createSnapshot()}
      */
-    public void createSnapshot() {
+    public void createSnapshotCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.createSnapshot
         client.createSnapshot()
             .subscribe(response -> System.out.printf("Identifier for the snapshot is %s%n",
-                response.value().getSnapshotId()));
+                response.getSnapshotId()));
         // END: com.azure.storage.blob.BlobAsyncClient.createSnapshot
-
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.createSnapshot#Metadata-BlobAccessConditions
-        Metadata snapshotMetadata = new Metadata(Collections.singletonMap("metadata", "value"));
-        BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId));
-
-        client.createSnapshot(snapshotMetadata, accessConditions)
-            .subscribe(response -> System.out.printf("Identifier for the snapshot is %s%n",
-                response.value().getSnapshotId()));
-        // END: com.azure.storage.blob.BlobAsyncClient.createSnapshot#Metadata-BlobAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#setTier(AccessTier)} and
-     * {@link BlobAsyncClient#setTier(AccessTier, LeaseAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#setTier(AccessTier)}
      */
-    public void setTier() {
+    public void setTierCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.setTier#AccessTier
-        client.setTier(AccessTier.HOT)
-            .subscribe(response -> System.out.printf("Set tier completed with status code %d%n", response.statusCode()));
+        client.setTier(AccessTier.HOT);
         // END: com.azure.storage.blob.BlobAsyncClient.setTier#AccessTier
-
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.setTier#AccessTier-LeaseAccessConditions
-        LeaseAccessConditions accessConditions = new LeaseAccessConditions().leaseId(leaseId);
-
-        client.setTier(AccessTier.HOT, accessConditions)
-            .subscribe(response -> System.out.printf("Set tier completed with status code %d%n", response.statusCode()));
-        // END: com.azure.storage.blob.BlobAsyncClient.setTier#AccessTier-LeaseAccessConditions
     }
 
     /**
      * Code snippet for {@link BlobAsyncClient#undelete()}
      */
-    public void undelete() {
+    public void undeleteCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.undelete
-        client.undelete()
-            .subscribe(response -> System.out.printf("Undelete completed with status %d%n", response.statusCode()));
+        client.undelete().doOnSuccess(response -> System.out.println("Completed undelete"));
         // END: com.azure.storage.blob.BlobAsyncClient.undelete
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#acquireLease(String, int)} and
-     * {@link BlobAsyncClient#acquireLease(String, int, ModifiedAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#acquireLease(String, int)}
      */
-    public void acquireLease() {
+    public void acquireLeaseCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.acquireLease#String-int
         client.acquireLease("proposedId", 60)
-            .subscribe(response -> System.out.printf("Lease ID is %s%n", response.value()));
+            .subscribe(response -> System.out.printf("Lease ID is %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.acquireLease#String-int
-
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.acquireLease#String-int-ModifiedAccessConditions
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
-            .ifModifiedSince(OffsetDateTime.now().minusDays(3));
-
-        client.acquireLease("proposedId", 60, modifiedAccessConditions)
-            .subscribe(response -> System.out.printf("Lease ID is %s%n", response.value()));
-        // END: com.azure.storage.blob.BlobAsyncClient.acquireLease#String-int-ModifiedAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#renewLease(String)} and
-     * {@link BlobAsyncClient#renewLease(String, ModifiedAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#renewLease(String)}
      */
-    public void renewLease() {
+    public void renewLeaseCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.renewLease#String
         client.renewLease(leaseId)
-            .subscribe(response -> System.out.printf("Renewed lease ID is %s%n", response.value()));
+            .subscribe(response -> System.out.printf("Renewed lease ID is %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.renewLease#String
-
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.renewLease#String-ModifiedAccessConditions
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
-            .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
-
-        client.renewLease(leaseId, modifiedAccessConditions)
-            .subscribe(response -> System.out.printf("Renewed lease ID is %s%n", response.value()));
-        // END: com.azure.storage.blob.BlobAsyncClient.renewLease#String-ModifiedAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#releaseLease(String)} and
-     * {@link BlobAsyncClient#releaseLease(String, ModifiedAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#releaseLease(String)}
      */
-    public void releaseLease() {
+    public void releaseLeaseCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.releaseLease#String
-        client.releaseLease(leaseId)
-            .subscribe(response -> System.out.printf("Release lease completed with status %d%n", response.statusCode()));
+        client.releaseLease(leaseId).doOnSuccess(response -> System.out.println("Completed release lease"));
         // END: com.azure.storage.blob.BlobAsyncClient.releaseLease#String
-
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.releaseLease#String-ModifiedAccessConditions
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
-            .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
-
-        client.releaseLease(leaseId, modifiedAccessConditions)
-            .subscribe(response -> System.out.printf("Release lease completed with status %d%n", response.statusCode()));
-        // END: com.azure.storage.blob.BlobAsyncClient.releaseLease#String-ModifiedAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#breakLease()} and
-     * {@link BlobAsyncClient#breakLease(Integer, ModifiedAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#breakLease()}
      */
-    public void breakLease() {
+    public void breakLeaseCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.breakLease
         client.breakLease()
             .subscribe(response ->
-                System.out.printf("The broken lease has %d seconds remaining on the lease", response.value()));
+                System.out.printf("The broken lease has %d seconds remaining on the lease", response));
         // END: com.azure.storage.blob.BlobAsyncClient.breakLease
-
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.breakLease#Integer-ModifiedAccessConditions
-        Integer retainLeaseInSeconds = 5;
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
-            .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
-
-        client.breakLease(retainLeaseInSeconds, modifiedAccessConditions)
-            .subscribe(response ->
-                System.out.printf("The broken lease has %d seconds remaining on the lease", response.value()));
-        // END: com.azure.storage.blob.BlobAsyncClient.breakLease#Integer-ModifiedAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#changeLease(String, String)} and
-     * {@link BlobAsyncClient#changeLease(String, String, ModifiedAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#changeLease(String, String)}
      */
-    public void changeLease() {
+    public void changeLeaseCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.changeLease#String-String
         client.changeLease(leaseId, "proposedId")
-            .subscribe(response -> System.out.printf("Changed lease ID is %s%n", response.value()));
+            .subscribe(response -> System.out.printf("Changed lease ID is %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.changeLease#String-String
-
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.changeLease#String-String-ModifiedAccessConditions
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
-            .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
-
-        client.changeLease(leaseId, "proposedId", modifiedAccessConditions)
-            .subscribe(response -> System.out.printf("Changed lease ID is %s%n", response.value()));
-        // END: com.azure.storage.blob.BlobAsyncClient.changeLease#String-String-ModifiedAccessConditions
     }
 
     /**
      * Code snippet for {@link BlobAsyncClient#getAccountInfo()}
      */
-    public void getAccountInfo() {
+    public void getAccountInfoCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.getAccountInfo
         client.getAccountInfo().subscribe(response -> System.out.printf("Account Kind: %s, SKU: %s%n",
-            response.value().accountKind(), response.value().skuName()));
+            response.accountKind(), response.skuName()));
         // END: com.azure.storage.blob.BlobAsyncClient.getAccountInfo
+    }
+
+    /**
+     * Code snippet for {@link BlobAsyncClient#existsWithResponse()}
+     */
+    public void existsWithResponseCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.existsWithResponse
+        client.existsWithResponse().subscribe(response -> System.out.printf("Exists? %b%n", response.value()));
+        // END: com.azure.storage.blob.BlobAsyncClient.existsWithResponse
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClient#startCopyFromURLWithResponse(URL, Metadata, ModifiedAccessConditions, BlobAccessConditions)}
+     */
+    public void startCopyFromURLWithResponseCodeSnippets() {
+
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions
+        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
+            .ifUnmodifiedSince(OffsetDateTime.now().minusDays(7));
+        BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
+            .leaseAccessConditions(
+                new LeaseAccessConditions().leaseId(leaseId));
+
+        client.startCopyFromURLWithResponse(url, metadata, modifiedAccessConditions, blobAccessConditions)
+            .subscribe(response -> System.out.printf("Copy identifier: %s%n", response.value()));
+        // END: com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClient#abortCopyFromURLWithResponse(String, LeaseAccessConditions)}
+     */
+    public void abortCopyFromURLWithResponseCodeSnippets() {
+
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURLWithResponse#String-LeaseAccessConditions
+        LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().leaseId(leaseId);
+        client.abortCopyFromURLWithResponse(copyId, leaseAccessConditions)
+            .subscribe(response -> System.out.printf("Aborted copy completed with status %d%n", response.statusCode()));
+        // END: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURLWithResponse#String-LeaseAccessConditions
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClient#copyFromURLWithResponse(URL, Metadata, ModifiedAccessConditions, BlobAccessConditions)}
+     */
+    public void copyFromURLWithResponseCodeSnippets() {
+
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions
+        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
+            .ifUnmodifiedSince(OffsetDateTime.now().minusDays(7));
+        BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
+            .leaseAccessConditions(
+                new LeaseAccessConditions().leaseId(leaseId));
+
+        client.copyFromURLWithResponse(url, metadata, modifiedAccessConditions, blobAccessConditions)
+            .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
+        // END: com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClient#downloadWithResponse(BlobRange, ReliableDownloadOptions, BlobAccessConditions, boolean)}
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public void downloadWithResponseCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadWithResponse#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
+        BlobRange range = new BlobRange(1024, (long) 2048);
+        ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
+
+        client.downloadWithResponse(range, options, null, false).subscribe(response -> {
+            ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
+            response.value().subscribe(piece -> {
+                try {
+                    downloadData.write(piece.array());
+                } catch (IOException ex) {
+                    throw new UncheckedIOException(ex);
+                }
+            });
+        });
+        // END: com.azure.storage.blob.BlobAsyncClient.downloadWithResponse#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClient#deleteWithResponse(DeleteSnapshotsOptionType, BlobAccessConditions)}
+     */
+    public void deleteWithResponseCodeSnippets() {
+
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.deleteWithResponse#DeleteSnapshotsOptionType-BlobAccessConditions
+        client.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, null)
+            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.statusCode()));
+        // END: com.azure.storage.blob.BlobAsyncClient.deleteWithResponse#DeleteSnapshotsOptionType-BlobAccessConditions
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClient#getPropertiesWithResponse(BlobAccessConditions)}
+     */
+    public void getPropertiesWithResponseCodeSnippets() {
+
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.getPropertiesWithResponse#BlobAccessConditions
+        BlobAccessConditions accessConditions = new BlobAccessConditions()
+            .leaseAccessConditions(
+                new LeaseAccessConditions().leaseId(leaseId));
+
+        client.getPropertiesWithResponse(accessConditions).subscribe(
+            response -> System.out.printf("Type: %s, Size: %d%n", response.value().blobType(),
+                response.value().blobSize()));
+        // END: com.azure.storage.blob.BlobAsyncClient.getPropertiesWithResponse#BlobAccessConditions
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClient#setHTTPHeadersWithResponse(BlobHTTPHeaders, BlobAccessConditions)}
+     */
+    public void setHTTPHeadersWithResponseCodeSnippets() {
+
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.setHTTPHeadersWithResponse#BlobHTTPHeaders-BlobAccessConditions
+        BlobAccessConditions accessConditions = new BlobAccessConditions()
+            .leaseAccessConditions(
+                new LeaseAccessConditions().leaseId(leaseId));
+
+        client.setHTTPHeadersWithResponse(new BlobHTTPHeaders()
+            .blobContentLanguage("en-US")
+            .blobContentType("binary"), accessConditions).subscribe(
+                response ->
+                System.out.printf("Set HTTP headers completed with status %d%n",
+                    response.statusCode()));
+        // END: com.azure.storage.blob.BlobAsyncClient.setHTTPHeadersWithResponse#BlobHTTPHeaders-BlobAccessConditions
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClient#setMetadataWithResponse(Metadata, BlobAccessConditions)}
+     */
+    public void setMetadataWithResponseCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.setMetadataWithResponse#Metadata-BlobAccessConditions
+        BlobAccessConditions accessConditions = new BlobAccessConditions()
+            .leaseAccessConditions(
+                new LeaseAccessConditions().leaseId(leaseId));
+
+        client.setMetadataWithResponse(new Metadata(Collections.singletonMap("metadata", "value")), accessConditions)
+            .subscribe(response -> System.out.printf("Set metadata completed with status %d%n", response.statusCode()));
+        // END: com.azure.storage.blob.BlobAsyncClient.setMetadataWithResponse#Metadata-BlobAccessConditions
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClient#createSnapshotWithResponse(Metadata, BlobAccessConditions)}
+     */
+    public void createSnapshotWithResponseCodeSnippets() {
+
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.createSnapshotWithResponse#Metadata-BlobAccessConditions
+        Metadata snapshotMetadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        BlobAccessConditions accessConditions = new BlobAccessConditions().leaseAccessConditions(
+            new LeaseAccessConditions().leaseId(leaseId));
+
+        client.createSnapshotWithResponse(snapshotMetadata, accessConditions)
+            .subscribe(response -> System.out.printf("Identifier for the snapshot is %s%n", response.value()));
+        // END: com.azure.storage.blob.BlobAsyncClient.createSnapshotWithResponse#Metadata-BlobAccessConditions
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClient#setTierWithResponse(AccessTier, LeaseAccessConditions)}
+     */
+    public void setTierWithResponseCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.setTierWithResponse#AccessTier-LeaseAccessConditions
+        LeaseAccessConditions accessConditions = new LeaseAccessConditions().leaseId(leaseId);
+
+        client.setTierWithResponse(AccessTier.HOT, accessConditions)
+            .subscribe(response -> System.out.printf("Set tier completed with status code %d%n",
+                response.statusCode()));
+        // END: com.azure.storage.blob.BlobAsyncClient.setTierWithResponse#AccessTier-LeaseAccessConditions
+    }
+
+    /**
+     * Code snippet for {@link BlobAsyncClient#undeleteWithResponse()}
+     */
+    public void undeleteWithResponseCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.undeleteWithResponse
+        client.undeleteWithResponse()
+            .subscribe(response -> System.out.printf("Undelete completed with status %d%n", response.statusCode()));
+        // END: com.azure.storage.blob.BlobAsyncClient.undeleteWithResponse
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClient#acquireLeaseWithResponse(String, int, ModifiedAccessConditions)}
+     */
+    public void acquireLeaseWithResponseCodeSnippets() {
+
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.acquireLeaseWithResponse#String-int-ModifiedAccessConditions
+        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
+            .ifModifiedSince(OffsetDateTime.now().minusDays(3));
+
+        client.acquireLeaseWithResponse("proposedId", 60, modifiedAccessConditions)
+            .subscribe(response -> System.out.printf("Lease ID is %s%n", response.value()));
+        // END: com.azure.storage.blob.BlobAsyncClient.acquireLeaseWithResponse#String-int-ModifiedAccessConditions
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClient#renewLeaseWithResponse(String, ModifiedAccessConditions)}
+     */
+    public void renewLeaseWithResponseCodeSnippets() {
+
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.renewLeaseWithResponse#String-ModifiedAccessConditions
+        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
+            .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        client.renewLeaseWithResponse(leaseId, modifiedAccessConditions)
+            .subscribe(response -> System.out.printf("Renewed lease ID is %s%n", response.value()));
+        // END: com.azure.storage.blob.BlobAsyncClient.renewLeaseWithResponse#String-ModifiedAccessConditions
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClient#releaseLeaseWithResponse(String, ModifiedAccessConditions)}
+     */
+    public void releaseLeaseWithResponseCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.releaseLeaseWithResponse#String-ModifiedAccessConditions
+        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
+            .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        client.releaseLeaseWithResponse(leaseId, modifiedAccessConditions)
+            .subscribe(response -> System.out.printf("Release lease completed with status %d%n",
+                response.statusCode()));
+        // END: com.azure.storage.blob.BlobAsyncClient.releaseLeaseWithResponse#String-ModifiedAccessConditions
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClient#breakLeaseWithResponse(Integer, ModifiedAccessConditions)}
+     */
+    public void breakLeaseWithResponseCodeSnippets() {
+
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.breakLeaseWithResponse#Integer-ModifiedAccessConditions
+        Integer retainLeaseInSeconds = 5;
+        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
+            .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        client.breakLeaseWithResponse(retainLeaseInSeconds, modifiedAccessConditions)
+            .subscribe(response ->
+                System.out.printf("The broken lease has %d seconds remaining on the lease",
+                    response.value()));
+        // END: com.azure.storage.blob.BlobAsyncClient.breakLeaseWithResponse#Integer-ModifiedAccessConditions
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClient#changeLeaseWithResponse(String, String, ModifiedAccessConditions)}
+     */
+    public void changeLeaseWithResponseCodeSnippets() {
+
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.changeLeaseWithResponse#String-String-ModifiedAccessConditions
+        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
+            .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        client.changeLeaseWithResponse(leaseId, "proposedId", modifiedAccessConditions)
+            .subscribe(response -> System.out.printf("Changed lease ID is %s%n", response.value()));
+        // END: com.azure.storage.blob.BlobAsyncClient.changeLeaseWithResponse#String-String-ModifiedAccessConditions
+    }
+
+    /**
+     * Code snippet for {@link BlobAsyncClient#getAccountInfoWithResponse()}
+     */
+    public void getAccountInfoWithResponseCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.getAccountInfoWithResponse
+        client.getAccountInfoWithResponse().subscribe(response -> System.out.printf("Account Kind: %s, SKU: %s%n",
+            response.value().accountKind(), response.value().skuName()));
+        // END: com.azure.storage.blob.BlobAsyncClient.getAccountInfoWithResponse
     }
 }
