@@ -114,6 +114,11 @@
       <scope>system</scope>
       <systemPath>${basedir}/lib/service-1.0-SNAPSHOT.jar</systemPath>
     </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
 </project>
