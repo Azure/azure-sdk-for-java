@@ -102,6 +102,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceInterfaceCheck" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.JavaDocFormatting" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
 
   <!-- Don't apply custom Checkstyle rules to files under implementation package -->
@@ -110,6 +111,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientInstantiationCheck" files=".*[/\\]implementation[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*[/\\]implementation[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceInterfaceCheck" files=".*[/\\]implementation[/\\].*\.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.JavaDocFormatting" files=".*[/\\]implementation[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files=".*[/\\]implementation[/\\].*\.java"/>
 
   <!-- Don't apply custom Checkstyle rules to files under samples package -->

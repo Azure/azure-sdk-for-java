@@ -15,6 +15,7 @@ import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
+import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
@@ -75,6 +76,7 @@ public final class BlockBlobClient extends BlobClient {
      * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service,
      * it will be overwritten.
      * @return A {@link BlobOutputStream} object used to write data to the blob.
+     *
      * @throws StorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream() {
@@ -84,9 +86,11 @@ public final class BlockBlobClient extends BlobClient {
     /**
      * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service,
      * it will be overwritten.
+     *
      * @param accessConditions A {@link BlobAccessConditions} object that represents the access conditions for the blob.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
+     *
      * @throws StorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(BlobAccessConditions accessConditions) {
@@ -100,9 +104,10 @@ public final class BlockBlobClient extends BlobClient {
      * perform a partial update of a block blob's, use PutBlock and PutBlockList.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
-     * @param data   The data to write to the blob.
+     *
+     * @param data The data to write to the blob.
      * @param length The exact length of the data. It is important that this value match precisely the length of the data
-     *               provided in the {@link InputStream}.
+     *         provided in the {@link InputStream}.
      *
      * @return The information of the uploaded block blob.
      * @throws IOException If an I/O error occurs
@@ -118,14 +123,15 @@ public final class BlockBlobClient extends BlobClient {
      * perform a partial update of a block blob's, use PutBlock and PutBlockList.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
-     * @param data             The data to write to the blob.
-     * @param length           The exact length of the data. It is important that this value match precisely the length of the data
-     *                         provided in the {@link InputStream}.
-     * @param headers          {@link BlobHTTPHeaders}
-     * @param metadata         {@link Metadata}
+     *
+     * @param data The data to write to the blob.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the data
+     *         provided in the {@link InputStream}.
+     * @param headers {@link BlobHTTPHeaders}
+     * @param metadata {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
-     * @param timeout          An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context          Additional context that is passed through the Http pipeline during the service call.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The information of the uploaded block blob.
      * @throws IOException If an I/O error occurs
@@ -166,11 +172,11 @@ public final class BlockBlobClient extends BlobClient {
 
     /**
      * Creates a new block blob, or updates the content of an existing block blob.
-     * @param filePath         Path of the file to upload
-     * @param headers          {@link BlobHTTPHeaders}
-     * @param metadata         {@link Metadata}
+     * @param filePath Path of the file to upload
+     * @param headers {@link BlobHTTPHeaders}
+     * @param metadata {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
-     * @param timeout          An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
      * @throws IOException If an I/O error occurs
      */
@@ -189,12 +195,12 @@ public final class BlockBlobClient extends BlobClient {
      * Uploads the specified block to the block blob's "staging area" to be later committed by a call to
      * commitBlockList. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
-     * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
-     *                      blob must be the same length.
-     * @param data          The data to write to the block.
-     * @param length        The exact length of the data. It is important that this value match precisely the length of the data
-     *                      provided in the {@link InputStream}.
      *
+     * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
+     *         blob must be the same length.
+     * @param data The data to write to the block.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the data
+     *         provided in the {@link InputStream}.
      */
     public void stageBlock(String base64BlockID, InputStream data, long length) {
         stageBlockWithResponse(base64BlockID, data, length, null, null, Context.NONE);
@@ -204,15 +210,16 @@ public final class BlockBlobClient extends BlobClient {
      * Uploads the specified block to the block blob's "staging area" to be later committed by a call to
      * commitBlockList. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
-     * @param base64BlockID         A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
-     *                              blob must be the same length.
-     * @param data                  The data to write to the block.
-     * @param length                The exact length of the data. It is important that this value match precisely the length of the data
-     *                              provided in the {@link InputStream}.
+     *
+     * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
+     *         blob must be the same length.
+     * @param data The data to write to the block.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the data
+     *         provided in the {@link InputStream}.
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does not match the active
-     *                              lease on the blob.
-     * @param timeout               An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context               Additional context that is passed through the Http pipeline during the service call.
+     *         lease on the blob.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A response containing status code and HTTP headers
      */
@@ -239,14 +246,14 @@ public final class BlockBlobClient extends BlobClient {
     /**
      * Creates a new block to be committed as part of a blob where the contents are read from a URL. For more
      * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url">Azure Docs</a>.
-     * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
-     *                      blob must be the same length.
-     * @param sourceURL     The url to the blob that will be the source of the copy.  A source blob in the same storage account can be
-     *                      authenticated via Shared Key. However, if the source is a blob in another account, the source blob must
-     *                      either be public or must be authenticated via a shared access signature. If the source blob is public, no
-     *                      authentication is required to perform the operation.
-     * @param sourceRange   {@link BlobRange}
      *
+     * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
+     *         blob must be the same length.
+     * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage account can be
+     *         authenticated via Shared Key. However, if the source is a blob in another account, the source blob must
+     *         either be public or must be authenticated via a shared access signature. If the source blob is public, no
+     *         authentication is required to perform the operation.
+     * @param sourceRange {@link BlobRange}
      */
     public void stageBlockFromURL(String base64BlockID, URL sourceURL, BlobRange sourceRange) {
         stageBlockFromURLWithResponse(base64BlockID, sourceURL, sourceRange, null, null, null, null, Context.NONE);
@@ -255,27 +262,28 @@ public final class BlockBlobClient extends BlobClient {
     /**
      * Creates a new block to be committed as part of a blob where the contents are read from a URL. For more
      * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url">Azure Docs</a>.
-     * @param base64BlockID                  A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
-     *                                       blob must be the same length.
-     * @param sourceURL                      The url to the blob that will be the source of the copy.  A source blob in the same storage account can
-     *                                       be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
-     *                                       must either be public or must be authenticated via a shared access signature. If the source blob is
-     *                                       public, no authentication is required to perform the operation.
-     * @param sourceRange                    {@link BlobRange}
-     * @param sourceContentMD5               An MD5 hash of the block content from the source blob. If specified, the service will calculate the MD5
-     *                                       of the received data and fail the request if it does not match the provided MD5.
-     * @param leaseAccessConditions          By setting lease access conditions, requests will fail if the provided lease does not match the active
-     *                                       lease on the blob.
+     *
+     * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
+     *         blob must be the same length.
+     * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage account can
+     *         be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
+     *         must either be public or must be authenticated via a shared access signature. If the source blob is
+     *         public, no authentication is required to perform the operation.
+     * @param sourceRange {@link BlobRange}
+     * @param sourceContentMD5 An MD5 hash of the block content from the source blob. If specified, the service will calculate the MD5
+     *         of the received data and fail the request if it does not match the provided MD5.
+     * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does not match the active
+     *         lease on the blob.
      * @param sourceModifiedAccessConditions {@link SourceModifiedAccessConditions}
-     * @param timeout                        An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context                        Additional context that is passed through the Http pipeline during the service call.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A response containing status code and HTTP headers
      */
     public VoidResponse stageBlockFromURLWithResponse(String base64BlockID, URL sourceURL, BlobRange sourceRange,
-        byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions, 
+        byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
         SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = blockBlobAsyncClient.stageBlockFromURLWithResponse(base64BlockID, sourceURL, 
+        Mono<VoidResponse> response = blockBlobAsyncClient.stageBlockFromURLWithResponse(base64BlockID, sourceURL,
             sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -284,6 +292,7 @@ public final class BlockBlobClient extends BlobClient {
      * Returns the list of blocks that have been uploaded as part of a block blob using the specified block list filter.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-block-list">Azure Docs</a>.
+     *
      * @param listType Specifies which type of blocks to return.
      *
      * @return The list of blocks.
@@ -296,10 +305,11 @@ public final class BlockBlobClient extends BlobClient {
      * Returns the list of blocks that have been uploaded as part of a block blob using the specified block list filter.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-block-list">Azure Docs</a>.
-     * @param listType              Specifies which type of blocks to return.
+     *
+     * @param listType Specifies which type of blocks to return.
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does not match the active
-     *                              lease on the blob.
-     * @param timeout               An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     *         lease on the blob.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
      * @return The list of blocks.
      */
@@ -318,6 +328,7 @@ public final class BlockBlobClient extends BlobClient {
      * blocks together. Any blocks not specified in the block list and permanently deleted.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
+     *
      * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      *
      * @return The information of the block blob.
@@ -334,17 +345,18 @@ public final class BlockBlobClient extends BlobClient {
      * blocks together. Any blocks not specified in the block list and permanently deleted.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
-     * @param base64BlockIDs   A list of base64 encode {@code String}s that specifies the block IDs to be committed.
-     * @param headers          {@link BlobHTTPHeaders}
-     * @param metadata         {@link Metadata}
+     *
+     * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
+     * @param headers {@link BlobHTTPHeaders}
+     * @param metadata {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
-     * @param timeout          An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context          Additional context that is passed through the Http pipeline during the service call.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The information of the block blob.
      */
     public Response<BlockBlobItem> commitBlockListWithResponse(List<String> base64BlockIDs,
-            BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, 
+            BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Duration timeout,
             Context context) {
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.commitBlockListWithResponse(
             base64BlockIDs, headers, metadata, accessConditions, context);

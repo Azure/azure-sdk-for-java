@@ -3,7 +3,13 @@
 
 package com.microsoft.azure.servicebus.security;
 
+import java.text.ParseException;
 import java.time.Instant;
+import java.util.Date;
+
+import com.nimbusds.jwt.JWT;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.JWTParser;
 
 /**
  * This class encapsulates the details of a security token.
@@ -72,5 +78,11 @@ public class SecurityToken {
      */
     public Instant getValidUntil() {
         return this.validUntil;
+    }
+    
+    static Date getExpirationDateTimeUtcFromToken(String token) throws ParseException {
+        JWT jwt = JWTParser.parse(token);
+        JWTClaimsSet claims = jwt.getJWTClaimsSet();
+        return claims.getExpirationTime();
     }
 }

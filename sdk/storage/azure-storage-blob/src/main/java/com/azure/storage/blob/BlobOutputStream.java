@@ -10,6 +10,7 @@ import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageBlobAccessConditions;
 import com.azure.storage.blob.models.PageRange;
+import com.azure.storage.blob.models.StorageException;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import org.reactivestreams.Subscriber;
@@ -108,7 +109,7 @@ public final class BlobOutputStream extends OutputStream {
 
     /**
      * Initializes a new instance of the BlobOutputStream class for a CloudBlockBlob
-     * @param parentBlob      A {@link BlobAsyncClient} object which represents the blob that this stream is associated with.
+     * @param parentBlob A {@link BlobAsyncClient} object which represents the blob that this stream is associated with.
      * @param accessCondition An {@link BlobAccessConditions} object which represents the access conditions for the blob.
      *
      * @throws StorageException An exception representing any error which occurred during the operation.
@@ -126,9 +127,10 @@ public final class BlobOutputStream extends OutputStream {
 
     /**
      * Initializes a new instance of the BlobOutputStream class for a CloudPageBlob
-     * @param parentBlob      A {@link PageBlobClient} object which represents the blob that this stream is associated with.
-     * @param length          A <code>long</code> which represents the length of the page blob in bytes, which must be a multiple of
-     *                        512.
+     *
+     * @param parentBlob A {@link PageBlobClient} object which represents the blob that this stream is associated with.
+     * @param length A <code>long</code> which represents the length of the page blob in bytes, which must be a multiple of
+     *            512.
      * @param accessCondition An {@link BlobAccessConditions} object which represents the access conditions for the blob.
      *
      * @throws StorageException An exception representing any error which occurred during the operation.
@@ -143,7 +145,9 @@ public final class BlobOutputStream extends OutputStream {
 
     /**
      * Initializes a new instance of the BlobOutputStream class for a CloudAppendBlob
-     * @param parentBlob      A {@link AppendBlobAsyncClient} object which represents the blob that this stream is associated with.
+     *
+     *
+     * @param parentBlob A {@link AppendBlobAsyncClient} object which represents the blob that this stream is associated with.
      * @param accessCondition An {@link BlobAccessConditions} object which represents the access conditions for the blob.
      *
      * @throws StorageException An exception representing any error which occurred during the operation.
@@ -181,6 +185,7 @@ public final class BlobOutputStream extends OutputStream {
     /**
      * Closes this output stream and releases any system resources associated with this stream. If any data remains in
      * the buffer it is committed to the service.
+     *
      * @throws IOException If an I/O error occurs.
      */
     @Override
@@ -338,7 +343,7 @@ public final class BlobOutputStream extends OutputStream {
     /**
      * Writes length bytes from the specified byte array starting at offset to this output stream.
      * <p>
-     * @param data   A <code>byte</code> array which represents the data to write.
+     * @param data A <code>byte</code> array which represents the data to write.
      * @param offset An <code>int</code> which represents the start offset in the data.
      * @param length An <code>int</code> which represents the number of bytes to write.
      *
@@ -372,7 +377,7 @@ public final class BlobOutputStream extends OutputStream {
 
     /**
      * Writes the data to the buffer and triggers writes to the service as needed.
-     * @param data   A <code>byte</code> array which represents the data to write.
+     * @param data A <code>byte</code> array which represents the data to write.
      * @param offset An <code>int</code> which represents the start offset in the data.
      * @param length An <code>int</code> which represents the number of bytes to write.
      *
