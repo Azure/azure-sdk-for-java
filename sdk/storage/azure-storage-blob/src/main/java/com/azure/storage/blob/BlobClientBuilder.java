@@ -78,7 +78,6 @@ public final class BlobClientBuilder {
     private final ClientLogger logger = new ClientLogger(BlobClientBuilder.class);
 
     private final List<HttpPipelinePolicy> additionalPolicies;
-    private final List<HttpPipelinePolicy> policies;
 
     private String endpoint;
     private String containerName;
