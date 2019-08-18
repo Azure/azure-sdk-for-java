@@ -10,6 +10,10 @@ import com.azure.search.data.customization.SearchIndexClientBuilder;
 import com.azure.search.data.env.AzureSearchResources;
 import com.azure.search.data.env.SearchIndexDocs;
 import com.azure.search.data.env.SearchIndexService;
+import com.azure.search.data.generated.models.IndexAction;
+import com.azure.search.data.generated.models.IndexActionType;
+import com.azure.search.data.generated.models.IndexBatch;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -22,82 +26,38 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class SearchIndexAsyncClientImplTest {
+public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
-    private String serviceName = "";
-    private String apiAdminKey = "";
-    private String indexName = "hotels";
-    private AzureSearchResources azureSearchResources;
-    private String apiVersion = "2019-05-06";
-    private String dnsSuffix = "search.windows.net";
-    private SearchIndexAsyncClient searchClient;
+    private SearchIndexAsyncClient asyncClient;
 
-    @Before
-    public void initialize() throws IOException {
-        ApplicationTokenCredentials applicationTokenCredentials = new ApplicationTokenCredentials(
-            "86384185-e31a-490f-a361-b19f9a378582",
-            "72f988bf-86f1-41af-91ab-2d7cd011db47",
-            "=PGXA_CxqmIJ0@]cewj434At.]KWyLQ5",
-            AzureEnvironment.AZURE);
+    private static final String INDEX_NAME = "hotels";
+    private static final String INDEX_FILE_NAME = "/Users/lizashakury/projects/azure-sdk-for-java-pr/search/data-plane/data/src/test/resources/IndexData.json";
 
-        String subscriptionId = "73a4ea93-d914-424d-9e64-28adf397e8e3";
-
-        Region location = Region.US_EAST;
-
-        azureSearchResources = new AzureSearchResources(
-            applicationTokenCredentials, subscriptionId, location);
-        azureSearchResources.initialize();
-
-        serviceName = azureSearchResources.getSearchServiceName();
-        apiAdminKey = azureSearchResources.getSearchAdminKey();
-
-        //Creating Index:
-        SearchIndexService searchIndexService;
-        try {
-            searchIndexService = new SearchIndexService(serviceName, apiAdminKey);
-            searchIndexService.initialize();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-
-        // Uploading Documents:
-        try {
-            SearchIndexDocs searchIndexDocs = new SearchIndexDocs(serviceName, apiAdminKey,
-                searchIndexService.indexName(),
-                dnsSuffix,
-                apiVersion);
-            searchIndexDocs.initialize();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        searchClient = new SearchIndexClientBuilder()
-            .serviceName(serviceName)
-            .searchDnsSuffix(dnsSuffix)
-            .indexName(searchIndexService.indexName())
-            .apiVersion(apiVersion)
-            .addPolicy(new SearchPipelinePolicy(apiAdminKey))
-            .buildAsyncClient();
+    @Override
+    protected void beforeTest() {
+        super.beforeTest();
+        asyncClient = builderSetup().indexName(INDEX_NAME).buildAsyncClient();
     }
 
-    @After
-    public void cleanup() {
-        try {
-            System.out.println("Waiting 100 secs before cleaning the created Azure Search resource");
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        azureSearchResources.cleanup();
+    private void uploadDocument(HashMap<String, Object> object) throws IOException {
+        List<IndexAction> indexActions = new LinkedList<>();
+        indexActions.add(new IndexAction()
+            .actionType(IndexActionType.UPLOAD)
+            .additionalProperties(object));
+
+        asyncClient.index(
+            new IndexBatch().actions(indexActions)).block();
     }
 
     @Test
@@ -147,8 +107,8 @@ public class SearchIndexAsyncClientImplTest {
         tags.add("air conditioning");
         tags.add("concierge");
 
-        Map<String, Object> expectedDoc = new HashMap<String, Object>();
-        expectedDoc.put("HotelId", "1000000000");
+        HashMap<String, Object> expectedDoc = new HashMap<String, Object>();
+        expectedDoc.put("HotelId", "1");
         expectedDoc.put("HotelName", "Secret Point Motel");
         expectedDoc.put("Description", "The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.");
         expectedDoc.put("Description_fr", "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.");
@@ -163,17 +123,13 @@ public class SearchIndexAsyncClientImplTest {
         //TODO: Support GeoTypes
 
         try {
-            SearchIndexDocs searchIndexDocs = new SearchIndexDocs(serviceName, apiAdminKey,
-                indexName,
-                "search.windows.net",
-                "2019-05-06");
-            searchIndexDocs.addSingleDocData(expectedDoc);
+            uploadDocument(expectedDoc);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        Mono<Map<String, Object>> futureDoc = searchClient.getDocument("1000000000");
+        Mono<Map<String, Object>> futureDoc = asyncClient.getDocument("1");
 
         StepVerifier
             .create(futureDoc)
@@ -186,7 +142,7 @@ public class SearchIndexAsyncClientImplTest {
 
     @Test
     public void getDocumentThrowsWhenDocumentNotFound() {
-        Mono<Map<String, Object>> futureDoc = searchClient.getDocument("1000000001");
+        Mono<Map<String, Object>> futureDoc = asyncClient.getDocument("1000000001");
         StepVerifier
             .create(futureDoc)
             .verifyErrorSatisfies(error -> assertEquals(ResourceNotFoundException.class, error.getClass()));
@@ -195,8 +151,8 @@ public class SearchIndexAsyncClientImplTest {
     @Test
     public void getDocumentThrowsWhenRequestIsMalformed() {
 
-        Map<String, Object> hotelDoc = new HashMap<String, Object>();
-        hotelDoc.put("HotelId", "1000000002");
+        HashMap<String, Object> hotelDoc = new HashMap<String, Object>();
+        hotelDoc.put("HotelId", "2");
         hotelDoc.put("Description", "Surprisingly expensive");
 
         ArrayList<String> selectedFields = new ArrayList<String>();
@@ -204,17 +160,13 @@ public class SearchIndexAsyncClientImplTest {
         selectedFields.add("ThisFieldDoesNotExist");
 
         try {
-            SearchIndexDocs searchIndexDocs = new SearchIndexDocs(serviceName, apiAdminKey,
-                indexName,
-                "search.windows.net",
-                "2019-05-06");
-            searchIndexDocs.addSingleDocData(hotelDoc);
+            uploadDocument(hotelDoc);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        Mono futureDoc = searchClient.getDocument("1000000002", selectedFields, null);
+        Mono futureDoc = asyncClient.getDocument("2", selectedFields, null);
 
         StepVerifier
             .create(futureDoc)
