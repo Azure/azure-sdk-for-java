@@ -6,6 +6,7 @@ package com.azure.search.data.test.customization;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.data.SearchIndexClient;
+import com.azure.search.data.common.DocumentResponseConversions;
 import com.azure.search.data.common.SearchPagedResponse;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
@@ -21,8 +22,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +39,7 @@ public class SearchIndexClientSearchTest extends SearchIndexClientTestBase {
 
     private static final String INDEX_NAME = "hotels";
     private static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
+    private static final String SEARCH_SCORE_FIELD = "@search.score";
 
     @Override
     protected void beforeTest() {
@@ -81,13 +85,76 @@ public class SearchIndexClientSearchTest extends SearchIndexClientTestBase {
             Assert.assertNotNull(result.items());
 
             result.items().forEach(item -> {
-                Assert.assertEquals(1, ((SearchResult) item).score(), 0);
-                Assert.assertNull(((SearchResult) item).highlights());
-                searchResults.add(((SearchResult) item).additionalProperties());
+                Assert.assertEquals(1, item.score(), 0);
+                Assert.assertNull(item.highlights());
+                searchResults.add(item.additionalProperties());
             });
         }
         Assert.assertEquals(hotels.size(), searchResults.size());
         assertTrue(compareResults(searchResults, hotels));
+    }
+
+
+    /**
+     * Verify that if searching and specifying fields, only those fields are returning
+     */
+    @Test
+    public void canSearchWithSelectedFields() {
+        // Ask JUST for the following two fields
+        SearchParameters sp = new SearchParameters();
+        sp.searchFields(new LinkedList<>(Arrays.asList("HotelName", "Category")));
+        sp.select(new LinkedList<>(Arrays.asList("HotelName", "Rating", "Address/City", "Rooms/Type")));
+
+        PagedIterable<SearchResult> results = client.search("fancy luxury secret", sp, new SearchRequestOptions());
+
+        HashMap<String, Object> expectedHotel1 = new HashMap<>();
+        expectedHotel1.put("HotelName", "Fancy Stay");
+        expectedHotel1.put("Rating", 5);
+        expectedHotel1.put("Address", null);
+        expectedHotel1.put("Rooms", Arrays.asList());
+
+        // This is the expected document when querying the document later (notice that only two fields are expected)
+        HashMap<String, Object> expectedHotel2 = new HashMap<>();
+        expectedHotel2.put("HotelName", "Secret Point Motel");
+        expectedHotel2.put("Rating", 3);
+        HashMap<String, Object> address = new LinkedHashMap<>();
+        address.put("City", "New York");
+        expectedHotel2.put("Address", address);
+        HashMap<String, Object> rooms = new LinkedHashMap<>();
+        rooms.put("Type", "Budget Room");
+        HashMap<String, Object> rooms2 = new LinkedHashMap<>();
+        rooms2.put("Type", "Budget Room");
+        expectedHotel2.put("Rooms", Arrays.asList(rooms, rooms2));
+
+        Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
+        PagedResponse<SearchResult> result = iterator.next();
+        assert (result.items().size() == 2);
+
+        // From the result object, extract the two hotels, clean up (irrelevant fields) and change data structure
+        // as a preparation to check equality
+        Map<String, Object> hotel1 = extractAndTransformSingleResult(result.items().get(0));
+        Map<String, Object> hotel2 = extractAndTransformSingleResult(result.items().get(1));
+
+        Assert.assertEquals(expectedHotel1, hotel1);
+        Assert.assertEquals(expectedHotel2, hotel2);
+    }
+
+    private Map<String, Object> extractAndTransformSingleResult(SearchResult result) {
+        return dropUnnecessaryFields(
+            DocumentResponseConversions.convertLinkedHashMapToMap(
+                (result.additionalProperties())));
+    }
+
+    /**
+     * Drop fields that shouldn't be in the returned object
+     *
+     * @param map the map to drop items from
+     * @return the new map
+     */
+    private static Map<String, Object> dropUnnecessaryFields(Map<String, Object> map) {
+        map.remove(SEARCH_SCORE_FIELD);
+
+        return map;
     }
 
     private boolean compareResults(List<Map<String, Object>> searchResults, List<Map<String, Object>> hotels) {
@@ -102,9 +169,6 @@ public class SearchIndexClientSearchTest extends SearchIndexClientTestBase {
             // TODO (Nava) - remove once geo location issue is resolved
             result.remove("Location");
             hotel.remove("Location");
-            /*if (!hotel.entrySet().stream().allMatch(e -> checkEquals(e, result))) {
-                return false;
-            }*/
             assertTrue(hotel.entrySet().stream().allMatch(e -> checkEquals(e, result)));
         }
 
