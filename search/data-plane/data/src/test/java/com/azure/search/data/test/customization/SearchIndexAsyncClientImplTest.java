@@ -4,30 +4,17 @@ package com.azure.search.data.test.customization;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.search.data.common.SearchPipelinePolicy;
 import com.azure.search.data.SearchIndexAsyncClient;
-import com.azure.search.data.customization.SearchIndexClientBuilder;
-import com.azure.search.data.env.AzureSearchResources;
-import com.azure.search.data.env.SearchIndexDocs;
-import com.azure.search.data.env.SearchIndexService;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.IndexBatch;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -42,7 +29,6 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
     private SearchIndexAsyncClient asyncClient;
 
     private static final String INDEX_NAME = "hotels";
-    private static final String INDEX_FILE_NAME = "/Users/lizashakury/projects/azure-sdk-for-java-pr/search/data-plane/data/src/test/resources/IndexData.json";
 
     @Override
     protected void beforeTest() {
