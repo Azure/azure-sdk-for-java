@@ -5,20 +5,13 @@ package com.azure.search.data.test.customization;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.search.data.SearchIndexAsyncClient;
-import com.azure.search.data.generated.models.IndexAction;
-import com.azure.search.data.generated.models.IndexActionType;
-import com.azure.search.data.generated.models.IndexBatch;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -34,16 +27,6 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
     protected void beforeTest() {
         super.beforeTest();
         asyncClient = builderSetup().indexName(INDEX_NAME).buildAsyncClient();
-    }
-
-    private void uploadDocument(HashMap<String, Object> object) throws IOException {
-        List<IndexAction> indexActions = new LinkedList<>();
-        indexActions.add(new IndexAction()
-            .actionType(IndexActionType.UPLOAD)
-            .additionalProperties(object));
-
-        asyncClient.index(
-            new IndexBatch().actions(indexActions)).block();
     }
 
     @Test
@@ -109,7 +92,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         //TODO: Support GeoTypes
 
         try {
-            uploadDocument(expectedDoc);
+            super.indexDocument(asyncClient, expectedDoc);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -146,7 +129,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         selectedFields.add("ThisFieldDoesNotExist");
 
         try {
-            uploadDocument(hotelDoc);
+            super.indexDocument(asyncClient, hotelDoc);
 
         } catch (Exception e) {
             e.printStackTrace();

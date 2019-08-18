@@ -74,8 +74,7 @@ public class DocumentResponseConversions {
         for (Object arrayValue : array) {
             if (arrayValue instanceof LinkedHashMap) {
                 convertedArray.add(convertLinkedHashMapToMap(arrayValue));
-            }
-            else {
+            } else {
                 convertedArray.add(arrayValue);
             }
         }
