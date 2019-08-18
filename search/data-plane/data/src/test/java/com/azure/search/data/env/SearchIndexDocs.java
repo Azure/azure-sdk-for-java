@@ -6,7 +6,6 @@ package com.azure.search.data.env;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.customization.SearchIndexClientBuilder;
 import com.azure.search.data.common.SearchPipelinePolicy;
-import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.IndexBatch;
@@ -37,10 +36,10 @@ public class SearchIndexDocs {
      * to be used in tests.
      *
      * @param searchServiceName The name of the Search service
-     * @param apiAdminKey The Admin key of the Search service
-     * @param indexName The name of the index
-     * @param dnsSuffix DNS suffix of the Search service
-     * @param apiVersion used API version
+     * @param apiAdminKey       The Admin key of the Search service
+     * @param indexName         The name of the index
+     * @param dnsSuffix         DNS suffix of the Search service
+     * @param apiVersion        used API version
      */
     public SearchIndexDocs(
         String searchServiceName, String apiAdminKey, String indexName,
@@ -54,6 +53,7 @@ public class SearchIndexDocs {
 
     /**
      * Created new documents in the index. The new documents are retrieved from HotelsDataArray.json
+     *
      * @throws IOException If the file in HOTELS_DATA_JSON is not existing or invalid.
      */
     public void initialize() throws IOException {
@@ -77,15 +77,49 @@ public class SearchIndexDocs {
         List<IndexAction> indexActions = createIndexActions(hotels);
 
         System.out.println("Indexing " + indexActions.size() + " docs");
-        DocumentIndexResult documentIndexResult = searchIndexAsyncClient.index(new IndexBatch().actions(indexActions))
-            .block();
-
         System.out.println("Indexing Results:");
-        assert documentIndexResult != null;
-        documentIndexResult.results().forEach(result ->
-            System.out.println(
-                "key:" + result.key() + (result.succeeded() ? " Succeeded" : " Error: " + result.errorMessage()))
-        );
+        searchIndexAsyncClient.index(
+            new IndexBatch()
+                .actions(indexActions))
+                .doOnSuccess(documentIndexResult ->
+                    documentIndexResult
+                        .results().forEach(
+                            result ->
+                                System.out.println("key:" + result.key() + (result.succeeded() ? " Succeeded" : " Error: " + result.errorMessage()))))
+                .doOnError(e -> System.out.println(e.getMessage()))
+                .block();
+
+
+    }
+
+    public void addSingleDocData(Map document) throws IOException {
+
+        if (searchIndexAsyncClient == null) {
+            searchIndexAsyncClient = new SearchIndexClientBuilder()
+                .serviceName(searchServiceName)
+                .searchDnsSuffix(dnsSuffix)
+                .indexName(indexName)
+                .apiVersion(apiVersion)
+                .addPolicy(new SearchPipelinePolicy(apiAdminKey))
+                .buildAsyncClient();
+        }
+
+        List<Map> documents = new ArrayList<>();
+        documents.add(document);
+        List<IndexAction> indexActions = createIndexActions(documents);
+
+        System.out.println("Indexing " + indexActions.size() + " docs");
+        System.out.println("Indexing Results:");
+        searchIndexAsyncClient.index(
+            new IndexBatch()
+                .actions(indexActions))
+                .doOnSuccess(documentIndexResult ->
+                    documentIndexResult
+                        .results().forEach(
+                            result ->
+                                System.out.println("key:" + result.key() + (result.succeeded() ? " Succeeded" : " Error: " + result.errorMessage()))))
+                .doOnError(e -> System.out.println(e.getMessage()))
+                .block();
     }
 
     private List<IndexAction> createIndexActions(List<Map> hotels) {

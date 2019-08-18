@@ -185,8 +185,14 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
 
     @Override
     public Mono<Map<String, Object>> getDocument(String key) {
-        return restClient.documents().getAsync(key).map(DocumentResponseConversions::convertLinkedHashMapToMap)
-                .map(DocumentResponseConversions::dropUnnecessaryFields);
+        return restClient
+            .documents()
+            .getAsync(key)
+            .map(DocumentResponseConversions::convertLinkedHashMapToMap)
+            .map(DocumentResponseConversions::dropUnnecessaryFields)
+            .onErrorMap(DocumentResponseConversions::exceptionMapper)
+            .doOnSuccess(s -> System.out.println("Document with key: " + key + " was retrieved succesfully"))
+            .doOnError(e -> System.out.println("An error occured in getDocument(key): " + e.getMessage()));
     }
 
     @Override
@@ -197,7 +203,10 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
             .documents()
             .getAsync(key, selectedFields, searchRequestOptions)
             .map(DocumentResponseConversions::convertLinkedHashMapToMap)
-            .map(DocumentResponseConversions::dropUnnecessaryFields);
+            .map(DocumentResponseConversions::dropUnnecessaryFields)
+            .onErrorMap(DocumentResponseConversions::exceptionMapper)
+            .doOnSuccess(s -> System.out.println("Document with key: " + key + "and selectedFields: " + selectedFields.toString()  + " was retrieved succesfully"))
+            .doOnError(e -> System.out.println("An error occured in getDocument(key, selectedFields, searchRequestOptions): " + e.getMessage()));
     }
 
     @Override

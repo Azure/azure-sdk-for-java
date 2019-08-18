@@ -3,6 +3,10 @@
 
 package com.azure.search.data.common;
 
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceNotFoundException;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,12 +30,23 @@ public class DocumentResponseConversions {
          **/
         @SuppressWarnings (value = "unchecked")
         LinkedHashMap<String, Object> linkedMap = (LinkedHashMap<String, Object>) linkedMapObject;
+
         Set<Map.Entry<String, Object>> entries = linkedMap.entrySet();
 
         Map<String, Object> convertedMap = new HashMap<>();
 
         for (Map.Entry<String, Object> entry : entries) {
-            convertedMap.put(entry.getKey(), entry.getValue());
+            Object value = entry.getValue();
+
+            if (value instanceof LinkedHashMap) {
+                value = convertLinkedHashMapToMap(entry.getValue());
+            }
+            if (value instanceof ArrayList) {
+                value = convertArray((ArrayList) value);
+
+            }
+
+            convertedMap.put(entry.getKey(), value);
         }
 
         return convertedMap;
@@ -47,4 +62,38 @@ public class DocumentResponseConversions {
 
         return map;
     }
+
+
+    /**
+     * Convert Array Object elements
+     * @param array which elements will be converted
+     * @return ArrayList<Object>
+     */
+    private static ArrayList<Object> convertArray(ArrayList array) {
+        ArrayList<Object> convertedArray = new ArrayList<>();
+        for (Object arrayValue : array) {
+            if (arrayValue instanceof LinkedHashMap) {
+                convertedArray.add(convertLinkedHashMapToMap(arrayValue));
+            } else {
+                convertedArray.add(arrayValue);
+            }
+        }
+        return convertedArray;
+    }
+
+    /**
+     * Map exceptions to be more informative
+     * @param throwable to convert
+     * @return Throwable
+     */
+    public static Throwable exceptionMapper(Throwable throwable) {
+
+        if (throwable instanceof HttpResponseException && throwable.getMessage().equals("Status code 404, (empty body)")) {
+            return new ResourceNotFoundException("Document not found", ((HttpResponseException) throwable).response());
+        }
+
+        return throwable;
+    }
+
+
 }
