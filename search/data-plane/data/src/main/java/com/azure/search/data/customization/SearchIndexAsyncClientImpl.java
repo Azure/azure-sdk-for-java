@@ -170,7 +170,6 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
 
     }
 
-
     @Override
     public PagedFlux<SearchResult> search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions) {
         Mono<PagedResponse<SearchResult>> first = restClient.documents()
@@ -181,7 +180,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
                 }
                 return new SearchPagedResponse(res);
             });
-        return new PagedFlux<>(() -> first, this::searchPostNextWithRestResponseAsync);
+        return new PagedFlux(() -> first, nextLink -> searchPostNextWithRestResponseAsync((String) nextLink));
     }
 
     @Override

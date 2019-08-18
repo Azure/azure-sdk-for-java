@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.search.data.common;
 
 import com.azure.core.http.HttpHeaders;
@@ -42,7 +43,7 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
      *
      * @return Double
      */
-    public Double getCoverage() {
+    public Double coverage() {
         return coverage;
     }
 
@@ -72,4 +73,19 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
         ).collect(Collectors.joining(","));
     }
 
+    /**
+     * return facets
+     * @return Map<String, List<FacetResult>>
+     */
+    public Map<String, List<FacetResult>> facets() {
+        return facets;
+    }
+
+    /**
+     * Return documents counts
+     * @return long
+     */
+    public Long count() {
+        return count;
+    }
 }

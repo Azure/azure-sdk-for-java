@@ -3,17 +3,16 @@
 
 package com.azure.search.data;
 
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.data.common.SearchPipelinePolicy;
 import com.azure.search.data.customization.SearchIndexClientBuilder;
-import com.azure.search.data.generated.models.DocumentSearchResult;
-import com.azure.search.data.generated.models.SearchParameters;
-import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
-import com.azure.search.data.models.Hotel;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * Sample demonstrates how to create a SearchIndexClient and issue search API
@@ -29,34 +28,31 @@ public class SearchIndexClientExample {
         String searchServiceName = "";
         String apiKey = "";
         String dnsSuffix = "search.windows.net";
-        String indexName = "hotels";
+        String indexName = "";
         String apiVersion = "2019-05-06";
 
 
-        SearchIndexClient searchClient = new SearchIndexClientBuilder()
+        SearchIndexAsyncClient searchClient = new SearchIndexClientBuilder()
             .serviceName(searchServiceName)
             .searchDnsSuffix(dnsSuffix)
             .indexName(indexName)
             .apiVersion(apiVersion)
             .addPolicy(new SearchPipelinePolicy(apiKey))
-            .buildClient();
+            .buildAsyncClient();
 
-        searchForAll(searchClient);
+        List<SearchResult> results = searchClient
+            .search()
+            .log()
+            .doOnSubscribe(ignoredVal -> System.out.println("Subscribed to paged flux processing items"))
+            .doOnNext(item -> System.out.println("Processing item " + item))
+            .doOnComplete(() -> System.out.println("Completed processing"))
+            .collectList().block();
 
-    }
+        Stream<PagedResponse<SearchResult>> pagedResults = searchClient.search()
+            .byPage().toStream();
 
-    private static void searchForAll(SearchIndexClient searchClient) {
-        DocumentSearchResult result = searchClient.search("*", new SearchParameters(), new SearchRequestOptions());
+        System.out.println("Oh Yeah");
 
-
-        for (SearchResult searchResult : result.results()) {
-            Hotel hotel = getDocument(Hotel.class, searchResult.additionalProperties());
-            System.out.printf(
-                "\t score: %s, id: %s, name: %s\n",
-                searchResult.score(),
-                hotel.HotelId,
-                hotel.HotelName);
-        }
     }
 
     private static <T> T getDocument(Class<T> toValueType, Map<String, Object> document) {
