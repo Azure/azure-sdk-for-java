@@ -14,8 +14,8 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
+import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
@@ -68,7 +68,8 @@ import java.util.Objects;
  * </ul>
  */
 @ServiceClientBuilder(serviceClients = {BlobClient.class, BlobAsyncClient.class, AppendBlobClient.class,
-    AppendBlobAsyncClient.class, BlockBlobClient.class, BlockBlobAsyncClient.class, PageBlobClient.class, PageBlobAsyncClient.class})
+    AppendBlobAsyncClient.class, BlockBlobClient.class, BlockBlobAsyncClient.class, PageBlobClient.class,
+    PageBlobAsyncClient.class})
 public final class BlobClientBuilder {
     private static final String ACCOUNT_NAME = "accountname";
     private static final String ACCOUNT_KEY = "accountkey";
