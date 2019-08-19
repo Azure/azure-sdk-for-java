@@ -17,7 +17,7 @@ abstract class AsymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
 
     /**
      * Constructor.
-     * 
+     *
      * @param name The name of the algorithm.
      */
     protected AsymmetricEncryptionAlgorithm(String name) {
@@ -29,10 +29,10 @@ abstract class AsymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
      * uses the specified {@link KeyPair} and the default {@link Provider} provider.
      *
      * @param keyPair The key pair to use.
-     * @return
-     * @throws InvalidKeyException
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchPaddingException
+     * @return abstract {@link ICryptoTransform}
+     * @throws InvalidKeyException when key is not valid
+     * @throws NoSuchAlgorithmException if algorithm is not found
+     * @throws NoSuchPaddingException if padding is set wrong
      */
     public abstract ICryptoTransform createEncryptor(KeyPair keyPair) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException;
 
@@ -42,10 +42,10 @@ abstract class AsymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
      *
      * @param keyPair The key pair to use.
      * @param provider The provider to use.
-     * @return
-     * @throws InvalidKeyException
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchPaddingException
+     * @return abstract {@link ICryptoTransform}
+     * @throws InvalidKeyException when key is not valid
+     * @throws NoSuchAlgorithmException if algorithm is not found
+     * @throws NoSuchPaddingException if padding is set wrong
      */
     public abstract ICryptoTransform createEncryptor(KeyPair keyPair, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException;
 
@@ -54,10 +54,10 @@ abstract class AsymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
      * uses the specified {@link KeyPair} and the default {@link Provider} provider.
      *
      * @param keyPair The key pair to use.
-     * @return
-     * @throws InvalidKeyException
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchPaddingException
+     * @return abstract {@link ICryptoTransform}
+     * @throws InvalidKeyException when key is not valid
+     * @throws NoSuchAlgorithmException if algorithm is not found
+     * @throws NoSuchPaddingException if padding is set wrong
      */
     public abstract ICryptoTransform createDecryptor(KeyPair keyPair) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException;
 
@@ -67,10 +67,10 @@ abstract class AsymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
      *
      * @param keyPair The key pair to use.
      * @param provider The provider to use.
-     * @return
-     * @throws InvalidKeyException
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchPaddingException
+     * @return abstract {@link ICryptoTransform}
+     * @throws InvalidKeyException when key is not valid
+     * @throws NoSuchAlgorithmException if algorithm is not found
+     * @throws NoSuchPaddingException if padding is set wrong
      */
     public abstract ICryptoTransform createDecryptor(KeyPair keyPair, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException;
 }

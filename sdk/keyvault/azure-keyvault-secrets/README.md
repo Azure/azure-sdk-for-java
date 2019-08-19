@@ -122,7 +122,7 @@ SecretClient secretClient = new SecretClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
-Secret secret = secretClient.setSecret("secret_name", "secret_value").value();
+Secret secret = secretClient.setSecret("secret_name", "secret_value");
 System.out.printf("Secret is created with name %s and value %s \n", secret.name(), secret.value());
 ```
 
@@ -130,7 +130,7 @@ System.out.printf("Secret is created with name %s and value %s \n", secret.name(
 
 Retrieve a previously stored Secret by calling `getSecret`.
 ```Java
-Secret secret = secretClient.getSecret("secret_name").value();
+Secret secret = secretClient.getSecret("secret_name");
 System.out.printf("Secret is returned with name %s and value %s \n", secret.name(), secret.value());
 ```
 
@@ -139,10 +139,10 @@ System.out.printf("Secret is returned with name %s and value %s \n", secret.name
 Update an existing Secret by calling `updateSecret`.
 ```Java
 // Get the secret to update.
-Secret secret = secretClient.getSecret("secret_name").value();
+Secret secret = secretClient.getSecret("secret_name");
 // Update the expiry time of the secret.
 secret.expires(OffsetDateTime.now().plusDays(30));
-SecretBase updatedSecret = secretClient.updateSecret(secret).value();
+SecretBase updatedSecret = secretClient.updateSecret(secret);
 System.out.printf("Secret's updated expiry time %s \n", updatedSecret.expires().toString());
 ```
 
@@ -150,7 +150,7 @@ System.out.printf("Secret's updated expiry time %s \n", updatedSecret.expires().
 
 Delete an existing Secret by calling `deleteSecret`.
 ```Java
-DeletedSecret deletedSecret = client.deleteSecret("secret_name").value();
+DeletedSecret deletedSecret = client.deleteSecret("secret_name");
 System.out.printf("Deleted Secret's deletion date %s", deletedSecret.deletedDate().toString());
 ```
 
@@ -160,7 +160,7 @@ List the secrets in the key vault by calling `listSecrets`.
 ```Java
 // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
 for (SecretBase secret : client.listSecrets()) {
-    Secret secretWithValue  = client.getSecret(secret).value();
+    Secret secretWithValue  = client.getSecret(secret);
     System.out.printf("Received secret with name %s and value %s \n", secretWithValue.name(), secretWithValue.value());
 }
 ```
@@ -187,30 +187,28 @@ SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildAsyncClient();
 
-secretAsyncClient.setSecret("secret_name", "secret_value").subscribe(secretResponse ->
-  System.out.printf("Secret is created with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
+secretAsyncClient.setSecret("secret_name", "secret_value").subscribe(secret ->
+  System.out.printf("Secret is created with name %s and value %s \n", secret.name(), secret.value()));
 ```
 
 ### Retrieve a Secret Asynchronously
 
 Retrieve a previously stored Secret by calling `getSecret`.
 ```Java
-secretAsyncClient.getSecret("secretName").subscribe(secretResponse ->
-  System.out.printf("Secret with name %s , value %s \n", secretResponse.value().name(),
-  secretResponse.value().value()));
+secretAsyncClient.getSecret("secretName").subscribe(secret ->
+  System.out.printf("Secret with name %s , value %s \n", secret.name(),
+  secret.value()));
 ```
 
 ### Update an existing Secret Asynchronously
 
 Update an existing Secret by calling `updateSecret`.
 ```Java
-secretAsyncClient.getSecret("secretName").subscribe(secretResponse -> {
-     // Get the Secret
-     Secret secret = secretResponse.value();
+secretAsyncClient.getSecret("secretName").subscribe(secret -> {
      // Update the expiry time of the secret.
      secret.expires(OffsetDateTime.now().plusDays(50));
-     secretAsyncClient.updateSecret(secret).subscribe(secretResponse ->
-         System.out.printf("Secret's updated not before time %s \n", secretResponse.value().notBefore().toString()));
+     secretAsyncClient.updateSecret(secret).subscribe(updatedSecret ->
+         System.out.printf("Secret's updated expiry time %s \n", updatedSecret.expires().toString()));
    });
 ```
 
@@ -218,8 +216,8 @@ secretAsyncClient.getSecret("secretName").subscribe(secretResponse -> {
 
 Delete an existing Secret by calling `deleteSecret`.
 ```Java
-secretAsyncClient.deleteSecret("secretName").subscribe(deletedSecretResponse ->
-   System.out.printf("Deleted Secret's deletion time %s \n", deletedSecretResponse.value().deletedDate().toString()));
+secretAsyncClient.deleteSecret("secretName").subscribe(deletedSecret ->
+   System.out.printf("Deleted Secret's deletion time %s \n", deletedSecret.deletedDate().toString()));
 ```
 
 ### List Secrets Asynchronously
@@ -228,8 +226,8 @@ List the secrets in the key vault by calling `listSecrets`.
 ```Java
 // The List Secrets operation returns secrets without their value, so for each secret returned we call `getSecret` to get its // value as well.
 secretAsyncClient.listSecrets()
-  .flatMap(secretAsyncClient::getSecret).subscribe(secretResponse ->
-    System.out.printf("Secret with name %s , value %s \n", secretResponse.value().name(), secretResponse.value().value()));
+  .flatMap(secretAsyncClient::getSecret).subscribe(secret ->
+    System.out.printf("Secret with name %s , value %s \n", secret.name(), secret.value()));
 ```
 
 ## Troubleshooting

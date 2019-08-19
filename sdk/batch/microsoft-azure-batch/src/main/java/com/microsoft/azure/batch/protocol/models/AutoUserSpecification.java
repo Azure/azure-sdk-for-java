@@ -17,7 +17,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class AutoUserSpecification {
     /**
      * The scope for the auto user.
-     * The default value is Task. Possible values include: 'task', 'pool'.
+     * The default value is pool. If the pool is running Windows a value of
+     * Task should be specified if stricter isolation between tasks is
+     * required. For example, if the task mutates the registry in a way which
+     * could impact other tasks, or if certificates have been specified on the
+     * pool which should not be accessible by normal tasks but should be
+     * accessible by StartTasks. Possible values include: 'task', 'pool'.
      */
     @JsonProperty(value = "scope")
     private AutoUserScope scope;
@@ -31,7 +36,7 @@ public class AutoUserSpecification {
     private ElevationLevel elevationLevel;
 
     /**
-     * Get the default value is Task. Possible values include: 'task', 'pool'.
+     * Get the default value is pool. If the pool is running Windows a value of Task should be specified if stricter isolation between tasks is required. For example, if the task mutates the registry in a way which could impact other tasks, or if certificates have been specified on the pool which should not be accessible by normal tasks but should be accessible by StartTasks. Possible values include: 'task', 'pool'.
      *
      * @return the scope value
      */
@@ -40,7 +45,7 @@ public class AutoUserSpecification {
     }
 
     /**
-     * Set the default value is Task. Possible values include: 'task', 'pool'.
+     * Set the default value is pool. If the pool is running Windows a value of Task should be specified if stricter isolation between tasks is required. For example, if the task mutates the registry in a way which could impact other tasks, or if certificates have been specified on the pool which should not be accessible by normal tasks but should be accessible by StartTasks. Possible values include: 'task', 'pool'.
      *
      * @param scope the scope value to set
      * @return the AutoUserSpecification object itself.

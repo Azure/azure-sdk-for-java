@@ -17,6 +17,8 @@ trigger:
   paths:
     include:
       - sdk/eventhubs/
+    exclude:
+      - sdk/eventhubs/microsoft-azure
 
 pr:
   branches:
@@ -28,6 +30,8 @@ pr:
   paths:
     include:
       - sdk/eventhubs/
+    exclude:
+      - sdk/eventhubs/microsoft-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -36,3 +40,4 @@ stages:
       Artifacts:
         - name: azure-messaging-eventhubs
           safeName: azuremessagingeventhubs
+          stagingProfileId: 88192f04117501

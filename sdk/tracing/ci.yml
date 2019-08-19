@@ -36,3 +36,4 @@ stages:
       Artifacts:
         - name: tracing-opentelemetry
           safeName: tracingopentelemetry
+          stagingProfileId: 88192f04117501

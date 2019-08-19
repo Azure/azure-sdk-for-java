@@ -7,23 +7,23 @@ import com.azure.core.amqp.RetryOptions;
 import com.azure.core.implementation.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubConsumer;
+import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
 import reactor.core.scheduler.Scheduler;
 
 import java.util.Locale;
 import java.util.Optional;
 
 /**
- * The baseline set of options that can be specified when creating a {@link EventHubConsumer} to configure its
+ * The baseline set of options that can be specified when creating a {@link EventHubAsyncConsumer} to configure its
  * behavior.
  *
- * @see EventHubConsumer
+ * @see EventHubAsyncConsumer
  * @see EventHubAsyncClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  */
 @Fluent
 public class EventHubConsumerOptions implements Cloneable {
     /**
-     * The maximum length, in characters, for the identifier assigned to an {@link EventHubConsumer}.
+     * The maximum length, in characters, for the identifier assigned to an {@link EventHubAsyncConsumer}.
      */
     public static final int MAXIMUM_IDENTIFIER_LENGTH = 64;
     /**
