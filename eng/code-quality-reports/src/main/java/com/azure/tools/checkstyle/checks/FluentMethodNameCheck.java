@@ -17,9 +17,11 @@ import java.util.Set;
 
 /**
  * Model Class Method:
- *  Fluent Methods: All methods that return an instance of the class, and that have one parameter.
- *  The method name should not start with {@code avoidStartWords}.
- *  All methods should not be declared to throws any checked exceptions
+ * <ol>
+*  <li>Fluent Methods: All methods that return an instance of the class, and that have one parameter.</li>
+ * <li>The method name should not start with {@code avoidStartWords}.</li>
+ * <li>All methods should not be declared to throws any checked exceptions.</li>
+ * </ol>
  */
 public class FluentMethodNameCheck extends AbstractCheck {
 
@@ -104,14 +106,13 @@ public class FluentMethodNameCheck extends AbstractCheck {
      */
     private void checkMethodNamePrefix(DetailAST methodDefToken) {
         // 1, parameter count should be 1
-        Optional<DetailAST> parametersASTOption = TokenUtil.findFirstTokenByPredicate(methodDefToken,
-            c -> c.getType() == TokenTypes.PARAMETERS && c.getChildCount() == 1);
-        if (!parametersASTOption.isPresent()) {
+        if (!TokenUtil.findFirstTokenByPredicate(methodDefToken,
+            c -> c.getType() == TokenTypes.PARAMETERS && c.getChildCount() == 1).isPresent()) {
             return;
         }
 
         // 2, method type should be matched with class name
-        DetailAST typeToken = methodDefToken.findFirstToken(TokenTypes.TYPE);
+        final DetailAST typeToken = methodDefToken.findFirstToken(TokenTypes.TYPE);
         if (typeToken == null) {
             return;
         }
