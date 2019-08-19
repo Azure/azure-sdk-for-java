@@ -71,7 +71,7 @@ public final class PartitionBasedLoadBalancer {
     }
 
     /**
-     * TODO: Add javadoc
+     * TODO: Add javadoc.
      */
     public void loadBalance() {
         /*

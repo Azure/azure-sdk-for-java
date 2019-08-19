@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.CheckpointManager;
 import com.azure.messaging.eventhubs.CloseReason;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
+import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
 import com.azure.messaging.eventhubs.EventHubConsumer;
 import com.azure.messaging.eventhubs.EventProcessor;
 import com.azure.messaging.eventhubs.PartitionManager;
@@ -34,7 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PartitionPumpManager {
 
     private final ClientLogger logger = new ClientLogger(PartitionPumpManager.class);
-    private final Map<String, EventHubConsumer> partitionPumps = new ConcurrentHashMap<>();
+    private final Map<String, EventHubAsyncConsumer> partitionPumps = new ConcurrentHashMap<>();
     private final PartitionManager partitionManager;
     private final PartitionProcessorFactory partitionProcessorFactory;
     private final EventPosition initialEventPosition;
@@ -99,7 +100,7 @@ public class PartitionPumpManager {
                 : EventPosition.fromSequenceNumber(claimedOwnership.sequenceNumber());
 
         EventHubConsumerOptions eventHubConsumerOptions = new EventHubConsumerOptions().ownerLevel(0L);
-        EventHubConsumer eventHubConsumer = eventHubAsyncClient
+        EventHubAsyncConsumer eventHubConsumer = eventHubAsyncClient
             .createConsumer(claimedOwnership.consumerGroupName(), claimedOwnership.partitionId(),
                 startFromEventPosition,
                 eventHubConsumerOptions);
@@ -120,7 +121,7 @@ public class PartitionPumpManager {
             () -> partitionProcessor.close(CloseReason.EVENT_PROCESSOR_SHUTDOWN));
     }
 
-    private void handleError(PartitionOwnership claimedOwnership, EventHubConsumer eventHubConsumer,
+    private void handleError(PartitionOwnership claimedOwnership, EventHubAsyncConsumer eventHubConsumer,
         PartitionProcessor partitionProcessor, Throwable error) {
         try {
             // if there was an error, it also marks the end of the event data stream

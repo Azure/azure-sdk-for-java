@@ -7,7 +7,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -16,7 +15,7 @@ import static org.mockito.Mockito.when;
 
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubConsumer;
+import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
 import com.azure.messaging.eventhubs.InMemoryPartitionManager;
 import com.azure.messaging.eventhubs.LogPartitionProcessor;
 import com.azure.messaging.eventhubs.PartitionManager;
@@ -34,11 +33,13 @@ import java.util.stream.IntStream;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Unit tests for {@link PartitionBasedLoadBalancer}.
+ */
 public class PartitionBasedLoadBalancerTest {
 
     private final String eventHubName = "test-event-hub";
@@ -51,7 +52,7 @@ public class PartitionBasedLoadBalancerTest {
     private EventHubAsyncClient eventHubAsyncClient;
 
     @Mock
-    private EventHubConsumer eventHubConsumer;
+    private EventHubAsyncConsumer eventHubConsumer;
 
     @Before
     public void setup() {
