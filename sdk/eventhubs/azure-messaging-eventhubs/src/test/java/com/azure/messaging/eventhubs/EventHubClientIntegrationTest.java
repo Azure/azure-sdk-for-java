@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.http.rest.IterableResponse;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
@@ -52,7 +52,7 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
     @Test
     public void getPartitionIds() {
         // Act
-        final IterableResponse<String> response = client.getPartitionIds();
+        final IterableStream<String> response = client.getPartitionIds();
 
         // Assert
         Assert.assertNotNull(response);

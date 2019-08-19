@@ -75,6 +75,9 @@ known_content_issues:
   - ['sdk/cosmos/changelog/README.md', '#3113']
   - ['sdk/cosmos/microsoft-azure-cosmos-benchmark/README.md', '#3113']
   - ['sdk/cosmos/README.md', '#3113']
+  - ['sdk/storage/azure-storage-blob/swagger/README.md', '#3113']
+  - ['sdk/storage/azure-storage-queue/swagger/README.md', '#3113']
+  - ['sdk/storage/azure-storage-file/swagger/README.md', '#3113']
 package_indexing_exclusion_list:
   - azure-loganalytics-sample
   - azure-applicationinsights-query-sample

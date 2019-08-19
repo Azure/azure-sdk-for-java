@@ -40,7 +40,10 @@ stages:
       Artifacts:
         - name: azure-eventhubs
           safeName: azureeventhubs
+          stagingProfileId: 534d15ee3800f4
         - name: azure-eventhubs-eph
           safeName: azureeventhubseph
+          stagingProfileId: 534d15ee3800f4
         - name: azure-eventhubs-extensions
           safeName: azureeventhubsextensions
+          stagingProfileId: 534d15ee3800f4

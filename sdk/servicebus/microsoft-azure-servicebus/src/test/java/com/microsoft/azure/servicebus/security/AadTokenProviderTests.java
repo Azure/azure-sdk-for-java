@@ -14,17 +14,26 @@ import com.microsoft.azure.servicebus.TestUtils;
 import com.microsoft.azure.servicebus.security.AzureActiveDirectoryTokenProvider.AuthenticationCallback;
 
 public class AadTokenProviderTests {
-    private static final SecurityToken TEST_TOKEN = new SecurityToken(SecurityTokenType.JWT, "testAudience", "tokenString", Instant.now(), Instant.MAX);
-
+    
     @Test
     public void aadCallbackTokenProviderTest() {
-        AuthenticationCallback callback = (String audience, String authority, Object state) -> CompletableFuture.completedFuture(TEST_TOKEN);
-        TokenProvider tokenProvider = TokenProvider.createAzureActiveDirectoryTokenProvider(callback, "https://login.microsoftonline.com/common", null);
-        assertEquals(TEST_TOKEN, tokenProvider.getSecurityTokenAsync("testAudience").join());
+        String TEST_TOKEN = "eyJhbGciOiJIUzI1NiJ9.e30.ZRrHA1JJJW8opsbCGfG_HACGpVUMN_a9IV7pAx_Zmeo";
+        String TEST_AUDIENCE = "testAudience";
+        String TEST_AUTHORITY = "https://login.microsoftonline.com/common";
+        
+        AuthenticationCallback callback = (String audience, String authority, Object state) -> {
+            assertEquals(SecurityConstants.SERVICEBUS_AAD_AUDIENCE_RESOURCE_URL, audience);
+            assertEquals(TEST_AUTHORITY, authority);
+            return CompletableFuture.completedFuture(TEST_TOKEN);
+        };
+        TokenProvider tokenProvider = TokenProvider.createAzureActiveDirectoryTokenProvider(callback, TEST_AUTHORITY, null);
+        SecurityToken token = tokenProvider.getSecurityTokenAsync(TEST_AUDIENCE).join();
+        assertEquals(TEST_TOKEN, token.getTokenValue());
+        assertEquals(TEST_AUDIENCE, token.getTokenAudience());
 
         // Should throw when null callback is provided
         TestUtils.assertThrows(IllegalArgumentException.class, () -> {
-            TokenProvider.createAzureActiveDirectoryTokenProvider(null, "https://login.microsoftonline.com/common", null);
+            TokenProvider.createAzureActiveDirectoryTokenProvider(null, TEST_AUTHORITY, null);
         });
 
         // Should throw when null authority is provided

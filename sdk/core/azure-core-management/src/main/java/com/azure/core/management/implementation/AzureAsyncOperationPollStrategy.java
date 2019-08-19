@@ -59,11 +59,11 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
          * Create a new AzureAsyncOperationPollStrategyData object that will poll the provided operation
          * resource URL.
          * @param operationResourceUrl The URL of the operation resource this pollStrategy will poll.
-         * @param originalResourceUrl  The URL of the resource that the long running operation is
+         * @param originalResourceUrl The URL of the resource that the long running operation is
          *                             operating on.
-         * @param locationUrl          The location uri received from service along with operationResourceUrl.
-         * @param initialHttpMethod    The http method used to initiate the long running operation
-         * @param delayInMilliseconds  The delay (in milliseconds) that the pollStrategy will use when
+         * @param locationUrl The location uri received from service along with operationResourceUrl.
+         * @param initialHttpMethod The http method used to initiate the long running operation
+         * @param delayInMilliseconds The delay (in milliseconds) that the pollStrategy will use when
          *                             polling.
          */
         AzureAsyncOperationPollStrategyData(RestProxy restProxy, SwaggerMethodParser methodParser, URL operationResourceUrl, URL originalResourceUrl, URL locationUrl, HttpMethod initialHttpMethod, long delayInMilliseconds) {

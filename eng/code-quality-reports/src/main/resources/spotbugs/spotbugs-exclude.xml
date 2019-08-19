@@ -65,6 +65,8 @@
     <Or>
       <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
       <Class name="com.azure.storage.blob.implementation.AzureBlobStorageBuilder"/>
+      <Class name="com.azure.storage.file.implementation.AzureFileStorageBuilder"/>
+      <Class name="com.azure.storage.queue.implementation.AzureQueueStorageBuilder"/>
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
@@ -452,6 +454,13 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
+  <!-- Incorrect flagging, all the optional values can be null -->
+  <Match>
+    <Class name="com.azure.storage.blob.BlobClient"/>
+    <Method name="downloadToFile"/>
+    <Bug pattern="NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS"/>
+  </Match>
+
   <!-- Incorrect flagging, if the response is null a HttpResponseException should be thrown
   https://github.com/azure/azure-sdk-for-java/issues/4556 -->
   <Match>
@@ -536,5 +545,14 @@
   <Match>
     <Class name="com.azure.storage.blob.ServiceSASSignatureValues"/>
     <Bug pattern="UC_USELESS_CONDITION"/>
+  </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.azure.storage.blob.models.StorageException"/>
+      <Class name="com.azure.storage.file.models.StorageException"/>
+      <Class name="com.azure.storage.queue.models.StorageException"/>
+    </Or>
+    <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 </FindBugsFilter>
