@@ -23,6 +23,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -110,21 +111,25 @@ public class EcKeyIntegrationTests {
     }
 
     @Test
+    @Ignore("https://github.com/Azure/azure-sdk-for-java/issues/4993")
     public void testSignVerifyIntegrationES256() throws Exception {
         validateSignVerifyInterop(importTestKey("itwkk-p256", P256TestKey()), JsonWebKeySignatureAlgorithm.ES256, "SHA-256");
     }
 
     @Test
+    @Ignore("https://github.com/Azure/azure-sdk-for-java/issues/4993")
     public void testSignVerifyIntegrationES256K() throws Exception {
         validateSignVerifyInterop(importTestKey("itwkk-p256k", P256KTestKey()), JsonWebKeySignatureAlgorithm.ES256K, "SHA-256");
     }
 
     @Test
+    @Ignore("https://github.com/Azure/azure-sdk-for-java/issues/4993")
     public void testSignVerifyIntegrationES384() throws Exception {
         validateSignVerifyInterop(importTestKey("itwkk-p384", P384TestKey()), JsonWebKeySignatureAlgorithm.ES384, "SHA-384");
     }
 
     @Test
+    @Ignore("https://github.com/Azure/azure-sdk-for-java/issues/4993")
     public void testSignVerifyIntegrationES521() throws Exception {
         validateSignVerifyInterop(importTestKey("itwkk-p521", P521TestKey()), JsonWebKeySignatureAlgorithm.ES512, "SHA-512");
     }

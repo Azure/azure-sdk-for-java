@@ -1,39 +1,39 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://sdktest2.westcentralus.batch.azure.com/pools?api-version=2019-06-01.9.0",
+    "Uri" : "https://sdktest2.westcentralus.batch.azure.com/pools?api-version=2019-08-01.10.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:6af0687e9696ddb898873c0cf08ca2cbde35f03414152ca2b00c9aee10e6c335 Java:12.0.1 (BatchServiceClient, 2019-06-01.9.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:6af0687e9696ddb898873c0cf08ca2cbde35f03414152ca2b00c9aee10e6c335 Java:12.0.1 (BatchServiceClient, 2019-08-01.10.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Wed, 19 Jun 2019 18:17:46 GMT",
+      "date" : "Tue, 06 Aug 2019 17:16:12 GMT",
       "content-length" : "672",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "2d0b941b-c6ae-46d1-af5e-aaa98c30f15d",
+      "client-request-id" : "436f3729-00c4-4e7c-bf76-df11646bc67c",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "f9bb4ba2-e16a-4f64-88b6-da6479cc010d",
+      "request-id" : "181fb746-fda6-4cb1-a08b-2864b4131655",
       "StatusCode" : "400",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"InvalidPropertyValue\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The value provided for one of the properties in the request body is invalid.\\nRequestId:f9bb4ba2-e16a-4f64-88b6-da6479cc010d\\nTime:2019-06-19T18:17:46.7800587Z\"\r\n  },\"values\":[\r\n    {\r\n      \"key\":\"PropertyName\",\"value\":\"windowsUserConfiguration\"\r\n    },{\r\n      \"key\":\"Reason\",\"value\":\"The user configuration for user account 'testaccount' has a mismatch with the OS (Windows/Linux) configuration specified in VirtualMachineConfiguration\"\r\n    }\r\n  ]\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"InvalidPropertyValue\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The value provided for one of the properties in the request body is invalid.\\nRequestId:181fb746-fda6-4cb1-a08b-2864b4131655\\nTime:2019-08-06T17:16:13.2611535Z\"\r\n  },\"values\":[\r\n    {\r\n      \"key\":\"PropertyName\",\"value\":\"windowsUserConfiguration\"\r\n    },{\r\n      \"key\":\"Reason\",\"value\":\"The user configuration for user account 'testaccount' has a mismatch with the OS (Windows/Linux) configuration specified in VirtualMachineConfiguration\"\r\n    }\r\n  ]\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://sdktest2.westcentralus.batch.azure.com/pools/BatchUser-createLinuxPool?api-version=2019-06-01.9.0",
+    "Uri" : "https://sdktest2.westcentralus.batch.azure.com/pools/BatchUser-createLinuxPool?api-version=2019-08-01.10.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:6af0687e9696ddb898873c0cf08ca2cbde35f03414152ca2b00c9aee10e6c335 Java:12.0.1 (BatchServiceClient, 2019-06-01.9.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:6af0687e9696ddb898873c0cf08ca2cbde35f03414152ca2b00c9aee10e6c335 Java:12.0.1 (BatchServiceClient, 2019-08-01.10.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Wed, 19 Jun 2019 18:17:46 GMT",
+      "date" : "Tue, 06 Aug 2019 17:16:12 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "15ea72eb-9f85-4038-8e1c-136cde4514a8",
+      "client-request-id" : "82b51dec-9fb4-4a1d-9273-398dc9a7b89d",
       "retry-after" : "0",
-      "request-id" : "b8fc07c2-0863-431b-8658-24fac14e5e7c",
+      "request-id" : "efd78e45-9e9b-4dae-a963-150e9af0a365",
       "StatusCode" : "404",
       "dataserviceversion" : "3.0",
       "Body" : "",

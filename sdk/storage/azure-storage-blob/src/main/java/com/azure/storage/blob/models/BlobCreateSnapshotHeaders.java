@@ -40,6 +40,13 @@ public final class BlobCreateSnapshotHeaders {
     private DateTimeRfc1123 lastModified;
 
     /*
+     * If a client request id header is sent in the request, this header will
+     * be present in the response with the same value.
+     */
+    @JsonProperty(value = "x-ms-client-request-id")
+    private String clientRequestId;
+
+    /*
      * This header uniquely identifies the request that was made and can be
      * used for troubleshooting the request.
      */
@@ -85,6 +92,14 @@ public final class BlobCreateSnapshotHeaders {
      */
     @JsonProperty(value = "x-ms-encryption-key-sha256")
     private String encryptionKeySha256;
+
+    /*
+     * The encryption scope used to encrypt the source blob. This header is
+     * only returned when the blob was encrypted with customer specified
+     * encryption.
+     */
+    @JsonProperty(value = "x-ms-encryption-scope")
+    private String encryptionScope;
 
     /*
      * The errorCode property.
@@ -170,6 +185,30 @@ public final class BlobCreateSnapshotHeaders {
         } else {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
+        return this;
+    }
+
+    /**
+     * Get the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
+     *
+     * @return the clientRequestId value.
+     */
+    public String clientRequestId() {
+        return this.clientRequestId;
+    }
+
+    /**
+     * Set the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
+     *
+     * @param clientRequestId the clientRequestId value to set.
+     * @return the BlobCreateSnapshotHeaders object itself.
+     */
+    public BlobCreateSnapshotHeaders clientRequestId(String clientRequestId) {
+        this.clientRequestId = clientRequestId;
         return this;
     }
 
@@ -321,6 +360,30 @@ public final class BlobCreateSnapshotHeaders {
      */
     public BlobCreateSnapshotHeaders encryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
+        return this;
+    }
+
+    /**
+     * Get the encryptionScope property: The encryption scope used to encrypt
+     * the source blob. This header is only returned when the blob was
+     * encrypted with customer specified encryption.
+     *
+     * @return the encryptionScope value.
+     */
+    public String encryptionScope() {
+        return this.encryptionScope;
+    }
+
+    /**
+     * Set the encryptionScope property: The encryption scope used to encrypt
+     * the source blob. This header is only returned when the blob was
+     * encrypted with customer specified encryption.
+     *
+     * @param encryptionScope the encryptionScope value to set.
+     * @return the BlobCreateSnapshotHeaders object itself.
+     */
+    public BlobCreateSnapshotHeaders encryptionScope(String encryptionScope) {
+        this.encryptionScope = encryptionScope;
         return this;
     }
 

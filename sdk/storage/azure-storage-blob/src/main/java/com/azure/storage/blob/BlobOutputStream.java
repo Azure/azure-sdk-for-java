@@ -9,6 +9,7 @@ import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageBlobAccessConditions;
 import com.azure.storage.blob.models.PageRange;
+import com.azure.storage.blob.models.StorageException;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import org.reactivestreams.Subscriber;
@@ -74,12 +75,9 @@ public final class BlobOutputStream extends OutputStream {
 
     /**
      * Initializes a new instance of the BlobOutputStream class.
+     * @param parentBlob A {@link BlobAsyncClient} object which represents the blob that this stream is associated with.
      *
-     * @param parentBlob
-     *            A {@link BlobAsyncClient} object which represents the blob that this stream is associated with.
-     *
-     * @throws StorageException
-     *             An exception representing any error which occurred during the operation.
+     * @throws StorageException An exception representing any error which occurred during the operation.
      */
     private BlobOutputStream(final BlobAsyncClient parentBlob) throws StorageException {
         this.blobClient = parentBlob;
@@ -108,14 +106,10 @@ public final class BlobOutputStream extends OutputStream {
 
     /**
      * Initializes a new instance of the BlobOutputStream class for a CloudBlockBlob
+     * @param parentBlob A {@link BlobAsyncClient} object which represents the blob that this stream is associated with.
+     * @param accessCondition An {@link BlobAccessConditions} object which represents the access conditions for the blob.
      *
-     * @param parentBlob
-     *            A {@link BlobAsyncClient} object which represents the blob that this stream is associated with.
-     * @param accessCondition
-     *            An {@link BlobAccessConditions} object which represents the access conditions for the blob.
-     *
-     * @throws StorageException
-     *             An exception representing any error which occurred during the operation.
+     * @throws StorageException An exception representing any error which occurred during the operation.
      */
     BlobOutputStream(final BlockBlobAsyncClient parentBlob, final BlobAccessConditions accessCondition) throws StorageException {
         this((BlobAsyncClient) parentBlob);
@@ -131,16 +125,12 @@ public final class BlobOutputStream extends OutputStream {
     /**
      * Initializes a new instance of the BlobOutputStream class for a CloudPageBlob
      *
-     * @param parentBlob
-     *            A {@link PageBlobClient} object which represents the blob that this stream is associated with.
-     * @param length
-     *            A <code>long</code> which represents the length of the page blob in bytes, which must be a multiple of
+     * @param parentBlob A {@link PageBlobClient} object which represents the blob that this stream is associated with.
+     * @param length A <code>long</code> which represents the length of the page blob in bytes, which must be a multiple of
      *            512.
-     * @param accessCondition
-     *            An {@link BlobAccessConditions} object which represents the access conditions for the blob.
+     * @param accessCondition An {@link BlobAccessConditions} object which represents the access conditions for the blob.
      *
-     * @throws StorageException
-     *             An exception representing any error which occurred during the operation.
+     * @throws StorageException An exception representing any error which occurred during the operation.
      */
     BlobOutputStream(final PageBlobAsyncClient parentBlob, final long length, final BlobAccessConditions accessCondition)
         throws StorageException {
@@ -153,13 +143,11 @@ public final class BlobOutputStream extends OutputStream {
     /**
      * Initializes a new instance of the BlobOutputStream class for a CloudAppendBlob
      *
-     * @param parentBlob
-     *            A {@link AppendBlobAsyncClient} object which represents the blob that this stream is associated with.
-     * @param accessCondition
-     *            An {@link BlobAccessConditions} object which represents the access conditions for the blob.
      *
-     * @throws StorageException
-     *             An exception representing any error which occurred during the operation.
+     * @param parentBlob A {@link AppendBlobAsyncClient} object which represents the blob that this stream is associated with.
+     * @param accessCondition An {@link BlobAccessConditions} object which represents the access conditions for the blob.
+     *
+     * @throws StorageException An exception representing any error which occurred during the operation.
      */
     BlobOutputStream(final AppendBlobAsyncClient parentBlob, final AppendBlobAccessConditions accessCondition)
         throws StorageException {
@@ -173,7 +161,7 @@ public final class BlobOutputStream extends OutputStream {
             if (accessCondition.appendPositionAccessConditions().appendPosition() != null) {
                 this.initialBlobOffset = accessCondition.appendPositionAccessConditions().appendPosition();
             } else {
-                this.initialBlobOffset = parentBlob.getProperties().block().value().blobSize();
+                this.initialBlobOffset = parentBlob.getProperties().block().blobSize();
             }
         }
 
@@ -182,10 +170,8 @@ public final class BlobOutputStream extends OutputStream {
 
     /**
      * Helper function to check if the stream is faulted, if it is it surfaces the exception.
-     *
-     * @throws IOException
-     *             If an I/O error occurs. In particular, an IOException may be thrown if the output stream has been
-     *             closed.
+     * @throws IOException If an I/O error occurs. In particular, an IOException may be thrown if the output stream has been
+     *                     closed.
      */
     private void checkStreamState() throws IOException {
         if (this.lastError != null) {
@@ -197,8 +183,7 @@ public final class BlobOutputStream extends OutputStream {
      * Closes this output stream and releases any system resources associated with this stream. If any data remains in
      * the buffer it is committed to the service.
      *
-     * @throws IOException
-     *             If an I/O error occurs.
+     * @throws IOException If an I/O error occurs.
      */
     @Override
     public synchronized void close() throws IOException {
@@ -224,32 +209,28 @@ public final class BlobOutputStream extends OutputStream {
 
     /**
      * Commits the blob, for block blob this uploads the block list.
-     *
-     * @throws StorageException
-     *             An exception representing any error which occurred during the operation.
+     * @throws StorageException An exception representing any error which occurred during the operation.
      */
     private synchronized void commit() throws StorageException {
         if (this.streamType == BlobType.BLOCK_BLOB) {
             // wait for all blocks to finish
             assert this.blobClient instanceof BlockBlobAsyncClient;
             final BlockBlobAsyncClient blobRef = (BlockBlobAsyncClient) this.blobClient;
-            blobRef.commitBlockList(new ArrayList<>(this.blockList.values()), null, null, this.accessCondition).block();
+            blobRef.commitBlockListWithResponse(new ArrayList<>(this.blockList.values()), null, null, this.accessCondition, null).block();
         }
     }
 
     /**
      * Dispatches a write operation for a given length.
-     *
-     * @throws IOException
-     *             If an I/O error occurs. In particular, an IOException may be thrown if the output stream has been
-     *             closed.
+     * @throws IOException If an I/O error occurs. In particular, an IOException may be thrown if the output stream has been
+     *                     closed.
      */
     private Mono<Integer> dispatchWrite(Flux<ByteBuf> bufferRef, int writeLength, long offset) {
         if (writeLength == 0) {
             return Mono.empty();
         }
 
-        if (this.streamType == BlobType.PAGE_BLOB && (writeLength % Constants.PAGE_SIZE != 0)) {
+        if (this.streamType == BlobType.PAGE_BLOB && (writeLength % PageBlobAsyncClient.PAGE_BYTES != 0)) {
             return Mono.error(new IOException(String.format(SR.INVALID_NUMBER_OF_BYTES_IN_THE_BUFFER, writeLength)));
         }
 
@@ -281,7 +262,7 @@ public final class BlobOutputStream extends OutputStream {
 
         LeaseAccessConditions leaseAccessConditions = accessCondition == null ? null : accessCondition.leaseAccessConditions();
 
-        return blobRef.stageBlock(blockId, blockData, writeLength, leaseAccessConditions)
+        return blobRef.stageBlockWithResponse(blockId, blockData, writeLength, leaseAccessConditions)
             .then()
             .onErrorResume(t -> t instanceof StorageException, e -> {
                 this.lastError = new IOException(e);
@@ -295,7 +276,7 @@ public final class BlobOutputStream extends OutputStream {
 
         PageBlobAccessConditions pageBlobAccessConditions = accessCondition == null ? null : new PageBlobAccessConditions().leaseAccessConditions(accessCondition.leaseAccessConditions()).modifiedAccessConditions(accessCondition.modifiedAccessConditions());
 
-        return blobRef.uploadPages(new PageRange().start(offset).end(offset + writeLength - 1), pageData, pageBlobAccessConditions)
+        return blobRef.uploadPagesWithResponse(new PageRange().start(offset).end(offset + writeLength - 1), pageData, pageBlobAccessConditions)
             .then()
             .onErrorResume(t -> t instanceof StorageException, e -> {
                 this.lastError = new IOException(e);
@@ -312,7 +293,7 @@ public final class BlobOutputStream extends OutputStream {
         this.appendPositionAccessConditions.appendPosition(offset);
 
         AppendBlobAccessConditions appendBlobAccessConditions = accessCondition == null ? null : new AppendBlobAccessConditions().leaseAccessConditions(accessCondition.leaseAccessConditions()).modifiedAccessConditions(accessCondition.modifiedAccessConditions());
-        return blobRef.appendBlock(blockData, writeLength, appendBlobAccessConditions)
+        return blobRef.appendBlockWithResponse(blockData, writeLength, appendBlobAccessConditions)
             .then()
             .onErrorResume(t -> t instanceof IOException || t instanceof StorageException, e -> {
                 this.lastError = new IOException(e);
@@ -323,9 +304,7 @@ public final class BlobOutputStream extends OutputStream {
     /**
      * Flushes this output stream and forces any buffered output bytes to be written out. If any data remains in the
      * buffer it is committed to the service.
-     *
-     * @throws IOException
-     *             If an I/O error occurs.
+     * @throws IOException If an I/O error occurs.
      */
     @Override
     public void flush() throws IOException {
@@ -334,7 +313,6 @@ public final class BlobOutputStream extends OutputStream {
 
     /**
      * Generates a new block ID to be used for PutBlock.
-     *
      * @return Base64 encoded block ID
      */
     private String getCurrentBlockId() {
@@ -349,13 +327,10 @@ public final class BlobOutputStream extends OutputStream {
     /**
      * Writes <code>b.length</code> bytes from the specified byte array to this output stream.
      * <p>
+     * @param data A <code>byte</code> array which represents the data to write.
      *
-     * @param data
-     *            A <code>byte</code> array which represents the data to write.
-     *
-     * @throws IOException
-     *             If an I/O error occurs. In particular, an IOException may be thrown if the output stream has been
-     *             closed.
+     * @throws IOException If an I/O error occurs. In particular, an IOException may be thrown if the output stream has been
+     *                     closed.
      */
     @Override
     public void write(final byte[] data) throws IOException {
@@ -365,17 +340,12 @@ public final class BlobOutputStream extends OutputStream {
     /**
      * Writes length bytes from the specified byte array starting at offset to this output stream.
      * <p>
+     * @param data A <code>byte</code> array which represents the data to write.
+     * @param offset An <code>int</code> which represents the start offset in the data.
+     * @param length An <code>int</code> which represents the number of bytes to write.
      *
-     * @param data
-     *            A <code>byte</code> array which represents the data to write.
-     * @param offset
-     *            An <code>int</code> which represents the start offset in the data.
-     * @param length
-     *            An <code>int</code> which represents the number of bytes to write.
-     *
-     * @throws IOException
-     *             If an I/O error occurs. In particular, an IOException may be thrown if the output stream has been
-     *             closed.
+     * @throws IOException If an I/O error occurs. In particular, an IOException may be thrown if the output stream has been
+     *                     closed.
      */
     @Override
     public void write(final byte[] data, final int offset, final int length) throws IOException {
@@ -392,32 +362,24 @@ public final class BlobOutputStream extends OutputStream {
      * of b are ignored.
      * <p>
      * <code>true</code> is acceptable for you.
+     * @param byteVal An <code>int</code> which represents the bye value to write.
      *
-     * @param byteVal
-     *            An <code>int</code> which represents the bye value to write.
-     *
-     * @throws IOException
-     *             If an I/O error occurs. In particular, an IOException may be thrown if the output stream has been
-     *             closed.
+     * @throws IOException If an I/O error occurs. In particular, an IOException may be thrown if the output stream has been
+     *                     closed.
      */
     @Override
     public void write(final int byteVal) throws IOException {
-        this.write(new byte[] { (byte) (byteVal & 0xFF) });
+        this.write(new byte[]{(byte) (byteVal & 0xFF)});
     }
 
     /**
      * Writes the data to the buffer and triggers writes to the service as needed.
+     * @param data A <code>byte</code> array which represents the data to write.
+     * @param offset An <code>int</code> which represents the start offset in the data.
+     * @param length An <code>int</code> which represents the number of bytes to write.
      *
-     * @param data
-     *            A <code>byte</code> array which represents the data to write.
-     * @param offset
-     *            An <code>int</code> which represents the start offset in the data.
-     * @param length
-     *            An <code>int</code> which represents the number of bytes to write.
-     *
-     * @throws IOException
-     *             If an I/O error occurs. In particular, an IOException may be thrown if the output stream has been
-     *             closed.
+     * @throws IOException If an I/O error occurs. In particular, an IOException may be thrown if the output stream has been
+     *                     closed.
      */
     private void writeInternal(final byte[] data, int offset, int length) {
         int chunks = (int) (Math.ceil((double) length / (double) this.internalWriteThreshold));
@@ -588,7 +550,7 @@ public final class BlobOutputStream extends OutputStream {
                     doRead();
                 }
                 int missed = 1;
-                for (;;) {
+                for (; ;) {
                     if (cancelled) {
                         return;
                     }

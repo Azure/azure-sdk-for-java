@@ -35,7 +35,7 @@ public final class CertificateUtil {
         Pattern pattern = Pattern.compile("(?s)-----BEGIN PRIVATE KEY-----.*-----END PRIVATE KEY-----");
         Matcher matcher = pattern.matcher(new String(pem, StandardCharsets.UTF_8));
         if (!matcher.find()) {
-            LOGGER.logAndThrow(new IllegalArgumentException("Certificate file provided is not a valid PEM file."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Certificate file provided is not a valid PEM file."));
         }
         String base64 = matcher.group()
                 .replace("-----BEGIN PRIVATE KEY-----", "")
@@ -48,8 +48,7 @@ public final class CertificateUtil {
             KeyFactory kf = KeyFactory.getInstance("RSA");
             return kf.generatePrivate(spec);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            LOGGER.logAndThrow(new RuntimeException(e));
-            return null;
+            throw LOGGER.logExceptionAsError(new IllegalStateException(e));
         }
     }
 
@@ -62,15 +61,14 @@ public final class CertificateUtil {
         Pattern pattern = Pattern.compile("(?s)-----BEGIN CERTIFICATE-----.*-----END CERTIFICATE-----");
         Matcher matcher = pattern.matcher(new String(pem, StandardCharsets.UTF_8));
         if (!matcher.find()) {
-            LOGGER.logAndThrow(new IllegalArgumentException("PEM certificate provided does not contain -----BEGIN CERTIFICATE-----END CERTIFICATE----- block"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("PEM certificate provided does not contain -----BEGIN CERTIFICATE-----END CERTIFICATE----- block"));
         }
         try {
             CertificateFactory factory = CertificateFactory.getInstance("X.509");
             InputStream stream = new ByteArrayInputStream(matcher.group().getBytes(StandardCharsets.UTF_8));
             return (X509Certificate) factory.generateCertificate(stream);
         } catch (CertificateException e) {
-            LOGGER.logAndThrow(new RuntimeException(e));
-            return null;
+            throw LOGGER.logExceptionAsError(new IllegalStateException(e));
         }
     }
 

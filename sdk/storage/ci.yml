@@ -34,9 +34,15 @@ stages:
     parameters:
       ServiceDirectory: storage
       Artifacts:
+        - name: azure-storage-common
+          safeName: azurestoragecommon
+          stagingProfileId: 88192f04117501
         - name: azure-storage-blob
           safeName: azurestorageblob
+          stagingProfileId: 88192f04117501
         - name: azure-storage-file
           safeName: azurestoragefile
+          stagingProfileId: 88192f04117501
         - name: azure-storage-queue
           safeName: azurestoragequeue
+          stagingProfileId: 88192f04117501

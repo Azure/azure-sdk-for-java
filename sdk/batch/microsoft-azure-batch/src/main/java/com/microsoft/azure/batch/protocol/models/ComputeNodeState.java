@@ -24,7 +24,7 @@ public enum ComputeNodeState {
     /** The Compute Node is reimaging. */
     REIMAGING("reimaging"),
 
-    /** The Compute Node is running one or more Tasks (other than a start task). */
+    /** The Compute Node is running one or more Tasks (other than a StartTask). */
     RUNNING("running"),
 
     /** The Compute Node cannot be used for Task execution due to errors. */
@@ -36,10 +36,10 @@ public enum ComputeNodeState {
     /** The Batch service is starting on the underlying virtual machine. */
     STARTING("starting"),
 
-    /** The start Task has started running on the Compute Node, but waitForSuccess is set and the start Task has not yet completed. */
+    /** The StartTask has started running on the Compute Node, but waitForSuccess is set and the StartTask has not yet completed. */
     WAITING_FOR_START_TASK("waitingforstarttask"),
 
-    /** The start Task has failed on the Compute Node (and exhausted all retries), and waitForSuccess is set. The Compute Node is not usable for running Tasks. */
+    /** The StartTask has failed on the Compute Node (and exhausted all retries), and waitForSuccess is set. The Compute Node is not usable for running Tasks. */
     START_TASK_FAILED("starttaskfailed"),
 
     /** The Batch service has lost contact with the Compute Node, and does not know its true state. */
