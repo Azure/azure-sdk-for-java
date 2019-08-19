@@ -169,7 +169,13 @@ public class DirectoryAsyncClient {
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
      */
     public Mono<Response<DirectoryInfo>> create(Map<String, String> metadata) {
-        return azureFileStorageClient.directorys().createWithRestResponseAsync(shareName, directoryPath, null, null, null, null, metadata, null, null, Context.NONE)
+        // TODO (alzimmer): These properties are dummy defaults to allow the new service version to be used. Remove these and use correct defaults when known (https://github.com/Azure/azure-sdk-for-java/issues/5039)
+        String fileAttributes = "None";
+        String filePermission = "inherit";
+        String fileCreationTime = "now";
+        String fileLastWriteTime = "now";
+
+        return azureFileStorageClient.directorys().createWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime, fileLastWriteTime, null, metadata, filePermission, null, Context.NONE)
             .map(this::createWithRestResponse);
     }
 

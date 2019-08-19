@@ -37,31 +37,6 @@ public final class AzureFileStorageImpl {
     }
 
     /**
-     * Only update is supported: - Update: Writes the bytes downloaded from the source url into the specified range.
-     */
-    private String fileRangeWriteFromUrl;
-
-    /**
-     * Gets Only update is supported: - Update: Writes the bytes downloaded from the source url into the specified range.
-     *
-     * @return the fileRangeWriteFromUrl value.
-     */
-    public String getFileRangeWriteFromUrl() {
-        return this.fileRangeWriteFromUrl;
-    }
-
-    /**
-     * Sets Only update is supported: - Update: Writes the bytes downloaded from the source url into the specified range.
-     *
-     * @param fileRangeWriteFromUrl the fileRangeWriteFromUrl value.
-     * @return the service client itself.
-     */
-    AzureFileStorageImpl setFileRangeWriteFromUrl(String fileRangeWriteFromUrl) {
-        this.fileRangeWriteFromUrl = fileRangeWriteFromUrl;
-        return this;
-    }
-
-    /**
      * The URL of the service account, share, directory or file that is the target of the desired operation.
      */
     private String url;

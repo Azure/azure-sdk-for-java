@@ -4,7 +4,6 @@
 
 package com.azure.storage.file.implementation;
 
-import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.annotation.BodyParam;
 import com.azure.core.implementation.annotation.Delete;
@@ -41,7 +40,6 @@ import com.azure.storage.file.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.models.StorageErrorException;
 import io.netty.buffer.ByteBuf;
-import java.time.OffsetDateTime;
 import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -81,7 +79,7 @@ public final class FilesImpl {
         @Put("{shareName}/{filePath}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesCreateResponse> create(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") long fileContentLength, @HeaderParam("x-ms-type") String fileTypeConstant, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") DateTimeRfc1123 fileCreationTime, @HeaderParam("x-ms-file-last-write-time") DateTimeRfc1123 fileLastWriteTime, @HeaderParam("x-ms-content-type") String fileContentType, @HeaderParam("x-ms-content-encoding") String fileContentEncoding, @HeaderParam("x-ms-content-language") String fileContentLanguage, @HeaderParam("x-ms-cache-control") String fileCacheControl, @HeaderParam("x-ms-content-md5") String fileContentMD5, @HeaderParam("x-ms-content-disposition") String fileContentDisposition, Context context);
+        Mono<FilesCreateResponse> create(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") long fileContentLength, @HeaderParam("x-ms-type") String fileTypeConstant, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") String fileCreationTime, @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime, @HeaderParam("x-ms-content-type") String fileContentType, @HeaderParam("x-ms-content-encoding") String fileContentEncoding, @HeaderParam("x-ms-content-language") String fileContentLanguage, @HeaderParam("x-ms-cache-control") String fileCacheControl, @HeaderParam("x-ms-content-md5") String fileContentMD5, @HeaderParam("x-ms-content-disposition") String fileContentDisposition, Context context);
 
         @Get("{shareName}/{filePath}")
         @ExpectedResponses({200, 206})
@@ -100,7 +98,7 @@ public final class FilesImpl {
         @Put("{shareName}/{filePath}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesSetHTTPHeadersResponse> setHTTPHeaders(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") Long fileContentLength, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") DateTimeRfc1123 fileCreationTime, @HeaderParam("x-ms-file-last-write-time") DateTimeRfc1123 fileLastWriteTime, @QueryParam("comp") String comp, @HeaderParam("x-ms-content-type") String fileContentType, @HeaderParam("x-ms-content-encoding") String fileContentEncoding, @HeaderParam("x-ms-content-language") String fileContentLanguage, @HeaderParam("x-ms-cache-control") String fileCacheControl, @HeaderParam("x-ms-content-md5") String fileContentMD5, @HeaderParam("x-ms-content-disposition") String fileContentDisposition, Context context);
+        Mono<FilesSetHTTPHeadersResponse> setHTTPHeaders(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") Long fileContentLength, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") String fileCreationTime, @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime, @QueryParam("comp") String comp, @HeaderParam("x-ms-content-type") String fileContentType, @HeaderParam("x-ms-content-encoding") String fileContentEncoding, @HeaderParam("x-ms-content-language") String fileContentLanguage, @HeaderParam("x-ms-cache-control") String fileCacheControl, @HeaderParam("x-ms-content-md5") String fileContentMD5, @HeaderParam("x-ms-content-disposition") String fileContentDisposition, Context context);
 
         @Put("{shareName}/{filePath}")
         @ExpectedResponses({200})
@@ -157,7 +155,7 @@ public final class FilesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesCreateResponse> createWithRestResponseAsync(String shareName, String filePath, long fileContentLength, String fileAttributes, OffsetDateTime fileCreationTime, OffsetDateTime fileLastWriteTime, Context context) {
+    public Mono<FilesCreateResponse> createWithRestResponseAsync(String shareName, String filePath, long fileContentLength, String fileAttributes, String fileCreationTime, String fileLastWriteTime, Context context) {
         final Integer timeout = null;
         final String fileTypeConstant = "file";
         final Map<String, String> metadata = null;
@@ -168,10 +166,8 @@ public final class FilesImpl {
         final String fileContentLanguage = null;
         final String fileCacheControl = null;
         final String fileContentDisposition = null;
-        DateTimeRfc1123 fileCreationTimeConverted = new DateTimeRfc1123(fileCreationTime);
-        DateTimeRfc1123 fileLastWriteTimeConverted = new DateTimeRfc1123(fileLastWriteTime);
         String fileContentMD5Converted = null;
-        return service.create(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTimeConverted, fileLastWriteTimeConverted, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
+        return service.create(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
     }
 
     /**
@@ -193,7 +189,7 @@ public final class FilesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesCreateResponse> createWithRestResponseAsync(String shareName, String filePath, long fileContentLength, String fileAttributes, OffsetDateTime fileCreationTime, OffsetDateTime fileLastWriteTime, Integer timeout, Map<String, String> metadata, String filePermission, String filePermissionKey, FileHTTPHeaders fileHTTPHeaders, Context context) {
+    public Mono<FilesCreateResponse> createWithRestResponseAsync(String shareName, String filePath, long fileContentLength, String fileAttributes, String fileCreationTime, String fileLastWriteTime, Integer timeout, Map<String, String> metadata, String filePermission, String filePermissionKey, FileHTTPHeaders fileHTTPHeaders, Context context) {
         final String fileTypeConstant = "file";
         String fileContentType = null;
         if (fileHTTPHeaders != null) {
@@ -219,10 +215,8 @@ public final class FilesImpl {
         if (fileHTTPHeaders != null) {
             fileContentDisposition = fileHTTPHeaders.fileContentDisposition();
         }
-        DateTimeRfc1123 fileCreationTimeConverted = new DateTimeRfc1123(fileCreationTime);
-        DateTimeRfc1123 fileLastWriteTimeConverted = new DateTimeRfc1123(fileLastWriteTime);
         String fileContentMD5Converted = Base64Util.encodeToString(fileContentMD5);
-        return service.create(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTimeConverted, fileLastWriteTimeConverted, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
+        return service.create(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
     }
 
     /**
@@ -334,7 +328,7 @@ public final class FilesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesSetHTTPHeadersResponse> setHTTPHeadersWithRestResponseAsync(String shareName, String filePath, String fileAttributes, OffsetDateTime fileCreationTime, OffsetDateTime fileLastWriteTime, Context context) {
+    public Mono<FilesSetHTTPHeadersResponse> setHTTPHeadersWithRestResponseAsync(String shareName, String filePath, String fileAttributes, String fileCreationTime, String fileLastWriteTime, Context context) {
         final Integer timeout = null;
         final Long fileContentLength = null;
         final String filePermission = null;
@@ -345,10 +339,8 @@ public final class FilesImpl {
         final String fileContentLanguage = null;
         final String fileCacheControl = null;
         final String fileContentDisposition = null;
-        DateTimeRfc1123 fileCreationTimeConverted = new DateTimeRfc1123(fileCreationTime);
-        DateTimeRfc1123 fileLastWriteTimeConverted = new DateTimeRfc1123(fileLastWriteTime);
         String fileContentMD5Converted = null;
-        return service.setHTTPHeaders(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, filePermission, filePermissionKey, fileAttributes, fileCreationTimeConverted, fileLastWriteTimeConverted, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
+        return service.setHTTPHeaders(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
     }
 
     /**
@@ -369,7 +361,7 @@ public final class FilesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesSetHTTPHeadersResponse> setHTTPHeadersWithRestResponseAsync(String shareName, String filePath, String fileAttributes, OffsetDateTime fileCreationTime, OffsetDateTime fileLastWriteTime, Integer timeout, Long fileContentLength, String filePermission, String filePermissionKey, FileHTTPHeaders fileHTTPHeaders, Context context) {
+    public Mono<FilesSetHTTPHeadersResponse> setHTTPHeadersWithRestResponseAsync(String shareName, String filePath, String fileAttributes, String fileCreationTime, String fileLastWriteTime, Integer timeout, Long fileContentLength, String filePermission, String filePermissionKey, FileHTTPHeaders fileHTTPHeaders, Context context) {
         final String comp = "properties";
         String fileContentType = null;
         if (fileHTTPHeaders != null) {
@@ -395,10 +387,8 @@ public final class FilesImpl {
         if (fileHTTPHeaders != null) {
             fileContentDisposition = fileHTTPHeaders.fileContentDisposition();
         }
-        DateTimeRfc1123 fileCreationTimeConverted = new DateTimeRfc1123(fileCreationTime);
-        DateTimeRfc1123 fileLastWriteTimeConverted = new DateTimeRfc1123(fileLastWriteTime);
         String fileContentMD5Converted = Base64Util.encodeToString(fileContentMD5);
-        return service.setHTTPHeaders(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, filePermission, filePermissionKey, fileAttributes, fileCreationTimeConverted, fileLastWriteTimeConverted, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
+        return service.setHTTPHeaders(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
     }
 
     /**
@@ -494,11 +484,12 @@ public final class FilesImpl {
     public Mono<FilesUploadRangeFromURLResponse> uploadRangeFromURLWithRestResponseAsync(String shareName, String filePath, String range, String copySource, long contentLength, Context context) {
         final Integer timeout = null;
         final String sourceRange = null;
+        final String fileRangeWriteFromUrl = "update";
         final String comp = "range";
         String sourceContentCrc64Converted = null;
         String sourceIfMatchCrc64Converted = null;
         String sourceIfNoneMatchCrc64Converted = null;
-        return service.uploadRangeFromURL(shareName, filePath, this.client.getUrl(), timeout, range, copySource, sourceRange, this.client.getFileRangeWriteFromUrl(), contentLength, sourceContentCrc64Converted, this.client.getVersion(), comp, sourceIfMatchCrc64Converted, sourceIfNoneMatchCrc64Converted, context);
+        return service.uploadRangeFromURL(shareName, filePath, this.client.getUrl(), timeout, range, copySource, sourceRange, fileRangeWriteFromUrl, contentLength, sourceContentCrc64Converted, this.client.getVersion(), comp, sourceIfMatchCrc64Converted, sourceIfNoneMatchCrc64Converted, context);
     }
 
     /**
@@ -519,6 +510,7 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesUploadRangeFromURLResponse> uploadRangeFromURLWithRestResponseAsync(String shareName, String filePath, String range, String copySource, long contentLength, Integer timeout, String sourceRange, byte[] sourceContentCrc64, SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
+        final String fileRangeWriteFromUrl = "update";
         final String comp = "range";
         byte[] sourceIfMatchCrc64 = null;
         if (sourceModifiedAccessConditions != null) {
@@ -531,7 +523,7 @@ public final class FilesImpl {
         String sourceContentCrc64Converted = Base64Util.encodeToString(sourceContentCrc64);
         String sourceIfMatchCrc64Converted = Base64Util.encodeToString(sourceIfMatchCrc64);
         String sourceIfNoneMatchCrc64Converted = Base64Util.encodeToString(sourceIfNoneMatchCrc64);
-        return service.uploadRangeFromURL(shareName, filePath, this.client.getUrl(), timeout, range, copySource, sourceRange, this.client.getFileRangeWriteFromUrl(), contentLength, sourceContentCrc64Converted, this.client.getVersion(), comp, sourceIfMatchCrc64Converted, sourceIfNoneMatchCrc64Converted, context);
+        return service.uploadRangeFromURL(shareName, filePath, this.client.getUrl(), timeout, range, copySource, sourceRange, fileRangeWriteFromUrl, contentLength, sourceContentCrc64Converted, this.client.getVersion(), comp, sourceIfMatchCrc64Converted, sourceIfNoneMatchCrc64Converted, context);
     }
 
     /**
