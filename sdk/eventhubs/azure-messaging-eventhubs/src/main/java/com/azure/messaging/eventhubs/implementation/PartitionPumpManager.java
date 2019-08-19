@@ -18,6 +18,7 @@ import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -115,10 +116,9 @@ public class PartitionPumpManager {
                 /* event processing threw an exception */
                 handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex);
             }
-        },
-        /* EventHubConsumer receive() returned an error */
-        ex -> handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex),
-        () -> partitionProcessor.close(CloseReason.EVENT_PROCESSOR_SHUTDOWN));
+        }, /* EventHubConsumer receive() returned an error */
+            ex -> handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex),
+            () -> partitionProcessor.close(CloseReason.EVENT_PROCESSOR_SHUTDOWN));
     }
 
     private void handleError(PartitionOwnership claimedOwnership, EventHubAsyncConsumer eventHubConsumer,
@@ -134,13 +134,18 @@ public class PartitionPumpManager {
                 partitionProcessor.close(CloseReason.LOST_PARTITION_OWNERSHIP);
             }
 
-            // close the consumer
-            eventHubConsumer.close();
         } catch (Exception ex) {
             logger.warning("Failed while processing error on receive {}", claimedOwnership.partitionId(), ex);
         } finally {
-            // finally, remove the partition from partitionPumps map
-            partitionPumps.remove(claimedOwnership.partitionId());
+            try {
+                // close the consumer
+                eventHubConsumer.close();
+            } catch (IOException ex) {
+                logger.warning("Failed to close EventHubConsumer for partition {}", claimedOwnership.partitionId(), ex);
+            } finally {
+                // finally, remove the partition from partitionPumps map
+                partitionPumps.remove(claimedOwnership.partitionId());
+            }
         }
     }
 }
