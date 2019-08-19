@@ -7,13 +7,13 @@
     <parent>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-keyvault-parent</artifactId>
-        <version>1.2.1</version>
+        <version>1.2.2</version>
         <relativePath>../pom.data.xml</relativePath>
     </parent>
 
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-keyvault-cryptography</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
 	<packaging>jar</packaging>
 
 	<name>Microsoft Azure SDK for Key Vault Cryptography</name>

@@ -207,8 +207,7 @@ public final class AccountSASSignatureValues {
      * Generates a {@link AccountSASQueryParameters} object which contains all SAS query parameters needed to make an actual
      * REST request.
      *
-     * @param sharedKeyCredentials
-     *         Credentials for the storage account and corresponding primary or secondary key.
+     * @param sharedKeyCredentials Credentials for the storage account and corresponding primary or secondary key.
      *
      * @return {@link AccountSASQueryParameters}
      * @throws RuntimeException If the HMAC-SHA256 signature for {@code sharedKeyCredentials} fails to generate.

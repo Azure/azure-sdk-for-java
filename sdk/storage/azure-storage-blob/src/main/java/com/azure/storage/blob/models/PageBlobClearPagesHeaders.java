@@ -42,10 +42,25 @@ public final class PageBlobClearPagesHeaders {
     private byte[] contentMD5;
 
     /*
+     * This header is returned so that the client can check for message content
+     * integrity. The value of this header is computed by the Blob service; it
+     * is not necessarily the same value specified in the request headers.
+     */
+    @JsonProperty(value = "x-ms-content-crc64")
+    private byte[] xMsContentCrc64;
+
+    /*
      * The current sequence number for the page blob.
      */
     @JsonProperty(value = "x-ms-blob-sequence-number")
     private Long blobSequenceNumber;
+
+    /*
+     * If a client request id header is sent in the request, this header will
+     * be present in the response with the same value.
+     */
+    @JsonProperty(value = "x-ms-client-request-id")
+    private String clientRequestId;
 
     /*
      * This header uniquely identifies the request that was made and can be
@@ -157,6 +172,32 @@ public final class PageBlobClearPagesHeaders {
     }
 
     /**
+     * Get the xMsContentCrc64 property: This header is returned so that the
+     * client can check for message content integrity. The value of this header
+     * is computed by the Blob service; it is not necessarily the same value
+     * specified in the request headers.
+     *
+     * @return the xMsContentCrc64 value.
+     */
+    public byte[] xMsContentCrc64() {
+        return ImplUtils.clone(this.xMsContentCrc64);
+    }
+
+    /**
+     * Set the xMsContentCrc64 property: This header is returned so that the
+     * client can check for message content integrity. The value of this header
+     * is computed by the Blob service; it is not necessarily the same value
+     * specified in the request headers.
+     *
+     * @param xMsContentCrc64 the xMsContentCrc64 value to set.
+     * @return the PageBlobClearPagesHeaders object itself.
+     */
+    public PageBlobClearPagesHeaders xMsContentCrc64(byte[] xMsContentCrc64) {
+        this.xMsContentCrc64 = ImplUtils.clone(xMsContentCrc64);
+        return this;
+    }
+
+    /**
      * Get the blobSequenceNumber property: The current sequence number for the
      * page blob.
      *
@@ -175,6 +216,30 @@ public final class PageBlobClearPagesHeaders {
      */
     public PageBlobClearPagesHeaders blobSequenceNumber(Long blobSequenceNumber) {
         this.blobSequenceNumber = blobSequenceNumber;
+        return this;
+    }
+
+    /**
+     * Get the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
+     *
+     * @return the clientRequestId value.
+     */
+    public String clientRequestId() {
+        return this.clientRequestId;
+    }
+
+    /**
+     * Set the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
+     *
+     * @param clientRequestId the clientRequestId value to set.
+     * @return the PageBlobClearPagesHeaders object itself.
+     */
+    public PageBlobClearPagesHeaders clientRequestId(String clientRequestId) {
+        this.clientRequestId = clientRequestId;
         return this;
     }
 

@@ -2,16 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
@@ -71,6 +74,7 @@ import java.util.Objects;
  * @see SASTokenCredential
  * @see SharedKeyCredential
  */
+@ServiceClientBuilder(serviceClients = {QueueServiceClient.class, QueueServiceAsyncClient.class})
 public final class QueueServiceClientBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(QueueServiceClientBuilder.class);
     private static final String ACCOUNT_NAME = "accountname";
@@ -79,10 +83,11 @@ public final class QueueServiceClientBuilder {
     private URL endpoint;
     private SASTokenCredential sasTokenCredential;
     private SharedKeyCredential sharedKeyCredential;
+    private TokenCredential bearerTokenCredential;
     private HttpClient httpClient;
     private HttpPipeline pipeline;
     private HttpLogDetailLevel logLevel;
-    private RetryPolicy retryPolicy;
+    private final RetryPolicy retryPolicy;
     private Configuration configuration;
 
     /**
@@ -113,9 +118,9 @@ public final class QueueServiceClientBuilder {
     public QueueServiceAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint);
 
-        if (sasTokenCredential == null && sharedKeyCredential == null) {
-            LOGGER.error("Credentials are required for authorization");
-            throw new IllegalArgumentException("Credentials are required for authorization");
+        if (sasTokenCredential == null && sharedKeyCredential == null && bearerTokenCredential == null) {
+            LOGGER.logExceptionAsError(new IllegalArgumentException("Credentials are required for authorization"));
+            return null;
         }
 
         if (pipeline != null) {
@@ -130,7 +135,9 @@ public final class QueueServiceClientBuilder {
 
         if (sharedKeyCredential != null) {
             policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
-        } else {
+        } else if (bearerTokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(bearerTokenCredential, String.format("%s/.default", endpoint)));
+        } else if (sasTokenCredential != null) {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         }
 
@@ -186,13 +193,14 @@ public final class QueueServiceClientBuilder {
             this.endpoint = new URL(fullURL.getProtocol() + "://" + fullURL.getHost());
 
             // Attempt to get the SAS token from the URL passed
-            SASTokenCredential credential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
-            if (credential != null) {
-                this.sasTokenCredential = credential;
+            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
+            if (this.sasTokenCredential != null) {
+                this.sharedKeyCredential = null;
+                this.bearerTokenCredential = null;
             }
         } catch (MalformedURLException ex) {
-            LOGGER.error("The Azure Storage Queue endpoint url is malformed.");
-            throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed.");
+            LOGGER.logExceptionAsError(new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed."));
+            return null;
         }
 
         return this;
@@ -207,6 +215,8 @@ public final class QueueServiceClientBuilder {
      */
     public QueueServiceClientBuilder credential(SASTokenCredential credential) {
         this.sasTokenCredential = Objects.requireNonNull(credential);
+        this.sharedKeyCredential = null;
+        this.bearerTokenCredential = null;
         return this;
     }
 
@@ -219,9 +229,23 @@ public final class QueueServiceClientBuilder {
      */
     public QueueServiceClientBuilder credential(SharedKeyCredential credential) {
         this.sharedKeyCredential = Objects.requireNonNull(credential);
+        this.sasTokenCredential = null;
+        this.bearerTokenCredential = null;
         return this;
     }
 
+    /**
+     * Sets the {@link TokenCredential} used to authenticate requests sent to the Queue service.
+     * @param credential authorization credential
+     * @return the updated QueueServiceClientBuilder object
+     * @throws NullPointerException If {@code credential} is {@code null}
+     */
+    public QueueServiceClientBuilder credential(TokenCredential credential) {
+        this.bearerTokenCredential = Objects.requireNonNull(credential);
+        this.sharedKeyCredential = null;
+        this.sasTokenCredential = null;
+        return this;
+    }
 
     /**
      * Creates a {@link SharedKeyCredential} from the {@code connectionString} used to authenticate requests sent to the
@@ -247,10 +271,8 @@ public final class QueueServiceClientBuilder {
         try {
             this.endpoint = new URL(String.format("https://%s.queue.core.windows.net", accountName));
         } catch (MalformedURLException e) {
-            LOGGER.error("There is no valid account for the connection string. "
-                + "Connection String: %s", connectionString);
-            throw new IllegalArgumentException(String.format("There is no valid account for the connection string. "
-                + "Connection String: %s", connectionString));
+            LOGGER.logExceptionAsError(new IllegalArgumentException(String.format("There is no valid account for the connection string. "
+                + "Connection String: %s", connectionString)));
         }
     }
 

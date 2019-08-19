@@ -14,9 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import com.microsoft.azure.credentials.MSICredentials;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
-import com.nimbusds.jwt.JWT;
-import com.nimbusds.jwt.JWTClaimsSet;
-import com.nimbusds.jwt.JWTParser;
 
 /**
  * This is a token provider that obtains token using Managed Identity(MI). This token provider automatically detects MI settings.
@@ -33,7 +30,7 @@ public class ManagedIdentityTokenProvider extends TokenProvider {
             try {
                 MSICredentials credentials = new MSICredentials();
                 String rawToken = credentials.getToken(SecurityConstants.SERVICEBUS_AAD_AUDIENCE_RESOURCE_URL);
-                Date expiry = getExpirationDateTimeUtcFromToken(rawToken);
+                Date expiry = SecurityToken.getExpirationDateTimeUtcFromToken(rawToken);
                 tokenGeneratingFuture.complete(new SecurityToken(SecurityTokenType.JWT, audience, rawToken, Instant.now(), expiry.toInstant()));
             } catch (IOException e) {
                 TRACE_LOGGER.error("ManagedIdentity token generation failed.", e);
@@ -45,11 +42,5 @@ public class ManagedIdentityTokenProvider extends TokenProvider {
         });
         
         return tokenGeneratingFuture;
-    }
-
-    private static Date getExpirationDateTimeUtcFromToken(String token) throws ParseException {
-        JWT jwt = JWTParser.parse(token);
-        JWTClaimsSet claims = jwt.getJWTClaimsSet();
-        return claims.getExpirationTime();
     }
 }

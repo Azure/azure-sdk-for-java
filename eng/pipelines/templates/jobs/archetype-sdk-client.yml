@@ -228,6 +228,7 @@ jobs:
 
       - task: Maven@3
         displayName: 'Start Jetty'
+        condition: ne(variables['SdkType'], 'client')
         inputs:
           mavenPomFile: pom.client.xml
           options: '$(DefaultOptions) $(ProfileFlag)'

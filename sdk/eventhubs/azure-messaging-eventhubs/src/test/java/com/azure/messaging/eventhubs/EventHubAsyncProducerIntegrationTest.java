@@ -3,15 +3,10 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.TransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
-import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
-import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
-import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
-import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -45,13 +40,13 @@ public class EventHubAsyncProducerIntegrationTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        final ConnectionStringProperties properties = new ConnectionStringProperties(getConnectionString());
-        final ConnectionOptions connectionOptions = new ConnectionOptions(properties.endpoint().getHost(),
-            properties.eventHubName(), getTokenCredential(), getAuthorizationType(), TransportType.AMQP, RETRY_OPTIONS,
-            ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
+        skipIfNotRecordMode();
 
-        client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);
+        client = new EventHubClientBuilder()
+            .connectionString(getConnectionString())
+            .retry(RETRY_OPTIONS)
+            .scheduler(Schedulers.parallel())
+            .buildAsyncClient();
     }
 
     @Override
@@ -64,8 +59,6 @@ public class EventHubAsyncProducerIntegrationTest extends ApiTestBase {
      */
     @Test
     public void sendMessageToPartition() throws IOException {
-        skipIfNotRecordMode();
-
         // Arrange
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
         final List<EventData> events = Arrays.asList(
@@ -86,8 +79,6 @@ public class EventHubAsyncProducerIntegrationTest extends ApiTestBase {
      */
     @Test
     public void sendMessage() throws IOException {
-        skipIfNotRecordMode();
-
         // Arrange
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
@@ -106,8 +97,6 @@ public class EventHubAsyncProducerIntegrationTest extends ApiTestBase {
      */
     @Test
     public void sendBatch() throws IOException {
-        skipIfNotRecordMode();
-
         // Arrange
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
@@ -134,8 +123,6 @@ public class EventHubAsyncProducerIntegrationTest extends ApiTestBase {
      */
     @Test
     public void sendBatchWithPartitionKey() throws IOException {
-        skipIfNotRecordMode();
-
         // Arrange
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),

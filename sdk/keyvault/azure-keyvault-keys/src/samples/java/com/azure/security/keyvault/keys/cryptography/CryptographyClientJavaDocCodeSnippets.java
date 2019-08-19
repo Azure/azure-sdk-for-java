@@ -220,7 +220,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
 
     /**
      * Generates a code sample for using {@link CryptographyClient#wrapKey(KeyWrapAlgorithm, byte[])} and
-     * {@link CryptographyClient#unwrapKey(KeyWrapAlgorithm, byte[])
+     * {@link CryptographyClient#unwrapKey(KeyWrapAlgorithm, byte[])}
      */
     public void wrapKeyUnwrapKey() {
         CryptographyClient cryptographyClient = createClient();

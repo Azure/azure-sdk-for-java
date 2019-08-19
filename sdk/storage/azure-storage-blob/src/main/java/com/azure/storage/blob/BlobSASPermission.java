@@ -36,8 +36,7 @@ public final class BlobSASPermission {
      * Creates a {@code BlobSASPermission} from the specified permissions string. This method will throw an
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString
-     *         A {@code String} which represents the {@code BlobSASPermission}.
+     * @param permString A {@code String} which represents the {@code BlobSASPermission}.
      *
      * @return A {@code BlobSASPermission} generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, or d.

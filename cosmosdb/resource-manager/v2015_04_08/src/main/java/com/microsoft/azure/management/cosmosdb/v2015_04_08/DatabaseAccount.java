@@ -31,6 +31,11 @@ public interface DatabaseAccount extends HasInner<DatabaseAccountInner>, Resourc
     List<Capability> capabilities();
 
     /**
+     * @return the connectorOffer value.
+     */
+    ConnectorOffer connectorOffer();
+
+    /**
      * @return the consistencyPolicy value.
      */
     ConsistencyPolicy consistencyPolicy();
@@ -49,6 +54,11 @@ public interface DatabaseAccount extends HasInner<DatabaseAccountInner>, Resourc
      * @return the enableAutomaticFailover value.
      */
     Boolean enableAutomaticFailover();
+
+    /**
+     * @return the enableCassandraConnector value.
+     */
+    Boolean enableCassandraConnector();
 
     /**
      * @return the enableMultipleWriteLocations value.
@@ -154,6 +164,18 @@ public interface DatabaseAccount extends HasInner<DatabaseAccountInner>, Resourc
         }
 
         /**
+         * The stage of the databaseaccount definition allowing to specify ConnectorOffer.
+         */
+        interface WithConnectorOffer {
+            /**
+             * Specifies connectorOffer.
+             * @param connectorOffer The cassandra connector offer type for the Cosmos DB database C* account. Possible values include: 'Small'
+             * @return the next definition stage
+             */
+            WithCreate withConnectorOffer(ConnectorOffer connectorOffer);
+        }
+
+        /**
          * The stage of the databaseaccount definition allowing to specify ConsistencyPolicy.
          */
         interface WithConsistencyPolicy {
@@ -175,6 +197,18 @@ public interface DatabaseAccount extends HasInner<DatabaseAccountInner>, Resourc
              * @return the next definition stage
              */
             WithCreate withEnableAutomaticFailover(Boolean enableAutomaticFailover);
+        }
+
+        /**
+         * The stage of the databaseaccount definition allowing to specify EnableCassandraConnector.
+         */
+        interface WithEnableCassandraConnector {
+            /**
+             * Specifies enableCassandraConnector.
+             * @param enableCassandraConnector Enables the cassandra connector on the Cosmos DB C* account
+             * @return the next definition stage
+             */
+            WithCreate withEnableCassandraConnector(Boolean enableCassandraConnector);
         }
 
         /**
@@ -242,7 +276,7 @@ public interface DatabaseAccount extends HasInner<DatabaseAccountInner>, Resourc
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<DatabaseAccount>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithCapabilities, DefinitionStages.WithConsistencyPolicy, DefinitionStages.WithEnableAutomaticFailover, DefinitionStages.WithEnableMultipleWriteLocations, DefinitionStages.WithIpRangeFilter, DefinitionStages.WithIsVirtualNetworkFilterEnabled, DefinitionStages.WithKind, DefinitionStages.WithVirtualNetworkRules {
+        interface WithCreate extends Creatable<DatabaseAccount>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithCapabilities, DefinitionStages.WithConnectorOffer, DefinitionStages.WithConsistencyPolicy, DefinitionStages.WithEnableAutomaticFailover, DefinitionStages.WithEnableCassandraConnector, DefinitionStages.WithEnableMultipleWriteLocations, DefinitionStages.WithIpRangeFilter, DefinitionStages.WithIsVirtualNetworkFilterEnabled, DefinitionStages.WithKind, DefinitionStages.WithVirtualNetworkRules {
         }
     }
     /**

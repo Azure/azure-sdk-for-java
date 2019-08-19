@@ -32,8 +32,7 @@ public final class AccountSASService {
      * Creates an {@code AccountSASService} from the specified services string. This method will throw an
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid service.
      *
-     * @param servicesString
-     *         A {@code String} which represents the {@code SharedAccessAccountServices}.
+     * @param servicesString A {@code String} which represents the {@code SharedAccessAccountServices}.
      *
      * @return A {@code AccountSASService} generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code servicesString} contains a character other than b, f, q, or t.

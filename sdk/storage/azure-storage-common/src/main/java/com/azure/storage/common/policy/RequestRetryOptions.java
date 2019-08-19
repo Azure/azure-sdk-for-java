@@ -19,8 +19,8 @@ public final class RequestRetryOptions {
     /**
      * A {@link RetryPolicyType} telling the pipeline what kind of retry policy to use.
      */
-    private RetryPolicyType retryPolicyType;
-    private String secondaryHost;
+    private final RetryPolicyType retryPolicyType;
+    private final String secondaryHost;
 
     /**
      * Constructor with default retry values: Exponential backoff, maxTries=4, tryTimeout=30, retryDelayInMs=4000,

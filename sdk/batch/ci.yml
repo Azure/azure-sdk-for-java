@@ -34,5 +34,6 @@ stages:
     parameters:
       ServiceDirectory: batch
       Artifacts:
-        - name: microsoft-azure-batch
-          safeName: microsoftazurebatch
+        - name: azure-batch
+          safeName: azurebatch
+          stagingProfileId: 534d15ee3800f4

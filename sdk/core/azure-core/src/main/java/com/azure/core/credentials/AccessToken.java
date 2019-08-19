@@ -9,8 +9,8 @@ import java.time.OffsetDateTime;
  * Represents an immutable access token with a token string and an expiration time.
  */
 public class AccessToken {
-    private String token;
-    private OffsetDateTime expiresOn;
+    private final String token;
+    private final OffsetDateTime expiresOn;
 
     /**
      * Creates an access token instance.

@@ -21,7 +21,7 @@ public class ConnectToSourceMySqlTaskInput {
     private MySqlConnectionInfo sourceConnectionInfo;
 
     /**
-     * Target Platform for the migration. Possible values include:
+     * Target Platform for the migration. Possible values include: 'SqlServer',
      * 'AzureDbForMySQL'.
      */
     @JsonProperty(value = "targetPlatform")
@@ -56,7 +56,7 @@ public class ConnectToSourceMySqlTaskInput {
     }
 
     /**
-     * Get target Platform for the migration. Possible values include: 'AzureDbForMySQL'.
+     * Get target Platform for the migration. Possible values include: 'SqlServer', 'AzureDbForMySQL'.
      *
      * @return the targetPlatform value
      */
@@ -65,7 +65,7 @@ public class ConnectToSourceMySqlTaskInput {
     }
 
     /**
-     * Set target Platform for the migration. Possible values include: 'AzureDbForMySQL'.
+     * Set target Platform for the migration. Possible values include: 'SqlServer', 'AzureDbForMySQL'.
      *
      * @param targetPlatform the targetPlatform value to set
      * @return the ConnectToSourceMySqlTaskInput object itself.

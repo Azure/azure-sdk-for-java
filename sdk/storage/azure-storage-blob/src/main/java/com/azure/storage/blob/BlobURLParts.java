@@ -161,8 +161,7 @@ final class BlobURLParts {
      *
      * @return A {@code java.net.URL} to the blob resource composed of all the elements in the object.
      *
-     * @throws MalformedURLException
-     *         The fields present on the BlobURLParts object were insufficient to construct a valid URL or were
+     * @throws MalformedURLException The fields present on the BlobURLParts object were insufficient to construct a valid URL or were
      *         ill-formatted.
      */
     public URL toURL() throws MalformedURLException {

@@ -84,7 +84,7 @@ public class BasicExample {
         /*
          * Download the blob's content to output stream.
          */
-        int dataSize = (int) blobClient.getProperties().value().blobSize();
+        int dataSize = (int) blobClient.getProperties().blobSize();
         OutputStream outputStream = new ByteArrayOutputStream(dataSize);
         blobClient.download(outputStream);
         outputStream.close();

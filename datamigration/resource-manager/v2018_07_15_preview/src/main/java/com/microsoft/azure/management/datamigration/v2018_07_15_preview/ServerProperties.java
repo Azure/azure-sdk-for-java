@@ -11,7 +11,7 @@ package com.microsoft.azure.management.datamigration.v2018_07_15_preview;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Server properties for Oracle, MySQL type source.
+ * Server properties for MySQL type source.
  */
 public class ServerProperties {
     /**

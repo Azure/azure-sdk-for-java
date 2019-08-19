@@ -1,5 +1,5 @@
-// Licensed under the MIT License.
 // Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.tools.checkstyle.checks;
 
@@ -19,8 +19,8 @@ import java.util.Optional;
  */
 public class OnlyFinalFieldsForImmutableClassCheck extends AbstractCheck {
     private static final String IMMUTABLE_NOTATION = "Immutable";
-    private static final String ERROR_MSG = "The variable field ''%s'' should be final." +
-        "Classes annotated with @Immutable are supposed to be immutable.";
+    private static final String ERROR_MSG = "The variable field ''%s'' should be final."
+        + "Classes annotated with @Immutable are supposed to be immutable.";
 
     private boolean hasImmutableAnnotation;
 
