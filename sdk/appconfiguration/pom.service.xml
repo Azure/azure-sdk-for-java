@@ -9,7 +9,8 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
-    <module>../core</module>
+    <module>../core/azure-core</module>
+    <module>../core/azure-core-test</module>
     <module>azure-data-appconfiguration</module>
   </modules>
 </project>

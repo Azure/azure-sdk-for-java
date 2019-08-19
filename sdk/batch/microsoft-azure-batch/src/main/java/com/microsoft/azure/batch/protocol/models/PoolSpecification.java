@@ -68,7 +68,7 @@ public class PoolSpecification {
     private Integer maxTasksPerNode;
 
     /**
-     * How Tasks are distributed across Compute Compute Nodes in a Pool.
+     * How Tasks are distributed across Compute Nodes in a Pool.
      * If not specified, the default is spread.
      */
     @JsonProperty(value = "taskSchedulingPolicy")
@@ -209,6 +209,13 @@ public class PoolSpecification {
      */
     @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
+
+    /**
+     * A list of file systems to mount on each node in the pool.
+     * This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
+     */
+    @JsonProperty(value = "mountConfiguration")
+    private List<MountConfiguration> mountConfiguration;
 
     /**
      * Get the display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
@@ -607,6 +614,26 @@ public class PoolSpecification {
      */
     public PoolSpecification withMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get this supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
+     *
+     * @return the mountConfiguration value
+     */
+    public List<MountConfiguration> mountConfiguration() {
+        return this.mountConfiguration;
+    }
+
+    /**
+     * Set this supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
+     *
+     * @param mountConfiguration the mountConfiguration value to set
+     * @return the PoolSpecification object itself.
+     */
+    public PoolSpecification withMountConfiguration(List<MountConfiguration> mountConfiguration) {
+        this.mountConfiguration = mountConfiguration;
         return this;
     }
 

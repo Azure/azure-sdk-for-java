@@ -9,5 +9,5 @@ package com.azure.data.appconfiguration;
 class AzureConfiguration {
     //TODO: Eventually remove these hardcoded strings with https://github.com/Azure/azure-sdk-for-java/issues/3141
     static final String NAME = "application-configuration";
-    static final String VERSION = "1.0.0-preview.2";
+    static final String VERSION = "1.0.0-preview.3";
 }

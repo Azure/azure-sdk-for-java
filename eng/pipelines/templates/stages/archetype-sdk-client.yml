@@ -5,7 +5,8 @@ parameters:
 stages:
   - stage: Build
     jobs:
-    - template: ../jobs/archetype-sdk-client.yml
+    #- template: ../jobs/archetype-sdk-client.yml
+    - template: ../jobs/archetype-sdk-client-search.yml
       parameters:
         ServiceDirectory: ${{parameters.ServiceDirectory}}
 

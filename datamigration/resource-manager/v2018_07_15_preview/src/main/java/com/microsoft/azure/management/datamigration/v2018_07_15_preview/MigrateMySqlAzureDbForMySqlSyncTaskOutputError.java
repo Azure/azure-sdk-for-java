@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The MigrateMySqlAzureDbForMySqlSyncTaskOutputError model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = MigrateMySqlAzureDbForMySqlSyncTaskOutputError.class)
 @JsonTypeName("ErrorOutput")
 public class MigrateMySqlAzureDbForMySqlSyncTaskOutputError extends MigrateMySqlAzureDbForMySqlSyncTaskOutput {
     /**

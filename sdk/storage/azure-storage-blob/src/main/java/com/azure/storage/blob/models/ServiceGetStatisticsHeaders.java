@@ -17,6 +17,13 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class ServiceGetStatisticsHeaders {
     /*
+     * If a client request id header is sent in the request, this header will
+     * be present in the response with the same value.
+     */
+    @JsonProperty(value = "x-ms-client-request-id")
+    private String clientRequestId;
+
+    /*
      * This header uniquely identifies the request that was made and can be
      * used for troubleshooting the request.
      */
@@ -43,6 +50,30 @@ public final class ServiceGetStatisticsHeaders {
      */
     @JsonProperty(value = "x-ms-error-code")
     private String errorCode;
+
+    /**
+     * Get the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
+     *
+     * @return the clientRequestId value.
+     */
+    public String clientRequestId() {
+        return this.clientRequestId;
+    }
+
+    /**
+     * Set the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
+     *
+     * @param clientRequestId the clientRequestId value to set.
+     * @return the ServiceGetStatisticsHeaders object itself.
+     */
+    public ServiceGetStatisticsHeaders clientRequestId(String clientRequestId) {
+        this.clientRequestId = clientRequestId;
+        return this;
+    }
 
     /**
      * Get the requestId property: This header uniquely identifies the request

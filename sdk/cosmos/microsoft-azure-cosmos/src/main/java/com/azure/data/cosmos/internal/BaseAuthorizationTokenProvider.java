@@ -3,6 +3,7 @@
 
 package com.azure.data.cosmos.internal;
 
+import com.azure.data.cosmos.CosmosKeyCredential;
 import com.azure.data.cosmos.internal.directconnectivity.HttpUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,19 +25,15 @@ import java.util.Map;
 public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvider {
 
     private static final String AUTH_PREFIX = "type=master&ver=1.0&sig=";
-    private final String masterKey;
+    private final CosmosKeyCredential cosmosKeyCredential;
     private final Mac macInstance;
 
-    public BaseAuthorizationTokenProvider(String masterKey) {
-        this.masterKey = masterKey;
-        byte[] masterKeyDecodedBytes = Utils.Base64Decoder.decode(this.masterKey.getBytes());
-        SecretKey signingKey = new SecretKeySpec(masterKeyDecodedBytes, "HMACSHA256");
-        try {
-            this.macInstance = Mac.getInstance("HMACSHA256");
-            this.macInstance.init(signingKey);
-        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            throw new IllegalStateException(e);
-        }
+    //  stores current master key's hashcode for performance reasons.
+    private int masterKeyHashCode;
+
+    public BaseAuthorizationTokenProvider(CosmosKeyCredential cosmosKeyCredential) {
+        this.cosmosKeyCredential = cosmosKeyCredential;
+        this.macInstance = getMacInstance();
     }
 
     private static String getResourceSegment(ResourceType resourceType) {
@@ -120,8 +117,8 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
             throw new IllegalArgumentException("headers");
         }
 
-        if (this.masterKey == null || this.masterKey.isEmpty()) {
-            throw new IllegalArgumentException("masterKey");
+        if (StringUtils.isEmpty(this.cosmosKeyCredential.key())) {
+            throw new IllegalArgumentException("key credentials cannot be empty");
         }
 
         if(!PathsHelper.isNameBased(resourceIdOrFullName)) {
@@ -149,12 +146,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
         body.append('\n');
 
-        Mac mac = null;
-        try {
-            mac = (Mac) this.macInstance.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new IllegalStateException(e);
-        }
+        Mac mac = getMacInstance();
 
         byte[] digest = mac.doFinal(body.toString().getBytes());
 
@@ -221,8 +213,8 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
                 headers);
     }
 
-    public String generateKeyAuthorizationSignatureNew(String verb, String resourceIdValue, String resourceType,
-            Map<String, String> headers) {
+    private String generateKeyAuthorizationSignatureNew(String verb, String resourceIdValue, String resourceType,
+                                                        Map<String, String> headers) {
         if (StringUtils.isEmpty(verb)) {
             throw new IllegalArgumentException(String.format(RMResources.StringArgumentNullOrEmpty, "verb"));
         }
@@ -240,22 +232,41 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
         // If any of the value is optional, it should still have the placeholder value
         // of ""
         // OperationType -> ResourceType -> ResourceId/OwnerId -> XDate -> Date
-        String verbInput = verb;
-        String resourceIdInput = resourceIdValue;
-        String resourceTypeInput = resourceType;
 
-        String authResourceId = getAuthorizationResourceIdOrFullName(resourceTypeInput, resourceIdInput);
-        String payLoad = generateMessagePayload(verbInput, authResourceId, resourceTypeInput, headers);
-        Mac mac = null;
-        try {
-            mac = (Mac) this.macInstance.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new IllegalStateException(e);
-        }
+        String authResourceId = getAuthorizationResourceIdOrFullName(resourceType, resourceIdValue);
+        String payLoad = generateMessagePayload(verb, authResourceId, resourceType, headers);
+        Mac mac = this.getMacInstance();
         byte[] digest = mac.doFinal(payLoad.getBytes());
         String authorizationToken = Utils.encodeBase64String(digest);
         String authtoken = AUTH_PREFIX + authorizationToken;
         return HttpUtils.urlEncode(authtoken);
+    }
+
+    private Mac getMacInstance() {
+        int masterKeyLatestHashCode = this.cosmosKeyCredential.keyHashCode();
+
+        //  Master key has changed, or this is the first time we are getting mac instance
+        if (masterKeyLatestHashCode != this.masterKeyHashCode) {
+            byte[] masterKeyBytes = this.cosmosKeyCredential.key().getBytes();
+            byte[] masterKeyDecodedBytes = Utils.Base64Decoder.decode(masterKeyBytes);
+            SecretKey signingKey = new SecretKeySpec(masterKeyDecodedBytes, "HMACSHA256");
+            try {
+                Mac macInstance = Mac.getInstance("HMACSHA256");
+                macInstance.init(signingKey);
+                //  Update the master key hash code
+                this.masterKeyHashCode = masterKeyLatestHashCode;
+                return macInstance;
+            } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+                throw new IllegalStateException(e);
+            }
+        } else {
+            //  Master key hasn't changed, return the cloned mac instance
+            try {
+                return (Mac)this.macInstance.clone();
+            } catch (CloneNotSupportedException e) {
+                throw new IllegalStateException(e);
+            }
+        }
     }
 
     private String generateMessagePayload(String verb, String resourceId, String resourceType,
