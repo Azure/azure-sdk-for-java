@@ -17,7 +17,6 @@ import java.nio.ByteBuffer;
  * Provides an input stream to read a given blob resource.
  */
 public final class BlobInputStream extends InputStream {
-
     private final ClientLogger logger = new ClientLogger(BlobInputStream.class);
 
     /**
