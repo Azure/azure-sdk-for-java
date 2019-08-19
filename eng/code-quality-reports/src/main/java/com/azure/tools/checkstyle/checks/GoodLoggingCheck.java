@@ -30,7 +30,6 @@ public class GoodLoggingCheck extends AbstractCheck {
     private static final String STATIC_LOGGER_ERROR = "Reference to ClientLogger should not be static: remove static modifier.";
     private static final String NOT_CLIENT_LOGGER_ERROR = "Do not use external logger class. Use ''%s'' as a logging mechanism instead of ''%s''.";
 
-    private String invalidLogger;
     private boolean hasClientLoggerImported;
     private String loggerRequiredName;
     private String className;
@@ -70,7 +69,6 @@ public class GoodLoggingCheck extends AbstractCheck {
 
     @Override
     public void finishTree(DetailAST ast) {
-        invalidLogger = null;
         hasClientLoggerImported = false;
     }
 
@@ -82,7 +80,8 @@ public class GoodLoggingCheck extends AbstractCheck {
                 hasClientLoggerImported = hasClientLoggerImported || importClassPath.equals(CLIENT_LOGGER_PATH);
                 for (final String logger : INVALID_LOG_SET) {
                     if (importClassPath.startsWith(logger)) {
-                        invalidLogger = logger;
+                        // Checks no use any external logger class.
+                        log(ast, String.format(NOT_CLIENT_LOGGER_ERROR, CLIENT_LOGGER_PATH, logger));
                     }
                 }
                 break;
@@ -90,11 +89,6 @@ public class GoodLoggingCheck extends AbstractCheck {
                 if (ast.getNextSibling() == null) {
                     break;
                 }
-                // Checks no use any external logger class.
-                if (invalidLogger != null) {
-                    log(ast, String.format(NOT_CLIENT_LOGGER_ERROR, CLIENT_LOGGER_PATH, invalidLogger));
-                }
-
                 className = ast.getNextSibling().getText();
                 break;
             case TokenTypes.LITERAL_NEW:
@@ -152,9 +146,9 @@ public class GoodLoggingCheck extends AbstractCheck {
             return;
         }
         // Check instantiation of ClientLogger
-        String containerClassName = FullIdent.createFullIdentBelow(exprToken).getText();
-        containerClassName = containerClassName.substring(0, containerClassName.length() - 6);
-        if (!containerClassName.equals(className)) {
+        final String containerClassName = FullIdent.createFullIdentBelow(exprToken).getText();
+        // Add suffix of '.class' at the end ot class name
+        if (!containerClassName.equals(className + ".class")) {
             log(literalNewToken, String.format("Not newing a ClientLogger with matching class name. Use ''%s.class'' instead of ''%s.class''", className, containerClassName));
         }
     }
