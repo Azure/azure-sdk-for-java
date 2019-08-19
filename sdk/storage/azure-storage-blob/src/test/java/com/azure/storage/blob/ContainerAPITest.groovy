@@ -25,6 +25,7 @@ import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SignedIdentifier
 import com.azure.storage.blob.models.StorageAccountInfo
 import com.azure.storage.blob.models.StorageErrorCode
+import com.azure.storage.blob.models.StorageException
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -103,7 +104,7 @@ class ContainerAPITest extends APISpec {
         def e = thrown(StorageException)
         e.response().statusCode() == 409
         e.errorCode() == StorageErrorCode.CONTAINER_ALREADY_EXISTS
-        e.message().contains("The specified container already exists.")
+        e.serviceMessage().contains("The specified container already exists.")
     }
 
     def "Get properties null"() {

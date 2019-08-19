@@ -18,7 +18,7 @@
 /sdk/servicebus/             @yvgopal @nemakam
 /sdk/tracing/                @samvaity @alzimmermsft
 
-/sdk/storage/                @rickle-msft @jaschrep-msft @alzimmermsft @sima-zhu
+/sdk/storage/                @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu
 
 # Management Plane
 /**/resource-manager/        @yaohaizh

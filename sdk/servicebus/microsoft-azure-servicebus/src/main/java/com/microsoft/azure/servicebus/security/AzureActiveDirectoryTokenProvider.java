@@ -3,6 +3,9 @@
 
 package com.microsoft.azure.servicebus.security;
 
+import java.text.ParseException;
+import java.time.Instant;
+import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -24,7 +27,17 @@ public class AzureActiveDirectoryTokenProvider extends TokenProvider {
 
     @Override
     public CompletableFuture<SecurityToken> getSecurityTokenAsync(String audience) {
-        return this.authCallback.acquireTokenAsync(audience, this.authority, this.authCallbackState);
+        CompletableFuture<String> tokenStringFuture = this.authCallback.acquireTokenAsync(
+                SecurityConstants.SERVICEBUS_AAD_AUDIENCE_RESOURCE_URL, this.authority, this.authCallbackState);
+        return tokenStringFuture.thenApply(tokenString -> {
+            Date expire;
+            try {
+                expire = SecurityToken.getExpirationDateTimeUtcFromToken(tokenString);
+                return new SecurityToken(SecurityTokenType.JWT, audience, tokenString, Instant.now(), expire == null ? null : expire.toInstant());
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
     
     @FunctionalInterface
@@ -36,6 +49,6 @@ public class AzureActiveDirectoryTokenProvider extends TokenProvider {
          * @param state Parameter that may be used as part of the custom acquireToken process.
          * @return A CompletableFuture which returns a valid security token.
          */
-        CompletableFuture<SecurityToken> acquireTokenAsync(String audience, String authority, Object state);
+        CompletableFuture<String> acquireTokenAsync(String audience, String authority, Object state);
     }
 }

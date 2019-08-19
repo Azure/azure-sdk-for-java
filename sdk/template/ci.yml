@@ -36,3 +36,4 @@ stages:
       Artifacts:
         - name: azure-sdk-template
           safeName: azuresdktemplate
+          stagingProfileId: 88192f04117501

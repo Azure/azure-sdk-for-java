@@ -15,6 +15,7 @@ import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
+import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
