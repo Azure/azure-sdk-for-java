@@ -68,12 +68,15 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
                     // response
                     response = chain.proceed(buildEmptyRequest(originalRequest));
 
-                    if (response.code() == 200) {
+                    if (response.code() !=  401) {
                         return response;
-                    } else if (response.code() != 401) {
-                        throw new IOException("Unexpected unauthorized response.");
                     }
-                    authenticatedRequestPair = buildAuthenticatedRequest(originalRequest, response);
+
+                    try {
+                        authenticatedRequestPair = buildAuthenticatedRequest(originalRequest, response);
+                    } finally {
+                        response.close();
+                    }
                 }
 
                 response = chain.proceed(authenticatedRequestPair.getLeft());

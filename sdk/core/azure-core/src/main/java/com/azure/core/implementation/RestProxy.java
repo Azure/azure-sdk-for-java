@@ -196,16 +196,22 @@ public class RestProxy implements InvocationHandler {
         } else {
             urlBuilder = new UrlBuilder();
 
-            // We add path to the UrlBuilder first because this is what is
-            // provided to the HTTP Method annotation. Any path substitutions
-            // from other substitution annotations will overwrite this.
-            urlBuilder.path(path);
-
             final String scheme = methodParser.scheme(args);
             urlBuilder.scheme(scheme);
 
             final String host = methodParser.host(args);
             urlBuilder.host(host);
+
+            // Set the path after host, concatenating the path
+            // segment in the host.
+            if (path != null && !path.isEmpty() && !path.equals("/")) {
+                String hostPath = urlBuilder.path();
+                if (hostPath == null || hostPath.isEmpty() || hostPath.equals("/")) {
+                    urlBuilder.path(path);
+                } else {
+                    urlBuilder.path(hostPath + "/" + path);
+                }
+            }
         }
 
         for (final EncodedParameter queryParameter : methodParser.encodedQueryParameters(args)) {

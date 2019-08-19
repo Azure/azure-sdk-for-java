@@ -228,7 +228,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
 
     /**
      * Generates a code sample for using {@link CryptographyAsyncClient#wrapKey(KeyWrapAlgorithm, byte[])} and
-     * {@link CryptographyAsyncClient#unwrapKey(KeyWrapAlgorithm, byte[])
+     * {@link CryptographyAsyncClient#unwrapKey(KeyWrapAlgorithm, byte[])}
      */
     public void wrapKeyUnwrapKey() {
         CryptographyAsyncClient cryptographyAsyncClient = createAsyncClient();

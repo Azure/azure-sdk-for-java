@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.StorageErrorException;
+import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Mono;
 
