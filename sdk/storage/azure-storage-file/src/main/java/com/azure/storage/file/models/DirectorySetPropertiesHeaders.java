@@ -6,38 +6,22 @@ package com.azure.storage.file.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.annotation.Fluent;
-import com.azure.core.implementation.annotation.HeaderCollection;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
-import java.util.Map;
 
 /**
- * Defines headers for GetProperties operation.
+ * Defines headers for SetProperties operation.
  */
-@JacksonXmlRootElement(localName = "Directory-GetProperties-Headers")
+@JacksonXmlRootElement(localName = "Directory-SetProperties-Headers")
 @Fluent
-public final class DirectoryGetPropertiesHeaders {
+public final class DirectorySetPropertiesHeaders {
     /*
-     * The metadata property.
-     */
-    @HeaderCollection("x-ms-meta-")
-    private Map<String, String> metadata;
-
-    /*
-     * The ETag contains a value that you can use to perform operations
-     * conditionally, in quotes.
+     * The ETag contains a value which represents the version of the file, in
+     * quotes.
      */
     @JsonProperty(value = "ETag")
     private String eTag;
-
-    /*
-     * Returns the date and time the Directory was last modified. Operations on
-     * files within the directory do not affect the last modified time of the
-     * directory.
-     */
-    @JsonProperty(value = "Last-Modified")
-    private DateTimeRfc1123 lastModified;
 
     /*
      * This header uniquely identifies the request that was made and can be
@@ -45,6 +29,15 @@ public final class DirectoryGetPropertiesHeaders {
      */
     @JsonProperty(value = "x-ms-request-id")
     private String requestId;
+
+    /*
+     * Returns the date and time the directory was last modified. Any operation
+     * that modifies the directory or its properties updates the last modified
+     * time. Operations on files do not affect the last modified time of the
+     * directory.
+     */
+    @JsonProperty(value = "Last-Modified")
+    private DateTimeRfc1123 lastModified;
 
     /*
      * Indicates the version of the File service used to execute the request.
@@ -60,12 +53,18 @@ public final class DirectoryGetPropertiesHeaders {
     private DateTimeRfc1123 dateProperty;
 
     /*
-     * The value of this header is set to true if the directory metadata is
-     * completely encrypted using the specified algorithm. Otherwise, the value
-     * is set to false.
+     * The value of this header is set to true if the contents of the request
+     * are successfully encrypted using the specified algorithm, and false
+     * otherwise.
      */
-    @JsonProperty(value = "x-ms-server-encrypted")
+    @JsonProperty(value = "x-ms-request-server-encrypted")
     private Boolean isServerEncrypted;
+
+    /*
+     * Key of the permission set for the directory.
+     */
+    @JsonProperty(value = "x-ms-file-permission-key")
+    private String filePermissionKey;
 
     /*
      * Attributes set for the directory.
@@ -92,12 +91,6 @@ public final class DirectoryGetPropertiesHeaders {
     private OffsetDateTime fileChangeTime;
 
     /*
-     * Key of the permission set for the directory.
-     */
-    @JsonProperty(value = "x-ms-file-permission-key")
-    private String filePermissionKey;
-
-    /*
      * The fileId of the directory.
      */
     @JsonProperty(value = "x-ms-file-id")
@@ -116,28 +109,8 @@ public final class DirectoryGetPropertiesHeaders {
     private String errorCode;
 
     /**
-     * Get the metadata property: The metadata property.
-     *
-     * @return the metadata value.
-     */
-    public Map<String, String> metadata() {
-        return this.metadata;
-    }
-
-    /**
-     * Set the metadata property: The metadata property.
-     *
-     * @param metadata the metadata value to set.
-     * @return the DirectoryGetPropertiesHeaders object itself.
-     */
-    public DirectoryGetPropertiesHeaders metadata(Map<String, String> metadata) {
-        this.metadata = metadata;
-        return this;
-    }
-
-    /**
-     * Get the eTag property: The ETag contains a value that you can use to
-     * perform operations conditionally, in quotes.
+     * Get the eTag property: The ETag contains a value which represents the
+     * version of the file, in quotes.
      *
      * @return the eTag value.
      */
@@ -146,45 +119,14 @@ public final class DirectoryGetPropertiesHeaders {
     }
 
     /**
-     * Set the eTag property: The ETag contains a value that you can use to
-     * perform operations conditionally, in quotes.
+     * Set the eTag property: The ETag contains a value which represents the
+     * version of the file, in quotes.
      *
      * @param eTag the eTag value to set.
-     * @return the DirectoryGetPropertiesHeaders object itself.
+     * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectoryGetPropertiesHeaders eTag(String eTag) {
+    public DirectorySetPropertiesHeaders eTag(String eTag) {
         this.eTag = eTag;
-        return this;
-    }
-
-    /**
-     * Get the lastModified property: Returns the date and time the Directory
-     * was last modified. Operations on files within the directory do not
-     * affect the last modified time of the directory.
-     *
-     * @return the lastModified value.
-     */
-    public OffsetDateTime lastModified() {
-        if (this.lastModified == null) {
-            return null;
-        }
-        return this.lastModified.dateTime();
-    }
-
-    /**
-     * Set the lastModified property: Returns the date and time the Directory
-     * was last modified. Operations on files within the directory do not
-     * affect the last modified time of the directory.
-     *
-     * @param lastModified the lastModified value to set.
-     * @return the DirectoryGetPropertiesHeaders object itself.
-     */
-    public DirectoryGetPropertiesHeaders lastModified(OffsetDateTime lastModified) {
-        if (lastModified == null) {
-            this.lastModified = null;
-        } else {
-            this.lastModified = new DateTimeRfc1123(lastModified);
-        }
         return this;
     }
 
@@ -203,10 +145,43 @@ public final class DirectoryGetPropertiesHeaders {
      * that was made and can be used for troubleshooting the request.
      *
      * @param requestId the requestId value to set.
-     * @return the DirectoryGetPropertiesHeaders object itself.
+     * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectoryGetPropertiesHeaders requestId(String requestId) {
+    public DirectorySetPropertiesHeaders requestId(String requestId) {
         this.requestId = requestId;
+        return this;
+    }
+
+    /**
+     * Get the lastModified property: Returns the date and time the directory
+     * was last modified. Any operation that modifies the directory or its
+     * properties updates the last modified time. Operations on files do not
+     * affect the last modified time of the directory.
+     *
+     * @return the lastModified value.
+     */
+    public OffsetDateTime lastModified() {
+        if (this.lastModified == null) {
+            return null;
+        }
+        return this.lastModified.dateTime();
+    }
+
+    /**
+     * Set the lastModified property: Returns the date and time the directory
+     * was last modified. Any operation that modifies the directory or its
+     * properties updates the last modified time. Operations on files do not
+     * affect the last modified time of the directory.
+     *
+     * @param lastModified the lastModified value to set.
+     * @return the DirectorySetPropertiesHeaders object itself.
+     */
+    public DirectorySetPropertiesHeaders lastModified(OffsetDateTime lastModified) {
+        if (lastModified == null) {
+            this.lastModified = null;
+        } else {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
         return this;
     }
 
@@ -225,9 +200,9 @@ public final class DirectoryGetPropertiesHeaders {
      * to execute the request.
      *
      * @param version the version value to set.
-     * @return the DirectoryGetPropertiesHeaders object itself.
+     * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectoryGetPropertiesHeaders version(String version) {
+    public DirectorySetPropertiesHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -250,9 +225,9 @@ public final class DirectoryGetPropertiesHeaders {
      * service that indicates the time at which the response was initiated.
      *
      * @param dateProperty the dateProperty value to set.
-     * @return the DirectoryGetPropertiesHeaders object itself.
+     * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectoryGetPropertiesHeaders dateProperty(OffsetDateTime dateProperty) {
+    public DirectorySetPropertiesHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -263,8 +238,8 @@ public final class DirectoryGetPropertiesHeaders {
 
     /**
      * Get the isServerEncrypted property: The value of this header is set to
-     * true if the directory metadata is completely encrypted using the
-     * specified algorithm. Otherwise, the value is set to false.
+     * true if the contents of the request are successfully encrypted using the
+     * specified algorithm, and false otherwise.
      *
      * @return the isServerEncrypted value.
      */
@@ -274,94 +249,14 @@ public final class DirectoryGetPropertiesHeaders {
 
     /**
      * Set the isServerEncrypted property: The value of this header is set to
-     * true if the directory metadata is completely encrypted using the
-     * specified algorithm. Otherwise, the value is set to false.
+     * true if the contents of the request are successfully encrypted using the
+     * specified algorithm, and false otherwise.
      *
      * @param isServerEncrypted the isServerEncrypted value to set.
-     * @return the DirectoryGetPropertiesHeaders object itself.
+     * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectoryGetPropertiesHeaders isServerEncrypted(Boolean isServerEncrypted) {
+    public DirectorySetPropertiesHeaders isServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
-        return this;
-    }
-
-    /**
-     * Get the fileAttributes property: Attributes set for the directory.
-     *
-     * @return the fileAttributes value.
-     */
-    public String fileAttributes() {
-        return this.fileAttributes;
-    }
-
-    /**
-     * Set the fileAttributes property: Attributes set for the directory.
-     *
-     * @param fileAttributes the fileAttributes value to set.
-     * @return the DirectoryGetPropertiesHeaders object itself.
-     */
-    public DirectoryGetPropertiesHeaders fileAttributes(String fileAttributes) {
-        this.fileAttributes = fileAttributes;
-        return this;
-    }
-
-    /**
-     * Get the fileCreationTime property: Creation time for the directory.
-     *
-     * @return the fileCreationTime value.
-     */
-    public OffsetDateTime fileCreationTime() {
-        return this.fileCreationTime;
-    }
-
-    /**
-     * Set the fileCreationTime property: Creation time for the directory.
-     *
-     * @param fileCreationTime the fileCreationTime value to set.
-     * @return the DirectoryGetPropertiesHeaders object itself.
-     */
-    public DirectoryGetPropertiesHeaders fileCreationTime(OffsetDateTime fileCreationTime) {
-        this.fileCreationTime = fileCreationTime;
-        return this;
-    }
-
-    /**
-     * Get the fileLastWriteTime property: Last write time for the directory.
-     *
-     * @return the fileLastWriteTime value.
-     */
-    public OffsetDateTime fileLastWriteTime() {
-        return this.fileLastWriteTime;
-    }
-
-    /**
-     * Set the fileLastWriteTime property: Last write time for the directory.
-     *
-     * @param fileLastWriteTime the fileLastWriteTime value to set.
-     * @return the DirectoryGetPropertiesHeaders object itself.
-     */
-    public DirectoryGetPropertiesHeaders fileLastWriteTime(OffsetDateTime fileLastWriteTime) {
-        this.fileLastWriteTime = fileLastWriteTime;
-        return this;
-    }
-
-    /**
-     * Get the fileChangeTime property: Change time for the directory.
-     *
-     * @return the fileChangeTime value.
-     */
-    public OffsetDateTime fileChangeTime() {
-        return this.fileChangeTime;
-    }
-
-    /**
-     * Set the fileChangeTime property: Change time for the directory.
-     *
-     * @param fileChangeTime the fileChangeTime value to set.
-     * @return the DirectoryGetPropertiesHeaders object itself.
-     */
-    public DirectoryGetPropertiesHeaders fileChangeTime(OffsetDateTime fileChangeTime) {
-        this.fileChangeTime = fileChangeTime;
         return this;
     }
 
@@ -380,10 +275,90 @@ public final class DirectoryGetPropertiesHeaders {
      * directory.
      *
      * @param filePermissionKey the filePermissionKey value to set.
-     * @return the DirectoryGetPropertiesHeaders object itself.
+     * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectoryGetPropertiesHeaders filePermissionKey(String filePermissionKey) {
+    public DirectorySetPropertiesHeaders filePermissionKey(String filePermissionKey) {
         this.filePermissionKey = filePermissionKey;
+        return this;
+    }
+
+    /**
+     * Get the fileAttributes property: Attributes set for the directory.
+     *
+     * @return the fileAttributes value.
+     */
+    public String fileAttributes() {
+        return this.fileAttributes;
+    }
+
+    /**
+     * Set the fileAttributes property: Attributes set for the directory.
+     *
+     * @param fileAttributes the fileAttributes value to set.
+     * @return the DirectorySetPropertiesHeaders object itself.
+     */
+    public DirectorySetPropertiesHeaders fileAttributes(String fileAttributes) {
+        this.fileAttributes = fileAttributes;
+        return this;
+    }
+
+    /**
+     * Get the fileCreationTime property: Creation time for the directory.
+     *
+     * @return the fileCreationTime value.
+     */
+    public OffsetDateTime fileCreationTime() {
+        return this.fileCreationTime;
+    }
+
+    /**
+     * Set the fileCreationTime property: Creation time for the directory.
+     *
+     * @param fileCreationTime the fileCreationTime value to set.
+     * @return the DirectorySetPropertiesHeaders object itself.
+     */
+    public DirectorySetPropertiesHeaders fileCreationTime(OffsetDateTime fileCreationTime) {
+        this.fileCreationTime = fileCreationTime;
+        return this;
+    }
+
+    /**
+     * Get the fileLastWriteTime property: Last write time for the directory.
+     *
+     * @return the fileLastWriteTime value.
+     */
+    public OffsetDateTime fileLastWriteTime() {
+        return this.fileLastWriteTime;
+    }
+
+    /**
+     * Set the fileLastWriteTime property: Last write time for the directory.
+     *
+     * @param fileLastWriteTime the fileLastWriteTime value to set.
+     * @return the DirectorySetPropertiesHeaders object itself.
+     */
+    public DirectorySetPropertiesHeaders fileLastWriteTime(OffsetDateTime fileLastWriteTime) {
+        this.fileLastWriteTime = fileLastWriteTime;
+        return this;
+    }
+
+    /**
+     * Get the fileChangeTime property: Change time for the directory.
+     *
+     * @return the fileChangeTime value.
+     */
+    public OffsetDateTime fileChangeTime() {
+        return this.fileChangeTime;
+    }
+
+    /**
+     * Set the fileChangeTime property: Change time for the directory.
+     *
+     * @param fileChangeTime the fileChangeTime value to set.
+     * @return the DirectorySetPropertiesHeaders object itself.
+     */
+    public DirectorySetPropertiesHeaders fileChangeTime(OffsetDateTime fileChangeTime) {
+        this.fileChangeTime = fileChangeTime;
         return this;
     }
 
@@ -400,9 +375,9 @@ public final class DirectoryGetPropertiesHeaders {
      * Set the fileId property: The fileId of the directory.
      *
      * @param fileId the fileId value to set.
-     * @return the DirectoryGetPropertiesHeaders object itself.
+     * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectoryGetPropertiesHeaders fileId(String fileId) {
+    public DirectorySetPropertiesHeaders fileId(String fileId) {
         this.fileId = fileId;
         return this;
     }
@@ -420,9 +395,9 @@ public final class DirectoryGetPropertiesHeaders {
      * Set the fileParentId property: The parent fileId of the directory.
      *
      * @param fileParentId the fileParentId value to set.
-     * @return the DirectoryGetPropertiesHeaders object itself.
+     * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectoryGetPropertiesHeaders fileParentId(String fileParentId) {
+    public DirectorySetPropertiesHeaders fileParentId(String fileParentId) {
         this.fileParentId = fileParentId;
         return this;
     }
@@ -440,9 +415,9 @@ public final class DirectoryGetPropertiesHeaders {
      * Set the errorCode property: The errorCode property.
      *
      * @param errorCode the errorCode value to set.
-     * @return the DirectoryGetPropertiesHeaders object itself.
+     * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectoryGetPropertiesHeaders errorCode(String errorCode) {
+    public DirectorySetPropertiesHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }
