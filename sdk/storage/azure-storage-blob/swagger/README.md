@@ -22,8 +22,6 @@ cd <swagger-folder>
 autorest --use=C:/work/autorest.java --use=C:/work/autorest.modeler --version=2.0.4280
 ```
 
-Due to limitations, after generation has completed add the `@JsonDeserialize(using = CustomHierarchicalListingDeserializer.class)` annotation to `BlobHierarchyListSegment`.
-
 ### Code generation settings
 ``` yaml
 input-file: ./blob-2019-02-02.json

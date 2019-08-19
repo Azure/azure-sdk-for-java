@@ -25,6 +25,9 @@ import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileRef;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageErrorException;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.OffsetDateTime;
@@ -32,8 +35,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * This class provides a client that contains all the operations for interacting with directory in Azure Storage File Service.
@@ -168,7 +169,7 @@ public class DirectoryAsyncClient {
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
      */
     public Mono<Response<DirectoryInfo>> create(Map<String, String> metadata) {
-        return azureFileStorageClient.directorys().createWithRestResponseAsync(shareName, directoryPath, null, metadata, Context.NONE)
+        return azureFileStorageClient.directorys().createWithRestResponseAsync(shareName, directoryPath, null, null, null, null, metadata, null, null, Context.NONE)
             .map(this::createWithRestResponse);
     }
 

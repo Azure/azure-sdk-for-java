@@ -39,6 +39,10 @@ import com.azure.storage.file.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageErrorException;
 import io.netty.buffer.ByteBuf;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -54,9 +58,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 /**
  * This class provides a client that contains all the operations for interacting with file in Azure Storage File Service.
@@ -171,7 +172,7 @@ public class FileAsyncClient {
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
     public Mono<Response<FileInfo>> create(long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata) {
-        return azureFileStorageClient.files().createWithRestResponseAsync(shareName, filePath, maxSize, null, metadata, httpHeaders, Context.NONE)
+        return azureFileStorageClient.files().createWithRestResponseAsync(shareName, filePath, maxSize, null, null, null, null, metadata, null, null, httpHeaders, Context.NONE)
             .map(this::createFileInfoResponse);
     }
 
@@ -410,7 +411,7 @@ public class FileAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Mono<Response<FileInfo>> setHttpHeaders(long newFileSize, FileHTTPHeaders httpHeaders) {
-        return azureFileStorageClient.files().setHTTPHeadersWithRestResponseAsync(shareName, filePath, null, newFileSize, httpHeaders, Context.NONE)
+        return azureFileStorageClient.files().setHTTPHeadersWithRestResponseAsync(shareName, filePath, null, null, null, null, newFileSize, null, null, httpHeaders, Context.NONE)
                         .map(this::setHttpHeadersResponse);
     }
 
