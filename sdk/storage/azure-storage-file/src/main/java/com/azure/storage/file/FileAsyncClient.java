@@ -584,8 +584,7 @@ public class FileAsyncClient {
      * @return {@link FileRange ranges} in the files.
      */
     public Flux<FileRange> listRanges() {
-        return azureFileStorageClient.files().getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, null, Context.NONE)
-                   .flatMapMany(this::convertListRangesResponseToFileRangeInfo);
+        return listRanges(null);
     }
 
     /**

@@ -106,6 +106,7 @@ public class FileClientTest extends FileClientTestBase {
 
     @Override
     public void downloadWithProperties() {
+       // defaultData.readBytes()
         fileClient.create(1024, null, null);
         FileRange range = new FileRange(0, 1024L);
         FileTestHelpers.assertResponseListStatusCode(fileClient.downloadWithProperties(range, null), Arrays.asList(200, 206));

@@ -169,7 +169,7 @@ class FileServiceAsyncAPITests extends APISpec {
         }.expectNextCount(limits - 1).verifyComplete()
 
         where:
-        options                                                                                                                             | limits | includeMetadata | includeSnapshot
+        options                                                                                                                   | limits | includeMetadata | includeSnapshot
         new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithargs")                                              | 3      | false           | false
         new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithargs").includeMetadata(true)                        | 3      | true            | false
         new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithargs").includeMetadata(true).includeSnapshots(true) | 4      | true            | true

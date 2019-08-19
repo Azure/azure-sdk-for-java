@@ -15,9 +15,10 @@ import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageErrorException
 import com.azure.storage.file.models.StorageServiceProperties
 
+import java.nio.file.Files
+import java.security.NoSuchAlgorithmException
 import java.time.Duration
 import java.util.logging.Logging
-
 
 class FileTestHelper {
 
@@ -180,5 +181,20 @@ class FileTestHelper {
                 assertMetricsAreEqual(expected.minuteMetrics(), actual.minuteMetrics()) &&
                 assertCorsAreEqual(expected.cors(), actual.cors())
         }
+    }
+
+    static boolean assertTwoFilesAreSame(File f1, File f2) throws IOException, NoSuchAlgorithmException {
+        List<String> uploadFileString = Files.readAllLines(f1.toPath())
+        List<String> downloadFileString = Files.readAllLines(f2.toPath())
+        if (uploadFileString != null && downloadFileString != null) {
+            downloadFileString.removeAll(uploadFileString)
+        }
+        while (!downloadFileString.isEmpty()) {
+            if (!downloadFileString.get(0).trim().isEmpty()) {
+                return false
+            }
+            downloadFileString.remove(0)
+        }
+        return true
     }
 }

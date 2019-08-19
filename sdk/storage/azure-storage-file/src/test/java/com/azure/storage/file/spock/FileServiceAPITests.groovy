@@ -148,7 +148,7 @@ class FileServiceAPITests extends APISpec {
         !shares.hasNext()
 
         where:
-        options                                                                                                                              | limits | includeMetadata | includeSnapshot
+        options                                                                                                               | limits | includeMetadata | includeSnapshot
         new ListSharesOptions().prefix("fileserviceapitestslistshareswithargs")                                               | 3      | false           | false
         new ListSharesOptions().prefix("fileserviceapitestslistshareswithargs") .includeMetadata(true)                        | 3      | true            | false
         new ListSharesOptions().prefix("fileserviceapitestslistshareswithargs") .includeMetadata(true).includeSnapshots(true) | 4      | true            | true
@@ -195,6 +195,5 @@ class FileServiceAPITests extends APISpec {
         INVALID_EXPOSED_HEADER | 400        | StorageErrorCode.INVALID_XML_DOCUMENT
         INVALID_ALLOWED_ORIGIN | 400        | StorageErrorCode.INVALID_XML_DOCUMENT
         INVALID_ALLOWED_METHOD | 400        | StorageErrorCode.INVALID_XML_NODE_VALUE
-
     }
 }

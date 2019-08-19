@@ -6,6 +6,7 @@ import com.azure.storage.file.FileClient
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageErrorException
+import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -13,7 +14,6 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 class DirectoryAPITests extends APISpec {
-    def shareClient
     def primaryDirectoryClient
     def directoryPath
     def shareName
@@ -22,7 +22,7 @@ class DirectoryAPITests extends APISpec {
     def setup() {
         shareName = testResourceName.randomName(methodName, 60)
         directoryPath = testResourceName.randomName(methodName, 60)
-        shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
+        def shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
         shareClient.create()
         primaryDirectoryClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).buildClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
@@ -237,6 +237,7 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
     }
 
+    @Ignore
     def "Force close handles"() {
         // TODO: Need to find a way of mocking handles.
     }
