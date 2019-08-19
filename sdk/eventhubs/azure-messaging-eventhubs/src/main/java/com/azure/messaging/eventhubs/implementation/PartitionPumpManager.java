@@ -107,18 +107,18 @@ public class PartitionPumpManager {
 
         partitionPumps.put(claimedOwnership.partitionId(), eventHubConsumer);
         eventHubConsumer.receive().subscribe(eventData -> {
-                try {
-                    partitionProcessor.processEvent(eventData).subscribe(unused -> {
-                    }, /* event processing returned error */ ex -> handleError(claimedOwnership, eventHubConsumer,
-                        partitionProcessor, ex));
-                } catch (Exception ex) {
-                    /* event processing threw an exception */
-                    handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex);
-                }
-            },
-            /* EventHubConsumer receive() returned an error */
-            ex -> handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex),
-            () -> partitionProcessor.close(CloseReason.EVENT_PROCESSOR_SHUTDOWN));
+            try {
+                partitionProcessor.processEvent(eventData).subscribe(unused -> {
+                }, /* event processing returned error */ ex -> handleError(claimedOwnership, eventHubConsumer,
+                    partitionProcessor, ex));
+            } catch (Exception ex) {
+                /* event processing threw an exception */
+                handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex);
+            }
+        },
+        /* EventHubConsumer receive() returned an error */
+        ex -> handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex),
+        () -> partitionProcessor.close(CloseReason.EVENT_PROCESSOR_SHUTDOWN));
     }
 
     private void handleError(PartitionOwnership claimedOwnership, EventHubAsyncConsumer eventHubConsumer,

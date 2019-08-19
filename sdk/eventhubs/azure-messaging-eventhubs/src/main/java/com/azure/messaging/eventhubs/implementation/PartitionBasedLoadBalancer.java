@@ -139,13 +139,14 @@ public final class PartitionBasedLoadBalancer {
         Map<String, PartitionOwnership> activePartitionOwnershipMap = removeInactivePartitionOwnerships(
             partitionOwnershipMap);
 
+        int numberOfPartitions = partitionIds.size();
         if (ImplUtils.isNullOrEmpty(activePartitionOwnershipMap)) {
             /*
              * If the active partition ownership map is empty, this is the first time an event processor is
              * running or all Event Processors are down for this Event Hub, consumer group combination. All
              * partitions in this Event Hub are available to claim. Choose a random partition to claim ownership.
              */
-            claimOwnership(partitionOwnershipMap, partitionIds.get(RANDOM.nextInt(partitionIds.size())));
+            claimOwnership(partitionOwnershipMap, partitionIds.get(RANDOM.nextInt(numberOfPartitions)));
             return Mono.empty();
         }
 
@@ -164,14 +165,15 @@ public final class PartitionBasedLoadBalancer {
          * Find the minimum number of partitions every event processor should own when the load is
          * evenly distributed.
          */
-        int minPartitionsPerEventProcessor = partitionIds.size() / ownerPartitionMap.size();
+        int numberOfActiveEventProcessors = ownerPartitionMap.size();
+        int minPartitionsPerEventProcessor = numberOfPartitions / numberOfActiveEventProcessors;
 
         /*
          * If the number of partitions in Event Hub is not evenly divisible by number of active event processors,
          * a few Event Processors may own 1 additional partition than the minimum when the load is balanced. Calculate
          * the number of event processors that can own additional partition.
          */
-        int numberOfEventProcessorsWithAdditionalPartition = partitionIds.size() % ownerPartitionMap.size();
+        int numberOfEventProcessorsWithAdditionalPartition = numberOfPartitions % numberOfActiveEventProcessors;
 
         if (isLoadBalanced(minPartitionsPerEventProcessor, numberOfEventProcessorsWithAdditionalPartition,
             ownerPartitionMap)) {
@@ -247,20 +249,19 @@ public final class PartitionBasedLoadBalancer {
         final int numberOfEventProcessorsWithAdditionalPartition,
         final Map<String, List<PartitionOwnership>> ownerPartitionMap) {
 
-        if (ownerPartitionMap.values()
-            .stream()
-            .noneMatch(ownershipList -> {
-                return ownershipList.size() < minPartitionsPerEventProcessor
-                    || ownershipList.size() > minPartitionsPerEventProcessor + 1;
-            })) {
-            long count = ownerPartitionMap.values()
-                .stream()
-                .filter(ownershipList -> ownershipList.size() == minPartitionsPerEventProcessor + 1)
-                .count();
+        int count = 0;
+        for (List<PartitionOwnership> partitionOwnership : ownerPartitionMap.values()) {
+            int numberOfPartitions = partitionOwnership.size();
+            if (numberOfPartitions < minPartitionsPerEventProcessor
+                || numberOfPartitions > minPartitionsPerEventProcessor + 1) {
+                return false;
+            }
 
-            return count == numberOfEventProcessorsWithAdditionalPartition;
+            if (numberOfPartitions == minPartitionsPerEventProcessor + 1) {
+                count++;
+            }
         }
-        return false;
+        return count == numberOfEventProcessorsWithAdditionalPartition;
     }
 
     /*
