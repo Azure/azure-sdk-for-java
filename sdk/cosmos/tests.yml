@@ -1,429 +1,339 @@
-trigger:
-  branches:
-    include:
-    - master
-  paths:
-    include:
-    - sdk/cosmos
+trigger: none
 
 variables:
-  pomFile: './sdk/cosmos/pom.xml'
-  DefaultOptions: '--batch-mode -Dmaven.wagon.http.pool=false'
-  LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+  - template: ../../eng/pipelines/templates/variables/globals.yml
+  - name: AdditionalArgs
+    value: ''
 
 jobs:
-  - job: 'Build'
-
-    pool:
-      vmImage: 'vs2017-win2016'
-
-    steps:
-    - task: Maven@3
-      displayName: 'Install reporting tools'
-      inputs:
-        mavenPomFile: ./eng/code-quality-reports/pom.xml
-        options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
-        mavenOptions: '$(LoggingOptions)'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.11'
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: false
-        goals: 'install'
-
-    - task: Maven@1
-      displayName: Build
-      inputs:
-        mavenPomFile: $(pomFile)
-        goals: 'package package'
-        options: '-DskipTests -Dgpg.skip'
-        publishJUnitResults: false
-        checkStyleRunAnalysis: true
-        pmdRunAnalysis: true
-        findBugsRunAnalysis: true
-      condition: succeededOrFailed()
-
-  - job: 'Test'
-
-    timeoutInMinutes: 240
-
-    strategy:
-      maxParallel: 1
-      matrix:
-        Session_Single_Region_ReadMyWrites:
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      TestName: Single_Region_Session
+      ServiceDirectory: cosmos
+      TimeoutInMinutes: 240
+      EnvVars:
+        ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
+        ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
+        SECONDARY_ACCOUNT_KEY: $(java-cosmos-session-singleregion-secondary-key)
+      MaxParallel: 1
+      Matrix:
+        # 59m 59s, timed out
+        Http_E2E:
+          DisplayName: ReadMyWrites Integration Tests
           OSVmImage: 'vs2017-win2016'
-          CosmosAccountHost: $(java-cosmos-session-singleregion-host)
-          CosmosAccountKey: $(java-cosmos-session-singleregion-key)
-          Consistency: 'Session'
-          TestDisplayName: 'ReadMyWrites Integration Tests'
           ProfileFlag: '-Pe2e'
-          cosmos.directModeProtocol: 'Https'
+          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
+          DESIRED_CONSISTENCY: 'Session'
+        # 09m 23s, expect passed
+        Single_Region_Fast:
+          DisplayName: Single Region Fast
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pfast'
+          PROTOCOLS: '["Https"]'
+          DESIRED_CONSISTENCIES: '["Session"]'
+        # 09m 0s, expect passed
+        Single_Region_Direct:
+          DisplayName: Single Region Direct
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pdirect'
+          PROTOCOLS: '["Https"]'
+          DESIRED_CONSISTENCIES: '["Session"]'
+        # 7m 44s, expect passed
+        Single_Region_Examples:
+          DisplayName: Single Region Examples
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pexamples'
+          PROTOCOLS: '["Https"]'
+          DESIRED_CONSISTENCIES: '["Session"]'
+
+      PreRunSteps:
+        - template: ../steps/install-reporting-tools.yml
+
+      TestStepMavenInputs:
+          goals: verify
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+
+      TestResultsFiles: '**/junitreports/TEST-*.xml'
 
 
-        Strong_Single_Region_ReadMyWrites:
+  # This template parllelizes tests that could be run on Single_Region_Session
+  # by running them against a different cosmosdb instance
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      TestName: Single_Region_Session_2
+      ServiceDirectory: cosmos
+      TimeoutInMinutes: 240
+      EnvVars:
+        ACCOUNT_HOST: $(java-cosmos-session-singleregion-one-host)
+        ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-key)
+        SECONDARY_ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-secondary-key)
+        DESIRED_CONSISTENCIES: '["Session"]'
+        PROTOCOLS: '["Tcp"]'
+      MaxParallel: 1
+      Matrix:
+        # 09m 07s, expect passed
+        Fast:
+          DisplayName: Multimaster Single Region Fast
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pfast'
+          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+        # 09m 14s, expect passed
+        Direct:
+          DisplayName: Multimaster Single Region Direct
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pdirect'
+          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+        # 07m 42s, expect passed
+        Examples:
+          DisplayName: Multimaster Single Region Examples
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pexamples'
+          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+        # 07m 05s, expect passed
+        NonEmulator:
+          DisplayName: Multimaster Single Region NonEmulator
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pnon-emulator'
+          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+        # 28m 42s, expect passed (rebalanced)
+        Single_Region_Long:
+          DisplayName: Long Integration Tests
           OSVmImage: 'vs2017-win2016'
-          CosmosAccountHost: $(java-cosmos-strong-singleregion-host)
-          CosmosAccountKey: $(java-cosmos-strong-singleregion-key)
-          Consistency: 'Strong'
-          TestDisplayName: 'ReadMyWrites Integration Tests'
+          ProfileFlag: '-e -Plong'
+          DESIRED_CONSISTENCIES: '["Session"]'
+          PREFERRED_LOCATIONS: null
+          PROTOCOLS: ''
+        # 6m 58s, expect passed (rebalanced)
+        Single_Region_NonEmulator:
+          DisplayName: Single Region Examples
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pnon-emulator'
+          PROTOCOLS: '["Https"]'
+          DESIRED_CONSISTENCIES: '["Session"]'
+
+      PreRunSteps:
+        - template: ../steps/install-reporting-tools.yml
+
+      TestStepMavenInputs:
+          goals: verify
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+
+      TestResultsFiles: '**/junitreports/TEST-*.xml'
+
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      TestName: Single_Region_Strong_Tcp
+      ServiceDirectory: cosmos
+      TimeoutInMinutes: 240
+      EnvVars:
+        ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
+        ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
+        SECONDARY_ACCOUNT_KEY: $(java-cosmos-strong-singleregion-secondary-key)
+      MaxParallel: 1
+      Matrix:
+        # 09m 32s, expect passed
+        Strong_Tcp_Fast:
+          DisplayName: Strong TCP Fast
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pfast'
+          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        # 08m 53s, expect passed
+        Strong_Tcp_Direct:
+          DisplayName: Strong TCP Direct
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pdirect'
+          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        # 07m 36s, expect passed
+        Strong_Tcp_Examples:
+          DisplayName: Strong TCP Examples
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pexamples'
+          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        # 06m 59s, expect passed
+        Strong_Tcp_NonEmulator:
+          DisplayName: Strong TCP NonEmulator
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pnon-emulator'
+          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+
+      PreRunSteps:
+        - template: ../steps/install-reporting-tools.yml
+
+      TestStepMavenInputs:
+          goals: verify
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+
+      TestResultsFiles: '**/junitreports/TEST-*.xml'
+
+  # Same host as above, parallelizing the e2e tests saves time overall
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      TestName: Single_Region_Strong_Https
+      ServiceDirectory: cosmos
+      TimeoutInMinutes: 240
+      EnvVars:
+        ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
+        ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
+        SECONDARY_ACCOUNT_KEY: $(java-cosmos-strong-singleregion-secondary-key)
+      MaxParallel: 1
+      Matrix:
+        # 59m 58s, timed out
+        Https_E2E:
+          DisplayName: Single Region ReadMyWrites
+          OSVmImage: 'vs2017-win2016'
           ProfileFlag: '-Pe2e'
-          cosmos.directModeProtocol: 'Https'
-
-        # Temporarily Disabled as V3 code lacks the support to run this pipeline. Will be enabled later by cosmos team.
-        # Strong_Multi_Region_ReadMyWrites:
-        #   OSVmImage: 'macOS-10.13'
-        #   CosmosAccountHost: $(MULTI_STRONG_ACCOUNT_HOST)
-        #   CosmosAccountKey: $(MULTI_STRONG_ACCOUNT_KEY)
-        #   Consistency: 'Strong'
-        #   TestDisplayName: 'ReadMyWrites Integration Tests'
-        #   ProfileFlag: '-Pe2e'
-        #   cosmos.directModeProtocol: 'Https'
-
-    pool:
-      vmImage: $(OSVmImage)
-        
-    #Your build pipeline references a secret variable named ‘ACCOUNT_HOST’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
-    #Your build pipeline references a secret variable named ‘ACCOUNT_KEY’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
-    steps:
-    - task: Maven@3
-      displayName: 'Install reporting tools'
-      inputs:
-        mavenPomFile: ./eng/code-quality-reports/pom.xml
-        options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
-        mavenOptions: '$(LoggingOptions)'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.11'
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: false
-        goals: 'install'
-
-    - task: Maven@1
-      displayName: $(TestDisplayName)
-      inputs:
-        mavenPomFile: $(pomFile)
-        goals: verify
-        options: '$(ProfileFlag) -Dgpg.skip -DargLine="-Dcosmos.directModeProtocol=$(cosmos.directModeProtocol)" -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
-        testResultsFiles: '**/junitreports/TEST-*.xml'
-      env:
-        DESIRED_CONSISTENCY: $(Consistency)
-      condition: succeededOrFailed()
-
-    - task: CopyFiles@2
-      displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-      inputs:
-        SourceFolder: '$(build.sourcesdirectory)'
-        Contents: |
-         **/target/**
-         **/collectedArtifactsForRelease/**
-        TargetFolder: '$(build.artifactstagingdirectory)'
-      continueOnError: true
-      condition: succeededOrFailed()
-
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifact: drop'
-      inputs:
-        PathtoPublish: '$(build.artifactstagingdirectory)'
-      continueOnError: true
-      condition: succeededOrFailed()
-
-
-  - job: 'Long_Tests'
-
-    timeoutInMinutes: 240
-
-    strategy:
-      maxParallel: 1
-      matrix:
-        MultiMaster_Multi_Region_Long:
-         OSVmImage: 'vs2017-win2016'
-         CosmosAccountHost: $(java-cosmos-multimaster-multiregion-host)
-         CosmosAccountKey: $(java-cosmos-multimaster-multiregion-key)
-         Consistency: '["Session"]'
-         TestDisplayName: 'Long Integration Tests'
-         ProfileFlag: '-e -Plong'
-         PreferredLocations: '["East US 2"]'
-
-        Session_Single_Region_Long:
-         OSVmImage: 'vs2017-win2016'
-         CosmosAccountHost: $(java-cosmos-session-singleregion-host)
-         CosmosAccountKey: $(java-cosmos-session-singleregion-key)
-         Consistency: '["Session"]'
-         TestDisplayName: 'Long Integration Tests'
-         ProfileFlag: '-e -Plong'
-         PreferredLocations: null
-
-    pool:
-      vmImage: $(OSVmImage)
-        
-    #Your build pipeline references a secret variable named ‘ACCOUNT_HOST’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
-    #Your build pipeline references a secret variable named ‘ACCOUNT_KEY’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
-    steps:
-    - task: Maven@3
-      displayName: 'Install reporting tools'
-      inputs:
-        mavenPomFile: ./eng/code-quality-reports/pom.xml
-        options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
-        mavenOptions: '$(LoggingOptions)'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.11'
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: false
-        goals: 'install'
-
-    - task: Maven@1
-      displayName: 'Long Integration Tests'
-      inputs:
-       mavenPomFile: $(pomFile)
-       goals: verify
-       options: '$(ProfileFlag) -Dgpg.skip -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
-       testResultsFiles: '**/junitreports/TEST-*.xml'
-      env:
-        DESIRED_CONSISTENCIES: $(Consistency)
-        PREFERRED_LOCATIONS: $(PreferredLocations)
-      condition: succeededOrFailed()
-
-    - task: CopyFiles@2
-      displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-      inputs:
-        SourceFolder: '$(build.sourcesdirectory)'
-        Contents: |
-         **/target/**
-         **/collectedArtifactsForRelease/**
-        TargetFolder: '$(build.artifactstagingdirectory)'
-      continueOnError: true
-      condition: succeededOrFailed()
-
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifact: drop'
-      inputs:
-        PathtoPublish: '$(build.artifactstagingdirectory)'
-      continueOnError: true
-      condition: succeededOrFailed()
-
-  - job: 'MultiMaster'
-
-    timeoutInMinutes: 240
-
-    strategy:
-      maxParallel: 1
-      matrix:
-        Single_Region:
-         OSVmImage: 'macOS-10.13'
-         CosmosAccountHost: $(java-cosmos-multimaster-singleregion-host)
-         CosmosAccountKey: $(java-cosmos-multimaster-singleregion-key)
-         PreferredLocations: null
-
-        Multi_Region:
+          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
+          DESIRED_CONSISTENCY: 'Strong'
+        # 08m 50s, expect passed
+        Strong_Https_Fast:
+          DisplayName: Strong HTTP Fast
           OSVmImage: 'macOS-10.13'
-          CosmosAccountHost: $(java-cosmos-multimaster-multiregion-host)
-          CosmosAccountKey: $(java-cosmos-multimaster-multiregion-key)
-          PreferredLocations: '["East US 2"]'
-
-    pool:
-      vmImage: $(OSVmImage)
-
-    steps:
-    - task: Maven@3
-      displayName: 'Install reporting tools'
-      inputs:
-        mavenPomFile: ./eng/code-quality-reports/pom.xml
-        options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
-        mavenOptions: '$(LoggingOptions)'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.11'
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: false
-        goals: 'install'
-
-    - task: Maven@1
-      displayName: 'Multi-Master Integration Tests'
-      inputs:
-        mavenPomFile: $(pomFile)
-        goals: verify
-        options: '-Pmulti-master -Dgpg.skip -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
-        testResultsFiles: '**/junitreports/TEST-*.xml'
-      env:
-        DESIRED_CONSISTENCIES: '["Session"]'
-        PREFERRED_LOCATIONS: $(PreferredLocations)
-      condition: succeededOrFailed()
-
-    - task: Maven@1
-      displayName: 'Fast Integration Tests'
-      inputs:
-        mavenPomFile: $(pomFile)
-        goals: verify
-        options: '-Pfast -Dgpg.skip -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
-        testResultsFiles: '**/junitreports/TEST-*.xml'
-      env:
-        DESIRED_CONSISTENCIES: '["Session"]'
-        PREFERRED_LOCATION: $(PreferredLocations)
-      condition: succeededOrFailed()
-
-    - task: Maven@1
-      displayName: 'DirectHttps Integration Tests'
-      inputs:
-        mavenPomFile: $(pomFile)
-        goals: verify
-        options: '-Pdirect -Dgpg.skip -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
-        testResultsFiles: '**/junitreports/TEST-*.xml'
-      env:
-        DESIRED_CONSISTENCIES: '["Session"]'
-        PREFERRED_LOCATION: $(PreferredLocations)
-      condition: succeededOrFailed()
-
-    - task: Maven@1
-      displayName: 'Examples Integration Tests'
-      inputs:
-        mavenPomFile: $(pomFile)
-        goals: verify
-        options: '-Pexamples -Dgpg.skip -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
-        testResultsFiles: '**/junitreports/TEST-*.xml'
-      env:
-        DESIRED_CONSISTENCIES: '["Session"]'
-        PREFERRED_LOCATION: $(PreferredLocations)
-      condition: succeededOrFailed()
-
-    - task: Maven@1
-      displayName: 'Non Emulator Tests'
-      inputs:
-        mavenPomFile: $(pomFile)
-        goals: verify
-        options: '-Pnon-emulator -Dgpg.skip -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
-        testResultsFiles: '**/junitreports/TEST-*.xml'
-      env:
-        DESIRED_CONSISTENCIES: '["Session"]'
-        PREFERRED_LOCATION: $(PreferredLocations)
-      condition: succeededOrFailed()
-
-    - task: CopyFiles@2
-      displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-      inputs:
-        SourceFolder: '$(build.sourcesdirectory)'
-        Contents: |
-         **/target/**
-         **/collectedArtifactsForRelease/**
-        TargetFolder: '$(build.artifactstagingdirectory)'
-      continueOnError: true
-      condition: succeededOrFailed()
-
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifact: drop'
-      inputs:
-        PathtoPublish: '$(build.artifactstagingdirectory)'
-      continueOnError: true
-      condition: succeededOrFailed()
-
-  - job: 'Single_Region'
-
-    timeoutInMinutes: 120
-
-    strategy:
-      maxParallel: 2
-      matrix:
-        Strong_Tcp:
+          ProfileFlag: '-Pfast'
+          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          PROTOCOLS: '["Https"]'
+          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        # 08m 50s, expect passed
+        Strong_Https_Direct:
+          DisplayName: Strong HTTP Direct
           OSVmImage: 'macOS-10.13'
-          CosmosAccountHost: $(java-cosmos-strong-singleregion-host)
-          CosmosAccountKey: $(java-cosmos-strong-singleregion-key)
-          ProtocolFlag: '["Tcp"]'
-          Consistency: '["Strong", "Session"]'
-
-        Session_Tcp:
+          ProfileFlag: '-Pdirect'
+          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          PROTOCOLS: '["Https"]'
+          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        # 07m 36s, expect passed
+        Strong_Https_Examples:
+          DisplayName: Strong HTTP Examples
           OSVmImage: 'macOS-10.13'
-          CosmosAccountHost: $(java-cosmos-session-singleregion-one-host)
-          CosmosAccountKey: $(java-cosmos-session-singleregion-one-key)
-          ProtocolFlag: '["Tcp"]'
-          Consistency: '["Session"]'
+          ProfileFlag: '-Pexamples'
+          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          PROTOCOLS: '["Https"]'
+          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        # 06m 59s, expect passed
+        Strong_Https_NonEmulator:
+          DisplayName: Strong HTTP NonEmulator
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pnon-emulator'
+          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          PROTOCOLS: '["Https"]'
+          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
-        Strong_Https:
-         OSVmImage: 'macOS-10.13'
-         CosmosAccountHost: $(java-cosmos-strong-singleregion-host)
-         CosmosAccountKey: $(java-cosmos-strong-singleregion-key)
-         ProtocolFlag: '["Https"]'
-         Consistency: '["Strong", "Session"]'
+      PreRunSteps:
+        - template: ../steps/install-reporting-tools.yml
 
-        Session_Https:
-         OSVmImage: 'macOS-10.13'
-         CosmosAccountHost: $(java-cosmos-session-singleregion-host)
-         CosmosAccountKey: $(java-cosmos-session-singleregion-key)
-         ProtocolFlag: '["Https"]'
-         Consistency: '["Session"]'
-    pool:
-      vmImage: $(OSVmImage)
+      TestStepMavenInputs:
+          goals: verify
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
 
-    steps:
-    - task: Maven@3
-      displayName: 'Install reporting tools'
-      inputs:
-        mavenPomFile: ./eng/code-quality-reports/pom.xml
-        options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
-        mavenOptions: '$(LoggingOptions)'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.11'
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: false
-        goals: 'install'
+      TestResultsFiles: '**/junitreports/TEST-*.xml'
 
-    - task: Maven@1
-      displayName: 'Fast Integration Tests'
-      inputs:
-        mavenPomFile: $(pomFile)
-        goals: verify
-        options: '-Pfast -Dgpg.skip -DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong" -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
-        testResultsFiles: '**/junitreports/TEST-*.xml'
-      env:
-        DESIRED_CONSISTENCIES: $(Consistency)
-        PROTOCOLS: $(ProtocolFlag)
-      condition: succeededOrFailed()
-    
-    - task: Maven@1
-      displayName: 'DirectHttps Integration Tests'
-      inputs:
-        mavenPomFile: $(pomFile)
-        goals: verify
-        options: '-Pdirect -Dgpg.skip -DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong" -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
-        testResultsFiles: '**/junitreports/TEST-*.xml'
-      env:
-        DESIRED_CONSISTENCIES: $(Consistency)
-        PROTOCOLS: $(ProtocolFlag)
-      condition: succeededOrFailed()
 
-    - task: Maven@1
-      displayName: 'Examples Integration Tests'
-      inputs:
-        mavenPomFile: $(pomFile)
-        goals: verify
-        options: '-Pexamples -Dgpg.skip -DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong" -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
-        testResultsFiles: '**/junitreports/TEST-*.xml'
-      env:
-        DESIRED_CONSISTENCIES: $(Consistency)
-        PROTOCOLS: $(ProtocolFlag)
-      condition: succeededOrFailed()
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      TestName: MultiMaster_Multi_Region
+      ServiceDirectory: cosmos
+      TimeoutInMinutes: 240
+      EnvVars:
+        ACCOUNT_HOST: $(java-cosmos-multimaster-multiregion-host)
+        ACCOUNT_KEY: $(java-cosmos-multimaster-multiregion-key)
+        SECONDARY_ACCOUNT_KEY: $(java-cosmos-multimaster-multiregion-secondary-key)
+        DESIRED_CONSISTENCIES: '["Session"]'
+        PREFERRED_LOCATIONS: '["East US 2"]'
+      MaxParallel: 1
+      Matrix:
+        # 29m 23s, expect passed
+        Long:
+          DisplayName: Multimaster Multi Region Long
+          OSVmImage: 'vs2017-win2016'
+          ProfileFlag: '-e -Plong'
+          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
+        # 06m 34s, previously failing
+        MultiMaster:
+          DisplayName: Multimaster Multi Region Multi-Master
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pmulti-master'
+        # 09m 43s, expect passed
+        Fast:
+          DisplayName: Multimaster Multi Region Fast
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pfast'
+        # 09m 10s, expect passed
+        Direct:
+          DisplayName: Multimaster Multi Region Direct
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pdirect'
+        # 07m 49s, expect passed
+        Examples:
+          DisplayName: Multimaster Multi Region Examples
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pexamples'
+        # 08m 0s, expect passed
+        NonEmulator:
+          DisplayName: Multimaster Multi Region NonEmulator
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pnon-emulator'
 
-    - task: Maven@1
-      displayName: 'Non Emulator Tests'
-      inputs:
-        mavenPomFile: $(pomFile)
-        goals: verify
-        options: '-Pnon-emulator -Dgpg.skip -DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong" -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
-        testResultsFiles: '**/junitreports/TEST-*.xml'
-      env:
-        DESIRED_CONSISTENCIES: $(Consistency)
-        PROTOCOLS: $(ProtocolFlag)
-      condition: succeededOrFailed()
+      PreRunSteps:
+        - template: ../steps/install-reporting-tools.yml
 
-    - task: CopyFiles@2
-      displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-      inputs:
-        SourceFolder: '$(build.sourcesdirectory)'
-        Contents: |
-         **/target/**
-         **/collectedArtifactsForRelease/**
-        TargetFolder: '$(build.artifactstagingdirectory)'
-      continueOnError: true
-      condition: succeededOrFailed()
+      TestStepMavenInputs:
+          goals: verify
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
 
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifact: drop'
-      inputs:
-        PathtoPublish: '$(build.artifactstagingdirectory)'
-      continueOnError: true
-      condition: succeededOrFailed()
+      TestResultsFiles: '**/junitreports/TEST-*.xml'
+
+
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      TestName: MultiMaster_Single_Region
+      ServiceDirectory: cosmos
+      TimeoutInMinutes: 240
+      EnvVars:
+        ACCOUNT_HOST: $(java-cosmos-multimaster-singleregion-host)
+        ACCOUNT_KEY: $(java-cosmos-multimaster-singleregion-key)
+        SECONDARY_ACCOUNT_KEY: $(java-cosmos-multimaster-singleregion-secondary-key)
+        DESIRED_CONSISTENCIES: '["Session"]'
+        PREFERRED_LOCATIONS: null
+      MaxParallel: 1
+      Matrix:
+        # 05m 21s, previously failing
+        MultiMaster:
+          DisplayName: MultiMaster Single Region Multi-Master
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pmulti-master'
+        # 09m 34s, expect passed
+        Fast:
+          DisplayName: Multimaster Single Region Fast
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pfast'
+        # 09m 05s, expect passed
+        Direct:
+          DisplayName: Multimaster Single Region Direct
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pdirect'
+        # 07m 52s, expect passed
+        Examples:
+          DisplayName: Multimaster Single Region Examples
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pexamples'
+        # 07m 10s, expect passed
+        NonEmulator:
+          DisplayName: Multimaster Single Region NonEmulator
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pnon-emulator'
+
+      PreRunSteps:
+        - template: ../steps/install-reporting-tools.yml
+
+      TestStepMavenInputs:
+          goals: verify
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+
+      TestResultsFiles: '**/junitreports/TEST-*.xml'

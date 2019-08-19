@@ -12,7 +12,7 @@ import java.util.Locale;
  * {@link AccountSASSignatureValues} object. It is possible to construct the resources string without this class, but
  * the order of the resources is particular and this class guarantees correctness.
  */
-final class AccountSASResourceType {
+public final class AccountSASResourceType {
 
     private boolean service;
 
@@ -23,15 +23,14 @@ final class AccountSASResourceType {
     /**
      * Initializes an {@code AccountSASResourceType} object with all fields set to false.
      */
-    private AccountSASResourceType() {
+    public AccountSASResourceType() {
     }
 
     /**
      * Creates an {@code AccountSASResourceType} from the specified resource types string. This method will throw an
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid resource type.
      *
-     * @param resourceTypesString
-     *         A {@code String} which represents the {@code AccountSASResourceTypes}.
+     * @param resourceTypesString A {@code String} which represents the {@code AccountSASResourceTypes}.
      *
      * @return A {@code AccountSASResourceType} generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code resourceTypesString} contains a character other than s, c, or o.
@@ -61,14 +60,17 @@ final class AccountSASResourceType {
     }
 
     /**
-     * Permission to access service level APIs granted.
+     * @return the access status for service level APIs.
      */
     public boolean service() {
         return service;
     }
 
     /**
-     * Permission to access service level APIs granted.
+     * Sets the access status for service level APIs.
+     *
+     * @param service Access status to set
+     * @return the updated AccountSASResourceType object.
      */
     public AccountSASResourceType service(boolean service) {
         this.service = service;
@@ -76,14 +78,18 @@ final class AccountSASResourceType {
     }
 
     /**
-     * Permission to access container level APIs (Blob Containers, Tables, Queues, File Shares) granted.
+     * @return the access status for container level APIs, this grants access to Blob Containers, Tables, Queues,
+     * and File Shares.
      */
     public boolean container() {
         return container;
     }
 
     /**
-     * Permission to access container level APIs (Blob Containers, Tables, Queues, File Shares) granted.
+     * Sets the access status for container level APIs, this grants access to Blob Containers, Tables, Queues, and File Shares.
+     *
+     * @param container Access status to set
+     * @return the updated AccountSASResourceType object.
      */
     public AccountSASResourceType container(boolean container) {
         this.container = container;
@@ -91,14 +97,18 @@ final class AccountSASResourceType {
     }
 
     /**
-     * Permission to access object level APIs (Blobs, Table Entities, Queue Messages, Files) granted.
+     * @return the access status for object level APIs, this grants access to Blobs, Table Entities, Queue Messages,
+     * Files.
      */
     public boolean object() {
         return object;
     }
 
     /**
-     * Permission to access object level APIs (Blobs, Table Entities, Queue Messages, Files) granted.
+     * Sets the access status for object level APIs, this grants access to Blobs, Table Entities, Queue Messages, Files.
+     *
+     * @param object Access status to set
+     * @return the updated AccountSASResourceType object.
      */
     public AccountSASResourceType object(boolean object) {
         this.object = object;

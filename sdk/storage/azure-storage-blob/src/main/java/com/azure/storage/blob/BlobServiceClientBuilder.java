@@ -14,6 +14,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
@@ -56,7 +57,7 @@ public final class BlobServiceClientBuilder {
     private static final String ENDPOINT_PROTOCOL = "defaultendpointsprotocol";
     private static final String ENDPOINT_SUFFIX = "endpointsuffix";
 
-    private final List<HttpPipelinePolicy> policies;
+    private final List<HttpPipelinePolicy> additionalPolicies;
 
     private String endpoint;
     private SharedKeyCredential sharedKeyCredential;
@@ -74,10 +75,20 @@ public final class BlobServiceClientBuilder {
     public BlobServiceClientBuilder() {
         retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
-        policies = new ArrayList<>();
+        additionalPolicies = new ArrayList<>();
     }
 
-    private AzureBlobStorageBuilder buildImpl() {
+    /**
+     * @return a {@link BlobServiceClient} created from the configurations in this builder.
+     */
+    public BlobServiceClient buildClient() {
+        return new BlobServiceClient(buildAsyncClient());
+    }
+
+    /**
+     * @return a {@link BlobServiceAsyncClient} created from the configurations in this builder.
+     */
+    public BlobServiceAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint);
 
         // Closest to API goes first, closest to wire goes last.
@@ -96,13 +107,13 @@ public final class BlobServiceClientBuilder {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
         } else if (sasTokenCredential != null) {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
-        } else {
-            policies.add(new AnonymousCredentialPolicy());
         }
-
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RequestRetryPolicy(retryOptions));
 
-        policies.addAll(this.policies);
+        policies.addAll(this.additionalPolicies);
+
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(logLevel));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -110,29 +121,10 @@ public final class BlobServiceClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        return new AzureBlobStorageBuilder()
+        return new BlobServiceAsyncClient(new AzureBlobStorageBuilder()
             .url(endpoint)
-            .pipeline(pipeline);
-    }
-
-    /**
-     * Creates a {@link BlobServiceClient} based on options set in the Builder.
-     *
-     * @return a {@link BlobServiceClient} created from the configurations in this builder.
-     * @throws NullPointerException If {@code endpoint} is {@code null}.
-     */
-    public BlobServiceClient buildClient() {
-        return new BlobServiceClient(buildAsyncClient());
-    }
-
-    /**
-     * Creates a {@link BlobServiceAsyncClient} based on options set in the Builder.
-     *
-     * @return a {@link BlobServiceAsyncClient} created from the configurations in this builder.
-     * @throws NullPointerException If {@code endpoint} is {@code null}.
-     */
-    public BlobServiceAsyncClient buildAsyncClient() {
-        return new BlobServiceAsyncClient(buildImpl());
+            .pipeline(pipeline)
+            .build());
     }
 
     /**
@@ -146,7 +138,7 @@ public final class BlobServiceClientBuilder {
             URL url = new URL(endpoint);
             this.endpoint = url.getProtocol() + "://" + url.getAuthority();
 
-            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(URLParser.parse(url).sasQueryParameters());
+            this.sasTokenCredential = SASTokenCredential.fromSASTokenString(URLParser.parse(url).sasQueryParameters().encode());
             if (this.sasTokenCredential != null) {
                 this.tokenCredential = null;
                 this.sharedKeyCredential = null;
@@ -263,7 +255,7 @@ public final class BlobServiceClientBuilder {
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public BlobServiceClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.policies.add(Objects.requireNonNull(pipelinePolicy));
+        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy));
         return this;
     }
 

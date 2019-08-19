@@ -8,9 +8,9 @@ import com.azure.core.util.configuration.ConfigurationManager;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Tests the configuration API.
@@ -94,13 +94,24 @@ public class ConfigurationTests {
     }
 
     @Test
-    public void logLevelAndTracingDisabledUpdateInstantly() {
-        assertNull(ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL));
-        System.setProperty(BaseConfigurations.AZURE_LOG_LEVEL, "2");
-        assertEquals(2, (int) ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL, 5));
+    public void logLevelUpdatesInstantly() {
+        String initialLogLevel = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL);
+        System.setProperty(BaseConfigurations.AZURE_LOG_LEVEL, "123456789");
+        assertNotEquals(initialLogLevel, ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL));
 
-        assertNull(ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_TELEMETRY_DISABLED));
-        System.setProperty(BaseConfigurations.AZURE_TELEMETRY_DISABLED, Boolean.toString(true));
-        assertTrue(ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_TELEMETRY_DISABLED, false));
+        // Cleanup the test
+        if (initialLogLevel != null) {
+            System.setProperty(BaseConfigurations.AZURE_LOG_LEVEL, initialLogLevel);
+        }
+    }
+
+    @Test
+    public void tracingDisabledUpdatesInstantly() {
+        boolean initialTracingDisabled = Boolean.parseBoolean(ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_TRACING_DISABLED));
+        System.setProperty(BaseConfigurations.AZURE_TRACING_DISABLED, Boolean.toString(!initialTracingDisabled));
+        assertNotEquals(initialTracingDisabled, ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_TRACING_DISABLED));
+
+        // Cleanup the test
+        System.setProperty(BaseConfigurations.AZURE_TRACING_DISABLED, Boolean.toString(initialTracingDisabled));
     }
 }

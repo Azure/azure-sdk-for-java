@@ -6,20 +6,23 @@ package com.azure.storage.blob;
 import com.azure.storage.blob.models.ContainerGetPropertiesHeaders;
 import com.azure.storage.blob.models.PublicAccessType;
 
-public class ContainerProperties {
+import java.time.OffsetDateTime;
 
-    private PublicAccessType blobPublicAccess;
+public final class ContainerProperties {
 
-    private boolean hasImmutabilityPolicy;
+    private final PublicAccessType blobPublicAccess;
 
-    private boolean hasLegalHold;
+    private final boolean hasImmutabilityPolicy;
 
-    //todo decide datetime representation for last modified time
+    private final boolean hasLegalHold;
+
+    private final OffsetDateTime lastModified;
 
     ContainerProperties(ContainerGetPropertiesHeaders generatedResponseHeaders) {
         this.blobPublicAccess = generatedResponseHeaders.blobPublicAccess();
         this.hasImmutabilityPolicy = generatedResponseHeaders.hasImmutabilityPolicy();
         this.hasLegalHold = generatedResponseHeaders.hasLegalHold();
+        this.lastModified = generatedResponseHeaders.lastModified();
     }
 
     /**
@@ -41,5 +44,12 @@ public class ContainerProperties {
      */
     public boolean hasLegalHold() {
         return hasLegalHold;
+    }
+
+    /**
+     * @return the time the container was last modified
+     */
+    public OffsetDateTime lastModified() {
+        return lastModified;
     }
 }

@@ -12,7 +12,7 @@ import java.util.Locale;
  * {@link AccountSASSignatureValues} object. It is possible to construct the services string without this class, but
  * the order of the services is particular and this class guarantees correctness.
  */
-final class AccountSASService {
+public final class AccountSASService {
 
     private boolean blob;
 
@@ -25,15 +25,14 @@ final class AccountSASService {
     /**
      * Initializes an {@code AccountSASService} object with all fields set to false.
      */
-    private AccountSASService() {
+    public AccountSASService() {
     }
 
     /**
      * Creates an {@code AccountSASService} from the specified services string. This method will throw an
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid service.
      *
-     * @param servicesString
-     *         A {@code String} which represents the {@code SharedAccessAccountServices}.
+     * @param servicesString A {@code String} which represents the {@code SharedAccessAccountServices}.
      *
      * @return A {@code AccountSASService} generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code servicesString} contains a character other than b, f, q, or t.
@@ -66,14 +65,17 @@ final class AccountSASService {
     }
 
     /**
-     * Permission to access blob resources granted.
+     * @return the access status for blob resources.
      */
     public boolean blob() {
         return blob;
     }
 
     /**
-     * Permission to access blob resources granted.
+     * Sets the access status for blob resources.
+     *
+     * @param blob Access status to set
+     * @return the updated AccountSASService object.
      */
     public AccountSASService blob(boolean blob) {
         this.blob = blob;
@@ -81,14 +83,17 @@ final class AccountSASService {
     }
 
     /**
-     * Permission to access file resources granted.
+     * @return the access status for file resources.
      */
     public boolean file() {
         return file;
     }
 
     /**
-     * Permission to access file resources granted.
+     * Sets the access status for file resources.
+     *
+     * @param file Access status to set
+     * @return the updated AccountSASService object.
      */
     public AccountSASService file(boolean file) {
         this.file = file;
@@ -96,14 +101,17 @@ final class AccountSASService {
     }
 
     /**
-     * Permission to access queue resources granted.
+     * @return the access status for queue resources.
      */
     public boolean queue() {
         return queue;
     }
 
     /**
-     * Permission to access queue resources granted.
+     * Sets the access status for queue resources.
+     *
+     * @param queue Access status to set
+     * @return the updated AccountSASService object.
      */
     public AccountSASService queue(boolean queue) {
         this.queue = queue;
@@ -111,14 +119,17 @@ final class AccountSASService {
     }
 
     /**
-     * Permission to access table resources granted.
+     * @return the access status for table resources.
      */
     public boolean table() {
         return table;
     }
 
     /**
-     * Permission to access table resources granted.
+     * Sets the access status for table resources.
+     *
+     * @param table Access status to set
+     * @return the updated AccountSASService object.
      */
     public AccountSASService table(boolean table) {
         this.table = table;

@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.common.Utility;
 
 import java.time.Duration;
 
@@ -11,7 +13,7 @@ import java.time.Duration;
  * HTTPGetterInfo is a passed to the getter function of a reliable download to specify parameters needed for the GET
  * request.
  */
-final class HTTPGetterInfo {
+public final class HTTPGetterInfo {
     private long offset = 0;
 
     private Long count = null;
@@ -19,14 +21,17 @@ final class HTTPGetterInfo {
     private String eTag = null;
 
     /**
-     * The start offset that should be used when creating the HTTP GET request's Range header. Defaults to 0.
+     * @return the start offset used when creating the Range header. Defaults to 0.
      */
     public long offset() {
         return offset;
     }
 
     /**
-     * The start offset that should be used when creating the HTTP GET request's Range header. Defaults to 0.
+     * Sets the start offset that is used when creating the Range header. If unchanged this will default to 0.
+     *
+     * @param offset Start offset
+     * @return the updated HTTPGetterInfo object
      */
     public HTTPGetterInfo offset(long offset) {
         this.offset = offset;
@@ -34,16 +39,19 @@ final class HTTPGetterInfo {
     }
 
     /**
-     * The count of bytes that should be used to calculate the end offset when creating the HTTP GET request's Range
-     * header. {@code} null is the default and indicates that the entire rest of the blob should be retrieved.
+     * @return the count of bytes used to calculate the end offset when creating the Range header. {@code} null is the
+     * default and indicates that the entire rest of the blob should be retrieved.
      */
     public Long count() {
         return count;
     }
 
     /**
-     * The count of bytes that should be used to calculate the end offset when creating the HTTP GET request's Range
-     * header. {@code} null is the default and indicates that the entire rest of the blob should be retrieved.
+     * Sets the count of bytes used to calculate the end offset when creating the Range header. {@code} null is the
+     * default and indicates that the entire rest of the blob should be retrieved.
+     *
+     * @param count Count of bytes
+     * @return the updated HTTPGetterInfo object
      */
     public HTTPGetterInfo count(Long count) {
         if (count != null) {
@@ -54,18 +62,21 @@ final class HTTPGetterInfo {
     }
 
     /**
-     * The resource's etag that should be used when creating the HTTP GET request's If-Match header. Note that the
-     * Etag is returned with any operation that modifies the resource and by a call to {@link
-     * BlobClient#getProperties(BlobAccessConditions, Duration)}. Defaults to null.
+     * @return the eTag used when creating If-Match header. eTag is returned with any operation that modifies the
+     * resource and when retrieving {@link BlobClient#getPropertiesWithResponse(BlobAccessConditions, Duration, Context) properties}.
+     * Defaults to null.
      */
     public String eTag() {
         return eTag;
     }
 
     /**
-     * The resource's etag that should be used when creating the HTTP GET request's If-Match header. Note that the
-     * Etag is returned with any operation that modifies the resource and by a call to {@link
-     * BlobClient#getProperties(BlobAccessConditions, Duration)}. Defaults to null.
+     * Sets the eTag used when creating If-Match header. eTag is returned with any operation that modifies the
+     * resource and when retrieving {@link BlobClient#getPropertiesWithResponse(BlobAccessConditions, Duration, Context) properties}.
+     * Defaults to null.
+     *
+     * @param eTag Resource's eTag
+     * @return the updated HTTPGetterInfo object
      */
     public HTTPGetterInfo eTag(String eTag) {
         this.eTag = eTag;

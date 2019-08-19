@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob;
 
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 
 import java.util.Locale;
 
@@ -32,11 +32,11 @@ public class AzureIdentityExample {
          */
         BlobServiceClient storageClient = new BlobServiceClientBuilder()
                 .endpoint(endpoint)
-                .credential(new DefaultAzureCredential())
+                .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
         System.out.println("Successfully setup client using the Azure Identity, please check the service version: "
-            + storageClient.getProperties().value().defaultServiceVersion());
+            + storageClient.getProperties().defaultServiceVersion());
 
     }
 }

@@ -7,7 +7,7 @@ import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
 import com.azure.security.keyvault.keys.models.Key;
@@ -38,7 +38,7 @@ public final class KeyClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.keys.keyclient.instantiation
         KeyClient keyClient = new KeyClientBuilder()
             .endpoint("https://myvault.azure.net/")
-            .credential(new DefaultAzureCredential())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // END: com.azure.security.keyvault.keys.keyclient.instantiation
         return keyClient;
@@ -352,6 +352,18 @@ public final class KeyClientJavaDocCodeSnippets {
                 keyWithMaterial.keyMaterial().kty());
         }
         // END: com.azure.keyvault.keys.keyclient.listKeys#Context
+
+        // BEGIN: com.azure.keyvault.keys.keyclient.listKeys.iterableByPage
+        keyClient.listKeys().iterableByPage().forEach(resp -> {
+            System.out.printf("Got response headers . Url: %s, Status code: %d %n",
+                resp.request().url(), resp.statusCode());
+            resp.items().forEach(value -> {
+                Key keyWithMaterial = keyClient.getKey(value);
+                System.out.printf("Received key with name %s and type %s %n", keyWithMaterial.name(),
+                    keyWithMaterial.keyMaterial().kty());
+            });
+        });
+        // END: com.azure.keyvault.keys.keyclient.listKeys.iterableByPage
     }
 
     /**
@@ -370,6 +382,16 @@ public final class KeyClientJavaDocCodeSnippets {
             System.out.printf("Deleted key's recovery Id %s", deletedKey.recoveryId());
         }
         // END: com.azure.keyvault.keys.keyclient.listDeletedKeys#Context
+
+        // BEGIN: com.azure.keyvault.keys.keyclient.listDeletedKeys.iterableByPage
+        keyClient.listDeletedKeys().iterableByPage().forEach(resp -> {
+            System.out.printf("Got response headers . Url: %s, Status code: %d %n",
+                resp.request().url(), resp.statusCode());
+            resp.items().forEach(value -> {
+                System.out.printf("Deleted key's recovery Id %s %n", value.recoveryId());
+            });
+        });
+        // END: com.azure.keyvault.keys.keyclient.listDeletedKeys.iterableByPage
     }
 
     /**
@@ -392,6 +414,16 @@ public final class KeyClientJavaDocCodeSnippets {
                     keyWithMaterial.keyMaterial().kty(), keyWithMaterial.version());
         }
         // END: com.azure.keyvault.keys.keyclient.listKeyVersions#Context
+
+        // BEGIN: com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage
+        keyClient.listKeyVersions("keyName").iterableByPage().forEach(resp -> {
+            System.out.printf("Got response headers . Url: %s, Status code: %d %n",
+                resp.request().url(), resp.statusCode());
+            resp.items().forEach(value -> {
+                System.out.printf("Key name: %s, Key version: %s %n", value.name(), value.version());
+            });
+        });
+        // END: com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage
     }
 
     /**

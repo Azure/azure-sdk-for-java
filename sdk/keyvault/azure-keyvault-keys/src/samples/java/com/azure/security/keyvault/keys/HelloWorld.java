@@ -5,7 +5,7 @@ package com.azure.security.keyvault.keys;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 
@@ -30,7 +30,7 @@ public class HelloWorld {
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         KeyClient keyClient = new KeyClientBuilder()
                 .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-                .credential(new DefaultAzureCredential())
+                .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
         // Let's create a Rsa key valid for 1 year. if the key

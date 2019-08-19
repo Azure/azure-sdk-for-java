@@ -14,6 +14,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
@@ -56,7 +57,7 @@ public final class ContainerClientBuilder {
     private static final String ENDPOINT_PROTOCOL = "defaultendpointsprotocol";
     private static final String ENDPOINT_SUFFIX = "endpointsuffix";
 
-    private final List<HttpPipelinePolicy> policies;
+    private final List<HttpPipelinePolicy> additionalPolicies;
 
     private String endpoint;
     private String containerName;
@@ -75,14 +76,20 @@ public final class ContainerClientBuilder {
     public ContainerClientBuilder() {
         retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
-        policies = new ArrayList<>();
+        additionalPolicies = new ArrayList<>();
     }
 
     /**
-     * Constructs an instance of ContainerAsyncClient based on the configurations stored in the appendBlobClientBuilder.
-     * @return a new client instance
+     * @return a {@link ContainerClient} created from the configurations in this builder.
      */
-    private AzureBlobStorageBuilder buildImpl() {
+    public ContainerClient buildClient() {
+        return new ContainerClient(buildAsyncClient());
+    }
+
+    /**
+     * @return a {@link ContainerAsyncClient} created from the configurations in this builder.
+     */
+    public ContainerAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint);
         Objects.requireNonNull(containerName);
 
@@ -102,13 +109,14 @@ public final class ContainerClientBuilder {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
         } else if (sasTokenCredential != null) {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
-        } else {
-            policies.add(new AnonymousCredentialPolicy());
         }
 
         policies.add(new RequestRetryPolicy(retryOptions));
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
-        policies.addAll(this.policies);
+        policies.addAll(this.additionalPolicies);
+
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(logLevel));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -116,29 +124,10 @@ public final class ContainerClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        return new AzureBlobStorageBuilder()
+        return new ContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(String.format("%s/%s", endpoint, containerName))
-            .pipeline(pipeline);
-    }
-
-    /**
-     * Creates a {@link ContainerClient} based on options set in the Builder.
-     *
-     * @return a {@link ContainerClient} created from the configurations in this builder.
-     * @throws NullPointerException If {@code endpoint} is {@code null} or {@code containerName} is {@code null}.
-     */
-    public ContainerClient buildClient() {
-        return new ContainerClient(buildAsyncClient());
-    }
-
-    /**
-     * Creates a {@link ContainerAsyncClient} based on options set in the Builder.
-     *
-     * @return a {@link ContainerAsyncClient} created from the configurations in this builder.
-     * @throws NullPointerException If {@code endpoint} is {@code null} or {@code containerName} is {@code null}.
-     */
-    public ContainerAsyncClient buildAsyncClient() {
-        return new ContainerAsyncClient(buildImpl());
+            .pipeline(pipeline)
+            .build());
     }
 
     /**
@@ -155,7 +144,7 @@ public final class ContainerClientBuilder {
             this.endpoint = parts.scheme() + "://" + parts.host();
             this.containerName = parts.containerName();
 
-            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(parts.sasQueryParameters());
+            this.sasTokenCredential = SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode());
             if (this.sasTokenCredential != null) {
                 this.tokenCredential = null;
                 this.sharedKeyCredential = null;
@@ -282,7 +271,7 @@ public final class ContainerClientBuilder {
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public ContainerClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.policies.add(Objects.requireNonNull(pipelinePolicy));
+        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy));
         return this;
     }
 
