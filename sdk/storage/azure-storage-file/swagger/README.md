@@ -509,7 +509,7 @@ directive:
     $.enum = [ "2019-02-02" ];
 ```
 
-### Times aren't required
+### Convert FileCreationTime and FileLastWriteTime to String to Support 'now'
 ``` yaml
 directive:
 - from: swagger-document
