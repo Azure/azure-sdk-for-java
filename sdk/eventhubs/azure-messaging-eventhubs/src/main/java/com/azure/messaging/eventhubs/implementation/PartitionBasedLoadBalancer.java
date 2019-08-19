@@ -122,7 +122,7 @@ public final class PartitionBasedLoadBalancer {
         List<String> partitionIds = tuple.getT2();
 
         if (ImplUtils.isNullOrEmpty(partitionIds)) {
-            // ideally, should never happen.
+            // This may be due to an error when getting Event Hub metadata.
             return Mono.error(new IllegalStateException("There are no partitions in Event Hub " + this.eventHubName));
         }
 
@@ -132,9 +132,9 @@ public final class PartitionBasedLoadBalancer {
         }
 
         /*
-         * Remove all partitions ownerships that have not be modified for a long time. This means that the previous
-         * event processor that owned the partition is probably down and the partition is now eligible to be
-         * claimed by other event processors.
+         * Remove all partitions' ownership that have not be modified for a configuration period of time. This means
+         * that the previous EventProcessor that owned the partition is probably down and the partition is now eligible
+         * to be claimed by other EventProcessors.
          */
         Map<String, PartitionOwnership> activePartitionOwnershipMap = removeInactivePartitionOwnerships(
             partitionOwnershipMap);
@@ -278,11 +278,8 @@ public final class PartitionBasedLoadBalancer {
         int leastPartitionsOwnedByAnyEventProcessor =
             ownerPartitionMap.values().stream().min(Comparator.comparingInt(List::size)).get().size();
 
-        if (numberOfPartitionsOwned < minPartitionsPerEventProcessor
-            || numberOfPartitionsOwned == leastPartitionsOwnedByAnyEventProcessor) {
-            return true;
-        }
-        return false;
+        return numberOfPartitionsOwned < minPartitionsPerEventProcessor
+            || numberOfPartitionsOwned == leastPartitionsOwnedByAnyEventProcessor;
     }
 
     /*

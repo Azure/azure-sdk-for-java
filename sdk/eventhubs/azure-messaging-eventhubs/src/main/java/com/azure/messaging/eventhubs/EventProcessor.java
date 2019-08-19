@@ -18,9 +18,9 @@ import reactor.core.scheduler.Schedulers;
 /**
  * This is the starting point for event processor.
  * <p>
- * Event Processor based application consists of one or more instances of {@link EventProcessor} which are set up to
- * consume events from the same Event Hub + consumer group and to balance the workload across different instances and
- * track progress when events are processed.
+ * Event Processor-based application consists of one or more instances of {@link EventProcessor} which have been
+ * configured to consume events from the same Event Hub and consumer group. Event Processors balance the
+ * workload across different instances and track progress when events are processed.
  * </p>
  *
  * <p><strong>Creating an {@link EventProcessor} instance using Event Hub instance connection
