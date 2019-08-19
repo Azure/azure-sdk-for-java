@@ -41,6 +41,10 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <property name="message" value='All TODOs should be named.  e.g. "TODO (johndoe): Refactor when v2 is released."'/>
   </module>
 
+  <!-- Checks that a package-info.java file exists for each package. -->
+  <!-- See http://checkstyle.sf.net/config_javadoc.html#JavadocPackage -->
+  <module name="JavadocPackage"/>
+
   <!-- All Java AST specific tests live under TreeWalker module. -->
   <module name="TreeWalker">
 
@@ -169,7 +173,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
     <!-- Checks for braces around if and else blocks -->
     <module name="NeedBraces">
-      <property name="severity" value="warning"/>
       <property name="tokens" value="LITERAL_IF, LITERAL_ELSE, LITERAL_FOR, LITERAL_WHILE, LITERAL_DO"/>
     </module>
 
@@ -309,17 +312,20 @@ page at http://checkstyle.sourceforge.net/config.html -->
     2) The length of value of property 'name' should be less than 20 characters and without space -->
     <module name="com.azure.tools.checkstyle.checks.ServiceInterfaceCheck"/>
 
-    <!--CUSTOM CHECKS-->
-    <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
-<!--    <module name="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck"/>-->
-
+    <!-- CUSTOM CHECKS -->
+    <!-- The @Immutable class should have the following rules:
+    1) All fields must be final -->
+    <module name="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClassCheck"/>
 
     <!-- CUSTOM CHECKS -->
-    <!-- Verifies that subclasses of ServiceClient meet a set of guidelines.
-    1) They cannot have public or protected constructors
-    2) They must implement a public static method named builder
-    -->
-    <module name="com.azure.tools.checkstyle.checks.ServiceClientChecks"/>
+    <!-- Javadoc format: 'param / return / throws' descriptions text should only have one space character after the
+     parameter name or return -->
+    <module name="com.azure.tools.checkstyle.checks.JavaDocFormatting"/>
+    <!--CUSTOM CHECKS-->
+    <!-- Any class that implements the HttpPipelinePolicy interface should:
+    1) Must be a public class.
+    2) Not in an implementation package or sub-package. -->
+    <module name="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"/>
 
     <!-- Fluent method checks -->
     <!-- A method returns an instance of the class, and that have one parameter, should not start with 'with'.-->

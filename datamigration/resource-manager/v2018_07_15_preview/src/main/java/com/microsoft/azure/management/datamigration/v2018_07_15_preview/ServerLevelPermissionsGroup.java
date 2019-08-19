@@ -8,40 +8,52 @@
 
 package com.microsoft.azure.management.datamigration.v2018_07_15_preview;
 
-import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Defines values for ServerLevelPermissionsGroup.
  */
-public final class ServerLevelPermissionsGroup extends ExpandableStringEnum<ServerLevelPermissionsGroup> {
-    /** Static value Default for ServerLevelPermissionsGroup. */
-    public static final ServerLevelPermissionsGroup DEFAULT = fromString("Default");
+public enum ServerLevelPermissionsGroup {
+    /** Enum value Default. */
+    DEFAULT("Default"),
 
-    /** Static value MigrationFromSqlServerToAzureDB for ServerLevelPermissionsGroup. */
-    public static final ServerLevelPermissionsGroup MIGRATION_FROM_SQL_SERVER_TO_AZURE_DB = fromString("MigrationFromSqlServerToAzureDB");
+    /** Enum value MigrationFromSqlServerToAzureDB. */
+    MIGRATION_FROM_SQL_SERVER_TO_AZURE_DB("MigrationFromSqlServerToAzureDB"),
 
-    /** Static value MigrationFromSqlServerToAzureMI for ServerLevelPermissionsGroup. */
-    public static final ServerLevelPermissionsGroup MIGRATION_FROM_SQL_SERVER_TO_AZURE_MI = fromString("MigrationFromSqlServerToAzureMI");
+    /** Enum value MigrationFromSqlServerToAzureMI. */
+    MIGRATION_FROM_SQL_SERVER_TO_AZURE_MI("MigrationFromSqlServerToAzureMI"),
 
-    /** Static value MigrationFromMySQLToAzureDBForMySQL for ServerLevelPermissionsGroup. */
-    public static final ServerLevelPermissionsGroup MIGRATION_FROM_MY_SQLTO_AZURE_DBFOR_MY_SQL = fromString("MigrationFromMySQLToAzureDBForMySQL");
+    /** Enum value MigrationFromMySQLToAzureDBForMySQL. */
+    MIGRATION_FROM_MY_SQLTO_AZURE_DBFOR_MY_SQL("MigrationFromMySQLToAzureDBForMySQL");
 
-    /**
-     * Creates or finds a ServerLevelPermissionsGroup from its string representation.
-     * @param name a name to look for
-     * @return the corresponding ServerLevelPermissionsGroup
-     */
-    @JsonCreator
-    public static ServerLevelPermissionsGroup fromString(String name) {
-        return fromString(name, ServerLevelPermissionsGroup.class);
+    /** The actual serialized value for a ServerLevelPermissionsGroup instance. */
+    private String value;
+
+    ServerLevelPermissionsGroup(String value) {
+        this.value = value;
     }
 
     /**
-     * @return known ServerLevelPermissionsGroup values
+     * Parses a serialized value to a ServerLevelPermissionsGroup instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed ServerLevelPermissionsGroup object, or null if unable to parse.
      */
-    public static Collection<ServerLevelPermissionsGroup> values() {
-        return values(ServerLevelPermissionsGroup.class);
+    @JsonCreator
+    public static ServerLevelPermissionsGroup fromString(String value) {
+        ServerLevelPermissionsGroup[] items = ServerLevelPermissionsGroup.values();
+        for (ServerLevelPermissionsGroup item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

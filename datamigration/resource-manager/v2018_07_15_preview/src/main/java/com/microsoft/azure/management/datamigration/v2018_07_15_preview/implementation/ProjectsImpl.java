@@ -64,10 +64,14 @@ class ProjectsImpl extends WrapperImpl<ProjectsInner> implements Projects {
     public Observable<Project> getAsync(String groupName, String serviceName, String projectName) {
         ProjectsInner client = this.inner();
         return client.getAsync(groupName, serviceName, projectName)
-        .map(new Func1<ProjectInner, Project>() {
+        .flatMap(new Func1<ProjectInner, Observable<Project>>() {
             @Override
-            public Project call(ProjectInner inner) {
-                return wrapModel(inner);
+            public Observable<Project> call(ProjectInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Project)wrapModel(inner));
+                }
             }
        });
     }

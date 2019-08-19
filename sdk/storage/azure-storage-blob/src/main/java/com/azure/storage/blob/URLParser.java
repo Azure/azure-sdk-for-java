@@ -3,6 +3,9 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.implementation.util.ImplUtils;
+import com.azure.storage.common.Utility;
+
 import java.net.URL;
 import java.util.Comparator;
 import java.util.Locale;
@@ -19,8 +22,7 @@ final class URLParser {
      * Any other query parameters remain in the UnparsedParams field. This method overwrites all fields in the
      * BlobURLParts object.
      *
-     * @param url
-     *         The {@code URL} to be parsed.
+     * @param url The {@code URL} to be parsed.
      *
      * @return A {@link BlobURLParts} object containing all the components of a BlobURL.
      */
@@ -34,7 +36,7 @@ final class URLParser {
 
         // find the container & blob names (if any)
         String path = url.getPath();
-        if (!Utility.isNullOrEmpty(path)) {
+        if (!ImplUtils.isNullOrEmpty(path)) {
             // if the path starts with a slash remove it
             if (path.charAt(0) == '/') {
                 path = path.substring(1);
@@ -74,8 +76,7 @@ final class URLParser {
     /**
      * Parses a query string into a one to many hashmap.
      *
-     * @param queryParams
-     *         The string of query params to parse.
+     * @param queryParams The string of query params to parse.
      *
      * @return A {@code HashMap<String, String[]>} of the key values.
      */
@@ -88,7 +89,7 @@ final class URLParser {
             }
         });
 
-        if (Utility.isNullOrEmpty(queryParams)) {
+        if (ImplUtils.isNullOrEmpty(queryParams)) {
             return retVals;
         }
 
@@ -99,8 +100,8 @@ final class URLParser {
         for (int m = 0; m < valuePairs.length; m++) {
             // Getting key and value for a single query parameter
             final int equalDex = valuePairs[m].indexOf("=");
-            String key = Utility.safeURLDecode(valuePairs[m].substring(0, equalDex)).toLowerCase(Locale.ROOT);
-            String value = Utility.safeURLDecode(valuePairs[m].substring(equalDex + 1));
+            String key = Utility.urlDecode(valuePairs[m].substring(0, equalDex)).toLowerCase(Locale.ROOT);
+            String value = Utility.urlDecode(valuePairs[m].substring(equalDex + 1));
 
             // add to map
             String[] keyValues = retVals.get(key);

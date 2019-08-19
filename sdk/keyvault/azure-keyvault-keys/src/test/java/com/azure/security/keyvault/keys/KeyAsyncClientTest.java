@@ -5,9 +5,6 @@ package com.azure.security.keyvault.keys;
 
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.KeyBase;
@@ -33,20 +30,14 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         beforeTestSetup();
 
         if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(credentials -> new KeyClientBuilder()
-                .credential(credentials)
+            client = clientSetup(pipeline -> new KeyClientBuilder()
                 .endpoint(getEndpoint())
-                .httpClient(interceptorManager.getPlaybackClient())
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .pipeline(pipeline)
                 .buildAsyncClient());
         } else {
-            client = clientSetup(credentials -> new KeyClientBuilder()
-                .credential(credentials)
+            client = clientSetup(pipeline -> new KeyClientBuilder()
+                .pipeline(pipeline)
                 .endpoint(getEndpoint())
-                .httpClient(HttpClient.createDefault().wiretap(true))
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy())
                 .buildAsyncClient());
         }
     }
@@ -55,7 +46,6 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
      * Tests that a key can be created in the key vault.
      */
     public void setKey() {
-
         setKeyRunner((expected) -> StepVerifier.create(client.createKey(expected))
             .assertNext(response -> assertKeyEquals(expected, response))
             .verifyComplete());
