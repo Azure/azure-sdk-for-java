@@ -15,6 +15,7 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountPatchP
 import java.util.List;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.Capability;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.ConnectorOffer;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.ConsistencyPolicy;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountOfferType;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.FailoverPolicy;
@@ -84,6 +85,11 @@ class DatabaseAccountImpl extends GroupableResourceCoreImpl<DatabaseAccount, Dat
     }
 
     @Override
+    public ConnectorOffer connectorOffer() {
+        return this.inner().connectorOffer();
+    }
+
+    @Override
     public ConsistencyPolicy consistencyPolicy() {
         return this.inner().consistencyPolicy();
     }
@@ -101,6 +107,11 @@ class DatabaseAccountImpl extends GroupableResourceCoreImpl<DatabaseAccount, Dat
     @Override
     public Boolean enableAutomaticFailover() {
         return this.inner().enableAutomaticFailover();
+    }
+
+    @Override
+    public Boolean enableCassandraConnector() {
+        return this.inner().enableCassandraConnector();
     }
 
     @Override
@@ -161,6 +172,12 @@ class DatabaseAccountImpl extends GroupableResourceCoreImpl<DatabaseAccount, Dat
     }
 
     @Override
+    public DatabaseAccountImpl withConnectorOffer(ConnectorOffer connectorOffer) {
+        this.createParameter.withConnectorOffer(connectorOffer);
+        return this;
+    }
+
+    @Override
     public DatabaseAccountImpl withConsistencyPolicy(ConsistencyPolicy consistencyPolicy) {
         this.createParameter.withConsistencyPolicy(consistencyPolicy);
         return this;
@@ -169,6 +186,12 @@ class DatabaseAccountImpl extends GroupableResourceCoreImpl<DatabaseAccount, Dat
     @Override
     public DatabaseAccountImpl withEnableAutomaticFailover(Boolean enableAutomaticFailover) {
         this.createParameter.withEnableAutomaticFailover(enableAutomaticFailover);
+        return this;
+    }
+
+    @Override
+    public DatabaseAccountImpl withEnableCassandraConnector(Boolean enableCassandraConnector) {
+        this.createParameter.withEnableCassandraConnector(enableCassandraConnector);
         return this;
     }
 
