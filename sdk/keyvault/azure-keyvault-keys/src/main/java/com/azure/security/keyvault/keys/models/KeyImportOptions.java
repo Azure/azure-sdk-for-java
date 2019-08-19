@@ -10,7 +10,7 @@ public class KeyImportOptions extends KeyBase {
     /**
      * The Key Material.
      */
-    private JsonWebKey keyMaterial;
+    private final JsonWebKey keyMaterial;
 
     /**
      * The hsm indicator for the key.

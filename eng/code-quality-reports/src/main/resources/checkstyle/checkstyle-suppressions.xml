@@ -86,52 +86,36 @@
   <!-- The constant name is public static. -->
   <suppress checks="ConstantNames" files=".*[/\\]storage[/\\].*LoggingOptions.java"/>
 
-  <!-- Add NoImplInPublicAPI suppression for any test files (ie. ones that live under src/test/java). -->
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
-
-  <!-- Add JavadocThrowsChecks suppression for any test or implementation files (ie. ones that live under src/test/java or implementation). -->
-  <suppress checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" files="(.*[/\\]src[/\\]test[/\\]java[/\\].*)|(.*[/\\]implementation[/\\].*)\.java"/>
-
   <!-- Custom checkstyle rules only check track 2 libraries -->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
 
-  <!-- Custom checkstyle rules that don't apply to files under test package -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientInstantiationCheck" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceInterfaceCheck" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.JavaDocFormatting" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
+  <!-- Remove this after fixing: https://github.com/Azure/azure-sdk-for-java/issues/5030 -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*CredentialBuilderBase.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*KeyCreateOptions.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*LocalKeyCryptographyClient.java"/>
+
+  <!-- Remove this after fixing: https://github.com/Azure/azure-sdk-for-java/issues/5021 -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*\BlobOutputStream.java"/>
+  
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientInstantiationCheck
+  |ServiceClientBuilderCheck|ServiceInterfaceCheck|HttpPipelinePolicyCheck|JavaDocFormatting|JavadocThrowsChecks
+  |EnforceFinalFieldsCheck)" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
 
   <!-- Custom checkstyle rules that don't apply to files under implementation package -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]implementation[/\\].*\.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientInstantiationCheck" files=".*[/\\]implementation[/\\].*\.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*[/\\]implementation[/\\].*\.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceInterfaceCheck" files=".*[/\\]implementation[/\\].*\.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.JavaDocFormatting" files=".*[/\\]implementation[/\\].*\.java"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|ServiceClientInstantiationCheck
+  |ServiceClientBuilderCheck|ServiceInterfaceCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck)"
+  files=".*[/\\]implementation[/\\].*\.java"/>
 
   <!-- Custom checkstyle rules that don't apply to files under samples package -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]samples[/\\].*\.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck" files=".*[/\\]samples[/\\].*\.java"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|HttpPipelinePolicyCheck|JavadocPackage
+  |EnforceFinalFieldsCheck)" files=".*[/\\]samples[/\\].*\.java"/>
 
   <!-- Don't apply custom Checkstyle rules to files under checkstyle package. -->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]tools[/\\]checkstyle[/\\].*"/>
-
-  <!-- JavaPackage suppression -->
-  <suppress checks="JavadocPackage" files=".*[/\\]samples[/\\].*\.java"/>
 
   <!-- OpenCensus should only be depended on from within the tracing-opencensus module -->
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]tracing[/\\]opentelemetry[/\\]*"/>
 
   <!-- Suppress warnings for Event Processor until the usage of "Client" is discussed and resolved: https://github.com/Azure/azure-sdk/issues/321 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*EventHubClientBuilder.java"/>
-
-  <!-- Any code in any package, it should never be a 'throw' keyword in the client library codebase except for in the client logger -->
-<!--  <suppress checks="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck" files=".*[/\\]com[/\\]azure[/\\]core[/\\]util[/\\]logging[/\\]*"/>-->
-
-  <!-- Suppression for throws IOException Class, Will remove these classes after be able to define the error is IOException -->
-<!--  <suppress checks="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck" files=".*[/\\]src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]core[/\\]implementation[/\\](.*RestProxyStressTests[/\\].*)|(.*util[/\\]FluxUtilTests[/\\].*)\.java"/>-->
-
-<!--  Storage still depends on 1.0.0-preview.2 azure core. suppress this rule for now until storage has upgraded to preview-3 azure core-->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*[/\\]storage[/\\].*\.java"/>
 </suppressions>
