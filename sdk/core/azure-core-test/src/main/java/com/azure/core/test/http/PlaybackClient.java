@@ -9,8 +9,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -25,7 +24,7 @@ import java.util.function.Supplier;
  * HTTP client that plays back {@link NetworkCallRecord NetworkCallRecords}.
  */
 public final class PlaybackClient implements HttpClient {
-    private final Logger logger = LoggerFactory.getLogger(PlaybackClient.class);
+    private final ClientLogger logger = new ClientLogger(PlaybackClient.class);
     private final AtomicInteger count = new AtomicInteger(0);
     private final Map<String, String> textReplacementRules;
     private final RecordedData recordedData;
@@ -88,10 +87,8 @@ public final class PlaybackClient implements HttpClient {
         count.incrementAndGet();
 
         if (networkCallRecord == null) {
-            if (logger.isWarnEnabled()) {
-                logger.warn("NOT FOUND - Method: {} URL: {}", incomingMethod, incomingUrl);
-                logger.warn("Records requested: {}.", count);
-            }
+            logger.warning("NOT FOUND - Method: {} URL: {}", incomingMethod, incomingUrl);
+            logger.warning("Records requested: {}.", count);
 
             return Mono.error(new IllegalStateException("==> Unexpected request: " + incomingMethod + " " + incomingUrl));
         }
