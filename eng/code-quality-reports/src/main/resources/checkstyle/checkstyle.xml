@@ -96,6 +96,8 @@ page at http://checkstyle.sourceforge.net/config.html -->
       <property name="severity" value="warning"/>
     </module>
 
+    <module name="MissingDeprecated"/>
+
     <module name="StaticVariableNameCheck">
       <!-- Validates static, non-final fields against the supplied
       expression "^[a-z][a-zA-Z0-9]*_?$". -->
