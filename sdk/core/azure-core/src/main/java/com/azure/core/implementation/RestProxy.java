@@ -202,7 +202,16 @@ public class RestProxy implements InvocationHandler {
             final String host = methodParser.host(args);
             urlBuilder.host(host);
 
-            urlBuilder.path(path);
+            // Set the path after host, concatenating the path
+            // segment in the host.
+            if (path != null && !path.isEmpty() && !path.equals("/")) {
+                String hostPath = urlBuilder.path();
+                if (hostPath == null || hostPath.isEmpty() || hostPath.equals("/")) {
+                    urlBuilder.path(path);
+                } else {
+                    urlBuilder.path(hostPath + "/" + path);
+                }
+            }
         }
 
         for (final EncodedParameter queryParameter : methodParser.encodedQueryParameters(args)) {

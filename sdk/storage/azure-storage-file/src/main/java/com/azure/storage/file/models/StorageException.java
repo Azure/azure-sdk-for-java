@@ -1,12 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.file.models;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.storage.blob.models.StorageErrorCode;
-import com.azure.storage.blob.models.StorageErrorException;
-import com.azure.storage.common.Constants;
 
 /**
  * A {@code StorageException} is thrown whenever Azure Storage successfully returns an error code that is not 200-level.
@@ -21,11 +18,14 @@ import com.azure.storage.common.Constants;
  * <p>For more samples, please see the <a href="https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java">sample file</a></p>
  */
 public final class StorageException extends HttpResponseException {
+    private static final String ERROR_CODE = "x-ms-error-code";
 
+    private final StorageErrorCode errorCode;
     private final String message;
 
     StorageException(StorageErrorException e, String responseBody) {
         super(e.getMessage(), e.response(), e);
+        this.errorCode = StorageErrorCode.fromString(e.response().headers().value(ERROR_CODE));
         this.message = responseBody;
     }
 
@@ -33,13 +33,13 @@ public final class StorageException extends HttpResponseException {
      * @return The error code returned by the service.
      */
     public StorageErrorCode errorCode() {
-        return StorageErrorCode.fromString(super.response().headers().value(Constants.HeaderConstants.ERROR_CODE));
+        return this.errorCode;
     }
 
     /**
      * @return The message returned by the service.
      */
-    public String message() {
+    public String serviceMessage() {
         return this.message;
     }
 

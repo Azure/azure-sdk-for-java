@@ -3,10 +3,29 @@
 
 package com.azure.storage.blob
 
-
 import com.azure.core.http.rest.Response
 import com.azure.core.http.rest.VoidResponse
-import com.azure.storage.blob.models.*
+import com.azure.storage.blob.models.AccessPolicy
+import com.azure.storage.blob.models.AccessTier
+import com.azure.storage.blob.models.AppendBlobItem
+import com.azure.storage.blob.models.BlobItem
+import com.azure.storage.blob.models.BlobListDetails
+import com.azure.storage.blob.models.BlobType
+import com.azure.storage.blob.models.ContainerAccessConditions
+import com.azure.storage.blob.models.ContainerAccessPolicies
+import com.azure.storage.blob.models.CopyStatusType
+import com.azure.storage.blob.models.LeaseAccessConditions
+import com.azure.storage.blob.models.LeaseDurationType
+import com.azure.storage.blob.models.LeaseStateType
+import com.azure.storage.blob.models.LeaseStatusType
+import com.azure.storage.blob.models.ListBlobsOptions
+import com.azure.storage.blob.models.Metadata
+import com.azure.storage.blob.models.ModifiedAccessConditions
+import com.azure.storage.blob.models.PublicAccessType
+import com.azure.storage.blob.models.SignedIdentifier
+import com.azure.storage.blob.models.StorageAccountInfo
+import com.azure.storage.blob.models.StorageErrorCode
+import com.azure.storage.blob.models.StorageException
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -85,7 +104,7 @@ class ContainerAPITest extends APISpec {
         def e = thrown(StorageException)
         e.response().statusCode() == 409
         e.errorCode() == StorageErrorCode.CONTAINER_ALREADY_EXISTS
-        e.message().contains("The specified container already exists.")
+        e.serviceMessage().contains("The specified container already exists.")
     }
 
     def "Get properties null"() {

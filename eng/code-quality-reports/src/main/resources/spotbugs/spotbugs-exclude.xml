@@ -546,4 +546,13 @@
     <Class name="com.azure.storage.blob.ServiceSASSignatureValues"/>
     <Bug pattern="UC_USELESS_CONDITION"/>
   </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.azure.storage.blob.models.StorageException"/>
+      <Class name="com.azure.storage.file.models.StorageException"/>
+      <Class name="com.azure.storage.queue.models.StorageException"/>
+    </Or>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
 </FindBugsFilter>

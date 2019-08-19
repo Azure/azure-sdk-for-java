@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-servicebus</artifactId>
-  <version>2.0.0</version>
+  <version>3.0.0</version>
 
   <name>Microsoft Azure SDK for Service Bus</name>
   <description>Java library for Azure Service Bus</description>

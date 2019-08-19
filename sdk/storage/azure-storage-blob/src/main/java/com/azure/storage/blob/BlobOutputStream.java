@@ -9,6 +9,7 @@ import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageBlobAccessConditions;
 import com.azure.storage.blob.models.PageRange;
+import com.azure.storage.blob.models.StorageException;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import org.reactivestreams.Subscriber;

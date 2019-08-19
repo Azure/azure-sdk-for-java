@@ -7,6 +7,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.storage.blob.models.AccessPolicy
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.SignedIdentifier
+import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.models.UserDelegationKey
 import com.azure.storage.common.Constants
 import com.azure.storage.common.IPRange

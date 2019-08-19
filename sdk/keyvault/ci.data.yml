@@ -41,15 +41,22 @@ stages:
       Artifacts:
         - name: microsoft-azure-keyvault
           safeName: microsoftazurekeyvault
+          stagingProfileId: 534d15ee3800f4
         - name: microsoft-azure-keyvault-complete
           safeName: microsoftazurekeyvaultcomplete
+          stagingProfileId: 534d15ee3800f4
         - name: microsoft-azure-keyvault-core
           safeName: microsoftazurekeyvaultcore
+          stagingProfileId: 534d15ee3800f4
         - name: microsoft-azure-keyvault-cryptography
           safeName: microsoftazurekeyvaultcryptography
+          stagingProfileId: 534d15ee3800f4
         - name: microsoft-azure-keyvault-extensions
           safeName: microsoftazurekeyvaultextensions
+          stagingProfileId: 534d15ee3800f4
         - name: microsoft-azure-keyvault-test
           safeName: microsoftazurekeyvaulttest
+          stagingProfileId: 534d15ee3800f4
         - name: microsoft-azure-keyvault-webkey
           safeName: microsoftazurekeyvaultwebkey
+          stagingProfileId: 534d15ee3800f4
