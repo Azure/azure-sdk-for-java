@@ -12,7 +12,6 @@ import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -71,7 +70,7 @@ public class FluentMethodNameCheck extends AbstractCheck {
                 break;
             case TokenTypes.METHOD_DEF:
                 if (!isFluentMethod(token)) {
-                   return;
+                    return;
                 }
                 checkMethodNamePrefix(token);
 
@@ -90,7 +89,7 @@ public class FluentMethodNameCheck extends AbstractCheck {
     public void leaveToken(DetailAST token) {
         switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
-                if(!classNameStack.isEmpty()) {
+                if (!classNameStack.isEmpty()) {
                     classNameStack.pop();
                 }
                 break;
@@ -113,25 +112,19 @@ public class FluentMethodNameCheck extends AbstractCheck {
 
         // 2, method type should be matched with class name
         final DetailAST typeToken = methodDefToken.findFirstToken(TokenTypes.TYPE);
-        if (typeToken == null) {
-            return;
-        }
-
         if (classNameStack.isEmpty()) {
             return;
         }
 
-        Optional<DetailAST> identASTOption = TokenUtil.findFirstTokenByPredicate(
-            typeToken, c -> c.getType() == TokenTypes.IDENT && c.getText().equals(classNameStack.peek()));
-        if (!identASTOption.isPresent()) {
+        if (!TokenUtil.findFirstTokenByPredicate(
+            typeToken, c -> c.getType() == TokenTypes.IDENT && c.getText().equals(classNameStack.peek())).isPresent()) {
             return;
         }
 
-        String methodName = methodDefToken.findFirstToken(TokenTypes.IDENT).getText();
-        int methodNameLength = methodName.length();
+        final String methodName = methodDefToken.findFirstToken(TokenTypes.IDENT).getText();
         // 3, log if the method name start with avoid substring
         for (String avoidStartWord : avoidStartWords) {
-            if (methodNameLength >= avoidStartWord.length() && methodName.startsWith(avoidStartWord)) {
+            if (methodName.length() >= avoidStartWord.length() && methodName.startsWith(avoidStartWord)) {
                 log(methodDefToken, String.format(FLUENT_METHOD_ERR, methodName, avoidStartWord));
                 return;
             }
