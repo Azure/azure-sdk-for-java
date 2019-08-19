@@ -1,4 +1,4 @@
-# Azure File client library for Java
+﻿# Azure File client library for Java
 The Server Message Block (SMB) protocol is the preferred file share protocol used on-premises today.
 The Microsoft Azure File service enables customers to leverage the availability and scalability of Azure’s Cloud Infrastructure as a Service (IaaS) SMB without having to rewrite SMB client applications.
 
@@ -479,3 +479,5 @@ If you would like to become an active contributor to this project please follow 
 [samples_directory]: src/samples/java/com/azure/storage/file/DirectorySample.java
 [samples_file]: src/samples/java/com/azure/storage/file/FileSample.java
 [samples_async]: src/samples/java/com/azure/storage/file/AsyncSample.java
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-file/README.png)

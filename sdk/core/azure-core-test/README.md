@@ -116,3 +116,5 @@ If you would like to become an active contributor to this project please follow 
 [RecordedData.java]: ./src/main/java/com/azure/core/test/models/RecordedData.java
 [RecordNetworkCallPolicy.java]: ./src/main/java/com/azure/core/test/policy/RecordNetworkCallPolicy.java
 [TestBase.java]: ./src/main/java/com/azure/core/test/TestBase.java
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/core/azure-core-test/README.png)

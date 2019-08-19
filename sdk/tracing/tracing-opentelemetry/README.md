@@ -11,3 +11,5 @@
 ## Next steps
 
 ## Contributing
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/tracing/tracing-opentelemetry/README.png)

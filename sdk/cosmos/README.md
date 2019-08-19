@@ -1,4 +1,4 @@
-# Java SDK for SQL API of Azure Cosmos DB
+﻿# Java SDK for SQL API of Azure Cosmos DB
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmos.svg)](https://search.maven.org/artifact/com.microsoft.azure/azure-cosmos)
 [![Known Vulnerabilities](https://snyk.io/test/github/Azure/azure-cosmosdb-java/badge.svg?targetFile=sdk%2Fpom.xml)](https://snyk.io/test/github/Azure/azure-cosmosdb-java?targetFile=sdk%2Fpom.xml)
@@ -248,3 +248,5 @@ If you encounter any bugs with the SDK please file an [issue](https://github.com
 [MIT License](LICENSE)
 
 Copyright (c) 2018 Copyright (c) Microsoft Corporation
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/cosmos/README.png)

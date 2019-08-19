@@ -386,3 +386,5 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [source_inmemorypartitionmanager]: ./src/main/java/com/azure/messaging/eventhubs/InMemoryPartitionManager.java
 [source_loglevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [source_partition_processor]: ./src/main/java/com/azure/messaging/eventhubs/PartitionProcessor.java
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/eventhubs/azure-messaging-eventhubs/README.png)
