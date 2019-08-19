@@ -18,9 +18,9 @@ import java.util.Set;
 /**
  * Javadoc Inline tag check:
  * <ol>
- *   <li>Use {@literal {@codesnippet ...}} instead of '<code>', '<pre>', or {@literal {@code ...}} if these tags span
- *   multiple lines. Inline code sample are fine as-is</li>
- *   <li>No check on class-level Javadoc</li>
+ * <li>Use {@literal {@codesnippet ...}} instead of {@literal <code>}, {@literal <pre>}, or {@literal {@code ...}}
+ * if these tags span multiple lines. Inline code sample are fine as-is</li>
+ * <li>No check on class-level Javadoc</li>
  * </ol>
  */
 public class JavadocInlineTagCheck extends AbstractJavadocCheck {

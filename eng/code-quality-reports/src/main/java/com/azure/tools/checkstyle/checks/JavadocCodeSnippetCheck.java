@@ -15,13 +15,14 @@ import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Locale;
 
 /**
  * Codesnippet description should match naming pattern requirement below:
  * <ol>
- *   <li>Package, class and method names should be concatenated by dot '.'. Ex., packageName.className.methodName</li>
- *   <li>Methods arguments should be concatenated by dash '-'. Ex. string-string  for methodName(String s, String s2)</li>
- *   <li>Use '#' to concatenate 1) and 2), ex packageName.className.methodName#string-string</li>
+ * <li>Package, class and method names should be concatenated by dot '.'. Ex., packageName.className.methodName</li>
+ * <li>Methods arguments should be concatenated by dash '-'. Ex. string-string  for methodName(String s, String s2)</li>
+ * <li>Use '#' to concatenate 1) and 2), ex packageName.className.methodName#string-string</li>
  * </ol>
  */
 public class JavadocCodeSnippetCheck extends AbstractCheck {
@@ -145,7 +146,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
             String customDescription = JavadocUtil.findFirstToken(descriptionNode, JavadocTokenTypes.TEXT).getText();
 
             // Find method name
-            DetailAST methodDefToken = methodDefStack.peek();
+            final DetailAST methodDefToken = methodDefStack.peek();
             final String methodName = methodDefToken.findFirstToken(TokenTypes.IDENT).getText();
             final String className = classNameStack.isEmpty() ? "" : classNameStack.peek();
             final String parameters = constructParametersString(methodDefToken);
@@ -157,7 +158,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
 
             // Check for CodeSnippet naming pattern matching
             if (customDescription == null || customDescription.isEmpty() ||
-                !isNamingMatched(customDescription.toLowerCase(), fullPath.toLowerCase(), parameters)) {
+                !isNamingMatched(customDescription.toLowerCase(Locale.ROOT), fullPath.toLowerCase(Locale.ROOT), parameters)) {
                 log(node.getLineNumber(), String.format("Naming pattern mismatch. The @codeSnippet description "
                     + "''%s'' does not match ''%s''. Case Insensitive.", customDescription, fullPath));
             }
