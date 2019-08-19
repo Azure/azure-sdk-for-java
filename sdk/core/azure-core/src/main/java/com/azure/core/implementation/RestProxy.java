@@ -507,7 +507,7 @@ public class RestProxy implements InvocationHandler {
 
     protected Object handleResumeOperation(HttpRequest httpRequest, OperationDescription operationDescription, SwaggerMethodParser methodParser, Type returnType, Context context)
         throws Exception {
-        throw logger.logExceptionAsError(new RuntimeException("The resume operation is not available in the base RestProxy class."));
+        throw new Exception("The resume operation is not available in the base RestProxy class.");
     }
 
     /**
