@@ -24,12 +24,12 @@ import java.util.Set;
  * strings inside nonFinalFields AND assignmentsFromConstructor but NOT in assignmentsFromMethods
  */
 public class EnforceFinalFieldsCheck extends AbstractCheck {
-    private static final String ERROR_SUGGESTION = "You should consider making the field final, " +
-        "or suppressing the warning.";
-    private static final String ERROR_MSG = "Field \"%s\" is only assigned in constructor and it is not final. " +
-        ERROR_SUGGESTION;
-    private static final String ERROR_FIELD_ALONE = "Field \"%s\" is not assigned in constructor or methods." +
-        ERROR_SUGGESTION;
+    private static final String ERROR_SUGGESTION = "You should consider making the field final, "
+        + "or suppressing the warning.";
+    private static final String ERROR_MSG = "Field \"%s\" is only assigned in constructor and it is not final. "
+        + ERROR_SUGGESTION;
+    private static final String ERROR_FIELD_ALONE = "Field \"%s\" is not assigned in constructor or methods."
+        + ERROR_SUGGESTION;
 
     private List<DetailAST> nonFinalFields;
     private Set<String> assignmentsFromConstructor;
@@ -108,6 +108,7 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
             case TokenTypes.METHOD_DEF:
             case TokenTypes.CTOR_DEF:
                 scopeParent = token;
+                break;
             default:
                 // Checkstyle complains if there's no default block in switch
                 break;
@@ -121,6 +122,7 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
             case TokenTypes.CTOR_DEF:
                 scopeParent = null;
                 currentScopeParameterSet = null;
+                break;
             default:
                 break;
         }
@@ -233,7 +235,7 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
      * @param parametersAST a TokenTypes.PARAMETERS
      * @return a set of parameter names
      */
-    private Set<String> getParameterSet (DetailAST parametersAST) {
+    private Set<String> getParameterSet(DetailAST parametersAST) {
         if (currentScopeParameterSet != null) {
             return currentScopeParameterSet;
         }
