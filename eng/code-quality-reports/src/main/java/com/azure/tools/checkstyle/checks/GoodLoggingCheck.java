@@ -110,7 +110,7 @@ public class GoodLoggingCheck extends AbstractCheck {
                 }
                 final String methodCallName = FullIdent.createFullIdentBelow(dotToken).getText();
                 if (methodCallName.startsWith("System.out") || methodCallName.startsWith("System.err")) {
-                    log(ast, String.format("Don't use Java System class for logging. Use ClientLogger in ''%s'' instead.", CLIENT_LOGGER_PATH));
+                    log(ast, String.format("Do not use Java System class for logging. Use ClientLogger in ''%s'' instead.", CLIENT_LOGGER_PATH));
                 }
                 break;
             default:
