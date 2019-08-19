@@ -330,7 +330,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- Fluent method checks -->
     <!-- A method returns an instance of the class, and that have one parameter, should not start with 'with'.-->
     <module name="com.azure.tools.checkstyle.checks.FluentMethodNameCheck">
-      <property name="avoidStartWords" value="with"/>
+      <property name="avoidStartWords" value="with,set"/>
     </module>
   </module>
 </module>
