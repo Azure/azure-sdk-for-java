@@ -1,5 +1,5 @@
-// Licensed under the MIT License.
 // Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.tools.checkstyle.checks;
 
@@ -49,6 +49,7 @@ public class JavaDocFormatting extends AbstractJavadocCheck {
         switch (javaDocTag.getType()) {
             case JavadocTokenTypes.RETURN_LITERAL:
                 evaluateValidFormat(javaDocTag, JAVA_DOC_RETURN);
+                break;
             case JavadocTokenTypes.PARAMETER_NAME:
                 evaluateValidFormat(javaDocTag, JAVA_DOC_PARAMETER);
                 break;
@@ -56,8 +57,10 @@ public class JavaDocFormatting extends AbstractJavadocCheck {
                 // Evaluate what is the format after the CLASS_NAME of a @throw
                 DetailNode throwFormat = JavadocUtil.getNextSibling(javaDocTag, JavadocTokenTypes.CLASS_NAME);
                 evaluateValidFormat(throwFormat, JAVA_DOC_THROW);
+                break;
             case JavadocTokenTypes.DEPRECATED_LITERAL:
                 evaluateValidFormat(javaDocTag, JAVA_DOC_DEPRECATED);
+                break;
             default:
                 break;
         }
