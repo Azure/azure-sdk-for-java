@@ -61,7 +61,7 @@ public final class KeyClientBuilder {
     private URL endpoint;
     private HttpClient httpClient;
     private HttpLogDetailLevel httpLogDetailLevel;
-    private RetryPolicy retryPolicy;
+    private final RetryPolicy retryPolicy;
     private Configuration configuration;
 
     /**
@@ -90,7 +90,7 @@ public final class KeyClientBuilder {
     public KeyClient buildClient() {
         return new KeyClient(buildAsyncClient());
     }
-    
+
     /**
      * Creates a {@link KeyAsyncClient} based on options set in the builder.
      * Every time {@code buildAsyncClient()} is called, a new instance of {@link KeyAsyncClient} is created.

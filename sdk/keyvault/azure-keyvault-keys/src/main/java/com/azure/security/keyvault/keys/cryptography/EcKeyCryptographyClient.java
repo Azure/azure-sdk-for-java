@@ -24,8 +24,8 @@ import java.security.MessageDigest;
 
 class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
     private KeyPair keyPair;
-    private CryptographyServiceClient serviceClient;
-    private Provider provider;
+    private final CryptographyServiceClient serviceClient;
+    private final Provider provider;
 
     /**
      * Creates a EcKeyCryptographyClient that uses {@code service} to service requests
@@ -35,6 +35,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
     EcKeyCryptographyClient(CryptographyServiceClient serviceClient) {
         super(serviceClient);
         this.serviceClient = serviceClient;
+        this.provider = null;
     }
 
     EcKeyCryptographyClient(JsonWebKey key, CryptographyServiceClient serviceClient) {
