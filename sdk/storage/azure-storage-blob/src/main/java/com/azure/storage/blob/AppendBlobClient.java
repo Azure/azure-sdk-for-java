@@ -40,7 +40,7 @@ import java.time.Duration;
  * for more information.
  */
 public final class AppendBlobClient extends BlobClient {
-    private AppendBlobAsyncClient appendBlobAsyncClient;
+    private final AppendBlobAsyncClient appendBlobAsyncClient;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.

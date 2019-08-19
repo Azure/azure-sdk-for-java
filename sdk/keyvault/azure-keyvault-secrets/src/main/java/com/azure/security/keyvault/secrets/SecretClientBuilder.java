@@ -58,7 +58,7 @@ public final class SecretClientBuilder {
     private URL endpoint;
     private HttpClient httpClient;
     private HttpLogDetailLevel httpLogDetailLevel;
-    private RetryPolicy retryPolicy;
+    private final RetryPolicy retryPolicy;
     private Configuration configuration;
 
     /**

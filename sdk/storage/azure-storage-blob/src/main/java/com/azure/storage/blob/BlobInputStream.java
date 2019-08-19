@@ -34,7 +34,7 @@ public final class BlobInputStream extends InputStream {
     /**
      * Holds the stream length.
      */
-    private long streamLength;
+    private final long streamLength;
 
     /**
      * Holds the stream read size for both block and page blobs.
@@ -74,7 +74,7 @@ public final class BlobInputStream extends InputStream {
     /**
      * Holds the {@link BlobAccessConditions} object that represents the access conditions for the blob.
      */
-    private BlobAccessConditions accessCondition;
+    private final BlobAccessConditions accessCondition;
 
     /**
      * Offset of the source blob this class is configured to stream from.
