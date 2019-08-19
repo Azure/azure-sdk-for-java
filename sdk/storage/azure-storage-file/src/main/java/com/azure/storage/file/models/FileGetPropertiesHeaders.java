@@ -180,19 +180,19 @@ public final class FileGetPropertiesHeaders {
      * Creation time for the file.
      */
     @JsonProperty(value = "x-ms-file-creation-time")
-    private DateTimeRfc1123 fileCreationTime;
+    private OffsetDateTime fileCreationTime;
 
     /*
      * Last write time for the file.
      */
     @JsonProperty(value = "x-ms-file-last-write-time")
-    private DateTimeRfc1123 fileLastWriteTime;
+    private OffsetDateTime fileLastWriteTime;
 
     /*
      * Change time for the file.
      */
     @JsonProperty(value = "x-ms-file-change-time")
-    private DateTimeRfc1123 fileChangeTime;
+    private OffsetDateTime fileChangeTime;
 
     /*
      * Key of the permission set for the file.
@@ -757,10 +757,7 @@ public final class FileGetPropertiesHeaders {
      * @return the fileCreationTime value.
      */
     public OffsetDateTime fileCreationTime() {
-        if (this.fileCreationTime == null) {
-            return null;
-        }
-        return this.fileCreationTime.dateTime();
+        return this.fileCreationTime;
     }
 
     /**
@@ -770,11 +767,7 @@ public final class FileGetPropertiesHeaders {
      * @return the FileGetPropertiesHeaders object itself.
      */
     public FileGetPropertiesHeaders fileCreationTime(OffsetDateTime fileCreationTime) {
-        if (fileCreationTime == null) {
-            this.fileCreationTime = null;
-        } else {
-            this.fileCreationTime = new DateTimeRfc1123(fileCreationTime);
-        }
+        this.fileCreationTime = fileCreationTime;
         return this;
     }
 
@@ -784,10 +777,7 @@ public final class FileGetPropertiesHeaders {
      * @return the fileLastWriteTime value.
      */
     public OffsetDateTime fileLastWriteTime() {
-        if (this.fileLastWriteTime == null) {
-            return null;
-        }
-        return this.fileLastWriteTime.dateTime();
+        return this.fileLastWriteTime;
     }
 
     /**
@@ -797,11 +787,7 @@ public final class FileGetPropertiesHeaders {
      * @return the FileGetPropertiesHeaders object itself.
      */
     public FileGetPropertiesHeaders fileLastWriteTime(OffsetDateTime fileLastWriteTime) {
-        if (fileLastWriteTime == null) {
-            this.fileLastWriteTime = null;
-        } else {
-            this.fileLastWriteTime = new DateTimeRfc1123(fileLastWriteTime);
-        }
+        this.fileLastWriteTime = fileLastWriteTime;
         return this;
     }
 
@@ -811,10 +797,7 @@ public final class FileGetPropertiesHeaders {
      * @return the fileChangeTime value.
      */
     public OffsetDateTime fileChangeTime() {
-        if (this.fileChangeTime == null) {
-            return null;
-        }
-        return this.fileChangeTime.dateTime();
+        return this.fileChangeTime;
     }
 
     /**
@@ -824,11 +807,7 @@ public final class FileGetPropertiesHeaders {
      * @return the FileGetPropertiesHeaders object itself.
      */
     public FileGetPropertiesHeaders fileChangeTime(OffsetDateTime fileChangeTime) {
-        if (fileChangeTime == null) {
-            this.fileChangeTime = null;
-        } else {
-            this.fileChangeTime = new DateTimeRfc1123(fileChangeTime);
-        }
+        this.fileChangeTime = fileChangeTime;
         return this;
     }
 

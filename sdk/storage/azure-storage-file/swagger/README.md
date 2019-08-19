@@ -222,6 +222,12 @@ directive:
         op.delete.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.delete.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
         delete $["/{shareName}/{directory}?restype=directory"];
+        op.put.responses["201"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.put.responses["201"].headers["x-ms-file-change-time"].format = "date-time";
+        op.get.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.get.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.get.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
     }
 ```
 
@@ -237,6 +243,9 @@ directive:
         op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.put.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
         delete $["/{shareName}/{directory}?restype=directory&comp=properties"];
+        op.put.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.put.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.put.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
     }
 ```
 
@@ -319,6 +328,15 @@ directive:
         op.delete.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.delete.parameters.splice(1, 0, { "$ref": path + "FilePath" });
         delete $["/{shareName}/{directory}/{fileName}"];
+        op.put.responses["201"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.put.responses["201"].headers["x-ms-file-change-time"].format = "date-time";
+        op.get.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.get.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.get.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
+        op.head.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.head.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.head.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
     }
 ```
 
@@ -334,6 +352,9 @@ directive:
         op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
         delete $["/{shareName}/{directory}/{fileName}?comp=properties"];
+        op.put.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.put.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.put.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
     }
 ```
 
@@ -486,4 +507,28 @@ directive:
   where: $.parameters.ApiVersionParameter
   transform: >
     $.enum = [ "2019-02-02" ];
+```
+
+### Times aren't required
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.FileCreationTime
+  transform: >
+    delete $.format;
+- from: swagger-document
+  where: $.parameters.FileLastWriteTime
+  transform: >
+    delete $.format;
+```
+
+### FileRangeWriteFromUrl Constant
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.FileRangeWriteFromUrl
+  transform: >
+    delete $.default;
+    delete $["x-ms-enum"];
+    $["x-ms-parameter-location"] = "method";
 ```
