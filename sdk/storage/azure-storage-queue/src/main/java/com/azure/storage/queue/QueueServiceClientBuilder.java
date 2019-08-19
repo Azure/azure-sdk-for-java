@@ -14,6 +14,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
@@ -73,6 +74,7 @@ import java.util.Objects;
  * @see SASTokenCredential
  * @see SharedKeyCredential
  */
+@ServiceClientBuilder(serviceClients = {QueueServiceClient.class, QueueServiceAsyncClient.class})
 public final class QueueServiceClientBuilder {
     private final ClientLogger logger = new ClientLogger(QueueServiceClientBuilder.class);
     private static final String ACCOUNT_NAME = "accountname";
