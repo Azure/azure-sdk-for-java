@@ -8,95 +8,113 @@ import static java.util.stream.Collectors.toList;
 
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.CheckpointManager;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubConsumer;
+import com.azure.messaging.eventhubs.EventProcessor;
 import com.azure.messaging.eventhubs.PartitionManager;
-import com.azure.messaging.eventhubs.PartitionProcessor;
-import com.azure.messaging.eventhubs.PartitionProcessorFactory;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
-import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
-import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
-public class PartitionLoadBalancerStrategy {
+/**
+ * This will balance the load by distributing the number of partitions uniformly among all the active {@link
+ * EventProcessor}s.
+ *
+ * TODO: Add more details on the load balancing algorithm used here.
+ */
+public final class PartitionBasedLoadBalancer {
 
     private static final Random RANDOM = new Random();
-    private final ClientLogger logger = new ClientLogger(PartitionLoadBalancerStrategy.class);
+    private final ClientLogger logger = new ClientLogger(PartitionBasedLoadBalancer.class);
 
     private final String eventHubName;
     private final String consumerGroupName;
     private final PartitionManager partitionManager;
     private final EventHubAsyncClient eventHubAsyncClient;
-    private final Map<String, EventHubConsumer> partitionPumps = new ConcurrentHashMap<>();
     private final String ownerId;
-    private final PartitionProcessorFactory partitionProcessorFactory;
-    private final EventPosition initialEventPosition;
     private final long inactiveTimeLimitInSeconds;
+    private final PartitionPumpManager partitionPumpManager;
 
-    public PartitionLoadBalancerStrategy(final PartitionManager partitionManager,
+    /**
+     * Creates an instance of PartitionBasedLoadBalancer for the given Event Hub name and consumer group.
+     *
+     * @param partitionManager The partition manager that this load balancer will use to read/update ownership details.
+     * @param eventHubAsyncClient The asynchronous Event Hub client used to consume events.
+     * @param eventHubName The Event Hub name the {@link EventProcessor} is associated with.
+     * @param consumerGroupName The consumer group name the {@link EventProcessor} is associated with.
+     * @param ownerId The owner identifier for the {@link EventProcessor} this load balancer is associated with.
+     * @param inactiveTimeLimitInSeconds The time in seconds to wait for an update on an ownership record before
+     * assuming the owner of the partition is inactive.
+     * @param partitionPumpManager The partition pump manager that keeps track of all EventHubConsumers and partitions
+     * that this {@link EventProcessor} is processing.
+     */
+    public PartitionBasedLoadBalancer(final PartitionManager partitionManager,
         final EventHubAsyncClient eventHubAsyncClient,
         final String eventHubName, final String consumerGroupName, final String ownerId,
-        final PartitionProcessorFactory partitionProcessorFactory, final EventPosition initialEventPosition,
-        final long inactiveTimeLimitInSeconds) {
+        final long inactiveTimeLimitInSeconds, final PartitionPumpManager partitionPumpManager) {
         this.partitionManager = partitionManager;
         this.eventHubAsyncClient = eventHubAsyncClient;
         this.eventHubName = eventHubName;
         this.consumerGroupName = consumerGroupName;
         this.ownerId = ownerId;
-        this.partitionProcessorFactory = partitionProcessorFactory;
-        this.initialEventPosition = initialEventPosition;
         this.inactiveTimeLimitInSeconds = inactiveTimeLimitInSeconds;
+        this.partitionPumpManager = partitionPumpManager;
     }
 
-    public synchronized void runOnce() {
+    /**
+     * TODO: Add javadoc
+     */
+    public void loadBalance() {
+        /*
+         * Retrieve current partition ownership details from the datastore.
+         */
         final Mono<Map<String, PartitionOwnership>> partitionOwnershipMono = partitionManager
             .listOwnership(eventHubName, consumerGroupName)
+            .timeout(Duration.ofSeconds(1)) // TODO: configurable by the user
             .collectMap(PartitionOwnership::partitionId, Function.identity());
-        final Mono<List<String>> partitionsMono = eventHubAsyncClient.getPartitionIds().collectList();
+
+        /*
+         * Retrieve the list of partition ids from the Event Hub.
+         */
+        final Mono<List<String>> partitionsMono = eventHubAsyncClient
+            .getPartitionIds()
+            .timeout(Duration.ofSeconds(1)) // TODO: configurable
+            .collectList();
 
         Mono.zip(partitionOwnershipMono, partitionsMono)
             .map(this::loadBalance)
+            // if there was an error, log warning and TODO: call user provided error handler
             .doOnError(ex -> logger.warning("Load balancing for event processor failed - {}", ex.getMessage()))
             .subscribe();
     }
 
-    public synchronized void stopAllPartitionPumps() {
-        this.partitionPumps.forEach((partitionId, eventHubConsumer) -> {
-            try {
-                eventHubConsumer.close();
-            } catch (Exception ex) {
-                logger.warning("Failed to close consumer for partition {}", partitionId, ex);
-            } finally {
-                partitionPumps.remove(partitionId);
-            }
-        });
-    }
-
-
+    /*
+     * This method works with the given partition ownership details and Event Hub partitions to evaluate whether the
+     * current Event Processor should take on the responsibility of processing more partitions.
+     */
     private Mono<Void> loadBalance(final Tuple2<Map<String, PartitionOwnership>, List<String>> tuple) {
 
         Map<String, PartitionOwnership> partitionOwnershipMap = tuple.getT1();
         List<String> partitionIds = tuple.getT2();
 
         if (ImplUtils.isNullOrEmpty(partitionIds)) {
-            // should ideally never happen
+            // ideally, should never happen.
             return Mono.error(new IllegalStateException("There are no partitions in Event Hub " + this.eventHubName));
         }
 
+        if (!isValid(partitionOwnershipMap)) {
+            // User data is corrupt.
+            return Mono.error(new IllegalStateException("Invalid partitionOwnership data from PartitionManager"));
+        }
 
         /*
          * Remove all partitions ownerships that have not be modified for a long time. This means that the previous
@@ -134,19 +152,20 @@ public class PartitionLoadBalancerStrategy {
         int minPartitionsPerEventProcessor = partitionIds.size() / ownerPartitionMap.size();
 
         /*
-         * Due to the number of partitions in Event Hub and number of event processors running,
-         * a few Event Processors may own 1 additional partition than the minimum. Calculate
+         * If the number of partitions in Event Hub is not evenly divisible by number of active event processors,
+         * a few Event Processors may own 1 additional partition than the minimum when the load is balanced. Calculate
          * the number of event processors that can own additional partition.
          */
         int numberOfEventProcessorsWithAdditionalPartition = partitionIds.size() % ownerPartitionMap.size();
 
         if (isLoadBalanced(minPartitionsPerEventProcessor, numberOfEventProcessorsWithAdditionalPartition,
             ownerPartitionMap)) {
+            // If the partitions are evenly distributed among all active event processors, no change required.
             return Mono.empty();
         }
 
         if (!shouldOwnMorePartitions(minPartitionsPerEventProcessor, ownerPartitionMap)) {
-            // This event processor already has enough partitions and shouldn't own more yet
+            // This event processor already has enough partitions and shouldn't own more.
             return Mono.empty();
         }
 
@@ -173,7 +192,29 @@ public class PartitionLoadBalancerStrategy {
         return Mono.empty();
     }
 
-    private String findPartitionToSteal(Map<String, List<PartitionOwnership>> ownerPartitionMap) {
+    /*
+     * Check if partition ownership data is valid before proceeding with load balancing.
+     */
+    private boolean isValid(final Map<String, PartitionOwnership> partitionOwnershipMap) {
+        return partitionOwnershipMap.values()
+            .stream()
+            .noneMatch(partitionOwnership -> {
+                return partitionOwnership.ownerId() == null
+                    || partitionOwnership.eventHubName() == null
+                    || !partitionOwnership.eventHubName().equals(this.eventHubName)
+                    || partitionOwnership.consumerGroupName() == null
+                    || !partitionOwnership.consumerGroupName().equals(this.consumerGroupName)
+                    || partitionOwnership.partitionId() == null
+                    || partitionOwnership.lastModifiedTime() == null
+                    || partitionOwnership.eTag() == null;
+            });
+    }
+
+    /*
+     * Find the event processor that owns the maximum number of partitions and steal a random partition
+     * from it.
+     */
+    private String findPartitionToSteal(final Map<String, List<PartitionOwnership>> ownerPartitionMap) {
         List<PartitionOwnership> maxList = ownerPartitionMap.values()
             .stream()
             .max(Comparator.comparingInt(List::size))
@@ -182,8 +223,15 @@ public class PartitionLoadBalancerStrategy {
         return maxList.get(RANDOM.nextInt(maxList.size())).partitionId();
     }
 
-    private boolean isLoadBalanced(int minPartitionsPerEventProcessor,
-        int numberOfEventProcessorsWithAdditionalPartition, Map<String, List<PartitionOwnership>> ownerPartitionMap) {
+    /*
+     * When the load is balanced, all active event processors own at least {@code minPartitionsPerEventProcessor}
+     * and only {@code numberOfEventProcessorsWithAdditionalPartition} event processors will own 1 additional
+     * partition.
+     */
+    private boolean isLoadBalanced(final int minPartitionsPerEventProcessor,
+        final int numberOfEventProcessorsWithAdditionalPartition,
+        final Map<String, List<PartitionOwnership>> ownerPartitionMap) {
+
         if (ownerPartitionMap.values()
             .stream()
             .noneMatch(ownershipList -> {
@@ -200,27 +248,42 @@ public class PartitionLoadBalancerStrategy {
         return false;
     }
 
+    /*
+     * This method is called after determining that the load is not balanced. This method will evaluate
+     * if the current event processor should own more partitions. Specifically, this method returns true if the
+     * current event processor owns less than the minimum number of partitions or if it owns the minimum number
+     * and no other event processor owns lesser number of partitions than this event processor.
+     */
     private boolean shouldOwnMorePartitions(final int minPartitionsPerEventProcessor,
         final Map<String, List<PartitionOwnership>> ownerPartitionMap) {
+
         int numberOfPartitionsOwned = ownerPartitionMap.get(this.ownerId).size();
 
         int leastPartitionsOwnedByAnyEventProcessor =
             ownerPartitionMap.values().stream().min(Comparator.comparingInt(List::size)).get().size();
 
-        if (numberOfPartitionsOwned > minPartitionsPerEventProcessor
-            || numberOfPartitionsOwned > leastPartitionsOwnedByAnyEventProcessor) {
-            return false;
+        if (numberOfPartitionsOwned < minPartitionsPerEventProcessor
+            || numberOfPartitionsOwned == leastPartitionsOwnedByAnyEventProcessor) {
+            return true;
         }
-
-        return true;
+        return false;
     }
 
+    /*
+     * This method will create a new map of partition id and PartitionOwnership containing only those partitions
+     * that are actively owned. All entries in the original map returned by PartitionManager that haven't been
+     * modified for a duration of time greater than the allowed inactivity time limit are assumed to be owned by
+     * dead event processors. These will not be included in the map returned by this method.
+     */
     private Map<String, PartitionOwnership> removeInactivePartitionOwnerships(
-        Map<String, PartitionOwnership> partitionOwnershipMap) {
-        return partitionOwnershipMap.entrySet().stream().filter(entry -> {
-            return System.currentTimeMillis() - entry.getValue().lastModifiedTime() < TimeUnit.SECONDS
-                .toMillis(inactiveTimeLimitInSeconds);
-        }).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+        final Map<String, PartitionOwnership> partitionOwnershipMap) {
+        return partitionOwnershipMap
+            .entrySet()
+            .stream()
+            .filter(entry -> {
+                return System.currentTimeMillis() - entry.getValue().lastModifiedTime() < TimeUnit.SECONDS
+                    .toMillis(inactiveTimeLimitInSeconds);
+            }).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
     private void claimOwnership(final Map<String, PartitionOwnership> partitionOwnershipMap,
@@ -228,56 +291,18 @@ public class PartitionLoadBalancerStrategy {
         PartitionOwnership ownershipRequest = createPartitionOwnershipRequest(partitionOwnershipMap,
             partitionIdToClaim);
 
-        partitionManager.claimOwnership(ownershipRequest)
-            .subscribe(claimedOwnership -> {
-                if (!partitionPumps.containsKey(claimedOwnership.partitionId())) {
-                    startPartitionPump(claimedOwnership);
-                }
-            }, ex -> logger
+        partitionManager
+            .claimOwnership(ownershipRequest)
+            .timeout(Duration.ofSeconds(1)) // TODO: configurable
+            .doOnError(ex -> logger
                 .warning("Failed to claim ownership of partition {} - {}", ownershipRequest.partitionId(),
-                    ex.getMessage(), ex));
+                    ex.getMessage(), ex))
+            .subscribe(partitionPumpManager::startPartitionPump);
     }
 
-    private void startPartitionPump(PartitionOwnership claimedOwnership) {
-        PartitionContext partitionContext = new PartitionContext(claimedOwnership.partitionId(),
-            this.eventHubName, this.consumerGroupName);
-        CheckpointManager checkpointManager = new CheckpointManager(this.ownerId, partitionContext,
-            this.partitionManager, null);
-        PartitionProcessor partitionProcessor = this.partitionProcessorFactory
-            .createPartitionProcessor(partitionContext, checkpointManager);
-
-        EventPosition startFromEventPosition =
-            claimedOwnership.sequenceNumber() == null ? initialEventPosition
-                : EventPosition.fromSequenceNumber(claimedOwnership.sequenceNumber());
-
-        EventHubConsumerOptions eventHubConsumerOptions = new EventHubConsumerOptions().ownerLevel(0L);
-        EventHubConsumer eventHubConsumer = eventHubAsyncClient
-            .createConsumer(this.consumerGroupName, claimedOwnership.partitionId(), startFromEventPosition,
-                eventHubConsumerOptions);
-
-        partitionPumps.put(claimedOwnership.partitionId(), eventHubConsumer);
-        eventHubConsumer.receive().subscribe(partitionProcessor::processEvent,
-            ex -> handleReceiveError(claimedOwnership, eventHubConsumer, partitionProcessor, ex));
-    }
-
-    private void handleReceiveError(PartitionOwnership claimedOwnership, EventHubConsumer eventHubConsumer,
-        PartitionProcessor partitionProcessor, Throwable error) {
-
-        partitionProcessor.processError(error);
-
-        // if there was an error, it also marks the end of the event data stream
-        // close the consumer and remove from partition pump map
-        try {
-            eventHubConsumer.close();
-        } catch (IOException ex) {
-            logger.warning("Failed to close Event Hub consumer for partition {}", claimedOwnership.partitionId(), ex);
-        } finally {
-            partitionPumps.remove(claimedOwnership.partitionId());
-        }
-    }
-
-    private PartitionOwnership createPartitionOwnershipRequest(Map<String, PartitionOwnership> partitionOwnershipMap,
-        String partitionIdToClaim) {
+    private PartitionOwnership createPartitionOwnershipRequest(
+        final Map<String, PartitionOwnership> partitionOwnershipMap,
+        final String partitionIdToClaim) {
         PartitionOwnership previousPartitionOwnership = partitionOwnershipMap.get(partitionIdToClaim);
         PartitionOwnership partitionOwnershipRequest = new PartitionOwnership()
             .ownerId(this.ownerId)

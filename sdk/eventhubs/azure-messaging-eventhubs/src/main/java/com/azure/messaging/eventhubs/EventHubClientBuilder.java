@@ -425,8 +425,7 @@ public class EventHubClientBuilder {
         EventPosition initialEventPosition =
             this.initialEventPosition == null ? EventPosition.earliest()
                 : this.initialEventPosition;
-
         return new EventProcessor(buildAsyncClient(), this.consumerGroupName,
-            this.partitionProcessorFactory, initialEventPosition, partitionManager, eventHubName);
+            this.partitionProcessorFactory, initialEventPosition, partitionManager);
     }
 }

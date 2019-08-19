@@ -4,14 +4,12 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.PartitionLoadBalancerStrategy;
+import com.azure.messaging.eventhubs.implementation.PartitionBasedLoadBalancer;
+import com.azure.messaging.eventhubs.implementation.PartitionPumpManager;
 import com.azure.messaging.eventhubs.models.EventPosition;
-
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import reactor.core.Disposable;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -38,15 +36,10 @@ public class EventProcessor {
     private static final long INITIAL_DELAY = 0; // start immediately
     private final ClientLogger logger = new ClientLogger(EventProcessor.class);
 
-    private final EventHubAsyncClient eventHubAsyncClient;
-    private final String consumerGroupName;
-    private final EventPosition initialEventPosition;
-    private final PartitionProcessorFactory partitionProcessorFactory;
-    private final PartitionManager partitionManager;
     private final String identifier;
-    private final String eventHubName;
     private final AtomicBoolean started = new AtomicBoolean(false);
-    private PartitionLoadBalancerStrategy partitionLoadBalancerStrategy;
+    private final PartitionPumpManager partitionPumpManager;
+    private final PartitionBasedLoadBalancer partitionBasedLoadBalancer;
 
     private Disposable runner;
     private Scheduler scheduler;
@@ -57,27 +50,22 @@ public class EventProcessor {
      * @param eventHubAsyncClient The {@link EventHubAsyncClient}.
      * @param consumerGroupName The consumer group name used in this event processor to consumer events.
      * @param partitionProcessorFactory The factory to create new partition processor(s).
-     * @param initialEventPosition Initial event position to start consuming events.
-     * @param partitionManager The partition manager.
-     * @param eventHubName The Event Hub name.
+     * @param initialEventPosition The event position to start processing events from a partition if no checkpoint is
+     * available for the partition.
+     * @param partitionManager The partition manager this Event Processor will use for reading and writing partition
+     * ownership and checkpoint information.
      */
     EventProcessor(EventHubAsyncClient eventHubAsyncClient, String consumerGroupName,
         PartitionProcessorFactory partitionProcessorFactory, EventPosition initialEventPosition,
-        PartitionManager partitionManager, String eventHubName) {
-        this.eventHubAsyncClient = Objects
-            .requireNonNull(eventHubAsyncClient, "eventHubAsyncClient cannot be null");
-        this.consumerGroupName = Objects
-            .requireNonNull(consumerGroupName, "consumerGroupname cannot be null");
-        this.partitionProcessorFactory = Objects
-            .requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null");
-        this.partitionManager = Objects
-            .requireNonNull(partitionManager, "partitionManager cannot be null");
-        this.initialEventPosition = Objects
-            .requireNonNull(initialEventPosition, "initialEventPosition cannot be null");
-        this.eventHubName = Objects
-            .requireNonNull(eventHubName, "eventHubName cannot be null");
+        PartitionManager partitionManager) {
+
         this.identifier = UUID.randomUUID().toString();
         logger.info("The instance ID for this event processors is {}", this.identifier);
+        this.partitionPumpManager = new PartitionPumpManager(partitionManager, partitionProcessorFactory,
+            initialEventPosition, eventHubAsyncClient);
+        this.partitionBasedLoadBalancer =
+            new PartitionBasedLoadBalancer(partitionManager, eventHubAsyncClient, eventHubAsyncClient.eventHubName(),
+                consumerGroupName, identifier, TimeUnit.MINUTES.toSeconds(5), partitionPumpManager);
     }
 
     /**
@@ -108,13 +96,8 @@ public class EventProcessor {
         }
         logger.info("Starting a new event processor instance with id {}", this.identifier);
         scheduler = Schedulers.newElastic("EventProcessor");
-
-        this.partitionLoadBalancerStrategy =
-            new PartitionLoadBalancerStrategy(partitionManager, eventHubAsyncClient, eventHubName, consumerGroupName,
-                identifier, partitionProcessorFactory, initialEventPosition, TimeUnit.MINUTES.toSeconds(5));
-
-        runner = scheduler.schedulePeriodically(partitionLoadBalancerStrategy::runOnce, INITIAL_DELAY,
-            INTERVAL_IN_SECONDS, TimeUnit.SECONDS);
+        runner = scheduler.schedulePeriodically(partitionBasedLoadBalancer::loadBalance, INITIAL_DELAY ,
+            INTERVAL_IN_SECONDS /* TODO: make this configurable */, TimeUnit.SECONDS);
     }
 
     /**
@@ -132,9 +115,8 @@ public class EventProcessor {
             logger.info("Event processor has already stopped");
             return;
         }
-
-        this.partitionLoadBalancerStrategy.stopAllPartitionPumps();
         runner.dispose();
         scheduler.dispose();
+        this.partitionPumpManager.stopAllPartitionPumps();
     }
 }
