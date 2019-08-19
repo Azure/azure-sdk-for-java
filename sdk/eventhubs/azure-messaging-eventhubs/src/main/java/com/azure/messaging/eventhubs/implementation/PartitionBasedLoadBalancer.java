@@ -9,6 +9,7 @@ import static java.util.stream.Collectors.toList;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
+import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
 import com.azure.messaging.eventhubs.EventProcessor;
 import com.azure.messaging.eventhubs.PartitionManager;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
@@ -26,10 +27,15 @@ import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
 /**
- * This will balance the load by distributing the number of partitions uniformly among all the active {@link
- * EventProcessor}s.
- *
- * TODO: Add more details on the load balancing algorithm used here.
+ * This class is responsible for balancing the load of processing events from all partitions of an Event Hub by
+ * distributing the number of partitions uniformly among all the  active {@link EventProcessor}s.
+ * <p>
+ * This load balancer will retrieve partition ownership details from the {@link PartitionManager} to find the number of
+ * active {@link EventProcessor}s. It uses the last modified time to decide if an EventProcessor is active. If a
+ * partition ownership entry has not be updated for a specified duration of time, the owner of that partition is
+ * considered inactive and the partition is available for other EventProcessors to own.
+ * </p>
+ * More details can be found <a href="https://gist.github.com/srnagar/7ef8566cfef0673288275c450dc99590">here</a>.
  */
 public final class PartitionBasedLoadBalancer {
 
@@ -71,7 +77,16 @@ public final class PartitionBasedLoadBalancer {
     }
 
     /**
-     * TODO: Add javadoc.
+     * This is the main method responsible for load balancing. This method is expected to be invoked by the {@link
+     * EventProcessor} periodically. Every call to this method will result in this {@link EventProcessor} owning <b>at
+     * most one</b> new partition.
+     * <p>
+     * The load is considered balanced when no active EventProcessor owns 2 partitions more than any other active
+     * EventProcessor.Given that each invocation to this method results in ownership claim of at most one partition,
+     * this algorithm converges gradually towards a steady state.
+     * </p>
+     * When a new partition is claimed, this method is also responsible for starting a partition pump that creates an
+     * {@link EventHubAsyncConsumer} for processing events from that partition.
      */
     public void loadBalance() {
         /*
