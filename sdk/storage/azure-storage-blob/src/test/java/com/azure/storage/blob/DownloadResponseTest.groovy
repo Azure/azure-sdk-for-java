@@ -13,7 +13,7 @@ class DownloadResponseTest extends APISpec {
     BlockBlobClient bu
 
     def setup() {
-        bu = cu.getBlockBlobClient(generateBlobName())
+        bu = cc.getBlockBlobClient(generateBlobName())
         bu.upload(defaultInputStream.get(), defaultText.length())
     }
 

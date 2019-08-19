@@ -25,6 +25,7 @@ import reactor.core.scheduler.Schedulers;
 import java.io.InputStream;
 import java.net.URL;
 import java.time.Duration;
+import java.util.stream.Stream;
 
 /**
  * Client to a page blob. It may only be instantiated through a {@link BlobClientBuilder}, via
@@ -326,7 +327,7 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The information of the cleared pages.
      */
-    public Response<PageList> getPageRanges(BlobRange blobRange) {
+    public Stream<PageRange> getPageRanges(BlobRange blobRange) {
         return this.getPageRanges(blobRange, null, null);
     }
 
@@ -344,8 +345,9 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      All the page ranges.
      */
-    public Response<PageList> getPageRanges(BlobRange blobRange, BlobAccessConditions accessConditions, Duration timeout) {
-        return Utility.blockWithOptionalTimeout(pageBlobAsyncClient.getPageRanges(blobRange, accessConditions), timeout);
+    public Stream<PageRange> getPageRanges(BlobRange blobRange, BlobAccessConditions accessConditions, Duration timeout) {
+        Flux<PageRange> response = pageBlobAsyncClient.getPageRanges(blobRange, accessConditions);
+        return timeout == null ? response.toStream() : response.timeout(timeout).toStream();
     }
 
     /**
@@ -362,7 +364,7 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      All the different page ranges.
      */
-    public Response<PageList> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
+    public Stream<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
         return this.getPageRangesDiff(blobRange, prevSnapshot, null, null);
     }
 
@@ -384,8 +386,9 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      All the different page ranges.
      */
-    public Response<PageList> getPageRangesDiff(BlobRange blobRange, String prevSnapshot, BlobAccessConditions accessConditions, Duration timeout) {
-        return Utility.blockWithOptionalTimeout(pageBlobAsyncClient.getPageRangesDiff(blobRange, prevSnapshot, accessConditions), timeout);
+    public Stream<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot, BlobAccessConditions accessConditions, Duration timeout) {
+        Flux<PageRange> response = pageBlobAsyncClient.getPageRangesDiff(blobRange, prevSnapshot, accessConditions);
+        return timeout == null ? response.toStream() : response.timeout(timeout).toStream();
     }
 
     /**

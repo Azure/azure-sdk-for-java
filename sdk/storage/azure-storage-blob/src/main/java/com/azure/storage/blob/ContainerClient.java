@@ -23,6 +23,7 @@ import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Client to a container. It may only be instantiated through a {@link ContainerClientBuilder} or via the method {@link
@@ -389,7 +390,7 @@ public final class ContainerClient {
 
     /**
      * Returns a lazy loaded list of blobs in this container, with folder structures flattened. The returned {@link
-     * Iterable} can be iterated through while new items are automatically retrieved as needed.
+     * Stream} can be consumed through while new items are automatically retrieved as needed.
      *
      * <p>
      * Blob names are returned in lexicographic order.
@@ -400,13 +401,13 @@ public final class ContainerClient {
      *
      * @return The listed blobs, flattened.
      */
-    public Iterable<BlobItem> listBlobsFlat() {
+    public Stream<BlobItem> listBlobsFlat() {
         return this.listBlobsFlat(new ListBlobsOptions(), null);
     }
 
     /**
      * Returns a lazy loaded list of blobs in this container, with folder structures flattened. The returned {@link
-     * Iterable} can be iterated through while new items are automatically retrieved as needed.
+     * Stream} can be consumed through while new items are automatically retrieved as needed.
      *
      * <p>
      * Blob names are returned in lexicographic order.
@@ -419,10 +420,10 @@ public final class ContainerClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The listed blobs, flattened.
      */
-    public Iterable<BlobItem> listBlobsFlat(ListBlobsOptions options, Duration timeout) {
+    public Stream<BlobItem> listBlobsFlat(ListBlobsOptions options, Duration timeout) {
         Flux<BlobItem> response = containerAsyncClient.listBlobsFlat(options);
 
-        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
+        return timeout == null ? response.toStream() : response.timeout(timeout).toStream();
     }
 
     /**
@@ -452,7 +453,7 @@ public final class ContainerClient {
      * @param directory The directory to list blobs underneath
      * @return A reactive response emitting the prefixes and blobs.
      */
-    public Iterable<BlobItem> listBlobsHierarchy(String directory) {
+    public Stream<BlobItem> listBlobsHierarchy(String directory) {
         return this.listBlobsHierarchy("/", new ListBlobsOptions().prefix(directory), null);
     }
 
@@ -485,10 +486,10 @@ public final class ContainerClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return A reactive response emitting the prefixes and blobs.
      */
-    public Iterable<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
+    public Stream<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
         Flux<BlobItem> response = containerAsyncClient.listBlobsHierarchy(delimiter, options);
 
-        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
+        return timeout == null ? response.toStream() : response.timeout(timeout).toStream();
     }
 
     /**

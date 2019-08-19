@@ -26,6 +26,7 @@ import java.io.UncheckedIOException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link BlobClientBuilder}, via
@@ -326,7 +327,7 @@ public final class BlockBlobClient extends BlobClient {
      * @return
      *      The list of blocks.
      */
-    public Iterable<BlockItem> listBlocks(BlockListType listType) {
+    public Stream<BlockItem> listBlocks(BlockListType listType) {
         return this.listBlocks(listType, null, null);
     }
 
@@ -347,11 +348,11 @@ public final class BlockBlobClient extends BlobClient {
      * @return
      *      The list of blocks.
      */
-    public Iterable<BlockItem> listBlocks(BlockListType listType,
+    public Stream<BlockItem> listBlocks(BlockListType listType,
                                           LeaseAccessConditions leaseAccessConditions, Duration timeout) {
         Flux<BlockItem> response = blockBlobAsyncClient.listBlocks(listType, leaseAccessConditions);
 
-        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
+        return timeout == null ? response.toStream() : response.timeout(timeout).toStream();
     }
 
     /**

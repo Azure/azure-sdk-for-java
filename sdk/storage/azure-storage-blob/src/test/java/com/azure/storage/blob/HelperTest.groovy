@@ -20,7 +20,7 @@ class HelperTest extends APISpec {
     // TODO (alzimmer): Turn this on when nextPageLink can be passed into listing
     /*def "responseError"() {
         when:
-        cu.listBlobsFlat().iterator().hasNext()
+        cc.listBlobsFlat().iterator().hasNext()
 
         then:
         def e = thrown(StorageException)
@@ -36,7 +36,7 @@ class HelperTest extends APISpec {
      */
     def "Request property"() {
         when:
-        VoidResponse response = cu.delete()
+        VoidResponse response = cc.delete()
 
         then:
         response.request() != null

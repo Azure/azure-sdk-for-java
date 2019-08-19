@@ -15,7 +15,7 @@ import java.time.OffsetDateTime
 class ServiceAPITest extends APISpec {
     def setup() {
         RetentionPolicy disabled = new RetentionPolicy().enabled(false)
-        primaryServiceURL.setProperties(new StorageServiceProperties()
+        primaryBlobServiceClient.setProperties(new StorageServiceProperties()
             .staticWebsite(new StaticWebsite().enabled(false))
             .deleteRetentionPolicy(disabled)
             .cors(null)
@@ -31,7 +31,7 @@ class ServiceAPITest extends APISpec {
     def cleanup() {
         Assume.assumeTrue("The test only runs in Live mode.", testMode.equalsIgnoreCase("RECORD"))
         RetentionPolicy disabled = new RetentionPolicy().enabled(false)
-        primaryServiceURL.setProperties(new StorageServiceProperties()
+        primaryBlobServiceClient.setProperties(new StorageServiceProperties()
                 .staticWebsite(new StaticWebsite().enabled(false))
                 .deleteRetentionPolicy(disabled)
                 .cors(null)
@@ -46,8 +46,8 @@ class ServiceAPITest extends APISpec {
 
     def "List containers"() {
         when:
-        Iterable<ContainerItem> response =
-                primaryServiceURL.listContainers(new ListContainersOptions().prefix(containerPrefix), null)
+        def response =
+            primaryBlobServiceClient.listContainers(new ListContainersOptions().prefix(containerPrefix), null)
 
         then:
         for (ContainerItem c : response) {
@@ -65,7 +65,7 @@ class ServiceAPITest extends APISpec {
 
     def "List containers min"() {
         when:
-        primaryServiceURL.listContainers().iterator().hasNext()
+        primaryBlobServiceClient.listContainers().iterator().hasNext()
 
         then:
         notThrown(StorageException)
@@ -74,10 +74,10 @@ class ServiceAPITest extends APISpec {
     def "List containers marker"() {
         setup:
         for (int i = 0; i < 10; i++) {
-            primaryServiceURL.createContainer(generateContainerName())
+            primaryBlobServiceClient.createContainer(generateContainerName())
         }
 
-        Iterator<ContainerItem> listResponse = primaryServiceURL.listContainers().iterator()
+        Iterator<ContainerItem> listResponse = primaryBlobServiceClient.listContainers().iterator()
         String firstContainerName = listResponse.next().name()
 
         expect:
@@ -89,28 +89,28 @@ class ServiceAPITest extends APISpec {
         setup:
         Metadata metadata = new Metadata()
         metadata.put("foo", "bar")
-        cu = primaryServiceURL.createContainer("aaa" + generateContainerName(), metadata, null).value()
+        cc = primaryBlobServiceClient.createContainer("aaa" + generateContainerName(), metadata, null).value()
 
         expect:
-        primaryServiceURL.listContainers(new ListContainersOptions()
+        primaryBlobServiceClient.listContainers(new ListContainersOptions()
                 .details(new ContainerListDetails().metadata(true))
                 .prefix("aaa" + containerPrefix), null)
             .iterator().next().metadata() == metadata
 
         // Container with prefix "aaa" will not be cleaned up by normal test cleanup.
-        cu.delete().statusCode() == 202
+        cc.delete().statusCode() == 202
     }
 
     // TODO (alzimmer): Turn this test back on when listing by page is implemented
     /*def "List containers maxResults"() {
         setup:
         for (int i = 0; i < 11; i++) {
-            primaryServiceURL.createContainer(generateContainerName())
+            primaryBlobServiceClient.createContainer(generateContainerName())
         }
 
         expect:
 
-        primaryServiceURL.listContainersSegment(null,
+        primaryBlobServiceClient.listContainersSegment(null,
                 new ListContainersOptions().maxResults(10), null)
                 .blockingGet().body().containerItems().size() == 10
     }*/

@@ -10,16 +10,16 @@ import spock.lang.Unroll
 import java.security.MessageDigest
 
 class AppendBlobAPITest extends APISpec {
-    AppendBlobClient bu
+    AppendBlobClient bc
 
     def setup() {
-        bu = cu.getAppendBlobClient(generateBlobName())
-        bu.create()
+        bc = cc.getAppendBlobClient(generateBlobName())
+        bc.create()
     }
 
     def "Create defaults"() {
         when:
-        Response<AppendBlobItem> createResponse = bu.create()
+        Response<AppendBlobItem> createResponse = bc.create()
 
         then:
         createResponse.statusCode() == 201
@@ -30,12 +30,12 @@ class AppendBlobAPITest extends APISpec {
 
     def "Create min"() {
         expect:
-        bu.create().statusCode() == 201
+        bc.create().statusCode() == 201
     }
 
     def "Create error"() {
         when:
-        bu.create(null, null,
+        bc.create(null, null,
             new BlobAccessConditions().modifiedAccessConditions(new ModifiedAccessConditions().ifMatch("garbage")),
             null)
 
@@ -54,8 +54,8 @@ class AppendBlobAPITest extends APISpec {
                 .blobContentType(contentType)
 
         when:
-        bu.create(headers, null, null, null)
-        Response<BlobProperties> response = bu.getProperties()
+        bc.create(headers, null, null, null)
+        Response<BlobProperties> response = bc.getProperties()
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType
@@ -81,8 +81,8 @@ class AppendBlobAPITest extends APISpec {
         }
 
         when:
-        bu.create(null, metadata, null, null)
-        Response<BlobProperties> response = bu.getProperties(null, null)
+        bc.create(null, metadata, null, null)
+        Response<BlobProperties> response = bc.getProperties(null, null)
 
         then:
         response.value().metadata() == metadata
@@ -96,8 +96,8 @@ class AppendBlobAPITest extends APISpec {
     @Unroll
     def "Create AC"() {
         setup:
-        match = setupBlobMatchCondition(bu, match)
-        leaseID = setupBlobLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bc, match)
+        leaseID = setupBlobLeaseCondition(bc, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions()
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
             .modifiedAccessConditions(new ModifiedAccessConditions().ifModifiedSince(modified)
@@ -108,7 +108,7 @@ class AppendBlobAPITest extends APISpec {
 
 
         expect:
-        bu.create(null, null, bac, null).statusCode() == 201
+        bc.create(null, null, bac, null).statusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -123,8 +123,8 @@ class AppendBlobAPITest extends APISpec {
     @Unroll
     def "Create AC fail"() {
         setup:
-        noneMatch = setupBlobMatchCondition(bu, noneMatch)
-        setupBlobLeaseCondition(bu, leaseID)
+        noneMatch = setupBlobMatchCondition(bc, noneMatch)
+        setupBlobLeaseCondition(bc, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions()
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
             .modifiedAccessConditions(new ModifiedAccessConditions().ifModifiedSince(modified)
@@ -133,7 +133,7 @@ class AppendBlobAPITest extends APISpec {
                 .ifNoneMatch(noneMatch))
 
         when:
-        bu.create(null, null, bac, null)
+        bc.create(null, null, bac, null)
 
         then:
         thrown(StorageException)
@@ -149,29 +149,29 @@ class AppendBlobAPITest extends APISpec {
 
     def "Append block defaults"() {
         setup:
-        Response<AppendBlobItem> appendResponse = bu.appendBlock(defaultInputStream.get(), defaultDataSize)
+        Response<AppendBlobItem> appendResponse = bc.appendBlock(defaultInputStream.get(), defaultDataSize)
 
         expect:
         ByteArrayOutputStream downloadStream = new ByteArrayOutputStream()
-        bu.download(downloadStream)
+        bc.download(downloadStream)
 
         downloadStream.toByteArray() == defaultData.array()
         validateBasicHeaders(appendResponse.headers())
         appendResponse.value().contentMD5() != null
         appendResponse.value().blobAppendOffset() != null
         appendResponse.value().blobCommittedBlockCount() != null
-        Integer.parseInt(bu.getProperties().headers().value("x-ms-blob-committed-block-count")) == 1
+        Integer.parseInt(bc.getProperties().headers().value("x-ms-blob-committed-block-count")) == 1
     }
 
     def "Append block min"() {
         expect:
-        bu.appendBlock(defaultInputStream.get(), defaultDataSize).statusCode() == 201
+        bc.appendBlock(defaultInputStream.get(), defaultDataSize).statusCode() == 201
     }
 
     @Unroll
     def "Append block IA"() {
         when:
-        bu.appendBlock(data, dataSize)
+        bc.appendBlock(data, dataSize)
 
         then:
         def e = thrown(Exception)
@@ -187,7 +187,7 @@ class AppendBlobAPITest extends APISpec {
 
     def "Append block empty body"() {
         when:
-        bu.appendBlock(new ByteArrayInputStream(new byte[0]), 0)
+        bc.appendBlock(new ByteArrayInputStream(new byte[0]), 0)
 
         then:
         thrown(StorageException)
@@ -195,7 +195,7 @@ class AppendBlobAPITest extends APISpec {
 
     def "Append block null body"() {
         when:
-        bu.appendBlock(new ByteArrayInputStream(null), 0)
+        bc.appendBlock(new ByteArrayInputStream(null), 0)
 
         then:
         thrown(NullPointerException)
@@ -204,8 +204,8 @@ class AppendBlobAPITest extends APISpec {
     @Unroll
     def "Append block AC"() {
         setup:
-        match = setupBlobMatchCondition(bu, match)
-        leaseID = setupBlobLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bc, match)
+        leaseID = setupBlobLeaseCondition(bc, leaseID)
         AppendBlobAccessConditions bac = new AppendBlobAccessConditions()
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
             .appendPositionAccessConditions(new AppendPositionAccessConditions()
@@ -220,7 +220,7 @@ class AppendBlobAPITest extends APISpec {
 
 
         expect:
-        bu.appendBlock(defaultInputStream.get(), defaultDataSize, bac, null).statusCode() == 201
+        bc.appendBlock(defaultInputStream.get(), defaultDataSize, bac, null).statusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID         | appendPosE | maxSizeLTE
@@ -237,8 +237,8 @@ class AppendBlobAPITest extends APISpec {
     @Unroll
     def "Append block AC fail"() {
         setup:
-        noneMatch = setupBlobMatchCondition(bu, noneMatch)
-        setupBlobLeaseCondition(bu, leaseID)
+        noneMatch = setupBlobMatchCondition(bc, noneMatch)
+        setupBlobLeaseCondition(bc, leaseID)
 
         AppendBlobAccessConditions bac = new AppendBlobAccessConditions()
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
@@ -252,7 +252,7 @@ class AppendBlobAPITest extends APISpec {
                 .ifNoneMatch(noneMatch))
 
         when:
-        bu.appendBlock(defaultInputStream.get(), defaultDataSize, bac, null)
+        bc.appendBlock(defaultInputStream.get(), defaultDataSize, bac, null)
 
         then:
         thrown(StorageException)
@@ -270,10 +270,10 @@ class AppendBlobAPITest extends APISpec {
 
     def "Append block error"() {
         setup:
-        bu = cu.getAppendBlobClient(generateBlobName())
+        bc = cc.getAppendBlobClient(generateBlobName())
 
         when:
-        bu.appendBlock(defaultInputStream.get(), defaultDataSize)
+        bc.appendBlock(defaultInputStream.get(), defaultDataSize)
 
         then:
         thrown(StorageException)
@@ -281,17 +281,17 @@ class AppendBlobAPITest extends APISpec {
 
     def "Append block from URL min"() {
         setup:
-        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         byte[] data = getRandomByteArray(1024)
-        bu.appendBlock(new ByteArrayInputStream(data), data.length)
+        bc.appendBlock(new ByteArrayInputStream(data), data.length)
 
-        AppendBlobClient destURL = cu.getAppendBlobClient(generateBlobName())
+        AppendBlobClient destURL = cc.getAppendBlobClient(generateBlobName())
         destURL.create()
 
         BlobRange blobRange = new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)
 
         when:
-        Response<AppendBlobItem> response = destURL.appendBlockFromUrl(bu.getBlobUrl(), blobRange)
+        Response<AppendBlobItem> response = destURL.appendBlockFromUrl(bc.getBlobUrl(), blobRange)
 
         then:
         response.statusCode() == 201
@@ -300,15 +300,15 @@ class AppendBlobAPITest extends APISpec {
 
     def "Append block from URL range"() {
         setup:
-        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         byte[] data = getRandomByteArray(4 * 1024)
-        bu.appendBlock(new ByteArrayInputStream(data), data.length)
+        bc.appendBlock(new ByteArrayInputStream(data), data.length)
 
-        AppendBlobClient destURL = cu.getAppendBlobClient(generateBlobName())
+        AppendBlobClient destURL = cc.getAppendBlobClient(generateBlobName())
         destURL.create()
 
         when:
-        destURL.appendBlockFromUrl(bu.getBlobUrl(), new BlobRange(2 * 1024, 1024))
+        destURL.appendBlockFromUrl(bc.getBlobUrl(), new BlobRange(2 * 1024, 1024))
 
         then:
         ByteArrayOutputStream downloadStream = new ByteArrayOutputStream(1024)
@@ -318,15 +318,15 @@ class AppendBlobAPITest extends APISpec {
 
     def "Append block from URL MD5"() {
         setup:
-        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         byte[] data = getRandomByteArray(1024)
-        bu.appendBlock(new ByteArrayInputStream(data), data.length)
+        bc.appendBlock(new ByteArrayInputStream(data), data.length)
 
-        AppendBlobClient destURL = cu.getAppendBlobClient(generateBlobName())
+        AppendBlobClient destURL = cc.getAppendBlobClient(generateBlobName())
         destURL.create()
 
         when:
-        destURL.appendBlockFromUrl(bu.getBlobUrl(), null, MessageDigest.getInstance("MD5").digest(data),
+        destURL.appendBlockFromUrl(bc.getBlobUrl(), null, MessageDigest.getInstance("MD5").digest(data),
                 null, null, null)
 
         then:
@@ -335,15 +335,15 @@ class AppendBlobAPITest extends APISpec {
 
     def "Append block from URL MD5 fail"() {
         setup:
-        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         byte[] data = getRandomByteArray(1024)
-        bu.appendBlock(new ByteArrayInputStream(data), data.length)
+        bc.appendBlock(new ByteArrayInputStream(data), data.length)
 
-        def destURL = cu.getAppendBlobClient(generateBlobName())
+        def destURL = cc.getAppendBlobClient(generateBlobName())
         destURL.create()
 
         when:
-        destURL.appendBlockFromUrl(bu.getBlobUrl(), null, MessageDigest.getInstance("MD5").digest("garbage".getBytes()),
+        destURL.appendBlockFromUrl(bc.getBlobUrl(), null, MessageDigest.getInstance("MD5").digest("garbage".getBytes()),
                 null, null, null)
 
         then:
@@ -353,9 +353,9 @@ class AppendBlobAPITest extends APISpec {
     @Unroll
     def "Append block from URL destination AC"() {
         setup:
-        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        match = setupBlobMatchCondition(bu, match)
-        leaseID = setupBlobLeaseCondition(bu, leaseID)
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        match = setupBlobMatchCondition(bc, match)
+        leaseID = setupBlobLeaseCondition(bc, leaseID)
         def bac = new AppendBlobAccessConditions()
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
             .appendPositionAccessConditions(new AppendPositionAccessConditions()
@@ -367,12 +367,12 @@ class AppendBlobAPITest extends APISpec {
                 .ifMatch(match)
                 .ifNoneMatch(noneMatch))
 
-        def sourceURL = cu.getAppendBlobClient(generateBlobName())
+        def sourceURL = cc.getAppendBlobClient(generateBlobName())
         sourceURL.create()
         sourceURL.appendBlock(defaultInputStream.get(), defaultDataSize).statusCode()
 
         expect:
-        bu.appendBlockFromUrl(sourceURL.getBlobUrl(), null, null, bac, null, null).statusCode() == 201
+        bc.appendBlockFromUrl(sourceURL.getBlobUrl(), null, null, bac, null, null).statusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID         | appendPosE | maxSizeLTE
@@ -389,9 +389,9 @@ class AppendBlobAPITest extends APISpec {
     @Unroll
     def "Append block from URL AC destination fail"() {
         setup:
-        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        noneMatch = setupBlobMatchCondition(bu, noneMatch)
-        setupBlobLeaseCondition(bu, leaseID)
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        noneMatch = setupBlobMatchCondition(bc, noneMatch)
+        setupBlobLeaseCondition(bc, leaseID)
 
         def bac = new AppendBlobAccessConditions()
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
@@ -404,12 +404,12 @@ class AppendBlobAPITest extends APISpec {
                 .ifMatch(match)
                 .ifNoneMatch(noneMatch))
 
-        def sourceURL = cu.getAppendBlobClient(generateBlobName())
+        def sourceURL = cc.getAppendBlobClient(generateBlobName())
         sourceURL.create()
         sourceURL.appendBlock(defaultInputStream.get(), defaultDataSize).statusCode()
 
         when:
-        bu.appendBlockFromUrl(sourceURL.getBlobUrl(), null, null, bac, null, null)
+        bc.appendBlockFromUrl(sourceURL.getBlobUrl(), null, null, bac, null, null)
 
         then:
         thrown(StorageException)
@@ -428,9 +428,9 @@ class AppendBlobAPITest extends APISpec {
     @Unroll
     def "Append block from URL source AC"() {
         setup:
-        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
 
-        def sourceURL = cu.getAppendBlobClient(generateBlobName())
+        def sourceURL = cc.getAppendBlobClient(generateBlobName())
         sourceURL.create()
         sourceURL.appendBlock(defaultInputStream.get(), defaultDataSize).statusCode()
 
@@ -441,7 +441,7 @@ class AppendBlobAPITest extends APISpec {
                 .sourceIfNoneMatch(sourceIfNoneMatch)
 
         expect:
-        bu.appendBlockFromUrl(sourceURL.getBlobUrl(), null, null, null, smac, null).statusCode() == 201
+        bc.appendBlockFromUrl(sourceURL.getBlobUrl(), null, null, null, smac, null).statusCode() == 201
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
@@ -455,9 +455,9 @@ class AppendBlobAPITest extends APISpec {
     @Unroll
     def "Append block from URL AC source fail"() {
         setup:
-        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null)
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null)
 
-        def sourceURL = cu.getAppendBlobClient(generateBlobName())
+        def sourceURL = cc.getAppendBlobClient(generateBlobName())
         sourceURL.create()
         sourceURL.appendBlock(defaultInputStream.get(), defaultDataSize).statusCode()
 
@@ -468,7 +468,7 @@ class AppendBlobAPITest extends APISpec {
                 .sourceIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch))
 
         when:
-        bu.appendBlockFromUrl(sourceURL.getBlobUrl(), null, null, null, smac, null)
+        bc.appendBlockFromUrl(sourceURL.getBlobUrl(), null, null, null, smac, null)
 
         then:
         thrown(StorageException)

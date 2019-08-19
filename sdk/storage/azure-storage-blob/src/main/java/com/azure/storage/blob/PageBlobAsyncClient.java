@@ -3,8 +3,11 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -337,7 +340,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the cleared pages.
      */
-    public Mono<Response<PageList>> getPageRanges(BlobRange blobRange) {
+    public PagedFlux<PageRange> getPageRanges(BlobRange blobRange) {
         return this.getPageRanges(blobRange, null);
     }
 
@@ -353,15 +356,28 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response emitting all the page ranges.
      */
-    public Mono<Response<PageList>> getPageRanges(BlobRange blobRange, BlobAccessConditions accessConditions) {
+    public PagedFlux<PageRange> getPageRanges(BlobRange blobRange, BlobAccessConditions accessConditions) {
         blobRange = blobRange == null ? new BlobRange(0) : blobRange;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
-        return postProcessResponse(this.azureBlobStorage.pageBlobs().getPageRangesWithRestResponseAsync(
-            null, null, snapshot, null, null, blobRange.toHeaderValue(),
-            null, accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(),
-            Context.NONE))
-            .map(response -> new SimpleResponse<>(response, response.value()));
+        Mono<PagedResponse<PageRange>> result =
+            postProcessResponse(
+                this.azureBlobStorage.pageBlobs().getPageRangesWithRestResponseAsync(
+                    null, null, snapshot, null, null, blobRange.toHeaderValue(), null,
+                    accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(), Context.NONE
+                )
+            )
+                .map(response -> new PagedResponseBase<>(
+                    response.request(),
+                    response.statusCode(),
+                    response.headers(),
+                    response.value().pageRange(),
+                    null /* nextLink */, // response guaranteed as single page; no continuation token available
+                    response.deserializedHeaders()));
+
+        return new PagedFlux<>(
+            () -> result,
+            marker -> null); // never called, as nextLink is null
     }
 
     /**
@@ -378,7 +394,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response emitting all the different page ranges.
      */
-    public Mono<Response<PageList>> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
+    public PagedFlux<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
         return this.getPageRangesDiff(blobRange, prevSnapshot, null);
     }
 
@@ -398,7 +414,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response emitting all the different page ranges.
      * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
      */
-    public Mono<Response<PageList>> getPageRangesDiff(BlobRange blobRange, String prevSnapshot, BlobAccessConditions accessConditions) {
+    public PagedFlux<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot, BlobAccessConditions accessConditions) {
         blobRange = blobRange == null ? new BlobRange(0) : blobRange;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
@@ -406,11 +422,24 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
             throw new IllegalArgumentException("prevSnapshot cannot be null");
         }
 
-        return postProcessResponse(this.azureBlobStorage.pageBlobs().getPageRangesDiffWithRestResponseAsync(
-            null, null, snapshot, null, null, prevSnapshot,
-            blobRange.toHeaderValue(), null, accessConditions.leaseAccessConditions(),
-            accessConditions.modifiedAccessConditions(), Context.NONE))
-            .map(response -> new SimpleResponse<>(response, response.value()));
+        Mono<PagedResponse<PageRange>> result =
+            postProcessResponse(
+                this.azureBlobStorage.pageBlobs().getPageRangesDiffWithRestResponseAsync(
+                    null, null, snapshot, null, null, prevSnapshot, blobRange.toHeaderValue(), null,
+                    accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(), Context.NONE
+                )
+            )
+                .map(response -> new PagedResponseBase<>(
+                    response.request(),
+                    response.statusCode(),
+                    response.headers(),
+                    response.value().pageRange(),
+                    null /* nextLink */, // response guaranteed as single page; no continuation token available
+                    response.deserializedHeaders()));
+
+        return new PagedFlux<>(
+            () -> result,
+            (marker) -> null); // never called, as nextLink is null
     }
 
     /**

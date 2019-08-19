@@ -22,6 +22,7 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.stream.Stream;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does not
@@ -109,18 +110,18 @@ public final class BlobServiceClient {
     }
 
     /**
-     * Returns a lazy loaded list of containers in this account. The returned {@link Iterable} can be iterated through
+     * Returns a lazy loaded list of containers in this account. The returned {@link Stream} can be consumed through
      * while new items are automatically retrieved as needed. For more information, see the <a
      * href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
      * @return The list of containers.
      */
-    public Iterable<ContainerItem> listContainers() {
+    public Stream<ContainerItem> listContainers() {
         return this.listContainers(new ListContainersOptions(), null);
     }
 
     /**
-     * Returns a lazy loaded list of containers in this account. The returned {@link Iterable} can be iterated through
+     * Returns a lazy loaded list of containers in this account. The returned {@link Stream} can be consumed through
      * while new items are automatically retrieved as needed. For more information, see the <a
      * href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
@@ -128,10 +129,10 @@ public final class BlobServiceClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of containers.
      */
-    public Iterable<ContainerItem> listContainers(ListContainersOptions options, Duration timeout) {
+    public Stream<ContainerItem> listContainers(ListContainersOptions options, Duration timeout) {
         Flux<ContainerItem> response = blobServiceAsyncClient.listContainers(options);
 
-        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
+        return timeout == null ? response.toStream() : response.timeout(timeout).toStream();
     }
 
     /**

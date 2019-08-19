@@ -45,7 +45,7 @@ class ProgressReporterTest extends APISpec {
 
         when:
         BlockBlobAsyncClient bu = new BlobClientBuilder()
-            .endpoint(cu.getContainerUrl().toString())
+            .endpoint(cc.getContainerUrl().toString())
             .blobName(generateBlobName())
             .credential(primaryCreds)
             .buildBlockBlobAsyncClient()

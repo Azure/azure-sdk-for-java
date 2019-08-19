@@ -3,10 +3,12 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -38,6 +40,8 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.storage.blob.Utility.postProcessResponse;
 
@@ -319,8 +323,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<VoidResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
-            BlobRange sourceRange) {
+    public Mono<VoidResponse> stageBlockFromURL(String base64BlockID, URL sourceURL, BlobRange sourceRange) {
         return this.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null,
                 null, null);
     }
@@ -375,7 +378,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the list of blocks.
      */
-    public Flux<BlockItem> listBlocks(BlockListType listType) {
+    public PagedFlux<BlockItem> listBlocks(BlockListType listType) {
         return this.listBlocks(listType, null);
     }
 
@@ -394,19 +397,31 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the list of blocks.
      */
-    public Flux<BlockItem> listBlocks(BlockListType listType,
+    public PagedFlux<BlockItem> listBlocks(BlockListType listType,
                                       LeaseAccessConditions leaseAccessConditions) {
-        return postProcessResponse(this.azureBlobStorage.blockBlobs().getBlockListWithRestResponseAsync(
-            null, null, listType, snapshot, null, null, null,
-            leaseAccessConditions, Context.NONE))
-            .map(ResponseBase::value)
-            .flatMapMany(bl -> {
-                Flux<BlockItem> committed = Flux.fromIterable(bl.committedBlocks())
-                    .map(block -> new BlockItem(block, true));
-                Flux<BlockItem> uncommitted = Flux.fromIterable(bl.uncommittedBlocks())
-                    .map(block -> new BlockItem(block, false));
-                return Flux.concat(committed, uncommitted);
-            });
+
+        Mono<PagedResponse<BlockItem>> result =
+            postProcessResponse(
+                this.azureBlobStorage.blockBlobs().getBlockListWithRestResponseAsync(
+                    null, null, listType, snapshot, null, null, null, leaseAccessConditions, Context.NONE
+                )
+            )
+                .map(response -> new PagedResponseBase<>(
+                    response.request(),
+                    response.statusCode(),
+                    response.headers(),
+                    Stream.concat(
+                        response.value().committedBlocks().stream()
+                            .map(committedBlock -> new BlockItem(committedBlock, true)),
+                        response.value().uncommittedBlocks().stream()
+                            .map(uncommittedBlock -> new BlockItem(uncommittedBlock, false)))
+                        .collect(Collectors.toList()),
+                    null /* nextLink */, // response guaranteed as single page; no continuation token available
+                    response.deserializedHeaders()));
+
+        return new PagedFlux<>(
+            () -> result,
+            marker -> null); // never called, as nextLink is null
     }
 
     /**
