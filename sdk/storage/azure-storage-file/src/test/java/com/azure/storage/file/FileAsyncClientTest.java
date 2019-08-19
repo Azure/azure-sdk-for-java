@@ -26,7 +26,7 @@ import static com.azure.storage.file.FileTestHelpers.setupClient;
 
 public class FileAsyncClientTest extends FileClientTestBase {
     private final ClientLogger fileAsyncLogger = new ClientLogger(FileAsyncClientTest.class);
-    String filePath;
+    private String filePath;
     private static String shareName = "filesharename";
     private static String dirName = "testdir/";
     private static ShareClient shareClient;
@@ -37,31 +37,32 @@ public class FileAsyncClientTest extends FileClientTestBase {
         filePath = dirName + testResourceNamer.randomName("file", 16);
         if (interceptorManager.isPlaybackMode()) {
             fileAsyncClient = setupClient((connectionString, endpoint) -> new FileClientBuilder()
-                                                                     .connectionString(connectionString)
-                                                                     .shareName(shareName)
-                                                                     .filePath(filePath)
-                                                                     .httpClient(interceptorManager.getPlaybackClient())
-                                                                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                                                                     .buildAsyncClient(), true, fileAsyncLogger);
+                .connectionString(connectionString)
+                .shareName(shareName)
+                .filePath(filePath)
+                .httpClient(interceptorManager.getPlaybackClient())
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .buildAsyncClient(), true, fileAsyncLogger);
         } else {
             fileAsyncClient = setupClient((connectionString, endpoint) -> new FileClientBuilder()
-                                                                     .connectionString(connectionString)
-                                                                     .shareName(shareName)
-                                                                     .filePath(filePath)
-                                                                     .httpClient(HttpClient.createDefault().wiretap(true))
-                                                                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                                                                     .addPolicy(interceptorManager.getRecordPolicy())
-                                                                     .buildAsyncClient(), false, fileAsyncLogger);
+                .connectionString(connectionString)
+                .shareName(shareName)
+                .filePath(filePath)
+                .httpClient(HttpClient.createDefault().wiretap(true))
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .buildAsyncClient(), false, fileAsyncLogger);
         }
     }
+
     @BeforeClass
     public static void beforeClass() {
         if (FileTestHelpers.getTestMode() == TestMode.PLAYBACK) {
             return;
         }
         FileServiceClient fileServiceClient = new FileServiceClientBuilder()
-                                                  .connectionString(ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING"))
-                                                  .buildClient();
+            .connectionString(ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING"))
+            .buildClient();
         shareClient = fileServiceClient.getShareClient(shareName);
         shareClient.create();
         shareClient.createDirectory(dirName);
@@ -82,28 +83,28 @@ public class FileAsyncClientTest extends FileClientTestBase {
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
         StepVerifier.create(fileAsyncClient.getProperties())
-            .assertNext(filePropertiesResponse -> Assert.assertTrue(filePropertiesResponse.value().contentLength() == 1024))
+            .assertNext(filePropertiesResponse -> Assert.assertEquals(new Long(1024), filePropertiesResponse.value().contentLength()))
             .verifyComplete();
     }
 
     @Override
     public void createExcessMaxSizeFromFileClient() {
-        StepVerifier.create(fileAsyncClient.create(1024 * 1024 * 1024 * 1024, null, null))
+        StepVerifier.create(fileAsyncClient.create(1024L * 1024 * 1024 * 1024, null, null))
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
         StepVerifier.create(fileAsyncClient.getProperties())
-            .assertNext(filePropertiesResponse -> Assert.assertTrue(filePropertiesResponse.value().contentLength() == 0))
+            .assertNext(filePropertiesResponse -> Assert.assertEquals(new Long(0), filePropertiesResponse.value().contentLength()))
             .verifyComplete();
     }
 
     @Override
-    public void startCopy() throws Exception {
+    public void startCopy() {
         fileAsyncClient.create(1024).block();
         String sourceURL = fileAsyncClient.getFileUrl().toString() + "/" + shareName + "/" + filePath;
         StepVerifier.create(fileAsyncClient.startCopy(sourceURL, null))
             .assertNext(response -> {
                 FileTestHelpers.assertResponseStatusCode(response, 202);
-                Assert.assertTrue(response.value().copyId() != null);
+                Assert.assertNotNull(response.value().copyId());
             })
             .verifyComplete();
     }
@@ -132,9 +133,9 @@ public class FileAsyncClientTest extends FileClientTestBase {
         }
         fileAsyncClient.create(uploadFile.length()).block();
         StepVerifier.create(fileAsyncClient.uploadFromFile(uploadFile.toString()))
-                    .verifyComplete();
+            .verifyComplete();
         StepVerifier.create(fileAsyncClient.downloadToFile(downloadFile.toString()))
-                    .verifyComplete();
+            .verifyComplete();
 
         assertTwoFilesAreSame(uploadFile, downloadFile);
     }
@@ -143,8 +144,8 @@ public class FileAsyncClientTest extends FileClientTestBase {
     public void deleteFromFileClient() {
         fileAsyncClient.create(1024, null, null).block();
         StepVerifier.create(fileAsyncClient.delete())
-                .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 202))
-                .verifyComplete();
+            .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 202))
+            .verifyComplete();
     }
 
     @Override
@@ -204,11 +205,8 @@ public class FileAsyncClientTest extends FileClientTestBase {
         fileAsyncClient.create(1024).block();
         Iterable<HandleItem> handles = fileAsyncClient.listHandles(10).toIterable();
         handles.forEach(
-            response -> {
-                StepVerifier.create(fileAsyncClient.forceCloseHandles(response.handleId()))
-                    .assertNext(forceCloseHandles -> Assert.assertTrue(forceCloseHandles > 0))
-                    .verifyComplete();
-            }
-        );
+            response -> StepVerifier.create(fileAsyncClient.forceCloseHandles(response.handleId()))
+                .assertNext(forceCloseHandles -> Assert.assertTrue(forceCloseHandles > 0))
+                .verifyComplete());
     }
 }

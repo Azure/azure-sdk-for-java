@@ -13,14 +13,15 @@ import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.util.Arrays;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
 
 import static com.azure.storage.file.FileTestHelpers.assertTwoFilesAreSame;
 import static com.azure.storage.file.FileTestHelpers.setupClient;
@@ -30,7 +31,7 @@ public class FileClientTest extends FileClientTestBase {
     private static String shareName = "filesharename";
     private static String dirName = "testdir/";
     private static ShareClient shareClient;
-    String filePath;
+    private String filePath;
 
     private FileClient fileClient;
 
@@ -39,31 +40,32 @@ public class FileClientTest extends FileClientTestBase {
         filePath = dirName + testResourceNamer.randomName("file", 16);
         if (interceptorManager.isPlaybackMode()) {
             fileClient = setupClient((connectionString, endpoint) -> new FileClientBuilder()
-                             .connectionString(connectionString)
-                             .shareName(shareName)
-                             .filePath(filePath)
-                             .httpClient(interceptorManager.getPlaybackClient())
-                             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                             .buildClient(), true, fileLogger);
+                .connectionString(connectionString)
+                .shareName(shareName)
+                .filePath(filePath)
+                .httpClient(interceptorManager.getPlaybackClient())
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .buildClient(), true, fileLogger);
         } else {
             fileClient = setupClient((connectionString, endpoint) -> new FileClientBuilder()
-                             .connectionString(connectionString)
-                             .shareName(shareName)
-                             .filePath(filePath)
-                             .httpClient(HttpClient.createDefault().wiretap(true))
-                             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                             .addPolicy(interceptorManager.getRecordPolicy())
-                             .buildClient(), false, fileLogger);
+                .connectionString(connectionString)
+                .shareName(shareName)
+                .filePath(filePath)
+                .httpClient(HttpClient.createDefault().wiretap(true))
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .buildClient(), false, fileLogger);
         }
     }
+
     @BeforeClass
     public static void beforeClass() {
         if (FileTestHelpers.getTestMode() == TestMode.PLAYBACK) {
             return;
         }
         FileServiceClient fileServiceClient = new FileServiceClientBuilder()
-                                                  .connectionString(ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING"))
-                                                  .buildClient();
+            .connectionString(ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING"))
+            .buildClient();
         shareClient = fileServiceClient.getShareClient(shareName);
         shareClient.create();
         shareClient.createDirectory(dirName);
@@ -81,22 +83,22 @@ public class FileClientTest extends FileClientTestBase {
     @Override
     public void createFromFileClient() {
         FileTestHelpers.assertResponseStatusCode(fileClient.create(1024), 201);
-        Assert.assertTrue(fileClient.getProperties().value().contentLength() == 1024);
+        Assert.assertEquals(new Long(1024), fileClient.getProperties().value().contentLength());
     }
 
     @Override
     public void createExcessMaxSizeFromFileClient() {
-        FileTestHelpers.assertResponseStatusCode(fileClient.create(1024 * 1024 * 1024 * 1024, null, null), 201);
-        Assert.assertTrue(fileClient.getProperties().value().contentLength() == 0);
+        FileTestHelpers.assertResponseStatusCode(fileClient.create(1024L * 1024 * 1024 * 1024, null, null), 201);
+        Assert.assertEquals(new Long(0), fileClient.getProperties().value().contentLength());
     }
 
     @Override
-    public void startCopy() throws Exception {
+    public void startCopy() {
         FileTestHelpers.assertResponseStatusCode(fileClient.create(1024, null, null), 201);
         String sourceURL = fileClient.getFileUrl().toString() + "/" + shareName + "/" + filePath;
         Response<FileCopyInfo> copyInfoResponse = fileClient.startCopy(sourceURL, null);
         FileTestHelpers.assertResponseStatusCode(copyInfoResponse, 202);
-        Assert.assertTrue(copyInfoResponse.value().copyId() != null);
+        Assert.assertNotNull(copyInfoResponse.value().copyId());
     }
 
     @Override
@@ -138,7 +140,7 @@ public class FileClientTest extends FileClientTestBase {
         fileClient.create(1024, null, null);
         Response<FileProperties> propertiesResponse = fileClient.getProperties();
         Assert.assertNotNull(propertiesResponse.value());
-        Assert.assertNotNull(propertiesResponse.value().contentLength() == 1024);
+        Assert.assertEquals(new Long(1024), propertiesResponse.value().contentLength());
         Assert.assertNotNull(propertiesResponse.value().eTag());
         Assert.assertNotNull(propertiesResponse.value().lastModified());
     }
@@ -171,8 +173,8 @@ public class FileClientTest extends FileClientTestBase {
         fileClient.upload(defaultData, defaultData.readableBytes());
         fileClient.listRanges(new FileRange(0, 511L)).forEach(
             fileRangeInfo -> {
-                Assert.assertTrue(fileRangeInfo.start() == 0);
-                Assert.assertTrue(fileRangeInfo.end() == 511);
+                Assert.assertEquals(0L, fileRangeInfo.start());
+                Assert.assertEquals(new Long(511), fileRangeInfo.end());
             }
         );
     }
@@ -181,20 +183,13 @@ public class FileClientTest extends FileClientTestBase {
     public void listHandlesFromFileClient() {
         //TODO: need to find a way to create handles.
         fileClient.create(1024);
-        fileClient.listHandles().forEach(
-            handleItem -> {
-                Assert.assertNotNull(handleItem.handleId());
-            }
-        );
+        fileClient.listHandles().forEach(handleItem -> Assert.assertNotNull(handleItem.handleId()));
     }
 
     @Override
     public void forceCloseHandlesFromFileClient() {
         fileClient.create(1024, null, null);
         fileClient.listHandles(10).forEach(
-            handleItem -> {
-                Assert.assertNotNull(fileClient.forceCloseHandles(handleItem.handleId()));
-            }
-        );
+            handleItem -> Assert.assertNotNull(fileClient.forceCloseHandles(handleItem.handleId())));
     }
 }
