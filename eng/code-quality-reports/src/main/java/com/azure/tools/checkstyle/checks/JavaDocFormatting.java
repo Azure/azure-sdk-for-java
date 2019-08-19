@@ -60,6 +60,7 @@ public class JavaDocFormatting extends AbstractJavadocCheck {
                 break;
             case JavadocTokenTypes.DEPRECATED_LITERAL:
                 evaluateValidFormat(javaDocTag, JAVA_DOC_DEPRECATED);
+                break;
             default:
                 break;
         }
