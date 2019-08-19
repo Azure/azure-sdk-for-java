@@ -93,7 +93,7 @@ public class FileAsyncClientTest extends FileClientTestBase {
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
         StepVerifier.create(fileAsyncClient.getProperties())
-            .assertNext(filePropertiesResponse -> Assert.assertEquals(new Long(0), filePropertiesResponse.value().contentLength()))
+            .assertNext(filePropertiesResponse -> Assert.assertEquals(new Long(1099511627776L), filePropertiesResponse.value().contentLength()))
             .verifyComplete();
     }
 

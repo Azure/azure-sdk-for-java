@@ -89,7 +89,7 @@ public class FileClientTest extends FileClientTestBase {
     @Override
     public void createExcessMaxSizeFromFileClient() {
         FileTestHelpers.assertResponseStatusCode(fileClient.create(1024L * 1024 * 1024 * 1024, null, null), 201);
-        Assert.assertEquals(new Long(0), fileClient.getProperties().value().contentLength());
+        Assert.assertEquals(new Long(1099511627776L), fileClient.getProperties().value().contentLength());
     }
 
     @Override

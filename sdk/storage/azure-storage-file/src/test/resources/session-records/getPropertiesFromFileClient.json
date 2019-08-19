@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://alzimmerstorage.file.core.windows.net/filesharename/testdir%2ffile0431077b",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/filesharename/testdir%2ffile6226590e",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D724D0EED1C6E4\"",
-      "Last-Modified" : "Mon, 19 Aug 2019 18:13:27 GMT",
+      "ETag" : "\"0x8D724DE73AE1B77\"",
+      "Last-Modified" : "Mon, 19 Aug 2019 19:50:13 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d3e75814-201a-001b-0cb9-56e1b9000000",
+      "x-ms-request-id" : "07d2b784-e01a-0111-0fc7-564138000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Mon, 19 Aug 2019 18:13:27 GMT"
+      "Date" : "Mon, 19 Aug 2019 19:50:12 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://alzimmerstorage.file.core.windows.net/filesharename/testdir%2ffile0431077b",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/filesharename/testdir%2ffile6226590e",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -31,16 +31,16 @@
       "x-ms-type" : "File",
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D724D0EED1C6E4\"",
-      "Last-Modified" : "Mon, 19 Aug 2019 18:13:27 GMT",
+      "ETag" : "\"0x8D724DE73AE1B77\"",
+      "Last-Modified" : "Mon, 19 Aug 2019 19:50:13 GMT",
       "retry-after" : "0",
       "Content-Length" : "1024",
       "StatusCode" : "200",
-      "x-ms-request-id" : "d3e75815-201a-001b-0db9-56e1b9000000",
-      "Date" : "Mon, 19 Aug 2019 18:13:27 GMT",
+      "x-ms-request-id" : "07d2b785-e01a-0111-10c7-564138000000",
+      "Date" : "Mon, 19 Aug 2019 19:50:12 GMT",
       "Content-Type" : "application/octet-stream"
     },
     "Exception" : null
   } ],
-  "variables" : [ "file0431077b" ]
+  "variables" : [ "file6226590e" ]
 }
