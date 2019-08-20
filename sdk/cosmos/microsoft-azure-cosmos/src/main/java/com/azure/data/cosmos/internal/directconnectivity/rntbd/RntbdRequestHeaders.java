@@ -3,7 +3,6 @@
 
 package com.azure.data.cosmos.internal.directconnectivity.rntbd;
 
-
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.IndexingDirective;
 import com.azure.data.cosmos.internal.ContentSerializationFormat;
@@ -18,6 +17,7 @@ import com.azure.data.cosmos.internal.ResourceId;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -53,17 +53,17 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     RntbdRequestHeaders(final RntbdRequestArgs args, final RntbdRequestFrame frame) {
 
-        this();
+        this(Unpooled.EMPTY_BUFFER);
 
         checkNotNull(args, "args");
         checkNotNull(frame, "frame");
 
-        final RxDocumentServiceRequest request = args.getServiceRequest();
+        final RxDocumentServiceRequest request = args.serviceRequest();
         final byte[] content = request.getContent();
 
         this.getPayloadPresent().setValue(content != null && content.length > 0);
-        this.getReplicaPath().setValue(args.getReplicaPath());
-        this.getTransportRequestID().setValue(args.getTransportRequestId());
+        this.getReplicaPath().setValue(args.replicaPath());
+        this.getTransportRequestID().setValue(args.transportRequestId());
 
         final Map<String, String> headers = request.getHeaders();
 
@@ -156,8 +156,8 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.fillTokenFromHeader(headers, this::getClientVersion, HttpHeaders.VERSION);
     }
 
-    private RntbdRequestHeaders() {
-        super(RntbdRequestHeader.set, RntbdRequestHeader.map);
+    private RntbdRequestHeaders(ByteBuf in) {
+        super(RntbdRequestHeader.set, RntbdRequestHeader.map, in);
     }
 
     // endregion
@@ -165,8 +165,8 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
     // region Methods
 
     static RntbdRequestHeaders decode(final ByteBuf in) {
-        final RntbdRequestHeaders metadata = new RntbdRequestHeaders();
-        return RntbdRequestHeaders.decode(in, metadata);
+        final RntbdRequestHeaders metadata = new RntbdRequestHeaders(in);
+        return RntbdRequestHeaders.decode(metadata);
     }
 
     // endregion

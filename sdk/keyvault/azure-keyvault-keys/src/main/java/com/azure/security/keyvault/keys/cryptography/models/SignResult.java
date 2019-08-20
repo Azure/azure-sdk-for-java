@@ -23,12 +23,12 @@ public final class SignResult {
     /**
      * The signature created from the digest.
      */
-    private byte[] signature;
+    private final byte[] signature;
 
     /**
      * The algorithm used to create the signature.
      */
-    private SignatureAlgorithm algorithm;
+    private final SignatureAlgorithm algorithm;
 
     /**
      * Get the signature created from the digest.

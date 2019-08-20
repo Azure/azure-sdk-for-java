@@ -320,9 +320,17 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClassCheck"/>
 
     <!-- CUSTOM CHECKS -->
+    <!-- Verify the whenever a field is assigned just once in constructor to be final -->
+    <module name="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"/>
+
+    <!-- CUSTOM CHECKS -->
     <!-- Javadoc format: 'param / return / throws' descriptions text should only have one space character after the
      parameter name or return -->
     <module name="com.azure.tools.checkstyle.checks.JavaDocFormatting"/>
+
+    <!--CUSTOM CHECKS-->
+    <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
+    <module name="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"/>
 
     <!--CUSTOM CHECKS-->
     <!-- Any class that implements the HttpPipelinePolicy interface should:
@@ -338,7 +346,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck"/>
 
     <!-- CUSTOM CHECKS -->
-    <!-- @codesnippet description should match naming pattern requirement below:
+    <!-- {@codesnippet ...} description should match naming pattern requirement below:
     1) Package, class and method names should be concatenated by dot '.'. Ex. packageName.className.methodName
     2) Methods arguments should be concatenated by dash '-'. Ex. string-string  for methodName(String s, String s2)
     3) Use '#' to concatenate 1) and 2), ex packageName.className.methodName#string-string -->

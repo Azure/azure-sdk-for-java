@@ -24,16 +24,13 @@ class PartitionManagerImpl implements PartitionManager {
 
     @Override
     public Mono<Void> start() {
-        PartitionManagerImpl self = this;
-
-        return self.bootstrapper.initialize()
-            .then(self.partitionController.initialize())
-            .then(self.partitionLoadBalancer.start());
+        return this.bootstrapper.initialize()
+            .then(this.partitionController.initialize())
+            .then(this.partitionLoadBalancer.start());
     }
 
     @Override
     public Mono<Void> stop() {
-        PartitionManagerImpl self = this;
-        return self.partitionLoadBalancer.stop();
+        return this.partitionLoadBalancer.stop();
     }
 }

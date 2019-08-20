@@ -7,12 +7,12 @@ package com.azure.core.util.configuration;
  * Manages the global configuration store.
  */
 public final class ConfigurationManager {
-    private static Configuration configuration = new Configuration();
+    private static final Configuration CONFIGURATION = new Configuration();
 
     /**
      * @return the global configuration store.
      */
     public static Configuration getConfiguration() {
-        return configuration;
+        return CONFIGURATION;
     }
 }

@@ -5,6 +5,8 @@ package com.azure.core.util;
 
 import com.azure.core.implementation.annotation.Immutable;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.logging.ClientLogger;
+
 import java.util.Map;
 import java.util.Optional;
 
@@ -16,6 +18,8 @@ import java.util.Optional;
  */
 @Immutable
 public class Context {
+    private final ClientLogger logger = new ClientLogger(Context.class);
+
     // All fields must be immutable.
     //
     /**
@@ -60,7 +64,7 @@ public class Context {
      */
     public Context addData(Object key, Object value) {
         if (key == null) {
-            throw new IllegalArgumentException("key cannot be null");
+            throw logger.logExceptionAsError(new IllegalArgumentException("key cannot be null"));
         }
         return new Context(this, key, value);
     }
@@ -99,7 +103,7 @@ public class Context {
      */
     public Optional<Object> getData(Object key) {
         if (key == null) {
-            throw new IllegalArgumentException("key cannot be null");
+            throw logger.logExceptionAsError(new IllegalArgumentException("key cannot be null"));
         }
         for (Context c = this; c != null; c = c.parent) {
             if (key.equals(c.key)) {

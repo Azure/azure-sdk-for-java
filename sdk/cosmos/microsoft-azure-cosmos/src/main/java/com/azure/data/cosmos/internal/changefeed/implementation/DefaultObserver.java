@@ -8,13 +8,14 @@ import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverCloseReason;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 class DefaultObserver implements ChangeFeedObserver {
-    private final  Logger log = LoggerFactory.getLogger(DefaultObserver.class);
-    private Consumer<List<CosmosItemProperties>> consumer;
+    private static final Logger log = LoggerFactory.getLogger(DefaultObserver.class);
+    private final Consumer<List<CosmosItemProperties>> consumer;
 
     public DefaultObserver(Consumer<List<CosmosItemProperties>> consumer) {
         this.consumer = consumer;
@@ -31,9 +32,11 @@ class DefaultObserver implements ChangeFeedObserver {
     }
 
     @Override
-    public void processChanges(ChangeFeedObserverContext context, List<CosmosItemProperties> docs) {
+    public Mono<Void> processChanges(ChangeFeedObserverContext context, List<CosmosItemProperties> docs) {
         log.info("Start processing from thread {}", Thread.currentThread().getId());
         consumer.accept(docs);
         log.info("Done processing from thread {}", Thread.currentThread().getId());
+
+        return Mono.empty();
     }
 }
