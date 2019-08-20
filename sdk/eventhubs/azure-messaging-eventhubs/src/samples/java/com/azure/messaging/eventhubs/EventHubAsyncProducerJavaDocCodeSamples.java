@@ -22,7 +22,8 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
     private final EventHubAsyncClient client = new EventHubClientBuilder().connectionString("fake-string").buildAsyncClient();
 
     /**
-     * Code snippet demonstrating how to create an EventHubProducer that automatically routes events to any partition.
+     * Code snippet demonstrating how to create an {@link EventHubAsyncProducer} that automatically routes events to any
+     * partition.
      *
      * @throws IOException if the producer cannot be disposed.
      */
@@ -39,7 +40,8 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
     }
 
     /**
-     * Code snippet demonstrating how to create an EventHubProducer that routes events to a single partition.
+     * Code snippet demonstrating how to create an {@link EventHubAsyncProducer}  that routes events to a single
+     * partition.
      *
      * @throws IOException if the producer cannot be disposed.
      */

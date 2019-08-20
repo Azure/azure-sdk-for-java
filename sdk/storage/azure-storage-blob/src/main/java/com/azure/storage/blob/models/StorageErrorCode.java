@@ -33,11 +33,6 @@ public final class StorageErrorCode extends ExpandableStringEnum<StorageErrorCod
     public static final StorageErrorCode AUTHENTICATION_FAILED = fromString("AuthenticationFailed");
 
     /**
-     * Static value AuthorizationFailure for StorageErrorCode.
-     */
-    public static final StorageErrorCode AUTHORIZATION_FAILURE = fromString("AuthorizationFailure");
-
-    /**
      * Static value ConditionHeadersNotSupported for StorageErrorCode.
      */
     public static final StorageErrorCode CONDITION_HEADERS_NOT_SUPPORTED = fromString("ConditionHeadersNotSupported");

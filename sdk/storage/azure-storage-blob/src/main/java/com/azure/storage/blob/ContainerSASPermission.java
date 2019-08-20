@@ -36,8 +36,7 @@ public final class ContainerSASPermission {
      * Creates an {@code ContainerSASPermission} from the specified permissions string. This method will throw an
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString
-     *         A {@code String} which represents the {@code ContainerSASPermission}.
+     * @param permString A {@code String} which represents the {@code ContainerSASPermission}.
      *
      * @return A {@code ContainerSASPermission} generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d, or l.

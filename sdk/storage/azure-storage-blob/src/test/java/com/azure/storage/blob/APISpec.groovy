@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob
 
+
 import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
@@ -16,6 +17,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.identity.credential.EnvironmentCredentialBuilder
+import com.azure.storage.blob.BlobProperties
 import com.azure.storage.blob.models.ContainerItem
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
@@ -223,7 +225,7 @@ class APISpec extends Specification {
         for (ContainerItem c : serviceURL.listContainers()) {
             ContainerClient containerURL = serviceURL.getContainerClient(c.name())
             if (c.properties().leaseState() == LeaseStateType.LEASED) {
-                containerURL.breakLease(0, null, null)
+                containerURL.breakLease()
             }
             containerURL.delete()
         }
@@ -239,6 +241,7 @@ class APISpec extends Specification {
     /*
     Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
      */
+
     static ByteBuffer getRandomData(int size) {
         return ByteBuffer.wrap(getRandomByteArray(size))
     }
@@ -246,6 +249,7 @@ class APISpec extends Specification {
     /*
     We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
      */
+
     static File getRandomFile(int size) {
         File file = File.createTempFile(UUID.randomUUID().toString(), ".txt")
         file.deleteOnExit()
@@ -324,7 +328,7 @@ class APISpec extends Specification {
      */
     def setupBlobMatchCondition(BlobClient bu, String match) {
         if (match == receivedEtag) {
-            return bu.getProperties().headers().value("ETag")
+            return bu.getPropertiesWithResponse(null, null, null).headers().value("ETag")
         } else {
             return match
         }
@@ -347,7 +351,7 @@ class APISpec extends Specification {
     def setupBlobLeaseCondition(BlobClient bu, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            responseLeaseId = bu.acquireLease(null, -1, null, null).value()
+            responseLeaseId = bu.acquireLease(null, -1)
         }
         if (leaseID == receivedLeaseID) {
             return responseLeaseId
@@ -366,7 +370,7 @@ class APISpec extends Specification {
 
     def setupContainerLeaseCondition(ContainerClient cu, String leaseID) {
         if (leaseID == receivedLeaseID) {
-            return cu.acquireLease(null, -1).value()
+            return cu.acquireLeaseWithResponse(null, -1, null, null, null).value()
         } else {
             return leaseID
         }
@@ -411,7 +415,7 @@ class APISpec extends Specification {
     }
 
     def validateBlobProperties(Response<BlobProperties> response, String cacheControl, String contentDisposition, String contentEncoding,
-        String contentLanguage, byte[] contentMD5, String contentType) {
+                               String contentLanguage, byte[] contentMD5, String contentType) {
         return response.value().cacheControl() == cacheControl &&
             response.value().contentDisposition() == contentDisposition &&
             response.value().contentEncoding() == contentEncoding &&
@@ -447,7 +451,6 @@ class APISpec extends Specification {
     }
 
 
-
     /*
     This method returns a stub of an HttpResponse. This is for when we want to test policies in isolation but don't care
      about the status code, so we stub a response that always returns a given value for the status code. We never care
@@ -465,6 +468,7 @@ class APISpec extends Specification {
     to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
     with than was worth it.
      */
+
     def getStubResponse(int code, HttpRequest request) {
         return new HttpResponse() {
 
@@ -579,10 +583,10 @@ class APISpec extends Specification {
             .buildClient()
     }
 
-    def getTestMode(){
-        String testMode =  System.getenv("AZURE_TEST_MODE")
-        if(testMode == null){
-            testMode =  "PLAYBACK"
+    def getTestMode() {
+        String testMode = System.getenv("AZURE_TEST_MODE")
+        if (testMode == null) {
+            testMode = "PLAYBACK"
         }
         return testMode
     }

@@ -22,8 +22,7 @@ final class URLParser {
      * Any other query parameters remain in the UnparsedParams field. This method overwrites all fields in the
      * BlobURLParts object.
      *
-     * @param url
-     *         The {@code URL} to be parsed.
+     * @param url The {@code URL} to be parsed.
      *
      * @return A {@link BlobURLParts} object containing all the components of a BlobURL.
      */
@@ -77,8 +76,7 @@ final class URLParser {
     /**
      * Parses a query string into a one to many hashmap.
      *
-     * @param queryParams
-     *         The string of query params to parse.
+     * @param queryParams The string of query params to parse.
      *
      * @return A {@code HashMap<String, String[]>} of the key values.
      */

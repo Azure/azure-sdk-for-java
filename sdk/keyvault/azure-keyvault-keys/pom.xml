@@ -15,7 +15,8 @@
   <artifactId>azure-keyvault-keys</artifactId>
   <version>4.0.0-preview.3</version>
 
-  <name>azure-keyvault-keys</name>
+  <name>Microsoft Azure client library for KeyVault Keys</name>
+  <description>This module contains client library for Microsoft Azure KeyVault Keys.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>

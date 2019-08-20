@@ -75,7 +75,7 @@ final class HttpResponseHeaderDecoder {
      * @param headers the REST API returned headers
      * @return instance of header entity type created based on provided {@headers}, if header entity model does
      * not exists then return null
-     * @throws IOException
+     * @throws IOException If an I/O error occurs
      */
     private static Object deserializeHeaders(HttpHeaders headers, SerializerAdapter serializer, HttpResponseDecodeData decodeData) throws IOException {
         final Type deserializedHeadersType = decodeData.headersType();

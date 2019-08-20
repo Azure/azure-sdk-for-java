@@ -25,6 +25,9 @@ import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileRef;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageErrorException;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.OffsetDateTime;
@@ -33,8 +36,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * This class provides a client that contains all the operations for interacting with directory in Azure Storage File Service.
@@ -173,7 +174,13 @@ public class DirectoryAsyncClient {
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
      */
     public Mono<Response<DirectoryInfo>> create(Map<String, String> metadata) {
-        return azureFileStorageClient.directorys().createWithRestResponseAsync(shareName, directoryPath, null, metadata, Context.NONE)
+        // TODO (alzimmer): These properties are dummy defaults to allow the new service version to be used. Remove these and use correct defaults when known (https://github.com/Azure/azure-sdk-for-java/issues/5039)
+        String fileAttributes = "None";
+        String filePermission = "inherit";
+        String fileCreationTime = "now";
+        String fileLastWriteTime = "now";
+
+        return azureFileStorageClient.directorys().createWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime, fileLastWriteTime, null, metadata, filePermission, null, Context.NONE)
             .map(this::createWithRestResponse);
     }
 
@@ -440,7 +447,6 @@ public class DirectoryAsyncClient {
     /**
      * Deletes the file with specific name in this directory.
      *
-     * <p><strong>Code Samples</strong></p>
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Delete the file "filetest"</p>

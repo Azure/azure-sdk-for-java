@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Output for connect to Oracle, MySQL type source.
+ * Output for connect to MySQL type source.
  */
 public class ConnectToSourceNonSqlTaskOutput {
     /**

@@ -18,7 +18,7 @@ import com.microsoft.azure.arm.model.HasInner;
 /**
  * Type representing Tasks.
  */
-public interface Tasks extends SupportsCreating<ProjectTask.DefinitionStages.Blank>, HasInner<TasksInner> {
+public interface Tasks extends SupportsCreating<ProjectServiceProjectTask.DefinitionStages.Blank>, HasInner<TasksInner> {
     /**
      * Cancel a task.
      * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. This method cancels a task if it's currently queued or running.
@@ -30,7 +30,7 @@ public interface Tasks extends SupportsCreating<ProjectTask.DefinitionStages.Bla
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ProjectTask> cancelAsync(String groupName, String serviceName, String projectName, String taskName);
+    Observable<ProjectServiceProjectTask> cancelAsync(String groupName, String serviceName, String projectName, String taskName);
 
     /**
      * Execute a command on a task.
@@ -57,7 +57,7 @@ public interface Tasks extends SupportsCreating<ProjectTask.DefinitionStages.Bla
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ProjectTask> getAsync(String groupName, String serviceName, String projectName, String taskName);
+    Observable<ProjectServiceProjectTask> getAsync(String groupName, String serviceName, String projectName, String taskName);
 
     /**
      * Get tasks in a service.
@@ -69,7 +69,7 @@ public interface Tasks extends SupportsCreating<ProjectTask.DefinitionStages.Bla
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ProjectTask> listAsync(final String groupName, final String serviceName, final String projectName);
+    Observable<ProjectServiceProjectTask> listAsync(final String groupName, final String serviceName, final String projectName);
 
     /**
      * Delete task.

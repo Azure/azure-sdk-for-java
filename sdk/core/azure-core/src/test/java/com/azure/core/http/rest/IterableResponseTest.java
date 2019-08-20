@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.azure.core.util.IterableStream;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -30,7 +31,7 @@ public class IterableResponseTest {
     /*Ensure that if we call stream multiple times, it always returns same values and they are same as original list of values.*/
     @Test
     public void testIterableResponseStreamFromStart()  {
-        IterableResponse<Integer> iterableResponse = getIntegerIterableResponse(2, 5);
+        IterableStream<Integer> iterableResponse = getIntegerIterableResponse(2, 5);
         Assert.assertEquals(iterableResponse.stream().collect(Collectors.toList()).size(), iterableResponse.stream().collect(Collectors.toList()).size());
 
         // ensure original list of values are same after calling iterator()
@@ -41,7 +42,7 @@ public class IterableResponseTest {
     /*Ensure that if we call iterator multiple times, it always returns same values and they are same as original list of values.*/
     @Test
     public void testIterableResponseIteratorFromStart()  {
-        IterableResponse<Integer> iterableResponse = getIntegerIterableResponse(2, 5);
+        IterableStream<Integer> iterableResponse = getIntegerIterableResponse(2, 5);
         List<Integer> actualNumberValues1 = new ArrayList<>();
         List<Integer> actualNumberValues2 = new ArrayList<>();
         iterableResponse.iterator().forEachRemaining(number -> actualNumberValues1.add(number));
@@ -53,8 +54,8 @@ public class IterableResponseTest {
         iterableResponse.iterator().forEachRemaining(number -> Assert.assertTrue(originalIntegerList.contains(number)));
     }
 
-    private IterableResponse<Integer> getIntegerIterableResponse(int startNumber, int noOfValues) {
+    private IterableStream<Integer> getIntegerIterableResponse(int startNumber, int noOfValues) {
         Flux<Integer> integerFlux = Flux.range(startNumber, noOfValues);
-        return new IterableResponse<>(integerFlux);
+        return new IterableStream<>(integerFlux);
     }
 }

@@ -545,7 +545,7 @@
     <module>./sdk/cosmos</module>
     <module>./sdk/eventhubs/pom.data.xml</module>
     <module>./sdk/keyvault/pom.data.xml</module>
-    <module>./sdk/servicebus</module>
+    <module>./sdk/servicebus/microsoft-azure-servicebus</module>
     <module>./sdk/storage/microsoft-azure-storage-blob</module>
   </modules>
 </project>

@@ -36,3 +36,4 @@ stages:
       Artifacts:
         - name: azure-identity
           safeName: azureidentity
+          stagingProfileId: 88192f04117501

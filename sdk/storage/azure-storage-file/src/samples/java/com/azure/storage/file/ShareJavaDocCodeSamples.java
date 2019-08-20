@@ -266,7 +266,7 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#createSnapshot()()}
+     * Generates a code sample for using {@link ShareClient#createSnapshot()}
      */
     public void createSnapshot() {
         ShareClient shareClient = createClientWithSASToken();
@@ -370,7 +370,7 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#deleteDirectory(String)()}
+     * Generates a code sample for using {@link ShareClient#deleteDirectory(String)}
      */
     public void deleteDirectory() {
         ShareClient shareClient = createClientWithSASToken();
@@ -381,7 +381,7 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#deleteDirectory(String)()}
+     * Generates a code sample for using {@link ShareAsyncClient#deleteDirectory(String)}
      */
     public void deleteDirectoryAsync() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
@@ -395,7 +395,7 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#deleteFile(String)()}
+     * Generates a code sample for using {@link ShareClient#deleteFile(String)}
      */
     public void deleteFile() {
         ShareClient shareClient = createClientWithSASToken();
@@ -406,7 +406,7 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#deleteFile(String)()}
+     * Generates a code sample for using {@link ShareAsyncClient#deleteFile(String)}
      */
     public void deleteFileAsync() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();

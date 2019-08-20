@@ -34,5 +34,6 @@ stages:
     parameters:
       ServiceDirectory: servicebus
       Artifacts:
-        - name: microsoft-azure-servicebus
-          safeName: microsoftazureservicebus
+        - name: azure-servicebus
+          safeName: azureservicebus
+          stagingProfileId: 534d15ee3800f4

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Information for connecting to PostgreSQL server.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = PostgreSqlConnectionInfo.class)
 @JsonTypeName("PostgreSqlConnectionInfo")
 public class PostgreSqlConnectionInfo extends ConnectionInfo {
     /**

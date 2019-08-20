@@ -47,6 +47,8 @@ import com.azure.data.cosmos.internal.PathParser;
 import com.azure.data.cosmos.internal.TestConfigurations;
 import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.internal.directconnectivity.Protocol;
+import com.azure.data.cosmos.sync.CosmosSyncClient;
+import com.azure.data.cosmos.sync.CosmosSyncDatabase;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -594,6 +596,16 @@ public class TestSuiteBase extends CosmosClientTest {
         return client.createDatabase(databaseSettings).block().database();
     }
 
+    static protected CosmosSyncDatabase createSyncDatabase(CosmosSyncClient client, String databaseId) {
+        CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
+        try {
+            return client.createDatabase(databaseSettings).database();
+        } catch (CosmosClientException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     static protected CosmosDatabase createDatabaseIfNotExists(CosmosClient client, String databaseId) {
         List<CosmosDatabaseProperties> res = client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), null)
                                                    .flatMap(p -> Flux.fromIterable(p.results()))
@@ -616,6 +628,16 @@ public class TestSuiteBase extends CosmosClientTest {
         }
     }
 
+    static protected void safeDeleteSyncDatabase(CosmosSyncDatabase database) {
+        if (database != null) {
+            try {
+                database.delete();
+            } catch (Exception e) {
+                logger.error("failed to delete sync database", e);
+            }
+        }
+    }
+    
     static protected void safeDeleteAllCollections(CosmosDatabase database) {
         if (database != null) {
             List<CosmosContainerProperties> collections = database.readAllContainers()
@@ -660,6 +682,16 @@ public class TestSuiteBase extends CosmosClientTest {
     }
 
     static protected void safeClose(CosmosClient client) {
+        if (client != null) {
+            try {
+                client.close();
+            } catch (Exception e) {
+                logger.error("failed to close client", e);
+            }
+        }
+    }
+
+    static protected void safeCloseSyncClient(CosmosSyncClient client) {
         if (client != null) {
             try {
                 client.close();
