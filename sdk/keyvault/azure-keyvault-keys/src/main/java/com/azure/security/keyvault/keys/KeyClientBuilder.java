@@ -17,6 +17,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
 
 import java.net.MalformedURLException;
@@ -55,6 +56,8 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = KeyClient.class)
 public final class KeyClientBuilder {
+    private final ClientLogger logger = new ClientLogger(KeyClientBuilder.class);
+
     private final List<HttpPipelinePolicy> policies;
     private TokenCredential credential;
     private HttpPipeline pipeline;
@@ -110,7 +113,7 @@ public final class KeyClientBuilder {
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            throw new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+            throw logger.logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
         }
 
         if (pipeline != null) {
@@ -118,7 +121,7 @@ public final class KeyClientBuilder {
         }
 
         if (credential == null) {
-            throw new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.CREDENTIAL_REQUIRED));
+            throw logger.logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.CREDENTIAL_REQUIRED)));
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -150,7 +153,7 @@ public final class KeyClientBuilder {
         try {
             this.endpoint = new URL(endpoint);
         } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed."));
         }
         return this;
     }
