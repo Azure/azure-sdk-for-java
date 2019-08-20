@@ -303,7 +303,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
       3.2) The return type for async single value should be of type? extends Mono
       3.3) The return type for sync collection should be of type? extends Stream
       3.4) The return type for sync single value should be of type? extends Response -->
-    <module name="com.azure.tools.checkstyle.checks.ServiceClientInstantiationCheck"/>
+    <module name="com.azure.tools.checkstyle.checks.ServiceClientCheck"/>
 
     <!--CUSTOM CHECKS-->
     <!-- Checks for no external dependency exposed in the public API.
@@ -332,7 +332,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- CUSTOM CHECKS -->
     <!-- Verify the whenever a field is assigned just once in constructor to be final -->
     <module name="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"/>
-    
+
     <!-- Javadoc format: 'param / return / throws' descriptions text should only have one space character after the
      parameter name or return -->
     <module name="com.azure.tools.checkstyle.checks.JavaDocFormatting"/>

@@ -32,7 +32,7 @@
   <suppress checks="Header" files=".*KeyVaultKeyResolverDefaultProviderTest.java"/>
 
   <!-- Cryptography Client exception for service client instantiation as it provides client side crypto and is not entirely based on REST service -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientInstantiationCheck" files=".*CryptographyAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*CryptographyAsyncClient.java"/>
 
   <!-- Public API already released with incorrect upper-case naming pattern -->
   <suppress checks="MethodName" files="AsymmetricEncryptionAlgorithm.java"/>
@@ -96,7 +96,7 @@
 
   <!-- Remove this after fixing: https://github.com/Azure/azure-sdk-for-java/issues/5021 -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*\BlobOutputStream.java"/>
-  
+
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientInstantiationCheck
   |ServiceClientBuilderCheck|ServiceInterfaceCheck|HttpPipelinePolicyCheck|JavaDocFormatting|JavadocThrowsChecks
   |EnforceFinalFieldsCheck)" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
