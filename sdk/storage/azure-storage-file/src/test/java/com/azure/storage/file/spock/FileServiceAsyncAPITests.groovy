@@ -129,7 +129,6 @@ class FileServiceAsyncAPITests extends APISpec {
         def sharesVerifier = StepVerifier.create(primaryFileServiceAsyncClient.listShares(options))
         then:
         sharesVerifier.thenConsumeWhile {
-            System.out.println("Sima: " + it.name())
             FileTestHelper.assertSharesAreEqual(testShares.pop(), it, includeMetadata, includeSnapshot)
         }.verifyComplete()
         for (int i = 0; i < 3 - limits; i++) {
