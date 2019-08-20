@@ -10,6 +10,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.ContainerItem;
@@ -56,6 +57,8 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
 public final class BlobServiceAsyncClient {
+    private final ClientLogger logger = new ClientLogger(BlobServiceAsyncClient.class);
+
     private final AzureBlobStorageImpl azureBlobStorage;
 
     /**
@@ -155,7 +158,7 @@ public final class BlobServiceAsyncClient {
         try {
             return new URL(azureBlobStorage.getUrl());
         } catch (MalformedURLException e) {
-            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e);
+            throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e));
         }
     }
 
@@ -313,7 +316,7 @@ public final class BlobServiceAsyncClient {
     Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry, Context context) {
         Utility.assertNotNull("expiry", expiry);
         if (start != null && !start.isBefore(expiry)) {
-            throw new IllegalArgumentException("`start` must be null or a datetime before `expiry`.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
 
         return postProcessResponse(

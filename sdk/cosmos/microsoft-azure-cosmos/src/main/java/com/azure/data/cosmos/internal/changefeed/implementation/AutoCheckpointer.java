@@ -7,6 +7,7 @@ import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserver;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverCloseReason;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverContext;
 import com.azure.data.cosmos.internal.changefeed.CheckpointFrequency;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.ZoneId;
@@ -19,12 +20,17 @@ import java.util.List;
 class AutoCheckpointer implements ChangeFeedObserver {
     private final CheckpointFrequency checkpointFrequency;
     private final ChangeFeedObserver observer;
-    private int processedDocCount;
-    private ZonedDateTime lastCheckpointTime;
+    private volatile int processedDocCount;
+    private volatile ZonedDateTime lastCheckpointTime;
 
     public AutoCheckpointer(CheckpointFrequency checkpointFrequency, ChangeFeedObserver observer) {
-        if (checkpointFrequency == null) throw new IllegalArgumentException("checkpointFrequency");
-        if (observer == null) throw new IllegalArgumentException("observer");
+        if (checkpointFrequency == null) {
+            throw new IllegalArgumentException("checkpointFrequency");
+        }
+
+        if (observer == null) {
+            throw new IllegalArgumentException("observer");
+        }
 
         this.checkpointFrequency = checkpointFrequency;
         this.observer = observer;
@@ -42,15 +48,22 @@ class AutoCheckpointer implements ChangeFeedObserver {
     }
 
     @Override
-    public void processChanges(ChangeFeedObserverContext context, List<CosmosItemProperties> docs) {
-        this.observer.processChanges(context, docs);
+    public Mono<Void> processChanges(ChangeFeedObserverContext context, List<CosmosItemProperties> docs) {
+        return this.observer.processChanges(context, docs)
+            .then(this.afterProcessChanges(context));
+    }
+
+    private Mono<Void> afterProcessChanges(ChangeFeedObserverContext context) {
         this.processedDocCount ++;
 
         if (this.isCheckpointNeeded()) {
-            context.checkpoint().block();
-            this.processedDocCount = 0;
-            this.lastCheckpointTime = ZonedDateTime.now(ZoneId.of("UTC"));
+            return context.checkpoint()
+                .doOnSuccess((Void) -> {
+                    this.processedDocCount = 0;
+                    this.lastCheckpointTime = ZonedDateTime.now(ZoneId.of("UTC"));
+                });
         }
+        return Mono.empty();
     }
 
     private boolean isCheckpointNeeded() {
@@ -64,10 +77,6 @@ class AutoCheckpointer implements ChangeFeedObserver {
 
         Duration delta = Duration.between(this.lastCheckpointTime, ZonedDateTime.now(ZoneId.of("UTC")));
 
-        if (delta.compareTo(this.checkpointFrequency.getTimeInterval()) >= 0) {
-            return true;
-        }
-
-        return false;
+        return delta.compareTo(this.checkpointFrequency.getTimeInterval()) >= 0;
     }
 }

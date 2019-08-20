@@ -9,16 +9,17 @@ import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.HandleItem;
-import java.io.File;
-import java.net.URL;
-import java.nio.file.Files;
-import java.time.Duration;
-import java.util.Arrays;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
+
+import java.io.File;
+import java.net.URL;
+import java.nio.file.Files;
+import java.time.Duration;
+import java.util.Arrays;
 
 import static com.azure.storage.file.FileTestHelpers.assertTwoFilesAreSame;
 import static com.azure.storage.file.FileTestHelpers.setupClient;
@@ -158,7 +159,7 @@ public class FileAsyncClientTest extends FileClientTestBase {
     public void setHttpHeadersFromFileClient() {
         fileAsyncClient.create(1024).block();
         FileHTTPHeaders headers = new FileHTTPHeaders();
-        headers.fileContentMD5(new byte[0]);
+        headers.fileContentType("binary");
         StepVerifier.create(fileAsyncClient.setHttpHeaders(1024, headers))
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 200))
             .verifyComplete();

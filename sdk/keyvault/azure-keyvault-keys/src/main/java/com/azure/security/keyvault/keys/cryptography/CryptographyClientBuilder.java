@@ -16,6 +16,7 @@ import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
@@ -55,13 +56,15 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = CryptographyClient.class)
 public final class CryptographyClientBuilder {
     private final List<HttpPipelinePolicy> policies;
+    private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
+
     private TokenCredential credential;
     private HttpPipeline pipeline;
     private JsonWebKey jsonWebKey;
     private String keyId;
     private HttpClient httpClient;
     private HttpLogDetailLevel httpLogDetailLevel;
-    private RetryPolicy retryPolicy;
+    private final RetryPolicy retryPolicy;
     private Configuration configuration;
 
     /**
@@ -110,7 +113,7 @@ public final class CryptographyClientBuilder {
         Configuration buildConfiguration = (configuration == null) ? ConfigurationManager.getConfiguration().clone() : configuration;
 
         if (jsonWebKey == null && Strings.isNullOrEmpty(keyId)) {
-            throw new IllegalStateException("Json Web Key or jsonWebKey identifier are required to create cryptography client");
+            throw logger.logExceptionAsError(new IllegalStateException("Json Web Key or jsonWebKey identifier are required to create cryptography client"));
         }
 
         if (pipeline != null) {
@@ -122,7 +125,7 @@ public final class CryptographyClientBuilder {
         }
 
         if (credential == null) {
-            throw new IllegalStateException("Key Vault credentials " + "are required to build the Cryptography async client");
+            throw logger.logExceptionAsError(new IllegalStateException("Key Vault credentials " + "are required to build the Cryptography async client"));
         }
 
         // Closest to API goes first, closest to wire goes last.

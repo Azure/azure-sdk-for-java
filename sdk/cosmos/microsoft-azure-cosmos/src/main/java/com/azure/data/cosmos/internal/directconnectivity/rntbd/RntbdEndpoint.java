@@ -4,9 +4,14 @@
 package com.azure.data.cosmos.internal.directconnectivity.rntbd;
 
 import com.azure.data.cosmos.internal.UserAgentContainer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.micrometer.core.instrument.Tag;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.ssl.SslContext;
 
+import java.net.SocketAddress;
 import java.net.URI;
 import java.util.stream.Stream;
 
@@ -15,21 +20,51 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public interface RntbdEndpoint extends AutoCloseable {
 
-    String getName();
+    // region Accessors
+
+    int channelsAcquired();
+
+    int channelsAvailable();
+
+    int concurrentRequests();
+
+    long id();
+
+    boolean isClosed();
+
+    SocketAddress remoteAddress();
+
+    int requestQueueLength();
+
+    Tag tag();
+
+    long usedDirectMemory();
+
+    long usedHeapMemory();
+
+    // endregion
+
+    // region Methods
 
     @Override
-    void close() throws RuntimeException;
+    void close();
 
     RntbdRequestRecord request(RntbdRequestArgs requestArgs);
+
+    // endregion
+
+    // region Types
 
     interface Provider extends AutoCloseable {
 
         @Override
-        void close() throws RuntimeException;
+        void close();
 
         Config config();
 
         int count();
+
+        int evictions();
 
         RntbdEndpoint get(URI physicalAddress);
 
@@ -38,6 +73,7 @@ public interface RntbdEndpoint extends AutoCloseable {
 
     final class Config {
 
+        private final PooledByteBufAllocator allocator;
         private final Options options;
         private final SslContext sslContext;
         private final LogLevel wireLogLevel;
@@ -47,52 +83,99 @@ public interface RntbdEndpoint extends AutoCloseable {
             checkNotNull(options, "options");
             checkNotNull(sslContext, "sslContext");
 
+            int directArenaCount = PooledByteBufAllocator.defaultNumDirectArena();
+            int heapArenaCount = PooledByteBufAllocator.defaultNumHeapArena();
+            int pageSize = options.bufferPageSize();
+            int maxOrder = Integer.numberOfTrailingZeros(options.maxBufferCapacity()) - Integer.numberOfTrailingZeros(pageSize);
+
+            this.allocator = new PooledByteBufAllocator(heapArenaCount, directArenaCount, pageSize, maxOrder);
             this.options = options;
             this.sslContext = sslContext;
             this.wireLogLevel = wireLogLevel;
         }
 
-        public int getConnectionTimeout() {
-            final long value = this.options.getConnectionTimeout().toMillis();
+        @JsonIgnore
+        public PooledByteBufAllocator allocator() {
+            return this.allocator;
+        }
+
+        @JsonProperty
+        public int bufferPageSize() {
+            return this.options.bufferPageSize();
+        }
+
+        @JsonProperty
+        public int connectionTimeout() {
+            final long value = this.options.connectionTimeout().toMillis();
             assert value <= Integer.MAX_VALUE;
             return (int)value;
         }
 
-        public int getMaxChannelsPerEndpoint() {
-            return this.options.getMaxChannelsPerEndpoint();
+        @JsonProperty
+        public long idleConnectionTimeout() {
+            return this.options.idleChannelTimeout().toNanos();
         }
 
-        public int getMaxRequestsPerChannel() {
-            return this.options.getMaxRequestsPerChannel();
+        @JsonProperty
+        public long idleEndpointTimeout() {
+            return this.options.idleEndpointTimeout().toNanos();
         }
 
-        public long getReceiveHangDetectionTime() {
-            return this.options.getReceiveHangDetectionTime().toNanos();
+        @JsonProperty
+        public int maxBufferCapacity() {
+            return this.options.maxBufferCapacity();
         }
 
-        public long getRequestTimeout() {
-            return this.options.getRequestTimeout().toNanos();
+        @JsonProperty
+        public int maxChannelsPerEndpoint() {
+            return this.options.maxChannelsPerEndpoint();
         }
 
-        public long getSendHangDetectionTime() {
-            return this.options.getSendHangDetectionTime().toNanos();
+        @JsonProperty
+        public int maxRequestsPerChannel() {
+            return this.options.maxRequestsPerChannel();
         }
 
-        public SslContext getSslContext() {
+        @JsonProperty
+        public long receiveHangDetectionTime() {
+            return this.options.receiveHangDetectionTime().toNanos();
+        }
+
+        @JsonProperty
+        public long requestTimeout() {
+            return this.options.requestTimeout().toNanos();
+        }
+
+        @JsonProperty
+        public long sendHangDetectionTime() {
+            return this.options.sendHangDetectionTime().toNanos();
+        }
+
+        @JsonProperty
+        public long shutdownTimeout() {
+            return this.options.shutdownTimeout().toNanos();
+        }
+
+        @JsonIgnore
+        public SslContext sslContext() {
             return this.sslContext;
         }
 
-        public UserAgentContainer getUserAgent() {
-            return this.options.getUserAgent();
+        @JsonProperty
+        public UserAgentContainer userAgent() {
+            return this.options.userAgent();
         }
 
-        public LogLevel getWireLogLevel() {
+        @JsonProperty
+        public LogLevel wireLogLevel() {
             return this.wireLogLevel;
         }
 
         @Override
         public String toString() {
-            return RntbdObjectMapper.toJson(this);
+            return RntbdObjectMapper.toString(this);
         }
     }
+
+    // endregion
 }

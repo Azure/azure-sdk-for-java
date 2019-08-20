@@ -15,7 +15,6 @@ import com.azure.data.cosmos.internal.changefeed.ServiceItemLeaseUpdater;
 import com.azure.data.cosmos.internal.changefeed.exceptions.LeaseLostException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.time.ZoneId;
@@ -44,7 +43,6 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
 
     @Override
     public Mono<Lease> updateLease(Lease cachedLease, CosmosItem itemLink, CosmosItemRequestOptions requestOptions, Function<Lease, Lease> updateLease) {
-        DocumentServiceLeaseUpdaterImpl self = this;
         Lease arrayLease[] = {cachedLease};
         arrayLease[0] = updateLease.apply(cachedLease);
 
@@ -54,7 +52,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
 
         arrayLease[0].setTimestamp(ZonedDateTime.now(ZoneId.of("UTC")));
 
-        return self.tryReplaceLease(arrayLease[0], itemLink)
+        return this.tryReplaceLease(arrayLease[0], itemLink)
             .map(leaseDocument -> {
                 arrayLease[0] = ServiceItemLease.fromDocument(leaseDocument);
                 return arrayLease[0];
@@ -71,7 +69,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                             CosmosClientException ex = (CosmosClientException) throwable;
                             if (ex.statusCode() == HTTP_STATUS_CODE_NOT_FOUND) {
                                 // Partition lease no longer exists
-                                throw Exceptions.propagate(new LeaseLostException(arrayLease[0]));
+                                throw new LeaseLostException(arrayLease[0]);
                             }
                         }
                         return Mono.error(throwable);
@@ -87,7 +85,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                             serverLease.getConcurrencyToken());
                         arrayLease[0] = serverLease;
 
-                        throw Exceptions.propagate(new RuntimeException(""));
+                        throw new RuntimeException("Partition update failed");
                     });
             })
             .retry(RETRY_COUNT_ON_CONFLICT, throwable -> {
@@ -96,57 +94,9 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                 }
                 return false;
             });
-
-//        Lease lease = cachedLease;
-//
-//        for (int retryCount = RETRY_COUNT_ON_CONFLICT; retryCount > 0; retryCount--) {
-//            lease = updateLease.apply(lease);
-//
-//            if (lease == null) {
-//                return Mono.empty();
-//            }
-//
-//            lease.setTimestamp(ZonedDateTime.now(ZoneId.of("UTC")));
-//            CosmosItemProperties leaseDocument = this.tryReplaceLease(lease, itemLink).block();
-//
-//            if (leaseDocument != null) {
-//                return Mono.just(ServiceItemLease.fromDocument(leaseDocument));
-//            }
-//
-//            // Partition lease update conflict. Reading the current version of lease.
-//            CosmosItemProperties document = null;
-//            try {
-//                CosmosItemResponse response = this.client.readItem(itemLink, requestOptions)
-//                    .block();
-//                document = response.properties();
-//            } catch (RuntimeException re) {
-//                if (re.getCause() instanceof CosmosClientException) {
-//                    CosmosClientException ex = (CosmosClientException) re.getCause();
-//                    if (ex.statusCode() == HTTP_STATUS_CODE_NOT_FOUND) {
-//                        // Partition lease no longer exists
-//                        throw new LeaseLostException(lease);
-//                    }
-//                }
-//                throw  re;
-//            }
-//
-//            ServiceItemLease serverLease = ServiceItemLease.fromDocument(document);
-//            logger.info(
-//                "Partition {} update failed because the lease with token '{}' was updated by host '{}' with token '{}'. Will retry, {} retry(s) left.",
-//                lease.getLeaseToken(),
-//                lease.getConcurrencyToken(),
-//                serverLease.getOwner(),
-//                serverLease.getConcurrencyToken(),
-//                retryCount);
-//
-//            lease = serverLease;
-//        }
-//
-//        throw new LeaseLostException(lease);
     }
 
     private Mono<CosmosItemProperties> tryReplaceLease(Lease lease, CosmosItem itemLink) throws LeaseLostException {
-        DocumentServiceLeaseUpdaterImpl self = this;
         return this.client.replaceItem(itemLink, lease, this.getCreateIfMatchOptions(lease))
             .map(cosmosItemResponse -> cosmosItemResponse.properties())
             .onErrorResume(re -> {
@@ -157,10 +107,10 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                             return Mono.empty();
                         }
                         case HTTP_STATUS_CODE_CONFLICT: {
-                            throw Exceptions.propagate( new LeaseLostException(lease, ex, false));
+                            throw new LeaseLostException(lease, ex, false);
                         }
                         case HTTP_STATUS_CODE_NOT_FOUND: {
-                            throw Exceptions.propagate( new LeaseLostException(lease, ex, true));
+                            throw new LeaseLostException(lease, ex, true);
                         }
                         default: {
                             return Mono.error(re);

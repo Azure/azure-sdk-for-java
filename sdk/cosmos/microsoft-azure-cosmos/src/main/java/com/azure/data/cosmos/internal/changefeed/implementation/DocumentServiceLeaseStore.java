@@ -26,14 +26,14 @@ class DocumentServiceLeaseStore implements LeaseStore {
     private String containerNamePrefix;
     private CosmosContainer leaseCollectionLink;
     private RequestOptionsFactory requestOptionsFactory;
-    private String lockETag;
+    private volatile String lockETag;
 
     //  TODO: rename to LeaseStoreImpl
     public DocumentServiceLeaseStore(
-        ChangeFeedContextClient client,
-        String containerNamePrefix,
-        CosmosContainer leaseCollectionLink,
-        RequestOptionsFactory requestOptionsFactory) {
+            ChangeFeedContextClient client,
+            String containerNamePrefix,
+            CosmosContainer leaseCollectionLink,
+            RequestOptionsFactory requestOptionsFactory) {
 
         this.client = client;
         this.containerNamePrefix = containerNamePrefix;
@@ -91,12 +91,10 @@ class DocumentServiceLeaseStore implements LeaseStore {
         containerDocument.id(lockId);
         BridgeInternal.setProperty(containerDocument, com.azure.data.cosmos.internal.Constants.Properties.TTL, Long.valueOf(lockExpirationTime.getSeconds()).intValue());
 
-        DocumentServiceLeaseStore self = this;
-
         return this.client.createItem(this.leaseCollectionLink, containerDocument, null, false)
             .map(documentResourceResponse -> {
                 if (documentResourceResponse.item() != null) {
-                    self.lockETag = documentResourceResponse.properties().etag();
+                    this.lockETag = documentResourceResponse.properties().etag();
                     return true;
                 } else {
                     return false;
@@ -130,13 +128,12 @@ class DocumentServiceLeaseStore implements LeaseStore {
         accessCondition.type(AccessConditionType.IF_MATCH);
         accessCondition.condition(this.lockETag);
         requestOptions.accessCondition(accessCondition);
-        DocumentServiceLeaseStore self = this;
 
         CosmosItem docItem = this.client.getContainerClient().getItem(lockId, "/id");
         return this.client.deleteItem(docItem, requestOptions)
             .map(documentResourceResponse -> {
                 if (documentResourceResponse.item() != null) {
-                    self.lockETag = null;
+                    this.lockETag = null;
                     return true;
                 } else {
                     return false;

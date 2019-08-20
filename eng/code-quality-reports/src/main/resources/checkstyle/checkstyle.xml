@@ -96,6 +96,8 @@ page at http://checkstyle.sourceforge.net/config.html -->
       <property name="severity" value="warning"/>
     </module>
 
+    <module name="MissingDeprecated"/>
+
     <module name="StaticVariableNameCheck">
       <!-- Validates static, non-final fields against the supplied
       expression "^[a-z][a-zA-Z0-9]*_?$". -->
@@ -318,15 +320,25 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClassCheck"/>
 
     <!-- CUSTOM CHECKS -->
+    <!-- Verify the whenever a field is assigned just once in constructor to be final -->
+    <module name="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"/>
+
+    <!-- CUSTOM CHECKS -->
     <!-- Javadoc format: 'param / return / throws' descriptions text should only have one space character after the
      parameter name or return -->
     <module name="com.azure.tools.checkstyle.checks.JavaDocFormatting"/>
+
+    <!--CUSTOM CHECKS-->
+    <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
+    <module name="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"/>
+
     <!--CUSTOM CHECKS-->
     <!-- Any class that implements the HttpPipelinePolicy interface should:
     1) Must be a public class.
     2) Not in an implementation package or sub-package. -->
     <module name="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"/>
 
+    <!--CUSTOM CHECKS-->
     <!-- Fluent method checks -->
     <!-- A method returns an instance of the class, and that have one parameter, should not start with 'with'.-->
     <module name="com.azure.tools.checkstyle.checks.FluentMethodNameCheck">
