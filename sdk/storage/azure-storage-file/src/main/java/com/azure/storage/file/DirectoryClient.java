@@ -231,7 +231,7 @@ public class DirectoryClient {
      *
      * <p>Get 10 handles with recursive call.</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.getHandles}
+     * {@codesnippet com.azure.storage.file.directoryClient.listHandles}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>
@@ -240,12 +240,12 @@ public class DirectoryClient {
      * @param recursive Specifies operation should apply to the directory specified in the URI, its files, its subdirectories and their files.
      * @return {@link HandleItem handles} in the directory that satisfy the requirements
      */
-    public Iterable<HandleItem> getHandles(Integer maxResult, boolean recursive) {
-        return directoryAsyncClient.getHandles(maxResult, recursive).collectList().block();
+    public Iterable<HandleItem> listHandles(Integer maxResult, boolean recursive) {
+        return directoryAsyncClient.listHandles(maxResult, recursive).collectList().block();
     }
 
     /**
-     * Closes a handle or handles opened on a directory or a file at the service. It is intended to be used alongside {@link DirectoryClient#getHandles(Integer, boolean)} .
+     * Closes a handle or handles opened on a directory or a file at the service. It is intended to be used alongside {@link DirectoryClient#listHandles(Integer, boolean)} .
      * TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
      * TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
      *

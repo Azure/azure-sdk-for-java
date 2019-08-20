@@ -396,7 +396,7 @@ shareClient.setAccessPolicy(Collections.singletonList(permission));
 Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory)
 
 ```Java
-Iterable<HandleItem> handleItems = directoryClient.getHandles(null, true);
+Iterable<HandleItem> handleItems = directoryClient.listHandles(null, true);
 ```
 
 ### Force close handles on handle id

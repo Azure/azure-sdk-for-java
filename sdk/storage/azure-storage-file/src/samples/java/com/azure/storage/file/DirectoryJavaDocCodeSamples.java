@@ -501,26 +501,26 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#getHandles(Integer, boolean)}
+     * Generates a code sample for using {@link DirectoryClient#listHandles(Integer, boolean)}
      */
-    public void getHandles() {
+    public void listHandles() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.getHandles
-        Iterable<HandleItem> result = directoryClient.getHandles(10, true);
+        // BEGIN: com.azure.storage.file.directoryClient.listHandles
+        Iterable<HandleItem> result = directoryClient.listHandles(10, true);
         System.out.printf("Get handles completed with handle id %s", result.iterator().next().handleId());
-        // END: com.azure.storage.file.directoryClient.getHandles
+        // END: com.azure.storage.file.directoryClient.listHandles
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#getHandles(Integer, boolean)}
+     * Generates a code sample for using {@link DirectoryAsyncClient#listHandles(Integer, boolean)}
      */
-    public void getHandlesAsync() {
+    public void listHandlesAsync() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.getHandles
-        directoryAsyncClient.getHandles(10, true)
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.listHandles
+        directoryAsyncClient.listHandles(10, true)
             .subscribe(handleItem -> System.out.printf("Get handles completed with handle id %s",
                 handleItem.handleId()));
-        // END: com.azure.storage.file.directoryAsyncClient.getHandles
+        // END: com.azure.storage.file.directoryAsyncClient.listHandles
     }
 
     /**
@@ -529,7 +529,7 @@ public class DirectoryJavaDocCodeSamples {
     public void forceCloseHandles() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.forceCloseHandles
-        Iterable<HandleItem> result = directoryClient.getHandles(10, true);
+        Iterable<HandleItem> result = directoryClient.listHandles(10, true);
         result.forEach(handleItem ->  {
             directoryClient.forceCloseHandles(handleItem.handleId(), true).forEach(numOfClosedHandles ->
                 System.out.printf("Get handles completed with handle id %s", handleItem.handleId()));
@@ -543,7 +543,7 @@ public class DirectoryJavaDocCodeSamples {
     public void forceCloseHandlesAsync() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.forceCloseHandles
-        directoryAsyncClient.getHandles(10, true)
+        directoryAsyncClient.listHandles(10, true)
             .subscribe(handleItem -> {
                 directoryAsyncClient.forceCloseHandles(handleItem.handleId(), true)
                     .subscribe(numOfClosedHandles ->

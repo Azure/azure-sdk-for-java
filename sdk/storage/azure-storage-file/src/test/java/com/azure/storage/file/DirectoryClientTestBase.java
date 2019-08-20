@@ -82,7 +82,7 @@ public abstract class DirectoryClientTestBase extends TestBase {
     public abstract void listFilesAndDirectoriesFromDirClient();
 
     @Test
-    public abstract void getHandlesFromDirClient();
+    public abstract void listHandlesFromDirClient();
 
     @Test
     public abstract void forceCloseHandlesFromDirClient();

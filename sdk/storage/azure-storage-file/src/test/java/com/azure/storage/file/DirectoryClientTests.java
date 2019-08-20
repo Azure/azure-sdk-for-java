@@ -177,16 +177,16 @@ public class DirectoryClientTests extends DirectoryClientTestBase {
     }
 
     @Override
-    public void getHandlesFromDirClient() {
+    public void listHandlesFromDirClient() {
         // TODO: Need to open channel and create handlers first.
 //        StorageTestBase.assertResponseStatusCode(directoryClient.create(), 201);
-//        Assert.assertTrue(directoryClient.getHandles(null, true).iterator().hasNext());
+//        Assert.assertTrue(directoryClient.listHandles(null, true).iterator().hasNext());
     }
 
     @Override
     public void forceCloseHandlesFromDirClient() {
         FileTestHelpers.assertResponseStatusCode(directoryClient.create(), 201);
-        directoryClient.getHandles(null, true).forEach(
+        directoryClient.listHandles(null, true).forEach(
             handleItem -> {
                 directoryClient.forceCloseHandles(handleItem.handleId(), true).forEach(
                     numberOfClosedHandles -> assertTrue(numberOfClosedHandles > 0)

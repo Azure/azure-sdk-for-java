@@ -218,13 +218,13 @@ public class DirectoryAsyncClientTests extends DirectoryClientTestBase {
     }
 
     @Override
-    public void getHandlesFromDirClient() {
+    public void listHandlesFromDirClient() {
         // TODO: Need to figure out way of creating handlers first.
 
 //        StepVerifier.create(client.create())
 //            .assertNext(response -> StorageTestBase.assertResponseStatusCode(response, 201))
 //            .verifyComplete();
-//        StepVerifier.create(client.getHandles(null, true))
+//        StepVerifier.create(client.listHandles(null, true))
 //            .assertNext(response -> Assert.assertNotNull(response))
 //            .verifyComplete();
     }
@@ -233,7 +233,7 @@ public class DirectoryAsyncClientTests extends DirectoryClientTestBase {
     public void forceCloseHandlesFromDirClient() {
         client.create().block();
         client.createFile("test", 1024);
-        Iterable<HandleItem> handleItems = client.getHandles(null, true).toIterable();
+        Iterable<HandleItem> handleItems = client.listHandles(null, true).toIterable();
         handleItems.forEach(handleItem -> {
             StepVerifier.create(client.forceCloseHandles(handleItem.handleId(), true))
                 .assertNext(numOfClosedHandles -> Assert.assertTrue(numOfClosedHandles.longValue() > 0))
