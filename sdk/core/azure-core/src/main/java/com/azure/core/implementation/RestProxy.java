@@ -35,6 +35,7 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.implementation.util.TypeUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -66,6 +67,7 @@ import java.util.stream.Collectors;
  * deserialized Java object.
  */
 public class RestProxy implements InvocationHandler {
+    private final ClientLogger logger = new ClientLogger(RestProxy.class);
     private final HttpPipeline httpPipeline;
     private final SerializerAdapter serializer;
     private final SwaggerInterfaceParser interfaceParser;
@@ -148,7 +150,7 @@ public class RestProxy implements InvocationHandler {
             }
 
         } catch (Exception e) {
-            throw Exceptions.propagate(e);
+            throw logger.logExceptionAsError(Exceptions.propagate(e));
         }
     }
 
@@ -426,7 +428,7 @@ public class RestProxy implements InvocationHandler {
             cls = (Class<? extends Response<?>>) (Object) PagedResponseBase.class;
 
             if (bodyAsObject != null && !TypeUtil.isTypeOrSubTypeOf(bodyAsObject.getClass(), Page.class)) {
-                throw new RuntimeException("Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class);
+                throw logger.logExceptionAsError(new RuntimeException("Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class));
             }
         }
 
@@ -443,7 +445,7 @@ public class RestProxy implements InvocationHandler {
             .collect(Collectors.toList());
 
         if (constructors.isEmpty()) {
-            throw new RuntimeException("Cannot find suitable constructor for class " + cls);
+            throw logger.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + cls));
         }
 
         // try to create an instance using our list of potential candidates
@@ -461,14 +463,14 @@ public class RestProxy implements InvocationHandler {
                     case 5:
                         return ctor.newInstance(httpRequest, responseStatusCode, responseHeaders, bodyAsObject, response.decodedHeaders().block());
                     default:
-                        throw new IllegalStateException("Response constructor with expected parameters not found.");
+                        throw logger.logExceptionAsError(new IllegalStateException("Response constructor with expected parameters not found."));
                 }
             } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                throw reactor.core.Exceptions.propagate(e);
+                throw logger.logExceptionAsError(reactor.core.Exceptions.propagate(e));
             }
         }
         // error
-        throw new RuntimeException("Cannot find suitable constructor for class " + cls);
+        throw logger.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + cls));
     }
 
     protected final Mono<?> handleBodyReturnType(final HttpDecodedResponse response, final SwaggerMethodParser methodParser, final Type entityType) {

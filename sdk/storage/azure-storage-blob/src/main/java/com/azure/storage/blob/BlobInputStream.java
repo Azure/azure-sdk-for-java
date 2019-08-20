@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.StorageException;
@@ -16,6 +17,8 @@ import java.nio.ByteBuffer;
  * Provides an input stream to read a given blob resource.
  */
 public final class BlobInputStream extends InputStream {
+    private final ClientLogger logger = new ClientLogger(BlobInputStream.class);
+
     /**
      * Holds the reference to the blob this stream is associated with.
      */
@@ -34,7 +37,7 @@ public final class BlobInputStream extends InputStream {
     /**
      * Holds the stream length.
      */
-    private long streamLength;
+    private final long streamLength;
 
     /**
      * Holds the stream read size for both block and page blobs.
@@ -74,7 +77,7 @@ public final class BlobInputStream extends InputStream {
     /**
      * Holds the {@link BlobAccessConditions} object that represents the access conditions for the blob.
      */
-    private BlobAccessConditions accessCondition;
+    private final BlobAccessConditions accessCondition;
 
     /**
      * Offset of the source blob this class is configured to stream from.
@@ -323,7 +326,7 @@ public final class BlobInputStream extends InputStream {
     @Override
     public int read(final byte[] b, final int off, final int len) throws IOException {
         if (off < 0 || len < 0 || len > b.length - off) {
-            throw new IndexOutOfBoundsException();
+            throw logger.logExceptionAsError(new IndexOutOfBoundsException());
         }
 
         return this.readInternal(b, off, len);
@@ -418,7 +421,7 @@ public final class BlobInputStream extends InputStream {
         }
 
         if (n < 0 || this.currentAbsoluteReadPosition + n > this.streamLength + this.blobRangeOffset) {
-            throw new IndexOutOfBoundsException();
+            throw logger.logExceptionAsError(new IndexOutOfBoundsException());
         }
 
         this.reposition(this.currentAbsoluteReadPosition + n);

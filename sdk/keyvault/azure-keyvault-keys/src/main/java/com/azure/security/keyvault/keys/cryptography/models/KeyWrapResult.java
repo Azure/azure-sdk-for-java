@@ -23,12 +23,12 @@ public final class KeyWrapResult {
     /**
      * The encrypted key content
      */
-    private byte[] encryptedKey;
+    private final byte[] encryptedKey;
 
     /**
      * The key wrap algorithm used to wrap the key content.
      */
-    private KeyWrapAlgorithm algorithm;
+    private final KeyWrapAlgorithm algorithm;
 
     /**
      * Get the encrypted key content.

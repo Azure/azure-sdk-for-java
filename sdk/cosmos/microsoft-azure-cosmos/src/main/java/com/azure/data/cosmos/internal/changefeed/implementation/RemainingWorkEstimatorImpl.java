@@ -27,10 +27,21 @@ class RemainingWorkEstimatorImpl implements RemainingWorkEstimator {
         String collectionSelfLink,
         int degreeOfParallelism) {
 
-        if (leaseContainer == null) throw new IllegalArgumentException("leaseContainer");
-        if (collectionSelfLink == null || collectionSelfLink.isEmpty()) throw new IllegalArgumentException("collectionSelfLink");
-        if (feedDocumentClient == null) throw new IllegalArgumentException("feedDocumentClient");
-        if (degreeOfParallelism < 1) throw new IllegalArgumentException("degreeOfParallelism - Degree of parallelism is out of range");
+        if (leaseContainer == null) {
+            throw new IllegalArgumentException("leaseContainer");
+        }
+
+        if (collectionSelfLink == null || collectionSelfLink.isEmpty()) {
+            throw new IllegalArgumentException("collectionSelfLink");
+        }
+
+        if (feedDocumentClient == null) {
+            throw new IllegalArgumentException("feedDocumentClient");
+        }
+
+        if (degreeOfParallelism < 1) {
+            throw new IllegalArgumentException("degreeOfParallelism - Degree of parallelism is out of range");
+        }
 
         this.leaseContainer = leaseContainer;
         this.collectionSelfLink = collectionSelfLink;

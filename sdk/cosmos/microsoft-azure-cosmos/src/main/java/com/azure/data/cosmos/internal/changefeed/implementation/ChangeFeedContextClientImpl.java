@@ -20,6 +20,8 @@ import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.internal.PartitionKeyRange;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedContextClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -33,6 +35,8 @@ import static com.azure.data.cosmos.CosmosBridgeInternal.getContextClient;
  * Implementation for ChangeFeedDocumentClient.
  */
 public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
+    private final Logger logger = LoggerFactory.getLogger(ChangeFeedContextClientImpl.class);
+
     private final AsyncDocumentClient documentClient;
     private final CosmosContainer cosmosContainer;
     private Scheduler rxScheduler;
@@ -41,8 +45,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
      * Initializes a new instance of the {@link ChangeFeedContextClient} interface.
      * @param cosmosContainer existing client.
      */
-    public ChangeFeedContextClientImpl(CosmosContainer cosmosContainer)
-    {
+    public ChangeFeedContextClientImpl(CosmosContainer cosmosContainer) {
         if (cosmosContainer == null) {
             throw new IllegalArgumentException("cosmosContainer");
         }
@@ -57,8 +60,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
      * @param cosmosContainer existing client.
      * @param rxScheduler the RX Java scheduler to observe on.
      */
-    public ChangeFeedContextClientImpl(CosmosContainer cosmosContainer, Scheduler rxScheduler)
-    {
+    public ChangeFeedContextClientImpl(CosmosContainer cosmosContainer, Scheduler rxScheduler) {
         if (cosmosContainer == null) {
             throw new IllegalArgumentException("cosmosContainer");
         }
