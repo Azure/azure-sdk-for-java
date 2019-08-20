@@ -33,6 +33,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertTrue;
@@ -159,6 +160,26 @@ public class SearchIndexClientSearchTest extends SearchIndexClientTestBase {
     }
 
     @Test
+    public void testSearchWithoutOrderBySortsByScore() {
+        Iterator<SearchResult> results = client.search("*", new SearchParameters().filter("Rating lt 4"), new SearchRequestOptions()).iterator();
+        SearchResult firstResult =  results.next();
+        SearchResult secondResult =  results.next();
+        Assert.assertTrue(firstResult.score() <= secondResult.score());
+    }
+
+    @Test
+    public void testOrderByProgressivelyBreaksTies() {
+        List<String> orderByValues = new ArrayList<>();
+        orderByValues.add("Rating desc");
+        orderByValues.add("LastRenovationDate asc");
+
+        String[] expectedResults = new String[]{"1", "9", "3", "4", "5", "10", "2", "6", "7", "8"};
+
+        Stream<String> results = client.search("*", new SearchParameters().orderBy(orderByValues), new SearchRequestOptions()).stream().map(res -> res.additionalProperties().get("HotelId").toString());
+        Assert.assertArrayEquals(results.toArray(), expectedResults);
+    }
+
+    @Test
     public void testCanFilter() {
         SearchParameters searchParameters = new SearchParameters()
             .filter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z");
@@ -186,7 +207,7 @@ public class SearchIndexClientSearchTest extends SearchIndexClientTestBase {
 
     @Test
     public void testCanFilterNonNullableType() throws IOException {
-        /** TODO: This test is testing the case where a customer is using a model type with non-nullable (unboxed)
+        /** TODO (Rabeea): This test is testing the case where a customer is using a model type with non-nullable (unboxed)
          primitive types. When we support user data-structured serialization, we need to use that in this test.
          **/
         if (!interceptorManager.isPlaybackMode()) {
