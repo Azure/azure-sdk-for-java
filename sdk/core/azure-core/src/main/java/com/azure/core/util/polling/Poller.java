@@ -168,7 +168,7 @@ public class Poller<T> {
      */
     public void cancelOperation() throws UnsupportedOperationException {
         if (this.cancelOperation == null) {
-            throw new UnsupportedOperationException("Cancel operation is not supported on this service/resource.");
+            throw logger.logExceptionAsError(new UnsupportedOperationException("Cancel operation is not supported on this service/resource."));
         }
 
         // We can not cancel an operation if it was never started

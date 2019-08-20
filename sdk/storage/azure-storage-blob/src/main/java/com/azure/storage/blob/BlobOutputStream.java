@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendPositionAccessConditions;
 import com.azure.storage.blob.models.BlobAccessConditions;
@@ -32,6 +33,8 @@ import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 
 
 public final class BlobOutputStream extends OutputStream {
+    private final ClientLogger logger = new ClientLogger(BlobOutputStream.class);
+
     /**
      * Holds the {@link BlobAccessConditions} object that represents the access conditions for the blob.
      */
@@ -350,7 +353,7 @@ public final class BlobOutputStream extends OutputStream {
     @Override
     public void write(final byte[] data, final int offset, final int length) throws IOException {
         if (offset < 0 || length < 0 || length > data.length - offset) {
-            throw new IndexOutOfBoundsException();
+            throw logger.logExceptionAsError(new IndexOutOfBoundsException());
         }
 
         this.writeInternal(data, offset, length);
