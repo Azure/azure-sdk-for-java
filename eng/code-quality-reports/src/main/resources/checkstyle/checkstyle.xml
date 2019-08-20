@@ -299,9 +299,9 @@ page at http://checkstyle.sourceforge.net/config.html -->
     1) Follows method naming pattern. Refer to Java Spec.
     2) Methods should not have "Async" added to the method name
     3) The return type of async and sync clients should be as per guidelines:
-      3.1) The return type for async collection should be of type? extends Flux
+      3.1) The return type for async collection should be of type? extends PagedFlux
       3.2) The return type for async single value should be of type? extends Mono
-      3.3) The return type for sync collection should be of type? extends Stream
+      3.3) The return type for sync collection should be of type? extends PagedIterable
       3.4) The return type for sync single value should be of type? extends Response -->
     <module name="com.azure.tools.checkstyle.checks.ServiceClientCheck"/>
 
