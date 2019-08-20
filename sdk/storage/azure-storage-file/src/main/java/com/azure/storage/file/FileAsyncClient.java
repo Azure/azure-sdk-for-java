@@ -553,7 +553,7 @@ public class FileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being cleared in the request body.
-     * @param offset  Optional starting point of the upload range. It will start from the beginning if it is {@code
+     * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code
      * null}
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If you attempt to clear a range that is larger than 4 MB, the service returns
