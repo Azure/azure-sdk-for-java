@@ -3,6 +3,8 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.util.Locale;
 import java.util.Objects;
 
@@ -13,6 +15,7 @@ class TokenResourceProvider {
     private static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
     private static final String AZURE_ACTIVE_DIRECTORY_SCOPE = "https://eventhubs.azure.net//.default";
 
+    private final ClientLogger logger = new ClientLogger(TokenResourceProvider.class);
     private final CBSAuthorizationType authorizationType;
     private final String host;
 
@@ -31,8 +34,8 @@ class TokenResourceProvider {
             case SHARED_ACCESS_SIGNATURE:
                 return String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, host, resource);
             default:
-                throw new IllegalArgumentException(String.format(Locale.US,
-                    "'%s' is not supported authorization type for token audience.", authorizationType));
+                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+                    "'%s' is not supported authorization type for token audience.", authorizationType)));
         }
     }
 }

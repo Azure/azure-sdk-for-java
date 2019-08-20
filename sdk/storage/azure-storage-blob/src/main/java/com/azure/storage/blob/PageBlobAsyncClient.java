@@ -8,6 +8,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -66,6 +67,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      */
     public static final int MAX_PUT_PAGES_BYTES = 4 * Constants.MB;
 
+    private final ClientLogger logger = new ClientLogger(PageBlobAsyncClient.class);
+
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
      * @param azureBlobStorage the API client for blob storage
@@ -117,12 +120,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         if (size % PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES."));
         }
         if (sequenceNumber != null && sequenceNumber < 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new IllegalArgumentException("SequenceNumber must be greater than or equal to 0.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("SequenceNumber must be greater than or equal to 0."));
         }
         metadata = metadata == null ? new Metadata() : metadata;
 
@@ -183,7 +186,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         if (pageRange == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new IllegalArgumentException("pageRange cannot be null.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("pageRange cannot be null."));
         }
         String pageRangeStr = pageRangeToString(pageRange);
 
@@ -252,7 +255,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         if (range == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new IllegalArgumentException("range cannot be null.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("range cannot be null."));
         }
 
         String rangeString = pageRangeToString(range);
@@ -312,7 +315,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         if (pageRange == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new IllegalArgumentException("pageRange cannot be null.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("pageRange cannot be null."));
         }
         String pageRangeStr = pageRangeToString(pageRange);
 
@@ -395,7 +398,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         if (prevSnapshot == null) {
-            throw new IllegalArgumentException("prevSnapshot cannot be null");
+            throw logger.logExceptionAsError(new IllegalArgumentException("prevSnapshot cannot be null"));
         }
 
         return postProcessResponse(this.azureBlobStorage.pageBlobs().getPageRangesDiffWithRestResponseAsync(
@@ -437,7 +440,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         if (size % PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES."));
         }
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
@@ -480,7 +483,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         if (sequenceNumber != null && sequenceNumber < 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new IllegalArgumentException("SequenceNumber must be greater than or equal to 0.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("SequenceNumber must be greater than or equal to 0."));
         }
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         sequenceNumber = action == SequenceNumberActionType.INCREMENT ? null : sequenceNumber;

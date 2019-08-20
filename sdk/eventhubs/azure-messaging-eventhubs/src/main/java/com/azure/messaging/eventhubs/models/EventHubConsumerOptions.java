@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs.models;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.implementation.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
 import reactor.core.scheduler.Scheduler;
@@ -22,6 +23,8 @@ import java.util.Optional;
  */
 @Fluent
 public class EventHubConsumerOptions implements Cloneable {
+    private final ClientLogger logger = new ClientLogger(EventHubConsumerOptions.class);
+
     /**
      * The maximum length, in characters, for the identifier assigned to an {@link EventHubAsyncConsumer}.
      */
@@ -61,8 +64,8 @@ public class EventHubConsumerOptions implements Cloneable {
      */
     public EventHubConsumerOptions identifier(String identifier) {
         if (!ImplUtils.isNullOrEmpty(identifier) && identifier.length() > MAXIMUM_IDENTIFIER_LENGTH) {
-            throw new IllegalArgumentException(String.format(Locale.US,
-                "identifier length cannot exceed %s", MAXIMUM_IDENTIFIER_LENGTH));
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+                "identifier length cannot exceed %s", MAXIMUM_IDENTIFIER_LENGTH)));
         }
 
         this.identifier = identifier;
@@ -89,7 +92,7 @@ public class EventHubConsumerOptions implements Cloneable {
      */
     public EventHubConsumerOptions ownerLevel(Long priority) {
         if (priority != null && priority < 0) {
-            throw new IllegalArgumentException("'priority' cannot be a negative value. Please specify a zero or positive long value.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("'priority' cannot be a negative value. Please specify a zero or positive long value."));
         }
 
         this.ownerLevel = priority;
@@ -119,13 +122,13 @@ public class EventHubConsumerOptions implements Cloneable {
      */
     public EventHubConsumerOptions prefetchCount(int prefetchCount) {
         if (prefetchCount < MINIMUM_PREFETCH_COUNT) {
-            throw new IllegalArgumentException(String.format(Locale.US,
-                "PrefetchCount, '%s' has to be above %s", prefetchCount, MINIMUM_PREFETCH_COUNT));
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+                "PrefetchCount, '%s' has to be above %s", prefetchCount, MINIMUM_PREFETCH_COUNT)));
         }
 
         if (prefetchCount > MAXIMUM_PREFETCH_COUNT) {
-            throw new IllegalArgumentException(String.format(Locale.US,
-                "PrefetchCount, '%s', has to be below %s", prefetchCount, MAXIMUM_PREFETCH_COUNT));
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+                "PrefetchCount, '%s', has to be below %s", prefetchCount, MAXIMUM_PREFETCH_COUNT)));
         }
 
         this.prefetchCount = prefetchCount;
