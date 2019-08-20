@@ -258,11 +258,11 @@ public class FileJavaDocCodeSamples {
      */
     public void uploadData() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.upload#flux-long
+        // BEGIN: com.azure.storage.file.fileClient.upload#bytebuf-long
         ByteBuf defaultData = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8));
         Response<FileUploadInfo> response = fileClient.upload(defaultData, defaultData.readableBytes());
         System.out.println("Complete uploading the data with status code: " + response.statusCode());
-        // END: com.azure.storage.file.fileClient.upload#flux-long
+        // END: com.azure.storage.file.fileClient.upload#bytebuf-long
     }
 
     /**
@@ -275,22 +275,21 @@ public class FileJavaDocCodeSamples {
         fileAsyncClient.upload(Flux.just(defaultData), defaultData.readableBytes()).subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete deleting the file!")
+            () -> System.out.println("Complete uploading the data!")
         );
         // END: com.azure.storage.file.fileAsyncClient.upload#flux-long
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#upload(ByteBuf, long, int, FileRangeWriteType)}
+     * Generates a code sample for using {@link FileClient#upload(ByteBuf, long, int)}
      */
     public void uploadDataMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.upload#bytebuf-long-int-filerangewritetype
+        // BEGIN: com.azure.storage.file.fileClient.upload#bytebuf-long-int
         ByteBuf defaultData = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8));
-        Response<FileUploadInfo> response = fileClient.upload(defaultData, defaultData.readableBytes(), 1024,
-            FileRangeWriteType.UPDATE);
+        Response<FileUploadInfo> response = fileClient.upload(defaultData, defaultData.readableBytes(), 1024);
         System.out.println("Complete uploading the data with status code: " + response.statusCode());
-        // END: com.azure.storage.file.fileClient.upload#bytebuf-long-int-filerangewritetype
+        // END: com.azure.storage.file.fileClient.upload#bytebuf-long-int
     }
 
     /**
@@ -298,15 +297,64 @@ public class FileJavaDocCodeSamples {
      */
     public void uploadDataAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.upload#bytebuf-long-int-filerangewritetype
+        // BEGIN: com.azure.storage.file.fileAsyncClient.upload#flux-long-int
         ByteBuf defaultData = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8));
-        fileAsyncClient.upload(Flux.just(defaultData), defaultData.readableBytes(), 1024,
-            FileRangeWriteType.UPDATE).subscribe(
+        fileAsyncClient.upload(Flux.just(defaultData), defaultData.readableBytes(), 1024).subscribe(
                 response -> { },
                 error -> System.err.print(error.toString()),
-                () -> System.out.println("Complete deleting the file!")
+                () -> System.out.println("Complete uploading the data!")
         );
-        // END: com.azure.storage.file.fileAsyncClient.upload#bytebuf-long-int-filerangewritetype
+        // END: com.azure.storage.file.fileAsyncClient.upload#flux-long-int
+    }
+
+    /**
+     * Generates a code sample for using {@link FileClient#clearRange(long)}
+     */
+    public void clearRange() {
+        FileClient fileClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileClient.clearRange#long
+        Response<FileUploadInfo> response = fileClient.clearRange(1024);
+        System.out.println("Complete clearing the range with status code: " + response.statusCode());
+        // END: com.azure.storage.file.fileClient.clearRange#long
+    }
+
+    /**
+     * Generates a code sample for using {@link FileAsyncClient#clearRange(long)}
+     */
+    public void clearRangeAsync() {
+        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileAsyncClient.clearRange#long
+        fileAsyncClient.clearRange(1024).subscribe(
+            response -> { },
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Complete clearing the range!")
+        );
+        // END: com.azure.storage.file.fileAsyncClient.clearRange#long
+    }
+
+    /**
+     * Generates a code sample for using {@link FileClient#clearRange(long, int)}
+     */
+    public void clearRangeMaxOverload() {
+        FileClient fileClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileClient.clearRange#long-int
+        Response<FileUploadInfo> response = fileClient.clearRange(1024, 1024);
+        System.out.println("Complete clearing the range with status code: " + response.statusCode());
+        // END: com.azure.storage.file.fileClient.clearRange#long-int
+    }
+
+    /**
+     * Generates a code sample for using {@link FileAsyncClient#clearRange(long)}
+     */
+    public void clearRangeAsyncMaxOverload() {
+        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileAsyncClient.clearRange#long-int
+        fileAsyncClient.clearRange(1024, 1024).subscribe(
+            response -> { },
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Complete clearing the range!")
+        );
+        // END: com.azure.storage.file.fileAsyncClient.clearRange#long-int
     }
 
     /**
@@ -331,36 +379,6 @@ public class FileJavaDocCodeSamples {
             () -> System.out.println("Complete deleting the file!")
         );
         // END: com.azure.storage.file.fileAsyncClient.uploadFromFile#string
-    }
-
-    /**
-     * Generates a code sample for using {@link FileClient#uploadFromFile(String, FileRangeWriteType)}
-     */
-    public void uploadFileMaxOverload() {
-        FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.uploadFromFile#string-filerangewritetype
-        fileClient.uploadFromFile("someFilePath", FileRangeWriteType.UPDATE);
-        if (fileClient.getProperties() != null) {
-            System.out.printf("Upload the file with length of %d completed",
-                fileClient.getProperties().value().contentLength());
-        }
-        // END: com.azure.storage.file.fileClient.uploadFromFile#string-filerangewritetype
-    }
-
-    /**
-     * Generates a code sample for using {@link FileAsyncClient#uploadFromFile(String, FileRangeWriteType)}
-     */
-    public void uploadFileAsyncMaxOverload() {
-        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadFromFile#string-filerangewritetype
-        fileAsyncClient.uploadFromFile("someFilePath", FileRangeWriteType.UPDATE)
-            .subscribe(response -> {
-                if (fileAsyncClient.getProperties() != null) {
-                    System.out.printf("Upload the file with length of %d completed",
-                        fileAsyncClient.getProperties().block().value().contentLength());
-                }
-            });
-        // END: com.azure.storage.file.fileAsyncClient.uploadFromFile#string-filerangewritetype
     }
 
     /**

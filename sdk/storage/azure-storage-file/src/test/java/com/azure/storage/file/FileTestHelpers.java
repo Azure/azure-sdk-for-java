@@ -43,7 +43,7 @@ class FileTestHelpers {
         String endpoint = "https://teststorage.file.core.windows.net/";
 
         if (!isPlayback) {
-            connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING");
+            connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING");
             endpoint = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
         }
 
@@ -218,7 +218,7 @@ class FileTestHelpers {
             downloadFileString.removeAll(uploadFileString);
         }
         while (!downloadFileString.isEmpty()) {
-            Assert.assertTrue("The download file is supposed to be the same as the upload file.", downloadFileString.get(0).isEmpty());
+            Assert.assertTrue("The download file is supposed to be the same as the upload file.", downloadFileString.get(0).trim().isEmpty());
             downloadFileString.remove(0);
         }
     }

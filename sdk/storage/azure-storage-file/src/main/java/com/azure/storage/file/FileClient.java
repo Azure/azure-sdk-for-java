@@ -313,20 +313,20 @@ public class FileClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Upload "default" to the file. </p>
+     * <p>Upload data "default" to the file in Storage File Service. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.upload#flux-long}
+     * {@codesnippet com.azure.storage.file.fileClient.upload#bytebuf-long}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is set to clear, the value of this header must be set to zero..
+     * @param length Specifies the number of bytes being transmitted in the request body.
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
     public Response<FileUploadInfo> upload(ByteBuf data, long length) {
-        return fileAsyncClient.upload(Flux.just(data), length).block();
+        return upload(data, length, 0);
     }
 
     /**
@@ -334,26 +334,62 @@ public class FileClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Upload the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
+     * <p>Upload data "default" starting from 1024. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.upload#bytebuf-long-int-filerangewritetype}
+     * {@codesnippet com.azure.storage.file.fileClient.upload#bytebuf-long-int}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
      * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code null}
-     * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is set to clear, the value of this header must be set to zero.
-     * @param type You may specify one of the following options:
-     * <ul>
-     *      <li>Update: Writes the bytes specified by the request body into the specified range.</li>
-     *      <li>Clear: Clears the specified range and releases the space used in storage for that range. To clear a range, set the Content-Length header to zero.</li>
-     * </ul>
+     * @param length Specifies the number of bytes being transmitted in the request body.
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
-    public Response<FileUploadInfo> upload(ByteBuf data, long length, int offset, FileRangeWriteType type) {
-        return fileAsyncClient.upload(Flux.just(data), length, offset, type).block();
+    public Response<FileUploadInfo> upload(ByteBuf data, long length, int offset) {
+        return fileAsyncClient.upload(Flux.just(data), length, offset).block();
+    }
+
+    /**
+     * Clears a range of bytes to specific of a file in storage file service. Clear operations performs an in-place write on the specified file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Clears the range starting from 0 bytes with the length of 1024. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileClient.clearRange#long}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param length Specifies the number of bytes being cleared in the request body.
+     * @return A response that only contains headers and response status code
+     * @throws StorageErrorException If you attempt to clear a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
+     */
+    public Response<FileUploadInfo> clearRange(long length) {
+        return clearRange(length, 0);
+    }
+
+    /**
+     * Clears a range of bytes to specific of a file in storage file service. Upload operations performs an in-place write on the specified file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Clear the range starting from 1024 with length of 1024. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileClient.clearRange#long-int}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code null}
+     * @param length Specifies the number of bytes being transmitted in the request body.
+     * @return A response that only contains headers and response status code
+     * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
+     */
+    public Response<FileUploadInfo> clearRange(long length, int offset) {
+        return fileAsyncClient.clearRange(length, offset).block();
     }
 
     /**
@@ -373,32 +409,7 @@ public class FileClient {
      * @param uploadFilePath The path where store the source file to upload
      */
     public void uploadFromFile(String uploadFilePath) {
-        uploadFromFile(uploadFilePath, FileRangeWriteType.UPDATE);
-    }
-
-    /**
-     * Uploads file to storage file service.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p> Upload the file from the source file path. </p>
-     *
-     * {@codesnippet com.azure.storage.file.fileClient.uploadFromFile#string-filerangewritetype}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs Create File</a>
-     * and
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs Upload</a>.</p>
-     *
-     * @param uploadFilePath The path where store the source file to upload
-     * @param type You may specify one of the following options:
-     * <ul>
-     *      <li>Update: Writes the bytes specified by the request body into the specified range.</li>
-     *      <li>Clear: Clears the specified range and releases the space used in storage for that range. To clear a range, set the Content-Length header to zero.</li>
-     * </ul>
-     */
-    public void uploadFromFile(String uploadFilePath, FileRangeWriteType type) {
-        fileAsyncClient.uploadFromFile(uploadFilePath, type).block();
+        fileAsyncClient.uploadFromFile(uploadFilePath).block();
     }
 
     /**
