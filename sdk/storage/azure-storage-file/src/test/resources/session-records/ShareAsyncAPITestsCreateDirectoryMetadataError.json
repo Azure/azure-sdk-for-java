@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatedirectorymetadataerror466474fe9?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatedirectorymetadataerror257827366?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D724EEEC25D106\"",
-      "Last-Modified" : "Mon, 19 Aug 2019 21:48:07 GMT",
+      "ETag" : "\"0x8D7258EC801D28A\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:52:26 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "bc227db1-001a-005b-31d7-56370a000000",
-      "Date" : "Mon, 19 Aug 2019 21:48:07 GMT"
+      "x-ms-request-id" : "84142271-701a-0136-3277-57db71000000",
+      "Date" : "Tue, 20 Aug 2019 16:52:26 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatedirectorymetadataerror466474fe9/testdirectory?restype=directory",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatedirectorymetadataerror257827366/testdirectory?restype=directory",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -31,11 +31,11 @@
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "bc227db3-001a-005b-32d7-56370a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:bc227db3-001a-005b-32d7-56370a000000\nTime:2019-08-19T21:48:07.9292578Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Mon, 19 Aug 2019 21:48:07 GMT",
+      "x-ms-request-id" : "8414227e-701a-0136-3377-57db71000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:8414227e-701a-0136-3377-57db71000000\nTime:2019-08-20T16:52:26.8061575Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Tue, 20 Aug 2019 16:52:26 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "shareasyncapitestscreatedirectorymetadataerror466474fe9" ]
+  "variables" : [ "shareasyncapitestscreatedirectorymetadataerror257827366" ]
 }

@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsdeletefileerror65577b5f269dd5cd345?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsdeletefileerror64307caeeae53a43646?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D724D87C2BF0A7\"",
-      "Last-Modified" : "Mon, 19 Aug 2019 19:07:31 GMT",
+      "ETag" : "\"0x8D7258EA4D71576\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:51:27 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "254c2c3f-601a-00c3-73c1-56b935000000",
-      "Date" : "Mon, 19 Aug 2019 19:07:30 GMT"
+      "x-ms-request-id" : "1152b5c8-c01a-0064-0b77-5780d6000000",
+      "Date" : "Tue, 20 Aug 2019 16:51:27 GMT"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsdeletefileerror65577b5f269dd5cd345/fileapitestsdeletefileerror79682fb02fb2e091c4b",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsdeletefileerror64307caeeae53a43646/fileapitestsdeletefileerror41993afe923b6175e4c",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -31,11 +31,11 @@
       "retry-after" : "0",
       "Content-Length" : "223",
       "StatusCode" : "404",
-      "x-ms-request-id" : "254c2c41-601a-00c3-74c1-56b935000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:254c2c41-601a-00c3-74c1-56b935000000\nTime:2019-08-19T19:07:32.5188054Z</Message></Error>",
-      "Date" : "Mon, 19 Aug 2019 19:07:32 GMT",
+      "x-ms-request-id" : "1152b5ca-c01a-0064-0c77-5780d6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:1152b5ca-c01a-0064-0c77-5780d6000000\nTime:2019-08-20T16:51:31.2160828Z</Message></Error>",
+      "Date" : "Tue, 20 Aug 2019 16:51:30 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "fileapitestsdeletefileerror65577b5f269dd5cd345", "fileapitestsdeletefileerror79682fb02fb2e091c4b" ]
+  "variables" : [ "fileapitestsdeletefileerror64307caeeae53a43646", "fileapitestsdeletefileerror41993afe923b6175e4c" ]
 }

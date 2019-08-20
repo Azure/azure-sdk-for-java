@@ -14,11 +14,11 @@
       "retry-after" : "0",
       "Content-Length" : "294",
       "StatusCode" : "400",
-      "x-ms-request-id" : "b91a4dcc-101a-0029-70a6-534634000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:b91a4dcc-101a-0029-70a6-534634000000\nTime:2019-08-15T20:18:42.9285785Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
-      "Date" : "Thu, 15 Aug 2019 20:18:42 GMT",
+      "x-ms-request-id" : "6530f5da-901a-013c-0b77-57c2f8000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:6530f5da-901a-013c-0b77-57c2f8000000\nTime:2019-08-20T16:52:40.6052494Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
+      "Date" : "Tue, 20 Aug 2019 16:52:40 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "fileserviceapitestssetandgetpropertieswithinvalidargs373415" ]
+  "variables" : [ "fileserviceapitestssetandgetpropertieswithinvalidargs390742" ]
 }

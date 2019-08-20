@@ -195,23 +195,18 @@ class DirectoryAsyncAPITests extends APISpec {
         def listFileAndDirVerifier = StepVerifier.create(primaryDirectoryAsyncClient.listFilesAndDirectories(prefix, maxResults))
 
         then:
-//        listFileAndDirVerifier.assertNext {
-//            assert Objects.equals(it.name(), nameList.pop())
-//        }.assertNext {
-//            assert Objects.equals(it.name(), nameList.pop())
-//        }.assertNext {
-//            assert Objects.equals(it.name(), nameList.pop())
-//        }.verifyComplete()
         listFileAndDirVerifier.thenConsumeWhile {
-            System.out.println(it)
             Objects.equals(it.name(), nameList.pop())
-            //return true
         }.verifyComplete()
+        for (int i = 0; i < 3 - numOfResults; i++) {
+            nameList.pop()
+        }
         nameList.isEmpty()
         where:
-        prefix                                         | maxResults
-        "directoryasyncapitestslistfilesanddirectoriesargs" | null
-      //  "directoryasyncapitestslistfilesanddirectoriesargs" | 1
+        prefix                                                   | maxResults | numOfResults
+        "directoryasyncapitestslistfilesanddirectoriesargs"      | null       | 3
+        "directoryasyncapitestslistfilesanddirectoriesargs"      | 1          | 3
+        "directoryasyncapitestslistfilesanddirectoriesargsnoops" | 1          | 0
     }
 
     @Unroll
@@ -382,7 +377,7 @@ class DirectoryAsyncAPITests extends APISpec {
         primaryDirectoryAsyncClient.createFile(fileName, 1024).block()
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.deleteFile(fileName))
-            .assertNext{
+            .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 202)
             }.verifyComplete()
     }

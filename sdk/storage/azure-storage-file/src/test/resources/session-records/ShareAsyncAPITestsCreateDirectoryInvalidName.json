@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatedirectoryinvalidname147140b6b3?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatedirectoryinvalidname172968389f?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D724EEEBDFDD1B\"",
-      "Last-Modified" : "Mon, 19 Aug 2019 21:48:07 GMT",
+      "ETag" : "\"0x8D7258EC7B7988C\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:52:26 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "bc227da6-001a-005b-29d7-56370a000000",
-      "Date" : "Mon, 19 Aug 2019 21:48:06 GMT"
+      "x-ms-request-id" : "84142264-701a-0136-2877-57db71000000",
+      "Date" : "Tue, 20 Aug 2019 16:52:25 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatedirectoryinvalidname147140b6b3/test%2fdirectory?restype=directory",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatedirectoryinvalidname172968389f/test%2fdirectory?restype=directory",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -31,11 +31,11 @@
       "retry-after" : "0",
       "Content-Length" : "224",
       "StatusCode" : "404",
-      "x-ms-request-id" : "bc227da8-001a-005b-2ad7-56370a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ParentNotFound</Code><Message>The specified parent path does not exist.\nRequestId:bc227da8-001a-005b-2ad7-56370a000000\nTime:2019-08-19T21:48:07.4778221Z</Message></Error>",
-      "Date" : "Mon, 19 Aug 2019 21:48:06 GMT",
+      "x-ms-request-id" : "84142266-701a-0136-2977-57db71000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ParentNotFound</Code><Message>The specified parent path does not exist.\nRequestId:84142266-701a-0136-2977-57db71000000\nTime:2019-08-20T16:52:26.4398159Z</Message></Error>",
+      "Date" : "Tue, 20 Aug 2019 16:52:25 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "shareasyncapitestscreatedirectoryinvalidname147140b6b3" ]
+  "variables" : [ "shareasyncapitestscreatedirectoryinvalidname172968389f" ]
 }

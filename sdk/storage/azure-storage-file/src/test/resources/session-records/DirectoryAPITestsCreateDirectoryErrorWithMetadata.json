@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatedirectoryerrorwithmetadata93176f28?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatedirectoryerrorwithmetadata6005264a?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D721BDA2A12756\"",
-      "Last-Modified" : "Thu, 15 Aug 2019 20:17:45 GMT",
+      "ETag" : "\"0x8D7258EB6557DCA\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:51:57 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d378edc6-a01a-013f-77a6-53c1ff000000",
-      "Date" : "Thu, 15 Aug 2019 20:17:44 GMT"
+      "x-ms-request-id" : "d6339008-b01a-002f-1977-57b14c000000",
+      "Date" : "Tue, 20 Aug 2019 16:51:56 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatedirectoryerrorwithmetadata93176f28/directoryapitestscreatedirectoryerrorwithmetadata58679a3d?restype=directory",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatedirectoryerrorwithmetadata6005264a/directoryapitestscreatedirectoryerrorwithmetadata888219e7?restype=directory",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -30,11 +30,11 @@
       "retry-after" : "0",
       "Content-Length" : "857",
       "StatusCode" : "403",
-      "x-ms-request-id" : "d378edc8-a01a-013f-78a6-53c1ff000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:d378edc8-a01a-013f-78a6-53c1ff000000\nTime:2019-08-15T20:17:45.7700893Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'Um/zbd8kOvnrrL3DjXgxg8y4Tl5cQjSd6WVnCe4Zabg=' is not the same as any computed signature. Server used following string to sign: 'PUT\n\n\n\n\n\nThu, 15 Aug 2019 20:17:45 GMT\n\n\n\n\n\nx-ms-client-request-id:54bf958e-320b-402b-885b-142f9ce9edda\nx-ms-meta-testmeta:value\nx-ms-version:2018-11-09\n/azstoragesdkaccount/directoryapitestscreatedirectoryerrorwithmetadata93176f28/directoryapitestscreatedirectoryerrorwithmetadata58679a3d\nrestype:directory'.</AuthenticationErrorDetail></Error>",
-      "Date" : "Thu, 15 Aug 2019 20:17:44 GMT",
+      "x-ms-request-id" : "d633900a-b01a-002f-1a77-57b14c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:d633900a-b01a-002f-1a77-57b14c000000\nTime:2019-08-20T16:51:57.1264726Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'KKy57fSw1HB179FqDWsCuqMS7QYvSzN8FnUovvev/9I=' is not the same as any computed signature. Server used following string to sign: 'PUT\n\n\n\n\n\nTue, 20 Aug 2019 16:51:57 GMT\n\n\n\n\n\nx-ms-client-request-id:bdbe2e55-0250-422e-b559-ea63062372fd\nx-ms-meta-testmeta:value\nx-ms-version:2018-11-09\n/azstoragesdkaccount/directoryapitestscreatedirectoryerrorwithmetadata6005264a/directoryapitestscreatedirectoryerrorwithmetadata888219e7\nrestype:directory'.</AuthenticationErrorDetail></Error>",
+      "Date" : "Tue, 20 Aug 2019 16:51:56 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "directoryapitestscreatedirectoryerrorwithmetadata93176f28", "directoryapitestscreatedirectoryerrorwithmetadata58679a3d" ]
+  "variables" : [ "directoryapitestscreatedirectoryerrorwithmetadata6005264a", "directoryapitestscreatedirectoryerrorwithmetadata888219e7" ]
 }

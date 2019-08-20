@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatefilemaxoverload192885455e828ec?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatefilemaxoverload40026f2915c132a?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D721BD9AA16459\"",
-      "Last-Modified" : "Thu, 15 Aug 2019 20:17:32 GMT",
+      "ETag" : "\"0x8D7258EAD009117\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:51:41 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "fdc07409-d01a-003f-39a6-5387aa000000",
-      "Date" : "Thu, 15 Aug 2019 20:17:32 GMT"
+      "x-ms-request-id" : "02ba5cfa-901a-005e-4c77-57c375000000",
+      "Date" : "Tue, 20 Aug 2019 16:51:40 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatefilemaxoverload192885455e828ec/testCreateFile",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatefilemaxoverload40026f2915c132a/testCreateFile",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -27,15 +27,15 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D721BD9AAAE63F\"",
-      "Last-Modified" : "Thu, 15 Aug 2019 20:17:32 GMT",
+      "ETag" : "\"0x8D7258EAD062144\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:51:41 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "fdc0740b-d01a-003f-3aa6-5387aa000000",
+      "x-ms-request-id" : "02ba5cfc-901a-005e-4d77-57c375000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Thu, 15 Aug 2019 20:17:32 GMT"
+      "Date" : "Tue, 20 Aug 2019 16:51:40 GMT"
     }
   } ],
-  "variables" : [ "shareapitestscreatefilemaxoverload192885455e828ec" ]
+  "variables" : [ "shareapitestscreatefilemaxoverload40026f2915c132a" ]
 }

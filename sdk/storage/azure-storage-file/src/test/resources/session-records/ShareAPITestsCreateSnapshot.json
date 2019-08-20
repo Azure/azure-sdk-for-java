@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatesnapshot15687f6bb8af357c444?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatesnapshot58807e4e2bdabc7d149?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -9,33 +9,33 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D721BD9565B532\"",
-      "Last-Modified" : "Thu, 15 Aug 2019 20:17:23 GMT",
+      "ETag" : "\"0x8D7258EA9E563AC\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:51:36 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "b27cadf4-001a-0014-05a6-53f312000000",
-      "Date" : "Thu, 15 Aug 2019 20:17:23 GMT"
+      "x-ms-request-id" : "a2d63b86-a01a-0116-3477-57b7bd000000",
+      "Date" : "Tue, 20 Aug 2019 16:51:36 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatesnapshot15687f6bb8af357c444?restype=share&comp=snapshot",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatesnapshot58807e4e2bdabc7d149?restype=share&comp=snapshot",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-11-09",
-      "x-ms-snapshot" : "2019-08-15T20:17:24.0000000Z",
+      "x-ms-snapshot" : "2019-08-20T16:51:36.0000000Z",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D721BD9565B532\"",
-      "Last-Modified" : "Thu, 15 Aug 2019 20:17:23 GMT",
+      "ETag" : "\"0x8D7258EA9E563AC\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:51:36 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "b27cadf6-001a-0014-06a6-53f312000000",
-      "Date" : "Thu, 15 Aug 2019 20:17:24 GMT"
+      "x-ms-request-id" : "a2d63b88-a01a-0116-3577-57b7bd000000",
+      "Date" : "Tue, 20 Aug 2019 16:51:36 GMT"
     }
   } ],
-  "variables" : [ "shareapitestscreatesnapshot15687f6bb8af357c444", "shareapitestscreatesnapshot964090e8ab734744749" ]
+  "variables" : [ "shareapitestscreatesnapshot58807e4e2bdabc7d149", "shareapitestscreatesnapshot045646a73571bae9a44" ]
 }

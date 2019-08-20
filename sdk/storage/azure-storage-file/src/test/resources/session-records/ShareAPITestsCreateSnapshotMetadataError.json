@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatesnapshotmetadataerror1713446aa8e3?restype=share&comp=snapshot",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatesnapshotmetadataerror124851cde4e3?restype=share&comp=snapshot",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -13,11 +13,11 @@
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "b27cae03-001a-0014-0fa6-53f312000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:b27cae03-001a-0014-0fa6-53f312000000\nTime:2019-08-15T20:17:25.9954231Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Thu, 15 Aug 2019 20:17:25 GMT",
+      "x-ms-request-id" : "a2d63b96-a01a-0116-4077-57b7bd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:a2d63b96-a01a-0116-4077-57b7bd000000\nTime:2019-08-20T16:51:37.7025170Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Tue, 20 Aug 2019 16:51:37 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "shareapitestscreatesnapshotmetadataerror1713446aa8e3" ]
+  "variables" : [ "shareapitestscreatesnapshotmetadataerror124851cde4e3" ]
 }

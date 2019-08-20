@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestsdeleteshareshareapitestsdeleteshare04f38387ba?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestsdeleteshareshareapitestsdeleteshare9b637198e8?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D721BD96F78C2F\"",
-      "Last-Modified" : "Thu, 15 Aug 2019 20:17:26 GMT",
+      "ETag" : "\"0x8D7258EAAD97509\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:51:37 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "b27cae06-001a-0014-11a6-53f312000000",
-      "Date" : "Thu, 15 Aug 2019 20:17:25 GMT"
+      "x-ms-request-id" : "a2d63b98-a01a-0116-4277-57b7bd000000",
+      "Date" : "Tue, 20 Aug 2019 16:51:37 GMT"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestsdeleteshareshareapitestsdeleteshare04f38387ba?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestsdeleteshareshareapitestsdeleteshare9b637198e8?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -30,9 +30,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "b27cae08-001a-0014-12a6-53f312000000",
-      "Date" : "Thu, 15 Aug 2019 20:17:25 GMT"
+      "x-ms-request-id" : "a2d63b9a-a01a-0116-4377-57b7bd000000",
+      "Date" : "Tue, 20 Aug 2019 16:51:37 GMT"
     }
   } ],
-  "variables" : [ "shareapitestsdeleteshareshareapitestsdeleteshare04f38387ba" ]
+  "variables" : [ "shareapitestsdeleteshareshareapitestsdeleteshare9b637198e8" ]
 }

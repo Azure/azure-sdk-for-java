@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestsgetproperties23078e897d40e5a4044?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestsgetproperties79414b6b6999a6b9c46?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D721BD971EA5A1\"",
-      "Last-Modified" : "Thu, 15 Aug 2019 20:17:26 GMT",
+      "ETag" : "\"0x8D7258EAB00DCCD\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:51:38 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "b27cae0c-001a-0014-16a6-53f312000000",
-      "Date" : "Thu, 15 Aug 2019 20:17:25 GMT"
+      "x-ms-request-id" : "a2d63b9f-a01a-0116-4777-57b7bd000000",
+      "Date" : "Tue, 20 Aug 2019 16:51:38 GMT"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestsgetproperties23078e897d40e5a4044?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestsgetproperties79414b6b6999a6b9c46?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -27,18 +27,18 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "Last-Modified" : "Thu, 15 Aug 2019 20:17:26 GMT",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:51:38 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Thu, 15 Aug 2019 20:17:26 GMT",
+      "Date" : "Tue, 20 Aug 2019 16:51:38 GMT",
       "x-ms-has-legal-hold" : "false",
       "x-ms-share-quota" : "1",
-      "ETag" : "\"0x8D721BD971EA5A1\"",
+      "ETag" : "\"0x8D7258EAB00DCCD\"",
       "x-ms-has-immutability-policy" : "false",
       "x-ms-meta-testmetadata" : "value",
       "Content-Length" : "0",
-      "x-ms-request-id" : "b27cae0e-001a-0014-17a6-53f312000000"
+      "x-ms-request-id" : "a2d63ba1-a01a-0116-4877-57b7bd000000"
     }
   } ],
-  "variables" : [ "shareapitestsgetproperties23078e897d40e5a4044" ]
+  "variables" : [ "shareapitestsgetproperties79414b6b6999a6b9c46" ]
 }

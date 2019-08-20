@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceasyncapitestscreatesharewithinvalidargs35200760?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceasyncapitestscreatesharewithinvalidargs321950cf?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -13,11 +13,11 @@
       "retry-after" : "0",
       "Content-Length" : "326",
       "StatusCode" : "400",
-      "x-ms-request-id" : "b91a4dea-101a-0029-06a6-534634000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:b91a4dea-101a-0029-06a6-534634000000\nTime:2019-08-15T20:18:48.2996957Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>5200</HeaderValue></Error>",
-      "Date" : "Thu, 15 Aug 2019 20:18:47 GMT",
+      "x-ms-request-id" : "05758c26-801a-00eb-0777-57ce8a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:05758c26-801a-00eb-0777-57ce8a000000\nTime:2019-08-20T16:53:12.6684632Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>5200</HeaderValue></Error>",
+      "Date" : "Tue, 20 Aug 2019 16:53:12 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "fileserviceasyncapitestscreatesharewithinvalidargs35200760" ]
+  "variables" : [ "fileserviceasyncapitestscreatesharewithinvalidargs321950cf" ]
 }

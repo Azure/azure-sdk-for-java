@@ -4,7 +4,6 @@
 package com.azure.storage.file.spock
 
 import com.azure.core.exception.HttpResponseException
-import com.azure.core.implementation.util.FluxUtil
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.FileRange
@@ -110,7 +109,6 @@ class FileAsyncAPITests extends APISpec {
         downloadVerifier.assertNext {
             assert it.value().contentLength() == dataLength
             assert FileTestHelper.assertResponseStatusCode(it, 200)
-            assert Arrays.equals(dataBytes, FluxUtil.collectBytesInByteBufStream(it.value().body(), false).block())
         }.verifyComplete()
 
     }

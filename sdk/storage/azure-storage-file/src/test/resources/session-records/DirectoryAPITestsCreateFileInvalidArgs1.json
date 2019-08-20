@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatefileinvalidargs158845f248f4bb?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatefileinvalidargs185947fd683701?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D721BDAC054D35\"",
-      "Last-Modified" : "Thu, 15 Aug 2019 20:18:01 GMT",
+      "ETag" : "\"0x8D7258EBA830965\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:52:04 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "25790312-301a-013a-01a6-533580000000",
-      "Date" : "Thu, 15 Aug 2019 20:18:00 GMT"
+      "x-ms-request-id" : "6543a0ac-e01a-0037-2777-579cd9000000",
+      "Date" : "Tue, 20 Aug 2019 16:52:03 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatefileinvalidargs158845f248f4bb/directoryapitestscreatefileinvalidargs173134384d322a?restype=directory",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatefileinvalidargs185947fd683701/directoryapitestscreatefileinvalidargs1425606303ff24?restype=directory",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -27,18 +27,18 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D721BDAC1D68CD\"",
-      "Last-Modified" : "Thu, 15 Aug 2019 20:18:01 GMT",
+      "ETag" : "\"0x8D7258EBA899598\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:52:04 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "25790316-301a-013a-04a6-533580000000",
+      "x-ms-request-id" : "6543a0ae-e01a-0037-2877-579cd9000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Thu, 15 Aug 2019 20:18:01 GMT"
+      "Date" : "Tue, 20 Aug 2019 16:52:03 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatefileinvalidargs158845f248f4bb/directoryapitestscreatefileinvalidargs173134384d322a%2ffileName",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatefileinvalidargs185947fd683701/directoryapitestscreatefileinvalidargs1425606303ff24%2ffileName",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -50,11 +50,11 @@
       "retry-after" : "0",
       "Content-Length" : "236",
       "StatusCode" : "400",
-      "x-ms-request-id" : "25790317-301a-013a-05a6-533580000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The file size exceeds the maximum permissible limit.\nRequestId:25790317-301a-013a-05a6-533580000000\nTime:2019-08-15T20:18:01.7090845Z</Message></Error>",
-      "Date" : "Thu, 15 Aug 2019 20:18:01 GMT",
+      "x-ms-request-id" : "6543a0af-e01a-0037-2977-579cd9000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The file size exceeds the maximum permissible limit.\nRequestId:6543a0af-e01a-0037-2977-579cd9000000\nTime:2019-08-20T16:52:04.5742666Z</Message></Error>",
+      "Date" : "Tue, 20 Aug 2019 16:52:03 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "directoryapitestscreatefileinvalidargs158845f248f4bb", "directoryapitestscreatefileinvalidargs173134384d322a" ]
+  "variables" : [ "directoryapitestscreatefileinvalidargs185947fd683701", "directoryapitestscreatefileinvalidargs1425606303ff24" ]
 }

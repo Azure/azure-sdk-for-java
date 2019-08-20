@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefilemaxoverloadinvalidargs3767369b?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefilemaxoverloadinvalidargs3076638c?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D724EEEE1509F0\"",
-      "Last-Modified" : "Mon, 19 Aug 2019 21:48:11 GMT",
+      "ETag" : "\"0x8D7258ECAAB06F6\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:52:31 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "f69d76ea-f01a-00c6-74d7-564d4a000000",
-      "Date" : "Mon, 19 Aug 2019 21:48:10 GMT"
+      "x-ms-request-id" : "1e973fa0-601a-002d-3477-57b3b6000000",
+      "Date" : "Tue, 20 Aug 2019 16:52:31 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefilemaxoverloadinvalidargs3767369b/test%0cile",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefilemaxoverloadinvalidargs3076638c/test%0cile",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -31,9 +31,9 @@
       "Content-Length" : "324",
       "StatusCode" : "400",
       "Body" : "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"\"http://www.w3.org/TR/html4/strict.dtd\">\r\n<HTML><HEAD><TITLE>Bad Request</TITLE>\r\n<META HTTP-EQUIV=\"Content-Type\" Content=\"text/html; charset=us-ascii\"></HEAD>\r\n<BODY><h2>Bad Request - Invalid URL</h2>\r\n<hr><p>HTTP Error 400. The request URL is invalid.</p>\r\n</BODY></HTML>\r\n",
-      "Date" : "Mon, 19 Aug 2019 21:48:10 GMT",
+      "Date" : "Tue, 20 Aug 2019 16:52:31 GMT",
       "Content-Type" : "text/html; charset=us-ascii"
     }
   } ],
-  "variables" : [ "shareasyncapitestscreatefilemaxoverloadinvalidargs3767369b" ]
+  "variables" : [ "shareasyncapitestscreatefilemaxoverloadinvalidargs3076638c" ]
 }

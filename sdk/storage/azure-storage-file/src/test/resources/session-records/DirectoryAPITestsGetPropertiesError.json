@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestsgetpropertieserror66500acd39d47bd?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestsgetpropertieserror54599ef700d16c8?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D721BDA31B56F3\"",
-      "Last-Modified" : "Thu, 15 Aug 2019 20:17:46 GMT",
+      "ETag" : "\"0x8D7258EB6E3AF3A\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:51:58 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d378eddc-a01a-013f-09a6-53c1ff000000",
-      "Date" : "Thu, 15 Aug 2019 20:17:46 GMT"
+      "x-ms-request-id" : "d633901f-b01a-002f-2b77-57b14c000000",
+      "Date" : "Tue, 20 Aug 2019 16:51:57 GMT"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestsgetpropertieserror66500acd39d47bd/directoryapitestsgetpropertieserror75189120bd52b27?restype=directory",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestsgetpropertieserror54599ef700d16c8/directoryapitestsgetpropertieserror15631cc4997caa1?restype=directory",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -31,11 +31,11 @@
       "retry-after" : "0",
       "Content-Length" : "223",
       "StatusCode" : "404",
-      "x-ms-request-id" : "d378edde-a01a-013f-0aa6-53c1ff000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:d378edde-a01a-013f-0aa6-53c1ff000000\nTime:2019-08-15T20:17:46.7209900Z</Message></Error>",
-      "Date" : "Thu, 15 Aug 2019 20:17:46 GMT",
+      "x-ms-request-id" : "d6339021-b01a-002f-2c77-57b14c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:d6339021-b01a-002f-2c77-57b14c000000\nTime:2019-08-20T16:51:58.2845633Z</Message></Error>",
+      "Date" : "Tue, 20 Aug 2019 16:51:57 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "directoryapitestsgetpropertieserror66500acd39d47bd", "directoryapitestsgetpropertieserror75189120bd52b27" ]
+  "variables" : [ "directoryapitestsgetpropertieserror54599ef700d16c8", "directoryapitestsgetpropertieserror15631cc4997caa1" ]
 }

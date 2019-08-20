@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestscreatefilewithargs790903d6dc1e4f092?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestscreatefilewithargs086087151006307bb?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D724D8783D4B9D\"",
-      "Last-Modified" : "Mon, 19 Aug 2019 19:07:24 GMT",
+      "ETag" : "\"0x8D7258EA03F55C3\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:51:20 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "254c2bf8-601a-00c3-3cc1-56b935000000",
-      "Date" : "Mon, 19 Aug 2019 19:07:24 GMT"
+      "x-ms-request-id" : "1152b580-c01a-0064-5377-5780d6000000",
+      "Date" : "Tue, 20 Aug 2019 16:51:19 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestscreatefilewithargs790903d6dc1e4f092/fileapitestscreatefilewithargs10190b2c5028b4ed6",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestscreatefilewithargs086087151006307bb/fileapitestscreatefilewithargs398808473dbca0072",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -27,15 +27,15 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D724D878443649\"",
-      "Last-Modified" : "Mon, 19 Aug 2019 19:07:24 GMT",
+      "ETag" : "\"0x8D7258EA045B7FD\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:51:20 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "254c2bfa-601a-00c3-3dc1-56b935000000",
+      "x-ms-request-id" : "1152b582-c01a-0064-5477-5780d6000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Mon, 19 Aug 2019 19:07:24 GMT"
+      "Date" : "Tue, 20 Aug 2019 16:51:19 GMT"
     }
   } ],
-  "variables" : [ "fileapitestscreatefilewithargs790903d6dc1e4f092", "fileapitestscreatefilewithargs10190b2c5028b4ed6" ]
+  "variables" : [ "fileapitestscreatefilewithargs086087151006307bb", "fileapitestscreatefilewithargs398808473dbca0072" ]
 }

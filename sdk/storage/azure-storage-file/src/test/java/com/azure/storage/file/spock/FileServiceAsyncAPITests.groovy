@@ -118,13 +118,10 @@ class FileServiceAsyncAPITests extends APISpec {
         given:
         LinkedList<ShareItem> testShares = new LinkedList<>()
         for (int i = 0; i < 3; i++) {
-            ShareItem share = new ShareItem().properties(new ShareProperties().quota(i + 1))
+            ShareItem share = new ShareItem().name(shareName + i).properties(new ShareProperties().quota(i + 1))
             if (i == 2) {
-                share.name(shareName + "prefix" + i).metadata(testMetadata)
-            } else {
-                share.name(shareName + i)
+                share.metadata(testMetadata)
             }
-
             testShares.add(share)
             primaryFileServiceAsyncClient.createShare(share.name(), share.metadata(), share.properties().quota()).block()
         }
@@ -132,15 +129,19 @@ class FileServiceAsyncAPITests extends APISpec {
         def sharesVerifier = StepVerifier.create(primaryFileServiceAsyncClient.listShares(options))
         then:
         sharesVerifier.thenConsumeWhile {
-            assert FileTestHelper.assertSharesAreEqual(testShares.pop(), it, includeMetadata, includeSnapshot)
+            System.out.println("Sima: " + it.name())
+            FileTestHelper.assertSharesAreEqual(testShares.pop(), it, includeMetadata, includeSnapshot)
         }.verifyComplete()
+        for (int i = 0; i < 3 - limits; i++) {
+            testShares.pop()
+        }
+        testShares.isEmpty()
         where:
-        options                                                                                          | limits | includeMetadata | includeSnapshot
-        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter")                        | 3      | false           | true
-        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter").includeMetadata(true)  | 3      | true            | true
-        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter").includeMetadata(false) | 3      | false           | true
-        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilterprefix")                  | 1      | true            | true
-        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter").maxResults(2)          | 2      | true            | true
+        options                                                                                               | limits | includeMetadata | includeSnapshot
+        new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithfilter")                        | 3      | false           | true
+        new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithfilter").includeMetadata(true)  | 3      | true            | true
+        new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithfilter").includeMetadata(false) | 3      | false           | true
+        new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithfilter").maxResults(2)          | 2      | true            | true
     }
 
     @Unroll

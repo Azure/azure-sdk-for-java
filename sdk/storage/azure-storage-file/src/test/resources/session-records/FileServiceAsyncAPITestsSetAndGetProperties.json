@@ -12,9 +12,9 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "b91a4e4d-101a-0029-4fa6-534634000000",
+      "x-ms-request-id" : "05758c8b-801a-00eb-5177-57ce8a000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceProperties><HourMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></HourMetrics><MinuteMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></MinuteMetrics><Cors /></StorageServiceProperties>",
-      "Date" : "Thu, 15 Aug 2019 20:18:51 GMT",
+      "Date" : "Tue, 20 Aug 2019 16:53:16 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
@@ -30,9 +30,9 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "b91a4e4e-101a-0029-50a6-534634000000",
+      "x-ms-request-id" : "05758c8c-801a-00eb-5277-57ce8a000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceProperties><HourMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></HourMetrics><MinuteMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></MinuteMetrics><Cors /></StorageServiceProperties>",
-      "Date" : "Thu, 15 Aug 2019 20:18:51 GMT",
+      "Date" : "Tue, 20 Aug 2019 16:53:16 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
@@ -48,11 +48,11 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "b91a4e4f-101a-0029-51a6-534634000000",
+      "x-ms-request-id" : "05758c8e-801a-00eb-5377-57ce8a000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceProperties><HourMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></HourMetrics><MinuteMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></MinuteMetrics><Cors /></StorageServiceProperties>",
-      "Date" : "Thu, 15 Aug 2019 20:18:51 GMT",
+      "Date" : "Tue, 20 Aug 2019 16:53:16 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "fileserviceasyncapitestssetandgetproperties06403bab9b1" ]
+  "variables" : [ "fileserviceasyncapitestssetandgetproperties8526558889b" ]
 }

@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestssetmetadataerror53763b9df6ccea34?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestssetmetadataerror60233a273facfd1c?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D721BDA3852EED\"",
-      "Last-Modified" : "Thu, 15 Aug 2019 20:17:47 GMT",
+      "ETag" : "\"0x8D7258EB75AF7CE\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:51:58 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d378edea-a01a-013f-14a6-53c1ff000000",
-      "Date" : "Thu, 15 Aug 2019 20:17:47 GMT"
+      "x-ms-request-id" : "d633902d-b01a-002f-3777-57b14c000000",
+      "Date" : "Tue, 20 Aug 2019 16:51:58 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestssetmetadataerror53763b9df6ccea34/directoryapitestssetmetadataerror5564431cd6791e09?restype=directory",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestssetmetadataerror60233a273facfd1c/directoryapitestssetmetadataerror146746bea7e8e267?restype=directory",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -27,18 +27,18 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D721BDA38C52BA\"",
-      "Last-Modified" : "Thu, 15 Aug 2019 20:17:47 GMT",
+      "ETag" : "\"0x8D7258EB75DF2DF\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:51:58 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d378edec-a01a-013f-15a6-53c1ff000000",
+      "x-ms-request-id" : "d633902f-b01a-002f-3877-57b14c000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Thu, 15 Aug 2019 20:17:47 GMT"
+      "Date" : "Tue, 20 Aug 2019 16:51:58 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestssetmetadataerror53763b9df6ccea34/directoryapitestssetmetadataerror5564431cd6791e09?restype=directory&comp=metadata",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestssetmetadataerror60233a273facfd1c/directoryapitestssetmetadataerror146746bea7e8e267?restype=directory&comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -50,11 +50,11 @@
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "d378eded-a01a-013f-16a6-53c1ff000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:d378eded-a01a-013f-16a6-53c1ff000000\nTime:2019-08-15T20:17:47.3115487Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Thu, 15 Aug 2019 20:17:47 GMT",
+      "x-ms-request-id" : "d6339030-b01a-002f-3977-57b14c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:d6339030-b01a-002f-3977-57b14c000000\nTime:2019-08-20T16:51:58.8791232Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Tue, 20 Aug 2019 16:51:58 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "directoryapitestssetmetadataerror53763b9df6ccea34", "directoryapitestssetmetadataerror5564431cd6791e09" ]
+  "variables" : [ "directoryapitestssetmetadataerror60233a273facfd1c", "directoryapitestssetmetadataerror146746bea7e8e267" ]
 }

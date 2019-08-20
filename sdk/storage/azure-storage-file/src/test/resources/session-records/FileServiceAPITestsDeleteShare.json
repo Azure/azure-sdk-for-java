@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceapitestsdeleteshare64567353f237bbc42?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceapitestsdeleteshare217055ac8c2118bbb?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D721BDBBE67CB9\"",
-      "Last-Modified" : "Thu, 15 Aug 2019 20:18:28 GMT",
+      "ETag" : "\"0x8D7258ECC104103\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:52:33 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "b91a4d55-101a-0029-21a6-534634000000",
-      "Date" : "Thu, 15 Aug 2019 20:18:27 GMT"
+      "x-ms-request-id" : "6530f56b-901a-013c-3e77-57c2f8000000",
+      "Date" : "Tue, 20 Aug 2019 16:52:33 GMT"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceapitestsdeleteshare64567353f237bbc42?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceapitestsdeleteshare217055ac8c2118bbb?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -30,9 +30,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "b91a4d57-101a-0029-22a6-534634000000",
-      "Date" : "Thu, 15 Aug 2019 20:18:27 GMT"
+      "x-ms-request-id" : "6530f56d-901a-013c-3f77-57c2f8000000",
+      "Date" : "Tue, 20 Aug 2019 16:52:33 GMT"
     }
   } ],
-  "variables" : [ "fileserviceapitestsdeleteshare64567353f237bbc42" ]
+  "variables" : [ "fileserviceapitestsdeleteshare217055ac8c2118bbb" ]
 }
