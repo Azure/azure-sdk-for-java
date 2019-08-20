@@ -28,23 +28,15 @@ public class GoodLoggingCheck extends AbstractCheck {
     private static final String CLIENT_LOGGER = "ClientLogger";
     private static final String LOGGER_NAME_ERROR = "ClientLogger instance naming: use ''%s'' instead of ''%s'' for consistency.";
     private static final String STATIC_LOGGER_ERROR = "Reference to ClientLogger should not be static: remove static modifier.";
-    private static final String NOT_CLIENT_LOGGER_ERROR = "Do not use external logger class. Use ''%s'' as a logging mechanism instead of ''%s''.";
+    private static final String NOT_CLIENT_LOGGER_ERROR = "Do not use %s class. Use ''%s'' as a logging mechanism instead of ''%s''.";
+    private static final String LOGGER = "logger";
 
     private boolean hasClientLoggerImported;
-    private String loggerRequiredName;
     private String className;
 
     private static final Set<String> INVALID_LOG_SET = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         "org.slf4j", "org.apache.logging.log4j"
     )));
-
-    /**
-     * Setter to specifies valid identifiers
-     * @param loggerRequiredName the variable name of logger used
-     */
-    public void setLoggerName(String loggerRequiredName) {
-        this.loggerRequiredName = loggerRequiredName;
-    }
 
     @Override
     public int[] getDefaultTokens() {
@@ -81,7 +73,7 @@ public class GoodLoggingCheck extends AbstractCheck {
                 for (final String logger : INVALID_LOG_SET) {
                     if (importClassPath.startsWith(logger)) {
                         // Checks no use any external logger class.
-                        log(ast, String.format(NOT_CLIENT_LOGGER_ERROR, CLIENT_LOGGER_PATH, logger));
+                        log(ast, String.format(NOT_CLIENT_LOGGER_ERROR, "external logger", CLIENT_LOGGER_PATH, logger));
                     }
                 }
                 break;
@@ -104,7 +96,7 @@ public class GoodLoggingCheck extends AbstractCheck {
                 }
                 final String methodCallName = FullIdent.createFullIdentBelow(dotToken).getText();
                 if (methodCallName.startsWith("System.out") || methodCallName.startsWith("System.err")) {
-                    log(ast, String.format("Do not use Java System class for logging. Use ClientLogger in ''%s'' instead.", CLIENT_LOGGER_PATH));
+                    log(ast, String.format(NOT_CLIENT_LOGGER_ERROR, "Java System", CLIENT_LOGGER_PATH, methodCallName));
                 }
                 break;
             default:
@@ -164,8 +156,8 @@ public class GoodLoggingCheck extends AbstractCheck {
         }
         // Check if the Logger instance named as 'logger'.
         final DetailAST identAST = varToken.findFirstToken(TokenTypes.IDENT);
-        if (identAST != null && !identAST.getText().equals(loggerRequiredName)) {
-            log(varToken, String.format(LOGGER_NAME_ERROR, loggerRequiredName, identAST.getText()));
+        if (identAST != null && !identAST.getText().equals(LOGGER)) {
+            log(varToken, String.format(LOGGER_NAME_ERROR, LOGGER, identAST.getText()));
         }
         // Check if the Logger is static instance, log as error if it is static instance logger.
         if (TokenUtil.findFirstTokenByPredicate(varToken, node -> node.getType() == TokenTypes.MODIFIERS && node.branchContains(TokenTypes.LITERAL_STATIC)).isPresent()) {

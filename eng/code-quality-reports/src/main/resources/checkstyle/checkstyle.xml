@@ -322,7 +322,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- CUSTOM CHECKS -->
     <!-- Verify the whenever a field is assigned just once in constructor to be final -->
     <module name="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"/>
-    
+
     <!-- Javadoc format: 'param / return / throws' descriptions text should only have one space character after the
      parameter name or return -->
     <module name="com.azure.tools.checkstyle.checks.JavaDocFormatting"/>
@@ -338,8 +338,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     1) ServiceLogger exists in public API should named 'logger'
     2) Non-static ServiceLogger instance logger
     3) All classes should use ServiceLogger as logger only but except ServiceLogger itself -->
-    <module name="com.azure.tools.checkstyle.checks.GoodLoggingCheck">
-      <property name="loggerName" value="logger"/>
-    </module>
+    <module name="com.azure.tools.checkstyle.checks.GoodLoggingCheck"/>
+
   </module>
 </module>
