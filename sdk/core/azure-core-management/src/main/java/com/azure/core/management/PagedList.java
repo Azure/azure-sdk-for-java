@@ -25,7 +25,7 @@ public abstract class PagedList<E> implements List<E> {
     private final ClientLogger logger = new ClientLogger(PagedList.class);
 
     /** The actual items in the list. */
-    private List<E> items;
+    private final List<E> items;
     /** Stores the latest page fetched. */
     private Page<E> currentPage;
     /** Cached page right after the current one. */
