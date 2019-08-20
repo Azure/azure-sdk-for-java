@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -25,6 +26,7 @@ import java.util.Map;
  * The Pipeline policy that which stores cookies based on the response Set-Cookie header and adds cookies to requests.
  */
 public class CookiePolicy implements HttpPipelinePolicy {
+    private final ClientLogger logger = new ClientLogger(CookiePolicy.class);
     private final CookieHandler cookies = new CookieManager();
 
     @Override
@@ -51,7 +53,7 @@ public class CookiePolicy implements HttpPipelinePolicy {
                 try {
                     cookies.put(uri, responseHeaders);
                 } catch (IOException e) {
-                    throw Exceptions.propagate(e);
+                    throw logger.logExceptionAsError(Exceptions.propagate(e));
                 }
                 return httpResponse;
             });

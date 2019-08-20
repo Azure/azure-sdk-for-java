@@ -269,8 +269,8 @@ public final class QueueServiceClientBuilder {
         try {
             this.endpoint = new URL(String.format("https://%s.queue.core.windows.net", accountName));
         } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format("There is no valid account for the connection string. "
-                + "Connection String: %s", connectionString)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format("There is no valid account for the "
+                + "connection string. Connection String: %s", connectionString)));
         }
     }
 

@@ -72,7 +72,7 @@ public final class QueueServiceAsyncClient {
             return new URL(client.getUrl());
         } catch (MalformedURLException ex) {
             logger.error("Queue Service URL is malformed");
-            throw new RuntimeException("Storage account URL is malformed");
+            throw logger.logExceptionAsError(new RuntimeException("Storage account URL is malformed"));
         }
     }
 

@@ -328,6 +328,10 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="com.azure.tools.checkstyle.checks.JavaDocFormatting"/>
 
     <!--CUSTOM CHECKS-->
+    <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
+    <module name="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"/>
+
+    <!--CUSTOM CHECKS-->
     <!-- Any class that implements the HttpPipelinePolicy interface should:
     1) Must be a public class.
     2) Not in an implementation package or sub-package. -->
@@ -339,6 +343,5 @@ page at http://checkstyle.sourceforge.net/config.html -->
     2) Non-static ServiceLogger instance logger
     3) All classes should use ServiceLogger as logger only but except ServiceLogger itself -->
     <module name="com.azure.tools.checkstyle.checks.GoodLoggingCheck"/>
-
   </module>
 </module>

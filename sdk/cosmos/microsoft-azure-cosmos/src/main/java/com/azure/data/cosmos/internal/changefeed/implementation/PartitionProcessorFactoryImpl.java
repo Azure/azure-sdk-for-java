@@ -23,15 +23,26 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
     private final CosmosContainer collectionSelfLink;
 
     public PartitionProcessorFactoryImpl(
-        ChangeFeedContextClient documentClient,
-        ChangeFeedProcessorOptions changeFeedProcessorOptions,
-        LeaseCheckpointer leaseCheckpointer,
-        CosmosContainer collectionSelfLink) {
+            ChangeFeedContextClient documentClient,
+            ChangeFeedProcessorOptions changeFeedProcessorOptions,
+            LeaseCheckpointer leaseCheckpointer,
+            CosmosContainer collectionSelfLink) {
 
-        if (documentClient == null) throw new IllegalArgumentException("documentClient");
-        if (changeFeedProcessorOptions == null) throw new IllegalArgumentException("changeFeedProcessorOptions");
-        if (leaseCheckpointer == null) throw new IllegalArgumentException("leaseCheckpointer");
-        if (collectionSelfLink == null) throw new IllegalArgumentException("collectionSelfLink");
+        if (documentClient == null) {
+            throw new IllegalArgumentException("documentClient");
+        }
+
+        if (changeFeedProcessorOptions == null) {
+            throw new IllegalArgumentException("changeFeedProcessorOptions");
+        }
+
+        if (leaseCheckpointer == null) {
+            throw new IllegalArgumentException("leaseCheckpointer");
+        }
+
+        if (collectionSelfLink == null) {
+            throw new IllegalArgumentException("collectionSelfLink");
+        }
 
         this.documentClient = documentClient;
         this.changeFeedProcessorOptions = changeFeedProcessorOptions;
@@ -41,8 +52,13 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
 
     @Override
     public PartitionProcessor create(Lease lease, ChangeFeedObserver observer) {
-        if (observer == null) throw new IllegalArgumentException("observer");
-        if (lease == null) throw new IllegalArgumentException("lease");
+        if (observer == null) {
+            throw new IllegalArgumentException("observer");
+        }
+
+        if (lease == null) {
+            throw new IllegalArgumentException("lease");
+        }
 
         String startContinuation = lease.getContinuationToken();
 
