@@ -18,12 +18,12 @@ public class BasicAuthenticationCredential implements TokenCredential {
     /**
      * Basic auth user name.
      */
-    private String userName;
+    private final String userName;
 
     /**
      * Basic auth password.
      */
-    private String password;
+    private final String password;
 
     /**
      * Creates a basic authentication credential.

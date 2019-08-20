@@ -152,9 +152,9 @@ public class ConfigurationClientCredentials {
         private static final String ID = "id=";
         private static final String SECRET = "secret=";
 
-        private URL baseUri;
-        private String id;
-        private byte[] secret;
+        private final URL baseUri;
+        private final String id;
+        private final byte[] secret;
 
         URL baseUri() {
             return baseUri;
@@ -178,23 +178,31 @@ public class ConfigurationClientCredentials {
                 throw new IllegalArgumentException("invalid connection string segment count");
             }
 
+            URL baseUri = null;
+            String id = null;
+            byte[] secret = null;
+
             for (String arg : args) {
                 String segment = arg.trim();
                 String lowerCase = segment.toLowerCase(Locale.US);
 
                 if (lowerCase.startsWith(ENDPOINT)) {
                     try {
-                        this.baseUri = new URL(segment.substring(ENDPOINT.length()));
+                        baseUri = new URL(segment.substring(ENDPOINT.length()));
                     } catch (MalformedURLException ex) {
                         throw new IllegalArgumentException(ex);
                     }
                 } else if (lowerCase.startsWith(ID)) {
-                    this.id = segment.substring(ID.length());
+                    id = segment.substring(ID.length());
                 } else if (lowerCase.startsWith(SECRET)) {
                     String secretBase64 = segment.substring(SECRET.length());
-                    this.secret = Base64.getDecoder().decode(secretBase64);
+                    secret = Base64.getDecoder().decode(secretBase64);
                 }
             }
+
+            this.baseUri = baseUri;
+            this.id = id;
+            this.secret = secret;
 
             if (this.baseUri == null || this.id == null || this.secret == null) {
                 throw new IllegalArgumentException("Could not parse 'connectionString'."
