@@ -537,4 +537,10 @@
     <Class name="com.azure.storage.blob.ServiceSASSignatureValues"/>
     <Bug pattern="UC_USELESS_CONDITION"/>
   </Match>
+
+  <!-- This is a false positive, the subscribe method will be called before onNext, onCancelled, or onError. -->
+  <Match>
+    <Class name="com.azure.core.implementation.util.FluxUtil$1"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
 </FindBugsFilter>

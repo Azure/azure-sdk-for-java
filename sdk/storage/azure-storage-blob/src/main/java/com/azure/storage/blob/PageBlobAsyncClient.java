@@ -21,12 +21,12 @@ import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.common.Constants;
-import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 
 import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
@@ -152,7 +152,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded pages.
      */
-    public Mono<Response<PageBlobItem>> uploadPages(PageRange pageRange, Flux<ByteBuf> body) {
+    public Mono<Response<PageBlobItem>> uploadPages(PageRange pageRange, Flux<ByteBuffer> body) {
         return this.uploadPages(pageRange, body, null);
     }
 
@@ -177,7 +177,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response containing the information of the uploaded pages.
      * @throws IllegalArgumentException If {@code pageRange} is {@code null}
      */
-    public Mono<Response<PageBlobItem>> uploadPages(PageRange pageRange, Flux<ByteBuf> body,
+    public Mono<Response<PageBlobItem>> uploadPages(PageRange pageRange, Flux<ByteBuffer> body,
             PageBlobAccessConditions pageBlobAccessConditions) {
         pageBlobAccessConditions = pageBlobAccessConditions == null ? new PageBlobAccessConditions() : pageBlobAccessConditions;
 

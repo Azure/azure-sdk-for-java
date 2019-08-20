@@ -3,20 +3,20 @@
 package com.azure.storage.file;
 
 import com.azure.core.test.TestBase;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.Map;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TestName;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.Map;
+
 public abstract class FileClientTestBase extends TestBase {
     final Map<String, String> basicMetadata = Collections.singletonMap("test", "metadata");
     static final String DEFAULT_TEXT = "default";
-    final ByteBuf defaultData = Unpooled.wrappedBuffer(DEFAULT_TEXT.getBytes(StandardCharsets.UTF_8));
+    final ByteBuffer defaultData = ByteBuffer.wrap(DEFAULT_TEXT.getBytes(StandardCharsets.UTF_8));
 
     @Rule
     public TestName testName = new TestName();

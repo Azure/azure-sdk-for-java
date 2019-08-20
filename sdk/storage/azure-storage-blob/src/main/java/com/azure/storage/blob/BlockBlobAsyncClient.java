@@ -21,7 +21,6 @@ import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.common.Constants;
-import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -29,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
@@ -114,7 +114,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<Response<BlockBlobItem>> upload(Flux<ByteBuf> data, long length) {
+    public Mono<Response<BlockBlobItem>> upload(Flux<ByteBuffer> data, long length) {
         return this.upload(data, length, null, null, null);
     }
 
@@ -146,7 +146,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<Response<BlockBlobItem>> upload(Flux<ByteBuf> data, long length, BlobHTTPHeaders headers,
+    public Mono<Response<BlockBlobItem>> upload(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
             Metadata metadata, BlobAccessConditions accessConditions) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
@@ -193,7 +193,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
                     .doOnNext(chunk -> blockIds.put(chunk.offset(), getBlockID()))
                     .flatMap(chunk -> {
                         String blockId = blockIds.get(chunk.offset());
-                        return stageBlock(blockId, FluxUtil.byteBufStreamFromFile(channel, chunk.offset(), chunk.count()), chunk.count(), null);
+                        return stageBlock(blockId, FluxUtil.readFile(channel, chunk.offset(), chunk.count()), chunk.count(), null);
                     })
                     .then(Mono.defer(() -> commitBlockList(new ArrayList<>(blockIds.values()), headers, metadata, accessConditions)))
                     .then()
@@ -265,7 +265,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<VoidResponse> stageBlock(String base64BlockID, Flux<ByteBuf> data,
+    public Mono<VoidResponse> stageBlock(String base64BlockID, Flux<ByteBuffer> data,
                                                          long length) {
         return this.stageBlock(base64BlockID, data, length, null);
     }
@@ -294,7 +294,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<VoidResponse> stageBlock(String base64BlockID, Flux<ByteBuf> data, long length,
+    public Mono<VoidResponse> stageBlock(String base64BlockID, Flux<ByteBuffer> data, long length,
                  LeaseAccessConditions leaseAccessConditions) {
         return postProcessResponse(this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null,
             null, base64BlockID, length, data, null, null, null,

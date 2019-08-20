@@ -7,13 +7,11 @@ import com.azure.core.entities.HttpBinFormDataJSON;
 import com.azure.core.entities.HttpBinFormDataJSON.Form;
 import com.azure.core.entities.HttpBinFormDataJSON.PizzaSize;
 import com.azure.core.entities.HttpBinJSON;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
-import com.azure.core.http.ProxyOptions;
 import com.azure.core.implementation.Base64Url;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.util.FluxUtil;
@@ -29,7 +27,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 /**
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.

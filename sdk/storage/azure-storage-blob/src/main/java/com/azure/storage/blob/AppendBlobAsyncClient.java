@@ -15,11 +15,11 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.common.Constants;
-import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.nio.ByteBuffer;
 
 import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
@@ -116,7 +116,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the append blob operation.
      */
-    public Mono<Response<AppendBlobItem>> appendBlock(Flux<ByteBuf> data, long length) {
+    public Mono<Response<AppendBlobItem>> appendBlock(Flux<ByteBuffer> data, long length) {
         return this.appendBlock(data, length, null);
     }
 
@@ -138,7 +138,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the append blob operation.
      */
-    public Mono<Response<AppendBlobItem>> appendBlock(Flux<ByteBuf> data, long length,
+    public Mono<Response<AppendBlobItem>> appendBlock(Flux<ByteBuffer> data, long length,
                                                       AppendBlobAccessConditions appendBlobAccessConditions) {
         appendBlobAccessConditions = appendBlobAccessConditions == null ? new AppendBlobAccessConditions()
             : appendBlobAccessConditions;

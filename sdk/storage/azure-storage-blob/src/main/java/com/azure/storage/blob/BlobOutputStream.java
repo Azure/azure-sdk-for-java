@@ -9,8 +9,6 @@ import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageBlobAccessConditions;
 import com.azure.storage.blob.models.PageRange;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
@@ -20,6 +18,7 @@ import reactor.core.publisher.Operators;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import java.nio.channels.CompletionHandler;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -244,7 +243,7 @@ public final class BlobOutputStream extends OutputStream {
      *             If an I/O error occurs. In particular, an IOException may be thrown if the output stream has been
      *             closed.
      */
-    private Mono<Integer> dispatchWrite(Flux<ByteBuf> bufferRef, int writeLength, long offset) {
+    private Mono<Integer> dispatchWrite(Flux<ByteBuffer> bufferRef, int writeLength, long offset) {
         if (writeLength == 0) {
             return Mono.empty();
         }
@@ -275,7 +274,7 @@ public final class BlobOutputStream extends OutputStream {
         }
     }
 
-    private Mono<Void> writeBlock(Flux<ByteBuf> blockData, String blockId, long writeLength) {
+    private Mono<Void> writeBlock(Flux<ByteBuffer> blockData, String blockId, long writeLength) {
         assert this.blobClient instanceof BlockBlobAsyncClient;
         final BlockBlobAsyncClient blobRef = (BlockBlobAsyncClient) this.blobClient;
 
@@ -289,7 +288,7 @@ public final class BlobOutputStream extends OutputStream {
             });
     }
 
-    private Mono<Void> writePages(Flux<ByteBuf> pageData, long offset, long writeLength) {
+    private Mono<Void> writePages(Flux<ByteBuffer> pageData, long offset, long writeLength) {
         assert this.blobClient instanceof PageBlobAsyncClient;
         final PageBlobAsyncClient blobRef = (PageBlobAsyncClient) this.blobClient;
 
@@ -303,7 +302,7 @@ public final class BlobOutputStream extends OutputStream {
             });
     }
 
-    private Mono<Void> appendBlock(Flux<ByteBuf> blockData, long offset, long writeLength) {
+    private Mono<Void> appendBlock(Flux<ByteBuffer> blockData, long offset, long writeLength) {
         assert this.blobClient instanceof AppendBlobAsyncClient;
         final AppendBlobAsyncClient blobRef = (AppendBlobAsyncClient) this.blobClient;
         if (this.appendPositionAccessConditions == null) {
@@ -453,7 +452,7 @@ public final class BlobOutputStream extends OutputStream {
         if (position + chunkLength > offset + length) {
             chunkLength = offset + length - position;
         }
-        Flux<ByteBuf> chunkData = new ByteBufStreamFromByteArray(data, 64 * 1024, position, chunkLength);
+        Flux<ByteBuffer> chunkData = new ByteBufStreamFromByteArray(data, 64 * 1024, position, chunkLength);
         return dispatchWrite(chunkData, chunkLength, position - offset)
             .doOnError(t -> {
                 if (t instanceof IOException) {
@@ -464,15 +463,13 @@ public final class BlobOutputStream extends OutputStream {
             });
     }
 
-    private static final class ByteBufStreamFromByteArray extends Flux<ByteBuf> {
-        private final ByteBufAllocator alloc;
+    private static final class ByteBufStreamFromByteArray extends Flux<ByteBuffer> {
         private final byte[] bigByteArray;
         private final int chunkSize;
         private final int offset;
         private final int length;
 
         ByteBufStreamFromByteArray(byte[] bigByteArray, int chunkSize, int offset, int length) {
-            this.alloc = ByteBufAllocator.DEFAULT;
             this.bigByteArray = bigByteArray;
             this.chunkSize = chunkSize;
             this.offset = offset;
@@ -480,27 +477,26 @@ public final class BlobOutputStream extends OutputStream {
         }
 
         @Override
-        public void subscribe(CoreSubscriber<? super ByteBuf> actual) {
-            ByteBufStreamFromByteArray.FileReadSubscription subscription = new ByteBufStreamFromByteArray.FileReadSubscription(actual, bigByteArray, alloc, chunkSize, offset, length);
+        public void subscribe(CoreSubscriber<? super ByteBuffer> actual) {
+            ByteBufStreamFromByteArray.FileReadSubscription subscription = new ByteBufStreamFromByteArray.FileReadSubscription(actual, bigByteArray, chunkSize, offset, length);
             actual.onSubscribe(subscription);
         }
 
-        static final class FileReadSubscription implements Subscription, CompletionHandler<Integer, ByteBuf> {
+        static final class FileReadSubscription implements Subscription, CompletionHandler<Integer, ByteBuffer> {
             private static final int NOT_SET = -1;
             private static final long serialVersionUID = -6831808726875304256L;
             //
-            private final Subscriber<? super ByteBuf> subscriber;
+            private final Subscriber<? super ByteBuffer> subscriber;
             private volatile int position;
             //
             private final byte[] bigByteArray;
-            private final ByteBufAllocator alloc;
             private final int chunkSize;
             private final int offset;
             private final int length;
             //
             private volatile boolean done;
             private Throwable error;
-            private volatile ByteBuf next;
+            private volatile ByteBuffer next;
             private volatile boolean cancelled;
             //
             volatile int wip;
@@ -511,11 +507,10 @@ public final class BlobOutputStream extends OutputStream {
             static final AtomicLongFieldUpdater<ByteBufStreamFromByteArray.FileReadSubscription> REQUESTED = AtomicLongFieldUpdater.newUpdater(ByteBufStreamFromByteArray.FileReadSubscription.class, "requested");
             //
 
-            FileReadSubscription(Subscriber<? super ByteBuf> subscriber, byte[] bigByteArray, ByteBufAllocator alloc, int chunkSize, int offset, int length) {
+            FileReadSubscription(Subscriber<? super ByteBuffer> subscriber, byte[] bigByteArray, int chunkSize, int offset, int length) {
                 this.subscriber = subscriber;
                 //
                 this.bigByteArray = bigByteArray;
-                this.alloc = alloc;
                 this.chunkSize = chunkSize;
                 this.offset = offset;
                 this.length = length;
@@ -543,7 +538,7 @@ public final class BlobOutputStream extends OutputStream {
             //region CompletionHandler implementation
 
             @Override
-            public void completed(Integer bytesRead, ByteBuf buffer) {
+            public void completed(Integer bytesRead, ByteBuffer buffer) {
                 if (!cancelled) {
                     if (bytesRead == -1) {
                         done = true;
@@ -551,8 +546,7 @@ public final class BlobOutputStream extends OutputStream {
                         // use local variable to perform fewer volatile reads
                         int pos = position;
                         //
-                        int bytesWanted = (int) Math.min(bytesRead, maxRequired(pos));
-                        buffer.writerIndex(bytesWanted);
+                        int bytesWanted = Math.min(bytesRead, maxRequired(pos));
                         int position2 = pos + bytesWanted;
                         //noinspection NonAtomicOperationOnVolatileField
                         position = position2;
@@ -566,7 +560,7 @@ public final class BlobOutputStream extends OutputStream {
             }
 
             @Override
-            public void failed(Throwable exc, ByteBuf attachment) {
+            public void failed(Throwable exc, ByteBuffer attachment) {
                 if (!cancelled) {
                     // must set error before setting done to true
                     // so that is visible in drain loop
@@ -596,7 +590,7 @@ public final class BlobOutputStream extends OutputStream {
                         boolean emitted = false;
                         // read d before next to avoid race
                         boolean d = done;
-                        ByteBuf bb = next;
+                        ByteBuffer bb = next;
                         if (bb != null) {
                             next = null;
                             //
@@ -643,9 +637,9 @@ public final class BlobOutputStream extends OutputStream {
                 // use local variable to limit volatile reads
                 int pos = position;
                 int readSize = Math.min(chunkSize, maxRequired(pos));
-                ByteBuf innerBuf = alloc.buffer(readSize, readSize);
+                ByteBuffer innerBuf = ByteBuffer.allocateDirect(readSize);
                 try {
-                    innerBuf.writeBytes(bigByteArray, pos, readSize);
+                    innerBuf.put(bigByteArray, 0, readSize);
                     completed(readSize, innerBuf);
                 } catch (Exception e) {
                     failed(e, innerBuf);

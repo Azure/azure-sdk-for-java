@@ -119,9 +119,8 @@ class ReactorNettyClient implements HttpClient {
                 case HTTP: nettyProxy = ProxyProvider.Proxy.HTTP; break;
                 case SOCKS4: nettyProxy = ProxyProvider.Proxy.SOCKS4; break;
                 case SOCKS5: nettyProxy = ProxyProvider.Proxy.SOCKS5; break;
-                default: {
+                default:
                     throw logger.logExceptionAsWarning(new IllegalStateException("Unknown Proxy type '" + options.type() + "' in use. Not configuring Netty proxy."));
-                }
             }
             return c.proxy(ts -> ts.type(nettyProxy).address(options.address()));
         }));

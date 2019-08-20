@@ -24,7 +24,6 @@ import com.azure.storage.blob.models.RetentionPolicy
 import com.azure.storage.blob.models.StorageServiceProperties
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
-import io.netty.buffer.ByteBuf
 import org.junit.Assume
 import org.spockframework.lang.ISpecificationContext
 import reactor.core.publisher.Flux
@@ -513,9 +512,9 @@ class APISpec extends Specification {
     static class MockDownloadHttpResponse extends HttpResponse {
         private final int statusCode
         private final HttpHeaders headers
-        private final Flux<ByteBuf> body
+        private final Flux<ByteBuffer> body
 
-        MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuf> body) {
+        MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuffer> body) {
             this.request(response.request())
             this.statusCode = statusCode
             this.headers = response.headers()
@@ -538,7 +537,7 @@ class APISpec extends Specification {
         }
 
         @Override
-        Flux<ByteBuf> body() {
+        Flux<ByteBuffer> body() {
             return body
         }
 

@@ -38,12 +38,16 @@ import com.azure.storage.file.models.FilesStartCopyResponse;
 import com.azure.storage.file.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageErrorException;
-import io.netty.buffer.ByteBuf;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -54,9 +58,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 /**
  * This class provides a client that contains all the operations for interacting with file in Azure Storage File Service.
@@ -258,7 +259,7 @@ public class FileAsyncClient {
                    .flatMap(chunk -> downloadWithProperties(chunk, false)
                          .map(dar -> dar.value().body())
                          .subscribeOn(Schedulers.elastic())
-                         .flatMap(fbb -> FluxUtil.bytebufStreamToFile(fbb, channel, chunk.start() - (range == null ? 0 : range.start()))
+                         .flatMap(fbb -> FluxUtil.writeFile(fbb, channel, chunk.start() - (range == null ? 0 : range.start()))
                          .subscribeOn(Schedulers.elastic())
                          .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
                          .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException)))
@@ -458,7 +459,7 @@ public class FileAsyncClient {
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
-    public Mono<Response<FileUploadInfo>> upload(Flux<ByteBuf> data, long length) {
+    public Mono<Response<FileUploadInfo>> upload(Flux<ByteBuffer> data, long length) {
         FileRange range = new FileRange(0, length - 1);
         return azureFileStorageClient.files().uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), FileRangeWriteType.UPDATE, length, data, null, null, Context.NONE)
             .map(this::uploadResponse);
@@ -487,7 +488,7 @@ public class FileAsyncClient {
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
-    public Mono<Response<FileUploadInfo>> upload(Flux<ByteBuf> data, long length, long offset, FileRangeWriteType type) {
+    public Mono<Response<FileUploadInfo>> upload(Flux<ByteBuffer> data, long length, long offset, FileRangeWriteType type) {
         FileRange range = new FileRange(offset, offset + length - 1);
         return azureFileStorageClient.files().uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), type, length, data, null, null, Context.NONE)
                    .map(this::uploadResponse);
@@ -542,7 +543,7 @@ public class FileAsyncClient {
         AsynchronousFileChannel channel = channelSetup(uploadFilePath);
         return Flux.fromIterable(sliceFile(uploadFilePath))
                    .flatMap(chunk -> {
-                       return upload(FluxUtil.byteBufStreamFromFile(channel, chunk.start(), chunk.end() - chunk.start() + 1), chunk.end() - chunk.start() + 1, chunk.start(), type)
+                       return upload(FluxUtil.readFile(channel, chunk.start(), chunk.end() - chunk.start() + 1), chunk.end() - chunk.start() + 1, chunk.start(), type)
                             .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
                             .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException);
                    })
@@ -734,7 +735,7 @@ public class FileAsyncClient {
         Long contentLength = response.deserializedHeaders().contentLength();
         String contentType = response.deserializedHeaders().contentType();
         String contentRange = response.deserializedHeaders().contentRange();
-        Flux<ByteBuf> body = response.value();
+        Flux<ByteBuffer> body = response.value();
         FileDownloadInfo fileDownloadInfo = new FileDownloadInfo(eTag, lastModified, metadata, contentLength, contentType, contentRange, body);
         return new SimpleResponse<>(response, fileDownloadInfo);
     }
