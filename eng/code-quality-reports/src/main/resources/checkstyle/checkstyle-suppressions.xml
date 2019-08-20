@@ -98,18 +98,19 @@
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*\BlobOutputStream.java"/>
 
   <!-- Don't apply custom Checkstyle rules to files under test package -->
-  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientInstantiationCheck
-  |ServiceClientBuilderCheck|ServiceInterfaceCheck|HttpPipelinePolicyCheck|JavaDocFormatting|JavadocThrowsChecks
-  |ThrowFromClientLoggerCheck|EnforceFinalFieldsCheck)" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientInstantiationCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|HttpPipelinePolicyCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck)"
+            files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
 
   <!-- Don't apply custom Checkstyle rules to files under implementation package -->
-  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientInstantiationCheck
-  |ServiceClientBuilderCheck|ServiceInterfaceCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck)"
-  files=".*[/\\]implementation[/\\].*\.java"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientInstantiationCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck)"
+            files=".*[/\\]implementation[/\\].*\.java"/>
 
   <!-- Don't apply custom Checkstyle rules to files under samples package -->
-  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|HttpPipelinePolicyCheck|JavadocPackage
-  |EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck)" files=".*[/\\]samples[/\\].*\.java"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|HttpPipelinePolicyCheck|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck)"
+            files=".*[/\\]samples[/\\].*\.java"/>
+
+  <!-- Don't check for JavaDocPackage in samples or tests -->
+  <suppress checks="JavadocPackage" files=".*[/\\](samples|test)[/\\].*\.java"/>
 
   <!-- Don't apply custom Checkstyle rules to files under checkstyle package. -->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]tools[/\\]checkstyle[/\\].*"/>
