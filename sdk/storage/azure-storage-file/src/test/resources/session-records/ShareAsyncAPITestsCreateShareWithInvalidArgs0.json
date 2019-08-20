@@ -1,0 +1,23 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatesharewithinvalidargs02881462390?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "EmptyMetadataKey",
+      "retry-after" : "0",
+      "Content-Length" : "278",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "2d915a14-901a-0092-0dd7-56a7c0000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:2d915a14-901a-0092-0dd7-56a7c0000000\nTime:2019-08-19T21:47:53.2888577Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Mon, 19 Aug 2019 21:47:53 GMT",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "shareasyncapitestscreatesharewithinvalidargs02881462390" ]
+}

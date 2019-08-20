@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.file.spock
 
 import com.azure.core.exception.HttpResponseException
@@ -46,9 +49,9 @@ class FileAPITests extends APISpec {
         def accoutName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accoutName)
         when:
-        def directoryURL = primaryFileClient.getFileUrl().toString()
+        def fileURL = primaryFileClient.getFileUrl().toString()
         then:
-        expectURL.equals(directoryURL)
+        expectURL.equals(fileURL)
     }
 
     def "Create file"() {
@@ -258,17 +261,23 @@ class FileAPITests extends APISpec {
 
     def "List ranges"() {
         given:
+        def fileName = testResourceName.randomName("file", 60)
         primaryFileClient.create(1024, null, null)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, fileName)
+        primaryFileClient.uploadFromFile(uploadFile)
         expect:
         primaryFileClient.listRanges().each {
             assert it.start() == 0
-            assert it.end() == 1024
+            assert it.end() == 1023
         }
     }
 
     def "List ranges with range"() {
         given:
+        def fileName = testResourceName.randomName("file", 60)
         primaryFileClient.create(1024, null, null)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, fileName)
+        primaryFileClient.uploadFromFile(uploadFile)
         expect:
         primaryFileClient.listRanges(new FileRange(0, 511L)).each {
             assert it.start() == 0

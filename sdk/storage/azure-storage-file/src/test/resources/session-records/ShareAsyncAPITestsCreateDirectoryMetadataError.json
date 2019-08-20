@@ -1,0 +1,41 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatedirectorymetadataerror466474fe9?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D724EEEC25D106\"",
+      "Last-Modified" : "Mon, 19 Aug 2019 21:48:07 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "bc227db1-001a-005b-31d7-56370a000000",
+      "Date" : "Mon, 19 Aug 2019 21:48:07 GMT"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatedirectorymetadataerror466474fe9/testdirectory?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "EmptyMetadataKey",
+      "retry-after" : "0",
+      "Content-Length" : "278",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "bc227db3-001a-005b-32d7-56370a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:bc227db3-001a-005b-32d7-56370a000000\nTime:2019-08-19T21:48:07.9292578Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Mon, 19 Aug 2019 21:48:07 GMT",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "shareasyncapitestscreatedirectorymetadataerror466474fe9" ]
+}

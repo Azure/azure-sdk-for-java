@@ -6,6 +6,7 @@ package com.azure.storage.file.spock
 import com.azure.core.http.rest.Response
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.storage.file.models.CorsRule
+import com.azure.storage.file.models.FileRef
 import com.azure.storage.file.models.FileServiceProperties
 import com.azure.storage.file.models.Metrics
 import com.azure.storage.file.models.RetentionPolicy
@@ -194,6 +195,21 @@ class FileTestHelper {
                 return false
             }
             downloadFileString.remove(0)
+        }
+        return true
+    }
+
+    static String createRandomFileWithLength(int size, String fileName) {
+        def folder = "src/test/resources/testfiles/"
+        def randomFile = new File(folder + fileName)
+        RandomAccessFile raf = new RandomAccessFile(randomFile, "rw")
+        raf.setLength(size)
+        return randomFile.getPath()
+    }
+
+    static boolean assertFileRefName(FileRef fileRef, String name) {
+        if (fileRef != null) {
+            return Objects.equals(name, fileRef.name())
         }
         return true
     }

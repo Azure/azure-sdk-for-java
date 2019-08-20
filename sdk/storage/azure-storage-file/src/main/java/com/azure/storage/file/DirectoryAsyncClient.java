@@ -441,6 +441,7 @@ public class DirectoryAsyncClient {
      * Deletes the file with specific name in this directory.
      *
      * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Samples</strong></p>
      *
      * <p>Delete the file "filetest"</p>
      *
