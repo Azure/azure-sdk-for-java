@@ -19,6 +19,7 @@ import java.util.List;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import reactor.test.StepVerifier;
 
 import static com.azure.storage.file.FileTestHelpers.setupClient;
@@ -218,6 +219,7 @@ public class DirectoryAsyncClientTests extends DirectoryClientTestBase {
     }
 
     @Override
+    @Ignore
     public void listHandlesFromDirClient() {
         // TODO: Need to figure out way of creating handlers first.
 

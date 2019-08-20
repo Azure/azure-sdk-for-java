@@ -6,6 +6,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.util.configuration.ConfigurationManager;
 import java.util.Collections;
 import java.util.Map;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -82,6 +83,7 @@ public abstract class DirectoryClientTestBase extends TestBase {
     public abstract void listFilesAndDirectoriesFromDirClient();
 
     @Test
+    @Ignore
     public abstract void listHandlesFromDirClient();
 
     @Test

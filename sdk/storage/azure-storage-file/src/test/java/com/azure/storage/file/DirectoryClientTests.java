@@ -15,6 +15,7 @@ import java.util.Iterator;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 
 import static com.azure.storage.file.FileTestHelpers.setupClient;
 import static org.junit.Assert.assertTrue;
@@ -177,6 +178,7 @@ public class DirectoryClientTests extends DirectoryClientTestBase {
     }
 
     @Override
+    @Ignore
     public void listHandlesFromDirClient() {
         // TODO: Need to open channel and create handlers first.
 //        StorageTestBase.assertResponseStatusCode(directoryClient.create(), 201);
