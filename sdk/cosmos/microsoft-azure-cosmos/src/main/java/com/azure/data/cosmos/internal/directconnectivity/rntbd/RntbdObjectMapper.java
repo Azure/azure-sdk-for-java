@@ -11,28 +11,50 @@ import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ser.PropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.google.common.base.Strings;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.handler.codec.CorruptedFrameException;
-import io.netty.handler.codec.EncoderException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class RntbdObjectMapper {
 
-    private static final SimpleFilterProvider filterProvider;
-    private static final ObjectMapper objectMapper;
-    private static final ObjectWriter objectWriter;
-
-    static {
-        objectMapper = new ObjectMapper().setFilterProvider(filterProvider = new SimpleFilterProvider());
-        objectWriter = objectMapper.writer();
-    }
+    private static final Logger logger = LoggerFactory.getLogger(RntbdObjectMapper.class);
+    private static final SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+    private static final ObjectMapper objectMapper = new ObjectMapper().setFilterProvider(filterProvider);
+    private static final ObjectWriter objectWriter = objectMapper.writer();
+    private static final ConcurrentHashMap<Class<?>, String> simpleClassNames = new ConcurrentHashMap<>();
 
     private RntbdObjectMapper() {
+    }
+
+    public static String toJson(final Object value) {
+        try {
+            return objectWriter.writeValueAsString(value);
+        } catch (final JsonProcessingException error) {
+            logger.error("could not convert {} value to JSON due to:", value.getClass(), error);
+            try {
+                return Strings.lenientFormat("{\"error\":%s", objectWriter.writeValueAsString(error.toString()));
+            } catch (final JsonProcessingException exception) {
+                return "null";
+            }
+        }
+    }
+
+    public static String toString(final Object value) {
+        final String name = simpleClassNames.computeIfAbsent(value.getClass(), Class::getSimpleName);
+        return Strings.lenientFormat("%s(%s)", name, toJson(value));
+    }
+
+    public static ObjectWriter writer() {
+        return objectWriter;
     }
 
     static ObjectNode readTree(final RntbdResponse response) {
@@ -55,7 +77,7 @@ public final class RntbdObjectMapper {
             return (ObjectNode)node;
         }
 
-        final String cause = String.format("Expected %s, not %s", JsonNodeType.OBJECT, node.getNodeType());
+        final String cause = Strings.lenientFormat("Expected %s, not %s", JsonNodeType.OBJECT, node.getNodeType());
         throw new CorruptedFrameException(cause);
     }
 
@@ -69,17 +91,5 @@ public final class RntbdObjectMapper {
         } catch (final ReflectiveOperationException error) {
             throw new IllegalStateException(error);
         }
-    }
-
-    public static String toJson(Object value) {
-        try {
-            return objectWriter.writeValueAsString(value);
-        } catch (final JsonProcessingException error) {
-            throw new EncoderException(error);
-        }
-    }
-
-    public static ObjectWriter writer() {
-        return objectWriter;
     }
 }
