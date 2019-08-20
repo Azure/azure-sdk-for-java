@@ -43,9 +43,9 @@ public class SearchIndexClientTestBase extends TestBase {
     private static final String INDEX_FILE_NAME = "INDEX_FILE_NAME";
 
 
-    private static String searchServiceName;
-    private static String apiKey;
-    private static String indexName;
+    String searchServiceName;
+    String apiKey;
+    private String indexName;
 
     private AzureSearchResources azureSearchResources;
 

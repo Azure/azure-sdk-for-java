@@ -3,11 +3,13 @@
 
 package com.azure.search.data.test.customization;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.data.SearchIndexClient;
 import com.azure.search.data.common.DocumentResponseConversions;
 import com.azure.search.data.common.SearchPagedResponse;
+import com.azure.search.data.env.SearchIndexService;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.IndexBatch;
@@ -16,7 +18,9 @@ import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -29,6 +33,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertTrue;
 
@@ -40,33 +45,47 @@ public class SearchIndexClientSearchTest extends SearchIndexClientTestBase {
     private static final String INDEX_NAME = "hotels";
     private static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
     private static final String SEARCH_SCORE_FIELD = "@search.score";
+    private static final String MODEL_WITH_VALUE_TYPES_INDEX_JSON = "ModelWithValueTypesIndexData.json";
+    private static final String MODEL_WITH_VALUE_TYPES_DOCS_JSON = "ModelWithValueTypesDocsData.json";
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
         client = builderSetup().indexName(INDEX_NAME).buildClient();
         try {
-            uploadDocuments();
+            hotels = uploadDocuments(HOTELS_DATA_JSON);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void uploadDocuments() throws IOException {
+    private List<Map<String, Object>> uploadDocuments(String docsDataFile) throws IOException {
         Reader docsData = new InputStreamReader(
-            getClass().getClassLoader().getResourceAsStream(HOTELS_DATA_JSON));
-        hotels = new ObjectMapper().readValue(docsData, List.class);
+            getClass().getClassLoader().getResourceAsStream(docsDataFile));
+        List<Map<String, Object>> docs = new ObjectMapper().readValue(docsData, List.class);
         List<IndexAction> indexActions = new LinkedList<>();
 
-        hotels.forEach(h -> {
-            HashMap<String, Object> hotel = new HashMap<String, Object>(h);
+        docs.forEach(h -> {
+            HashMap<String, Object> doc = new HashMap<String, Object>(h);
             indexActions.add(new IndexAction()
                 .actionType(IndexActionType.UPLOAD)
-                .additionalProperties(hotel));
+                .additionalProperties(doc));
         });
 
         client.index(
             new IndexBatch().actions(indexActions));
+
+        // Wait 2 secs to index finish
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return docs;
     }
 
     @Test
@@ -139,6 +158,74 @@ public class SearchIndexClientSearchTest extends SearchIndexClientTestBase {
         Assert.assertEquals(expectedHotel2, hotel2);
     }
 
+    @Test
+    public void testCanFilter() {
+        SearchParameters searchParameters = new SearchParameters()
+            .filter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z");
+        PagedIterable<SearchResult> results = client.search("*", searchParameters, new SearchRequestOptions());
+        Assert.assertNotNull(results);
+
+        List<Map<String, Object>> searchResultsList = getSearchResults(results);
+        Assert.assertEquals(2, searchResultsList.size());
+
+        List hotelIds = searchResultsList.stream().map(r -> r.get("HotelId")).collect(Collectors.toList());
+        Assert.assertTrue(Arrays.asList("1", "5").containsAll(hotelIds));
+    }
+
+    @Test
+    public void testSearchThrowsWhenRequestIsMalformed() {
+        thrown.expect(HttpResponseException.class);
+        thrown.expectMessage("Invalid expression: Syntax error at position 7 in 'This is not a valid filter.'");
+
+        SearchParameters invalidSearchParameters = new SearchParameters()
+            .filter("This is not a valid filter.");
+
+        PagedIterable<SearchResult> results = client.search("*", invalidSearchParameters, new SearchRequestOptions());
+        results.iterableByPage().iterator().next();
+    }
+
+    @Test
+    public void testCanFilterNonNullableType() throws IOException {
+        /** TODO: This test is testing the case where a customer is using a model type with non-nullable (unboxed)
+         primitive types. When we support user data-structured serialization, we need to use that in this test.
+         **/
+        if (!interceptorManager.isPlaybackMode()) {
+            // In RECORDING mode (only), create a new index:
+            SearchIndexService searchIndexService = new SearchIndexService(
+                MODEL_WITH_VALUE_TYPES_INDEX_JSON, searchServiceName, apiKey);
+            searchIndexService.initialize();
+        }
+
+        client.setIndexName("testindex");
+        List<Map<String, Object>> docsList = uploadDocuments(MODEL_WITH_VALUE_TYPES_DOCS_JSON);
+        List<Map<String, Object>> expectedDocsList = docsList.stream().filter(d -> !d.get("Key").equals("789")).collect(
+            Collectors.toList());
+
+        SearchParameters searchParameters = new SearchParameters()
+            .filter("IntValue eq 0 or (Bucket/BucketName eq 'B' and Bucket/Count lt 10)");
+
+        PagedIterable<SearchResult> results = client.search("*", searchParameters, new SearchRequestOptions());
+        Assert.assertNotNull(results);
+
+        List<Map<String, Object>> searchResultsList = getSearchResults(results);
+        Assert.assertEquals(2, searchResultsList.size());
+
+        searchResultsList.forEach(SearchIndexClientSearchTest::dropUnnecessaryFields);
+        Assert.assertEquals(expectedDocsList, searchResultsList);
+    }
+
+    private List<Map<String, Object>> getSearchResults(PagedIterable<SearchResult> results) {
+        Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
+        List<Map<String, Object>> searchResults = new ArrayList<>();
+        while (iterator.hasNext()) {
+            SearchPagedResponse result = (SearchPagedResponse) iterator.next();
+            Assert.assertNotNull(result.items());
+            result.items().forEach(item -> searchResults.add(item.additionalProperties()));
+        }
+
+        return searchResults;
+    }
+
     private Map<String, Object> extractAndTransformSingleResult(SearchResult result) {
         return dropUnnecessaryFields(
             DocumentResponseConversions.convertLinkedHashMapToMap(
@@ -181,4 +268,5 @@ public class SearchIndexClientSearchTest extends SearchIndexClientTestBase {
         }
         return true;
     }
+
 }

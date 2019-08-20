@@ -131,7 +131,7 @@ public class AzureSearchResources {
         }
         if (resourceGroup != null) {
             System.out.println("Deleting Resource Group: " + resourceGroup.name());
-            azure.resourceGroups().deleteByName(resourceGroup.name());
+            azure.resourceGroups().beginDeleteByName(resourceGroup.name());
         }
     }
 }
