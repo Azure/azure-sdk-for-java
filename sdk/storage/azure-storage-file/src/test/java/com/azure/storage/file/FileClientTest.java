@@ -62,7 +62,7 @@ public class FileClientTest extends FileClientTestBase {
             return;
         }
         FileServiceClient fileServiceClient = new FileServiceClientBuilder()
-                                                  .connectionString(ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING"))
+                                                  .connectionString(ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING"))
                                                   .buildClient();
         shareClient = fileServiceClient.getShareClient(shareName);
         shareClient.create();

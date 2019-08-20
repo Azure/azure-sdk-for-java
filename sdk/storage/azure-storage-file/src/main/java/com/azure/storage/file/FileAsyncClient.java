@@ -496,7 +496,7 @@ public class FileAsyncClient {
      *
      * <p>Upload date "default" starting from 1024 bytes. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.clearRange#flux-long-int}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.upload#flux-long-int}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>

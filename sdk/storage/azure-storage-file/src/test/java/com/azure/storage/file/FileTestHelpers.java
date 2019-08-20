@@ -43,7 +43,7 @@ class FileTestHelpers {
         String endpoint = "https://teststorage.file.core.windows.net/";
 
         if (!isPlayback) {
-            connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING");
+            connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING");
             endpoint = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
         }
 
