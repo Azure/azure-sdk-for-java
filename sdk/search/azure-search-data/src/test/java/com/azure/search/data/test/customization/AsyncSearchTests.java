@@ -15,10 +15,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.test.StepVerifier;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AsyncSearchTests extends SearchIndexClientTestBase {
 
@@ -68,5 +71,30 @@ public class AsyncSearchTests extends SearchIndexClientTestBase {
                 Assert.assertEquals(nextPage.value().size(), 50);
                 Assert.assertEquals(nextPage.nextLink(), null);
             }).verifyComplete();
+    }
+
+    @Test
+    public void testCanUseTopAndSkipForClientSidePaging() {
+        List<String> orderBy = Stream.of("HotelId").collect(Collectors.toList());
+        SearchParameters parameters = new SearchParameters().top(3).skip(0).orderBy(orderBy);
+
+        PagedFlux<SearchResult> results = asyncClient.search("*", parameters, new SearchRequestOptions());
+        assertKeySequenceEqual(results, Arrays.asList("1", "10", "100"));
+
+        parameters = parameters.skip(3);
+        results = asyncClient.search("*", parameters, new SearchRequestOptions());
+        assertKeySequenceEqual(results, Arrays.asList("11", "12", "13"));
+    }
+
+    private void assertKeySequenceEqual(PagedFlux<SearchResult> results, List<String> expectedKeys) {
+        Assert.assertNotNull(results);
+
+        List<String> actualKeys = results.log()
+            .filter(doc -> doc.additionalProperties().containsKey("HotelId"))
+            .map(doc -> (String) doc.additionalProperties().get("HotelId"))
+            .collectList()
+            .block();
+
+        Assert.assertEquals(expectedKeys, actualKeys);
     }
 }
