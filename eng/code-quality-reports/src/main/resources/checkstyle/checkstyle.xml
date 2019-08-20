@@ -339,7 +339,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
     <!--CUSTOM CHECKS-->
     <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
-<!--    <module name="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck"/>-->
+    <module name="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"/>
 
     <!--CUSTOM CHECKS-->
     <!-- Any class that implements the HttpPipelinePolicy interface should:

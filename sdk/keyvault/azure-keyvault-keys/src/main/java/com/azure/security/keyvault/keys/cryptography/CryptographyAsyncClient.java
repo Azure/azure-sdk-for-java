@@ -113,7 +113,7 @@ public final class CryptographyAsyncClient {
                 localKeyCryptographyClient = new SymmetricKeyCryptographyClient(key, cryptographyServiceClient);
                 break;
             default:
-                throw new IllegalArgumentException(String.format("The Json Web Key Type: %s  is not supported.", key.kty().toString()));
+                throw logger.logExceptionAsError(new IllegalArgumentException(String.format("The Json Web Key Type: %s  is not supported.", key.kty().toString())));
         }
     }
 
@@ -524,7 +524,7 @@ public final class CryptographyAsyncClient {
 
     private void unpackAndValidateId(String keyId) {
         if (ImplUtils.isNullOrEmpty(keyId)) {
-            throw new IllegalArgumentException("Key Id is invalid");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Key Id is invalid"));
         }
         try {
             URL url = new URL(keyId);
@@ -533,14 +533,14 @@ public final class CryptographyAsyncClient {
             String keyName = (tokens.length >= 3 ? tokens[2] : null);
             String version = (tokens.length >= 4 ? tokens[3] : null);
             if (Strings.isNullOrEmpty(endpoint)) {
-                throw new IllegalArgumentException("Key endpoint in key id is invalid");
+                throw logger.logExceptionAsError(new IllegalArgumentException("Key endpoint in key id is invalid"));
             } else if (Strings.isNullOrEmpty(keyName)) {
-                throw new IllegalArgumentException("Key name in key id is invalid");
+                throw logger.logExceptionAsError(new IllegalArgumentException("Key name in key id is invalid"));
             } else if (Strings.isNullOrEmpty(version)) {
-                throw new IllegalArgumentException("Key version in key id is invalid");
+                throw logger.logExceptionAsError(new IllegalArgumentException("Key version in key id is invalid"));
             }
         } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("The key identifier is malformed", e);
+            throw logger.logExceptionAsError(new IllegalArgumentException("The key identifier is malformed", e));
         }
     }
 
