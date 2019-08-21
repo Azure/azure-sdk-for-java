@@ -3,16 +3,21 @@
 
 package com.azure.storage.queue.spock
 
+import com.azure.core.http.HttpClient
+import com.azure.core.http.ProxyOptions
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.queue.QueueClientBuilder
+import com.azure.storage.queue.QueueServiceAsyncClient
 import com.azure.storage.queue.QueueServiceClient
 import com.azure.storage.queue.QueueServiceClientBuilder
 import com.azure.storage.queue.models.QueuesSegmentOptions
 import spock.lang.Specification
+
+import java.util.function.Supplier
 
 class APISpec extends Specification {
     // Field common used for all APIs.
@@ -22,14 +27,17 @@ class APISpec extends Specification {
     def testResourceName
 
     // Clients for API tests
-    def primaryQueueServiceClient
-    def primaryQueueServiceAsyncClient
+    QueueServiceClient primaryQueueServiceClient
+    QueueServiceAsyncClient primaryQueueServiceAsyncClient
 
 
     // Test name for test method name.
     def methodName
     def testMode = getTestMode()
     def connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
+
+    // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
+    static boolean enableDebugging = true
 
     /**
      * Setup the QueueServiceClient and QueueClient common used for the API tests.
@@ -89,6 +97,7 @@ class APISpec extends Specification {
             return new QueueServiceClientBuilder()
                 .connectionString(connectionString)
                 .addPolicy(interceptorManager.getRecordPolicy())
+                .httpClient(getHttpClient())
         } else {
             return new QueueServiceClientBuilder()
                 .connectionString(connectionString)
@@ -119,5 +128,18 @@ class APISpec extends Specification {
             return fullName
         }
         return matcher[0][1] + matcher[0][3]
+    }
+
+    static HttpClient getHttpClient() {
+        if (enableDebugging) {
+            return HttpClient.createDefault().proxy(new Supplier<ProxyOptions>() {
+                @Override
+                ProxyOptions get() {
+                    return new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
+                }
+            })
+        } else {
+            return HttpClient.createDefault()
+        }
     }
 }

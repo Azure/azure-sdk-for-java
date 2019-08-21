@@ -66,7 +66,7 @@ class APISpec extends Specification {
     static defaultDataSize = defaultData.remaining()
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static boolean enableDebugging = false
+    static boolean enableDebugging = true
 
     // Prefixes for blobs and containers
     static String containerPrefix = "jtc" // java test container
@@ -209,7 +209,7 @@ class APISpec extends Specification {
         // TODO: logging?
 
         return new BlobServiceClientBuilder()
-            .endpoint("https://" + creds.accountName() + ".blob.core.windows.net")
+            .endpoint("http://" + creds.accountName() + ".blob.core.windows.net")
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .credential(creds)

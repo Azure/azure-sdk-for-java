@@ -570,7 +570,8 @@ public final class QueueAsyncClient {
         String accountName) {
 
         // Set canonical name
-        queueServiceSASSignatureValues.canonicalName(this.client.getUrl(), accountName);
+        // TODO: Find out why is this not consistent with blobs where it is in the path
+        queueServiceSASSignatureValues.canonicalName(this.queueName, accountName);
 
         queueServiceSASSignatureValues.resource(Constants.UrlConstants.SAS_QUEUE_CONSTANT);
 

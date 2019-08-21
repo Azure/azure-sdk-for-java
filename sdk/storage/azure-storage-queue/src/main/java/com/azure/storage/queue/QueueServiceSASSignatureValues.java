@@ -241,20 +241,21 @@ final class QueueServiceSASSignatureValues {
      * Sets the canonical name of the object the SAS user may access. Constructs a canonical name of
      * "/queue/{accountName}{Path of urlString}".
      *
-     * @param urlString URL string that contains the path to the object
+     * @param queueName URL string that contains the path to the object
      * @param accountName Name of the account that contains the object
      * @return the updated QueueServiceSASSignatureValues object
      * @throws RuntimeException If {@code urlString} is a malformed URL.
      */
-    public QueueServiceSASSignatureValues canonicalName(String urlString, String accountName) {
-        URL url;
-        try {
-            url = new URL(urlString);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+    public QueueServiceSASSignatureValues canonicalName(String queueName, String accountName) {
+//        URL url;
+//        try {
+//            url = new URL(urlString);
+//        } catch (MalformedURLException e) {
+//            throw new RuntimeException(e);
+//        }
 
-        this.canonicalName = String.format("/queue/%s%s", accountName, url.getPath());
+        // TODO: Find out why is this not consistent with blobs where it is in the path
+        this.canonicalName = String.format("/queue/%s/%s", accountName, queueName);
         return this;
     }
 
@@ -293,7 +294,8 @@ final class QueueServiceSASSignatureValues {
         assertGenerateOK();
 
         // Signature is generated on the un-url-encoded values.
-        String signature = sharedKeyCredentials.computeHmac256(stringToSign());
+        String stringToSign = stringToSign();
+        String signature = sharedKeyCredentials.computeHmac256(stringToSign);
 
         return new QueueServiceSASQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime, this.ipRange,
             this.identifier, this.resource, this.permissions, signature);
