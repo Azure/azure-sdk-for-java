@@ -13,6 +13,7 @@ import com.azure.search.data.generated.models.SearchParameters;
 import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
 import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -190,12 +191,14 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
+    @Test
     public void testCanGetResultCountInSearch() {
         PagedIterable<SearchResult> results = client.search("*", new SearchParameters().includeTotalResultCount(true), new SearchRequestOptions());
         Assert.assertNotNull(results);
-        List<Map<String, Object>> searchResultsList = getSearchResults(results);
+        Iterator<PagedResponse<SearchResult>> resultsIterator = results.iterableByPage().iterator();
 
-        Assert.assertEquals(hotels.size(), searchResultsList.size());
+        Assert.assertEquals(hotels.size(),((SearchPagedResponse) resultsIterator.next()).count().intValue());
+        Assert.assertFalse(resultsIterator.hasNext());
     }
 
     private List<Map<String, Object>> getSearchResults(PagedIterable<SearchResult> results) {
