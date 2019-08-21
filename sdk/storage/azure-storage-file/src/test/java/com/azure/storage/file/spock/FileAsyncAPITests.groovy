@@ -301,7 +301,7 @@ class FileAsyncAPITests extends APISpec {
         given:
         primaryFileAsyncClient.create(1024, null, null).block()
         def fileName = testResourceName.randomName("file", 60)
-        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, fileName)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder, fileName)
         primaryFileAsyncClient.uploadFromFile(uploadFile).block()
         expect:
         StepVerifier.create(primaryFileAsyncClient.listRanges())
@@ -315,7 +315,7 @@ class FileAsyncAPITests extends APISpec {
         given:
         primaryFileAsyncClient.create(1024, null, null).block()
         def fileName = testResourceName.randomName("file", 60)
-        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, fileName)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder, fileName)
         primaryFileAsyncClient.uploadFromFile(uploadFile).block()
         expect:
         StepVerifier.create(primaryFileAsyncClient.listRanges(new FileRange(0, 511L)))

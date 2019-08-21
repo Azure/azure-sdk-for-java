@@ -17,6 +17,7 @@ import com.azure.storage.file.models.StorageErrorException
 import com.azure.storage.file.models.StorageServiceProperties
 
 import java.nio.file.Files
+import java.nio.file.Paths
 import java.security.NoSuchAlgorithmException
 import java.time.Duration
 import java.util.logging.Logging
@@ -199,11 +200,15 @@ class FileTestHelper {
         return true
     }
 
-    static String createRandomFileWithLength(int size, String fileName) {
-        def folder = "src/test/resources/testfiles/"
+    static String createRandomFileWithLength(int size, String folder, String fileName) {
+        def path = Paths.get(folder)
+        if (!Files.exists(path)) {
+            Files.createDirectory(path)
+        }
         def randomFile = new File(folder + fileName)
         RandomAccessFile raf = new RandomAccessFile(randomFile, "rw")
         raf.setLength(size)
+        raf.close()
         return randomFile.getPath()
     }
 

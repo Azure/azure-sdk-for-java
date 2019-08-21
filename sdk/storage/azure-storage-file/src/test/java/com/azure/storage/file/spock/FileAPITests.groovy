@@ -140,8 +140,8 @@ class FileAPITests extends APISpec {
 
     def "Upload and download file"() {
         given:
-        File uploadFile = new File("src/test/resources/testfiles/helloworld")
-        File downloadFile = new File("src/test/resources/testfiles/testDownload")
+        File uploadFile = new File(testFolder + "helloworld")
+        File downloadFile = new File(testFolder + "testDownload")
 
         if (!Files.exists(downloadFile.toPath())) {
             downloadFile.createNewFile()
@@ -262,7 +262,7 @@ class FileAPITests extends APISpec {
         given:
         def fileName = testResourceName.randomName("file", 60)
         primaryFileClient.create(1024, null, null)
-        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, fileName)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
         expect:
         primaryFileClient.listRanges().each {
@@ -275,7 +275,7 @@ class FileAPITests extends APISpec {
         given:
         def fileName = testResourceName.randomName("file", 60)
         primaryFileClient.create(1024, null, null)
-        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, fileName)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
         expect:
         primaryFileClient.listRanges(new FileRange(0, 511L)).each {

@@ -107,8 +107,8 @@
     <proton-j-version>0.31.0</proton-j-version>
     <qpid-proton-j-extensions-version>1.2.0</qpid-proton-j-extensions-version>
     <log4j-api.version>2.11.1</log4j-api.version>
-    <groovy-eclipse-compiler.version>2.9.3-01</groovy-eclipse-compiler.version>
-    <groovy-eclipse-batch.version>2.4.16-03</groovy-eclipse-batch.version>
+    <groovy-eclipse-compiler.version>3.4.0-01</groovy-eclipse-compiler.version>
+    <groovy-eclipse-batch.version>2.5.8-01</groovy-eclipse-batch.version>
     <client-runtime.version.v2>2.1.1</client-runtime.version.v2>
     <slf4j-api.version>1.7.6</slf4j-api.version>
     <slf4j-log4j12.version>1.7.0</slf4j-log4j12.version>
