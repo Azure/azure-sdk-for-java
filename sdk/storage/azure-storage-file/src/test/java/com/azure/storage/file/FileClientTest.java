@@ -13,14 +13,15 @@ import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.util.Arrays;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
 
 import static com.azure.storage.file.FileTestHelpers.assertTwoFilesAreSame;
 import static com.azure.storage.file.FileTestHelpers.setupClient;
@@ -162,13 +163,13 @@ public class FileClientTest extends FileClientTestBase {
     @Override
     public void upload() {
         fileClient.create(1024 * 5, null, null);
-        FileTestHelpers.assertResponseStatusCode(fileClient.upload(defaultData, defaultData.readableBytes()), 201);
+        FileTestHelpers.assertResponseStatusCode(fileClient.upload(defaultData, defaultData.remaining()), 201);
     }
 
     @Override
     public void listRangesFromFileClient() {
         fileClient.create(1024, null, null);
-        fileClient.upload(defaultData, defaultData.readableBytes());
+        fileClient.upload(defaultData, defaultData.remaining());
         fileClient.listRanges(new FileRange(0, 511L)).forEach(
             fileRangeInfo -> {
                 Assert.assertTrue(fileRangeInfo.start() == 0);

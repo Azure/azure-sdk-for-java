@@ -421,11 +421,7 @@ public final class BlobOutputStream extends OutputStream {
     private void writeInternal(final byte[] data, int offset, int length) {
         int chunks = (int) (Math.ceil((double) length / (double) this.internalWriteThreshold));
         Flux<Integer> chunkPositions = Flux.range(0, chunks).map(c -> offset + c * this.internalWriteThreshold);
-        if (this.streamType == BlobType.APPEND_BLOB) {
-            chunkPositions.concatMap(pos -> processChunk(data, pos, offset, length)).then().block();
-        } else {
-            chunkPositions.concatMap(pos -> processChunk(data, pos, offset, length)).then().block();
-        }
+        chunkPositions.concatMap(pos -> processChunk(data, pos, offset, length)).then().block();
 
 //        synchronized (outBufferLock) {
 //            while (length > 0) {

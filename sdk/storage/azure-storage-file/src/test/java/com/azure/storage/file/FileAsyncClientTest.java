@@ -9,16 +9,17 @@ import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.HandleItem;
-import java.io.File;
-import java.net.URL;
-import java.nio.file.Files;
-import java.time.Duration;
-import java.util.Arrays;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
+
+import java.io.File;
+import java.net.URL;
+import java.nio.file.Files;
+import java.time.Duration;
+import java.util.Arrays;
 
 import static com.azure.storage.file.FileTestHelpers.assertTwoFilesAreSame;
 import static com.azure.storage.file.FileTestHelpers.setupClient;
@@ -175,7 +176,7 @@ public class FileAsyncClientTest extends FileClientTestBase {
     @Override
     public void upload() {
         fileAsyncClient.create(1024 * 5, null, null).block();
-        StepVerifier.create(fileAsyncClient.upload(Flux.just(defaultData), defaultData.readableBytes()))
+        StepVerifier.create(fileAsyncClient.upload(Flux.just(defaultData), defaultData.remaining()))
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
     }
@@ -183,7 +184,7 @@ public class FileAsyncClientTest extends FileClientTestBase {
     @Override
     public void listRangesFromFileClient() {
         fileAsyncClient.create(512, null, null).block();
-        fileAsyncClient.upload(Flux.just(defaultData), defaultData.readableBytes()).block();
+        fileAsyncClient.upload(Flux.just(defaultData), defaultData.remaining()).block();
         StepVerifier.create(fileAsyncClient.listRanges())
             .assertNext(response -> Assert.assertTrue(response.start() == 0 && response.end() == 511))
             .verifyComplete();
