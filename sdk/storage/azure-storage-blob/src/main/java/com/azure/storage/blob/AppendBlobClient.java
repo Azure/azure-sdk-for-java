@@ -85,7 +85,7 @@ public final class AppendBlobClient extends BlobClient {
      *             If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(AppendBlobAccessConditions accessConditions) {
-        return new BlobOutputStream(appendBlobAsyncClient, accessConditions);
+        return BlobOutputStream.appendBlobOutputStream(appendBlobAsyncClient, accessConditions);
     }
 
     /**

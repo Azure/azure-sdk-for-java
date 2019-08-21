@@ -96,7 +96,7 @@ public final class PageBlobClient extends BlobClient {
      *             If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(long length, BlobAccessConditions accessConditions) {
-        return new BlobOutputStream(pageBlobAsyncClient, length, accessConditions);
+        return BlobOutputStream.pageBlobOutputStream(pageBlobAsyncClient, length, accessConditions);
     }
 
     /**

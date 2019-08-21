@@ -95,7 +95,7 @@ public final class BlockBlobClient extends BlobClient {
      *             If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(BlobAccessConditions accessConditions) {
-        return new BlobOutputStream(blockBlobAsyncClient, accessConditions);
+        return BlobOutputStream.blockBlobOutputStream(blockBlobAsyncClient, accessConditions);
     }
 
     /**
