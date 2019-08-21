@@ -189,8 +189,8 @@ public class ServiceClientCheck extends AbstractCheck {
         final Optional<DetailAST> varDefTokenOption = TokenUtil.findFirstTokenByPredicate(objBlockToken, node ->
             node.getType() == TokenTypes.VARIABLE_DEF && !node.findFirstToken(TokenTypes.MODIFIERS).branchContains(TokenTypes.FINAL));
         if (varDefTokenOption.isPresent()) {
-            DetailAST varDefToken = varDefTokenOption.get();
-            String varName = varDefToken.findFirstToken(TokenTypes.IDENT).getText();
+            final DetailAST varDefToken = varDefTokenOption.get();
+            final String varName = varDefToken.findFirstToken(TokenTypes.IDENT).getText();
             log(varDefToken, String.format("The variable field ''%s'' of class ''%s'' should be final. Classes "
                 + "annotated with @ServiceClient are supposed to be immutable.", varName, objBlockToken.getPreviousSibling().getText()));
         }
@@ -241,7 +241,7 @@ public class ServiceClientCheck extends AbstractCheck {
         final DetailAST modifiersToken = methodDefToken.findFirstToken(TokenTypes.MODIFIERS);
         final Optional<DetailAST> serviceMethodAnnotationOption = TokenUtil.findFirstTokenByPredicate(modifiersToken,
             node -> node.getType() == TokenTypes.ANNOTATION && node.findFirstToken(TokenTypes.IDENT) != null
-                && node.findFirstToken(TokenTypes.IDENT).getText() == "ServiceMethod");
+                && node.findFirstToken(TokenTypes.IDENT).getText().equals("ServiceMethod"));
         // NOT a @ServiceMethod method
         if (!serviceMethodAnnotationOption.isPresent()) {
             return;
