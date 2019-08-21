@@ -1,6 +1,23 @@
 trigger:
-  - master
-  
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - sdk/core/
+    exclude:
+    - sdk/
+
+pr:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - sdk/core/
+    exclude:
+    - sdk/
+
 variables:
   MavenGoals: 'clean,compile'
 
