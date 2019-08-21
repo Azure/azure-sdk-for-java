@@ -7,7 +7,6 @@ import com.azure.core.exception.HttpResponseException
 import com.azure.core.http.rest.Response
 import com.azure.core.implementation.util.FluxUtil
 import com.azure.storage.common.credentials.SharedKeyCredential
-import com.azure.storage.file.FileTestHelpers
 import com.azure.storage.file.models.FileCopyInfo
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.FileRange
@@ -165,7 +164,7 @@ class FileAPITests extends APISpec {
         when:
         Response<FileCopyInfo> copyInfoResponse = primaryFileClient.startCopy(sourceURL, null)
         then:
-        FileTestHelpers.assertResponseStatusCode(copyInfoResponse, 202)
+        FileTestHelper.assertResponseStatusCode(copyInfoResponse, 202)
         copyInfoResponse.value().copyId() != null
     }
 
