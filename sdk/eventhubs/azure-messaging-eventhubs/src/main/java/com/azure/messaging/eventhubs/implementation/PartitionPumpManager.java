@@ -110,30 +110,41 @@ public class PartitionPumpManager {
         eventHubConsumer.receive().subscribe(eventData -> {
             try {
                 partitionProcessor.processEvent(eventData).subscribe(unused -> {
-                }, /* event processing returned error */ ex -> handleError(claimedOwnership, eventHubConsumer,
+                }, /* event processing returned error */ ex -> handleProcessingError(claimedOwnership, eventHubConsumer,
                     partitionProcessor, ex));
             } catch (Exception ex) {
                 /* event processing threw an exception */
-                handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex);
+                handleProcessingError(claimedOwnership, eventHubConsumer, partitionProcessor, ex);
             }
         }, /* EventHubConsumer receive() returned an error */
-            ex -> handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex),
+            ex -> handleReceiveError(claimedOwnership, eventHubConsumer, partitionProcessor, ex),
             () -> partitionProcessor.close(CloseReason.EVENT_PROCESSOR_SHUTDOWN));
     }
 
-    private void handleError(PartitionOwnership claimedOwnership, EventHubAsyncConsumer eventHubConsumer,
+    private void handleProcessingError(PartitionOwnership claimedOwnership, EventHubAsyncConsumer eventHubConsumer,
         PartitionProcessor partitionProcessor, Throwable error) {
         try {
-            // if there was an error, it also marks the end of the event data stream
+            // There was an error in process event (user provided code), call process error and if that
+            // also fails just log and continue
             partitionProcessor.processError(error);
+        } catch (Exception ex) {
+            logger.warning("Failed while processing error {}", claimedOwnership.partitionId(), ex);
+        }
+    }
 
+    private void handleReceiveError(PartitionOwnership claimedOwnership, EventHubAsyncConsumer eventHubConsumer,
+        PartitionProcessor partitionProcessor, Throwable error) {
+        try {
+            // if there was an error on receive, it also marks the end of the event data stream
+            partitionProcessor.processError(error);
+            CloseReason closeReason = CloseReason.EVENT_HUB_EXCEPTION;
             // If the exception indicates that the partition was stolen (i.e some other consumer with same ownerlevel
-            // started consuming the partition), close the partition processor
+            // started consuming the partition), update the closeReason
             // TODO: Find right exception type to determine stolen partition
             if (error instanceof AmqpException) {
-                partitionProcessor.close(CloseReason.LOST_PARTITION_OWNERSHIP);
+                closeReason = CloseReason.LOST_PARTITION_OWNERSHIP;
             }
-
+            partitionProcessor.close(closeReason);
         } catch (Exception ex) {
             logger.warning("Failed while processing error on receive {}", claimedOwnership.partitionId(), ex);
         } finally {

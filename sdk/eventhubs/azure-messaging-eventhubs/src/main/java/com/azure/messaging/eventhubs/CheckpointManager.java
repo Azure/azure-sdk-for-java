@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import reactor.core.publisher.Mono;
 
@@ -33,9 +34,9 @@ public class CheckpointManager {
      */
     public CheckpointManager(String ownerId, PartitionContext partitionContext, PartitionManager partitionManager,
         String eTag) {
-        this.ownerId = ownerId;
-        this.partitionContext = partitionContext;
-        this.partitionManager = partitionManager;
+        this.ownerId = Objects.requireNonNull(ownerId, "ownerId cannot be null");
+        this.partitionContext = Objects.requireNonNull(partitionContext, "partitionContext cannot be null");
+        this.partitionManager = Objects.requireNonNull(partitionManager, "partitionManager cannot be null");
         this.eTag = new AtomicReference<>(eTag);
     }
 
