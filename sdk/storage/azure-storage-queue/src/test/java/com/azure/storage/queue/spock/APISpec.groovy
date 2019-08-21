@@ -34,7 +34,7 @@ class APISpec extends Specification {
     // Test name for test method name.
     def methodName
     def testMode = getTestMode()
-    def connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
+    def connectionString
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
     static boolean enableDebugging = true
@@ -50,6 +50,12 @@ class APISpec extends Specification {
         interceptorManager = new InterceptorManager(methodName, testMode)
         testResourceName = new TestResourceNamer(methodName, testMode,
             interceptorManager.getRecordedData())
+        if (getTestMode() == TestMode.RECORD) {
+            connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
+        } else {
+            connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;" +
+                "EndpointSuffix=core.windows.net"
+        }
     }
 
     /**
