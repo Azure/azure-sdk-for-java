@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.data.test.customization;
+package com.azure.search.data.customization;
 
 import com.azure.search.data.SearchIndexAsyncClient;
+import com.azure.search.data.env.SearchIndexClientTestBase;
 import com.azure.search.data.env.SearchIndexDocs;
 import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.IndexAction;

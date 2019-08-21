@@ -254,7 +254,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
             return Mono.empty();
         }
         return restClient.documents()
-            .searchPostWithRestResponseAsync(new SearchRequest().skip(skip).includeTotalResultCount(true))
+            .searchPostWithRestResponseAsync(new SearchRequest().skip(skip))
             .map(res -> {
                 if (res.value().nextPageParameters() == null || res.value().nextPageParameters().skip() == null) {
                     skip = null;

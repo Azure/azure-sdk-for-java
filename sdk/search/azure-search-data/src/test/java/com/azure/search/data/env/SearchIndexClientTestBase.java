@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.data.test.customization;
+package com.azure.search.data.env;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -13,8 +13,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.common.SearchPipelinePolicy;
 import com.azure.search.data.customization.SearchIndexClientBuilder;
-import com.azure.search.data.env.AzureSearchResources;
-import com.azure.search.data.env.SearchIndexService;
 import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
@@ -43,9 +41,9 @@ public class SearchIndexClientTestBase extends TestBase {
     private static final String INDEX_FILE_NAME = "INDEX_FILE_NAME";
 
 
-    String searchServiceName;
-    String apiKey;
-    private String indexName;
+    protected String searchServiceName;
+    protected String apiKey;
+    protected String indexName;
 
     private AzureSearchResources azureSearchResources;
 

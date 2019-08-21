@@ -1,15 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.data.test.customization;
+package com.azure.search.data.customization;
 
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.SearchIndexClient;
 import com.azure.search.data.common.SearchPipelinePolicy;
-import com.azure.search.data.customization.SearchIndexAsyncClientImpl;
-import com.azure.search.data.customization.SearchIndexBaseClient;
-import com.azure.search.data.customization.SearchIndexClientImpl;
-import com.azure.search.data.customization.SearchIndexClientBuilder;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
