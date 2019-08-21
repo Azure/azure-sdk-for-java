@@ -30,10 +30,10 @@ import java.util.stream.Collectors;
  */
 public final class FluxUtil {
     /**
-     * Checks if a type is Flux&lt;ByteBuf&gt;.
+     * Checks if a type is Flux&lt;ByteBuffer&gt;.
      *
      * @param entityType the type to check
-     * @return whether the type represents a Flux that emits ByteBuf
+     * @return whether the type represents a Flux that emits ByteBuffer
      */
     public static boolean isFluxByteBuffer(Type entityType) {
         if (TypeUtil.isTypeOrSubTypeOf(entityType, Flux.class)) {
@@ -47,13 +47,14 @@ public final class FluxUtil {
 
     /**
      * Collects ByteBuffer emitted by a Flux into a byte array.
-     * @param stream A stream which emits ByteBuf instances.
-     * @return A Mono which emits the concatenation of all the ByteBuf instances given by the source Flux.
+     *
+     * @param stream A stream which emits ByteBuffer instances.
+     * @return A Mono which emits the concatenation of all the ByteBuffer instances given by the source Flux.
      */
     public static Mono<byte[]> collectBytesInByteBufferStream(Flux<ByteBuffer> stream) {
         return stream
-                   .collect(ByteArrayOutputStream::new, FluxUtil::accept)
-                   .map(ByteArrayOutputStream::toByteArray);
+            .collect(ByteArrayOutputStream::new, FluxUtil::accept)
+            .map(ByteArrayOutputStream::toByteArray);
     }
 
     private static void accept(ByteArrayOutputStream byteOutputStream, ByteBuffer byteBuffer) {
@@ -65,10 +66,8 @@ public final class FluxUtil {
     }
 
     /**
-     * Gets the content of the provided ByteBuf as a byte array.
-     * This method will create a new byte array even if the ByteBuf can
-     * have optionally backing array.
-     *
+     * Gets the content of the provided ByteBuffer as a byte array. This method will create a new byte array even if the
+     * ByteBuffer can have optionally backing array.
      *
      * @param byteBuffer the byte buffer
      * @return the byte array
@@ -85,7 +84,7 @@ public final class FluxUtil {
      * Context} to {@link Context Azure Context} and calls the given lambda function with this context and returns a
      * single entity of type {@code T}
      * <p>
-     *  If the reactor context is empty, {@link Context#NONE} will be used to call the lambda function
+     * If the reactor context is empty, {@link Context#NONE} will be used to call the lambda function
      * </p>
      *
      * <p><strong>Code samples</strong></p>
@@ -116,11 +115,11 @@ public final class FluxUtil {
      * Context} to {@link Context Azure Context} and calls the given lambda function with this context and returns a
      * collection of type {@code T}
      * <p>
-     *  If the reactor context is empty, {@link Context#NONE} will be used to call the lambda function
+     * If the reactor context is empty, {@link Context#NONE} will be used to call the lambda function
      * </p>
      *
-     *  <p><strong>Code samples</strong></p>
-     *  {@codesnippet com.azure.core.implementation.util.fluxutil.fluxcontext}
+     * <p><strong>Code samples</strong></p>
+     * {@codesnippet com.azure.core.implementation.util.fluxutil.fluxcontext}
      *
      * @param serviceCall The lambda function that makes the service call into which the context will be passed
      * @param <T> The type of response returned from the service call
@@ -133,8 +132,8 @@ public final class FluxUtil {
     }
 
     /**
-     * Converts a reactor context to azure context. If the reactor context is {@code null} or empty,
-     * {@link Context#NONE} will be returned.
+     * Converts a reactor context to azure context. If the reactor context is {@code null} or empty, {@link
+     * Context#NONE} will be returned.
      *
      * @param context The reactor context
      * @return The azure context
@@ -159,8 +158,7 @@ public final class FluxUtil {
     }
 
     /**
-     * Writes the bytes emitted by a Flux to an AsynchronousFileChannel
-     * starting at the given position in the file.
+     * Writes the bytes emitted by a Flux to an AsynchronousFileChannel starting at the given position in the file.
      *
      * @param content the Flux content
      * @param outFile the file channel
@@ -226,8 +224,8 @@ public final class FluxUtil {
     }
 
     /**
-     * Creates a {@link Flux} from an {@link AsynchronousFileChannel}
-     * which reads part of a file into chunks of the given size.
+     * Creates a {@link Flux} from an {@link AsynchronousFileChannel} which reads part of a file into chunks of the
+     * given size.
      *
      * @param fileChannel The file channel.
      * @param chunkSize the size of file chunks to read.
@@ -240,8 +238,7 @@ public final class FluxUtil {
     }
 
     /**
-     * Creates a {@link Flux} from an {@link AsynchronousFileChannel}
-     * which reads part of a file.
+     * Creates a {@link Flux} from an {@link AsynchronousFileChannel} which reads part of a file.
      *
      * @param fileChannel The file channel.
      * @param offset The offset in the file to begin reading.
@@ -253,8 +250,7 @@ public final class FluxUtil {
     }
 
     /**
-     * Creates a {@link Flux} from an {@link AsynchronousFileChannel}
-     * which reads the entire file.
+     * Creates a {@link Flux} from an {@link AsynchronousFileChannel} which reads the entire file.
      *
      * @param fileChannel The file channel.
      * @return The AsyncInputStream.
@@ -390,7 +386,7 @@ public final class FluxUtil {
                     doRead();
                 }
                 int missed = 1;
-                for (;;) {
+                for (; ; ) {
                     if (cancelled) {
                         return;
                     }

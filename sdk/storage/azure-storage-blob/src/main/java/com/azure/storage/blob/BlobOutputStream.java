@@ -8,24 +8,19 @@ import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageBlobAccessConditions;
 import com.azure.storage.blob.models.PageRange;
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Operators;
+import reactor.core.scheduler.Schedulers;
+import reactor.util.annotation.NonNull;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.nio.channels.CompletionHandler;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.TreeMap;
+import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
-import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 
 public abstract class BlobOutputStream extends OutputStream {
     /*
@@ -51,7 +46,7 @@ public abstract class BlobOutputStream extends OutputStream {
         return new PageBlobOutputStream(client, length, accessConditions);
     }
 
-    abstract Mono<Integer> dispatchWrite(Flux<ByteBuffer> bufferRef, int writeLength, long offset);
+    abstract Mono<Void> dispatchWrite(byte[] data, int writeLength, long offset);
 
     abstract void commit();
 
@@ -72,13 +67,15 @@ public abstract class BlobOutputStream extends OutputStream {
             .block();
     }
 
-    private Mono<Integer> processChunk(byte[] data, int position, int offset, int length) {
+    private Mono<Void> processChunk(byte[] data, int position, int offset, int length) {
         int chunkLength = this.writeThreshold;
+
         if (position + chunkLength > offset + length) {
             chunkLength = offset + length - position;
         }
-        Flux<ByteBuffer> chunkData = new ByteBufStreamFromByteArray(data, 64 * 1024, position, chunkLength);
-        return dispatchWrite(chunkData, chunkLength, position - offset)
+
+        // Flux<ByteBuffer> chunkData = new ByteBufferStreamFromByteArray(data, writeThreshold, position, chunkLength);
+        return dispatchWrite(data, chunkLength, position - offset)
             .doOnError(t -> {
                 if (t instanceof IOException) {
                     lastError = (IOException) t;
@@ -120,7 +117,7 @@ public abstract class BlobOutputStream extends OutputStream {
      * been closed.
      */
     @Override
-    public void write(final byte[] data) throws IOException {
+    public void write(@NonNull final byte[] data) throws IOException {
         this.write(data, 0, data.length);
     }
 
@@ -135,7 +132,7 @@ public abstract class BlobOutputStream extends OutputStream {
      * been closed.
      */
     @Override
-    public void write(final byte[] data, final int offset, final int length) throws IOException {
+    public void write(@NonNull final byte[] data, final int offset, final int length) throws IOException {
         if (offset < 0 || length < 0 || length > data.length - offset) {
             throw new IndexOutOfBoundsException();
         }
@@ -225,7 +222,7 @@ public abstract class BlobOutputStream extends OutputStream {
         }
 
         @Override
-        Mono<Integer> dispatchWrite(Flux<ByteBuffer> bufferRef, int writeLength, long offset) {
+        Mono<Void> dispatchWrite(byte[] data, int writeLength, long offset) {
             if (writeLength == 0) {
                 return Mono.empty();
             }
@@ -240,7 +237,10 @@ public abstract class BlobOutputStream extends OutputStream {
                 return Mono.error(this.lastError);
             }
 
-            return this.appendBlock(bufferRef, offset, writeLength).then(Mono.justOrEmpty(writeLength));
+            Flux<ByteBuffer> fbb = Flux.range(0, 1)
+                .concatMap(pos -> Mono.fromCallable(() -> ByteBuffer.wrap(data, (int) offset, writeLength)));
+
+            return this.appendBlock(fbb.subscribeOn(Schedulers.elastic()), offset, writeLength);
         }
 
         @Override
@@ -252,14 +252,14 @@ public abstract class BlobOutputStream extends OutputStream {
     private static class BlockBlobOutputStream extends BlobOutputStream {
         private final BlobAccessConditions accessConditions;
         private final String blockIdPrefix;
-        private final TreeMap<Long, String> blockList;
+        private final List<String> blockList;
         private final BlockBlobAsyncClient client;
 
         private BlockBlobOutputStream(final BlockBlobAsyncClient client, final BlobAccessConditions accessConditions) {
             this.client = client;
             this.accessConditions = accessConditions;
             this.blockIdPrefix = UUID.randomUUID().toString() + '-';
-            this.blockList = new TreeMap<>();
+            this.blockList = new ArrayList<>();
             this.writeThreshold = BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
         }
 
@@ -285,14 +285,18 @@ public abstract class BlobOutputStream extends OutputStream {
         }
 
         @Override
-        Mono<Integer> dispatchWrite(Flux<ByteBuffer> bufferRef, int writeLength, long offset) {
+        Mono<Void> dispatchWrite(byte[] data, int writeLength, long offset) {
             if (writeLength == 0) {
                 return Mono.empty();
             }
 
             final String blockID = this.getCurrentBlockId();
-            this.blockList.put(offset, blockID);
-            return this.writeBlock(bufferRef, blockID, writeLength).then(Mono.just(writeLength));
+            this.blockList.add(blockID);
+
+            Flux<ByteBuffer> fbb = Flux.range(0, 1)
+                .concatMap(pos -> Mono.fromCallable(() -> ByteBuffer.wrap(data, (int) offset, writeLength)));
+
+            return this.writeBlock(fbb.subscribeOn(Schedulers.elastic()), blockID, writeLength);
         }
 
         /**
@@ -300,7 +304,7 @@ public abstract class BlobOutputStream extends OutputStream {
          */
         @Override
         synchronized void commit() {
-            client.commitBlockList(new ArrayList<>(this.blockList.values()), null, null, this.accessConditions).block();
+            client.commitBlockList(this.blockList, null, null, this.accessConditions).block();
         }
     }
 
@@ -331,7 +335,7 @@ public abstract class BlobOutputStream extends OutputStream {
         }
 
         @Override
-        Mono<Integer> dispatchWrite(Flux<ByteBuffer> bufferRef, int writeLength, long offset) {
+        Mono<Void> dispatchWrite(byte[] data, int writeLength, long offset) {
             if (writeLength == 0) {
                 return Mono.empty();
             }
@@ -340,213 +344,15 @@ public abstract class BlobOutputStream extends OutputStream {
                 return Mono.error(new IOException(String.format(SR.INVALID_NUMBER_OF_BYTES_IN_THE_BUFFER, writeLength)));
             }
 
-            return this.writePages(bufferRef, offset, writeLength).then(Mono.just(writeLength));
+            Flux<ByteBuffer> fbb = Flux.range(0, 1)
+                .concatMap(pos -> Mono.fromCallable(() -> ByteBuffer.wrap(data, (int) offset, writeLength)));
+
+            return this.writePages(fbb.subscribeOn(Schedulers.elastic()), offset, writeLength);
         }
 
         @Override
         void commit() {
             // PageBlob doesn't need to commit anything.
-        }
-    }
-
-    private static final class ByteBufStreamFromByteArray extends Flux<ByteBuffer> {
-        private final byte[] bigByteArray;
-        private final int chunkSize;
-        private final int offset;
-        private final int length;
-
-        ByteBufStreamFromByteArray(byte[] bigByteArray, int chunkSize, int offset, int length) {
-            this.bigByteArray = bigByteArray;
-            this.chunkSize = chunkSize;
-            this.offset = offset;
-            this.length = length;
-        }
-
-        @Override
-        public void subscribe(CoreSubscriber<? super ByteBuffer> actual) {
-            ByteBufStreamFromByteArray.FileReadSubscription subscription = new ByteBufStreamFromByteArray.FileReadSubscription(actual, bigByteArray, chunkSize, offset, length);
-            actual.onSubscribe(subscription);
-        }
-
-        static final class FileReadSubscription implements Subscription, CompletionHandler<Integer, ByteBuffer> {
-            private static final int NOT_SET = -1;
-            private static final long serialVersionUID = -6831808726875304256L;
-            //
-            private final Subscriber<? super ByteBuffer> subscriber;
-            private volatile int position;
-            //
-            private final byte[] bigByteArray;
-            private final int chunkSize;
-            private final int offset;
-            private final int length;
-            //
-            private volatile boolean done;
-            private Throwable error;
-            private volatile ByteBuffer next;
-            private volatile boolean cancelled;
-            //
-            volatile int wip;
-            @SuppressWarnings("rawtypes")
-            static final AtomicIntegerFieldUpdater<ByteBufStreamFromByteArray.FileReadSubscription> WIP = AtomicIntegerFieldUpdater.newUpdater(ByteBufStreamFromByteArray.FileReadSubscription.class, "wip");
-            volatile long requested;
-            @SuppressWarnings("rawtypes")
-            static final AtomicLongFieldUpdater<ByteBufStreamFromByteArray.FileReadSubscription> REQUESTED = AtomicLongFieldUpdater.newUpdater(ByteBufStreamFromByteArray.FileReadSubscription.class, "requested");
-            //
-
-            FileReadSubscription(Subscriber<? super ByteBuffer> subscriber, byte[] bigByteArray, int chunkSize, int offset, int length) {
-                this.subscriber = subscriber;
-                //
-                this.bigByteArray = bigByteArray;
-                this.chunkSize = chunkSize;
-                this.offset = offset;
-                this.length = length;
-                //
-                this.position = NOT_SET;
-            }
-
-            //region Subscription implementation
-
-            @Override
-            public void request(long n) {
-                if (Operators.validate(n)) {
-                    Operators.addCap(REQUESTED, this, n);
-                    drain();
-                }
-            }
-
-            @Override
-            public void cancel() {
-                this.cancelled = true;
-            }
-
-            //endregion
-
-            //region CompletionHandler implementation
-
-            @Override
-            public void completed(Integer bytesRead, ByteBuffer buffer) {
-                if (!cancelled) {
-                    if (bytesRead == -1) {
-                        done = true;
-                    } else {
-                        // use local variable to perform fewer volatile reads
-                        int pos = position;
-                        //
-                        int bytesWanted = Math.min(bytesRead, maxRequired(pos));
-                        buffer.position(bytesWanted);
-                        int position2 = pos + bytesWanted;
-                        //noinspection NonAtomicOperationOnVolatileField
-                        position = position2;
-                        next = buffer;
-                        if (position2 >= offset + length) {
-                            done = true;
-                        }
-                    }
-                    drain();
-                }
-            }
-
-            @Override
-            public void failed(Throwable exc, ByteBuffer attachment) {
-                if (!cancelled) {
-                    // must set error before setting done to true
-                    // so that is visible in drain loop
-                    error = exc;
-                    done = true;
-                    drain();
-                }
-            }
-
-            //endregion
-
-            private void drain() {
-                if (WIP.getAndIncrement(this) != 0) {
-                    return;
-                }
-                // on first drain (first request) we initiate the first read
-                if (position == NOT_SET) {
-                    position = offset;
-                    doRead();
-                }
-                int missed = 1;
-                for (; ; ) {
-                    if (cancelled) {
-                        return;
-                    }
-                    if (REQUESTED.get(this) > 0) {
-                        boolean emitted;
-                        // read d before next to avoid race
-                        boolean d = done;
-                        ByteBuffer bb = next;
-                        if (bb != null) {
-                            next = null;
-                            //
-                            // try {
-                            subscriber.onNext(bb);
-                            // } finally {
-                            // Note: Don't release here, we follow netty disposal pattern
-                            // it's consumers responsiblity to release chunks after consumption.
-                            //
-                            // ReferenceCountUtil.release(bb);
-                            // }
-                            //
-                            emitted = true;
-                        } else {
-                            emitted = false;
-                        }
-                        if (d) {
-                            if (error != null) {
-                                subscriber.onError(error);
-                                // exit without reducing wip so that further drains will be NOOP
-                                return;
-                            } else {
-                                subscriber.onComplete();
-                                // exit without reducing wip so that further drains will be NOOP
-                                return;
-                            }
-                        }
-                        if (emitted) {
-                            // do this after checking d to avoid calling read
-                            // when done
-                            Operators.produced(REQUESTED, this, 1);
-                            //
-                            doRead();
-                        }
-                    }
-                    missed = WIP.addAndGet(this, -missed);
-                    if (missed == 0) {
-                        return;
-                    }
-                }
-            }
-
-            private void doRead() {
-                // use local variable to limit volatile reads
-                int pos = position;
-                int readSize = Math.min(chunkSize, maxRequired(pos));
-                ByteBuffer innerBuf = ByteBuffer.allocate(readSize);
-                try {
-                    innerBuf.put(bigByteArray, pos, readSize);
-                    completed(readSize, innerBuf);
-                } catch (Exception e) {
-                    failed(e, innerBuf);
-                }
-            }
-
-            private int maxRequired(long pos) {
-                long maxRequired = offset + length - pos;
-                if (maxRequired <= 0) {
-                    return 0;
-                } else {
-                    int m = (int) (maxRequired);
-                    // support really large files by checking for overflow
-                    if (m < 0) {
-                        return Integer.MAX_VALUE;
-                    } else {
-                        return m;
-                    }
-                }
-            }
         }
     }
 }
