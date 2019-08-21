@@ -7,7 +7,6 @@ import com.azure.core.exception.HttpResponseException
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.FileRange
-import com.azure.storage.file.models.FileRangeWriteType
 import com.azure.storage.file.models.StorageErrorCode
 import io.netty.buffer.Unpooled
 import reactor.core.publisher.Flux
@@ -121,7 +120,7 @@ class FileAsyncAPITests extends APISpec {
         defaultData.getBytes(readerIndex, dataBytes)
 
         when:
-        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData.retain()), dataLength, 1, FileRangeWriteType.UPDATE))
+        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData.retain()), dataLength, 1))
         def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithProperties(new FileRange(1, dataLength), true))
 
         then:
@@ -137,7 +136,7 @@ class FileAsyncAPITests extends APISpec {
 
     def "Upload data error"() {
         when:
-        def updateDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData.retain()), dataLength, 1, FileRangeWriteType.UPDATE))
+        def updateDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData.retain()), dataLength, 1))
         then:
         updateDataErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.RESOURCE_NOT_FOUND)

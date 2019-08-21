@@ -10,7 +10,6 @@ import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.models.FileCopyInfo
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.FileRange
-import com.azure.storage.file.models.FileRangeWriteType
 import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageErrorException
 import io.netty.buffer.Unpooled
@@ -111,7 +110,7 @@ class FileAPITests extends APISpec {
         defaultData.getBytes(readerIndex, dataBytes)
 
         when:
-        def uploadResponse = primaryFileClient.upload(defaultData.retain(), dataLength, 1, FileRangeWriteType.UPDATE)
+        def uploadResponse = primaryFileClient.upload(defaultData.retain(), dataLength, 1)
         def downloadResponse = primaryFileClient.downloadWithProperties(new FileRange(1, dataLength), true)
 
         then:
@@ -124,10 +123,33 @@ class FileAPITests extends APISpec {
 
     def "Upload data error"() {
         when:
-        primaryFileClient.upload(defaultData.retain(), dataLength, 1, FileRangeWriteType.UPDATE)
+        primaryFileClient.upload(defaultData.retain(), dataLength, 1)
         then:
         def e = thrown(StorageErrorException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
+    }
+
+    /**
+     * The test is trying to clear partial string from the original one.
+     * @return
+     */
+    def "Upload and clear range" () {
+        given:
+        def fullInfoString = "please clear the range"
+        def expectRemainingString = "clear the range"
+        def fullInfoData = Unpooled.wrappedBuffer(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        primaryFileClient.create(fullInfoString.length())
+        primaryFileClient.upload(fullInfoData.retain(), fullInfoString.length())
+        when:
+        primaryFileClient.upload(fullInfoData.retain(), fullInfoString.length())
+    }
+
+    def "Upload and clear range with args" () {
+
+    }
+
+    def "Clear range error" () {
+
     }
 
     def "Download data error"() {
