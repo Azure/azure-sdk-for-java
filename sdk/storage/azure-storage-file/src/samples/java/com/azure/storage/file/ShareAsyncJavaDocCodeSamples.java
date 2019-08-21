@@ -217,8 +217,8 @@ public class ShareAsyncJavaDocCodeSamples {
     }
 
     /**
-    * Generates a code sample for using {@link ShareAsyncClient#deleteDirectory(String)()}
-    */
+     *  Generates a code sample for using {@link ShareAsyncClient#deleteDirectory(String)()}
+     */
     public void deleteDirectoryAsync() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.deleteDirectory#string
@@ -231,8 +231,8 @@ public class ShareAsyncJavaDocCodeSamples {
     }
 
     /**
-    * Generates a code sample for using {@link ShareAsyncClient#deleteFile(String)()}
-    */
+     * Generates a code sample for using {@link ShareAsyncClient#deleteFile(String)()}
+     */
     public void deleteFileAsync() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.deleteFile#string

@@ -190,7 +190,7 @@ public class DirectoryAsyncClient {
         String fileCreationTime = "now";
         String fileLastWriteTime = "now";
         
-        return azureFileStorageClient.directorys().createWithRestResponseAsync(shareName, directoryPath, null, metadata, context)
+        return azureFileStorageClient.directorys().createWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime, fileLastWriteTime, null, metadata, filePermission, null, context)
             .map(this::createWithRestResponse);
     }
 

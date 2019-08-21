@@ -10,6 +10,7 @@ import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.file.DirectoryClientBuilder
 import com.azure.storage.file.FileClientBuilder
+import com.azure.storage.file.FileServiceAsyncClient
 import com.azure.storage.file.FileServiceClient
 import com.azure.storage.file.FileServiceClientBuilder
 import com.azure.storage.file.ShareClientBuilder
@@ -29,8 +30,8 @@ class APISpec extends Specification {
     def testResourceName
 
     // Primary Clients used for API tests
-    def primaryFileServiceClient
-    def primaryFileServiceAsyncClient
+    FileServiceClient primaryFileServiceClient
+    FileServiceAsyncClient primaryFileServiceAsyncClient
 
 
     // Test name for test method name.

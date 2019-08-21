@@ -105,7 +105,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#createSubDirectory(String)
+     * Generates code sample for creating a subdirectory with {@link DirectoryAsyncClient}
      */
     public void createSubDirectory() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();

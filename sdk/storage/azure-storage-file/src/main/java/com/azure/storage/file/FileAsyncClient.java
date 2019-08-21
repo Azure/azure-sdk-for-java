@@ -192,7 +192,8 @@ public class FileAsyncClient {
         String fileCreationTime = "now";
         String fileLastWriteTime = "now";
         
-        return azureFileStorageClient.files().createWithRestResponseAsync(shareName, filePath, maxSize, null, metadata, httpHeaders, context)
+        return azureFileStorageClient.files().createWithRestResponseAsync(shareName, filePath, maxSize, fileAttributes, fileCreationTime, fileLastWriteTime, null, metadata, filePermission, null, httpHeaders, context)
+
             .map(this::createFileInfoResponse);
     }
 
@@ -324,7 +325,7 @@ public class FileAsyncClient {
     public Mono<Void> downloadToFile(String downloadFilePath, FileRange range) {
         AsynchronousFileChannel channel = channelSetup(downloadFilePath);
         return sliceFileRange(range)
-            .flatMap(chunk -> downloadWithProperties(chunk, false)
+            .flatMap(chunk -> downloadWithPropertiesWithResponse(chunk, false)
                 .map(dar -> dar.value().body())
                 .subscribeOn(Schedulers.elastic())
                 .flatMap(fbb -> FluxUtil.writeFile(fbb, channel, chunk.start() - (range == null ? 0 : range.start()))
@@ -567,7 +568,8 @@ public class FileAsyncClient {
         String fileCreationTime = "preserve";
         String fileLastWriteTime = "preserve";
         
-        return azureFileStorageClient.files().setHTTPHeadersWithRestResponseAsync(shareName, filePath, null, newFileSize, httpHeaders, context)
+        return azureFileStorageClient.files().setHTTPHeadersWithRestResponseAsync(shareName, filePath, fileAttributes, fileCreationTime, fileLastWriteTime, null, newFileSize, filePermission, null, httpHeaders, context)
+
             .map(this::setHttpHeadersResponse);
     }
 

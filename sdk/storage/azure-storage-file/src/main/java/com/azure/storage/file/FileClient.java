@@ -448,6 +448,27 @@ public class FileClient {
         return fileAsyncClient.setMetadataWithResponse(metadata, context).block();
     }
 
+    /**
+     * Uploads a range of bytes to the beginning of a file in storage file service. Upload operations performs an in-place write on the specified file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload "default" to the file. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileClient.upload#flux-long}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param data The data which will upload to the storage file.
+     * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is set to clear, the value of this header must be set to zero..
+     * @return The {@link FileUploadInfo file upload info}
+     * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
+     */
+    public FileUploadInfo upload(ByteBuf data, long length) {
+        return uploadWithResponse(data, length, Context.NONE).value();
+    }
+
    /**
      * Uploads a range of bytes to the beginning of a file in storage file service. Upload operations performs an in-place write on the specified file.
      *
@@ -461,9 +482,8 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is set to clear, the value of this header must be set to zero.
-     * @return A response that only contains headers and response status code
      * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is set to clear, the value of this header must be set to zero..
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link FileUploadInfo file upload info}
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
