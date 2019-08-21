@@ -3,136 +3,266 @@
 
 package com.azure.data.cosmos.internal.directconnectivity.rntbd;
 
-import com.codahale.metrics.Gauge;
-import com.codahale.metrics.Meter;
-import com.codahale.metrics.MetricFilter;
+import com.azure.data.cosmos.internal.directconnectivity.RntbdTransportClient;
+import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.RatioGauge;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.google.common.base.Stopwatch;
+import com.google.common.net.PercentEscaper;
+import io.micrometer.core.instrument.Clock;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.Measurement;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Tags;
+import io.micrometer.core.instrument.Timer;
+import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
+import io.micrometer.core.instrument.config.NamingConvention;
+import io.micrometer.core.instrument.dropwizard.DropwizardConfig;
+import io.micrometer.core.instrument.dropwizard.DropwizardMeterRegistry;
+import io.micrometer.core.instrument.util.HierarchicalNameMapper;
+import io.micrometer.core.lang.Nullable;
 
-import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
+@SuppressWarnings("UnstableApiUsage")
 @JsonPropertyOrder({
-    "lifetime", "requests", "responses", "errorResponses", "responseRate", "completionRate", "throughput"
+    "tags", "concurrentRequests", "requests", "responseErrors", "responseSuccesses", "completionRate", "responseRate",
+    "channelsAcquired", "channelsAvailable", "requestQueueLength", "usedDirectMemory", "usedHeapMemory"
 })
-public final class RntbdMetrics implements AutoCloseable {
+public final class RntbdMetrics {
 
     // region Fields
 
-    private static final MetricRegistry registry = new MetricRegistry();
+    private static final PercentEscaper escaper = new PercentEscaper("_-", false);
+    private static final CompositeMeterRegistry registry = new CompositeMeterRegistry();
 
-    private final Gauge<Double> completionRate;
-    private final Meter errorResponses;
-    private final Stopwatch lifetime;
-    private final String prefix;
-    private final Meter requests;
-    private final Gauge<Double> responseRate;
-    private final Meter responses;
+    private static final String prefix = "azure.cosmos.directTcp.";
+    private static MeterRegistry consoleLoggingRegistry;
+
+    private final RntbdTransportClient transportClient;
+    private final RntbdEndpoint endpoint;
+
+    private final Timer requests;
+    private final Timer responseErrors;
+    private final Timer responseSuccesses;
+    private final Tags tags;
+
+    static {
+        int step = Integer.getInteger("azure.cosmos.monitoring.consoleLogging.step", 0);
+        if (step > 0) {
+            RntbdMetrics.add(RntbdMetrics.consoleLoggingRegistry(step));
+        }
+    }
 
     // endregion
 
     // region Constructors
 
-    public RntbdMetrics(final String name) {
+    public RntbdMetrics(RntbdTransportClient client, RntbdEndpoint endpoint) {
 
-        this.lifetime = Stopwatch.createStarted();
-        this.prefix = name + '.';
+        this.transportClient = client;
+        this.endpoint = endpoint;
 
-        this.requests = registry.register(this.prefix + "requests", new Meter());
-        this.responses = registry.register(this.prefix + "responses", new Meter());
-        this.errorResponses = registry.register(this.prefix + "errorResponses", new Meter());
-        this.responseRate = registry.register(this.prefix + "responseRate", new ResponseRate(this));
-        this.completionRate = registry.register(this.prefix + "completionRate", new CompletionRate(this));
+        this.tags = Tags.of(client.tag(), endpoint.tag());
+        this.requests = registry.timer(nameOf("requests"), tags);
+        this.responseErrors = registry.timer(nameOf("responseErrors"), tags);
+        this.responseSuccesses = registry.timer(nameOf("responseSuccesses"), tags);
+
+        Gauge.builder(nameOf("endpoints"), client, RntbdTransportClient::endpointCount)
+             .description("endpoint count")
+             .tag(client.tag().getKey(), client.tag().getValue())
+             .register(registry);
+
+        Gauge.builder(nameOf("endpointsEvicted"), client, RntbdTransportClient::endpointEvictionCount)
+             .description("endpoint eviction count")
+             .tag(client.tag().getKey(), client.tag().getValue())
+             .register(registry);
+
+        Gauge.builder(nameOf("concurrentRequests"), endpoint, RntbdEndpoint::concurrentRequests)
+             .description("executing or queued request count")
+             .tags(this.tags)
+             .register(registry);
+
+        Gauge.builder(nameOf("requestQueueLength"), endpoint, RntbdEndpoint::requestQueueLength)
+            .description("queued request count")
+            .tags(this.tags)
+            .register(registry);
+
+        Gauge.builder(nameOf("channelsAcquired"), endpoint, RntbdEndpoint::channelsAcquired)
+             .description("acquired channel count")
+             .tags(this.tags)
+             .register(registry);
+
+        Gauge.builder(nameOf("channelsAvailable"), endpoint, RntbdEndpoint::channelsAvailable)
+             .description("available channel count")
+             .tags(this.tags)
+             .register(registry);
+
+        Gauge.builder(nameOf("usedDirectMemory"), endpoint, x -> x.usedDirectMemory())
+             .description("Java direct memory usage")
+             .baseUnit("bytes")
+             .tags(this.tags)
+             .register(registry);
+
+        Gauge.builder(nameOf("usedHeapMemory"), endpoint, x -> x.usedHeapMemory())
+             .description("Java heap memory usage")
+             .baseUnit("MiB")
+             .tags(this.tags)
+             .register(registry);
     }
 
     // endregion
 
     // region Accessors
 
-    public double getCompletionRate() {
-        return this.completionRate.getValue();
+    @JsonIgnore
+    private static synchronized MeterRegistry consoleLoggingRegistry(final int step) {
+
+        if (consoleLoggingRegistry == null) {
+
+            MetricRegistry dropwizardRegistry = new MetricRegistry();
+
+            ConsoleReporter consoleReporter = ConsoleReporter
+                .forRegistry(dropwizardRegistry)
+                .convertRatesTo(TimeUnit.SECONDS)
+                .convertDurationsTo(TimeUnit.MILLISECONDS)
+                .build();
+
+            consoleReporter.start(step, TimeUnit.SECONDS);
+
+            DropwizardConfig dropwizardConfig = new DropwizardConfig() {
+
+                @Override
+                public String get(@Nullable String key) {
+                    return null;
+                }
+
+                @Override
+                public String prefix() {
+                    return "console";
+                }
+
+            };
+
+            consoleLoggingRegistry = new DropwizardMeterRegistry(dropwizardConfig, dropwizardRegistry, HierarchicalNameMapper.DEFAULT, Clock.SYSTEM) {
+                @Override
+                @Nullable
+                protected Double nullGaugeValue() {
+                    return null;
+                }
+            };
+
+            consoleLoggingRegistry.config().namingConvention(NamingConvention.dot);
+        }
+
+        return consoleLoggingRegistry;
     }
 
-    public long getErrorResponses() {
-        return this.errorResponses.getCount();
+    @JsonProperty
+    public int channelsAcquired() {
+        return this.endpoint.channelsAcquired();
     }
 
-    public double getLifetime() {
-        final Duration elapsed = this.lifetime.elapsed();
-        return elapsed.getSeconds() + (1E-9D * elapsed.getNano());
+    @JsonProperty
+    public int channelsAvailable() {
+        return this.endpoint.channelsAvailable();
     }
 
-    public long getRequests() {
-        return this.requests.getCount();
+    /***
+     * Computes the number of successful (non-error) responses received divided by the number of completed requests
+     *
+     * @return The number of successful (non-error) responses received divided by the number of completed requests
+     */
+    @JsonProperty
+    public double completionRate() {
+        return this.responseSuccesses.count() / (double)this.requests.count();
     }
 
-    public double getResponseRate() {
-        return this.responseRate.getValue();
+    @JsonProperty
+    public long concurrentRequests() {
+        return this.endpoint.concurrentRequests();
     }
 
-    public long getResponses() {
-        return this.responses.getCount();
+    @JsonProperty
+    public int endpoints() {
+        return this.transportClient.endpointCount();
     }
 
-    public double getThroughput() {
-        return this.responses.getMeanRate();
+    @JsonProperty
+    public int requestQueueLength() {
+        return this.endpoint.requestQueueLength();
+    }
+
+    @JsonProperty
+    public Iterable<Measurement> requests() {
+        return this.requests.measure();
+    }
+
+    @JsonProperty
+    public Iterable<Measurement> responseErrors() {
+        return this.responseErrors.measure();
+    }
+
+    /***
+     * Computes the number of successful (non-error) responses received divided by the number of requests sent
+     *
+     * @return The number of successful (non-error) responses received divided by the number of requests sent
+     */
+    @JsonProperty
+    public double responseRate() {
+        return this.responseSuccesses.count() / (double)(this.requests.count() + this.endpoint.concurrentRequests());
+    }
+
+    @JsonProperty
+    public Iterable<Measurement> responseSuccesses() {
+        return this.responseSuccesses.measure();
+    }
+
+    @JsonProperty
+    public Iterable<Tag> tags() {
+        return this.tags;
+    }
+
+    @JsonProperty
+    public long usedDirectMemory() {
+        return this.endpoint.usedDirectMemory();
+    }
+
+    @JsonProperty
+    public long usedHeapMemory() {
+        return this.endpoint.usedHeapMemory();
     }
 
     // endregion
 
     // region Methods
 
-    @Override
-    public void close() {
-        registry.removeMatching(MetricFilter.startsWith(this.prefix));
+    public static void add(MeterRegistry registry) {
+        RntbdMetrics.registry.add(registry);
     }
 
-    public final void incrementErrorResponseCount() {
-        this.errorResponses.mark();
+    public void markComplete(RntbdRequestRecord record) {
+        record.stop(this.requests, record.isCompletedExceptionally() ? this.responseErrors : this.responseSuccesses);
     }
 
-    public final void incrementRequestCount() {
-        this.requests.mark();
-    }
-
-    public final void incrementResponseCount() {
-        this.responses.mark();
+    public static String escape(String value) {
+        return escaper.escape(value);
     }
 
     @Override
     public String toString() {
-        return RntbdObjectMapper.toJson(this);
+        return RntbdObjectMapper.toString(this);
     }
 
     // endregion
 
-    private static final class CompletionRate extends RatioGauge {
+    // region Private
 
-        private final RntbdMetrics metrics;
-
-        private CompletionRate(RntbdMetrics metrics) {
-            this.metrics = metrics;
-        }
-
-        @Override
-        protected Ratio getRatio() {
-            return Ratio.of(this.metrics.responses.getCount() - this.metrics.errorResponses.getCount(),
-                this.metrics.requests.getCount());
-        }
+    private static String nameOf(final String member) {
+        return prefix + member;
     }
 
-    private static final class ResponseRate extends RatioGauge {
-
-        private final RntbdMetrics metrics;
-
-        private ResponseRate(RntbdMetrics metrics) {
-            this.metrics = metrics;
-        }
-
-        @Override
-        protected Ratio getRatio() {
-            return Ratio.of(this.metrics.responses.getCount(), this.metrics.requests.getCount());
-        }
-    }
+    // endregion
 }

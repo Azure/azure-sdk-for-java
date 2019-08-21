@@ -7,6 +7,7 @@ import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.implementation.annotation.Immutable;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
@@ -32,6 +33,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class EventHubSharedAccessKeyCredential implements TokenCredential {
     private static final String SHARED_ACCESS_SIGNATURE_FORMAT = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
     private static final String HASH_ALGORITHM = "HMACSHA256";
+
+    private final ClientLogger logger = new ClientLogger(EventHubSharedAccessKeyCredential.class);
 
     private final String keyName;
     private final Mac hmac;
@@ -87,7 +90,7 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
         if (scopes.length != 1) {
-            throw new IllegalArgumentException("'scopes' should only contain a single argument that is the token audience or resource name.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("'scopes' should only contain a single argument that is the token audience or resource name."));
         }
 
         return Mono.fromCallable(() -> generateSharedAccessSignature(scopes[0]));
@@ -95,7 +98,7 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
 
     private AccessToken generateSharedAccessSignature(final String resource) throws UnsupportedEncodingException {
         if (ImplUtils.isNullOrEmpty(resource)) {
-            throw new IllegalArgumentException("resource cannot be empty");
+            throw logger.logExceptionAsError(new IllegalArgumentException("resource cannot be empty"));
         }
 
         final String utf8Encoding = UTF_8.name();

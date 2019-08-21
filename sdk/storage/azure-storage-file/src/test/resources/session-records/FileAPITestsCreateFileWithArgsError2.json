@@ -1,0 +1,40 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestscreatefilewithargserror24159255f00d5b2?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D721C4D36074BB\"",
+      "Last-Modified" : "Thu, 15 Aug 2019 21:09:13 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "ec0e84be-b01a-00a7-44ad-530995000000",
+      "Date" : "Thu, 15 Aug 2019 21:09:13 GMT"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestscreatefilewithargserror24159255f00d5b2/fileapitestscreatefilewithargserror24044490d9bcaa1",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "AuthenticationFailed",
+      "retry-after" : "0",
+      "Content-Length" : "865",
+      "StatusCode" : "403",
+      "x-ms-request-id" : "ec0e84c0-b01a-00a7-45ad-530995000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:ec0e84c0-b01a-00a7-45ad-530995000000\nTime:2019-08-15T21:09:14.0445650Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'JP4ooBRaMLGCKgd7WfBQe+F8eRVIvSqyvgiHYQRjr6k=' is not the same as any computed signature. Server used following string to sign: 'PUT\n\n\n\n\n\nThu, 15 Aug 2019 21:09:14 GMT\n\n\n\n\n\nx-ms-client-request-id:c726219e-d5d0-4af9-b4c3-d52e318c69dc\nx-ms-content-length:1024\nx-ms-meta-testmeta:value\nx-ms-type:file\nx-ms-version:2018-11-09\n/azstoragesdkaccount/fileapitestscreatefilewithargserror24159255f00d5b2/fileapitestscreatefilewithargserror24044490d9bcaa1'.</AuthenticationErrorDetail></Error>",
+      "Date" : "Thu, 15 Aug 2019 21:09:13 GMT",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "fileapitestscreatefilewithargserror24159255f00d5b2", "fileapitestscreatefilewithargserror24044490d9bcaa1" ]
+}

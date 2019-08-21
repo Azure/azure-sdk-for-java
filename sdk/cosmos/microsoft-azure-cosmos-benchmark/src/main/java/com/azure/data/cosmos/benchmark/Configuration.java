@@ -11,15 +11,30 @@ import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.google.common.base.Strings;
+import com.google.common.net.HostAndPort;
+import com.google.common.net.PercentEscaper;
+import io.micrometer.azuremonitor.AzureMonitorConfig;
+import io.micrometer.azuremonitor.AzureMonitorMeterRegistry;
+import io.micrometer.core.instrument.Clock;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.config.NamingConvention;
+import io.micrometer.core.lang.Nullable;
+import io.micrometer.graphite.GraphiteConfig;
+import io.micrometer.graphite.GraphiteMeterRegistry;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.time.Duration;
 import java.util.Arrays;
 
 class Configuration {
-    private final static int GRAPHITE_SERVER_DEFAULT_PORT = 2003;
+
+    private final static int DEFAULT_GRAPHITE_SERVER_PORT = 2003;
+    private MeterRegistry azureMonitorMeterRegistry;
+    private MeterRegistry graphiteMeterRegistry;
 
     @Parameter(names = "-serviceEndpoint", description = "Service Endpoint")
     private String serviceEndpoint;
@@ -246,6 +261,20 @@ class Configuration {
         return enableJvmStats;
     }
 
+    public MeterRegistry getAzureMonitorMeterRegistry() {
+        String instrumentationKey = System.getProperty("azure.cosmos.monitoring.azureMonitor.instrumentationKey",
+            StringUtils.defaultString(Strings.emptyToNull(
+                System.getenv().get("AZURE_INSTRUMENTATION_KEY")), null));
+        return instrumentationKey == null ? null : this.azureMonitorMeterRegistry(instrumentationKey);
+    }
+
+    public MeterRegistry getGraphiteMeterRegistry() {
+        String serviceAddress = System.getProperty("azure.cosmos.monitoring.graphite.serviceAddress",
+            StringUtils.defaultString(Strings.emptyToNull(
+                System.getenv().get("GRAPHITE_SERVICE_ADDRESS")), null));
+        return serviceAddress == null ? null : this.graphiteMeterRegistry(serviceAddress);
+    }
+
     public String getGraphiteEndpoint() {
         if (graphiteEndpoint == null) {
             return null;
@@ -261,7 +290,7 @@ class Configuration {
 
         String portAsString = Strings.emptyToNull(StringUtils.substringAfterLast(graphiteEndpoint, ":"));
         if (portAsString == null) {
-            return GRAPHITE_SERVER_DEFAULT_PORT;
+            return DEFAULT_GRAPHITE_SERVER_PORT;
         } else {
             return Integer.parseInt(portAsString);
         }
@@ -305,5 +334,113 @@ class Configuration {
         String numberOfOperationsValue = StringUtils.defaultString(
                 Strings.emptyToNull(System.getenv().get("NUMBER_OF_OPERATIONS")), Integer.toString(numberOfOperations));
         numberOfOperations = Integer.parseInt(numberOfOperationsValue);
+    }
+
+    private synchronized MeterRegistry azureMonitorMeterRegistry(String instrumentationKey) {
+
+        if (this.azureMonitorMeterRegistry == null) {
+
+            Duration step = Duration.ofSeconds(Integer.getInteger("azure.cosmos.monitoring.azureMonitor.step", this.printingInterval));
+            boolean enabled = !Boolean.getBoolean("azure.cosmos.monitoring.azureMonitor.disabled");
+
+            final AzureMonitorConfig config = new AzureMonitorConfig() {
+
+                @Override
+                @Nullable
+                public String get(@Nullable String key) {
+                    return null;
+                }
+
+                @Override
+                @Nullable
+                public String instrumentationKey() {
+                    return instrumentationKey;
+                }
+
+                @Override
+                public Duration step() {
+                    return step;
+                }
+
+                @Override
+                public boolean enabled() {
+                    return enabled;
+                }
+            };
+
+            this.azureMonitorMeterRegistry = new AzureMonitorMeterRegistry(config, Clock.SYSTEM);
+        }
+
+        return this.azureMonitorMeterRegistry;
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    private synchronized MeterRegistry graphiteMeterRegistry(String serviceAddress) {
+
+        if (this.graphiteMeterRegistry == null) {
+
+            HostAndPort address = HostAndPort.fromString(serviceAddress);
+
+            String host = address.getHost();
+            int port = address.getPortOrDefault(DEFAULT_GRAPHITE_SERVER_PORT);
+            boolean enabled = !Boolean.getBoolean("azure.cosmos.monitoring.graphite.disabled");
+            Duration step = Duration.ofSeconds(Integer.getInteger("azure.cosmos.monitoring.graphite.step", this.printingInterval));
+
+            final GraphiteConfig config = new GraphiteConfig() {
+
+                private String[] tagNames = { "source" };
+
+                @Override
+                @Nullable
+                public String get(@Nullable String key) {
+                    return null;
+                }
+
+                @Override
+                public boolean enabled() {
+                    return enabled;
+                }
+
+                @Override
+                @Nullable
+                public String host() {
+                    return host;
+                }
+
+                @Override
+                @Nullable
+                public int port() {
+                    return port;
+                }
+
+                @Override
+                @Nullable
+                public Duration step() {
+                    return step;
+                }
+
+                @Override
+                @Nullable
+                public String[] tagsAsPrefix() {
+                    return this.tagNames;
+                }
+            };
+
+            this.graphiteMeterRegistry = new GraphiteMeterRegistry(config, Clock.SYSTEM);
+            String source;
+
+            try {
+                PercentEscaper escaper = new PercentEscaper("_-", false);
+                source = escaper.escape(InetAddress.getLocalHost().getHostName());
+            } catch (UnknownHostException error) {
+                source = "unknown-host";
+            }
+
+            this.graphiteMeterRegistry.config()
+                .namingConvention(NamingConvention.dot)
+                .commonTags("source", source);
+        }
+
+        return this.graphiteMeterRegistry;
     }
 }

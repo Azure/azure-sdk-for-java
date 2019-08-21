@@ -76,7 +76,7 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {QueueServiceClient.class, QueueServiceAsyncClient.class})
 public final class QueueServiceClientBuilder {
-    private static final ClientLogger LOGGER = new ClientLogger(QueueServiceClientBuilder.class);
+    private final ClientLogger logger = new ClientLogger(QueueServiceClientBuilder.class);
     private static final String ACCOUNT_NAME = "accountname";
     private final List<HttpPipelinePolicy> policies;
 
@@ -119,8 +119,7 @@ public final class QueueServiceClientBuilder {
         Objects.requireNonNull(endpoint);
 
         if (sasTokenCredential == null && sharedKeyCredential == null && bearerTokenCredential == null) {
-            LOGGER.logExceptionAsError(new IllegalArgumentException("Credentials are required for authorization"));
-            return null;
+            logger.logExceptionAsError(new IllegalArgumentException("Credentials are required for authorization"));
         }
 
         if (pipeline != null) {
@@ -199,8 +198,7 @@ public final class QueueServiceClientBuilder {
                 this.bearerTokenCredential = null;
             }
         } catch (MalformedURLException ex) {
-            LOGGER.logExceptionAsError(new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed."));
-            return null;
+            logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed."));
         }
 
         return this;
@@ -271,8 +269,8 @@ public final class QueueServiceClientBuilder {
         try {
             this.endpoint = new URL(String.format("http://%s.queue.core.windows.net", accountName));
         } catch (MalformedURLException e) {
-            LOGGER.logExceptionAsError(new IllegalArgumentException(String.format("There is no valid account for the connection string. "
-                + "Connection String: %s", connectionString)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format("There is no valid account for the "
+                + "connection string. Connection String: %s", connectionString)));
         }
     }
 

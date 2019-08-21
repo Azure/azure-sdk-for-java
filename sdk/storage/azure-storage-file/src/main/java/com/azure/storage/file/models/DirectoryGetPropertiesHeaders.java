@@ -68,6 +68,48 @@ public final class DirectoryGetPropertiesHeaders {
     private Boolean isServerEncrypted;
 
     /*
+     * Attributes set for the directory.
+     */
+    @JsonProperty(value = "x-ms-file-attributes")
+    private String fileAttributes;
+
+    /*
+     * Creation time for the directory.
+     */
+    @JsonProperty(value = "x-ms-file-creation-time")
+    private OffsetDateTime fileCreationTime;
+
+    /*
+     * Last write time for the directory.
+     */
+    @JsonProperty(value = "x-ms-file-last-write-time")
+    private OffsetDateTime fileLastWriteTime;
+
+    /*
+     * Change time for the directory.
+     */
+    @JsonProperty(value = "x-ms-file-change-time")
+    private OffsetDateTime fileChangeTime;
+
+    /*
+     * Key of the permission set for the directory.
+     */
+    @JsonProperty(value = "x-ms-file-permission-key")
+    private String filePermissionKey;
+
+    /*
+     * The fileId of the directory.
+     */
+    @JsonProperty(value = "x-ms-file-id")
+    private String fileId;
+
+    /*
+     * The parent fileId of the directory.
+     */
+    @JsonProperty(value = "x-ms-file-parent-id")
+    private String fileParentId;
+
+    /*
      * The errorCode property.
      */
     @JsonProperty(value = "x-ms-error-code")
@@ -240,6 +282,148 @@ public final class DirectoryGetPropertiesHeaders {
      */
     public DirectoryGetPropertiesHeaders isServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
+        return this;
+    }
+
+    /**
+     * Get the fileAttributes property: Attributes set for the directory.
+     *
+     * @return the fileAttributes value.
+     */
+    public String fileAttributes() {
+        return this.fileAttributes;
+    }
+
+    /**
+     * Set the fileAttributes property: Attributes set for the directory.
+     *
+     * @param fileAttributes the fileAttributes value to set.
+     * @return the DirectoryGetPropertiesHeaders object itself.
+     */
+    public DirectoryGetPropertiesHeaders fileAttributes(String fileAttributes) {
+        this.fileAttributes = fileAttributes;
+        return this;
+    }
+
+    /**
+     * Get the fileCreationTime property: Creation time for the directory.
+     *
+     * @return the fileCreationTime value.
+     */
+    public OffsetDateTime fileCreationTime() {
+        return this.fileCreationTime;
+    }
+
+    /**
+     * Set the fileCreationTime property: Creation time for the directory.
+     *
+     * @param fileCreationTime the fileCreationTime value to set.
+     * @return the DirectoryGetPropertiesHeaders object itself.
+     */
+    public DirectoryGetPropertiesHeaders fileCreationTime(OffsetDateTime fileCreationTime) {
+        this.fileCreationTime = fileCreationTime;
+        return this;
+    }
+
+    /**
+     * Get the fileLastWriteTime property: Last write time for the directory.
+     *
+     * @return the fileLastWriteTime value.
+     */
+    public OffsetDateTime fileLastWriteTime() {
+        return this.fileLastWriteTime;
+    }
+
+    /**
+     * Set the fileLastWriteTime property: Last write time for the directory.
+     *
+     * @param fileLastWriteTime the fileLastWriteTime value to set.
+     * @return the DirectoryGetPropertiesHeaders object itself.
+     */
+    public DirectoryGetPropertiesHeaders fileLastWriteTime(OffsetDateTime fileLastWriteTime) {
+        this.fileLastWriteTime = fileLastWriteTime;
+        return this;
+    }
+
+    /**
+     * Get the fileChangeTime property: Change time for the directory.
+     *
+     * @return the fileChangeTime value.
+     */
+    public OffsetDateTime fileChangeTime() {
+        return this.fileChangeTime;
+    }
+
+    /**
+     * Set the fileChangeTime property: Change time for the directory.
+     *
+     * @param fileChangeTime the fileChangeTime value to set.
+     * @return the DirectoryGetPropertiesHeaders object itself.
+     */
+    public DirectoryGetPropertiesHeaders fileChangeTime(OffsetDateTime fileChangeTime) {
+        this.fileChangeTime = fileChangeTime;
+        return this;
+    }
+
+    /**
+     * Get the filePermissionKey property: Key of the permission set for the
+     * directory.
+     *
+     * @return the filePermissionKey value.
+     */
+    public String filePermissionKey() {
+        return this.filePermissionKey;
+    }
+
+    /**
+     * Set the filePermissionKey property: Key of the permission set for the
+     * directory.
+     *
+     * @param filePermissionKey the filePermissionKey value to set.
+     * @return the DirectoryGetPropertiesHeaders object itself.
+     */
+    public DirectoryGetPropertiesHeaders filePermissionKey(String filePermissionKey) {
+        this.filePermissionKey = filePermissionKey;
+        return this;
+    }
+
+    /**
+     * Get the fileId property: The fileId of the directory.
+     *
+     * @return the fileId value.
+     */
+    public String fileId() {
+        return this.fileId;
+    }
+
+    /**
+     * Set the fileId property: The fileId of the directory.
+     *
+     * @param fileId the fileId value to set.
+     * @return the DirectoryGetPropertiesHeaders object itself.
+     */
+    public DirectoryGetPropertiesHeaders fileId(String fileId) {
+        this.fileId = fileId;
+        return this;
+    }
+
+    /**
+     * Get the fileParentId property: The parent fileId of the directory.
+     *
+     * @return the fileParentId value.
+     */
+    public String fileParentId() {
+        return this.fileParentId;
+    }
+
+    /**
+     * Set the fileParentId property: The parent fileId of the directory.
+     *
+     * @param fileParentId the fileParentId value to set.
+     * @return the DirectoryGetPropertiesHeaders object itself.
+     */
+    public DirectoryGetPropertiesHeaders fileParentId(String fileParentId) {
+        this.fileParentId = fileParentId;
         return this;
     }
 

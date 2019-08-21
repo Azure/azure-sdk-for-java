@@ -13,6 +13,7 @@ import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageBuilder;
@@ -34,6 +35,7 @@ import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -54,6 +56,8 @@ import reactor.core.publisher.Mono;
  * @see SASTokenCredential
  */
 public class ShareAsyncClient {
+    private final ClientLogger logger = new ClientLogger(ShareAsyncClient.class);
+
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
     private final String snapshot;
@@ -66,6 +70,7 @@ public class ShareAsyncClient {
      * @param shareName Name of the share
      */
     ShareAsyncClient(AzureFileStorageImpl client, String shareName) {
+        Objects.requireNonNull(shareName);
         this.shareName = shareName;
         this.snapshot = null;
 
@@ -82,6 +87,7 @@ public class ShareAsyncClient {
      * @param snapshot Optional specific snapshot of the share
      */
     ShareAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String snapshot) {
+        Objects.requireNonNull(shareName);
         this.shareName = shareName;
         this.snapshot = snapshot;
 
@@ -99,8 +105,8 @@ public class ShareAsyncClient {
         try {
             return new URL(azureFileStorageClient.getUrl());
         } catch (MalformedURLException e) {
-            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
-                azureFileStorageClient.getUrl()), e);
+            throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
+                azureFileStorageClient.getUrl()), e));
         }
     }
 
