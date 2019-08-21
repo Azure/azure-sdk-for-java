@@ -163,6 +163,9 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     @Test
     public abstract void canFilter();
 
+    @Test
+    public abstract void testCanGetResultCountInSearch();
+
     abstract void search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions);
 
     abstract void indexDocuments(List<IndexAction> indexActions);

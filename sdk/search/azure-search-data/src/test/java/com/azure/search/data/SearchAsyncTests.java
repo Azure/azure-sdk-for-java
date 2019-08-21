@@ -13,6 +13,7 @@ import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
 import org.junit.Assert;
 import org.junit.Test;
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
@@ -182,6 +183,14 @@ public class SearchAsyncTests extends SearchTestBase {
 
         Assert.assertEquals(hotels.size(), actualResults.size());
         Assert.assertTrue(compareResults(actualResults.stream().map(SearchTestBase::dropUnnecessaryFields).collect(Collectors.toList()), hotels));
+    }
+
+    @Override
+    public void testCanGetResultCountInSearch() {
+        Flux<PagedResponse<SearchResult>> results = client.search("*", new SearchParameters().includeTotalResultCount(true), new SearchRequestOptions()).byPage();
+        StepVerifier.create(results)
+            .assertNext(res -> Assert.assertEquals(hotels.size(), ((SearchPagedResponse) res).count().intValue()))
+            .verifyComplete();
     }
 
     private void assertResponse(SearchPagedResponse response, List<Map<String, Object>> actualResults) {

@@ -141,8 +141,8 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void searchWithoutOrderBySortsByScore() {
         Iterator<SearchResult> results = client.search("*", new SearchParameters().filter("Rating lt 4"), new SearchRequestOptions()).iterator();
-        SearchResult firstResult =  results.next();
-        SearchResult secondResult =  results.next();
+        SearchResult firstResult = results.next();
+        SearchResult secondResult = results.next();
         Assert.assertTrue(firstResult.score() <= secondResult.score());
     }
 
@@ -187,6 +187,15 @@ public class SearchSyncTests extends SearchTestBase {
 
         searchResultsList.forEach(SearchTestBase::dropUnnecessaryFields);
         Assert.assertEquals(expectedDocsList, searchResultsList);
+    }
+
+    @Override
+    public void testCanGetResultCountInSearch() {
+        PagedIterable<SearchResult> results = client.search("*", new SearchParameters().includeTotalResultCount(true), new SearchRequestOptions());
+        Assert.assertNotNull(results);
+        List<Map<String, Object>> searchResultsList = getSearchResults(results);
+
+        Assert.assertEquals(hotels.size(), searchResultsList.size());
     }
 
     private List<Map<String, Object>> getSearchResults(PagedIterable<SearchResult> results) {
