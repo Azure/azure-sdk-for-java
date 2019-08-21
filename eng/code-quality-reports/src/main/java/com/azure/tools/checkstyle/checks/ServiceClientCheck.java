@@ -345,7 +345,7 @@ public class ServiceClientCheck extends AbstractCheck {
     private void checkReturnTypeNamingPattern(DetailAST methodDefToken, String methodName) {
         final DetailAST typeToken = methodDefToken.findFirstToken(TokenTypes.TYPE);
         // Use recursion to get the return type
-        final String returnType =getReturnType(typeToken, new StringBuilder()).toString();
+        final String returnType = getReturnType(typeToken, new StringBuilder()).toString();
 
         if (methodName.endsWith(WITH_RESPONSE)) {
             if (!returnType.startsWith(RESPONSE_BRACKET) && !returnType.startsWith(MONO_RESPONSE_BRACKET)) {
