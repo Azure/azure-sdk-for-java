@@ -104,7 +104,7 @@ class QueueSASTests extends APISpec {
     def "Test QueueSAS enqueue dequeue with permissions"() {
         setup:
         queueClient.create()
-        Response<EnqueuedMessage> resp = queueClient.enqueueMessage("test")
+        EnqueuedMessage resp = queueClient.enqueueMessage("test")
 
         def permissions = new QueueSASPermission()
             .read(true)
@@ -135,7 +135,7 @@ class QueueSASTests extends APISpec {
         "sastest" == dequeueMsgIterPermissions.next().messageText()
 
         when:
-        clientPermissions.updateMessage("testing", resp.value().messageId(), resp.value().popReceipt(), Duration.ofHours(1))
+        clientPermissions.updateMessage("testing", resp.messageId(), resp.popReceipt(), Duration.ofHours(1))
 
         then:
         thrown(Exception)
@@ -145,7 +145,7 @@ class QueueSASTests extends APISpec {
     def "Test QueueSAS update delete with permissions"() {
         setup:
         queueClient.create()
-        Response<EnqueuedMessage> resp = queueClient.enqueueMessage("test")
+        EnqueuedMessage resp = queueClient.enqueueMessage("test")
 
         def permissions = new QueueSASPermission()
             .read(true)
@@ -168,7 +168,7 @@ class QueueSASTests extends APISpec {
             .credential(SASTokenCredential.fromSASTokenString(sasPermissions))
             .httpClient(getHttpClient())
             .buildClient()
-        clientPermissions.updateMessage("testing", resp.value().messageId(), resp.value().popReceipt(), Duration.ZERO)
+        clientPermissions.updateMessage("testing", resp.messageId(), resp.popReceipt(), Duration.ZERO)
         def dequeueMsgIterPermissions = clientPermissions.dequeueMessages(1).iterator()
 
         then:

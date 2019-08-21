@@ -17,15 +17,12 @@ import com.azure.storage.file.ShareClient
 import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.ShareSASPermission
 import com.azure.storage.file.models.AccessPolicy
-import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.SignedIdentifier
 import com.azure.storage.file.models.StorageErrorException
 import com.azure.storage.file.models.StorageException
-import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import spock.lang.Unroll
 
-import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
 
 class FileSASTests extends APISpec {
