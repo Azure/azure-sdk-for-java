@@ -34,15 +34,15 @@ public abstract class BlobOutputStream extends OutputStream {
      */
     volatile IOException lastError;
 
-    public static BlobOutputStream appendBlobOutputStream(final AppendBlobAsyncClient client, final AppendBlobAccessConditions appendBlobAccessConditions) {
+    static BlobOutputStream appendBlobOutputStream(final AppendBlobAsyncClient client, final AppendBlobAccessConditions appendBlobAccessConditions) {
         return new AppendBlobOutputStream(client, appendBlobAccessConditions);
     }
 
-    public static BlobOutputStream blockBlobOutputStream(final BlockBlobAsyncClient client, final BlobAccessConditions accessConditions) {
+    static BlobOutputStream blockBlobOutputStream(final BlockBlobAsyncClient client, final BlobAccessConditions accessConditions) {
         return new BlockBlobOutputStream(client, accessConditions);
     }
 
-    public static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final long length, final BlobAccessConditions accessConditions) {
+    static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final long length, final BlobAccessConditions accessConditions) {
         return new PageBlobOutputStream(client, length, accessConditions);
     }
 
