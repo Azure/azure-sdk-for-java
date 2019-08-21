@@ -746,19 +746,19 @@
   </profiles>
 
   <modules>
-<!--    <module>./sdk/appconfiguration/azure-data-appconfiguration</module>-->
+    <module>./sdk/appconfiguration/azure-data-appconfiguration</module>
     <module>./sdk/core/azure-core</module>
-<!--    <module>./sdk/core/azure-core-amqp</module>-->
-<!--    <module>./sdk/core/azure-core-management</module>-->
-<!--    <module>./sdk/core/azure-core-test</module>-->
-<!--    <module>./sdk/eventhubs/azure-messaging-eventhubs</module>-->
-<!--    <module>./sdk/keyvault/azure-keyvault-secrets</module>-->
-<!--    <module>./sdk/keyvault/azure-keyvault-keys</module>-->
-<!--    <module>./sdk/tracing/tracing-opentelemetry</module>-->
-<!--    <module>./sdk/identity/azure-identity</module>-->
-<!--    <module>./sdk/storage/azure-storage-blob</module>-->
+    <module>./sdk/core/azure-core-amqp</module>
+    <module>./sdk/core/azure-core-management</module>
+    <module>./sdk/core/azure-core-test</module>
+    <module>./sdk/eventhubs/azure-messaging-eventhubs</module>
+    <module>./sdk/keyvault/azure-keyvault-secrets</module>
+    <module>./sdk/keyvault/azure-keyvault-keys</module>
+    <module>./sdk/tracing/tracing-opentelemetry</module>
+    <module>./sdk/identity/azure-identity</module>
+    <module>./sdk/storage/azure-storage-blob</module>
     <module>./sdk/storage/azure-storage-common</module>
     <module>./sdk/storage/azure-storage-file</module>
-<!--    <module>./sdk/storage/azure-storage-queue</module>-->
+    <module>./sdk/storage/azure-storage-queue</module>
   </modules>
 </project>
