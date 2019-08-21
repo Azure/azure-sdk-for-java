@@ -13,6 +13,7 @@ import com.azure.search.data.generated.models.SearchParameters;
 import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
 import org.junit.Assert;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -143,8 +144,8 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void searchWithoutOrderBySortsByScore() {
         Iterator<SearchResult> results = client.search("*", new SearchParameters().filter("Rating lt 4"), new SearchRequestOptions()).iterator();
-        SearchResult firstResult =  results.next();
-        SearchResult secondResult =  results.next();
+        SearchResult firstResult = results.next();
+        SearchResult secondResult = results.next();
         Assert.assertTrue(firstResult.score() <= secondResult.score());
     }
 
@@ -192,7 +193,7 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
-    public void testCanSearchWithSearchModeAll(){
+    public void testCanSearchWithSearchModeAll() {
         List<Map<String, Object>> response = getSearchResults(client.search("Cheapest hotel", new SearchParameters().queryType(SIMPLE).searchMode(ALL), new SearchRequestOptions()));
         Assert.assertEquals(1, response.size());
         Assert.assertEquals("2", response.get(0).get("HotelId"));
@@ -200,7 +201,7 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
-    public void testDefaultSearchModeIsAny(){
+    public void testDefaultSearchModeIsAny() {
         List<Map<String, Object>> response = getSearchResults(client.search("Cheapest hotel", new SearchParameters(), new SearchRequestOptions()));
         Assert.assertEquals(7, response.size());
         Assert.assertEquals(Arrays.asList("2", "10", "3", "4", "5", "1", "9"), response.stream().map(res -> res.get("HotelId").toString()).collect(Collectors.toList()));

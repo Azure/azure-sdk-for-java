@@ -189,13 +189,13 @@ public class SearchAsyncTests extends SearchTestBase {
     }
 
     @Override
-    public void testCanSearchWithSearchModeAll(){
+    public void testCanSearchWithSearchModeAll() {
         Flux<SearchResult> response = client.search("Cheapest hotel", new SearchParameters().queryType(SIMPLE).searchMode(ALL), new SearchRequestOptions()).log();
         StepVerifier.create(response).assertNext(res -> Assert.assertEquals("2", getSearchResultId(res, "HotelId"))).verifyComplete();
     }
 
     @Override
-    public void testDefaultSearchModeIsAny(){
+    public void testDefaultSearchModeIsAny() {
         Flux<SearchResult> response = client.search("Cheapest hotel", new SearchParameters(), new SearchRequestOptions()).log();
 
         StepVerifier.create(response)
