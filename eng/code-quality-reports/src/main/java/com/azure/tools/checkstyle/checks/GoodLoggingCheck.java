@@ -35,7 +35,7 @@ public class GoodLoggingCheck extends AbstractCheck {
     private String className;
 
     private static final Set<String> INVALID_LOG_SET = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-        "org.slf4j", "org.apache.logging.log4j"
+        "org.slf4j", "org.apache.logging.log4j", "java.util.logging"
     )));
 
     @Override
