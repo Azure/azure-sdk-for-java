@@ -36,3 +36,4 @@ stages:
       Artifacts:
         - name: microsoft-azure-loganalytics
           safeName: microsoftazureloganalytics
+          stagingProfileId: 534d15ee3800f4
