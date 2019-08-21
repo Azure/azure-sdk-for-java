@@ -130,7 +130,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
             Collectors.toList());
     }
 
-    protected String getSearchResultId(SearchResult searchResult, String idFieldName){
+    protected String getSearchResultId(SearchResult searchResult, String idFieldName) {
         return searchResult.additionalProperties().get(idFieldName).toString();
     }
 
