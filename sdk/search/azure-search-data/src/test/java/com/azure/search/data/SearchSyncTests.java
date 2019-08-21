@@ -12,7 +12,9 @@ import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.generated.models.SearchParameters;
 import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
+import com.azure.search.data.models.Hotel;
 import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,8 +24,12 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.azure.search.data.generated.models.QueryType.SIMPLE;
+import static com.azure.search.data.generated.models.SearchMode.ALL;
 
 public class SearchSyncTests extends SearchTestBase {
 
@@ -188,6 +194,23 @@ public class SearchSyncTests extends SearchTestBase {
         searchResultsList.forEach(SearchTestBase::dropUnnecessaryFields);
         Assert.assertEquals(expectedDocsList, searchResultsList);
     }
+
+    @Override
+    public void testCanSearchWithSearchModeAll(){
+        List<Map<String, Object>> response = getSearchResults(client.search("Cheapest hotel", new SearchParameters().queryType(SIMPLE).searchMode(ALL), new SearchRequestOptions()));
+        Assert.assertEquals(1, response.size());
+        Assert.assertEquals("2", response.get(0).get("HotelId"));
+
+    }
+
+    @Override
+    public void testDefaultSearchModeIsAny(){
+        List<Map<String, Object>> response = getSearchResults(client.search("Cheapest hotel", new SearchParameters(), new SearchRequestOptions()));
+        Assert.assertEquals(7, response.size());
+        Assert.assertEquals(Arrays.asList("2", "10", "3", "4", "5", "1", "9"), response.stream().map(res -> res.get("HotelId").toString()).collect(Collectors.toList()));
+
+    }
+
 
     private List<Map<String, Object>> getSearchResults(PagedIterable<SearchResult> results) {
         Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
