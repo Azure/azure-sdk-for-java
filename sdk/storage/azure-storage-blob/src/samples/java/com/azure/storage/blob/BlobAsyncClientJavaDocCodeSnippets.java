@@ -524,21 +524,17 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .create(true)
             .delete(true)
             .add(true);
-
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-
         IPRange ipRange = new IPRange()
             .ipMin("0.0.0.0")
             .ipMax("255.255.255.255");
-
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
         String cacheControl = "cache";
         String contentDisposition = "disposition";
         String contentEncoding = "encoding";
         String contentLanguage = "language";
         String contentType = "type";
-
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
         String accountName = "accountName";
         UserDelegationKey userDelegationKey = new UserDelegationKey();
@@ -558,27 +554,21 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .create(true)
             .delete(true)
             .add(true);
-
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-
         IPRange ipRange = new IPRange()
             .ipMin("0.0.0.0")
             .ipMax("255.255.255.255");
-
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
         String cacheControl = "cache";
         String contentDisposition = "disposition";
         String contentEncoding = "encoding";
         String contentLanguage = "language";
         String contentType = "type";
-
-        String identifier = "";
-
+        String identifier = "identifier";
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
         // Note either "identifier", or "expiryTime and permissions" are required to be set
-
         String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
         // END: com.azure.storage.blob.BlobAsyncClient.generateSAS
     }

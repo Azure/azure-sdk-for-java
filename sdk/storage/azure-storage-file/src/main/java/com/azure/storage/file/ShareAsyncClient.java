@@ -33,6 +33,7 @@ import com.azure.storage.file.models.StorageErrorException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -366,6 +367,26 @@ public class ShareAsyncClient {
      * or the share will have more than five policies.
      */
     public Mono<Response<ShareInfo>> setAccessPolicy(List<SignedIdentifier> permissions) {
+
+        /*
+        We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
+        OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
+        allows for proper serialization with no real detriment to users as sub-second precision on active time for
+        signed identifiers is not really necessary.
+         */
+        if (permissions != null) {
+            for (SignedIdentifier permission : permissions) {
+                if (permission.accessPolicy() != null && permission.accessPolicy().start() != null) {
+                    permission.accessPolicy().start(
+                        permission.accessPolicy().start().truncatedTo(ChronoUnit.SECONDS));
+                }
+                if (permission.accessPolicy() != null && permission.accessPolicy().expiry() != null) {
+                    permission.accessPolicy().expiry(
+                        permission.accessPolicy().expiry().truncatedTo(ChronoUnit.SECONDS));
+                }
+            }
+        }
+
         return azureFileStorageClient.shares().setAccessPolicyWithRestResponseAsync(shareName, permissions, null, Context.NONE)
             .map(this::mapToShareInfoResponse);
     }
@@ -644,7 +665,7 @@ public class ShareAsyncClient {
         String accountName) {
 
         // Set canonical name
-        fileServiceSASSignatureValues.canonicalName(this.azureFileStorageClient.getUrl(), accountName);
+        fileServiceSASSignatureValues.canonicalName(this.shareName, accountName);
 
         fileServiceSASSignatureValues.resource(Constants.UrlConstants.SAS_SHARE_CONSTANT);
 

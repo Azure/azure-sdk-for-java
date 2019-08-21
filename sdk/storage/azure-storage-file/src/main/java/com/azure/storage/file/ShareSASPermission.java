@@ -12,7 +12,7 @@ import java.util.Locale;
  * This is a helper class to construct a string representing the permissions granted by a ServiceSAS to a share.
  * Setting a value to true means that any SAS which uses these permissions will grant permissions for that operation.
  * Once all the values are set, this should be serialized with toString and set as the permissions field on a
- * {@link ServiceSASSignatureValues} object. It is possible to construct the permissions string without this class, but
+ * {@link FileServiceSASSignatureValues} object. It is possible to construct the permissions string without this class, but
  * the order of the permissions is particular and this class guarantees correctness.
  */
 public final class ShareSASPermission {

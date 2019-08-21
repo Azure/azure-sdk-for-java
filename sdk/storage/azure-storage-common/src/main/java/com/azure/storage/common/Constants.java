@@ -4,7 +4,7 @@
 package com.azure.storage.common;
 
 public final class Constants {
-    private static final int KB = 1024;
+    public static final int KB = 1024;
 
     /**
      * Constant representing a megabyte (Non-SI version).

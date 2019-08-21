@@ -812,7 +812,7 @@ public class FileAsyncClient {
         String accountName) {
 
         // Set canonical name
-        fileServiceSASSignatureValues.canonicalName(this.azureFileStorageClient.getUrl(), accountName);
+        fileServiceSASSignatureValues.canonicalName(this.shareName,this.filePath, accountName);
 
         fileServiceSASSignatureValues.resource(Constants.UrlConstants.SAS_FILE_CONSTANT);
 

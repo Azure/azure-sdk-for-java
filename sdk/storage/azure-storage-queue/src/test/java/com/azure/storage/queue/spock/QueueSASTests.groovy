@@ -88,7 +88,6 @@ class QueueSASTests extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Unroll
     def "queueServiceSASSignatureValues canonicalizedResource"() {
         setup:
         def queueName = queueClient.client.queueName

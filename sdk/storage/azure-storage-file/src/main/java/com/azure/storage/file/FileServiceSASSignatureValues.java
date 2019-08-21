@@ -255,22 +255,28 @@ final class FileServiceSASSignatureValues {
 
     /**
      * Sets the canonical name of the object the SAS user may access. Constructs a canonical name of
-     * "/file/{accountName}{Path of urlString}".
+     * "/file/{accountName}/{shareName}/{filePath}".
      *
-     * @param urlString URL string that contains the path to the object
+     * @param shareName Name of the share
+     * @param filePath Name of the file
      * @param accountName Name of the account that contains the object
      * @return the updated FileServiceSASSignatureValues object
-     * @throws RuntimeException If {@code urlString} is a malformed URL.
      */
-    public FileServiceSASSignatureValues canonicalName(String urlString, String accountName) {
-        URL url;
-        try {
-            url = new URL(urlString);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+    public FileServiceSASSignatureValues canonicalName(String shareName, String filePath, String accountName) {
+        this.canonicalName = String.format("/file/%s/%s/%s", accountName, shareName, filePath);
+        return this;
+    }
 
-        this.canonicalName = String.format("/file/%s%s", accountName, url.getPath());
+    /**
+     * Sets the canonical name of the object the SAS user may access. Constructs a canonical name of
+     * "/file/{accountName}/{shareName}".
+     *
+     * @param shareName Name of the share
+     * @param accountName Name of the account that contains the object
+     * @return the updated FileServiceSASSignatureValues object
+     */
+    public FileServiceSASSignatureValues canonicalName(String shareName, String accountName) {
+        this.canonicalName = String.format("/file/%s/%s", accountName, shareName);
         return this;
     }
 

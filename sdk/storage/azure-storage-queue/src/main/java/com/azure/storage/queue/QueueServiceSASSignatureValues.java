@@ -239,22 +239,13 @@ final class QueueServiceSASSignatureValues {
 
     /**
      * Sets the canonical name of the object the SAS user may access. Constructs a canonical name of
-     * "/queue/{accountName}{Path of urlString}".
+     * "/queue/{accountName}{queueName}".
      *
-     * @param queueName URL string that contains the path to the object
+     * @param queueName Name of the queue object
      * @param accountName Name of the account that contains the object
      * @return the updated QueueServiceSASSignatureValues object
-     * @throws RuntimeException If {@code urlString} is a malformed URL.
      */
     public QueueServiceSASSignatureValues canonicalName(String queueName, String accountName) {
-//        URL url;
-//        try {
-//            url = new URL(urlString);
-//        } catch (MalformedURLException e) {
-//            throw new RuntimeException(e);
-//        }
-
-        // TODO: Find out why is this not consistent with blobs where it is in the path
         this.canonicalName = String.format("/queue/%s/%s", accountName, queueName);
         return this;
     }

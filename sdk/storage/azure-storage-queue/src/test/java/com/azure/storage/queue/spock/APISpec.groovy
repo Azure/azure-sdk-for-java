@@ -112,6 +112,7 @@ class APISpec extends Specification {
                 .connectionString(connectionString)
                 .queueName(queueName)
                 .addPolicy(interceptorManager.getRecordPolicy())
+                .httpClient(getHttpClient())
         } else {
             return new QueueClientBuilder()
                 .connectionString(connectionString)

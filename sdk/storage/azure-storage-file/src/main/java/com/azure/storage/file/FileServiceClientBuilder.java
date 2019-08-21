@@ -243,7 +243,7 @@ public final class FileServiceClientBuilder {
         }
         String accountName = connectionStringPieces.get(ACCOUNT_NAME);
         try {
-            this.endpoint = new URL(String.format("https://%s.file.core.windows.net", accountName));
+            this.endpoint = new URL(String.format("http://%s.file.core.windows.net", accountName));
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format("There is no valid endpoint for"
                 + " the connection string. Connection String: %s", connectionString)));
