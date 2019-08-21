@@ -13,7 +13,8 @@
   <artifactId>azure-keyvault-secrets</artifactId>
   <version>4.0.0-preview.3</version>
 
-  <name>azure-keyvault-secrets</name>
+  <name>Microsoft Azure client library for KeyVault Secrets</name>
+  <description>This module contains client library for Microsoft Azure KeyVault Secrets.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -57,6 +58,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
+      <version>1.0.0-preview.4</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
       <version>1.0.0-preview.4</version>
       <scope>test</scope>
     </dependency>

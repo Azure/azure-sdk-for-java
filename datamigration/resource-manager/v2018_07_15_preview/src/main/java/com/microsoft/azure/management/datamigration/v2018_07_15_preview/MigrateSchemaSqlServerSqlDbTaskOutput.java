@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * Output for the task that migrates Schema for SQL Server databases to Azure
  * SQL databases.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = MigrateSchemaSqlServerSqlDbTaskOutput.class)
 @JsonTypeName("MigrateSchemaSqlServerSqlDbTaskOutput")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "MigrationLevelOutput", value = MigrateSchemaSqlServerSqlDbTaskOutputMigrationLevel.class),

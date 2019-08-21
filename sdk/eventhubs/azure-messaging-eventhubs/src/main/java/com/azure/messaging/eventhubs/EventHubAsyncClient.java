@@ -49,13 +49,13 @@ import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAM
  * the Event Hubs namespace and offers operations for sending event data, receiving events, and inspecting the connected
  * Event Hub.
  *
- * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hubs namespace connection string</strong></p>
+ * <p><strong>Creating an {@link EventHubAsyncClient} using an Event Hubs namespace connection string</strong></p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.connectionString#string-string}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.instantiation#string-string}
  *
- * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hub instance connection string</strong></p>
+ * <p><strong>Creating an {@link EventHubAsyncClient} using an Event Hub instance connection string</strong></p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.connectionstring#string}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.instantiation#string}
  *
  * @see EventHubClientBuilder
  * @see <a href="https://docs.microsoft.com/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>
@@ -236,20 +236,22 @@ public class EventHubAsyncClient implements Closeable {
      * @param options The set of options to apply when creating the consumer.
      * @return An new {@link EventHubAsyncConsumer} that receives events from the partition with all configured {@link
      *         EventHubConsumerOptions}.
-     * @throws NullPointerException If {@code eventPosition}, or {@code options} is {@code null}.
-     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an
-     *         empty string.
+     * @throws NullPointerException If {@code eventPosition}, {@code consumerGroup}, {@code partitionId}, or {@code
+     *     options} is {@code null}.
+     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
     public EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
                                                 EventHubConsumerOptions options) {
         Objects.requireNonNull(eventPosition);
         Objects.requireNonNull(options);
+        Objects.requireNonNull(consumerGroup);
+        Objects.requireNonNull(partitionId);
 
         if (ImplUtils.isNullOrEmpty(consumerGroup)) {
-            throw new IllegalArgumentException("'consumerGroup' cannot be null or empty.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("'consumerGroup' cannot be an empty string."));
         }
         if (ImplUtils.isNullOrEmpty(partitionId)) {
-            throw new IllegalArgumentException("'partitionId' cannot be null or empty.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("'partitionId' cannot be an empty string."));
         }
 
         final EventHubConsumerOptions clonedOptions = options.clone();
@@ -268,8 +270,6 @@ public class EventHubAsyncClient implements Closeable {
             return connection.createSession(entityPath).cast(EventHubSession.class);
         }).flatMap(session -> {
             logger.verbose("Creating consumer for path: {}", entityPath);
-
-            logger.verbose("Creating producer for {}", entityPath);
             final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(clonedOptions.retry());
 
             return session.createConsumer(linkName, entityPath, getExpression(eventPosition),
@@ -293,8 +293,8 @@ public class EventHubAsyncClient implements Closeable {
                     connection.close();
                 }
             } catch (IOException exception) {
-                throw new AmqpException(false, "Unable to close connection to service", exception,
-                    new ErrorContext(connectionOptions.host()));
+                throw logger.logExceptionAsError(new AmqpException(false, "Unable to close connection to service", exception,
+                    new ErrorContext(connectionOptions.host())));
             }
         }
     }

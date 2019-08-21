@@ -201,10 +201,22 @@ public final class BlobProperties {
     private String customerProvidedKeySha256;
 
     /*
+     * The encryptionScope property.
+     */
+    @JsonProperty(value = "EncryptionScope")
+    private String encryptionScope;
+
+    /*
      * The accessTierChangeTime property.
      */
     @JsonProperty(value = "AccessTierChangeTime")
     private DateTimeRfc1123 accessTierChangeTime;
+
+    /*
+     * The number of tags corresponding to the blob.
+     */
+    @JsonProperty(value = "TagCount", required = true)
+    private int tagCount;
 
     /**
      * Get the creationTime property: The creationTime property.
@@ -856,6 +868,26 @@ public final class BlobProperties {
     }
 
     /**
+     * Get the encryptionScope property: The encryptionScope property.
+     *
+     * @return the encryptionScope value.
+     */
+    public String encryptionScope() {
+        return this.encryptionScope;
+    }
+
+    /**
+     * Set the encryptionScope property: The encryptionScope property.
+     *
+     * @param encryptionScope the encryptionScope value to set.
+     * @return the BlobProperties object itself.
+     */
+    public BlobProperties encryptionScope(String encryptionScope) {
+        this.encryptionScope = encryptionScope;
+        return this;
+    }
+
+    /**
      * Get the accessTierChangeTime property: The accessTierChangeTime
      * property.
      *
@@ -881,6 +913,26 @@ public final class BlobProperties {
         } else {
             this.accessTierChangeTime = new DateTimeRfc1123(accessTierChangeTime);
         }
+        return this;
+    }
+
+    /**
+     * Get the tagCount property: The number of tags corresponding to the blob.
+     *
+     * @return the tagCount value.
+     */
+    public int tagCount() {
+        return this.tagCount;
+    }
+
+    /**
+     * Set the tagCount property: The number of tags corresponding to the blob.
+     *
+     * @param tagCount the tagCount value to set.
+     * @return the BlobProperties object itself.
+     */
+    public BlobProperties tagCount(int tagCount) {
+        this.tagCount = tagCount;
         return this;
     }
 }

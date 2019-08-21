@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -22,6 +23,7 @@ public class SetMetadataAndHTTPHeadersExample {
     /**
      * Entry point into the setting metadata examples for Storage blobs.
      * @param args Unused. Arguments to the program.
+     *
      * @throws IOException If an I/O error occurs
      */
     public static void main(String[] args) throws IOException {
@@ -57,7 +59,7 @@ public class SetMetadataAndHTTPHeadersExample {
         /*
          * Create a container with the containerMetadata above.
          */
-        containerClient.create(containerMetadata, null, null);
+        containerClient.createWithResponse(containerMetadata, null, null, new Context("key1", "value1"));
 
         /*
          * Create a blob client.
@@ -76,7 +78,7 @@ public class SetMetadataAndHTTPHeadersExample {
          */
         String data = "Hello world!";
         InputStream dataStream = new ByteArrayInputStream(data.getBytes());
-        blobClient.upload(dataStream, data.length(), blobHTTPHeaders, blobMetadata, null, null);
+        blobClient.uploadWithResponse(dataStream, data.length(), blobHTTPHeaders, blobMetadata, null, null, null);
 
         /*
          * Clean up the container and blob.

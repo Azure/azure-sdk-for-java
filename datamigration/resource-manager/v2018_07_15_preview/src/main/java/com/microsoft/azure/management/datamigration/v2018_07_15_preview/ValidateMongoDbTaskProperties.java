@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Properties for the task that validates a migration between MongoDB data
  * sources.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType", defaultImpl = ValidateMongoDbTaskProperties.class)
 @JsonTypeName("Validate.MongoDb")
 public class ValidateMongoDbTaskProperties extends ProjectTaskProperties {
     /**

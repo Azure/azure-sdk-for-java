@@ -25,6 +25,7 @@
   <properties>
     <azure-core.version>1.0.0-preview.4</azure-core.version>
     <azure-core-amqp.version>1.0.0-preview.4</azure-core-amqp.version>
+    <azure-core-http-netty.version>1.0.0-preview.4</azure-core-http-netty.version>
     <azure-core-management.version>1.0.0-preview.4</azure-core-management.version>
     <azure-core-test.version>1.0.0-preview.4</azure-core-test.version>
     <azure-data-appconfiguration.version>1.0.0-preview.3</azure-data-appconfiguration.version>
@@ -59,6 +60,11 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
       <version>${azure-core.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>${azure-core-http-netty}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

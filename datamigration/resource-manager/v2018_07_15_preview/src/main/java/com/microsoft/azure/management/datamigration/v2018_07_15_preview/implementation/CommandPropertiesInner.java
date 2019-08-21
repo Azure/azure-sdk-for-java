@@ -10,70 +10,55 @@ package com.microsoft.azure.management.datamigration.v2018_07_15_preview.impleme
 
 import java.util.List;
 
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.ConnectToMongoDbTaskProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.ConnectToSourceMySqlTaskProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.ConnectToSourceSqlServerSyncTaskProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.ConnectToSourceSqlServerTaskProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.ConnectToTargetAzureDbForMySqlTaskProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.ConnectToTargetSqlDbTaskProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.ConnectToTargetSqlMITaskProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.ConnectToTargetSqlSqlDbSyncTaskProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.GetTdeCertificatesSqlTaskProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.GetUserTablesSqlSyncTaskProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.GetUserTablesSqlTaskProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.MigrateMongoDbTaskProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.MigrateMySqlAzureDbForMySqlSyncTaskProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.MigrateSchemaSqlServerSqlDbTaskProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.MigrateSqlServerSqlDbSyncTaskProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.MigrateSqlServerSqlDbTaskProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.MigrateSqlServerSqlMITaskProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.MigrateSyncCompleteCommandProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.MongoDbCancelCommand;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.MongoDbConnectionInfo;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.MongoDbFinishCommand;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.MongoDbRestartCommand;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.MySqlConnectionInfo;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.ODataError;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.CommandState;
+import com.microsoft.azure.management.datamigration.v2018_07_15_preview.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.PostgreSqlConnectionInfo;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.SqlConnectionInfo;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.ValidateMigrationInputSqlServerSqlDbSyncTaskProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.ValidateMigrationInputSqlServerSqlMITaskProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.ValidateMongoDbTaskProperties;
 
 /**
  * Base class for all types of DMS command properties. If command is not
  * supported by current client, this object is returned.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "commandType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "commandType", defaultImpl = CommandPropertiesInner.class)
 @JsonTypeName("Unknown")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "Migrate.SqlServer.AzureDbSqlMi.Complete", value = MigrateMISyncCompleteCommandProperties.class),
     @JsonSubTypes.Type(name = "Migrate.Sync.Complete.Database", value = MigrateSyncCompleteCommandProperties.class),
+    @JsonSubTypes.Type(name = "MiSqlConnectionInfo", value = MiSqlConnectionInfo.class),
     @JsonSubTypes.Type(name = "PostgreSqlConnectionInfo", value = PostgreSqlConnectionInfo.class),
+    @JsonSubTypes.Type(name = "OracleConnectionInfo", value = OracleConnectionInfo.class),
     @JsonSubTypes.Type(name = "MySqlConnectionInfo", value = MySqlConnectionInfo.class),
     @JsonSubTypes.Type(name = "MongoDbConnectionInfo", value = MongoDbConnectionInfo.class),
     @JsonSubTypes.Type(name = "SqlConnectionInfo", value = SqlConnectionInfo.class),
+    @JsonSubTypes.Type(name = "Migrate.Ssis", value = MigrateSsisTaskProperties.class),
     @JsonSubTypes.Type(name = "GetTDECertificates.Sql", value = GetTdeCertificatesSqlTaskProperties.class),
+    @JsonSubTypes.Type(name = "Validate.Oracle.AzureDbPostgreSql.Sync", value = ValidateOracleAzureDbForPostgreSqlSyncTaskProperties.class),
     @JsonSubTypes.Type(name = "Validate.MongoDb", value = ValidateMongoDbTaskProperties.class),
+    @JsonSubTypes.Type(name = "ValidateMigrationInput.SqlServer.AzureSqlDbMI.Sync.LRS", value = ValidateMigrationInputSqlServerSqlMISyncTaskProperties.class),
     @JsonSubTypes.Type(name = "ValidateMigrationInput.SqlServer.AzureSqlDbMI", value = ValidateMigrationInputSqlServerSqlMITaskProperties.class),
     @JsonSubTypes.Type(name = "ValidateMigrationInput.SqlServer.SqlDb.Sync", value = ValidateMigrationInputSqlServerSqlDbSyncTaskProperties.class),
+    @JsonSubTypes.Type(name = "Migrate.Oracle.AzureDbForPostgreSql.Sync", value = MigrateOracleAzureDbForPostgreSqlSyncTaskProperties.class),
     @JsonSubTypes.Type(name = "Migrate.PostgreSql.AzureDbForPostgreSql.Sync", value = MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties.class),
     @JsonSubTypes.Type(name = "Migrate.MySql.AzureDbForMySql.Sync", value = MigrateMySqlAzureDbForMySqlSyncTaskProperties.class),
     @JsonSubTypes.Type(name = "Migrate.SqlServer.AzureSqlDb.Sync", value = MigrateSqlServerSqlDbSyncTaskProperties.class),
     @JsonSubTypes.Type(name = "Migrate.SqlServer.SqlDb", value = MigrateSqlServerSqlDbTaskProperties.class),
+    @JsonSubTypes.Type(name = "Migrate.SqlServer.AzureSqlDbMI.Sync.LRS", value = MigrateSqlServerSqlMISyncTaskProperties.class),
     @JsonSubTypes.Type(name = "Migrate.SqlServer.AzureSqlDbMI", value = MigrateSqlServerSqlMITaskProperties.class),
     @JsonSubTypes.Type(name = "Migrate.MongoDb", value = MigrateMongoDbTaskProperties.class),
     @JsonSubTypes.Type(name = "ConnectToTarget.AzureDbForMySql", value = ConnectToTargetAzureDbForMySqlTaskProperties.class),
+    @JsonSubTypes.Type(name = "ConnectToTarget.AzureSqlDbMI.Sync.LRS", value = ConnectToTargetSqlMISyncTaskProperties.class),
     @JsonSubTypes.Type(name = "ConnectToTarget.AzureSqlDbMI", value = ConnectToTargetSqlMITaskProperties.class),
+    @JsonSubTypes.Type(name = "GetUserTablesPostgreSql", value = GetUserTablesPostgreSqlTaskProperties.class),
+    @JsonSubTypes.Type(name = "GetUserTablesOracle", value = GetUserTablesOracleTaskProperties.class),
     @JsonSubTypes.Type(name = "GetUserTables.AzureSqlDb.Sync", value = GetUserTablesSqlSyncTaskProperties.class),
     @JsonSubTypes.Type(name = "GetUserTables.Sql", value = GetUserTablesSqlTaskProperties.class),
+    @JsonSubTypes.Type(name = "ConnectToTarget.Oracle.AzureDbForPostgreSql.Sync", value = ConnectToTargetOracleAzureDbForPostgreSqlSyncTaskProperties.class),
+    @JsonSubTypes.Type(name = "ConnectToTarget.AzureDbForPostgreSql.Sync", value = ConnectToTargetAzureDbForPostgreSqlSyncTaskProperties.class),
     @JsonSubTypes.Type(name = "ConnectToTarget.SqlDb.Sync", value = ConnectToTargetSqlSqlDbSyncTaskProperties.class),
     @JsonSubTypes.Type(name = "ConnectToTarget.SqlDb", value = ConnectToTargetSqlDbTaskProperties.class),
+    @JsonSubTypes.Type(name = "ConnectToSource.Oracle.Sync", value = ConnectToSourceOracleSyncTaskProperties.class),
+    @JsonSubTypes.Type(name = "ConnectToSource.PostgreSql.Sync", value = ConnectToSourcePostgreSqlSyncTaskProperties.class),
     @JsonSubTypes.Type(name = "ConnectToSource.SqlServer.Sync", value = ConnectToSourceSqlServerSyncTaskProperties.class),
     @JsonSubTypes.Type(name = "ConnectToSource.SqlServer", value = ConnectToSourceSqlServerTaskProperties.class),
     @JsonSubTypes.Type(name = "Connect.MongoDb", value = ConnectToMongoDbTaskProperties.class),
@@ -81,7 +66,10 @@ import com.microsoft.azure.management.datamigration.v2018_07_15_preview.Validate
     @JsonSubTypes.Type(name = "MigrateSchemaSqlServerSqlDb", value = MigrateSchemaSqlServerSqlDbTaskProperties.class),
     @JsonSubTypes.Type(name = "cancel", value = MongoDbCancelCommand.class),
     @JsonSubTypes.Type(name = "finish", value = MongoDbFinishCommand.class),
-    @JsonSubTypes.Type(name = "restart", value = MongoDbRestartCommand.class)
+    @JsonSubTypes.Type(name = "restart", value = MongoDbRestartCommand.class),
+    @JsonSubTypes.Type(name = "Service.Check.OCI", value = CheckOCIDriverTaskProperties.class),
+    @JsonSubTypes.Type(name = "Service.Upload.OCI", value = UploadOCIDriverTaskProperties.class),
+    @JsonSubTypes.Type(name = "Service.Install.OCI", value = InstallOCIDriverTaskProperties.class)
 })
 public class CommandPropertiesInner {
     /**

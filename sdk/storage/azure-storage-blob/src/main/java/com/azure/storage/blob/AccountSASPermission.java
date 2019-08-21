@@ -40,8 +40,7 @@ public final class AccountSASPermission {
      * Creates an {@code AccountSASPermission} from the specified permissions string. This method will throw an
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString
-     *         A {@code String} which represents the {@code SharedAccessAccountPermissions}.
+     * @param permString A {@code String} which represents the {@code SharedAccessAccountPermissions}.
      *
      * @return An {@code AccountSASPermission} object generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, w, d, l, a, c, u, or p.

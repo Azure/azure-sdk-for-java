@@ -68,7 +68,7 @@ public class EventHubAsyncProducerTest {
     public void sendMultipleMessages() {
         // Arrange
         final int count = 4;
-        final byte[] contents = CONTENTS.getBytes(UTF_8);
+        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
         final Flux<EventData> testData = Flux.range(0, count).flatMap(number -> {
             final EventData data = new EventData(contents);
             return Flux.just(data);
@@ -100,7 +100,7 @@ public class EventHubAsyncProducerTest {
     @Test
     public void sendSingleMessage() {
         // Arrange
-        final EventData testData = new EventData(CONTENTS.getBytes(UTF_8));
+        final EventData testData = new EventData(TEST_CONTENTS.getBytes(UTF_8));
 
         when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
@@ -128,8 +128,8 @@ public class EventHubAsyncProducerTest {
     public void partitionProducerCannotSendWithPartitionKey() {
         // Arrange
         final Flux<EventData> testData = Flux.just(
-            new EventData(CONTENTS.getBytes(UTF_8)),
-            new EventData(CONTENTS.getBytes(UTF_8)));
+            new EventData(TEST_CONTENTS.getBytes(UTF_8)),
+            new EventData(TEST_CONTENTS.getBytes(UTF_8)));
 
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
@@ -163,7 +163,7 @@ public class EventHubAsyncProducerTest {
 
         // We believe 20 events is enough for that EventDataBatch to be greater than max size.
         final Flux<EventData> testData = Flux.range(0, 20).flatMap(number -> {
-            final EventData data = new EventData(CONTENTS.getBytes(UTF_8));
+            final EventData data = new EventData(TEST_CONTENTS.getBytes(UTF_8));
             return Flux.just(data);
         });
 
@@ -378,7 +378,7 @@ public class EventHubAsyncProducerTest {
         verify(link, times(2)).getLinkSize();
     }
 
-    private static final String CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus luctus ipsum, at commodo ligula euismod ac. Phasellus vitae lacus sit amet diam porta placerat. \n"
+    static final String TEST_CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus luctus ipsum, at commodo ligula euismod ac. Phasellus vitae lacus sit amet diam porta placerat. \n"
         + "Ut sodales efficitur sapien ut posuere. Morbi sed tellus est. Proin eu erat purus. Proin massa nunc, condimentum id iaculis dignissim, consectetur et odio. Cras suscipit sem eu libero aliquam tincidunt. Nullam ut arcu suscipit, eleifend velit in, cursus libero. Ut eleifend facilisis odio sit amet feugiat. Phasellus at nunc sit amet elit sagittis commodo ac in nisi. Fusce vitae aliquam quam. Integer vel nibh euismod, tempus elit vitae, pharetra est. Duis vulputate enim a elementum dignissim. Morbi dictum enim id elit scelerisque, in elementum nulla pharetra. \n"
         + "Aenean aliquet aliquet condimentum. Proin dapibus dui id libero tempus feugiat. Sed commodo ligula a lectus mattis, vitae tincidunt velit auctor. Fusce quis semper dui. Phasellus eu efficitur sem. Ut non sem sit amet enim condimentum venenatis id dictum massa. Nullam sagittis lacus a neque sodales, et ultrices arcu mattis. Aliquam erat volutpat. \n"
         + "Aenean fringilla quam elit, id mattis purus vestibulum nec. Praesent porta eros in dapibus molestie. Vestibulum orci libero, tincidunt et turpis eget, condimentum lobortis enim. Fusce suscipit ante et mauris consequat cursus nec laoreet lorem. Maecenas in sollicitudin diam, non tincidunt purus. Nunc mauris purus, laoreet eget interdum vitae, placerat a sapien. In mi risus, blandit eu facilisis nec, molestie suscipit leo. Pellentesque molestie urna vitae dui faucibus bibendum. \n"

@@ -35,6 +35,7 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.implementation.util.TypeUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -66,6 +67,7 @@ import java.util.stream.Collectors;
  * deserialized Java object.
  */
 public class RestProxy implements InvocationHandler {
+    private final ClientLogger logger = new ClientLogger(RestProxy.class);
     private final HttpPipeline httpPipeline;
     private final SerializerAdapter serializer;
     private final SwaggerInterfaceParser interfaceParser;
@@ -148,7 +150,7 @@ public class RestProxy implements InvocationHandler {
             }
 
         } catch (Exception e) {
-            throw Exceptions.propagate(e);
+            throw logger.logExceptionAsError(Exceptions.propagate(e));
         }
     }
 
@@ -196,16 +198,22 @@ public class RestProxy implements InvocationHandler {
         } else {
             urlBuilder = new UrlBuilder();
 
-            // We add path to the UrlBuilder first because this is what is
-            // provided to the HTTP Method annotation. Any path substitutions
-            // from other substitution annotations will overwrite this.
-            urlBuilder.path(path);
-
             final String scheme = methodParser.scheme(args);
             urlBuilder.scheme(scheme);
 
             final String host = methodParser.host(args);
             urlBuilder.host(host);
+
+            // Set the path after host, concatenating the path
+            // segment in the host.
+            if (path != null && !path.isEmpty() && !path.equals("/")) {
+                String hostPath = urlBuilder.path();
+                if (hostPath == null || hostPath.isEmpty() || hostPath.equals("/")) {
+                    urlBuilder.path(path);
+                } else {
+                    urlBuilder.path(hostPath + "/" + path);
+                }
+            }
         }
 
         for (final EncodedParameter queryParameter : methodParser.encodedQueryParameters(args)) {
@@ -420,7 +428,7 @@ public class RestProxy implements InvocationHandler {
             cls = (Class<? extends Response<?>>) (Object) PagedResponseBase.class;
 
             if (bodyAsObject != null && !TypeUtil.isTypeOrSubTypeOf(bodyAsObject.getClass(), Page.class)) {
-                throw new RuntimeException("Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class);
+                throw logger.logExceptionAsError(new RuntimeException("Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class));
             }
         }
 
@@ -437,7 +445,7 @@ public class RestProxy implements InvocationHandler {
             .collect(Collectors.toList());
 
         if (constructors.isEmpty()) {
-            throw new RuntimeException("Cannot find suitable constructor for class " + cls);
+            throw logger.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + cls));
         }
 
         // try to create an instance using our list of potential candidates
@@ -455,14 +463,14 @@ public class RestProxy implements InvocationHandler {
                     case 5:
                         return ctor.newInstance(httpRequest, responseStatusCode, responseHeaders, bodyAsObject, response.decodedHeaders().block());
                     default:
-                        throw new IllegalStateException("Response constructor with expected parameters not found.");
+                        throw logger.logExceptionAsError(new IllegalStateException("Response constructor with expected parameters not found."));
                 }
             } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                throw reactor.core.Exceptions.propagate(e);
+                throw logger.logExceptionAsError(reactor.core.Exceptions.propagate(e));
             }
         }
         // error
-        throw new RuntimeException("Cannot find suitable constructor for class " + cls);
+        throw logger.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + cls));
     }
 
     protected final Mono<?> handleBodyReturnType(final HttpDecodedResponse response, final SwaggerMethodParser methodParser, final Type entityType) {

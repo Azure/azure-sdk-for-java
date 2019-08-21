@@ -8,6 +8,7 @@ import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageBlobAccessConditions;
 import com.azure.storage.blob.models.PageRange;
+import com.azure.storage.blob.models.StorageException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -150,6 +151,7 @@ public abstract class BlobOutputStream extends OutputStream {
      * @param byteVal An <code>int</code> which represents the bye value to write.
      * @throws IOException If an I/O error occurs. In particular, an IOException may be thrown if the output stream has
      * been closed.
+
      */
     @Override
     public void write(final int byteVal) throws IOException {
@@ -184,7 +186,6 @@ public abstract class BlobOutputStream extends OutputStream {
         }
     }
 
-
     private static class AppendBlobOutputStream extends BlobOutputStream {
         private final AppendBlobAccessConditions appendBlobAccessConditions;
         private final AppendPositionAccessConditions appendPositionAccessConditions;
@@ -202,10 +203,10 @@ public abstract class BlobOutputStream extends OutputStream {
                 if (appendBlobAccessConditions.appendPositionAccessConditions().appendPosition() != null) {
                     this.initialBlobOffset = appendBlobAccessConditions.appendPositionAccessConditions().appendPosition();
                 } else {
-                    this.initialBlobOffset = client.getProperties().block().value().blobSize();
+                    this.initialBlobOffset = client.getProperties().block().blobSize();
                 }
             } else {
-                this.initialBlobOffset = client.getProperties().block().value().blobSize();
+                this.initialBlobOffset = client.getProperties().block().blobSize();
                 this.appendPositionAccessConditions = new AppendPositionAccessConditions();
             }
         }
@@ -213,7 +214,7 @@ public abstract class BlobOutputStream extends OutputStream {
         private Mono<Void> appendBlock(Flux<ByteBuffer> blockData, long offset, long writeLength) {
             this.appendPositionAccessConditions.appendPosition(offset);
 
-            return client.appendBlock(blockData, writeLength, appendBlobAccessConditions)
+            return client.appendBlockWithResponse(blockData, writeLength, appendBlobAccessConditions)
                 .then()
                 .onErrorResume(t -> t instanceof IOException || t instanceof StorageException, e -> {
                     this.lastError = new IOException(e);
@@ -276,7 +277,7 @@ public abstract class BlobOutputStream extends OutputStream {
         private Mono<Void> writeBlock(Flux<ByteBuffer> blockData, String blockId, long writeLength) {
             LeaseAccessConditions leaseAccessConditions = (accessConditions == null) ? null : accessConditions.leaseAccessConditions();
 
-            return client.stageBlock(blockId, blockData, writeLength, leaseAccessConditions)
+            return client.stageBlockWithResponse(blockId, blockData, writeLength, leaseAccessConditions)
                 .then()
                 .onErrorResume(t -> t instanceof StorageException, e -> {
                     this.lastError = new IOException(e);
@@ -304,7 +305,7 @@ public abstract class BlobOutputStream extends OutputStream {
          */
         @Override
         synchronized void commit() {
-            client.commitBlockList(this.blockList, null, null, this.accessConditions).block();
+            client.commitBlockListWithResponse(this.blockList, null, null, this.accessConditions).block();
         }
     }
 
@@ -326,7 +327,7 @@ public abstract class BlobOutputStream extends OutputStream {
         }
 
         private Mono<Void> writePages(Flux<ByteBuffer> pageData, long offset, long writeLength) {
-            return client.uploadPages(new PageRange().start(offset).end(offset + writeLength - 1), pageData, pageBlobAccessConditions)
+            return client.uploadPagesWithResponse(new PageRange().start(offset).end(offset + writeLength - 1), pageData, pageBlobAccessConditions)
                 .then()
                 .onErrorResume(t -> t instanceof StorageException, e -> {
                     this.lastError = new IOException(e);

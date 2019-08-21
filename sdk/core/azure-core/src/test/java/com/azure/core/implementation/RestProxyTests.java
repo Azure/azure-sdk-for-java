@@ -1547,7 +1547,7 @@ public abstract class RestProxyTests {
     @Host("{url}")
     @ServiceInterface(name = "Service22")
     interface Service22 {
-        @Get("{container}/{blob}")
+        @Get("/")
         byte[] getBytes(@HostParam("url") String url);
     }
 

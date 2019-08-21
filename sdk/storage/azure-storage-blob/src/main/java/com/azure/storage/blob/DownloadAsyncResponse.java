@@ -18,8 +18,8 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * {@code DownloadAsyncResponse} wraps the protocol-layer response from {@link BlobAsyncClient#download(BlobRange,
- * ReliableDownloadOptions, BlobAccessConditions, boolean)} to automatically retry failed reads from the body as
+ * {@code DownloadAsyncResponse} wraps the protocol-layer response from {@link BlobAsyncClient#download(BlobRange, BlobAccessConditions, boolean)}
+ * to automatically retry failed reads from the body as
  * appropriate. If the download is interrupted, the {@code DownloadAsyncResponse} will make a request to resume the download
  * from where it left off, allowing the user to consume the data as one continuous stream, for any interruptions are
  * hidden. The retry behavior is defined by the options passed to the {@link #body(ReliableDownloadOptions)}. The

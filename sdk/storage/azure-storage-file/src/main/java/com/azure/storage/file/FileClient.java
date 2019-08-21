@@ -322,7 +322,7 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is set to clear, the value of this header must be set to zero..
+     * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is set to clear, the value of this header must be set to zero.
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
@@ -349,7 +349,7 @@ public class FileClient {
      * <ul>
      *      <li>Update: Writes the bytes specified by the request body into the specified range.</li>
      *      <li>Clear: Clears the specified range and releases the space used in storage for that range. To clear a range, set the Content-Length header to zero.</li>
-     * <ul/>
+     * </ul>
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
@@ -396,7 +396,7 @@ public class FileClient {
      * <ul>
      *      <li>Update: Writes the bytes specified by the request body into the specified range.</li>
      *      <li>Clear: Clears the specified range and releases the space used in storage for that range. To clear a range, set the Content-Length header to zero.</li>
-     * <ul/>
+     * </ul>
      */
     public void uploadFromFile(String uploadFilePath, FileRangeWriteType type) {
         fileAsyncClient.uploadFromFile(uploadFilePath, type).block();

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Information for connecting to MySQL server.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = MySqlConnectionInfo.class)
 @JsonTypeName("MySqlConnectionInfo")
 public class MySqlConnectionInfo extends ConnectionInfo {
     /**

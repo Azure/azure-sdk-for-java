@@ -29,9 +29,11 @@ public final class AzureFileStorageImpl {
      * Sets Specifies the version of the operation to use for this request.
      *
      * @param version the version value.
+     * @return the service client itself.
      */
-    void setVersion(String version) {
+    AzureFileStorageImpl setVersion(String version) {
         this.version = version;
+        return this;
     }
 
     /**
@@ -52,9 +54,11 @@ public final class AzureFileStorageImpl {
      * Sets The URL of the service account, share, directory or file that is the target of the desired operation.
      *
      * @param url the url value.
+     * @return the service client itself.
      */
-    void setUrl(String url) {
+    AzureFileStorageImpl setUrl(String url) {
         this.url = url;
+        return this;
     }
 
     /**

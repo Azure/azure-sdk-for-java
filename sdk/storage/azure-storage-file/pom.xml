@@ -15,7 +15,8 @@
   <artifactId>azure-storage-file</artifactId>
   <version>12.0.0-preview.3</version>
 
-  <name>azure-storage-file</name>
+  <name>Microsoft Azure client library for File Storage</name>
+  <description>This module contains client library for Microsoft Azure File Storage.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -61,18 +62,19 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-identity</artifactId>
-      <version>1.0.0-preview.3</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.0.0-preview.4</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.spockframework</groupId>
+      <artifactId>spock-core</artifactId>
+      <version>1.3-groovy-2.5</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

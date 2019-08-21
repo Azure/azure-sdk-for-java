@@ -192,7 +192,7 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#createSubDirectory(String)
+     * Generates a code sample for using {@link DirectoryClient#createSubDirectory(String)}
      */
     public void createSubDirectory() {
         DirectoryClient directoryClient = createClientWithSASToken();
