@@ -197,7 +197,7 @@ public class SearchSyncTests extends SearchTestBase {
         Assert.assertNotNull(results);
         Iterator<PagedResponse<SearchResult>> resultsIterator = results.iterableByPage().iterator();
 
-        Assert.assertEquals(hotels.size(),((SearchPagedResponse) resultsIterator.next()).count().intValue());
+        Assert.assertEquals(hotels.size(), ((SearchPagedResponse) resultsIterator.next()).count().intValue());
         Assert.assertFalse(resultsIterator.hasNext());
     }
 
