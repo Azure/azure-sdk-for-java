@@ -57,6 +57,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -95,6 +96,8 @@ public class FileAsyncClient {
      * @param snapshot The snapshot of the share
      */
     FileAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String filePath, String snapshot) {
+        Objects.requireNonNull(shareName);
+        Objects.requireNonNull(filePath);
         this.shareName = shareName;
         this.filePath = filePath;
         this.snapshot = snapshot;
@@ -112,6 +115,8 @@ public class FileAsyncClient {
      * @param snapshot Optional snapshot of the share
      */
     FileAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String filePath, String snapshot) {
+        Objects.requireNonNull(shareName);
+        Objects.requireNonNull(filePath);
         this.shareName = shareName;
         this.filePath = filePath;
         this.snapshot = snapshot;
@@ -609,8 +614,7 @@ public class FileAsyncClient {
      * @return {@link FileRange ranges} in the files.
      */
     public Flux<FileRange> listRanges() {
-        return azureFileStorageClient.files().getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, null, Context.NONE)
-            .flatMapMany(this::convertListRangesResponseToFileRangeInfo);
+        return listRanges(null);
     }
 
     /**
@@ -674,8 +678,10 @@ public class FileAsyncClient {
 
     /**
      * Closes a handle or handles opened on a file at the service. It is intended to be used alongside {@link
-     * FileAsyncClient#listHandles()} (Integer)} . TODO: Will change the return type to how many handles have been
-     * closed. Implement one more API to force close all handles. TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github
+     * FileAsyncClient#listHandles()} (Integer)} .
+     * TODO: Will change the return type to how many handles have been
+     * closed. Implement one more API to force close all handles.
+     * TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github
      * Issue 4525</a>
      *
      * <p><strong>Code Samples</strong></p>
