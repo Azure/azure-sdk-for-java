@@ -370,7 +370,7 @@ public class ServiceClientCheck extends AbstractCheck {
         final String returnType = getReturnType(methodDefToken, new StringBuilder()).toString();
 
         final boolean containsTypeParameter = TokenUtil.findFirstTokenByPredicate(parametersToken,
-            node -> node.getType() == TokenTypes.PARAMETER_DEF
+            node -> node.getType() == TokenTypes.PARAMETER_DEF && node.findFirstToken(TokenTypes.TYPE).findFirstToken(TokenTypes.IDENT) != null
             && node.findFirstToken(TokenTypes.TYPE).findFirstToken(TokenTypes.IDENT).getText().equals(CONTEXT)).isPresent();
 
         if (containsTypeParameter) {
