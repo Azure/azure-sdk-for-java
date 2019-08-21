@@ -29,6 +29,8 @@ import com.azure.storage.queue.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.models.SignedIdentifier;
 import com.azure.storage.queue.models.StorageErrorException;
 import com.azure.storage.queue.models.UpdatedMessage;
+
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -362,6 +364,26 @@ public final class QueueAsyncClient {
     }
 
     Mono<VoidResponse> setAccessPolicyWithResponse(List<SignedIdentifier> permissions, Context context) {
+
+        /*
+        We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
+        OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
+        allows for proper serialization with no real detriment to users as sub-second precision on active time for
+        signed identifiers is not really necessary.
+         */
+        if (permissions != null) {
+            for (SignedIdentifier permission : permissions) {
+                if (permission.accessPolicy() != null && permission.accessPolicy().start() != null) {
+                    permission.accessPolicy().start(
+                        permission.accessPolicy().start().truncatedTo(ChronoUnit.SECONDS));
+                }
+                if (permission.accessPolicy() != null && permission.accessPolicy().expiry() != null) {
+                    permission.accessPolicy().expiry(
+                        permission.accessPolicy().expiry().truncatedTo(ChronoUnit.SECONDS));
+                }
+            }
+        }
+
         return client.queues().setAccessPolicyWithRestResponseAsync(queueName, permissions, null,  null, context)
             .map(VoidResponse::new);
     }
