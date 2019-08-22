@@ -1,0 +1,43 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsclearrangeerrorargs7266798d7d2584?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D726C5E913F3DD\"",
+      "Last-Modified" : "Thu, 22 Aug 2019 05:59:35 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "78fc692d-801a-00eb-31ae-58ce8a000000",
+      "Date" : "Thu, 22 Aug 2019 05:59:35 GMT",
+      "x-ms-client-request-id" : "e3ba6870-0a4e-412b-9d4e-da26240685a7"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsclearrangeerrorargs7266798d7d2584/fileasyncapitestsclearrangeerrorargs79686d4b5e1ace?comp=range",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "78fc6931-801a-00eb-33ae-58ce8a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:78fc6931-801a-00eb-33ae-58ce8a000000\nTime:2019-08-22T05:59:36.7226033Z</Message></Error>",
+      "Date" : "Thu, 22 Aug 2019 05:59:36 GMT",
+      "x-ms-client-request-id" : "bdc04258-ea64-496f-b9ff-c7b43404ce32",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "fileasyncapitestsclearrangeerrorargs7266798d7d2584", "fileasyncapitestsclearrangeerrorargs79686d4b5e1ace" ]
+}

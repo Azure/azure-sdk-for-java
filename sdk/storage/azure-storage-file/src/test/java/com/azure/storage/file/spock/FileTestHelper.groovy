@@ -213,4 +213,14 @@ class FileTestHelper {
         }
         return true
     }
+
+    static boolean equalsAfterTrim(int length, int offset, byte[] actual) {
+        int totalLength = actual.length
+        for (int i = 0; i < totalLength; i++) {
+            if (offset <= i && i < offset + length && actual[i] != 0){
+                return false
+            }
+        }
+        return true
+    }
 }

@@ -539,9 +539,7 @@ public class FileAsyncClient {
      * status code 413 (Request Entity Too Large)
      */
     public Mono<Response<FileUploadInfo>> clearRange(long length) {
-        FileRange range = new FileRange(0, length - 1);
-        return azureFileStorageClient.files().uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), FileRangeWriteType.UPDATE, 0, null, null, null, Context.NONE)
-            .map(this::uploadResponse);
+        return clearRange(length, 0);
     }
 
     /**
@@ -566,7 +564,7 @@ public class FileAsyncClient {
      */
     public Mono<Response<FileUploadInfo>> clearRange(long length, long offset) {
         FileRange range = new FileRange(offset, offset + length - 1);
-        return azureFileStorageClient.files().uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), FileRangeWriteType.UPDATE, 0, null, null, null, Context.NONE)
+        return azureFileStorageClient.files().uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), FileRangeWriteType.CLEAR, 0L, null, null, null, Context.NONE)
             .map(this::uploadResponse);
     }
 
