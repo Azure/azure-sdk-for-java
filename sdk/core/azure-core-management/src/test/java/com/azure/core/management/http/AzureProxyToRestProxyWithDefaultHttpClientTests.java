@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.implementation;
+package com.azure.core.management.http;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.management.AzureProxyToRestProxyTests;
 
-public class RestProxyWithNettyTests extends RestProxyTests {
+public class AzureProxyToRestProxyWithDefaultHttpClientTests extends AzureProxyToRestProxyTests {
 
     @Override
     protected HttpClient createHttpClient() {

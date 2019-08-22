@@ -11,13 +11,13 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.util.logging.ClientLogger;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,8 +25,8 @@ import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 
 /**
- * HTTP Pipeline policy that keeps track of each HTTP request and response that flows through the pipeline.
- * Data is recorded into {@link RecordedData}.
+ * HTTP Pipeline policy that keeps track of each HTTP request and response that flows through the pipeline. Data is
+ * recorded into {@link RecordedData}.
  */
 public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     private static final int DEFAULT_BUFFER_LENGTH = 1024;
@@ -72,7 +72,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
                 // Remove pre-added header if this is a waiting or redirection
                 if (body != null && body.contains("<Status>InProgress</Status>")
-                    || Integer.parseInt(responseData.get("StatusCode")) == HttpResponseStatus.TEMPORARY_REDIRECT.code()) {
+                    || Integer.parseInt(responseData.get("StatusCode")) == HttpURLConnection.HTTP_MOVED_TEMP) {
                     logger.info("Waiting for a response or redirection.");
                 } else {
                     recordedData.addNetworkCall(networkCallRecord);

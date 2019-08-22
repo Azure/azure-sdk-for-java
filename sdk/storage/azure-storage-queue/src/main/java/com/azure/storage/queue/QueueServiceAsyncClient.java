@@ -30,6 +30,7 @@ import com.azure.storage.queue.models.ServicesListQueuesSegmentResponse;
 import com.azure.storage.queue.models.StorageErrorException;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
+import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -134,6 +135,7 @@ public final class QueueServiceAsyncClient {
      * @throws StorageErrorException If a queue with the same name and different metadata already exists
      */
     public Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata) {
+        Objects.requireNonNull(queueName);
         return withContext(context -> createQueueWithResponse(queueName, metadata, context));
     }
 

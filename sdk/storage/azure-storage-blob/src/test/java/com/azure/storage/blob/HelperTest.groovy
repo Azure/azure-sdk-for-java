@@ -141,7 +141,7 @@ class HelperTest extends APISpec {
         data.toByteArray() == defaultData.array()
 
         and:
-        Response<BlobProperties> properties = bsu.getProperties()
+        Response<BlobProperties> properties = bsu.getPropertiesWithResponse(null, null, null)
 
         then:
         properties.value().cacheControl() == "cache"
