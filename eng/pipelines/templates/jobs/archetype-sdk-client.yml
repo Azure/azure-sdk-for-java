@@ -61,6 +61,8 @@ jobs:
         displayName: 'Tag scheduled builds'
         condition: and(eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
 
+      - template: ../steps/cache-maven-repository.yml
+
       - task: Maven@3
         displayName: 'Build and Package'
         inputs:
@@ -103,6 +105,8 @@ jobs:
         # builds should be sufficient.
         condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
         displayName: 'Component Detection'
+
+      - template: ../steps/cache-maven-repository.yml
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
