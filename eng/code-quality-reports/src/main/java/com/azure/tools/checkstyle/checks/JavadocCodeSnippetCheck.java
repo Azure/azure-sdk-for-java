@@ -41,8 +41,9 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
     private String packageName;
     // A container to contains all class name visited, remove the class name when leave the same token
     private Deque<String> classNameStack = new ArrayDeque<>();
-    // A container to contains all METHOD_DEF node visited, remove the node whenever leave the same token
-    private Deque<DetailAST> methodDefStack = new ArrayDeque<>();
+//    // A container to contains all METHOD_DEF node visited, remove the node whenever leave the same token
+//    private Deque<DetailAST> methodDefStack = new ArrayDeque<>();
+    private DetailAST methodDefToken = null;
 
     @Override
     public int[] getDefaultTokens() {
@@ -72,11 +73,6 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
                     classNameStack.pop();
                 }
                 break;
-            case TokenTypes.METHOD_DEF:
-                if (!methodDefStack.isEmpty()) {
-                    methodDefStack.pop();
-                }
-                break;
             default:
                 // Checkstyle complains if there's no default block in switch
                 break;
@@ -93,7 +89,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
                 classNameStack.push(token.findFirstToken(TokenTypes.IDENT).getText());
                 break;
             case TokenTypes.METHOD_DEF:
-                methodDefStack.push(token);
+                methodDefToken = token;
                 break;
             case TokenTypes.BLOCK_COMMENT_BEGIN:
                 checkNamingPattern(token);
@@ -127,7 +123,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
             return;
         }
 
-        // Iterate through all the top level nodes in the Javadoc, looking for the @throws statements.
+        // Iterate through all the top level nodes in the Javadoc, looking for the @codesnippet tag.
         for (DetailNode node : javadocNode.getChildren()) {
             if (node.getType() != JavadocTokenTypes.JAVADOC_INLINE_TAG) {
                 continue;
@@ -144,10 +140,10 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
                 return;
             }
 
+            // There will always have TEXT token if there is DESCRIPTION token exists.
             String customDescription = JavadocUtil.findFirstToken(descriptionNode, JavadocTokenTypes.TEXT).getText();
 
             // Find method name
-            final DetailAST methodDefToken = methodDefStack.peek();
             final String methodName = methodDefToken.findFirstToken(TokenTypes.IDENT).getText();
             final String className = classNameStack.isEmpty() ? "" : classNameStack.peek();
             final String parameters = constructParametersString(methodDefToken);
@@ -161,7 +157,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
             if (customDescription == null || customDescription.isEmpty()
                 || !isNamingMatched(customDescription.toLowerCase(Locale.ROOT),
                     fullPathWithoutParameters.toLowerCase(Locale.ROOT), parameters)) {
-                log(node.getLineNumber(), String.format("Naming pattern mismatch. The @codeSnippet description "
+                log(node.getLineNumber(), String.format("Naming pattern mismatch. The @codesnippet description "
                     + "''%s'' does not match ''%s''. Case Insensitive.", customDescription, fullPath));
             }
         }
@@ -174,7 +170,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
      * @return a valid parameter string or null if no method arguments exist.
      */
     private String constructParametersString(DetailAST methodDefToken) {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         // Checks for the parameters of the method
         final DetailAST parametersToken = methodDefToken.findFirstToken(TokenTypes.PARAMETERS);
         for (DetailAST ast = parametersToken.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
@@ -217,13 +213,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
     }
 
     /**
-     *  Check if the given customDescription from codesnippet matched the naming pattern rules:
-     *  All rules now are case-insensitive.
-     *  <ol>
-     *    <li>Method names from codesnippet should have started with actual method name where the codesnippet
-     *    javadoc represents</li>
-     *    <li>Parameters should match correctly in terms of ordering and naming.</li>
-     *  </ol>
+     * Check if the given customDescription from codesnippet matches the naming pattern rule.
      *
      * @param customDescription full sample code reference name from annotation codesnippet
      * @param fullPathWithoutParameters a string contains package name, class name, and method name if exist.
@@ -236,21 +226,21 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
         // (1) packagename.classname.methodname#string-string
         // (2) packagename.classname.methodname#string-string-2
         final String[] descriptionSegments = customDescription.split("#");
-        if (!fullPathWithoutParameters.equalsIgnoreCase(descriptionSegments[0])) {
+        if (descriptionSegments.length == 1) {
+            final String pathUntilMethodName = descriptionSegments[0].split("-")[0];
+            if (!fullPathWithoutParameters.equalsIgnoreCase(pathUntilMethodName)) {
+                return false;
+            }
+
+            // There exists parameters in the actual Java sample, but there is no custom parameters exist.
+            if (parameters != null) {
+                return false;
+            }
+        } else if (descriptionSegments.length == 2 && !descriptionSegments[1].toLowerCase().startsWith(parameters.toLowerCase())) {
+            // The name of codesnippet sample has parameters but the actual code sample has
+            // no parameter or not start with the given parameters of codesnippet.
             return false;
         }
-
-        // There exists parameters in the actual Java sample, but there is no custom parameters exist.
-        if (parameters != null && descriptionSegments.length != 2) {
-            return false;
-        }
-
-        // The name of codesnippet sample has parameters but the actual code sample has
-        // no parameter or not equal to the given parameters of codesnippet.
-        if (descriptionSegments.length == 2 && !descriptionSegments[1].toLowerCase().startsWith(parameters.toLowerCase())) {
-            return false;
-        }
-
         return true;
     }
 }
