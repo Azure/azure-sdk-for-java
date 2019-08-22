@@ -13,6 +13,7 @@ import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
 import org.junit.Assert;
 import org.junit.Test;
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
@@ -24,6 +25,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.azure.search.data.generated.models.QueryType.SIMPLE;
+import static com.azure.search.data.generated.models.SearchMode.ALL;
 
 public class SearchAsyncTests extends SearchTestBase {
 
@@ -153,7 +157,7 @@ public class SearchAsyncTests extends SearchTestBase {
         PagedFlux<SearchResult> results = client.search("*", new SearchParameters().orderBy(orderByValues), new SearchRequestOptions());
         Assert.assertNotNull(results);
 
-        List<String> actualResults = results.log().map(res -> (String) res.additionalProperties().get("HotelId")).collectList().block();
+        List<String> actualResults = results.log().map(res -> getSearchResultId(res, "HotelId")).collectList().block();
 
         Assert.assertArrayEquals(actualResults.toArray(), expectedResults);
     }
@@ -184,6 +188,27 @@ public class SearchAsyncTests extends SearchTestBase {
         Assert.assertTrue(compareResults(actualResults.stream().map(SearchTestBase::dropUnnecessaryFields).collect(Collectors.toList()), hotels));
     }
 
+    @Override
+    public void testCanSearchWithSearchModeAll() {
+        Flux<SearchResult> response = client.search("Cheapest hotel", new SearchParameters().queryType(SIMPLE).searchMode(ALL), new SearchRequestOptions()).log();
+        StepVerifier.create(response).assertNext(res -> Assert.assertEquals("2", getSearchResultId(res, "HotelId"))).verifyComplete();
+    }
+
+    @Override
+    public void testDefaultSearchModeIsAny() {
+        Flux<SearchResult> response = client.search("Cheapest hotel", new SearchParameters(), new SearchRequestOptions()).log();
+
+        StepVerifier.create(response)
+            .assertNext(res -> Assert.assertEquals("2", getSearchResultId(res, "HotelId")))
+            .assertNext(res -> Assert.assertEquals("10", getSearchResultId(res, "HotelId")))
+            .assertNext(res -> Assert.assertEquals("3", getSearchResultId(res, "HotelId")))
+            .assertNext(res -> Assert.assertEquals("4", getSearchResultId(res, "HotelId")))
+            .assertNext(res -> Assert.assertEquals("5", getSearchResultId(res, "HotelId")))
+            .assertNext(res -> Assert.assertEquals("1", getSearchResultId(res, "HotelId")))
+            .assertNext(res -> Assert.assertEquals("9", getSearchResultId(res, "HotelId")))
+            .verifyComplete();
+    }
+
     private void assertResponse(SearchPagedResponse response, List<Map<String, Object>> actualResults) {
         Assert.assertNull(response.count());
         Assert.assertNull(response.coverage());
@@ -208,7 +233,7 @@ public class SearchAsyncTests extends SearchTestBase {
 
         List<String> actualKeys = results.log()
             .filter(doc -> doc.additionalProperties().containsKey("HotelId"))
-            .map(doc -> (String) doc.additionalProperties().get("HotelId"))
+            .map(doc -> getSearchResultId(doc, "HotelId"))
             .collectList()
             .block();
 
