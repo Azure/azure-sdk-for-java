@@ -23,6 +23,7 @@ import com.azure.storage.file.models.StorageException
 import io.netty.buffer.Unpooled
 import spock.lang.Unroll
 
+import java.nio.ByteBuffer
 import java.time.OffsetDateTime
 
 class FileSASTests extends APISpec {
@@ -160,8 +161,9 @@ class FileSASTests extends APISpec {
     def "FileSAS network test download upload"() {
         setup:
         String data = "test"
+        primaryShareClient.create()
         primaryFileClient.create(Constants.KB)
-        primaryFileClient.upload(Unpooled.wrappedBuffer(data.getBytes()), (long) data.length())
+        primaryFileClient.upload(ByteBuffer.wrap(data.getBytes()), (long) data.length())
 
         def permissions = new FileSASPermission()
             .read(true)
@@ -195,11 +197,13 @@ class FileSASTests extends APISpec {
 
         def responseBody = downloadResponse.value().body().toIterable().iterator().next()
 
-        client.upload(Unpooled.wrappedBuffer(data.getBytes()), (long) data.length())
+        client.upload(ByteBuffer.wrap(data.getBytes()), (long) data.length())
+
+        primaryShareClient.delete()
 
         then:
         for(int i = 0; i < data.length(); i++) {
-            responseBody.getByte(i) == data.getBytes()[i]
+            responseBody.get(i) == data.getBytes()[i]
         }
 
         notThrown(StorageException)
@@ -239,7 +243,7 @@ class FileSASTests extends APISpec {
             .httpClient(getHttpClient())
             .buildClient()
 
-        client.upload(Unpooled.wrappedBuffer(data.getBytes()), (long) data.length())
+        client.upload(ByteBuffer.wrap(data.getBytes()), (long) data.length())
 
         then:
         thrown(StorageErrorException)
@@ -325,8 +329,8 @@ class FileSASTests extends APISpec {
             .httpClient(getHttpClient())
             .credential(SASTokenCredential.fromSASTokenString(sas))
         def sc = scBuilder.buildClient()
-        sc.createShare(shareName)
-        sc.deleteShare(shareName)
+        sc.createShare("create")
+        sc.deleteShare("create")
 
         then:
         notThrown(StorageException)

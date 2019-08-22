@@ -53,6 +53,42 @@ public final class AccountSASSignatureValues {
     }
 
     /**
+     * Shared method between service clients to generate an account SAS.
+     *
+     * @param sharedKeyCredential The {@code SharedKeyCredential} shared key credential for the account SAS
+     * @param accountSASService The {@code AccountSASService} services for the account SAS
+     * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
+     * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
+     * @param startTime The {@code OffsetDateTime} start time for the account SAS
+     * @param version The {@code String} version for the account SAS
+     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateAccountSAS(SharedKeyCredential sharedKeyCredential, AccountSASService accountSASService,
+        AccountSASResourceType accountSASResourceType, AccountSASPermission accountSASPermission,
+        OffsetDateTime expiryTime, OffsetDateTime startTime, String version, IPRange ipRange, SASProtocol sasProtocol) {
+
+        this.services(accountSASService == null ? null : accountSASService.toString());
+        this.resourceTypes(accountSASResourceType == null ? null : accountSASResourceType.toString());
+        this.permissions(accountSASPermission == null ? null : accountSASPermission.toString());
+        this.expiryTime(expiryTime);
+        this.startTime(startTime);
+
+        if (version != null) {
+            this.version(version);
+        }
+
+        this.ipRange(ipRange);
+        this.protocol(sasProtocol);
+
+        AccountSASQueryParameters sasQueryParameters = this.generateSASQueryParameters(sharedKeyCredential);
+
+        return sasQueryParameters.encode();
+    }
+
+    /**
      * @return the service version that is targeted, if {@code null} or empty the service version targeted by the
      * library will be used.
      */

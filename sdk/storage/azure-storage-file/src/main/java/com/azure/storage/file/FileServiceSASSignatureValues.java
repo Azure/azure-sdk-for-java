@@ -87,8 +87,8 @@ final class FileServiceSASSignatureValues {
     }
 
     FileServiceSASSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
-                              OffsetDateTime expiryTime, String permission, IPRange ipRange, String identifier, String cacheControl,
-                              String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
+        OffsetDateTime expiryTime, String permission, IPRange ipRange, String identifier, String cacheControl,
+        String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
         if (version != null) {
             this.version = version;
         }

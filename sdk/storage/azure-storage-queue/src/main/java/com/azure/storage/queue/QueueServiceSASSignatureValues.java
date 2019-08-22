@@ -74,8 +74,8 @@ final class QueueServiceSASSignatureValues {
         this.identifier = identifier;
     }
 
-    QueueServiceSASSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
-                              OffsetDateTime expiryTime, String permission, IPRange ipRange, String identifier) {
+    QueueServiceSASSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime, OffsetDateTime expiryTime,
+        String permission, IPRange ipRange, String identifier) {
         if (version != null) {
             this.version = version;
         }

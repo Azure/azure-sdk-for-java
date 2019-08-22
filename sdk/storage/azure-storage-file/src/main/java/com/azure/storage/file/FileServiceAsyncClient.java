@@ -393,25 +393,11 @@ public final class FileServiceAsyncClient {
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         IPRange ipRange, SASProtocol sasProtocol) {
 
-        AccountSASSignatureValues accountSASSignatureValues = new AccountSASSignatureValues();
-        accountSASSignatureValues.services(accountSASService == null ? null : accountSASService.toString());
-        accountSASSignatureValues.resourceTypes(accountSASResourceType == null ? null : accountSASResourceType.toString());
-        accountSASSignatureValues.permissions(accountSASPermission == null ? null : accountSASPermission.toString());
-        accountSASSignatureValues.expiryTime(expiryTime);
-        accountSASSignatureValues.startTime(startTime);
-
-        if (version != null) {
-            accountSASSignatureValues.version(version);
-        }
-
-        accountSASSignatureValues.ipRange(ipRange);
-        accountSASSignatureValues.protocol(sasProtocol);
-
         SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.azureFileStorageClient.getHttpPipeline());
+        Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
-        AccountSASQueryParameters sasQueryParameters = accountSASSignatureValues.generateSASQueryParameters(sharedKeyCredential);
+        return new AccountSASSignatureValues().generateAccountSAS(sharedKeyCredential, accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
 
-        return sasQueryParameters.encode();
     }
 
 }
