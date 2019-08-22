@@ -787,19 +787,9 @@ class ContainerAPITest extends APISpec {
         def uncommittedName = "u" + generateBlobName()
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
-        // TODO Turn this on once paged responses are available in sync client
-        /*when: "list blobs with sync client"
-        Iterator<BlobItem> blobs = cc.listBlobsFlat(options, null).iterator()
-
-        then:
-        blobs.size() == PAGE_SIZE*/
-
-
-        when: "list blobs with async client"
-        def pagedResponse = ccAsync.listBlobsFlat(options).byPage().blockFirst()
-
-        then:
-        pagedResponse.value().size() == PAGE_SIZE
+        expect: "Get first page of blob listings (sync and async)"
+        cc.listBlobsFlat(options, null).iterableByPage().iterator().next().value().size() == PAGE_SIZE
+        ccAsync.listBlobsFlat(options).byPage().blockFirst().value().size() == PAGE_SIZE
     }
 
     def "List blobs flat options fail"() {
@@ -819,24 +809,21 @@ class ContainerAPITest extends APISpec {
             bc.create(512)
         }
 
-        // TODO Turn this on once paged responses are available in sync client
-        /*when: "list blobs with sync client"
-        Iterator<BlobItem> response = cc.listBlobsFlat(new ListBlobsOptions().maxResults(6), null)
-
-        String marker = response.body().nextMarker()
-        int firstSegmentSize = response.iterator().size()
-        response = cc.listBlobsFlat(marker, null, null)
+        when: "list blobs with sync client"
+        def pagedIterable = cc.listBlobsFlat(new ListBlobsOptions().maxResults(PAGE_SIZE), null)
+        def pagedSyncResponse1 = pagedIterable.iterableByPage().iterator().next()
+        def pagedSyncResponse2 = pagedIterable.iterableByPage(pagedSyncResponse1.nextLink()).iterator().next()
 
         then:
-        firstSegmentSize == 6
-        response.body().nextMarker() == null
-        responseiterator()().size() == 4*/
+        pagedSyncResponse1.value().size() == PAGE_SIZE
+        pagedSyncResponse2.value().size() == NUM_BLOBS - PAGE_SIZE
+        pagedSyncResponse2.nextLink() == null
 
 
         when: "list blobs with async client"
-        def responseT = ccAsync.listBlobsFlat(new ListBlobsOptions().maxResults(PAGE_SIZE))
-        def pagedResponse1 = responseT.byPage().blockFirst()
-        def pagedResponse2 = responseT.byPage(pagedResponse1.nextLink()).blockFirst()
+        def pagedFlux = ccAsync.listBlobsFlat(new ListBlobsOptions().maxResults(PAGE_SIZE))
+        def pagedResponse1 = pagedFlux.byPage().blockFirst()
+        def pagedResponse2 = pagedFlux.byPage(pagedResponse1.nextLink()).blockFirst()
 
         then:
         pagedResponse1.value().size() == PAGE_SIZE
