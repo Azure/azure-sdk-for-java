@@ -83,7 +83,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
             .doOnError(throwable -> {
                 networkCallRecord.exception(new NetworkCallError(throwable));
                 recordedData.addNetworkCall(networkCallRecord);
-                throw Exceptions.propagate(throwable);
+                throw logger.logExceptionAsWarning(Exceptions.propagate(throwable));
             }).flatMap(httpResponse -> {
                 final HttpResponse bufferedResponse = httpResponse.buffer();
 
@@ -162,7 +162,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
                         content = new String(output.toByteArray(), StandardCharsets.UTF_8);
                     } catch (IOException e) {
-                        throw Exceptions.propagate(e);
+                        throw logger.logExceptionAsWarning(Exceptions.propagate(e));
                     }
                 } else {
                     content = new String(bytes, StandardCharsets.UTF_8);
