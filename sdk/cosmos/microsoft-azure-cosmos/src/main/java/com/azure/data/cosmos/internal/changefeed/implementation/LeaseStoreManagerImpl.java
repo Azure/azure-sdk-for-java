@@ -435,7 +435,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             this.requestOptionsFactory.createFeedOptions());
 
         return query.flatMap( documentFeedResponse -> Flux.fromIterable(documentFeedResponse.results()))
-            .map( ServiceItemLease::fromDocument);
+            .map(ServiceItemLease::fromDocument);
     }
 
     private String getDocumentId(String leaseToken)
@@ -443,8 +443,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         return this.getPartitionLeasePrefix() + leaseToken;
     }
 
-    private String getPartitionLeasePrefix()
-    {
+    private String getPartitionLeasePrefix() {
         return this.settings.getContainerNamePrefix() + "..";
     }
 

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ChangeFeedProcessor;
 import com.azure.data.cosmos.ChangeFeedProcessorOptions;
 import com.azure.data.cosmos.CosmosClient;
@@ -11,7 +12,15 @@ import com.azure.data.cosmos.CosmosContainerProperties;
 import com.azure.data.cosmos.CosmosContainerRequestOptions;
 import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.CosmosItemProperties;
+import com.azure.data.cosmos.CosmosItemRequestOptions;
+import com.azure.data.cosmos.CosmosItemResponse;
+import com.azure.data.cosmos.FeedOptions;
+import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.SerializationFormattingPolicy;
+import com.azure.data.cosmos.SqlParameter;
+import com.azure.data.cosmos.SqlParameterList;
+import com.azure.data.cosmos.SqlQuerySpec;
+import com.azure.data.cosmos.internal.changefeed.ServiceItemLease;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +30,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
@@ -40,7 +50,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
     private CosmosContainer createdFeedCollection;
     private CosmosContainer createdLeaseCollection;
     private List<CosmosItemProperties> createdDocuments;
-    private static Map<String, CosmosItemProperties> receivedDocuments;
+    private static volatile Map<String, CosmosItemProperties> receivedDocuments;
 //    private final String databaseId = "testdb1";
 //    private final String hostName = "TestHost1";
     private final String hostName = RandomStringUtils.randomAlphabetic(6);
@@ -154,9 +164,9 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         // Wait for the feed processor to receive and process the documents.
         long remainingWork = FEED_TIMEOUT;
         while (remainingWork > 0 && receivedDocuments.size() < FEED_COUNT) {
-            remainingWork -= CHANGE_FEED_PROCESSOR_TIMEOUT;
+            remainingWork -= 100;
             try {
-                Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -179,7 +189,147 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         receivedDocuments.clear();
     }
 
-     @BeforeMethod(groups = { "emulator" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
+    @Test(groups = { "emulator" }, timeOut = 40 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void staledLeaseAcquiring() {
+        final String ownerFirst = "Owner_First";
+        final String ownerSecond = "Owner_Second";
+        final String leasePrefix = "TEST";
+
+        ChangeFeedProcessor changeFeedProcessorFirst = ChangeFeedProcessor.Builder()
+            .hostName(ownerFirst)
+            .handleChanges(docs -> {
+                ChangeFeedProcessorTest.log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
+                ChangeFeedProcessorTest.log.info("END processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
+            })
+            .feedContainer(createdFeedCollection)
+            .leaseContainer(createdLeaseCollection)
+            .options(new ChangeFeedProcessorOptions()
+                .leasePrefix(leasePrefix)
+            )
+            .build();
+
+        ChangeFeedProcessor changeFeedProcessorSecond = ChangeFeedProcessor.Builder()
+            .hostName(ownerSecond)
+            .handleChanges(docs -> {
+                ChangeFeedProcessorTest.log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerSecond);
+                for (CosmosItemProperties item : docs) {
+                    processItem(item);
+                }
+                ChangeFeedProcessorTest.log.info("END processing from thread {} using host {}", Thread.currentThread().getId(), ownerSecond);
+            })
+            .feedContainer(createdFeedCollection)
+            .leaseContainer(createdLeaseCollection)
+            .options(new ChangeFeedProcessorOptions()
+                    .leaseRenewInterval(Duration.ofSeconds(10))
+                    .leaseAcquireInterval(Duration.ofSeconds(5))
+                    .leaseExpirationInterval(Duration.ofSeconds(20))
+                    .feedPollDelay(Duration.ofSeconds(2))
+                    .leasePrefix(leasePrefix)
+                    .maxItemCount(10)
+                    .startFromBeginning(true)
+                    .maxScaleCount(0) // unlimited
+            )
+            .build();
+
+        receivedDocuments = new ConcurrentHashMap<>();
+
+        try {
+            changeFeedProcessorFirst.start().subscribeOn(Schedulers.elastic())
+                .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                .then(Mono.just(changeFeedProcessorFirst)
+                    .delayElement(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .flatMap( value -> changeFeedProcessorFirst.stop()
+                        .subscribeOn(Schedulers.elastic())
+                        .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    ))
+                .then(Mono.just(changeFeedProcessorFirst)
+                    .delayElement(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT))
+                )
+                .doOnSuccess(aVoid -> {
+                    try {
+                        Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT / 2);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    ChangeFeedProcessorTest.log.info("Update leases for Change feed processor in thread {} using host {}", Thread.currentThread().getId(), "Owner_first");
+
+                    SqlParameter param = new SqlParameter();
+                    param.name("@PartitionLeasePrefix");
+                    param.value(leasePrefix);
+                    SqlQuerySpec querySpec = new SqlQuerySpec(
+                        "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)",
+                        new SqlParameterList(param));
+
+                    FeedOptions feedOptions = new FeedOptions();
+                    feedOptions.enableCrossPartitionQuery(true);
+
+                    createdLeaseCollection.queryItems(querySpec, feedOptions)
+                        .delayElements(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT / 2))
+                        .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.results()))
+                        .flatMap(doc -> {
+                            BridgeInternal.setProperty(doc, "Owner", "TEMP_OWNER");
+                            CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+                            options.partitionKey(new PartitionKey(doc.id()));
+                            return createdLeaseCollection.getItem(doc.id(), "/id")
+                                .replace(doc, options)
+                                .map(CosmosItemResponse::properties);
+                        })
+                        .map(ServiceItemLease::fromDocument)
+                        .map(leaseDocument -> {
+                            ChangeFeedProcessorTest.log.info("QueryItems after Change feed processor processing; found host {}", leaseDocument.getOwner());
+                            return leaseDocument;
+                        })
+                        .last()
+                        .delayElement(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT / 2))
+                        .flatMap(leaseDocument -> {
+                            ChangeFeedProcessorTest.log.info("Start creating documents");
+                            List<CosmosItemProperties> docDefList = new ArrayList<>();
+
+                            for(int i = 0; i < FEED_COUNT; i++) {
+                                docDefList.add(getDocumentDefinition());
+                            }
+
+                            return bulkInsert(createdFeedCollection, docDefList, FEED_COUNT)
+                                .last()
+                                .delayElement(Duration.ofMillis(1000))
+                                .flatMap(cosmosItemResponse -> {
+                                    ChangeFeedProcessorTest.log.info("Start second Change feed processor");
+                                    return changeFeedProcessorSecond.start().subscribeOn(Schedulers.elastic())
+                                        .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT));
+                                });
+                        })
+                        .subscribe();
+                })
+                .subscribe();
+        } catch (Exception ex) {
+            log.error("First change feed processor did not start in the expected time", ex);
+        }
+
+        // Wait for the feed processor to receive and process the documents.
+        long remainingWork = 40 * CHANGE_FEED_PROCESSOR_TIMEOUT;
+        while (remainingWork > 0 && receivedDocuments.size() < FEED_COUNT) {
+            remainingWork -= 100;
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        assertThat(remainingWork >= 0).as("Failed to receive all the feed documents").isTrue();
+
+        changeFeedProcessorSecond.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+
+        // Wait for the feed processor to shutdown.
+        try {
+            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        receivedDocuments.clear();
+    }
+
+    @BeforeMethod(groups = { "emulator" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
      public void beforeMethod() {
          createdFeedCollection = createFeedCollection();
          createdLeaseCollection = createLeaseCollection();
