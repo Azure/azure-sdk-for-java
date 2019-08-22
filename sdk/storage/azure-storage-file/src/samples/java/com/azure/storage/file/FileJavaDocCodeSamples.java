@@ -16,10 +16,9 @@ import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileRangeWriteType;
 import com.azure.storage.file.models.FileUploadInfo;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -254,15 +253,15 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#upload(ByteBuf, long)}
+     * Generates a code sample for using {@link FileClient#upload(ByteBuffer, long)}
      */
     public void uploadData() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.upload#bytebuf-long
-        ByteBuf defaultData = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8));
-        Response<FileUploadInfo> response = fileClient.upload(defaultData, defaultData.readableBytes());
+        // BEGIN: com.azure.storage.file.fileClient.upload#bytebuffer-long
+        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
+        Response<FileUploadInfo> response = fileClient.upload(defaultData, defaultData.remaining());
         System.out.println("Complete uploading the data with status code: " + response.statusCode());
-        // END: com.azure.storage.file.fileClient.upload#bytebuf-long
+        // END: com.azure.storage.file.fileClient.upload#bytebuffer-long
     }
 
     /**
@@ -271,8 +270,8 @@ public class FileJavaDocCodeSamples {
     public void uploadDataAsync() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.upload#flux-long
-        ByteBuf defaultData = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8));
-        fileAsyncClient.upload(Flux.just(defaultData), defaultData.readableBytes()).subscribe(
+        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
+        fileAsyncClient.upload(Flux.just(defaultData), defaultData.remaining()).subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete uploading the data!")
@@ -281,15 +280,15 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#upload(ByteBuf, long, int)}
+     * Generates a code sample for using {@link FileClient#upload(ByteBuffer, long, int, FileRangeWriteType)}
      */
     public void uploadDataMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.upload#bytebuf-long-int
-        ByteBuf defaultData = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8));
-        Response<FileUploadInfo> response = fileClient.upload(defaultData, defaultData.readableBytes(), 1024);
+        // BEGIN: com.azure.storage.file.fileClient.upload#bytebuffer-long-int
+        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
+        Response<FileUploadInfo> response = fileClient.upload(defaultData, defaultData.remaining(), 1024);
         System.out.println("Complete uploading the data with status code: " + response.statusCode());
-        // END: com.azure.storage.file.fileClient.upload#bytebuf-long-int
+        // END: com.azure.storage.file.fileClient.upload#bytebuffer-long-int
     }
 
     /**
@@ -298,8 +297,9 @@ public class FileJavaDocCodeSamples {
     public void uploadDataAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.upload#flux-long-int
-        ByteBuf defaultData = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8));
-        fileAsyncClient.upload(Flux.just(defaultData), defaultData.readableBytes(), 1024).subscribe(
+        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
+        fileAsyncClient.upload(Flux.just(defaultData), defaultData.remaining(), 1024,
+            FileRangeWriteType.UPDATE).subscribe(
                 response -> { },
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete uploading the data!")
@@ -329,6 +329,7 @@ public class FileJavaDocCodeSamples {
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete clearing the range!")
         );
+        // END: com.azure.storage.file.fileAsyncClient.upload#flux-long-long-filerangewritetype
         // END: com.azure.storage.file.fileAsyncClient.clearRange#long
     }
 
@@ -390,8 +391,8 @@ public class FileJavaDocCodeSamples {
         Response<FileDownloadInfo> response = fileClient.downloadWithProperties();
         System.out.println("Complete downloading the data with status code: " + response.statusCode());
         response.value().body().subscribe(
-            byteBuf ->  System.out.println("Complete downloading the data with body: "
-                + byteBuf.toString(StandardCharsets.UTF_8)),
+            byteBuffer -> System.out.println("Complete downloading the data with body: "
+                + new String(byteBuffer.array(), StandardCharsets.UTF_8)),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete downloading the data!")
         );
@@ -422,8 +423,8 @@ public class FileJavaDocCodeSamples {
             false);
         System.out.println("Complete downloading the data with status code: " + response.statusCode());
         response.value().body().subscribe(
-            byteBuf ->  System.out.println("Complete downloading the data with body: "
-                + byteBuf.toString(StandardCharsets.UTF_8)),
+            byteBuffer ->  System.out.println("Complete downloading the data with body: "
+                + new String(byteBuffer.array(), StandardCharsets.UTF_8)),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete downloading the data!")
         );

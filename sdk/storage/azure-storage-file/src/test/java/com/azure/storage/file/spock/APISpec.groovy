@@ -31,7 +31,7 @@ class APISpec extends Specification {
     // Test name for test method name.
     def methodName
     def testMode = getTestMode()
-    def connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
+    def connectionString
 
 
     /**
@@ -45,6 +45,12 @@ class APISpec extends Specification {
         interceptorManager = new InterceptorManager(methodName, testMode)
         testResourceName = new TestResourceNamer(methodName, testMode,
             interceptorManager.getRecordedData())
+        if (getTestMode() == TestMode.RECORD) {
+            connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
+        } else {
+            connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;" +
+                "AccountKey=atestaccountkey;EndpointSuffix=core.windows.net"
+        }
     }
 
     /**
