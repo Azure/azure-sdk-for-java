@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration.credentials;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.data.appconfiguration.policy.ConfigurationCredentialsPolicy;
 import com.azure.core.implementation.util.ImplUtils;
-import io.netty.buffer.ByteBuf;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -14,6 +14,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
@@ -37,6 +38,8 @@ import java.util.stream.Collectors;
  * @see ConfigurationClientBuilder
  */
 public class ConfigurationClientCredentials {
+    private final ClientLogger logger = new ClientLogger(ConfigurationClientCredentials.class);
+
     private static final String HOST_HEADER = "Host";
     private static final String DATE_HEADER = "Date";
     private static final String CONTENT_HASH_HEADER = "x-ms-content-sha256";
@@ -75,17 +78,17 @@ public class ConfigurationClientCredentials {
      * @return a flux of headers to add for authorization
      * @throws NoSuchAlgorithmException If the SHA-256 algorithm doesn't exist.
      */
-    public Mono<Map<String, String>> getAuthorizationHeadersAsync(URL url, String httpMethod, Flux<ByteBuf> contents) {
+    public Mono<Map<String, String>> getAuthorizationHeadersAsync(URL url, String httpMethod, Flux<ByteBuffer> contents) {
         return contents
             .collect(() -> {
                 try {
                     return MessageDigest.getInstance("SHA-256");
                 } catch (NoSuchAlgorithmException e) {
-                    throw Exceptions.propagate(e);
+                    throw logger.logExceptionAsError(Exceptions.propagate(e));
                 }
             }, (messageDigest, byteBuffer) -> {
                     if (messageDigest != null) {
-                        messageDigest.update(byteBuffer.nioBuffer());
+                        messageDigest.update(byteBuffer);
                     }
                 })
             .flatMap(messageDigest -> Mono.just(headerProvider.getAuthenticationHeaders(url, httpMethod, messageDigest)));

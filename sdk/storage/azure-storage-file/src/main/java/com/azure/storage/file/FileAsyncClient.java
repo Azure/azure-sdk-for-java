@@ -38,7 +38,6 @@ import com.azure.storage.file.models.FilesStartCopyResponse;
 import com.azure.storage.file.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageErrorException;
-import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -48,6 +47,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -57,6 +57,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -95,6 +96,8 @@ public class FileAsyncClient {
      * @param snapshot The snapshot of the share
      */
     FileAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String filePath, String snapshot) {
+        Objects.requireNonNull(shareName);
+        Objects.requireNonNull(filePath);
         this.shareName = shareName;
         this.filePath = filePath;
         this.snapshot = snapshot;
@@ -112,6 +115,8 @@ public class FileAsyncClient {
      * @param snapshot Optional snapshot of the share
      */
     FileAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String filePath, String snapshot) {
+        Objects.requireNonNull(shareName);
+        Objects.requireNonNull(filePath);
         this.shareName = shareName;
         this.filePath = filePath;
         this.snapshot = snapshot;
@@ -130,8 +135,8 @@ public class FileAsyncClient {
         try {
             return new URL(azureFileStorageClient.getUrl());
         } catch (MalformedURLException e) {
-            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
-                azureFileStorageClient.getUrl()), e);
+            throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
+                azureFileStorageClient.getUrl()), e));
         }
     }
 
@@ -272,7 +277,7 @@ public class FileAsyncClient {
             .flatMap(chunk -> downloadWithProperties(chunk, false)
                 .map(dar -> dar.value().body())
                 .subscribeOn(Schedulers.elastic())
-                .flatMap(fbb -> FluxUtil.bytebufStreamToFile(fbb, channel, chunk.start() - (range == null ? 0 : range.start()))
+                .flatMap(fbb -> FluxUtil.writeFile(fbb, channel, chunk.start() - (range == null ? 0 : range.start()))
                     .subscribeOn(Schedulers.elastic())
                     .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
                     .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException)))
@@ -284,7 +289,7 @@ public class FileAsyncClient {
         try {
             return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ, StandardOpenOption.WRITE);
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
@@ -292,7 +297,7 @@ public class FileAsyncClient {
         try {
             channel.close();
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
@@ -483,7 +488,7 @@ public class FileAsyncClient {
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
      */
-    public Mono<Response<FileUploadInfo>> upload(Flux<ByteBuf> data, long length) {
+    public Mono<Response<FileUploadInfo>> upload(Flux<ByteBuffer> data, long length) {
         FileRange range = new FileRange(0, length - 1);
         return azureFileStorageClient.files().uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), FileRangeWriteType.UPDATE, length, data, null, null, Context.NONE)
             .map(this::uploadResponse);
@@ -497,7 +502,7 @@ public class FileAsyncClient {
      *
      * <p>Upload the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.upload#bytebuf-long-int-filerangewritetype}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.upload#flux-long-long-filerangewritetype}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -517,7 +522,7 @@ public class FileAsyncClient {
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
      */
-    public Mono<Response<FileUploadInfo>> upload(Flux<ByteBuf> data, long length, long offset, FileRangeWriteType type) {
+    public Mono<Response<FileUploadInfo>> upload(Flux<ByteBuffer> data, long length, long offset, FileRangeWriteType type) {
         FileRange range = new FileRange(offset, offset + length - 1);
         return azureFileStorageClient.files().uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), type, length, data, null, null, Context.NONE)
             .map(this::uploadResponse);
@@ -572,7 +577,7 @@ public class FileAsyncClient {
         AsynchronousFileChannel channel = channelSetup(uploadFilePath);
         return Flux.fromIterable(sliceFile(uploadFilePath))
             .flatMap(chunk -> {
-                return upload(FluxUtil.byteBufStreamFromFile(channel, chunk.start(), chunk.end() - chunk.start() + 1), chunk.end() - chunk.start() + 1, chunk.start(), type)
+                return upload(FluxUtil.readFile(channel, chunk.start(), chunk.end() - chunk.start() + 1), chunk.end() - chunk.start() + 1, chunk.start(), type)
                     .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
                     .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException);
             })
@@ -609,8 +614,7 @@ public class FileAsyncClient {
      * @return {@link FileRange ranges} in the files.
      */
     public Flux<FileRange> listRanges() {
-        return azureFileStorageClient.files().getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, null, Context.NONE)
-            .flatMapMany(this::convertListRangesResponseToFileRangeInfo);
+        return listRanges(null);
     }
 
     /**
@@ -767,7 +771,7 @@ public class FileAsyncClient {
         Long contentLength = response.deserializedHeaders().contentLength();
         String contentType = response.deserializedHeaders().contentType();
         String contentRange = response.deserializedHeaders().contentRange();
-        Flux<ByteBuf> body = response.value();
+        Flux<ByteBuffer> body = response.value();
         FileDownloadInfo fileDownloadInfo = new FileDownloadInfo(eTag, lastModified, metadata, contentLength, contentType, contentRange, body);
         return new SimpleResponse<>(response, fileDownloadInfo);
     }

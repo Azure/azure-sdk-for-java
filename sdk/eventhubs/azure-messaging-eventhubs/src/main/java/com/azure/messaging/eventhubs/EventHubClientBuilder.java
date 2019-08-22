@@ -12,6 +12,7 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.BaseConfigurations;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.CBSAuthorizationType;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
@@ -63,6 +64,7 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {EventHubAsyncClient.class, EventHubClient.class, EventProcessor.class})
 public class EventHubClientBuilder {
+    private final ClientLogger logger = new ClientLogger(EventHubClientBuilder.class);
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
     private static final RetryOptions DEFAULT_RETRY = new RetryOptions()
@@ -118,7 +120,7 @@ public class EventHubClientBuilder {
             tokenCredential = new EventHubSharedAccessKeyCredential(properties.sharedAccessKeyName(),
                 properties.sharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
         } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            throw new AzureException("Could not create the EventHubSharedAccessKeyCredential.", e);
+            throw logger.logExceptionAsError(new AzureException("Could not create the EventHubSharedAccessKeyCredential.", e));
         }
 
         return credential(properties.endpoint().getHost(), properties.eventHubName(), tokenCredential);
@@ -140,7 +142,7 @@ public class EventHubClientBuilder {
      */
     public EventHubClientBuilder connectionString(String connectionString, String eventHubName) {
         if (ImplUtils.isNullOrEmpty(eventHubName)) {
-            throw new IllegalArgumentException("'eventHubName' cannot be null or empty");
+            throw logger.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be null or empty"));
         }
 
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
@@ -149,14 +151,14 @@ public class EventHubClientBuilder {
             tokenCredential = new EventHubSharedAccessKeyCredential(properties.sharedAccessKeyName(),
                 properties.sharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
         } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            throw new AzureException("Could not create the EventHubSharedAccessKeyCredential.", e);
+            throw logger.logExceptionAsError(new AzureException("Could not create the EventHubSharedAccessKeyCredential.", e));
         }
 
         if (!ImplUtils.isNullOrEmpty(properties.eventHubName())) {
-            throw new IllegalArgumentException(String.format(Locale.US,
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
                 "'connectionString' contains an Event Hub name [%s].  Please use the"
                     + " credentials(String connectionString) overload. Or supply a 'connectionString' without"
-                    + " 'EntityPath' in it.", properties.eventHubName()));
+                    + " 'EntityPath' in it.", properties.eventHubName())));
         }
 
         return credential(properties.endpoint().getHost(), eventHubName, tokenCredential);
@@ -190,10 +192,10 @@ public class EventHubClientBuilder {
      */
     public EventHubClientBuilder credential(String host, String eventHubName, TokenCredential credential) {
         if (ImplUtils.isNullOrEmpty(host)) {
-            throw new IllegalArgumentException("'host' cannot be null or empty");
+            throw logger.logExceptionAsError(new IllegalArgumentException("'host' cannot be null or empty"));
         }
         if (ImplUtils.isNullOrEmpty(eventHubName)) {
-            throw new IllegalArgumentException("'eventHubName' cannot be null or empty.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be null or empty."));
         }
 
         Objects.requireNonNull(credential);
@@ -407,9 +409,9 @@ public class EventHubClientBuilder {
             final String connectionString = configuration.get(AZURE_EVENT_HUBS_CONNECTION_STRING);
 
             if (ImplUtils.isNullOrEmpty(connectionString)) {
-                throw new IllegalArgumentException("Credentials have not been set using 'EventHubClientBuilder.credentials(String)'"
+                throw logger.logExceptionAsError(new IllegalArgumentException("Credentials have not been set using 'EventHubClientBuilder.credentials(String)'"
                     + "EventHubClientBuilder.credentials(String, String, TokenCredential). And the connection string is"
-                    + "not set in the '" + AZURE_EVENT_HUBS_CONNECTION_STRING + "' environment variable.");
+                    + "not set in the '" + AZURE_EVENT_HUBS_CONNECTION_STRING + "' environment variable."));
             }
 
             connectionString(connectionString);
@@ -423,7 +425,7 @@ public class EventHubClientBuilder {
         // is not AMQP_WEB_SOCKETS.
         if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()
             && transport != TransportType.AMQP_WEB_SOCKETS) {
-            throw new IllegalArgumentException("Cannot use a proxy when TransportType is not AMQP.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Cannot use a proxy when TransportType is not AMQP."));
         }
 
         if (proxyConfiguration == null) {
@@ -456,7 +458,7 @@ public class EventHubClientBuilder {
 
         final String[] hostPort = proxyAddress.split(":");
         if (hostPort.length < 2) {
-            throw new IllegalArgumentException("HTTP_PROXY cannot be parsed into a proxy");
+            throw logger.logExceptionAsError(new IllegalArgumentException("HTTP_PROXY cannot be parsed into a proxy"));
         }
 
         final String host = hostPort[0];

@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
@@ -32,6 +33,7 @@ import java.time.OffsetDateTime;
  * for additional samples.</p>
  */
 final class ServiceSASSignatureValues {
+    private final ClientLogger logger = new ClientLogger(ServiceSASSignatureValues.class);
 
     private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
@@ -270,7 +272,7 @@ final class ServiceSASSignatureValues {
         try {
             url = new URL(urlString);
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
 
         this.canonicalName = String.format("/blob/%s%s", accountName, url.getPath());
@@ -467,7 +469,7 @@ final class ServiceSASSignatureValues {
         }
 
         if (Constants.UrlConstants.SAS_CONTAINER_CONSTANT.equals(this.resource) && this.snapshotId != null) {
-            throw new IllegalArgumentException("Cannot set a snapshotId without resource being a blob.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Cannot set a snapshotId without resource being a blob."));
         }
     }
 

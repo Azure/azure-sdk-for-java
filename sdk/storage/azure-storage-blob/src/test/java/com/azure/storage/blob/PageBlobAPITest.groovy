@@ -714,7 +714,7 @@ class PageBlobAPITest extends APISpec {
         bu.uploadPages(new PageRange().start(PageBlobClient.PAGE_BYTES).end(PageBlobClient.PAGE_BYTES * 2 - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
 
-        String snapshot = bu.createSnapshot()
+        String snapshot = bu.createSnapshot().getSnapshotId()
 
         bu.uploadPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))

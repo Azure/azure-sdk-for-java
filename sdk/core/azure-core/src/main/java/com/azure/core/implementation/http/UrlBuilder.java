@@ -3,6 +3,8 @@
 
 package com.azure.core.implementation.http;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedHashMap;
@@ -12,6 +14,8 @@ import java.util.Map;
  * A builder class that is used to create URLs.
  */
 public final class UrlBuilder {
+    private final ClientLogger logger = new ClientLogger(UrlBuilder.class);
+
     private String scheme;
     private String host;
     private String port;
@@ -190,7 +194,7 @@ public final class UrlBuilder {
                             if (nameValue.length == 2) {
                                 setQueryParameter(nameValue[0], nameValue[1]);
                             } else {
-                                throw new IllegalArgumentException("Malformed query entry: " + entry);
+                                throw logger.logExceptionAsError(new IllegalArgumentException("Malformed query entry: " + entry));
                             }
                         }
                     }

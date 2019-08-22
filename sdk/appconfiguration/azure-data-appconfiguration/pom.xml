@@ -50,6 +50,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.0.0-preview.4</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>

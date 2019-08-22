@@ -10,15 +10,14 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,12 +25,13 @@ import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 
 /**
- * HTTP Pipeline policy that keeps track of each HTTP request and response that flows through the pipeline.
- * Data is recorded into {@link RecordedData}.
+ * HTTP Pipeline policy that keeps track of each HTTP request and response that flows through the pipeline. Data is
+ * recorded into {@link RecordedData}.
  */
 public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     private static final int DEFAULT_BUFFER_LENGTH = 1024;
-    private final Logger logger = LoggerFactory.getLogger(RecordNetworkCallPolicy.class);
+
+    private final ClientLogger logger = new ClientLogger(RecordNetworkCallPolicy.class);
     private final RecordedData recordedData;
 
     /**
@@ -72,10 +72,8 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
                 // Remove pre-added header if this is a waiting or redirection
                 if (body != null && body.contains("<Status>InProgress</Status>")
-                    || Integer.parseInt(responseData.get("StatusCode")) == HttpResponseStatus.TEMPORARY_REDIRECT.code()) {
-                    if (logger.isInfoEnabled()) {
-                        logger.info("Waiting for a response or redirection.");
-                    }
+                    || Integer.parseInt(responseData.get("StatusCode")) == HttpURLConnection.HTTP_MOVED_TEMP) {
+                    logger.info("Waiting for a response or redirection.");
                 } else {
                     recordedData.addNetworkCall(networkCallRecord);
                 }
@@ -129,7 +127,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
                     content = new String(output.toByteArray(), StandardCharsets.UTF_8);
                 } catch (IOException e) {
-                    throw Exceptions.propagate(e);
+                    throw logger.logExceptionAsError(Exceptions.propagate(e));
                 }
 
                 responseData.remove("content-encoding");

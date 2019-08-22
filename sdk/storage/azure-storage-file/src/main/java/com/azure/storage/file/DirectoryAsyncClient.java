@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageBuilder;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This class provides a client that contains all the operations for interacting with directory in Azure Storage File Service.
@@ -53,6 +55,8 @@ import java.util.Map;
  * @see SASTokenCredential
  */
 public class DirectoryAsyncClient {
+    private final ClientLogger logger = new ClientLogger(DirectoryAsyncClient.class);
+
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
     private final String directoryPath;
@@ -67,6 +71,8 @@ public class DirectoryAsyncClient {
      * @param snapshot The snapshot of the share
      */
     DirectoryAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String directoryPath, String snapshot) {
+        Objects.requireNonNull(shareName);
+        Objects.requireNonNull(directoryPath);
         this.shareName = shareName;
         this.directoryPath = directoryPath;
         this.snapshot = snapshot;
@@ -83,6 +89,8 @@ public class DirectoryAsyncClient {
      * @param snapshot Optional snapshot of the share
      */
     DirectoryAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String directoryPath, String snapshot) {
+        Objects.requireNonNull(shareName);
+        Objects.requireNonNull(directoryPath);
         this.shareName = shareName;
         this.directoryPath = directoryPath;
         this.snapshot = snapshot;
@@ -100,8 +108,8 @@ public class DirectoryAsyncClient {
         try {
             return new URL(azureFileStorageClient.getUrl());
         } catch (MalformedURLException e) {
-            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
-                azureFileStorageClient.getUrl()), e);
+            throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
+                azureFileStorageClient.getUrl()), e));
         }
     }
 
@@ -537,8 +545,10 @@ public class DirectoryAsyncClient {
 
     private List<FileRef> convertResponseAndGetNumOfResults(DirectorysListFilesAndDirectoriesSegmentResponse response) {
         List<FileRef> fileRefs = new ArrayList<>();
-        response.value().segment().directoryItems().forEach(directoryItem -> fileRefs.add(new FileRef(directoryItem.name(), true, null)));
-        response.value().segment().fileItems().forEach(fileItem -> fileRefs.add(new FileRef(fileItem.name(), false, fileItem.properties())));
+        if (response.value().segment() != null) {
+            response.value().segment().directoryItems().forEach(directoryItem -> fileRefs.add(new FileRef(directoryItem.name(), true, null)));
+            response.value().segment().fileItems().forEach(fileItem -> fileRefs.add(new FileRef(fileItem.name(), false, fileItem.properties())));
+        }
         return fileRefs;
     }
 }
