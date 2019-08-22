@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.StorageErrorException;
@@ -40,10 +39,10 @@ public class FileServiceSample {
 
         // Get properties from the file service
         try {
-            Response<FileServiceProperties> response = fileServiceClient.getProperties();
+            FileServiceProperties properties = fileServiceClient.getProperties();
 
             System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b\n",
-                response.value().hourMetrics(), response.value().minuteMetrics());
+                properties.hourMetrics(), properties.minuteMetrics());
         } catch (StorageErrorException e) {
             System.out.println("Failed to get the account properties. Reasons: " + e.getMessage());
         }

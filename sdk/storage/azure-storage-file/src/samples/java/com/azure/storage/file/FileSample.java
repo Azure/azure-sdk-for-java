@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.file.models.CopyStatusType;
 import com.azure.storage.file.models.FileCopyInfo;
@@ -73,7 +72,7 @@ public class FileSample {
 
         String sourceURL = clientURL.toString() + "/" + shareName + "/" + parentDirName + "/" + srcFileName;
 
-        Response<FileCopyInfo> copyResponse = null;
+        FileCopyInfo copyResponse = null;
         try {
             copyResponse = destFileClient.startCopy(sourceURL, null);
         } catch (StorageErrorException e) {
@@ -81,9 +80,9 @@ public class FileSample {
         }
 
         // Abort the copy if the status is pending.
-        if (copyResponse.value().copyStatus() == CopyStatusType.PENDING) {
+        if (copyResponse.copyStatus() == CopyStatusType.PENDING) {
             try {
-                destFileClient.abortCopy(copyResponse.value().copyId());
+                destFileClient.abortCopy(copyResponse.copyId());
             } catch (StorageErrorException e) {
                 System.out.println("Failed to abort the copy. Reasons: " + e.getMessage());
             }
@@ -121,8 +120,8 @@ public class FileSample {
 
         // Get the file properties
         try {
-            Response<FileProperties> propertiesResponse = srcFileClient.getProperties();
-            System.out.printf("This is the eTag: %s of the file. File type is : %s.", propertiesResponse.value().eTag(), propertiesResponse.value().fileType());
+            FileProperties propertiesResponse = srcFileClient.getProperties();
+            System.out.printf("This is the eTag: %s of the file. File type is : %s.", propertiesResponse.eTag(), propertiesResponse.fileType());
         } catch (StorageErrorException e) {
             System.out.println("Failed to get file properties. Reasons: " + e.getMessage());
         }
