@@ -10,6 +10,7 @@ import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.SearchParameters;
 import com.azure.search.data.generated.models.SearchRequestOptions;
+import com.azure.search.data.generated.models.SearchResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -129,6 +130,10 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
             Collectors.toList());
     }
 
+    protected String getSearchResultId(SearchResult searchResult, String idFieldName) {
+        return searchResult.additionalProperties().get(idFieldName).toString();
+    }
+
     protected abstract void setIndexName(String indexName);
 
     @Test
@@ -162,6 +167,12 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
 
     @Test
     public abstract void canFilter();
+
+    @Test
+    public abstract void testCanSearchWithSearchModeAll();
+
+    @Test
+    public abstract void testDefaultSearchModeIsAny();
 
     @Test
     public abstract void testCanGetResultCountInSearch();

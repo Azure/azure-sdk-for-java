@@ -13,7 +13,6 @@ import com.azure.search.data.generated.models.SearchParameters;
 import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
 import org.junit.Assert;
-import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.azure.search.data.generated.models.QueryType.SIMPLE;
+import static com.azure.search.data.generated.models.SearchMode.ALL;
 
 public class SearchSyncTests extends SearchTestBase {
 
@@ -191,7 +193,23 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
-    @Test
+    public void testCanSearchWithSearchModeAll() {
+        List<Map<String, Object>> response = getSearchResults(client.search("Cheapest hotel", new SearchParameters().queryType(SIMPLE).searchMode(ALL), new SearchRequestOptions()));
+        Assert.assertEquals(1, response.size());
+        Assert.assertEquals("2", response.get(0).get("HotelId"));
+
+    }
+
+    @Override
+    public void testDefaultSearchModeIsAny() {
+        List<Map<String, Object>> response = getSearchResults(client.search("Cheapest hotel", new SearchParameters(), new SearchRequestOptions()));
+        Assert.assertEquals(7, response.size());
+        Assert.assertEquals(Arrays.asList("2", "10", "3", "4", "5", "1", "9"), response.stream().map(res -> res.get("HotelId").toString()).collect(Collectors.toList()));
+
+    }
+
+
+    @Override
     public void testCanGetResultCountInSearch() {
         PagedIterable<SearchResult> results = client.search("*", new SearchParameters().includeTotalResultCount(true), new SearchRequestOptions());
         Assert.assertNotNull(results);
