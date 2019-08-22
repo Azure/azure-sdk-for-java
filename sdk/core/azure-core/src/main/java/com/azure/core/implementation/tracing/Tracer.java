@@ -5,9 +5,6 @@ package com.azure.core.implementation.tracing;
 
 import com.azure.core.util.Context;
 
-import java.io.Closeable;
-import java.util.concurrent.atomic.AtomicReference;
-
 /**
  * Contract that all tracers must implement to be plug-able into the SDK.
  */
@@ -64,6 +61,19 @@ public interface Tracer {
      * @return An updated context object.
      */
     Context start(String methodName, Context context);
+
+    /**
+     * Creates a new scoped tracing span.
+     *
+     * The {@code context} will be checked for containing information about a parent span. If a parent span is found the
+     * new span will be added as a child, otherwise the span will be created and added to the context and any downstream
+     * start calls will use the created span as the parent.
+     *
+     * @param methodName Name of the method triggering the span creation.
+     * @param context Additional metadata that is passed through the call stack.
+     * @return An updated context object.
+     */
+    Context startScopedSpan(String methodName, Context context);
 
     /**
      * Completes the current tracing span.

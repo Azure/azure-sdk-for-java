@@ -21,7 +21,7 @@ public class AmqpPropagationFormat {
      * @return {@link Context}
      */
     public static Context extractContext(String diagnosticId) {
-        return new Context("newKey", fromDiagnosticId(diagnosticId));
+        return new Context(SPAN_CONTEXT, fromDiagnosticId(diagnosticId));
     }
 
     static final SpanContext fromDiagnosticId(String diagnosticId) {

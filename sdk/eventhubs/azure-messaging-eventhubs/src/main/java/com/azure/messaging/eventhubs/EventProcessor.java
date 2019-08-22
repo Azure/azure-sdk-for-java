@@ -240,27 +240,39 @@ public class EventProcessor {
         final AtomicReference<Context> processSpanContext = new AtomicReference<>(Context.NONE);
         consumer.receive().subscribeOn(Schedulers.newElastic("PartitionPump"))
             .subscribe(eventData -> {
-                Object diagnosticId = eventData.properties().get(DIAGNOSTIC_ID);
-                Context msgContext = TraceUtil.extractContext(diagnosticId.toString());
-                eventData.context(new Context(SPAN_CONTEXT, msgContext));
-                processSpanContext.set(TraceUtil.start("process", eventData.context()));
-                // TraceUtil.withSpan(processSpanContext);
-                eventData.context(processSpanContext.get());
+                startScopedTracingSpan(eventData, processSpanContext);
                 partitionProcessor.processEvent(eventData).subscribe(unused -> {
                 }, partitionProcessor::processError);
-                Closeable close = (Closeable) processSpanContext.get().getData("close").get();
-                try {
-                    close.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                // add span on eventdata
-                TraceUtil.endTracingSpan(processSpanContext.get(), null);
+                endScopedTracingSpan(processSpanContext);
             },
                 partitionProcessor::processError,
             // Currently, there is no way to distinguish if the receiver was closed because
             // another receiver with higher/same owner level(epoch) connected or because
             // this event processor explicitly called close on this consumer.
                 () -> partitionProcessor.close(CloseReason.LOST_PARTITION_OWNERSHIP));
+    }
+
+    /*
+     * Starts a new process tracing span and attached context the EventData object for users.
+     */
+    private void startScopedTracingSpan(EventData eventData, AtomicReference<Context> processSpanContext) {
+        Object diagnosticId = eventData.properties().get(DIAGNOSTIC_ID);
+        eventData.context(TraceUtil.extractContext(diagnosticId.toString()));
+        processSpanContext.set(TraceUtil.startScopedSpan("process", eventData.context()));
+        eventData.context(processSpanContext.get());
+    }
+
+    /*
+     * Ends the tracing span and the scope of that span.
+     */
+    private void endScopedTracingSpan(AtomicReference<Context> processSpanContext) {
+        // Disposes of the scope when the trace span closes.
+        Closeable close = (Closeable) processSpanContext.get().getData("scope").get();
+        try {
+            close.close();
+        } catch (IOException ioException) {
+            logger.error("EventProcessor.run() endTracingSpan().close() failed with an error %s", ioException);
+        }
+        TraceUtil.endTracingSpan(processSpanContext.get(), null);
     }
 }

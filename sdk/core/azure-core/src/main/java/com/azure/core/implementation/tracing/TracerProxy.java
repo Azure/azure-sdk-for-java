@@ -4,9 +4,7 @@ package com.azure.core.implementation.tracing;
 
 import com.azure.core.util.Context;
 
-import java.io.Closeable;
 import java.util.ServiceLoader;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This class provides a means for all client libraries to augment the context information they have received from an
@@ -35,6 +33,26 @@ public final class TracerProxy {
         Context local = context;
         for (Tracer tracer : tracers) {
             local = tracer.start(methodName, local);
+        }
+
+        return local;
+    }
+
+    /**
+     * For each tracer plugged into the SDK a new scoped tracing span is created.
+     *
+     * The {@code context} will be checked for containing information about a parent span. If a parent span is found the
+     * new span will be added as a child, otherwise the span will be created and added to the context and any downstream
+     * start calls will use the created span as the parent.
+     *
+     * @param methodName Name of the method triggering the span creation.
+     * @param context Additional metadata that is passed through the call stack.
+     * @return An updated context object.
+     */
+    public static Context startScopedSpan(String methodName, Context context) {
+        Context local = context;
+        for (Tracer tracer : tracers) {
+            local = tracer.startScopedSpan(methodName, local);
         }
 
         return local;
@@ -90,10 +108,21 @@ public final class TracerProxy {
         tracers.forEach(tracer -> tracer.endAmqp(errorCondition, context, throwable));
     }
 
-    public static void addLink(Context eventContextData) {
-        tracers.forEach(tracer -> tracer.addLink(eventContextData));
+    /**
+     * For each tracer plugged into the SDK a link is created between the parent tracing span and
+     * the current service call.
+     *
+     * @param context Additional metadata that is passed through the call stack.
+     */
+    public static void addLink(Context context) {
+        tracers.forEach(tracer -> tracer.addLink(context));
     }
 
+    /**
+     * For each tracer plugged into the SDK a new context is extracted from the event's diagnostic Id.
+     *
+     * @param diagnosticId Unique identifier of an external call from producer to the queue.
+     */
     public static Context extractContext(String diagnosticId) {
         Context local = Context.NONE;
         for (Tracer tracer : tracers) {

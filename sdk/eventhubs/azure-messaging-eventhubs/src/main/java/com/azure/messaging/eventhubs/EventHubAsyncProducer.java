@@ -315,8 +315,9 @@ public class EventHubAsyncProducer implements Closeable {
 
                     return events.map(eventData -> {
                         Context parentContext = eventData.context();
-                        Context entityContext = parentContext != null ? parentContext.addData(entityPath, link.getEntityPath()) : new Context(entityPath, link.getEntityPath());
+                        Context entityContext = parentContext.addData(entityPath, link.getEntityPath());
                         sendSpanContext.set(TraceUtil.start("send", entityContext.addData(hostName, link.getHostname())));
+                        // add span context on event data
                         return setSpanContext(eventData, parentContext);
                     }).collect(new EventDataCollector(batchOptions, 1, () -> link.getErrorContext()));
                 })
@@ -328,10 +329,10 @@ public class EventHubAsyncProducer implements Closeable {
     private EventData setSpanContext(EventData event, Context parentContext) {
         Optional<Object> eventContextData = event.context().getData(spanContext);
         if (eventContextData.isPresent()) {
-            TraceUtil.addSpanLinks(event.context());
-            return event;
             // if message has context (in case of retries), link it to the span
-            // builder.addLink((Context)eventContextData.get()); TODO: not supported yet in Opencensus
+            TraceUtil.addSpanLinks(event.context());
+            // builder.addLink((Context)eventContextData.get()); TODO: not supported in Opencensus yet
+            return event;
         } else {
             // Starting the span makes the sampling decision (nothing is logged at this time)
             Context eventSpanContext = TraceUtil.start("message", parentContext);

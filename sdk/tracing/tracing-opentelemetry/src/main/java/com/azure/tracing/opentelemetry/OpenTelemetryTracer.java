@@ -42,26 +42,26 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
 
     @Override
     public Context start(String spanName, Context context) {
-        Span span;
-        if (context.getData(SPAN_CONTEXT).isPresent()) {
-            // span = startSpanWithRemoteParent(spanName, context);
-            return startScopedSpan(spanName, context); // need scoped span regardless
+        Span span = startSpanWithExplicitParent(spanName, context);
+        if (context.getData(ENTITY_PATH).isPresent() && span.getOptions().contains(Span.Options.RECORD_EVENTS)) {
+            // If span is sampled in, add additional TRACING attributes
+            addSpanRequestAttributes(span, context, spanName);
         } else {
-            span = startSpanWithExplicitParent(spanName, context);
-            if (context.getData(ENTITY_PATH).isPresent() && span.getOptions().contains(Span.Options.RECORD_EVENTS)) {
-                // If span is sampled in, add additional TRACING attributes
-                addSpanRequestAttributes(span, context, spanName);
-            } else {
-                // Add diagnostic Id to Context
-                context = setContextData(span);
-            }
+            // Add diagnostic Id to Context
+            context = setContextData(span);
         }
         return context.addData(OPENTELEMETRY_SPAN_KEY, span);
     }
 
-    private Context startScopedSpan(String spanName, Context context) {
-        Span span = startSpanWithRemoteParent(spanName, context);
-        return context.addData(OPENTELEMETRY_SPAN_KEY, span).addData("close", TRACER.withSpan(span));
+    @Override
+    public Context startScopedSpan(String spanName, Context context) {
+        Span span;
+        if (context.getData(SPAN_CONTEXT).isPresent()) {
+            span = startSpanWithRemoteParent(spanName, context);
+        } else {
+            span = startSpanWithExplicitParent(spanName, context);
+        }
+        return context.addData(OPENTELEMETRY_SPAN_KEY, span).addData("scope", TRACER.withSpan(span));
     }
 
     @Override
@@ -122,7 +122,7 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
     @Override
     public void addLink(Context eventContext) {
         Optional<Object> spanContextOptional = eventContext.getData(SPAN_CONTEXT);
-        Optional<Object> spanOptional = eventContext.getData(OPENTELEMETRY_SPAN_KEY); // TODO: need to confirm this
+        Optional<Object> spanOptional = eventContext.getData(OPENTELEMETRY_SPAN_KEY); // TODO: we need this to be the parent span key
 
         if (!spanOptional.isPresent()) {
             logger.warning("Failed to find span to link it.");
@@ -148,9 +148,7 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
     }
 
     private Span startSpanWithRemoteParent(String spanName, Context context) {
-        Context test = (Context) context.getData(SPAN_CONTEXT).get();
-        // test.getData("newKey").get();
-        SpanBuilder spanBuilder = TRACER.spanBuilderWithRemoteParent(spanName, (SpanContext) test.getData("newKey").get());
+        SpanBuilder spanBuilder = TRACER.spanBuilderWithRemoteParent(spanName, (SpanContext) context.getData(SPAN_CONTEXT).get());
         return spanBuilder.startSpan();
 
     }

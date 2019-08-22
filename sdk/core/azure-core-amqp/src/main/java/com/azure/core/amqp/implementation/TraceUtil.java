@@ -8,20 +8,20 @@ import com.azure.core.implementation.tracing.TracerProxy;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Signal;
 
-import java.io.Closeable;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
-
 /**
  * Helper class to help start tracing spans.
  */
 public class TraceUtil {
+
+    private static final String OPENTELEMETRY_SPAN_KEY = com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
+
     // So this class can't be instantiated.
     private TraceUtil() {
     }
 
     /**
      * Starts the tracing span for the current service call.
+     *
      * @param context Context information about the current service call.
      * @return The updated context containing the span context.
      */
@@ -29,6 +29,18 @@ public class TraceUtil {
         String spanName = String.format("Azure.eventhubs.%s", methodName);
         context = TracerProxy.setSpanName(spanName, context);
         return TracerProxy.start(spanName, context);
+    }
+
+    /**
+     * Starts a new scoped tracing span for the current service call.
+     *
+     * @param context Context information about the current service call.
+     * @return The updated context containing the span context.
+     */
+    public static Context startScopedSpan(String methodName, Context context) {
+        String spanName = String.format("Azure.eventhubs.%s", methodName);
+        context = TracerProxy.setSpanName(spanName, context);
+        return TracerProxy.startScopedSpan(spanName, context);
     }
 
     /**
@@ -42,9 +54,7 @@ public class TraceUtil {
         String errorCondition = "";
 
         // Get the context that was added to the mono, this will contain the information needed to end the span.
-        Optional<Object> tracingContext = context.getData("opentelemetry-span");
-
-        if (!tracingContext.isPresent()) {
+        if (!context.getData(OPENTELEMETRY_SPAN_KEY).isPresent()) {
             return;
         }
 
