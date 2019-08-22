@@ -170,10 +170,10 @@ public class ShareJavaDocCodeSamples {
      */
     public void createShareMaxOverloadMetadata() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareClient.create#map-integer.metadata
+        // BEGIN: com.azure.storage.file.ShareClient.create-metadata#Map-Integer
         Response<ShareInfo> response = shareClient.create(Collections.singletonMap("share", "metadata"), null);
         System.out.println("Complete creating the shares with status code: " + response.statusCode());
-        // END: com.azure.storage.file.shareClient.create#map-integer.metadata
+        // END: com.azure.storage.file.ShareClient.create-metadata#Map-Integer
     }
 
     /**
@@ -181,13 +181,13 @@ public class ShareJavaDocCodeSamples {
      */
     public void createShareAsyncMaxOverloadMetadata() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.create#map-integer.metadata
+        // BEGIN: com.azure.storage.file.ShareAsyncClient.create-metadata#Map-Integer
         shareAsyncClient.create(Collections.singletonMap("share", "metadata"), null).subscribe(
             response -> System.out.printf("Creating the share completed with status code %d", response.statusCode()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete creating the share!")
         );
-        // END: com.azure.storage.file.shareAsyncClient.create#map-integer.metadata
+        // END: com.azure.storage.file.ShareAsyncClient.create-metadata#Map-Integer
     }
 
     /**
@@ -195,10 +195,10 @@ public class ShareJavaDocCodeSamples {
      */
     public void createShareMaxOverloadQuota() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareClient.create#map-integer.quota
+        // BEGIN: com.azure.storage.file.ShareClient.create-quota#Map-Integer
         Response<ShareInfo> response = shareClient.create(null, 10);
         System.out.println("Complete creating the shares with status code: " + response.statusCode());
-        // END: com.azure.storage.file.shareClient.create#map-integer.quota
+        // END: com.azure.storage.file.ShareClient.create-quota#Map-Integer
     }
 
     /**
@@ -206,13 +206,13 @@ public class ShareJavaDocCodeSamples {
      */
     public void createShareAsyncMaxOverloadQuota() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.create#map-integer.quota
+        // BEGIN: com.azure.storage.file.ShareAsyncClient.create-quota#Map-Integer
         shareAsyncClient.create(null, 10).subscribe(
             response -> System.out.printf("Creating the share completed with status code %d", response.statusCode()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete creating the share!")
         );
-        // END: com.azure.storage.file.shareAsyncClient.create#map-integer.quota
+        // END: com.azure.storage.file.ShareAsyncClient.create-quota#Map-Integer
     }
 
     /**
@@ -477,10 +477,10 @@ public class ShareJavaDocCodeSamples {
      */
     public void setQuota() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareClient.setQuota
+        // BEGIN: com.azure.storage.file.ShareClient.setQuota#int
         Response<ShareInfo> response = shareClient.setQuota(1024);
         System.out.printf("Setting the share quota completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.shareClient.setQuota
+        // END: com.azure.storage.file.ShareClient.setQuota#int
     }
 
 
@@ -489,12 +489,12 @@ public class ShareJavaDocCodeSamples {
      */
     public void setQuotaAsync() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.setQuota
+        // BEGIN: com.azure.storage.file.ShareAsyncClient.setQuota#int
         shareAsyncClient.setQuota(1024)
             .subscribe(response ->
                 System.out.printf("Setting the share quota completed with status code %d", response.statusCode())
             );
-        // END: com.azure.storage.file.shareAsyncClient.setQuota
+        // END: com.azure.storage.file.ShareAsyncClient.setQuota#int
     }
 
     /**
@@ -527,10 +527,10 @@ public class ShareJavaDocCodeSamples {
      */
     public void clearMetadata() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareClient.clearMetadata#map
+        // BEGIN: com.azure.storage.file.ShareClient.setMetadata-clearMetadata#Map
         Response<ShareInfo> response = shareClient.setMetadata(null);
         System.out.printf("Setting the share metadata completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.shareClient.clearMetadata#map
+        // END: com.azure.storage.file.ShareClient.setMetadata-clearMetadata#Map
     }
 
 
@@ -539,12 +539,12 @@ public class ShareJavaDocCodeSamples {
      */
     public void clearMetadataAsync() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.clearMetadata#map
+        // BEGIN: com.azure.storage.file.ShareAsyncClient.setMetadata-clearMetadata#Map
         shareAsyncClient.setMetadata(null)
             .subscribe(response ->
                 System.out.printf("Setting the share metadata completed with status code %d", response.statusCode())
             );
-        // END: com.azure.storage.file.shareAsyncClient.clearMetadata#map
+        // END: com.azure.storage.file.ShareAsyncClient.setMetadata-clearMetadata#Map
     }
 
     /**
@@ -577,7 +577,7 @@ public class ShareJavaDocCodeSamples {
      */
     public void setAccessPolicy() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareClient.setAccessPolicy
+        // BEGIN: com.azure.storage.file.ShareClient.setAccessPolicy#List
         AccessPolicy accessPolicy = new AccessPolicy().permission("r")
             .start(OffsetDateTime.now(ZoneOffset.UTC))
             .expiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
@@ -586,7 +586,7 @@ public class ShareJavaDocCodeSamples {
 
         Response<ShareInfo> response = shareClient.setAccessPolicy(Collections.singletonList(permission));
         System.out.printf("Setting access policies completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.shareClient.setAccessPolicy
+        // END: com.azure.storage.file.ShareClient.setAccessPolicy#List
     }
 
     /**
@@ -594,7 +594,7 @@ public class ShareJavaDocCodeSamples {
      */
     public void setAccessPolicyAsync() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.setAccessPolicy
+        // BEGIN: com.azure.storage.file.ShareAsyncClient.setAccessPolicy#List
         AccessPolicy accessPolicy = new AccessPolicy().permission("r")
             .start(OffsetDateTime.now(ZoneOffset.UTC))
             .expiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
@@ -603,7 +603,7 @@ public class ShareJavaDocCodeSamples {
         shareAsyncClient.setAccessPolicy(Collections.singletonList(permission))
             .subscribe(response -> System.out.printf("Setting access policies completed with status code %d",
                 response.statusCode()));
-        // END: com.azure.storage.file.shareAsyncClient.setAccessPolicy
+        // END: com.azure.storage.file.ShareAsyncClient.setAccessPolicy#List
     }
 
     /**

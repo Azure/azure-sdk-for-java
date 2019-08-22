@@ -258,11 +258,11 @@ public class FileJavaDocCodeSamples {
      */
     public void uploadData() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.upload#flux-long
+        // BEGIN: com.azure.storage.file.FileClient.upload#ByteBuf-long
         ByteBuf defaultData = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8));
         Response<FileUploadInfo> response = fileClient.upload(defaultData, defaultData.readableBytes());
         System.out.println("Complete uploading the data with status code: " + response.statusCode());
-        // END: com.azure.storage.file.fileClient.upload#flux-long
+        // END: com.azure.storage.file.FileClient.upload#ByteBuf-long
     }
 
     /**
@@ -298,7 +298,7 @@ public class FileJavaDocCodeSamples {
      */
     public void uploadDataAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.upload#bytebuf-long-int-filerangewritetype
+        // BEGIN: com.azure.storage.file.FileAsyncClient.upload#Flux-long-long-FileRangeWriteType
         ByteBuf defaultData = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8));
         fileAsyncClient.upload(Flux.just(defaultData), defaultData.readableBytes(), 1024,
             FileRangeWriteType.UPDATE).subscribe(
@@ -306,7 +306,7 @@ public class FileJavaDocCodeSamples {
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete deleting the file!")
         );
-        // END: com.azure.storage.file.fileAsyncClient.upload#bytebuf-long-int-filerangewritetype
+        // END: com.azure.storage.file.FileAsyncClient.upload#Flux-long-long-FileRangeWriteType
     }
 
     /**
@@ -568,10 +568,10 @@ public class FileJavaDocCodeSamples {
      */
     public void clearMetadata() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.setMetadata#map.clearMetadata
+        // BEGIN: com.azure.storage.file.FileClient.setMetadata-clearMetadata#Map
         Response<FileMetadataInfo> response = fileClient.setMetadata(null);
         System.out.printf("Setting the file metadata completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.fileClient.setMetadata#map.clearMetadata
+        // END: com.azure.storage.file.FileClient.setMetadata-clearMetadata#Map
     }
 
     /**
@@ -579,11 +579,11 @@ public class FileJavaDocCodeSamples {
      */
     public void clearMetadataAsync() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.setMetadata#map.clearMetadata
+        // BEGIN: com.azure.storage.file.FileAsyncClient.setMetadata-clearMetadata#Map
         fileAsyncClient.setMetadata(null)
             .subscribe(response -> System.out.printf("Setting the file metadata completed with status code %d",
                 response.statusCode()));
-        // END: com.azure.storage.file.fileAsyncClient.setMetadata#map.clearMetadata
+        // END: com.azure.storage.file.FileAsyncClient.setMetadata-clearMetadata#Map
     }
 
     /**
@@ -616,10 +616,10 @@ public class FileJavaDocCodeSamples {
      */
     public void clearHTTPHeaders() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.setHttpHeaders#long-filehttpheaders.clearHttpHeaders
+        // BEGIN: com.azure.storage.file.FileClient.setHttpHeaders-clearHttpHeaders#long-FileHTTPHeaders
         Response<FileInfo> response = fileClient.setHttpHeaders(1024, null);
         System.out.printf("Setting the file httpHeaders completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.fileClient.setHttpHeaders#long-filehttpheaders.clearHttpHeaders
+        // END: com.azure.storage.file.FileClient.setHttpHeaders-clearHttpHeaders#long-FileHTTPHeaders
     }
 
     /**
@@ -627,11 +627,11 @@ public class FileJavaDocCodeSamples {
      */
     public void clearHTTPHeadersAsync() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.setHttpHeaders#long-filehttpheaders.clearHttpHeaders
+        // BEGIN: com.azure.storage.file.FileAsyncClient.setHttpHeaders-clearHttpHeaders#long-FileHTTPHeaders
         fileAsyncClient.setHttpHeaders(1024, null)
             .subscribe(response -> System.out.printf("Setting the file httpHeaders completed with status code %d",
                 response.statusCode()));
-        // END: com.azure.storage.file.fileAsyncClient.setHttpHeaders#long-filehttpheaders.clearHttpHeaders
+        // END: com.azure.storage.file.FileAsyncClient.setHttpHeaders-clearHttpHeaders#long-FileHTTPHeaders
     }
 
     /**

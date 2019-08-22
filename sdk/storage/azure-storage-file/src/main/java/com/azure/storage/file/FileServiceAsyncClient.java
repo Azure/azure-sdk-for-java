@@ -126,11 +126,11 @@ public final class FileServiceAsyncClient {
      *
      * <p>List all shares that begin with "azure"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.prefix}
+     * {@codesnippet com.azure.storage.file.FileServiceAsyncClient.listShares-prefix#ListSharesOptions}
      *
      * <p>List all shares including their snapshots and metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot}
+     * {@codesnippet com.azure.storage.file.FileServiceAsyncClient.listShares-metadata-snapshot#ListSharesOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-shares">Azure Docs</a>.</p>
@@ -281,11 +281,11 @@ public final class FileServiceAsyncClient {
      *
      * <p>Create the share "test" with metadata "share:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.createShare#string-map-integer.metadata}
+     * {@codesnippet com.azure.storage.file.FileServiceAsyncClient.createShare-metadata#String-Map-Integer}
      *
      * <p>Create the share "test" with a quota of 10 GB</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.createShare#string-map-integer.quota}
+     * {@codesnippet com.azure.storage.file.FileServiceAsyncClient.createShare-quota#String-Map-Integer}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>

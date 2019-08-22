@@ -240,7 +240,7 @@ public class DirectoryAsyncClient {
      *
      * <p>Clear the metadata of the directory</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.setMetadata#map.clearMetadata}
+     * {@codesnippet com.azure.storage.file.DirectoryAsyncClient.setMetadata-clearMetadataAsync#Map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-metadata">Azure Docs</a>.</p>
@@ -301,7 +301,7 @@ public class DirectoryAsyncClient {
      *
      * <p>Get 10 handles with recursive call.</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.getHandles}
+     * {@codesnippet com.azure.storage.file.DirectoryAsyncClient.getHandles#Integer-boolean}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>

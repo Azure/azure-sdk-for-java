@@ -236,8 +236,8 @@ public class EventHubAsyncClient implements Closeable {
      * @param options The set of options to apply when creating the consumer.
      * @return An new {@link EventHubAsyncConsumer} that receives events from the partition with all configured {@link
      *         EventHubConsumerOptions}.
-     * @throws NullPointerException If {@code eventPosition}, {@code consumerGroup}, {@code partitionId}, or {@code
-     *     options} is {@code null}.
+     * @throws NullPointerException If {@code eventPosition}, {@code consumerGroup}, {@code partitionId}, or
+     *     {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
     public EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,

@@ -171,11 +171,11 @@ public class ShareAsyncClient {
      *
      * <p>Create the share with metadata "share:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.shareAsyncClient.create#map-integer.metadata}
+     * {@codesnippet com.azure.storage.file.ShareAsyncClient.create-metadata#Map-Integer}
      *
      * <p>Create the share with a quota of 10 GB</p>
      *
-     * {@codesnippet com.azure.storage.file.shareAsyncClient.create#map-integer.quota}
+     * {@codesnippet com.azure.storage.file.ShareAsyncClient.create-quota#Map-Integer}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
@@ -283,7 +283,7 @@ public class ShareAsyncClient {
      *
      * <p>Set the quota to 1024 GB</p>
      *
-     * {@codesnippet com.azure.storage.file.shareAsyncClient.setQuota}
+     * {@codesnippet com.azure.storage.file.ShareAsyncClient.setQuota#int}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -310,7 +310,7 @@ public class ShareAsyncClient {
      *
      * <p>Clear the metadata of the share</p>
      *
-     * {@codesnippet com.azure.storage.file.shareAsyncClient.clearMetadata#map}
+     * {@codesnippet com.azure.storage.file.ShareAsyncClient.setMetadata-clearMetadata#Map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
@@ -351,7 +351,7 @@ public class ShareAsyncClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * {@codesnippet com.azure.storage.file.shareAsyncClient.setAccessPolicy}
+     * {@codesnippet com.azure.storage.file.ShareAsyncClient.setAccessPolicy#List}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>

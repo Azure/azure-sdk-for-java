@@ -419,7 +419,7 @@ public class FileAsyncClient {
      *
      * <p>Clear the metadata of the file</p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.setHttpHeaders#long-filehttpheaders.clearHttpHeaders}
+     * {@codesnippet com.azure.storage.file.FileAsyncClient.setHttpHeaders-clearHttpHeaders#long-FileHTTPHeaders}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a>.</p>
@@ -454,7 +454,7 @@ public class FileAsyncClient {
      *
      * <p>Clear the metadata of the file</p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.setMetadata#map.clearMetadata}
+     * {@codesnippet com.azure.storage.file.FileAsyncClient.setMetadata-clearMetadata#Map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-metadata">Azure Docs</a>.</p>
@@ -502,14 +502,13 @@ public class FileAsyncClient {
      *
      * <p>Upload the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.upload#bytebuf-long-int-filerangewritetype}
+     * {@codesnippet com.azure.storage.file.FileAsyncClient.upload#Flux-long-long-FileRangeWriteType}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code
-     * null}
+     * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code null}
      * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is
      * set to clear, the value of this header must be set to zero.
      * @param type You may specify one of the following options:

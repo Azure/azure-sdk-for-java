@@ -172,7 +172,7 @@ public class DirectoryClient {
      *
      * <p>Clear the metadata of the directory</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.setMetadata#map.clearMetadata}
+     * {@codesnippet com.azure.storage.file.DirectoryClient.setMetadata-clearMetadata#Map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-metadata">Azure Docs</a>.</p>
@@ -231,7 +231,7 @@ public class DirectoryClient {
      *
      * <p>Get 10 handles with recursive call.</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.getHandles}
+     * {@codesnippet com.azure.storage.file.DirectoryClient.getHandles#Integer-boolean}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>

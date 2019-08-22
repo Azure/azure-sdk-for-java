@@ -482,10 +482,10 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void clearMetadata() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.setMetadata#map.clearMetadata
+        // BEGIN: com.azure.storage.file.DirectoryClient.setMetadata-clearMetadata#Map
         Response<DirectorySetMetadataInfo> response = directoryClient.setMetadata(null);
         System.out.printf("Directory latest modified date is %s.", response.statusCode());
-        // END: com.azure.storage.file.directoryClient.setMetadata#map.clearMetadata
+        // END: com.azure.storage.file.DirectoryClient.setMetadata-clearMetadata#Map
     }
 
     /**
@@ -493,11 +493,11 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void clearMetadataAsync() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.setMetadata#map.clearMetadata
+        // BEGIN: com.azure.storage.file.DirectoryAsyncClient.setMetadata-clearMetadataAsync#Map
         directoryAsyncClient.setMetadata(null)
             .subscribe(response ->  System.out.printf("Clearing the directory metadata completed with status code %d",
                 response.statusCode()));
-        // END: com.azure.storage.file.directoryAsyncClient.setMetadata#map.clearMetadata
+        // END: com.azure.storage.file.DirectoryAsyncClient.setMetadata-clearMetadataAsync#Map
     }
 
     /**
@@ -505,10 +505,10 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void getHandles() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.getHandles
+        // BEGIN: com.azure.storage.file.DirectoryClient.getHandles#Integer-boolean
         Iterable<HandleItem> result = directoryClient.getHandles(10, true);
         System.out.printf("Get handles completed with handle id %s", result.iterator().next().handleId());
-        // END: com.azure.storage.file.directoryClient.getHandles
+        // END: com.azure.storage.file.DirectoryClient.getHandles#Integer-boolean
     }
 
     /**
@@ -516,11 +516,11 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void getHandlesAsync() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.getHandles
+        // BEGIN: com.azure.storage.file.DirectoryAsyncClient.getHandles#Integer-boolean
         directoryAsyncClient.getHandles(10, true)
             .subscribe(handleItem -> System.out.printf("Get handles completed with handle id %s",
                 handleItem.handleId()));
-        // END: com.azure.storage.file.directoryAsyncClient.getHandles
+        // END: com.azure.storage.file.DirectoryAsyncClient.getHandles#Integer-boolean
     }
 
     /**

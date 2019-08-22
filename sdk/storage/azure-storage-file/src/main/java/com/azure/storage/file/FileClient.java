@@ -268,7 +268,7 @@ public class FileClient {
      *
      * <p>Clear the httpHeaders of the file</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setHttpHeaders#long-filehttpheaders.clearHttpHeaders}
+     * {@codesnippet com.azure.storage.file.FileClient.setHttpHeaders-clearHttpHeaders#long-FileHTTPHeaders}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a>.</p>
@@ -295,7 +295,7 @@ public class FileClient {
      *
      * <p>Clear the metadata of the file</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setMetadata#map.clearMetadata}
+     * {@codesnippet com.azure.storage.file.FileClient.setMetadata-clearMetadata#Map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-metadata">Azure Docs</a>.</p>
@@ -315,7 +315,7 @@ public class FileClient {
      *
      * <p>Upload "default" to the file. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.upload#flux-long}
+     * {@codesnippet com.azure.storage.file.FileClient.upload#ByteBuf-long}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>

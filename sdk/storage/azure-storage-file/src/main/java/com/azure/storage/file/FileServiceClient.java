@@ -100,11 +100,11 @@ public final class FileServiceClient {
      *
      * <p>List all shares that begin with "azure"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix}
+     * {@codesnippet com.azure.storage.file.FileServiceClient.listShares-prefix#ListSharesOptions}
      *
      * <p>List all shares including their snapshots and metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot}
+     * {@codesnippet com.azure.storage.file.FileServiceClient.listShares-metadata-snapshot#ListSharesOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-shares">Azure Docs</a>.</p>
@@ -201,11 +201,11 @@ public final class FileServiceClient {
      *
      * <p>Create the share "test" with metadata "share:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.createShare#string-map-integer.metadata}
+     * {@codesnippet com.azure.storage.file.FileServiceClient.createShare-metadata#String-Map-Integer}
      *
      * <p>Create the share "test" with a quota of 10 GB</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.createShare#string-map-integer.quota}
+     * {@codesnippet com.azure.storage.file.FileServiceClient.createShare-quota#String-Map-Integer}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>

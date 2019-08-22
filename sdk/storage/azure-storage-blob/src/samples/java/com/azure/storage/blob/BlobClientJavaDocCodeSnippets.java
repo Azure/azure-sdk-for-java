@@ -392,12 +392,12 @@ public class BlobClientJavaDocCodeSnippets {
      * Code snippets for {@link BlobClient#setTierWithResponse(AccessTier, LeaseAccessConditions, Duration, Context)}
      */
     public void setTierWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobClient.setTier#AccessTier-LeaseAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobClient.setTierWithResponse#AccessTier-LeaseAccessConditions-Duration-Context
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().leaseId(leaseId);
 
         System.out.printf("Set tier completed with status code %d%n",
             client.setTierWithResponse(AccessTier.HOT, accessConditions, timeout, new Context(key2, value2)).statusCode());
-        // END: com.azure.storage.blob.BlobClient.setTier#AccessTier-LeaseAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.BlobClient.setTierWithResponse#AccessTier-LeaseAccessConditions-Duration-Context
     }
 
     /**

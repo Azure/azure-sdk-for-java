@@ -158,11 +158,11 @@ public class FileServiceJavaDocCodeSamples {
      */
     public void createShareWithMetadata() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceClient.createShare#string-map-integer.metadata
+        // BEGIN: com.azure.storage.file.FileServiceClient.createShare-metadata#String-Map-Integer
         Response<ShareClient> response = fileServiceClient.createShare("test",
             Collections.singletonMap("share", "metadata"), null);
         System.out.printf("Creating the share completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.fileServiceClient.createShare#string-map-integer.metadata
+        // END: com.azure.storage.file.FileServiceClient.createShare-metadata#String-Map-Integer
     }
 
     /**
@@ -170,14 +170,14 @@ public class FileServiceJavaDocCodeSamples {
      */
     public void createShareAsyncWithMetadata() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.createShare#string-map-integer.metadata
+        // BEGIN: com.azure.storage.file.FileServiceAsyncClient.createShare-metadata#String-Map-Integer
         fileServiceAsyncClient.createShare("test", Collections.singletonMap("share", "metadata"), null)
             .subscribe(
                 response -> System.out.printf("Creating the share completed with status code %d", response.statusCode()),
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete creating the share!")
             );
-        // END: com.azure.storage.file.fileServiceAsyncClient.createShare#string-map-integer.metadata
+        // END: com.azure.storage.file.FileServiceAsyncClient.createShare-metadata#String-Map-Integer
     }
 
     /**
@@ -185,10 +185,10 @@ public class FileServiceJavaDocCodeSamples {
      */
     public void createShareWithQuota() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceClient.createShare#string-map-integer.quota
+        // BEGIN: com.azure.storage.file.FileServiceClient.createShare-quota#String-Map-Integer
         Response<ShareClient> response = fileServiceClient.createShare("test", null, 10);
         System.out.printf("Creating the share completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.fileServiceClient.createShare#string-map-integer.quota
+        // END: com.azure.storage.file.FileServiceClient.createShare-quota#String-Map-Integer
     }
 
     /**
@@ -196,7 +196,7 @@ public class FileServiceJavaDocCodeSamples {
      */
     public void createShareAsyncWithQuota() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.createShare#string-map-integer.quota
+        // BEGIN: com.azure.storage.file.FileServiceAsyncClient.createShare-quota#String-Map-Integer
         fileServiceAsyncClient.createShare("test", null, 10)
             .subscribe(
                 response -> System.out.printf("Creating the share completed with status code %d",
@@ -204,7 +204,7 @@ public class FileServiceJavaDocCodeSamples {
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete creating the share!")
             );
-        // END: com.azure.storage.file.fileServiceAsyncClient.createShare#string-map-integer.quota
+        // END: com.azure.storage.file.FileServiceAsyncClient.createShare-quota#String-Map-Integer
     }
 
     /**
@@ -238,11 +238,11 @@ public class FileServiceJavaDocCodeSamples {
      */
     public void listSharesWithPrefix() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix
+        // BEGIN: com.azure.storage.file.FileServiceClient.listShares-prefix#ListSharesOptions
         fileServiceClient.listShares(new ListSharesOptions().prefix("azure")).forEach(
             shareItem -> System.out.printf("Share %s exists in the account", shareItem.name())
         );
-        // END: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix
+        // END: com.azure.storage.file.FileServiceClient.listShares-prefix#ListSharesOptions
     }
 
     /**
@@ -250,13 +250,13 @@ public class FileServiceJavaDocCodeSamples {
      */
     public void listSharesAsyncWithPrefix() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.prefix
+        // BEGIN: com.azure.storage.file.FileServiceAsyncClient.listShares-prefix#ListSharesOptions
         fileServiceAsyncClient.listShares(new ListSharesOptions().prefix("azure")).subscribe(
             shareItem -> System.out.printf("Share %s exists in the account", shareItem.name()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete listing the shares!")
         );
-        // END: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.prefix
+        // END: com.azure.storage.file.FileServiceAsyncClient.listShares-prefix#ListSharesOptions
     }
 
     /**
@@ -264,12 +264,12 @@ public class FileServiceJavaDocCodeSamples {
      */
     public void listSharesWithMetadataAndSnapshot() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot
+        // BEGIN: com.azure.storage.file.FileServiceClient.listShares-metadata-snapshot#ListSharesOptions
         fileServiceClient.listShares(new ListSharesOptions().includeMetadata(true)
             .includeSnapshots(true)).forEach(
                 shareItem -> System.out.printf("Share %s exists in the account", shareItem.name())
         );
-        // END: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot
+        // END: com.azure.storage.file.FileServiceClient.listShares-metadata-snapshot#ListSharesOptions
     }
 
     /**
@@ -277,14 +277,14 @@ public class FileServiceJavaDocCodeSamples {
      */
     public void listSharesAsyncWithOverload() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot
+        // BEGIN: com.azure.storage.file.FileServiceAsyncClient.listShares-metadata-snapshot#ListSharesOptions
         fileServiceAsyncClient.listShares(new ListSharesOptions().includeMetadata(true)
             .includeSnapshots(true)).subscribe(
                 shareItem -> System.out.printf("Share %s exists in the account", shareItem.name()),
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete listing the shares!")
         );
-        // END: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot
+        // END: com.azure.storage.file.FileServiceAsyncClient.listShares-metadata-snapshot#ListSharesOptions
     }
 
     /**
