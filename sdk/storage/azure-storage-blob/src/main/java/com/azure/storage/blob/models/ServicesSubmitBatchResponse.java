@@ -12,19 +12,19 @@ import java.io.Closeable;
 import reactor.core.publisher.Flux;
 
 /**
- * Contains all response data for the download operation.
+ * Contains all response data for the submitBatch operation.
  */
-public final class BlobsDownloadResponse extends ResponseBase<BlobDownloadHeaders, Flux<ByteBuf>> implements Closeable {
+public final class ServicesSubmitBatchResponse extends ResponseBase<ServiceSubmitBatchHeaders, Flux<ByteBuf>> implements Closeable {
     /**
-     * Creates an instance of BlobsDownloadResponse.
+     * Creates an instance of ServicesSubmitBatchResponse.
      *
-     * @param request the request which resulted in this BlobsDownloadResponse.
+     * @param request the request which resulted in this ServicesSubmitBatchResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the content stream.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public BlobsDownloadResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Flux<ByteBuf> value, BlobDownloadHeaders headers) {
+    public ServicesSubmitBatchResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Flux<ByteBuf> value, ServiceSubmitBatchHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

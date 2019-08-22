@@ -63,31 +63,6 @@ public final class AzureBlobStorageImpl {
     }
 
     /**
-     * The filter parameter enables the caller to query blobs whose tags match a given expression. The given expression must evaluate to true for a blob to be returned in the results.
-     */
-    private String filter;
-
-    /**
-     * Gets The filter parameter enables the caller to query blobs whose tags match a given expression. The given expression must evaluate to true for a blob to be returned in the results.
-     *
-     * @return the filter value.
-     */
-    public String getFilter() {
-        return this.filter;
-    }
-
-    /**
-     * Sets The filter parameter enables the caller to query blobs whose tags match a given expression. The given expression must evaluate to true for a blob to be returned in the results.
-     *
-     * @param filter the filter value.
-     * @return the service client itself.
-     */
-    AzureBlobStorageImpl setFilter(String filter) {
-        this.filter = filter;
-        return this;
-    }
-
-    /**
      * Determines the behavior of the rename operation. Possible values include: 'legacy', 'posix'.
      */
     private PathRenameMode pathRenameMode;

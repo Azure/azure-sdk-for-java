@@ -7,15 +7,14 @@ package com.azure.storage.file.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
-import reactor.core.publisher.Flux;
-
+import io.netty.buffer.ByteBuf;
 import java.io.Closeable;
-import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 
 /**
  * Contains all response data for the download operation.
  */
-public final class FilesDownloadResponse extends ResponseBase<FileDownloadHeaders, Flux<ByteBuffer>> implements Closeable {
+public final class FilesDownloadResponse extends ResponseBase<FileDownloadHeaders, Flux<ByteBuf>> implements Closeable {
     /**
      * Creates an instance of FilesDownloadResponse.
      *
@@ -25,7 +24,7 @@ public final class FilesDownloadResponse extends ResponseBase<FileDownloadHeader
      * @param value the content stream.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public FilesDownloadResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Flux<ByteBuffer> value, FileDownloadHeaders headers) {
+    public FilesDownloadResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Flux<ByteBuf> value, FileDownloadHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
@@ -33,7 +32,7 @@ public final class FilesDownloadResponse extends ResponseBase<FileDownloadHeader
      * @return the response content stream.
      */
     @Override
-    public Flux<ByteBuffer> value() {
+    public Flux<ByteBuf> value() {
         return super.value();
     }
 
