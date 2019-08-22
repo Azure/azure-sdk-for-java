@@ -9,6 +9,7 @@ import com.azure.search.data.common.DocumentResponseConversions;
 import com.azure.search.data.common.SearchPagedResponse;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexBatch;
+import com.azure.search.data.generated.models.QueryType;
 import com.azure.search.data.generated.models.SearchParameters;
 import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
@@ -176,6 +177,21 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
+    public void canSearchWithLuceneSyntax() {
+        Map<String, Object> expectedResult = new HashMap<>();
+        expectedResult.put("HotelName", "Roach Motel");
+        expectedResult.put("Rating", 1);
+
+        SearchParameters searchParameters = new SearchParameters().queryType(QueryType.FULL).select(Arrays.asList("HotelName", "Rating"));
+        PagedIterable<SearchResult> results = client.search("HotelName:roch~", searchParameters, new SearchRequestOptions());
+
+        Assert.assertNotNull(results);
+        List<Map<String, Object>> searchResultsList = getSearchResults(results);
+        Assert.assertEquals(1, searchResultsList.size());
+        Assert.assertEquals(expectedResult, searchResultsList.get(0));
+    }
+
+    @Override
     public void canFilterNonNullableType() throws Exception {
 
         List<Map<String, Object>> expectedDocsList = prepareDataForNonNullableTest();
@@ -188,7 +204,6 @@ public class SearchSyncTests extends SearchTestBase {
         List<Map<String, Object>> searchResultsList = getSearchResults(results);
         Assert.assertEquals(2, searchResultsList.size());
 
-        searchResultsList.forEach(SearchTestBase::dropUnnecessaryFields);
         Assert.assertEquals(expectedDocsList, searchResultsList);
     }
 
@@ -225,7 +240,7 @@ public class SearchSyncTests extends SearchTestBase {
         while (iterator.hasNext()) {
             SearchPagedResponse result = (SearchPagedResponse) iterator.next();
             Assert.assertNotNull(result.items());
-            result.items().forEach(item -> searchResults.add(item.additionalProperties()));
+            result.items().forEach(item -> searchResults.add(dropUnnecessaryFields(item.additionalProperties())));
         }
 
         return searchResults;

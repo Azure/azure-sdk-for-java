@@ -136,6 +136,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
 
     protected abstract void setIndexName(String indexName);
 
+
     @Test
     public void searchThrowsWhenRequestIsMalformed() {
         thrown.expect(HttpResponseException.class);
@@ -167,6 +168,9 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
 
     @Test
     public abstract void canFilter();
+
+    @Test
+    public abstract void canSearchWithLuceneSyntax();
 
     @Test
     public abstract void testCanSearchWithSearchModeAll();

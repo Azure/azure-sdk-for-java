@@ -8,6 +8,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.data.common.SearchPagedResponse;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexBatch;
+import com.azure.search.data.generated.models.QueryType;
 import com.azure.search.data.generated.models.SearchParameters;
 import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
@@ -170,10 +171,28 @@ public class SearchAsyncTests extends SearchTestBase {
         Assert.assertNotNull(results);
 
         List<Map<String, Object>> searchResultsList = results.log().map(res -> res.additionalProperties()).collectList().block();
+        Assert.assertNotNull(searchResultsList);
         Assert.assertEquals(2, searchResultsList.size());
 
         List hotelIds = searchResultsList.stream().map(r -> r.get("HotelId")).collect(Collectors.toList());
         Assert.assertTrue(Arrays.asList("1", "5").containsAll(hotelIds));
+    }
+
+    @Override
+    public void canSearchWithLuceneSyntax() {
+        HashMap<String, Object> expectedResult = new HashMap<>();
+        expectedResult.put("HotelName", "Roach Motel");
+        expectedResult.put("Rating", 1);
+
+        SearchParameters searchParameters = new SearchParameters().queryType(QueryType.FULL).select(Arrays.asList("HotelName", "Rating"));
+        PagedFlux<SearchResult> results = client.search("HotelName:roch~", searchParameters, new SearchRequestOptions());
+
+        Assert.assertNotNull(results);
+        StepVerifier.create(results.byPage())
+            .assertNext(res -> {
+                Assert.assertEquals(1, res.items().size());
+                Assert.assertEquals(expectedResult, dropUnnecessaryFields(res.items().get(0).additionalProperties()));
+            }).verifyComplete();
     }
 
     @Override
