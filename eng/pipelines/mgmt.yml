@@ -3,8 +3,6 @@ trigger:
     include:
     - master
   paths:
-    include:
-    - sdk/core/
     exclude:
     - sdk/
 
@@ -13,8 +11,6 @@ pr:
     include:
     - master
   paths:
-    include:
-    - sdk/core/
     exclude:
     - sdk/
 
