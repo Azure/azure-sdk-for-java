@@ -134,41 +134,41 @@ class FileAPITests extends APISpec {
     def "Upload and clear range" () {
         given:
         def fullInfoString = "please clear the range"
-        def fullInfoData = Unpooled.wrappedBuffer(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        def fullInfoData = ByteBuffer.allocate(8).wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
         primaryFileClient.create(fullInfoString.length())
-        primaryFileClient.upload(fullInfoData.retain(), fullInfoString.length())
+        primaryFileClient.upload(fullInfoData, fullInfoString.length())
         when:
         primaryFileClient.clearRange(7)
         def downloadResponse = primaryFileClient.downloadWithProperties(new FileRange(0, 6), false)
         then:
-        FileTestHelper.equalsAfterTrim(7, 0,
-            FluxUtil.collectBytesInByteBufStream(downloadResponse.value().body(), false).block())
+        def downloadArray = FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().body()).block()
+        downloadArray.eachByte {
+            assert it == 0
+        }
     }
 
     def "Upload and clear range with args" () {
         given:
         def fullInfoString = "please clear the range"
-        def fullInfoData = Unpooled.wrappedBuffer(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        def fullInfoData = ByteBuffer.allocate(8).wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
         primaryFileClient.create(fullInfoString.length())
-        primaryFileClient.upload(fullInfoData.retain(), fullInfoString.length())
+        primaryFileClient.upload(fullInfoData, fullInfoString.length())
         when:
         primaryFileClient.clearRange(7, 1)
         def downloadResponse = primaryFileClient.downloadWithProperties(new FileRange(1, 7), false)
         then:
-//        FileTestHelper.equalsAfterTrim(7, 1,
-//            )
         def downloadArray = FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().body()).block()
-        downloadArray.All {
-            it == 0
+        downloadArray.eachByte {
+            assert it == 0
         }
     }
 
     def "Clear range error" () {
         given:
         def fullInfoString = "please clear the range"
-        def fullInfoData = Unpooled.wrappedBuffer(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        def fullInfoData = ByteBuffer.allocate(8).wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
         primaryFileClient.create(fullInfoString.length())
-        primaryFileClient.upload(fullInfoData.retain(), fullInfoString.length())
+        primaryFileClient.upload(fullInfoData, fullInfoString.length())
         when:
         primaryFileClient.clearRange(30)
         then:
@@ -179,9 +179,9 @@ class FileAPITests extends APISpec {
     def "Clear range error args" () {
         given:
         def fullInfoString = "please clear the range"
-        def fullInfoData = Unpooled.wrappedBuffer(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        def fullInfoData = ByteBuffer.allocate(8).wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
         primaryFileClient.create(fullInfoString.length())
-        primaryFileClient.upload(fullInfoData.retain(), fullInfoString.length())
+        primaryFileClient.upload(fullInfoData, fullInfoString.length())
         when:
         primaryFileClient.clearRange(7, 20)
         then:

@@ -157,12 +157,12 @@ class FileAsyncAPITests extends APISpec {
     def "Upload and clear range" () {
         given:
         def fullInfoString = "please clear the range"
-        def fullInfoData = Unpooled.wrappedBuffer(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        def fullInfoData = ByteBuffer.allocate(8).wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
         primaryFileAsyncClient.create(fullInfoString.length()).block()
-        primaryFileAsyncClient.upload(Flux.just(fullInfoData.retain()), fullInfoString.length()).block()
+        primaryFileAsyncClient.upload(Flux.just(fullInfoData), fullInfoString.length()).block()
         when:
         def clearRangeVerifier = StepVerifier.create(primaryFileAsyncClient.clearRange(7))
-        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithProperties())
+        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithProperties(new FileRange(0, 6), false))
         then:
         clearRangeVerifier.assertNext {
             FileTestHelper.assertResponseStatusCode(it, 201)
@@ -177,10 +177,10 @@ class FileAsyncAPITests extends APISpec {
         def fullInfoString = "please clear the range"
         def fullInfoData = Unpooled.wrappedBuffer(fullInfoString.getBytes(StandardCharsets.UTF_8))
         primaryFileAsyncClient.create(fullInfoString.length())
-        primaryFileAsyncClient.upload(Flux.just(fullInfoData.retain()), fullInfoString.length())
+        primaryFileAsyncClient.upload(Flux.just(fullInfoData), fullInfoString.length())
         when:
         def clearRangeVerifier = StepVerifier.create(primaryFileAsyncClient.clearRange(7, 1))
-        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithProperties())
+        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithProperties(new FileRange(1, 7), false))
         then:
         clearRangeVerifier.assertNext {
             FileTestHelper.assertResponseStatusCode(it, 201)
@@ -193,9 +193,9 @@ class FileAsyncAPITests extends APISpec {
     def "Clear range error" () {
         given:
         def fullInfoString = "please clear the range"
-        def fullInfoData = Unpooled.wrappedBuffer(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        def fullInfoData = ByteBuffer.allocate(8).wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
         primaryFileAsyncClient.create(fullInfoString.length())
-        primaryFileAsyncClient.upload(Flux.just(fullInfoData.retain()), fullInfoString.length())
+        primaryFileAsyncClient.upload(Flux.just(fullInfoData), fullInfoString.length())
         when:
         def clearRangeErrorVerifier = StepVerifier.create(primaryFileAsyncClient.clearRange(30))
         then:
@@ -207,9 +207,9 @@ class FileAsyncAPITests extends APISpec {
     def "Clear range error args" () {
         given:
         def fullInfoString = "please clear the range"
-        def fullInfoData = Unpooled.wrappedBuffer(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        def fullInfoData = ByteBuffer.allocate(8).wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
         primaryFileAsyncClient.create(fullInfoString.length())
-        primaryFileAsyncClient.upload(Flux.just(fullInfoData.retain()), fullInfoString.length())
+        primaryFileAsyncClient.upload(Flux.just(fullInfoData), fullInfoString.length())
         when:
         def clearRangeErrorVerifier = StepVerifier.create(primaryFileAsyncClient.clearRange(7, 20))
         then:
