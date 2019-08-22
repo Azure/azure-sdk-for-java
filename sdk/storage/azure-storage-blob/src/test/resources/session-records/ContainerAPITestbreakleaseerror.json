@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcbreakleaseerror0containerapitestbreakleaseerror41b435739a?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcbreakleaseerror0containerapitestbreakleaseerror27a700770b?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D722805C346312\"",
-      "Last-Modified" : "Fri, 16 Aug 2019 19:31:39 GMT",
+      "ETag" : "\"0x8D7274113ED2FD2\"",
+      "Last-Modified" : "Thu, 22 Aug 2019 20:41:15 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "214e3c60-401e-009b-0e69-54bd4e000000",
-      "Date" : "Fri, 16 Aug 2019 19:31:39 GMT",
-      "x-ms-client-request-id" : "f5689562-c83f-48c7-bee2-6c355a73076a"
+      "x-ms-request-id" : "6a962a96-201e-012e-3229-59f6e4000000",
+      "Date" : "Thu, 22 Aug 2019 20:41:15 GMT",
+      "x-ms-client-request-id" : "c1262ac2-450c-41b0-94b9-ad749d0bd725"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcbreakleaseerror1containerapitestbreakleaseerror41b22970a6?comp=lease&restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcbreakleaseerror1containerapitestbreakleaseerror27a543393f?comp=lease&restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -33,10 +33,10 @@
       "retry-after" : "0",
       "Content-Length" : "225",
       "StatusCode" : "404",
-      "x-ms-request-id" : "214e3c68-401e-009b-1469-54bd4e000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:214e3c68-401e-009b-1469-54bd4e000000\nTime:2019-08-16T19:31:39.4730317Z</Message></Error>",
-      "Date" : "Fri, 16 Aug 2019 19:31:39 GMT",
-      "x-ms-client-request-id" : "95a61e43-2246-490c-a566-329ea5a09af2",
+      "x-ms-request-id" : "6a962ab5-201e-012e-4e29-59f6e4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:6a962ab5-201e-012e-4e29-59f6e4000000\nTime:2019-08-22T20:41:15.7263756Z</Message></Error>",
+      "Date" : "Thu, 22 Aug 2019 20:41:15 GMT",
+      "x-ms-client-request-id" : "20c4f5ff-c238-4b79-bc22-22053d9003e6",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
@@ -53,16 +53,16 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "214e3c71-401e-009b-1a69-54bd4e000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcbreakleaseerror</Prefix><Containers><Container><Name>jtcbreakleaseerror0containerapitestbreakleaseerror41b435739a</Name><Properties><Last-Modified>Fri, 16 Aug 2019 19:31:39 GMT</Last-Modified><Etag>\"0x8D722805C346312\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 16 Aug 2019 19:31:39 GMT",
-      "x-ms-client-request-id" : "38f2ad56-30cb-4286-bc56-d1cddd906f4d",
+      "x-ms-request-id" : "6a962acb-201e-012e-5f29-59f6e4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcbreakleaseerror</Prefix><Containers><Container><Name>jtcbreakleaseerror0containerapitestbreakleaseerror27a700770b</Name><Properties><Last-Modified>Thu, 22 Aug 2019 20:41:15 GMT</Last-Modified><Etag>\"0x8D7274113ED2FD2\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 22 Aug 2019 20:41:15 GMT",
+      "x-ms-client-request-id" : "80f857e9-2889-42da-80cd-be7240e9490e",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcbreakleaseerror0containerapitestbreakleaseerror41b435739a?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcbreakleaseerror0containerapitestbreakleaseerror27a700770b?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -73,11 +73,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "214e3c7d-401e-009b-2269-54bd4e000000",
-      "Date" : "Fri, 16 Aug 2019 19:31:39 GMT",
-      "x-ms-client-request-id" : "a282b78f-bf8b-4d4b-a9f8-037587de2a77"
+      "x-ms-request-id" : "6a962ae7-201e-012e-7929-59f6e4000000",
+      "Date" : "Thu, 22 Aug 2019 20:41:15 GMT",
+      "x-ms-client-request-id" : "38f5d36f-0917-4864-b89c-1199338ade68"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcbreakleaseerror0containerapitestbreakleaseerror41b435739a", "jtcbreakleaseerror1containerapitestbreakleaseerror41b22970a6" ]
+  "variables" : [ "jtcbreakleaseerror0containerapitestbreakleaseerror27a700770b", "jtcbreakleaseerror1containerapitestbreakleaseerror27a543393f" ]
 }

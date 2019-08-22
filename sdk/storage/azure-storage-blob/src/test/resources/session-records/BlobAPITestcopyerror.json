@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccopyerror0blobapitestcopyerror748559531cf3e94c1ae?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccopyerror0blobapitestcopyerrordc008744cfd1f41dd25?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7227F5EAB2477\"",
-      "Last-Modified" : "Fri, 16 Aug 2019 19:24:34 GMT",
+      "ETag" : "\"0x8D72740430C0942\"",
+      "Last-Modified" : "Thu, 22 Aug 2019 20:35:25 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "c5388d09-001e-00d8-3568-5497a7000000",
-      "Date" : "Fri, 16 Aug 2019 19:24:33 GMT",
-      "x-ms-client-request-id" : "19f5995f-33fe-4c38-8d38-88c3b481a0ca"
+      "x-ms-request-id" : "25b2ad96-f01e-012c-5429-59f41e000000",
+      "Date" : "Thu, 22 Aug 2019 20:35:24 GMT",
+      "x-ms-client-request-id" : "f9db2342-36a4-4957-90ff-730e5a8df8ca"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccopyerror0blobapitestcopyerror748559531cf3e94c1ae/javablobcopyerror1blobapitestcopyerror748655357b7c6a9a",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccopyerror0blobapitestcopyerrordc008744cfd1f41dd25/javablobcopyerror1blobapitestcopyerrordc09336650628d17",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
@@ -31,21 +31,21 @@
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-content-crc64" : "6RYQPwaVsyQ=",
-      "Last-Modified" : "Fri, 16 Aug 2019 19:24:34 GMT",
+      "Last-Modified" : "Thu, 22 Aug 2019 20:35:25 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Fri, 16 Aug 2019 19:24:33 GMT",
+      "Date" : "Thu, 22 Aug 2019 20:35:24 GMT",
       "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
-      "ETag" : "\"0x8D7227F5EB2E0A4\"",
+      "ETag" : "\"0x8D7274043116C39\"",
       "Content-Length" : "0",
-      "x-ms-request-id" : "c5388d22-001e-00d8-4768-5497a7000000",
-      "x-ms-client-request-id" : "4db85959-9c1c-47c9-885b-d1006aef5f3d"
+      "x-ms-request-id" : "25b2adc7-f01e-012c-0229-59f41e000000",
+      "x-ms-client-request-id" : "a4aad86d-a46c-4c00-9cd6-57319ecbac91"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccopyerror0blobapitestcopyerror748559531cf3e94c1ae/javablobcopyerror2blobapitestcopyerror7485760461634125",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccopyerror0blobapitestcopyerrordc008744cfd1f41dd25/javablobcopyerror2blobapitestcopyerrordc0747404c5346d7",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -57,10 +57,10 @@
       "retry-after" : "0",
       "Content-Length" : "229",
       "StatusCode" : "404",
-      "x-ms-request-id" : "c5388d38-001e-00d8-5668-5497a7000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>CannotVerifyCopySource</Code><Message>The specified resource does not exist.\nRequestId:c5388d38-001e-00d8-5668-5497a7000000\nTime:2019-08-16T19:24:34.3602623Z</Message></Error>",
-      "Date" : "Fri, 16 Aug 2019 19:24:34 GMT",
-      "x-ms-client-request-id" : "b603bfc7-9c2f-429f-bad1-08c464647154",
+      "x-ms-request-id" : "25b2adfb-f01e-012c-3229-59f41e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>CannotVerifyCopySource</Code><Message>The specified resource does not exist.\nRequestId:25b2adfb-f01e-012c-3229-59f41e000000\nTime:2019-08-22T20:35:25.4969370Z</Message></Error>",
+      "Date" : "Thu, 22 Aug 2019 20:35:24 GMT",
+      "x-ms-client-request-id" : "89ff6056-1fe8-482d-b1b8-91e508f70a73",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
@@ -77,16 +77,16 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "c5388d72-001e-00d8-8068-5497a7000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtccopyerror</Prefix><Containers><Container><Name>jtccopyerror0blobapitestcopyerror748559531cf3e94c1ae</Name><Properties><Last-Modified>Fri, 16 Aug 2019 19:24:34 GMT</Last-Modified><Etag>\"0x8D7227F5EAB2477\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 16 Aug 2019 19:24:34 GMT",
-      "x-ms-client-request-id" : "aa091971-1a7f-4a7a-b6d5-4d132632b2cd",
+      "x-ms-request-id" : "25b2af3d-f01e-012c-6029-59f41e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtccopyerror</Prefix><Containers><Container><Name>jtccopyerror0blobapitestcopyerrordc008744cfd1f41dd25</Name><Properties><Last-Modified>Thu, 22 Aug 2019 20:35:25 GMT</Last-Modified><Etag>\"0x8D72740430C0942\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 22 Aug 2019 20:35:24 GMT",
+      "x-ms-client-request-id" : "596d13a6-9f89-4fd1-baf5-b1474062036a",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccopyerror0blobapitestcopyerror748559531cf3e94c1ae?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccopyerror0blobapitestcopyerrordc008744cfd1f41dd25?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -97,11 +97,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "c5388d83-001e-00d8-0c68-5497a7000000",
-      "Date" : "Fri, 16 Aug 2019 19:24:34 GMT",
-      "x-ms-client-request-id" : "cf0ba6ae-cadd-4a76-b05a-1e4236ea19d6"
+      "x-ms-request-id" : "25b2af68-f01e-012c-0b29-59f41e000000",
+      "Date" : "Thu, 22 Aug 2019 20:35:24 GMT",
+      "x-ms-client-request-id" : "b8de8aad-95fa-4699-91e3-7b699eac733d"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtccopyerror0blobapitestcopyerror748559531cf3e94c1ae", "javablobcopyerror1blobapitestcopyerror748655357b7c6a9a", "javablobcopyerror2blobapitestcopyerror7485760461634125" ]
+  "variables" : [ "jtccopyerror0blobapitestcopyerrordc008744cfd1f41dd25", "javablobcopyerror1blobapitestcopyerrordc09336650628d17", "javablobcopyerror2blobapitestcopyerrordc0747404c5346d7" ]
 }
