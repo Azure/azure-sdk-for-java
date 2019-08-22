@@ -12,6 +12,7 @@ import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
@@ -237,20 +238,29 @@ public class EventProcessor {
             .createPartitionProcessor(partitionContext, checkpointManager);
         partitionProcessor.initialize().subscribe();
         final AtomicReference<Context> processSpanContext = new AtomicReference<>(Context.NONE);
-        // TraceUtil.start("process", entityContext.addData(hostName, link.getHostname()));
         consumer.receive().subscribeOn(Schedulers.newElastic("PartitionPump"))
             .subscribe(eventData -> {
-                String diagnosticId = eventData.properties().get(DIAGNOSTIC_ID).toString();
-                Context msgContext = TraceUtil.extractContext(diagnosticId);
-                processSpanContext.set(TraceUtil.start("process", msgContext));
+                Object diagnosticId = eventData.properties().get(DIAGNOSTIC_ID);
+                Context msgContext = TraceUtil.extractContext(diagnosticId.toString());
+                eventData.context(new Context(SPAN_CONTEXT, msgContext));
+                processSpanContext.set(TraceUtil.start("process", eventData.context()));
+                // TraceUtil.withSpan(processSpanContext);
+                eventData.context(processSpanContext.get());
                 partitionProcessor.processEvent(eventData).subscribe(unused -> {
-                    }, partitionProcessor::processError);
+                }, partitionProcessor::processError);
+                Closeable close = (Closeable) processSpanContext.get().getData("close").get();
+                try {
+                    close.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                // add span on eventdata
                 TraceUtil.endTracingSpan(processSpanContext.get(), null);
-                },
+            },
                 partitionProcessor::processError,
-                // Currently, there is no way to distinguish if the receiver was closed because
-                // another receiver with higher/same owner level(epoch) connected or because
-                // this event processor explicitly called close on this consumer.
+            // Currently, there is no way to distinguish if the receiver was closed because
+            // another receiver with higher/same owner level(epoch) connected or because
+            // this event processor explicitly called close on this consumer.
                 () -> partitionProcessor.close(CloseReason.LOST_PARTITION_OWNERSHIP));
     }
 }

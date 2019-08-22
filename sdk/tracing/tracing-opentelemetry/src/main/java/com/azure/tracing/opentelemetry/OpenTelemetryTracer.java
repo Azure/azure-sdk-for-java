@@ -15,7 +15,6 @@ import io.opencensus.trace.Tracing;
 import io.opencensus.trace.SpanContext;
 import io.opencensus.trace.AttributeValue;
 import io.opencensus.trace.Link;
-import sun.security.jgss.spnego.SpNegoContext;
 
 import java.util.Optional;
 
@@ -44,32 +43,25 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
     @Override
     public Context start(String spanName, Context context) {
         Span span;
-        if (!context.getData(OPENTELEMETRY_SPAN_KEY).isPresent()) {
-            SpanBuilder spanBuilder = TRACER.spanBuilderWithRemoteParent(spanName, (SpanContext) context.getData(SPAN_CONTEXT).get());
-            span = spanBuilder.startSpan();
+        if (context.getData(SPAN_CONTEXT).isPresent()) {
+            // span = startSpanWithRemoteParent(spanName, context);
+            return startScopedSpan(spanName, context); // need scoped span regardless
         } else {
-            Span parentSpan = (Span) context.getData(OPENTELEMETRY_SPAN_KEY).orElse(TRACER.getCurrentSpan());
-            String spanNameKey = (String) context.getData(OPENTELEMETRY_SPAN_NAME_KEY).orElse(spanName);
-
-            SpanBuilder spanBuilder = TRACER.spanBuilderWithExplicitParent(spanNameKey, parentSpan);
-            span = spanBuilder.startSpan();
-            if (context.getData(ENTITY_PATH).isPresent()) {
+            span = startSpanWithExplicitParent(spanName, context);
+            if (context.getData(ENTITY_PATH).isPresent() && span.getOptions().contains(Span.Options.RECORD_EVENTS)) {
                 // If span is sampled in, add additional TRACING attributes
-                if (span.getOptions().contains(Span.Options.RECORD_EVENTS)) {
-                    addSpanRequestAttributes(span, context, spanName);
-                }
+                addSpanRequestAttributes(span, context, spanName);
             } else {
-                return setContextData(span);
+                // Add diagnostic Id to Context
+                context = setContextData(span);
             }
         }
         return context.addData(OPENTELEMETRY_SPAN_KEY, span);
     }
 
-    private Context setContextData(Span span) {
-
-        final String traceparent = DiagnosticIdConversionUtil.getDiagnosticId(span.getContext());
-        Context parentContext = new Context(DIAGNOSTIC_ID, traceparent).addData(OPENTELEMETRY_SPAN_KEY, span).addData(SPAN_CONTEXT, span.getContext());
-        return parentContext;
+    private Context startScopedSpan(String spanName, Context context) {
+        Span span = startSpanWithRemoteParent(spanName, context);
+        return context.addData(OPENTELEMETRY_SPAN_KEY, span).addData("close", TRACER.withSpan(span));
     }
 
     @Override
@@ -145,6 +137,28 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
     @Override
     public Context extractContext(String diagnosticId) {
         return AmqpPropagationFormat.extractContext(diagnosticId);
+    }
+
+    private Span startSpanWithExplicitParent(String spanName, Context context) {
+        Span parentSpan = (Span) context.getData(OPENTELEMETRY_SPAN_KEY).orElse(TRACER.getCurrentSpan());
+        String spanNameKey = (String) context.getData(OPENTELEMETRY_SPAN_NAME_KEY).orElse(spanName);
+
+        SpanBuilder spanBuilder = TRACER.spanBuilderWithExplicitParent(spanNameKey, parentSpan);
+        return spanBuilder.startSpan();
+    }
+
+    private Span startSpanWithRemoteParent(String spanName, Context context) {
+        Context test = (Context) context.getData(SPAN_CONTEXT).get();
+        // test.getData("newKey").get();
+        SpanBuilder spanBuilder = TRACER.spanBuilderWithRemoteParent(spanName, (SpanContext) test.getData("newKey").get());
+        return spanBuilder.startSpan();
+
+    }
+
+    private Context setContextData(Span span) {
+        final String traceparent = DiagnosticIdConversionUtil.getDiagnosticId(span.getContext());
+        Context parentContext = new Context(DIAGNOSTIC_ID, traceparent).addData(SPAN_CONTEXT, span.getContext());
+        return parentContext;
     }
 
     private static void addSpanRequestAttributes(Span span, Context context, String spanName) {

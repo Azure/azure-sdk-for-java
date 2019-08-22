@@ -4,7 +4,9 @@ package com.azure.core.implementation.tracing;
 
 import com.azure.core.util.Context;
 
+import java.io.Closeable;
 import java.util.ServiceLoader;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This class provides a means for all client libraries to augment the context information they have received from an
@@ -97,6 +99,6 @@ public final class TracerProxy {
         for (Tracer tracer : tracers) {
             local = tracer.extractContext(diagnosticId);
         }
-
-        return local;    }
+        return local;
+    }
 }

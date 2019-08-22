@@ -8,7 +8,9 @@ import com.azure.core.implementation.tracing.TracerProxy;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Signal;
 
+import java.io.Closeable;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Helper class to help start tracing spans.
@@ -48,10 +50,11 @@ public class TraceUtil {
 
         if (signal == null) {
             TracerProxy.endAmqp(errorCondition, context, null);
+            return;
         }
 
         Throwable throwable = null;
-        if (signal != null && signal.hasError()) {
+        if (signal.hasError()) {
             // The last status available is on error, this contains the error thrown by the REST response.
             throwable = signal.getThrowable();
 
@@ -70,5 +73,9 @@ public class TraceUtil {
 
     public static Context extractContext(String diagnosticId) {
         return TracerProxy.extractContext(diagnosticId);
+    }
+
+    public static Closeable withSpan(AtomicReference<Context> processSpanContext) {
+        return TracerProxy.withSpan(processSpanContext);
     }
 }

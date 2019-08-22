@@ -5,6 +5,9 @@ package com.azure.core.implementation.tracing;
 
 import com.azure.core.util.Context;
 
+import java.io.Closeable;
+import java.util.concurrent.atomic.AtomicReference;
+
 /**
  * Contract that all tracers must implement to be plug-able into the SDK.
  */
@@ -134,8 +137,7 @@ public interface Tracer {
     void addLink(Context eventContextData);
 
     /**
-     * Adds a link to the tracing span.
-     * Used in batching operations to relate multiple requests under a single batch.
+     * Extracts the span Context from the given event's diagnostic Id
      *
      */
     Context extractContext(String diagnosticId);
