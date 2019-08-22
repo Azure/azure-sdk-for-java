@@ -22,8 +22,8 @@ class APISpec extends Specification {
     // Field common used for all APIs.
     def logger = new ClientLogger(APISpec.class)
     def AZURE_TEST_MODE = "AZURE_TEST_MODE"
-    def tmpFolder = getClass().getClassLoader().getResource("./tmptestfiles/")
-    def testFolder = getClass().getClassLoader().getResource("./testfiles/")
+    def tmpFolder = getClass().getClassLoader().getResource("tmptestfiles")
+    def testFolder = getClass().getClassLoader().getResource("testfiles")
    // def testFolder = "src/test/resources/testfiles/"
     def interceptorManager
     def testResourceName
@@ -70,20 +70,6 @@ class APISpec extends Specification {
                 cleanupFileServiceClient.deleteShare(it.name())
             }
         }
-
-        // Clean up all temporary generated files
-        def dir = new File(tmpFolder)
-        if (dir.isDirectory()) {
-            File[] children = dir.listFiles()
-            for (int i = 0; i < children.length; i++) {
-                def success = Files.delete(children[i].toPath())
-                if (!success) {
-                    return false
-                }
-            }
-        }
-        // either file or an empty directory
-        dir.delete()
     }
 
     /**

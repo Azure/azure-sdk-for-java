@@ -155,8 +155,8 @@ class FileAsyncAPITests extends APISpec {
 
     def "Upload and download file"() {
         given:
-        File uploadFile = new File("src/test/resources/testfiles/helloworld")
-        File downloadFile = new File("src/test/resources/testfiles/testDownload")
+        File uploadFile = new File(testFolder.getPath() + "/helloworld")
+        File downloadFile = new File(testFolder.getPath() + "/testDownload")
 
         if (!Files.exists(downloadFile.toPath())) {
             downloadFile.createNewFile().block()
@@ -170,6 +170,8 @@ class FileAsyncAPITests extends APISpec {
         uploadFileVerifier.verifyComplete()
         downloadFileVerifier.verifyComplete()
         assert FileTestHelper.assertTwoFilesAreSame(uploadFile, downloadFile)
+        cleanup:
+        FileTestHelper.deleteFolderIfExists(testFolder.toString())
     }
 
     def "Start copy"() {
@@ -301,7 +303,7 @@ class FileAsyncAPITests extends APISpec {
         given:
         primaryFileAsyncClient.create(1024, null, null).block()
         def fileName = testResourceName.randomName("file", 60)
-        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder, fileName)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder.toString(), fileName)
         primaryFileAsyncClient.uploadFromFile(uploadFile).block()
         expect:
         StepVerifier.create(primaryFileAsyncClient.listRanges())
@@ -309,13 +311,15 @@ class FileAsyncAPITests extends APISpec {
                 assert it.start() == 0
                 assert it.end() == 1023
             }.verifyComplete()
+        cleanup:
+        FileTestHelper.deleteFolderIfExists(tmpFolder.toString())
     }
 
     def "List ranges with range"() {
         given:
         primaryFileAsyncClient.create(1024, null, null).block()
         def fileName = testResourceName.randomName("file", 60)
-        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder, fileName)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder.toString(), fileName)
         primaryFileAsyncClient.uploadFromFile(uploadFile).block()
         expect:
         StepVerifier.create(primaryFileAsyncClient.listRanges(new FileRange(0, 511L)))
@@ -323,6 +327,8 @@ class FileAsyncAPITests extends APISpec {
                 assert it.start() == 0
                 assert it.end() == 511
             }.verifyComplete()
+        cleanup:
+        FileTestHelper.deleteFolderIfExists(tmpFolder.toString())
     }
 
     def "List handles"() {

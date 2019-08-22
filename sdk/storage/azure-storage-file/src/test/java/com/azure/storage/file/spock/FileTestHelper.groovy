@@ -218,4 +218,17 @@ class FileTestHelper {
         }
         return true
     }
+
+    static void deleteFolderIfExists(String folder) {
+        // Clean up all temporary generated files
+        def dir = new File(folder)
+        if (dir.isDirectory()) {
+            File[] children = dir.listFiles()
+            for (int i = 0; i < children.length; i++) {
+                Files.delete(children[i].toPath())
+            }
+        }
+        // either file or an empty directory
+        dir.delete()
+    }
 }

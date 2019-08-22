@@ -140,8 +140,8 @@ class FileAPITests extends APISpec {
 
     def "Upload and download file"() {
         given:
-        File uploadFile = new File(testFolder + "helloworld")
-        File downloadFile = new File(testFolder + "testDownload")
+        File uploadFile = new File(testFolder.getPath() + "/helloworld")
+        File downloadFile = new File(testFolder.getPath() + "/testDownload")
 
         if (!Files.exists(downloadFile.toPath())) {
             downloadFile.createNewFile()
@@ -153,6 +153,9 @@ class FileAPITests extends APISpec {
         primaryFileClient.downloadToFile(downloadFile.toString())
         then:
         FileTestHelper.assertTwoFilesAreSame(uploadFile, downloadFile)
+        cleanup:
+        FileTestHelper.deleteFolderIfExists(testFolder.toString())
+
     }
 
     def "Start copy"() {
@@ -262,26 +265,30 @@ class FileAPITests extends APISpec {
         given:
         def fileName = testResourceName.randomName("file", 60)
         primaryFileClient.create(1024, null, null)
-        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder, fileName)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder.toString(), fileName)
         primaryFileClient.uploadFromFile(uploadFile)
         expect:
         primaryFileClient.listRanges().each {
             assert it.start() == 0
             assert it.end() == 1023
         }
+        cleanup:
+        FileTestHelper.deleteFolderIfExists(tmpFolder.toString())
     }
 
     def "List ranges with range"() {
         given:
         def fileName = testResourceName.randomName("file", 60)
         primaryFileClient.create(1024, null, null)
-        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder, fileName)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder.toString(), fileName)
         primaryFileClient.uploadFromFile(uploadFile)
         expect:
         primaryFileClient.listRanges(new FileRange(0, 511L)).each {
             assert it.start() == 0
             assert it.end() == 511
         }
+        cleanup:
+        FileTestHelper.deleteFolderIfExists(tmpFolder.toString())
     }
 
     def "List handles"() {
