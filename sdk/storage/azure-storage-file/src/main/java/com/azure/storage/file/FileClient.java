@@ -365,7 +365,6 @@ public class FileClient {
      *
      * @param length Specifies the number of bytes being cleared in the request body.
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If you attempt to clear a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
     public Response<FileUploadInfo> clearRange(long length) {
         return clearRange(length, 0);
@@ -386,7 +385,6 @@ public class FileClient {
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code null}
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
     public Response<FileUploadInfo> clearRange(long length, long offset) {
         return fileAsyncClient.clearRange(length, offset).block();

@@ -535,8 +535,6 @@ public class FileAsyncClient {
      *
      * @param length Specifies the number of bytes being cleared in the request body.
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If you attempt to clear a range that is larger than 4 MB, the service returns
-     * status code 413 (Request Entity Too Large)
      */
     public Mono<Response<FileUploadInfo>> clearRange(long length) {
         return clearRange(length, 0);
@@ -559,8 +557,6 @@ public class FileAsyncClient {
      * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code
      * null}
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If you attempt to clear a range that is larger than 4 MB, the service returns
-     * status code 413 (Request Entity Too Large)
      */
     public Mono<Response<FileUploadInfo>> clearRange(long length, long offset) {
         FileRange range = new FileRange(offset, offset + length - 1);
