@@ -284,12 +284,12 @@ public class FileJavaDocCodeSamples {
      */
     public void uploadDataMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.upload#bytebuf-long-int-filerangewritetype
+        // BEGIN: com.azure.storage.file.fileClient.upload#bytebuffer-long-int-filerangewritetype
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         Response<FileUploadInfo> response = fileClient.upload(defaultData, defaultData.remaining(), 1024,
             FileRangeWriteType.UPDATE);
         System.out.println("Complete uploading the data with status code: " + response.statusCode());
-        // END: com.azure.storage.file.fileClient.upload#bytebuf-long-int-filerangewritetype
+        // END: com.azure.storage.file.fileClient.upload#bytebuffer-long-int-filerangewritetype
     }
 
     /**
@@ -297,7 +297,7 @@ public class FileJavaDocCodeSamples {
      */
     public void uploadDataAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.upload#bytebuf-long-int-filerangewritetype
+        // BEGIN: com.azure.storage.file.fileAsyncClient.upload#flux-long-long-filerangewritetype
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         fileAsyncClient.upload(Flux.just(defaultData), defaultData.remaining(), 1024,
             FileRangeWriteType.UPDATE).subscribe(
@@ -305,7 +305,7 @@ public class FileJavaDocCodeSamples {
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete deleting the file!")
         );
-        // END: com.azure.storage.file.fileAsyncClient.upload#bytebuf-long-int-filerangewritetype
+        // END: com.azure.storage.file.fileAsyncClient.upload#flux-long-long-filerangewritetype
     }
 
     /**

@@ -186,7 +186,7 @@ public abstract class BlobOutputStream extends OutputStream {
         }
     }
 
-    private static class AppendBlobOutputStream extends BlobOutputStream {
+    private static final class AppendBlobOutputStream extends BlobOutputStream {
         private final AppendBlobAccessConditions appendBlobAccessConditions;
         private final AppendPositionAccessConditions appendPositionAccessConditions;
         private final long initialBlobOffset;
@@ -231,9 +231,9 @@ public abstract class BlobOutputStream extends OutputStream {
             // We cannot differentiate between max size condition failing only in the retry versus failing in the
             // first attempt and retry even for a single writer scenario. So we will eliminate the latter and handle
             // the former in the append block method.
-            if (this.appendPositionAccessConditions != null &&
-                this.appendPositionAccessConditions.maxSize() != null &&
-                this.initialBlobOffset > this.appendPositionAccessConditions.maxSize()) {
+            if (this.appendPositionAccessConditions != null
+                && this.appendPositionAccessConditions.maxSize() != null
+                && this.initialBlobOffset > this.appendPositionAccessConditions.maxSize()) {
                 this.lastError = new IOException(SR.INVALID_BLOCK_SIZE);
                 return Mono.error(this.lastError);
             }
@@ -250,7 +250,7 @@ public abstract class BlobOutputStream extends OutputStream {
         }
     }
 
-    private static class BlockBlobOutputStream extends BlobOutputStream {
+    private static final class BlockBlobOutputStream extends BlobOutputStream {
         private final BlobAccessConditions accessConditions;
         private final String blockIdPrefix;
         private final List<String> blockList;
@@ -309,7 +309,7 @@ public abstract class BlobOutputStream extends OutputStream {
         }
     }
 
-    private static class PageBlobOutputStream extends BlobOutputStream {
+    private static final class PageBlobOutputStream extends BlobOutputStream {
         private final PageBlobAsyncClient client;
         private final PageBlobAccessConditions pageBlobAccessConditions;
 

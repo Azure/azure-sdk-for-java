@@ -448,7 +448,7 @@
   <Match>
     <Or>
       <Class name="com.azure.storage.blob.BlobInputStream"/>
-      <Class name="com.azure.storage.blob.BlobOutputStream"/>
+      <Class name="com.azure.storage.blob.BlobOutputStream$AppendBlobOutputStream"/>
       <Class name="com.azure.storage.queue.QueueServiceClient"/>
     </Or>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>

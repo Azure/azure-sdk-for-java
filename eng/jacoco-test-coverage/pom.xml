@@ -64,7 +64,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>${azure-core-http-netty}</version>
+      <version>${azure-core-http-netty.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
