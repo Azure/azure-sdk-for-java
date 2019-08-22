@@ -121,7 +121,7 @@ public class FileTransferExample {
     }
 
     private static File createTempEmptyFile(String fileName) throws IOException {
-        String pathName = "C:/folderPath/" + LARGE_TEST_FOLDER;
+        String pathName = "./folderPath/" + LARGE_TEST_FOLDER;
 
         File dirPath = new File(pathName);
 
