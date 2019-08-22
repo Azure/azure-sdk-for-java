@@ -3,6 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.implementation.TraceUtil;
+import com.azure.core.implementation.tracing.Tracer;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
@@ -16,6 +19,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.reactivestreams.Publisher;
 import reactor.core.Disposable;
@@ -44,6 +48,9 @@ public class EventProcessor {
     private static final long INTERVAL_IN_SECONDS = 10; // run every 10 seconds
     private static final long INITIAL_DELAY = 0; // start immediately
     private static final long OWNERSHIP_EXPIRATION_TIME_IN_MILLIS = TimeUnit.SECONDS.toMillis(30);
+    private static final String SPAN_CONTEXT = Tracer.OPENTELEMETRY_AMQP_EVENT_SPAN_CONTEXT;
+    private static final String DIAGNOSTIC_ID = com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_DIAGNOSTIC_ID_KEY;
+
     private final ClientLogger logger = new ClientLogger(EventProcessor.class);
 
     private final EventHubAsyncClient eventHubAsyncClient;
@@ -229,10 +236,17 @@ public class EventProcessor {
         PartitionProcessor partitionProcessor = this.partitionProcessorFactory
             .createPartitionProcessor(partitionContext, checkpointManager);
         partitionProcessor.initialize().subscribe();
-
+        final AtomicReference<Context> processSpanContext = new AtomicReference<>(Context.NONE);
+        // TraceUtil.start("process", entityContext.addData(hostName, link.getHostname()));
         consumer.receive().subscribeOn(Schedulers.newElastic("PartitionPump"))
-            .subscribe(eventData -> partitionProcessor.processEvent(eventData).subscribe(unused -> {
-            }, partitionProcessor::processError),
+            .subscribe(eventData -> {
+                String diagnosticId = eventData.properties().get(DIAGNOSTIC_ID).toString();
+                Context msgContext = TraceUtil.extractContext(diagnosticId);
+                processSpanContext.set(TraceUtil.start("process", msgContext));
+                partitionProcessor.processEvent(eventData).subscribe(unused -> {
+                    }, partitionProcessor::processError);
+                TraceUtil.endTracingSpan(processSpanContext.get(), null);
+                },
                 partitionProcessor::processError,
                 // Currently, there is no way to distinguish if the receiver was closed because
                 // another receiver with higher/same owner level(epoch) connected or because

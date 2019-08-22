@@ -126,4 +126,17 @@ public interface Tracer {
      */
     void endAmqp(String errorCondition, Context context, Throwable throwable);
 
+    /**
+     * Adds a link to the tracing span.
+     * Used in batching operations to relate multiple requests under a single batch.
+     *
+     */
+    void addLink(Context eventContextData);
+
+    /**
+     * Adds a link to the tracing span.
+     * Used in batching operations to relate multiple requests under a single batch.
+     *
+     */
+    Context extractContext(String diagnosticId);
 }

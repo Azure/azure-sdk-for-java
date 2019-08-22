@@ -117,7 +117,6 @@ public class EventHubAsyncProducer implements Closeable {
     private final boolean isPartitionSender;
     private final String entityPath = Tracer.OPENTELEMETRY_AMQP_ENTITY_PATH;
     private final String hostName = Tracer.OPENTELEMETRY_AMQP_HOST_NAME;
-    private final String opentelemetryParentSpan = Tracer.OPENTELEMETRY_SPAN_KEY;
     private final String spanContext = Tracer.OPENTELEMETRY_AMQP_EVENT_SPAN_CONTEXT;
     private final String diagnosticId = Tracer.OPENTELEMETRY_DIAGNOSTIC_ID_KEY;
 
@@ -329,6 +328,7 @@ public class EventHubAsyncProducer implements Closeable {
     private EventData setSpanContext(EventData event, Context parentContext) {
         Optional<Object> eventContextData = event.context().getData(spanContext);
         if (eventContextData.isPresent()) {
+            TraceUtil.addSpanLinks(event.context());
             return event;
             // if message has context (in case of retries), link it to the span
             // builder.addLink((Context)eventContextData.get()); TODO: not supported yet in Opencensus
@@ -336,9 +336,9 @@ public class EventHubAsyncProducer implements Closeable {
             // Starting the span makes the sampling decision (nothing is logged at this time)
             Context eventSpanContext = TraceUtil.start("message", parentContext);
             if (eventSpanContext != null && eventSpanContext.getData(diagnosticId).isPresent()) {
-                event.addProperty(diagnosticId, eventSpanContext.getData(diagnosticId).toString());
+                event.addProperty(diagnosticId, eventSpanContext.getData(diagnosticId).get().toString());
                 TraceUtil.endTracingSpan(eventSpanContext, null);
-                event.context(new Context(spanContext, eventSpanContext));
+                event.context(eventSpanContext);
             }
         }
         return  event;

@@ -63,4 +63,12 @@ public class TraceUtil {
         }
         TracerProxy.endAmqp(errorCondition, context, throwable);
     }
+
+    public static void addSpanLinks(Context eventContextData) {
+        TracerProxy.addLink(eventContextData);
+    }
+
+    public static Context extractContext(String diagnosticId) {
+        return TracerProxy.extractContext(diagnosticId);
+    }
 }

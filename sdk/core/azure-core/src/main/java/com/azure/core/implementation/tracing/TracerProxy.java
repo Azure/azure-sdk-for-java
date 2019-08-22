@@ -87,4 +87,16 @@ public final class TracerProxy {
     public static void endAmqp(String errorCondition, Context context, Throwable throwable) {
         tracers.forEach(tracer -> tracer.endAmqp(errorCondition, context, throwable));
     }
+
+    public static void addLink(Context eventContextData) {
+        tracers.forEach(tracer -> tracer.addLink(eventContextData));
+    }
+
+    public static Context extractContext(String diagnosticId) {
+        Context local = Context.NONE;
+        for (Tracer tracer : tracers) {
+            local = tracer.extractContext(diagnosticId);
+        }
+
+        return local;    }
 }
