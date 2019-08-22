@@ -37,6 +37,14 @@ import java.util.zip.GZIPInputStream;
  */
 public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     private static final int DEFAULT_BUFFER_LENGTH = 1024;
+    private static final String CONTENT_TYPE = "Content-Type";
+    private static final String CONTENT_ENCODING = "Content-Encoding";
+    private static final String X_MS_VERSION = "x-ms-version";
+    private static final String USER_AGENT = "User-Agent";
+    private static final String STATUS_CODE = "StatusCode";
+    private static final String BODY = "Body";
+    private static final String SIG = "sig";
+
     private static final Pattern DELEGATIONKEY_KEY_PATTERN = Pattern.compile("(?:<Value>)(.*)(?:</Value>)");
     private static final Pattern DELEGATIONKEY_CLIENTID_PATTERN = Pattern.compile("(?:<SignedOid>)(.*)(?:</SignedOid>)");
     private static final Pattern DELEGATIONKEY_TENANTID_PATTERN = Pattern.compile("(?:<SignedTid>)(.*)(?:</SignedTid>)");
@@ -59,14 +67,14 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         final NetworkCallRecord networkCallRecord = new NetworkCallRecord();
         Map<String, String> headers = new HashMap<>();
 
-        if (context.httpRequest().headers().value("Content-Type") != null) {
-            headers.put("Content-Type", context.httpRequest().headers().value("Content-Type"));
+        if (context.httpRequest().headers().value(CONTENT_TYPE) != null) {
+            headers.put(CONTENT_TYPE, context.httpRequest().headers().value(CONTENT_TYPE));
         }
-        if (context.httpRequest().headers().value("x-ms-version") != null) {
-            headers.put("x-ms-version", context.httpRequest().headers().value("x-ms-version"));
+        if (context.httpRequest().headers().value(X_MS_VERSION) != null) {
+            headers.put(X_MS_VERSION, context.httpRequest().headers().value(X_MS_VERSION));
         }
-        if (context.httpRequest().headers().value("User-Agent") != null) {
-            headers.put("User-Agent", context.httpRequest().headers().value("User-Agent"));
+        if (context.httpRequest().headers().value(USER_AGENT) != null) {
+            headers.put(USER_AGENT, context.httpRequest().headers().value(USER_AGENT));
         }
 
         networkCallRecord.headers(headers);
@@ -74,8 +82,8 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
         // Remove sensitive information such as SAS token signatures from the recording.
         UrlBuilder urlBuilder = UrlBuilder.parse(context.httpRequest().url());
-        if (urlBuilder.query().containsKey("sig")) {
-            urlBuilder.setQueryParameter("sig", "REDACTED");
+        if (urlBuilder.query().containsKey(SIG)) {
+            urlBuilder.setQueryParameter(SIG, "REDACTED");
         }
         networkCallRecord.uri(urlBuilder.toString().replaceAll("\\?$", ""));
 
@@ -89,11 +97,11 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
                 return extractResponseData(bufferedResponse).map(responseData -> {
                     networkCallRecord.response(responseData);
-                    String body = responseData.get("Body");
+                    String body = responseData.get(BODY);
 
                     // Remove pre-added header if this is a waiting or redirection
                     if (body != null && body.contains("<Status>InProgress</Status>")
-                        || Integer.parseInt(responseData.get("StatusCode")) == HttpURLConnection.HTTP_MOVED_TEMP) {
+                        || Integer.parseInt(responseData.get(STATUS_CODE)) == HttpURLConnection.HTTP_MOVED_TEMP) {
                         logger.info("Waiting for a response or redirection.");
                     } else {
                         recordedData.addNetworkCall(networkCallRecord);
@@ -106,7 +114,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
     private Mono<Map<String, String>> extractResponseData(final HttpResponse response) {
         final Map<String, String> responseData = new HashMap<>();
-        responseData.put("StatusCode", Integer.toString(response.statusCode()));
+        responseData.put(STATUS_CODE, Integer.toString(response.statusCode()));
 
         boolean addedRetryAfter = false;
         for (HttpHeader header : response.headers()) {
@@ -123,21 +131,21 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
             responseData.put("retry-after", "0");
         }
 
-        String contentType = response.headerValue("Content-Type");
+        String contentType = response.headerValue(CONTENT_TYPE);
         if (contentType == null) {
             return Mono.just(responseData);
-        } else if (contentType.contains("octet-stream")) {
+        } else if (contentType.equalsIgnoreCase("application/octet-stream")) {
             return response.bodyAsByteArray().switchIfEmpty(Mono.just(new byte[0])).map(bytes -> {
                 if (bytes.length == 0) {
                     return responseData;
                 }
 
-                responseData.put("Body", Arrays.toString(bytes));
+                responseData.put(BODY, Arrays.toString(bytes));
                 return responseData;
             });
-        } else if (contentType.contains("json") || response.headerValue("Content-Encoding") == null) {
+        } else if (contentType.contains("json") || response.headerValue(CONTENT_ENCODING) == null) {
             return response.bodyAsString(StandardCharsets.UTF_8).switchIfEmpty(Mono.just("")).map(content -> {
-                responseData.put("Body", redactUserDelegationKey(content));
+                responseData.put(BODY, redactUserDelegationKey(content));
                 return responseData;
             });
         } else {
@@ -147,7 +155,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 }
 
                 String content;
-                if ("gzip".equals(response.headerValue("Content-Encoding"))) {
+                if ("gzip".equalsIgnoreCase(response.headerValue(CONTENT_ENCODING))) {
                     try (GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(bytes));
                          ByteArrayOutputStream output = new ByteArrayOutputStream()) {
                         byte[] buffer = new byte[DEFAULT_BUFFER_LENGTH];
@@ -168,10 +176,10 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                     content = new String(bytes, StandardCharsets.UTF_8);
                 }
 
-                responseData.remove("Content-Encoding");
+                responseData.remove(CONTENT_ENCODING);
                 responseData.put("Content-Length", Integer.toString(content.length()));
 
-                responseData.put("Body", content);
+                responseData.put(BODY, content);
                 return responseData;
             });
         }

@@ -651,9 +651,9 @@ class BlockBlobAPITest extends APISpec {
         validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                | contentType
-        null         | null               | null            | null            | null                                                                      | null
-        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array())    | "type"
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                             | contentType
+        null         | null               | null            | null            | null                                                                   | null
+        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array())  | "type"
     }
 
     @Unroll

@@ -611,8 +611,8 @@ class SASTest extends APISpec {
 
         where:
         version | creds             || parameter
-        null    | primaryCredential | "version"
-        "v"     | null              | "sharedKeyCredentials"
+        null    | primaryCredential || "version"
+        "v"     | null              || "sharedKeyCredentials"
     }
 
     @Unroll

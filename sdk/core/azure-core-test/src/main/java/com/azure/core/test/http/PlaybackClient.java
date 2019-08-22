@@ -127,7 +127,7 @@ public final class PlaybackClient implements HttpClient {
             String contentType = networkCallRecord.response().get("Content-Type");
 
             // octet-stream's are written to disk using Arrays.toString() which creates an output such as "[12, -1]".
-            if (contentType != null && contentType.contains("octet-stream")) {
+            if (contentType != null && contentType.equalsIgnoreCase("application/octet-stream")) {
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 for (String piece : rawBody.substring(1, rawBody.length() - 1).split(", ")) {
                     outputStream.write(Byte.parseByte(piece));
