@@ -190,7 +190,7 @@ class SASTest extends APISpec {
     @Ignore
     def "serviceSASSignatureValues network test container"() {
         setup:
-        SignedIdentifier identifier = new SignedIdentifier()
+        def identifier = new SignedIdentifier()
             .id("0000")
             .accessPolicy(new AccessPolicy().permission("racwdl")
                 .expiry(getUTCNow().plusDays(1)))
@@ -473,7 +473,7 @@ class SASTest extends APISpec {
     @Unroll
     def "serviceSasSignatures string to sign"() {
         when:
-        def v = new ServiceSASSignatureValues()
+        ServiceSASSignatureValues v = new ServiceSASSignatureValues()
         def p = new BlobSASPermission()
         p.read(true)
         v.permissions(p.toString())
@@ -774,7 +774,7 @@ class SASTest extends APISpec {
     @Unroll
     def "ServiceSASSignatureValues assertGenerateOk"() {
         when:
-        def serviceSASSignatureValues = new ServiceSASSignatureValues()
+        ServiceSASSignatureValues serviceSASSignatureValues = new ServiceSASSignatureValues()
         serviceSASSignatureValues.version(version)
         serviceSASSignatureValues.canonicalName(canonicalName)
         serviceSASSignatureValues.expiryTime(expiryTime)
@@ -795,11 +795,11 @@ class SASTest extends APISpec {
 
         where:
         usingUserDelegation | version                                          | canonicalName            | expiryTime                                                | permissions                                   | identifier | resource | snapshotId
-        false               | null                                             | null                     | null                                                      | null                                          | null | null | null
-        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | null                     | null                                                      | null                                          | null | null | null
-        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | null                                                      | null                                          | null | null | null
-        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                          | null | null | null
-        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | null                                                      | new BlobSASPermission().read(true).toString() | null | null | null
+        false               | null                                             | null                     | null                                                      | null                                          | null       | null     | null
+        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | null                     | null                                                      | null                                          | null       | null     | null
+        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | null                                                      | null                                          | null       | null     | null
+        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                          | null       | null     | null
+        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | null                                                      | new BlobSASPermission().read(true).toString() | null       | null     | null
         false               | null                                             | null                     | null                                                      | null                                          | "0000"     | "c"      | "id"
     }
 
@@ -863,7 +863,7 @@ class SASTest extends APISpec {
         "c"         | "b"     | null         | OffsetDateTime.now() | "v"     | primaryCredential || "resourceTypes"
         "c"         | "b"     | "c"          | null                 | "v"     | primaryCredential || "expiryTime"
         "c"         | "b"     | "c"          | OffsetDateTime.now() | null    | primaryCredential || "version"
-        "c"         | "b"     | "c"          | OffsetDateTime.now() | "v"     | null               || "SharedKeyCredential"
+        "c"         | "b"     | "c"          | OffsetDateTime.now() | "v"     | null              || "SharedKeyCredential"
     }
 
     @Unroll

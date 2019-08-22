@@ -148,7 +148,7 @@ class BlobAPITest extends APISpec {
         where:
         offset | count || expectedData
         0      | null  || defaultText
-        0      | 5L     || defaultText.substring(0, 5)
+        0      | 5L    || defaultText.substring(0, 5)
         3      | 2L    || defaultText.substring(3, 3 + 2)
     }
 
@@ -1119,7 +1119,7 @@ class BlobAPITest extends APISpec {
             metadata.put(key2, value2)
         }
 
-        String status =
+        def status =
             bu2.startCopyFromURLWithResponse(bu.getBlobUrl(), metadata, null, null, null, null)
                 .headers().value("x-ms-copy-status")
 
@@ -1743,8 +1743,8 @@ class BlobAPITest extends APISpec {
         bu.setTier(destTier)
 
         then:
+        cu.listBlobsFlat().iterator().next().properties().archiveStatus().toString() == status
         bu.getPropertiesWithResponse(null, null, null).headers().value("x-ms-archive-status") == status.toString()
-        cu.listBlobsFlat().iterator().next().properties().archiveStatus() == status
 
         where:
         sourceTier         | destTier        | status
@@ -1810,7 +1810,7 @@ class BlobAPITest extends APISpec {
         bu.delete()
 
         when:
-        HttpHeaders headers = bu.undeleteWithResponse(null, null).headers()
+        def headers = bu.undeleteWithResponse(null, null).headers()
         bu.getProperties()
 
         then:
