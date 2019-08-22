@@ -26,12 +26,13 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * A class for aggregating EventData into a single, size-limited, batch that will be treated as a single message when
- * sent to the Azure Event Hubs service.
+ * A class for aggregating EventData into a single, size-limited, batch. It is treated as a single message when sent to
+ * the Azure Event Hubs service.
  *
+ * @see EventHubProducer#createBatch()
  * @see EventHubAsyncProducer#createBatch()
- * @see EventHubAsyncProducer#createBatch(BatchOptions)
- * @see EventHubAsyncProducer See EventHubAsyncProducer for examples.
+ * @see EventHubProducer See EventHubProducer for examples using the synchronous producer.
+ * @see EventHubAsyncProducer See EventHubAsyncProducer for examples using the asynchronous producer.
  */
 public final class EventDataBatch {
     private final ClientLogger logger = new ClientLogger(EventDataBatch.class);

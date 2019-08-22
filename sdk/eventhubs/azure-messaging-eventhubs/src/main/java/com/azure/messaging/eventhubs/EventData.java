@@ -45,6 +45,7 @@ import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAM
  * types) and Data section is not supported.
  * </p>
  *
+ * @see EventHubProducer
  * @see EventHubAsyncProducer
  */
 public class EventData implements Comparable<EventData> {
