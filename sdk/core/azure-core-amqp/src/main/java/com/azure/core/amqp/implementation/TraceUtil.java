@@ -74,8 +74,4 @@ public class TraceUtil {
     public static Context extractContext(String diagnosticId) {
         return TracerProxy.extractContext(diagnosticId);
     }
-
-    public static Closeable withSpan(AtomicReference<Context> processSpanContext) {
-        return TracerProxy.withSpan(processSpanContext);
-    }
 }
