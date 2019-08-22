@@ -9,11 +9,10 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.EmptyByteBuf;
-import io.netty.buffer.UnpooledByteBufAllocator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * A policy that authenticates requests with Azure App Configuration service. The content added by this policy
@@ -47,7 +46,7 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        final Flux<ByteBuf> contents = context.httpRequest().body() == null
+        final Flux<ByteBuffer> contents = context.httpRequest().body() == null
                 ? Flux.just(getEmptyBuffer())
                 : context.httpRequest().body();
 
@@ -58,8 +57,8 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
             .flatMap(request -> next.process());
     }
 
-    private ByteBuf getEmptyBuffer() {
-        return new EmptyByteBuf(UnpooledByteBufAllocator.DEFAULT);
+    private ByteBuffer getEmptyBuffer() {
+        return ByteBuffer.allocate(0);
     }
 }
 

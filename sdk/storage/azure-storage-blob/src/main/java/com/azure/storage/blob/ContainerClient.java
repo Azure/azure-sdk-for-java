@@ -43,7 +43,7 @@ import java.util.List;
  * Docs</a> for more information on containers.
  */
 public final class ContainerClient {
-    private ContainerAsyncClient containerAsyncClient;
+    private final ContainerAsyncClient containerAsyncClient;
 
     public static final String ROOT_CONTAINER_NAME = ContainerAsyncClient.ROOT_CONTAINER_NAME;
 

@@ -4,14 +4,6 @@
 package com.azure.core.implementation;
 
 import com.azure.core.MockServer;
-import com.azure.core.implementation.annotation.BodyParam;
-import com.azure.core.implementation.annotation.Delete;
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.HeaderParam;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.Put;
-import com.azure.core.implementation.annotation.PathParam;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -26,11 +18,15 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.annotation.BodyParam;
+import com.azure.core.implementation.annotation.Delete;
+import com.azure.core.implementation.annotation.ExpectedResponses;
+import com.azure.core.implementation.annotation.Get;
+import com.azure.core.implementation.annotation.HeaderParam;
+import com.azure.core.implementation.annotation.Host;
+import com.azure.core.implementation.annotation.PathParam;
+import com.azure.core.implementation.annotation.Put;
 import com.azure.core.implementation.http.ContentType;
-import com.azure.core.implementation.util.FluxUtil;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.util.ResourceLeakDetector;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -46,16 +42,13 @@ import reactor.core.publisher.Mono;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ProcessBuilder.Redirect;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.AsynchronousFileChannel;
-import java.nio.channels.FileChannel;
+import java.nio.ByteBuffer;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
-import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -65,10 +58,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.fail;
 
 public class RestProxyStressTests {
     private static IOService service;
@@ -83,9 +76,6 @@ public class RestProxyStressTests {
         Assume.assumeTrue(
                 "Set the environment variable JAVA_SDK_STRESS_TESTS to \"true\" to run stress tests",
                 Boolean.parseBoolean(System.getenv("JAVA_SDK_STRESS_TESTS")));
-
-        ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.PARANOID);
-        LoggerFactory.getLogger(RestProxyStressTests.class).info("ResourceLeakDetector level: " + ResourceLeakDetector.getLevel());
 
         String tempFolderPath = System.getenv("JAVA_STRESS_TEST_TEMP_PATH");
         if (tempFolderPath == null || tempFolderPath.isEmpty()) {
@@ -174,7 +164,7 @@ public class RestProxyStressTests {
     interface IOService {
         @ExpectedResponses({201})
         @Put("/javasdktest/upload/100m-{id}.dat?{sas}")
-        Mono<VoidResponse> upload100MB(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) Flux<ByteBuf> stream, @HeaderParam("content-length") long contentLength);
+        Mono<VoidResponse> upload100MB(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) Flux<ByteBuffer> stream, @HeaderParam("content-length") long contentLength);
 
         @Get("/javasdktest/upload/100m-{id}.dat?{sas}")
         Mono<StreamResponse> download100M(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
@@ -218,50 +208,53 @@ public class RestProxyStressTests {
     }
 
     private static void create100MFiles(boolean recreate) throws IOException {
-        final Flux<ByteBuf> contentGenerator = Flux.generate(Random::new, (random, emitter) -> {
-            byte[] ba = new byte[CHUNK_SIZE];
-            random.nextBytes(ba);
-            emitter.next(Unpooled.wrappedBuffer(ba));
-            return random;
-        });
+//        final Flux<ByteBuffer> contentGenerator = Flux.generate(Random::new, (random, emitter) -> {
+//            byte[] ba = new byte[CHUNK_SIZE];
+//            random.nextBytes(ba);
+//            emitter.next(ByteBuffer.wrap(ba));
+//            return random;
+//        });
+//
+//        if (recreate) {
+//            deleteRecursive(tempFolderPath);
+//        }
+//
+//        if (Files.exists(tempFolderPath)) {
+//            LoggerFactory.getLogger(RestProxyStressTests.class).info("Temp files directory already exists: " + tempFolderPath.toAbsolutePath());
+//        } else {
+//            LoggerFactory.getLogger(RestProxyStressTests.class).info("Generating temp files in directory: " + tempFolderPath.toAbsolutePath());
+//            Files.createDirectory(tempFolderPath);
+//            Flux.range(0, NUM_FILES).flatMap(integer -> {
+//                try {
+//                    final int i = integer;
+//                    final Path filePath = tempFolderPath.resolve("100m-" + i + ".dat");
+//
+//                    Files.deleteIfExists(filePath);
+//                    Files.createFile(filePath);
+//                    final AsynchronousFileChannel file = AsynchronousFileChannel.open(filePath, StandardOpenOption.READ, StandardOpenOption.WRITE);
+//                    final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+//
+//                    Flux<ByteBuffer> fileContent = contentGenerator
+//                        .take(CHUNKS_PER_FILE)
+//                        .doOnNext(buf -> messageDigest.update(buf.array()));
+//
+//                    return FluxUtil.bytebufStreamToFile(fileContent, file).then(Mono.fromRunnable(() -> {
+//                        try {
+//                            file.close();
+//                            Files.write(tempFolderPath.resolve("100m-" + i + "-md5.dat"), messageDigest.digest());
+//                            LoggerFactory.getLogger(RestProxyStressTests.class).info("Finished writing file " + i);
+//                        } catch (Exception e) {
+//                            throw Exceptions.propagate(e);
+//                        }
+//                    }));
+//                } catch (Exception e) {
+//                    return Flux.error(e);
+//                }
+//            }).blockLast();
+//        }
 
-        if (recreate) {
-            deleteRecursive(tempFolderPath);
-        }
-
-        if (Files.exists(tempFolderPath)) {
-            LoggerFactory.getLogger(RestProxyStressTests.class).info("Temp files directory already exists: " + tempFolderPath.toAbsolutePath());
-        } else {
-            LoggerFactory.getLogger(RestProxyStressTests.class).info("Generating temp files in directory: " + tempFolderPath.toAbsolutePath());
-            Files.createDirectory(tempFolderPath);
-            Flux.range(0, NUM_FILES).flatMap(integer -> {
-                try {
-                    final int i = integer;
-                    final Path filePath = tempFolderPath.resolve("100m-" + i + ".dat");
-
-                    Files.deleteIfExists(filePath);
-                    Files.createFile(filePath);
-                    final AsynchronousFileChannel file = AsynchronousFileChannel.open(filePath, StandardOpenOption.READ, StandardOpenOption.WRITE);
-                    final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-
-                    Flux<ByteBuf> fileContent = contentGenerator
-                        .take(CHUNKS_PER_FILE)
-                        .doOnNext(buf -> messageDigest.update(buf.array()));
-
-                    return FluxUtil.bytebufStreamToFile(fileContent, file).then(Mono.fromRunnable(() -> {
-                        try {
-                            file.close();
-                            Files.write(tempFolderPath.resolve("100m-" + i + "-md5.dat"), messageDigest.digest());
-                            LoggerFactory.getLogger(RestProxyStressTests.class).info("Finished writing file " + i);
-                        } catch (Exception e) {
-                            throw Exceptions.propagate(e);
-                        }
-                    }));
-                } catch (Exception e) {
-                    return Flux.error(e);
-                }
-            }).blockLast();
-        }
+        // TODO
+        fail("This method is not yet re-implemented");
     }
 
     @Test
@@ -272,90 +265,92 @@ public class RestProxyStressTests {
 
     @Test
     public void upload100MParallelTest() {
-        final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
-
-        Flux<byte[]> md5s = Flux.range(0, NUM_FILES)
-            .map(integer -> {
-                final Path filePath = tempFolderPath.resolve("100m-" + integer + "-md5.dat");
-                try {
-                    return Files.readAllBytes(filePath);
-                } catch (IOException ioe) {
-                    throw Exceptions.propagate(ioe);
-                }
-            });
-        //
-        Instant uploadStart = Instant.now();
-        //
-        Flux.range(0, NUM_FILES)
-                .zipWith(md5s, (id, md5) -> {
-                    AsynchronousFileChannel fileStream = null;
-                    try {
-                        fileStream = AsynchronousFileChannel.open(tempFolderPath.resolve("100m-" + id + ".dat"));
-                    } catch (IOException ioe) {
-                        Exceptions.propagate(ioe);
-                    }
-                    return service.upload100MB(String.valueOf(id), sas, "BlockBlob", FluxUtil.byteBufStreamFromFile(fileStream), FILE_SIZE).map(response -> {
-                        String base64MD5 = response.headers().value("Content-MD5");
-                        byte[] receivedMD5 = Base64.getDecoder().decode(base64MD5);
-                        Assert.assertArrayEquals(md5, receivedMD5);
-                        return response;
-                    });
-                })
-                .flatMapDelayError(m -> m, 15, 1)
-                .blockLast();
-        //
-        long durationMilliseconds = Duration.between(uploadStart, Instant.now()).toMillis();
-        LoggerFactory.getLogger(getClass()).info("Upload took " + durationMilliseconds + " milliseconds.");
+//        final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
+//
+//        Flux<byte[]> md5s = Flux.range(0, NUM_FILES)
+//            .map(integer -> {
+//                final Path filePath = tempFolderPath.resolve("100m-" + integer + "-md5.dat");
+//                try {
+//                    return Files.readAllBytes(filePath);
+//                } catch (IOException ioe) {
+//                    throw Exceptions.propagate(ioe);
+//                }
+//            });
+//        //
+//        Instant uploadStart = Instant.now();
+//        //
+//        Flux.range(0, NUM_FILES)
+//                .zipWith(md5s, (id, md5) -> {
+//                    AsynchronousFileChannel fileStream = null;
+//                    try {
+//                        fileStream = AsynchronousFileChannel.open(tempFolderPath.resolve("100m-" + id + ".dat"));
+//                    } catch (IOException ioe) {
+//                        Exceptions.propagate(ioe);
+//                    }
+//                    return service.upload100MB(String.valueOf(id), sas, "BlockBlob", FluxUtil.byteBufStreamFromFile(fileStream), FILE_SIZE).map(response -> {
+//                        String base64MD5 = response.headers().value("Content-MD5");
+//                        byte[] receivedMD5 = Base64.getDecoder().decode(base64MD5);
+//                        Assert.assertArrayEquals(md5, receivedMD5);
+//                        return response;
+//                    });
+//                })
+//                .flatMapDelayError(m -> m, 15, 1)
+//                .blockLast();
+//        //
+//        long durationMilliseconds = Duration.between(uploadStart, Instant.now()).toMillis();
+//        LoggerFactory.getLogger(getClass()).info("Upload took " + durationMilliseconds + " milliseconds.");
+        Assert.fail("Need to implement this test again");
     }
 
     @Test
     public void uploadMemoryMappedTest() {
-        final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
-
-        Flux<byte[]> md5s = Flux.range(0, NUM_FILES)
-                .map(integer -> {
-                    final Path filePath = tempFolderPath.resolve("100m-" + integer + "-md5.dat");
-                    try {
-                        return Files.readAllBytes(filePath);
-                    } catch (IOException ioe) {
-                        throw Exceptions.propagate(ioe);
-                    }
-                });
-
-        Instant uploadStart = Instant.now();
-        //
-        Flux.range(0, NUM_FILES)
-                .zipWith(md5s, (id, md5) -> {
-                    FileChannel fileStream = null;
-                    try {
-                        fileStream = FileChannel.open(tempFolderPath.resolve("100m-" + id + ".dat"), StandardOpenOption.READ);
-                    } catch (IOException ioe) {
-                        Exceptions.propagate(ioe);
-                    }
-                    //
-                    ByteBuf mappedByteBufFile = null;
-                    Flux<ByteBuf> stream = null;
-                    try {
-                        MappedByteBuffer mappedByteBufferFile = fileStream.map(FileChannel.MapMode.READ_ONLY, 0, fileStream.size());
-                        mappedByteBufFile = Unpooled.wrappedBuffer(mappedByteBufferFile);
-                        stream = FluxUtil.split(mappedByteBufFile, CHUNK_SIZE);
-                    } catch (IOException ioe) {
-                        mappedByteBufFile.release();
-                        Exceptions.propagate(ioe);
-                    }
-                    //
-                    return service.upload100MB(String.valueOf(id), sas, "BlockBlob", stream, FILE_SIZE).map(response -> {
-                        String base64MD5 = response.headers().value("Content-MD5");
-                        byte[] receivedMD5 = Base64.getDecoder().decode(base64MD5);
-                        Assert.assertArrayEquals(md5, receivedMD5);
-                        return response;
-                    });
-                })
-                .flatMapDelayError(m -> m, 15, 1)
-                .blockLast();
-        //
-        long durationMilliseconds = Duration.between(uploadStart, Instant.now()).toMillis();
-        LoggerFactory.getLogger(getClass()).info("Upload took " + durationMilliseconds + " milliseconds.");
+//        final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
+//
+//        Flux<byte[]> md5s = Flux.range(0, NUM_FILES)
+//                .map(integer -> {
+//                    final Path filePath = tempFolderPath.resolve("100m-" + integer + "-md5.dat");
+//                    try {
+//                        return Files.readAllBytes(filePath);
+//                    } catch (IOException ioe) {
+//                        throw Exceptions.propagate(ioe);
+//                    }
+//                });
+//
+//        Instant uploadStart = Instant.now();
+//        //
+//        Flux.range(0, NUM_FILES)
+//                .zipWith(md5s, (id, md5) -> {
+//                    FileChannel fileStream = null;
+//                    try {
+//                        fileStream = FileChannel.open(tempFolderPath.resolve("100m-" + id + ".dat"), StandardOpenOption.READ);
+//                    } catch (IOException ioe) {
+//                        Exceptions.propagate(ioe);
+//                    }
+//                    //
+//                    ByteBuffer mappedByteBufFile = null;
+//                    Flux<ByteBuffer> stream = null;
+//                    try {
+//                        MappedByteBuffer mappedByteBufferFile = fileStream.map(FileChannel.MapMode.READ_ONLY, 0, fileStream.size());
+//                        mappedByteBufFile = Unpooled.wrappedBuffer(mappedByteBufferFile);
+//                        stream = FluxUtil.split(mappedByteBufFile, CHUNK_SIZE);
+//                    } catch (IOException ioe) {
+//                        mappedByteBufFile.release();
+//                        Exceptions.propagate(ioe);
+//                    }
+//                    //
+//                    return service.upload100MB(String.valueOf(id), sas, "BlockBlob", stream, FILE_SIZE).map(response -> {
+//                        String base64MD5 = response.headers().value("Content-MD5");
+//                        byte[] receivedMD5 = Base64.getDecoder().decode(base64MD5);
+//                        Assert.assertArrayEquals(md5, receivedMD5);
+//                        return response;
+//                    });
+//                })
+//                .flatMapDelayError(m -> m, 15, 1)
+//                .blockLast();
+//        //
+//        long durationMilliseconds = Duration.between(uploadStart, Instant.now()).toMillis();
+//        LoggerFactory.getLogger(getClass()).info("Upload took " + durationMilliseconds + " milliseconds.");
+        Assert.fail("Need to implement this test again");
     }
 
 
@@ -381,11 +376,11 @@ public class RestProxyStressTests {
         Flux.range(0, NUM_FILES)
                 .zipWith(md5s, (id, md5) -> {
                     return service.download100M(String.valueOf(id), sas).flatMap(response -> {
-                        Flux<ByteBuf> content;
+                        Flux<ByteBuffer> content;
                         try {
                             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
                             content = response.value()
-                                    .doOnNext(buf -> messageDigest.update(buf.slice().nioBuffer()));
+                                    .doOnNext(buf -> messageDigest.update(buf.slice()));
 
                             return content.last().doOnSuccess(b -> {
                                 assertArrayEquals(md5, messageDigest.digest());
@@ -424,7 +419,7 @@ public class RestProxyStressTests {
         Flux.range(0, NUM_FILES)
                 .zipWith(md5s, (integer, md5) -> {
                     final int id = integer;
-                    Flux<ByteBuf> downloadContent = service.download100M(String.valueOf(id), sas)
+                    Flux<ByteBuffer> downloadContent = service.download100M(String.valueOf(id), sas)
                             // Ideally we would intercept this content to load an MD5 to check consistency between download and upload directly,
                             // but it's sufficient to demonstrate that no corruption occurred between preparation->upload->download->upload.
                             .flatMapMany(StreamResponse::value)
@@ -453,7 +448,9 @@ public class RestProxyStressTests {
                                 //
                                 // Solution is to aware of ByteBufFlux auto-release property and retain each chunk before passing to Netty.write().
                                 //
-                                return reactorNettybb.retain();
+//                                return reactorNettybb.retain();
+                                // TODO
+                                throw new IllegalStateException("This method is not yet re-implemented");
                             });
                     //
                     return service.upload100MB("copy-" + integer, sas, "BlockBlob", downloadContent, FILE_SIZE)

@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration.credentials;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.data.appconfiguration.policy.ConfigurationCredentialsPolicy;
 import com.azure.core.implementation.util.ImplUtils;
-import io.netty.buffer.ByteBuf;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -14,6 +14,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
@@ -37,6 +38,8 @@ import java.util.stream.Collectors;
  * @see ConfigurationClientBuilder
  */
 public class ConfigurationClientCredentials {
+    private final ClientLogger logger = new ClientLogger(ConfigurationClientCredentials.class);
+
     private static final String HOST_HEADER = "Host";
     private static final String DATE_HEADER = "Date";
     private static final String CONTENT_HASH_HEADER = "x-ms-content-sha256";
@@ -75,17 +78,17 @@ public class ConfigurationClientCredentials {
      * @return a flux of headers to add for authorization
      * @throws NoSuchAlgorithmException If the SHA-256 algorithm doesn't exist.
      */
-    public Mono<Map<String, String>> getAuthorizationHeadersAsync(URL url, String httpMethod, Flux<ByteBuf> contents) {
+    public Mono<Map<String, String>> getAuthorizationHeadersAsync(URL url, String httpMethod, Flux<ByteBuffer> contents) {
         return contents
             .collect(() -> {
                 try {
                     return MessageDigest.getInstance("SHA-256");
                 } catch (NoSuchAlgorithmException e) {
-                    throw Exceptions.propagate(e);
+                    throw logger.logExceptionAsError(Exceptions.propagate(e));
                 }
             }, (messageDigest, byteBuffer) -> {
                     if (messageDigest != null) {
-                        messageDigest.update(byteBuffer.nioBuffer());
+                        messageDigest.update(byteBuffer);
                     }
                 })
             .flatMap(messageDigest -> Mono.just(headerProvider.getAuthenticationHeaders(url, httpMethod, messageDigest)));
@@ -149,9 +152,9 @@ public class ConfigurationClientCredentials {
         private static final String ID = "id=";
         private static final String SECRET = "secret=";
 
-        private URL baseUri;
-        private String id;
-        private byte[] secret;
+        private final URL baseUri;
+        private final String id;
+        private final byte[] secret;
 
         URL baseUri() {
             return baseUri;
@@ -175,23 +178,31 @@ public class ConfigurationClientCredentials {
                 throw new IllegalArgumentException("invalid connection string segment count");
             }
 
+            URL baseUri = null;
+            String id = null;
+            byte[] secret = null;
+
             for (String arg : args) {
                 String segment = arg.trim();
                 String lowerCase = segment.toLowerCase(Locale.US);
 
                 if (lowerCase.startsWith(ENDPOINT)) {
                     try {
-                        this.baseUri = new URL(segment.substring(ENDPOINT.length()));
+                        baseUri = new URL(segment.substring(ENDPOINT.length()));
                     } catch (MalformedURLException ex) {
                         throw new IllegalArgumentException(ex);
                     }
                 } else if (lowerCase.startsWith(ID)) {
-                    this.id = segment.substring(ID.length());
+                    id = segment.substring(ID.length());
                 } else if (lowerCase.startsWith(SECRET)) {
                     String secretBase64 = segment.substring(SECRET.length());
-                    this.secret = Base64.getDecoder().decode(secretBase64);
+                    secret = Base64.getDecoder().decode(secretBase64);
                 }
             }
+
+            this.baseUri = baseUri;
+            this.id = id;
+            this.secret = secret;
 
             if (this.baseUri == null || this.id == null || this.secret == null) {
                 throw new IllegalArgumentException("Could not parse 'connectionString'."

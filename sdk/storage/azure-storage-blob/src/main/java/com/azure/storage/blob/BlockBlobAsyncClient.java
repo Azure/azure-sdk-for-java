@@ -8,10 +8,10 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
 import com.azure.storage.common.Constants;
-import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
@@ -57,6 +58,8 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  * object through {@link Mono#toFuture()}.
  */
 public final class BlockBlobAsyncClient extends BlobAsyncClient {
+    private final ClientLogger logger = new ClientLogger(BlockBlobAsyncClient.class);
+
     static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
     static final int BLOB_MAX_UPLOAD_BLOCK_SIZE = 100 * Constants.MB;
 
@@ -102,7 +105,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * @return A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<BlockBlobItem> upload(Flux<ByteBuf> data, long length) {
+    public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, long length) {
         return uploadWithResponse(data, length, null, null, null).flatMap(FluxUtil::toMono);
     }
 
@@ -128,12 +131,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * @return A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuf> data, long length, BlobHTTPHeaders headers,
+    public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
                                                             Metadata metadata, BlobAccessConditions accessConditions) {
         return withContext(context -> uploadWithResponse(data, length, headers, metadata, accessConditions, context));
     }
 
-    Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuf> data, long length, BlobHTTPHeaders headers,
+    Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
                                                      Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
@@ -170,7 +173,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
     public Mono<Void> uploadFromFile(String filePath, Integer blockSize, BlobHTTPHeaders headers, Metadata metadata,
                                      BlobAccessConditions accessConditions) {
         if (blockSize < 0 || blockSize > BLOB_MAX_UPLOAD_BLOCK_SIZE) {
-            throw new IllegalArgumentException("Block size should not exceed 100MB");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Block size should not exceed 100MB"));
         }
 
         return Mono.using(() -> uploadFileResourceSupplier(filePath),
@@ -180,7 +183,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
                     .doOnNext(chunk -> blockIds.put(chunk.offset(), getBlockID()))
                     .flatMap(chunk -> {
                         String blockId = blockIds.get(chunk.offset());
-                        return stageBlockWithResponse(blockId, FluxUtil.byteBufStreamFromFile(channel, chunk.offset(), chunk.count()), chunk.count(), null);
+                        return stageBlockWithResponse(blockId, FluxUtil.readFile(channel, chunk.offset(), chunk.count()), chunk.count(), null);
                     })
                     .then(Mono.defer(() -> commitBlockListWithResponse(new ArrayList<>(blockIds.values()), headers, metadata, accessConditions)))
                     .then()
@@ -188,7 +191,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
                         try {
                             channel.close();
                         } catch (IOException e) {
-                            throw new UncheckedIOException(e);
+                            throw logger.logExceptionAsError(new UncheckedIOException(e));
                         }
                     });
             }, this::uploadFileCleanup);
@@ -199,7 +202,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         try {
             return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ);
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
@@ -207,7 +210,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         try {
             channel.close();
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
@@ -249,8 +252,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> stageBlock(String base64BlockID, Flux<ByteBuf> data,
-                                 long length) {
+    public Mono<Void> stageBlock(String base64BlockID, Flux<ByteBuffer> data, long length) {
         return stageBlockWithResponse(base64BlockID, data, length, null).flatMap(FluxUtil::toMono);
     }
 
@@ -273,12 +275,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> stageBlockWithResponse(String base64BlockID, Flux<ByteBuf> data, long length,
+    public Mono<VoidResponse> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
                                                      LeaseAccessConditions leaseAccessConditions) {
         return withContext(context -> stageBlockWithResponse(base64BlockID, data, length, leaseAccessConditions, context));
     }
 
-    Mono<VoidResponse> stageBlockWithResponse(String base64BlockID, Flux<ByteBuf> data, long length,
+    Mono<VoidResponse> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
                                               LeaseAccessConditions leaseAccessConditions, Context context) {
         return postProcessResponse(this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null,
             null, base64BlockID, length, data, null, null, null, null,

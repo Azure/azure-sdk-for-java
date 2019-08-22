@@ -1357,7 +1357,7 @@ class BlobAPITest extends APISpec {
         when:
         String copyID =
             bu2.startCopyFromURLWithResponse(bc.getBlobUrl(), null, null,
-                new BlobAccessConditions().leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID)), null, null)
+                new BlobAccessConditions().leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID)), null, null).value()
 
         then:
         bu2.abortCopyFromURLWithResponse(copyID, new LeaseAccessConditions().leaseId(leaseID), null, null).statusCode() == 204

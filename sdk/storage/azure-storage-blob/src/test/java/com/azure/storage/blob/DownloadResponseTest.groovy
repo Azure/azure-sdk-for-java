@@ -45,7 +45,7 @@ class DownloadResponseTest extends APISpec {
         DownloadAsyncResponse response = flux.getter(info).block()
 
         then:
-        FluxUtil.collectByteBufStream(response.body(options), false).block().nioBuffer() == flux.getScenarioData()
+        FluxUtil.collectBytesInByteBufferStream(response.body(options)).block() == flux.getScenarioData().array()
         flux.getTryNumber() == tryNumber
 
 

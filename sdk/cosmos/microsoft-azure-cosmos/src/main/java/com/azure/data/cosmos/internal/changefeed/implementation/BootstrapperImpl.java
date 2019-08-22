@@ -21,56 +21,71 @@ class BootstrapperImpl implements Bootstrapper {
     private final Duration lockTime;
     private final Duration sleepTime;
 
-    public BootstrapperImpl(PartitionSynchronizer synchronizer, LeaseStore leaseStore, Duration lockTime, Duration sleepTime)
-    {
-        if (synchronizer == null) throw new IllegalArgumentException("synchronizer");
-        if (leaseStore == null) throw new IllegalArgumentException("leaseStore");
-        if (lockTime == null || lockTime.isNegative() || lockTime.isZero()) throw new IllegalArgumentException("lockTime should be non-null and positive");
-        if (sleepTime == null || sleepTime.isNegative() || sleepTime.isZero()) throw new IllegalArgumentException("sleepTime should be non-null and positive");
+    private volatile boolean isInitialized;
+    private volatile boolean isLockAcquired;
+
+    public BootstrapperImpl(PartitionSynchronizer synchronizer, LeaseStore leaseStore, Duration lockTime, Duration sleepTime) {
+        if (synchronizer == null) {
+            throw new IllegalArgumentException("synchronizer");
+        }
+
+        if (leaseStore == null) {
+            throw new IllegalArgumentException("leaseStore");
+        }
+
+        if (lockTime == null || lockTime.isNegative() || lockTime.isZero()) {
+            throw new IllegalArgumentException("lockTime should be non-null and positive");
+        }
+
+        if (sleepTime == null || sleepTime.isNegative() || sleepTime.isZero()) {
+            throw new IllegalArgumentException("sleepTime should be non-null and positive");
+        }
 
         this.synchronizer = synchronizer;
         this.leaseStore = leaseStore;
         this.lockTime = lockTime;
         this.sleepTime = sleepTime;
+
+        this.isInitialized = false;
     }
 
     @Override
     public Mono<Void> initialize() {
-        BootstrapperImpl self = this;
+        this.isInitialized = false;
 
-        return Mono.fromRunnable( () -> {
-            while (true) {
-                boolean initialized = self.leaseStore.isInitialized().block();
+        return Mono.just(this)
+            .flatMap( value -> this.leaseStore.isInitialized())
+            .flatMap(initialized -> {
+                this.isInitialized = initialized;
 
-                if (initialized) break;
+                if (initialized) {
+                    return Mono.empty();
+                } else {
+                    return this.leaseStore.acquireInitializationLock(this.lockTime)
+                        .flatMap(lockAcquired -> {
+                            this.isLockAcquired = lockAcquired;
 
-                boolean isLockAcquired = self.leaseStore.acquireInitializationLock(self.lockTime).block();
-
-                try {
-                    if (!isLockAcquired) {
-                        logger.info("Another instance is initializing the store");
-                        try {
-                            Thread.sleep(self.sleepTime.toMillis());
-                        } catch (InterruptedException ex) {
-                            logger.warn("Unexpected exception caught", ex);
-                        }
-                        continue;
-                    }
-
-                    logger.info("Initializing the store");
-                    self.synchronizer.createMissingLeases().block();
-                    self.leaseStore.markInitialized().block();
-
-                } catch (RuntimeException ex) {
-                    break;
-                } finally {
-                    if (isLockAcquired) {
-                        self.leaseStore.releaseInitializationLock().block();
-                    }
+                            if (!this.isLockAcquired) {
+                                logger.info("Another instance is initializing the store");
+                                return Mono.just(isLockAcquired).delayElement(this.sleepTime);
+                            } else {
+                                return this.synchronizer.createMissingLeases()
+                                    .then(this.leaseStore.markInitialized());
+                            }
+                        })
+                        .onErrorResume(throwable -> {
+                            logger.warn("Unexpected exception caught", throwable);
+                            return Mono.just(this.isLockAcquired);
+                        })
+                        .flatMap(lockAcquired -> {
+                            if (this.isLockAcquired) {
+                                return this.leaseStore.releaseInitializationLock();
+                            }
+                            return Mono.just(lockAcquired);
+                        });
                 }
-            }
-
-            logger.info("The store is initialized");
-        });
+            })
+            .repeat( () -> !this.isInitialized)
+            .then();
     }
 }

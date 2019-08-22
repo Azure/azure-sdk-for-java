@@ -40,14 +40,13 @@ import com.azure.core.implementation.http.ContentType;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.implementation.util.FluxUtil;
-import io.netty.buffer.ByteBuf;
-import io.netty.util.ReferenceCountUtil;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -1483,17 +1482,16 @@ public abstract class RestProxyTests {
         StreamResponse getBytes();
 
         @Get("/bytes/30720")
-        Flux<ByteBuf> getBytesFlowable();
+        Flux<ByteBuffer> getBytesFlowable();
     }
 
     @Test
     public void simpleDownloadTest() {
         try (StreamResponse response = createService(DownloadService.class).getBytes()) {
             int count = 0;
-            for (ByteBuf byteBuf : response.value().doOnNext(b -> b.retain()).toIterable()) {
+            for (ByteBuffer byteBuf : response.value().toIterable()) {
                 // assertEquals(1, byteBuf.refCnt());
-                count += byteBuf.readableBytes();
-                ReferenceCountUtil.refCnt(byteBuf);
+                count += byteBuf.remaining();
             }
             assertEquals(30720, count);
         }
@@ -1501,11 +1499,10 @@ public abstract class RestProxyTests {
 
     @Test
     public void rawFlowableDownloadTest() {
-        Flux<ByteBuf> response = createService(DownloadService.class).getBytesFlowable();
+        Flux<ByteBuffer> response = createService(DownloadService.class).getBytesFlowable();
         int count = 0;
-        for (ByteBuf byteBuf : response.doOnNext(b -> b.retain()).toIterable()) {
-            count += byteBuf.readableBytes();
-            ReferenceCountUtil.refCnt(byteBuf);
+        for (ByteBuffer byteBuf : response.toIterable()) {
+            count += byteBuf.remaining();
         }
         assertEquals(30720, count);
     }
@@ -1514,13 +1511,13 @@ public abstract class RestProxyTests {
     @ServiceInterface(name = "FlowableUploadService")
     interface FlowableUploadService {
         @Put("/put")
-        Response<HttpBinJSON> put(@BodyParam("text/plain") Flux<ByteBuf> content, @HeaderParam("Content-Length") long contentLength);
+        Response<HttpBinJSON> put(@BodyParam("text/plain") Flux<ByteBuffer> content, @HeaderParam("Content-Length") long contentLength);
     }
 
     @Test
-    public void flowableUploadTest() throws Exception {
+    public void fluxUploadTest() throws Exception {
         Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
-        Flux<ByteBuf> stream = FluxUtil.byteBufStreamFromFile(AsynchronousFileChannel.open(filePath));
+        Flux<ByteBuffer> stream = FluxUtil.readFile(AsynchronousFileChannel.open(filePath));
 
         final HttpClient httpClient = createHttpClient();
         // Scenario: Log the body so that body buffering/replay behavior is exercised.
@@ -1542,7 +1539,7 @@ public abstract class RestProxyTests {
         Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(filePath, StandardOpenOption.READ);
         Response<HttpBinJSON> response = createService(FlowableUploadService.class)
-                .put(FluxUtil.byteBufStreamFromFile(fileChannel, 4, 15), 15);
+                .put(FluxUtil.readFile(fileChannel, 4, 15), 15);
 
         assertEquals("quick brown fox", response.value().data());
     }
@@ -1640,7 +1637,7 @@ public abstract class RestProxyTests {
 
     @Test
     public void postUrlFormEncoded() {
-        Service26 service = RestProxy.create(Service26.class, new HttpPipelineBuilder().build());
+        Service26 service = createService(Service26.class);
         HttpBinFormDataJSON response = service.postForm("Foo", "123", "foo@bar.com", PizzaSize.LARGE, Arrays.asList("Bacon", "Onion"));
         assertNotNull(response);
         assertNotNull(response.form());

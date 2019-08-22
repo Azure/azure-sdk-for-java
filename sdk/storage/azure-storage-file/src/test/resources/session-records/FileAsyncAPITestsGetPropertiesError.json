@@ -1,0 +1,38 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsgetpropertieserror46147a2c97c397a?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D7258EC370B849\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:52:19 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "249cbc15-e01a-005a-5277-5736f7000000",
+      "Date" : "Tue, 20 Aug 2019 16:52:18 GMT"
+    }
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsgetpropertieserror46147a2c97c397a/fileasyncapitestsgetpropertieserror60974ef9d1662f0",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "249cbc17-e01a-005a-5377-5736f7000000",
+      "Date" : "Tue, 20 Aug 2019 16:52:19 GMT"
+    }
+  } ],
+  "variables" : [ "fileasyncapitestsgetpropertieserror46147a2c97c397a", "fileasyncapitestsgetpropertieserror60974ef9d1662f0" ]
+}

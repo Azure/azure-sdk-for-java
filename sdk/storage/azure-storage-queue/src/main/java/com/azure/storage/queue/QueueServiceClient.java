@@ -5,6 +5,7 @@ package com.azure.storage.queue;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.models.CorsRule;
@@ -76,8 +77,8 @@ public final class QueueServiceClient {
      * @return A response containing the QueueClient and the status of creating the queue
      * @throws StorageErrorException If a queue with the same name and different metadata already exists
      */
-    public Response<QueueClient> createQueue(String queueName) {
-        return createQueue(queueName, null);
+    public QueueClient createQueue(String queueName) {
+        return createQueueWithResponse(queueName, null, Context.NONE).value();
     }
 
     /**
@@ -88,15 +89,16 @@ public final class QueueServiceClient {
      *
      * <p>Create the queue "test" with metadata "queue:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.createQueue#string-map}
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.createQueueWithResponse#string-map-Context}
      *
      * @param queueName Name of the queue
      * @param metadata Metadata to associate with the queue
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the QueueClient and the status of creating the queue
      * @throws StorageErrorException If a queue with the same name and different metadata already exists
      */
-    public Response<QueueClient> createQueue(String queueName, Map<String, String> metadata) {
-        Response<QueueAsyncClient> response = client.createQueue(queueName, metadata).block();
+    public Response<QueueClient> createQueueWithResponse(String queueName, Map<String, String> metadata, Context context) {
+        Response<QueueAsyncClient> response = client.createQueueWithResponse(queueName, metadata, context).block();
 
         return new SimpleResponse<>(response, new QueueClient(response.value()));
     }
@@ -111,11 +113,28 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.deleteQueue#string}
      *
      * @param queueName Name of the queue
+     * @throws StorageErrorException If the queue doesn't exist
+     */
+    public void deleteQueue(String queueName) {
+        deleteQueueWithResponse(queueName, Context.NONE);
+    }
+
+    /**
+     * Deletes a queue in the storage account
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the queue "test"</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.deleteQueueWithResponse#string-Context}
+     *
+     * @param queueName Name of the queue
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the status of deleting the queue
      * @throws StorageErrorException If the queue doesn't exist
      */
-    public VoidResponse deleteQueue(String queueName) {
-        return client.deleteQueue(queueName).block();
+    public VoidResponse deleteQueueWithResponse(String queueName, Context context) {
+        return client.deleteQueueWithResponse(queueName, context).block();
     }
 
     /**
@@ -187,8 +206,28 @@ public final class QueueServiceClient {
      *
      * @return Storage account Queue service properties
      */
-    public Response<StorageServiceProperties> getProperties() {
-        return client.getProperties().block();
+    public StorageServiceProperties getProperties() {
+        return getPropertiesWithResponse(Context.NONE).value();
+    }
+
+    /**
+     * Retrieves the properties of the storage account's Queue service. The properties range from storage analytics and
+     * metric to CORS (Cross-Origin Resource Sharing).
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve Queue service properties</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.getPropertiesWithResponse#Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-properties">Azure Docs</a>.</p>
+     *
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the Storage account Queue service properties
+     */
+    public Response<StorageServiceProperties> getPropertiesWithResponse(Context context) {
+        return client.getPropertiesWithResponse(context).block();
     }
 
     /**
@@ -212,6 +251,44 @@ public final class QueueServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure Docs</a>.</p>
      *
      * @param properties Storage account Queue service properties
+     * @throws StorageErrorException When one of the following is true
+     * <ul>
+     *     <li>A CORS rule is missing one of its fields</li>
+     *     <li>More than five CORS rules will exist for the Queue service</li>
+     *     <li>Size of all CORS rules exceeds 2KB</li>
+     *     <li>
+     *         Length of {@link CorsRule#allowedHeaders() allowed headers}, {@link CorsRule#exposedHeaders() exposed headers},
+     *         or {@link CorsRule#allowedOrigins() allowed origins} exceeds 256 characters.
+     *     </li>
+     *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
+     * </ul>
+     */
+    public void setProperties(StorageServiceProperties properties) {
+        setPropertiesWithResponse(properties, Context.NONE);
+    }
+
+    /**
+     * Sets the properties for the storage account's Queue service. The properties range from storage analytics and
+     * metric to CORS (Cross-Origin Resource Sharing).
+     *
+     * To maintain the CORS in the Queue service pass a {@code null} value for {@link StorageServiceProperties#cors() CORS}.
+     * To disable all CORS in the Queue service pass an empty list for {@link StorageServiceProperties#cors() CORS}.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p>Clear CORS in the Queue service</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesWithResponse#storageServiceProperties-Context}
+     *
+     * <p>Enable Minute and Hour Metrics</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesWithResponseEnableMetrics#storageServiceProperties-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure Docs</a>.</p>
+     *
+     * @param properties Storage account Queue service properties
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException When one of the following is true
      * <ul>
@@ -225,8 +302,8 @@ public final class QueueServiceClient {
      *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
      * </ul>
      */
-    public VoidResponse setProperties(StorageServiceProperties properties) {
-        return client.setProperties(properties).block();
+    public VoidResponse setPropertiesWithResponse(StorageServiceProperties properties, Context context) {
+        return client.setPropertiesWithResponse(properties, context).block();
     }
 
     /**
@@ -243,7 +320,27 @@ public final class QueueServiceClient {
      *
      * @return The geo replication information about the Queue service
      */
-    public Response<StorageServiceStats> getStatistics() {
-        return client.getStatistics().block();
+    public StorageServiceStats getStatistics() {
+        return getStatisticsWithResponse(Context.NONE).value();
     }
+
+    /**
+     * Retrieves the geo replication information about the Queue service.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve the geo replication information</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.getStatisticsWithResponse#Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
+     *
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the geo replication information about the Queue service
+     */
+    public Response<StorageServiceStats> getStatisticsWithResponse(Context context) {
+        return client.getStatisticsWithResponse(context).block();
+    }
+
 }
