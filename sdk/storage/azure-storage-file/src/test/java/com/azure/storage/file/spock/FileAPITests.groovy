@@ -137,7 +137,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.upload(fullInfoData.retain(), fullInfoString.length())
         when:
         primaryFileClient.clearRange(7)
-        def downloadResponse = primaryFileClient.downloadWithProperties()
+        def downloadResponse = primaryFileClient.downloadWithProperties(new FileRange(0, 6), false)
         then:
         FileTestHelper.equalsAfterTrim(7, 0,
             FluxUtil.collectBytesInByteBufStream(downloadResponse.value().body(), false).block())
@@ -151,10 +151,14 @@ class FileAPITests extends APISpec {
         primaryFileClient.upload(fullInfoData.retain(), fullInfoString.length())
         when:
         primaryFileClient.clearRange(7, 1)
-        def downloadResponse = primaryFileClient.downloadWithProperties()
+        def downloadResponse = primaryFileClient.downloadWithProperties(new FileRange(1, 7), false)
         then:
-        FileTestHelper.equalsAfterTrim(7, 1,
-            FluxUtil.collectBytesInByteBufStream(downloadResponse.value().body(), false).block())
+//        FileTestHelper.equalsAfterTrim(7, 1,
+//            )
+        def downloadArray = FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().body()).block()
+        downloadArray.All {
+            it == 0
+        }
     }
 
     def "Clear range error" () {
