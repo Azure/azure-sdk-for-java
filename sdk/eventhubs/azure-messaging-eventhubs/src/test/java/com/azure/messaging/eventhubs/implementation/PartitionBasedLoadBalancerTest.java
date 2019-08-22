@@ -28,6 +28,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 import org.junit.Before;
@@ -317,6 +318,47 @@ public class PartitionBasedLoadBalancerTest {
         verify(partitionProcessor, never()).processEvent(any(EventData.class));
         verify(partitionProcessor, never()).processError(any(IllegalStateException.class));
         verify(eventHubConsumer, never()).close();
+    }
+
+    @Test
+    public void testEmptyOwnerId() {
+        // null owner id
+        PartitionOwnership claim1 = new PartitionOwnership()
+            .eventHubName(eventHubName)
+            .consumerGroupName(consumerGroupName)
+            .partitionId("1")
+            .eTag(UUID.randomUUID().toString())
+            .ownerLevel(0)
+            .lastModifiedTime(System.currentTimeMillis());
+        // owner id is an empty string
+        PartitionOwnership claim2 = new PartitionOwnership()
+            .eventHubName(eventHubName)
+            .consumerGroupName(consumerGroupName)
+            .partitionId("2")
+            .eTag(UUID.randomUUID().toString())
+            .ownerLevel(0)
+            .lastModifiedTime(System.currentTimeMillis())
+            .ownerId("");
+        partitionManager.claimOwnership(claim1, claim2).subscribe();
+
+        List<String> partitionIds = Arrays.asList("1", "2", "3");
+        when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
+        when(eventHubAsyncClient.createConsumer(anyString(), anyString(), any(EventPosition.class), any(
+            EventHubConsumerOptions.class))).thenReturn(eventHubConsumer);
+
+        when(eventHubConsumer.receive())
+            .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> eventDataList.get(index.intValue())));
+
+        PartitionBasedLoadBalancer partitionBasedLoadBalancer = createPartitionLoadBalancer("owner1");
+
+        IntStream.range(0, partitionIds.size()).forEach(index -> {
+            partitionBasedLoadBalancer.loadBalance();
+        });
+        List<PartitionOwnership> partitionOwnership = partitionManager.listOwnership(eventHubName,
+            consumerGroupName).collectList().block();
+        assertEquals(3, partitionOwnership.size());
+        partitionOwnership.forEach(po -> assertEquals("owner1", partitionOwnership.get(0).ownerId()));
+        assertEquals(3, partitionOwnership.stream().map(po -> po.partitionId()).distinct().count());
     }
 
     private PartitionBasedLoadBalancer createPartitionLoadBalancer(String owner) {
