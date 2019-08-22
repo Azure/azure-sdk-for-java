@@ -226,6 +226,8 @@ jobs:
         parameters:
           OSName: $(OSName)
 
+      - template: ../steps/cache-maven-repository.yml
+
       - task: Maven@3
         displayName: 'Start Jetty'
         condition: ne(variables['SdkType'], 'client')
