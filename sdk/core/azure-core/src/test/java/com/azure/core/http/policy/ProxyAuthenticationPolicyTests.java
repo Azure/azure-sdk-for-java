@@ -7,7 +7,7 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.MockHttpClient;
+import com.azure.core.http.clients.NoOpHttpClient;
 import org.junit.Test;
 
 import java.net.MalformedURLException;
@@ -25,7 +25,7 @@ public class ProxyAuthenticationPolicyTests {
         final String password = "testpass";
         //
         final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new MockHttpClient())
+            .httpClient(new NoOpHttpClient())
             .policies(new ProxyAuthenticationPolicy(username, password),
                 (context, next) -> {
                     assertEquals("Basic dGVzdHVzZXI6dGVzdHBhc3M=", context.httpRequest().headers().value("Proxy-Authentication"));

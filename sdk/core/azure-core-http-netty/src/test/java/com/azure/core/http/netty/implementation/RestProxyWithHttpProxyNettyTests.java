@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.implementation;
+package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.ProxyOptions.Type;
+import com.azure.core.implementation.RestProxyTests;
 import org.junit.Ignore;
 
 import java.net.InetSocketAddress;

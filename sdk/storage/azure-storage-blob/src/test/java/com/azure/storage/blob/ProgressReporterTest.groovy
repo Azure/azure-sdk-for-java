@@ -3,8 +3,7 @@
 
 package com.azure.storage.blob
 
-import io.netty.buffer.ByteBuf
-import io.netty.buffer.Unpooled
+
 import reactor.core.publisher.Flux
 
 import java.nio.ByteBuffer
@@ -40,8 +39,7 @@ class ProgressReporterTest extends APISpec {
         IProgressReceiver mockReceiver = Mock(IProgressReceiver)
 
         ByteBuffer buffer = getRandomData(1 * 1024 * 1024)
-        Flux<ByteBuf> data = ProgressReporter.addProgressReporting(Flux.just(buffer), mockReceiver)
-            .map({ it -> Unpooled.wrappedBuffer(it) })
+        Flux<ByteBuffer> data = ProgressReporter.addProgressReporting(Flux.just(buffer), mockReceiver)
 
         when:
         BlockBlobAsyncClient bu = new BlobClientBuilder()
