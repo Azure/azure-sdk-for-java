@@ -50,7 +50,7 @@ class BlobAPITest extends APISpec {
     def "Download all null"() {
         when:
         ByteArrayOutputStream stream = new ByteArrayOutputStream()
-        VoidResponse response = bu.downloadWithResponse(stream, null, null, null, null, null, null)
+        VoidResponse response = bu.downloadWithResponse(stream, null, null, null, false, null, null)
         ByteBuffer body = ByteBuffer.wrap(stream.toByteArray())
         HttpHeaders headers = response.headers()
 

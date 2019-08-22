@@ -361,7 +361,7 @@ class APISpec extends Specification {
 
     def setupContainerMatchCondition(ContainerClient cu, String match) {
         if (match == receivedEtag) {
-            return cu.getProperties().headers().value("ETag")
+            return cu.getPropertiesWithResponse(null, null, null).headers().value("ETag")
         } else {
             return match
         }
@@ -386,7 +386,7 @@ class APISpec extends Specification {
     def waitForCopy(ContainerClient bu, String status) {
         OffsetDateTime start = OffsetDateTime.now()
         while (status != CopyStatusType.SUCCESS.toString()) {
-            status = bu.getProperties().headers().value("x-ms-copy-status")
+            status = bu.getPropertiesWithResponse(null, null, null).headers().value("x-ms-copy-status")
             OffsetDateTime currentTime = OffsetDateTime.now()
             if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long")
