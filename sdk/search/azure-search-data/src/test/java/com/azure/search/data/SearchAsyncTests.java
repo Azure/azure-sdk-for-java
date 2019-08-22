@@ -236,6 +236,42 @@ public class SearchAsyncTests extends SearchTestBase {
             .verifyComplete();
     }
 
+    @Override
+    public void canSearchWithRegex() {
+        SearchParameters searchParameters = new SearchParameters()
+            .queryType(QueryType.FULL)
+            .select(Arrays.asList("HotelName", "Rating"));
+
+        PagedFlux<SearchResult> results = client
+            .search("HotelName:/.*oach.*\\/?/", searchParameters, new SearchRequestOptions());
+        Assert.assertNotNull(results);
+
+        List<SearchResult> searchResultsList = results.log().collectList().block();
+        Assert.assertEquals(1, searchResultsList.size());
+
+        Map<String, Object> result = searchResultsList.get(0).additionalProperties();
+
+        Map<String, Object> expectedHotel = new HashMap<>();
+        expectedHotel.put("HotelName", "Roach Motel");
+        expectedHotel.put("Rating", 1);
+
+        Assert.assertEquals(dropUnnecessaryFields(result), expectedHotel);
+    }
+
+    @Override
+    public void canSearchWithEscapedSpecialCharsInRegex() {
+        SearchParameters searchParameters = new SearchParameters().queryType(QueryType.FULL);
+
+        PagedFlux<SearchResult> results = client
+            .search(
+                "\\+\\-\\&\\|\\!\\(\\)\\{\\}\\[\\]\\^\\~\\*\\?\\:", searchParameters,
+                new SearchRequestOptions());
+        Assert.assertNotNull(results);
+
+        List<SearchResult> searchResultsList = results.log().collectList().block();
+        Assert.assertEquals(0, searchResultsList.size());
+    }
+
     private void assertResponse(SearchPagedResponse response, List<Map<String, Object>> actualResults) {
         Assert.assertNull(response.count());
         Assert.assertNull(response.coverage());
@@ -251,7 +287,7 @@ public class SearchAsyncTests extends SearchTestBase {
 
     @Override
     protected void search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions) {
-        PagedFlux<SearchResult> results = client.search("*", searchParameters, new SearchRequestOptions());
+        PagedFlux<SearchResult> results = client.search(searchText, searchParameters, searchRequestOptions);
         results.log().blockFirst();
     }
 

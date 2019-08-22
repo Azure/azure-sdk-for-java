@@ -34,8 +34,9 @@ public class SearchSyncTests extends SearchTestBase {
     private SearchIndexClient client;
 
     @Override
-    protected void search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions) {
-        PagedIterable<SearchResult> results = client.search("*", searchParameters, new SearchRequestOptions());
+    protected void search(
+        String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions) {
+        PagedIterable<SearchResult> results = client.search(searchText, searchParameters, searchRequestOptions);
         results.iterableByPage().iterator().next();
     }
 
@@ -144,7 +145,8 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void searchWithoutOrderBySortsByScore() {
-        Iterator<SearchResult> results = client.search("*", new SearchParameters().filter("Rating lt 4"), new SearchRequestOptions()).iterator();
+        Iterator<SearchResult> results = client
+            .search("*", new SearchParameters().filter("Rating lt 4"), new SearchRequestOptions()).iterator();
         SearchResult firstResult = results.next();
         SearchResult secondResult = results.next();
         Assert.assertTrue(firstResult.score() <= secondResult.score());
@@ -158,7 +160,9 @@ public class SearchSyncTests extends SearchTestBase {
 
         String[] expectedResults = new String[]{"1", "9", "3", "4", "5", "10", "2", "6", "7", "8"};
 
-        Stream<String> results = client.search("*", new SearchParameters().orderBy(orderByValues), new SearchRequestOptions()).stream().map(res -> res.additionalProperties().get("HotelId").toString());
+        Stream<String> results = client
+            .search("*", new SearchParameters().orderBy(orderByValues), new SearchRequestOptions()).stream()
+            .map(res -> res.additionalProperties().get("HotelId").toString());
         Assert.assertArrayEquals(results.toArray(), expectedResults);
     }
 
@@ -209,7 +213,9 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void testCanSearchWithSearchModeAll() {
-        List<Map<String, Object>> response = getSearchResults(client.search("Cheapest hotel", new SearchParameters().queryType(SIMPLE).searchMode(ALL), new SearchRequestOptions()));
+        List<Map<String, Object>> response = getSearchResults(client
+            .search("Cheapest hotel", new SearchParameters().queryType(SIMPLE).searchMode(ALL),
+                new SearchRequestOptions()));
         Assert.assertEquals(1, response.size());
         Assert.assertEquals("2", response.get(0).get("HotelId"));
 
@@ -217,21 +223,59 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void testDefaultSearchModeIsAny() {
-        List<Map<String, Object>> response = getSearchResults(client.search("Cheapest hotel", new SearchParameters(), new SearchRequestOptions()));
+        List<Map<String, Object>> response = getSearchResults(
+            client.search("Cheapest hotel", new SearchParameters(), new SearchRequestOptions()));
         Assert.assertEquals(7, response.size());
-        Assert.assertEquals(Arrays.asList("2", "10", "3", "4", "5", "1", "9"), response.stream().map(res -> res.get("HotelId").toString()).collect(Collectors.toList()));
+        Assert.assertEquals(
+            Arrays.asList("2", "10", "3", "4", "5", "1", "9"),
+            response.stream().map(res -> res.get("HotelId").toString()).collect(Collectors.toList()));
 
     }
 
 
     @Override
     public void testCanGetResultCountInSearch() {
-        PagedIterable<SearchResult> results = client.search("*", new SearchParameters().includeTotalResultCount(true), new SearchRequestOptions());
+        PagedIterable<SearchResult> results = client
+            .search("*", new SearchParameters().includeTotalResultCount(true), new SearchRequestOptions());
         Assert.assertNotNull(results);
         Iterator<PagedResponse<SearchResult>> resultsIterator = results.iterableByPage().iterator();
 
         Assert.assertEquals(hotels.size(), ((SearchPagedResponse) resultsIterator.next()).count().intValue());
         Assert.assertFalse(resultsIterator.hasNext());
+    }
+
+    @Override
+    public void canSearchWithRegex() {
+        SearchParameters searchParameters = new SearchParameters()
+            .queryType(QueryType.FULL)
+            .select(Arrays.asList("HotelName", "Rating"));
+
+        PagedIterable<SearchResult> results = client
+            .search("HotelName:/.*oach.*\\/?/", searchParameters, new SearchRequestOptions());
+        Assert.assertNotNull(results);
+
+        List<Map<String, Object>> resultsList = getSearchResults(results);
+
+        Map<String, Object> expectedHotel = new HashMap<>();
+        expectedHotel.put("HotelName", "Roach Motel");
+        expectedHotel.put("Rating", 1);
+
+        Assert.assertEquals(1, resultsList.size());
+        Assert.assertEquals(dropUnnecessaryFields(resultsList.get(0)), expectedHotel);
+    }
+
+    @Override
+    public void canSearchWithEscapedSpecialCharsInRegex() {
+        SearchParameters searchParameters = new SearchParameters().queryType(QueryType.FULL);
+
+        PagedIterable<SearchResult> results = client
+            .search(
+                "\\+\\-\\&\\|\\!\\(\\)\\{\\}\\[\\]\\^\\~\\*\\?\\:", searchParameters,
+                new SearchRequestOptions());
+        Assert.assertNotNull(results);
+
+        List<Map<String, Object>> resultsList = getSearchResults(results);
+        Assert.assertEquals(0, resultsList.size());
     }
 
     private List<Map<String, Object>> getSearchResults(PagedIterable<SearchResult> results) {

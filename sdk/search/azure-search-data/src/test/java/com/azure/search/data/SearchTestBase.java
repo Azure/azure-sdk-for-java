@@ -8,6 +8,7 @@ import com.azure.search.data.env.SearchIndexClientTestBase;
 import com.azure.search.data.env.SearchIndexService;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
+import com.azure.search.data.generated.models.QueryType;
 import com.azure.search.data.generated.models.SearchParameters;
 import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
@@ -180,6 +181,23 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
 
     @Test
     public abstract void testCanGetResultCountInSearch();
+
+    @Test
+    public abstract void canSearchWithRegex();
+
+    @Test
+    public abstract void canSearchWithEscapedSpecialCharsInRegex();
+
+    @Test
+    public void searchThrowsWhenSpecialCharInRegexIsUnescaped() {
+        thrown.expect(HttpResponseException.class);
+        thrown.expectMessage("Failed to parse query string at line 1, column 8.");
+
+        SearchParameters invalidSearchParameters = new SearchParameters()
+            .queryType(QueryType.FULL);
+
+        search("/.*/.*/", invalidSearchParameters, new SearchRequestOptions());
+    }
 
     abstract void search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions);
 
