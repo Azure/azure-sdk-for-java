@@ -33,27 +33,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.apache.qpid</groupId>
-      <artifactId>proton-j</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>qpid-proton-j-extensions</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-client-authentication</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.nimbusds</groupId>
-      <artifactId>nimbus-jose-jwt</artifactId>
-      <version>6.0.1</version>
-    </dependency>
-    <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-eventhubs</artifactId>
       <version>3.0.0</version>
