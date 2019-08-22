@@ -474,7 +474,7 @@ public class FileAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Upload "default" to the file in Storage File Service. </p>
+     * <p>Upload data "default" to the file in Storage File Service. </p>
      *
      * {@codesnippet com.azure.storage.file.fileAsyncClient.upload#flux-long}
      *
@@ -499,7 +499,7 @@ public class FileAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Upload date "default" starting from 1024 bytes. </p>
+     * <p>Upload data "default" starting from 1024 bytes. </p>
      *
      * {@codesnippet com.azure.storage.file.fileAsyncClient.upload#flux-long-int}
      *
@@ -507,9 +507,9 @@ public class FileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
+     * @param length Specifies the number of bytes being transmitted in the request body.
      * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code
      * null}
-     * @param length Specifies the number of bytes being transmitted in the request body.
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
@@ -526,7 +526,7 @@ public class FileAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Clear the range from 0 bytes with length of 1024. </p>
+     * <p>Clears the first 1024 bytes. </p>
      *
      * {@codesnippet com.azure.storage.file.fileAsyncClient.clearRange#long}
      *

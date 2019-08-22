@@ -355,7 +355,7 @@ public class FileClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Clears the range starting from 0 bytes with the length of 1024. </p>
+     * <p>Clears the first 1024 bytes. </p>
      *
      * {@codesnippet com.azure.storage.file.fileClient.clearRange#long}
      *
@@ -382,8 +382,8 @@ public class FileClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
-     * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code null}
      * @param length Specifies the number of bytes being transmitted in the request body.
+     * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code null}
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
