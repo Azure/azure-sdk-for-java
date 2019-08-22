@@ -280,31 +280,30 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#upload(ByteBuffer, long, int, FileRangeWriteType)}
+     * Generates a code sample for using {@link FileClient#upload(ByteBuffer, long, long)}
      */
     public void uploadDataMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.upload#bytebuffer-long-int
+        // BEGIN: com.azure.storage.file.fileClient.upload#bytebuffer-long-long
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         Response<FileUploadInfo> response = fileClient.upload(defaultData, defaultData.remaining(), 1024);
         System.out.println("Complete uploading the data with status code: " + response.statusCode());
-        // END: com.azure.storage.file.fileClient.upload#bytebuffer-long-int
+        // END: com.azure.storage.file.fileClient.upload#bytebuffer-long-long
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#upload(Flux, long)}
+     * Generates a code sample for using {@link FileAsyncClient#upload(Flux, long, long)}
      */
     public void uploadDataAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.upload#flux-long-int
+        // BEGIN: com.azure.storage.file.fileAsyncClient.upload#flux-long-long
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
-        fileAsyncClient.upload(Flux.just(defaultData), defaultData.remaining(), 1024,
-            FileRangeWriteType.UPDATE).subscribe(
+        fileAsyncClient.upload(Flux.just(defaultData), defaultData.remaining(), 1024).subscribe(
                 response -> { },
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete uploading the data!")
         );
-        // END: com.azure.storage.file.fileAsyncClient.upload#flux-long-int
+        // END: com.azure.storage.file.fileAsyncClient.upload#flux-long-long
     }
 
     /**
@@ -334,28 +333,28 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#clearRange(long, int)}
+     * Generates a code sample for using {@link FileClient#clearRange(long, long)}
      */
     public void clearRangeMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.clearRange#long-int
+        // BEGIN: com.azure.storage.file.fileClient.clearRange#long-long
         Response<FileUploadInfo> response = fileClient.clearRange(1024, 1024);
         System.out.println("Complete clearing the range with status code: " + response.statusCode());
-        // END: com.azure.storage.file.fileClient.clearRange#long-int
+        // END: com.azure.storage.file.fileClient.clearRange#long-long
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#clearRange(long)}
+     * Generates a code sample for using {@link FileAsyncClient#clearRange(long, long)}
      */
     public void clearRangeAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.clearRange#long-int
+        // BEGIN: com.azure.storage.file.fileAsyncClient.clearRange#long-long
         fileAsyncClient.clearRange(1024, 1024).subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete clearing the range!")
         );
-        // END: com.azure.storage.file.fileAsyncClient.clearRange#long-int
+        // END: com.azure.storage.file.fileAsyncClient.clearRange#long-long
     }
 
     /**

@@ -14,7 +14,6 @@ import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
-import com.azure.storage.file.models.FileRangeWriteType;
 import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageErrorException;
@@ -337,7 +336,7 @@ public class FileClient {
      *
      * <p>Upload data "default" starting from 1024. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.upload#bytebuffer-long-int}
+     * {@codesnippet com.azure.storage.file.fileClient.upload#bytebuffer-long-long}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -348,7 +347,7 @@ public class FileClient {
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
-    public Response<FileUploadInfo> upload(ByteBuffer data, long length, int offset) {
+    public Response<FileUploadInfo> upload(ByteBuffer data, long length, long offset) {
         return fileAsyncClient.upload(Flux.just(data), length, offset).block();
     }
 
@@ -379,7 +378,7 @@ public class FileClient {
      *
      * <p>Clear the range starting from 1024 with length of 1024. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.clearRange#long-int}
+     * {@codesnippet com.azure.storage.file.fileClient.clearRange#long-long}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -389,7 +388,7 @@ public class FileClient {
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
-    public Response<FileUploadInfo> clearRange(long length, int offset) {
+    public Response<FileUploadInfo> clearRange(long length, long offset) {
         return fileAsyncClient.clearRange(length, offset).block();
     }
 
