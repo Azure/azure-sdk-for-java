@@ -6,6 +6,7 @@ package com.azure.storage.file;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileHTTPHeaders;
@@ -54,7 +55,7 @@ public class ShareClient {
     /**
      * Constructs a {@link DirectoryClient} that interacts with the root directory in the share.
      *
-     * <p>If the directory doesn't exist in the share {@link DirectoryClient#create(Map) create} in the client will
+     * <p>If the directory doesn't exist in the share {@link DirectoryClient#create() create} in the client will
      * need to be called before interaction with the directory can happen.</p>
      *
      * @return a {@link DirectoryClient} that interacts with the root directory in the share
@@ -66,7 +67,7 @@ public class ShareClient {
     /**
      * Constructs a {@link DirectoryClient} that interacts with the specified directory.
      *
-     * <p>If the directory doesn't exist in the share {@link DirectoryClient#create(Map) create} in the client will
+     * <p>If the directory doesn't exist in the share {@link DirectoryClient#create() create} in the client will
      * need to be called before interaction with the directory can happen.</p>
      *
      * @param directoryName Name of the directory
@@ -101,11 +102,11 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
-     * @return A response containing information about the share and the status its creation.
+     * @return The {@link ShareInfo information about the share}.
      * @throws StorageErrorException If the share already exists with different metadata
      */
-    public Response<ShareInfo> create() {
-        return create(null, null);
+    public ShareInfo create() {
+        return createWithResponse(null, null, Context.NONE).value();
     }
 
     /**
@@ -115,11 +116,11 @@ public class ShareClient {
      *
      * <p>Create the share with metadata "share:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.ShareClient.create-metadata#Map-Integer}
+     * {@codesnippet com.azure.storage.file.shareClient.createWithResponse#map-integer.metadata}
      *
      * <p>Create the share with a quota of 10 GB</p>
      *
-     * {@codesnippet com.azure.storage.file.ShareClient.create-quota#Map-Integer}
+     * {@codesnippet com.azure.storage.file.shareClient.createWithResponse#map-integer.quota}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
@@ -127,12 +128,13 @@ public class ShareClient {
      * @param metadata Optional metadata to associate with the share
      * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
      * less than or equal to 5120. The default value is 5120.
-     * @return A response containing information about the share and the status its creation.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the {@link ShareInfo information about the share} and the status its creation.
      * @throws StorageErrorException If the share already exists with different metadata or {@code quotaInGB} is outside the
      * allowed range.
      */
-    public Response<ShareInfo> create(Map<String, String> metadata, Integer quotaInGB) {
-        return client.create(metadata, quotaInGB).block();
+    public Response<ShareInfo> createWithResponse(Map<String, String> metadata, Integer quotaInGB, Context context) {
+        return client.createWithResponse(metadata, quotaInGB, context).block();
     }
 
     /**
@@ -142,16 +144,17 @@ public class ShareClient {
      *
      * <p>Create a snapshot</p>
      *
+     * {@codesnippet com.azure.storage.file.shareClient.createSnapshot}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-share">Azure Docs</a>.</p>
      *
-     * @return A response containing information about the snapshot of share.
+     * @return The {@link ShareSnapshotInfo information about snapshot of share}
      * @throws StorageErrorException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is
      * in progress for the share
      */
-    public Response<ShareSnapshotInfo> createSnapshot() {
-        return createSnapshot(null);
+    public ShareSnapshotInfo createSnapshot() {
+        return createSnapshotWithResponse(null, Context.NONE).value();
     }
 
     /**
@@ -161,19 +164,20 @@ public class ShareClient {
      *
      * <p>Create a snapshot with metadata "snapshot:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.createSnapshot#map}
+     * {@codesnippet com.azure.storage.file.shareClient.createSnapshotWithResponse#map-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-share">Azure Docs</a>.</p>
      *
      * @param metadata Optional metadata to associate with the snapshot. If {@code null} the metadata of the share
      * will be copied to the snapshot.
-     * @return A response containing information about the snapshot of share.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the {@link ShareSnapshotInfo information about snapshot of the share} and status of creation.
      * @throws StorageErrorException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is
      * in progress for the share
      */
-    public Response<ShareSnapshotInfo> createSnapshot(Map<String, String> metadata) {
-        return client.createSnapshot(metadata).block();
+    public Response<ShareSnapshotInfo> createSnapshotWithResponse(Map<String, String> metadata, Context context) {
+        return client.createSnapshotWithResponse(metadata, context).block();
     }
 
     /**
@@ -188,11 +192,30 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
+     * @throws StorageErrorException If the share doesn't exist
+     */
+    public void delete() {
+        deleteWithResponse(Context.NONE);
+    }
+
+    /**
+     * Deletes the share in the storage account
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the share</p>
+     *
+     * {@codesnippet com.azure.storage.file.shareClient.deleteWithResponse#Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
+     *
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the share doesn't exist
      */
-    public VoidResponse delete() {
-        return client.delete().block();
+    public VoidResponse deleteWithResponse(Context context) {
+        return client.deleteWithResponse(context).block();
     }
 
     /**
@@ -208,11 +231,32 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
-     * @return the properties of the share
+     * @return The {@link ShareProperties properties of the share}
      * @throws StorageErrorException If the share doesn't exist
      */
-    public Response<ShareProperties> getProperties() {
-        return client.getProperties().block();
+    public ShareProperties getProperties() {
+        return getPropertiesWithResponse(Context.NONE).value();
+    }
+
+    /**
+     * Retrieves the properties of the share, these include the metadata associated to it and the quota that the share
+     * is restricted to.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve the share properties</p>
+     *
+     * {@codesnippet com.azure.storage.file.shareClient.getPropertiesWithResponse#Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
+     *
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing {@link ShareProperties properties of the share} with response status code
+     * @throws StorageErrorException If the share doesn't exist
+     */
+    public Response<ShareProperties> getPropertiesWithResponse(Context context) {
+        return client.getPropertiesWithResponse(context).block();
     }
 
     /**
@@ -228,11 +272,32 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
      * @param quotaInGB Size in GB to limit the share's growth. The quota in GB must be between 1 and 5120.
-     * @return information about the share
+     * @return The {@link ShareProperties properties of the share}
      * @throws StorageErrorException If the share doesn't exist or {@code quotaInGB} is outside the allowed bounds
      */
-    public Response<ShareInfo> setQuota(int quotaInGB) {
-        return client.setQuota(quotaInGB).block();
+    public ShareInfo setQuota(int quotaInGB) {
+        return setQuotaWithResponse(quotaInGB, Context.NONE).value();
+    }
+
+    /**
+     * Sets the maximum size in GB that the share is allowed to grow.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set the quota to 1024 GB</p>
+     *
+     * {@codesnippet com.azure.storage.file.shareClient.setQuotaWithResponse#int-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
+     *
+     * @param quotaInGB Size in GB to limit the share's growth. The quota in GB must be between 1 and 5120.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing {@link ShareProperties properties of the share} with response status code
+     * @throws StorageErrorException If the share doesn't exist or {@code quotaInGB} is outside the allowed bounds
+     */
+    public Response<ShareInfo> setQuotaWithResponse(int quotaInGB, Context context) {
+        return client.setQuotaWithResponse(quotaInGB, context).block();
     }
 
     /**
@@ -248,17 +313,40 @@ public class ShareClient {
      *
      * <p>Clear the metadata of the share</p>
      *
-     * {@codesnippet com.azure.storage.file.ShareClient.setMetadata-clearMetadata#Map}
+     * {@codesnippet com.azure.storage.file.shareClient.clearMetadata#map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
      *
      * @param metadata Metadata to set on the share, if null is passed the metadata for the share is cleared
-     * @return information about the share
+     * @return The {@link ShareProperties properties of the share}
      * @throws StorageErrorException If the share doesn't exist or the metadata contains invalid keys
      */
-    public Response<ShareInfo> setMetadata(Map<String, String> metadata) {
-        return client.setMetadata(metadata).block();
+    public ShareInfo setMetadata(Map<String, String> metadata) {
+        return setMetadataWithResponse(metadata, Context.NONE).value();
+    }
+
+    /**
+     * Sets the user-defined metadata to associate to the share.
+     *
+     * <p>If {@code null} is passed for the metadata it will clear the metadata associated to the share.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set the metadata to "share:updatedMetadata"</p>
+     *
+     * {@codesnippet com.azure.storage.file.shareClient.setMetadataWithResponse#map-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
+     *
+     * @param metadata Metadata to set on the share, if null is passed the metadata for the share is cleared
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing {@link ShareProperties properties of the share} with response status code
+     * @throws StorageErrorException If the share doesn't exist or the metadata contains invalid keys
+     */
+    public Response<ShareInfo> setMetadataWithResponse(Map<String, String> metadata, Context context) {
+        return client.setMetadataWithResponse(metadata, context).block();
     }
 
     /**
@@ -293,12 +381,34 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
      *
      * @param permissions Access policies to set on the queue
-     * @return A response that only contains headers and response status code
+     * @return The {@link ShareInfo information of the share}
      * @throws StorageErrorException If the share doesn't exist, a stored access policy doesn't have all fields filled out,
      * or the share will have more than five policies.
      */
-    public Response<ShareInfo> setAccessPolicy(List<SignedIdentifier> permissions) {
-        return client.setAccessPolicy(permissions).block();
+    public ShareInfo setAccessPolicy(List<SignedIdentifier> permissions) {
+        return setAccessPolicyWithResponse(permissions, Context.NONE).value();
+    }
+
+    /**
+     * Sets stored access policies for the share.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set a read only stored access policy</p>
+     *
+     * {@codesnippet com.azure.storage.file.shareClient.setAccessPolicyWithResponse#List-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
+     *
+     * @param permissions Access policies to set on the queue
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the {@link ShareInfo information of the share} with headers and response status code
+     * @throws StorageErrorException If the share doesn't exist, a stored access policy doesn't have all fields filled out,
+     * or the share will have more than five policies.
+     */
+    public Response<ShareInfo> setAccessPolicyWithResponse(List<SignedIdentifier> permissions, Context context) {
+        return client.setAccessPolicyWithResponse(permissions, context).block();
     }
 
     /**
@@ -313,10 +423,29 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
      *
-     * @return the storage statistics of the share
+     * @return The storage {@link ShareStatistics statistics of the share}
      */
-    public Response<ShareStatistics> getStatistics() {
-        return client.getStatistics().block();
+    public ShareStatistics getStatistics() {
+        return getStatisticsWithResponse(Context.NONE).value();
+    }
+
+    /**
+     * Retrieves storage statistics about the share.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve the storage statistics</p>
+     *
+     * {@codesnippet com.azure.storage.file.shareClient.getStatisticsWithResponse#Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
+     *
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the {@link ShareStatistics statistics of the share}
+     */
+    public Response<ShareStatistics> getStatisticsWithResponse(Context context) {
+        return client.getStatisticsWithResponse(context).block();
     }
 
     /**
@@ -332,13 +461,12 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
-     * @return A response containing a {@link DirectoryClient} to interact with the created directory and the
-     * status of its creation.
+     * @return A response containing a {@link DirectoryClient} to interact with the created directory.
      * @throws StorageErrorException If the share doesn't exist, the directory already exists or is in the process of
      * being deleted, or the parent directory for the new directory doesn't exist
      */
-    public Response<DirectoryClient> createDirectory(String directoryName) {
-        return createDirectory(directoryName, null);
+    public DirectoryClient createDirectory(String directoryName) {
+        return createDirectoryWithResponse(directoryName, null, Context.NONE).value();
     }
 
     /**
@@ -348,22 +476,23 @@ public class ShareClient {
      *
      * <p>Create the directory "documents" with metadata "directory:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.createDirectory#string-map}
+     * {@codesnippet com.azure.storage.file.shareClient.createDirectoryWithResponse#string-map-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
      * @param metadata Optional metadata to associate with the directory
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing a {@link DirectoryAsyncClient} to interact with the created directory and the
      * status of its creation.
      * @throws StorageErrorException If the share doesn't exist, the directory already exists or is in the process of
      * being deleted, the parent directory for the new directory doesn't exist, or the metadata is using an illegal
      * key name
      */
-    public Response<DirectoryClient> createDirectory(String directoryName, Map<String, String> metadata) {
+    public Response<DirectoryClient> createDirectoryWithResponse(String directoryName, Map<String, String> metadata, Context context) {
         DirectoryClient directoryClient = getDirectoryClient(directoryName);
-        return new SimpleResponse<>(directoryClient.create(metadata), directoryClient);
+        return new SimpleResponse<>(directoryClient.createWithResponse(metadata, context), directoryClient);
     }
 
     /**
@@ -380,8 +509,7 @@ public class ShareClient {
      *
      * @param fileName Name of the file.
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
-     * @return A response containing a {@link FileClient} to interact with the created file and the
-     * status of its creation.
+     * @return A response containing a {@link FileClient} to interact with the created file.
      * @throws StorageErrorException If one of the following cases happen:
      * <ul>
      *     <li>
@@ -392,8 +520,8 @@ public class ShareClient {
      *     </li>
      * </ul>
      */
-    public Response<FileClient> createFile(String fileName, long maxSize) {
-        return createFile(fileName, maxSize, null, null);
+    public FileClient createFile(String fileName, long maxSize) {
+        return createFileWithResponse(fileName, maxSize, null, null, Context.NONE).value();
     }
 
     /**
@@ -403,7 +531,7 @@ public class ShareClient {
      *
      * <p>Create the file "myfile" with length of 1024 bytes, some headers and metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.createFile#string-long-filehttpheaders-map}
+     * {@codesnippet com.azure.storage.file.shareClient.createFileWithResponse#string-long-filehttpheaders-map-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -412,6 +540,7 @@ public class ShareClient {
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @param httpHeaders Additional parameters for the operation.
      * @param metadata Optional metadata to associate with the file.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing a {@link FileClient} to interact with the created file and the
      * status of its creation.
      * @throws StorageErrorException If one of the following cases happen:
@@ -424,9 +553,9 @@ public class ShareClient {
      *     </li>
      * </ul>
      */
-    public Response<FileClient> createFile(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata) {
+    public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata, Context context) {
         FileClient fileClient = getFileClient(fileName);
-        return new SimpleResponse<>(fileClient.create(maxSize, httpHeaders, metadata), fileClient);
+        return new SimpleResponse<>(fileClient.createWithResponse(maxSize, httpHeaders, metadata, context), fileClient);
     }
 
     /**
@@ -442,11 +571,32 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
+     * @throws StorageErrorException If the share doesn't exist or the directory isn't empty
+     */
+    public void deleteDirectory(String directoryName) {
+        deleteDirectoryWithResponse(directoryName, Context.NONE);
+    }
+
+
+    /**
+     * Deletes the specified directory in the share.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the directory "mydirectory"</p>
+     *
+     * {@codesnippet com.azure.storage.file.shareClient.deleteDirectoryWithResponse#string-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
+     *
+     * @param directoryName Name of the directory
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the share doesn't exist or the directory isn't empty
      */
-    public VoidResponse deleteDirectory(String directoryName) {
-        return client.deleteDirectory(directoryName).block();
+    public VoidResponse deleteDirectoryWithResponse(String directoryName, Context context) {
+        return client.deleteDirectoryWithResponse(directoryName, context).block();
     }
 
     /**
@@ -462,11 +612,31 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file
+     * @throws StorageErrorException If the share or the file doesn't exist.
+     */
+    public void deleteFile(String fileName) {
+        deleteFileWithResponse(fileName, Context.NONE);
+    }
+
+    /**
+     * Deletes the specified file in the share.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file "myfile"</p>
+     *
+     * {@codesnippet com.azure.storage.file.shareClient.deleteFileWithResponse#string-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @param fileName Name of the file
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the share or the file doesn't exist.
      */
-    public VoidResponse deleteFile(String fileName) {
-        return client.deleteFile(fileName).block();
+    public VoidResponse deleteFileWithResponse(String fileName, Context context) {
+        return client.deleteFileWithResponse(fileName, context).block();
     }
 
     /**

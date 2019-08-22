@@ -246,7 +246,8 @@ Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) .
 
 ```Java
 String fileName = "testfile";
-directoryClient.createFile(fileName);
+long maxSize = 1024;
+directoryClient.createFile(fileName, maxSize);
 ```
 
 ### List all Shares
@@ -306,14 +307,14 @@ Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with string of sou
 
 ```Java
 String sourceURL = "https://myaccount.file.core.windows.net/myshare/myfile";
-Response<FileCopyInfo> copyInfoResponse = fileClient.startCopy(sourceURL, null);
+FileCopyInfo copyInfo = fileClient.startCopy(sourceURL, null);
 ```
 
 ### Abort copy a file
 Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with the copy info response returned above `${copyId}=[copyInfoResponse](#Copy-a-file)`.
 
 ```Java
-String copyId = copyInfoResponse.value().copyId();
+String copyId = copyInfoResponse.copyId();
 fileClient.abortCopy(copyId);
 ```
 
@@ -336,7 +337,7 @@ fileClient.uploadFromFile(filePath);
 Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with the range from 1024 to 2048.
 ```Java
 FileRange fileRange = new FileRange(1024, 2047);
-fileClient.downloadWithProperties(fileRange, false);
+fileClient.downloadWithProperties(fileRange, false, null);
 ```
 
 ### Download file from storage
@@ -357,12 +358,12 @@ fileServiceClient.getProperties();
 Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services) .
 
 ```Java
-FileServiceProperties properties = fileServiceClient.getProperties().value();
+FileServiceProperties properties = fileServiceClient.getProperties();
 
 properties.minuteMetrics().enabled(true);
 properties.hourMetrics().enabled(true);
 
-VoidResponse response = fileServiceClient.setProperties(properties);
+fileServiceClient.setProperties(properties);
 ```
 
 ### Set a share metadata
@@ -420,7 +421,8 @@ Taking the fileClient in KeyConcept, [`${fileClient}`](#File) .
 
 ```Java
 FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
-fileClient.setHttpHeaders(httpHeaders);
+long newFileSize = 1024;
+fileClient.setHttpHeaders(newFileSize, httpHeaders);
 ```
 
 ## Troubleshooting
