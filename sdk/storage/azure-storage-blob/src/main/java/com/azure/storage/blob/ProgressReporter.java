@@ -86,7 +86,7 @@ final class ProgressReporter {
         We need an AtomicLong to be able to update the value referenced. Because we are already synchronizing with the
         lock, we don't incur any additional performance hit here by the synchronization.
          */
-        private AtomicLong totalProgress;
+        private final AtomicLong totalProgress;
 
         ParallelProgressReporter(IProgressReceiver progressReceiver, Lock lock, AtomicLong totalProgress) {
             super(progressReceiver);

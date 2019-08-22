@@ -1,0 +1,41 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsdeletefileerror61219fb9782a1c60?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D7258EC33906C9\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:52:18 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "249cbc0a-e01a-005a-4977-5736f7000000",
+      "Date" : "Tue, 20 Aug 2019 16:52:18 GMT"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsdeletefileerror61219fb9782a1c60/fileasyncapitestsdeletefileerror8560999a282d753d",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "249cbc0c-e01a-005a-4a77-5736f7000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:249cbc0c-e01a-005a-4a77-5736f7000000\nTime:2019-08-20T16:52:18.7552701Z</Message></Error>",
+      "Date" : "Tue, 20 Aug 2019 16:52:18 GMT",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "fileasyncapitestsdeletefileerror61219fb9782a1c60", "fileasyncapitestsdeletefileerror8560999a282d753d" ]
+}

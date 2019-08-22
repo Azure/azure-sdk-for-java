@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsenqueueemptymessage69434f760bff89a1",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsenqueueemptymessage717359ecd4698c3c",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -12,12 +12,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "86d0ae5f-d003-0034-0c88-539fde000000",
-      "Date" : "Thu, 15 Aug 2019 16:40:20 GMT"
+      "x-ms-request-id" : "5a885889-7003-0114-4ba0-58b547000000",
+      "Date" : "Thu, 22 Aug 2019 04:14:58 GMT"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsenqueueemptymessage69434f760bff89a1/messages?visibilitytimeout=0&messagettl=604800",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsenqueueemptymessage717359ecd4698c3c/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0",
@@ -29,14 +29,14 @@
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "86d0ae64-d003-0034-1088-539fde000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>0541e4ad-a35d-436e-adaa-1b7e39276645</MessageId><InsertionTime>Thu, 15 Aug 2019 16:40:20 GMT</InsertionTime><ExpirationTime>Thu, 22 Aug 2019 16:40:20 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAWdTNIIhT1QE=</PopReceipt><TimeNextVisible>Thu, 15 Aug 2019 16:40:20 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
-      "Date" : "Thu, 15 Aug 2019 16:40:20 GMT",
+      "x-ms-request-id" : "5a8858f3-7003-0114-2ca0-58b547000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>4027b73b-ed6a-480d-aab0-e20900de4d4c</MessageId><InsertionTime>Thu, 22 Aug 2019 04:14:59 GMT</InsertionTime><ExpirationTime>Thu, 29 Aug 2019 04:14:59 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAA8gSrKaBY1QE=</PopReceipt><TimeNextVisible>Thu, 22 Aug 2019 04:14:59 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Thu, 22 Aug 2019 04:14:58 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsenqueueemptymessage69434f760bff89a1/messages?peekonly=true",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsenqueueemptymessage717359ecd4698c3c/messages?peekonly=true",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -48,11 +48,11 @@
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "86d0ae77-d003-0034-2088-539fde000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>0541e4ad-a35d-436e-adaa-1b7e39276645</MessageId><InsertionTime>Thu, 15 Aug 2019 16:40:20 GMT</InsertionTime><ExpirationTime>Thu, 22 Aug 2019 16:40:20 GMT</ExpirationTime><DequeueCount>0</DequeueCount><MessageText /></QueueMessage></QueueMessagesList>",
-      "Date" : "Thu, 15 Aug 2019 16:40:20 GMT",
+      "x-ms-request-id" : "5a885920-7003-0114-55a0-58b547000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>4027b73b-ed6a-480d-aab0-e20900de4d4c</MessageId><InsertionTime>Thu, 22 Aug 2019 04:14:59 GMT</InsertionTime><ExpirationTime>Thu, 29 Aug 2019 04:14:59 GMT</ExpirationTime><DequeueCount>0</DequeueCount><MessageText /></QueueMessage></QueueMessagesList>",
+      "Date" : "Thu, 22 Aug 2019 04:14:59 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queueapitestsenqueueemptymessage69434f760bff89a1" ]
+  "variables" : [ "queueapitestsenqueueemptymessage717359ecd4698c3c" ]
 }

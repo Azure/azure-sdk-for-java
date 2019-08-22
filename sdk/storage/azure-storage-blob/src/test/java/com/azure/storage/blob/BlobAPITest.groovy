@@ -50,7 +50,7 @@ class BlobAPITest extends APISpec {
     def "Download all null"() {
         when:
         ByteArrayOutputStream stream = new ByteArrayOutputStream()
-        VoidResponse response = bu.downloadWithResponse(stream, null, null, null, null, null, null)
+        VoidResponse response = bu.downloadWithResponse(stream, null, null, null, false, null, null)
         ByteBuffer body = ByteBuffer.wrap(stream.toByteArray())
         HttpHeaders headers = response.headers()
 
@@ -1357,7 +1357,7 @@ class BlobAPITest extends APISpec {
         when:
         String copyID =
             bu2.startCopyFromURLWithResponse(bu.getBlobUrl(), null, null,
-                new BlobAccessConditions().leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID)), null, null)
+                new BlobAccessConditions().leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID)), null, null).value()
 
         then:
         bu2.abortCopyFromURLWithResponse(copyID, new LeaseAccessConditions().leaseId(leaseID), null, null).statusCode() == 204

@@ -24,8 +24,7 @@ class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
         this.feedResponse = null;
     }
 
-    public ChangeFeedObserverContextImpl(String leaseToken, FeedResponse<CosmosItemProperties> feedResponse, PartitionCheckpointer checkpointer)
-    {
+    public ChangeFeedObserverContextImpl(String leaseToken, FeedResponse<CosmosItemProperties> feedResponse, PartitionCheckpointer checkpointer) {
         this.partitionKeyRangeId = leaseToken;
         this.feedResponse = feedResponse;
         this.checkpointer = checkpointer;

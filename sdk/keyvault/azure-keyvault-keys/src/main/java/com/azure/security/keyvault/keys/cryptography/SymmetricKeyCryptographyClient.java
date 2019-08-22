@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
@@ -19,6 +20,8 @@ import reactor.core.publisher.Mono;
 import java.security.NoSuchAlgorithmException;
 
 class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
+    private final ClientLogger logger = new ClientLogger(SymmetricKeyCryptographyClient.class);
+
     private byte[] key;
 
     /*
@@ -127,7 +130,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         this.key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
-            throw new IllegalArgumentException("key");
+            throw logger.logExceptionAsError(new IllegalArgumentException("key"));
         }
 
         // Interpret the algorithm
