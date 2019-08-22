@@ -1,8 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http;
+package com.azure.core.http.netty.implementation;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
@@ -14,7 +21,9 @@ import reactor.netty.Connection;
 import reactor.netty.NettyOutbound;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
+import reactor.netty.tcp.ProxyProvider;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -25,7 +34,8 @@ import java.util.function.Supplier;
  * HttpClient that is implemented using reactor-netty.
  */
 class ReactorNettyClient implements HttpClient {
-    private final reactor.netty.http.client.HttpClient httpClient;
+    private final ClientLogger logger = new ClientLogger(ReactorNettyClient.class);
+    private reactor.netty.http.client.HttpClient httpClient;
 
     /**
      * Creates default ReactorNettyClient.
@@ -104,7 +114,15 @@ class ReactorNettyClient implements HttpClient {
     public final HttpClient proxy(Supplier<ProxyOptions> proxyOptionsSupplier) {
         return new ReactorNettyClient(this.httpClient, client -> client.tcpConfiguration(c -> {
             ProxyOptions options = proxyOptionsSupplier.get();
-            return c.proxy(ts -> ts.type(options.type().value()).address(options.address()));
+            ProxyProvider.Proxy nettyProxy;
+            switch (options.type()) {
+                case HTTP: nettyProxy = ProxyProvider.Proxy.HTTP; break;
+                case SOCKS4: nettyProxy = ProxyProvider.Proxy.SOCKS4; break;
+                case SOCKS5: nettyProxy = ProxyProvider.Proxy.SOCKS5; break;
+                default:
+                    throw logger.logExceptionAsWarning(new IllegalStateException("Unknown Proxy type '" + options.type() + "' in use. Not configuring Netty proxy."));
+            }
+            return c.proxy(ts -> ts.type(nettyProxy).address(options.address()));
         }));
     }
 
@@ -118,7 +136,7 @@ class ReactorNettyClient implements HttpClient {
         return new ReactorNettyClient(this.httpClient, client -> client.port(port));
     }
 
-    private static class ReactorNettyHttpResponse extends HttpResponse {
+    static class ReactorNettyHttpResponse extends HttpResponse {
         private final HttpClientResponse reactorNettyResponse;
         private final Connection reactorNettyConnection;
 
@@ -145,12 +163,12 @@ class ReactorNettyClient implements HttpClient {
         }
 
         @Override
-        public Flux<ByteBuf> body() {
+        public Flux<ByteBuffer> body() {
             return bodyIntern().doFinally(s -> {
                 if (!reactorNettyConnection.isDisposed()) {
                     reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
                 }
-            });
+            }).map(ByteBuf::nioBuffer);
         }
 
         @Override
@@ -191,7 +209,7 @@ class ReactorNettyClient implements HttpClient {
             return reactorNettyConnection.inbound().receive();
         }
 
-        @Override
+        // used for testing only
         Connection internConnection() {
             return reactorNettyConnection;
         }

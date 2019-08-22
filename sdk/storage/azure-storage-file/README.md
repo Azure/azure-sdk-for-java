@@ -321,7 +321,7 @@ fileClient.abortCopy(copyId);
 Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with data of "default" .
 
 ```Java
-ByteBuf data = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8));
+ByteBuffer data = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
 fileClient.upload(data, data.readableBytes());
 ```
 

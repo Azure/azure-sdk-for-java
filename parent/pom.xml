@@ -112,6 +112,7 @@
     <client-runtime.version.v2>2.1.1</client-runtime.version.v2>
     <slf4j-api.version>1.7.6</slf4j-api.version>
     <slf4j-log4j12.version>1.7.0</slf4j-log4j12.version>
+    <reactor-core.version>3.2.10.RELEASE</reactor-core.version>
     <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
     <netty.version>4.1.33.Final</netty.version>
     <async-http-client.version>2.5.2</async-http-client.version>
@@ -331,6 +332,11 @@
         <version>${slf4j-log4j12.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>io.projectreactor</groupId>
+        <artifactId>reactor-core</artifactId>
+        <version>${reactor-core.version}</version>
+      </dependency>
       <dependency>
         <groupId>io.projectreactor.netty</groupId>
         <artifactId>reactor-netty</artifactId>
