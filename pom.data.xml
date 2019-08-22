@@ -543,7 +543,9 @@
   <modules>
     <module>./sdk/batch/microsoft-azure-batch</module>
     <module>./sdk/cosmos</module>
-    <module>./sdk/eventhubs/pom.data.xml</module>
+    <module>./sdk/eventhubs/microsoft-azure-eventhubs/pom.xml</module>
+    <module>./sdk/eventhubs/microsoft-azure-eventhubs-eph/pom.xml</module>
+    <module>./sdk/eventhubs/microsoft-azure-eventhubs-extensions/pom.xml</module>
     <module>./sdk/keyvault/pom.data.xml</module>
     <module>./sdk/servicebus/microsoft-azure-servicebus</module>
     <module>./sdk/storage/microsoft-azure-storage-blob</module>
