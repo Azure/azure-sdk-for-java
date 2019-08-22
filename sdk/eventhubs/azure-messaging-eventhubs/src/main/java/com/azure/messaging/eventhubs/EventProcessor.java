@@ -257,6 +257,9 @@ public class EventProcessor {
      */
     private void startScopedTracingSpan(EventData eventData, AtomicReference<Context> processSpanContext) {
         Object diagnosticId = eventData.properties().get(DIAGNOSTIC_ID);
+        if (diagnosticId == null) {
+            return;
+        }
         eventData.context(TraceUtil.extractContext(diagnosticId.toString()));
         processSpanContext.set(TraceUtil.startScopedSpan("process", eventData.context()));
         eventData.context(processSpanContext.get());
@@ -267,6 +270,9 @@ public class EventProcessor {
      */
     private void endScopedTracingSpan(AtomicReference<Context> processSpanContext) {
         // Disposes of the scope when the trace span closes.
+        if (!processSpanContext.get().getData("scope").isPresent()) {
+            return;
+        }
         Closeable close = (Closeable) processSpanContext.get().getData("scope").get();
         try {
             close.close();

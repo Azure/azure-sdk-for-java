@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.tracing.opentelemetry;
+package com.azure.tracing.opentelemetry.implementation;
 
 import io.opencensus.trace.Status;
 
-final class AmqpTraceUtil {
+public final class AmqpTraceUtil {
     private static final Status STATUS_100 = Status.UNKNOWN.withDescription("amqp:not-found");
     private static final Status STATUS_101 = Status.UNKNOWN.withDescription("amqp:unauthorized-access");
     private static final Status STATUS_402 = Status.UNKNOWN.withDescription("amqp:resource-limit-exceeded");

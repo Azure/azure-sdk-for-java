@@ -7,6 +7,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 
+import com.azure.tracing.opentelemetry.implementation.AmqpPropagationFormatUtil;
+import com.azure.tracing.opentelemetry.implementation.AmqpTraceUtil;
+import com.azure.tracing.opentelemetry.implementation.HttpTraceUtil;
 import io.opencensus.trace.Span;
 import io.opencensus.trace.Span.Options;
 import io.opencensus.trace.SpanBuilder;
@@ -136,7 +139,7 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
 
     @Override
     public Context extractContext(String diagnosticId) {
-        return AmqpPropagationFormat.extractContext(diagnosticId);
+        return AmqpPropagationFormatUtil.extractContext(diagnosticId);
     }
 
     private Span startSpanWithExplicitParent(String spanName, Context context) {
@@ -154,7 +157,7 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
     }
 
     private Context setContextData(Span span) {
-        final String traceparent = DiagnosticIdConversionUtil.getDiagnosticId(span.getContext());
+        final String traceparent = AmqpPropagationFormatUtil.getDiagnosticId(span.getContext());
         Context parentContext = new Context(DIAGNOSTIC_ID, traceparent).addData(SPAN_CONTEXT, span.getContext());
         return parentContext;
     }
