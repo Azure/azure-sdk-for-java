@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.http.rest.IterableResponse;
+import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import reactor.core.publisher.Flux;
@@ -48,8 +48,8 @@ public class EventHubConsumer implements Closeable {
      * @return A set of {@link EventData} that was received. The iterable contains up to {@code maximumMessageCount}
      *     events.
      */
-    public IterableResponse<EventData> receive(int maximumMessageCount) {
-        return new IterableResponse<>(Flux.empty());
+    public IterableStream<EventData> receive(int maximumMessageCount) {
+        return new IterableStream<>(Flux.empty());
     }
 
     /**
@@ -61,8 +61,8 @@ public class EventHubConsumer implements Closeable {
      * @return A set of {@link EventData} that was received. The iterable contains up to {@code maximumMessageCount}
      *     events.
      */
-    public IterableResponse<EventData> receive(int maximumMessageCount, Duration maximumWaitTime) {
-        return new IterableResponse<>(Flux.empty());
+    public IterableStream<EventData> receive(int maximumMessageCount, Duration maximumWaitTime) {
+        return new IterableStream<>(Flux.empty());
     }
 
     /**

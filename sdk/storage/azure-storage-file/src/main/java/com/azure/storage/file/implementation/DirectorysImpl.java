@@ -26,6 +26,7 @@ import com.azure.storage.file.models.DirectorysGetPropertiesResponse;
 import com.azure.storage.file.models.DirectorysListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.models.DirectorysListHandlesResponse;
 import com.azure.storage.file.models.DirectorysSetMetadataResponse;
+import com.azure.storage.file.models.DirectorysSetPropertiesResponse;
 import com.azure.storage.file.models.StorageErrorException;
 import java.util.Map;
 import reactor.core.publisher.Mono;
@@ -65,7 +66,7 @@ public final class DirectorysImpl {
         @Put("{shareName}/{directoryPath}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<DirectorysCreateResponse> create(@PathParam("shareName") String shareName, @PathParam("directoryPath") String directoryPath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, Context context);
+        Mono<DirectorysCreateResponse> create(@PathParam("shareName") String shareName, @PathParam("directoryPath") String directoryPath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") String fileCreationTime, @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime, @QueryParam("restype") String restype, Context context);
 
         @Get("{shareName}/{directoryPath}")
         @ExpectedResponses({200})
@@ -76,6 +77,11 @@ public final class DirectorysImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<DirectorysDeleteResponse> delete(@PathParam("shareName") String shareName, @PathParam("directoryPath") String directoryPath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, Context context);
+
+        @Put("{shareName}/{directoryPath}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Mono<DirectorysSetPropertiesResponse> setProperties(@PathParam("shareName") String shareName, @PathParam("directoryPath") String directoryPath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") String fileCreationTime, @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime, @QueryParam("comp") String comp, Context context);
 
         @Put("{shareName}/{directoryPath}")
         @ExpectedResponses({200})
@@ -103,16 +109,21 @@ public final class DirectorysImpl {
      *
      * @param shareName The name of the target share.
      * @param directoryPath The path of the target directory.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DirectorysCreateResponse> createWithRestResponseAsync(String shareName, String directoryPath, Context context) {
+    public Mono<DirectorysCreateResponse> createWithRestResponseAsync(String shareName, String directoryPath, String fileAttributes, String fileCreationTime, String fileLastWriteTime, Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
+        final String filePermission = null;
+        final String filePermissionKey = null;
         final String restype = "directory";
-        return service.create(shareName, directoryPath, this.client.getUrl(), timeout, metadata, this.client.getVersion(), restype, context);
+        return service.create(shareName, directoryPath, this.client.getUrl(), timeout, metadata, this.client.getVersion(), filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, restype, context);
     }
 
     /**
@@ -120,16 +131,21 @@ public final class DirectorysImpl {
      *
      * @param shareName The name of the target share.
      * @param directoryPath The path of the target directory.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DirectorysCreateResponse> createWithRestResponseAsync(String shareName, String directoryPath, Integer timeout, Map<String, String> metadata, Context context) {
+    public Mono<DirectorysCreateResponse> createWithRestResponseAsync(String shareName, String directoryPath, String fileAttributes, String fileCreationTime, String fileLastWriteTime, Integer timeout, Map<String, String> metadata, String filePermission, String filePermissionKey, Context context) {
         final String restype = "directory";
-        return service.create(shareName, directoryPath, this.client.getUrl(), timeout, metadata, this.client.getVersion(), restype, context);
+        return service.create(shareName, directoryPath, this.client.getUrl(), timeout, metadata, this.client.getVersion(), filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, restype, context);
     }
 
     /**
@@ -196,6 +212,48 @@ public final class DirectorysImpl {
     public Mono<DirectorysDeleteResponse> deleteWithRestResponseAsync(String shareName, String directoryPath, Integer timeout, Context context) {
         final String restype = "directory";
         return service.delete(shareName, directoryPath, this.client.getUrl(), timeout, this.client.getVersion(), restype, context);
+    }
+
+    /**
+     * Sets properties on the directory.
+     *
+     * @param shareName The name of the target share.
+     * @param directoryPath The path of the target directory.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DirectorysSetPropertiesResponse> setPropertiesWithRestResponseAsync(String shareName, String directoryPath, String fileAttributes, String fileCreationTime, String fileLastWriteTime, Context context) {
+        final Integer timeout = null;
+        final String filePermission = null;
+        final String filePermissionKey = null;
+        final String comp = "properties";
+        return service.setProperties(shareName, directoryPath, this.client.getUrl(), timeout, this.client.getVersion(), filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, comp, context);
+    }
+
+    /**
+     * Sets properties on the directory.
+     *
+     * @param shareName The name of the target share.
+     * @param directoryPath The path of the target directory.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DirectorysSetPropertiesResponse> setPropertiesWithRestResponseAsync(String shareName, String directoryPath, String fileAttributes, String fileCreationTime, String fileLastWriteTime, Integer timeout, String filePermission, String filePermissionKey, Context context) {
+        final String comp = "properties";
+        return service.setProperties(shareName, directoryPath, this.client.getUrl(), timeout, this.client.getVersion(), filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, comp, context);
     }
 
     /**

@@ -6,6 +6,7 @@ package com.azure.storage.blob
 import com.azure.core.http.rest.Response
 import com.azure.core.http.rest.VoidResponse
 import com.azure.storage.blob.models.BlobRange
+import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.models.UserDelegationKey
 import com.azure.storage.common.Constants
 import com.azure.storage.common.IPRange
@@ -31,7 +32,7 @@ class HelperTest extends APISpec {
         e.errorCode() == StorageErrorCode.INVALID_QUERY_PARAMETER_VALUE
         e.statusCode() == 400
         e.message().contains("Value for one of the query parameters specified in the request URI is invalid.")
-        e.getMessage().contains("<?xml") // Ensure that the details in the payload are printable
+        e.getServiceMessage().contains("<?xml") // Ensure that the details in the payload are printable
     }*/
 
     /*
@@ -40,7 +41,7 @@ class HelperTest extends APISpec {
      */
     def "Request property"() {
         when:
-        VoidResponse response = cu.delete()
+        VoidResponse response = cu.deleteWithResponse(null, null, null)
 
         then:
         response.request() != null
@@ -76,10 +77,10 @@ class HelperTest extends APISpec {
         setup:
         String containerName = generateContainerName()
         String blobName = generateBlobName()
-        ContainerClient cu = primaryServiceURL.createContainer(containerName).value()
+        ContainerClient cu = primaryServiceURL.createContainer(containerName)
         BlockBlobClient bu = cu.getBlockBlobClient(blobName)
         bu.upload(defaultInputStream.get(), defaultDataSize) // need something to snapshot
-        String snapshotId = bu.createSnapshot().value().getSnapshotId()
+        String snapshotId = bu.createSnapshot().getSnapshotId()
 
         BlobSASPermission p = new BlobSASPermission()
             .read(true)
@@ -137,7 +138,7 @@ class HelperTest extends APISpec {
         data.toByteArray() == defaultData.array()
 
         and:
-        Response<BlobProperties> properties = bsu.getProperties()
+        Response<BlobProperties> properties = bsu.getPropertiesWithResponse(null, null, null)
 
         then:
         properties.value().cacheControl() == "cache"

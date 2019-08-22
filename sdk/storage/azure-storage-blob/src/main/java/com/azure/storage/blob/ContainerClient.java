@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerAccessConditions;
 import com.azure.storage.blob.models.ContainerAccessPolicies;
@@ -42,7 +43,7 @@ import java.util.List;
  * Docs</a> for more information on containers.
  */
 public final class ContainerClient {
-    private ContainerAsyncClient containerAsyncClient;
+    private final ContainerAsyncClient containerAsyncClient;
 
     public static final String ROOT_CONTAINER_NAME = ContainerAsyncClient.ROOT_CONTAINER_NAME;
 
@@ -52,7 +53,6 @@ public final class ContainerClient {
 
     /**
      * Package-private constructor for use by {@link ContainerClientBuilder}.
-     *
      * @param containerAsyncClient the async container client
      */
     ContainerClient(ContainerAsyncClient containerAsyncClient) {
@@ -65,8 +65,8 @@ public final class ContainerClient {
      * pipeline, create the BlockBlobClient and then call its WithPipeline method passing in the desired pipeline
      * object. Or, call this package's NewBlockBlobAsyncClient instead of calling this object's NewBlockBlobAsyncClient
      * method.
-     *
      * @param blobName A {@code String} representing the name of the blob.
+     *
      * @return A new {@link BlockBlobClient} object which references the blob with the specified name in this container.
      */
     public BlockBlobClient getBlockBlobClient(String blobName) {
@@ -79,9 +79,9 @@ public final class ContainerClient {
      * pipeline, create the BlockBlobClient and then call its WithPipeline method passing in the desired pipeline
      * object. Or, call this package's NewBlockBlobAsyncClient instead of calling this object's NewBlockBlobAsyncClient
      * method.
-     *
      * @param blobName A {@code String} representing the name of the blob.
      * @param snapshot the snapshot identifier for the blob.
+     *
      * @return A new {@link BlockBlobClient} object which references the blob with the specified name in this container.
      */
     public BlockBlobClient getBlockBlobClient(String blobName, String snapshot) {
@@ -93,8 +93,8 @@ public final class ContainerClient {
      * The new PageBlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline,
      * create the PageBlobClient and then call its WithPipeline method passing in the desired pipeline object. Or, call
      * this package's NewPageBlobAsyncClient instead of calling this object's NewPageBlobAsyncClient method.
-     *
      * @param blobName A {@code String} representing the name of the blob.
+     *
      * @return A new {@link PageBlobClient} object which references the blob with the specified name in this container.
      */
     public PageBlobClient getPageBlobClient(String blobName) {
@@ -106,9 +106,9 @@ public final class ContainerClient {
      * The new PageBlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline,
      * create the PageBlobClient and then call its WithPipeline method passing in the desired pipeline object. Or, call
      * this package's NewPageBlobAsyncClient instead of calling this object's NewPageBlobAsyncClient method.
-     *
      * @param blobName A {@code String} representing the name of the blob.
      * @param snapshot the snapshot identifier for the blob.
+     *
      * @return A new {@link PageBlobClient} object which references the blob with the specified name in this container.
      */
     public PageBlobClient getPageBlobClient(String blobName, String snapshot) {
@@ -121,8 +121,8 @@ public final class ContainerClient {
      * pipeline, create the AppendBlobClient and then call its WithPipeline method passing in the desired pipeline
      * object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
      * NewAppendBlobAsyncClient method.
-     *
      * @param blobName A {@code String} representing the name of the blob.
+     *
      * @return A new {@link AppendBlobClient} object which references the blob with the specified name in this
      * container.
      */
@@ -136,9 +136,9 @@ public final class ContainerClient {
      * pipeline, create the AppendBlobClient and then call its WithPipeline method passing in the desired pipeline
      * object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
      * NewAppendBlobAsyncClient method.
-     *
      * @param blobName A {@code String} representing the name of the blob.
      * @param snapshot the snapshot identifier for the blob.
+     *
      * @return A new {@link AppendBlobClient} object which references the blob with the specified name in this
      * container.
      */
@@ -151,8 +151,8 @@ public final class ContainerClient {
      * BlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline, create the
      * BlobClient and then call its WithPipeline method passing in the desired pipeline object. Or, call this package's
      * getBlobAsyncClient instead of calling this object's getBlobAsyncClient method.
-     *
      * @param blobName A {@code String} representing the name of the blob.
+     *
      * @return A new {@link BlobClient} object which references the blob with the specified name in this container.
      */
     public BlobClient getBlobClient(String blobName) {
@@ -164,9 +164,9 @@ public final class ContainerClient {
      * BlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline, create the
      * BlobClient and then call its WithPipeline method passing in the desired pipeline object. Or, call this package's
      * getBlobAsyncClient instead of calling this object's getBlobAsyncClient method.
-     *
      * @param blobName A {@code String} representing the name of the blob.
      * @param snapshot the snapshot identifier for the blob.
+     *
      * @return A new {@link BlobClient} object which references the blob with the specified name in this container.
      */
     public BlobClient getBlobClient(String blobName, String snapshot) {
@@ -175,7 +175,6 @@ public final class ContainerClient {
 
     /**
      * Initializes a {@link BlobServiceClient} object pointing to the storage account this container is in.
-     *
      * @return A {@link BlobServiceClient} object pointing to the specified storage account
      */
     public BlobServiceClient getBlobServiceClient() {
@@ -184,7 +183,6 @@ public final class ContainerClient {
 
     /**
      * Gets the URL of the container represented by this client.
-     *
      * @return the URL.
      */
     public URL getContainerUrl() {
@@ -193,21 +191,21 @@ public final class ContainerClient {
 
     /**
      * Gets if the container this client represents exists in the cloud.
-     *
      * @return true if the container exists, false if it doesn't
      */
-    public Response<Boolean> exists() {
-        return this.exists(null);
+    public Boolean exists() {
+        return existsWithResponse(null, Context.NONE).value();
     }
 
     /**
      * Gets if the container this client represents exists in the cloud.
-     *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return true if the container exists, false if it doesn't
      */
-    public Response<Boolean> exists(Duration timeout) {
-        Mono<Response<Boolean>> response = containerAsyncClient.exists();
+    public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
+        Mono<Response<Boolean>> response = containerAsyncClient.existsWithResponse(context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -216,26 +214,25 @@ public final class ContainerClient {
      * Creates a new container within a storage account. If a container with the same name already exists, the operation
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
-     *
-     * @return A response containing status code and HTTP headers
      */
-    public VoidResponse create() {
-        return this.create(null, null, null);
+    public void create() {
+        createWithResponse(null, null, null, Context.NONE);
     }
 
     /**
      * Creates a new container within a storage account. If a container with the same name already exists, the operation
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
-     *
      * @param metadata {@link Metadata}
      * @param accessType Specifies how the data in this container is available to the public. See the
-     * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
+     *                   x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse create(Metadata metadata, PublicAccessType accessType, Duration timeout) {
-        Mono<VoidResponse> response = containerAsyncClient.create(metadata, accessType);
+    public VoidResponse createWithResponse(Metadata metadata, PublicAccessType accessType, Duration timeout, Context context) {
+        Mono<VoidResponse> response = containerAsyncClient.createWithResponse(metadata, accessType, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -244,24 +241,23 @@ public final class ContainerClient {
      * Marks the specified container for deletion. The container and any blobs contained within it are later deleted
      * during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
-     *
-     * @return A response containing status code and HTTP headers
      */
-    public VoidResponse delete() {
-        return this.delete(null, null);
+    public void delete() {
+        deleteWithResponse(null, null, Context.NONE);
     }
 
     /**
      * Marks the specified container for deletion. The container and any blobs contained within it are later deleted
      * during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
-     *
      * @param accessConditions {@link ContainerAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse delete(ContainerAccessConditions accessConditions, Duration timeout) {
-        Mono<VoidResponse> response = containerAsyncClient.delete(accessConditions);
+    public VoidResponse deleteWithResponse(ContainerAccessConditions accessConditions, Duration timeout, Context context) {
+        Mono<VoidResponse> response = containerAsyncClient.deleteWithResponse(accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -269,25 +265,25 @@ public final class ContainerClient {
     /**
      * Returns the container's metadata and system properties. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.
-     *
      * @return The container properties.
      */
-    public Response<ContainerProperties> getProperties() {
-        return this.getProperties(null, null);
+    public ContainerProperties getProperties() {
+        return getPropertiesWithResponse(null, null, Context.NONE).value();
     }
 
     /**
      * Returns the container's metadata and system properties. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.
-     *
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
-     * not match the active lease on the blob.
+     *                              not match the active lease on the blob.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return The container properties.
      */
-    public Response<ContainerProperties> getProperties(LeaseAccessConditions leaseAccessConditions,
-                                                       Duration timeout) {
-        Mono<Response<ContainerProperties>> response = containerAsyncClient.getProperties(leaseAccessConditions);
+    public Response<ContainerProperties> getPropertiesWithResponse(LeaseAccessConditions leaseAccessConditions,
+                                                                   Duration timeout, Context context) {
+        Mono<Response<ContainerProperties>> response = containerAsyncClient.getPropertiesWithResponse(leaseAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -295,26 +291,26 @@ public final class ContainerClient {
     /**
      * Sets the container's metadata. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-metadata">Azure Docs</a>.
-     *
      * @param metadata {@link Metadata}
-     * @return A response containing status code and HTTP headers
+     *
      */
-    public VoidResponse setMetadata(Metadata metadata) {
-        return this.setMetadata(metadata, null, null);
+    public void setMetadata(Metadata metadata) {
+        setMetadataWithResponse(metadata, null, null, Context.NONE);
     }
 
     /**
      * Sets the container's metadata. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-metadata">Azure Docs</a>.
-     *
      * @param metadata {@link Metadata}
      * @param accessConditions {@link ContainerAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse setMetadata(Metadata metadata,
-                                    ContainerAccessConditions accessConditions, Duration timeout) {
-        Mono<VoidResponse> response = containerAsyncClient.setMetadata(metadata, accessConditions);
+    public VoidResponse setMetadataWithResponse(Metadata metadata,
+                                                ContainerAccessConditions accessConditions, Duration timeout, Context context) {
+        Mono<VoidResponse> response = containerAsyncClient.setMetadataWithResponse(metadata, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -323,26 +319,26 @@ public final class ContainerClient {
      * Returns the container's permissions. The permissions indicate whether container's blobs may be accessed publicly.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
-     *
      * @return The container access policy.
      */
-    public Response<ContainerAccessPolicies> getAccessPolicy() {
-        return this.getAccessPolicy(null, null);
+    public ContainerAccessPolicies getAccessPolicy() {
+        return getAccessPolicyWithResponse(null, null, Context.NONE).value();
     }
 
     /**
      * Returns the container's permissions. The permissions indicate whether container's blobs may be accessed publicly.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
-     *
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
-     * not match the active lease on the blob.
+     *                              not match the active lease on the blob.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return The container access policy.
      */
-    public Response<ContainerAccessPolicies> getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
-                                                             Duration timeout) {
-        Mono<Response<ContainerAccessPolicies>> response = containerAsyncClient.getAccessPolicy(leaseAccessConditions);
+    public Response<ContainerAccessPolicies> getAccessPolicyWithResponse(LeaseAccessConditions leaseAccessConditions,
+                                                                         Duration timeout, Context context) {
+        Mono<Response<ContainerAccessPolicies>> response = containerAsyncClient.getAccessPolicyWithResponse(leaseAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -352,18 +348,16 @@ public final class ContainerClient {
      * Note that, for each signed identifier, we will truncate the start and expiry times to the nearest second to
      * ensure the time formatting is compatible with the service. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
-     *
      * @param accessType Specifies how the data in this container is available to the public. See the
-     * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
+     *                    x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @param identifiers A list of {@link SignedIdentifier} objects that specify the permissions for the container.
-     * Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
-     * for more information. Passing null will clear all access policies.
-     * @return A response containing status code and HTTP headers
+     *                    Please see
+     *                    <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     *                    for more information. Passing null will clear all access policies.
      */
-    public VoidResponse setAccessPolicy(PublicAccessType accessType,
-                                        List<SignedIdentifier> identifiers) {
-        return this.setAccessPolicy(accessType, identifiers, null, null);
+    public void setAccessPolicy(PublicAccessType accessType,
+                                List<SignedIdentifier> identifiers) {
+        setAccessPolicyWithResponse(accessType, identifiers, null, null, Context.NONE);
     }
 
     /**
@@ -371,21 +365,22 @@ public final class ContainerClient {
      * Note that, for each signed identifier, we will truncate the start and expiry times to the nearest second to
      * ensure the time formatting is compatible with the service. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
-     *
      * @param accessType Specifies how the data in this container is available to the public. See the
-     * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
+     *                         x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @param identifiers A list of {@link SignedIdentifier} objects that specify the permissions for the container.
-     * Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
-     * for more information. Passing null will clear all access policies.
+     *                         Please see
+     *                         <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     *                         for more information. Passing null will clear all access policies.
      * @param accessConditions {@link ContainerAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse setAccessPolicy(PublicAccessType accessType,
-                                        List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions,
-                                        Duration timeout) {
-        Mono<VoidResponse> response = containerAsyncClient.setAccessPolicy(accessType, identifiers, accessConditions);
+    public VoidResponse setAccessPolicyWithResponse(PublicAccessType accessType,
+                                                    List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions,
+                                                    Duration timeout, Context context) {
+        Mono<VoidResponse> response = containerAsyncClient.setAccessPolicyWithResponse(accessType, identifiers, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -400,7 +395,6 @@ public final class ContainerClient {
      * <p>
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
-     *
      * @return The listed blobs, flattened.
      */
     public Iterable<BlobItem> listBlobsFlat() {
@@ -417,9 +411,9 @@ public final class ContainerClient {
      * <p>
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
-     *
      * @param options {@link ListBlobsOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     *
      * @return The listed blobs, flattened.
      */
     public Iterable<BlobItem> listBlobsFlat(ListBlobsOptions options, Duration timeout) {
@@ -451,8 +445,8 @@ public final class ContainerClient {
      * <li>foo/foo1 (isPrefix = false)
      * <li>foo/foo2 (isPrefix = false)
      * </ul>
-     *
      * @param directory The directory to list blobs underneath
+     *
      * @return A reactive response emitting the prefixes and blobs.
      */
     public Iterable<BlobItem> listBlobsHierarchy(String directory) {
@@ -482,10 +476,10 @@ public final class ContainerClient {
      * <li>foo/foo1 (isPrefix = false)
      * <li>foo/foo2 (isPrefix = false)
      * </ul>
-     *
      * @param delimiter The delimiter for blob hierarchy, "/" for hierarchy based on directories
      * @param options {@link ListBlobsOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     *
      * @return A reactive response emitting the prefixes and blobs.
      */
     public Iterable<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
@@ -497,89 +491,106 @@ public final class ContainerClient {
     /**
      * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
      * seconds, or infinite (-1).
-     *
      * @param proposedId A {@code String} in any valid GUID format. May be null.
      * @param duration The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
-     * non-infinite lease can be between 15 and 60 seconds.
+     *                   non-infinite lease can be between 15 and 60 seconds.
+     *
      * @return The lease ID.
      */
-    public Response<String> acquireLease(String proposedId, int duration) {
-        return this.acquireLease(proposedId, duration, null, null);
+    public String acquireLease(String proposedId, int duration) {
+        return acquireLeaseWithResponse(proposedId, duration, null, null, Context.NONE).value();
     }
 
     /**
      * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
      * seconds, or infinite (-1).
-     *
      * @param proposedID A {@code String} in any valid GUID format. May be null.
      * @param duration The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
-     * non-infinite lease can be between 15 and 60 seconds.
+     *                                 non-infinite lease can be between 15 and 60 seconds.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
-     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
-     * request. The request will fail if the specified condition is not satisfied.
+     *                                 LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
+     *                                 request. The request will fail if the specified condition is not satisfied.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return The lease ID.
      */
-    public Response<String> acquireLease(String proposedID, int duration,
-                                         ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
+    public Response<String> acquireLeaseWithResponse(String proposedID, int duration,
+                                                     ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
         Mono<Response<String>> response = containerAsyncClient
-            .acquireLease(proposedID, duration, modifiedAccessConditions);
+            .acquireLeaseWithResponse(proposedID, duration, modifiedAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
      * Renews the blob's previously-acquired lease.
-     *
      * @param leaseID The leaseId of the active lease on the blob.
+     *
      * @return The renewed lease ID.
      */
-    public Response<String> renewLease(String leaseID) {
-        return this.renewLease(leaseID, null, null);
+    public String renewLease(String leaseID) {
+        return renewLease(leaseID, null, null);
     }
 
     /**
      * Renews the blob's previously-acquired lease.
-     *
      * @param leaseID The leaseId of the active lease on the blob.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
-     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
-     * request. The request will fail if the specified condition is not satisfied.
+     *                                 LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
+     *                                 request. The request will fail if the specified condition is not satisfied.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     *
      * @return The renewed lease ID.
      */
-    public Response<String> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions,
-                                       Duration timeout) {
+    public String renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions,
+                             Duration timeout) {
+        return renewLeaseWithResponse(leaseID, modifiedAccessConditions, timeout, Context.NONE).value();
+    }
+
+    /**
+     * Renews the blob's previously-acquired lease.
+     * @param leaseID The leaseId of the active lease on the blob.
+     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     *                                 LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
+     *                                 request. The request will fail if the specified condition is not satisfied.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return The renewed lease ID.
+     */
+    public Response<String> renewLeaseWithResponse(String leaseID, ModifiedAccessConditions modifiedAccessConditions,
+                                                   Duration timeout, Context context) {
         Mono<Response<String>> response = containerAsyncClient
-            .renewLease(leaseID, modifiedAccessConditions);
+            .renewLeaseWithResponse(leaseID, modifiedAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
      * Releases the blob's previously-acquired lease.
-     *
      * @param leaseID The leaseId of the active lease on the blob.
-     * @return A response containing status code and HTTP headers
+     *
      */
-    public VoidResponse releaseLease(String leaseID) {
-        return this.releaseLease(leaseID, null, null);
+    public void releaseLease(String leaseID) {
+        releaseLeaseWithResponse(leaseID, null, null, Context.NONE);
     }
 
     /**
      * Releases the blob's previously-acquired lease.
-     *
      * @param leaseID The leaseId of the active lease on the blob.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
-     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
-     * request. The request will fail if the specified condition is not satisfied.
+     *                                 LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
+     *                                 request. The request will fail if the specified condition is not satisfied.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse releaseLease(String leaseID,
-                                     ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
+    public VoidResponse releaseLeaseWithResponse(String leaseID,
+                                                 ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
         Mono<VoidResponse> response = containerAsyncClient
-            .releaseLease(leaseID, modifiedAccessConditions);
+            .releaseLeaseWithResponse(leaseID, modifiedAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -587,63 +598,64 @@ public final class ContainerClient {
     /**
      * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
      * to break a fixed-duration lease when it expires or an infinite lease immediately.
-     *
      * @return The remaining time in the broken lease.
      */
-    public Response<Duration> breakLease() {
-        return this.breakLease(null, null, null);
+    public Duration breakLease() {
+        return breakLeaseWithResponse(null, null, null, Context.NONE).value();
     }
 
     /**
      * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
      * to break a fixed-duration lease when it expires or an infinite lease immediately.
-     *
      * @param breakPeriodInSeconds An optional {@code Integer} representing the proposed duration of seconds that the
-     * lease should continue before it is broken, between 0 and 60 seconds. This break period is only used if it is
-     * shorter than the time remaining on the lease. If longer, the time remaining on the lease is used. A new lease
-     * will not be available before the break period has expired, but the lease may be held for longer than the break
-     * period.
+     *                                 lease should continue before it is broken, between 0 and 60 seconds. This break period is only used if it is
+     *                                 shorter than the time remaining on the lease. If longer, the time remaining on the lease is used. A new lease
+     *                                 will not be available before the break period has expired, but the lease may be held for longer than the break
+     *                                 period.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
-     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
-     * request. The request will fail if the specified condition is not satisfied.
+     *                                 LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
+     *                                 request. The request will fail if the specified condition is not satisfied.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return The remaining time in the broken lease.
      */
-    public Response<Duration> breakLease(Integer breakPeriodInSeconds,
-                                         ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
+    public Response<Duration> breakLeaseWithResponse(Integer breakPeriodInSeconds,
+                                                     ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
         Mono<Response<Duration>> response = containerAsyncClient
-            .breakLease(breakPeriodInSeconds, modifiedAccessConditions);
+            .breakLeaseWithResponse(breakPeriodInSeconds, modifiedAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
      * ChangeLease changes the blob's lease ID.
-     *
      * @param leaseId The leaseId of the active lease on the blob.
      * @param proposedID A {@code String} in any valid GUID format.
+     *
      * @return The new lease ID.
      */
-    public Response<String> changeLease(String leaseId, String proposedID) {
-        return this.changeLease(leaseId, proposedID, null, null);
+    public String changeLease(String leaseId, String proposedID) {
+        return changeLeaseWithResponse(leaseId, proposedID, null, null, Context.NONE).value();
     }
 
     /**
      * ChangeLease changes the blob's lease ID.  For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure
      * Docs</a>.
-     *
      * @param leaseId The leaseId of the active lease on the blob.
      * @param proposedID A {@code String} in any valid GUID format.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
-     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
-     * request. The request will fail if the specified condition is not satisfied.
+     *                                 LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
+     *                                 request. The request will fail if the specified condition is not satisfied.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return The new lease ID.
      */
-    public Response<String> changeLease(String leaseId, String proposedID,
-                                        ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
+    public Response<String> changeLeaseWithResponse(String leaseId, String proposedID,
+                                                    ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
         Mono<Response<String>> response = containerAsyncClient
-            .changeLease(leaseId, proposedID, modifiedAccessConditions);
+            .changeLeaseWithResponse(leaseId, proposedID, modifiedAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -651,23 +663,35 @@ public final class ContainerClient {
     /**
      * Returns the sku name and account kind for the account. For more information, please see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
-     *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     *
      * @return The account info.
      */
-    public Response<StorageAccountInfo> getAccountInfo(Duration timeout) {
-        Mono<Response<StorageAccountInfo>> response = containerAsyncClient.getAccountInfo();
+    public StorageAccountInfo getAccountInfo(Duration timeout) {
+        return getAccountInfoWithResponse(timeout, Context.NONE).value();
+    }
+
+    /**
+     * Returns the sku name and account kind for the account. For more information, please see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return The account info.
+     */
+    public Response<StorageAccountInfo> getAccountInfoWithResponse(Duration timeout, Context context) {
+        Mono<Response<StorageAccountInfo>> response = containerAsyncClient.getAccountInfoWithResponse(context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
      * Generates a user delegation SAS token with the specified parameters
-     *
      * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
      * @param accountName The {@code String} account name for the SAS
      * @param permissions The {@code ContainerSASPermissions} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
+     *
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
@@ -678,7 +702,6 @@ public final class ContainerClient {
 
     /**
      * Generates a user delegation SAS token with the specified parameters
-     *
      * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
      * @param accountName The {@code String} account name for the SAS
      * @param permissions The {@code ContainerSASPermissions} permission for the SAS
@@ -687,6 +710,7 @@ public final class ContainerClient {
      * @param version An optional {@code String} version for the SAS
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     *
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
@@ -698,7 +722,6 @@ public final class ContainerClient {
 
     /**
      * Generates a user delegation SAS token with the specified parameters
-     *
      * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
      * @param accountName The {@code String} account name for the SAS
      * @param permissions The {@code ContainerSASPermissions} permission for the SAS
@@ -712,6 +735,7 @@ public final class ContainerClient {
      * @param contentEncoding An optional {@code String} content-encoding header for the SAS.
      * @param contentLanguage An optional {@code String} content-language header for the SAS.
      * @param contentType An optional {@code String} content-type header for the SAS.
+     *
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
@@ -725,9 +749,9 @@ public final class ContainerClient {
 
     /**
      * Generates a SAS token with the specified parameters
-     *
      * @param permissions The {@code ContainerSASPermissions} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
+     *
      * @return A string that represents the SAS token
      */
     public String generateSAS(ContainerSASPermission permissions, OffsetDateTime expiryTime) {
@@ -736,8 +760,8 @@ public final class ContainerClient {
 
     /**
      * Generates a SAS token with the specified parameters
-     *
      * @param identifier The {@code String} name of the access policy on the container this SAS references if any
+     *
      * @return A string that represents the SAS token
      */
     public String generateSAS(String identifier) {
@@ -746,7 +770,6 @@ public final class ContainerClient {
 
     /**
      * Generates a SAS token with the specified parameters
-     *
      * @param identifier The {@code String} name of the access policy on the container this SAS references if any
      * @param permissions The {@code ContainerSASPermissions} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
@@ -754,6 +777,7 @@ public final class ContainerClient {
      * @param version An optional {@code String} version for the SAS
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     *
      * @return A string that represents the SAS token
      */
     public String generateSAS(String identifier, ContainerSASPermission permissions, OffsetDateTime expiryTime,
@@ -764,7 +788,6 @@ public final class ContainerClient {
 
     /**
      * Generates a SAS token with the specified parameters
-     *
      * @param identifier The {@code String} name of the access policy on the container this SAS references if any
      * @param permissions The {@code ContainerSASPermissions} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
@@ -777,6 +800,7 @@ public final class ContainerClient {
      * @param contentEncoding An optional {@code String} content-encoding header for the SAS.
      * @param contentLanguage An optional {@code String} content-language header for the SAS.
      * @param contentType An optional {@code String} content-type header for the SAS.
+     *
      * @return A string that represents the SAS token
      */
     public String generateSAS(String identifier, ContainerSASPermission permissions, OffsetDateTime expiryTime,

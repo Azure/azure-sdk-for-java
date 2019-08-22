@@ -1,0 +1,60 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatesubdirectoryinvalidname938269073?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D7258EB985FEB4\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:52:02 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "d633908c-b01a-002f-0777-57b14c000000",
+      "Date" : "Tue, 20 Aug 2019 16:52:01 GMT"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatesubdirectoryinvalidname938269073/directoryapitestscreatesubdirectoryinvalidname8672562cc?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D7258EB9899991\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:52:02 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "d633908e-b01a-002f-0877-57b14c000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 20 Aug 2019 16:52:01 GMT"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatesubdirectoryinvalidname938269073/directoryapitestscreatesubdirectoryinvalidname8672562cc%2ftest%2fsubdirectory?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ParentNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "224",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "d633908f-b01a-002f-0977-57b14c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ParentNotFound</Code><Message>The specified parent path does not exist.\nRequestId:d633908f-b01a-002f-0977-57b14c000000\nTime:2019-08-20T16:52:02.5545837Z</Message></Error>",
+      "Date" : "Tue, 20 Aug 2019 16:52:01 GMT",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "directoryapitestscreatesubdirectoryinvalidname938269073", "directoryapitestscreatesubdirectoryinvalidname8672562cc" ]
+}

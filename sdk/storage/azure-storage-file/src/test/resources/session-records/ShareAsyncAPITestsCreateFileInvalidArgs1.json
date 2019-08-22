@@ -1,0 +1,41 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefileinvalidargs129557328bc7d?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D7258EC8DB8675\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:52:28 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "247e9e69-001a-0050-3677-572f7e000000",
+      "Date" : "Tue, 20 Aug 2019 16:52:28 GMT"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefileinvalidargs129557328bc7d/fileName",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "OutOfRangeInput",
+      "retry-after" : "0",
+      "Content-Length" : "236",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "247e9e6b-001a-0050-3777-572f7e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The file size exceeds the maximum permissible limit.\nRequestId:247e9e6b-001a-0050-3777-572f7e000000\nTime:2019-08-20T16:52:28.2168799Z</Message></Error>",
+      "Date" : "Tue, 20 Aug 2019 16:52:28 GMT",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "shareasyncapitestscreatefileinvalidargs129557328bc7d" ]
+}

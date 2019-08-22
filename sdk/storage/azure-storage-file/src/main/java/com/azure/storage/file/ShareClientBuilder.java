@@ -13,9 +13,11 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -70,7 +72,9 @@ import java.util.Objects;
  * @see SASTokenCredential
  * @see SharedKeyCredential
  */
+@ServiceClientBuilder(serviceClients = {ShareClient.class, ShareAsyncClient.class})
 public class ShareClientBuilder {
+    private final ClientLogger logger = new ClientLogger(ShareClientBuilder.class);
     private static final String ACCOUNT_NAME = "accountname";
     private final List<HttpPipelinePolicy> policies;
 
@@ -82,7 +86,7 @@ public class ShareClientBuilder {
     private HttpClient httpClient;
     private HttpPipeline pipeline;
     private HttpLogDetailLevel logLevel;
-    private RetryPolicy retryPolicy;
+    private final RetryPolicy retryPolicy;
     private Configuration configuration;
 
     /**
@@ -118,7 +122,7 @@ public class ShareClientBuilder {
         }
 
         if (sasTokenCredential == null && sharedKeyCredential == null) {
-            throw new IllegalArgumentException("Credentials are required for authorization");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Credentials are required for authorization"));
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -192,7 +196,7 @@ public class ShareClientBuilder {
                 this.sharedKeyCredential = null;
             }
         } catch (MalformedURLException ex) {
-            throw new IllegalArgumentException("The Azure Storage File Service endpoint url is malformed.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage File Service endpoint url is malformed."));
         }
 
         return this;
@@ -249,8 +253,8 @@ public class ShareClientBuilder {
         try {
             this.endpoint = new URL(String.format("https://%s.file.core.windows.net", accountName));
         } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(String.format("There is no valid endpoint for the connection string. "
-                                                                 + "Connection String: %s", connectionString));
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format("There is no valid endpoint for"
+                + " the connection string. Connection String: %s", connectionString)));
         }
     }
 

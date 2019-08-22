@@ -32,7 +32,7 @@ public final class MSIToken extends AccessToken {
     /**
      * Creates an access token instance.
      *
-     * @param token     the token string.
+     * @param token the token string.
      * @param expiresOn the expiration time.
      */
     public MSIToken(String token, OffsetDateTime expiresOn) {

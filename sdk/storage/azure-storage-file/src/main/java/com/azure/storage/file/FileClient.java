@@ -18,10 +18,11 @@ import com.azure.storage.file.models.FileRangeWriteType;
 import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageErrorException;
-import io.netty.buffer.ByteBuf;
-import java.net.URL;
-import java.util.Map;
 import reactor.core.publisher.Flux;
+
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.util.Map;
 
 /**
  * This class provides a client that contains all the operations for interacting files under Azure Storage File Service.
@@ -321,11 +322,11 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is set to clear, the value of this header must be set to zero..
+     * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is set to clear, the value of this header must be set to zero.
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
-    public Response<FileUploadInfo> upload(ByteBuf data, long length) {
+    public Response<FileUploadInfo> upload(ByteBuffer data, long length) {
         return fileAsyncClient.upload(Flux.just(data), length).block();
     }
 
@@ -336,7 +337,7 @@ public class FileClient {
      *
      * <p>Upload the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.upload#bytebuf-long-int-filerangewritetype}
+     * {@codesnippet com.azure.storage.file.fileClient.upload#bytebuffer-long-int-filerangewritetype}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -348,11 +349,11 @@ public class FileClient {
      * <ul>
      *      <li>Update: Writes the bytes specified by the request body into the specified range.</li>
      *      <li>Clear: Clears the specified range and releases the space used in storage for that range. To clear a range, set the Content-Length header to zero.</li>
-     * <ul/>
+     * </ul>
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
-    public Response<FileUploadInfo> upload(ByteBuf data, long length, int offset, FileRangeWriteType type) {
+    public Response<FileUploadInfo> upload(ByteBuffer data, long length, int offset, FileRangeWriteType type) {
         return fileAsyncClient.upload(Flux.just(data), length, offset, type).block();
     }
 
@@ -395,7 +396,7 @@ public class FileClient {
      * <ul>
      *      <li>Update: Writes the bytes specified by the request body into the specified range.</li>
      *      <li>Clear: Clears the specified range and releases the space used in storage for that range. To clear a range, set the Content-Length header to zero.</li>
-     * <ul/>
+     * </ul>
      */
     public void uploadFromFile(String uploadFilePath, FileRangeWriteType type) {
         fileAsyncClient.uploadFromFile(uploadFilePath, type).block();

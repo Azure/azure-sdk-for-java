@@ -90,6 +90,19 @@ public class DatabaseAccountCreateUpdateParameters extends Resource {
     private Boolean enableMultipleWriteLocations;
 
     /**
+     * Enables the cassandra connector on the Cosmos DB C* account.
+     */
+    @JsonProperty(value = "properties.enableCassandraConnector")
+    private Boolean enableCassandraConnector;
+
+    /**
+     * The cassandra connector offer type for the Cosmos DB database C*
+     * account. Possible values include: 'Small'.
+     */
+    @JsonProperty(value = "properties.connectorOffer")
+    private ConnectorOffer connectorOffer;
+
+    /**
      * Creates an instance of DatabaseAccountCreateUpdateParameters class.
      * @param locations an array that contains the georeplication locations enabled for the Cosmos DB account.
      */
@@ -294,6 +307,46 @@ public class DatabaseAccountCreateUpdateParameters extends Resource {
      */
     public DatabaseAccountCreateUpdateParameters withEnableMultipleWriteLocations(Boolean enableMultipleWriteLocations) {
         this.enableMultipleWriteLocations = enableMultipleWriteLocations;
+        return this;
+    }
+
+    /**
+     * Get enables the cassandra connector on the Cosmos DB C* account.
+     *
+     * @return the enableCassandraConnector value
+     */
+    public Boolean enableCassandraConnector() {
+        return this.enableCassandraConnector;
+    }
+
+    /**
+     * Set enables the cassandra connector on the Cosmos DB C* account.
+     *
+     * @param enableCassandraConnector the enableCassandraConnector value to set
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withEnableCassandraConnector(Boolean enableCassandraConnector) {
+        this.enableCassandraConnector = enableCassandraConnector;
+        return this;
+    }
+
+    /**
+     * Get the cassandra connector offer type for the Cosmos DB database C* account. Possible values include: 'Small'.
+     *
+     * @return the connectorOffer value
+     */
+    public ConnectorOffer connectorOffer() {
+        return this.connectorOffer;
+    }
+
+    /**
+     * Set the cassandra connector offer type for the Cosmos DB database C* account. Possible values include: 'Small'.
+     *
+     * @param connectorOffer the connectorOffer value to set
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withConnectorOffer(ConnectorOffer connectorOffer) {
+        this.connectorOffer = connectorOffer;
         return this;
     }
 
