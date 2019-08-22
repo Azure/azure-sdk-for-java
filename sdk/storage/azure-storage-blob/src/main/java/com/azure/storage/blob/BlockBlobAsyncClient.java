@@ -303,7 +303,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response signalling completion.
      */
     public Mono<VoidResponse> stageBlockFromURL(String base64BlockID, URL sourceURL, BlobRange sourceRange) {
-        return this.stageBlockFromURL(base64BlockID, sourceURL, sourceRange);
+        return this.stageBlockFromURLWithResponse(base64BlockID, sourceURL, sourceRange, null, null, null);
     }
 
     /**
