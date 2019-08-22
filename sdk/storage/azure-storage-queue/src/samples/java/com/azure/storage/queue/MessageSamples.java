@@ -4,7 +4,6 @@
 package com.azure.storage.queue;
 
 import com.azure.storage.queue.models.DequeuedMessage;
-
 import java.time.Duration;
 
 import static com.azure.storage.queue.SampleHelper.generateRandomName;
