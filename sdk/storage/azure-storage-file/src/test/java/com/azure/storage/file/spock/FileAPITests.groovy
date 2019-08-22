@@ -13,10 +13,10 @@ import com.azure.storage.file.models.FileRange
 import com.azure.storage.file.models.FileRangeWriteType
 import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageErrorException
-import io.netty.buffer.Unpooled
 import spock.lang.Ignore
 import spock.lang.Unroll
 
+import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.time.LocalDateTime
@@ -27,8 +27,8 @@ class FileAPITests extends APISpec {
     def primaryFileClient
     def shareName
     def filePath
-    static def defaultData = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8))
-    static def dataLength = defaultData.readableBytes()
+    static def defaultData = ByteBuffer.allocate(8).wrap("default".getBytes(StandardCharsets.UTF_8))
+    static def dataLength = defaultData.remaining()
     static def testMetadata
     static def httpHeaders
 
@@ -88,11 +88,10 @@ class FileAPITests extends APISpec {
         given:
         primaryFileClient.create(dataLength)
         def dataBytes = new byte[dataLength]
-        def readerIndex = defaultData.readerIndex()
-        defaultData.getBytes(readerIndex, dataBytes)
+        defaultData.get(dataBytes)
 
         when:
-        def uploadResponse = primaryFileClient.upload(defaultData.retain(), dataLength)
+        def uploadResponse = primaryFileClient.upload(defaultData, dataLength)
         def downloadResponse = primaryFileClient.downloadWithProperties()
 
         then:
@@ -100,18 +99,19 @@ class FileAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(downloadResponse, 200)
         downloadResponse.value().contentLength() == dataLength
 
-        Arrays.equals(dataBytes, FluxUtil.collectBytesInByteBufStream(downloadResponse.value().body(), false).block())
+        Arrays.equals(dataBytes, FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().body()).block())
+        cleanup:
+        defaultData.clear()
     }
 
     def "Upload and download data with args"() {
         given:
         primaryFileClient.create(1024)
         def dataBytes = new byte[dataLength]
-        def readerIndex = defaultData.readerIndex()
-        defaultData.getBytes(readerIndex, dataBytes)
+        defaultData.get(dataBytes)
 
         when:
-        def uploadResponse = primaryFileClient.upload(defaultData.retain(), dataLength, 1, FileRangeWriteType.UPDATE)
+        def uploadResponse = primaryFileClient.upload(defaultData, dataLength, 1, FileRangeWriteType.UPDATE)
         def downloadResponse = primaryFileClient.downloadWithProperties(new FileRange(1, dataLength), true)
 
         then:
@@ -119,12 +119,14 @@ class FileAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(downloadResponse, 206)
         downloadResponse.value().contentLength() == dataLength
 
-        Arrays.equals(dataBytes, FluxUtil.collectBytesInByteBufStream(downloadResponse.value().body(), false).block())
+        Arrays.equals(dataBytes, FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().body()).block())
+        cleanup:
+        defaultData.clear()
     }
 
     def "Upload data error"() {
         when:
-        primaryFileClient.upload(defaultData.retain(), dataLength, 1, FileRangeWriteType.UPDATE)
+        primaryFileClient.upload(defaultData, dataLength, 1, FileRangeWriteType.UPDATE)
         then:
         def e = thrown(StorageErrorException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)

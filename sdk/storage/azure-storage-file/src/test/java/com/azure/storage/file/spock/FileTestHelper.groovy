@@ -205,7 +205,7 @@ class FileTestHelper {
         if (!Files.exists(path)) {
             Files.createDirectory(path)
         }
-        def randomFile = new File(folder + fileName)
+        def randomFile = new File(folder + "/" + fileName)
         RandomAccessFile raf = new RandomAccessFile(randomFile, "rw")
         raf.setLength(size)
         raf.close()
@@ -228,7 +228,5 @@ class FileTestHelper {
                 Files.delete(children[i].toPath())
             }
         }
-        // either file or an empty directory
-        dir.delete()
     }
 }

@@ -15,6 +15,7 @@ import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Unroll
 
+import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.time.LocalDateTime
@@ -25,8 +26,8 @@ class FileAsyncAPITests extends APISpec {
     def primaryFileAsyncClient
     def shareName
     def filePath
-    static def defaultData = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8))
-    static def dataLength = defaultData.readableBytes()
+    static def defaultData = ByteBuffer.allocate(8).wrap("default".getBytes(StandardCharsets.UTF_8))
+    static def dataLength = defaultData.remaining()
     static def testMetadata
     static def httpHeaders
 
@@ -94,11 +95,10 @@ class FileAsyncAPITests extends APISpec {
         given:
         primaryFileAsyncClient.create(dataLength).block()
         def dataBytes = new byte[dataLength]
-        def readerIndex = defaultData.readerIndex()
-        defaultData.getBytes(readerIndex, dataBytes)
+        defaultData.get(dataBytes)
 
         when:
-        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData.retain()), dataLength))
+        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData), dataLength))
         def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithProperties())
 
         then:
@@ -110,18 +110,18 @@ class FileAsyncAPITests extends APISpec {
             assert it.value().contentLength() == dataLength
             assert FileTestHelper.assertResponseStatusCode(it, 200)
         }.verifyComplete()
-
+        cleanup:
+        defaultData.clear()
     }
 
     def "Upload and download data with args"() {
         given:
         primaryFileAsyncClient.create(1024).block()
         def dataBytes = new byte[dataLength]
-        def readerIndex = defaultData.readerIndex()
-        defaultData.getBytes(readerIndex, dataBytes)
+        defaultData.get(dataBytes)
 
         when:
-        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData.retain()), dataLength, 1, FileRangeWriteType.UPDATE))
+        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData), dataLength, 1, FileRangeWriteType.UPDATE))
         def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithProperties(new FileRange(1, dataLength), true))
 
         then:
@@ -133,11 +133,13 @@ class FileAsyncAPITests extends APISpec {
             assert FileTestHelper.assertResponseStatusCode(it, 206)
             assert it.value().contentLength() == dataLength
         }.verifyComplete()
+        cleanup:
+        defaultData.clear()
     }
 
     def "Upload data error"() {
         when:
-        def updateDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData.retain()), dataLength, 1, FileRangeWriteType.UPDATE))
+        def updateDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData), dataLength, 1, FileRangeWriteType.UPDATE))
         then:
         updateDataErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
