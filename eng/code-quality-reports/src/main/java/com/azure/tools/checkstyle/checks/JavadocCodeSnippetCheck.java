@@ -28,7 +28,8 @@ import java.util.Locale;
 public class JavadocCodeSnippetCheck extends AbstractCheck {
 
     private static final String CODE_SNIPPET_ANNOTATION = "@codesnippet";
-    private static final String MISSING_CODESNIPPET_TAG_MESSAGE = "There is a @codesnippet block in the JavaDoc, but it does not refer to any sample.";
+    private static final String MISSING_CODESNIPPET_TAG_MESSAGE = "There is a @codesnippet block in the JavaDoc, but it"
+        + " does not refer to any sample.";
 
     private static final int[] TOKENS = new int[] {
         TokenTypes.PACKAGE_DEF,
@@ -219,7 +220,8 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
      *  Check if the given customDescription from codesnippet matched the naming pattern rules:
      *  All rules now are case-insensitive.
      *  <ol>
-     *    <li>Method names from codesnippet should have started with actual method name where the codesnippet javadoc represents</li>
+     *    <li>Method names from codesnippet should have started with actual method name where the codesnippet
+     *    javadoc represents</li>
      *    <li>Parameters should match correctly in terms of ordering and naming.</li>
      *  </ol>
      *
@@ -229,13 +231,12 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
      * @return false if the given custom description not matched with naming rule. Otherwise, return true.
      */
     private boolean isNamingMatched(String customDescription, String fullPathWithoutParameters, String parameters) {
-        // Two same codescippet samples should have two different key names,
+        // Two same codesnippet samples should have two different key names,
         // For example, for method name methodName(string, string),
         // (1) packagename.classname.methodname#string-string
-        // (2) packagename.classname.methodname-2#string-string.
+        // (2) packagename.classname.methodname#string-string-2
         final String[] descriptionSegments = customDescription.split("#");
-        final String methodPath = descriptionSegments[0].split("-")[0];
-        if (!fullPathWithoutParameters.equalsIgnoreCase(methodPath)) {
+        if (!fullPathWithoutParameters.equalsIgnoreCase(descriptionSegments[0])) {
             return false;
         }
 
@@ -245,8 +246,8 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
         }
 
         // The name of codesnippet sample has parameters but the actual code sample has
-        // no parameter or not equal to the given parameters of codesnippet
-        if (descriptionSegments.length == 2 && !descriptionSegments[1].equalsIgnoreCase(parameters)) {
+        // no parameter or not equal to the given parameters of codesnippet.
+        if (descriptionSegments.length == 2 && !descriptionSegments[1].toLowerCase().startsWith(parameters.toLowerCase())) {
             return false;
         }
 
