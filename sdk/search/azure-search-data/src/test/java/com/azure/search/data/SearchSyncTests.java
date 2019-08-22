@@ -209,6 +209,16 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
 
+    @Override
+    public void testCanGetResultCountInSearch() {
+        PagedIterable<SearchResult> results = client.search("*", new SearchParameters().includeTotalResultCount(true), new SearchRequestOptions());
+        Assert.assertNotNull(results);
+        Iterator<PagedResponse<SearchResult>> resultsIterator = results.iterableByPage().iterator();
+
+        Assert.assertEquals(hotels.size(), ((SearchPagedResponse) resultsIterator.next()).count().intValue());
+        Assert.assertFalse(resultsIterator.hasNext());
+    }
+
     private List<Map<String, Object>> getSearchResults(PagedIterable<SearchResult> results) {
         Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
         List<Map<String, Object>> searchResults = new ArrayList<>();

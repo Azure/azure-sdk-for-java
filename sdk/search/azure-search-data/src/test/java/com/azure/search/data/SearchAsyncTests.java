@@ -209,6 +209,14 @@ public class SearchAsyncTests extends SearchTestBase {
             .verifyComplete();
     }
 
+    @Override
+    public void testCanGetResultCountInSearch() {
+        Flux<PagedResponse<SearchResult>> results = client.search("*", new SearchParameters().includeTotalResultCount(true), new SearchRequestOptions()).byPage();
+        StepVerifier.create(results)
+            .assertNext(res -> Assert.assertEquals(hotels.size(), ((SearchPagedResponse) res).count().intValue()))
+            .verifyComplete();
+    }
+
     private void assertResponse(SearchPagedResponse response, List<Map<String, Object>> actualResults) {
         Assert.assertNull(response.count());
         Assert.assertNull(response.coverage());
