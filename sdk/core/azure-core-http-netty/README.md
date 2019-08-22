@@ -1,4 +1,4 @@
-# Azure Core Netty HTTP client for Java
+# Azure Core Netty HTTP client library for Java
 
 Azure Core Netty HTTP client is a plugin for the azure-core HTTP client API. 
 
