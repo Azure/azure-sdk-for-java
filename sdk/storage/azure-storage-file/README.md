@@ -1,4 +1,4 @@
-﻿# Azure File client library for Java
+# Azure File client library for Java
 The Server Message Block (SMB) protocol is the preferred file share protocol used on-premises today.
 The Microsoft Azure File service enables customers to leverage the availability and scalability of Azure’s Cloud Infrastructure as a Service (IaaS) SMB without having to rewrite SMB client applications.
 
