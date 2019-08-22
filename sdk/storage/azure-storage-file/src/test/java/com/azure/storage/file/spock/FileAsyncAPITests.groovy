@@ -14,6 +14,7 @@ import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Unroll
 
+import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.time.LocalDateTime
@@ -24,8 +25,8 @@ class FileAsyncAPITests extends APISpec {
     def primaryFileAsyncClient
     def shareName
     def filePath
-    static def defaultData = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8))
-    static def dataLength = defaultData.readableBytes()
+    static def defaultData = ByteBuffer.allocate(8).wrap("default".getBytes(StandardCharsets.UTF_8))
+    static def dataLength = defaultData.remaining()
     static def testMetadata
     static def httpHeaders
 
@@ -93,11 +94,10 @@ class FileAsyncAPITests extends APISpec {
         given:
         primaryFileAsyncClient.create(dataLength).block()
         def dataBytes = new byte[dataLength]
-        def readerIndex = defaultData.readerIndex()
-        defaultData.getBytes(readerIndex, dataBytes)
+        defaultData.get(dataBytes)
 
         when:
-        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData.retain()), dataLength))
+        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData), dataLength))
         def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithProperties())
 
         then:
@@ -109,18 +109,18 @@ class FileAsyncAPITests extends APISpec {
             assert it.value().contentLength() == dataLength
             assert FileTestHelper.assertResponseStatusCode(it, 200)
         }.verifyComplete()
-
+        cleanup:
+        defaultData.clear()
     }
 
     def "Upload and download data with args"() {
         given:
         primaryFileAsyncClient.create(1024).block()
         def dataBytes = new byte[dataLength]
-        def readerIndex = defaultData.readerIndex()
-        defaultData.getBytes(readerIndex, dataBytes)
+        defaultData.get(dataBytes)
 
         when:
-        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData.retain()), dataLength, 1))
+        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData), dataLength, 1))
         def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithProperties(new FileRange(1, dataLength), true))
 
         then:
@@ -132,11 +132,13 @@ class FileAsyncAPITests extends APISpec {
             assert FileTestHelper.assertResponseStatusCode(it, 206)
             assert it.value().contentLength() == dataLength
         }.verifyComplete()
+        cleanup:
+        defaultData.clear()
     }
 
     def "Upload data error"() {
         when:
-        def updateDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData.retain()), dataLength, 1))
+        def updateDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData), dataLength, 1))
         then:
         updateDataErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
@@ -218,8 +220,8 @@ class FileAsyncAPITests extends APISpec {
 
     def "Upload and download file"() {
         given:
-        File uploadFile = new File("src/test/resources/testfiles/helloworld")
-        File downloadFile = new File("src/test/resources/testfiles/testDownload")
+        File uploadFile = new File(testFolder.getPath() + "/helloworld")
+        File downloadFile = new File(testFolder.getPath() + "/testDownload")
 
         if (!Files.exists(downloadFile.toPath())) {
             downloadFile.createNewFile().block()
@@ -233,6 +235,8 @@ class FileAsyncAPITests extends APISpec {
         uploadFileVerifier.verifyComplete()
         downloadFileVerifier.verifyComplete()
         assert FileTestHelper.assertTwoFilesAreSame(uploadFile, downloadFile)
+        cleanup:
+        FileTestHelper.deleteFolderIfExists(testFolder.toString())
     }
 
     def "Start copy"() {
@@ -366,7 +370,7 @@ class FileAsyncAPITests extends APISpec {
         given:
         primaryFileAsyncClient.create(1024, null, null).block()
         def fileName = testResourceName.randomName("file", 60)
-        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, fileName)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder.toString(), fileName)
         primaryFileAsyncClient.uploadFromFile(uploadFile).block()
         expect:
         StepVerifier.create(primaryFileAsyncClient.listRanges())
@@ -374,13 +378,15 @@ class FileAsyncAPITests extends APISpec {
                 assert it.start() == 0
                 assert it.end() == 1023
             }.verifyComplete()
+        cleanup:
+        FileTestHelper.deleteFolderIfExists(tmpFolder.toString())
     }
 
     def "List ranges with range"() {
         given:
         primaryFileAsyncClient.create(1024, null, null).block()
         def fileName = testResourceName.randomName("file", 60)
-        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, fileName)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder.toString(), fileName)
         primaryFileAsyncClient.uploadFromFile(uploadFile).block()
         expect:
         StepVerifier.create(primaryFileAsyncClient.listRanges(new FileRange(0, 511L)))
@@ -388,6 +394,8 @@ class FileAsyncAPITests extends APISpec {
                 assert it.start() == 0
                 assert it.end() == 511
             }.verifyComplete()
+        cleanup:
+        FileTestHelper.deleteFolderIfExists(tmpFolder.toString())
     }
 
     def "List handles"() {

@@ -17,6 +17,7 @@ import com.azure.storage.file.models.StorageErrorException
 import com.azure.storage.file.models.StorageServiceProperties
 
 import java.nio.file.Files
+import java.nio.file.Paths
 import java.security.NoSuchAlgorithmException
 import java.time.Duration
 import java.util.logging.Logging
@@ -199,11 +200,15 @@ class FileTestHelper {
         return true
     }
 
-    static String createRandomFileWithLength(int size, String fileName) {
-        def folder = "src/test/resources/testfiles/"
-        def randomFile = new File(folder + fileName)
+    static String createRandomFileWithLength(int size, String folder, String fileName) {
+        def path = Paths.get(folder)
+        if (!Files.exists(path)) {
+            Files.createDirectory(path)
+        }
+        def randomFile = new File(folder + "/" + fileName)
         RandomAccessFile raf = new RandomAccessFile(randomFile, "rw")
         raf.setLength(size)
+        raf.close()
         return randomFile.getPath()
     }
 
@@ -214,13 +219,14 @@ class FileTestHelper {
         return true
     }
 
-    static boolean equalsAfterTrim(int length, int offset, byte[] actual) {
-        int totalLength = actual.length
-        for (int i = 0; i < totalLength; i++) {
-            if (offset <= i && i < offset + length && actual[i] != 0){
-                return false
+    static void deleteFolderIfExists(String folder) {
+        // Clean up all temporary generated files
+        def dir = new File(folder)
+        if (dir.isDirectory()) {
+            File[] children = dir.listFiles()
+            for (int i = 0; i < children.length; i++) {
+                Files.delete(children[i].toPath())
             }
         }
-        return true
     }
 }
