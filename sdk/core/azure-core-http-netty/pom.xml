@@ -84,18 +84,10 @@
       <artifactId>reactor-netty</artifactId>
     </dependency>
 
-    <!-- test dependencies on azure-core and azure-core-management, because we want to run tests inherited from these
-         modules using Netty -->
+    <!-- test dependencies on azure-core, because we want to run tests inherited from this module using Netty -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.4</version>
-      <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-management</artifactId>
       <version>1.0.0-preview.4</version>
       <type>test-jar</type>
       <scope>test</scope>

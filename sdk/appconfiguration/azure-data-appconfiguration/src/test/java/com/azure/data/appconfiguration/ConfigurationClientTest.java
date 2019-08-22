@@ -474,6 +474,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that an exception will be thrown from the service if it cannot satisfy the range request.
      */
+    @Override
     public void listRevisionsInvalidRange() {
         final String key = getKey();
         final ConfigurationSetting original = new ConfigurationSetting().key(key).value("myValue");
