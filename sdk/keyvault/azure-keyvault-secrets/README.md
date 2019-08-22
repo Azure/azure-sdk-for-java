@@ -122,7 +122,7 @@ SecretClient secretClient = new SecretClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
-Secret secret = secretClient.setSecret("secret_name", "secret_value").value();
+Secret secret = secretClient.setSecret("secret_name", "secret_value");
 System.out.printf("Secret is created with name %s and value %s \n", secret.name(), secret.value());
 ```
 
@@ -130,7 +130,7 @@ System.out.printf("Secret is created with name %s and value %s \n", secret.name(
 
 Retrieve a previously stored Secret by calling `getSecret`.
 ```Java
-Secret secret = secretClient.getSecret("secret_name").value();
+Secret secret = secretClient.getSecret("secret_name");
 System.out.printf("Secret is returned with name %s and value %s \n", secret.name(), secret.value());
 ```
 
@@ -139,10 +139,10 @@ System.out.printf("Secret is returned with name %s and value %s \n", secret.name
 Update an existing Secret by calling `updateSecret`.
 ```Java
 // Get the secret to update.
-Secret secret = secretClient.getSecret("secret_name").value();
+Secret secret = secretClient.getSecret("secret_name");
 // Update the expiry time of the secret.
 secret.expires(OffsetDateTime.now().plusDays(30));
-SecretBase updatedSecret = secretClient.updateSecret(secret).value();
+SecretBase updatedSecret = secretClient.updateSecret(secret);
 System.out.printf("Secret's updated expiry time %s \n", updatedSecret.expires().toString());
 ```
 
@@ -150,7 +150,7 @@ System.out.printf("Secret's updated expiry time %s \n", updatedSecret.expires().
 
 Delete an existing Secret by calling `deleteSecret`.
 ```Java
-DeletedSecret deletedSecret = client.deleteSecret("secret_name").value();
+DeletedSecret deletedSecret = client.deleteSecret("secret_name");
 System.out.printf("Deleted Secret's deletion date %s", deletedSecret.deletedDate().toString());
 ```
 
@@ -160,7 +160,7 @@ List the secrets in the key vault by calling `listSecrets`.
 ```Java
 // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
 for (SecretBase secret : client.listSecrets()) {
-    Secret secretWithValue  = client.getSecret(secret).value();
+    Secret secretWithValue  = client.getSecret(secret);
     System.out.printf("Received secret with name %s and value %s \n", secretWithValue.name(), secretWithValue.value());
 }
 ```
@@ -187,30 +187,28 @@ SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildAsyncClient();
 
-secretAsyncClient.setSecret("secret_name", "secret_value").subscribe(secretResponse ->
-  System.out.printf("Secret is created with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
+secretAsyncClient.setSecret("secret_name", "secret_value").subscribe(secret ->
+  System.out.printf("Secret is created with name %s and value %s \n", secret.name(), secret.value()));
 ```
 
 ### Retrieve a Secret Asynchronously
 
 Retrieve a previously stored Secret by calling `getSecret`.
 ```Java
-secretAsyncClient.getSecret("secretName").subscribe(secretResponse ->
-  System.out.printf("Secret with name %s , value %s \n", secretResponse.value().name(),
-  secretResponse.value().value()));
+secretAsyncClient.getSecret("secretName").subscribe(secret ->
+  System.out.printf("Secret with name %s , value %s \n", secret.name(),
+  secret.value()));
 ```
 
 ### Update an existing Secret Asynchronously
 
 Update an existing Secret by calling `updateSecret`.
 ```Java
-secretAsyncClient.getSecret("secretName").subscribe(secretResponse -> {
-     // Get the Secret
-     Secret secret = secretResponse.value();
+secretAsyncClient.getSecret("secretName").subscribe(secret -> {
      // Update the expiry time of the secret.
      secret.expires(OffsetDateTime.now().plusDays(50));
-     secretAsyncClient.updateSecret(secret).subscribe(secretResponse ->
-         System.out.printf("Secret's updated not before time %s \n", secretResponse.value().notBefore().toString()));
+     secretAsyncClient.updateSecret(secret).subscribe(updatedSecret ->
+         System.out.printf("Secret's updated expiry time %s \n", updatedSecret.expires().toString()));
    });
 ```
 
@@ -218,8 +216,8 @@ secretAsyncClient.getSecret("secretName").subscribe(secretResponse -> {
 
 Delete an existing Secret by calling `deleteSecret`.
 ```Java
-secretAsyncClient.deleteSecret("secretName").subscribe(deletedSecretResponse ->
-   System.out.printf("Deleted Secret's deletion time %s \n", deletedSecretResponse.value().deletedDate().toString()));
+secretAsyncClient.deleteSecret("secretName").subscribe(deletedSecret ->
+   System.out.printf("Deleted Secret's deletion time %s \n", deletedSecret.deletedDate().toString()));
 ```
 
 ### List Secrets Asynchronously
@@ -228,8 +226,8 @@ List the secrets in the key vault by calling `listSecrets`.
 ```Java
 // The List Secrets operation returns secrets without their value, so for each secret returned we call `getSecret` to get its // value as well.
 secretAsyncClient.listSecrets()
-  .flatMap(secretAsyncClient::getSecret).subscribe(secretResponse ->
-    System.out.printf("Secret with name %s , value %s \n", secretResponse.value().name(), secretResponse.value().value()));
+  .flatMap(secretAsyncClient::getSecret).subscribe(secret ->
+    System.out.printf("Secret with name %s , value %s \n", secret.name(), secret.value()));
 ```
 
 ## Troubleshooting
@@ -286,25 +284,25 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-keyvault-secrets/src
+[source_code]:  src
 [api_documentation]: https://azure.github.io/azure-sdk-for-java/track2reports/index.html
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/identity/client
-[azkeyvault_docs]: https://docs.microsoft.com/en-us/azure/key-vault/
+[azkeyvault_docs]: https://docs.microsoft.com/azure/key-vault/
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/
-[azure_keyvault]: https://docs.microsoft.com/en-us/azure/key-vault/quick-create-portal
+[azure_keyvault]: https://docs.microsoft.com/azure/key-vault/quick-create-portal
 [azure_cli]: https://docs.microsoft.com/cli/azure
-[rest_api]: https://docs.microsoft.com/en-us/rest/api/keyvault/
-[azkeyvault_rest]: https://docs.microsoft.com/en-us/rest/api/keyvault/
-[azure_create_application_in_portal]:https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal
-[azure_keyvault_cli]:https://docs.microsoft.com/en-us/azure/key-vault/quick-create-cli
-[azure_keyvault_cli_full]:https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest
-[secrets_samples]:https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets
-[sample_helloWorld]:https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/HelloWorld.java
-[sample_helloWorldAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/HelloWorldAsync.java
-[sample_list]:https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/ListOperations.java
-[sample_listAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/ListOperationsAsync.java
-[sample_BackupRestore]:https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/BackupAndRestoreOperations.java
-[sample_BackupRestoreAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/BackupAndRestoreOperationsAsync.java
-[sample_ManageDeleted]:https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/ManagingDeletedSecrets.java
-[sample_ManageDeletedAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/ManagingDeletedSecretsAsync.java
+[rest_api]: https://docs.microsoft.com/rest/api/keyvault/
+[azkeyvault_rest]: https://docs.microsoft.com/rest/api/keyvault/
+[azure_create_application_in_portal]:https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
+[azure_keyvault_cli]:https://docs.microsoft.com/azure/key-vault/quick-create-cli
+[azure_keyvault_cli_full]:https://docs.microsoft.com/cli/azure/keyvault?view=azure-cli-latest
+[secrets_samples]: src/samples/java/com/azure/security/keyvault/secrets
+[sample_helloWorld]: src/samples/java/com/azure/security/keyvault/secrets/HelloWorld.java
+[sample_helloWorldAsync]: src/samples/java/com/azure/security/keyvault/secrets/HelloWorldAsync.java
+[sample_list]: src/samples/java/com/azure/security/keyvault/secrets/ListOperations.java
+[sample_listAsync]: src/samples/java/com/azure/security/keyvault/secrets/ListOperationsAsync.java
+[sample_BackupRestore]: src/samples/java/com/azure/security/keyvault/secrets/BackupAndRestoreOperations.java
+[sample_BackupRestoreAsync]: src/samples/java/com/azure/security/keyvault/secrets/BackupAndRestoreOperationsAsync.java
+[sample_ManageDeleted]: src/samples/java/com/azure/security/keyvault/secrets/ManagingDeletedSecrets.java
+[sample_ManageDeletedAsync]: src/samples/java/com/azure/security/keyvault/secrets/ManagingDeletedSecretsAsync.java

@@ -4,10 +4,12 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.ListSharesOptions;
+
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -76,7 +78,7 @@ public class FileServiceJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileServiceClient.instantiation.credential
         FileServiceClient fileServiceClient = new FileServiceClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQuery("${SASTokenQueryParams}"))
+            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
             .buildClient();
         // END: com.azure.storage.file.fileServiceClient.instantiation.credential
         return fileServiceClient;
@@ -90,7 +92,7 @@ public class FileServiceJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.instantiation.credential
         FileServiceAsyncClient fileServiceAsyncClient = new FileServiceClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQuery("${SASTokenQueryParams}"))
+            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
             .buildAsyncClient();
         // END: com.azure.storage.file.fileServiceAsyncClient.instantiation.credential
         return fileServiceAsyncClient;

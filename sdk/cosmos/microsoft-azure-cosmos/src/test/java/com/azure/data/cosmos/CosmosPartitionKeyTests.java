@@ -62,17 +62,17 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                 .withRequestTimeoutInMillis(connectionPolicy.requestTimeoutInMillis());
 
         HttpClient httpClient = HttpClient.createFixed(httpClientConfig);
-        
+
         // CREATE a non partitioned collection using the rest API and older version
         String resourceId = Paths.DATABASES_PATH_SEGMENT + "/" + createdDatabase.id();
         String path = Paths.DATABASES_PATH_SEGMENT + "/" + createdDatabase.id() + "/" + Paths.COLLECTIONS_PATH_SEGMENT + "/";
         DocumentCollection collection = new DocumentCollection();
         collection.id(NON_PARTITIONED_CONTAINER_ID);
-        
+
         HashMap<String, String> headers = new HashMap<String, String>();
         headers.put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
         headers.put(HttpConstants.HttpHeaders.VERSION, "2018-09-17");
-        BaseAuthorizationTokenProvider base = new BaseAuthorizationTokenProvider(TestConfigurations.MASTER_KEY);
+        BaseAuthorizationTokenProvider base = new BaseAuthorizationTokenProvider(new CosmosKeyCredential(TestConfigurations.MASTER_KEY));
         String authorization = base.generateKeyAuthorizationSignature(HttpConstants.HttpMethods.POST, resourceId, Paths.COLLECTIONS_PATH_SEGMENT, headers);
         headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, URLEncoder.encode(authorization, "UTF-8"));
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create,
@@ -87,7 +87,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         httpRequest.withBody(request.getContent());
         String body = httpClient.send(httpRequest).block().bodyAsString().block();
         assertThat(body).contains("\"id\":\"" + NON_PARTITIONED_CONTAINER_ID + "\"");
-        
+
         // CREATE a document in the non partitioned collection using the rest API and older version
         resourceId = Paths.DATABASES_PATH_SEGMENT + "/" + createdDatabase.id() + "/" + Paths.COLLECTIONS_PATH_SEGMENT + "/" + collection.id();
         path = Paths.DATABASES_PATH_SEGMENT + "/" + createdDatabase.id() + "/" + Paths.COLLECTIONS_PATH_SEGMENT

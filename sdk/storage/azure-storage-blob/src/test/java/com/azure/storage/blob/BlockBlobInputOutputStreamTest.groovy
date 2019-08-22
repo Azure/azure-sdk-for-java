@@ -1,5 +1,7 @@
 package com.azure.storage.blob
 
+import com.azure.storage.common.Constants
+
 class BlockBlobInputOutputStreamTest extends APISpec {
     BlockBlobClient bc
 

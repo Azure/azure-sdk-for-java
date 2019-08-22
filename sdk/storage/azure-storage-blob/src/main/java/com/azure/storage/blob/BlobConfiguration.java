@@ -4,5 +4,5 @@ package com.azure.storage.blob;
 
 class BlobConfiguration {
     static final String NAME = "azure-storage-blob";
-    static final String VERSION = "12.0.0-preview.2";
+    static final String VERSION = "12.0.0-preview.3";
 }

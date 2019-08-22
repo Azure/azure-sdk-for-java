@@ -57,5 +57,6 @@ abstract class Ecdsa extends AsymmetricSignatureAlgorithm {
                 throw new IllegalArgumentException("Invalid digest length.");
             }
         }
+
     }
 }

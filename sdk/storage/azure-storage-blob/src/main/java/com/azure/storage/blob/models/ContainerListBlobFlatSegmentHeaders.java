@@ -24,6 +24,13 @@ public final class ContainerListBlobFlatSegmentHeaders {
     private String contentType;
 
     /*
+     * If a client request id header is sent in the request, this header will
+     * be present in the response with the same value.
+     */
+    @JsonProperty(value = "x-ms-client-request-id")
+    private String clientRequestId;
+
+    /*
      * This header uniquely identifies the request that was made and can be
      * used for troubleshooting the request.
      */
@@ -70,6 +77,30 @@ public final class ContainerListBlobFlatSegmentHeaders {
      */
     public ContainerListBlobFlatSegmentHeaders contentType(String contentType) {
         this.contentType = contentType;
+        return this;
+    }
+
+    /**
+     * Get the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
+     *
+     * @return the clientRequestId value.
+     */
+    public String clientRequestId() {
+        return this.clientRequestId;
+    }
+
+    /**
+     * Set the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
+     *
+     * @param clientRequestId the clientRequestId value to set.
+     * @return the ContainerListBlobFlatSegmentHeaders object itself.
+     */
+    public ContainerListBlobFlatSegmentHeaders clientRequestId(String clientRequestId) {
+        this.clientRequestId = clientRequestId;
         return this;
     }
 

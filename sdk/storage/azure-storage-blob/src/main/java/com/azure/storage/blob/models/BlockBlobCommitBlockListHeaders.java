@@ -34,12 +34,27 @@ public final class BlockBlobCommitBlockListHeaders {
     private DateTimeRfc1123 lastModified;
 
     /*
-     * If the blob has an MD5 hash and this operation is to read the full blob,
-     * this response header is returned so that the client can check for
-     * message content integrity.
+     * This header is returned so that the client can check for message content
+     * integrity. This header refers to the content of the request, meaning, in
+     * this case, the list of blocks, and not the content of the blob itself.
      */
     @JsonProperty(value = "Content-MD5")
     private byte[] contentMD5;
+
+    /*
+     * This header is returned so that the client can check for message content
+     * integrity. This header refers to the content of the request, meaning, in
+     * this case, the list of blocks, and not the content of the blob itself.
+     */
+    @JsonProperty(value = "x-ms-content-crc64")
+    private byte[] xMsContentCrc64;
+
+    /*
+     * If a client request id header is sent in the request, this header will
+     * be present in the response with the same value.
+     */
+    @JsonProperty(value = "x-ms-client-request-id")
+    private String clientRequestId;
 
     /*
      * This header uniquely identifies the request that was made and can be
@@ -86,6 +101,13 @@ public final class BlockBlobCommitBlockListHeaders {
      */
     @JsonProperty(value = "x-ms-encryption-key-sha256")
     private String encryptionKeySha256;
+
+    /*
+     * The encryption scope used to encrypt the blob. This header is only
+     * returned when the blob was encrypted with customer specified encryption.
+     */
+    @JsonProperty(value = "x-ms-encryption-scope")
+    private String encryptionScope;
 
     /*
      * The errorCode property.
@@ -151,9 +173,10 @@ public final class BlockBlobCommitBlockListHeaders {
     }
 
     /**
-     * Get the contentMD5 property: If the blob has an MD5 hash and this
-     * operation is to read the full blob, this response header is returned so
-     * that the client can check for message content integrity.
+     * Get the contentMD5 property: This header is returned so that the client
+     * can check for message content integrity. This header refers to the
+     * content of the request, meaning, in this case, the list of blocks, and
+     * not the content of the blob itself.
      *
      * @return the contentMD5 value.
      */
@@ -162,15 +185,66 @@ public final class BlockBlobCommitBlockListHeaders {
     }
 
     /**
-     * Set the contentMD5 property: If the blob has an MD5 hash and this
-     * operation is to read the full blob, this response header is returned so
-     * that the client can check for message content integrity.
+     * Set the contentMD5 property: This header is returned so that the client
+     * can check for message content integrity. This header refers to the
+     * content of the request, meaning, in this case, the list of blocks, and
+     * not the content of the blob itself.
      *
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
     public BlockBlobCommitBlockListHeaders contentMD5(byte[] contentMD5) {
         this.contentMD5 = ImplUtils.clone(contentMD5);
+        return this;
+    }
+
+    /**
+     * Get the xMsContentCrc64 property: This header is returned so that the
+     * client can check for message content integrity. This header refers to
+     * the content of the request, meaning, in this case, the list of blocks,
+     * and not the content of the blob itself.
+     *
+     * @return the xMsContentCrc64 value.
+     */
+    public byte[] xMsContentCrc64() {
+        return ImplUtils.clone(this.xMsContentCrc64);
+    }
+
+    /**
+     * Set the xMsContentCrc64 property: This header is returned so that the
+     * client can check for message content integrity. This header refers to
+     * the content of the request, meaning, in this case, the list of blocks,
+     * and not the content of the blob itself.
+     *
+     * @param xMsContentCrc64 the xMsContentCrc64 value to set.
+     * @return the BlockBlobCommitBlockListHeaders object itself.
+     */
+    public BlockBlobCommitBlockListHeaders xMsContentCrc64(byte[] xMsContentCrc64) {
+        this.xMsContentCrc64 = ImplUtils.clone(xMsContentCrc64);
+        return this;
+    }
+
+    /**
+     * Get the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
+     *
+     * @return the clientRequestId value.
+     */
+    public String clientRequestId() {
+        return this.clientRequestId;
+    }
+
+    /**
+     * Set the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
+     *
+     * @param clientRequestId the clientRequestId value to set.
+     * @return the BlockBlobCommitBlockListHeaders object itself.
+     */
+    public BlockBlobCommitBlockListHeaders clientRequestId(String clientRequestId) {
+        this.clientRequestId = clientRequestId;
         return this;
     }
 
@@ -318,6 +392,30 @@ public final class BlockBlobCommitBlockListHeaders {
      */
     public BlockBlobCommitBlockListHeaders encryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
+        return this;
+    }
+
+    /**
+     * Get the encryptionScope property: The encryption scope used to encrypt
+     * the blob. This header is only returned when the blob was encrypted with
+     * customer specified encryption.
+     *
+     * @return the encryptionScope value.
+     */
+    public String encryptionScope() {
+        return this.encryptionScope;
+    }
+
+    /**
+     * Set the encryptionScope property: The encryption scope used to encrypt
+     * the blob. This header is only returned when the blob was encrypted with
+     * customer specified encryption.
+     *
+     * @param encryptionScope the encryptionScope value to set.
+     * @return the BlockBlobCommitBlockListHeaders object itself.
+     */
+    public BlockBlobCommitBlockListHeaders encryptionScope(String encryptionScope) {
+        this.encryptionScope = encryptionScope;
         return this;
     }
 

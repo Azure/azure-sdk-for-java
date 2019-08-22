@@ -4,6 +4,7 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.AccessPolicy;
@@ -13,6 +14,7 @@ import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.ShareSnapshotInfo;
 import com.azure.storage.file.models.ShareStatistics;
 import com.azure.storage.file.models.SignedIdentifier;
+
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -86,7 +88,7 @@ public class ShareJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareClient.instantiation.credential
         ShareClient shareClient = new ShareClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQuery("${SASTokenQueryParams}"))
+            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
             .shareName("myshare")
             .buildClient();
         // END: com.azure.storage.file.shareClient.instantiation.credential
@@ -101,7 +103,7 @@ public class ShareJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareAsyncClient.instantiation.credential
         ShareAsyncClient shareAsyncClient = new ShareClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQuery("${SASTokenQueryParams}"))
+            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
             .shareName("myshare")
             .buildAsyncClient();
         // END: com.azure.storage.file.shareAsyncClient.instantiation.credential
@@ -264,7 +266,7 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#createSnapshot()()}
+     * Generates a code sample for using {@link ShareClient#createSnapshot()}
      */
     public void createSnapshot() {
         ShareClient shareClient = createClientWithSASToken();
@@ -368,7 +370,7 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#deleteDirectory(String)()}
+     * Generates a code sample for using {@link ShareClient#deleteDirectory(String)}
      */
     public void deleteDirectory() {
         ShareClient shareClient = createClientWithSASToken();
@@ -379,7 +381,7 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#deleteDirectory(String)()}
+     * Generates a code sample for using {@link ShareAsyncClient#deleteDirectory(String)}
      */
     public void deleteDirectoryAsync() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
@@ -393,7 +395,7 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#deleteFile(String)()}
+     * Generates a code sample for using {@link ShareClient#deleteFile(String)}
      */
     public void deleteFile() {
         ShareClient shareClient = createClientWithSASToken();
@@ -404,7 +406,7 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#deleteFile(String)()}
+     * Generates a code sample for using {@link ShareAsyncClient#deleteFile(String)}
      */
     public void deleteFileAsync() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
@@ -634,7 +636,7 @@ public class ShareJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareClient.getSnapshotId
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         ShareClient shareClient = new ShareClientBuilder().endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQuery("${SASToken}"))
+            .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
             .shareName("myshare")
             .snapshot(currentTime.toString())
             .buildClient();
@@ -649,7 +651,7 @@ public class ShareJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareAsyncClient.getSnapshotId
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         ShareAsyncClient shareAysncClient = new ShareClientBuilder().endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQuery("${SASToken}"))
+            .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
             .shareName("myshare")
             .snapshot(currentTime.toString())
             .buildAsyncClient();

@@ -44,13 +44,13 @@ public class TokenResolverTest extends TestSuiteBase {
     private class UserClass {
         public String userName;
         public int userId;
-        
+
         public UserClass(String userName, int userId) {
             this.userName = userName;
             this.userId = userId;
         }
     }
-    
+
     private Database createdDatabase;
     private DocumentCollection createdCollection;
     private User userWithReadPermission;
@@ -296,12 +296,12 @@ public class TokenResolverTest extends TestSuiteBase {
                     "        }" +
                     "    }'" +
                     "}");
-            
+
             Flux<ResourceResponse<StoredProcedure>> createObservable = asyncClientWithTokenResolver.createStoredProcedure(createdCollection.selfLink(), sproc, null);
             ResourceResponseValidator<StoredProcedure> createSucessValidator = new ResourceResponseValidator.Builder<StoredProcedure>()
                     .withId(sprocId).build();
             validateSuccess(createObservable, createSucessValidator);
-            
+
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(""));
             String sprocLink = "dbs/" + createdDatabase.id() + "/colls/" + createdCollection.id() + "/sprocs/" + sprocId;
@@ -317,7 +317,7 @@ public class TokenResolverTest extends TestSuiteBase {
         AsyncDocumentClient asyncClientWithTokenResolver = null;
         String id1 = UUID.randomUUID().toString();
         String id2 = UUID.randomUUID().toString();
-        
+
         try {
             asyncClientWithTokenResolver = buildClient(connectionMode, PermissionMode.ALL);
             Document document1 = asyncClientWithTokenResolver.createDocument(createdCollection.selfLink(), new Document("{'id': '" + id1 + "'}"), null, false)
@@ -330,7 +330,7 @@ public class TokenResolverTest extends TestSuiteBase {
             expectedIds.add(rid1);
             expectedIds.add(rid2);
             String query = "SELECT * FROM r WHERE r._rid=\"" + rid1 + "\" or r._rid=\"" + rid2 + "\"";
-            
+
             FeedOptions options = new FeedOptions();
             options.enableCrossPartitionQuery(true);
             Flux<FeedResponse<Document>> queryObservable = asyncClientWithTokenResolver.queryDocuments(createdCollection.selfLink(), query, options);
@@ -365,7 +365,7 @@ public class TokenResolverTest extends TestSuiteBase {
         try {
             asyncClientWithTokenResolver = buildClient(connectionMode, PermissionMode.ALL);
             OffsetDateTime befTime = OffsetDateTime.now();
-            Thread.sleep(1000);
+            Thread.sleep(1500);
 
             document1 = asyncClientWithTokenResolver
                     .createDocument(createdCollection.selfLink(), document1, null, false).single().block()
@@ -397,7 +397,7 @@ public class TokenResolverTest extends TestSuiteBase {
     @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void verifyRuntimeExceptionWhenUserModifiesProperties(ConnectionMode connectionMode) {
         AsyncDocumentClient asyncClientWithTokenResolver = null;
-        
+
         try {
             ConnectionPolicy connectionPolicy = new ConnectionPolicy();
             connectionPolicy.connectionMode(connectionMode);
@@ -412,12 +412,12 @@ public class TokenResolverTest extends TestSuiteBase {
             options.setProperties(new HashMap<String, Object>());
             Flux<ResourceResponse<DocumentCollection>> readObservable = asyncClientWithTokenResolver.readCollection(createdCollection.selfLink(), options);
             FailureValidator validator = new FailureValidator.Builder().withRuntimeExceptionClass(UnsupportedOperationException.class).build();
-            validateFailure(readObservable, validator);            
+            validateFailure(readObservable, validator);
         } finally {
             safeClose(asyncClientWithTokenResolver);
         }
     }
-    
+
     @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void verifyBlockListedUserThrows(ConnectionMode connectionMode) {
         String field = "user";
@@ -434,7 +434,7 @@ public class TokenResolverTest extends TestSuiteBase {
                     .withConsistencyLevel(ConsistencyLevel.SESSION)
                     .withTokenResolver(getTokenResolverWithBlockList(PermissionMode.READ, field, blockListedUser, errorMessage))
                     .build();
-            
+
             RequestOptions options = new RequestOptions();
             HashMap<String, Object> properties = new HashMap<String, Object>();
             properties.put(field, blockListedUser);
@@ -518,14 +518,14 @@ public class TokenResolverTest extends TestSuiteBase {
             return null;
         };
     }
-    
+
     private TokenResolver getTokenResolverWithBlockList(PermissionMode permissionMode,  String field, UserClass blockListedUser, String errorMessage) {
         return (String requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
             UserClass currentUser = null;
             if (properties != null && properties.get(field) != null) {
                 currentUser = (UserClass) properties.get(field);
             }
-            
+
             if (resourceType == CosmosResourceType.System) {
                 return readPermission.getToken();
             } else if (currentUser != null &&

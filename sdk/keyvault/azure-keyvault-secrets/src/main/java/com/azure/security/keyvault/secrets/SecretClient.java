@@ -6,6 +6,7 @@ package com.azure.security.keyvault.secrets;
 import com.azure.core.exception.HttpRequestException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.annotation.ServiceClient;
@@ -25,6 +26,7 @@ import java.util.List;
  * {@codesnippet com.azure.security.keyvault.secretclient.sync.construct}
  *
  * @see SecretClientBuilder
+ * @see PagedIterable
  */
 @ServiceClient(builder = SecretClientBuilder.class, serviceInterfaces = SecretService.class)
 public final class SecretClient {
@@ -473,9 +475,14 @@ public final class SecretClient {
      * call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the {@link Secret secret} with value included of its latest version.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets}
      *
-     * @return A {@link List} containing {@link SecretBase} of all the secrets in the vault. The {@link SecretBase} contains all the information about the secret, except its value.
+     * <p><strong>Code Samples to iterate over secrets by page</strong></p>
+     * <p>It is possible to get full secrets with values from this information. Iterate over all the {@link SecretBase secret} by page and
+     * call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the {@link Secret secret} with value included of its latest version.</p>
+     * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets.iterableByPage}
+     *
+     * @return {@link PagedIterable} of {@link SecretBase} of all the secrets in the vault. The {@link SecretBase} contains all the information about the secret, except its value.
      */
-    public Iterable<SecretBase> listSecrets() {
+    public PagedIterable<SecretBase> listSecrets() {
         return listSecrets(Context.NONE);
     }
 
@@ -484,15 +491,16 @@ public final class SecretClient {
      * in the list is represented by {@link SecretBase} as only the base secret identifier and its attributes are
      * provided in the response. The secret values and individual secret versions are not listed in the response. This operation requires the {@code secrets/list} permission.
      *
+     * <p><strong>Code Samples to iterate over secrets by page</strong></p>
      * <p>It is possible to get full secrets with values from this information. Loop over the {@link SecretBase secret} and
      * call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the {@link Secret secret} with value included of its latest version.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets#Context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.*
-     * @return A {@link List} containing {@link SecretBase} of all the secrets in the vault. The {@link SecretBase} contains all the information about the secret, except its value.
+     * @return {@link PagedIterable} of {@link SecretBase} of all the secrets in the vault. The {@link SecretBase} contains all the information about the secret, except its value.
      */
-    public Iterable<SecretBase> listSecrets(Context context) {
-        return client.listSecrets(context).toIterable();
+    public PagedIterable<SecretBase> listSecrets(Context context) {
+        return new PagedIterable<>(client.listSecrets(context));
     }
 
     /**
@@ -504,10 +512,10 @@ public final class SecretClient {
      * {@codesnippet com.azure.security.keyvault.secretclient.listDeletedSecrets#Context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link List} containing all of the {@link DeletedSecret deleted secrets} in the vault.
+     * @return {@link PagedIterable} of all of the {@link DeletedSecret deleted secrets} in the vault.
      */
-    public Iterable<DeletedSecret> listDeletedSecrets(Context context) {
-        return client.listDeletedSecrets(context).toIterable();
+    public PagedIterable<DeletedSecret> listDeletedSecrets(Context context) {
+        return new PagedIterable<>(client.listDeletedSecrets(context));
     }
 
     /**
@@ -518,9 +526,13 @@ public final class SecretClient {
      * <p>Lists the deleted secrets in the key vault and for each deleted secret prints out its recovery id.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listDeletedSecrets}
      *
-     * @return A {@link List} containing all of the {@link DeletedSecret deleted secrets} in the vault.
+     * <p><strong>Code Samples to iterate over secrets by page</strong></p>
+     * <p>Iterate over Lists the deleted secrets by page in the key vault and for each deleted secret prints out its recovery id.</p>
+     * {@codesnippet com.azure.security.keyvault.secretclient.listDeletedSecrets.iterableByPage}
+     *
+     * @return {@link PagedIterable} of all of the {@link DeletedSecret deleted secrets} in the vault.
      */
-    public Iterable<DeletedSecret> listDeletedSecrets() {
+    public PagedIterable<DeletedSecret> listDeletedSecrets() {
         return listDeletedSecrets(Context.NONE);
     }
 
@@ -536,9 +548,9 @@ public final class SecretClient {
      * @param name The name of the secret.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
-     * @return A {@link List} containing {@link SecretBase} of all the versions of the specified secret in the vault. List is empty if secret with {@code name} does not exist in key vault
+     * @return {@link PagedIterable} of {@link SecretBase} of all the versions of the specified secret in the vault. List is empty if secret with {@code name} does not exist in key vault
      */
-    public Iterable<SecretBase> listSecretVersions(String name) {
+    public PagedIterable<SecretBase> listSecretVersions(String name) {
         return listSecretVersions(name, Context.NONE);
     }
 
@@ -551,13 +563,19 @@ public final class SecretClient {
      * call {@link SecretClient#getSecret(SecretBase)} . This will return the {@link Secret} secrets with values included of the specified versions.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string-Context}
      *
+     *
+     * <p><strong>Code Samples to iterate over secret versions by page</strong></p>
+     * <p>It is possible to get full Secrets with values for each version from this information. Iterate over all the {@link SecretBase secret} by each page and
+     * call {@link SecretClient#getSecret(SecretBase)} . This will return the {@link Secret} secrets with values included of the specified versions.</p>
+     * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string-Context-iterableByPage}
+     *
      * @param name The name of the secret.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
-     * @return A {@link List} containing {@link SecretBase} of all the versions of the specified secret in the vault. List is empty if secret with {@code name} does not exist in key vault
+     * @return {@link PagedIterable} of {@link SecretBase} of all the versions of the specified secret in the vault. List is empty if secret with {@code name} does not exist in key vault
      */
-    public Iterable<SecretBase> listSecretVersions(String name, Context context) {
-        return client.listSecretVersions(name, context).toIterable();
+    public PagedIterable<SecretBase> listSecretVersions(String name, Context context) {
+        return new PagedIterable<>(client.listSecretVersions(name, context));
     }
 }

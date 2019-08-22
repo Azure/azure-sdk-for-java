@@ -4,6 +4,8 @@ package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.StorageException;
+import com.azure.storage.common.Constants;
 import reactor.netty.ByteBufFlux;
 
 import java.io.IOException;
@@ -82,13 +84,10 @@ public final class BlobInputStream extends InputStream {
     /**
      * Initializes a new instance of the BlobInputStream class.
      *
-     * @param blobClient
-     *            A {@link BlobClient} object which represents the blob that this stream is associated with.
-     * @param accessCondition
-     *            An {@link BlobAccessConditions} object which represents the access conditions for the blob.
+     * @param blobClient A {@link BlobClient} object which represents the blob that this stream is associated with.
+     * @param accessCondition An {@link BlobAccessConditions} object which represents the access conditions for the blob.
      *
-     * @throws StorageException
-     *             An exception representing any error which occurred during the operation.
+     * @throws StorageException An exception representing any error which occurred during the operation.
      */
     BlobInputStream(final BlobAsyncClient blobClient, final BlobAccessConditions accessCondition) throws StorageException {
         this(blobClient, 0, null, accessCondition);
@@ -99,17 +98,12 @@ public final class BlobInputStream extends InputStream {
      * Note that if {@code blobRangeOffset} is not {@code 0} or {@code blobRangeLength} is not {@code null}, there will
      * be no content MD5 verification.
      *
-     * @param blobClient
-     *            A {@link BlobClient} object which represents the blob that this stream is associated with.
-     * @param blobRangeOffset
-     *            The offset of blob data to begin stream.
-     * @param blobRangeLength
-     *            How much data the stream should return after blobRangeOffset.
-     * @param accessCondition
-     *            An {@link BlobAccessConditions} object which represents the access conditions for the blob.
+     * @param blobClient A {@link BlobClient} object which represents the blob that this stream is associated with.
+     * @param blobRangeOffset The offset of blob data to begin stream.
+     * @param blobRangeLength How much data the stream should return after blobRangeOffset.
+     * @param accessCondition An {@link BlobAccessConditions} object which represents the access conditions for the blob.
      *
-     * @throws StorageException
-     *             An exception representing any error which occurred during the operation.
+     * @throws StorageException An exception representing any error which occurred during the operation.
      */
     BlobInputStream(final BlobAsyncClient blobClient, long blobRangeOffset, Long blobRangeLength,
                               final BlobAccessConditions accessCondition)
@@ -126,7 +120,7 @@ public final class BlobInputStream extends InputStream {
             throw new IndexOutOfBoundsException();
         }
 
-        BlobProperties properties = blobClient.getProperties().block().value();
+        BlobProperties properties = blobClient.getProperties().block();
         this.streamLength = blobRangeLength == null
             ? properties.blobSize() - this.blobRangeOffset
             : Math.min(properties.blobSize() - this.blobRangeOffset, blobRangeLength);
@@ -143,8 +137,7 @@ public final class BlobInputStream extends InputStream {
      *         over)
      *         from this input stream without blocking, or 0 when it reaches the end of the input stream.
      *
-     * @throws IOException
-     *             If an I/O error occurs.
+     * @throws IOException If an I/O error occurs.
      */
     @Override
     public synchronized int available() throws IOException {
@@ -154,8 +147,7 @@ public final class BlobInputStream extends InputStream {
     /**
      * Helper function to check if the stream is faulted, if it is it surfaces the exception.
      *
-     * @throws IOException
-     *             If an I/O error occurs. In particular, an IOException may be thrown if the output stream has been
+     * @throws IOException If an I/O error occurs. In particular, an IOException may be thrown if the output stream has been
      *             closed.
      */
     private synchronized void checkStreamState() throws IOException {
@@ -167,8 +159,7 @@ public final class BlobInputStream extends InputStream {
     /**
      * Closes this input stream and releases any system resources associated with the stream.
      *
-     * @throws IOException
-     *             If an I/O error occurs.
+     * @throws IOException If an I/O error occurs.
      */
     @Override
     public synchronized void close() throws IOException {
@@ -181,11 +172,9 @@ public final class BlobInputStream extends InputStream {
      * Dispatches a read operation of N bytes. When using sparse page blobs, the page ranges are evaluated and zero
      * bytes may be generated on the client side for some ranges that do not exist.
      *
-     * @param readLength
-     *            An <code>int</code> which represents the number of bytes to read.
+     * @param readLength An <code>int</code> which represents the number of bytes to read.
      *
-     * @throws IOException
-     *             If an I/O error occurs.
+     * @throws IOException If an I/O error occurs.
      */
     private synchronized void dispatchRead(final int readLength) throws IOException {
         try {
@@ -206,8 +195,7 @@ public final class BlobInputStream extends InputStream {
      * Marks the current position in this input stream. A subsequent call to the reset method repositions this stream at
      * the last marked position so that subsequent reads re-read the same bytes.
      *
-     * @param readlimit
-     *            An <code>int</code> which represents the maximum limit of bytes that can be read before the mark
+     * @param readlimit An <code>int</code> which represents the maximum limit of bytes that can be read before the mark
      *            position becomes invalid.
      */
     @Override
@@ -237,8 +225,7 @@ public final class BlobInputStream extends InputStream {
      * @return An <code>int</code> which represents the total number of bytes read into the buffer, or -1 if
      *         there is no more data because the end of the stream has been reached.
      *
-     * @throws IOException
-     *             If an I/O error occurs.
+     * @throws IOException If an I/O error occurs.
      */
     @Override
     public int read() throws IOException {
@@ -274,14 +261,11 @@ public final class BlobInputStream extends InputStream {
      *
      * <code>read(b, 0, b.length)</code>
      *
-     * @param b
-     *            A <code>byte</code> array which represents the buffer into which the data is read.
+     * @param b A <code>byte</code> array which represents the buffer into which the data is read.
      *
-     * @throws IOException
-     *             If the first byte cannot be read for any reason other than the end of the file, if the input stream
+     * @throws IOException If the first byte cannot be read for any reason other than the end of the file, if the input stream
      *             has been closed, or if some other I/O error occurs.
-     * @throws NullPointerException
-     *             If the <code>byte</code> array <code>b</code> is null.
+     * @throws NullPointerException If the <code>byte</code> array <code>b</code> is null.
      */
     @Override
     public int read(final byte[] b) throws IOException {
@@ -322,24 +306,18 @@ public final class BlobInputStream extends InputStream {
      * provide a
      * more efficient implementation of this method.
      *
-     * @param b
-     *            A <code>byte</code> array which represents the buffer into which the data is read.
-     * @param off
-     *            An <code>int</code> which represents the start offset in the <code>byte</code> array at which the data
+     * @param b A <code>byte</code> array which represents the buffer into which the data is read.
+     * @param off An <code>int</code> which represents the start offset in the <code>byte</code> array at which the data
      *            is written.
-     * @param len
-     *            An <code>int</code> which represents the maximum number of bytes to read.
+     * @param len An <code>int</code> which represents the maximum number of bytes to read.
      *
      * @return An <code>int</code> which represents the total number of bytes read into the buffer, or -1 if
      *         there is no more data because the end of the stream has been reached.
      *
-     * @throws IOException
-     *             If the first byte cannot be read for any reason other than end of file, or if the input stream has
+     * @throws IOException If the first byte cannot be read for any reason other than end of file, or if the input stream has
      *             been closed, or if some other I/O error occurs.
-     * @throws NullPointerException
-     *             If the <code>byte</code> array <code>b</code> is null.
-     * @throws IndexOutOfBoundsException
-     *             If <code>off</code> is negative, <code>len</code> is negative, or <code>len</code> is greater than
+     * @throws NullPointerException If the <code>byte</code> array <code>b</code> is null.
+     * @throws IndexOutOfBoundsException If <code>off</code> is negative, <code>len</code> is negative, or <code>len</code> is greater than
      *             <code>b.length - off</code>.
      */
     @Override
@@ -354,19 +332,15 @@ public final class BlobInputStream extends InputStream {
     /**
      * Performs internal read to the given byte buffer.
      *
-     * @param b
-     *            A <code>byte</code> array which represents the buffer into which the data is read.
-     * @param off
-     *            An <code>int</code> which represents the start offset in the <code>byte</code> array <code>b</code> at
+     * @param b A <code>byte</code> array which represents the buffer into which the data is read.
+     * @param off An <code>int</code> which represents the start offset in the <code>byte</code> array <code>b</code> at
      *            which the data is written.
-     * @param len
-     *            An <code>int</code> which represents the maximum number of bytes to read.
+     * @param len An <code>int</code> which represents the maximum number of bytes to read.
      *
      * @return An <code>int</code> which represents the total number of bytes read into the buffer, or -1 if
      *         there is no more data because the end of the stream has been reached.
      *
-     * @throws IOException
-     *             If the first byte cannot be read for any reason other than end of file, or if the input stream has
+     * @throws IOException If the first byte cannot be read for any reason other than end of file, or if the input stream has
      *             been closed, or if some other I/O error occurs.
      */
     private synchronized int readInternal(final byte[] b, final int off, int len) throws IOException {
@@ -405,8 +379,7 @@ public final class BlobInputStream extends InputStream {
     /**
      * Repositions the stream to the given absolute byte offset.
      *
-     * @param absolutePosition
-     *            A <code>long</code> which represents the absolute byte offset withitn the stream reposition.
+     * @param absolutePosition A <code>long</code> which represents the absolute byte offset withitn the stream reposition.
      */
     private synchronized void reposition(final long absolutePosition) {
         this.currentAbsoluteReadPosition = absolutePosition;
@@ -418,8 +391,7 @@ public final class BlobInputStream extends InputStream {
      * Repositions this stream to the position at the time the mark method was last called on this input stream. Note
      * repositioning the blob read stream will disable blob MD5 checking.
      *
-     * @throws IOException
-     *             If this stream has not been marked or if the mark has been invalidated.
+     * @throws IOException If this stream has not been marked or if the mark has been invalidated.
      */
     @Override
     public synchronized void reset() throws IOException {
@@ -437,8 +409,7 @@ public final class BlobInputStream extends InputStream {
      *
      * Note repositioning the blob read stream will disable blob MD5 checking.
      *
-     * @param n
-     *            A <code>long</code> which represents the number of bytes to skip.
+     * @param n A <code>long</code> which represents the number of bytes to skip.
      */
     @Override
     public synchronized long skip(final long n) throws IOException {

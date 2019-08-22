@@ -5,6 +5,7 @@ package com.azure.data.cosmos.internal.directconnectivity;
 
 import com.azure.data.cosmos.ConflictException;
 import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.CosmosKeyCredential;
 import com.azure.data.cosmos.ForbiddenException;
 import com.azure.data.cosmos.GoneException;
 import com.azure.data.cosmos.LockedException;
@@ -17,10 +18,6 @@ import com.azure.data.cosmos.RequestTimeoutException;
 import com.azure.data.cosmos.RetryWithException;
 import com.azure.data.cosmos.ServiceUnavailableException;
 import com.azure.data.cosmos.UnauthorizedException;
-import com.azure.data.cosmos.internal.directconnectivity.RntbdTransportClient;
-import com.azure.data.cosmos.internal.directconnectivity.ServerProperties;
-import com.azure.data.cosmos.internal.directconnectivity.RntbdTransportClient;
-import com.azure.data.cosmos.internal.directconnectivity.ServerProperties;
 import com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdContext;
 import com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdContextNegotiator;
 import com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdContextRequest;
@@ -611,7 +608,7 @@ public final class RntbdTransportClientTest {
         try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext)) {
 
             final BaseAuthorizationTokenProvider authorizationTokenProvider = new BaseAuthorizationTokenProvider(
-                RntbdTestConfiguration.AccountKey
+                new CosmosKeyCredential(RntbdTestConfiguration.AccountKey)
             );
 
             final URI physicalAddress = new URI("rntbd://"

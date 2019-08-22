@@ -13,7 +13,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
     /**
      * Specifies the Azure Active Directory endpoint to acquire tokens.
      * @param authorityHost the Azure Active Directory endpoint
-     * @return {@link <T>} itself
+     * @return itself
      */
     @SuppressWarnings("unchecked")
     public T authorityHost(String authorityHost) {
@@ -24,7 +24,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
     /**
      * Sets the client ID of the application.
      * @param clientId the client ID of the application.
-     * @return {@link <T>} itself
+     * @return itself
      */
     @SuppressWarnings("unchecked")
     public T clientId(String clientId) {

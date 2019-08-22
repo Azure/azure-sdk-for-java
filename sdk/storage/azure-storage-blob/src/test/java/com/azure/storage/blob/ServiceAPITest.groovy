@@ -3,18 +3,33 @@
 
 package com.azure.storage.blob
 
-
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.rest.Response
-import com.azure.storage.blob.models.*
+import com.azure.storage.blob.models.ContainerItem
+import com.azure.storage.blob.models.ContainerListDetails
+import com.azure.storage.blob.models.CorsRule
+import com.azure.storage.blob.models.ListContainersOptions
+import com.azure.storage.blob.models.Logging
+import com.azure.storage.blob.models.Metadata
+import com.azure.storage.blob.models.Metrics
+import com.azure.storage.blob.models.RetentionPolicy
+import com.azure.storage.blob.models.StaticWebsite
+import com.azure.storage.blob.models.StorageAccountInfo
+import com.azure.storage.blob.models.StorageException
+import com.azure.storage.blob.models.StorageServiceProperties
+import com.azure.storage.blob.models.StorageServiceStats
+import com.azure.storage.blob.models.UserDelegationKey
 import com.azure.storage.common.policy.RequestRetryOptions
 import org.junit.Assume
 
+import java.time.Duration
 import java.time.OffsetDateTime
+import java.time.temporal.TemporalAmount
+import java.time.temporal.TemporalUnit
 
 class ServiceAPITest extends APISpec {
     def setup() {
-        RetentionPolicy disabled = new RetentionPolicy().enabled(false)
+        def disabled = new RetentionPolicy().enabled(false)
         primaryBlobServiceClient.setProperties(new StorageServiceProperties()
             .staticWebsite(new StaticWebsite().enabled(false))
             .deleteRetentionPolicy(disabled)
@@ -25,7 +40,7 @@ class ServiceAPITest extends APISpec {
                 .retentionPolicy(disabled))
             .logging(new Logging().version("1.0")
                 .retentionPolicy(disabled))
-            .defaultServiceVersion("2018-03-28"), null)
+            .defaultServiceVersion("2018-03-28"))
     }
 
     def cleanup() {
@@ -41,7 +56,7 @@ class ServiceAPITest extends APISpec {
                 .retentionPolicy(disabled))
                 .logging(new Logging().version("1.0")
                 .retentionPolicy(disabled))
-                .defaultServiceVersion("2018-03-28"), null)
+                .defaultServiceVersion("2018-03-28"))
     }
 
     def "List containers"() {
@@ -89,7 +104,7 @@ class ServiceAPITest extends APISpec {
         setup:
         Metadata metadata = new Metadata()
         metadata.put("foo", "bar")
-        cc = primaryBlobServiceClient.createContainer("aaa" + generateContainerName(), metadata, null).value()
+        cc = primaryBlobServiceClient.createContainerWithResponse("aaa" + generateContainerName(), metadata, null, null).value()
 
         expect:
         primaryBlobServiceClient.listContainers(new ListContainersOptions()
@@ -98,31 +113,54 @@ class ServiceAPITest extends APISpec {
             .iterator().next().metadata() == metadata
 
         // Container with prefix "aaa" will not be cleaned up by normal test cleanup.
-        cc.delete().statusCode() == 202
+        cc.deleteWithResponse(null, null, null).statusCode() == 202
     }
 
-    // TODO (alzimmer): Turn this test back on when listing by page is implemented
-    /*def "List containers maxResults"() {
+    def "List containers maxResults"() {
         setup:
-        for (int i = 0; i < 11; i++) {
-            primaryBlobServiceClient.createContainer(generateContainerName())
+        def NUM_CONTAINERS = 5
+        def PAGE_RESULTS = 3
+
+        def containers = [] as Collection<ContainerClient>
+        for (i in (1..NUM_CONTAINERS)) {
+            containers << primaryBlobServiceClient.createContainer(generateContainerName())
         }
 
         expect:
+        primaryBlobServiceClient.listContainers(new ListContainersOptions().maxResults(PAGE_RESULTS), null)
+            .iterableByPage().iterator().next().value().size() == PAGE_RESULTS
 
-        primaryBlobServiceClient.listContainersSegment(null,
-                new ListContainersOptions().maxResults(10), null)
-                .blockingGet().body().containerItems().size() == 10
-    }*/
+        cleanup:
+        containers.each { container -> container.delete() }
+    }
 
-    // TODO (alzimmer): Turn this test back on when listing by page is implemented as this requires being able to set a marker
-    /*def "List containers error"() {
+    def "List containers error"() {
         when:
-        primaryServiceURL.listContainers("garbage", null, null).blockingGet()
+        primaryBlobServiceClient.listContainers().streamByPage("garbage continuation token").count()
 
         then:
         thrown(StorageException)
-    }*/
+    }
+
+    def "List containers with timeout still backed by PagedFlux"() {
+        setup:
+        def NUM_CONTAINERS = 5
+        def PAGE_RESULTS = 3
+
+        def containers = [] as Collection<ContainerClient>
+        for (i in (1..NUM_CONTAINERS)) {
+            containers << primaryBlobServiceClient.createContainer(generateContainerName())
+        }
+
+        when: "Consume results by page"
+        primaryBlobServiceClient.listContainers(new ListContainersOptions().maxResults(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
+
+        then: "Still have paging functionality"
+        notThrown(Exception)
+
+        cleanup:
+        containers.each { container -> container.delete() }
+    }
 
     def validatePropsSet(StorageServiceProperties sent, StorageServiceProperties received) {
         return received.logging().read() == sent.logging().read() &&
@@ -187,12 +225,12 @@ class ServiceAPITest extends APISpec {
                 .deleteRetentionPolicy(retentionPolicy)
                 .staticWebsite(website)
 
-        HttpHeaders headers = primaryServiceURL.setProperties(sentProperties).headers()
+        HttpHeaders headers = primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).headers()
 
         // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
         sleep(30 * 1000)
 
-        StorageServiceProperties receivedProperties = primaryServiceURL.getProperties().value()
+        StorageServiceProperties receivedProperties = primaryBlobServiceClient.getProperties()
 
         then:
         headers.value("x-ms-request-id") != null
@@ -229,7 +267,7 @@ class ServiceAPITest extends APISpec {
                 .staticWebsite(website)
 
         expect:
-        primaryServiceURL.setProperties(sentProperties).statusCode() == 202
+        primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).statusCode() == 202
     }
 
     def "Set props error"() {
@@ -246,7 +284,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get props min"() {
         expect:
-        primaryServiceURL.getProperties().statusCode() == 200
+        primaryBlobServiceClient.getPropertiesWithResponse(null, null).statusCode() == 200
     }
 
     def "Get props error"() {
@@ -266,7 +304,7 @@ class ServiceAPITest extends APISpec {
         def start = OffsetDateTime.now()
         def expiry = start.plusDays(1)
 
-        Response<UserDelegationKey> response = getOAuthServiceURL().getUserDelegationKey(start, expiry, null)
+        Response<UserDelegationKey> response = getOAuthServiceURL().getUserDelegationKeyWithResponse(start, expiry, null, null)
 
         expect:
         response.statusCode() == 200
@@ -284,7 +322,7 @@ class ServiceAPITest extends APISpec {
         setup:
         def expiry = OffsetDateTime.now().plusDays(1)
 
-        def response = getOAuthServiceURL().getUserDelegationKey(null, expiry)
+        def response = getOAuthServiceURL().getUserDelegationKeyWithResponse(null, expiry, null, null)
 
         expect:
         response.statusCode() == 200
@@ -308,7 +346,7 @@ class ServiceAPITest extends APISpec {
         String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCreds.accountName())
         BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(secondaryEndpoint)
                                         .credential(primaryCreds).buildClient()
-        Response<StorageServiceStats> response = serviceClient.getStatistics()
+        Response<StorageServiceStats> response = serviceClient.getStatisticsWithResponse(null, null)
 
         expect:
         response.headers().value("x-ms-version") != null
@@ -324,12 +362,12 @@ class ServiceAPITest extends APISpec {
         BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(secondaryEndpoint)
             .credential(primaryCreds).buildClient()
         expect:
-        serviceClient.getStatistics().statusCode() == 200
+        serviceClient.getStatisticsWithResponse(null, null).statusCode() == 200
     }
 
     def "Get stats error"() {
         when:
-        primaryServiceURL.getStatistics()
+        primaryBlobServiceClient.getStatistics()
 
         then:
         thrown(StorageException)
@@ -337,7 +375,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get account info"() {
         when:
-        Response<StorageAccountInfo> response = primaryServiceURL.getAccountInfo()
+        Response<StorageAccountInfo> response = primaryBlobServiceClient.getAccountInfoWithResponse(null, null)
 
         then:
         response.headers().value("Date") != null
@@ -349,13 +387,13 @@ class ServiceAPITest extends APISpec {
 
     def "Get account info min"() {
         expect:
-        primaryServiceURL.getAccountInfo().statusCode() == 200
+        primaryBlobServiceClient.getAccountInfoWithResponse(null, null).statusCode() == 200
     }
 
     def "Get account info error"() {
         when:
         BlobServiceClient serviceURL = new BlobServiceClientBuilder()
-            .endpoint(primaryServiceURL.getAccountUrl().toString())
+            .endpoint(primaryBlobServiceClient.getAccountUrl().toString())
             .buildClient()
         serviceURL.getAccountInfo()
 

@@ -583,7 +583,6 @@ public interface Files {
      * @return the observable to the InputStream object
      */
     Observable<ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders>> getFromComputeNodeWithServiceResponseAsync(String poolId, String nodeId, String filePath);
-
     /**
      * Returns the content of the specified Compute Node file.
      *

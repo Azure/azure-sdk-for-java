@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * This is a fluent logger helper class that wraps a plug-able {@link Logger}.
@@ -151,20 +152,36 @@ public class ClientLogger {
     }
 
     /**
-     * This will log {@link RuntimeException}, if logging is enabled , and throw the runtime exception.
-     * @param runtimeException to be thrown. It will do nothing if {@code null} is provided.
-     * @throws RuntimeException which is requested by this call.
+     * Attempts to log the {@link RuntimeException} at the warning level and returns it to be thrown.
+     *
+     * @param runtimeException RuntimeException to be logged and returned.
+     * @return the passed {@code RuntimeException}
+     * @throws NullPointerException If {@code runtimeException} is {@code null}.
      */
-    public void logAndThrow(RuntimeException runtimeException) {
-        if (runtimeException == null) {
-            return;
+    public RuntimeException logExceptionAsWarning(RuntimeException runtimeException) {
+        return logException(runtimeException, WARNING_LEVEL);
+    }
+
+    /**
+     * Attempts to log the {@link RuntimeException} at the error level and returns it to be thrown.
+     *
+     * @param runtimeException RuntimeException to be logged and returned.
+     * @return the passed {@code RuntimeException}
+     * @throws NullPointerException If {@code runtimeException} is {@code null}.
+     */
+    public RuntimeException logExceptionAsError(RuntimeException runtimeException) {
+        return logException(runtimeException, ERROR_LEVEL);
+    }
+
+    private RuntimeException logException(RuntimeException runtimeException, int logLevel) {
+        Objects.requireNonNull(runtimeException);
+
+        // Only log if the level is enabled.
+        if (canLogAtLevel(logLevel)) {
+            log(logLevel, runtimeException.getMessage(), runtimeException);
         }
 
-        // it will only log if error level is enabled in configuration
-        if (canLogAtLevel(ERROR_LEVEL)) {
-            logger.error(runtimeException.getMessage(), runtimeException);
-        }
-        throw runtimeException;
+        return runtimeException;
     }
 
     /*

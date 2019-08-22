@@ -138,7 +138,7 @@ public class Sample {
             // download results
             .flatMap(listItem ->
                 finalContainerClient.getBlobAsyncClient(listItem.name())
-                    .download()
+                    .downloadWithResponse(null, null, null, false, null)
                     .flatMapMany(Response::value)
                     .map(buffer -> new String(buffer.array()))
                     .doOnNext(string -> System.out.println(listItem.name() + ": " + string)))

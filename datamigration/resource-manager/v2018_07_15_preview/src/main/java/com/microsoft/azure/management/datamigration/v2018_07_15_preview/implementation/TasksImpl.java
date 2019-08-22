@@ -15,7 +15,7 @@ import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.ProjectTask;
+import com.microsoft.azure.management.datamigration.v2018_07_15_preview.ProjectServiceProjectTask;
 import com.microsoft.azure.management.datamigration.v2018_07_15_preview.CommandProperties;
 
 class TasksImpl extends WrapperImpl<TasksInner> implements Tasks {
@@ -31,26 +31,26 @@ class TasksImpl extends WrapperImpl<TasksInner> implements Tasks {
     }
 
     @Override
-    public ProjectTaskImpl define(String name) {
+    public ProjectServiceProjectTaskImpl define(String name) {
         return wrapModel(name);
     }
 
-    private ProjectTaskImpl wrapModel(ProjectTaskInner inner) {
-        return  new ProjectTaskImpl(inner, manager());
+    private ProjectServiceProjectTaskImpl wrapModel(ProjectTaskInner inner) {
+        return  new ProjectServiceProjectTaskImpl(inner, manager());
     }
 
-    private ProjectTaskImpl wrapModel(String name) {
-        return new ProjectTaskImpl(name, this.manager());
+    private ProjectServiceProjectTaskImpl wrapModel(String name) {
+        return new ProjectServiceProjectTaskImpl(name, this.manager());
     }
 
     @Override
-    public Observable<ProjectTask> cancelAsync(String groupName, String serviceName, String projectName, String taskName) {
+    public Observable<ProjectServiceProjectTask> cancelAsync(String groupName, String serviceName, String projectName, String taskName) {
         TasksInner client = this.inner();
         return client.cancelAsync(groupName, serviceName, projectName, taskName)
-        .map(new Func1<ProjectTaskInner, ProjectTask>() {
+        .map(new Func1<ProjectTaskInner, ProjectServiceProjectTask>() {
             @Override
-            public ProjectTask call(ProjectTaskInner inner) {
-                return new ProjectTaskImpl(inner, manager());
+            public ProjectServiceProjectTask call(ProjectTaskInner inner) {
+                return new ProjectServiceProjectTaskImpl(inner, manager());
             }
         });
     }
@@ -68,7 +68,7 @@ class TasksImpl extends WrapperImpl<TasksInner> implements Tasks {
     }
 
     @Override
-    public Observable<ProjectTask> listAsync(final String groupName, final String serviceName, final String projectName) {
+    public Observable<ProjectServiceProjectTask> listAsync(final String groupName, final String serviceName, final String projectName) {
         TasksInner client = this.inner();
         return client.listAsync(groupName, serviceName, projectName)
         .flatMapIterable(new Func1<Page<ProjectTaskInner>, Iterable<ProjectTaskInner>>() {
@@ -77,22 +77,26 @@ class TasksImpl extends WrapperImpl<TasksInner> implements Tasks {
                 return page.items();
             }
         })
-        .map(new Func1<ProjectTaskInner, ProjectTask>() {
+        .map(new Func1<ProjectTaskInner, ProjectServiceProjectTask>() {
             @Override
-            public ProjectTask call(ProjectTaskInner inner) {
+            public ProjectServiceProjectTask call(ProjectTaskInner inner) {
                 return wrapModel(inner);
             }
         });
     }
 
     @Override
-    public Observable<ProjectTask> getAsync(String groupName, String serviceName, String projectName, String taskName) {
+    public Observable<ProjectServiceProjectTask> getAsync(String groupName, String serviceName, String projectName, String taskName) {
         TasksInner client = this.inner();
         return client.getAsync(groupName, serviceName, projectName, taskName)
-        .map(new Func1<ProjectTaskInner, ProjectTask>() {
+        .flatMap(new Func1<ProjectTaskInner, Observable<ProjectServiceProjectTask>>() {
             @Override
-            public ProjectTask call(ProjectTaskInner inner) {
-                return wrapModel(inner);
+            public Observable<ProjectServiceProjectTask> call(ProjectTaskInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ProjectServiceProjectTask)wrapModel(inner));
+                }
             }
        });
     }

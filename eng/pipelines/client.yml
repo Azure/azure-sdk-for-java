@@ -109,7 +109,7 @@ jobs:
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          goals: 'spotbugs:spotbugs checkstyle:checkstyle-aggregate'
+          goals: 'spotbugs:check checkstyle:checkstyle-aggregate'
 
       # Generate the Maven site report, including SpotBugs, JavaDoc, CheckStyle, Jacoco, etc only when we are not
       # running as a PR check.

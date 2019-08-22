@@ -3,9 +3,12 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.common.Constants;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
-import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
 
 /**
@@ -208,8 +211,7 @@ final class AccountSASSignatureValues {
      * Generates a {@link SASQueryParameters} object which contains all SAS query parameters needed to make an actual
      * REST request.
      *
-     * @param sharedKeyCredentials
-     *         Credentials for the storage account and corresponding primary or secondary key.
+     * @param sharedKeyCredentials Credentials for the storage account and corresponding primary or secondary key.
      *
      * @return {@link SASQueryParameters}
      * @throws RuntimeException If the HMAC-SHA256 signature for {@code sharedKeyCredentials} fails to generate.
@@ -223,14 +225,7 @@ final class AccountSASSignatureValues {
         Utility.assertNotNull("version", this.version);
 
         // Signature is generated on the un-url-encoded values.
-        final String stringToSign = stringToSign(sharedKeyCredentials);
-
-        String signature;
-        try {
-            signature = sharedKeyCredentials.computeHmac256(stringToSign);
-        } catch (InvalidKeyException e) {
-            throw new RuntimeException(e); // The key should have been validated by now. If it is no longer valid here, we fail.
-        }
+        String signature = sharedKeyCredentials.computeHmac256(stringToSign(sharedKeyCredentials));
 
         return new SASQueryParameters(this.version, this.services, resourceTypes,
                 this.protocol, this.startTime, this.expiryTime, this.ipRange, null,
@@ -243,10 +238,10 @@ final class AccountSASSignatureValues {
                 AccountSASPermission.parse(this.permissions).toString(), // guarantees ordering
                 this.services,
                 resourceTypes,
-                this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+                this.startTime == null ? Constants.EMPTY_STRING : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
                 Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-                this.ipRange == null ? (new IPRange()).toString() : this.ipRange.toString(),
-                this.protocol == null ? "" : this.protocol.toString(),
+                this.ipRange == null ? Constants.EMPTY_STRING : this.ipRange.toString(),
+                this.protocol == null ? Constants.EMPTY_STRING : this.protocol.toString(),
                 this.version,
                 Constants.EMPTY_STRING // Account SAS requires an additional newline character
         );

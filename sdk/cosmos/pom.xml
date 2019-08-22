@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmos-parent</artifactId>
-  <version>3.0.1</version>
+  <version>3.1.0</version>
   <packaging>pom</packaging>
 
   <name>Microsoft Azure Cosmos DB SQL API</name>
@@ -34,11 +34,11 @@ Licensed under the MIT License.
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <cosmosdb-sdk-direct-impl.version>3.0.1</cosmosdb-sdk-direct-impl.version>
-    <direct-connectivity-version>3.0.1</direct-connectivity-version>
+    <cosmosdb-sdk-direct-impl.version>3.1.0</cosmosdb-sdk-direct-impl.version>
+    <direct-connectivity-version>3.1.0</direct-connectivity-version>
     <mockito.version>1.10.19</mockito.version>
     <netty.version>4.1.36.Final</netty.version>
-    <sdk-version>3.0.1</sdk-version>
+    <sdk-version>3.1.0</sdk-version>
     <guava.version>27.0.1-jre</guava.version>
     <reactor-core.version>3.2.9.RELEASE</reactor-core.version>
     <netty-tcnative.version>2.0.25.Final</netty-tcnative.version>

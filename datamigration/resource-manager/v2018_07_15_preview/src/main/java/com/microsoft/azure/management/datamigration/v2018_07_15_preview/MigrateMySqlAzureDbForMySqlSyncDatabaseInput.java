@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.datamigration.v2018_07_15_preview;
 
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -27,6 +28,24 @@ public class MigrateMySqlAzureDbForMySqlSyncDatabaseInput {
      */
     @JsonProperty(value = "targetDatabaseName")
     private String targetDatabaseName;
+
+    /**
+     * Migration settings which tune the migration behavior.
+     */
+    @JsonProperty(value = "migrationSetting")
+    private Map<String, String> migrationSetting;
+
+    /**
+     * Source settings to tune source endpoint migration behavior.
+     */
+    @JsonProperty(value = "sourceSetting")
+    private Map<String, String> sourceSetting;
+
+    /**
+     * Target settings to tune target endpoint migration behavior.
+     */
+    @JsonProperty(value = "targetSetting")
+    private Map<String, String> targetSetting;
 
     /**
      * Get name of the database.
@@ -65,6 +84,66 @@ public class MigrateMySqlAzureDbForMySqlSyncDatabaseInput {
      */
     public MigrateMySqlAzureDbForMySqlSyncDatabaseInput withTargetDatabaseName(String targetDatabaseName) {
         this.targetDatabaseName = targetDatabaseName;
+        return this;
+    }
+
+    /**
+     * Get migration settings which tune the migration behavior.
+     *
+     * @return the migrationSetting value
+     */
+    public Map<String, String> migrationSetting() {
+        return this.migrationSetting;
+    }
+
+    /**
+     * Set migration settings which tune the migration behavior.
+     *
+     * @param migrationSetting the migrationSetting value to set
+     * @return the MigrateMySqlAzureDbForMySqlSyncDatabaseInput object itself.
+     */
+    public MigrateMySqlAzureDbForMySqlSyncDatabaseInput withMigrationSetting(Map<String, String> migrationSetting) {
+        this.migrationSetting = migrationSetting;
+        return this;
+    }
+
+    /**
+     * Get source settings to tune source endpoint migration behavior.
+     *
+     * @return the sourceSetting value
+     */
+    public Map<String, String> sourceSetting() {
+        return this.sourceSetting;
+    }
+
+    /**
+     * Set source settings to tune source endpoint migration behavior.
+     *
+     * @param sourceSetting the sourceSetting value to set
+     * @return the MigrateMySqlAzureDbForMySqlSyncDatabaseInput object itself.
+     */
+    public MigrateMySqlAzureDbForMySqlSyncDatabaseInput withSourceSetting(Map<String, String> sourceSetting) {
+        this.sourceSetting = sourceSetting;
+        return this;
+    }
+
+    /**
+     * Get target settings to tune target endpoint migration behavior.
+     *
+     * @return the targetSetting value
+     */
+    public Map<String, String> targetSetting() {
+        return this.targetSetting;
+    }
+
+    /**
+     * Set target settings to tune target endpoint migration behavior.
+     *
+     * @param targetSetting the targetSetting value to set
+     * @return the MigrateMySqlAzureDbForMySqlSyncDatabaseInput object itself.
+     */
+    public MigrateMySqlAzureDbForMySqlSyncDatabaseInput withTargetSetting(Map<String, String> targetSetting) {
+        this.targetSetting = targetSetting;
         return this;
     }
 

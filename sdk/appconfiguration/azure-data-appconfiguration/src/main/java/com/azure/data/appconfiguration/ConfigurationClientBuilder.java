@@ -147,7 +147,7 @@ public final class ConfigurationClientBuilder {
 
         ConfigurationClientCredentials buildCredential = (credential == null) ? configurationCredentials : credential;
         if (buildCredential == null) {
-            logger.logAndThrow(new IllegalStateException("'credential' is required."));
+            throw logger.logExceptionAsWarning(new IllegalStateException("'credential' is required."));
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -186,7 +186,7 @@ public final class ConfigurationClientBuilder {
         try {
             this.endpoint = new URL(endpoint);
         } catch (MalformedURLException ex) {
-            logger.logAndThrow(new IllegalArgumentException("'endpoint' must be a valid URL"));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
         }
 
         return this;

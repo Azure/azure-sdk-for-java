@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.common.Constants;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -29,7 +30,7 @@ public class BlobOutputStreamTest {
             .buildClient();
         String containerName = "testcontainer" + RANDOM.nextInt(1000);
         containerClient = storageClient.getContainerClient(containerName);
-        if (!containerClient.exists().value()) {
+        if (!containerClient.exists()) {
             containerClient.create();
         }
     }
@@ -46,7 +47,7 @@ public class BlobOutputStreamTest {
         outStream.write(randomBytes);
         outStream.close();
 
-        Assert.assertEquals(length, blockBlobClient.getProperties().value().blobSize());
+        Assert.assertEquals(length, blockBlobClient.getProperties().blobSize());
         BlobInputStream blobInputStream = blockBlobClient.openInputStream();
         byte[] downloaded = convertInputStreamToByteArray(blobInputStream);
         Assert.assertArrayEquals(randomBytes, downloaded);
@@ -95,7 +96,7 @@ public class BlobOutputStreamTest {
         }
         outStream.close();
 
-        Assert.assertEquals(length, appendBlobClient.getProperties().value().blobSize());
+        Assert.assertEquals(length, appendBlobClient.getProperties().blobSize());
         BlobInputStream blobInputStream = appendBlobClient.openInputStream();
         byte[] downloaded = convertInputStreamToByteArray(blobInputStream);
         Assert.assertArrayEquals(uploaded, downloaded);

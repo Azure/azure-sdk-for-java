@@ -4,6 +4,8 @@
 package com.azure.storage.blob;
 
 import com.azure.core.implementation.http.UrlBuilder;
+import com.azure.storage.common.Constants;
+import com.azure.storage.common.Utility;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -159,8 +161,7 @@ final class BlobURLParts {
      *
      * @return A {@code java.net.URL} to the blob resource composed of all the elements in the object.
      *
-     * @throws MalformedURLException
-     *         The fields present on the BlobURLParts object were insufficient to construct a valid URL or were
+     * @throws MalformedURLException The fields present on the BlobURLParts object were insufficient to construct a valid URL or were
      *         ill-formatted.
      */
     public URL toURL() throws MalformedURLException {
@@ -189,7 +190,7 @@ final class BlobURLParts {
         for (Map.Entry<String, String[]> entry : this.unparsedParameters.entrySet()) {
             // The commas are intentionally encoded.
             url.setQueryParameter(entry.getKey(),
-                    Utility.safeURLEncode(String.join(",", entry.getValue())));
+                    Utility.urlEncode(String.join(",", entry.getValue())));
         }
 
         return url.toURL();

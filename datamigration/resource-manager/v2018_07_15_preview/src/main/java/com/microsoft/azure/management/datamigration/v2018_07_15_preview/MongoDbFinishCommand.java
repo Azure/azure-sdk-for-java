@@ -16,7 +16,7 @@ import com.microsoft.azure.management.datamigration.v2018_07_15_preview.implemen
 /**
  * Properties for the command that finishes a migration in whole or in part.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "commandType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "commandType", defaultImpl = MongoDbFinishCommand.class)
 @JsonTypeName("finish")
 public class MongoDbFinishCommand extends CommandPropertiesInner {
     /**

@@ -296,6 +296,13 @@ public class CloudPool {
     private PoolStatistics stats;
 
     /**
+     * A list of file systems to mount on each node in the pool.
+     * This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
+     */
+    @JsonProperty(value = "mountConfiguration")
+    private List<MountConfiguration> mountConfiguration;
+
+    /**
      * Get the ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
      *
      * @return the id value
@@ -972,6 +979,26 @@ public class CloudPool {
      */
     public CloudPool withStats(PoolStatistics stats) {
         this.stats = stats;
+        return this;
+    }
+
+    /**
+     * Get this supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
+     *
+     * @return the mountConfiguration value
+     */
+    public List<MountConfiguration> mountConfiguration() {
+        return this.mountConfiguration;
+    }
+
+    /**
+     * Set this supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
+     *
+     * @param mountConfiguration the mountConfiguration value to set
+     * @return the CloudPool object itself.
+     */
+    public CloudPool withMountConfiguration(List<MountConfiguration> mountConfiguration) {
+        this.mountConfiguration = mountConfiguration;
         return this;
     }
 

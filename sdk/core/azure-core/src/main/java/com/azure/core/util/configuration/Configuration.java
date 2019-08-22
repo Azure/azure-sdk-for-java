@@ -220,13 +220,19 @@ public class Configuration implements Cloneable {
      */
     private boolean loadFrom(String name, Function<String, String> loader, String logMessage) {
         String value = loader.apply(name);
-        if (!ImplUtils.isNullOrEmpty(value) && !value.equals(configurations.get(name))) {
+
+        if (value == null) {
+            // Nothing was loaded
+            return false;
+        } else if (value.equals(configurations.get(name))) {
+            // Value loaded is the same, no need to log anything.
+            return true;
+        } else {
+            // Value changed, log it!
             configurations.put(name, value);
             logger.info(logMessage, name, value);
             return true;
         }
-
-        return false;
     }
 
     /*

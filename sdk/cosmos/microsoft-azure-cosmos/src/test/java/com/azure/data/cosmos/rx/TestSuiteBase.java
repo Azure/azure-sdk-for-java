@@ -23,6 +23,7 @@ import com.azure.data.cosmos.CosmosDatabaseResponse;
 import com.azure.data.cosmos.CosmosItem;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.CosmosItemResponse;
+import com.azure.data.cosmos.CosmosKeyCredential;
 import com.azure.data.cosmos.CosmosResponse;
 import com.azure.data.cosmos.CosmosResponseValidator;
 import com.azure.data.cosmos.CosmosStoredProcedureRequestOptions;
@@ -46,6 +47,8 @@ import com.azure.data.cosmos.internal.PathParser;
 import com.azure.data.cosmos.internal.TestConfigurations;
 import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.internal.directconnectivity.Protocol;
+import com.azure.data.cosmos.sync.CosmosSyncClient;
+import com.azure.data.cosmos.sync.CosmosSyncDatabase;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -99,6 +102,8 @@ public class TestSuiteBase extends CosmosClientTest {
     private static final ImmutableList<ConsistencyLevel> desiredConsistencies;
     private static final ImmutableList<Protocol> protocols;
 
+    protected static final CosmosKeyCredential cosmosKeyCredential;
+
     protected int subscriberValidationTimeout = TIMEOUT;
 
     private static CosmosDatabase SHARED_DATABASE;
@@ -113,7 +118,7 @@ public class TestSuiteBase extends CosmosClientTest {
     protected static CosmosDatabase getSharedCosmosDatabase(CosmosClient client) {
         return CosmosBridgeInternal.getCosmosDatabaseWithNewClient(SHARED_DATABASE, client);
     }
-    
+
     protected static CosmosContainer getSharedMultiPartitionCosmosContainer(CosmosClient client) {
         return CosmosBridgeInternal.getCosmosContainerWithNewClient(SHARED_MULTI_PARTITION_COLLECTION, SHARED_DATABASE, client);
     }
@@ -140,6 +145,8 @@ public class TestSuiteBase extends CosmosClientTest {
         objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
         objectMapper.configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, true);
         objectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
+
+        cosmosKeyCredential = new CosmosKeyCredential(TestConfigurations.MASTER_KEY);
     }
 
     protected TestSuiteBase() {
@@ -519,7 +526,7 @@ public class TestSuiteBase extends CosmosClientTest {
                                                       .flatMap(page -> Flux.fromIterable(page.results()))
                                                       .collectList()
                                                       .block();
-        
+
         if (!res.isEmpty()) {
             deleteCollection(database, collectionId);
         }
@@ -589,6 +596,16 @@ public class TestSuiteBase extends CosmosClientTest {
         return client.createDatabase(databaseSettings).block().database();
     }
 
+    static protected CosmosSyncDatabase createSyncDatabase(CosmosSyncClient client, String databaseId) {
+        CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
+        try {
+            return client.createDatabase(databaseSettings).database();
+        } catch (CosmosClientException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     static protected CosmosDatabase createDatabaseIfNotExists(CosmosClient client, String databaseId) {
         List<CosmosDatabaseProperties> res = client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), null)
                                                    .flatMap(p -> Flux.fromIterable(p.results()))
@@ -611,6 +628,16 @@ public class TestSuiteBase extends CosmosClientTest {
         }
     }
 
+    static protected void safeDeleteSyncDatabase(CosmosSyncDatabase database) {
+        if (database != null) {
+            try {
+                database.delete();
+            } catch (Exception e) {
+                logger.error("failed to delete sync database", e);
+            }
+        }
+    }
+    
     static protected void safeDeleteAllCollections(CosmosDatabase database) {
         if (database != null) {
             List<CosmosContainerProperties> collections = database.readAllContainers()
@@ -655,6 +682,16 @@ public class TestSuiteBase extends CosmosClientTest {
     }
 
     static protected void safeClose(CosmosClient client) {
+        if (client != null) {
+            try {
+                client.close();
+            } catch (Exception e) {
+                logger.error("failed to close client", e);
+            }
+        }
+    }
+
+    static protected void safeCloseSyncClient(CosmosSyncClient client) {
         if (client != null) {
             try {
                 client.close();
@@ -803,7 +840,7 @@ public class TestSuiteBase extends CosmosClientTest {
     private static Object[][] simpleClientBuildersWithDirect(Protocol... protocols) {
         logger.info("Max test consistency to use is [{}]", accountConsistency);
         List<ConsistencyLevel> testConsistencies = ImmutableList.of(ConsistencyLevel.EVENTUAL);
-        
+
         boolean isMultiMasterEnabled = preferredLocations != null && accountConsistency == ConsistencyLevel.SESSION;
 
         List<CosmosClientBuilder> cosmosConfigurations = new ArrayList<>();
@@ -876,7 +913,7 @@ public class TestSuiteBase extends CosmosClientTest {
     static List<ConsistencyLevel> allEqualOrLowerConsistencies(ConsistencyLevel accountConsistency) {
         List<ConsistencyLevel> testConsistencies = new ArrayList<>();
         switch (accountConsistency) {
-        
+
             case STRONG:
                 testConsistencies.add(ConsistencyLevel.STRONG);
             case BOUNDED_STALENESS:
@@ -924,7 +961,7 @@ public class TestSuiteBase extends CosmosClientTest {
         options.maxRetryWaitTimeInSeconds(SUITE_SETUP_TIMEOUT);
         connectionPolicy.retryOptions(options);
         return CosmosClient.builder().endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
+                .cosmosKeyCredential(cosmosKeyCredential)
                 .connectionPolicy(connectionPolicy)
                 .consistencyLevel(ConsistencyLevel.SESSION);
     }
@@ -935,7 +972,7 @@ public class TestSuiteBase extends CosmosClientTest {
         connectionPolicy.usingMultipleWriteLocations(multiMasterEnabled);
         connectionPolicy.preferredLocations(preferredLocations);
         return CosmosClient.builder().endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
+                .cosmosKeyCredential(cosmosKeyCredential)
                 .connectionPolicy(connectionPolicy)
                 .consistencyLevel(consistencyLevel);
     }
@@ -963,7 +1000,7 @@ public class TestSuiteBase extends CosmosClientTest {
         doAnswer((Answer<Protocol>)invocation -> protocol).when(configs).getProtocol();
 
         CosmosClientBuilder builder = CosmosClient.builder().endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
+                .cosmosKeyCredential(cosmosKeyCredential)
                 .connectionPolicy(connectionPolicy)
                 .consistencyLevel(consistencyLevel);
 
