@@ -9,10 +9,9 @@ import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileRangeWriteType;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -185,8 +184,8 @@ public class FileAsyncJavaDocCodeSamples {
     public void uploadDataAsync() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.upload#flux-long
-        ByteBuf defaultData = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8));
-        fileAsyncClient.upload(Flux.just(defaultData), defaultData.readableBytes()).subscribe(
+        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
+        fileAsyncClient.upload(Flux.just(defaultData), defaultData.remaining()).subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete deleting the file!")
@@ -200,8 +199,8 @@ public class FileAsyncJavaDocCodeSamples {
     public void uploadWithResponse() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.uploadWithResponse#flux-long
-        ByteBuf defaultData = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8));
-        fileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultData.readableBytes()).subscribe(
+        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
+        fileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultData.remaining()).subscribe(
             response -> System.out.println("Complete deleting the file with status code:" + response.statusCode()),
             error -> System.err.print(error.toString())
         );
@@ -210,18 +209,18 @@ public class FileAsyncJavaDocCodeSamples {
 
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#uploadWithResponse(Flux, long)}
+     * Generates a code sample for using {@link FileAsyncClient#uploadWithResponse(Flux, long, long, FileRangeWriteType)}
      */
     public void uploadWithResponseOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadWithResponse#bytebuf-long-int-filerangewritetype
-        ByteBuf defaultData = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8));
-        fileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultData.readableBytes(), 1024,
+        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadWithResponse#ByteBuffer-long-int-filerangewritetype
+        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
+        fileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultData.remaining(), 1024,
             FileRangeWriteType.UPDATE).subscribe(
                 response -> System.out.println("Complete deleting the file with status code" + response.statusCode()),
                 error -> System.err.print(error.toString())
         );
-        // END: com.azure.storage.file.fileAsyncClient.uploadWithResponse#bytebuf-long-int-filerangewritetype
+        // END: com.azure.storage.file.fileAsyncClient.uploadWithResponse#ByteBuffer-long-int-filerangewritetype
     }
 
     /**
@@ -229,15 +228,15 @@ public class FileAsyncJavaDocCodeSamples {
      */
     public void uploadDataAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.upload#bytebuf-long-int-filerangewritetype
-        ByteBuf defaultData = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8));
-        fileAsyncClient.upload(Flux.just(defaultData), defaultData.readableBytes(), 1024,
+        // BEGIN: com.azure.storage.file.fileAsyncClient.upload#ByteBuffer-long-int-filerangewritetype
+        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
+        fileAsyncClient.upload(Flux.just(defaultData), defaultData.remaining(), 1024,
             FileRangeWriteType.UPDATE).subscribe(
                 response -> { },
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete deleting the file!")
         );
-        // END: com.azure.storage.file.fileAsyncClient.upload#bytebuf-long-int-filerangewritetype
+        // END: com.azure.storage.file.fileAsyncClient.upload#ByteBuffer-long-int-filerangewritetype
     }
 
     /**

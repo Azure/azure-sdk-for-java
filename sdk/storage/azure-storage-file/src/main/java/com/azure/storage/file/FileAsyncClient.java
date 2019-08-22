@@ -648,7 +648,7 @@ public class FileAsyncClient {
      * @return The {@link FileUploadInfo file upload info}
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
-    public Mono<FileUploadInfo> upload(Flux<ByteBuf> data, long length) {
+    public Mono<FileUploadInfo> upload(Flux<ByteBuffer> data, long length) {
         return uploadWithResponse(data, length).flatMap(FluxUtil::toMono);
     }
 
@@ -669,11 +669,11 @@ public class FileAsyncClient {
      * @return A response containing the {@link FileUploadInfo file upload info} with headers and response status code
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
-    public Mono<Response<FileUploadInfo>> uploadWithResponse(Flux<ByteBuf> data, long length) {
+    public Mono<Response<FileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length) {
         return withContext(context -> uploadWithResponse(data, length, context));
     }
 
-    Mono<Response<FileUploadInfo>> uploadWithResponse(Flux<ByteBuf> data, long length, Context context) {
+    Mono<Response<FileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Context context) {
         FileRange range = new FileRange(0, length - 1);
         return azureFileStorageClient.files().uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), FileRangeWriteType.UPDATE, length, data, null, null, context)
             .map(this::uploadResponse);
@@ -687,7 +687,7 @@ public class FileAsyncClient {
      *
      * <p>Upload the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.upload#flux-long-long-filerangewritetype}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.upload#ByteBuffer-long-int-filerangewritetype}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -706,7 +706,7 @@ public class FileAsyncClient {
      * @return The {@link FileUploadInfo file upload info}
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
-    public Mono<FileUploadInfo> upload(Flux<ByteBuf> data, long length, long offset, FileRangeWriteType type) {
+    public Mono<FileUploadInfo> upload(Flux<ByteBuffer> data, long length, long offset, FileRangeWriteType type) {
         return uploadWithResponse(data, length, offset, type).flatMap(FluxUtil::toMono);
     }
 
@@ -717,7 +717,7 @@ public class FileAsyncClient {
      *
      * <p>Upload the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.uploadWithResponse#bytebuf-long-int-filerangewritetype}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.uploadWithResponse#ByteBuffer-long-int-filerangewritetype}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -733,15 +733,11 @@ public class FileAsyncClient {
      * @return A response containing the {@link FileUploadInfo file upload info} with headers and response status code
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
-<<<<<<< HEAD
-    public Mono<Response<FileUploadInfo>> upload(Flux<ByteBuffer> data, long length, long offset, FileRangeWriteType type) {
-=======
-    public Mono<Response<FileUploadInfo>> uploadWithResponse(Flux<ByteBuf> data, long length, long offset, FileRangeWriteType type) {
+    public Mono<Response<FileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, long offset, FileRangeWriteType type) {
         return withContext(context -> uploadWithResponse(data, length, offset, type, context));
     }
 
-    Mono<Response<FileUploadInfo>> uploadWithResponse(Flux<ByteBuf> data, long length, long offset, FileRangeWriteType type, Context context) {
->>>>>>> 6e327045951... directory client async
+    Mono<Response<FileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, long offset, FileRangeWriteType type, Context context) {
         FileRange range = new FileRange(offset, offset + length - 1);
         return azureFileStorageClient.files().uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), type, length, data, null, null, context)
             .map(this::uploadResponse);

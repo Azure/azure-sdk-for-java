@@ -465,7 +465,7 @@ public class FileClient {
      * @return The {@link FileUploadInfo file upload info}
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
-    public FileUploadInfo upload(ByteBuf data, long length) {
+    public FileUploadInfo upload(ByteBuffer data, long length) {
         return uploadWithResponse(data, length, Context.NONE).value();
     }
 
@@ -487,7 +487,7 @@ public class FileClient {
      * @return The {@link FileUploadInfo file upload info}
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
-    public Response<FileUploadInfo> uploadWithResponse(ByteBuf data, long length, Context context) {
+    public Response<FileUploadInfo> uploadWithResponse(ByteBuffer data, long length, Context context) {
         return fileAsyncClient.uploadWithResponse(Flux.just(data), length, context).block();
     }
 
@@ -498,7 +498,7 @@ public class FileClient {
      *
      * <p>Upload the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.uploadWithResponse#bytebuf-long-int-filerangewritetype-Context}
+     * {@codesnippet com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-int-filerangewritetype-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -515,7 +515,7 @@ public class FileClient {
      * @return A response containing the {@link FileUploadInfo file upload info} with headers and response status code
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
-    public Response<FileUploadInfo> uploadWithResponse(ByteBuf data, long length, int offset, FileRangeWriteType type, Context context) {
+    public Response<FileUploadInfo> uploadWithResponse(ByteBuffer data, long length, int offset, FileRangeWriteType type, Context context) {
         return fileAsyncClient.uploadWithResponse(Flux.just(data), length, offset, type, context).block();
     }
 

@@ -122,13 +122,8 @@ class FileAsyncAPITests extends APISpec {
         defaultData.get(dataBytes)
 
         when:
-<<<<<<< HEAD
-        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData), dataLength, 1, FileRangeWriteType.UPDATE))
-        def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithProperties(new FileRange(1, dataLength), true))
-=======
-        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData.retain()), dataLength, 1, FileRangeWriteType.UPDATE))
+        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData), dataLength, 1, FileRangeWriteType.UPDATE))
         def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(1, dataLength), true))
->>>>>>> 7d0e1728eab... fixing tests with responses
 
         then:
         uploadVerifier.assertNext {

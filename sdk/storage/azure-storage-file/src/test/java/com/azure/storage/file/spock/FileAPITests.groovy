@@ -93,7 +93,7 @@ class FileAPITests extends APISpec {
         defaultData.get(dataBytes)
 
         when:
-        def uploadResponse = primaryFileClient.uploadWithResponse(defaultData.retain(), dataLength, null)
+        def uploadResponse = primaryFileClient.uploadWithResponse(defaultData, dataLength, null)
         def downloadResponse = primaryFileClient.downloadWithPropertiesWithResponse(null, null, null)
 
         then:
@@ -113,7 +113,7 @@ class FileAPITests extends APISpec {
         defaultData.get(dataBytes)
 
         when:
-        def uploadResponse = primaryFileClient.uploadWithResponse(defaultData.retain(), dataLength, 1, FileRangeWriteType.UPDATE, null)
+        def uploadResponse = primaryFileClient.uploadWithResponse(defaultData, dataLength, 1, FileRangeWriteType.UPDATE, null)
         def downloadResponse = primaryFileClient.downloadWithPropertiesWithResponse(new FileRange(1, dataLength), true, null)
 
         then:
@@ -128,7 +128,7 @@ class FileAPITests extends APISpec {
 
     def "Upload data error"() {
         when:
-        primaryFileClient.uploadWithResponse(defaultData.retain(), dataLength, 1, FileRangeWriteType.UPDATE, null)
+        primaryFileClient.uploadWithResponse(defaultData, dataLength, 1, FileRangeWriteType.UPDATE, null)
         then:
         def e = thrown(StorageErrorException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)

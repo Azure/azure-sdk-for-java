@@ -169,7 +169,7 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#createSnapshot()()}
+     * Generates a code sample for using {@link ShareClient#createSnapshot()}
      */
     public void createSnapshot() {
         ShareClient shareClient = createClientWithSASToken();
@@ -238,7 +238,7 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#deleteFileWithResponse(String, Context)()}
+     * Generates a code sample for using {@link ShareClient#deleteFileWithResponse(String, Context)}
      */
     public void deleteFileWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
