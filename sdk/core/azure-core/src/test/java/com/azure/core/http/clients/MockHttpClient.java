@@ -1,21 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http;
+package com.azure.core.http.clients;
 
 import com.azure.core.entities.HttpBinFormDataJSON;
 import com.azure.core.entities.HttpBinFormDataJSON.Form;
 import com.azure.core.entities.HttpBinFormDataJSON.PizzaSize;
 import com.azure.core.entities.HttpBinJSON;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.MockHttpResponse;
 import com.azure.core.implementation.Base64Url;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.util.FluxUtil;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -25,12 +27,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 /**
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
  */
-public class MockHttpClient implements HttpClient {
+public class MockHttpClient extends NoOpHttpClient {
     private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders()
             .put("Date", "Fri, 13 Oct 2017 20:33:09 GMT")
             .put("Via", "1.1 vegur")
@@ -143,7 +144,7 @@ public class MockHttpClient implements HttpClient {
                     json.data(createHttpBinResponseDataForRequest(request));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/post")) {
-                    if ("x-www-form-urlencoded".equalsIgnoreCase(contentType)) {
+                    if (contentType != null && contentType.contains("x-www-form-urlencoded")) {
                         Map<String, String> parsed = bodyToMap(request);
                         final HttpBinFormDataJSON json = new HttpBinFormDataJSON();
                         Form form = new Form();
@@ -153,6 +154,7 @@ public class MockHttpClient implements HttpClient {
                         form.pizzaSize(PizzaSize.valueOf(parsed.get("size")));
                         form.toppings(Arrays.asList(parsed.get("toppings").split(",")));
                         json.form(form);
+                        response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json);
                     } else {
                         final HttpBinJSON json = new HttpBinJSON();
                         json.url(request.url().toString());
@@ -172,13 +174,8 @@ public class MockHttpClient implements HttpClient {
                     response = new MockHttpResponse(request, statusCode);
                 }
             } else if ("echo.org".equalsIgnoreCase(requestHost)) {
-                return request.body()
-                    .map(ByteBuf::nioBuffer)
-                    .collectList()
-                    .map(list ->  {
-                        byte[] bytes = Unpooled.wrappedBuffer(list.toArray(new ByteBuffer[0])).array();
-                        return new MockHttpResponse(request, 200, new HttpHeaders(request.headers()), bytes);
-                    });
+                return FluxUtil.collectBytesInByteBufferStream(request.body())
+                    .map(bytes -> new MockHttpResponse(request, 200, new HttpHeaders(request.headers()), bytes));
             }
         } catch (Exception ex) {
             return Mono.error(ex);
@@ -189,21 +186,6 @@ public class MockHttpClient implements HttpClient {
         }
 
         return Mono.just(response);
-    }
-
-    @Override
-    public HttpClient proxy(Supplier<ProxyOptions> proxyOptions) {
-        throw new IllegalStateException("MockHttpClient.proxy");
-    }
-
-    @Override
-    public HttpClient wiretap(boolean enableWiretap) {
-        throw new IllegalStateException("MockHttpClient.wiretap");
-    }
-
-    @Override
-    public HttpClient port(int port) {
-        throw new IllegalStateException("MockHttpClient.port");
     }
 
     private static String createHttpBinResponseDataForRequest(HttpRequest request) {
@@ -218,7 +200,7 @@ public class MockHttpClient implements HttpClient {
     private static String bodyToString(HttpRequest request) {
         String body = "";
         if (request.body() != null) {
-            Mono<String> asyncString = FluxUtil.collectBytesInByteBufStream(request.body(), true)
+            Mono<String> asyncString = FluxUtil.collectBytesInByteBufferStream(request.body())
                     .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
             body = asyncString.block();
         }

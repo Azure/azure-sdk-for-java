@@ -18,10 +18,11 @@ import com.azure.storage.file.models.FileRangeWriteType;
 import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageErrorException;
-import io.netty.buffer.ByteBuf;
-import java.net.URL;
-import java.util.Map;
 import reactor.core.publisher.Flux;
+
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.util.Map;
 
 /**
  * This class provides a client that contains all the operations for interacting files under Azure Storage File Service.
@@ -325,7 +326,7 @@ public class FileClient {
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
-    public Response<FileUploadInfo> upload(ByteBuf data, long length) {
+    public Response<FileUploadInfo> upload(ByteBuffer data, long length) {
         return fileAsyncClient.upload(Flux.just(data), length).block();
     }
 
@@ -336,7 +337,7 @@ public class FileClient {
      *
      * <p>Upload the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.upload#bytebuf-long-int-filerangewritetype}
+     * {@codesnippet com.azure.storage.file.fileClient.upload#bytebuffer-long-int-filerangewritetype}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -352,7 +353,7 @@ public class FileClient {
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
-    public Response<FileUploadInfo> upload(ByteBuf data, long length, int offset, FileRangeWriteType type) {
+    public Response<FileUploadInfo> upload(ByteBuffer data, long length, int offset, FileRangeWriteType type) {
         return fileAsyncClient.upload(Flux.just(data), length, offset, type).block();
     }
 

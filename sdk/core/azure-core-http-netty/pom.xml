@@ -1,0 +1,113 @@
+<!--
+  ~ Copyright (c) Microsoft Corporation. All rights reserved.
+  ~ Licensed under the MIT License.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.3.0</version>
+    <relativePath>../../../pom.client.xml</relativePath>
+  </parent>
+
+  <groupId>com.azure</groupId>
+  <artifactId>azure-core-http-netty</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0.0-preview.4</version>
+
+  <name>Microsoft Azure Netty HTTP Client Library</name>
+  <description>This package contains the Netty HTTP client plugin for azure-core.</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <distributionManagement>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
+  <scm>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
+    <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
+  </scm>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <legal>
+      <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+  </properties>
+
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft</name>
+    </developer>
+  </developers>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.0.0-preview.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-handler</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-handler-proxy</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-buffer</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-codec-http</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.projectreactor.netty</groupId>
+      <artifactId>reactor-netty</artifactId>
+    </dependency>
+
+    <!-- test dependencies on azure-core, because we want to run tests inherited from this module using Netty -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.0.0-preview.4</version>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.tomakehurst</groupId>
+      <artifactId>wiremock-standalone</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

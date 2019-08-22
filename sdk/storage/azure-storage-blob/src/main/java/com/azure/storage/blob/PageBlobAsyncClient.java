@@ -23,12 +23,12 @@ import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.common.Constants;
-import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 
 import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
@@ -152,7 +152,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *
      * @return A reactive response containing the information of the uploaded pages.
      */
-    public Mono<PageBlobItem> uploadPages(PageRange pageRange, Flux<ByteBuf> body) {
+    public Mono<PageBlobItem> uploadPages(PageRange pageRange, Flux<ByteBuffer> body) {
         return uploadPagesWithResponse(pageRange, body, null).flatMap(FluxUtil::toMono);
     }
 
@@ -174,12 +174,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response containing the information of the uploaded pages.
      * @throws IllegalArgumentException If {@code pageRange} is {@code null}
      */
-    public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuf> body,
+    public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
             PageBlobAccessConditions pageBlobAccessConditions) {
         return withContext(context -> uploadPagesWithResponse(pageRange, body, pageBlobAccessConditions, context));
     }
 
-    Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuf> body,
+    Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
                                              PageBlobAccessConditions pageBlobAccessConditions, Context context) {
         pageBlobAccessConditions = pageBlobAccessConditions == null ? new PageBlobAccessConditions() : pageBlobAccessConditions;
 

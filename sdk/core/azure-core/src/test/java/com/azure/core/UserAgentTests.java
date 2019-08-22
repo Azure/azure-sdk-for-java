@@ -5,11 +5,11 @@ package com.azure.core;
 
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.MockHttpClient;
 import com.azure.core.http.MockHttpResponse;
+import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.http.policy.UserAgentPolicy;
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,13 +21,13 @@ public class UserAgentTests {
     @Test
     public void defaultUserAgentTests() throws Exception {
         final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new MockHttpClient() {
+            .httpClient(new NoOpHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     Assert.assertEquals(
                             request.headers().value("User-Agent"),
                             "AutoRest-Java");
-                    return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
+                    return Mono.just(new MockHttpResponse(request, 200));
                 }
             })
             .policies(new UserAgentPolicy("AutoRest-Java"))
@@ -42,12 +42,12 @@ public class UserAgentTests {
     @Test
     public void customUserAgentTests() throws Exception {
         final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new MockHttpClient() {
+            .httpClient(new NoOpHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     String header = request.headers().value("User-Agent");
                     Assert.assertEquals("Awesome", header);
-                    return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
+                    return Mono.just(new MockHttpResponse(request, 200));
                 }
             })
             .policies(new UserAgentPolicy("Awesome"))
