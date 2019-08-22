@@ -409,3 +409,5 @@ If you would like to become an active contributor to this project please follow 
 [samples_message]: src/samples/java/com/azure/storage/queue/MessageSamples.java
 [samples_queue_exception]: src/samples/java/com/azure/storage/queue/QueueExceptionSamples.java
 [samples_async]: src/samples/java/com/azure/storage/queue/AsyncSamples.java
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-queue/README.png)
