@@ -353,12 +353,8 @@ public class FileJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.uploadFromFile#string-filerangewritetype
         fileAsyncClient.uploadFromFile("someFilePath", FileRangeWriteType.UPDATE)
-            .subscribe(response -> {
-                if (fileAsyncClient.getProperties() != null) {
-                    System.out.printf("Upload the file with length of %d completed",
-                        fileAsyncClient.getProperties().block().value().contentLength());
-                }
-            });
+            .subscribe(response -> System.out.println("Uploaded file successfully!"),
+                error -> System.err.printf("Failed to upload file. Reason: %s%n", error.getMessage()));
         // END: com.azure.storage.file.fileAsyncClient.uploadFromFile#string-filerangewritetype
     }
 
@@ -685,7 +681,7 @@ public class FileJavaDocCodeSamples {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.listHandles
         fileClient.listHandles()
-            .forEach(handleItem -> System.out.printf("List handles completed with handleId %d",
+            .forEach(handleItem -> System.out.printf("List handles completed with handleId %s",
                 handleItem.handleId()));
         // END: com.azure.storage.file.fileClient.listHandles
     }
@@ -707,7 +703,7 @@ public class FileJavaDocCodeSamples {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.listHandles#integer
         fileClient.listHandles(10)
-            .forEach(handleItem -> System.out.printf("List handles completed with handleId %d",
+            .forEach(handleItem -> System.out.printf("List handles completed with handleId %s",
                 handleItem.handleId()));
         // END: com.azure.storage.file.fileClient.listHandles#integer
     }
@@ -763,7 +759,8 @@ public class FileJavaDocCodeSamples {
             .filePath("myfile")
             .snapshot(currentTime.toString())
             .buildClient();
-        fileClient.getShareSnapshotId();
+
+        System.out.printf("Snapshot ID: %s%n", fileClient.getShareSnapshotId());
         // END: com.azure.storage.file.fileClient.getShareSnapshotId
     }
 
@@ -780,7 +777,8 @@ public class FileJavaDocCodeSamples {
             .filePath("myfiile")
             .snapshot(currentTime.toString())
             .buildAsyncClient();
-        fileAsyncClient.getShareSnapshotId();
+
+        System.out.printf("Snapshot ID: %s%n", fileAsyncClient.getShareSnapshotId());
         // END: com.azure.storage.file.fileAsyncClient.getShareSnapshotId
     }
 }

@@ -4,7 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
@@ -15,6 +14,7 @@ import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlockBlobItem;
+import com.azure.storage.blob.models.BlockBlobsGetBlockListResponse;
 import com.azure.storage.blob.models.BlockItem;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
@@ -41,8 +41,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
 
-import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link BlobClientBuilder}, via
@@ -384,7 +384,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         return postProcessResponse(this.azureBlobStorage.blockBlobs().getBlockListWithRestResponseAsync(
             null, null, listType, snapshot, null, null, null,
             leaseAccessConditions, Context.NONE))
-            .map(ResponseBase::value)
+            .map(BlockBlobsGetBlockListResponse::value)
             .flatMapMany(bl -> {
                 Flux<BlockItem> committed = Flux.fromIterable(bl.committedBlocks())
                     .map(block -> new BlockItem(block, true));

@@ -9,9 +9,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -121,16 +121,17 @@ public class FileTransferExample {
     }
 
     private static File createTempEmptyFile(String fileName) throws IOException {
-        URL folderUrl = FileTransferExample.class.getClassLoader().getResource(".");
+        String pathName = "C:/folderPath/" + LARGE_TEST_FOLDER;
 
-        File dirPath = new File(folderUrl.getPath() + LARGE_TEST_FOLDER);
+        File dirPath = new File(pathName);
 
         if (dirPath.exists() || dirPath.mkdir()) {
-            File f = new File(folderUrl.getPath() + LARGE_TEST_FOLDER + fileName);
-            if (!f.exists()) {
-                f.createNewFile();
+            File f = new File(pathName + fileName);
+            if (f.exists() || f.createNewFile()) {
+                return f;
+            } else {
+                throw new RuntimeException("Failed to create the large file.");
             }
-            return f;
         } else {
             throw new RuntimeException("Failed to create the large file dir.");
         }
@@ -164,9 +165,8 @@ public class FileTransferExample {
                 buf.clear();
                 b = ch.read(buf);
             }
-            ch.close();
-            fis.close();
-            return new String(md.digest());
+
+            return new String(md.digest(), StandardCharsets.UTF_8);
         }
     }
 

@@ -49,10 +49,9 @@ public class DirectorySample {
         }
 
         // Create a 1KB file under the child directory.
-        DirectoryClient childDirClient = null;
+        DirectoryClient childDirClient = directoryClient.getSubDirectoryClient(childDirectoryName);
         String fileName = generateRandomName();
         try {
-            childDirClient = directoryClient.getSubDirectoryClient(childDirectoryName);
             childDirClient.createFile(fileName, 1024);
         } catch (StorageErrorException e) {
             System.out.println("Failed to create a file under the child directory. Reasons: " + e.getMessage());
@@ -68,11 +67,8 @@ public class DirectorySample {
         // List all the sub directories and files.
         try {
             directoryClient.listFilesAndDirectories().forEach(
-                fileRef -> {
-                    System.out.printf("Is the resource a directory? %b. The resource name is: ", fileRef.isDirectory(),
-                        fileRef.name());
-                }
-            );
+                fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s%n",
+                    fileRef.isDirectory(), fileRef.name()));
         } catch (StorageErrorException e) {
             System.out.println("Failed to list all the subdirectories and files. Reasons: " + e.getMessage());
         }
@@ -80,7 +76,7 @@ public class DirectorySample {
         // Get the parent directory properties.
         try {
             Response<DirectoryProperties> propertiesResponse = directoryClient.getProperties();
-            System.out.printf("This is the eTag %s of the directory: ", propertiesResponse.value().eTag());
+            System.out.printf("This is the eTag of the directory: %s%n", propertiesResponse.value().eTag());
         } catch (StorageErrorException e) {
             System.out.println("Failed to get the properties of the parent directory");
         }

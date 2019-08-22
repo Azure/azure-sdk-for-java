@@ -640,7 +640,8 @@ public class ShareJavaDocCodeSamples {
             .shareName("myshare")
             .snapshot(currentTime.toString())
             .buildClient();
-        shareClient.getSnapshotId();
+
+        System.out.printf("Snapshot ID: %s%n", shareClient.getSnapshotId());
         // END: com.azure.storage.file.shareClient.getSnapshotId
     }
 
@@ -655,7 +656,8 @@ public class ShareJavaDocCodeSamples {
             .shareName("myshare")
             .snapshot(currentTime.toString())
             .buildAsyncClient();
-        shareAysncClient.getSnapshotId();
+
+        System.out.printf("Snapshot ID: %s%n", shareAysncClient.getSnapshotId());
         // END: com.azure.storage.file.shareAsyncClient.getSnapshotId
     }
 }

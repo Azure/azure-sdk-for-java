@@ -276,10 +276,9 @@ public class ShareClientBuilder {
      *
      * @param snapshot Identifier of the snapshot
      * @return the updated ShareClientBuilder object
-     * @throws NullPointerException If {@code snapshot} is {@code null}.
      */
     public ShareClientBuilder snapshot(String snapshot) {
-        this.snapshot = Objects.requireNonNull(snapshot);
+        this.snapshot = snapshot;
         return this;
     }
 
