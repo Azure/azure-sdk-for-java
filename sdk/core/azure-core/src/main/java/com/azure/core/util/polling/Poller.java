@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * This class offers API that simplifies the task of executing long-running operations against Azure service.
@@ -132,6 +133,47 @@ public class Poller<T> {
             .repeat()
             .takeUntil(pollResponse -> hasCompleted())
             .share();
+
+        // auto polling start here
+        this.fluxDisposable = fluxHandle.subscribe();
+        this.autoPollingEnabled = true;
+    }
+
+    /**
+     * Create a {@link Poller} instance with poll interval and poll operation. The polling starts immediately by invoking {@code pollOperation}.
+     * The next poll cycle will be defined by {@code retryAfter} value in {@link PollResponse}.
+     * In absence of {@code retryAfter}, the {@link Poller} will use {@code pollInterval}.
+     *
+     * <p><strong>Code Sample - Create poller object</strong></p>
+     * {@codesnippet com.azure.core.util.polling.poller.initialize.interval.polloperation}
+     *
+     * @param pollInterval Not-null and greater than zero poll interval.
+     * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into the client library,
+     * which must never return {@code null}, and which must always have a non-null {@link OperationStatus}.
+     * @param activationOperation The activation operation to be called by the {@link Poller} instance before calling {@code pollOperation}.
+     *{@link Mono} returned from poll operation should never return {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation,
+     * it should be handled by client library and return a valid {@link PollResponse}. However if poll operation returns {@link Mono#error(Throwable)},
+     * the {@link Poller} will disregard that and continue to poll.
+     * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if {@code pollInterval} or {@code pollOperation} are {@code null}
+     */
+    public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Supplier<Mono<T>> activationOperation) {
+        if (pollInterval == null || pollInterval.toNanos() <= 0) {
+            logger.logExceptionAsWarning(new IllegalArgumentException("Null, negative or zero value for poll interval is not allowed."));
+        }
+        if (pollOperation == null) {
+            logger.logExceptionAsWarning(new IllegalArgumentException("Null value for poll operation is not allowed."));
+        }
+
+        this.pollInterval = pollInterval;
+        this.pollOperation = pollOperation;
+        this.pollResponse = new PollResponse<>(PollResponse.OperationStatus.NOT_STARTED, null);
+
+        this.fluxHandle = asyncPollRequestWithDelay()
+            .flux()
+            .repeat()
+            .takeUntil(pollResponse -> hasCompleted())
+            .share()
+            .delaySubscription(activationOperation.get());
 
         // auto polling start here
         this.fluxDisposable = fluxHandle.subscribe();
