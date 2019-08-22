@@ -16,10 +16,15 @@ import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.ListSharesOptions
 import spock.lang.Specification
 
+import java.nio.file.Files
+
 class APISpec extends Specification {
     // Field common used for all APIs.
     def logger = new ClientLogger(APISpec.class)
     def AZURE_TEST_MODE = "AZURE_TEST_MODE"
+    def tmpFolder = getClass().getClassLoader().getResource("tmptestfiles")
+    def testFolder = getClass().getClassLoader().getResource("testfiles")
+   // def testFolder = "src/test/resources/testfiles/"
     def interceptorManager
     def testResourceName
 
@@ -32,7 +37,6 @@ class APISpec extends Specification {
     def methodName
     def testMode = getTestMode()
     def connectionString
-
 
     /**
      * Setup the File service clients commonly used for the API tests.

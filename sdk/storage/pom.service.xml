@@ -15,7 +15,7 @@
     <module>../core/azure-core-http-netty</module>
     <module>../identity/azure-identity</module>
     <module>azure-storage-common</module>
-    <module>azure-storage-blob</module>
+<!--    <module>azure-storage-blob</module>-->
     <module>azure-storage-file</module>
     <module>azure-storage-queue</module>
   </modules>
