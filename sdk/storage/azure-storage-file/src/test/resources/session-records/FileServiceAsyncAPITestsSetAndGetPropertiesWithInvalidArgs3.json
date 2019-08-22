@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?restype=service&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidXmlDocument",
+      "retry-after" : "0",
+      "Content-Length" : "294",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "05758c96-801a-00eb-5b77-57ce8a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:05758c96-801a-00eb-5b77-57ce8a000000\nTime:2019-08-20T16:53:17.1097442Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
+      "Date" : "Tue, 20 Aug 2019 16:53:17 GMT",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "fa76bbad05a24b10acff9234fa8678c0284183b637414d08a824f41bd2a4bdf8" ]
+}

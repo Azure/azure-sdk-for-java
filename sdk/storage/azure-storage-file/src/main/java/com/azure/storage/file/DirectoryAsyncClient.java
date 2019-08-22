@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageBuilder;
@@ -25,6 +26,9 @@ import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileRef;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageErrorException;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.OffsetDateTime;
@@ -32,8 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import java.util.Objects;
 
 /**
  * This class provides a client that contains all the operations for interacting with directory in Azure Storage File Service.
@@ -52,6 +55,8 @@ import reactor.core.publisher.Mono;
  * @see SASTokenCredential
  */
 public class DirectoryAsyncClient {
+    private final ClientLogger logger = new ClientLogger(DirectoryAsyncClient.class);
+
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
     private final String directoryPath;
@@ -66,6 +71,8 @@ public class DirectoryAsyncClient {
      * @param snapshot The snapshot of the share
      */
     DirectoryAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String directoryPath, String snapshot) {
+        Objects.requireNonNull(shareName);
+        Objects.requireNonNull(directoryPath);
         this.shareName = shareName;
         this.directoryPath = directoryPath;
         this.snapshot = snapshot;
@@ -82,6 +89,8 @@ public class DirectoryAsyncClient {
      * @param snapshot Optional snapshot of the share
      */
     DirectoryAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String directoryPath, String snapshot) {
+        Objects.requireNonNull(shareName);
+        Objects.requireNonNull(directoryPath);
         this.shareName = shareName;
         this.directoryPath = directoryPath;
         this.snapshot = snapshot;
@@ -99,8 +108,8 @@ public class DirectoryAsyncClient {
         try {
             return new URL(azureFileStorageClient.getUrl());
         } catch (MalformedURLException e) {
-            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
-                azureFileStorageClient.getUrl()), e);
+            throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
+                azureFileStorageClient.getUrl()), e));
         }
     }
 
@@ -168,7 +177,13 @@ public class DirectoryAsyncClient {
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
      */
     public Mono<Response<DirectoryInfo>> create(Map<String, String> metadata) {
-        return azureFileStorageClient.directorys().createWithRestResponseAsync(shareName, directoryPath, null, metadata, Context.NONE)
+        // TODO (alzimmer): These properties are dummy defaults to allow the new service version to be used. Remove these and use correct defaults when known (https://github.com/Azure/azure-sdk-for-java/issues/5039)
+        String fileAttributes = "None";
+        String filePermission = "inherit";
+        String fileCreationTime = "now";
+        String fileLastWriteTime = "now";
+
+        return azureFileStorageClient.directorys().createWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime, fileLastWriteTime, null, metadata, filePermission, null, Context.NONE)
             .map(this::createWithRestResponse);
     }
 
@@ -530,8 +545,10 @@ public class DirectoryAsyncClient {
 
     private List<FileRef> convertResponseAndGetNumOfResults(DirectorysListFilesAndDirectoriesSegmentResponse response) {
         List<FileRef> fileRefs = new ArrayList<>();
-        response.value().segment().directoryItems().forEach(directoryItem -> fileRefs.add(new FileRef(directoryItem.name(), true, null)));
-        response.value().segment().fileItems().forEach(fileItem -> fileRefs.add(new FileRef(fileItem.name(), false, fileItem.properties())));
+        if (response.value().segment() != null) {
+            response.value().segment().directoryItems().forEach(directoryItem -> fileRefs.add(new FileRef(directoryItem.name(), true, null)));
+            response.value().segment().fileItems().forEach(fileItem -> fileRefs.add(new FileRef(fileItem.name(), false, fileItem.properties())));
+        }
         return fileRefs;
     }
 }

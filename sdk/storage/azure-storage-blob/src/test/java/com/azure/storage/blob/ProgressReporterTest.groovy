@@ -4,8 +4,6 @@
 package com.azure.storage.blob
 
 
-import io.netty.buffer.ByteBuf
-import io.netty.buffer.Unpooled
 import reactor.core.publisher.Flux
 import spock.lang.Requires
 
@@ -34,7 +32,7 @@ class ProgressReporterTest extends APISpec {
         2 * mockReceiver.reportProgress(10)
         2 * mockReceiver.reportProgress(25)
         2 * mockReceiver.reportProgress(30)
-        0 * mockReceiver.reportProgress({it > 30})
+        0 * mockReceiver.reportProgress({ it > 30 })
     }
 
     @Requires({ APISpec.liveMode() })
@@ -43,8 +41,7 @@ class ProgressReporterTest extends APISpec {
         IProgressReceiver mockReceiver = Mock(IProgressReceiver)
 
         ByteBuffer buffer = getRandomData(1 * 1024 * 1024)
-        Flux<ByteBuf> data = ProgressReporter.addProgressReporting(Flux.just(buffer), mockReceiver)
-            .map({ it -> Unpooled.wrappedBuffer(it) })
+        Flux<ByteBuffer> data = ProgressReporter.addProgressReporting(Flux.just(buffer), mockReceiver)
 
         when:
         BlockBlobAsyncClient bu = getBlobAsyncClient(primaryCredential, cu.getContainerUrl().toString(), generateBlobName())
@@ -103,7 +100,7 @@ class ProgressReporterTest extends APISpec {
         We should never report more progress than the 60 total (30 from each Flux--Resubscribing is a retry and
         therefore rewinds).
          */
-        0 * mockReceiver.reportProgress({it > 60})
+        0 * mockReceiver.reportProgress({ it > 60 })
     }
 
     // See TransferManagerTest for network tests of the parallel ProgressReporter.

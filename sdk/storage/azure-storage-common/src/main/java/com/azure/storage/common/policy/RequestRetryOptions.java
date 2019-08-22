@@ -3,6 +3,8 @@
 
 package com.azure.storage.common.policy;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -11,6 +13,7 @@ import java.util.concurrent.TimeUnit;
  * functionality.
  */
 public final class RequestRetryOptions {
+    private final ClientLogger logger = new ClientLogger(RequestRetryOptions.class);
 
     private final int maxTries;
     private final int tryTimeout;
@@ -19,8 +22,8 @@ public final class RequestRetryOptions {
     /**
      * A {@link RetryPolicyType} telling the pipeline what kind of retry policy to use.
      */
-    private RetryPolicyType retryPolicyType;
-    private String secondaryHost;
+    private final RetryPolicyType retryPolicyType;
+    private final String secondaryHost;
 
     /**
      * Constructor with default retry values: Exponential backoff, maxTries=4, tryTimeout=30, retryDelayInMs=4000,
@@ -154,7 +157,7 @@ public final class RequestRetryOptions {
                 delay = this.retryDelayInMs;
                 break;
             default:
-                throw new IllegalArgumentException("Invalid retry policy type.");
+                throw logger.logExceptionAsError(new IllegalArgumentException("Invalid retry policy type."));
         }
 
         return Math.min(delay, this.maxRetryDelayInMs);

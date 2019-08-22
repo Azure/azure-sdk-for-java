@@ -83,7 +83,7 @@ public final class ConfigurationClientBuilder {
     private HttpClient httpClient;
     private HttpLogDetailLevel httpLogDetailLevel;
     private HttpPipeline pipeline;
-    private RetryPolicy retryPolicy;
+    private final RetryPolicy retryPolicy;
     private Configuration configuration;
 
     /**

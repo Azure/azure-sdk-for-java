@@ -12,15 +12,14 @@ import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.test.models.NetworkCallError;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;
@@ -42,7 +41,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     private static final Pattern DELEGATIONKEY_CLIENTID_PATTERN = Pattern.compile("(?:<SignedOid>)(.*)(?:</SignedOid>)");
     private static final Pattern DELEGATIONKEY_TENANTID_PATTERN = Pattern.compile("(?:<SignedTid>)(.*)(?:</SignedTid>)");
 
-    private final Logger logger = LoggerFactory.getLogger(RecordNetworkCallPolicy.class);
+    private final ClientLogger logger = new ClientLogger(RecordNetworkCallPolicy.class);
     private final RecordedData recordedData;
 
     /**
@@ -94,10 +93,8 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
                     // Remove pre-added header if this is a waiting or redirection
                     if (body != null && body.contains("<Status>InProgress</Status>")
-                        || Integer.parseInt(responseData.get("StatusCode")) == HttpResponseStatus.TEMPORARY_REDIRECT.code()) {
-                        if (logger.isInfoEnabled()) {
-                            logger.info("Waiting for a response or redirection.");
-                        }
+                        || Integer.parseInt(responseData.get("StatusCode")) == HttpURLConnection.HTTP_MOVED_TEMP) {
+                        logger.info("Waiting for a response or redirection.");
                     } else {
                         recordedData.addNetworkCall(networkCallRecord);
                     }

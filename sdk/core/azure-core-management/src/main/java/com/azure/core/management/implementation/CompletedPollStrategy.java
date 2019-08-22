@@ -9,6 +9,7 @@ import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.SwaggerMethodParser;
 import com.azure.core.management.OperationState;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -20,6 +21,8 @@ import java.lang.reflect.Type;
  * further polling.
  */
 public class CompletedPollStrategy extends PollStrategy {
+    private final ClientLogger logger = new ClientLogger(CompletedPollStrategy.class);
+
     private final HttpResponse firstHttpResponse;
     private CompletedPollStrategyData data;
 
@@ -65,7 +68,7 @@ public class CompletedPollStrategy extends PollStrategy {
 
     @Override
     public HttpRequest createPollRequest() {
-        throw new UnsupportedOperationException();
+        throw logger.logExceptionAsError(new UnsupportedOperationException());
     }
 
     @Override

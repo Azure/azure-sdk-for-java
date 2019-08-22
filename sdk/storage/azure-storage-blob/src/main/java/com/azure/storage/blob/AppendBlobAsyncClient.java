@@ -16,11 +16,11 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.common.Constants;
-import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.nio.ByteBuffer;
 
 import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
@@ -112,7 +112,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *
      * @return {@link Mono} containing the information of the append blob operation.
      */
-    public Mono<AppendBlobItem> appendBlock(Flux<ByteBuf> data, long length) {
+    public Mono<AppendBlobItem> appendBlock(Flux<ByteBuffer> data, long length) {
         return appendBlockWithResponse(data, length, null).flatMap(FluxUtil::toMono);
     }
 
@@ -129,12 +129,12 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *
      * @return A {@link Mono} containing {@link Response} whose {@link Response#value() value} contains the append blob operation.
      */
-    public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuf> data, long length,
+    public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length,
                                                                   AppendBlobAccessConditions appendBlobAccessConditions) {
         return withContext(context -> appendBlockWithResponse(data, length, appendBlobAccessConditions, context));
     }
 
-    Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuf> data, long length,
+    Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length,
                                                            AppendBlobAccessConditions appendBlobAccessConditions, Context context) {
         appendBlobAccessConditions = appendBlobAccessConditions == null ? new AppendBlobAccessConditions()
             : appendBlobAccessConditions;
