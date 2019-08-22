@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsuploadandclearrange755517a96e1e7f?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsuploadandclearrange40648a8fbf95ae?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -9,18 +9,18 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D726C60078FBE8\"",
-      "Last-Modified" : "Thu, 22 Aug 2019 06:00:14 GMT",
+      "ETag" : "\"0x8D7274C5CCA8DE9\"",
+      "Last-Modified" : "Thu, 22 Aug 2019 22:02:02 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "321ecb14-d01a-003f-59ae-5887aa000000",
-      "Date" : "Thu, 22 Aug 2019 06:00:14 GMT",
-      "x-ms-client-request-id" : "241d7456-f9dc-4733-8a72-cdba37077876"
+      "x-ms-request-id" : "f6bc4652-101a-006d-4535-599a58000000",
+      "Date" : "Thu, 22 Aug 2019 22:02:01 GMT",
+      "x-ms-client-request-id" : "286cc3c0-2377-41e4-a9a5-71aea2391edd"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsuploadandclearrange755517a96e1e7f/fileasyncapitestsuploadandclearrange934511c2a79457",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsuploadandclearrange40648a8fbf95ae/fileasyncapitestsuploadandclearrange587419a95ca501",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -30,24 +30,24 @@
       "x-ms-file-permission-key" : "2189138948451189390*13168958551941065216",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-08-22T06:00:15.7572851Z",
-      "Last-Modified" : "Thu, 22 Aug 2019 06:00:15 GMT",
+      "x-ms-file-creation-time" : "2019-08-22T22:02:03.1160766Z",
+      "Last-Modified" : "Thu, 22 Aug 2019 22:02:03 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Thu, 22 Aug 2019 06:00:15 GMT",
-      "ETag" : "\"0x8D726C600F3CEF3\"",
+      "Date" : "Thu, 22 Aug 2019 22:02:02 GMT",
+      "ETag" : "\"0x8D7274C5D37F5BE\"",
       "x-ms-file-attributes" : "Archive",
-      "x-ms-file-change-time" : "2019-08-22T06:00:15.7572851Z",
+      "x-ms-file-change-time" : "2019-08-22T22:02:03.1160766Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "321ecb18-d01a-003f-5aae-5887aa000000",
-      "x-ms-client-request-id" : "35685c93-d859-4027-abae-8da73e2fd897",
-      "x-ms-file-last-write-time" : "2019-08-22T06:00:15.7572851Z"
+      "x-ms-request-id" : "f6bc4657-101a-006d-4735-599a58000000",
+      "x-ms-client-request-id" : "d0b70399-63a4-4c2c-8557-a607e0a8932c",
+      "x-ms-file-last-write-time" : "2019-08-22T22:02:03.1160766Z"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsuploadandclearrange755517a96e1e7f/fileasyncapitestsuploadandclearrange934511c2a79457?comp=range",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsuploadandclearrange40648a8fbf95ae/fileasyncapitestsuploadandclearrange587419a95ca501?comp=range",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0",
@@ -56,17 +56,17 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D726C6014BA195\"",
-      "Last-Modified" : "Thu, 22 Aug 2019 06:00:16 GMT",
+      "ETag" : "\"0x8D7274C5D4BF7CF\"",
+      "Last-Modified" : "Thu, 22 Aug 2019 22:02:03 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "321ecb1a-d01a-003f-5bae-5887aa000000",
+      "x-ms-request-id" : "f6bc4658-101a-006d-4835-599a58000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Thu, 22 Aug 2019 06:00:16 GMT",
-      "x-ms-client-request-id" : "39d3d107-cad9-4e5f-8d8a-7cf09185543b",
+      "Date" : "Thu, 22 Aug 2019 22:02:02 GMT",
+      "x-ms-client-request-id" : "fa19b295-c52e-4779-aa23-cacefba85f95",
       "Content-MD5" : "A5momLrihyOacM8O00uT1g=="
     }
   } ],
-  "variables" : [ "fileasyncapitestsuploadandclearrange755517a96e1e7f", "fileasyncapitestsuploadandclearrange934511c2a79457" ]
+  "variables" : [ "fileasyncapitestsuploadandclearrange40648a8fbf95ae", "fileasyncapitestsuploadandclearrange587419a95ca501" ]
 }
