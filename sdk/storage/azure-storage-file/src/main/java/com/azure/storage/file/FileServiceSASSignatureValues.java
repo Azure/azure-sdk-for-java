@@ -419,6 +419,7 @@ final class FileServiceSASSignatureValues {
     private void assertGenerateOK() {
         Utility.assertNotNull("version", this.version);
         Utility.assertNotNull("canonicalName", this.canonicalName);
+        Utility.assertNotNull("resource", this.resource);
 
         // If a UserDelegation key or a SignedIdentifier is not being used both expiryDate and permissions must be set.
         if (identifier == null) {

@@ -46,8 +46,6 @@ final class QueueServiceSASSignatureValues {
 
     private String canonicalName;
 
-    private String resource;
-
     private String identifier;
 
     /**
@@ -202,24 +200,6 @@ final class QueueServiceSASSignatureValues {
     }
 
     /**
-     * @return the resource the SAS user may access.
-     */
-    public String resource() {
-        return resource;
-    }
-
-    /**
-     * Sets the resource the SAS user may access.
-     *
-     * @param resource Allowed resources string to set
-     * @return the updated QueueServiceSASSignatureValues object
-     */
-    public QueueServiceSASSignatureValues resource(String resource) {
-        this.resource = resource;
-        return this;
-    }
-
-    /**
      * @return the canonical name of the object the SAS user may access.
      */
     public String canonicalName() {
@@ -289,7 +269,7 @@ final class QueueServiceSASSignatureValues {
         String signature = sharedKeyCredentials.computeHmac256(stringToSign);
 
         return new QueueServiceSASQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime, this.ipRange,
-            this.identifier, this.resource, this.permissions, signature);
+            this.identifier, this.permissions, signature);
     }
 
     /**

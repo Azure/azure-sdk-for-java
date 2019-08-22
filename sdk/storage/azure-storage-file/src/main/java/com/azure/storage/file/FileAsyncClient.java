@@ -812,8 +812,9 @@ public class FileAsyncClient {
         String accountName) {
 
         // Set canonical name
-        fileServiceSASSignatureValues.canonicalName(this.shareName,this.filePath, accountName);
+        fileServiceSASSignatureValues.canonicalName(this.shareName, this.filePath, accountName);
 
+        // Set resource
         fileServiceSASSignatureValues.resource(Constants.UrlConstants.SAS_FILE_CONSTANT);
 
         return fileServiceSASSignatureValues;

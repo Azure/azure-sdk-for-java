@@ -38,7 +38,7 @@ public final class FileSASPermission {
      *         A {@code String} which represents the {@code FileSASPermission}.
      *
      * @return A {@code FileSASPermission} generated from the given {@code String}.
-     * @throws IllegalArgumentException If {@code permString} contains a character other than r, c, w, d, or l.
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, c, w, or d.
      */
     public static FileSASPermission parse(String permString) {
         FileSASPermission permissions = new FileSASPermission();

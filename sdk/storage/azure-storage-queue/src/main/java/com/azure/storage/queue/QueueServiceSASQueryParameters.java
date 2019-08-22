@@ -34,8 +34,6 @@ public final class QueueServiceSASQueryParameters {
 
     private final String identifier;
 
-    private final String resource;
-
     private final String permissions;
 
     private final String signature;
@@ -54,7 +52,6 @@ public final class QueueServiceSASQueryParameters {
         this.expiryTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_EXPIRY_TIME, removeSASParametersFromMap, Utility::parseDate);
         this.ipRange = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_IP_RANGE, removeSASParametersFromMap, IPRange::parse);
         this.identifier = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER, removeSASParametersFromMap);
-        this.resource = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_RESOURCE, removeSASParametersFromMap);
         this.permissions = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, removeSASParametersFromMap);
         this.signature = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNATURE, removeSASParametersFromMap);
     }
@@ -88,23 +85,19 @@ public final class QueueServiceSASQueryParameters {
      * @param ipRange A {@link IPRange} representing the range of valid IP addresses for this SAS token or {@code
      * null}.
      * @param identifier A {@code String} representing the signed identifier (only for Service SAS) or {@code null}.
-     * @param resource A {@code String} representing the storage share or file (only for Service SAS).
      * @param permissions A {@code String} representing the storage permissions or {@code null}.
      * @param signature A {@code String} representing the signature for the SAS token.
      */
     QueueServiceSASQueryParameters(String version, SASProtocol protocol, OffsetDateTime startTime, OffsetDateTime expiryTime,
-        IPRange ipRange, String identifier, String resource, String permissions, String signature) {
-
+        IPRange ipRange, String identifier, String permissions, String signature) {
         this.version = version;
         this.protocol = protocol;
         this.startTime = startTime;
         this.expiryTime = expiryTime;
         this.ipRange = ipRange;
         this.identifier = identifier;
-        this.resource = resource;
         this.permissions = permissions;
         this.signature = signature;
-
     }
 
     /**
@@ -152,13 +145,6 @@ public final class QueueServiceSASQueryParameters {
     }
 
     /**
-     * @return The storage share or file (only for {@link QueueServiceSASSignatureValues}).
-     */
-    public String resource() {
-        return resource;
-    }
-
-    /**
      * @return Please refer to {@link QueueSASPermission} for more details.
      */
     public String permissions() {
@@ -200,7 +186,6 @@ public final class QueueServiceSASQueryParameters {
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_EXPIRY_TIME, formatQueryParameterDate(this.expiryTime));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_IP_RANGE, this.ipRange);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER, this.identifier);
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_RESOURCE, this.resource);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNATURE, this.signature);
 

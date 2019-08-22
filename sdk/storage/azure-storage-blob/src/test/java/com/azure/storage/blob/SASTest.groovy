@@ -278,7 +278,7 @@ class SASTest extends APISpec {
         UserDelegationKey key = getOAuthServiceURL().getUserDelegationKey(null, OffsetDateTime.now().plusDays(1))
 
         when:
-        String sas = bu.generateUserDelegationSAS(key, primaryCreds.accountName(), permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        String sas = bu.generateUserDelegationSAS(key, primaryCreds.accountName(), permissions, expiryTime, startTime, key.signedVersion(), sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         BlockBlobClient client = new BlobClientBuilder()
             .endpoint(cu.getContainerUrl().toString())
@@ -289,7 +289,7 @@ class SASTest extends APISpec {
 
         OutputStream os = new ByteArrayOutputStream()
         client.download(os)
-        BlobProperties properties = client.getProperties().value()
+        BlobProperties properties = client.getProperties()
 
         then:
         os.toString() == new String(data)
@@ -334,7 +334,7 @@ class SASTest extends APISpec {
 
         when:
 
-        String sas = snapshotBlob.generateUserDelegationSAS(key, primaryCreds.accountName(), permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        String sas = snapshotBlob.generateUserDelegationSAS(key, primaryCreds.accountName(), permissions, expiryTime, startTime, key.signedVersion(), sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         // base blob with snapshot SAS
         BlockBlobClient client1 = new BlobClientBuilder()
@@ -394,7 +394,7 @@ class SASTest extends APISpec {
 
         when:
 
-        String sasWithPermissions = cu.generateUserDelegationSAS(key, primaryCreds.accountName(), permissions, expiryTime)
+        String sasWithPermissions = cu.generateUserDelegationSAS(key, primaryCreds.accountName(), permissions, expiryTime, null, key.signedVersion(), null, null, null, null, null, null, null)
 
         ContainerClient client = new ContainerClientBuilder()
             .endpoint(cu.getContainerUrl().toString())
@@ -560,6 +560,7 @@ class SASTest extends APISpec {
             .contentEncoding(encoding)
             .contentLanguage(language)
             .contentType(type)
+        v.resource("")
 
         def token = v.generateSASQueryParameters(primaryCreds)
         then:
@@ -611,6 +612,7 @@ class SASTest extends APISpec {
             .contentEncoding(encoding)
             .contentLanguage(language)
             .contentType(type)
+        v.resource("")
         def key = new UserDelegationKey()
             .signedOid(keyOid)
             .signedTid(keyTid)
@@ -1055,6 +1057,7 @@ class SASTest extends APISpec {
             .permissions("r")
             .canonicalName("/containerName/blobName")
             .expiryTime(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
+            .resource("bs")
         parts.sasQueryParameters(sasValues.generateSASQueryParameters(primaryCreds))
 
         when:
@@ -1066,7 +1069,7 @@ class SASTest extends APISpec {
         splitParts[1].contains("snapshot=snapshot")
         splitParts[1].contains("sp=r")
         splitParts[1].contains("sig=")
-        splitParts[1].split("&").size() == 5 // snapshot & sv & sr & sp & sig
+        splitParts[1].split("&").size() == 6 // snapshot & sv & sr & sp & sig
     }
 
     def "URLParser"() {

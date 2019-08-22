@@ -768,26 +768,12 @@ public final class QueueAsyncClient {
 
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
-        QueueServiceSASSignatureValues values = configureServiceSASSignatureValues(queueServiceSASSignatureValues,
-            sharedKeyCredential.accountName());
+        // Set canonical name
+        QueueServiceSASSignatureValues values = queueServiceSASSignatureValues.canonicalName(this.queueName, sharedKeyCredential.accountName());
 
         QueueServiceSASQueryParameters queueServiceSasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
 
         return queueServiceSasQueryParameters.encode();
-    }
-
-    /**
-     * Sets queueServiceSASSignatureValues parameters dependent on the current queue type
-     */
-    QueueServiceSASSignatureValues configureServiceSASSignatureValues(QueueServiceSASSignatureValues queueServiceSASSignatureValues,
-        String accountName) {
-
-        // Set canonical name
-        queueServiceSASSignatureValues.canonicalName(this.queueName, accountName);
-
-        queueServiceSASSignatureValues.resource(Constants.UrlConstants.SAS_QUEUE_CONSTANT);
-
-        return queueServiceSASSignatureValues;
     }
 
     /*

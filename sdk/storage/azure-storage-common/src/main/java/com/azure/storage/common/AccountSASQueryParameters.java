@@ -90,7 +90,6 @@ public final class AccountSASQueryParameters {
      */
     AccountSASQueryParameters(String version, String services, String resourceTypes, SASProtocol protocol,
         OffsetDateTime startTime, OffsetDateTime expiryTime, IPRange ipRange, String permissions, String signature) {
-
         this.version = version;
         this.services = services;
         this.resourceTypes = resourceTypes;
@@ -100,7 +99,6 @@ public final class AccountSASQueryParameters {
         this.ipRange = ipRange;
         this.permissions = permissions;
         this.signature = signature;
-
     }
 
     /**

@@ -94,7 +94,7 @@ class QueueSASTests extends APISpec {
         def accountName = "account"
 
         when:
-        def serviceSASSignatureValues = queueClient.client.configureServiceSASSignatureValues(new QueueServiceSASSignatureValues(), accountName)
+        def serviceSASSignatureValues = new QueueServiceSASSignatureValues().canonicalName(queueName, accountName)
 
         then:
         serviceSASSignatureValues.canonicalName() == "/queue/" + accountName + "/" + queueName
