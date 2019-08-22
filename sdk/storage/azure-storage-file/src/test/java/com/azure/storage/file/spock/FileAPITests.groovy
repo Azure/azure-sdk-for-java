@@ -269,7 +269,7 @@ class FileAPITests extends APISpec {
         given:
         def fileName = testResourceName.randomName("file", 60)
         primaryFileClient.create(1024)
-        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, fileName)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder.toString(), fileName)
         primaryFileClient.uploadFromFile(uploadFile)
         expect:
         primaryFileClient.listRanges().each {
@@ -284,7 +284,7 @@ class FileAPITests extends APISpec {
         given:
         def fileName = testResourceName.randomName("file", 60)
         primaryFileClient.create(1024)
-        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, fileName)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder.toString(), fileName)
         primaryFileClient.uploadFromFile(uploadFile)
         expect:
         primaryFileClient.listRanges(new FileRange(0, 511L)).each {

@@ -153,9 +153,9 @@ class FileServiceAsyncAPITests extends APISpec {
             def shareAsyncClient = primaryFileServiceAsyncClient.getShareAsyncClient(share.name())
             shareAsyncClient.createWithResponse(share.metadata(), share.properties().quota()).block()
             if (i == 2) {
-                StepVerifier.create(shareAsyncClient.createSnapshot())
+                StepVerifier.create(shareAsyncClient.createSnapshotWithResponse(null))
                     .assertNext {
-                        testShares.add(new ShareItem().name(share.name()).metadata(share.metadata()).properties(share.properties()).snapshot(it.snapshot()))
+                        testShares.add(new ShareItem().name(share.name()).metadata(share.metadata()).properties(share.properties()).snapshot(it.value().snapshot()))
                         FileTestHelper.assertResponseStatusCode(it, 201)
                     }.verifyComplete()
             }
