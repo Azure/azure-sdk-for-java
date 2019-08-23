@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.spock
 
+import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
@@ -15,8 +16,6 @@ import com.azure.storage.file.FileServiceClientBuilder
 import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.ListSharesOptions
 import spock.lang.Specification
-
-import java.nio.file.Files
 
 class APISpec extends Specification {
     // Field common used for all APIs.
@@ -101,6 +100,7 @@ class APISpec extends Specification {
         if (testMode == TestMode.RECORD) {
             return new FileServiceClientBuilder()
                 .connectionString(connectionString)
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
         } else {
             return new FileServiceClientBuilder()
@@ -114,6 +114,7 @@ class APISpec extends Specification {
             return new ShareClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
         } else {
             return new ShareClientBuilder()
@@ -129,6 +130,7 @@ class APISpec extends Specification {
                 .connectionString(connectionString)
                 .shareName(shareName)
                 .directoryPath(directoryPath)
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
         } else {
             return new DirectoryClientBuilder()
@@ -145,6 +147,7 @@ class APISpec extends Specification {
                 .connectionString(connectionString)
                 .shareName(shareName)
                 .filePath(filePath)
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
         } else {
             return new FileClientBuilder()
