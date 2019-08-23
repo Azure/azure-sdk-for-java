@@ -189,7 +189,7 @@ public class DirectoryAsyncClient {
         String filePermission = "inherit";
         String fileCreationTime = "now";
         String fileLastWriteTime = "now";
-        
+
         return azureFileStorageClient.directorys().createWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime, fileLastWriteTime, null, metadata, filePermission, null, context)
             .map(this::createWithRestResponse);
     }
@@ -293,7 +293,7 @@ public class DirectoryAsyncClient {
      *
      * <p>Clear the metadata of the directory</p>
      *
-     * {@codesnippet com.azure.storage.file.DirectoryAsyncClient.setMetadata-clearMetadataAsync#Map}
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.setMetadata#map.clearMetadata}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-metadata">Azure Docs</a>.</p>

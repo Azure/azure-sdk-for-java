@@ -174,11 +174,11 @@ public class FileJavaDocCodeSamples {
      */
     public void uploadData() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.upload#flux-long
+        // BEGIN: com.azure.storage.file.FileClient.upload#ByteBuffer-long
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         FileUploadInfo response = fileClient.upload(defaultData, defaultData.remaining());
         System.out.println("Complete uploading the data.");
-        // END: com.azure.storage.file.fileClient.upload#flux-long
+        // END: com.azure.storage.file.FileClient.upload#ByteBuffer-long
     }
 
     /**
@@ -186,12 +186,12 @@ public class FileJavaDocCodeSamples {
      */
     public void uploadWithResponseData() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.uploadWithResponse#flux-long
+        // BEGIN: com.azure.storage.file.FileClient.uploadWithResponse#ByteBuffer-long-Context
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         Response<FileUploadInfo> response = fileClient.uploadWithResponse(defaultData, defaultData.remaining(),
             new Context(key1, value1));
         System.out.println("Complete uploading the data with status code: " + response.statusCode());
-        // END: com.azure.storage.file.fileClient.uploadWithResponse#flux-long
+        // END: com.azure.storage.file.FileClient.uploadWithResponse#ByteBuffer-long-Context
     }
 
     /**
@@ -341,10 +341,10 @@ public class FileJavaDocCodeSamples {
      */
     public void setMetadata() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.setMetadata#map
+        // BEGIN: com.azure.storage.file.FileClient.setMetadataWithResponse#Map-Context
         fileClient.setMetadata(Collections.singletonMap("file", "updatedMetadata"));
         System.out.printf("Setting the file metadata completed.");
-        // END: com.azure.storage.file.fileClient.setMetadata#map
+        // END: com.azure.storage.file.FileClient.setMetadataWithResponse#Map-Context
     }
 
     /**

@@ -353,7 +353,7 @@ public class FileClient {
      *
      * <p>Clear the httpHeaders of the file</p>
      *
-     * {@codesnippet com.azure.storage.file.FileClient.setHttpHeaders-clearHttpHeaders#long-FileHTTPHeaders}
+     * {@codesnippet com.azure.storage.file.fileClient.setHttpHeaders#long-filehttpheaders.clearHttpHeaders}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a>.</p>
@@ -404,11 +404,11 @@ public class FileClient {
      *
      * <p>Set the metadata to "file:updatedMetadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setMetadata#map}
+     * {@codesnippet com.azure.storage.file.FileClient.setMetadataWithResponse#Map-Context}
      *
      * <p>Clear the metadata of the file</p>
      *
-     * {@codesnippet com.azure.storage.file.FileClient.setMetadata-clearMetadata#Map}
+     * {@codesnippet com.azure.storage.file.fileClient.setMetadata#map.clearMetadata}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-metadata">Azure Docs</a>.</p>
@@ -430,7 +430,7 @@ public class FileClient {
      *
      * <p>Set the metadata to "file:updatedMetadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setMetadata#map}
+     * {@codesnippet com.azure.storage.file.FileClient.setMetadataWithResponse#Map-Context}
      *
      * <p>Clear the metadata of the file</p>
      *
@@ -455,7 +455,7 @@ public class FileClient {
      *
      * <p>Upload "default" to the file. </p>
      *
-     * {@codesnippet com.azure.storage.file.FileClient.upload#ByteBuf-long}
+     * {@codesnippet com.azure.storage.file.FileClient.upload#ByteBuffer-long}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -476,7 +476,7 @@ public class FileClient {
      *
      * <p>Upload "default" to the file. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.uploadWithResponse#flux-long}
+     * {@codesnippet com.azure.storage.file.FileClient.uploadWithResponse#ByteBuffer-long-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>

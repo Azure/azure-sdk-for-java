@@ -148,7 +148,7 @@ public class DirectoryClient {
      *
      * <p>Delete the directory</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.deleteWithResponse}
+     * {@codesnippet com.azure.storage.file.DirectoryClient.deleteWithResponse#Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
@@ -213,7 +213,7 @@ public class DirectoryClient {
      *
      * <p>Clear the metadata of the directory</p>
      *
-     * {@codesnippet com.azure.storage.file.DirectoryClient.setMetadata-clearMetadata#Map}
+     * {@codesnippet com.azure.storage.file.directoryClient.setMetadata#map.clearMetadata}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-metadata">Azure Docs</a>.</p>
@@ -239,7 +239,7 @@ public class DirectoryClient {
      *
      * <p>Clear the metadata of the directory</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.setMetadataWithResponse#map.clearMetadata}
+     * {@codesnippet com.azure.storage.file.DirectoryClient.setMetadataWithResponse#Map-Context.clearMetadata}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-metadata">Azure Docs</a>.</p>
@@ -489,7 +489,7 @@ public class DirectoryClient {
      *
      * <p>Delete the file "filetest"</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.deleteFile#string}
+     * {@codesnippet com.azure.storage.file.DirectoryClient.deleteFileWithResponse#String-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>

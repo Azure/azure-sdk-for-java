@@ -191,7 +191,7 @@ public class FileAsyncClient {
         String filePermission = "inherit";
         String fileCreationTime = "now";
         String fileLastWriteTime = "now";
-        
+
         return azureFileStorageClient.files().createWithRestResponseAsync(shareName, filePath, maxSize, fileAttributes, fileCreationTime, fileLastWriteTime, null, metadata, filePermission, null, httpHeaders, context)
 
             .map(this::createFileInfoResponse);
@@ -407,7 +407,7 @@ public class FileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
      *
      * @param range Optional byte range which returns file data only from the specified range.
-     * @param rangeGetContentMD5 Optional boolean which the service returns the MD5 hash for the range when it sets 
+     * @param rangeGetContentMD5 Optional boolean which the service returns the MD5 hash for the range when it sets
      * to true, as long as the range is less than or equal to 4 MB in size.
      * @return A response containing the {@link FileDownloadInfo file download Info} with headers and response status code
      */
@@ -561,13 +561,13 @@ public class FileAsyncClient {
     }
 
     Mono<Response<FileInfo>> setHttpHeadersWithResponse(long newFileSize, FileHTTPHeaders httpHeaders, Context context) {
-        
+
         // TODO (alzimmer): These properties are dummy defaults to allow the new service version to be used. Remove these and use correct defaults when known (https://github.com/Azure/azure-sdk-for-java/issues/5039)
         String fileAttributes = "None";
         String filePermission = "inherit";
         String fileCreationTime = "preserve";
         String fileLastWriteTime = "preserve";
-        
+
         return azureFileStorageClient.files().setHTTPHeadersWithRestResponseAsync(shareName, filePath, fileAttributes, fileCreationTime, fileLastWriteTime, null, newFileSize, filePermission, null, httpHeaders, context)
 
             .map(this::setHttpHeadersResponse);
@@ -687,7 +687,7 @@ public class FileAsyncClient {
      *
      * <p>Upload the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.upload#ByteBuffer-long-int-filerangewritetype}
+     * {@codesnippet com.azure.storage.file.FileAsyncClient.upload#Flux-long-long-FileRangeWriteType}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -716,7 +716,7 @@ public class FileAsyncClient {
      *
      * <p>Upload the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.uploadWithResponse#ByteBuffer-long-int-filerangewritetype}
+     * {@codesnippet com.azure.storage.file.FileAsyncClient.uploadWithResponse#Flux-long-long-FileRangeWriteType}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>

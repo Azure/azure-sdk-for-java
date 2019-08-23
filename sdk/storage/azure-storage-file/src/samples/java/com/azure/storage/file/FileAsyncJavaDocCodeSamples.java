@@ -213,14 +213,14 @@ public class FileAsyncJavaDocCodeSamples {
      */
     public void uploadWithResponseOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadWithResponse#ByteBuffer-long-int-filerangewritetype
+        // BEGIN: com.azure.storage.file.FileAsyncClient.uploadWithResponse#Flux-long-long-FileRangeWriteType
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         fileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultData.remaining(), 1024,
             FileRangeWriteType.UPDATE).subscribe(
                 response -> System.out.println("Complete deleting the file with status code" + response.statusCode()),
                 error -> System.err.print(error.toString())
         );
-        // END: com.azure.storage.file.fileAsyncClient.uploadWithResponse#ByteBuffer-long-int-filerangewritetype
+        // END: com.azure.storage.file.FileAsyncClient.uploadWithResponse#Flux-long-long-FileRangeWriteType
     }
 
     /**
@@ -228,7 +228,7 @@ public class FileAsyncJavaDocCodeSamples {
      */
     public void uploadDataAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.upload#ByteBuffer-long-int-filerangewritetype
+        // BEGIN: com.azure.storage.file.FileAsyncClient.upload#Flux-long-long-FileRangeWriteType
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         fileAsyncClient.upload(Flux.just(defaultData), defaultData.remaining(), 1024,
             FileRangeWriteType.UPDATE).subscribe(
@@ -236,7 +236,7 @@ public class FileAsyncJavaDocCodeSamples {
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete deleting the file!")
         );
-        // END: com.azure.storage.file.fileAsyncClient.upload#ByteBuffer-long-int-filerangewritetype
+        // END: com.azure.storage.file.FileAsyncClient.upload#Flux-long-long-FileRangeWriteType
     }
 
     /**

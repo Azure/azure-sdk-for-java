@@ -188,10 +188,10 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void deleteFile() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.deleteFile#string
+        // BEGIN: com.azure.storage.file.DirectoryClient.deleteFileWithResponse#String-Context
         directoryClient.deleteFile("myfile");
         System.out.println("Completed deleting the file.");
-        // END: com.azure.storage.file.directoryClient.deleteFile#string
+        // END: com.azure.storage.file.DirectoryClient.deleteFileWithResponse#String-Context
     }
 
     /**
@@ -244,10 +244,10 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void deleteWithResponse() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.deleteWithResponse
+        // BEGIN: com.azure.storage.file.DirectoryClient.deleteWithResponse#Context
         VoidResponse response = directoryClient.deleteWithResponse(new Context(key1, value1));
         System.out.println("Completed deleting the file with status code: " + response.statusCode());
-        // END: com.azure.storage.file.directoryClient.deleteWithResponse
+        // END: com.azure.storage.file.DirectoryClient.deleteWithResponse#Context
     }
 
     /**
@@ -313,11 +313,11 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void clearMetadata() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.setMetadataWithResponse#map.clearMetadata
+        // BEGIN: com.azure.storage.file.DirectoryClient.setMetadataWithResponse#Map-Context.clearMetadata
         Response<DirectorySetMetadataInfo> response = directoryClient.setMetadataWithResponse(null,
             new Context(key1, value1));
         System.out.printf("Directory latest modified date is %s.", response.statusCode());
-        // END: com.azure.storage.file.directoryClient.setMetadataWithResponse#map.clearMetadata
+        // END: com.azure.storage.file.DirectoryClient.setMetadataWithResponse#Map-Context.clearMetadata
     }
 
     /**
