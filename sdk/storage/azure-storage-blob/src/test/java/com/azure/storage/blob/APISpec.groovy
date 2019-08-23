@@ -148,8 +148,8 @@ class APISpec extends Specification {
     }
 
     def cleanup() {
-        for (ContainerItem container : primaryBlobServiceClient.listContainers(new ListContainersOptions()
-            .prefix(containerPrefix + testName), Duration.ofSeconds(120))) {
+        def options = new ListContainersOptions().prefix(containerPrefix + testName)
+        for (ContainerItem container : primaryBlobServiceClient.listContainers(options, Duration.ofSeconds(120))) {
             ContainerClient containerClient = primaryBlobServiceClient.getContainerClient(container.name())
 
             if (container.properties().leaseState() == LeaseStateType.LEASED) {
@@ -189,7 +189,7 @@ class APISpec extends Specification {
             accountKey = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
             accountName = "storageaccount"
-            accountKey = "storageaccountkey"
+            accountKey = "astorageaccountkey"
         }
 
         if (accountName == null || accountKey == null) {
