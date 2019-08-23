@@ -8,7 +8,6 @@ import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventprocessorhost.EventProcessorHost.EventProcessorHostBuilder.AuthStep;
 import com.microsoft.azure.eventprocessorhost.EventProcessorHost.EventProcessorHostBuilder.OptionalStep;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assume;
@@ -16,9 +15,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestName;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
-
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -112,25 +110,25 @@ public class TestBase {
         ConnectionStringBuilder environmentCSB = settings.outUtils.getConnectionString(skipIfNoEventHubConnectionString);
 
         String effectiveEntityPath = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_PATH_OVERRIDE)
-                ? settings.inoutEPHConstructorArgs.getEHPath()
-                : environmentCSB.getEventHubName();
+            ? settings.inoutEPHConstructorArgs.getEHPath()
+            : environmentCSB.getEventHubName();
 
         String effectiveConsumerGroup = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.CONSUMER_GROUP_OVERRIDE)
-                ? settings.inoutEPHConstructorArgs.getConsumerGroupName()
-                : EventHubClient.DEFAULT_CONSUMER_GROUP_NAME;
+            ? settings.inoutEPHConstructorArgs.getConsumerGroupName()
+            : EventHubClient.DEFAULT_CONSUMER_GROUP_NAME;
 
         String effectiveConnectionString = environmentCSB.toString();
         if (settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_PATH_REPLACE_IN_CONNECTION)
             || settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_CONNECTION_REMOVE_PATH)) {
             ConnectionStringBuilder replacedCSB = new ConnectionStringBuilder()
-                    .setEndpoint(environmentCSB.getEndpoint())
-                    .setEventHubName(
-                            settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_CONNECTION_REMOVE_PATH)
-                                ? ""
-                                : settings.inoutEPHConstructorArgs.getEHPath()
-                    )
-                    .setSasKeyName(environmentCSB.getSasKeyName())
-                    .setSasKey(environmentCSB.getSasKey());
+                .setEndpoint(environmentCSB.getEndpoint())
+                .setEventHubName(
+                    settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_CONNECTION_REMOVE_PATH)
+                        ? ""
+                        : settings.inoutEPHConstructorArgs.getEHPath()
+                )
+                .setSasKeyName(environmentCSB.getSasKeyName())
+                .setSasKey(environmentCSB.getSasKey());
             replacedCSB.setOperationTimeout(environmentCSB.getOperationTimeout());
             effectiveConnectionString = replacedCSB.toString();
         }
@@ -139,8 +137,8 @@ public class TestBase {
         }
 
         ScheduledExecutorService effectiveExecutor = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EXECUTOR_OVERRIDE)
-                ? settings.inoutEPHConstructorArgs.getExecutor()
-                : null;
+            ? settings.inoutEPHConstructorArgs.getExecutor()
+            : null;
 
         if (settings.inTelltaleOnTimeout) {
             settings.outTelltale = "";
@@ -154,11 +152,11 @@ public class TestBase {
 
         if (settings.inoutEPHConstructorArgs.useExplicitManagers()) {
             ICheckpointManager effectiveCheckpointManager = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.CHECKPOINT_MANAGER_OVERRIDE)
-                    ? settings.inoutEPHConstructorArgs.getCheckpointMananger()
-                    : new BogusCheckpointMananger();
+                ? settings.inoutEPHConstructorArgs.getCheckpointMananger()
+                : new BogusCheckpointMananger();
             ILeaseManager effectiveLeaseManager = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.LEASE_MANAGER_OVERRIDE)
-                    ? settings.inoutEPHConstructorArgs.getLeaseManager()
-                    : new BogusLeaseManager();
+                ? settings.inoutEPHConstructorArgs.getLeaseManager()
+                : new BogusLeaseManager();
 
             settings.outHost = EventProcessorHost.EventProcessorHostBuilder.newBuilder(effectiveHostName, effectiveConsumerGroup)
                 .useUserCheckpointAndLeaseManagers(effectiveCheckpointManager, effectiveLeaseManager)
@@ -166,8 +164,8 @@ public class TestBase {
                 .setExecutor(effectiveExecutor).build();
         } else {
             String effectiveStorageConnectionString = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.STORAGE_CONNECTION_OVERRIDE)
-                    ? settings.inoutEPHConstructorArgs.getStorageConnection()
-                    : TestUtilities.getStorageConnectionString();
+                ? settings.inoutEPHConstructorArgs.getStorageConnection()
+                : TestUtilities.getStorageConnectionString();
 
             String effectiveStorageContainerName = settings.getDefaultHostName().toLowerCase() + "-" + EventProcessorHost.safeCreateUUID();
             if (settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.STORAGE_CONTAINER_OVERRIDE)) {
@@ -180,16 +178,16 @@ public class TestBase {
             }
 
             String effectiveBlobPrefix = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.STORAGE_BLOB_PREFIX_OVERRIDE)
-                    ? settings.inoutEPHConstructorArgs.getStorageBlobPrefix()
-                    : null;
+                ? settings.inoutEPHConstructorArgs.getStorageBlobPrefix()
+                : null;
 
             AuthStep intermediate = EventProcessorHost.EventProcessorHostBuilder.newBuilder(effectiveHostName, effectiveConsumerGroup)
-                    .useAzureStorageCheckpointLeaseManager(effectiveStorageConnectionString, effectiveStorageContainerName, effectiveBlobPrefix);
+                .useAzureStorageCheckpointLeaseManager(effectiveStorageConnectionString, effectiveStorageContainerName, effectiveBlobPrefix);
             OptionalStep almostDone = null;
             if (settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.AUTH_CALLBACK)) {
                 ConnectionStringBuilder csb = new ConnectionStringBuilder(effectiveConnectionString);
                 almostDone = intermediate.useAADAuthentication(csb.getEndpoint(), effectiveEntityPath)
-                        .useAuthenticationCallback(settings.inoutEPHConstructorArgs.getAuthCallback(), settings.inoutEPHConstructorArgs.getAuthAuthority());
+                    .useAuthenticationCallback(settings.inoutEPHConstructorArgs.getAuthCallback(), settings.inoutEPHConstructorArgs.getAuthAuthority());
             } else {
                 almostDone = intermediate.useEventHubConnectionString(effectiveConnectionString, effectiveEntityPath);
             }
