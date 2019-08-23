@@ -130,7 +130,7 @@ class QueueSASTests extends APISpec {
         def dequeueMsgIterPermissions = clientPermissions.dequeueMessages(2).iterator()
 
         then:
-        notThrown(StorageException)
+        notThrown(StorageErrorException)
         "test" == dequeueMsgIterPermissions.next().messageText()
         "sastest" == dequeueMsgIterPermissions.next().messageText()
 
@@ -138,7 +138,7 @@ class QueueSASTests extends APISpec {
         clientPermissions.updateMessage("testing", resp.messageId(), resp.popReceipt(), Duration.ofHours(1))
 
         then:
-        thrown(Exception)
+        thrown(StorageErrorException)
     }
 
     @Test
@@ -172,7 +172,7 @@ class QueueSASTests extends APISpec {
         def dequeueMsgIterPermissions = clientPermissions.dequeueMessages(1).iterator()
 
         then:
-        notThrown(StorageException)
+        notThrown(StorageErrorException)
         "testing" == dequeueMsgIterPermissions.next().messageText()
 
         when:
@@ -216,7 +216,7 @@ class QueueSASTests extends APISpec {
         def dequeueMsgIterIdentifier = clientIdentifier.dequeueMessages(2).iterator()
 
         then:
-        notThrown(StorageException)
+        notThrown(StorageErrorException)
         "test" == dequeueMsgIterIdentifier.next().messageText()
         "sastest" == dequeueMsgIterIdentifier.next().messageText()
     }
@@ -246,8 +246,7 @@ class QueueSASTests extends APISpec {
         sc.createQueue("queue")
 
         then:
-        // TODO: Figure out which exception is right - StorageErrorException or StorageException
-        notThrown(Exception)
+        notThrown(StorageErrorException)
 
         when:
         sc.deleteQueue("queue")
@@ -280,8 +279,7 @@ class QueueSASTests extends APISpec {
         sc.listQueues()
 
         then:
-        // TODO: Figure out which exception is right - StorageErrorException or StorageException
-        notThrown(Exception)
+        notThrown(StorageErrorException)
     }
 
 }

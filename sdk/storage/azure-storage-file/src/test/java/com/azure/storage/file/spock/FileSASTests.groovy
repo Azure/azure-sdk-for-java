@@ -195,12 +195,11 @@ class FileSASTests extends APISpec {
 
         def downloadResponse = client.downloadWithProperties()
 
-        def responseBody = downloadResponse.value().body().toIterable().iterator().next()
+        def responseBody = downloadResponse.body().toIterable().iterator().next()
 
         client.upload(ByteBuffer.wrap(data.getBytes()), (long) data.length())
 
         primaryShareClient.delete()
-
         then:
         for(int i = 0; i < data.length(); i++) {
             responseBody.get(i) == data.getBytes()[i]
@@ -250,6 +249,7 @@ class FileSASTests extends APISpec {
 
         when:
         client.delete()
+
         primaryShareClient.delete()
 
         then:
@@ -262,6 +262,8 @@ class FileSASTests extends APISpec {
             .id("0000")
             .accessPolicy(new AccessPolicy().permission("rcwdl")
                 .expiry(OffsetDateTime.now().plusDays(1)))
+
+        primaryShareClient.delete()
 
         primaryShareClient.create()
         primaryShareClient.setAccessPolicy(Arrays.asList(identifier))

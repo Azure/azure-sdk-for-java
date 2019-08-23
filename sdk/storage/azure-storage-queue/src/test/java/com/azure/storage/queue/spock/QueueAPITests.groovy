@@ -33,13 +33,6 @@ class QueueAPITests extends APISpec {
         QueueTestHelper.assertResponseStatusCode(queueClient.createWithResponse(null, null), 201)
     }
 
-    // TODO: Will implement the test after introduce the sas token generator
-    // Note: This test is in the QueueSASTests, so we could remove this
-    @Ignore
-    def "Create queue with sas token"() {
-
-    }
-
     def "Delete exist queue"() {
         given:
         queueClient.create()

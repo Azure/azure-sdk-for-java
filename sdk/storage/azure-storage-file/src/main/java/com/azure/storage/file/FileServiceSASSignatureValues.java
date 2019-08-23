@@ -421,11 +421,13 @@ final class FileServiceSASSignatureValues {
         Utility.assertNotNull("canonicalName", this.canonicalName);
         Utility.assertNotNull("resource", this.resource);
 
-        // If a UserDelegation key or a SignedIdentifier is not being used both expiryDate and permissions must be set.
+        // If a SignedIdentifier is not being used both expiryDate and permissions must be set.
         if (identifier == null) {
             Utility.assertNotNull("expiryTime", this.expiryTime);
             Utility.assertNotNull("permissions", this.permissions);
-        } else {
+        }
+        // Still need to check identifier if expiry time and permissions are not both set
+        if (expiryTime == null || permissions == null) {
             Utility.assertNotNull("identifier", identifier);
         }
     }
