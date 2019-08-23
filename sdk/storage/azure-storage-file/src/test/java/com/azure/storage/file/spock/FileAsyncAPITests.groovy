@@ -229,6 +229,7 @@ class FileAsyncAPITests extends APISpec {
         }
     }
 
+    @Ignore
     def "Get properties"() {
         given:
         primaryFileAsyncClient.create(1024).block()
@@ -273,6 +274,7 @@ class FileAsyncAPITests extends APISpec {
         }
     }
 
+    @Ignore
     def "Set metadata"() {
         given:
         primaryFileAsyncClient.createWithResponse(1024, httpHeaders, testMetadata).block()

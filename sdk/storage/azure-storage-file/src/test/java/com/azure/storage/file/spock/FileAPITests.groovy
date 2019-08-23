@@ -208,6 +208,7 @@ class FileAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
     }
 
+    @Ignore
     def "Get properties"() {
         given:
         primaryFileClient.create(1024)
@@ -244,6 +245,7 @@ class FileAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.OUT_OF_RANGE_INPUT)
     }
 
+    @Ignore
     def "Set metadata"() {
         given:
         primaryFileClient.createWithResponse(1024, httpHeaders, testMetadata, null)
