@@ -5,8 +5,6 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.ContainerItem;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,20 +33,21 @@ public class Sample {
             .buildClient();
 
         // create 5 containers
-        ContainerClient containerClient = null;
+        ContainerClient containerClientToCreate = null;
         for (int i = 0; i < 5; i++) {
             String name = "uxtesting" + UUID.randomUUID();
-            containerClient = serviceClient.getContainerClient(name);
-            containerClient.create();
+            containerClientToCreate = serviceClient.getContainerClient(name);
+            containerClientToCreate.create();
             System.out.println("Created container: " + name);
         }
         System.out.println();
 
+        // finalized client for lambdas
+        final ContainerClient containerClient = containerClientToCreate;
+
         // list containers in account
         System.out.println("Listing containers in account:");
-        for (ContainerItem item : serviceClient.listContainers()) {
-            System.out.println(item.name());
-        }
+        serviceClient.listContainers().forEach((item) -> System.out.println(item.name()));
         System.out.println();
 
         // in the last container, create 5 blobs
@@ -63,19 +62,19 @@ public class Sample {
 
         // list blobs and download results
         System.out.println("Listing/downloading blobs:");
-        for (BlobItem item : containerClient.listBlobsFlat()) {
+        containerClient.listBlobsFlat().forEach((item) -> {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             containerClient.getBlobClient(item.name()).download(stream);
             System.out.println(item.name() + ": " + new String(stream.toByteArray()));
-        }
+        });
         System.out.println();
 
         // cleanup
-        for (ContainerItem item : serviceClient.listContainers()) {
-            containerClient = serviceClient.getContainerClient(item.name());
-            containerClient.delete();
+        serviceClient.listContainers().forEach((item) -> {
+            ContainerClient containerClientToCleanup = serviceClient.getContainerClient(item.name());
+            containerClientToCleanup.delete();
             System.out.println("Deleted container: " + item.name());
-        }
+        });
     }
 
     //@Test

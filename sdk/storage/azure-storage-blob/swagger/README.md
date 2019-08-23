@@ -882,32 +882,3 @@ directive:
         "@JsonDeserialize(using = CustomHierarchicalListingDeserializer.class)\npublic final class BlobHierarchyListSegment {");
 ```
 
-
-### Replace ByteBuf with ByteBuffer
-``` yaml
-directive:
-- from: AppendBlobsImpl.java
-  where: $
-  transform: >
-    return $.replace("import io.netty.buffer.ByteBuf;", "import java.nio.ByteBuffer;").replace(/ByteBuf(?!f)/g, "ByteBuffer");
-- from: BlockBlobsImpl.java
-  where: $
-  transform: >
-    return $.replace("import io.netty.buffer.ByteBuf;", "import java.nio.ByteBuffer;").replace(/ByteBuf(?!f)/g, "ByteBuffer");
-- from: PageBlobsImpl.java
-  where: $
-  transform: >
-    return $.replace("import io.netty.buffer.ByteBuf;", "import java.nio.ByteBuffer;").replace(/ByteBuf(?!f)/g, "ByteBuffer");
-- from: ServicesImpl.java
-  where: $
-  transform: >
-    return $.replace("import io.netty.buffer.ByteBuf;", "import java.nio.ByteBuffer;").replace(/ByteBuf(?!f)/g, "ByteBuffer");
-- from: BlobsDownloadResponse.java
-  where: $
-  transform: >
-    return $.replace("import io.netty.buffer.ByteBuf;", "import java.nio.ByteBuffer;").replace(/ByteBuf(?!f)/g, "ByteBuffer");
-- from: ServicesSubmitBatchResponse.java
-  where: $
-  transform: >
-    return $.replace("import io.netty.buffer.ByteBuf;", "import java.nio.ByteBuffer;").replace(/ByteBuf(?!f)/g, "ByteBuffer");
-```

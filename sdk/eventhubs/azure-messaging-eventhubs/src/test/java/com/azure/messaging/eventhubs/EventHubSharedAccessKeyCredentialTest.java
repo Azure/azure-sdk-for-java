@@ -29,14 +29,24 @@ public class EventHubSharedAccessKeyCredentialTest {
         new EventHubSharedAccessKeyCredential(KEY_NAME, KEY_VALUE, null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void constructorNullKey() throws InvalidKeyException, NoSuchAlgorithmException {
         new EventHubSharedAccessKeyCredential(null, KEY_VALUE, TOKEN_DURATION);
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void constructorEmptyKey() throws InvalidKeyException, NoSuchAlgorithmException {
+        new EventHubSharedAccessKeyCredential("", KEY_VALUE, TOKEN_DURATION);
+    }
+
+    @Test(expected = NullPointerException.class)
     public void constructorNullValue() throws InvalidKeyException, NoSuchAlgorithmException {
         new EventHubSharedAccessKeyCredential(KEY_NAME, null, TOKEN_DURATION);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void constructorEmptyValue() throws InvalidKeyException, NoSuchAlgorithmException {
+        new EventHubSharedAccessKeyCredential(KEY_NAME, "", TOKEN_DURATION);
     }
 
     @Test
@@ -76,7 +86,7 @@ public class EventHubSharedAccessKeyCredentialTest {
 
                     // These are the values that are random, but we expect the expiration to be after this date.
                     if (signatureExpires.equals(key)) {
-                        final Instant instant = Instant.ofEpochSecond(Long.valueOf(value));
+                        final Instant instant = Instant.ofEpochSecond(Long.parseLong(value));
                         Assert.assertTrue(instant.isAfter(Instant.now()));
                     } else if (expectedValue == null) {
                         Assert.assertNotNull(value);

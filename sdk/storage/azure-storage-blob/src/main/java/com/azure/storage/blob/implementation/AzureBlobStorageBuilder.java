@@ -84,9 +84,6 @@ public final class AzureBlobStorageBuilder {
      * @return an instance of AzureBlobStorageImpl.
      */
     public AzureBlobStorageImpl build() {
-        if (version == null) {
-            this.version = "2019-02-02";
-        }
         if (pipeline == null) {
             this.pipeline = RestProxy.createDefaultPipeline();
         }
@@ -96,6 +93,8 @@ public final class AzureBlobStorageBuilder {
         }
         if (this.version != null) {
             client.setVersion(this.version);
+        } else {
+            client.setVersion("2019-02-02");
         }
         if (this.pathRenameMode != null) {
             client.setPathRenameMode(this.pathRenameMode);

@@ -17,7 +17,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.identity.credential.EnvironmentCredentialBuilder
-import com.azure.storage.blob.BlobProperties
 import com.azure.storage.blob.models.ContainerItem
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
@@ -47,8 +46,11 @@ class APISpec extends Specification {
 
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 
+    // both sync and async clients point to same container
     @Shared
-    ContainerClient cu
+    ContainerClient cc
+    @Shared
+    ContainerAsyncClient ccAsync
 
     // Fields used for conveniently creating blobs with data.
     static final String defaultText = "default"
@@ -107,16 +109,17 @@ class APISpec extends Specification {
     /*
     URLs to various kinds of accounts.
      */
-    BlobServiceClient primaryServiceURL
+    BlobServiceClient primaryBlobServiceClient
+    BlobServiceAsyncClient primaryBlobServiceAsyncClient
 
     @Shared
-    static BlobServiceClient alternateServiceURL
+    static BlobServiceClient alternateBlobServiceClient
 
     @Shared
-    static BlobServiceClient blobStorageServiceURL
+    static BlobServiceClient blobServiceClient
 
     @Shared
-    static BlobServiceClient premiumServiceURL
+    static BlobServiceClient premiumBlobServiceClient
 
     /*
     Constants for testing that the context parameter is properly passed to the pipeline.
@@ -204,7 +207,7 @@ class APISpec extends Specification {
         }
     }
 
-    static BlobServiceClient getGenericServiceURL(SharedKeyCredential creds) {
+    static BlobServiceClient getGenericBlobServiceClient(SharedKeyCredential creds) {
         // TODO: logging?
 
         return new BlobServiceClientBuilder()
@@ -213,6 +216,17 @@ class APISpec extends Specification {
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .credential(creds)
             .buildClient()
+    }
+
+    static BlobServiceAsyncClient getGenericBlobServiceAsyncClient(SharedKeyCredential creds) {
+        // TODO: logging?
+
+        return new BlobServiceClientBuilder()
+            .endpoint("https://" + creds.accountName() + ".blob.core.windows.net")
+            .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+            .credential(creds)
+            .buildAsyncClient()
     }
 
     static void cleanupContainers() throws MalformedURLException {
@@ -276,19 +290,19 @@ class APISpec extends Specification {
          */
         try {
             alternateCreds = getGenericCreds("SECONDARY_STORAGE_")
-            alternateServiceURL = getGenericServiceURL(alternateCreds)
+            alternateBlobServiceClient = getGenericBlobServiceClient(alternateCreds)
         }
         catch (Exception e) {
         }
 
         try {
-            blobStorageServiceURL = getGenericServiceURL(getGenericCreds("BLOB_STORAGE_"))
+            blobServiceClient = getGenericBlobServiceClient(getGenericCreds("BLOB_STORAGE_"))
         }
         catch (Exception e) {
         }
 
         try {
-            premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_STORAGE_"))
+            premiumBlobServiceClient = getGenericBlobServiceClient(getGenericCreds("PREMIUM_STORAGE_"))
         }
         catch (Exception e) {
         }
@@ -303,9 +317,11 @@ class APISpec extends Specification {
         Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
         String containerName = generateContainerName()
 
-        primaryServiceURL = getGenericServiceURL(primaryCreds)
-        cu = primaryServiceURL.getContainerClient(containerName)
-        cu.create()
+        primaryBlobServiceClient = getGenericBlobServiceClient(primaryCreds)
+        primaryBlobServiceAsyncClient = getGenericBlobServiceAsyncClient(primaryCreds)
+        cc = primaryBlobServiceClient.getContainerClient(containerName)
+        ccAsync = primaryBlobServiceAsyncClient.getContainerAsyncClient(containerName)
+        cc.create() // creates for both, since they point to the same place
     }
 
     def cleanup() {
@@ -437,13 +453,13 @@ class APISpec extends Specification {
     }
 
     def enableSoftDelete() {
-        primaryServiceURL.setProperties(new StorageServiceProperties()
+        primaryBlobServiceClient.setProperties(new StorageServiceProperties()
             .deleteRetentionPolicy(new RetentionPolicy().enabled(true).days(2)))
         sleep(30000) // Wait for the policy to take effect.
     }
 
     def disableSoftDelete() {
-        primaryServiceURL.setProperties(new StorageServiceProperties()
+        primaryBlobServiceClient.setProperties(new StorageServiceProperties()
             .deleteRetentionPolicy(new RetentionPolicy().enabled(false)))
 
         sleep(30000) // Wait for the policy to take effect.

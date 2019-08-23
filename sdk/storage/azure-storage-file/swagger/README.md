@@ -532,16 +532,3 @@ directive:
     delete $["x-ms-enum"];
     $["x-ms-parameter-location"] = "method";
 ```
-
-### Replace ByteBuf with ByteBuffer
-``` yaml
-directive:
-- from: FilesImpl.java
-  where: $
-  transform: >
-    return $.replace("import io.netty.buffer.ByteBuf;", "import java.nio.ByteBuffer;").replace(/ByteBuf(?!f)/g, "ByteBuffer");
-- from: FilesDownloadResponse.java
-  where: $
-  transform: >
-    return $.replace("import io.netty.buffer.ByteBuf;", "import java.nio.ByteBuffer;").replace(/ByteBuf(?!f)/g, "ByteBuffer");
-```
