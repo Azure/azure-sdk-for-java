@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueserviceasyncapitestsdeletequeue62103c4b54ee98",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueserviceasyncapitestsdeletequeue221912e6b7bae4",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -12,12 +12,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "b9c9cbb0-2003-0008-0788-532b05000000",
-      "Date" : "Thu, 15 Aug 2019 16:40:51 GMT"
+      "x-ms-request-id" : "daede43e-5003-0007-4d15-59c6f3000000",
+      "Date" : "Thu, 22 Aug 2019 18:13:53 GMT"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueserviceasyncapitestsdeletequeue62103c4b54ee98",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueserviceasyncapitestsdeletequeue221912e6b7bae4",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
@@ -28,12 +28,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "b9c9cbbb-2003-0008-1188-532b05000000",
-      "Date" : "Thu, 15 Aug 2019 16:40:51 GMT"
+      "x-ms-request-id" : "daede4a8-5003-0007-2f15-59c6f3000000",
+      "Date" : "Thu, 22 Aug 2019 18:13:53 GMT"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueserviceasyncapitestsdeletequeue62103c4b54ee98/messages?visibilitytimeout=0&messagettl=604800",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueserviceasyncapitestsdeletequeue221912e6b7bae4/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0",
@@ -46,11 +46,11 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "b9c9cbc3-2003-0008-1888-532b05000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:b9c9cbc3-2003-0008-1888-532b05000000\nTime:2019-08-15T16:40:51.4946206Z</Message></Error>",
-      "Date" : "Thu, 15 Aug 2019 16:40:51 GMT",
+      "x-ms-request-id" : "daede4c7-5003-0007-4b15-59c6f3000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:daede4c7-5003-0007-4b15-59c6f3000000\nTime:2019-08-22T18:13:53.7720240Z</Message></Error>",
+      "Date" : "Thu, 22 Aug 2019 18:13:53 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queueserviceasyncapitestsdeletequeue62103c4b54ee98" ]
+  "variables" : [ "queueserviceasyncapitestsdeletequeue221912e6b7bae4" ]
 }

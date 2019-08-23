@@ -4,10 +4,10 @@
 package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.ReliableDownloadOptions;
-import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 
 public class DownloadResponse {
     private final DownloadAsyncResponse asyncResponse;
@@ -24,9 +24,10 @@ public class DownloadResponse {
      * @throws IOException If an I/O error occurs
      */
     public void body(OutputStream outputStream, ReliableDownloadOptions options) throws IOException {
-        for (ByteBuf buffer : this.asyncResponse.body(options).toIterable()) {
-            buffer.readBytes(outputStream, buffer.readableBytes());
-            buffer.release();
+        for (ByteBuffer buffer : this.asyncResponse.body(options).toIterable()) {
+            if (buffer.hasArray()) {
+                outputStream.write(buffer.array());
+            }
         }
     }
 

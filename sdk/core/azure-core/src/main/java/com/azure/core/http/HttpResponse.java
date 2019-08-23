@@ -4,12 +4,11 @@
 package com.azure.core.http;
 
 import com.azure.core.implementation.http.BufferedHttpResponse;
-import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.netty.Connection;
 
 import java.io.Closeable;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
 /**
@@ -66,9 +65,9 @@ public abstract class HttpResponse implements Closeable {
      * the `subscribeOn` and `observeOn` but should be considered a template for
      * more complex situations.
      *
-     * @return The response's content as a stream of {@link ByteBuf}.
+     * @return The response's content as a stream of {@link ByteBuffer}.
      */
-    public abstract Flux<ByteBuf> body();
+    public abstract Flux<ByteBuffer> body();
 
     /**
      * Get the response content as a byte[].
@@ -127,10 +126,5 @@ public abstract class HttpResponse implements Closeable {
      */
     @Override
     public void close() {
-    }
-
-    // package private for test purpose
-    Connection internConnection() {
-        return null;
     }
 }

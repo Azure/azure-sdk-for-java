@@ -31,10 +31,10 @@ class QueueServiceAsyncAPITests extends APISpec {
         given:
         def queueName = testResourceName.randomName(methodName, 60)
         expect:
-        StepVerifier.create(primaryQueueServiceAsyncClient.createQueue(queueName)).assertNext {
+        StepVerifier.create(primaryQueueServiceAsyncClient.createQueueWithResponse(queueName, null)).assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 201)
         }.verifyComplete()
-        StepVerifier.create(primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName).enqueueMessage("Testing service client creating a queue"))
+        StepVerifier.create(primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName).enqueueMessageWithResponse("Testing service client creating a queue", null, null))
             .assertNext {
                 assert QueueTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -70,9 +70,9 @@ class QueueServiceAsyncAPITests extends APISpec {
         given:
         def queueName = testResourceName.randomName(methodName, 60)
         when:
-        def createQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueue(queueName, metadata))
+        def createQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueueWithResponse(queueName, metadata))
         def enqueueMessageVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName)
-            .enqueueMessage("Testing service client creating a queue"))
+            .enqueueMessageWithResponse("Testing service client creating a queue", null, null))
         then:
         createQueueVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 201)
@@ -93,7 +93,7 @@ class QueueServiceAsyncAPITests extends APISpec {
         given:
         def queueName = testResourceName.randomName(methodName, 60)
         when:
-        def createQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueue(queueName, Collections.singletonMap("meta@data", "value")))
+        def createQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueueWithResponse(queueName, Collections.singletonMap("meta@data", "value")))
         then:
         createQueueVerifier.verifyErrorSatisfies {
             assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, "Bad Request")
@@ -105,9 +105,9 @@ class QueueServiceAsyncAPITests extends APISpec {
         def queueName = testResourceName.randomName(methodName, 60)
         primaryQueueServiceAsyncClient.createQueue(queueName).block()
         when:
-        def deleteQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.deleteQueue(queueName))
+        def deleteQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.deleteQueueWithResponse(queueName))
         def enqueueMessageVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName)
-            .enqueueMessage("Expecting exception as queue has been deleted."))
+            .enqueueMessageWithResponse("Expecting exception as queue has been deleted.", null, null))
         then:
         deleteQueueVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 204)
@@ -119,7 +119,7 @@ class QueueServiceAsyncAPITests extends APISpec {
 
     def "Delete queue error"() {
         when:
-        def deleteQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.deleteQueue(testResourceName.randomName(methodName, 16)))
+        def deleteQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.deleteQueueWithResponse(testResourceName.randomName(methodName, 16)))
         then:
         deleteQueueVerifier.verifyErrorSatisfies {
             assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.QUEUE_NOT_FOUND)
@@ -136,7 +136,7 @@ class QueueServiceAsyncAPITests extends APISpec {
             QueueItem queue = new QueueItem().name(queueName + version)
                 .metadata(Collections.singletonMap("metadata" + version, "value" + version))
             testQueues.add(queue)
-            primaryQueueServiceAsyncClient.createQueue(queue.name(), queue.metadata()).block()
+            primaryQueueServiceAsyncClient.createQueueWithResponse(queue.name(), queue.metadata()).block()
         }
         when:
         def queueListVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.listQueues(options))
@@ -166,7 +166,7 @@ class QueueServiceAsyncAPITests extends APISpec {
 
     def "Get and set properties"() {
         given:
-        def originalProperties = primaryQueueServiceAsyncClient.getProperties().block().value()
+        def originalProperties = primaryQueueServiceAsyncClient.getProperties().block()
         def retentionPolicy = new RetentionPolicy().enabled(true)
             .days(3)
         def logging = new Logging().version("1.0")
@@ -183,18 +183,18 @@ class QueueServiceAsyncAPITests extends APISpec {
             .cors(new ArrayList<>())
         when:
         def getPropertiesBeforeVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.getProperties())
-        def setPropertiesVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.setProperties(updatedProperties))
+        def setPropertiesVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.setPropertiesWithResponse(updatedProperties))
         def getPropertiesAfterVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.getProperties())
         then:
         getPropertiesBeforeVerifier.assertNext {
-            assert QueueTestHelper.assertQueueServicePropertiesAreEqual(originalProperties, it.value())
+            assert QueueTestHelper.assertQueueServicePropertiesAreEqual(originalProperties, it)
         }
         setPropertiesVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 202)
         }.verifyComplete()
 
         getPropertiesAfterVerifier.assertNext {
-            assert QueueTestHelper.assertQueueServicePropertiesAreEqual(updatedProperties, it.value())
+            assert QueueTestHelper.assertQueueServicePropertiesAreEqual(updatedProperties, it)
         }.verifyComplete()
     }
 }
