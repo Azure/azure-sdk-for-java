@@ -28,6 +28,10 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Authorizes with Azure Event Hubs service using a shared access key from either an Event Hubs namespace or a specific
  * Event Hub.
+ *
+ * <p>
+ *
+ * </p>
  */
 @Immutable
 public class EventHubSharedAccessKeyCredential implements TokenCredential {
@@ -36,40 +40,40 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
 
     private final ClientLogger logger = new ClientLogger(EventHubSharedAccessKeyCredential.class);
 
-    private final String keyName;
+    private final String policyName;
     private final Mac hmac;
     private final Duration tokenValidity;
 
     /**
-     * Creates an instance that authorizes using the {@code keyName} and {@code sharedAccessKey}. The authorization
+     * Creates an instance that authorizes using the {@code policyName} and {@code sharedAccessKey}. The authorization
      * lasts for a period of {@code tokenValidity} before another token must be requested.
      *
-     * @param keyName Name of the shared access key policy.
+     * @param policyName Name of the shared access key policy.
      * @param sharedAccessKey Value of the shared access key.
      * @param tokenValidity The duration for which the shared access signature is valid.
-     * @throws IllegalArgumentException if {@code keyName}, {@code sharedAccessKey} is null or empty. Or the duration of
+     * @throws IllegalArgumentException if {@code policyName}, {@code sharedAccessKey} is null or empty. Or the duration of
      *         {@code tokenValidity} is zero or a negative value.
      * @throws NoSuchAlgorithmException If the hashing algorithm cannot be instantiated, which is used to generate the
      *         shared access signatures.
      * @throws InvalidKeyException If the {@code sharedAccessKey} is an invalid value for the hashing algorithm.
      * @throws NullPointerException if {@code tokenValidity} is null.
      */
-    public EventHubSharedAccessKeyCredential(String keyName, String sharedAccessKey, Duration tokenValidity)
+    public EventHubSharedAccessKeyCredential(String policyName, String sharedAccessKey, Duration tokenValidity)
         throws NoSuchAlgorithmException, InvalidKeyException {
 
-        if (ImplUtils.isNullOrEmpty(keyName)) {
-            throw new IllegalArgumentException("keyName cannot be null or empty");
+        if (ImplUtils.isNullOrEmpty(policyName)) {
+            throw new IllegalArgumentException("'policyName' cannot be null or empty");
         }
         if (ImplUtils.isNullOrEmpty(sharedAccessKey)) {
-            throw new IllegalArgumentException("sharedAccessKey cannot be null or empty.");
+            throw new IllegalArgumentException("'sharedAccessKey' cannot be null or empty.");
         }
 
         Objects.requireNonNull(tokenValidity);
         if (tokenValidity.isZero() || tokenValidity.isNegative()) {
-            throw new IllegalArgumentException("tokenTimeToLive has to positive and in the order-of seconds");
+            throw new IllegalArgumentException("'tokenTimeToLive' has to positive and in the order-of seconds");
         }
 
-        this.keyName = keyName;
+        this.policyName = policyName;
         this.tokenValidity = tokenValidity;
 
         hmac = Mac.getInstance(HASH_ALGORITHM);
@@ -114,7 +118,7 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
             audienceUri,
             URLEncoder.encode(signature, utf8Encoding),
             URLEncoder.encode(expiresOnEpochSeconds, utf8Encoding),
-            URLEncoder.encode(keyName, utf8Encoding));
+            URLEncoder.encode(policyName, utf8Encoding));
 
         return new AccessToken(token, expiresOn);
     }

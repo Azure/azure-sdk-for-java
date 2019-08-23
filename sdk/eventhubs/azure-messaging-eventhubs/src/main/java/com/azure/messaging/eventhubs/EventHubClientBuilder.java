@@ -33,14 +33,20 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
- * EventHubAsyncClient}. Calling {@link #buildAsyncClient()} constructs an instant of the client.
+ * This class provides a fluent builder API to aid the instantiation of {@link EventHubAsyncClient} and
+ * {@link EventHubClient}. Calling {@link #buildAsyncClient() buildAsyncClient()} or
+ * {@link #buildClient() buildClient()} constructs an instance of the respective client.
  *
  * <p>
- * The client requires credentials or a connection string to perform operations against Azure Event Hubs. Setting
- * credentials by using {@link #connectionString(String)}, {@link #connectionString(String, String)}, or {@link
- * #credential(String, String, TokenCredential)}, is required in order to construct an {@link EventHubAsyncClient}.
- * </p>
+ * <strong>Credentials are required</strong> to perform operations against Azure Event Hubs. They can be set by using
+ * one of the following methods:
+ * <ul>
+ *     <li>{@link #connectionString(String)} with a connection string to a specific Event Hub.</li>
+ *     <li>{@link #connectionString(String, String)} with an Event Hub <i>namespace</i> connection string and the
+ *     Event Hub name.</li>
+ *     <li>{@link #credential(String, String, TokenCredential)} with the hostname, Event Hub name, and a set of
+ *     credentials authorized to use the Event Hub.</li>
+ * </ul>
  *
  * <p>
  * <strong>Creating an asynchronous {@link EventHubAsyncClient} using Event Hubs namespace connection string</strong>
@@ -57,8 +63,10 @@ import java.util.Objects;
  * <p>
  * <strong>Creating an {@link EventProcessor} using Event Hub instance connection string</strong>
  * </p>
+ *
  * {@codesnippet com.azure.messaging.eventhubs.eventprocessor.instantiation}
  *
+ * @see EventHubClient
  * @see EventHubAsyncClient
  * @see EventProcessor
  */

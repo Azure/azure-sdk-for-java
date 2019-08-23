@@ -3,8 +3,9 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
 
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
@@ -13,6 +14,8 @@ import java.util.Objects;
 
 /**
  * Properties for configuring proxies with Event Hubs.
+ *
+ * @see EventHubClientBuilder#proxyConfiguration(ProxyConfiguration)
  */
 @Immutable
 public class ProxyConfiguration implements AutoCloseable {

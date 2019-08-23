@@ -6,7 +6,9 @@ package com.azure.messaging.eventhubs.models;
 import com.azure.core.implementation.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventData;
+import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
+import com.azure.messaging.eventhubs.EventHubClient;
 
 import java.time.Instant;
 import java.util.Locale;
@@ -16,7 +18,8 @@ import java.util.Objects;
  * Defines a position of an {@link EventData} in the Event Hub partition. The position can be an offset, sequence
  * number, or enqueued time.
  *
- * @see EventHubAsyncConsumer
+ * @see EventHubClient#createConsumer(String, String, EventPosition)
+ * @see EventHubAsyncClient#createConsumer(String, String, EventPosition)
  */
 @Immutable
 public final class EventPosition {
