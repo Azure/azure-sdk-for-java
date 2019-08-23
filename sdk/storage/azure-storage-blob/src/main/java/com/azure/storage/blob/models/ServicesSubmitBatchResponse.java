@@ -7,14 +7,14 @@ package com.azure.storage.blob.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
-import io.netty.buffer.ByteBuf;
+import java.nio.ByteBuffer;
 import java.io.Closeable;
 import reactor.core.publisher.Flux;
 
 /**
  * Contains all response data for the submitBatch operation.
  */
-public final class ServicesSubmitBatchResponse extends ResponseBase<ServiceSubmitBatchHeaders, Flux<ByteBuf>> implements Closeable {
+public final class ServicesSubmitBatchResponse extends ResponseBase<ServiceSubmitBatchHeaders, Flux<ByteBuffer>> implements Closeable {
     /**
      * Creates an instance of ServicesSubmitBatchResponse.
      *
@@ -24,7 +24,7 @@ public final class ServicesSubmitBatchResponse extends ResponseBase<ServiceSubmi
      * @param value the content stream.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ServicesSubmitBatchResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Flux<ByteBuf> value, ServiceSubmitBatchHeaders headers) {
+    public ServicesSubmitBatchResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Flux<ByteBuffer> value, ServiceSubmitBatchHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
@@ -32,7 +32,7 @@ public final class ServicesSubmitBatchResponse extends ResponseBase<ServiceSubmi
      * @return the response content stream.
      */
     @Override
-    public Flux<ByteBuf> value() {
+    public Flux<ByteBuffer> value() {
         return super.value();
     }
 
