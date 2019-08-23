@@ -25,7 +25,7 @@ class HelperTest extends APISpec {
     // TODO (alzimmer): Turn this on when nextPageLink can be passed into listing
     /*def "responseError"() {
         when:
-        cu.listBlobsFlat().iterator().hasNext()
+        cc.listBlobsFlat().iterator().hasNext()
 
         then:
         def e = thrown(StorageException)
@@ -41,7 +41,7 @@ class HelperTest extends APISpec {
      */
     def "Request property"() {
         when:
-        VoidResponse response = cu.deleteWithResponse(null, null, null)
+        def response = cc.deleteWithResponse(null, null, null)
 
         then:
         response.request() != null
@@ -77,7 +77,7 @@ class HelperTest extends APISpec {
         setup:
         String containerName = generateContainerName()
         String blobName = generateBlobName()
-        ContainerClient cu = primaryServiceURL.createContainer(containerName)
+        ContainerClient cu = primaryBlobServiceClient.createContainer(containerName)
         BlockBlobClient bu = cu.getBlockBlobClient(blobName)
         bu.upload(defaultInputStream.get(), defaultDataSize) // need something to snapshot
         String snapshotId = bu.createSnapshot().getSnapshotId()
