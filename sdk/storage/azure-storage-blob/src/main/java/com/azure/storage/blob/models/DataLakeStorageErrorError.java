@@ -17,13 +17,13 @@ public final class DataLakeStorageErrorError {
     /*
      * The service error code.
      */
-    @JsonProperty(value = "code")
+    @JsonProperty(value = "Code")
     private String code;
 
     /*
      * The service error message.
      */
-    @JsonProperty(value = "message")
+    @JsonProperty(value = "Message")
     private String message;
 
     /**
