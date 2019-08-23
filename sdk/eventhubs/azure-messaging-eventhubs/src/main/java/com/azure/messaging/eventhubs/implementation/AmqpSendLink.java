@@ -45,11 +45,4 @@ public interface AmqpSendLink extends AmqpLink {
      * Gets the context for this AMQP send link.
      */
     ErrorContext getErrorContext();
-
-    /**
-     * The remote endpoint path this link is connected to.
-     *
-     * @return The remote endpoint path this link is connected to.
-     */
-    String getHostname();
 }

@@ -22,4 +22,11 @@ public interface AmqpLink extends EndpointStateNotifier, Closeable {
      * @return The remote endpoint path this link is connected to.
      */
     String getEntityPath();
+
+    /**
+     * The host name of the Eventhub connection that this link that is connected to.
+     *
+     * @return The host name of the Eventhub connection that this link that is connected to.
+     */
+    String getHostname();
 }

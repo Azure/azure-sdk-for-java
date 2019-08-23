@@ -7,7 +7,6 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.implementation.TraceUtil;
 import com.azure.core.implementation.annotation.Immutable;
-import com.azure.core.implementation.tracing.Tracer;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -37,6 +36,11 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+
+import static com.azure.core.implementation.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.implementation.tracing.Tracer.ENTITY_PATH;
+import static com.azure.core.implementation.tracing.Tracer.HOST_NAME;
+import static com.azure.core.implementation.tracing.Tracer.SPAN_CONTEXT;
 
 /**
  * A producer responsible for transmitting {@link EventData} to a specific Event Hub, grouped together in batches.
@@ -115,10 +119,6 @@ public class EventHubAsyncProducer implements Closeable {
     private final EventHubProducerOptions senderOptions;
     private final Mono<AmqpSendLink> sendLinkMono;
     private final boolean isPartitionSender;
-    private final String entityPath = Tracer.OPENTELEMETRY_AMQP_ENTITY_PATH;
-    private final String hostName = Tracer.OPENTELEMETRY_AMQP_HOST_NAME;
-    private final String spanContext = Tracer.OPENTELEMETRY_AMQP_EVENT_SPAN_CONTEXT;
-    private final String diagnosticId = Tracer.OPENTELEMETRY_DIAGNOSTIC_ID_KEY;
 
     /**
      * Creates a new instance of this {@link EventHubAsyncProducer} that sends messages to {@link
@@ -315,8 +315,8 @@ public class EventHubAsyncProducer implements Closeable {
 
                     return events.map(eventData -> {
                         Context parentContext = eventData.context();
-                        Context entityContext = parentContext.addData(entityPath, link.getEntityPath());
-                        sendSpanContext.set(TraceUtil.start("send", entityContext.addData(hostName, link.getHostname())));
+                        Context entityContext = parentContext.addData(ENTITY_PATH, link.getEntityPath());
+                        sendSpanContext.set(TraceUtil.start("send", entityContext.addData(HOST_NAME, link.getHostname())));
                         // add span context on event data
                         return setSpanContext(eventData, parentContext);
                     }).collect(new EventDataCollector(batchOptions, 1, () -> link.getErrorContext()));
@@ -327,7 +327,7 @@ public class EventHubAsyncProducer implements Closeable {
     }
 
     private EventData setSpanContext(EventData event, Context parentContext) {
-        Optional<Object> eventContextData = event.context().getData(spanContext);
+        Optional<Object> eventContextData = event.context().getData(SPAN_CONTEXT);
         if (eventContextData.isPresent()) {
             // if message has context (in case of retries), link it to the span
             TraceUtil.addSpanLinks(event.context());
@@ -336,8 +336,8 @@ public class EventHubAsyncProducer implements Closeable {
         } else {
             // Starting the span makes the sampling decision (nothing is logged at this time)
             Context eventSpanContext = TraceUtil.start("message", parentContext);
-            if (eventSpanContext != null && eventSpanContext.getData(diagnosticId).isPresent()) {
-                event.addProperty(diagnosticId, eventSpanContext.getData(diagnosticId).get().toString());
+            if (eventSpanContext != null && eventSpanContext.getData(DIAGNOSTIC_ID_KEY).isPresent()) {
+                event.addProperty(DIAGNOSTIC_ID_KEY, eventSpanContext.getData(DIAGNOSTIC_ID_KEY).get().toString());
                 TraceUtil.endTracingSpan(eventSpanContext, null);
                 event.context(eventSpanContext);
             }

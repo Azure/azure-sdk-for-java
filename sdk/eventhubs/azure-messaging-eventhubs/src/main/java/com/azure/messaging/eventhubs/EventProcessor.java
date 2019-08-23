@@ -4,7 +4,6 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.TraceUtil;
-import com.azure.core.implementation.tracing.Tracer;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.PartitionContext;
@@ -28,6 +27,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+import static com.azure.core.implementation.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+
 /**
  * This is the starting point for event processor.
  * <p>
@@ -49,8 +50,6 @@ public class EventProcessor {
     private static final long INTERVAL_IN_SECONDS = 10; // run every 10 seconds
     private static final long INITIAL_DELAY = 0; // start immediately
     private static final long OWNERSHIP_EXPIRATION_TIME_IN_MILLIS = TimeUnit.SECONDS.toMillis(30);
-    private static final String SPAN_CONTEXT = Tracer.OPENTELEMETRY_AMQP_EVENT_SPAN_CONTEXT;
-    private static final String DIAGNOSTIC_ID = com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_DIAGNOSTIC_ID_KEY;
 
     private final ClientLogger logger = new ClientLogger(EventProcessor.class);
 
@@ -246,9 +245,9 @@ public class EventProcessor {
                 endScopedTracingSpan(processSpanContext);
             },
                 partitionProcessor::processError,
-            // Currently, there is no way to distinguish if the receiver was closed because
-            // another receiver with higher/same owner level(epoch) connected or because
-            // this event processor explicitly called close on this consumer.
+                // Currently, there is no way to distinguish if the receiver was closed because
+                // another receiver with higher/same owner level(epoch) connected or because
+                // this event processor explicitly called close on this consumer.
                 () -> partitionProcessor.close(CloseReason.LOST_PARTITION_OWNERSHIP));
     }
 
@@ -256,11 +255,11 @@ public class EventProcessor {
      * Starts a new process tracing span and attached context the EventData object for users.
      */
     private void startScopedTracingSpan(EventData eventData, AtomicReference<Context> processSpanContext) {
-        Object diagnosticId = eventData.properties().get(DIAGNOSTIC_ID);
+        Object diagnosticId = eventData.properties().get(DIAGNOSTIC_ID_KEY);
         if (diagnosticId == null) {
             return;
         }
-        eventData.context(TraceUtil.extractContext(diagnosticId.toString()));
+        eventData.context(TraceUtil.extractContext(diagnosticId.toString(), Context.NONE));
         processSpanContext.set(TraceUtil.startScopedSpan("process", eventData.context()));
         eventData.context(processSpanContext.get());
     }

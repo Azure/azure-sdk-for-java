@@ -105,7 +105,7 @@ public final class TracerProxy {
      * @param context Additional metadata that is passed through the call stack.
      */
     public static void end(String errorCondition, Context context, Throwable throwable) {
-        tracers.forEach(tracer -> tracer.end(errorCondition, context, throwable));
+        tracers.forEach(tracer -> tracer.end(errorCondition, throwable, context));
     }
 
     /**
@@ -123,10 +123,10 @@ public final class TracerProxy {
      *
      * @param diagnosticId Unique identifier of an external call from producer to the queue.
      */
-    public static Context extractContext(String diagnosticId) {
-        Context local = Context.NONE;
+    public static Context extractContext(String diagnosticId, Context context) {
+        Context local = context;
         for (Tracer tracer : tracers) {
-            local = tracer.extractContext(diagnosticId);
+            local = tracer.extractContext(diagnosticId, context);
         }
         return local;
     }

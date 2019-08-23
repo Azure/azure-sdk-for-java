@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.tracing.opentelemetry.implementation;
 
-import com.azure.core.implementation.tracing.Tracer;
 import com.azure.core.util.Context;
 import io.opencensus.trace.SpanContext;
 import io.opencensus.trace.SpanId;
@@ -10,9 +9,10 @@ import io.opencensus.trace.TraceId;
 import io.opencensus.trace.TraceOptions;
 import io.opencensus.trace.Tracestate;
 
+import static com.azure.core.implementation.tracing.Tracer.SPAN_CONTEXT;
+
 
 public class AmqpPropagationFormatUtil {
-    private static final String SPAN_CONTEXT = Tracer.OPENTELEMETRY_AMQP_EVENT_SPAN_CONTEXT;
 
     private AmqpPropagationFormatUtil() { }
 
@@ -22,8 +22,8 @@ public class AmqpPropagationFormatUtil {
      * @param diagnosticId The diagnostic Id for the event.
      * @return {@link Context}
      */
-    public static Context extractContext(String diagnosticId) {
-        return new Context(SPAN_CONTEXT, fromDiagnosticId(diagnosticId));
+    public static Context extractContext(String diagnosticId, Context context) {
+        return context.addData(SPAN_CONTEXT, fromDiagnosticId(diagnosticId));
     }
 
     /**

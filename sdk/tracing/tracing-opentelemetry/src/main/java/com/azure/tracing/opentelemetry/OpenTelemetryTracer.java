@@ -29,12 +29,6 @@ import static io.opencensus.trace.Link.Type.PARENT_LINKED_SPAN;
 public class OpenTelemetryTracer implements com.azure.core.implementation.tracing.Tracer {
     // Singleton OpenTelemetry tracer capable of starting and exporting spans.
     private static final Tracer TRACER = Tracing.getTracer();
-    private static final String OPENTELEMETRY_SPAN_KEY = com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
-    private static final String OPENTELEMETRY_SPAN_NAME_KEY = com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_NAME_KEY;
-    private static final String DIAGNOSTIC_ID = com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_DIAGNOSTIC_ID_KEY;
-    private static final String ENTITY_PATH = com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_AMQP_ENTITY_PATH;
-    private static final String HOSTNAME = com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_AMQP_HOST_NAME;
-    private static final String SPAN_CONTEXT = com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_AMQP_EVENT_SPAN_CONTEXT;
 
     // standard attributes with AMQP call information
     private static final String COMPONENT = "component";
@@ -45,15 +39,20 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
 
     @Override
     public Context start(String spanName, Context context) {
-        Span span = startSpanWithExplicitParent(spanName, context);
-        if (context.getData(ENTITY_PATH).isPresent() && span.getOptions().contains(Span.Options.RECORD_EVENTS)) {
-            // If span is sampled in, add additional TRACING attributes
-            addSpanRequestAttributes(span, context, spanName);
-        } else {
+        SpanBuilder spanBuilder = startSpanWithExplicitParent(spanName, context);
+        Span span;
+        if (spanName.contains("send")) {
+            span = spanBuilder.setSpanKind(Span.Kind.CLIENT).startSpan();
+            if (span.getOptions().contains(Span.Options.RECORD_EVENTS)) {
+                // If span is sampled in, add additional TRACING attributes
+                addSpanRequestAttributes(span, context, spanName);
+            }
+        } else if (spanName.contains("message")) {
+            span = spanBuilder.startSpan();
             // Add diagnostic Id to Context
             context = setContextData(span);
         }
-        return context.addData(OPENTELEMETRY_SPAN_KEY, span);
+        return context.addData(OPENTELEMETRY_SPAN_KEY, spanBuilder.startSpan());
     }
 
     @Override
@@ -62,7 +61,8 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
         if (context.getData(SPAN_CONTEXT).isPresent()) {
             span = startSpanWithRemoteParent(spanName, context);
         } else {
-            span = startSpanWithExplicitParent(spanName, context);
+            SpanBuilder spanBuilder = startSpanWithExplicitParent(spanName, context);
+            span = spanBuilder.setSpanKind(Span.Kind.SERVER).startSpan();
         }
         return context.addData(OPENTELEMETRY_SPAN_KEY, span).addData("scope", TRACER.withSpan(span));
     }
@@ -125,7 +125,7 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
     @Override
     public void addLink(Context eventContext) {
         Optional<Object> spanContextOptional = eventContext.getData(SPAN_CONTEXT);
-        Optional<Object> spanOptional = eventContext.getData(OPENTELEMETRY_SPAN_KEY); // TODO: we need this to be the parent span key
+        Optional<Object> spanOptional = eventContext.getData(OPENTELEMETRY_SPAN_KEY);
 
         if (!spanOptional.isPresent()) {
             logger.warning("Failed to find span to link it.");
@@ -133,39 +133,43 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
         }
         SpanContext spanContext = (SpanContext) spanContextOptional.get();
         Span span = (Span) spanOptional.get();
-
+        // TODO: Needs to be updated with Opentelemtery support to addLink using Span Context before span is started
+        // and no link type is needed.
         span.addLink(Link.fromSpanContext(spanContext, PARENT_LINKED_SPAN));
     }
 
     @Override
-    public Context extractContext(String diagnosticId) {
-        return AmqpPropagationFormatUtil.extractContext(diagnosticId);
+    public Context extractContext(String diagnosticId, Context context) {
+        return AmqpPropagationFormatUtil.extractContext(diagnosticId, context);
     }
 
-    private Span startSpanWithExplicitParent(String spanName, Context context) {
+    private SpanBuilder startSpanWithExplicitParent(String spanName, Context context) {
         Span parentSpan = (Span) context.getData(OPENTELEMETRY_SPAN_KEY).orElse(TRACER.getCurrentSpan());
         String spanNameKey = (String) context.getData(OPENTELEMETRY_SPAN_NAME_KEY).orElse(spanName);
 
         SpanBuilder spanBuilder = TRACER.spanBuilderWithExplicitParent(spanNameKey, parentSpan);
-        return spanBuilder.startSpan();
+        return spanBuilder;
     }
 
     private Span startSpanWithRemoteParent(String spanName, Context context) {
         SpanBuilder spanBuilder = TRACER.spanBuilderWithRemoteParent(spanName, (SpanContext) context.getData(SPAN_CONTEXT).get());
+        spanBuilder.setSpanKind(Span.Kind.SERVER);
         return spanBuilder.startSpan();
 
     }
 
     private Context setContextData(Span span) {
         final String traceparent = AmqpPropagationFormatUtil.getDiagnosticId(span.getContext());
-        Context parentContext = new Context(DIAGNOSTIC_ID, traceparent).addData(SPAN_CONTEXT, span.getContext());
+        Context parentContext = new Context(DIAGNOSTIC_ID_KEY, traceparent).addData(SPAN_CONTEXT, span.getContext());
         return parentContext;
     }
 
     private static void addSpanRequestAttributes(Span span, Context context, String spanName) {
-        span.putAttribute(COMPONENT, AttributeValue.stringAttributeValue(parseComponentValue(spanName)));
-        span.putAttribute(MESSAGE_BUS_DESTINATION, AttributeValue.stringAttributeValue(context.getData(ENTITY_PATH).get().toString()));
-        span.putAttribute(PEER_ENDPOINT, AttributeValue.stringAttributeValue(context.getData(HOSTNAME).get().toString()));
+        if (context.getData(ENTITY_PATH).isPresent() && context.getData(HOST_NAME).isPresent()) {
+            span.putAttribute(COMPONENT, AttributeValue.stringAttributeValue(parseComponentValue(spanName)));
+            span.putAttribute(MESSAGE_BUS_DESTINATION, AttributeValue.stringAttributeValue(context.getData(ENTITY_PATH).get().toString()));
+            span.putAttribute(PEER_ENDPOINT, AttributeValue.stringAttributeValue(context.getData(HOST_NAME).get().toString()));
+        }
     }
 
     private static String parseComponentValue(String spanName) {

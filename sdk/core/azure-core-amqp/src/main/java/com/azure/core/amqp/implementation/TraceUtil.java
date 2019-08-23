@@ -8,12 +8,12 @@ import com.azure.core.implementation.tracing.TracerProxy;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Signal;
 
+import static com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
+
 /**
  * Helper class to help start tracing spans.
  */
 public class TraceUtil {
-
-    private static final String OPENTELEMETRY_SPAN_KEY = com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
 
     // So this class can't be instantiated.
     private TraceUtil() {
@@ -26,7 +26,7 @@ public class TraceUtil {
      * @return The updated context containing the span context.
      */
     public static Context start(String methodName, Context context) {
-        String spanName = String.format("Azure.eventhubs.%s", methodName);
+        String spanName = "Azure.eventhubs." + methodName;
         context = TracerProxy.setSpanName(spanName, context);
         return TracerProxy.start(spanName, context);
     }
@@ -38,7 +38,7 @@ public class TraceUtil {
      * @return The updated context containing the span context.
      */
     public static Context startScopedSpan(String methodName, Context context) {
-        String spanName = String.format("Azure.eventhubs.%s", methodName);
+        String spanName = "Azure.eventhubs." + methodName;
         context = TracerProxy.setSpanName(spanName, context);
         return TracerProxy.startScopedSpan(spanName, context);
     }
@@ -48,7 +48,6 @@ public class TraceUtil {
      *
      * @param context Additional metadata that is passed through the call stack.
      * @param signal The signal indicates the status and contains the metadata we need to end the tracing span.
-     *
      */
     public static void endTracingSpan(Context context, Signal<Void> signal) {
         String errorCondition = "";
@@ -81,7 +80,7 @@ public class TraceUtil {
         TracerProxy.addLink(eventContextData);
     }
 
-    public static Context extractContext(String diagnosticId) {
-        return TracerProxy.extractContext(diagnosticId);
+    public static Context extractContext(String diagnosticId, Context context) {
+        return TracerProxy.extractContext(diagnosticId, context);
     }
 }

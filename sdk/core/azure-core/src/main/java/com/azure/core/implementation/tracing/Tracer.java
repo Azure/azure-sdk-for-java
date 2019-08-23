@@ -29,25 +29,25 @@ public interface Tracer {
      * Key for {@link Context} which indicates that the context contains the Entity Path, remote endpoint path.
      *
      */
-    String OPENTELEMETRY_AMQP_ENTITY_PATH = "entityPath";
+    String ENTITY_PATH = "entityPath";
 
     /**
      * Key for {@link Context} which indicates that the context contains the hostname.
      *
      */
-    String OPENTELEMETRY_AMQP_HOST_NAME = "hostName";
+    String HOST_NAME = "hostName";
 
     /**
      * Key for {@link Context} which indicates that the context contains message Span Context.
      *
      */
-    String OPENTELEMETRY_AMQP_EVENT_SPAN_CONTEXT = "spanContext";
+    String SPAN_CONTEXT = "spanContext";
 
     /**
      * Key for {@link Context} which indicates that the context contains the Diagnostic Id for the service call.
      *
      */
-    String OPENTELEMETRY_DIAGNOSTIC_ID_KEY = "Diagnostic-Id";
+    String DIAGNOSTIC_ID_KEY = "Diagnostic-Id";
 
     /**
      * Creates a new tracing span.
@@ -154,6 +154,8 @@ public interface Tracer {
      * Extracts the span Context from the given event's diagnostic Id
      *
      * @param diagnosticId Unique identifier for the trace information of the event.
+     * @param context Additional metadata that is passed through the call stack.
+     * @return An updated context object.
      */
-    Context extractContext(String diagnosticId);
+    Context extractContext(String diagnosticId, Context context);
 }
