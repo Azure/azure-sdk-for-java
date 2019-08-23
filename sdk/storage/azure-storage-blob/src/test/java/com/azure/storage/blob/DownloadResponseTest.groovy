@@ -13,7 +13,7 @@ class DownloadResponseTest extends APISpec {
     BlockBlobClient bu
 
     def setup() {
-        bu = cu.getBlockBlobClient(generateBlobName())
+        bu = cc.getBlockBlobClient(generateBlobName())
         bu.upload(defaultInputStream.get(), defaultText.length())
     }
 
@@ -32,7 +32,7 @@ class DownloadResponseTest extends APISpec {
     @Unroll
     def "Successful"() {
         setup:
-        DownloadResponseMockFlux flux = new DownloadResponseMockFlux(scenario)
+        DownloadResponseMockFlux flux = new DownloadResponseMockFlux(scenario, this)
 
         HTTPGetterInfo info = new HTTPGetterInfo()
             .offset(0)
@@ -59,7 +59,7 @@ class DownloadResponseTest extends APISpec {
     @Unroll
     def "Failure"() {
         setup:
-        DownloadResponseMockFlux flux = new DownloadResponseMockFlux(scenario)
+        DownloadResponseMockFlux flux = new DownloadResponseMockFlux(scenario, this)
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5)
         HTTPGetterInfo info = new HTTPGetterInfo().eTag("etag")
 
@@ -89,7 +89,7 @@ class DownloadResponseTest extends APISpec {
     @Unroll
     def "Info null IA"() {
         setup:
-        DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK)
+        DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK, this)
 
         when:
         new DownloadAsyncResponse(flux.getter(info).block().rawResponse(), info, { HTTPGetterInfo newInfo -> flux.getter(newInfo) })
@@ -113,7 +113,7 @@ class DownloadResponseTest extends APISpec {
 
     def "Getter IA"() {
         setup:
-        DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK)
+        DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK, this)
 
         when:
         DownloadAsyncResponse response = new DownloadAsyncResponse(flux.getter(new HTTPGetterInfo()).block()
@@ -126,7 +126,7 @@ class DownloadResponseTest extends APISpec {
 
     def "Info"() {
         setup:
-        DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_INFO_TEST)
+        DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_INFO_TEST, this)
         HTTPGetterInfo info = new HTTPGetterInfo()
             .offset(20)
             .count(10)

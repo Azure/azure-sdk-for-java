@@ -45,6 +45,8 @@
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
+      "x-ms-server-encrypted" : "true",
+      "x-ms-type" : "File",
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "ETag" : "\"0x8D7258EA10762DF\"",
@@ -79,7 +81,8 @@
       "x-ms-request-id" : "1152b594-c01a-0064-6277-5780d6000000",
       "Body" : "default",
       "Content-Type" : "application/octet-stream"
-    }
+    },
+    "Exception" : null
   } ],
   "variables" : [ "fileapitestsuploadanddownloaddata8261753d4a9a8ace", "fileapitestsuploadanddownloaddata955818dc2be89dfa" ]
 }
