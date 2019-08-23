@@ -475,7 +475,7 @@ public class FileClient {
      *
      * <p>Upload "default" to the file. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.uploadWithResponse#flux-long-Context}
+     * {@codesnippet com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>

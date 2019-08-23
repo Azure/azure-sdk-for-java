@@ -82,7 +82,8 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link FileClient} with {@code connectionString} which turns into {@link SharedKeyCredential}
+     * Generates code sample for creating a {@link FileClient} with {@code connectionString}
+     * which turns into {@link SharedKeyCredential}
      * @return An instance of {@link FileClient}
      */
     public FileClient createClientWithConnectionString() {
@@ -183,24 +184,25 @@ public class FileJavaDocCodeSamples {
     /**
      * Generates a code sample for using {@link FileClient#uploadWithResponse(ByteBuffer, long, Context)}
      */
-    public void uploadWithResponseData() {
+    public void uploadWithResponse() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-long
+        // BEGIN: com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-Context
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         Response<FileUploadInfo> response = fileClient.uploadWithResponse(defaultData, defaultData.remaining(),
             new Context(key1, value1));
         System.out.println("Complete uploading the data with status code: " + response.statusCode());
-        // END: com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-long
+        // END: com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-Context
     }
 
     /**
      * Generates a code sample for using {@link FileClient#uploadWithResponse(ByteBuffer, long, long, Context)}
      */
-    public void uploadWithResponse() {
+    public void uploadWithResponseMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-int-Context
+        // BEGIN: com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-long-Context
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
-        Response<FileUploadInfo> response = fileClient.uploadWithResponse(defaultData, defaultData.remaining(), 1024, new Context(key1, value1));
+        Response<FileUploadInfo> response = fileClient.uploadWithResponse(defaultData, defaultData.remaining(),
+            1024, new Context(key1, value1));
         System.out.println("Complete uploading the data with status code: " + response.statusCode());
         // END: com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-long-Context
     }
@@ -270,7 +272,8 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#downloadWithPropertiesWithResponse(FileRange, Boolean, Context)}
+     * Generates a code sample for using {@link FileClient#downloadWithPropertiesWithResponse(
+     * FileRange, Boolean, Context)}
      */
     public void downloadWithPropertiesWithResponse() {
         FileClient fileClient = createClientWithSASToken();
@@ -386,7 +389,8 @@ public class FileJavaDocCodeSamples {
     public void clearMetadataWithResponse() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.setMetadataWithResponse#map-Context.clearMetadata
-        Response<FileMetadataInfo> response = fileClient.setMetadataWithResponse(null, new Context(key1, value1));
+        Response<FileMetadataInfo> response = fileClient.setMetadataWithResponse(null,
+            new Context(key1, value1));
         System.out.printf("Setting the file metadata completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.fileClient.setMetadataWithResponse#map-Context.clearMetadata
     }

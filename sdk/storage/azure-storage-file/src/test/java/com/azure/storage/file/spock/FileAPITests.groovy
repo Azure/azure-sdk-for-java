@@ -91,7 +91,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(dataLength)
         def dataBytes = new byte[dataLength]
         defaultData.get(dataBytes)
-        defaultData.flip()
+        defaultData.rewind()
         when:
         def uploadResponse = primaryFileClient.uploadWithResponse(defaultData, dataLength, null)
         def downloadResponse = primaryFileClient.downloadWithPropertiesWithResponse(null, null, null)
@@ -110,7 +110,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(1024)
         def dataBytes = new byte[dataLength]
         defaultData.get(dataBytes)
-        defaultData.flip()
+        defaultData.rewind()
         when:
         def uploadResponse = primaryFileClient.uploadWithResponse(defaultData, dataLength, 1, null)
         def downloadResponse = primaryFileClient.downloadWithPropertiesWithResponse(new FileRange(1, dataLength), true, null)
