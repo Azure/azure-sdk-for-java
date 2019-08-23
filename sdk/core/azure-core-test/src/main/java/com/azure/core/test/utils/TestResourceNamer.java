@@ -6,6 +6,8 @@ package com.azure.core.test.utils;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.models.RecordedData;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Objects;
 
 /**
@@ -62,6 +64,21 @@ public class TestResourceNamer extends ResourceNamer {
             String uuid = super.randomUuid();
             recordedData.addVariable(uuid);
             return uuid;
+        }
+    }
+
+    /**
+     * Gets an OffsetDateTime of UTC now.
+     *
+     * @return OffsetDateTime of UTC now.
+     */
+    public OffsetDateTime now() {
+        if (testMode == TestMode.PLAYBACK) {
+            return OffsetDateTime.parse(recordedData.removeVariable());
+        } else {
+            OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+            recordedData.addVariable(now.toString());
+            return now;
         }
     }
 }

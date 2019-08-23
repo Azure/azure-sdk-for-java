@@ -4,7 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
@@ -15,7 +14,7 @@ import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlockBlobItem;
-import com.azure.storage.blob.models.BlockItem;
+import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.LeaseAccessConditions;
@@ -41,8 +40,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
 
-import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link BlobClientBuilder}, via
@@ -313,8 +312,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response signalling completion.
      */
     public Mono<Void> stageBlockFromURL(String base64BlockID, URL sourceURL, BlobRange sourceRange) {
-        return stageBlockFromURLWithResponse(base64BlockID, sourceURL, sourceRange, null,
-            null, null).flatMap(FluxUtil::toMono);
+        return this.stageBlockFromURLWithResponse(base64BlockID, sourceURL, sourceRange, null, null, null)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -364,8 +363,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * @return A reactive response containing the list of blocks.
      */
-    public Flux<BlockItem> listBlocks(BlockListType listType) {
-        return this.listBlocks(listType, null);
+    public Mono<BlockList> listBlocks(BlockListType listType) {
+        return this.listBlocks(listType, null).map(Response::value);
     }
 
     /**
@@ -379,19 +378,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * @return A reactive response containing the list of blocks.
      */
-    public Flux<BlockItem> listBlocks(BlockListType listType,
+    public Mono<Response<BlockList>> listBlocks(BlockListType listType,
                                       LeaseAccessConditions leaseAccessConditions) {
+
         return postProcessResponse(this.azureBlobStorage.blockBlobs().getBlockListWithRestResponseAsync(
-            null, null, listType, snapshot, null, null, null,
-            leaseAccessConditions, Context.NONE))
-            .map(ResponseBase::value)
-            .flatMapMany(bl -> {
-                Flux<BlockItem> committed = Flux.fromIterable(bl.committedBlocks())
-                    .map(block -> new BlockItem(block, true));
-                Flux<BlockItem> uncommitted = Flux.fromIterable(bl.uncommittedBlocks())
-                    .map(block -> new BlockItem(block, false));
-                return Flux.concat(committed, uncommitted);
-            });
+                null, null, listType, snapshot, null, null, null, leaseAccessConditions, Context.NONE))
+            .map(response -> new SimpleResponse<>(response, response.value()));
     }
 
     /**
