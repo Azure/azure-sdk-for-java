@@ -50,7 +50,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
     private CosmosContainer createdFeedCollection;
     private CosmosContainer createdLeaseCollection;
     private List<CosmosItemProperties> createdDocuments;
-    private static volatile Map<String, CosmosItemProperties> receivedDocuments;
+    private static Map<String, CosmosItemProperties> receivedDocuments;
 //    private final String databaseId = "testdb1";
 //    private final String hostName = "TestHost1";
     private final String hostName = RandomStringUtils.randomAlphabetic(6);
