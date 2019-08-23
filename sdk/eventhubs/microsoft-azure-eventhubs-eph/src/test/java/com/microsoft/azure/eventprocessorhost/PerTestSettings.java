@@ -3,10 +3,12 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
+import com.microsoft.azure.eventhubs.AzureActiveDirectoryTokenProvider;
+import com.microsoft.azure.eventhubs.ProxyConfiguration;
+import com.microsoft.azure.eventhubs.TransportType;
+
 import java.util.ArrayList;
 import java.util.concurrent.ScheduledExecutorService;
-
-import com.microsoft.azure.eventhubs.AzureActiveDirectoryTokenProvider;
 
 public class PerTestSettings {
     // In-out properties: may be set before test setup and then changed by setup.
@@ -46,7 +48,7 @@ public class PerTestSettings {
         return this.inDefaultHostName;
     }
 
-    class EPHConstructorArgs {
+    static class EPHConstructorArgs {
         static final int HOST_OVERRIDE = 0x0001;
         static final int EH_PATH_OVERRIDE = 0x0002;
         static final int EH_PATH_REPLACE_IN_CONNECTION = 0x0004;
@@ -65,6 +67,7 @@ public class PerTestSettings {
         static final int AUTH_CALLBACK = 0x2000;
 
         private int flags;
+        private ProxyConfiguration proxyConfiguration;
 
         private String hostName;
         private String ehPath;
@@ -78,6 +81,7 @@ public class PerTestSettings {
         private ScheduledExecutorService executor;
         private ICheckpointManager checkpointManager;
         private ILeaseManager leaseManager;
+        private TransportType transportType = TransportType.AMQP;
 
         EPHConstructorArgs() {
             this.flags = 0;
@@ -143,11 +147,11 @@ public class PerTestSettings {
             this.ehConnection = ehConnection;
             this.flags |= EH_CONNECTION_OVERRIDE;
         }
-        
+
         AzureActiveDirectoryTokenProvider.AuthenticationCallback getAuthCallback() {
             return this.authCallback;
         }
-        
+
         String getAuthAuthority() {
             return this.authAuthority;
         }
@@ -222,6 +226,22 @@ public class PerTestSettings {
         void setLeaseManager(ILeaseManager leaseManager) {
             this.leaseManager = leaseManager;
             this.flags |= LEASE_MANAGER_OVERRIDE;
+        }
+
+        ProxyConfiguration getProxyConfiguration() {
+            return proxyConfiguration;
+        }
+
+        void setProxyConfiguration(ProxyConfiguration configuration) {
+            this.proxyConfiguration = configuration;
+        }
+
+        TransportType getTransportType() {
+            return transportType;
+        }
+
+        void setTransportType(TransportType transportType) {
+            this.transportType = transportType;
         }
     }
 }
