@@ -4,18 +4,18 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.BlobFlatListSegment;
-import com.azure.storage.blob.models.BlobHierarchyListSegment;
 import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.BlobPrefix;
 import com.azure.storage.blob.models.ContainerAccessConditions;
 import com.azure.storage.blob.models.ContainerAccessPolicies;
 import com.azure.storage.blob.models.ContainersListBlobFlatSegmentResponse;
@@ -34,7 +34,6 @@ import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -42,7 +41,11 @@ import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 import static com.azure.storage.blob.PostProcessor.postProcessResponse;
@@ -541,7 +544,7 @@ public final class ContainerAsyncClient {
      *
      * @return A reactive response emitting the flattened blobs.
      */
-    public Flux<BlobItem> listBlobsFlat() {
+    public PagedFlux<BlobItem> listBlobsFlat() {
         return this.listBlobsFlat(new ListBlobsOptions());
     }
 
@@ -566,8 +569,39 @@ public final class ContainerAsyncClient {
      * @param options {@link ListBlobsOptions}
      * @return A reactive response emitting the listed blobs, flattened.
      */
-    public Flux<BlobItem> listBlobsFlat(ListBlobsOptions options) {
-        return listBlobsFlatSegment(null, options).flatMapMany(response -> listBlobsFlatHelper(options, response));
+    public PagedFlux<BlobItem> listBlobsFlat(ListBlobsOptions options) {
+        return listBlobsFlatWithOptionalTimeout(options, null);
+    }
+
+    /*
+     * Implementation for this paged listing operation, supporting an optional timeout provided by the synchronous
+     * ContainerClient. Applies the given timeout to each Mono<ContainersListBlobFlatSegmentResponse> backing the
+     * PagedFlux.
+     *
+     * @param options {@link ListBlobsOptions}.
+     * @param timeout An optional timeout to be applied to the network asynchronous operations.
+     * @return A reactive response emitting the listed blobs, flattened.
+     */
+    PagedFlux<BlobItem> listBlobsFlatWithOptionalTimeout(ListBlobsOptions options, Duration timeout) {
+        Function<String, Mono<PagedResponse<BlobItem>>> func =
+            marker -> listBlobsFlatSegment(marker, options, timeout)
+                .map(response -> {
+                    List<BlobItem> value = response.value().segment() == null
+                        ? new ArrayList<>(0)
+                        : response.value().segment().blobItems();
+
+                    return new PagedResponseBase<>(
+                        response.request(),
+                        response.statusCode(),
+                        response.headers(),
+                        value,
+                        response.value().nextMarker(),
+                        response.deserializedHeaders());
+                });
+
+        return new PagedFlux<>(
+            () -> func.apply(null),
+            marker -> func.apply(marker));
     }
 
     /*
@@ -591,29 +625,13 @@ public final class ContainerAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat_helper "helper code for ContainerAsyncClient.listBlobsFlatSegment")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    private Mono<ContainersListBlobFlatSegmentResponse> listBlobsFlatSegment(String marker, ListBlobsOptions options) {
+    private Mono<ContainersListBlobFlatSegmentResponse> listBlobsFlatSegment(String marker, ListBlobsOptions options, Duration timeout) {
         options = options == null ? new ListBlobsOptions() : options;
 
-        return postProcessResponse(this.azureBlobStorage.containers().listBlobFlatSegmentWithRestResponseAsync(null,
-            options.prefix(), marker, options.maxResults(), options.details().toList(), null, null, Context.NONE));
-    }
-
-    private Flux<BlobItem> listBlobsFlatHelper(ListBlobsOptions options, ContainersListBlobFlatSegmentResponse response) {
-        Flux<BlobItem> result;
-        BlobFlatListSegment segment = response.value().segment();
-        if (segment != null && segment.blobItems() != null) {
-            result = Flux.fromIterable(segment.blobItems());
-        } else {
-            result = Flux.empty();
-        }
-
-        if (response.value().nextMarker() != null) {
-            // Recursively add the continuation items to the observable.
-            result = result.concatWith(listBlobsFlatSegment(response.value().nextMarker(), options)
-                .flatMapMany(r -> listBlobsFlatHelper(options, r)));
-        }
-
-        return result;
+        return postProcessResponse(Utility.applyOptionalTimeout(
+            this.azureBlobStorage.containers().listBlobFlatSegmentWithRestResponseAsync(null, options.prefix(), marker,
+                options.maxResults(), options.details().toList(), null, null, Context.NONE),
+            timeout));
     }
 
     /**
@@ -643,7 +661,7 @@ public final class ContainerAsyncClient {
      * @param directory The directory to list blobs underneath
      * @return A reactive response emitting the prefixes and blobs.
      */
-    public Flux<BlobItem> listBlobsHierarchy(String directory) {
+    public PagedFlux<BlobItem> listBlobsHierarchy(String directory) {
         return this.listBlobsHierarchy("/", new ListBlobsOptions().prefix(directory));
     }
 
@@ -675,9 +693,44 @@ public final class ContainerAsyncClient {
      * @param options {@link ListBlobsOptions}
      * @return A reactive response emitting the prefixes and blobs.
      */
-    public Flux<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options) {
-        return listBlobsHierarchySegment(null, delimiter, options)
-            .flatMapMany(response -> listBlobsHierarchyHelper(delimiter, options, Context.NONE, response));
+    public PagedFlux<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options) {
+        return listBlobsHierarchyWithOptionalTimeout(delimiter, options, null);
+    }
+
+    /*
+     * Implementation for this paged listing operation, supporting an optional timeout provided by the synchronous
+     * ContainerClient. Applies the given timeout to each Mono<ContainersListBlobHierarchySegmentResponse> backing the
+     * PagedFlux.
+     *
+     * @param delimiter The delimiter for blob hierarchy, "/" for hierarchy based on directories
+     * @param options {@link ListBlobsOptions}
+     * @param timeout An optional timeout to be applied to the network asynchronous operations.
+     * @return A reactive response emitting the listed blobs, flattened.
+     */
+    PagedFlux<BlobItem> listBlobsHierarchyWithOptionalTimeout(String delimiter, ListBlobsOptions options, Duration timeout) {
+        Function<String, Mono<PagedResponse<BlobItem>>> func =
+            marker -> listBlobsHierarchySegment(marker, delimiter, options, timeout)
+                .map(response ->  {
+                    List<BlobItem> value = response.value().segment() == null
+                        ? new ArrayList<>(0)
+                        : Stream.concat(
+                            response.value().segment().blobItems().stream(),
+                            response.value().segment().blobPrefixes().stream()
+                                .map(blobPrefix -> new BlobItem().name(blobPrefix.name()).isPrefix(true))
+                        ).collect(Collectors.toList());
+
+                    return new PagedResponseBase<>(
+                        response.request(),
+                        response.statusCode(),
+                        response.headers(),
+                        value,
+                        response.value().nextMarker(),
+                        response.deserializedHeaders());
+                });
+
+        return new PagedFlux<>(
+            () -> func.apply(null),
+            marker -> func.apply(marker));
     }
 
     /*
@@ -707,110 +760,18 @@ public final class ContainerAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy_helper "helper code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    private Mono<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(String marker, String delimiter, ListBlobsOptions options) {
+    private Mono<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(String marker, String delimiter,
+            ListBlobsOptions options, Duration timeout) {
         options = options == null ? new ListBlobsOptions() : options;
         if (options.details().snapshots()) {
             throw logger.logExceptionAsError(new UnsupportedOperationException("Including snapshots in a hierarchical listing is not supported."));
         }
 
-        return postProcessResponse(this.azureBlobStorage.containers().listBlobHierarchySegmentWithRestResponseAsync(null, delimiter,
-            options.prefix(), marker, options.maxResults(), options.details().toList(), null, null, Context.NONE));
+        return postProcessResponse(Utility.applyOptionalTimeout(
+            this.azureBlobStorage.containers().listBlobHierarchySegmentWithRestResponseAsync(null, delimiter,
+                options.prefix(), marker, options.maxResults(), options.details().toList(), null, null, Context.NONE),
+            timeout));
     }
-
-    private Flux<BlobItem> listBlobsHierarchyHelper(String delimiter, ListBlobsOptions options,
-                                                    Context context, ContainersListBlobHierarchySegmentResponse response) {
-        Flux<BlobItem> blobs;
-        Flux<BlobPrefix> prefixes;
-        BlobHierarchyListSegment segment = response.value().segment();
-        if (segment != null && segment.blobItems() != null) {
-            blobs = Flux.fromIterable(segment.blobItems());
-        } else {
-            blobs = Flux.empty();
-        }
-        if (segment != null && segment.blobPrefixes() != null) {
-            prefixes = Flux.fromIterable(segment.blobPrefixes());
-        } else {
-            prefixes = Flux.empty();
-        }
-        Flux<BlobItem> result = blobs.map(item -> item.isPrefix(false))
-            .concatWith(prefixes.map(prefix -> new BlobItem().name(prefix.name()).isPrefix(true)));
-
-        if (response.value().nextMarker() != null) {
-            // Recursively add the continuation items to the observable.
-            result = result.concatWith(listBlobsHierarchySegment(response.value().nextMarker(), delimiter, options)
-                .flatMapMany(r -> listBlobsHierarchyHelper(delimiter, options, context, r)));
-        }
-
-        return result;
-    }
-
-    /**
-     * Returns a single segment of blobs and blob prefixes starting from the specified Marker. Use an empty
-     * marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
-     * After getting a segment, process it, and then call ListBlobs again (passing the the previously-returned
-     * Marker) to get the next segment. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
-     *
-     * @param marker
-     *         Identifies the portion of the list to be returned with the next list operation.
-     *         This value is returned in the response of a previous list operation as the
-     *         ListBlobsHierarchySegmentResponse.body().nextMarker(). Set to null to list the first segment.
-     * @param delimiter
-     *         The operation returns a BlobPrefix element in the response body that acts as a placeholder for all blobs
-     *         whose names begin with the same substring up to the appearance of the delimiter character. The delimiter may
-     *         be a single character or a string.
-     * @param options
-     *         {@link ListBlobsOptions}
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy "Sample code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy_helper "helper code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-//    public Flux<BlobHierarchyListSegment> listBlobsHierarchySegment(String marker, String delimiter,
-//            ListBlobsOptions options) {
-//        return this.listBlobsHierarchySegment(marker, delimiter, options, null);
-//    }
-
-    /**
-     * Returns a single segment of blobs and blob prefixes starting from the specified Marker. Use an empty
-     * marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
-     * After getting a segment, process it, and then call ListBlobs again (passing the the previously-returned
-     * Marker) to get the next segment. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
-     *
-     * @param marker
-     *         Identifies the portion of the list to be returned with the next list operation.
-     *         This value is returned in the response of a previous list operation as the
-     *         ListBlobsHierarchySegmentResponse.body().nextMarker(). Set to null to list the first segment.
-     * @param delimiter
-     *         The operation returns a BlobPrefix element in the response body that acts as a placeholder for all blobs
-     *         whose names begin with the same substring up to the appearance of the delimiter character. The delimiter may
-     *         be a single character or a string.
-     * @param options
-     *         {@link ListBlobsOptions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy "Sample code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy_helper "helper code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-//    public Flux<BlobHierarchyListSegment> listBlobsHierarchySegment(String marker, String delimiter,
-//            ListBlobsOptions options) {
-//        return containerAsyncRawClient
-//            .listBlobsHierarchySegment(null, delimiter, options)
-//            .flatMapMany();
-//    }
 
     /**
      * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60

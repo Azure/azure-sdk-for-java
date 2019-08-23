@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcsetpropserror0serviceapitestsetpropserror47006402163ab?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcsetpropserror0serviceapitestsetpropserroraca18238a88da?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -9,14 +9,14 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7274179073C95\"",
-      "Last-Modified" : "Thu, 22 Aug 2019 20:44:05 GMT",
+      "ETag" : "\"0x8D728141E1D0136\"",
+      "Last-Modified" : "Fri, 23 Aug 2019 21:51:56 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "7f33aa16-c01e-0002-2b2a-59328c000000",
-      "Date" : "Thu, 22 Aug 2019 20:44:04 GMT",
-      "x-ms-client-request-id" : "b9e27a0c-6f06-4e0d-92f3-0201f6561e2e"
+      "x-ms-request-id" : "cfe0085b-201e-004c-5bfc-59f769000000",
+      "Date" : "Fri, 23 Aug 2019 21:51:55 GMT",
+      "x-ms-client-request-id" : "2520c810-7f9e-4637-b86e-a8b49f6ae3f3"
     },
     "Exception" : null
   }, {
@@ -33,9 +33,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "7f33aa23-c01e-0002-372a-59328c000000",
-      "Date" : "Thu, 22 Aug 2019 20:44:04 GMT",
-      "x-ms-client-request-id" : "0c387efc-7c75-478a-aeec-847393546b0f"
+      "x-ms-request-id" : "cfe0086f-201e-004c-68fc-59f769000000",
+      "Date" : "Fri, 23 Aug 2019 21:51:55 GMT",
+      "x-ms-client-request-id" : "b48cfbd0-2a5d-4330-b13f-e1277dd57be6"
     },
     "Exception" : null
   }, {
@@ -52,9 +52,9 @@
       "retry-after" : "0",
       "Content-Length" : "472",
       "StatusCode" : "403",
-      "x-ms-request-id" : "0c0f6e84-301e-010a-442a-5906df000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:0c0f6e84-301e-010a-442a-5906df000000\nTime:2019-08-22T20:44:06.1670681Z</Message><AuthenticationErrorDetail>Cannot find the claimed account when trying to GetProperties for the account azstoragesdkaccount.</AuthenticationErrorDetail></Error>",
-      "Date" : "Thu, 22 Aug 2019 20:44:05 GMT",
+      "x-ms-request-id" : "af83ba0d-c01e-00fe-1efc-596566000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:af83ba0d-c01e-00fe-1efc-596566000000\nTime:2019-08-23T21:51:56.9587302Z</Message><AuthenticationErrorDetail>Cannot find the claimed account when trying to GetProperties for the account azstoragesdkaccount.</AuthenticationErrorDetail></Error>",
+      "Date" : "Fri, 23 Aug 2019 21:51:56 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
@@ -72,9 +72,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "7f33abeb-c01e-0002-432a-59328c000000",
-      "Date" : "Thu, 22 Aug 2019 20:44:05 GMT",
-      "x-ms-client-request-id" : "b43d54e3-8942-428a-9df5-7752cab83624"
+      "x-ms-request-id" : "cfe00926-201e-004c-72fc-59f769000000",
+      "Date" : "Fri, 23 Aug 2019 21:51:56 GMT",
+      "x-ms-client-request-id" : "cad5d6f9-926d-44ad-8f28-975b558cb4e2"
     },
     "Exception" : null
   }, {
@@ -92,16 +92,16 @@
       "Access-Control-Allow-Origin" : "*",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "7f33ac05-c01e-0002-5a2a-59328c000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcsetpropserror</Prefix><Containers><Container><Name>jtcsetpropserror0serviceapitestsetpropserror47006402163ab</Name><Properties><Last-Modified>Thu, 22 Aug 2019 20:44:05 GMT</Last-Modified><Etag>\"0x8D7274179073C95\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 22 Aug 2019 20:44:05 GMT",
-      "x-ms-client-request-id" : "b82e5d0c-bf4a-4169-aa83-af53e6bd90a0",
+      "x-ms-request-id" : "cfe0092f-201e-004c-79fc-59f769000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcsetpropserror</Prefix><Containers><Container><Name>jtcsetpropserror0serviceapitestsetpropserroraca18238a88da</Name><Properties><Last-Modified>Fri, 23 Aug 2019 21:51:56 GMT</Last-Modified><Etag>\"0x8D728141E1D0136\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 23 Aug 2019 21:51:56 GMT",
+      "x-ms-client-request-id" : "10b45d05-3ed7-4b5d-9dab-a9dc644e2703",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcsetpropserror0serviceapitestsetpropserror47006402163ab?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcsetpropserror0serviceapitestsetpropserroraca18238a88da?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -112,11 +112,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "7f33ac10-c01e-0002-652a-59328c000000",
-      "Date" : "Thu, 22 Aug 2019 20:44:05 GMT",
-      "x-ms-client-request-id" : "252fcbbd-ae9a-4946-9064-e3b1c2d503c6"
+      "x-ms-request-id" : "cfe0093f-201e-004c-04fc-59f769000000",
+      "Date" : "Fri, 23 Aug 2019 21:51:56 GMT",
+      "x-ms-client-request-id" : "ad7f4cec-6e96-4484-9815-5bf8c4003a23"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcsetpropserror0serviceapitestsetpropserror47006402163ab" ]
+  "variables" : [ "jtcsetpropserror0serviceapitestsetpropserroraca18238a88da" ]
 }

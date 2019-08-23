@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcabortcopyerror0blobapitestabortcopyerrorf6714630ea9961?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcabortcopyerror0blobapitestabortcopyerrorc8575987042cfe?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7274043409379\"",
-      "Last-Modified" : "Thu, 22 Aug 2019 20:35:25 GMT",
+      "ETag" : "\"0x8D72812E6A7480F\"",
+      "Last-Modified" : "Fri, 23 Aug 2019 21:43:14 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "25b2afac-f01e-012c-4d29-59f41e000000",
-      "Date" : "Thu, 22 Aug 2019 20:35:25 GMT",
-      "x-ms-client-request-id" : "0c95b789-bfe8-4e9e-b2f7-11e27c63ea10"
+      "x-ms-request-id" : "d51ea0e1-201e-00c4-51fb-594fb0000000",
+      "Date" : "Fri, 23 Aug 2019 21:43:14 GMT",
+      "x-ms-client-request-id" : "3d59f750-dd28-49f4-8cee-f07b782d4be5"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcabortcopyerror0blobapitestabortcopyerrorf6714630ea9961/javablobabortcopyerror1blobapitestabortcopyerrorf6769390abb",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcabortcopyerror0blobapitestabortcopyerrorc8575987042cfe/javablobabortcopyerror1blobapitestabortcopyerrorc8555796d24",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
@@ -31,21 +31,21 @@
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-content-crc64" : "6RYQPwaVsyQ=",
-      "Last-Modified" : "Thu, 22 Aug 2019 20:35:25 GMT",
+      "Last-Modified" : "Fri, 23 Aug 2019 21:43:14 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Thu, 22 Aug 2019 20:35:25 GMT",
+      "Date" : "Fri, 23 Aug 2019 21:43:14 GMT",
       "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
-      "ETag" : "\"0x8D7274043461DB7\"",
+      "ETag" : "\"0x8D72812E6AE5F19\"",
       "Content-Length" : "0",
-      "x-ms-request-id" : "25b2afef-f01e-012c-0a29-59f41e000000",
-      "x-ms-client-request-id" : "8dcdb5af-b290-4210-85b1-aef1befff99f"
+      "x-ms-request-id" : "d51ea106-201e-00c4-72fb-594fb0000000",
+      "x-ms-client-request-id" : "8b9b6563-a613-414f-981e-ebbd2e24b6e5"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcabortcopyerror0blobapitestabortcopyerrorf6714630ea9961/javablobabortcopyerror2blobapitestabortcopyerrorf6700912d63?copyid=id&comp=copy",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcabortcopyerror0blobapitestabortcopyerrorc8575987042cfe/javablobabortcopyerror2blobapitestabortcopyerrorc8541929234?copyid=id&comp=copy",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -57,10 +57,10 @@
       "retry-after" : "0",
       "Content-Length" : "412",
       "StatusCode" : "400",
-      "x-ms-request-id" : "25b2b030-f01e-012c-4629-59f41e000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidQueryParameterValue</Code><Message>Value for one of the query parameters specified in the request URI is invalid.\nRequestId:25b2b030-f01e-012c-4629-59f41e000000\nTime:2019-08-22T20:35:25.6660974Z</Message><QueryParameterName>copyid</QueryParameterName><QueryParameterValue>id</QueryParameterValue><Reason>copyid needs to be valid Guid.</Reason></Error>",
-      "Date" : "Thu, 22 Aug 2019 20:35:25 GMT",
-      "x-ms-client-request-id" : "da8bedc8-1fc7-4380-9f37-2d660e85919a",
+      "x-ms-request-id" : "d51ea127-201e-00c4-0afb-594fb0000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidQueryParameterValue</Code><Message>Value for one of the query parameters specified in the request URI is invalid.\nRequestId:d51ea127-201e-00c4-0afb-594fb0000000\nTime:2019-08-23T21:43:14.1310353Z</Message><QueryParameterName>copyid</QueryParameterName><QueryParameterValue>id</QueryParameterValue><Reason>copyid needs to be valid Guid.</Reason></Error>",
+      "Date" : "Fri, 23 Aug 2019 21:43:14 GMT",
+      "x-ms-client-request-id" : "b1a3e364-79aa-4d66-8060-e28e080f0e05",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
@@ -77,16 +77,16 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "25b2b06a-f01e-012c-7d29-59f41e000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcabortcopyerror</Prefix><Containers><Container><Name>jtcabortcopyerror0blobapitestabortcopyerrorf6714630ea9961</Name><Properties><Last-Modified>Thu, 22 Aug 2019 20:35:25 GMT</Last-Modified><Etag>\"0x8D7274043409379\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 22 Aug 2019 20:35:25 GMT",
-      "x-ms-client-request-id" : "052511bf-20a5-4541-acc9-c3e93086cdad",
+      "x-ms-request-id" : "d51ea138-201e-00c4-18fb-594fb0000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcabortcopyerror</Prefix><Containers><Container><Name>jtcabortcopyerror0blobapitestabortcopyerrorc8575987042cfe</Name><Properties><Last-Modified>Fri, 23 Aug 2019 21:43:14 GMT</Last-Modified><Etag>\"0x8D72812E6A7480F\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 23 Aug 2019 21:43:14 GMT",
+      "x-ms-client-request-id" : "cb7f5ae5-7ab6-4e29-b068-2c8fcdb8f6ec",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcabortcopyerror0blobapitestabortcopyerrorf6714630ea9961?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcabortcopyerror0blobapitestabortcopyerrorc8575987042cfe?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -97,11 +97,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "25b2b096-f01e-012c-2729-59f41e000000",
-      "Date" : "Thu, 22 Aug 2019 20:35:25 GMT",
-      "x-ms-client-request-id" : "5ba61365-fac4-424f-a4dc-3ae99a14edbd"
+      "x-ms-request-id" : "d51ea14a-201e-00c4-23fb-594fb0000000",
+      "Date" : "Fri, 23 Aug 2019 21:43:14 GMT",
+      "x-ms-client-request-id" : "0e3cb31f-be85-4860-9dd2-6c5ce14cb330"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcabortcopyerror0blobapitestabortcopyerrorf6714630ea9961", "javablobabortcopyerror1blobapitestabortcopyerrorf6769390abb", "javablobabortcopyerror2blobapitestabortcopyerrorf6700912d63" ]
+  "variables" : [ "jtcabortcopyerror0blobapitestabortcopyerrorc8575987042cfe", "javablobabortcopyerror1blobapitestabortcopyerrorc8555796d24", "javablobabortcopyerror2blobapitestabortcopyerrorc8541929234" ]
 }

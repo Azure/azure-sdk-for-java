@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetpropertiesnull0containerapitestgetpropertiesnull9e144810?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetpropertiesnull0containerapitestgetpropertiesnull13742670?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7274099FA544D\"",
-      "Last-Modified" : "Thu, 22 Aug 2019 20:37:51 GMT",
+      "ETag" : "\"0x8D728133DC26AA9\"",
+      "Last-Modified" : "Fri, 23 Aug 2019 21:45:40 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "6a93a4a5-201e-012e-7c29-59f6e4000000",
-      "Date" : "Thu, 22 Aug 2019 20:37:50 GMT",
-      "x-ms-client-request-id" : "1741139e-de94-4ae4-972a-9fed060cf00b"
+      "x-ms-request-id" : "b1dea64d-001e-00f1-0cfc-59e1e5000000",
+      "Date" : "Fri, 23 Aug 2019 21:45:39 GMT",
+      "x-ms-client-request-id" : "149559f2-1521-4341-85ea-10596aa58e46"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetpropertiesnull0containerapitestgetpropertiesnull9e144810?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetpropertiesnull0containerapitestgetpropertiesnull13742670?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -32,17 +32,17 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-lease-state" : "available",
       "x-ms-deny-encryption-scope-override" : "false",
-      "Last-Modified" : "Thu, 22 Aug 2019 20:37:51 GMT",
+      "Last-Modified" : "Fri, 23 Aug 2019 21:45:40 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Thu, 22 Aug 2019 20:37:50 GMT",
+      "Date" : "Fri, 23 Aug 2019 21:45:39 GMT",
       "x-ms-has-legal-hold" : "false",
       "x-ms-default-encryption-scope" : "$account-encryption-key",
-      "ETag" : "\"0x8D7274099FA544D\"",
+      "ETag" : "\"0x8D728133DC26AA9\"",
       "x-ms-has-immutability-policy" : "false",
       "Content-Length" : "0",
-      "x-ms-request-id" : "6a93a4bf-201e-012e-1429-59f6e4000000",
-      "x-ms-client-request-id" : "262f533a-ad26-4c04-b162-8016ea0bbbce"
+      "x-ms-request-id" : "b1dea680-001e-00f1-3dfc-59e1e5000000",
+      "x-ms-client-request-id" : "3e4b529b-b9a9-41b4-bf1c-6621a0aa7407"
     },
     "Exception" : null
   }, {
@@ -58,16 +58,16 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "6a93a4d6-201e-012e-2a29-59f6e4000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcgetpropertiesnull</Prefix><Containers><Container><Name>jtcgetpropertiesnull0containerapitestgetpropertiesnull9e144810</Name><Properties><Last-Modified>Thu, 22 Aug 2019 20:37:51 GMT</Last-Modified><Etag>\"0x8D7274099FA544D\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 22 Aug 2019 20:37:50 GMT",
-      "x-ms-client-request-id" : "e1d9963b-26a2-4b22-a5ff-9f495fcb5d7f",
+      "x-ms-request-id" : "b1dea6b7-001e-00f1-6efc-59e1e5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcgetpropertiesnull</Prefix><Containers><Container><Name>jtcgetpropertiesnull0containerapitestgetpropertiesnull13742670</Name><Properties><Last-Modified>Fri, 23 Aug 2019 21:45:40 GMT</Last-Modified><Etag>\"0x8D728133DC26AA9\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 23 Aug 2019 21:45:39 GMT",
+      "x-ms-client-request-id" : "aff90f21-397a-48ef-a22e-2795f1db41ec",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetpropertiesnull0containerapitestgetpropertiesnull9e144810?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetpropertiesnull0containerapitestgetpropertiesnull13742670?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
@@ -78,11 +78,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "6a93a4f0-201e-012e-4229-59f6e4000000",
-      "Date" : "Thu, 22 Aug 2019 20:37:50 GMT",
-      "x-ms-client-request-id" : "e0574a4d-3145-4029-bf08-67ba4e89a58f"
+      "x-ms-request-id" : "b1dea6d6-001e-00f1-0dfc-59e1e5000000",
+      "Date" : "Fri, 23 Aug 2019 21:45:39 GMT",
+      "x-ms-client-request-id" : "f739890e-3996-4ca1-a991-6a00b58c361a"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcgetpropertiesnull0containerapitestgetpropertiesnull9e144810" ]
+  "variables" : [ "jtcgetpropertiesnull0containerapitestgetpropertiesnull13742670" ]
 }

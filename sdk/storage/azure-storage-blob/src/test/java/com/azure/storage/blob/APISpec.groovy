@@ -20,7 +20,6 @@ import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.credential.EnvironmentCredentialBuilder
-import com.azure.storage.blob.BlobProperties
 import com.azure.storage.blob.models.ContainerItem
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
@@ -48,8 +47,11 @@ class APISpec extends Specification {
 
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 
+    // both sync and async clients point to same container
     @Shared
-    ContainerClient cu
+    ContainerClient cc
+    @Shared
+    ContainerAsyncClient ccAsync
 
     // Fields used for conveniently creating blobs with data.
     static final String defaultText = "default"
@@ -105,10 +107,11 @@ class APISpec extends Specification {
     static SharedKeyCredential premiumCredential
     static TestMode testMode
 
-    BlobServiceClient primaryServiceClient
-    BlobServiceClient alternateServiceClient
-    BlobServiceClient blobStorageServiceClient
-    BlobServiceClient premiumServiceClient
+    BlobServiceClient primaryBlobServiceClient
+    BlobServiceAsyncClient primaryBlobServiceAsyncClient
+    BlobServiceClient alternateBlobServiceClient
+    BlobServiceClient blobServiceClient
+    BlobServiceClient premiumBlobServiceClient
 
     private InterceptorManager interceptorManager
     private TestResourceNamer resourceNamer
@@ -132,19 +135,22 @@ class APISpec extends Specification {
         this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
         this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
 
-        primaryServiceClient = setClient(primaryCredential)
-        alternateServiceClient = setClient(alternateCredential)
-        blobStorageServiceClient = setClient(blobCredential)
-        premiumServiceClient = setClient(premiumCredential)
+        primaryBlobServiceClient = setClient(primaryCredential)
+        primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
+        alternateBlobServiceClient = setClient(alternateCredential)
+        blobServiceClient = setClient(blobCredential)
+        premiumBlobServiceClient = setClient(premiumCredential)
 
-        cu = primaryServiceClient.getContainerClient(generateContainerName())
-        cu.create()
+        def containerName = generateContainerName()
+        cc = primaryBlobServiceClient.getContainerClient(containerName)
+        ccAsync = primaryBlobServiceAsyncClient.getContainerAsyncClient(containerName)
+        cc.create()
     }
 
     def cleanup() {
-        for (ContainerItem container : primaryServiceClient.listContainers(new ListContainersOptions()
+        for (ContainerItem container : primaryBlobServiceClient.listContainers(new ListContainersOptions()
             .prefix(containerPrefix + testName), Duration.ofSeconds(120))) {
-            ContainerClient containerClient = primaryServiceClient.getContainerClient(container.name())
+            ContainerClient containerClient = primaryBlobServiceClient.getContainerClient(container.name())
 
             if (container.properties().leaseState() == LeaseStateType.LEASED) {
                 containerClient.breakLeaseWithResponse(0, null, null, null)
@@ -263,6 +269,20 @@ class APISpec extends Specification {
         }
 
         return builder.credential(credential).buildClient()
+    }
+
+    BlobServiceAsyncClient getServiceAsyncClient(SharedKeyCredential credential) {
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
+            .credential(credential)
+            .endpoint(String.format("https://%s.blob.core.windows.net", credential.accountName()))
+            .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.buildAsyncClient()
     }
 
     ContainerClient getContainerClient(SASTokenCredential credential, String endpoint) {
@@ -555,14 +575,14 @@ class APISpec extends Specification {
     }
 
     def enableSoftDelete() {
-        primaryServiceClient.setProperties(new StorageServiceProperties()
+        primaryBlobServiceClient.setProperties(new StorageServiceProperties()
             .deleteRetentionPolicy(new RetentionPolicy().enabled(true).days(2)))
 
         sleepIfRecord(30000)
     }
 
     def disableSoftDelete() {
-        primaryServiceClient.setProperties(new StorageServiceProperties()
+        primaryBlobServiceClient.setProperties(new StorageServiceProperties()
             .deleteRetentionPolicy(new RetentionPolicy().enabled(false)))
 
         sleepIfRecord(30000)
