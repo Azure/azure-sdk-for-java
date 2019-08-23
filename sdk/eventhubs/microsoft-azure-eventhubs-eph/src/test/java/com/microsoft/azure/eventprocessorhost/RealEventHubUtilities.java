@@ -13,6 +13,7 @@ import org.junit.Assume;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
@@ -85,7 +86,7 @@ final class RealEventHubUtilities {
             if (skipIfFakeEH) {
                 TestUtilities.skipIfAppveyor();
             }
-            String rawConnectionString = System.getenv("EVENT_HUB_CONNECTION_STRING");
+            String rawConnectionString = TestUtilities.getEventHubsConnectionString();
             if (rawConnectionString == null) {
                 if (skipIfFakeEH) {
                     TestBase.logInfo("SKIPPING - REQUIRES REAL EVENT HUB");
@@ -127,18 +128,16 @@ final class RealEventHubUtilities {
         sender.sendSync(event);
     }
 
-    ArrayList<String> getPartitionIdsForTest() throws EventHubException, IOException {
+    private ArrayList<String> getPartitionIdsForTest() throws EventHubException, IOException {
         if (this.cachedPartitionIds == null) {
-            this.cachedPartitionIds = new ArrayList<String>();
+            this.cachedPartitionIds = new ArrayList<>();
             ehCacheCheck(true);
 
             EventHubClient idClient = EventHubClient.createFromConnectionStringSync(this.hubConnectionString.toString(), TestUtilities.EXECUTOR_SERVICE);
             try {
                 EventHubRuntimeInformation info = idClient.getRuntimeInformation().get();
                 String[] ids = info.getPartitionIds();
-                for (String id : ids) {
-                    this.cachedPartitionIds.add(id);
-                }
+                this.cachedPartitionIds.addAll(Arrays.asList(ids));
             } catch (ExecutionException | InterruptedException e) {
                 throw new IllegalArgumentException("Error getting partition ids in test framework", e.getCause());
             }
