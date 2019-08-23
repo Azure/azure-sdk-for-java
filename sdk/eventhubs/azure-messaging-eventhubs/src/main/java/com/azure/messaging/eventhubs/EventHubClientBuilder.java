@@ -417,9 +417,10 @@ public class EventHubClientBuilder {
             final String connectionString = configuration.get(AZURE_EVENT_HUBS_CONNECTION_STRING);
 
             if (ImplUtils.isNullOrEmpty(connectionString)) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("Credentials have not been set using 'EventHubClientBuilder.credentials(String)'"
-                    + "EventHubClientBuilder.credentials(String, String, TokenCredential). And the connection string is"
-                    + "not set in the '" + AZURE_EVENT_HUBS_CONNECTION_STRING + "' environment variable."));
+                throw logger.logExceptionAsError(new IllegalArgumentException("Credentials have not been set. "
+                    + "They can be set using: connectionString(String), connectionString(String, String), "
+                    + "credentials(String, String, TokenCredential), or setting the environment variable '"
+                    + AZURE_EVENT_HUBS_CONNECTION_STRING + "' with a connection string"));
             }
 
             connectionString(connectionString);
