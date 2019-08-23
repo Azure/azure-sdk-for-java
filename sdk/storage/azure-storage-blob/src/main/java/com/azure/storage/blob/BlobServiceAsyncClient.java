@@ -425,6 +425,6 @@ public final class BlobServiceAsyncClient {
         SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.azureBlobStorage.getHttpPipeline());
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
-        return new AccountSASSignatureValues().generateAccountSAS(sharedKeyCredential, accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
+        return AccountSASSignatureValues.generateAccountSAS(sharedKeyCredential, accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
     }
 }

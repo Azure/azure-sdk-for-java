@@ -66,24 +66,26 @@ public final class AccountSASSignatureValues {
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateAccountSAS(SharedKeyCredential sharedKeyCredential, AccountSASService accountSASService,
+    public static String generateAccountSAS(SharedKeyCredential sharedKeyCredential, AccountSASService accountSASService,
         AccountSASResourceType accountSASResourceType, AccountSASPermission accountSASPermission,
         OffsetDateTime expiryTime, OffsetDateTime startTime, String version, IPRange ipRange, SASProtocol sasProtocol) {
 
-        this.services(accountSASService == null ? null : accountSASService.toString());
-        this.resourceTypes(accountSASResourceType == null ? null : accountSASResourceType.toString());
-        this.permissions(accountSASPermission == null ? null : accountSASPermission.toString());
-        this.expiryTime(expiryTime);
-        this.startTime(startTime);
+        AccountSASSignatureValues values = new AccountSASSignatureValues();
+
+        values.services(accountSASService == null ? null : accountSASService.toString());
+        values.resourceTypes(accountSASResourceType == null ? null : accountSASResourceType.toString());
+        values.permissions(accountSASPermission == null ? null : accountSASPermission.toString());
+        values.expiryTime(expiryTime);
+        values.startTime(startTime);
 
         if (version != null) {
-            this.version(version);
+            values.version(version);
         }
 
-        this.ipRange(ipRange);
-        this.protocol(sasProtocol);
+        values.ipRange(ipRange);
+        values.protocol(sasProtocol);
 
-        AccountSASQueryParameters sasQueryParameters = this.generateSASQueryParameters(sharedKeyCredential);
+        AccountSASQueryParameters sasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
 
         return sasQueryParameters.encode();
     }

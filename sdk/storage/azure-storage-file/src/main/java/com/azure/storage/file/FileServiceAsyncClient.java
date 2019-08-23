@@ -396,7 +396,7 @@ public final class FileServiceAsyncClient {
         SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.azureFileStorageClient.getHttpPipeline());
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
-        return new AccountSASSignatureValues().generateAccountSAS(sharedKeyCredential, accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
+        return AccountSASSignatureValues.generateAccountSAS(sharedKeyCredential, accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
 
     }
 

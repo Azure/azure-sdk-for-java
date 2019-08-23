@@ -3,6 +3,7 @@
 
 package com.azure.storage.queue;
 
+import com.azure.storage.common.BaseSASQueryParameters;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
@@ -20,23 +21,9 @@ import java.util.function.Function;
  * might affect the appropriate means of appending these query parameters).
  * NOTE: Instances of this class are immutable to ensure thread safety.
  */
-public final class QueueServiceSASQueryParameters {
-
-    private final String version;
-
-    private final SASProtocol protocol;
-
-    private final OffsetDateTime startTime;
-
-    private final OffsetDateTime expiryTime;
-
-    private final IPRange ipRange;
+public final class QueueServiceSASQueryParameters extends BaseSASQueryParameters {
 
     private final String identifier;
-
-    private final String permissions;
-
-    private final String signature;
 
     /**
      * Creates a new {@link QueueServiceSASQueryParameters} object.
@@ -46,31 +33,9 @@ public final class QueueServiceSASQueryParameters {
      * queryParamsMap
      */
     public QueueServiceSASQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSASParametersFromMap) {
-        this.version = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SERVICE_VERSION, removeSASParametersFromMap);
-        this.protocol = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_PROTOCOL, removeSASParametersFromMap, SASProtocol::parse);
-        this.startTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_START_TIME, removeSASParametersFromMap, Utility::parseDate);
-        this.expiryTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_EXPIRY_TIME, removeSASParametersFromMap, Utility::parseDate);
-        this.ipRange = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_IP_RANGE, removeSASParametersFromMap, IPRange::parse);
+        super(queryParamsMap, removeSASParametersFromMap);
+
         this.identifier = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER, removeSASParametersFromMap);
-        this.permissions = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, removeSASParametersFromMap);
-        this.signature = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNATURE, removeSASParametersFromMap);
-    }
-
-    private String getQueryParameter(Map<String, String[]> parameters, String name, boolean remove) {
-        return getQueryParameter(parameters, name, remove, value -> value);
-    }
-
-    private <T> T getQueryParameter(Map<String, String[]> parameters, String name, Boolean remove, Function<String, T> converter) {
-        String[] parameterValue = parameters.get(name);
-        if (parameterValue == null) {
-            return null;
-        }
-
-        if (remove) {
-            parameters.remove(name);
-        }
-
-        return converter.apply(parameterValue[0]);
     }
 
 
@@ -90,49 +55,9 @@ public final class QueueServiceSASQueryParameters {
      */
     QueueServiceSASQueryParameters(String version, SASProtocol protocol, OffsetDateTime startTime, OffsetDateTime expiryTime,
         IPRange ipRange, String identifier, String permissions, String signature) {
-        this.version = version;
-        this.protocol = protocol;
-        this.startTime = startTime;
-        this.expiryTime = expiryTime;
-        this.ipRange = ipRange;
+        super(version, protocol, startTime, expiryTime, ipRange, permissions, signature);
+
         this.identifier = identifier;
-        this.permissions = permissions;
-        this.signature = signature;
-    }
-
-    /**
-     * @return The storage version
-     */
-    public String version() {
-        return version;
-    }
-
-    /**
-     * @return The allowed HTTP protocol(s) or {@code null}. Please refer to {@link SASProtocol} for more details.
-     */
-    public SASProtocol protocol() {
-        return protocol;
-    }
-
-    /**
-     * @return The start time for this SAS token or {@code null}.
-     */
-    public OffsetDateTime startTime() {
-        return startTime;
-    }
-
-    /**
-     * @return The expiry time for this SAS token.
-     */
-    public OffsetDateTime expiryTime() {
-        return expiryTime;
-    }
-
-    /**
-     * @return {@link IPRange}
-     */
-    public IPRange ipRange() {
-        return ipRange;
     }
 
     /**
@@ -142,30 +67,6 @@ public final class QueueServiceSASQueryParameters {
      */
     public String identifier() {
         return identifier;
-    }
-
-    /**
-     * @return Please refer to {@link QueueSASPermission} for more details.
-     */
-    public String permissions() {
-        return permissions;
-    }
-
-    private void tryAppendQueryParameter(StringBuilder sb, String param, Object value) {
-        if (value != null) {
-            if (sb.length() != 0) {
-                sb.append('&');
-            }
-            sb.append(Utility.urlEncode(param)).append('=').append(Utility.urlEncode(value.toString()));
-        }
-    }
-
-    private String formatQueryParameterDate(OffsetDateTime dateTime) {
-        if (dateTime == null) {
-            return null;
-        } else {
-            return Utility.ISO_8601_UTC_DATE_FORMATTER.format(dateTime);
-        }
     }
 
     /**

@@ -560,7 +560,7 @@ class SASTest extends APISpec {
             .contentEncoding(encoding)
             .contentLanguage(language)
             .contentType(type)
-        v.resource("")
+        v.resource("bs")
 
         def token = v.generateSASQueryParameters(primaryCreds)
         then:

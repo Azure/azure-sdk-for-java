@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.BaseSASQueryParameters;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
@@ -21,17 +22,7 @@ import java.util.function.Function;
  * might affect the appropriate means of appending these query parameters).
  * NOTE: Instances of this class are immutable to ensure thread safety.
  */
-public final class BlobServiceSASQueryParameters {
-
-    private final String version;
-
-    private final SASProtocol protocol;
-
-    private final OffsetDateTime startTime;
-
-    private final OffsetDateTime expiryTime;
-
-    private final IPRange ipRange;
+public final class BlobServiceSASQueryParameters extends BaseSASQueryParameters {
 
     private final String identifier;
 
@@ -48,10 +39,6 @@ public final class BlobServiceSASQueryParameters {
     private final String keyVersion;
 
     private final String resource;
-
-    private final String permissions;
-
-    private final String signature;
 
     private final String cacheControl;
 
@@ -71,11 +58,7 @@ public final class BlobServiceSASQueryParameters {
      * queryParamsMap
      */
     public BlobServiceSASQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSASParametersFromMap) {
-        this.version = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SERVICE_VERSION, removeSASParametersFromMap);
-        this.protocol = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_PROTOCOL, removeSASParametersFromMap, SASProtocol::parse);
-        this.startTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_START_TIME, removeSASParametersFromMap, Utility::parseDate);
-        this.expiryTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_EXPIRY_TIME, removeSASParametersFromMap, Utility::parseDate);
-        this.ipRange = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_IP_RANGE, removeSASParametersFromMap, IPRange::parse);
+        super(queryParamsMap, removeSASParametersFromMap);
         this.identifier = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER, removeSASParametersFromMap);
         this.keyOid = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_OBJECT_ID, removeSASParametersFromMap);
         this.keyTid = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_TENANT_ID, removeSASParametersFromMap);
@@ -84,32 +67,12 @@ public final class BlobServiceSASQueryParameters {
         this.keyService = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_SERVICE, removeSASParametersFromMap);
         this.keyVersion = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION, removeSASParametersFromMap);
         this.resource = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_RESOURCE, removeSASParametersFromMap);
-        this.permissions = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, removeSASParametersFromMap);
-        this.signature = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNATURE, removeSASParametersFromMap);
         this.cacheControl = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CACHE_CONTROL, removeSASParametersFromMap);
         this.contentDisposition = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_DISPOSITION, removeSASParametersFromMap);
         this.contentEncoding = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_ENCODING, removeSASParametersFromMap);
         this.contentLanguage = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_LANGUAGE, removeSASParametersFromMap);
         this.contentType = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_TYPE, removeSASParametersFromMap);
     }
-
-    private String getQueryParameter(Map<String, String[]> parameters, String name, boolean remove) {
-        return getQueryParameter(parameters, name, remove, value -> value);
-    }
-
-    private <T> T getQueryParameter(Map<String, String[]> parameters, String name, Boolean remove, Function<String, T> converter) {
-        String[] parameterValue = parameters.get(name);
-        if (parameterValue == null) {
-            return null;
-        }
-
-        if (remove) {
-            parameters.remove(name);
-        }
-
-        return converter.apply(parameterValue[0]);
-    }
-
 
     /**
      * Creates a new {@link BlobServiceSASQueryParameters} object. These objects are only created internally by SASSignatureValues
@@ -129,16 +92,10 @@ public final class BlobServiceSASQueryParameters {
     BlobServiceSASQueryParameters(String version, SASProtocol protocol, OffsetDateTime startTime, OffsetDateTime expiryTime,
         IPRange ipRange, String identifier, String resource, String permissions, String signature, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType, UserDelegationKey key) {
+        super(version, protocol, startTime, expiryTime, ipRange, permissions, signature);
 
-        this.version = version;
-        this.protocol = protocol;
-        this.startTime = startTime;
-        this.expiryTime = expiryTime;
-        this.ipRange = ipRange;
         this.identifier = identifier;
         this.resource = resource;
-        this.permissions = permissions;
-        this.signature = signature;
         this.cacheControl = cacheControl;
         this.contentDisposition = contentDisposition;
         this.contentEncoding = contentEncoding;
@@ -163,41 +120,6 @@ public final class BlobServiceSASQueryParameters {
     }
 
     /**
-     * @return The storage version
-     */
-    public String version() {
-        return version;
-    }
-
-    /**
-     * @return The allowed HTTP protocol(s) or {@code null}. Please refer to {@link SASProtocol} for more details.
-     */
-    public SASProtocol protocol() {
-        return protocol;
-    }
-
-    /**
-     * @return The start time for this SAS token or {@code null}.
-     */
-    public OffsetDateTime startTime() {
-        return startTime;
-    }
-
-    /**
-     * @return The expiry time for this SAS token.
-     */
-    public OffsetDateTime expiryTime() {
-        return expiryTime;
-    }
-
-    /**
-     * @return {@link IPRange}
-     */
-    public IPRange ipRange() {
-        return ipRange;
-    }
-
-    /**
      * @return The signed identifier (only for {@link BlobServiceSASSignatureValues}) or {@code null}. Please see
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
@@ -211,20 +133,6 @@ public final class BlobServiceSASQueryParameters {
      */
     public String resource() {
         return resource;
-    }
-
-    /**
-     * @return Please refer to {@link BlobSASPermission}, or {@link ContainerSASPermission} for more details.
-     */
-    public String permissions() {
-        return permissions;
-    }
-
-    /**
-     * @return The signature for the SAS token.
-     */
-    public String signature() {
-        return signature;
     }
 
     /**
@@ -312,23 +220,6 @@ public final class BlobServiceSASQueryParameters {
             .signedStart(this.keyStart)
             .signedTid(this.keyTid)
             .signedVersion(this.keyVersion);
-    }
-
-    private void tryAppendQueryParameter(StringBuilder sb, String param, Object value) {
-        if (value != null) {
-            if (sb.length() != 0) {
-                sb.append('&');
-            }
-            sb.append(Utility.urlEncode(param)).append('=').append(Utility.urlEncode(value.toString()));
-        }
-    }
-
-    private String formatQueryParameterDate(OffsetDateTime dateTime) {
-        if (dateTime == null) {
-            return null;
-        } else {
-            return Utility.ISO_8601_UTC_DATE_FORMATTER.format(dateTime);
-        }
     }
 
     /**
