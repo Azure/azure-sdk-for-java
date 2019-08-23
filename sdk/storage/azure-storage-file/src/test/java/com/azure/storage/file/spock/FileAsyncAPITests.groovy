@@ -25,7 +25,7 @@ class FileAsyncAPITests extends APISpec {
     FileAsyncClient primaryFileAsyncClient
     def shareName
     def filePath
-    def defaultData = ByteBuffer.allocate(8).wrap("default".getBytes(StandardCharsets.UTF_8))
+    def defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8))
     def dataLength = defaultData.remaining()
     static def testMetadata
     static def httpHeaders
@@ -153,7 +153,7 @@ class FileAsyncAPITests extends APISpec {
     def "Upload and clear range" () {
         given:
         def fullInfoString = "please clear the range"
-        def fullInfoData = ByteBuffer.allocate(8).wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
         primaryFileAsyncClient.create(fullInfoString.length()).block()
         primaryFileAsyncClient.upload(Flux.just(fullInfoData), fullInfoString.length()).block()
         when:
@@ -191,7 +191,7 @@ class FileAsyncAPITests extends APISpec {
     def "Clear range error" () {
         given:
         def fullInfoString = "please clear the range"
-        def fullInfoData = ByteBuffer.allocate(8).wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
         primaryFileAsyncClient.create(fullInfoString.length()).block()
         primaryFileAsyncClient.upload(Flux.just(fullInfoData), fullInfoString.length()).block()
         when:
@@ -205,7 +205,7 @@ class FileAsyncAPITests extends APISpec {
     def "Clear range error args" () {
         given:
         def fullInfoString = "please clear the range"
-        def fullInfoData = ByteBuffer.allocate(8).wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
         primaryFileAsyncClient.create(fullInfoString.length()).block()
         primaryFileAsyncClient.upload(Flux.just(fullInfoData), fullInfoString.length()).block()
         when:

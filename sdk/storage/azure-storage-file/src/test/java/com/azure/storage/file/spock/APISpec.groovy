@@ -149,20 +149,12 @@ class APISpec extends Specification {
                 .shareName(shareName)
                 .filePath(filePath)
                 .addPolicy(interceptorManager.getRecordPolicy())
-                .httpClient(HttpClient.createDefault().wiretap(true).proxy(PROXY_OPTIONS))
         } else {
             return new FileClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
                 .filePath(filePath)
                 .httpClient(interceptorManager.getPlaybackClient())
-        }
-    }
-
-    private Supplier<ProxyOptions> PROXY_OPTIONS = new Supplier<ProxyOptions>() {
-        @Override
-        ProxyOptions get() {
-            return new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
         }
     }
 

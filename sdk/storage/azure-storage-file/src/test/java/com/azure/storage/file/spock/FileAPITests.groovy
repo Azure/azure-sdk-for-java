@@ -156,7 +156,7 @@ class FileAPITests extends APISpec {
     def "Upload and clear range with args" () {
         given:
         def fullInfoString = "please clear the range"
-        def fullInfoData = ByteBuffer.allocate(8).wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
         primaryFileClient.create(fullInfoString.length())
         primaryFileClient.upload(fullInfoData, fullInfoString.length())
         when:
@@ -172,7 +172,7 @@ class FileAPITests extends APISpec {
     def "Clear range error" () {
         given:
         def fullInfoString = "please clear the range"
-        def fullInfoData = ByteBuffer.allocate(8).wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
         primaryFileClient.create(fullInfoString.length())
         primaryFileClient.upload(fullInfoData, fullInfoString.length())
         when:
@@ -185,7 +185,7 @@ class FileAPITests extends APISpec {
     def "Clear range error args" () {
         given:
         def fullInfoString = "please clear the range"
-        def fullInfoData = ByteBuffer.allocate(8).wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
         primaryFileClient.create(fullInfoString.length())
         primaryFileClient.upload(fullInfoData, fullInfoString.length())
         when:

@@ -96,7 +96,6 @@ class ReactorNettyClient implements HttpClient {
             } else {
                 return reactorNettyOutbound;
             }
-
         };
     }
 

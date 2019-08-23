@@ -192,8 +192,8 @@ public class FileAsyncClient {
         String fileCreationTime = "now";
         String fileLastWriteTime = "now";
 
-        return azureFileStorageClient.files().createWithRestResponseAsync(shareName, filePath, maxSize, fileAttributes, fileCreationTime, fileLastWriteTime, null, metadata, filePermission, null, httpHeaders, context)
-
+        return azureFileStorageClient.files().createWithRestResponseAsync(shareName, filePath, maxSize, fileAttributes,
+            fileCreationTime, fileLastWriteTime, null, metadata, filePermission, null, httpHeaders, context)
             .map(this::createFileInfoResponse);
     }
 
@@ -561,15 +561,14 @@ public class FileAsyncClient {
     }
 
     Mono<Response<FileInfo>> setHttpHeadersWithResponse(long newFileSize, FileHTTPHeaders httpHeaders, Context context) {
-
         // TODO (alzimmer): These properties are dummy defaults to allow the new service version to be used. Remove these and use correct defaults when known (https://github.com/Azure/azure-sdk-for-java/issues/5039)
         String fileAttributes = "None";
         String filePermission = "inherit";
         String fileCreationTime = "preserve";
         String fileLastWriteTime = "preserve";
 
-        return azureFileStorageClient.files().setHTTPHeadersWithRestResponseAsync(shareName, filePath, fileAttributes, fileCreationTime, fileLastWriteTime, null, newFileSize, filePermission, null, httpHeaders, context)
-
+        return azureFileStorageClient.files().setHTTPHeadersWithRestResponseAsync(shareName, filePath, fileAttributes,
+            fileCreationTime, fileLastWriteTime, null, newFileSize, filePermission, null, httpHeaders, context)
             .map(this::setHttpHeadersResponse);
     }
 
@@ -743,7 +742,7 @@ public class FileAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
-     * @param length Specifies the number of bytes being cleared in the request body.
+     * @param length Specifies the number of bytes being cleared.
      * @return The {@link FileUploadInfo file upload info}
      */
     public Mono<FileUploadInfo> clearRange(long length) {

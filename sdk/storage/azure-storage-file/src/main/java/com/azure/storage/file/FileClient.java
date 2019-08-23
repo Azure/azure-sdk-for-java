@@ -527,7 +527,7 @@ public class FileClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
-     * @param length Specifies the number of bytes being cleared in the request body.
+     * @param length Specifies the number of bytes being cleared.
      * @return The {@link FileUploadInfo file upload info}
      */
     public FileUploadInfo clearRange(long length) {
