@@ -1743,7 +1743,7 @@ class BlobAPITest extends APISpec {
         bu.setTier(destTier)
 
         then:
-        cu.listBlobsFlat().iterator().next().properties().archiveStatus().toString() == status
+        cu.listBlobsFlat().iterator().next().properties().archiveStatus() == status
         bu.getPropertiesWithResponse(null, null, null).headers().value("x-ms-archive-status") == status.toString()
 
         where:
@@ -1810,14 +1810,14 @@ class BlobAPITest extends APISpec {
         bu.delete()
 
         when:
-        def headers = bu.undeleteWithResponse(null, null).headers()
+        def undeleteHeaders = bu.undeleteWithResponse(null, null).headers()
         bu.getProperties()
 
         then:
         notThrown(StorageException)
-        headers.value("x-ms-request-id") != null
-        headers.value("x-ms-version") != null
-        headers.value("Date") != null
+        undeleteHeaders.value("x-ms-request-id") != null
+        undeleteHeaders.value("x-ms-version") != null
+        undeleteHeaders.value("Date") != null
 
         disableSoftDelete() == null
     }
