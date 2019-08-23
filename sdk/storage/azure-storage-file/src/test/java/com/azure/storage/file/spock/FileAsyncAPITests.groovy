@@ -132,7 +132,6 @@ class FileAsyncAPITests extends APISpec {
 
     def "Upload data error"() {
         when:
-        defaultData.flip()
         def updateDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData), dataLength, 1))
         then:
         updateDataErrorVerifier.verifyErrorSatisfies {
