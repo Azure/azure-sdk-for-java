@@ -197,6 +197,7 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Upload page IA"() {
         when:
+        def data = (dataSize == null) ? null : new ByteArrayInputStream(getRandomByteArray(dataSize))
         bc.uploadPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES * 2 - 1), data)
 
         then:
@@ -204,10 +205,10 @@ class PageBlobAPITest extends APISpec {
         exceptionType.isInstance(e)
 
         where:
-        data                                                                        | exceptionType
-        null                                                                        | NullPointerException
-        new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES))     | IndexOutOfBoundsException
-        new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES * 3)) | StorageException
+        dataSize                      | exceptionType
+        null                          | NullPointerException
+        PageBlobClient.PAGE_BYTES     | IndexOutOfBoundsException
+        PageBlobClient.PAGE_BYTES * 3 | StorageException
     }
 
     @Unroll
@@ -333,17 +334,12 @@ class PageBlobAPITest extends APISpec {
         outputStream.toByteArray() == Arrays.copyOfRange(data, PageBlobClient.PAGE_BYTES * 2, PageBlobClient.PAGE_BYTES * 4)
     }
 
-    @Unroll
     def "Upload page from URL IA"() {
         when:
-        bc.uploadPagesFromURL(range, bc.getBlobUrl(), sourceOffset)
+        bc.uploadPagesFromURL(null, bc.getBlobUrl(), (Long) PageBlobClient.PAGE_BYTES)
 
         then:
         thrown(IllegalArgumentException)
-
-        where:
-        sourceOffset                     | range
-        (Long) PageBlobClient.PAGE_BYTES | null
     }
 
     def "Upload page from URL MD5"() {
@@ -1011,7 +1007,7 @@ class PageBlobAPITest extends APISpec {
             if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long")
             }
-            sleep(1000)
+            sleepIfRecord(1000)
         }
 
         expect:
@@ -1050,7 +1046,7 @@ class PageBlobAPITest extends APISpec {
             if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long")
             }
-            sleep(1000)
+            sleepIfRecord(1000)
         }
 
         snapshot = bc.createSnapshot().getSnapshotId()

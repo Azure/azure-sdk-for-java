@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+
 package com.azure.storage.blob
 
 import com.azure.core.http.HttpHeaders
@@ -31,10 +32,6 @@ class BlockBlobAPITest extends APISpec {
         bc.upload(defaultInputStream.get(), defaultDataSize)
     }
 
-    def getBlockID() {
-        return Base64.encoder.encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8))
-    }
-
     def "Stage block"() {
         setup:
         def response = bc.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, null, null, null)
@@ -57,6 +54,7 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     def "Stage block illegal arguments"() {
         when:
+        String blockID = (getBlockId) ? getBlockID() : null
         bc.stageBlock(blockID, data == null ? null : data.get(), dataSize)
 
         then:
@@ -64,12 +62,12 @@ class BlockBlobAPITest extends APISpec {
         exceptionType.isInstance(e)
 
         where:
-        blockID      | data               | dataSize            | exceptionType
-        null         | defaultInputStream | defaultDataSize     | StorageException
-        getBlockID() | null               | defaultDataSize     | NullPointerException
-        getBlockID() | defaultInputStream | defaultDataSize + 1 | IndexOutOfBoundsException
+        getBlockId   | data                 | dataSize            | exceptionType
+        false        | defaultInputStream   | defaultDataSize     | StorageException
+        true         | null                 | defaultDataSize     | NullPointerException
+        true         | defaultInputStream   | defaultDataSize + 1 | IndexOutOfBoundsException
         // TODO (alzimmer): This doesn't throw an error as the stream is larger than the stated size
-        //getBlockID() | defaultInputStream   | defaultDataSize - 1 | IllegalArgumentException
+        //true         | defaultInputStream   | defaultDataSize - 1 | IllegalArgumentException
     }
 
     def "Stage block empty body"() {
@@ -163,15 +161,16 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     def "Stage block from URL IA"() {
         when:
+        String blockID = (getBlockId) ? getBlockID() : null
         bc.stageBlockFromURL(blockID, sourceURL, null)
 
         then:
         thrown(StorageException)
 
         where:
-        blockID      | sourceURL
-        null         | new URL("http://www.example.com")
-        getBlockID() | null
+        getBlockId   | sourceURL
+        false        | new URL("http://www.example.com")
+        true         | null
     }
 
     def "Stage block from URL range"() {
@@ -627,9 +626,9 @@ class BlockBlobAPITest extends APISpec {
         validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
-        null         | null               | null            | null            | null                                                         | null
-        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                    | contentType
+        null         | null               | null            | null            | null                                                          | null
+        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array())  | "type"
     }
 
     @Unroll
