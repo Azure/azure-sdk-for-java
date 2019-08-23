@@ -182,8 +182,8 @@ class APISpec extends Specification {
             accountName = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
-            accountName = "playback"
-            accountKey = "playback"
+            accountName = "storageaccount"
+            accountKey = "storageaccountkey"
         }
 
         if (accountName == null || accountKey == null) {
