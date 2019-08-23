@@ -57,17 +57,11 @@ public class TraceUtil {
             return;
         }
 
-        if (signal == null) {
-            TracerProxy.end(errorCondition, context, null);
-            return;
-        }
-
         Throwable throwable = null;
-        if (signal.hasError()) {
-            // The last status available is on error, this contains the error thrown by the REST response.
+        if (signal != null && signal.hasError()) {
+            // The last status available is on error, this contains the thrown error.
             throwable = signal.getThrowable();
 
-            // Only HttpResponseException contain a status code, this is the base REST response.
             if (throwable instanceof AmqpException) {
                 AmqpException exception = (AmqpException) throwable;
                 errorCondition = exception.getErrorCondition().toString();

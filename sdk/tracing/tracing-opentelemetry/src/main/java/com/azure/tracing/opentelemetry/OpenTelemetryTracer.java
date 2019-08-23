@@ -51,8 +51,10 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
             span = spanBuilder.startSpan();
             // Add diagnostic Id to Context
             context = setContextData(span);
+        } else {
+            span = spanBuilder.startSpan();
         }
-        return context.addData(OPENTELEMETRY_SPAN_KEY, spanBuilder.startSpan());
+        return context.addData(OPENTELEMETRY_SPAN_KEY, span);
     }
 
     @Override

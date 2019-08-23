@@ -54,8 +54,8 @@ public final class AmqpTraceUtil {
             }
         }
 
-        // Unknown error.
-        if (errorCondition.isEmpty()) {
+        // No error.
+        if (error == null && errorCondition.isEmpty()) {
             return Status.OK;
         }
         // Error Condition, try to parse the error message.
