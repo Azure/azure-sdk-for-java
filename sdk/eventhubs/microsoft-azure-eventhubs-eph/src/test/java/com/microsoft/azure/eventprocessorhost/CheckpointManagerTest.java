@@ -4,9 +4,16 @@
 package com.microsoft.azure.eventprocessorhost;
 
 import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.ProxyConfiguration;
+import com.microsoft.azure.eventhubs.TransportType;
+import org.junit.Assume;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -16,36 +23,60 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+@RunWith(Parameterized.class)
 public class CheckpointManagerTest extends TestBase {
+    private static final int PARTITION_COUNT = 8;
+
+    private final boolean useAzureStorage;
+    private final boolean useProxy;
+
     private ILeaseManager[] leaseManagers;
     private ICheckpointManager[] checkpointManagers;
     private EventProcessorHost[] hosts;
+    private ProxyConfiguration proxyConfiguration;
+    private String azureStorageConnectionString;
 
-    @Test
-    public void singleManangerInMemoryCheckpointSmokeTest() throws Exception {
-        singleManagerCheckpointSmokeTest(false, 8);
+    public CheckpointManagerTest(boolean useAzureStorage, boolean useProxy) {
+        this.useAzureStorage = useAzureStorage;
+        this.useProxy = useProxy;
+    }
+
+    @Parameterized.Parameters(name = "{index}: useAzureStorage={0};useProxy{1}")
+    public static Iterable<Object[]> data() {
+        return Arrays.asList(new Object[][]{
+            {true, true},
+            {true, false},
+            {false, true},
+            {false, false},
+        });
+    }
+
+    @Before
+    public void setup() {
+        proxyConfiguration = TestUtilities.getProxyConfiguration();
+        azureStorageConnectionString = TestUtilities.getStorageConnectionString();
+
+        Assume.assumeTrue("Cannot test with proxy. Environment variable not set.",
+            !useProxy || proxyConfiguration != null);
+        Assume.assumeTrue("Cannot test with Azure storage. Environment variable not set.",
+            !useAzureStorage || azureStorageConnectionString != null);
     }
 
     @Test
-    public void twoManagerInMemoryCheckpointSmokeTest() throws Exception {
-        twoManagerCheckpointSmokeTest(false, 8);
+    public void singleManagerSmokeTest() throws Exception {
+        singleManagerCheckpointSmokeTest(useAzureStorage, PARTITION_COUNT, useProxy);
     }
 
     @Test
-    public void singleManagerAzureCheckpointSmokeTest() throws Exception {
-        singleManagerCheckpointSmokeTest(true, 8);
+    public void twoCheckpointManagersSmokeTest() throws Exception {
+        twoManagerCheckpointSmokeTest(useAzureStorage, PARTITION_COUNT, useProxy);
     }
 
-    @Test
-    public void twoManagerAzureCheckpointSmokeTest() throws Exception {
-        twoManagerCheckpointSmokeTest(true, 8);
-    }
-
-    public void singleManagerCheckpointSmokeTest(boolean useAzureStorage, int partitionCount) throws Exception {
+    private void singleManagerCheckpointSmokeTest(boolean useAzureStorage, int partitionCount, boolean useProxy) throws Exception {
         this.leaseManagers = new ILeaseManager[1];
         this.checkpointManagers = new ICheckpointManager[1];
         this.hosts = new EventProcessorHost[1];
-        setupOneManager(useAzureStorage, 0, "0", generateContainerName("0"));
+        setupOneManager(useAzureStorage, 0, "0", generateContainerName("0"), useProxy);
 
         TestBase.logInfo("Check whether checkpoint store exists before create");
         boolean boolret = this.checkpointManagers[0].checkpointStoreExists().get();
@@ -89,7 +120,7 @@ public class CheckpointManagerTest extends TestBase {
         if (useAzureStorage) {
             for (int i = 0; i < partitionCount; i++) {
                 CompleteLease l = this.leaseManagers[0].getLease(partitionIds.get(i)).get();
-                assertTrue("null lease for " + partitionIds.get(i), l != null);
+                assertNotNull("null lease for " + partitionIds.get(i), l);
                 leases.put(l.getPartitionId(), l);
                 boolret = this.leaseManagers[0].acquireLease(l).get();
                 assertTrue("failed to acquire lease for " + l.getPartitionId(), boolret);
@@ -125,13 +156,13 @@ public class CheckpointManagerTest extends TestBase {
         this.checkpointManagers[0].deleteCheckpointStore().get();
     }
 
-    public void twoManagerCheckpointSmokeTest(boolean useAzureStorage, int partitionCount) throws Exception {
+    private void twoManagerCheckpointSmokeTest(boolean useAzureStorage, int partitionCount, boolean withProxy) throws Exception {
         this.leaseManagers = new ILeaseManager[2];
         this.checkpointManagers = new ICheckpointManager[2];
         this.hosts = new EventProcessorHost[2];
         String containerName = generateContainerName(null);
-        setupOneManager(useAzureStorage, 0, "twoCheckpoint", containerName);
-        setupOneManager(useAzureStorage, 1, "twoCheckpoint", containerName);
+        setupOneManager(useAzureStorage, 0, "twoCheckpoint", containerName, withProxy);
+        setupOneManager(useAzureStorage, 1, "twoCheckpoint", containerName, withProxy);
 
         TestBase.logInfo("Check whether checkpoint store exists before create");
         boolean boolret = this.checkpointManagers[0].checkpointStoreExists().get();
@@ -222,7 +253,8 @@ public class CheckpointManagerTest extends TestBase {
         return containerName.toString();
     }
 
-    private void setupOneManager(boolean useAzureStorage, int index, String suffix, String containerName) throws Exception {
+    private void setupOneManager(boolean useAzureStorage, int index, String suffix, String containerName,
+                                 boolean useProxy) throws Exception {
         ILeaseManager leaseMgr = null;
         ICheckpointManager checkpointMgr = null;
 
@@ -231,18 +263,32 @@ public class CheckpointManagerTest extends TestBase {
             checkpointMgr = new InMemoryCheckpointManager();
         } else {
             TestBase.logInfo("Container name: " + containerName);
-            String azureStorageConnectionString = TestUtilities.getStorageConnectionString();
             AzureStorageCheckpointLeaseManager azMgr = new AzureStorageCheckpointLeaseManager(azureStorageConnectionString, containerName, null);
+
+            if (useProxy) {
+                azMgr.setProxyConfiguration(proxyConfiguration);
+            }
+
             leaseMgr = azMgr;
             checkpointMgr = azMgr;
         }
 
+        TransportType transportType = TransportType.AMQP;
+        ProxyConfiguration configuration = null;
+
+        if (useProxy) {
+            transportType = TransportType.AMQP_WEB_SOCKETS;
+            configuration = proxyConfiguration;
+        }
+
         // Host name needs to be unique per host so use index. Event hub should be the same for all hosts in a test, so use the supplied suffix.
-        EventProcessorHost host = EventProcessorHost.EventProcessorHostBuilder.newBuilder("dummyHost" + String.valueOf(index), EventHubClient.DEFAULT_CONSUMER_GROUP_NAME)
-                .useUserCheckpointAndLeaseManagers(checkpointMgr, leaseMgr)
-                .useEventHubConnectionString(RealEventHubUtilities.SYNTACTICALLY_CORRECT_DUMMY_CONNECTION_STRING + suffix,
-                        RealEventHubUtilities.SYNTACTICALLY_CORRECT_DUMMY_EVENT_HUB_PATH + suffix)
-                .build();
+        EventProcessorHost host = EventProcessorHost.EventProcessorHostBuilder.newBuilder("dummyHost" + index, EventHubClient.DEFAULT_CONSUMER_GROUP_NAME)
+            .useUserCheckpointAndLeaseManagers(checkpointMgr, leaseMgr)
+            .useEventHubConnectionString(RealEventHubUtilities.SYNTACTICALLY_CORRECT_DUMMY_CONNECTION_STRING + suffix,
+                RealEventHubUtilities.SYNTACTICALLY_CORRECT_DUMMY_EVENT_HUB_PATH + suffix)
+            .setProxyConfiguration(configuration)
+            .setTransportType(transportType)
+            .build();
 
         try {
             if (!useAzureStorage) {
