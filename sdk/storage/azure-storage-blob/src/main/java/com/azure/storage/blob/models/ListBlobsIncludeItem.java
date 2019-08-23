@@ -32,11 +32,6 @@ public enum ListBlobsIncludeItem {
     SNAPSHOTS("snapshots"),
 
     /**
-     * Enum value tags.
-     */
-    TAGS("tags"),
-
-    /**
      * Enum value uncommittedblobs.
      */
     UNCOMMITTEDBLOBS("uncommittedblobs");

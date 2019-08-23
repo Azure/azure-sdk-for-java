@@ -28,8 +28,9 @@ import com.azure.storage.file.models.DirectorysListHandlesResponse;
 import com.azure.storage.file.models.DirectorysSetMetadataResponse;
 import com.azure.storage.file.models.DirectorysSetPropertiesResponse;
 import com.azure.storage.file.models.StorageErrorException;
-import java.util.Map;
 import reactor.core.publisher.Mono;
+
+import java.util.Map;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -81,7 +82,7 @@ public final class DirectorysImpl {
         @Put("{shareName}/{directoryPath}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<DirectorysSetPropertiesResponse> setProperties(@PathParam("shareName") String shareName, @PathParam("directoryPath") String directoryPath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") String fileCreationTime, @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime, @QueryParam("comp") String comp, Context context);
+        Mono<DirectorysSetPropertiesResponse> setProperties(@PathParam("shareName") String shareName, @PathParam("directoryPath") String directoryPath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") String fileCreationTime, @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Put("{shareName}/{directoryPath}")
         @ExpectedResponses({200})
@@ -231,8 +232,9 @@ public final class DirectorysImpl {
         final Integer timeout = null;
         final String filePermission = null;
         final String filePermissionKey = null;
+        final String restype = "directory";
         final String comp = "properties";
-        return service.setProperties(shareName, directoryPath, this.client.getUrl(), timeout, this.client.getVersion(), filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, comp, context);
+        return service.setProperties(shareName, directoryPath, this.client.getUrl(), timeout, this.client.getVersion(), filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, restype, comp, context);
     }
 
     /**
@@ -252,8 +254,9 @@ public final class DirectorysImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectorysSetPropertiesResponse> setPropertiesWithRestResponseAsync(String shareName, String directoryPath, String fileAttributes, String fileCreationTime, String fileLastWriteTime, Integer timeout, String filePermission, String filePermissionKey, Context context) {
+        final String restype = "directory";
         final String comp = "properties";
-        return service.setProperties(shareName, directoryPath, this.client.getUrl(), timeout, this.client.getVersion(), filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, comp, context);
+        return service.setProperties(shareName, directoryPath, this.client.getUrl(), timeout, this.client.getVersion(), filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, restype, comp, context);
     }
 
     /**

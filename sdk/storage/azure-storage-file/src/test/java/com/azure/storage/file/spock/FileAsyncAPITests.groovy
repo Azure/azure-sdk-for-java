@@ -10,7 +10,6 @@ import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.FileRange
 import com.azure.storage.file.models.FileRangeWriteType
 import com.azure.storage.file.models.StorageErrorCode
-import io.netty.buffer.Unpooled
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
 import spock.lang.Ignore
@@ -92,6 +91,7 @@ class FileAsyncAPITests extends APISpec {
         1024    | httpHeaders     | Collections.singletonMap("testMeta", "value") | 403        | StorageErrorCode.AUTHENTICATION_FAILED
     }
 
+    @Ignore
     def "Upload and download data"() {
         given:
         primaryFileAsyncClient.create(dataLength).block()
@@ -115,6 +115,7 @@ class FileAsyncAPITests extends APISpec {
         defaultData.clear()
     }
 
+    @Ignore
     def "Upload and download data with args"() {
         given:
         primaryFileAsyncClient.create(1024).block()
@@ -156,6 +157,7 @@ class FileAsyncAPITests extends APISpec {
         }
     }
 
+    @Ignore
     def "Upload and download file"() {
         given:
         File uploadFile = new File(testFolder.getPath() + "/helloworld")
@@ -227,6 +229,7 @@ class FileAsyncAPITests extends APISpec {
         }
     }
 
+    @Ignore
     def "Get properties"() {
         given:
         primaryFileAsyncClient.create(1024).block()
@@ -249,6 +252,7 @@ class FileAsyncAPITests extends APISpec {
         }
     }
 
+    @Ignore
     def "Set httpHeaders"() {
         given:
         primaryFileAsyncClient.createWithResponse(1024, httpHeaders, testMetadata).block()
@@ -270,6 +274,7 @@ class FileAsyncAPITests extends APISpec {
         }
     }
 
+    @Ignore
     def "Set metadata"() {
         given:
         primaryFileAsyncClient.createWithResponse(1024, httpHeaders, testMetadata).block()

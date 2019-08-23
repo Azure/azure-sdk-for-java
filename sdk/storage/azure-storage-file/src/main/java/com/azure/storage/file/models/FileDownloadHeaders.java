@@ -197,19 +197,19 @@ public final class FileDownloadHeaders {
      * Creation time for the file.
      */
     @JsonProperty(value = "x-ms-file-creation-time")
-    private OffsetDateTime fileCreationTime;
+    private DateTimeRfc1123 fileCreationTime;
 
     /*
      * Last write time for the file.
      */
     @JsonProperty(value = "x-ms-file-last-write-time")
-    private OffsetDateTime fileLastWriteTime;
+    private DateTimeRfc1123 fileLastWriteTime;
 
     /*
      * Change time for the file.
      */
     @JsonProperty(value = "x-ms-file-change-time")
-    private OffsetDateTime fileChangeTime;
+    private DateTimeRfc1123 fileChangeTime;
 
     /*
      * Key of the permission set for the file.
@@ -830,7 +830,10 @@ public final class FileDownloadHeaders {
      * @return the fileCreationTime value.
      */
     public OffsetDateTime fileCreationTime() {
-        return this.fileCreationTime;
+        if (this.fileCreationTime == null) {
+            return null;
+        }
+        return this.fileCreationTime.dateTime();
     }
 
     /**
@@ -840,7 +843,11 @@ public final class FileDownloadHeaders {
      * @return the FileDownloadHeaders object itself.
      */
     public FileDownloadHeaders fileCreationTime(OffsetDateTime fileCreationTime) {
-        this.fileCreationTime = fileCreationTime;
+        if (fileCreationTime == null) {
+            this.fileCreationTime = null;
+        } else {
+            this.fileCreationTime = new DateTimeRfc1123(fileCreationTime);
+        }
         return this;
     }
 
@@ -850,7 +857,10 @@ public final class FileDownloadHeaders {
      * @return the fileLastWriteTime value.
      */
     public OffsetDateTime fileLastWriteTime() {
-        return this.fileLastWriteTime;
+        if (this.fileLastWriteTime == null) {
+            return null;
+        }
+        return this.fileLastWriteTime.dateTime();
     }
 
     /**
@@ -860,7 +870,11 @@ public final class FileDownloadHeaders {
      * @return the FileDownloadHeaders object itself.
      */
     public FileDownloadHeaders fileLastWriteTime(OffsetDateTime fileLastWriteTime) {
-        this.fileLastWriteTime = fileLastWriteTime;
+        if (fileLastWriteTime == null) {
+            this.fileLastWriteTime = null;
+        } else {
+            this.fileLastWriteTime = new DateTimeRfc1123(fileLastWriteTime);
+        }
         return this;
     }
 
@@ -870,7 +884,10 @@ public final class FileDownloadHeaders {
      * @return the fileChangeTime value.
      */
     public OffsetDateTime fileChangeTime() {
-        return this.fileChangeTime;
+        if (this.fileChangeTime == null) {
+            return null;
+        }
+        return this.fileChangeTime.dateTime();
     }
 
     /**
@@ -880,7 +897,11 @@ public final class FileDownloadHeaders {
      * @return the FileDownloadHeaders object itself.
      */
     public FileDownloadHeaders fileChangeTime(OffsetDateTime fileChangeTime) {
-        this.fileChangeTime = fileChangeTime;
+        if (fileChangeTime == null) {
+            this.fileChangeTime = null;
+        } else {
+            this.fileChangeTime = new DateTimeRfc1123(fileChangeTime);
+        }
         return this;
     }
 

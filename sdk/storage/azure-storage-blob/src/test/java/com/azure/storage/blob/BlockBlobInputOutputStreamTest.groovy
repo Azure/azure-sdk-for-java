@@ -1,6 +1,7 @@
 package com.azure.storage.blob
 
 import com.azure.storage.common.Constants
+import spock.lang.Requires
 
 class BlockBlobInputOutputStreamTest extends APISpec {
     BlockBlobClient bc
@@ -9,11 +10,12 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         bc = cc.getBlockBlobClient(generateBlobName())
     }
 
+    // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
+    @Requires({ APISpec.liveMode() })
     def "Upload download"() {
         when:
         int length = 30 * Constants.MB
-        byte[] randomBytes = new byte[length]
-        (new Random()).nextBytes(randomBytes)
+        byte[] randomBytes = getRandomByteArray(length)
 
         BlobOutputStream outStream = bc.getBlobOutputStream()
         outStream.write(randomBytes)
