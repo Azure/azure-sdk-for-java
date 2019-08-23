@@ -1,0 +1,40 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatedirectoryerrorwithmetadata56958?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D7258ED1915D7B\"",
+      "Last-Modified" : "Tue, 20 Aug 2019 16:52:42 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "6530f5fb-901a-013c-2477-57c2f8000000",
+      "Date" : "Tue, 20 Aug 2019 16:52:42 GMT"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatedirectoryerrorwithmetadata56958/directoryasyncapitestscreatedirectoryerrorwithmetadata26287?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "AuthenticationFailed",
+      "retry-after" : "0",
+      "Content-Length" : "861",
+      "StatusCode" : "403",
+      "x-ms-request-id" : "6530f5fd-901a-013c-2577-57c2f8000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:6530f5fd-901a-013c-2577-57c2f8000000\nTime:2019-08-20T16:52:42.8453719Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'uP/gUgiaf/HQGjnVVf3md/3FX4m5qhz94HYd15JtL14=' is not the same as any computed signature. Server used following string to sign: 'PUT\n\n\n\n\n\nTue, 20 Aug 2019 16:52:42 GMT\n\n\n\n\n\nx-ms-client-request-id:456ea906-6667-492c-8c05-8d1a6ac1f8e1\nx-ms-meta-testmeta:value\nx-ms-version:2018-11-09\n/azstoragesdkaccount/directoryasyncapitestscreatedirectoryerrorwithmetadata56958/directoryasyncapitestscreatedirectoryerrorwithmetadata26287\nrestype:directory'.</AuthenticationErrorDetail></Error>",
+      "Date" : "Tue, 20 Aug 2019 16:52:42 GMT",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "directoryasyncapitestscreatedirectoryerrorwithmetadata56958", "directoryasyncapitestscreatedirectoryerrorwithmetadata26287" ]
+}

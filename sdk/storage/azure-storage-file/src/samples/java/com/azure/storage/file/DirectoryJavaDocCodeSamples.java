@@ -5,6 +5,7 @@ package com.azure.storage.file;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.storage.common.Utility;
+import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.DirectoryInfo;
@@ -20,9 +21,13 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * Contains code snippets when generating javadocs through doclets for {@link DirectoryClient} and {@link DirectoryAsyncClient}.
+ * Contains code snippets when generating javadocs through doclets for {@link DirectoryClient}.
  */
 public class DirectoryJavaDocCodeSamples {
+
+    private String key1 = "key1";
+    private String value1 = "val1";
+
     /**
      * Generates code sample for {@link DirectoryClient} instantiation.
      */
@@ -33,18 +38,6 @@ public class DirectoryJavaDocCodeSamples {
             .endpoint("${endpoint}")
             .buildClient();
         // END: com.azure.storage.file.directoryClient.instantiation
-    }
-
-    /**
-     * Generates code sample for {@link DirectoryAsyncClient} instantiation.
-     */
-    public void asyncInitialization() {
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.instantiation
-        DirectoryAsyncClient client = new DirectoryClientBuilder()
-            .connectionString("${connectionString}")
-            .endpoint("${endpoint}")
-            .buildAsyncClient();
-        // END: com.azure.storage.file.directoryAsyncClient.instantiation
     }
 
     /**
@@ -60,21 +53,6 @@ public class DirectoryJavaDocCodeSamples {
             .buildClient();
         // END: com.azure.storage.file.directoryClient.instantiation.sastoken
         return directoryClient;
-    }
-
-    /**
-     * Generates code sample for creating a {@link DirectoryAsyncClient} with {@link SASTokenCredential}
-     * @return An instance of {@link DirectoryAsyncClient}
-     */
-    public DirectoryAsyncClient createAsyncClientWithSASToken() {
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.instantiation.sastoken
-        DirectoryAsyncClient directoryAsyncClient = new DirectoryClientBuilder()
-            .endpoint("https://{accountName}.file.core.windows.net?{SASToken}")
-            .shareName("myshare")
-            .directoryPath("mydirectory")
-            .buildAsyncClient();
-        // END: com.azure.storage.file.directoryAsyncClient.instantiation.sastoken
-        return directoryAsyncClient;
     }
 
     /**
@@ -95,22 +73,6 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link DirectoryAsyncClient} with {@link SASTokenCredential}
-     * @return An instance of {@link DirectoryAsyncClient}
-     */
-    public DirectoryAsyncClient createAsyncClientWithCredential() {
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.instantiation.credential
-        DirectoryAsyncClient direcotryAsyncClient = new DirectoryClientBuilder()
-            .endpoint("https://{accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
-            .shareName("myshare")
-            .directoryPath("mydirectory")
-            .buildAsyncClient();
-        // END: com.azure.storage.file.directoryAsyncClient.instantiation.credential
-        return direcotryAsyncClient;
-    }
-
-    /**
      * Generates code sample for creating a {@link DirectoryClient} with {@code connectionString} which turns into {@link SharedKeyCredential}
      * @return An instance of {@link DirectoryClient}
      */
@@ -126,69 +88,26 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link DirectoryAsyncClient} with {@code connectionString} which turns into {@link SharedKeyCredential}
-     * @return An instance of {@link DirectoryAsyncClient}
-     */
-    public DirectoryAsyncClient createAsyncClientWithConnectionString() {
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.instantiation.connectionstring
-        String connectionString = "DefaultEndpointsProtocol=https;AccountName={name};AccountKey={key};"
-            + "EndpointSuffix={core.windows.net}";
-        DirectoryAsyncClient directoryAsyncClient = new DirectoryClientBuilder()
-            .connectionString(connectionString).shareName("myshare").directoryPath("mydirectory")
-            .buildAsyncClient();
-        // END: com.azure.storage.file.directoryAsyncClient.instantiation.connectionstring
-        return directoryAsyncClient;
-    }
-
-    /**
      * Generates a code sample for using {@link DirectoryClient#create()}
      */
     public void createDirectory() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.createDirectory
-        Response<DirectoryInfo> response = directoryClient.create();
-        System.out.println("Complete creating the directory with status code: " + response.statusCode());
+        directoryClient.create();
+        System.out.println("Completed creating the directory. ");
         // END: com.azure.storage.file.directoryClient.createDirectory
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#create}
+     * Generates a code sample for using {@link DirectoryClient#createWithResponse(Map, Context)}
      */
-    public void createDirectoryAsync() {
-        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.create
-        directoryAsyncClient.create().subscribe(
-            response -> { },
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete creating the directory!")
-        );
-        // END: com.azure.storage.file.directoryAsyncClient.create
-    }
-
-    /**
-     * Generates a code sample for using {@link DirectoryClient#create(Map)}
-     */
-    public void createDirectoryWithOverload() {
+    public void createWithResponse() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.create#map
-        Response<DirectoryInfo> response = directoryClient.create(Collections.singletonMap("directory", "metadata"));
-        System.out.println("Complete creating the directory with status code: " + response.statusCode());
-        // END: com.azure.storage.file.directoryClient.create#map
-    }
-
-    /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#create(Map)}
-     */
-    public void createDirectoryAsyncWithOverload() {
-        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.create#map
-        directoryAsyncClient.create(Collections.singletonMap("directory", "metadata")).subscribe(
-            response -> System.out.printf("Creating the directory completed with status code %d",
-                response.statusCode()),
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete creating the directory!")
-        );
-        // END: com.azure.storage.file.directoryAsyncClient.create#map
+        // BEGIN: com.azure.storage.file.directoryClient.createWithResponse#map-Context
+        Response<DirectoryInfo> response = directoryClient.createWithResponse(
+            Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
+        System.out.println("Completed creating the directory with status code: " + response.statusCode());
+        // END: com.azure.storage.file.directoryClient.createWithResponse#map-Context
     }
 
     /**
@@ -197,49 +116,21 @@ public class DirectoryJavaDocCodeSamples {
     public void createSubDirectory() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.createSubDirectory#string
-        Response<DirectoryClient> response = directoryClient.createSubDirectory("subdir");
-        System.out.println("Complete creating the subdirectory with status code " + response.statusCode());
+        directoryClient.createSubDirectory("subdir");
+        System.out.println("Completed creating the subdirectory.");
         // END: com.azure.storage.file.directoryClient.createSubDirectory#string
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#createSubDirectory(String)}
-     */
-    public void createSubDirectoryAsync() {
-        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.createSubDirectory#string
-        directoryAsyncClient.createSubDirectory("subdir").subscribe(
-            response -> System.out.println("Successfully creating the subdirectory with status code: "
-                + response.statusCode()),
-            error -> System.err.println(error.toString()),
-            () -> System.out.println("Complete creating the sub directory.")
-        );
-        // END: com.azure.storage.file.directoryAsyncClient.createSubDirectory#string
-    }
-
-    /**
-     * Generates a code sample for using {@link DirectoryClient#createSubDirectory(String, Map)}
+     * Generates a code sample for using {@link DirectoryClient#createSubDirectoryWithResponse(String, Map, Context)}
      */
     public void createSubDirectoryMaxOverload() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.createSubDirectory#string-map
-        Response<DirectoryClient> response = directoryClient.createSubDirectory("subdir",
-            Collections.singletonMap("directory", "metadata"));
+        // BEGIN: com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-map-Context
+        Response<DirectoryClient> response = directoryClient.createSubDirectoryWithResponse("subdir",
+            Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
         System.out.printf("Creating the sub directory completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.directoryClient.createSubDirectory#string-map
-    }
-
-    /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#createSubDirectory(String, Map)}
-     */
-    public void createSubDirectoryAsyncMaxOverload() {
-        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.createSubDirectory#string-map
-        directoryAsyncClient.createSubDirectory("subdir",
-            Collections.singletonMap("directory", "metadata"))
-            .subscribe(response -> System.out.printf("Creating the subdirectory completed with status code %d",
-                response.statusCode()));
-        // END: com.azure.storage.file.directoryAsyncClient.createSubDirectory#string-map
+        // END: com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-map-Context
     }
 
     /**
@@ -248,52 +139,22 @@ public class DirectoryJavaDocCodeSamples {
     public void createFile() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long
-        Response<FileClient> response = directoryClient.createFile("myfile", 1024);
-        System.out.println("Complete creating the file with status code: " + response.statusCode());
+        FileClient response = directoryClient.createFile("myfile", 1024);
+        System.out.println("Completed creating the file: " + response);
         // END: com.azure.storage.file.directoryClient.createFile#string-long
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#createFile(String, long)}
-     */
-    public void createFileAsync() {
-        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.createFile#string-long
-        directoryAsyncClient.createFile("myfile", 1024).subscribe(
-            response -> { },
-            error -> System.err.println(error.toString()),
-            () -> System.out.println("Complete creating the file.")
-        );
-        // END: com.azure.storage.file.directoryAsyncClient.createFile#string-long
-    }
-
-    /**
-     * Generates a code sample for using {@link DirectoryClient#createFile(String, long, FileHTTPHeaders, Map)}
+     * Generates a code sample for using {@link DirectoryClient#createFileWithResponse(String, long, FileHTTPHeaders, Map, Context)}
      */
     public void createFileMaxOverload() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-map
+        // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-map-Context
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
-        Response<FileClient> response = directoryClient.createFile("myFile", 1024,
-            httpHeaders, Collections.singletonMap("directory", "metadata"));
-        System.out.println("Complete creating the file with status code: " + response.statusCode());
-        // END: com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-map
-    }
-
-    /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#createFile(String, long, FileHTTPHeaders, Map)}
-     */
-    public void createFileAsyncMaxOverload() {
-        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.createFile#string-long-fileHTTPHeaders-map
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
-        directoryAsyncClient.createFile("myFile", 1024, httpHeaders,
-            Collections.singletonMap("directory", "metadata")).subscribe(
-                response ->  System.out.printf("Creating the file completed with status code %d", response.statusCode()),
-                error -> System.err.println(error.toString()),
-                () -> System.out.println("Complete creating the file.")
-        );
-        // END: com.azure.storage.file.directoryAsyncClient.createFile#string-long-fileHTTPHeaders-map
+        Response<FileClient> response = directoryClient.createFileWithResponse("myFile", 1024,
+            httpHeaders, Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
+        System.out.println("Completed creating the file with status code: " + response.statusCode());
+        // END: com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-map-Context
     }
 
     /**
@@ -310,21 +171,6 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#listFilesAndDirectories()}
-     */
-    public void listDirectoriesAndFilesAsync() {
-        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories
-        directoryAsyncClient.listFilesAndDirectories().subscribe(
-            fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
-                fileRef.isDirectory(), fileRef.name()),
-            error -> System.err.println(error.toString()),
-            () -> System.out.println("Complete listing the directories and files.")
-        );
-        // END: com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories
-    }
-
-    /**
      * Generates a code sample for using {@link DirectoryClient#listFilesAndDirectories(String, Integer)}
      */
     public void listDirectoriesAndFilesMaxOverload() {
@@ -337,45 +183,26 @@ public class DirectoryJavaDocCodeSamples {
         // END: com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer
     }
 
-
-    /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#listFilesAndDirectories(String, Integer)}
-     */
-    public void listDirectoriesAndFilesAsyncMaxOverload() {
-        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories#string-integer
-        directoryAsyncClient.listFilesAndDirectories("subdir", 10).subscribe(
-            fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
-                fileRef.isDirectory(), fileRef.name()),
-            error -> System.err.println(error.toString()),
-            () -> System.out.println("Complete listing the directories and files.")
-        );
-        // END: com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories#string-integer
-    }
-
     /**
      * Generates a code sample for using {@link DirectoryClient#deleteFile(String)} ()}
      */
     public void deleteFile() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.deleteFile#string
-        VoidResponse response = directoryClient.deleteFile("myfile");
-        System.out.println("Complete deleting the file with status code: " + response.statusCode());
+        directoryClient.deleteFile("myfile");
+        System.out.println("Completed deleting the file.");
         // END: com.azure.storage.file.directoryClient.deleteFile#string
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#deleteFile(String)} ()}
+     * Generates a code sample for using {@link DirectoryClient#deleteFileWithResponse(String, Context)}
      */
-    public void deleteFileAsync() {
-        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.deleteFile#string
-        directoryAsyncClient.deleteFile("myfile").subscribe(
-            response -> { },
-            error -> System.err.println(error.toString()),
-            () -> System.out.println("Complete deleting the file.")
-        );
-        // END: com.azure.storage.file.directoryAsyncClient.deleteFile#string
+    public void deleteFileWithResponse() {
+        DirectoryClient directoryClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.directoryClient.deleteFileWithResponse#string-Context
+        VoidResponse response = directoryClient.deleteFileWithResponse("myfile", new Context(key1, value1));
+        System.out.println("Completed deleting the file with status code: " + response.statusCode());
+        // END: com.azure.storage.file.directoryClient.deleteFileWithResponse#string-Context
     }
 
     /**
@@ -384,48 +211,43 @@ public class DirectoryJavaDocCodeSamples {
     public void deleteSubDirectory() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.deleteSubDirectory#string
-        VoidResponse response = directoryClient.deleteSubDirectory("mysubdirectory");
-        System.out.println("Complete deleting the subdirectory with status code: " + response.statusCode());
+        directoryClient.deleteSubDirectory("mysubdirectory");
+        System.out.println("Complete deleting the subdirectory.");
         // END: com.azure.storage.file.directoryClient.deleteSubDirectory#string
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#deleteSubDirectory(String)} ()}
+     * Generates a code sample for using {@link DirectoryClient#deleteSubDirectoryWithResponse(String, Context)}
      */
-    public void deleteSubDirectoryAsync() {
-        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.deleteSubDirectory#string
-        directoryAsyncClient.deleteSubDirectory("mysubdirectory").subscribe(
-            response -> { },
-            error -> System.err.println(error.toString()),
-            () -> System.out.println("Complete deleting the subdirectory.")
-        );
-        // END: com.azure.storage.file.directoryAsyncClient.deleteSubDirectory#string
+    public void deleteSubDirectoryWithResponse() {
+        DirectoryClient directoryClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.directoryClient.deleteSubDirectoryWithResponse#string-Context
+        VoidResponse response = directoryClient.deleteSubDirectoryWithResponse("mysubdirectory",
+            new Context(key1, value1));
+        System.out.println("Completed deleting the subdirectory with status code: " + response.statusCode());
+        // END: com.azure.storage.file.directoryClient.deleteSubDirectoryWithResponse#string-Context
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#delete()} ()}
+     * Generates a code sample for using {@link DirectoryClient#delete()}
      */
     public void deleteDirectory() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.delete
-        VoidResponse response = directoryClient.delete();
-        System.out.println("Complete deleting the file with status code: " + response.statusCode());
+        directoryClient.delete();
+        System.out.println("Completed deleting the file.");
         // END: com.azure.storage.file.directoryClient.delete
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#delete()}
+     * Generates a code sample for using {@link DirectoryClient#deleteWithResponse(Context)}
      */
-    public void deleteDirectoryAsync() {
-        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.delete
-        directoryAsyncClient.delete().subscribe(
-            response -> { },
-            error -> System.err.println(error.toString()),
-            () -> System.out.println("Complete deleting the file.")
-        );
-        // END: com.azure.storage.file.directoryAsyncClient.delete
+    public void deleteWithResponse() {
+        DirectoryClient directoryClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.directoryClient.deleteWithResponse
+        VoidResponse response = directoryClient.deleteWithResponse(new Context(key1, value1));
+        System.out.println("Completed deleting the file with status code: " + response.statusCode());
+        // END: com.azure.storage.file.directoryClient.deleteWithResponse
     }
 
     /**
@@ -434,23 +256,20 @@ public class DirectoryJavaDocCodeSamples {
     public void getProperties() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.getProperties
-        Response<DirectoryProperties> response = directoryClient.getProperties();
-        System.out.printf("Directory latest modified date is %s.", response.value().lastModified());
+        DirectoryProperties response = directoryClient.getProperties();
+        System.out.printf("Directory latest modified date is %s.", response.lastModified());
         // END: com.azure.storage.file.directoryClient.getProperties
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#getProperties()}
+     * Generates a code sample for using {@link DirectoryClient#getPropertiesWithResponse(Context)}
      */
-    public void getPropertiesAsync() {
-        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.getProperties
-        directoryAsyncClient.getProperties()
-            .subscribe(response -> {
-                DirectoryProperties properties = response.value();
-                System.out.printf("Directory latest modified date is %s.", properties.lastModified());
-            });
-        // END: com.azure.storage.file.directoryAsyncClient.getProperties
+    public void getPropertiesWithResponse() {
+        DirectoryClient directoryClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.directoryClient.getPropertiesWithResponse#Context
+        Response<DirectoryProperties> response = directoryClient.getPropertiesWithResponse(new Context(key1, value1));
+        System.out.printf("Directory latest modified date is %s.", response.value().lastModified());
+        // END: com.azure.storage.file.directoryClient.getPropertiesWithResponse#Context
     }
 
     /**
@@ -459,22 +278,34 @@ public class DirectoryJavaDocCodeSamples {
     public void setMetadata() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.setMetadata#map
-        Response<DirectorySetMetadataInfo> response =
+        DirectorySetMetadataInfo response =
             directoryClient.setMetadata(Collections.singletonMap("directory", "updatedMetadata"));
-        System.out.printf("Setting the directory metadata completed with status code %d", response.statusCode());
+        System.out.printf("Setting the directory metadata completed with updated etag %d", response.eTag());
         // END: com.azure.storage.file.directoryClient.setMetadata#map
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#setMetadata(Map)}
+     * Generates a code sample for using {@link DirectoryClient#setMetadataWithResponse(Map, Context)}
      */
-    public void setMetadataAsync() {
-        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.setMetadata#map
-        directoryAsyncClient.setMetadata(Collections.singletonMap("directory", "updatedMetadata"))
-            .subscribe(response -> System.out.printf("Setting the directory metadata completed with status code %d",
-                response.statusCode()));
-        // END: com.azure.storage.file.directoryAsyncClient.setMetadata#map
+    public void setMetadataWithResponse() {
+        DirectoryClient directoryClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.directoryClient.setMetadataWithResponse#map-Context
+        Response<DirectorySetMetadataInfo> response =
+            directoryClient.setMetadataWithResponse(Collections.singletonMap("directory", "updatedMetadata"),
+                new Context(key1, value1));
+        System.out.printf("Setting the directory metadata completed with updated etag %d", response.statusCode());
+        // END: com.azure.storage.file.directoryClient.setMetadataWithResponse#map-Context
+    }
+
+    /**
+     * Generates a code sample for using {@link DirectoryClient#setMetadata(Map)} to clear the metadata.
+     */
+    public void clearSetMetadata() {
+        DirectoryClient directoryClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.directoryClient.setMetadata#map.clearMetadata
+        DirectorySetMetadataInfo response = directoryClient.setMetadata(null);
+        System.out.printf("Cleared metadata.");
+        // END: com.azure.storage.file.directoryClient.setMetadata#map.clearMetadata
     }
 
     /**
@@ -482,22 +313,11 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void clearMetadata() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.setMetadata#map.clearMetadata
-        Response<DirectorySetMetadataInfo> response = directoryClient.setMetadata(null);
+        // BEGIN: com.azure.storage.file.directoryClient.setMetadataWithResponse#map.clearMetadata
+        Response<DirectorySetMetadataInfo> response = directoryClient.setMetadataWithResponse(null,
+            new Context(key1, value1));
         System.out.printf("Directory latest modified date is %s.", response.statusCode());
-        // END: com.azure.storage.file.directoryClient.setMetadata#map.clearMetadata
-    }
-
-    /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#setMetadata(Map)} to clear the metadata.
-     */
-    public void clearMetadataAsync() {
-        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.setMetadata#map.clearMetadata
-        directoryAsyncClient.setMetadata(null)
-            .subscribe(response ->  System.out.printf("Clearing the directory metadata completed with status code %d",
-                response.statusCode()));
-        // END: com.azure.storage.file.directoryAsyncClient.setMetadata#map.clearMetadata
+        // END: com.azure.storage.file.directoryClient.setMetadataWithResponse#map.clearMetadata
     }
 
     /**
@@ -509,18 +329,6 @@ public class DirectoryJavaDocCodeSamples {
         Iterable<HandleItem> result = directoryClient.listHandles(10, true);
         System.out.printf("Get handles completed with handle id %s", result.iterator().next().handleId());
         // END: com.azure.storage.file.directoryClient.listHandles
-    }
-
-    /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#listHandles(Integer, boolean)}
-     */
-    public void listHandlesAsync() {
-        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.listHandles
-        directoryAsyncClient.listHandles(10, true)
-            .subscribe(handleItem -> System.out.printf("Get handles completed with handle id %s",
-                handleItem.handleId()));
-        // END: com.azure.storage.file.directoryAsyncClient.listHandles
     }
 
     /**
@@ -537,20 +345,7 @@ public class DirectoryJavaDocCodeSamples {
         // END: com.azure.storage.file.directoryClient.forceCloseHandles
     }
 
-    /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#forceCloseHandles(String, boolean)}
-     */
-    public void forceCloseHandlesAsync() {
-        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.forceCloseHandles
-        directoryAsyncClient.listHandles(10, true)
-            .subscribe(handleItem -> {
-                directoryAsyncClient.forceCloseHandles(handleItem.handleId(), true)
-                    .subscribe(numOfClosedHandles ->
-                    System.out.printf("Close %d handles.", numOfClosedHandles));
-            });
-        // END: com.azure.storage.file.directoryAsyncClient.forceCloseHandles
-    }
+
 
     /**
      * Generates a code sample for using {@link DirectoryClient#getShareSnapshotId()}
@@ -567,22 +362,5 @@ public class DirectoryJavaDocCodeSamples {
             .buildClient();
         directoryClient.getShareSnapshotId();
         // END: com.azure.storage.file.directoryClient.getShareSnapshotId
-    }
-
-    /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#getShareSnapshotId()}
-     */
-    public void getShareSnapshotIdAsync() {
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.getShareSnapshotId
-        OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
-        DirectoryAsyncClient directoryAsyncClient = new DirectoryClientBuilder()
-            .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
-            .shareName("myshare")
-            .directoryPath("mydirectory")
-            .snapshot(currentTime.toString())
-            .buildAsyncClient();
-        directoryAsyncClient.getShareSnapshotId();
-        // END: com.azure.storage.file.directoryAsyncClient.getShareSnapshotId
     }
 }

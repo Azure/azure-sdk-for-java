@@ -9,14 +9,14 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.MockHttpClient;
-import io.netty.buffer.ByteBuf;
+import com.azure.core.http.clients.NoOpHttpClient;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -44,7 +44,7 @@ public class RequestIdPolicyTests {
         }
 
         @Override
-        public Flux<ByteBuf> body() {
+        public Flux<ByteBuffer> body() {
             return Flux.empty();
         }
 
@@ -64,7 +64,7 @@ public class RequestIdPolicyTests {
     @Test
     public void newRequestIdForEachCall() throws Exception {
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new MockHttpClient() {
+            .httpClient(new NoOpHttpClient() {
                 String firstRequestId = null;
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
@@ -91,7 +91,7 @@ public class RequestIdPolicyTests {
     @Test
     public void sameRequestIdForRetry() throws Exception {
         final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new MockHttpClient() {
+            .httpClient(new NoOpHttpClient() {
                 String firstRequestId = null;
 
                 @Override

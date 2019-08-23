@@ -6,6 +6,7 @@ package com.azure.storage.file;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.DirectoryInfo;
@@ -94,11 +95,11 @@ public class DirectoryClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
-     * @return A response containing the directory info and the status of creating the directory.
+     * @return The {@link DirectoryInfo directory info}.
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
      */
-    public Response<DirectoryInfo> create() {
-        return create(null);
+    public DirectoryInfo create() {
+        return createWithResponse(null, Context.NONE).value();
     }
 
     /**
@@ -108,17 +109,18 @@ public class DirectoryClient {
      *
      * <p>Create the directory</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.create#map}
+     * {@codesnippet com.azure.storage.file.directoryClient.createWithResponse#map-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param metadata Optional metadata to associate with the directory.
      * @return A response containing the directory info and the status of creating the directory.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
      */
-    public Response<DirectoryInfo> create(Map<String, String> metadata) {
-        return directoryAsyncClient.create(metadata).block();
+    public Response<DirectoryInfo> createWithResponse(Map<String, String> metadata, Context context) {
+        return directoryAsyncClient.createWithResponse(metadata, context).block();
     }
 
     /**
@@ -133,11 +135,30 @@ public class DirectoryClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
-     * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the share doesn't exist
      */
-    public VoidResponse delete() {
-        return directoryAsyncClient.delete().block();
+    public void delete() {
+        deleteWithResponse(Context.NONE);
+    }
+
+    /**
+     * Deletes the directory in the file share. The directory must be empty before it can be deleted.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the directory</p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryClient.deleteWithResponse}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
+     *
+     * @return A response that only contains headers and response status code
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @throws StorageErrorException If the share doesn't exist
+     */
+    public VoidResponse deleteWithResponse(Context context) {
+        return directoryAsyncClient.deleteWithResponse(context).block();
     }
 
     /**
@@ -155,8 +176,28 @@ public class DirectoryClient {
      *
      * @return Storage directory properties
      */
-    public Response<DirectoryProperties> getProperties() {
-        return directoryAsyncClient.getProperties().block();
+    public DirectoryProperties getProperties() {
+        return getPropertiesWithResponse(Context.NONE).value();
+    }
+
+    /**
+     * Retrieves the properties of this directory.
+     * The properties includes directory metadata, last modified date, is server encrypted, and eTag.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve directory properties</p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryClient.getPropertiesWithResponse#Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-directory-properties">Azure Docs</a>.</p>
+     *
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the storage directory properties with response status code and headers
+     */
+    public Response<DirectoryProperties> getPropertiesWithResponse(Context context) {
+        return directoryAsyncClient.getPropertiesWithResponse(context).block();
     }
 
     /**
@@ -178,11 +219,38 @@ public class DirectoryClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-metadata">Azure Docs</a>.</p>
      *
      * @param metadata Optional metadata to set on the directory, if null is passed the metadata for the directory is cleared
-     * @return information about the directory
+     * @return The information about the directory
      * @throws StorageErrorException If the directory doesn't exist or the metadata contains invalid keys
      */
-    public Response<DirectorySetMetadataInfo> setMetadata(Map<String, String> metadata) {
-        return directoryAsyncClient.setMetadata(metadata).block();
+    public DirectorySetMetadataInfo setMetadata(Map<String, String> metadata) {
+        return setMetadataWithResponse(metadata, Context.NONE).value();
+    }
+
+    /**
+     * Sets the user-defined metadata to associate to the directory.
+     *
+     * <p>If {@code null} is passed for the metadata it will clear the metadata associated to the directory.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set the metadata to "directory:updatedMetadata"</p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryClient.setMetadataWithResponse#map-Context}
+     *
+     * <p>Clear the metadata of the directory</p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryClient.setMetadataWithResponse#map.clearMetadata}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-metadata">Azure Docs</a>.</p>
+     *
+     * @param metadata Optional metadata to set on the directory, if null is passed the metadata for the directory is cleared
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the information about the directory and response status code
+     * @throws StorageErrorException If the directory doesn't exist or the metadata contains invalid keys
+     */
+    public Response<DirectorySetMetadataInfo> setMetadataWithResponse(Map<String, String> metadata, Context context) {
+        return directoryAsyncClient.setMetadataWithResponse(metadata, context).block();
     }
 
     /**
@@ -279,11 +347,11 @@ public class DirectoryClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param subDirectoryName Name of the subdirectory
-     * @return A response containing the subdirectory client and the status of creating the directory.
+     * @return The subdirectory client.
      * @throws StorageErrorException If the subdirectory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
-    public Response<DirectoryClient> createSubDirectory(String subDirectoryName) {
-        return createSubDirectory(subDirectoryName, null);
+    public DirectoryClient createSubDirectory(String subDirectoryName) {
+        return createSubDirectoryWithResponse(subDirectoryName, null, Context.NONE).value();
     }
 
     /**
@@ -293,7 +361,7 @@ public class DirectoryClient {
      *
      * <p>Create the subdirectory named "subdir", with metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.createSubDirectory#string-map}
+     * {@codesnippet com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-map-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
@@ -301,11 +369,12 @@ public class DirectoryClient {
      * @param subDirectoryName Name of the subdirectory
      * @param metadata Optional metadata to associate with the subdirectory
      * @return A response containing the subdirectory client and the status of creating the directory.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or subdirectory is an invalid resource name.
      */
-    public Response<DirectoryClient> createSubDirectory(String subDirectoryName, Map<String, String> metadata) {
+    public Response<DirectoryClient> createSubDirectoryWithResponse(String subDirectoryName, Map<String, String> metadata, Context context) {
         DirectoryClient directoryClient = getSubDirectoryClient(subDirectoryName);
-        return new SimpleResponse<>(directoryClient.create(metadata), directoryClient);
+        return new SimpleResponse<>(directoryClient.createWithResponse(metadata, context), directoryClient);
     }
 
     /**
@@ -321,11 +390,31 @@ public class DirectoryClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
      * @param subDirectoryName Name of the subdirectory
-     * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the subdirectory doesn't exist, the parent directory does not exist or subdirectory name is an invalid resource name.
      */
-    public VoidResponse deleteSubDirectory(String subDirectoryName) {
-        return directoryAsyncClient.deleteSubDirectory(subDirectoryName).block();
+    public void deleteSubDirectory(String subDirectoryName) {
+        deleteSubDirectoryWithResponse(subDirectoryName, Context.NONE);
+    }
+
+    /**
+     * Deletes the subdirectory with specific name in this directory. The directory must be empty before it can be deleted.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the subdirectory named "subdir"</p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryClient.deleteSubDirectoryWithResponse#string-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
+     *
+     * @param subDirectoryName Name of the subdirectory
+     * @return A response that only contains headers and response status code
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @throws StorageErrorException If the subdirectory doesn't exist, the parent directory does not exist or subdirectory name is an invalid resource name.
+     */
+    public VoidResponse deleteSubDirectoryWithResponse(String subDirectoryName, Context context) {
+        return directoryAsyncClient.deleteSubDirectoryWithResponse(subDirectoryName, context).block();
     }
 
     /**
@@ -342,11 +431,11 @@ public class DirectoryClient {
      *
      * @param fileName Name of the file
      * @param maxSize Size of the file
-     * @return A response containing the FileClient and the status of creating the directory.
+     * @return The FileClient
      * @throws StorageErrorException If the file has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
-    public Response<FileClient> createFile(String fileName, long maxSize) {
-        return createFile(fileName, maxSize, null, null);
+    public FileClient createFile(String fileName, long maxSize) {
+        return createFileWithResponse(fileName, maxSize, null, null, Context.NONE).value();
     }
 
     /**
@@ -356,7 +445,7 @@ public class DirectoryClient {
      *
      * <p>Create the file named "myFile"</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-map}
+     * {@codesnippet com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-map-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -365,12 +454,32 @@ public class DirectoryClient {
      * @param maxSize Max size of the file
      * @param httpHeaders the Http headers set to the file
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the directory info and the status of creating the directory.
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
-    public Response<FileClient> createFile(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata) {
-        return directoryAsyncClient.createFile(fileName, maxSize, httpHeaders, metadata)
+    public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata, Context context) {
+        return directoryAsyncClient.createFileWithResponse(fileName, maxSize, httpHeaders, metadata, context)
             .map(response -> new SimpleResponse<>(response, new FileClient(response.value()))).block();
+    }
+
+    /**
+     * Deletes the file with specific name in this directory.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file "filetest"</p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryClient.deleteFileWithResponse#string-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @param fileName Name of the file
+     * @throws StorageErrorException If the directory doesn't exist or the file doesn't exist or file name is an invalid resource name.
+     */
+    public void deleteFile(String fileName) {
+        deleteFileWithResponse(fileName, Context.NONE);
     }
 
     /**
@@ -387,10 +496,11 @@ public class DirectoryClient {
      *
      * @param fileName Name of the file
      * @return A response that only contains headers and response status code
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws StorageErrorException If the directory doesn't exist or the file doesn't exist or file name is an invalid resource name.
      */
-    public VoidResponse deleteFile(String fileName) {
-        return directoryAsyncClient.deleteFile(fileName).block();
+    public VoidResponse deleteFileWithResponse(String fileName, Context context) {
+        return directoryAsyncClient.deleteFileWithResponse(fileName, context).block();
     }
 
     /**

@@ -2,11 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob;
 
+import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Constants;
-import reactor.netty.ByteBufFlux;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +17,8 @@ import java.nio.ByteBuffer;
  * Provides an input stream to read a given blob resource.
  */
 public final class BlobInputStream extends InputStream {
+    private final ClientLogger logger = new ClientLogger(BlobInputStream.class);
+
     /**
      * Holds the reference to the blob this stream is associated with.
      */
@@ -179,7 +182,7 @@ public final class BlobInputStream extends InputStream {
     private synchronized void dispatchRead(final int readLength) throws IOException {
         try {
             this.currentBuffer = this.blobClient.download(new BlobRange(this.currentAbsoluteReadPosition, (long) readLength), this.accessCondition, false)
-                .flatMap(res -> ByteBufFlux.fromInbound(res.body(null)).aggregate().asByteBuffer())
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.body(null)).map(ByteBuffer::wrap))
                 .block();
 
             this.bufferSize = readLength;
@@ -323,7 +326,7 @@ public final class BlobInputStream extends InputStream {
     @Override
     public int read(final byte[] b, final int off, final int len) throws IOException {
         if (off < 0 || len < 0 || len > b.length - off) {
-            throw new IndexOutOfBoundsException();
+            throw logger.logExceptionAsError(new IndexOutOfBoundsException());
         }
 
         return this.readInternal(b, off, len);
@@ -418,7 +421,7 @@ public final class BlobInputStream extends InputStream {
         }
 
         if (n < 0 || this.currentAbsoluteReadPosition + n > this.streamLength + this.blobRangeOffset) {
-            throw new IndexOutOfBoundsException();
+            throw logger.logExceptionAsError(new IndexOutOfBoundsException());
         }
 
         this.reposition(this.currentAbsoluteReadPosition + n);
