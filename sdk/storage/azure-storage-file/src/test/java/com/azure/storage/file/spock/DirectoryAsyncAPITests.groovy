@@ -17,7 +17,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 class DirectoryAsyncAPITests extends APISpec {
-    def primaryDirectoryAsyncClient
+    DirectoryAsyncClient primaryDirectoryAsyncClient
     def directoryPath
     def shareName
     static def testMetadata
@@ -57,7 +57,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "Create directory"() {
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.create())
+        StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(null))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -76,7 +76,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "Create directory with metadata"() {
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.create(testMetadata))
+        StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(testMetadata))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -86,7 +86,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         def errorMetadata = Collections.singletonMap("testMeta", "value")
         when:
-        def createMetadataErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.create(errorMetadata))
+        def createMetadataErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(errorMetadata))
         then:
         createMetadataErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 403, StorageErrorCode.AUTHENTICATION_FAILED)
@@ -97,7 +97,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.delete())
+        StepVerifier.create(primaryDirectoryAsyncClient.deleteWithResponse())
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 202)
             }.verifyComplete()
@@ -115,7 +115,7 @@ class DirectoryAsyncAPITests extends APISpec {
     def "Get properties"() {
         given:
         primaryDirectoryAsyncClient.create().block()
-        def getPropertiesVerifier = StepVerifier.create(primaryDirectoryAsyncClient.getProperties())
+        def getPropertiesVerifier = StepVerifier.create(primaryDirectoryAsyncClient.getPropertiesWithResponse())
         expect:
         getPropertiesVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 200)
@@ -125,7 +125,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "Get properties error"() {
         when:
-        def getPropertiesErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.getProperties())
+        def getPropertiesErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.getPropertiesWithResponse())
         then:
         getPropertiesErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
@@ -134,12 +134,12 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "Set metadata"() {
         given:
-        primaryDirectoryAsyncClient.create(testMetadata).block()
+        primaryDirectoryAsyncClient.createWithResponse(testMetadata).block()
         def updatedMetadata = Collections.singletonMap("update", "value")
         when:
-        def getPropertiesBeforeVerifier = StepVerifier.create(primaryDirectoryAsyncClient.getProperties())
-        def setPropertiesVerifier = StepVerifier.create(primaryDirectoryAsyncClient.setMetadata(updatedMetadata))
-        def getPropertiesAfterVerifier = StepVerifier.create(primaryDirectoryAsyncClient.getProperties())
+        def getPropertiesBeforeVerifier = StepVerifier.create(primaryDirectoryAsyncClient.getPropertiesWithResponse())
+        def setPropertiesVerifier = StepVerifier.create(primaryDirectoryAsyncClient.setMetadataWithResponse(updatedMetadata))
+        def getPropertiesAfterVerifier = StepVerifier.create(primaryDirectoryAsyncClient.getPropertiesWithResponse())
         then:
         getPropertiesBeforeVerifier.assertNext {
             assert testMetadata.equals(it.value().metadata())
@@ -250,7 +250,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.createSubDirectory("testCreateSubDirectory"))
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubDirectoryWithResponse("testCreateSubDirectory", null))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -271,7 +271,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.createSubDirectory("testCreateSubDirectory", testMetadata))
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubDirectoryWithResponse("testCreateSubDirectory", testMetadata))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -281,7 +281,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         when:
-        def createDirErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createSubDirectory("testsubdirectory", Collections.singletonMap("", "value")))
+        def createDirErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createSubDirectoryWithResponse("testsubdirectory", Collections.singletonMap("", "value")))
         then:
         createDirErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.EMPTY_METADATA_KEY)
@@ -294,7 +294,7 @@ class DirectoryAsyncAPITests extends APISpec {
         primaryDirectoryAsyncClient.create().block()
         primaryDirectoryAsyncClient.createSubDirectory(subDirectoryName).block()
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.deleteSubDirectory(subDirectoryName))
+        StepVerifier.create(primaryDirectoryAsyncClient.deleteSubDirectoryWithResponse(subDirectoryName))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 202)
             }.verifyComplete()
@@ -304,7 +304,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         when:
-        def deleteDirErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.deleteSubDirectory("testsubdirectory"))
+        def deleteDirErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.deleteSubDirectoryWithResponse("testsubdirectory"))
         then:
         deleteDirErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
@@ -315,7 +315,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.createFile("testCreateFile", 1024))
+        StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -326,7 +326,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         when:
-        def createFileErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createFile(fileName, maxSize))
+        def createFileErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse(fileName, maxSize, null, null))
         then:
         createFileErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMsg)
@@ -344,7 +344,7 @@ class DirectoryAsyncAPITests extends APISpec {
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
             .fileContentType("txt")
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.createFile("testCreateFile", 1024, httpHeaders, testMetadata))
+        StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, httpHeaders, testMetadata))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -376,7 +376,7 @@ class DirectoryAsyncAPITests extends APISpec {
         primaryDirectoryAsyncClient.create().block()
         primaryDirectoryAsyncClient.createFile(fileName, 1024).block()
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.deleteFile(fileName))
+        StepVerifier.create(primaryDirectoryAsyncClient.deleteFileWithResponse(fileName))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 202)
             }.verifyComplete()
@@ -386,7 +386,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         when:
-        def deleteFileErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.deleteFile("testfile"))
+        def deleteFileErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.deleteFileWithResponse("testfile"))
         then:
         deleteFileErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.RESOURCE_NOT_FOUND)

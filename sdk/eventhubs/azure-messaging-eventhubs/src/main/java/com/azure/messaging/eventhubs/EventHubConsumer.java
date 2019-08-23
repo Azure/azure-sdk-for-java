@@ -34,8 +34,8 @@ public class EventHubConsumer implements Closeable {
     private final EventHubConsumerOptions options;
 
     EventHubConsumer(EventHubAsyncConsumer consumer, EventHubConsumerOptions options) {
-        this.consumer = Objects.requireNonNull(consumer);
-        this.options = Objects.requireNonNull(options);
+        this.consumer = Objects.requireNonNull(consumer, "'consumer' cannot be null.");
+        this.options = Objects.requireNonNull(options, "'options' cannot be null.");
 
         //TODO (conniey): Keep track of the last sequence number as each method invoked.
         this.consumer.receive().windowTimeout(options.prefetchCount(), this.options.retry().tryTimeout());

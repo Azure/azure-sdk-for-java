@@ -5,14 +5,9 @@ package com.azure.messaging.eventhubs.implementation;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
 
 import java.util.Locale;
 
-@RunWith(Theories.class)
 public class ConnectionStringPropertiesTest {
     private static final String HOST = "foo.bar.windows.net";
     private static final String HOSTNAME_URI = "sb://" + HOST;
@@ -20,19 +15,14 @@ public class ConnectionStringPropertiesTest {
     private static final String SAS_KEY = "test-sas-key";
     private static final String SAS_VALUE = "some-secret-value";
 
-    @DataPoints
-    public static String[] getInvalidArguments() {
-        return new String[]{"", null};
+    @Test(expected = NullPointerException.class)
+    public void nullConnectionString() {
+        new ConnectionStringProperties(null);
     }
 
-    @Theory
-    public void nullConnectionString(String argument) {
-        try {
-            new ConnectionStringProperties(argument);
-            Assert.fail("Expected an exception.");
-        } catch (IllegalArgumentException e) {
-            // This is what we expect.
-        }
+    @Test(expected = IllegalArgumentException.class)
+    public void emptyConnectionString() {
+        new ConnectionStringProperties("");
     }
 
     @Test(expected = IllegalArgumentException.class)
