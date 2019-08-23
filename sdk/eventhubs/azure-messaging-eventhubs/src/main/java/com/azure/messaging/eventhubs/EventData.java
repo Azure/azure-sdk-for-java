@@ -234,7 +234,7 @@ public class EventData implements Comparable<EventData> {
      * @return UTF-8 decoded string representation of the event data.
      */
     public String bodyAsString() {
-        return UTF_8.decode(body.duplicate()).toString();
+        return UTF_8.decode(body).toString();
     }
 
     /**
