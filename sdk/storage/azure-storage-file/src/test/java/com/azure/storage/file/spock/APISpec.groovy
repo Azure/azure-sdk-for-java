@@ -10,29 +10,34 @@ import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.file.DirectoryClientBuilder
 import com.azure.storage.file.FileClientBuilder
+import com.azure.storage.file.FileServiceAsyncClient
 import com.azure.storage.file.FileServiceClient
 import com.azure.storage.file.FileServiceClientBuilder
 import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.ListSharesOptions
 import spock.lang.Specification
 
+import java.nio.file.Files
+
 class APISpec extends Specification {
     // Field common used for all APIs.
     def logger = new ClientLogger(APISpec.class)
     def AZURE_TEST_MODE = "AZURE_TEST_MODE"
+    def tmpFolder = getClass().getClassLoader().getResource("tmptestfiles")
+    def testFolder = getClass().getClassLoader().getResource("testfiles")
+   // def testFolder = "src/test/resources/testfiles/"
     def interceptorManager
     def testResourceName
 
     // Primary Clients used for API tests
-    def primaryFileServiceClient
-    def primaryFileServiceAsyncClient
+    FileServiceClient primaryFileServiceClient
+    FileServiceAsyncClient primaryFileServiceAsyncClient
 
 
     // Test name for test method name.
     def methodName
     def testMode = getTestMode()
     def connectionString
-
 
     /**
      * Setup the File service clients commonly used for the API tests.
@@ -46,7 +51,7 @@ class APISpec extends Specification {
         testResourceName = new TestResourceNamer(methodName, testMode,
             interceptorManager.getRecordedData())
         if (getTestMode() == TestMode.RECORD) {
-            connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
+            connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING")
         } else {
             connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;" +
                 "AccountKey=atestaccountkey;EndpointSuffix=core.windows.net"

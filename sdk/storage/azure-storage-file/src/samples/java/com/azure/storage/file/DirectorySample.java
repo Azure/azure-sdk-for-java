@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.StorageErrorException;
@@ -75,8 +74,8 @@ public class DirectorySample {
 
         // Get the parent directory properties.
         try {
-            Response<DirectoryProperties> propertiesResponse = directoryClient.getProperties();
-            System.out.printf("This is the eTag of the directory: %s%n", propertiesResponse.value().eTag());
+            DirectoryProperties propertiesResponse = directoryClient.getProperties();
+            System.out.printf("This is the eTag of the directory: %s%n", propertiesResponse.eTag());
         } catch (StorageErrorException e) {
             System.out.println("Failed to get the properties of the parent directory");
         }

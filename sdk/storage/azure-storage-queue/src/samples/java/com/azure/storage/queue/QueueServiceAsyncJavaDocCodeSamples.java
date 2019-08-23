@@ -11,7 +11,6 @@ import com.azure.storage.queue.QueueServiceClientBuilder;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
-
 import java.util.Collections;
 import java.util.Map;
 

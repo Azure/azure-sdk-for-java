@@ -253,3 +253,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [secrets_client_library]: ../../keyvault/azure-keyvault-secrets
 [eventhubs_client_library]: ../../eventhubs/azure-messaging-eventhubs
 [azure_core_library]: ../../core
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/identity/azure-identity/README.png)
