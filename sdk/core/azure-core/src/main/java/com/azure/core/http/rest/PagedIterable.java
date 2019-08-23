@@ -69,7 +69,7 @@ public class PagedIterable<T> extends IterableStream<T> {
     }
 
     /**
-     * Provides {@link Iterable} API for{ @link PagedResponse}, starting from the next page associated with the given
+     * Provides {@link Iterable} API for {@link PagedResponse}, starting from the next page associated with the given
      * continuation token. To start from first page, use {@link #streamByPage()} instead.
      * It will provide same collection of T values from starting if called multiple times.
      *

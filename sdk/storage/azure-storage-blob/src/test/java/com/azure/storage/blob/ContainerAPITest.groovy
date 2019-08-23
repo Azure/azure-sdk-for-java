@@ -775,7 +775,6 @@ class ContainerAPITest extends APISpec {
         !blobs.hasNext() // Normal
     }
 
-    // TODO (alzimmer): Turn this on once paged responses are available
     def "List blobs flat options maxResults"() {
         setup:
         def PAGE_SIZE = 2
@@ -1081,18 +1080,17 @@ class ContainerAPITest extends APISpec {
             bc.create(512)
         }
 
-        // use async client, as there is no paging functionality for sync yet
-        def fetchOperation = ccAsync.listBlobsHierarchy("/", new ListBlobsOptions().maxResults(PAGE_SIZE))
+        def blobs = cc.listBlobsHierarchy("/", new ListBlobsOptions().maxResults(PAGE_SIZE), null)
 
         when:
-        def firstPage = fetchOperation.byPage().blockFirst()
+        def firstPage = blobs.iterableByPage().iterator().next()
 
         then:
         firstPage.value().size() == PAGE_SIZE
         firstPage.nextLink() != null
 
         when:
-        def secondPage = fetchOperation.byPage(firstPage.nextLink()).blockFirst()
+        def secondPage = blobs.iterableByPage(firstPage.nextLink()).iterator().next()
 
         then:
         secondPage.value().size() == NUM_BLOBS - PAGE_SIZE
