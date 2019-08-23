@@ -201,7 +201,7 @@ public class DirectoryAsyncClient {
      *
      * <p>Delete the directory</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.delete}
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.delete}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
@@ -344,7 +344,7 @@ public class DirectoryAsyncClient {
      *
      * <p>List all sub-directories and files in the account</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.listFilesAndDirectories}
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files">Azure Docs</a>.</p>

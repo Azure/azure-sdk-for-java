@@ -293,11 +293,10 @@ public final class FileServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
      * @param shareName Name of the share
-     * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the share doesn't exist
      */
-    public VoidResponse deleteShare(String shareName) {
-        return deleteShare(shareName, null);
+    public void deleteShare(String shareName) {
+        deleteShareWithResponse(shareName, null, Context.NONE);
     }
 
     /**
@@ -308,17 +307,18 @@ public final class FileServiceClient {
      *
      * <p>Delete the snapshot of share "test" that was created at current time. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.deleteShare#string-string}
+     * {@codesnippet com.azure.storage.file.fileServiceClient.deleteShareWithResponse#string-string-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
      * @param shareName Name of the share
      * @param snapshot Identifier of the snapshot
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the share doesn't exist or the snapshot doesn't exist
      */
-    public VoidResponse deleteShare(String shareName, String snapshot) {
-        return fileServiceAsyncClient.deleteShare(shareName, snapshot).block();
+    public VoidResponse deleteShareWithResponse(String shareName, String snapshot, Context context) {
+        return fileServiceAsyncClient.deleteShareWithResponse(shareName, snapshot, context).block();
     }
 }

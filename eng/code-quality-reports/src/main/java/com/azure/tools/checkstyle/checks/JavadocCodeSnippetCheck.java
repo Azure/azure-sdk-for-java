@@ -227,18 +227,24 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
         // (2) packagename.classname.methodname#string-string-2
         final String[] descriptionSegments = customDescription.split("#");
         if (descriptionSegments.length == 1) {
-            final String pathUntilMethodName = descriptionSegments[0].split("-")[0];
-            if (!fullPathWithoutParameters.equalsIgnoreCase(pathUntilMethodName)) {
-                return false;
-            }
-
             // There exists parameters in the actual Java sample, but there is no custom parameters exist.
             if (parameters != null) {
                 return false;
             }
-        } else if (descriptionSegments.length == 2 && !descriptionSegments[1].toLowerCase().startsWith(parameters.toLowerCase())) {
-            // The name of codesnippet sample has parameters but the actual code sample has
-            // no parameter or not start with the given parameters of codesnippet.
+
+            final String pathUntilMethodName = descriptionSegments[0].split("-")[0];
+            if (!fullPathWithoutParameters.equalsIgnoreCase(pathUntilMethodName)) {
+                return false;
+            }
+        }
+
+        if (descriptionSegments.length == 2) {
+            // Both of codesnippet name and the method has parameters
+            if (parameters != null) {
+                return descriptionSegments[1].toLowerCase().startsWith(parameters.toLowerCase());
+            }
+
+            // Codesnippet name has parameters but the method does not.
             return false;
         }
         return true;
