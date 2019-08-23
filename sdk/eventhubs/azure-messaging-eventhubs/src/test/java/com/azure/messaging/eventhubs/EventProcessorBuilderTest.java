@@ -41,7 +41,20 @@ public class EventProcessorBuilderTest {
 
     @Test(expected = NullPointerException.class)
     public void testEventProcessorBuilderMissingProperties() {
-        EventProcessor eventProcessor = new EventProcessorBuilder().buildEventProcessor();
+        EventProcessor eventProcessor = new EventProcessorBuilder()
+            .processEvent(eventData -> Mono.fromRunnable(() -> System.out.println(eventData.sequenceNumber())))
+            .buildEventProcessor();
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testEventProcessorBuilderMissingBothProcessors() {
+        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
+            .connectionString(CORRECT_CONNECTION_STRING)
+            .buildAsyncClient();
+        EventProcessor eventProcessor = new EventProcessorBuilder()
+            .consumerGroup("test")
+            .eventHubClient(eventHubAsyncClient)
+            .buildEventProcessor();
     }
 
     @Test(expected = IllegalStateException.class)
