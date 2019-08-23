@@ -4,6 +4,7 @@
 package com.microsoft.azure.eventprocessorhost;
 
 import com.microsoft.azure.eventhubs.ProxyConfiguration;
+import com.microsoft.azure.eventhubs.ProxyConfiguration.ProxyAuthenticationType;
 import org.junit.Assume;
 
 import java.net.InetSocketAddress;
@@ -35,18 +36,18 @@ final class TestUtilities {
         Assume.assumeTrue(appveyor == null);
     }
 
+    /**
+     * Gets the Azure Storage connection string if the environment variable {@link #EPH_STORAGE_CONNECTION_STRING_NAME}
+     * is set. Otherwise, null is returned.
+     */
     static String getStorageConnectionString() {
         TestUtilities.skipIfAppveyor();
 
-        String retval = System.getenv("EPHTESTSTORAGE");
+        final String connectionString = System.getenv(EPH_STORAGE_CONNECTION_STRING_NAME);
+        // if connectionString is not set - we cannot run integration tests
 
-        // if EPHTESTSTORAGE is not set - we cannot run integration tests
-        if (retval == null) {
-            TestBase.logInfo("SKIPPING - NO STORAGE CONNECTION STRING");
-        }
-        Assume.assumeTrue(retval != null);
-
-        return ((retval != null) ? retval : "");
+        Assume.assumeTrue("SKIPPING - NO STORAGE CONNECTION STRING", connectionString != null);
+        return connectionString;
     }
 
     /**
@@ -80,17 +81,28 @@ final class TestUtilities {
         final String username = System.getenv(PROXY_USERNAME);
 
         if (username == null) {
-            return new ProxyConfiguration(ProxyConfiguration.ProxyAuthenticationType.NONE, proxy, null, null);
+            return new ProxyConfiguration(ProxyAuthenticationType.NONE, proxy, null, null);
         }
 
-        final ProxyConfiguration.ProxyAuthenticationType authenticationType =
-            ProxyConfiguration.ProxyAuthenticationType.valueOf(System.getenv(PROXY_AUTH_TYPE_ENV_NAME));
+        final ProxyAuthenticationType authenticationType =
+            ProxyAuthenticationType.valueOf(System.getenv(PROXY_AUTH_TYPE_ENV_NAME));
         final String password = System.getenv(PROXY_PASSWORD);
 
         return new ProxyConfiguration(authenticationType, proxy, username, password);
     }
 
-    static Boolean isRunningOnAzure() {
-        return (System.getenv("EVENT_HUB_CONNECTION_STRING") != null);
+    /**
+     * Returns true if logging is enabled. Logging is enabled when the environment variable {@link
+     * TestUtilities#AZURE_LOG_LEVEL_ENV_NAME} is set.
+     */
+    static boolean isLoggerEnabled() {
+        return System.getenv(AZURE_LOG_LEVEL_ENV_NAME) != null;
+    }
+
+    /**
+     * Gets whether the Azure Event Hubs connection string has been set, so we can run live tests.
+     */
+    static boolean isRunningOnAzure() {
+        return getEventHubsConnectionString() != null;
     }
 }
