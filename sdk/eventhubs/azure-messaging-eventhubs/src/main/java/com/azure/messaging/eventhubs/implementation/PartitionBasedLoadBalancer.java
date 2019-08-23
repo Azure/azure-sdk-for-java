@@ -248,7 +248,7 @@ public final class PartitionBasedLoadBalancer {
      * from it.
      */
     private String findPartitionToSteal(final Map<String, List<PartitionOwnership>> ownerPartitionMap) {
-        Map.Entry<String,List<PartitionOwnership>> ownerWithMaxPartitions = ownerPartitionMap.entrySet()
+        Map.Entry<String, List<PartitionOwnership>> ownerWithMaxPartitions = ownerPartitionMap.entrySet()
             .stream()
             .max(Comparator.comparingInt(entry -> entry.getValue().size()))
             .get();
