@@ -30,8 +30,14 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Event Hub.
  *
  * <p>
- *
+ * The shared access key can be obtained by creating a <i>shared access policy</i> for the Event Hubs namespace or for a
+ * specific Event Hub instance. See
+ * <a href="https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-shared-access-signature#shared-access-authorization-policies">
+ * Shared access authorization policies</a> for more information.
  * </p>
+ *
+ * @see <a href="https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-shared-access-signature">Authorize
+ *     access with shared access signature.</a>
  */
 @Immutable
 public class EventHubSharedAccessKeyCredential implements TokenCredential {
@@ -52,11 +58,12 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
      * @param sharedAccessKey Value of the shared access key.
      * @param tokenValidity The duration for which the shared access signature is valid.
      * @throws IllegalArgumentException if {@code policyName}, {@code sharedAccessKey} is an empty string. Or the
-     *         duration of {@code tokenValidity} is zero or a negative value.
-     * @throws NoSuchAlgorithmException If the hashing algorithm cannot be instantiated, which is used to generate the
-     *         shared access signatures.
+     *     duration of {@code tokenValidity} is zero or a negative value.
+     * @throws NoSuchAlgorithmException If the hashing algorithm cannot be instantiated, which is used to generate
+     *     the shared access signatures.
      * @throws InvalidKeyException If the {@code sharedAccessKey} is an invalid value for the hashing algorithm.
-     * @throws NullPointerException if {@code policyName}, {@code sharedAccessKey}, or {@code tokenValidity} is null.
+     * @throws NullPointerException if {@code policyName}, {@code sharedAccessKey}, or {@code tokenValidity} is
+     *     null.
      */
     public EventHubSharedAccessKeyCredential(String policyName, String sharedAccessKey, Duration tokenValidity)
         throws NoSuchAlgorithmException, InvalidKeyException {
@@ -86,7 +93,8 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
      *
      * @param scopes The name of the resource or token audience to obtain a token for.
      * @return A Mono that completes and returns the shared access signature.
-     * @throws IllegalArgumentException if {@code scopes} does not contain a single value, which is the token audience.
+     * @throws IllegalArgumentException if {@code scopes} does not contain a single value, which is the token
+     *     audience.
      */
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
