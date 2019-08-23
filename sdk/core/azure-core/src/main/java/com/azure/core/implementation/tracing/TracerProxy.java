@@ -100,12 +100,12 @@ public final class TracerProxy {
     /**
      * For each tracer plugged into the SDK the current tracing span is marked as completed.
      *
-     * @param errorCondition the AMQP header value for this error condition
+     * @param errorCondition the value of error condition
      * @param throwable Potential throwable that happened during the span.
      * @param context Additional metadata that is passed through the call stack.
      */
-    public static void endAmqp(String errorCondition, Context context, Throwable throwable) {
-        tracers.forEach(tracer -> tracer.endAmqp(errorCondition, context, throwable));
+    public static void end(String errorCondition, Context context, Throwable throwable) {
+        tracers.forEach(tracer -> tracer.end(errorCondition, context, throwable));
     }
 
     /**

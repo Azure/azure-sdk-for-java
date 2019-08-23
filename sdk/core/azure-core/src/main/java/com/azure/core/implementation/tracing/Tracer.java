@@ -85,6 +85,15 @@ public interface Tracer {
     void end(int responseCode, Throwable error, Context context);
 
     /**
+     * Completes the current tracing span.
+     *
+     * @param errorCondition the error message that occurred during the call.
+     * @param error Potential throwable that happened during the span.
+     * @param context Additional metadata that is passed through the call stack.
+     */
+    void end(String errorCondition, Throwable error, Context context);
+
+    /**
      * Adds metadata to the current span. The {@code context} is checked for having span information, if no span
      * information is found in the context no metadata is added.
      *
@@ -134,21 +143,17 @@ public interface Tracer {
     Context setSpanName(String spanName, Context context);
 
     /**
-     * Completes the current AMQP tracing span.
-     *
-     */
-    void endAmqp(String errorCondition, Context context, Throwable throwable);
-
-    /**
      * Adds a link to the tracing span.
      * Used in batching operations to relate multiple requests under a single batch.
      *
+     * @param context Additional metadata that is passed through the call stack.
      */
-    void addLink(Context eventContextData);
+    void addLink(Context context);
 
     /**
      * Extracts the span Context from the given event's diagnostic Id
      *
+     * @param diagnosticId Unique identifier for the trace information of the event.
      */
     Context extractContext(String diagnosticId);
 }

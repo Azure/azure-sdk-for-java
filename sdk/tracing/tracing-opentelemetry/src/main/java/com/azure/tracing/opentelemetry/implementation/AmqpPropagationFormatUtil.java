@@ -27,17 +27,10 @@ public class AmqpPropagationFormatUtil {
     }
 
     /**
-     * Parse OpenTelemetry Status from HTTP response status code.
-     *
-     * <p>This method serves a default routine to map HTTP status code to Open Census Status. The
-     * mapping is defined in <a
-     * href="https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto">Google API
-     * canonical error code</a>, and the behavior is defined in <a
-     * href="https://github.com/census-instrumentation/opencensus-specs/blob/master/trace/HTTP.md">OpenTelemetry
-     * Specs</a>.
+     * Parse span context and get the diagnostic Id for that event.
      *
      * @param spanContext the span context.
-     * @return the corresponding OpenTelemetry {@code Status}.
+     * @retrun The dignostic Id
      */
     public static String getDiagnosticId(SpanContext spanContext) {
         char[] chars = new char[55];

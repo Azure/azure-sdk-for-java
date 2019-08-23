@@ -59,7 +59,7 @@ public class TraceUtil {
         }
 
         if (signal == null) {
-            TracerProxy.endAmqp(errorCondition, context, null);
+            TracerProxy.end(errorCondition, context, null);
             return;
         }
 
@@ -74,7 +74,7 @@ public class TraceUtil {
                 errorCondition = exception.getErrorCondition().toString();
             }
         }
-        TracerProxy.endAmqp(errorCondition, context, throwable);
+        TracerProxy.end(errorCondition, context, throwable);
     }
 
     public static void addSpanLinks(Context eventContextData) {

@@ -106,7 +106,7 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
     }
 
     @Override
-    public void endAmqp(String errorCondition, Context context, Throwable throwable) {
+    public void end(String errorCondition, Throwable throwable, Context context) {
         Optional<Object> spanOptional = context.getData(OPENTELEMETRY_SPAN_KEY);
         if (!spanOptional.isPresent()) {
             logger.warning("Failed to find span to end it.");
