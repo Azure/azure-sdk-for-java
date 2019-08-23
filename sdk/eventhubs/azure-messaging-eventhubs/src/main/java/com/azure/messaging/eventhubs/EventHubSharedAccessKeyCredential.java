@@ -51,30 +51,27 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
      * @param policyName Name of the shared access key policy.
      * @param sharedAccessKey Value of the shared access key.
      * @param tokenValidity The duration for which the shared access signature is valid.
-     * @throws IllegalArgumentException if {@code policyName}, {@code sharedAccessKey} is null or empty. Or the duration of
-     *         {@code tokenValidity} is zero or a negative value.
+     * @throws IllegalArgumentException if {@code policyName}, {@code sharedAccessKey} is an empty string. Or the
+     *         duration of {@code tokenValidity} is zero or a negative value.
      * @throws NoSuchAlgorithmException If the hashing algorithm cannot be instantiated, which is used to generate the
      *         shared access signatures.
      * @throws InvalidKeyException If the {@code sharedAccessKey} is an invalid value for the hashing algorithm.
-     * @throws NullPointerException if {@code tokenValidity} is null.
+     * @throws NullPointerException if {@code policyName}, {@code sharedAccessKey}, or {@code tokenValidity} is null.
      */
     public EventHubSharedAccessKeyCredential(String policyName, String sharedAccessKey, Duration tokenValidity)
         throws NoSuchAlgorithmException, InvalidKeyException {
 
-        if (ImplUtils.isNullOrEmpty(policyName)) {
-            throw new IllegalArgumentException("'policyName' cannot be null or empty");
-        }
-        if (ImplUtils.isNullOrEmpty(sharedAccessKey)) {
-            throw new IllegalArgumentException("'sharedAccessKey' cannot be null or empty.");
-        }
+        Objects.requireNonNull(sharedAccessKey, "'sharedAccessKey' cannot be null.");
+        this.policyName = Objects.requireNonNull(policyName, "'sharedAccessKey' cannot be null.");
+        this.tokenValidity = Objects.requireNonNull(tokenValidity, "'tokenValidity' cannot be null.");
 
-        Objects.requireNonNull(tokenValidity);
-        if (tokenValidity.isZero() || tokenValidity.isNegative()) {
+        if (policyName.isEmpty()) {
+            throw new IllegalArgumentException("'policyName' cannot be an empty string.");
+        } else if (sharedAccessKey.isEmpty()) {
+            throw new IllegalArgumentException("'sharedAccessKey' cannot be an empty string.");
+        } else if (tokenValidity.isZero() || tokenValidity.isNegative()) {
             throw new IllegalArgumentException("'tokenTimeToLive' has to positive and in the order-of seconds");
         }
-
-        this.policyName = policyName;
-        this.tokenValidity = tokenValidity;
 
         hmac = Mac.getInstance(HASH_ALGORITHM);
 

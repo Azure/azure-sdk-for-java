@@ -143,14 +143,20 @@ public class EventHubClientBuilder {
      *         Hub name.
      * @param eventHubName The name of the Event Hub to connect the client to.
      * @return The updated {@link EventHubClientBuilder} object.
-     * @throws IllegalArgumentException if {@code connectionString} or {@code eventHubName} is null or empty.
+     * @throws NullPointerException if {@code connectionString} or {@code eventHubName} is null.
+     * @throws IllegalArgumentException if {@code connectionString} or {@code eventHubName} is an empty string.
      *         Or, if the {@code connectionString} contains the Event Hub name.
      * @throws AzureException If the shared access signature token credential could not be created using the
      *         connection string.
      */
     public EventHubClientBuilder connectionString(String connectionString, String eventHubName) {
-        if (ImplUtils.isNullOrEmpty(eventHubName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be null or empty"));
+        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
+        Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
+
+        if (connectionString.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'connectionString' cannot be an empty string."));
+        } else if (eventHubName.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
         }
 
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
@@ -162,11 +168,12 @@ public class EventHubClientBuilder {
             throw logger.logExceptionAsError(new AzureException("Could not create the EventHubSharedAccessKeyCredential.", e));
         }
 
-        if (!ImplUtils.isNullOrEmpty(properties.eventHubName())) {
+        if (!ImplUtils.isNullOrEmpty(properties.eventHubName()) && !eventHubName.equals(properties.eventHubName())) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
-                "'connectionString' contains an Event Hub name [%s].  Please use the"
-                    + " credentials(String connectionString) overload. Or supply a 'connectionString' without"
-                    + " 'EntityPath' in it.", properties.eventHubName())));
+                "'connectionString' contains an Event Hub name [%s] and it does not match the given "
+                    + "'eventHubName' parameter [%s]. Please use the credentials(String connectionString) overload. "
+                    + "Or supply a 'connectionString' without 'EntityPath' in it.",
+                properties.eventHubName(), eventHubName)));
         }
 
         return credential(properties.endpoint().getHost(), eventHubName, tokenCredential);
@@ -190,27 +197,25 @@ public class EventHubClientBuilder {
      * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
      *
      * @param host The fully qualified host name for the Event Hubs namespace. This is likely to be similar to
-     *         {@literal "{your-namespace}.servicebus.windows.net}".
+     *         <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
      * @param eventHubName The name of the Event Hub to connect the client to.
      * @param credential The token credential to use for authorization. Access controls may be specified by the
      *         Event Hubs namespace or the requested Event Hub, depending on Azure configuration.
      * @return The updated {@link EventHubClientBuilder} object.
-     * @throws IllegalArgumentException if {@code host} or {@code eventHubName} is null or empty.
-     * @throws NullPointerException if {@code credentials} is null.
+     * @throws IllegalArgumentException if {@code host} or {@code eventHubName} is an empty string.
+     * @throws NullPointerException if {@code host}, {@code eventHubName}, {@code credentials} is null.
      */
     public EventHubClientBuilder credential(String host, String eventHubName, TokenCredential credential) {
+        this.host = Objects.requireNonNull(host, "'host' cannot be null.");
+        this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
+
         if (ImplUtils.isNullOrEmpty(host)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'host' cannot be null or empty"));
-        }
-        if (ImplUtils.isNullOrEmpty(eventHubName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be null or empty."));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'host' cannot be an empty string."));
+        } else if (ImplUtils.isNullOrEmpty(eventHubName)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
         }
 
-        Objects.requireNonNull(credential);
-
-        this.host = host;
-        this.credentials = credential;
-        this.eventHubName = eventHubName;
         return this;
     }
 

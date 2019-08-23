@@ -135,7 +135,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
      */
     public Mono<EventDataBatch> createBatch(BatchOptions options) {
-        Objects.requireNonNull(options);
+        Objects.requireNonNull(options, "'options' cannot be null.");
 
         final BatchOptions clone = options.clone();
 
@@ -176,7 +176,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when the event is pushed to the service.
      */
     public Mono<Void> send(EventData event) {
-        Objects.requireNonNull(event);
+        Objects.requireNonNull(event, "'event' cannot be null.");
 
         return send(Flux.just(event));
     }
@@ -196,8 +196,8 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when the event is pushed to the service.
      */
     public Mono<Void> send(EventData event, SendOptions options) {
-        Objects.requireNonNull(event);
-        Objects.requireNonNull(options);
+        Objects.requireNonNull(event, "'event' cannot be null.");
+        Objects.requireNonNull(options, "'options' cannot be null.");
 
         return send(Flux.just(event), options);
     }
@@ -211,7 +211,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Iterable<EventData> events) {
-        Objects.requireNonNull(events);
+        Objects.requireNonNull(events, "'events' cannot be null.");
 
         return send(Flux.fromIterable(events));
     }
@@ -226,7 +226,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Iterable<EventData> events, SendOptions options) {
-        Objects.requireNonNull(events);
+        Objects.requireNonNull(events, "'options' cannot be null.");
 
         return send(Flux.fromIterable(events), options);
     }
@@ -240,7 +240,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Flux<EventData> events) {
-        Objects.requireNonNull(events);
+        Objects.requireNonNull(events, "'events' cannot be null.");
 
         return send(events, DEFAULT_SEND_OPTIONS);
     }
@@ -255,8 +255,8 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Flux<EventData> events, SendOptions options) {
-        Objects.requireNonNull(events);
-        Objects.requireNonNull(options);
+        Objects.requireNonNull(events, "'events' cannot be null.");
+        Objects.requireNonNull(options, "'options' cannot be null.");
 
         return sendInternal(events, options);
     }
@@ -271,7 +271,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @see EventHubAsyncProducer#createBatch(BatchOptions)
      */
     public Mono<Void> send(EventDataBatch batch) {
-        Objects.requireNonNull(batch);
+        Objects.requireNonNull(batch, "'batch' cannot be null.");
 
         if (batch.getEvents().isEmpty()) {
             logger.info("Cannot send an EventBatch that is empty.");

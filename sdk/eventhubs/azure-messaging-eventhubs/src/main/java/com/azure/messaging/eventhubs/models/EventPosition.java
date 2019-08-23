@@ -109,9 +109,10 @@ public final class EventPosition {
      * @param isInclusive If true, the event with the {@code offset} is included; otherwise, the next event will
      *         be received.
      * @return An {@link EventPosition} object.
+     * @throws NullPointerException if {@code offset} is null.
      */
     public static EventPosition fromOffset(String offset, boolean isInclusive) {
-        Objects.requireNonNull(offset);
+        Objects.requireNonNull(offset, "'offset' cannot be null.");
 
         return new EventPosition(isInclusive, offset, null, null);
     }

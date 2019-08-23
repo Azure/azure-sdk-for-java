@@ -4,10 +4,10 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.RetryOptions;
-import com.azure.core.util.IterableStream;
 import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.annotation.ServiceMethod;
+import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
@@ -44,9 +44,9 @@ public class EventHubClient implements Closeable {
     private final EventHubConsumerOptions defaultConsumerOptions;
 
     EventHubClient(EventHubAsyncClient client, ConnectionOptions connectionOptions) {
-        Objects.requireNonNull(connectionOptions);
+        Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.");
 
-        this.client = Objects.requireNonNull(client);
+        this.client = Objects.requireNonNull(client, "'client' cannot be null.");
         this.retry = connectionOptions.retry();
         this.defaultProducerOptions = new EventHubProducerOptions()
             .retry(connectionOptions.retry());
@@ -108,7 +108,7 @@ public class EventHubClient implements Closeable {
      * @throws NullPointerException if {@code options} is {@code null}.
      */
     public EventHubProducer createProducer(EventHubProducerOptions options) {
-        Objects.requireNonNull(options);
+        Objects.requireNonNull(options, "'options' cannot be null.");
 
         final EventHubAsyncProducer producer = client.createProducer(options);
 

@@ -85,9 +85,9 @@ public class EventHubAsyncClient implements Closeable {
     private final EventHubConsumerOptions defaultConsumerOptions;
 
     EventHubAsyncClient(ConnectionOptions connectionOptions, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
-        Objects.requireNonNull(connectionOptions);
-        Objects.requireNonNull(provider);
-        Objects.requireNonNull(handlerProvider);
+        Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.");
+        Objects.requireNonNull(provider, "'provider' cannot be null.");
+        Objects.requireNonNull(handlerProvider, "'handlerProvider' cannot be null.");
 
         this.connectionOptions = connectionOptions;
         this.eventHubName = connectionOptions.eventHubName();
@@ -170,7 +170,7 @@ public class EventHubAsyncClient implements Closeable {
      * @throws NullPointerException if {@code options} is {@code null}.
      */
     public EventHubAsyncProducer createProducer(EventHubProducerOptions options) {
-        Objects.requireNonNull(options);
+        Objects.requireNonNull(options, "'options' cannot be null.");
 
         final EventHubProducerOptions clonedOptions = options.clone();
 
@@ -256,15 +256,14 @@ public class EventHubAsyncClient implements Closeable {
      */
     public EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
                                                 EventHubConsumerOptions options) {
-        Objects.requireNonNull(eventPosition);
-        Objects.requireNonNull(options);
-        Objects.requireNonNull(consumerGroup);
-        Objects.requireNonNull(partitionId);
+        Objects.requireNonNull(eventPosition, "'eventPosition' cannot be null.");
+        Objects.requireNonNull(options, "'options' cannot be null.");
+        Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null.");
+        Objects.requireNonNull(partitionId, "'partitionId' cannot be null.");
 
-        if (ImplUtils.isNullOrEmpty(consumerGroup)) {
+        if (consumerGroup.isEmpty()) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'consumerGroup' cannot be an empty string."));
-        }
-        if (ImplUtils.isNullOrEmpty(partitionId)) {
+        } else if (partitionId.isEmpty()) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'partitionId' cannot be an empty string."));
         }
 
