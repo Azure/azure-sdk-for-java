@@ -349,11 +349,11 @@ public class DirectoryAsyncJavaDocCodeSamples {
      */
     public void listHandlesAsync() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.getHandles
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean
         directoryAsyncClient.listHandles(10, true)
             .subscribe(handleItem -> System.out.printf("Get handles completed with handle id %s",
                 handleItem.handleId()));
-        // END: com.azure.storage.file.directoryAsyncClient.getHandles
+        // END: com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean
     }
 
     /**

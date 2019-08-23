@@ -384,7 +384,7 @@ public class DirectoryAsyncClient {
      *
      * <p>Get 10 handles with recursive call.</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.listHandles}
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>
