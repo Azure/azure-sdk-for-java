@@ -3,6 +3,9 @@
 
 package com.azure.storage.file.spock
 
+import com.azure.core.http.HttpClient
+import com.azure.core.http.ProxyOptions
+import com.azure.core.http.netty.implementation.ReactorNettyClientProvider
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
@@ -17,7 +20,7 @@ import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.ListSharesOptions
 import spock.lang.Specification
 
-import java.nio.file.Files
+import java.util.function.Supplier
 
 class APISpec extends Specification {
     // Field common used for all APIs.
@@ -25,7 +28,6 @@ class APISpec extends Specification {
     def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     def tmpFolder = getClass().getClassLoader().getResource("tmptestfiles")
     def testFolder = getClass().getClassLoader().getResource("testfiles")
-   // def testFolder = "src/test/resources/testfiles/"
     def interceptorManager
     def testResourceName
 
@@ -51,7 +53,7 @@ class APISpec extends Specification {
         testResourceName = new TestResourceNamer(methodName, testMode,
             interceptorManager.getRecordedData())
         if (getTestMode() == TestMode.RECORD) {
-            connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING")
+            connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
         } else {
             connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;" +
                 "AccountKey=atestaccountkey;EndpointSuffix=core.windows.net"
@@ -147,12 +149,20 @@ class APISpec extends Specification {
                 .shareName(shareName)
                 .filePath(filePath)
                 .addPolicy(interceptorManager.getRecordPolicy())
+                .httpClient(HttpClient.createDefault().wiretap(true).proxy(PROXY_OPTIONS))
         } else {
             return new FileClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
                 .filePath(filePath)
                 .httpClient(interceptorManager.getPlaybackClient())
+        }
+    }
+
+    private Supplier<ProxyOptions> PROXY_OPTIONS = new Supplier<ProxyOptions>() {
+        @Override
+        ProxyOptions get() {
+            return new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
         }
     }
 

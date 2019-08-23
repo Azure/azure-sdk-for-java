@@ -6,6 +6,7 @@ package com.azure.storage.file;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.configuration.Configuration;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
@@ -476,7 +477,7 @@ public class FileClient {
      *
      * <p>Upload "default" to the file. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.uploadWithResponse#flux-long}
+     * {@codesnippet com.azure.storage.file.fileClient.uploadWithResponse#flux-long-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -528,10 +529,10 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being cleared in the request body.
-     * @return A response that only contains headers and response status code
+     * @return The {@link FileUploadInfo file upload info}
      */
-    public Response<FileUploadInfo> clearRange(long length) {
-        return clearRange(length, 0);
+    public FileUploadInfo clearRange(long length) {
+        return clearRangeWithResponse(length, 0, Context.NONE).value();
     }
 
     /**
@@ -541,17 +542,18 @@ public class FileClient {
      *
      * <p>Clear the range starting from 1024 with length of 1024. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.clearRange#long-long}
+     * {@codesnippet com.azure.storage.file.fileClient.clearRange#long-long-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code null}
-     * @return A response that only contains headers and response status code
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the {@link FileUploadInfo file upload info} with headers and response status code
      */
-    public Response<FileUploadInfo> clearRange(long length, long offset) {
-        return fileAsyncClient.clearRange(length, offset).block();
+    public Response<FileUploadInfo> clearRangeWithResponse(long length, long offset, Context context) {
+        return fileAsyncClient.clearRangeWithResponse(length, offset, context).block();
     }
 
     /**

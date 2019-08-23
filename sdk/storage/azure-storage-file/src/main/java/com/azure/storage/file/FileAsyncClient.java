@@ -9,6 +9,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -744,10 +745,10 @@ public class FileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being cleared in the request body.
-     * @return A response that only contains headers and response status code
+     * @return The {@link FileUploadInfo file upload info}
      */
-    public Mono<Response<FileUploadInfo>> clearRange(long length) {
-        return clearRange(length, 0);
+    public Mono<FileUploadInfo> clearRange(long length) {
+        return clearRangeWithResponse(length, 0).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -766,9 +767,13 @@ public class FileAsyncClient {
      * @param length Specifies the number of bytes being cleared in the request body.
      * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code
      * null}
-     * @return A response that only contains headers and response status code
+     * @return A response of {@link FileUploadInfo file upload info} that only contains headers and response status code
      */
-    public Mono<Response<FileUploadInfo>> clearRange(long length, long offset) {
+    public Mono<Response<FileUploadInfo>> clearRangeWithResponse(long length, long offset) {
+        return withContext(context -> clearRangeWithResponse(length, offset, context));
+    }
+
+    Mono<Response<FileUploadInfo>> clearRangeWithResponse(long length, long offset, Context context) {
         FileRange range = new FileRange(offset, offset + length - 1);
         return azureFileStorageClient.files().uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), FileRangeWriteType.CLEAR, 0L, null, null, null, Context.NONE)
             .map(this::uploadResponse);

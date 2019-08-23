@@ -141,7 +141,6 @@ public class RestProxy implements InvocationHandler {
                 request = createHttpRequest(methodParser, args);
                 Context context = methodParser.context(args).addData("caller-method", methodParser.fullyQualifiedMethodName());
                 context = startTracingSpan(method, context);
-
                 final Mono<HttpResponse> asyncResponse = send(request, context);
                 //
                 Mono<HttpDecodedResponse> asyncDecodedResponse = this.decoder.decode(asyncResponse, methodParser);

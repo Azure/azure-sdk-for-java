@@ -15,7 +15,6 @@ import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
-import com.azure.storage.file.models.FileRangeWriteType;
 import com.azure.storage.file.models.FileUploadInfo;
 
 import java.nio.ByteBuffer;
@@ -212,49 +211,21 @@ public class FileJavaDocCodeSamples {
     public void clearRange() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.clearRange#long
-        Response<FileUploadInfo> response = fileClient.clearRange(1024);
-        System.out.println("Complete clearing the range with status code: " + response.statusCode());
+        FileUploadInfo response = fileClient.clearRange(1024);
+        System.out.println("Complete clearing the range with eTag: " + response.eTag());
         // END: com.azure.storage.file.fileClient.clearRange#long
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#clearRange(long)}
-     */
-    public void clearRangeAsync() {
-        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.clearRange#long
-        fileAsyncClient.clearRange(1024).subscribe(
-            response -> { },
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete clearing the range!")
-        );
-        // END: com.azure.storage.file.fileAsyncClient.upload#flux-long-long-filerangewritetype
-        // END: com.azure.storage.file.fileAsyncClient.clearRange#long
-    }
-
-    /**
-     * Generates a code sample for using {@link FileClient#clearRange(long, long)}
+     * Generates a code sample for using {@link FileClient#clearRangeWithResponse(long, long, Context)}
      */
     public void clearRangeMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.clearRange#long-long
-        Response<FileUploadInfo> response = fileClient.clearRange(1024, 1024);
+        // BEGIN: com.azure.storage.file.fileClient.clearRange#long-long-Context
+        Response<FileUploadInfo> response = fileClient.clearRangeWithResponse(1024, 1024,
+            new Context(key1, value1));
         System.out.println("Complete clearing the range with status code: " + response.statusCode());
-        // END: com.azure.storage.file.fileClient.clearRange#long-long
-    }
-
-    /**
-     * Generates a code sample for using {@link FileAsyncClient#clearRange(long, long)}
-     */
-    public void clearRangeAsyncMaxOverload() {
-        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.clearRange#long-long
-        fileAsyncClient.clearRange(1024, 1024).subscribe(
-            response -> { },
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete clearing the range!")
-        );
-        // END: com.azure.storage.file.fileAsyncClient.clearRange#long-long
+        // END: com.azure.storage.file.fileClient.clearRange#long-long-Context
     }
 
     /**
@@ -279,20 +250,6 @@ public class FileJavaDocCodeSamples {
                 fileClient.getProperties().contentLength());
         }
         // END: com.azure.storage.file.fileClient.uploadFromFile#string-filerangewritetype
-    }
-
-    /**
-     * Generates a code sample for using {@link FileAsyncClient#uploadFromFile(String)}
-     */
-    public void uploadFileAsync() {
-        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadFromFile#string
-        fileAsyncClient.uploadFromFile("someFilePath").subscribe(
-            response -> { },
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete deleting the file!")
-        );
-        // END: com.azure.storage.file.fileAsyncClient.uploadFromFile#string
     }
 
     /**
