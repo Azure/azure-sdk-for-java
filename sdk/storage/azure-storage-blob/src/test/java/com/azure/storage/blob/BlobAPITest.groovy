@@ -1114,7 +1114,7 @@ class BlobAPITest extends APISpec {
             metadata.put(key2, value2)
         }
 
-        String status = bu2.startCopyFromURLWithResponse(bc.getBlobUrl(), metadata, null, null, null, null)
+        def status = bu2.startCopyFromURLWithResponse(bc.getBlobUrl(), metadata, null, null, null, null)
             .headers().value("x-ms-copy-status")
 
         OffsetDateTime start = OffsetDateTime.now()
