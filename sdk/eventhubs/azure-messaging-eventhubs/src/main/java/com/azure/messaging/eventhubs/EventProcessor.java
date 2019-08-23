@@ -12,6 +12,7 @@ import com.azure.messaging.eventhubs.models.EventPosition;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
+import java.util.ServiceLoader;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -24,20 +25,22 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 /**
- * This is the starting point for event processor.
+ * Event Processor provides a convenient mechanism to consume events from all partitions of an Event Hub in the context
+ * of a consumer group. Event Processor based application consists of one or more instances of EventProcessor which are
+ * set up to consume events from the same Event Hub, consumer group to balance the workload across different instances
+ * and track progress when events are processed. Based on the number of instances running, each Event Processor may own
+ * 0 or more partitions to balance the workload among all the instances.
+ *
  * <p>
- * Event Processor based application consists of one or more instances of {@link EventProcessor} which are
- * set up to consume events from the same Event Hub + consumer group and to balance the workload across different
- * instances and track progress when events are processed.
+ * Event Processor based application consists of one or more instances of {@link EventProcessor} which are set up to
+ * consume events from the same Event Hub + consumer group and to balance the workload across different instances and
+ * track progress when events are processed.
  * </p>
  *
- * <p><strong>Creating an {@link EventProcessor} instance using Event Hub instance connection
- * string</strong></p>
- *
- * {@codesnippet com.azure.messaging.eventhubs.eventprocessor.instantiation}
- *
- * @see EventHubAsyncClient
- * @see EventHubClientBuilder
+ * <p>
+ * To create an instance of EventProcessor, use the fluent {@link EventProcessorBuilder}.
+ * </p>
+ * @see EventProcessorBuilder
  */
 public class EventProcessor {
 
@@ -65,27 +68,66 @@ public class EventProcessor {
      * @param consumerGroupName The consumer group name used in this event processor to consumer events.
      * @param partitionProcessorFactory The factory to create new partition processor(s).
      * @param initialEventPosition Initial event position to start consuming events.
-     * @param partitionManager The partition manager.
-     * @param eventHubName The Event Hub name.
+     * @param partitionManager The partition manager used for reading and updating partition ownership and checkpoint
+     *        information.
      */
     EventProcessor(EventHubAsyncClient eventHubAsyncClient, String consumerGroupName,
         PartitionProcessorFactory partitionProcessorFactory, EventPosition initialEventPosition,
-        PartitionManager partitionManager,
-        String eventHubName) {
+        PartitionManager partitionManager) {
         this.eventHubAsyncClient = Objects
             .requireNonNull(eventHubAsyncClient, "eventHubAsyncClient cannot be null");
         this.consumerGroupName = Objects
             .requireNonNull(consumerGroupName, "consumerGroupname cannot be null");
         this.partitionProcessorFactory = Objects
             .requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null");
-        this.partitionManager = Objects
-            .requireNonNull(partitionManager, "partitionManager cannot be null");
+        this.partitionManager = partitionManager == null ? findPartitionManager() : partitionManager;
         this.initialEventPosition = Objects
             .requireNonNull(initialEventPosition, "initialEventPosition cannot be null");
         this.eventHubName = Objects
-            .requireNonNull(eventHubName, "eventHubName cannot be null");
+            .requireNonNull(eventHubAsyncClient.eventHubName(), "eventHubName cannot be null");
         this.identifier = UUID.randomUUID().toString();
         logger.info("The instance ID for this event processors is {}", this.identifier);
+    }
+
+    /**
+     * Looks for a user-defined PartitionManager implementation in classpath. If none found, {@link
+     * InMemoryPartitionManager} will be returned that will have no visibility into other EventProcessors that are running
+     * and can only update checkpoints in memory.
+     *
+     * <p>
+     *  If there are more than one user-defined PartitionManagers, this method will throw an exception. User has to
+     *  specify a PartitionManager explicitly in {@link EventProcessorBuilder}.
+     * </p>
+     *
+     * @return A {@link PartitionManager} implementation found in classpath, or {@link InMemoryPartitionManager}
+     * otherwise.
+     */
+    private PartitionManager findPartitionManager() {
+        ServiceLoader<PartitionManager> partitionManagers = ServiceLoader.load(PartitionManager.class);
+        PartitionManager partitionManager = null;
+
+        for (PartitionManager partitionManagerInClassPath : partitionManagers) {
+            if (partitionManager != null) {
+                // If more than one PartitionManager is found in classpath, throw an exception
+                // User has to specify which one to use.
+                throw logger.logExceptionAsWarning(
+                    new IllegalStateException("Found multiple PartitionManagers in classpath. Specify one in "
+                        + "EventProcessorOptions"));
+            }
+            if (!(partitionManagerInClassPath instanceof InMemoryPartitionManager)) {
+                // Don't consider InMemoryPartitionManager yet.
+                partitionManager = partitionManagerInClassPath;
+            }
+        }
+
+        if (partitionManager == null) {
+            // No PartitionManagers found in classpath. Use InMemoryPartitionManager as default.
+            logger
+                .info("No PartitionManager implementation found in class path. Using in-memory partition manager "
+                    + "which has no visibility into other EventProcessors and can only update checkpoints in-memory.");
+            partitionManager = new InMemoryPartitionManager();
+        }
+        return partitionManager;
     }
 
     /**

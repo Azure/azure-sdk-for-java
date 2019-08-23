@@ -54,6 +54,7 @@ public class EventProcessorTest {
     @Test
     public void testWithSimplePartitionProcessor() throws Exception {
         // Arrange
+        when(eventHubAsyncClient.eventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
@@ -64,19 +65,20 @@ public class EventProcessorTest {
         when(eventData1.offset()).thenReturn("1");
         when(eventData2.offset()).thenReturn("100");
 
-        final TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
         final InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
+        final TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor(partitionManager);
 
         final long beforeTest = System.currentTimeMillis();
 
         // Act
-        final EventProcessor eventProcessor = new EventProcessor(eventHubAsyncClient,
-            "test-consumer",
-            (partitionContext, checkpointManager) -> {
-                testPartitionProcessor.checkpointManager = checkpointManager;
-                testPartitionProcessor.partitionContext = partitionContext;
-                return testPartitionProcessor;
-            }, EventPosition.latest(), partitionManager, "test-eh");
+        final EventProcessor eventProcessor = new EventProcessorBuilder()
+            .eventHubClient(eventHubAsyncClient)
+            .consumerGroup("test-consumer")
+            .partitionProcessorFactory((partitionContext, checkpointManager) -> testPartitionProcessor)
+            .initialEventPosition(EventPosition.latest())
+            .partitionManager(partitionManager)
+            .buildEventProcessor();
+
         eventProcessor.start();
         Thread.sleep(TimeUnit.SECONDS.toMillis(2));
         eventProcessor.stop();
@@ -84,12 +86,12 @@ public class EventProcessorTest {
         // Assert
         assertNotNull(eventProcessor.identifier());
 
-        assertNotNull(testPartitionProcessor.partitionContext);
-        assertNotNull(testPartitionProcessor.checkpointManager);
+        assertNotNull(testPartitionProcessor.partitionContext());
+        assertNotNull(testPartitionProcessor.checkpointManager());
 
-        assertEquals("1", testPartitionProcessor.partitionContext.partitionId());
-        assertEquals("test-eh", testPartitionProcessor.partitionContext.eventHubName());
-        assertEquals("test-consumer", testPartitionProcessor.partitionContext.consumerGroupName());
+        assertEquals("1", testPartitionProcessor.partitionContext().partitionId());
+        assertEquals("test-eh", testPartitionProcessor.partitionContext().eventHubName());
+        assertEquals("test-consumer", testPartitionProcessor.partitionContext().consumerGroupName());
 
         StepVerifier.create(partitionManager.listOwnership("test-eh", "test-consumer"))
             .expectNextCount(1).verifyComplete();
@@ -115,28 +117,32 @@ public class EventProcessorTest {
     }
 
     /**
-     * Tests {@link EventProcessor} with a partition processor that throws an exception when processing an
-     * event.
+     * Tests {@link EventProcessor} with a partition processor that throws an exception when processing an event.
      *
      * @throws Exception if an error occurs while running the test.
      */
     @Test
     public void testWithFaultyPartitionProcessor() throws Exception {
         // Arrange
+        when(eventHubAsyncClient.eventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer1);
         when(consumer1.receive()).thenReturn(Flux.just(eventData1));
 
-        final FaultyPartitionProcessor faultyPartitionProcessor = new FaultyPartitionProcessor();
         final InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
+        final FaultyPartitionProcessor faultyPartitionProcessor = new FaultyPartitionProcessor(partitionManager);
 
         // Act
-        final EventProcessor eventProcessor = new EventProcessor(eventHubAsyncClient,
-            "test-consumer",
-            (partitionContext, checkpointManager) -> faultyPartitionProcessor,
-            EventPosition.latest(), partitionManager, "test-eh");
+        final EventProcessor eventProcessor = new EventProcessorBuilder()
+            .eventHubClient(eventHubAsyncClient)
+            .consumerGroup("test-consumer")
+            .partitionProcessorFactory((partitionContext, checkpointManager) -> faultyPartitionProcessor)
+            .initialEventPosition(EventPosition.latest())
+            .partitionManager(partitionManager)
+            .buildEventProcessor();
+
         eventProcessor.start();
         Thread.sleep(TimeUnit.SECONDS.toMillis(2));
         eventProcessor.stop();
@@ -146,14 +152,14 @@ public class EventProcessorTest {
     }
 
     /**
-     * Tests {@link EventProcessor} that processes events from an Event Hub configured with multiple
-     * partitions.
+     * Tests {@link EventProcessor} that processes events from an Event Hub configured with multiple partitions.
      *
      * @throws Exception if an error occurs while running the test.
      */
     @Test
     public void testWithMultiplePartitions() throws Exception {
         // Arrange
+        when(eventHubAsyncClient.eventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1", "2", "3"));
         when(eventHubAsyncClient
             .createConsumer(anyString(), eq("1"), any(EventPosition.class), any(EventHubConsumerOptions.class)))
@@ -180,9 +186,15 @@ public class EventProcessorTest {
 
         final InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
         // Act
-        final EventProcessor eventProcessor = new EventProcessor(eventHubAsyncClient,
-            "test-consumer",
-            TestPartitionProcessor::new, EventPosition.latest(), partitionManager, "test-eh");
+
+        final EventProcessor eventProcessor = new EventProcessorBuilder()
+            .eventHubClient(eventHubAsyncClient)
+            .consumerGroup("test-consumer")
+            .partitionProcessorFactory(TestPartitionProcessor::new)
+            .initialEventPosition(EventPosition.latest())
+            .partitionManager(partitionManager)
+            .buildEventProcessor();
+
         eventProcessor.start();
         Thread.sleep(TimeUnit.SECONDS.toMillis(2));
         eventProcessor.stop();
@@ -209,13 +221,19 @@ public class EventProcessorTest {
         verify(consumer3, atLeastOnce()).close();
     }
 
-    private static final class FaultyPartitionProcessor implements PartitionProcessor {
+    private static final class FaultyPartitionProcessor extends PartitionProcessor {
 
         boolean error;
 
-        @Override
-        public Mono<Void> initialize() {
-            return Mono.empty();
+        FaultyPartitionProcessor(PartitionManager partitionManager) {
+            super(new PartitionContext("1", "test-eh", "test-consumer"),
+                new CheckpointManager("owner", new PartitionContext("1",
+                    "test-eh", "test-consumer"), partitionManager, null));
+        }
+
+        FaultyPartitionProcessor(PartitionContext partitionContext,
+            CheckpointManager checkpointManager) {
+            super(partitionContext, checkpointManager);
         }
 
         @Override
@@ -227,44 +245,24 @@ public class EventProcessorTest {
         public void processError(Throwable throwable) {
             error = true;
         }
-
-        @Override
-        public Mono<Void> close(CloseReason closeReason) {
-            return Mono.empty();
-        }
     }
 
-    private static final class TestPartitionProcessor implements PartitionProcessor {
+    private static final class TestPartitionProcessor extends PartitionProcessor {
 
-        PartitionContext partitionContext;
-        CheckpointManager checkpointManager;
-
-        private TestPartitionProcessor() {
-            // default ctr
+        TestPartitionProcessor(PartitionManager partitionManager) {
+            super(new PartitionContext("1", "test-eh", "test-consumer"),
+                new CheckpointManager("owner", new PartitionContext("1",
+                    "test-eh", "test-consumer"), partitionManager, null));
         }
 
-        private TestPartitionProcessor(PartitionContext partitionContext, CheckpointManager checkpointManager) {
-            this.partitionContext = partitionContext;
-            this.checkpointManager = checkpointManager;
-        }
-
-        @Override
-        public Mono<Void> initialize() {
-            return Mono.empty();
+        TestPartitionProcessor(PartitionContext partitionContext,
+            CheckpointManager checkpointManager) {
+            super(partitionContext, checkpointManager);
         }
 
         @Override
         public Mono<Void> processEvent(EventData eventData) {
-            return this.checkpointManager.updateCheckpoint(eventData);
-        }
-
-        @Override
-        public void processError(Throwable throwable) {
-        }
-
-        @Override
-        public Mono<Void> close(CloseReason closeReason) {
-            return Mono.empty();
+            return checkpointManager().updateCheckpoint(eventData);
         }
     }
 
