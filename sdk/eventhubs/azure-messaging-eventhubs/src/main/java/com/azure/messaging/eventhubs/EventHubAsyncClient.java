@@ -106,15 +106,6 @@ public class EventHubAsyncClient implements Closeable {
     }
 
     /**
-     * Gets the name of the Event Hub this client is associated with.
-     *
-     * @return The Event Hub name this client is associated with.
-     */
-    String eventHubName() {
-        return eventHubName;
-    }
-
-    /**
      * Retrieves information about an Event Hub, including the number of partitions present and their identifiers.
      *
      * @return The set of information for the Event Hub that this client is associated with.
