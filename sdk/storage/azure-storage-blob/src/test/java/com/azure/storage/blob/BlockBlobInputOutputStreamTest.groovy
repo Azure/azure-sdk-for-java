@@ -3,10 +3,10 @@ package com.azure.storage.blob
 import com.azure.storage.common.Constants
 
 class BlockBlobInputOutputStreamTest extends APISpec {
-    BlockBlobClient bu
+    BlockBlobClient bc
 
     def setup() {
-        bu = cu.getBlockBlobClient(generateBlobName())
+        bc = cc.getBlockBlobClient(generateBlobName())
     }
 
     def "Upload download"() {
@@ -15,12 +15,12 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         byte[] randomBytes = new byte[length]
         (new Random()).nextBytes(randomBytes)
 
-        BlobOutputStream outStream = bu.getBlobOutputStream()
+        BlobOutputStream outStream = bc.getBlobOutputStream()
         outStream.write(randomBytes)
         outStream.close()
 
         then:
-        BlobInputStream inputStream = bu.openInputStream()
+        BlobInputStream inputStream = bc.openInputStream()
         int b
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
         try {

@@ -13,7 +13,6 @@ import com.azure.storage.blob.models.Metadata
 import com.azure.storage.blob.models.ModifiedAccessConditions
 import com.azure.storage.blob.models.PageBlobAccessConditions
 import com.azure.storage.blob.models.PageBlobItem
-import com.azure.storage.blob.models.PageList
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SequenceNumberAccessConditions
@@ -26,19 +25,22 @@ import java.security.MessageDigest
 import java.time.OffsetDateTime
 
 class PageBlobAPITest extends APISpec {
-    PageBlobClient bu
+    PageBlobClient bc
+    PageBlobAsyncClient bcAsync
 
     def setup() {
-        bu = cu.getPageBlobClient(generateBlobName())
-        bu.create(PageBlobClient.PAGE_BYTES)
+        def name = generateBlobName()
+        bc = cc.getPageBlobClient(name)
+        bcAsync = ccAsync.getPageBlobAsyncClient(name)
+        bc.create(PageBlobClient.PAGE_BYTES)
     }
 
     def "Create all null"() {
         setup:
-        bu = cu.getPageBlobClient(generateBlobName())
+        bc = cc.getPageBlobClient(generateBlobName())
 
         when:
-        Response<PageBlobItem> response = bu.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, null, null, null)
+        def response = bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, null, null, null)
 
         then:
         response.statusCode() == 201
@@ -49,15 +51,15 @@ class PageBlobAPITest extends APISpec {
 
     def "Create min"() {
         expect:
-        bu.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, null, null, null).statusCode() == 201
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, null, null, null).statusCode() == 201
     }
 
     def "Create sequence number"() {
         when:
-        bu.createWithResponse(PageBlobClient.PAGE_BYTES, 2, null, null, null, null, null)
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, 2, null, null, null, null, null)
 
         then:
-        Integer.parseInt(bu.getPropertiesWithResponse(null, null, null).headers().value("x-ms-blob-sequence-number")) == 2
+        Integer.parseInt(bc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-blob-sequence-number")) == 2
     }
 
     @Unroll
@@ -71,9 +73,9 @@ class PageBlobAPITest extends APISpec {
             .blobContentType(contentType)
 
         when:
-        bu.createWithResponse(PageBlobClient.PAGE_BYTES, null, headers, null, null, null, null)
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, headers, null, null, null, null)
 
-        Response<BlobProperties> response = bu.getPropertiesWithResponse(null, null, null)
+        def response = bc.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType
@@ -99,9 +101,9 @@ class PageBlobAPITest extends APISpec {
         }
 
         when:
-        bu.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, metadata, null, null, null)
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, metadata, null, null, null)
 
-        Response<BlobProperties> response = bu.getPropertiesWithResponse(null, null, null)
+        def response = bc.getPropertiesWithResponse(null, null, null)
 
         then:
         response.statusCode() == 200
@@ -117,16 +119,16 @@ class PageBlobAPITest extends APISpec {
     def "Create AC"() {
         setup:
         BlobAccessConditions bac = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bc, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
-                .ifMatch(setupBlobMatchCondition(bu, match))
+                .ifMatch(setupBlobMatchCondition(bc, match))
                 .ifNoneMatch(noneMatch))
 
         expect:
-        bu.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, bac, null, null)
-            .statusCode() == 201
+
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, bac, null, null).statusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -142,15 +144,15 @@ class PageBlobAPITest extends APISpec {
     def "Create AC fail"() {
         setup:
         BlobAccessConditions bac = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bc, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
                 .ifMatch(match)
-                .ifNoneMatch(setupBlobMatchCondition(bu, noneMatch)))
+                .ifNoneMatch(setupBlobMatchCondition(bc, noneMatch)))
 
         when:
-        bu.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, bac, null, null)
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, bac, null, null)
 
         then:
         thrown(StorageException)
@@ -166,7 +168,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Create error"() {
         when:
-        bu.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null,
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null,
             new BlobAccessConditions().leaseAccessConditions(new LeaseAccessConditions().leaseId("id")), null, null)
 
         then:
@@ -175,7 +177,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Upload page"() {
         when:
-        Response<PageBlobItem> response = bu.uploadPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
+        def response = bc.uploadPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null)
 
         then:
@@ -188,14 +190,14 @@ class PageBlobAPITest extends APISpec {
 
     def "Upload page min"() {
         expect:
-        bu.uploadPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
+        bc.uploadPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null).statusCode() == 201
     }
 
     @Unroll
     def "Upload page IA"() {
         when:
-        bu.uploadPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES * 2 - 1), data)
+        bc.uploadPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES * 2 - 1), data)
 
         then:
         def e = thrown(Exception)
@@ -212,11 +214,11 @@ class PageBlobAPITest extends APISpec {
     def "Upload page AC"() {
         setup:
         PageBlobAccessConditions pac = new PageBlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bc, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
-                .ifMatch(setupBlobMatchCondition(bu, match))
+                .ifMatch(setupBlobMatchCondition(bc, match))
                 .ifNoneMatch(noneMatch))
             .sequenceNumberAccessConditions(new SequenceNumberAccessConditions()
                 .ifSequenceNumberLessThan(sequenceNumberLT)
@@ -224,7 +226,7 @@ class PageBlobAPITest extends APISpec {
                 .ifSequenceNumberEqualTo(sequenceNumberEqual))
 
         expect:
-        bu.uploadPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
+        bc.uploadPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), pac, null, null).statusCode() == 201
 
         where:
@@ -243,8 +245,8 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Upload page AC fail"() {
         setup:
-        noneMatch = setupBlobMatchCondition(bu, noneMatch)
-        setupBlobLeaseCondition(bu, leaseID)
+        noneMatch = setupBlobMatchCondition(bc, noneMatch)
+        setupBlobLeaseCondition(bc, leaseID)
         PageBlobAccessConditions pac = new PageBlobAccessConditions()
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
             .modifiedAccessConditions(new ModifiedAccessConditions()
@@ -258,7 +260,7 @@ class PageBlobAPITest extends APISpec {
                 .ifSequenceNumberEqualTo(sequenceNumberEqual))
 
         when:
-        bu.uploadPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
+        bc.uploadPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), pac, null, null)
 
         then:
@@ -278,10 +280,10 @@ class PageBlobAPITest extends APISpec {
 
     def "Upload page error"() {
         setup:
-        bu = cu.getPageBlobClient(generateBlobName())
+        bc = cc.getPageBlobClient(generateBlobName())
 
         when:
-        bu.uploadPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
+        bc.uploadPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)),
             new PageBlobAccessConditions().leaseAccessConditions(new LeaseAccessConditions().leaseId("id")),
             null, null)
@@ -292,15 +294,15 @@ class PageBlobAPITest extends APISpec {
 
     def "Upload page from URL min"() {
         setup:
-        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        def destURL = cu.getPageBlobClient(generateBlobName())
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def destURL = cc.getPageBlobClient(generateBlobName())
         destURL.create(PageBlobClient.PAGE_BYTES)
         destURL.uploadPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
         def pageRange = new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1)
 
         when:
-        Response<PageBlobItem> response = bu.uploadPagesFromURLWithResponse(pageRange, destURL.getBlobUrl(), null, null, null, null, null, null)
+        Response<PageBlobItem> response = bc.uploadPagesFromURLWithResponse(pageRange, destURL.getBlobUrl(), null, null, null, null, null, null)
 
         then:
         response.statusCode() == 201
@@ -309,16 +311,16 @@ class PageBlobAPITest extends APISpec {
 
     def "Upload page from URL range"() {
         setup:
-        cu.setAccessPolicyWithResponse(PublicAccessType.CONTAINER, null, null, null, null)
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
 
         byte[] data = getRandomByteArray(PageBlobClient.PAGE_BYTES * 4)
 
-        def sourceURL = cu.getPageBlobClient(generateBlobName())
+        def sourceURL = cc.getPageBlobClient(generateBlobName())
         sourceURL.create(PageBlobClient.PAGE_BYTES * 4)
         sourceURL.uploadPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES * 4 - 1),
             new ByteArrayInputStream(data))
 
-        def destURL = cu.getPageBlobClient(generateBlobName())
+        def destURL = cc.getPageBlobClient(generateBlobName())
         destURL.create(PageBlobClient.PAGE_BYTES * 2)
 
         when:
@@ -334,7 +336,7 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Upload page from URL IA"() {
         when:
-        bu.uploadPagesFromURL(range, bu.getBlobUrl(), sourceOffset)
+        bc.uploadPagesFromURL(range, bc.getBlobUrl(), sourceOffset)
 
         then:
         thrown(IllegalArgumentException)
@@ -346,15 +348,15 @@ class PageBlobAPITest extends APISpec {
 
     def "Upload page from URL MD5"() {
         setup:
-        cu.setAccessPolicyWithResponse(PublicAccessType.CONTAINER, null, null, null, null)
-        def destURL = cu.getPageBlobClient(generateBlobName())
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def destURL = cc.getPageBlobClient(generateBlobName())
         destURL.create(PageBlobClient.PAGE_BYTES)
         def data = getRandomByteArray(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1)
-        bu.uploadPages(pageRange, new ByteArrayInputStream(data))
+        bc.uploadPages(pageRange, new ByteArrayInputStream(data))
 
         when:
-        destURL.uploadPagesFromURLWithResponse(pageRange, bu.getBlobUrl(), null, MessageDigest.getInstance("MD5").digest(data),
+        destURL.uploadPagesFromURLWithResponse(pageRange, bc.getBlobUrl(), null, MessageDigest.getInstance("MD5").digest(data),
             null, null, null, null)
 
         then:
@@ -363,14 +365,14 @@ class PageBlobAPITest extends APISpec {
 
     def "Upload page from URL MD5 fail"() {
         setup:
-        cu.setAccessPolicyWithResponse(PublicAccessType.CONTAINER, null, null, null, null)
-        def destURL = cu.getPageBlobClient(generateBlobName())
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def destURL = cc.getPageBlobClient(generateBlobName())
         destURL.create(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1)
-        bu.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+        bc.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
 
         when:
-        destURL.uploadPagesFromURLWithResponse(pageRange, bu.getBlobUrl(), null,
+        destURL.uploadPagesFromURLWithResponse(pageRange, bc.getBlobUrl(), null,
             MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null, null)
 
         then:
@@ -380,18 +382,18 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Upload page from URL destination AC"() {
         setup:
-        cu.setAccessPolicyWithResponse(PublicAccessType.CONTAINER, null, null, null, null)
-        def sourceURL = cu.getPageBlobClient(generateBlobName())
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def sourceURL = cc.getPageBlobClient(generateBlobName())
         sourceURL.create(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1)
         sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
 
         def pac = new PageBlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bc, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
-                .ifMatch(setupBlobMatchCondition(bu, match))
+                .ifMatch(setupBlobMatchCondition(bc, match))
                 .ifNoneMatch(noneMatch))
             .sequenceNumberAccessConditions(new SequenceNumberAccessConditions()
                 .ifSequenceNumberLessThan(sequenceNumberLT)
@@ -399,7 +401,7 @@ class PageBlobAPITest extends APISpec {
                 .ifSequenceNumberEqualTo(sequenceNumberEqual))
 
         expect:
-        bu.uploadPagesFromURLWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, pac, null, null, null).statusCode() == 201
+        bc.uploadPagesFromURLWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, pac, null, null, null).statusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
@@ -417,14 +419,14 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Upload page from URL destination AC fail"() {
         setup:
-        cu.setAccessPolicyWithResponse(PublicAccessType.CONTAINER, null, null, null, null)
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
 
-        def sourceURL = cu.getPageBlobClient(generateBlobName())
+        def sourceURL = cc.getPageBlobClient(generateBlobName())
         sourceURL.create(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1)
         sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
 
-        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        noneMatch = setupBlobMatchCondition(bc, noneMatch)
         def pac = new PageBlobAccessConditions()
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
             .modifiedAccessConditions(new ModifiedAccessConditions()
@@ -438,7 +440,7 @@ class PageBlobAPITest extends APISpec {
                 .ifSequenceNumberEqualTo(sequenceNumberEqual))
 
         when:
-        bu.uploadPagesFromURLWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, pac, null, null, null)
+        bc.uploadPagesFromURLWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, pac, null, null, null)
 
         then:
         thrown(StorageException)
@@ -458,8 +460,8 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Upload page from URL source AC"() {
         setup:
-        cu.setAccessPolicyWithResponse(PublicAccessType.CONTAINER, null, null, null, null)
-        def sourceURL = cu.getPageBlobClient(generateBlobName())
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def sourceURL = cc.getPageBlobClient(generateBlobName())
         sourceURL.create(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1)
         sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
@@ -472,7 +474,7 @@ class PageBlobAPITest extends APISpec {
             .sourceIfNoneMatch(sourceIfNoneMatch)
 
         expect:
-        bu.uploadPagesFromURLWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, null, smac, null, null).statusCode() == 201
+        bc.uploadPagesFromURLWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, null, smac, null, null).statusCode() == 201
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
@@ -486,8 +488,8 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Upload page from URL source AC fail"() {
         setup:
-        cu.setAccessPolicyWithResponse(PublicAccessType.CONTAINER, null, null, null, null)
-        def sourceURL = cu.getPageBlobClient(generateBlobName())
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def sourceURL = cc.getPageBlobClient(generateBlobName())
         sourceURL.create(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1)
         sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
@@ -499,8 +501,7 @@ class PageBlobAPITest extends APISpec {
             .sourceIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch))
 
         when:
-        bu.uploadPagesFromURLWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, null, smac, null, null)
-
+        bc.uploadPagesFromURLWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, null, smac, null, null)
         then:
         thrown(StorageException)
 
@@ -514,14 +515,14 @@ class PageBlobAPITest extends APISpec {
 
     def "Clear page"() {
         setup:
-        bu.uploadPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
+        bc.uploadPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null)
 
         when:
-        Response<PageBlobItem> response = bu.clearPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1), null, null, null)
+        Response<PageBlobItem> response = bc.clearPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1), null, null, null)
 
         then:
-        bu.getPageRanges(new BlobRange(0)).pageRange().size() == 0
+        bc.getPageRanges(new BlobRange(0)).pageRange().size() == 0
         validateBasicHeaders(response.headers())
         response.value().contentMD5() == null
         response.value().blobSequenceNumber() == 0
@@ -529,16 +530,16 @@ class PageBlobAPITest extends APISpec {
 
     def "Clear page min"() {
         expect:
-        bu.clearPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1))
+        bc.clearPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1))
     }
 
     @Unroll
     def "Clear pages AC"() {
         setup:
-        bu.uploadPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
+        bc.uploadPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
-        match = setupBlobMatchCondition(bu, match)
-        leaseID = setupBlobLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bc, match)
+        leaseID = setupBlobLeaseCondition(bc, leaseID)
         def pac = new PageBlobAccessConditions()
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
             .modifiedAccessConditions(new ModifiedAccessConditions()
@@ -552,7 +553,7 @@ class PageBlobAPITest extends APISpec {
                 .ifSequenceNumberEqualTo(sequenceNumberEqual))
 
         expect:
-        bu.clearPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1), pac, null, null)
+        bc.clearPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1), pac, null, null)
             .statusCode() == 201
 
         where:
@@ -571,10 +572,10 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Clear pages AC fail"() {
         setup:
-        bu.uploadPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
+        bc.uploadPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
-        noneMatch = setupBlobMatchCondition(bu, noneMatch)
-        setupBlobLeaseCondition(bu, leaseID)
+        noneMatch = setupBlobMatchCondition(bc, noneMatch)
+        setupBlobLeaseCondition(bc, leaseID)
         def pac = new PageBlobAccessConditions()
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
             .modifiedAccessConditions(new ModifiedAccessConditions()
@@ -589,7 +590,7 @@ class PageBlobAPITest extends APISpec {
 
 
         when:
-        bu.clearPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1), pac, null, null)
+        bc.clearPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1), pac, null, null)
 
         then:
         thrown(StorageException)
@@ -608,10 +609,10 @@ class PageBlobAPITest extends APISpec {
 
     def "Clear page error"() {
         setup:
-        bu = cu.getPageBlobClient(generateBlobName())
+        bc = cc.getPageBlobClient(generateBlobName())
 
         when:
-        bu.clearPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1))
+        bc.clearPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1))
 
         then:
         thrown(StorageException)
@@ -619,22 +620,22 @@ class PageBlobAPITest extends APISpec {
 
     def "Get page ranges"() {
         setup:
-        bu.uploadPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
+        bc.uploadPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
 
         when:
-        Response<PageList> response = bu.getPageRangesWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), null, null, null)
+        def response = bc.getPageRangesWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), null, null, null)
 
         then:
         response.statusCode() == 200
         response.value().pageRange().size() == 1
         validateBasicHeaders(response.headers())
-        Integer.parseInt(response.headers().value("x-ms-blob-content-length")) == PageBlobClient.PAGE_BYTES
+        Long.parseLong(response.headers().get("x-ms-blob-content-length").value()) == (long) PageBlobClient.PAGE_BYTES
     }
 
     def "Get page ranges min"() {
         when:
-        bu.getPageRanges(null)
+        bc.getPageRanges(null)
 
         then:
         notThrown(StorageException)
@@ -643,8 +644,8 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Get page ranges AC"() {
         setup:
-        match = setupBlobMatchCondition(bu, match)
-        leaseID = setupBlobLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bc, match)
+        leaseID = setupBlobLeaseCondition(bc, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions()
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
             .modifiedAccessConditions(new ModifiedAccessConditions()
@@ -655,7 +656,7 @@ class PageBlobAPITest extends APISpec {
 
 
         when:
-        bu.getPageRangesWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), bac, null, null)
+        bc.getPageRangesWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), bac, null, null)
 
         then:
         notThrown(StorageException)
@@ -674,15 +675,15 @@ class PageBlobAPITest extends APISpec {
     def "Get page ranges AC fail"() {
         setup:
         BlobAccessConditions bac = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bc, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
                 .ifMatch(match)
-                .ifNoneMatch(setupBlobMatchCondition(bu, noneMatch)))
+                .ifNoneMatch(setupBlobMatchCondition(bc, noneMatch)))
 
         when:
-        bu.getPageRangesWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), bac, null, null)
+        bc.getPageRangesWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), bac, null, null)
 
         then:
         thrown(StorageException)
@@ -698,10 +699,10 @@ class PageBlobAPITest extends APISpec {
 
     def "Get page ranges error"() {
         setup:
-        bu = cu.getPageBlobClient(generateBlobName())
+        bc = cc.getPageBlobClient(generateBlobName())
 
         when:
-        bu.getPageRanges(null)
+        bc.getPageRanges(null)
 
         then:
         thrown(StorageException)
@@ -709,20 +710,20 @@ class PageBlobAPITest extends APISpec {
 
     def "Get page ranges diff"() {
         setup:
-        bu.create(PageBlobClient.PAGE_BYTES * 2)
+        bc.create(PageBlobClient.PAGE_BYTES * 2)
 
-        bu.uploadPages(new PageRange().start(PageBlobClient.PAGE_BYTES).end(PageBlobClient.PAGE_BYTES * 2 - 1),
+        bc.uploadPages(new PageRange().start(PageBlobClient.PAGE_BYTES).end(PageBlobClient.PAGE_BYTES * 2 - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
 
-        String snapshot = bu.createSnapshot().getSnapshotId()
+        def snapId = bc.createSnapshot().getSnapshotId()
 
-        bu.uploadPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
+        bc.uploadPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
 
-        bu.clearPages(new PageRange().start(PageBlobClient.PAGE_BYTES).end(PageBlobClient.PAGE_BYTES * 2 - 1))
+        bc.clearPages(new PageRange().start(PageBlobClient.PAGE_BYTES).end(PageBlobClient.PAGE_BYTES * 2 - 1))
 
         when:
-        Response<PageList> response = bu.getPageRangesDiffWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES * 2), snapshot, null, null, null)
+        def response = bc.getPageRangesDiffWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES * 2), snapId, null, null, null)
 
         then:
         response.value().pageRange().size() == 1
@@ -737,10 +738,10 @@ class PageBlobAPITest extends APISpec {
 
     def "Get page ranges diff min"() {
         setup:
-        String snapshot = bu.createSnapshot().getSnapshotId()
+        def snapId = bc.createSnapshot().getSnapshotId()
 
         when:
-        bu.getPageRangesDiff(null, snapshot).iterator().hasNext()
+        bc.getPageRangesDiff(null, snapId).iterator().hasNext()
 
         then:
         notThrown(StorageException)
@@ -749,17 +750,17 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Get page ranges diff AC"() {
         setup:
-        String snapshot = bu.createSnapshot().getSnapshotId()
+        def snapId = bc.createSnapshot().getSnapshotId()
         BlobAccessConditions bac = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bc, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
-                .ifMatch(setupBlobMatchCondition(bu, match))
+                .ifMatch(setupBlobMatchCondition(bc, match))
                 .ifNoneMatch(noneMatch))
 
         when:
-        bu.getPageRangesDiffWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), snapshot, bac, null, null)
+        bc.getPageRangesDiffWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), snapId, bac, null, null)
 
         then:
         notThrown(StorageException)
@@ -777,18 +778,18 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Get page ranges diff AC fail"() {
         setup:
-        String snapshot = bu.createSnapshot()
+        def snapId = bc.createSnapshot().getSnapshotId()
 
         BlobAccessConditions bac = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bc, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
                 .ifMatch(match)
-                .ifNoneMatch(setupBlobMatchCondition(bu, noneMatch)))
+                .ifNoneMatch(setupBlobMatchCondition(bc, noneMatch)))
 
         when:
-        bu.getPageRangesDiffWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), snapshot, bac, null, null)
+        bc.getPageRangesDiffWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), snapId, bac, null, null)
 
         then:
         thrown(StorageException)
@@ -804,10 +805,10 @@ class PageBlobAPITest extends APISpec {
 
     def "Get page ranges diff error"() {
         setup:
-        bu = cu.getPageBlobClient(generateBlobName())
+        bc = cc.getPageBlobClient(generateBlobName())
 
         when:
-        bu.getPageRangesDiff(null, "snapshot")
+        bc.getPageRangesDiff(null, "snapshot")
 
         then:
         thrown(StorageException)
@@ -819,7 +820,7 @@ class PageBlobAPITest extends APISpec {
         def range = new PageRange().start(start).end(end)
 
         when:
-        bu.clearPages(range)
+        bc.clearPages(range)
 
         then:
         thrown(IllegalArgumentException)
@@ -836,32 +837,32 @@ class PageBlobAPITest extends APISpec {
 
     def "Resize"() {
         setup:
-        Response<PageBlobItem> response = bu.resizeWithResponse(PageBlobClient.PAGE_BYTES * 2, null, null, null)
+        def response = bc.resizeWithResponse(PageBlobClient.PAGE_BYTES * 2, null, null, null)
 
         expect:
-        Integer.parseInt(bu.getPropertiesWithResponse(null, null, null).headers().value("Content-Length")) == PageBlobClient.PAGE_BYTES * 2
+        Integer.parseInt(bc.getPropertiesWithResponse(null, null, null).headers().value("Content-Length")) == PageBlobClient.PAGE_BYTES * 2
         validateBasicHeaders(response.headers())
         response.value().blobSequenceNumber() != null
     }
 
     def "Resize min"() {
         expect:
-        bu.resizeWithResponse(PageBlobClient.PAGE_BYTES, null, null, null).statusCode() == 200
+        bc.resizeWithResponse(PageBlobClient.PAGE_BYTES, null, null, null).statusCode() == 200
     }
 
     @Unroll
     def "Resize AC"() {
         setup:
         BlobAccessConditions bac = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bc, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
-                .ifMatch(setupBlobMatchCondition(bu, match))
+                .ifMatch(setupBlobMatchCondition(bc, match))
                 .ifNoneMatch(noneMatch))
 
         expect:
-        bu.resizeWithResponse(PageBlobClient.PAGE_BYTES * 2, bac, null, null).statusCode() == 200
+        bc.resizeWithResponse(PageBlobClient.PAGE_BYTES * 2, bac, null, null).statusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -877,15 +878,15 @@ class PageBlobAPITest extends APISpec {
     def "Resize AC fail"() {
         setup:
         BlobAccessConditions bac = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bc, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
                 .ifMatch(match)
-                .ifNoneMatch(setupBlobMatchCondition(bu, noneMatch)))
+                .ifNoneMatch(setupBlobMatchCondition(bc, noneMatch)))
 
         when:
-        bu.resizeWithResponse(PageBlobClient.PAGE_BYTES * 2, bac, null, null)
+        bc.resizeWithResponse(PageBlobClient.PAGE_BYTES * 2, bac, null, null)
 
         then:
         thrown(StorageException)
@@ -901,10 +902,10 @@ class PageBlobAPITest extends APISpec {
 
     def "Resize error"() {
         setup:
-        bu = cu.getPageBlobClient(generateBlobName())
+        bc = cc.getPageBlobClient(generateBlobName())
 
         when:
-        bu.resize(0)
+        bc.resize(0)
 
         then:
         thrown(StorageException)
@@ -913,10 +914,10 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Sequence number"() {
         setup:
-        Response<PageBlobItem> response = bu.updateSequenceNumberWithResponse(action, number, null, null, null)
+        Response<PageBlobItem> response = bc.updateSequenceNumberWithResponse(action, number, null, null, null)
 
         expect:
-        Integer.parseInt(bu.getPropertiesWithResponse(null, null, null).headers().value("x-ms-blob-sequence-number")) == result
+        Integer.parseInt(bc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-blob-sequence-number")) == result
         validateBasicHeaders(response.headers())
         response.value().blobSequenceNumber() == result
 
@@ -929,22 +930,22 @@ class PageBlobAPITest extends APISpec {
 
     def "Sequence number min"() {
         expect:
-        bu.updateSequenceNumberWithResponse(SequenceNumberActionType.INCREMENT, null, null, null, null).statusCode() == 200
+        bc.updateSequenceNumberWithResponse(SequenceNumberActionType.INCREMENT, null, null, null, null).statusCode() == 200
     }
 
     @Unroll
     def "Sequence number AC"() {
         setup:
         BlobAccessConditions bac = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bc, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
-                .ifMatch(setupBlobMatchCondition(bu, match))
+                .ifMatch(setupBlobMatchCondition(bc, match))
                 .ifNoneMatch(noneMatch))
 
         expect:
-        bu.updateSequenceNumberWithResponse(SequenceNumberActionType.UPDATE, 1, bac, null, null)
+        bc.updateSequenceNumberWithResponse(SequenceNumberActionType.UPDATE, 1, bac, null, null)
             .statusCode() == 200
 
         where:
@@ -961,15 +962,15 @@ class PageBlobAPITest extends APISpec {
     def "Sequence number AC fail"() {
         setup:
         BlobAccessConditions bac = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bc, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
                 .ifMatch(match)
-                .ifNoneMatch(setupBlobMatchCondition(bu, noneMatch)))
+                .ifNoneMatch(setupBlobMatchCondition(bc, noneMatch)))
 
         when:
-        bu.updateSequenceNumberWithResponse(SequenceNumberActionType.UPDATE, 1, bac, null, null)
+        bc.updateSequenceNumberWithResponse(SequenceNumberActionType.UPDATE, 1, bac, null, null)
 
         then:
         thrown(StorageException)
@@ -985,10 +986,10 @@ class PageBlobAPITest extends APISpec {
 
     def "Sequence number error"() {
         setup:
-        bu = cu.getPageBlobClient(generateBlobName())
+        bc = cc.getPageBlobClient(generateBlobName())
 
         when:
-        bu.updateSequenceNumber(SequenceNumberActionType.UPDATE, 0)
+        bc.updateSequenceNumber(SequenceNumberActionType.UPDATE, 0)
 
         then:
         thrown(StorageException)
@@ -996,16 +997,16 @@ class PageBlobAPITest extends APISpec {
 
     def "Start incremental copy"() {
         setup:
-        cu.setAccessPolicy(PublicAccessType.BLOB, null)
-        PageBlobClient bu2 = cu.getPageBlobClient(generateBlobName())
-        String snapshot = bu.createSnapshot().getSnapshotId()
+        cc.setAccessPolicy(PublicAccessType.BLOB, null)
+        def bc2 = cc.getPageBlobClient(generateBlobName())
+        def snapId = bc.createSnapshot().getSnapshotId()
 
-        Response<CopyStatusType> copyResponse = bu2.copyIncrementalWithResponse(bu.getBlobUrl(), snapshot, null, null, null)
-        String status = copyResponse.value().toString()
+        def copyResponse = bc2.copyIncrementalWithResponse(bc.getBlobUrl(), snapId, null, null, null)
+        def status = copyResponse.value().toString()
 
         OffsetDateTime start = OffsetDateTime.now()
         while (status != CopyStatusType.SUCCESS.toString()) {
-            status = bu2.getPropertiesWithResponse(null, null, null).headers().value("x-ms-copy-status")
+            status = bc2.getPropertiesWithResponse(null, null, null).headers().value("x-ms-copy-status")
             OffsetDateTime currentTime = OffsetDateTime.now()
             if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long")
@@ -1014,7 +1015,7 @@ class PageBlobAPITest extends APISpec {
         }
 
         expect:
-        Response<BlobProperties> propertiesResponse = bu2.getPropertiesWithResponse(null, null, null)
+        Response<BlobProperties> propertiesResponse = bc2.getPropertiesWithResponse(null, null, null)
         Boolean.parseBoolean(propertiesResponse.headers().value("x-ms-incremental-copy"))
         propertiesResponse.headers().value("x-ms-copy-destination-snapshot") != null
         validateBasicHeaders(copyResponse.headers())
@@ -1024,23 +1025,23 @@ class PageBlobAPITest extends APISpec {
 
     def "Start incremental copy min"() {
         setup:
-        cu.setAccessPolicy(PublicAccessType.BLOB, null)
-        PageBlobClient bu2 = cu.getPageBlobClient(generateBlobName())
-        String snapshot = bu.createSnapshot().getSnapshotId()
+        cc.setAccessPolicy(PublicAccessType.BLOB, null)
+        def bc2 = cc.getPageBlobClient(generateBlobName())
+        String snapshot = bc.createSnapshot().getSnapshotId()
 
         expect:
-        bu2.copyIncrementalWithResponse(bu.getBlobUrl(), snapshot, null, null, null).statusCode() == 202
+        bc2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, null, null, null).statusCode() == 202
     }
 
     @Unroll
     def "Start incremental copy AC"() {
         setup:
-        cu.setAccessPolicy(PublicAccessType.BLOB, null)
-        PageBlobClient bu2 = cu.getPageBlobClient(generateBlobName())
-        String snapshot = bu.createSnapshot().getSnapshotId()
+        cc.setAccessPolicy(PublicAccessType.BLOB, null)
+        PageBlobClient bu2 = cc.getPageBlobClient(generateBlobName())
+        String snapshot = bc.createSnapshot().getSnapshotId()
 
-        Response<CopyStatusType> copyResponse = bu2.copyIncrementalWithResponse(bu.getBlobUrl(), snapshot, null, null, null)
-        String status = copyResponse.value().toString()
+        def copyResponse = bu2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, null, null, null)
+        def status = copyResponse.value().toString()
 
         OffsetDateTime start = OffsetDateTime.now()
         while (status != CopyStatusType.SUCCESS.toString()) {
@@ -1052,7 +1053,7 @@ class PageBlobAPITest extends APISpec {
             sleep(1000)
         }
 
-        snapshot = bu.createSnapshot().getSnapshotId()
+        snapshot = bc.createSnapshot().getSnapshotId()
         match = setupBlobMatchCondition(bu2, match)
         def mac = new ModifiedAccessConditions()
             .ifModifiedSince(modified)
@@ -1061,7 +1062,7 @@ class PageBlobAPITest extends APISpec {
             .ifNoneMatch(noneMatch)
 
         expect:
-        bu2.copyIncrementalWithResponse(bu.getBlobUrl(), snapshot, mac, null, null).statusCode() == 202
+        bu2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, mac, null, null).statusCode() == 202
 
         where:
         modified | unmodified | match        | noneMatch
@@ -1075,11 +1076,11 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Start incremental copy AC fail"() {
         setup:
-        cu.setAccessPolicy(PublicAccessType.BLOB, null)
-        PageBlobClient bu2 = cu.getPageBlobClient(generateBlobName())
-        String snapshot = bu.createSnapshot().getSnapshotId()
-        bu2.copyIncremental(bu.getBlobUrl(), snapshot)
-        snapshot = bu.createSnapshot().getSnapshotId()
+        cc.setAccessPolicy(PublicAccessType.BLOB, null)
+        PageBlobClient bu2 = cc.getPageBlobClient(generateBlobName())
+        String snapshot = bc.createSnapshot().getSnapshotId()
+        bu2.copyIncremental(bc.getBlobUrl(), snapshot)
+        snapshot = bc.createSnapshot().getSnapshotId()
         noneMatch = setupBlobMatchCondition(bu2, noneMatch)
         def mac = new ModifiedAccessConditions()
             .ifModifiedSince(modified)
@@ -1088,7 +1089,7 @@ class PageBlobAPITest extends APISpec {
             .ifNoneMatch(noneMatch)
 
         when:
-        bu2.copyIncrementalWithResponse(bu.getBlobUrl(), snapshot, mac, null, null).statusCode()
+        bu2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, mac, null, null)
 
         then:
         thrown(StorageException)
@@ -1103,10 +1104,10 @@ class PageBlobAPITest extends APISpec {
 
     def "Start incremental copy error"() {
         setup:
-        bu = cu.getPageBlobClient(generateBlobName())
+        bc = cc.getPageBlobClient(generateBlobName())
 
         when:
-        bu.copyIncremental(new URL("https://www.error.com"), "snapshot")
+        bc.copyIncremental(new URL("https://www.error.com"), "snapshot")
 
         then:
         thrown(StorageException)

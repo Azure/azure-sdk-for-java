@@ -11,6 +11,7 @@ import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
@@ -235,6 +236,34 @@ public final class Utility {
         } else {
             return response.block(timeout);
         }
+    }
+
+    /**
+     * Applies a timeout to a publisher if the given timeout is not null.
+     *
+     * @param publisher Mono to apply optional timeout to.
+     * @param timeout Optional timeout.
+     * @param <T> Return type of the Mono.
+     * @return Mono with an applied timeout, if any.
+     */
+    public static <T> Mono<T> applyOptionalTimeout(Mono<T> publisher, Duration timeout) {
+        return timeout == null
+            ? publisher
+            : publisher.timeout(timeout);
+    }
+
+    /**
+     * Applies a timeout to a publisher if the given timeout is not null.
+     *
+     * @param publisher Flux to apply optional timeout to.
+     * @param timeout Optional timeout.
+     * @param <T> Return type of the Flux.
+     * @return Flux with an applied timeout, if any.
+     */
+    public static <T> Flux<T> applyOptionalTimeout(Flux<T> publisher, Duration timeout) {
+        return timeout == null
+            ? publisher
+            : publisher.timeout(timeout);
     }
 
     /**
