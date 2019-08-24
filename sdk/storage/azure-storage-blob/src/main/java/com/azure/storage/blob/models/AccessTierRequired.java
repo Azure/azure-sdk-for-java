@@ -28,6 +28,11 @@ public final class AccessTierRequired extends ExpandableStringEnum<AccessTierReq
     public static final AccessTierRequired P10 = fromString("P10");
 
     /**
+     * Static value P15 for AccessTierRequired.
+     */
+    public static final AccessTierRequired P15 = fromString("P15");
+
+    /**
      * Static value P20 for AccessTierRequired.
      */
     public static final AccessTierRequired P20 = fromString("P20");
@@ -46,6 +51,21 @@ public final class AccessTierRequired extends ExpandableStringEnum<AccessTierReq
      * Static value P50 for AccessTierRequired.
      */
     public static final AccessTierRequired P50 = fromString("P50");
+
+    /**
+     * Static value P60 for AccessTierRequired.
+     */
+    public static final AccessTierRequired P60 = fromString("P60");
+
+    /**
+     * Static value P70 for AccessTierRequired.
+     */
+    public static final AccessTierRequired P70 = fromString("P70");
+
+    /**
+     * Static value P80 for AccessTierRequired.
+     */
+    public static final AccessTierRequired P80 = fromString("P80");
 
     /**
      * Static value Hot for AccessTierRequired.
