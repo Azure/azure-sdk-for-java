@@ -1,28 +1,30 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefilemaxoverloadinvalidargs0923498c?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefilemaxoverloadinvalidargs08708515?restype=share",
     "Headers" : {
-      "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : {
-      "x-ms-version" : "2018-11-09",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7258EC91E451B\"",
-      "Last-Modified" : "Tue, 20 Aug 2019 16:52:28 GMT",
+      "ETag" : "\"0x8D72829DF6F1101\"",
+      "Last-Modified" : "Sat, 24 Aug 2019 00:27:40 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "247e9e74-001a-0050-3e77-572f7e000000",
-      "Date" : "Tue, 20 Aug 2019 16:52:28 GMT"
-    }
+      "x-ms-request-id" : "fa95788a-b01a-006b-7212-5a6d20000000",
+      "Date" : "Sat, 24 Aug 2019 00:27:40 GMT",
+      "x-ms-client-request-id" : "6d7d2610-4350-42e2-8512-0de92c7e42a8"
+    },
+    "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefilemaxoverloadinvalidargs0923498c/test%0cile",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefilemaxoverloadinvalidargs08708515/test%0cile",
     "Headers" : {
-      "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : {
       "Server" : "Microsoft-HTTPAPI/2.0",
@@ -31,9 +33,10 @@
       "Content-Length" : "324",
       "StatusCode" : "400",
       "Body" : "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"\"http://www.w3.org/TR/html4/strict.dtd\">\r\n<HTML><HEAD><TITLE>Bad Request</TITLE>\r\n<META HTTP-EQUIV=\"Content-Type\" Content=\"text/html; charset=us-ascii\"></HEAD>\r\n<BODY><h2>Bad Request - Invalid URL</h2>\r\n<hr><p>HTTP Error 400. The request URL is invalid.</p>\r\n</BODY></HTML>\r\n",
-      "Date" : "Tue, 20 Aug 2019 16:52:28 GMT",
+      "Date" : "Sat, 24 Aug 2019 00:27:40 GMT",
       "Content-Type" : "text/html; charset=us-ascii"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "shareasyncapitestscreatefilemaxoverloadinvalidargs0923498c" ]
+  "variables" : [ "shareasyncapitestscreatefilemaxoverloadinvalidargs08708515" ]
 }
