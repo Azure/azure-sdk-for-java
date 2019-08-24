@@ -50,7 +50,7 @@ class APISpec extends Specification {
         testResourceName = new TestResourceNamer(methodName, testMode,
             interceptorManager.getRecordedData())
         if (getTestMode() == TestMode.RECORD) {
-            connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING")
+            connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
         } else {
             connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;" +
                 "AccountKey=atestaccountkey;EndpointSuffix=core.windows.net"
