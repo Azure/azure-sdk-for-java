@@ -19,6 +19,7 @@ import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.network.v2019_06_01.implementation.NetworkManager;
 import java.util.List;
+import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.v2019_06_01.implementation.AzureFirewallInner;
 
 /**
@@ -34,6 +35,16 @@ public interface AzureFirewall extends HasInner<AzureFirewallInner>, Resource, G
      * @return the etag value.
      */
     String etag();
+
+    /**
+     * @return the firewallPolicy value.
+     */
+    SubResource firewallPolicy();
+
+    /**
+     * @return the hubIpAddresses value.
+     */
+    HubIPAddresses hubIpAddresses();
 
     /**
      * @return the ipConfigurations value.
@@ -59,6 +70,11 @@ public interface AzureFirewall extends HasInner<AzureFirewallInner>, Resource, G
      * @return the threatIntelMode value.
      */
     AzureFirewallThreatIntelMode threatIntelMode();
+
+    /**
+     * @return the virtualHub value.
+     */
+    SubResource virtualHub();
 
     /**
      * @return the zones value.
@@ -97,6 +113,18 @@ public interface AzureFirewall extends HasInner<AzureFirewallInner>, Resource, G
              * @return the next definition stage
              */
             WithCreate withApplicationRuleCollections(List<AzureFirewallApplicationRuleCollection> applicationRuleCollections);
+        }
+
+        /**
+         * The stage of the azurefirewall definition allowing to specify FirewallPolicy.
+         */
+        interface WithFirewallPolicy {
+            /**
+             * Specifies firewallPolicy.
+             * @param firewallPolicy The firewallPolicy associated with this azure firewall
+             * @return the next definition stage
+             */
+            WithCreate withFirewallPolicy(SubResource firewallPolicy);
         }
 
         /**
@@ -160,6 +188,18 @@ public interface AzureFirewall extends HasInner<AzureFirewallInner>, Resource, G
         }
 
         /**
+         * The stage of the azurefirewall definition allowing to specify VirtualHub.
+         */
+        interface WithVirtualHub {
+            /**
+             * Specifies virtualHub.
+             * @param virtualHub The virtualHub to which the firewall belongs
+             * @return the next definition stage
+             */
+            WithCreate withVirtualHub(SubResource virtualHub);
+        }
+
+        /**
          * The stage of the azurefirewall definition allowing to specify Zones.
          */
         interface WithZones {
@@ -176,13 +216,13 @@ public interface AzureFirewall extends HasInner<AzureFirewallInner>, Resource, G
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<AzureFirewall>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithApplicationRuleCollections, DefinitionStages.WithIpConfigurations, DefinitionStages.WithNatRuleCollections, DefinitionStages.WithNetworkRuleCollections, DefinitionStages.WithProvisioningState, DefinitionStages.WithThreatIntelMode, DefinitionStages.WithZones {
+        interface WithCreate extends Creatable<AzureFirewall>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithApplicationRuleCollections, DefinitionStages.WithFirewallPolicy, DefinitionStages.WithIpConfigurations, DefinitionStages.WithNatRuleCollections, DefinitionStages.WithNetworkRuleCollections, DefinitionStages.WithProvisioningState, DefinitionStages.WithThreatIntelMode, DefinitionStages.WithVirtualHub, DefinitionStages.WithZones {
         }
     }
     /**
      * The template for a AzureFirewall update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<AzureFirewall>, Resource.UpdateWithTags<Update>, UpdateStages.WithApplicationRuleCollections, UpdateStages.WithIpConfigurations, UpdateStages.WithNatRuleCollections, UpdateStages.WithNetworkRuleCollections, UpdateStages.WithProvisioningState, UpdateStages.WithThreatIntelMode, UpdateStages.WithZones {
+    interface Update extends Appliable<AzureFirewall>, Resource.UpdateWithTags<Update>, UpdateStages.WithApplicationRuleCollections, UpdateStages.WithFirewallPolicy, UpdateStages.WithIpConfigurations, UpdateStages.WithNatRuleCollections, UpdateStages.WithNetworkRuleCollections, UpdateStages.WithProvisioningState, UpdateStages.WithThreatIntelMode, UpdateStages.WithVirtualHub, UpdateStages.WithZones {
     }
 
     /**
@@ -199,6 +239,18 @@ public interface AzureFirewall extends HasInner<AzureFirewallInner>, Resource, G
              * @return the next update stage
              */
             Update withApplicationRuleCollections(List<AzureFirewallApplicationRuleCollection> applicationRuleCollections);
+        }
+
+        /**
+         * The stage of the azurefirewall update allowing to specify FirewallPolicy.
+         */
+        interface WithFirewallPolicy {
+            /**
+             * Specifies firewallPolicy.
+             * @param firewallPolicy The firewallPolicy associated with this azure firewall
+             * @return the next update stage
+             */
+            Update withFirewallPolicy(SubResource firewallPolicy);
         }
 
         /**
@@ -259,6 +311,18 @@ public interface AzureFirewall extends HasInner<AzureFirewallInner>, Resource, G
              * @return the next update stage
              */
             Update withThreatIntelMode(AzureFirewallThreatIntelMode threatIntelMode);
+        }
+
+        /**
+         * The stage of the azurefirewall update allowing to specify VirtualHub.
+         */
+        interface WithVirtualHub {
+            /**
+             * Specifies virtualHub.
+             * @param virtualHub The virtualHub to which the firewall belongs
+             * @return the next update stage
+             */
+            Update withVirtualHub(SubResource virtualHub);
         }
 
         /**
