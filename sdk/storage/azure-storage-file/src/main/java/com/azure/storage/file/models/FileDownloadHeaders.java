@@ -197,7 +197,7 @@ public final class FileDownloadHeaders {
      * Creation time for the file.
      */
     @JsonProperty(value = "x-ms-file-creation-time")
-    private OffsetDateTime fileCreationTime;
+    private DateTimeRfc1123 fileCreationTime;
 
     /*
      * Last write time for the file.
@@ -830,7 +830,10 @@ public final class FileDownloadHeaders {
      * @return the fileCreationTime value.
      */
     public OffsetDateTime fileCreationTime() {
-        return this.fileCreationTime;
+        if (this.fileCreationTime == null) {
+            return null;
+        }
+        return this.fileCreationTime.dateTime();
     }
 
     /**
@@ -840,7 +843,11 @@ public final class FileDownloadHeaders {
      * @return the FileDownloadHeaders object itself.
      */
     public FileDownloadHeaders fileCreationTime(OffsetDateTime fileCreationTime) {
-        this.fileCreationTime = fileCreationTime;
+        if (fileCreationTime == null) {
+            this.fileCreationTime = null;
+        } else {
+            this.fileCreationTime = new DateTimeRfc1123(fileCreationTime);
+        }
         return this;
     }
 
