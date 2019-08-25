@@ -339,8 +339,8 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
     <!--CUSTOM CHECKS-->
     <!-- Good Logging Practice
-    1) ServiceLogger exists in public API should named 'logger'
-    2) Non-static ServiceLogger instance logger
+    1) ClientLogger in public API should all named 'logger'
+    2) ClientLogger should be non-static instance logger
     3) All classes should use ServiceLogger as logger only but except ServiceLogger itself -->
     <module name="com.azure.tools.checkstyle.checks.GoodLoggingCheck"/>
   </module>

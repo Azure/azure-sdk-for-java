@@ -68,7 +68,7 @@ public class GoodLoggingCheck extends AbstractCheck {
     public void visitToken(DetailAST ast) {
         switch (ast.getType()) {
             case TokenTypes.IMPORT:
-                String importClassPath = FullIdent.createFullIdentBelow(ast).getText();
+                final String importClassPath = FullIdent.createFullIdentBelow(ast).getText();
                 hasClientLoggerImported = hasClientLoggerImported || importClassPath.equals(CLIENT_LOGGER_PATH);
                 for (final String logger : INVALID_LOG_SET) {
                     if (importClassPath.startsWith(logger)) {
@@ -106,12 +106,13 @@ public class GoodLoggingCheck extends AbstractCheck {
     }
 
     /**
-     * check if the VARIABLE_DEF AST node type is 'ClientLogger'.
+     * Check if the VARIABLE_DEF AST node type is 'ClientLogger'.
+     *
      * @param varDefAST VARIABLE_DEF AST node
      * @return true if the variable type is 'ClientLogger'.
      */
     private boolean isTypeClientLogger(DetailAST varDefAST) {
-        DetailAST typeAST = varDefAST.findFirstToken(TokenTypes.TYPE);
+        final DetailAST typeAST = varDefAST.findFirstToken(TokenTypes.TYPE);
         if (typeAST == null) {
             return false;
         }
@@ -127,7 +128,7 @@ public class GoodLoggingCheck extends AbstractCheck {
      */
     private void checkLoggerInstantiation(DetailAST literalNewToken) {
         final DetailAST identToken = literalNewToken.findFirstToken(TokenTypes.IDENT);
-        // Not named 'logger'
+        // Not ClientLogger instance
         if (identToken == null || !identToken.getText().equals(CLIENT_LOGGER)) {
             return;
         }

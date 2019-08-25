@@ -106,7 +106,7 @@
             files=".*[/\\]implementation[/\\].*\.java"/>
 
   <!-- Don't apply custom Checkstyle rules to files under samples package -->
-  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|HttpPipelinePolicyCheck|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck)"
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|HttpPipelinePolicyCheck|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck)"
             files=".*[/\\]samples[/\\].*\.java"/>
 
   <!-- Don't check for JavaDocPackage in samples or tests -->
