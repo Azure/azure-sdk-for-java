@@ -9,8 +9,10 @@ import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,15 +28,18 @@ import java.util.Set;
 public class GoodLoggingCheck extends AbstractCheck {
     private static final String CLIENT_LOGGER_PATH = "com.azure.core.util.logging.ClientLogger";
     private static final String CLIENT_LOGGER = "ClientLogger";
+    private static final String LOGGER = "logger";
+
     private static final String LOGGER_NAME_ERROR = "ClientLogger instance naming: use ''%s'' instead of ''%s'' for consistency.";
     private static final String STATIC_LOGGER_ERROR = "Reference to ClientLogger should not be static: remove static modifier.";
     private static final String NOT_CLIENT_LOGGER_ERROR = "Do not use %s class. Use ''%s'' as a logging mechanism instead of ''%s''.";
-    private static final String LOGGER = "logger";
 
+    // Boolean indicator that indicates if the java class imports ClientLogger
     private boolean hasClientLoggerImported;
-    private String className;
-
-    private static final Set<String> INVALID_LOG_SET = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+    // A container stores the class names, pop top element if exist the class name AST node
+    private Deque<String> classNameDeque = new ArrayDeque<>();
+    // Collection of Invalid logging packages
+    private static final Set<String> INVALID_LOGS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         "org.slf4j", "org.apache.logging.log4j", "java.util.logging"
     )));
 
@@ -52,7 +57,7 @@ public class GoodLoggingCheck extends AbstractCheck {
     public int[] getRequiredTokens() {
         return new int[] {
             TokenTypes.IMPORT,
-            TokenTypes.LITERAL_CLASS,
+            TokenTypes.CLASS_DEF,
             TokenTypes.LITERAL_NEW,
             TokenTypes.VARIABLE_DEF,
             TokenTypes.METHOD_CALL
@@ -65,23 +70,27 @@ public class GoodLoggingCheck extends AbstractCheck {
     }
 
     @Override
+    public void leaveToken(DetailAST ast) {
+        if (ast.getType() == TokenTypes.CLASS_DEF) {
+            classNameDeque.pollFirst();
+        }
+    }
+
+    @Override
     public void visitToken(DetailAST ast) {
         switch (ast.getType()) {
             case TokenTypes.IMPORT:
                 final String importClassPath = FullIdent.createFullIdentBelow(ast).getText();
                 hasClientLoggerImported = hasClientLoggerImported || importClassPath.equals(CLIENT_LOGGER_PATH);
-                for (final String logger : INVALID_LOG_SET) {
-                    if (importClassPath.startsWith(logger)) {
-                        // Checks no use any external logger class.
-                        log(ast, String.format(NOT_CLIENT_LOGGER_ERROR, "external logger", CLIENT_LOGGER_PATH, logger));
+
+                INVALID_LOGS.forEach(item -> {
+                    if (importClassPath.startsWith(item)) {
+                        log(ast, String.format(NOT_CLIENT_LOGGER_ERROR, "external logger", CLIENT_LOGGER_PATH, item));
                     }
-                }
+                });
                 break;
-            case TokenTypes.LITERAL_CLASS:
-                if (ast.getNextSibling() == null) {
-                    break;
-                }
-                className = ast.getNextSibling().getText();
+            case TokenTypes.CLASS_DEF:
+                classNameDeque.addFirst(ast.findFirstToken(TokenTypes.IDENT).getText());
                 break;
             case TokenTypes.LITERAL_NEW:
                 checkLoggerInstantiation(ast);
@@ -132,18 +141,21 @@ public class GoodLoggingCheck extends AbstractCheck {
         if (identToken == null || !identToken.getText().equals(CLIENT_LOGGER)) {
             return;
         }
-        // Edge cases
-        final DetailAST elistToken = literalNewToken.findFirstToken(TokenTypes.ELIST);
-        final DetailAST exprToken = elistToken.findFirstToken(TokenTypes.EXPR);
-        if (exprToken.getFirstChild().getType() != TokenTypes.DOT) {
-            return;
-        }
-        // Check instantiation of ClientLogger
-        final String containerClassName = FullIdent.createFullIdentBelow(exprToken).getText();
-        // Add suffix of '.class' at the end ot class name
-        if (!containerClassName.equals(className + ".class")) {
-            log(literalNewToken, String.format("Not newing a ClientLogger with matching class name. Use ''%s.class'' instead of ''%s.class''", className, containerClassName));
-        }
+        // LITERAL_NEW node always has ELIST node below
+        TokenUtil.findFirstTokenByPredicate(literalNewToken.findFirstToken(TokenTypes.ELIST), exprToken -> {
+            // Skip check if not EXPR node or if has no DOT node below. EXPR always has children below
+            if (exprToken.getType() != TokenTypes.EXPR || exprToken.getFirstChild().getType() != TokenTypes.DOT) {
+                return false;
+            }
+            // Check instantiation of ClientLogger
+            final String containerClassName = FullIdent.createFullIdent(exprToken.getFirstChild()).getText();
+            // Add suffix of '.class' at the end ot class name
+            final String className = classNameDeque.peekFirst();
+            if (!containerClassName.equals(className + ".class")) {
+                log(exprToken, String.format("Not newing a ClientLogger with matching class name. Use ''%s.class'' instead of ''%s''", className, containerClassName));
+            }
+            return true;
+        });
     }
 
     /**
