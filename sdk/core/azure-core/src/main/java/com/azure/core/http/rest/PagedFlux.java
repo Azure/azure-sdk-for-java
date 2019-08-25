@@ -3,11 +3,8 @@
 
 package com.azure.core.http.rest;
 
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import org.reactivestreams.Publisher;
-import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -37,6 +34,16 @@ import reactor.core.publisher.Mono;
  * @see Flux
  */
 public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
+
+    /**
+     * Creates an instance of {@link PagedFlux} that consists of only a single page of results. The only
+     * argument to this constructor therefore is a supplier that fetches the first (and known-only) page of {@code T}.
+     *
+     * @param firstPageRetriever Supplier that retrieves the first .
+     */
+    public PagedFlux(Supplier<Mono<PagedResponse<T>>> firstPageRetriever) {
+        super(firstPageRetriever);
+    }
 
     /**
      * Creates an instance of {@link PagedFlux}. The constructor takes in two arguments. The first
