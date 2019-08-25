@@ -7,6 +7,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.data.common.DocumentResponseConversions;
 import com.azure.search.data.common.SearchPagedResponse;
+import com.azure.search.data.customization.RangeFacetResult;
+import com.azure.search.data.customization.ValueFacetResult;
+import com.azure.search.data.generated.models.FacetResult;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.generated.models.QueryType;
@@ -181,6 +184,75 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
+    public void canSearchWithRangeFacets() {
+        PagedIterable<SearchResult> results = client.search("*", getSearchParametersForRangeFacets(), new SearchRequestOptions());
+        Assert.assertNotNull(results);
+
+        Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
+        while (iterator.hasNext()) {
+            SearchPagedResponse result = (SearchPagedResponse) iterator.next();
+            assertContainKeys(result.items());
+            Assert.assertNotNull(result.facets());
+            List<RangeFacetResult> baseRateFacets = getRangeFacetsForField(result.facets(), "Rooms/BaseRate", 4);
+            List<RangeFacetResult> lastRenovationDateFacets = getRangeFacetsForField(result.facets(), "LastRenovationDate", 2);
+            assertRangeFacets(baseRateFacets, lastRenovationDateFacets);
+        }
+    }
+
+    @Override
+    public void canSearchWithValueFacets() {
+        PagedIterable<SearchResult> results = client.search("*", getSearchParametersForValueFacets(), new SearchRequestOptions());
+        Assert.assertNotNull(results);
+
+        Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
+        while (iterator.hasNext()) {
+            SearchPagedResponse result = (SearchPagedResponse) iterator.next();
+            assertContainKeys(result.items());
+            Map<String, List<FacetResult>> facets = result.facets();
+            Assert.assertNotNull(facets);
+
+            assertValueFacetsEqual(getValueFacetsForField(facets, "Rating", 2),
+                new ArrayList<>(Arrays.asList(new ValueFacetResult(1L, 5),
+                    new ValueFacetResult(4L, 4))));
+
+            assertValueFacetsEqual(getValueFacetsForField(facets, "SmokingAllowed", 2),
+                new ArrayList<>(Arrays.asList(new ValueFacetResult(4L, false),
+                    new ValueFacetResult(2L, true))));
+
+            assertValueFacetsEqual(getValueFacetsForField(facets, "Category", 3),
+                new ArrayList<>(Arrays.asList(new ValueFacetResult(5L, "Budget"),
+                    new ValueFacetResult(1L, "Boutique"),
+                    new ValueFacetResult(1L, "Luxury"))));
+
+            assertValueFacetsEqual(getValueFacetsForField(facets, "LastRenovationDate", 6),
+                new ArrayList<>(Arrays.asList(new ValueFacetResult(1L, "1970-01-01T00:00:00Z"),
+                    new ValueFacetResult(1L, "1982-01-01T00:00:00Z"),
+                    new ValueFacetResult(2L, "1995-01-01T00:00:00Z"),
+                    new ValueFacetResult(1L, "1999-01-01T00:00:00Z"),
+                    new ValueFacetResult(1L, "2010-01-01T00:00:00Z"),
+                    new ValueFacetResult(1L, "2012-01-01T00:00:00Z"))));
+
+            assertValueFacetsEqual(getValueFacetsForField(facets, "Rooms/BaseRate", 4),
+                new ArrayList<>(Arrays.asList(new ValueFacetResult(1L, 2.44),
+                    new ValueFacetResult(1L, 7.69),
+                    new ValueFacetResult(1L, 8.09),
+                    new ValueFacetResult(1L, 9.69))));
+
+            assertValueFacetsEqual(getValueFacetsForField(facets, "Tags", 10),
+                new ArrayList<>(Arrays.asList(new ValueFacetResult(1L, "24-hour front desk service"),
+                    new ValueFacetResult(1L, "air conditioning"),
+                    new ValueFacetResult(4L, "budget"),
+                    new ValueFacetResult(1L, "coffee in lobby"),
+                    new ValueFacetResult(2L, "concierge"),
+                    new ValueFacetResult(1L, "motel"),
+                    new ValueFacetResult(2L, "pool"),
+                    new ValueFacetResult(1L, "restaurant"),
+                    new ValueFacetResult(1L, "view"),
+                    new ValueFacetResult(4L, "wifi"))));
+        }
+    }
+
+    @Override
     public void canSearchWithLuceneSyntax() {
         Map<String, Object> expectedResult = new HashMap<>();
         expectedResult.put("HotelName", "Roach Motel");
@@ -197,7 +269,6 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void canFilterNonNullableType() throws Exception {
-
         List<Map<String, Object>> expectedDocsList = prepareDataForNonNullableTest();
         SearchParameters searchParameters = new SearchParameters()
             .filter("IntValue eq 0 or (Bucket/BucketName eq 'B' and Bucket/Count lt 10)");
@@ -212,7 +283,7 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
-    public void testCanSearchWithSearchModeAll() {
+    public void canSearchWithSearchModeAll() {
         List<Map<String, Object>> response = getSearchResults(client
             .search("Cheapest hotel", new SearchParameters().queryType(SIMPLE).searchMode(ALL),
                 new SearchRequestOptions()));
@@ -222,9 +293,8 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
-    public void testDefaultSearchModeIsAny() {
-        List<Map<String, Object>> response = getSearchResults(
-            client.search("Cheapest hotel", new SearchParameters(), new SearchRequestOptions()));
+    public void defaultSearchModeIsAny() {
+        List<Map<String, Object>> response = getSearchResults(client.search("Cheapest hotel", new SearchParameters(), new SearchRequestOptions()));
         Assert.assertEquals(7, response.size());
         Assert.assertEquals(
             Arrays.asList("2", "10", "3", "4", "5", "1", "9"),
@@ -232,11 +302,9 @@ public class SearchSyncTests extends SearchTestBase {
 
     }
 
-
     @Override
-    public void testCanGetResultCountInSearch() {
-        PagedIterable<SearchResult> results = client
-            .search("*", new SearchParameters().includeTotalResultCount(true), new SearchRequestOptions());
+    public void canGetResultCountInSearch() {
+        PagedIterable<SearchResult> results = client.search("*", new SearchParameters().includeTotalResultCount(true), new SearchRequestOptions());
         Assert.assertNotNull(results);
         Iterator<PagedResponse<SearchResult>> resultsIterator = results.iterableByPage().iterator();
 

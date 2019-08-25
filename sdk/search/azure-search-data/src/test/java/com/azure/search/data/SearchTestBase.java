@@ -4,8 +4,11 @@
 package com.azure.search.data;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.search.data.customization.RangeFacetResult;
+import com.azure.search.data.customization.ValueFacetResult;
 import com.azure.search.data.env.SearchIndexClientTestBase;
 import com.azure.search.data.env.SearchIndexService;
+import com.azure.search.data.generated.models.FacetResult;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.QueryType;
@@ -20,6 +23,8 @@ import org.junit.rules.ExpectedException;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -131,12 +136,81 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
             Collectors.toList());
     }
 
+    protected void assertRangeFacets(List<RangeFacetResult> baseRateFacets, List<RangeFacetResult> lastRenovationDateFacets) {
+        Assert.assertNull(baseRateFacets.get(0).from());
+        Assert.assertEquals(5.0, baseRateFacets.get(0).to());
+        Assert.assertEquals(5.0, baseRateFacets.get(1).from());
+        Assert.assertEquals(8.0, baseRateFacets.get(1).to());
+        Assert.assertEquals(8.0, baseRateFacets.get(2).from());
+        Assert.assertEquals(10.0, baseRateFacets.get(2).to());
+        Assert.assertEquals(10.0, baseRateFacets.get(3).from());
+        Assert.assertNull(baseRateFacets.get(3).to());
+
+        Assert.assertEquals(1, baseRateFacets.get(0).count());
+        Assert.assertEquals(1, baseRateFacets.get(1).count());
+        Assert.assertEquals(1, baseRateFacets.get(2).count());
+        Assert.assertEquals(0, baseRateFacets.get(3).count());
+
+        Assert.assertNull(lastRenovationDateFacets.get(0).from());
+        Assert.assertEquals("2000-01-01T00:00:00.000+0000", lastRenovationDateFacets.get(0).to());
+        Assert.assertEquals("2000-01-01T00:00:00.000+0000", lastRenovationDateFacets.get(1).from());
+        Assert.assertNull(lastRenovationDateFacets.get(1).to());
+
+        Assert.assertEquals(5, lastRenovationDateFacets.get(0).count());
+        Assert.assertEquals(2, lastRenovationDateFacets.get(1).count());
+    }
+
+    protected List<RangeFacetResult> getRangeFacetsForField(Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
+        List<FacetResult> facetCollection = getFacetsForField(facets, expectedField, expectedCount);
+        return facetCollection.stream().map(facetResult -> new RangeFacetResult(facetResult)).collect(Collectors.toList());
+    }
+
+    protected List<ValueFacetResult> getValueFacetsForField(Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
+        List<FacetResult> facetCollection = getFacetsForField(facets, expectedField, expectedCount);
+        return facetCollection.stream().map(facetResult -> new ValueFacetResult(facetResult)).collect(Collectors.toList());
+    }
+
+    protected List<FacetResult> getFacetsForField(Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
+        Assert.assertTrue(facets.containsKey(expectedField));
+        List<FacetResult> results = facets.get(expectedField);
+        Assert.assertEquals(expectedCount, results.size());
+        return results;
+    }
+
+    protected void assertContainKeys(List<SearchResult> items) {
+        Assert.assertNotNull(items);
+        List<String> expectedKeys = items.stream().filter(item -> item.additionalProperties().containsKey("HotelId")).map(item -> (String) item.additionalProperties().get("HotelId")).collect(Collectors.toList());
+        List<String> actualKeys = hotels.stream().filter(item -> item.containsKey("HotelId")).map(item -> (String) item.get("HotelId")).collect(Collectors.toList());
+        Assert.assertEquals(expectedKeys, actualKeys);
+    }
+
+    protected void assertValueFacetsEqual(List<ValueFacetResult> actualFacets, ArrayList<ValueFacetResult> expectedFacets) {
+        Assert.assertEquals(expectedFacets.size(), actualFacets.size());
+        for (int i = 0; i < actualFacets.size(); i++) {
+            Assert.assertEquals(expectedFacets.get(i).count(), actualFacets.get(i).count());
+            Assert.assertEquals(expectedFacets.get(i).value(), actualFacets.get(i).value());
+        }
+    }
+
     protected String getSearchResultId(SearchResult searchResult, String idFieldName) {
         return searchResult.additionalProperties().get(idFieldName).toString();
     }
 
-    protected abstract void setIndexName(String indexName);
+    protected SearchParameters getSearchParametersForRangeFacets() {
+        return new SearchParameters().facets(Arrays.asList(
+            "Rooms/BaseRate,values:5|8|10",
+            "LastRenovationDate,values:2000-01-01T00:00:00Z"));
+    }
 
+    protected SearchParameters getSearchParametersForValueFacets() {
+        return new SearchParameters().facets(Arrays.asList(
+            "Rating,count:2,sort:-value",
+            "SmokingAllowed,sort:count",
+            "Category",
+            "LastRenovationDate,interval:year",
+            "Rooms/BaseRate,sort:value",
+            "Tags,sort:value"));
+    }
 
     @Test
     public void searchThrowsWhenRequestIsMalformed() {
@@ -171,16 +245,22 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     public abstract void canFilter();
 
     @Test
+    public abstract void canSearchWithRangeFacets();
+
+    @Test
     public abstract void canSearchWithLuceneSyntax();
 
     @Test
-    public abstract void testCanSearchWithSearchModeAll();
+    public abstract void canSearchWithValueFacets();
 
     @Test
-    public abstract void testDefaultSearchModeIsAny();
+    public abstract void canSearchWithSearchModeAll();
 
     @Test
-    public abstract void testCanGetResultCountInSearch();
+    public abstract void defaultSearchModeIsAny();
+
+    @Test
+    public abstract void canGetResultCountInSearch();
 
     @Test
     public abstract void canSearchWithRegex();
@@ -205,4 +285,5 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
 
     abstract void initializeClient();
 
+    protected abstract void setIndexName(String indexName);
 }

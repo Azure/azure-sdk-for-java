@@ -6,6 +6,9 @@ package com.azure.search.data;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.data.common.SearchPagedResponse;
+import com.azure.search.data.customization.RangeFacetResult;
+import com.azure.search.data.customization.ValueFacetResult;
+import com.azure.search.data.generated.models.FacetResult;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.generated.models.QueryType;
@@ -179,6 +182,75 @@ public class SearchAsyncTests extends SearchTestBase {
     }
 
     @Override
+    public void canSearchWithRangeFacets() {
+        PagedFlux<SearchResult> results = client.search("*", getSearchParametersForRangeFacets(), new SearchRequestOptions());
+        Assert.assertNotNull(results);
+
+        StepVerifier.create(results.byPage())
+            .assertNext(res -> {
+                assertContainKeys(res.items());
+                Map<String, List<FacetResult>> facets = ((SearchPagedResponse) res).facets();
+                Assert.assertNotNull(facets);
+                List<RangeFacetResult> baseRateFacets = getRangeFacetsForField(facets, "Rooms/BaseRate", 4);
+                List<RangeFacetResult> lastRenovationDateFacets = getRangeFacetsForField(facets, "LastRenovationDate", 2);
+                assertRangeFacets(baseRateFacets, lastRenovationDateFacets);
+            }).verifyComplete();
+    }
+
+    @Override
+    public void canSearchWithValueFacets() {
+        PagedFlux<SearchResult> results = client.search("*", getSearchParametersForValueFacets(), new SearchRequestOptions());
+        Assert.assertNotNull(results);
+
+        StepVerifier.create(results.byPage())
+            .assertNext(res -> {
+                assertContainKeys(res.items());
+                Map<String, List<FacetResult>> facets = ((SearchPagedResponse) res).facets();
+                Assert.assertNotNull(facets);
+
+                assertValueFacetsEqual(getValueFacetsForField(facets, "Rating", 2),
+                    new ArrayList<>(Arrays.asList(new ValueFacetResult(1L, 5),
+                        new ValueFacetResult(4L, 4))));
+
+                assertValueFacetsEqual(getValueFacetsForField(facets, "SmokingAllowed", 2),
+                    new ArrayList<>(Arrays.asList(new ValueFacetResult(4L, false),
+                        new ValueFacetResult(2L, true))));
+
+                assertValueFacetsEqual(getValueFacetsForField(facets, "Category", 3),
+                    new ArrayList<>(Arrays.asList(new ValueFacetResult(5L, "Budget"),
+                        new ValueFacetResult(1L, "Boutique"),
+                        new ValueFacetResult(1L, "Luxury"))));
+
+                assertValueFacetsEqual(getValueFacetsForField(facets, "LastRenovationDate", 6),
+                    new ArrayList<>(Arrays.asList(new ValueFacetResult(1L, "1970-01-01T00:00:00Z"),
+                        new ValueFacetResult(1L, "1982-01-01T00:00:00Z"),
+                        new ValueFacetResult(2L, "1995-01-01T00:00:00Z"),
+                        new ValueFacetResult(1L, "1999-01-01T00:00:00Z"),
+                        new ValueFacetResult(1L, "2010-01-01T00:00:00Z"),
+                        new ValueFacetResult(1L, "2012-01-01T00:00:00Z"))));
+
+                assertValueFacetsEqual(getValueFacetsForField(facets, "Rooms/BaseRate", 4),
+                    new ArrayList<>(Arrays.asList(new ValueFacetResult(1L, 2.44),
+                        new ValueFacetResult(1L, 7.69),
+                        new ValueFacetResult(1L, 8.09),
+                        new ValueFacetResult(1L, 9.69))));
+
+                assertValueFacetsEqual(getValueFacetsForField(facets, "Tags", 10),
+                    new ArrayList<>(Arrays.asList(new ValueFacetResult(1L, "24-hour front desk service"),
+                        new ValueFacetResult(1L, "air conditioning"),
+                        new ValueFacetResult(4L, "budget"),
+                        new ValueFacetResult(1L, "coffee in lobby"),
+                        new ValueFacetResult(2L, "concierge"),
+                        new ValueFacetResult(1L, "motel"),
+                        new ValueFacetResult(2L, "pool"),
+                        new ValueFacetResult(1L, "restaurant"),
+                        new ValueFacetResult(1L, "view"),
+                        new ValueFacetResult(4L, "wifi"))));
+
+            }).verifyComplete();
+    }
+
+    @Override
     public void canSearchWithLuceneSyntax() {
         HashMap<String, Object> expectedResult = new HashMap<>();
         expectedResult.put("HotelName", "Roach Motel");
@@ -208,13 +280,13 @@ public class SearchAsyncTests extends SearchTestBase {
     }
 
     @Override
-    public void testCanSearchWithSearchModeAll() {
+    public void canSearchWithSearchModeAll() {
         Flux<SearchResult> response = client.search("Cheapest hotel", new SearchParameters().queryType(SIMPLE).searchMode(ALL), new SearchRequestOptions()).log();
         StepVerifier.create(response).assertNext(res -> Assert.assertEquals("2", getSearchResultId(res, "HotelId"))).verifyComplete();
     }
 
     @Override
-    public void testDefaultSearchModeIsAny() {
+    public void defaultSearchModeIsAny() {
         Flux<SearchResult> response = client.search("Cheapest hotel", new SearchParameters(), new SearchRequestOptions()).log();
 
         StepVerifier.create(response)
@@ -229,7 +301,7 @@ public class SearchAsyncTests extends SearchTestBase {
     }
 
     @Override
-    public void testCanGetResultCountInSearch() {
+    public void canGetResultCountInSearch() {
         Flux<PagedResponse<SearchResult>> results = client.search("*", new SearchParameters().includeTotalResultCount(true), new SearchRequestOptions()).byPage();
         StepVerifier.create(results)
             .assertNext(res -> Assert.assertEquals(hotels.size(), ((SearchPagedResponse) res).count().intValue()))
