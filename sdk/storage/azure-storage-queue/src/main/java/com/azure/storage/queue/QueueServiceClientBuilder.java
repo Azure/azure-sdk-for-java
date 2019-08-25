@@ -119,7 +119,7 @@ public final class QueueServiceClientBuilder {
         Objects.requireNonNull(endpoint);
 
         if (sasTokenCredential == null && sharedKeyCredential == null && bearerTokenCredential == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Credentials are required for authorization"));
+            logger.logExceptionAsError(new IllegalArgumentException("Credentials are required for authorization"));
         }
 
         if (pipeline != null) {
@@ -198,7 +198,7 @@ public final class QueueServiceClientBuilder {
                 this.bearerTokenCredential = null;
             }
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed."));
+            logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed."));
         }
 
         return this;
