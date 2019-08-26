@@ -106,7 +106,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         try {
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
 
         changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
@@ -119,7 +119,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         try {
             Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         receivedDocuments.clear();
      }
@@ -168,7 +168,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
             }
         }
 
@@ -184,7 +184,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         try {
             Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         receivedDocuments.clear();
     }
@@ -249,7 +249,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     try {
                         Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT / 2);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        log.error(e.getMessage());
                     }
                     ChangeFeedProcessorTest.log.info("Update leases for Change feed processor in thread {} using host {}", Thread.currentThread().getId(), "Owner_first");
 
@@ -312,7 +312,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
             }
         }
 
@@ -324,7 +324,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         try {
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         receivedDocuments.clear();
     }
