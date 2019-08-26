@@ -38,7 +38,6 @@ public class ProxySmokeTest extends TestBase {
 
     @After
     public void teardown() {
-
         containerNames.clear();
     }
 

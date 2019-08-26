@@ -191,7 +191,11 @@ public class TestBase {
             } else {
                 almostDone = intermediate.useEventHubConnectionString(effectiveConnectionString, effectiveEntityPath);
             }
-            settings.outHost = almostDone.setExecutor(effectiveExecutor).build();
+            settings.outHost = almostDone
+                .setProxyConfiguration(settings.inoutEPHConstructorArgs.getProxyConfiguration())
+                .setTransportType(settings.inoutEPHConstructorArgs.getTransportType())
+                .setExecutor(effectiveExecutor)
+                .build();
         }
 
         if (!settings.inEventHubDoesNotExist) {
