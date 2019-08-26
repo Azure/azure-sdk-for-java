@@ -9,6 +9,6 @@ steps:
   displayName: Detecting Maven repository on Linux and macOS
 - task: CacheBeta@0
   inputs:
-    key: $(Agent.JobName) | $(CacheSalt) | $(Build.SourcesDirectory)/**/pom.xml | $(Build.SourcesDirectory)/**/pom.client.xml | $(Build.SourcesDirectory)/**/pom.data.xml
+    key: $(Agent.JobName)|$(CacheSalt)|$(Build.SourcesDirectory)/sdk/**/pom.xml
     path: $(Maven.RepositoryPath)
   displayName: 'Download/upload cache'
