@@ -3,22 +3,24 @@
     "Method" : "PUT",
     "Uri" : "https://azstoragesdkaccount.file.core.windows.net?restype=service&comp=properties",
     "Headers" : {
-      "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0",
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
-      "x-ms-version" : "2018-11-09",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "InvalidXmlNodeValue",
       "retry-after" : "0",
       "Content-Length" : "340",
       "StatusCode" : "400",
-      "x-ms-request-id" : "05758c98-801a-00eb-5d77-57ce8a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlNodeValue</Code><Message>The value for one of the XML nodes is not in the correct format.\nRequestId:05758c98-801a-00eb-5d77-57ce8a000000\nTime:2019-08-20T16:53:17.3669924Z</Message><XmlNodeName>AllowedMethods</XmlNodeName><XmlNodeValue>NOTAREALHTTPMETHOD</XmlNodeValue></Error>",
-      "Date" : "Tue, 20 Aug 2019 16:53:17 GMT",
+      "x-ms-request-id" : "efe54924-601a-008c-1012-5a7d2d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlNodeValue</Code><Message>The value for one of the XML nodes is not in the correct format.\nRequestId:efe54924-601a-008c-1012-5a7d2d000000\nTime:2019-08-24T00:28:13.8372190Z</Message><XmlNodeName>AllowedMethods</XmlNodeName><XmlNodeValue>NOTAREALHTTPMETHOD</XmlNodeValue></Error>",
+      "Date" : "Sat, 24 Aug 2019 00:28:13 GMT",
+      "x-ms-client-request-id" : "f2064efa-6376-479e-af47-13d264cf4944",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "a65cab28969b4730b3bee7f103633d0b5a5770333637473980e8f4dfc486f84e" ]
+  "variables" : [ "29224450209b46f897c78a52544ec136f5905157c33d4a9b8bf6e3dfd8bc1196" ]
 }
