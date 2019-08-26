@@ -9,10 +9,13 @@ import com.azure.data.cosmos.CosmosContainerRequestOptions;
 import com.azure.data.cosmos.CosmosContainerResponse;
 import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.CosmosDatabaseRequestOptions;
+import com.azure.data.cosmos.CosmosUserProperties;
+import com.azure.data.cosmos.CosmosUserResponse;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.SqlQuerySpec;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Iterator;
@@ -338,9 +341,159 @@ public class CosmosSyncDatabase {
      * @param response the response
      * @return the cosmos sync container response
      */
-    /* */
     CosmosSyncContainerResponse convertResponse(CosmosContainerResponse response) {
         return new CosmosSyncContainerResponse(response, this, client);
+    }
+
+    /* Users */
+
+    /**
+     * Create user cosmos sync user response.
+     *
+     * @param settings the settings
+     * @return the cosmos sync user response
+     * @throws CosmosClientException the cosmos client exception
+     */
+    public CosmosSyncUserResponse createUser(CosmosUserProperties settings) throws CosmosClientException {
+        return mapUserResponseAndBlock(databaseWrapper.createUser(settings));
+    }
+
+    /**
+     * Upsert user cosmos sync user response.
+     *
+     * @param settings the settings
+     * @return the cosmos sync user response
+     * @throws CosmosClientException the cosmos client exception
+     */
+    public CosmosSyncUserResponse upsertUser(CosmosUserProperties settings) throws CosmosClientException {
+        return mapUserResponseAndBlock(databaseWrapper.upsertUser(settings));
+    }
+
+    /**
+     * Read all users iterator.
+     *
+     * @return the iterator
+     */
+    public Iterator<FeedResponse<CosmosUserProperties>> readAllUsers() {
+        return getFeedIterator(databaseWrapper.readAllUsers());
+    }
+
+    /**
+     * Read all users iterator.
+     *
+     * @param options the options
+     * @return the iterator
+     */
+    public Iterator<FeedResponse<CosmosUserProperties>> readAllUsers(FeedOptions options) {
+        return getFeedIterator(databaseWrapper.readAllUsers(options));
+    }
+
+    /**
+     * Query users iterator.
+     *
+     * @param query the query
+     * @return the iterator
+     */
+    public Iterator<FeedResponse<CosmosUserProperties>> queryUsers(String query) {
+        return getFeedIterator(databaseWrapper.queryUsers(query));
+    }
+
+    /**
+     * Query users iterator.
+     *
+     * @param query the query
+     * @param options the options
+     * @return the iterator
+     */
+    public Iterator<FeedResponse<CosmosUserProperties>> queryUsers(String query, FeedOptions options) {
+        return getFeedIterator(databaseWrapper.queryUsers(query, options));
+    }
+
+    /**
+     * Query users iterator.
+     *
+     * @param querySpec the query spec
+     * @return the iterator
+     */
+    public Iterator<FeedResponse<CosmosUserProperties>> queryUsers(SqlQuerySpec querySpec) {
+        return getFeedIterator(databaseWrapper.queryUsers(querySpec));
+    }
+
+    /**
+     * Query users iterator.
+     *
+     * @param querySpec the query spec
+     * @param options the options
+     * @return the iterator
+     */
+    public Iterator<FeedResponse<CosmosUserProperties>> queryUsers(SqlQuerySpec querySpec, FeedOptions options) {
+        return getFeedIterator(databaseWrapper.queryUsers(querySpec, options));
+    }
+
+    /**
+     * Gets user.
+     *
+     * @param id the id
+     * @return the user
+     */
+    public CosmosSyncUser getUser(String id) {
+        return new CosmosSyncUser(databaseWrapper.getUser(id), this, id);
+    }
+
+    CosmosSyncUserResponse mapUserResponseAndBlock(Mono<CosmosUserResponse> containerMono)
+            throws CosmosClientException {
+        try {
+            return containerMono.map(this::convertUserResponse).block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosClientException) {
+                throw (CosmosClientException) throwable;
+            } else {
+                throw ex;
+            }
+        }
+    }
+
+    CosmosSyncUserResponse convertUserResponse(CosmosUserResponse response) {
+        return new CosmosSyncUserResponse(response, this);
+    }
+
+    /**
+     * Read provisioned throughput integer.
+     *
+     * @return the integer
+     * @throws CosmosClientException the cosmos client exception
+     */
+    public Integer readProvisionedThroughput() throws CosmosClientException {
+        return throughputResponseToBlock(databaseWrapper.readProvisionedThroughput());
+    }
+
+    /**
+     * Replace provisioned throughput integer.
+     *
+     * @param requestUnitsPerSecond the request units per second
+     * @return the integer
+     * @throws CosmosClientException the cosmos client exception
+     */
+    public Integer replaceProvisionedThroughput(int requestUnitsPerSecond) throws CosmosClientException {
+        return throughputResponseToBlock(databaseWrapper.replaceProvisionedThroughput(requestUnitsPerSecond));
+    }
+
+    Integer throughputResponseToBlock(Mono<Integer> throughputResponse) throws CosmosClientException {
+        try {
+            return throughputResponse.block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosClientException) {
+                throw (CosmosClientException) throwable;
+            } else {
+                throw ex;
+            }
+        }
+    }
+
+    private <T> Iterator<FeedResponse<T>> getFeedIterator(Flux<FeedResponse<T>> itemFlux) {
+        return itemFlux.toIterable(1).iterator();
     }
 
 }

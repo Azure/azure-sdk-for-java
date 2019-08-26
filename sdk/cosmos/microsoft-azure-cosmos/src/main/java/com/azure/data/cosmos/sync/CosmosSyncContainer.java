@@ -29,6 +29,7 @@ public class CosmosSyncContainer {
     private final CosmosContainer containerWrapper;
     private final CosmosSyncDatabase database;
     private final String id;
+    private CosmosSyncScripts scripts;
 
     /**
      * Instantiates a new Cosmos sync container.
@@ -246,6 +247,19 @@ public class CosmosSyncContainer {
                 containerWrapper.getItem(id, partitionKey));
     }
 
+    /**
+     * Gets the cosmos sync scripts.
+     *
+     * @return the cosmos sync scripts
+     */
+    public CosmosSyncScripts getScripts(){
+        if (this.scripts == null) {
+            this.scripts = new CosmosSyncScripts(this, containerWrapper.getScripts());
+        }
+        return this.scripts;
+    }
+
+    // TODO: should make partitionkey public in CosmosItem and fix the below call
     /**
      * Convert response cosmos sync item response.
      *
