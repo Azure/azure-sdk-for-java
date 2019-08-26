@@ -3,7 +3,6 @@
 
 package com.azure.storage.file;
 
-
 import com.azure.storage.common.SR;
 
 import java.util.Locale;
