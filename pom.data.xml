@@ -83,9 +83,9 @@
           </dependency>
         </dependencies>
         <configuration>
-          <configLocation>checkstyle/checkstyle.xml</configLocation>
-          <suppressionsLocation>checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-          <headerLocation>checkstyle/java.header</headerLocation>
+          <configLocation>eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+          <suppressionsLocation>eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+          <headerLocation>eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
           <propertyExpansion>samedir=</propertyExpansion>
           <encoding>UTF-8</encoding>
           <consoleOutput>true</consoleOutput>
@@ -123,7 +123,7 @@
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-          <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+          <excludeFilterFile>eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
 
           <!-- TODO soon - enable this failure mode -->
           <failOnError>false</failOnError>
