@@ -384,7 +384,7 @@ public class DirectoryAsyncClient {
      *
      * <p>Get 10 handles with recursive call.</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.getHandles}
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>
@@ -393,15 +393,13 @@ public class DirectoryAsyncClient {
      * @param recursive Specifies operation should apply to the directory specified in the URI, its files, its subdirectories and their files.
      * @return {@link HandleItem handles} in the directory that satisfy the requirements
      */
-    public Flux<HandleItem> getHandles(Integer maxResult, boolean recursive) {
+    public Flux<HandleItem> listHandles(Integer maxResult, boolean recursive) {
         return azureFileStorageClient.directorys().listHandlesWithRestResponseAsync(shareName, directoryPath, null, maxResult, null, snapshot, recursive, Context.NONE)
                    .flatMapMany(response -> nextPageForHandles(response, maxResult, recursive));
     }
 
     /**
-     * Closes a handle or handles opened on a directory or a file at the service. It is intended to be used alongside {@link DirectoryAsyncClient#getHandles(Integer, boolean)} .
-     * TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
-     * TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
+     * Closes a handle or handles opened on a directory or a file at the service. It is intended to be used alongside {@link DirectoryAsyncClient#listHandles(Integer, boolean)} .
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -417,6 +415,8 @@ public class DirectoryAsyncClient {
      * @return The counts of number of handles closed
      */
     public Flux<Integer> forceCloseHandles(String handleId, boolean recursive) {
+        // TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
+        // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
         return azureFileStorageClient.directorys().forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, handleId, null, null, snapshot, recursive, Context.NONE)
             .flatMapMany(response -> nextPageForForceCloseHandles(response, handleId, recursive));
     }

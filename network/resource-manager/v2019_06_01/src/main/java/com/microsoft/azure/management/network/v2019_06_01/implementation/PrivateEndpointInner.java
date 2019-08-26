@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.network.v2019_06_01.implementation;
 
 import java.util.List;
+import com.microsoft.azure.management.network.v2019_06_01.ProvisioningState;
 import com.microsoft.azure.management.network.v2019_06_01.PrivateLinkServiceConnection;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -35,11 +36,11 @@ public class PrivateEndpointInner extends Resource {
     private List<NetworkInterfaceInner> networkInterfaces;
 
     /**
-     * The provisioning state of the private endpoint. Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
+     * The provisioning state of the private endpoint. Possible values include:
+     * 'Succeeded', 'Updating', 'Deleting', 'Failed'.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    @JsonProperty(value = "properties.provisioningState")
+    private ProvisioningState provisioningState;
 
     /**
      * A grouping of information about the connection to the remote resource.
@@ -56,8 +57,7 @@ public class PrivateEndpointInner extends Resource {
     private List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections;
 
     /**
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag")
     private String etag;
@@ -98,12 +98,23 @@ public class PrivateEndpointInner extends Resource {
     }
 
     /**
-     * Get the provisioning state of the private endpoint. Possible values are: 'Updating', 'Deleting', and 'Failed'.
+     * Get the provisioning state of the private endpoint. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'.
      *
      * @return the provisioningState value
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioning state of the private endpoint. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set
+     * @return the PrivateEndpointInner object itself.
+     */
+    public PrivateEndpointInner withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**
@@ -147,7 +158,7 @@ public class PrivateEndpointInner extends Resource {
     }
 
     /**
-     * Get gets a unique read-only string that changes whenever the resource is updated.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -156,7 +167,7 @@ public class PrivateEndpointInner extends Resource {
     }
 
     /**
-     * Set gets a unique read-only string that changes whenever the resource is updated.
+     * Set a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the PrivateEndpointInner object itself.
