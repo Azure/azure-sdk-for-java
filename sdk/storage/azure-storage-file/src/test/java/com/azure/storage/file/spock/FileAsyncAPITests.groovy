@@ -9,7 +9,6 @@ import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.FileAsyncClient
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.FileRange
-import com.azure.storage.file.models.FileRangeWriteType
 import com.azure.storage.file.models.StorageErrorCode
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
@@ -27,8 +26,8 @@ class FileAsyncAPITests extends APISpec {
     FileAsyncClient primaryFileAsyncClient
     def shareName
     def filePath
-    static def defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8))
-    static def dataLength = defaultData.remaining()
+    def defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8))
+    def dataLength = defaultData.remaining()
     static def testMetadata
     static def httpHeaders
 
@@ -95,9 +94,6 @@ class FileAsyncAPITests extends APISpec {
     def "Upload and download data"() {
         given:
         primaryFileAsyncClient.create(dataLength).block()
-        def dataBytes = new byte[dataLength]
-        defaultData.get(dataBytes)
-
         when:
         def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData), dataLength))
         def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(null, null))
@@ -115,15 +111,11 @@ class FileAsyncAPITests extends APISpec {
         defaultData.clear()
     }
 
-    @Ignore
     def "Upload and download data with args"() {
         given:
         primaryFileAsyncClient.create(1024).block()
-        def dataBytes = new byte[dataLength]
-        defaultData.get(dataBytes)
-
         when:
-        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData), dataLength, 1, FileRangeWriteType.UPDATE))
+        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData), dataLength, 1))
         def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(1, dataLength), true))
 
         then:
@@ -141,11 +133,13 @@ class FileAsyncAPITests extends APISpec {
 
     def "Upload data error"() {
         when:
-        def updateDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData), dataLength, 1, FileRangeWriteType.UPDATE))
+        def updateDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData), dataLength, 1))
         then:
         updateDataErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
         }
+        cleanup:
+        defaultData.clear()
     }
 
     @Unroll
@@ -170,14 +164,81 @@ class FileAsyncAPITests extends APISpec {
 
     def "Download data error"() {
         when:
-        def downloadDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(0, 1023), false))
+        def downloadDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(0, 1023), false, null))
         then:
         downloadDataErrorVerifier.assertNext {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
         }
     }
 
-    @Ignore
+    def "Upload and clear range" () {
+        given:
+        def fullInfoString = "please clear the range"
+        def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        primaryFileAsyncClient.create(fullInfoString.length()).block()
+        primaryFileAsyncClient.upload(Flux.just(fullInfoData), fullInfoString.length()).block()
+        when:
+        def clearRangeVerifier = StepVerifier.create(primaryFileAsyncClient.clearRange(7))
+        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(0, 6), false, null))
+        then:
+        clearRangeVerifier.assertNext {
+            FileTestHelper.assertResponseStatusCode(it, 201)
+        }
+        downloadResponseVerifier.assertNext {
+            assert it.value().body() != null
+        }
+    }
+
+    def "Upload and clear range with args" () {
+        given:
+        def fullInfoString = "please clear the range"
+        def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        primaryFileAsyncClient.create(fullInfoString.length()).block()
+        primaryFileAsyncClient.upload(Flux.just(fullInfoData), fullInfoString.length()).block()
+        when:
+        def clearRangeVerifier = StepVerifier.create(primaryFileAsyncClient.clearRangeWithResponse(7, 1))
+        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(1, 7), false, null))
+        then:
+        clearRangeVerifier.assertNext {
+            FileTestHelper.assertResponseStatusCode(it, 201)
+        }
+        downloadResponseVerifier.assertNext {
+            assert it.value().body() != null
+        }
+        cleanup:
+        fullInfoData.clear()
+    }
+
+    def "Clear range error" () {
+        given:
+        def fullInfoString = "please clear the range"
+        def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        primaryFileAsyncClient.create(fullInfoString.length()).block()
+        primaryFileAsyncClient.upload(Flux.just(fullInfoData), fullInfoString.length()).block()
+        when:
+        def clearRangeErrorVerifier = StepVerifier.create(primaryFileAsyncClient.clearRange(30))
+        then:
+        clearRangeErrorVerifier.verifyErrorSatisfies {
+            FileTestHelper.assertExceptionStatusCodeAndMessage(it, 416, StorageErrorCode.INVALID_RANGE)
+        }
+    }
+
+    def "Clear range error args" () {
+        given:
+        def fullInfoString = "please clear the range"
+        def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        primaryFileAsyncClient.create(fullInfoString.length()).block()
+        primaryFileAsyncClient.upload(Flux.just(fullInfoData), fullInfoString.length()).block()
+        when:
+        def clearRangeErrorVerifier = StepVerifier.create(primaryFileAsyncClient.clearRangeWithResponse(7, 20))
+        then:
+        clearRangeErrorVerifier.verifyErrorSatisfies {
+            FileTestHelper.assertExceptionStatusCodeAndMessage(it, 416, StorageErrorCode.INVALID_RANGE)
+        }
+        cleanup:
+        fullInfoData.clear()
+    }
+
     def "Upload and download file"() {
         given:
         File uploadFile = new File(testFolder.getPath() + "/helloworld")
@@ -249,7 +310,6 @@ class FileAsyncAPITests extends APISpec {
         }
     }
 
-    @Ignore
     def "Get properties"() {
         given:
         primaryFileAsyncClient.create(1024).block()
@@ -272,6 +332,7 @@ class FileAsyncAPITests extends APISpec {
         }
     }
 
+    // This test needs to update since the service version update.
     @Ignore
     def "Set httpHeaders"() {
         given:
@@ -294,7 +355,6 @@ class FileAsyncAPITests extends APISpec {
         }
     }
 
-    @Ignore
     def "Set metadata"() {
         given:
         primaryFileAsyncClient.createWithResponse(1024, httpHeaders, testMetadata).block()

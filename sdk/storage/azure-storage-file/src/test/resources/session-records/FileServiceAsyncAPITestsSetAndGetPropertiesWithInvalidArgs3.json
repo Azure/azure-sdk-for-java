@@ -3,22 +3,24 @@
     "Method" : "PUT",
     "Uri" : "https://azstoragesdkaccount.file.core.windows.net?restype=service&comp=properties",
     "Headers" : {
-      "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0",
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
-      "x-ms-version" : "2018-11-09",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "InvalidXmlDocument",
       "retry-after" : "0",
       "Content-Length" : "294",
       "StatusCode" : "400",
-      "x-ms-request-id" : "05758c96-801a-00eb-5b77-57ce8a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:05758c96-801a-00eb-5b77-57ce8a000000\nTime:2019-08-20T16:53:17.1097442Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
-      "Date" : "Tue, 20 Aug 2019 16:53:17 GMT",
+      "x-ms-request-id" : "efe54922-601a-008c-0e12-5a7d2d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:efe54922-601a-008c-0e12-5a7d2d000000\nTime:2019-08-24T00:28:12.7061849Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
+      "Date" : "Sat, 24 Aug 2019 00:28:12 GMT",
+      "x-ms-client-request-id" : "313529ec-179c-427a-972d-0b4e42195808",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "fa76bbad05a24b10acff9234fa8678c0284183b637414d08a824f41bd2a4bdf8" ]
+  "variables" : [ "721b57646cd14c90af804d57c56f3d14005a4f776a60412e8dd81421b940e105" ]
 }

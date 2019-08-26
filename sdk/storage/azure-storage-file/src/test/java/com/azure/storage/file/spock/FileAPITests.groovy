@@ -7,13 +7,13 @@ import com.azure.core.exception.HttpResponseException
 import com.azure.core.http.rest.Response
 import com.azure.core.implementation.exception.UnexpectedLengthException
 import com.azure.core.implementation.util.FluxUtil
+import com.azure.core.util.Context
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.FileClient
 import com.azure.storage.file.ShareClient
 import com.azure.storage.file.models.FileCopyInfo
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.FileRange
-import com.azure.storage.file.models.FileRangeWriteType
 import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageErrorException
 import spock.lang.Ignore
@@ -30,8 +30,8 @@ class FileAPITests extends APISpec {
     FileClient primaryFileClient
     def shareName
     def filePath
-    static def defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8))
-    static def dataLength = defaultData.remaining()
+    def defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8))
+    def dataLength = defaultData.remaining()
     static def testMetadata
     static def httpHeaders
 
@@ -87,17 +87,15 @@ class FileAPITests extends APISpec {
         1024    | httpHeaders     | Collections.singletonMap("testMeta", "value") | 403        | StorageErrorCode.AUTHENTICATION_FAILED
     }
 
-    @Ignore
     def "Upload and download data"() {
         given:
         primaryFileClient.create(dataLength)
         def dataBytes = new byte[dataLength]
         defaultData.get(dataBytes)
-        defaultData.flip()
+        defaultData.rewind()
         when:
         def uploadResponse = primaryFileClient.uploadWithResponse(defaultData, dataLength, null)
         def downloadResponse = primaryFileClient.downloadWithPropertiesWithResponse(null, null, null)
-
         then:
         FileTestHelper.assertResponseStatusCode(uploadResponse, 201)
         FileTestHelper.assertResponseStatusCode(downloadResponse, 200)
@@ -108,15 +106,14 @@ class FileAPITests extends APISpec {
         defaultData.clear()
     }
 
-    @Ignore
     def "Upload and download data with args"() {
         given:
         primaryFileClient.create(1024)
         def dataBytes = new byte[dataLength]
         defaultData.get(dataBytes)
-
+        defaultData.rewind()
         when:
-        def uploadResponse = primaryFileClient.uploadWithResponse(defaultData, dataLength, 1, FileRangeWriteType.UPDATE, null)
+        def uploadResponse = primaryFileClient.uploadWithResponse(defaultData, dataLength, 1, null)
         def downloadResponse = primaryFileClient.downloadWithPropertiesWithResponse(new FileRange(1, dataLength), true, null)
 
         then:
@@ -131,10 +128,72 @@ class FileAPITests extends APISpec {
 
     def "Upload data error"() {
         when:
-        primaryFileClient.uploadWithResponse(defaultData, dataLength, 1, FileRangeWriteType.UPDATE, null)
+        primaryFileClient.uploadWithResponse(defaultData, dataLength, 1, null)
         then:
         def e = thrown(StorageErrorException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
+        cleanup:
+        defaultData.clear()
+    }
+
+    def "Upload and clear range" () {
+        given:
+        def fullInfoString = "please clear the range"
+        def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        primaryFileClient.create(fullInfoString.length())
+        primaryFileClient.upload(fullInfoData, fullInfoString.length())
+        when:
+        primaryFileClient.clearRange(7)
+        def downloadResponse = primaryFileClient.downloadWithPropertiesWithResponse(new FileRange(0, 6), false, null)
+        then:
+        def downloadArray = FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().body()).block()
+        downloadArray.eachByte {
+            assert it == 0
+        }
+        cleanup:
+        fullInfoData.clear()
+    }
+
+    def "Upload and clear range with args" () {
+        given:
+        def fullInfoString = "please clear the range"
+        def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        primaryFileClient.create(fullInfoString.length())
+        primaryFileClient.upload(fullInfoData, fullInfoString.length())
+        when:
+        primaryFileClient.clearRangeWithResponse(7, 1, null)
+        def downloadResponse = primaryFileClient.downloadWithPropertiesWithResponse(new FileRange(1, 7), false, null)
+        then:
+        def downloadArray = FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().body()).block()
+        downloadArray.eachByte {
+            assert it == 0
+        }
+    }
+
+    def "Clear range error" () {
+        given:
+        def fullInfoString = "please clear the range"
+        def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        primaryFileClient.create(fullInfoString.length())
+        primaryFileClient.upload(fullInfoData, fullInfoString.length())
+        when:
+        primaryFileClient.clearRange(30)
+        then:
+        def e = thrown(StorageErrorException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 416, StorageErrorCode.INVALID_RANGE)
+    }
+
+    def "Clear range error args" () {
+        given:
+        def fullInfoString = "please clear the range"
+        def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        primaryFileClient.create(fullInfoString.length())
+        primaryFileClient.upload(fullInfoData, fullInfoString.length())
+        when:
+        primaryFileClient.clearRangeWithResponse(7, 20, null)
+        then:
+        def e = thrown(StorageErrorException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 416, StorageErrorCode.INVALID_RANGE)
     }
 
     @Unroll
@@ -162,7 +221,6 @@ class FileAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
     }
 
-    @Ignore
     def "Upload and download file"() {
         given:
         File uploadFile = new File(testFolder.getPath() + "/helloworld")
@@ -226,7 +284,6 @@ class FileAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
     }
 
-    @Ignore
     def "Get properties"() {
         given:
         primaryFileClient.create(1024)
@@ -245,6 +302,7 @@ class FileAPITests extends APISpec {
         thrown(HttpResponseException)
     }
 
+    // This test needs to update since the service version update.
     @Ignore
     def "Set httpHeaders"() {
         given:
@@ -263,7 +321,6 @@ class FileAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.OUT_OF_RANGE_INPUT)
     }
 
-    @Ignore
     def "Set metadata"() {
         given:
         primaryFileClient.createWithResponse(1024, httpHeaders, testMetadata, null)
