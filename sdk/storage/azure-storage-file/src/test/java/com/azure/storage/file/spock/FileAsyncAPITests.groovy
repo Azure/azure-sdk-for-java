@@ -90,8 +90,6 @@ class FileAsyncAPITests extends APISpec {
         1024    | httpHeaders     | Collections.singletonMap("testMeta", "value") | 403        | StorageErrorCode.AUTHENTICATION_FAILED
     }
 
-    // TODO: (sima) The tests have been blocked by swagger's bug in time format. X-store team is working on a fix.
-    @Ignore
     def "Upload and download data"() {
         given:
         primaryFileAsyncClient.create(dataLength).block()
@@ -112,8 +110,6 @@ class FileAsyncAPITests extends APISpec {
         defaultData.clear()
     }
 
-    // TODO: (sima) The tests have been blocked by swagger's bug in time format. X-store team is working on a fix.
-    @Ignore
     def "Upload and download data with args"() {
         given:
         primaryFileAsyncClient.create(1024).block()
@@ -222,8 +218,6 @@ class FileAsyncAPITests extends APISpec {
         fullInfoData.clear()
     }
 
-    // TODO: (sima) The tests have been blocked by swagger's bug in time format. X-store team is working on a fix.
-    @Ignore
     def "Upload and download file"() {
         given:
         File uploadFile = new File(testFolder.getPath() + "/helloworld")
