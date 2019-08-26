@@ -34,5 +34,6 @@ stages:
     parameters:
       ServiceDirectory: applicationinsights
       Artifacts:
-        - name: microsoft-azure-applicationinsights-query
-          safeName: microsoftazureapplicationinsightsquery
+        - name: azure-applicationinsights-query
+          safeName: azureapplicationinsightsquery
+          stagingProfileId: 534d15ee3800f4
