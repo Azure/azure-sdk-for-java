@@ -64,7 +64,7 @@ public class TraceUtil {
 
             if (throwable instanceof AmqpException) {
                 AmqpException exception = (AmqpException) throwable;
-                errorCondition = exception.getErrorCondition().toString();
+                errorCondition = exception.getErrorCondition().getErrorCondition();
             }
         }
         TracerProxy.end(errorCondition, context, throwable);

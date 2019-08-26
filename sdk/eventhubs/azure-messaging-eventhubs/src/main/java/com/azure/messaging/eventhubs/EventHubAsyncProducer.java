@@ -330,7 +330,7 @@ public class EventHubAsyncProducer implements Closeable {
         Optional<Object> eventContextData = event.context().getData(SPAN_CONTEXT);
         if (eventContextData.isPresent()) {
             // if message has context (in case of retries), link it to the span
-            TraceUtil.addSpanLinks(event.context());
+            TraceUtil.addSpanLinks((Context) eventContextData.get());
             // builder.addLink((Context)eventContextData.get()); TODO: not supported in Opencensus yet
             return event;
         } else {
@@ -339,7 +339,7 @@ public class EventHubAsyncProducer implements Closeable {
             if (eventSpanContext != null && eventSpanContext.getData(DIAGNOSTIC_ID_KEY).isPresent()) {
                 event.addProperty(DIAGNOSTIC_ID_KEY, eventSpanContext.getData(DIAGNOSTIC_ID_KEY).get().toString());
                 TraceUtil.endTracingSpan(eventSpanContext, null);
-                event.context(eventSpanContext);
+                event.addContext(SPAN_CONTEXT, eventSpanContext);
             }
         }
         return  event;

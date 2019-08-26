@@ -19,7 +19,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.reactivestreams.Publisher;
 import reactor.core.Disposable;
@@ -29,6 +28,7 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import static com.azure.core.implementation.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.implementation.tracing.Tracer.SPAN_CONTEXT;
 
 /**
  * This is the starting point for event processor.
@@ -237,10 +237,13 @@ public class EventProcessor {
         PartitionProcessor partitionProcessor = this.partitionProcessorFactory
             .createPartitionProcessor(partitionContext, checkpointManager);
         partitionProcessor.initialize().subscribe();
-        final AtomicReference<Context> processSpanContext = new AtomicReference<>(Context.NONE);
+
         consumer.receive().subscribeOn(Schedulers.newElastic("PartitionPump"))
             .subscribe(eventData -> {
-                startProcessTracingSpan(eventData, processSpanContext);
+                Context processSpanContext = startProcessTracingSpan(eventData);
+                if (processSpanContext.getData(SPAN_CONTEXT).isPresent()) {
+                    eventData.addContext(SPAN_CONTEXT, processSpanContext);
+                }
                 partitionProcessor.processEvent(eventData).doOnEach(signal ->
                     endProcessTracingSpan(processSpanContext, signal)).subscribe(unused -> {
                     }, partitionProcessor::processError);
@@ -255,30 +258,29 @@ public class EventProcessor {
     /*
      * Starts a new process tracing span and attached context the EventData object for users.
      */
-    private void startProcessTracingSpan(EventData eventData, AtomicReference<Context> processSpanContext) {
+    private Context startProcessTracingSpan(EventData eventData) {
         Object diagnosticId = eventData.properties().get(DIAGNOSTIC_ID_KEY);
         if (diagnosticId == null) {
-            return;
+            return Context.NONE;
         }
-        eventData.context(TraceUtil.extractContext(diagnosticId.toString(), Context.NONE));
-        processSpanContext.set(TraceUtil.startScopedSpan("process", eventData.context()));
-        eventData.context(processSpanContext.get());
+        Context spanContext = TraceUtil.extractContext(diagnosticId.toString(), Context.NONE);
+        return TraceUtil.startScopedSpan("process", spanContext);
     }
 
     /*
      * Ends the process tracing span and the scope of that span.
      */
-    private void endProcessTracingSpan(AtomicReference<Context> processSpanContext, Signal<Void> signal) {
+    private void endProcessTracingSpan(Context processSpanContext, Signal<Void> signal) {
         // Disposes of the scope when the trace span closes.
-        if (!processSpanContext.get().getData("scope").isPresent()) {
+        if (!processSpanContext.getData("scope").isPresent()) {
             return;
         }
-        Closeable close = (Closeable) processSpanContext.get().getData("scope").get();
+        Closeable close = (Closeable) processSpanContext.getData("scope").get();
         try {
             close.close();
         } catch (IOException ioException) {
             logger.error("EventProcessor.run() endTracingSpan().close() failed with an error %s", ioException);
         }
-        TraceUtil.endTracingSpan(processSpanContext.get(), signal);
+        TraceUtil.endTracingSpan(processSpanContext, signal);
     }
 }

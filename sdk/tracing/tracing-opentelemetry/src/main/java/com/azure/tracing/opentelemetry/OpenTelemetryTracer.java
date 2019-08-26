@@ -61,7 +61,7 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
     public Context startScopedSpan(String spanName, Context context) {
         Span span;
         if (context.getData(SPAN_CONTEXT).isPresent()) {
-            span = startSpanWithRemoteParent(spanName, context);
+            span = startSpanWithRemoteParent(spanName, (SpanContext) context.getData(SPAN_CONTEXT).get());
         } else {
             SpanBuilder spanBuilder = startSpanWithExplicitParent(spanName, context);
             span = spanBuilder.setSpanKind(Span.Kind.SERVER).startSpan();
@@ -153,8 +153,8 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
         return spanBuilder;
     }
 
-    private Span startSpanWithRemoteParent(String spanName, Context context) {
-        SpanBuilder spanBuilder = TRACER.spanBuilderWithRemoteParent(spanName, (SpanContext) context.getData(SPAN_CONTEXT).get());
+    private Span startSpanWithRemoteParent(String spanName, SpanContext spanContext) {
+        SpanBuilder spanBuilder = TRACER.spanBuilderWithRemoteParent(spanName, spanContext);
         spanBuilder.setSpanKind(Span.Kind.SERVER);
         return spanBuilder.startSpan();
 
