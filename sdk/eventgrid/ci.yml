@@ -34,5 +34,6 @@ stages:
     parameters:
       ServiceDirectory: eventgrid
       Artifacts:
-        - name: microsoft-azure-eventgrid
-          safeName: microsoftazureeventgrid
+        - name: azure-eventgrid
+          safeName: azureeventgrid
+          stagingProfileId: 534d15ee3800f4
