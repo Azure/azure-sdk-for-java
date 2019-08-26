@@ -43,7 +43,8 @@ import java.time.OffsetDateTime
 import java.util.function.Supplier
 
 class APISpec extends Specification {
-    private final ClientLogger logger = new ClientLogger(APISpec.class)
+    @Shared
+    private ClientLogger logger = new ClientLogger(APISpec.class)
 
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 

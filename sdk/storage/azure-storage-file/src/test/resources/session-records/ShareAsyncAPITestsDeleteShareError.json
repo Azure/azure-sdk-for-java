@@ -1,23 +1,25 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestsdeleteshareerror808635c314b800d?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestsdeleteshareerror33490c5fbd2e369?restype=share",
     "Headers" : {
-      "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : {
-      "x-ms-version" : "2018-11-09",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "ShareNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "84142249-701a-0136-1277-57db71000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:84142249-701a-0136-1277-57db71000000\nTime:2019-08-20T16:52:24.7242257Z</Message></Error>",
-      "Date" : "Tue, 20 Aug 2019 16:52:24 GMT",
+      "x-ms-request-id" : "ab179c82-201a-00cf-4012-5a57c4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:ab179c82-201a-00cf-4012-5a57c4000000\nTime:2019-08-24T00:27:37.2734061Z</Message></Error>",
+      "Date" : "Sat, 24 Aug 2019 00:27:36 GMT",
+      "x-ms-client-request-id" : "752a91da-0962-4059-b6e8-bf54fe0879b4",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "shareasyncapitestsdeleteshareerror808635c314b800d" ]
+  "variables" : [ "shareasyncapitestsdeleteshareerror33490c5fbd2e369" ]
 }

@@ -223,6 +223,7 @@ public class QueueJavaDocCodeSamples {
             dequeuedMessage -> {
                 UpdatedMessage response = client.updateMessage("newText",
                     dequeuedMessage.messageId(), dequeuedMessage.popReceipt(), null);
+
                 System.out.println("Complete updating the message.");
             }
         );
@@ -239,6 +240,7 @@ public class QueueJavaDocCodeSamples {
             dequeuedMessage -> {
                 Response<UpdatedMessage> response = client.updateMessageWithResponse("newText",
                     dequeuedMessage.messageId(), dequeuedMessage.popReceipt(), null, new Context(key1, value1));
+
                 System.out.println("Complete updating the message with status code " + response.statusCode());
             }
         );

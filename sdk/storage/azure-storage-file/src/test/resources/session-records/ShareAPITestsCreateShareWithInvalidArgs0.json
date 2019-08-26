@@ -1,23 +1,25 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatesharewithinvalidargs0571956053750?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatesharewithinvalidargs040210fe33a52?restype=share",
     "Headers" : {
-      "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : {
-      "x-ms-version" : "2018-11-09",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "EmptyMetadataKey",
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "1152b62e-c01a-0064-5b77-5780d6000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:1152b62e-c01a-0064-5b77-5780d6000000\nTime:2019-08-20T16:51:35.7524343Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Tue, 20 Aug 2019 16:51:35 GMT",
+      "x-ms-request-id" : "90b846ab-201a-006e-1012-5a995f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:90b846ab-201a-006e-1012-5a995f000000\nTime:2019-08-24T00:26:20.4673136Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Sat, 24 Aug 2019 00:26:20 GMT",
+      "x-ms-client-request-id" : "00ae003d-a0b3-4050-9349-135216199729",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "shareapitestscreatesharewithinvalidargs0571956053750" ]
+  "variables" : [ "shareapitestscreatesharewithinvalidargs040210fe33a52" ]
 }

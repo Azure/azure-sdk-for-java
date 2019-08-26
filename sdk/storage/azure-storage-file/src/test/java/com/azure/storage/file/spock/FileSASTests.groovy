@@ -19,6 +19,7 @@ import com.azure.storage.file.ShareSASPermission
 import com.azure.storage.file.models.AccessPolicy
 import com.azure.storage.file.models.SignedIdentifier
 import com.azure.storage.file.models.StorageErrorException
+import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -183,6 +184,10 @@ class FileSASTests extends APISpec {
         when:
         def sas = primaryFileClient.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
+        then:
+        sas != null
+
+        when:
         def client = new FileClientBuilder()
             .endpoint(primaryFileClient.getFileUrl().toString())
             .filePath(filePath)
@@ -199,11 +204,10 @@ class FileSASTests extends APISpec {
 
         primaryShareClient.delete()
         then:
+        notThrown(StorageErrorException)
         for(int i = 0; i < data.length(); i++) {
             responseBody.get(i) == data.getBytes()[i]
         }
-
-        notThrown(StorageException)
     }
 
     def "FileSAS network test upload fails"() {
@@ -249,7 +253,6 @@ class FileSASTests extends APISpec {
         client.delete()
 
         primaryShareClient.delete()
-
         then:
         notThrown(StorageErrorException)
     }
@@ -260,8 +263,8 @@ class FileSASTests extends APISpec {
             .id("0000")
             .accessPolicy(new AccessPolicy().permission("rcwdl")
                 .expiry(OffsetDateTime.now().plusDays(1)))
-
         primaryShareClient.create()
+
         primaryShareClient.setAccessPolicy(Arrays.asList(identifier))
 
         // Check containerSASPermissions
@@ -298,11 +301,10 @@ class FileSASTests extends APISpec {
 
         client2.createDirectory("dir")
         client2.deleteDirectory("dir")
-
         primaryShareClient.delete()
 
         then:
-        notThrown(StorageException)
+        notThrown(StorageErrorException)
     }
 
     def "AccountSAS FileService network test create delete share succeeds"() {
@@ -322,6 +324,10 @@ class FileSASTests extends APISpec {
         when:
         def sas = primaryFileServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
 
+        then:
+        sas != null
+
+        when:
         def scBuilder = new FileServiceClientBuilder()
         scBuilder.endpoint(primaryFileServiceClient.getFileServiceUrl().toString())
             .httpClient(getHttpClient())

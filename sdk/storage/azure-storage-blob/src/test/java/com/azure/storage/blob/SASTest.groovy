@@ -7,6 +7,7 @@ import com.azure.storage.blob.models.AccessPolicy
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.SignedIdentifier
 import com.azure.storage.blob.models.StorageErrorException
+import com.azure.storage.blob.models.StorageErrorException
 import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.models.UserDelegationKey
 import com.azure.storage.common.AccountSASPermission
@@ -144,7 +145,7 @@ class SASTest extends APISpec {
         properties.contentDisposition() == "disposition"
         properties.contentEncoding() == "encoding"
         properties.contentLanguage() == "language"
-        notThrown(StorageException)
+        notThrown(StorageErrorException)
     }
 
     def "serviceSASSignatureValues network test blob snapshot"() {
@@ -193,7 +194,6 @@ class SASTest extends APISpec {
         properties.contentLanguage() == "language"
     }
 
-    @Ignore
     def "serviceSASSignatureValues network test container"() {
         setup:
         def identifier = new SignedIdentifier()
@@ -228,11 +228,9 @@ class SASTest extends APISpec {
         client2.listBlobsFlat().iterator().hasNext()
 
         then:
-        notThrown(StorageException)
+        notThrown(StorageErrorException)
     }
 
-
-    @Ignore
     def "serviceSASSignatureValues network test blob user delegation"() {
         setup:
         byte[] data = "test".getBytes()
@@ -264,8 +262,12 @@ class SASTest extends APISpec {
         UserDelegationKey key = getOAuthServiceClient().getUserDelegationKey(null, getUTCNow().plusDays(1))
 
         when:
-        String sas = bu.generateUserDelegationSAS(key, primaryCredential.accountName(), permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        String sas = bu.generateUserDelegationSAS(key, primaryCredential.accountName(), permissions, expiryTime, startTime, key.signedVersion(), sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
+        then:
+        sas != null
+
+        when:
         BlockBlobClient client = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getContainerUrl().toString(), blobName).asBlockBlobClient()
 
         OutputStream os = new ByteArrayOutputStream()
@@ -278,14 +280,14 @@ class SASTest extends APISpec {
         properties.contentDisposition() == "disposition"
         properties.contentEncoding() == "encoding"
         properties.contentLanguage() == "language"
-        notThrown(StorageException)
+        notThrown(StorageErrorException)
     }
 
     def "BlobServiceSAS network test blob snapshot"() {
         setup:
         String containerName = generateContainerName()
         String blobName = generateBlobName()
-        ContainerClient containerClient = primaryServiceURL.createContainer(containerName)
+        ContainerClient containerClient = primaryBlobServiceClient.createContainer(containerName)
         BlockBlobClient blobClient = containerClient.getBlockBlobClient(blobName)
         blobClient.upload(defaultInputStream.get(), defaultDataSize) // need something to snapshot
         BlockBlobClient snapshotBlob = blobClient.createSnapshot().asBlockBlobClient()
@@ -317,7 +319,6 @@ class SASTest extends APISpec {
             .endpoint(containerClient.getContainerUrl().toString())
             .blobName(blobName)
             .credential(SASTokenCredential.fromSASTokenString(sas))
-            .httpClient(getHttpClient())
             .buildAppendBlobClient()
 
         client.download(new ByteArrayOutputStream())
@@ -331,7 +332,6 @@ class SASTest extends APISpec {
             .blobName(blobName)
             .snapshot(snapshotId)
             .credential(SASTokenCredential.fromSASTokenString(sas))
-            .httpClient(getHttpClient())
             .buildAppendBlobClient()
 
         ByteArrayOutputStream data = new ByteArrayOutputStream()
@@ -352,7 +352,6 @@ class SASTest extends APISpec {
 
     }
 
-    @Ignore
     def "serviceSASSignatureValues network test blob snapshot user delegation"() {
         setup:
         byte[] data = "test".getBytes()
@@ -386,7 +385,7 @@ class SASTest extends APISpec {
         UserDelegationKey key = getOAuthServiceClient().getUserDelegationKey(startTime, expiryTime)
 
         when:
-        String sas = snapshotBlob.generateUserDelegationSAS(key, primaryCredential.accountName(), permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        String sas = snapshotBlob.generateUserDelegationSAS(key, primaryCredential.accountName(), permissions, expiryTime, startTime, key.signedVersion(), sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         // base blob with snapshot SAS
         BlockBlobClient client1 = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getContainerUrl().toString(), blobName).asBlockBlobClient()
@@ -403,7 +402,7 @@ class SASTest extends APISpec {
         client2.download(os)
 
         then:
-        notThrown(StorageException)
+        notThrown(StorageErrorException)
         os.toString() == new String(data)
 
         and:
@@ -416,7 +415,6 @@ class SASTest extends APISpec {
         properties.contentLanguage() == "language"
     }
 
-    @Ignore
     def "serviceSASSignatureValues network test container user delegation"() {
         setup:
         ContainerSASPermission permissions = new ContainerSASPermission()
@@ -438,7 +436,7 @@ class SASTest extends APISpec {
         client.listBlobsFlat().iterator().hasNext()
 
         then:
-        notThrown(StorageException)
+        notThrown(StorageErrorException)
     }
 
     def "accountSAS network test blob read"() {
@@ -539,7 +537,7 @@ class SASTest extends APISpec {
         sc.createContainer(generateContainerName())
 
         then:
-        notThrown(StorageException)
+        notThrown(StorageErrorException)
     }
 
     /*
