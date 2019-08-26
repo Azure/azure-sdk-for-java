@@ -148,7 +148,7 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.create(1024).block()
         when:
         def uploadErrorVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData),
-            size, 0, FileRangeWriteType.UPDATE))
+            size, 0))
         then:
         uploadErrorVerifier.verifyErrorSatisfies {
             assert it instanceof UnexpectedLengthException
@@ -241,8 +241,9 @@ class FileAsyncAPITests extends APISpec {
 
     def "Upload and download file"() {
         given:
-        File uploadFile = new File(testFolder.getPath() + "/helloworld")
-        File downloadFile = new File(testFolder.getPath() + "/testDownload")
+        def testFolder = getClass().getClassLoader().getResource("testfiles")
+        File uploadFile = new File(testFolder.getPath(), "/helloworld")
+        File downloadFile = new File(testFolder.getPath(), "/testDownload")
 
         if (!Files.exists(downloadFile.toPath())) {
             downloadFile.createNewFile().block()

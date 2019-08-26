@@ -89,9 +89,7 @@ class FileAPITests extends APISpec {
     def "Upload and download data"() {
         given:
         primaryFileClient.create(dataLength)
-        def dataBytes = new byte[dataLength]
-        defaultData.get(dataBytes)
-        defaultData.rewind()
+        def dataBytes = FluxUtil.byteBufferToArray(defaultData)
         when:
         def uploadResponse = primaryFileClient.uploadWithResponse(defaultData, dataLength, null)
         def downloadResponse = primaryFileClient.downloadWithPropertiesWithResponse(null, null, null)
@@ -108,9 +106,7 @@ class FileAPITests extends APISpec {
     def "Upload and download data with args"() {
         given:
         primaryFileClient.create(1024)
-        def dataBytes = new byte[dataLength]
-        defaultData.get(dataBytes)
-        defaultData.rewind()
+        def dataBytes = FluxUtil.byteBufferToArray(defaultData)
         when:
         def uploadResponse = primaryFileClient.uploadWithResponse(defaultData, dataLength, 1, null)
         def downloadResponse = primaryFileClient.downloadWithPropertiesWithResponse(new FileRange(1, dataLength), true, null)
@@ -200,7 +196,7 @@ class FileAPITests extends APISpec {
         given:
         primaryFileClient.create(1024)
         when:
-        primaryFileClient.uploadWithResponse(defaultData, size, 0, FileRangeWriteType.UPDATE, null)
+        primaryFileClient.uploadWithResponse(defaultData, size, 0, null)
         then:
         def e = thrown(UnexpectedLengthException)
         e.getMessage().contains(errMsg)
@@ -222,8 +218,9 @@ class FileAPITests extends APISpec {
 
     def "Upload and download file"() {
         given:
-        File uploadFile = new File(testFolder.getPath() + "/helloworld")
-        File downloadFile = new File(testFolder.getPath() + "/testDownload")
+        def testFolder = getClass().getClassLoader().getResource("testfiles")
+        File uploadFile = new File(testFolder.getPath(), "helloworld")
+        File downloadFile = new File(testFolder.getPath(), "testDownload")
 
         if (!Files.exists(downloadFile.toPath())) {
             downloadFile.createNewFile()

@@ -3,7 +3,10 @@
 
 package com.azure.storage.file.spock
 
+import com.azure.core.http.HttpClient
+import com.azure.core.http.ProxyOptions
 import com.azure.core.http.policy.HttpLogDetailLevel
+import com.azure.core.implementation.http.spi.HttpClientProvider
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
@@ -18,12 +21,14 @@ import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.ListSharesOptions
 import spock.lang.Specification
 
+import java.util.function.Supplier
+
 class APISpec extends Specification {
     // Field common used for all APIs.
     def logger = new ClientLogger(APISpec.class)
     def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     def tmpFolder = getClass().getClassLoader().getResource("tmptestfiles")
-    def testFolder = getClass().getClassLoader().getResource("testfiles")
+
     def interceptorManager
     def testResourceName
 
@@ -149,12 +154,20 @@ class APISpec extends Specification {
                 .filePath(filePath)
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
+             //   .httpClient(HttpClient.createDefault().proxy(PROXY_OPTIONS))
         } else {
             return new FileClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
                 .filePath(filePath)
                 .httpClient(interceptorManager.getPlaybackClient())
+        }
+    }
+
+    private Supplier<ProxyOptions> PROXY_OPTIONS = new Supplier<ProxyOptions>() {
+        @Override
+        ProxyOptions get() {
+            return new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
         }
     }
 

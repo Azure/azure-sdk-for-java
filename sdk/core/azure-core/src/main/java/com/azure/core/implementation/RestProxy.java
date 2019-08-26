@@ -141,10 +141,11 @@ public class RestProxy implements InvocationHandler {
                 methodParser = methodParser(method);
                 request = createHttpRequest(methodParser, args);
                 Context context = methodParser.context(args).addData("caller-method", methodParser.fullyQualifiedMethodName());
-                final Context context1 = startTracingSpan(method, context);
+                context = startTracingSpan(method, context);
+
 
                 final Mono<HttpResponse> asyncResponse = validateLength(request).then(
-                    send(request, context1));
+                    send(request, context));
                 //
                 Mono<HttpDecodedResponse> asyncDecodedResponse = this.decoder.decode(asyncResponse, methodParser);
                 //
@@ -162,6 +163,7 @@ public class RestProxy implements InvocationHandler {
             return Mono.just(request);
         }
         Long expectedLength = Long.valueOf(request.headers().value("Content-Length"));
+
         return FluxUtil.collectBytesInByteBufferStream(body).doOnNext(bb -> {
             if (bb.length > expectedLength) {
                 throw new UnexpectedLengthException(
