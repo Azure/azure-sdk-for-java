@@ -1,23 +1,25 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatesnapshotmetadataerror259030881e?restype=share&comp=snapshot",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatesnapshotmetadataerror288669910b?restype=share&comp=snapshot",
     "Headers" : {
-      "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : {
-      "x-ms-version" : "2018-11-09",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "EmptyMetadataKey",
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "84142243-701a-0136-0d77-57db71000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:84142243-701a-0136-0d77-57db71000000\nTime:2019-08-20T16:52:24.5070240Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Tue, 20 Aug 2019 16:52:23 GMT",
+      "x-ms-request-id" : "ab179c7c-201a-00cf-3b12-5a57c4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:ab179c7c-201a-00cf-3b12-5a57c4000000\nTime:2019-08-24T00:27:36.9821297Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Sat, 24 Aug 2019 00:27:36 GMT",
+      "x-ms-client-request-id" : "120013bc-b48c-411e-9b5e-aeef4d24fd03",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "shareasyncapitestscreatesnapshotmetadataerror259030881e" ]
+  "variables" : [ "shareasyncapitestscreatesnapshotmetadataerror288669910b" ]
 }
