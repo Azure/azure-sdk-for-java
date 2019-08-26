@@ -32,7 +32,6 @@ public final class AccountSASQueryParameters extends BaseSASQueryParameters {
         this.services = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SERVICES, removeSASParametersFromMap);
     }
 
-
     /**
      * Creates a new {@link AccountSASQueryParameters} object. These objects are only created internally by SASSignatureValues
      * classes.

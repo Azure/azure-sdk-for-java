@@ -328,7 +328,7 @@ class SASTest extends APISpec {
         String contentEncoding = "encoding"
         String contentLanguage = "language"
         String contentType = "type"
-        
+
         when:
         String sas = snapshotBlob.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 

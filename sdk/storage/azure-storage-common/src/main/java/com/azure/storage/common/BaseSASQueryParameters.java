@@ -15,7 +15,7 @@ import java.util.function.Function;
  * means of appending these query parameters).
  * NOTE: Instances of this class are immutable to ensure thread safety.
  */
-public class BaseSASQueryParameters {
+public abstract class BaseSASQueryParameters {
 
     protected String version;
 
@@ -162,21 +162,5 @@ public class BaseSASQueryParameters {
      *
      * @return A {@code String} representing all SAS query parameters.
      */
-    public String encode() {
-        /*
-         We should be url-encoding each key and each value, but because we know all the keys and values will encode to
-         themselves, we cheat except for the signature value.
-         */
-        StringBuilder sb = new StringBuilder();
-
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SERVICE_VERSION, this.version);
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PROTOCOL, this.protocol);
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_START_TIME, formatQueryParameterDate(this.startTime));
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_EXPIRY_TIME, formatQueryParameterDate(this.expiryTime));
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_IP_RANGE, this.ipRange);
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNATURE, this.signature);
-
-        return sb.toString();
-    }
+    public abstract String encode();
 }

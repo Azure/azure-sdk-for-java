@@ -42,7 +42,7 @@ class APISpec extends Specification {
     def connectionString
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static boolean enableDebugging = true
+    static boolean enableDebugging = false
 
     /**
      * Setup the File service clients commonly used for the API tests.
