@@ -19,8 +19,6 @@ import com.azure.storage.file.ShareSASPermission
 import com.azure.storage.file.models.AccessPolicy
 import com.azure.storage.file.models.SignedIdentifier
 import com.azure.storage.file.models.StorageErrorException
-import com.azure.storage.file.models.StorageException
-import io.netty.buffer.Unpooled
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -263,8 +261,6 @@ class FileSASTests extends APISpec {
             .accessPolicy(new AccessPolicy().permission("rcwdl")
                 .expiry(OffsetDateTime.now().plusDays(1)))
 
-        primaryShareClient.delete()
-
         primaryShareClient.create()
         primaryShareClient.setAccessPolicy(Arrays.asList(identifier))
 
@@ -335,7 +331,7 @@ class FileSASTests extends APISpec {
         sc.deleteShare("create")
 
         then:
-        notThrown(StorageException)
+        notThrown(StorageErrorException)
     }
 
 
