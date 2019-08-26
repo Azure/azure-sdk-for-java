@@ -5,10 +5,13 @@ package com.azure.storage.blob;
 
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
@@ -27,12 +30,13 @@ import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.function.Function;
 
 import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
@@ -168,7 +172,7 @@ public final class BlobServiceAsyncClient {
      *
      * @return A reactive response emitting the list of containers.
      */
-    public Flux<ContainerItem> listContainers() {
+    public PagedFlux<ContainerItem> listContainers() {
         return this.listContainers(new ListContainersOptions());
     }
 
@@ -179,9 +183,34 @@ public final class BlobServiceAsyncClient {
      * @param options A {@link ListContainersOptions} which specifies what data should be returned by the service.
      * @return A reactive response emitting the list of containers.
      */
-    public Flux<ContainerItem> listContainers(ListContainersOptions options) {
-        return listContainersSegment(null, options)
-            .flatMapMany(response -> listContainersHelper(response.value().marker(), options, response));
+    public PagedFlux<ContainerItem> listContainers(ListContainersOptions options) {
+        return listContainersWithOptionalTimeout(options, null);
+    }
+
+    /*
+     * Implementation for this paged listing operation, supporting an optional timeout provided by the synchronous
+     * BlobServiceClient. Applies the given timeout to each Mono<ServiceListContainersSegmentResponse> backing the
+     * PagedFlux.
+     *
+     * @param options A {@link ListContainersOptions} which specifies what data should be returned by the service.
+     * @param timeout An optional timeout to be applied to the network asynchronous operations.
+     * @return A reactive response emitting the list of containers.
+     */
+    PagedFlux<ContainerItem> listContainersWithOptionalTimeout(ListContainersOptions options, Duration timeout) {
+
+        Function<String, Mono<PagedResponse<ContainerItem>>> func =
+            marker -> listContainersSegment(marker, options, timeout)
+                .map(response -> new PagedResponseBase<>(
+                    response.request(),
+                    response.statusCode(),
+                    response.headers(),
+                    response.value().containerItems(),
+                    response.value().nextMarker(),
+                    response.deserializedHeaders()));
+
+        return new PagedFlux<>(
+            () -> func.apply(null),
+            marker -> func.apply(marker));
     }
 
     /*
@@ -205,26 +234,13 @@ public final class BlobServiceAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list_helper "Helper code for ServiceURL.listContainersSegment")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    private Mono<ServicesListContainersSegmentResponse> listContainersSegment(String marker, ListContainersOptions options) {
+    private Mono<ServicesListContainersSegmentResponse> listContainersSegment(String marker, ListContainersOptions options, Duration timeout) {
         options = options == null ? new ListContainersOptions() : options;
 
-        return postProcessResponse(
+        return postProcessResponse(Utility.applyOptionalTimeout(
             this.azureBlobStorage.services().listContainersSegmentWithRestResponseAsync(
                 options.prefix(), marker, options.maxResults(), options.details().toIncludeType(), null,
-                null, Context.NONE));
-    }
-
-    private Flux<ContainerItem> listContainersHelper(String marker, ListContainersOptions options,
-                                                     ServicesListContainersSegmentResponse response) {
-        Flux<ContainerItem> result = Flux.fromIterable(response.value().containerItems());
-        if (response.value().nextMarker() != null) {
-            // Recursively add the continuation items to the observable.
-            result = result.concatWith(listContainersSegment(marker, options)
-                .flatMapMany((r) ->
-                    listContainersHelper(response.value().nextMarker(), options, r)));
-        }
-
-        return result;
+                null, Context.NONE), timeout));
     }
 
     /**

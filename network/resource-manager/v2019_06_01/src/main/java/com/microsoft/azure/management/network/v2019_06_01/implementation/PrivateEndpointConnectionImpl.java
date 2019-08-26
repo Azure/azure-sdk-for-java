@@ -12,6 +12,7 @@ import com.microsoft.azure.management.network.v2019_06_01.PrivateEndpointConnect
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.network.v2019_06_01.PrivateLinkServiceConnectionState;
+import com.microsoft.azure.management.network.v2019_06_01.ProvisioningState;
 import com.microsoft.azure.management.network.v2019_06_01.PrivateEndpoint;
 
 class PrivateEndpointConnectionImpl extends CreatableUpdatableImpl<PrivateEndpointConnection, PrivateEndpointConnectionInner, PrivateEndpointConnectionImpl> implements PrivateEndpointConnection, PrivateEndpointConnection.Update {
@@ -71,6 +72,11 @@ class PrivateEndpointConnectionImpl extends CreatableUpdatableImpl<PrivateEndpoi
 
 
     @Override
+    public String etag() {
+        return this.inner().etag();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
     }
@@ -96,6 +102,16 @@ class PrivateEndpointConnectionImpl extends CreatableUpdatableImpl<PrivateEndpoi
     }
 
     @Override
+    public ProvisioningState provisioningState() {
+        return this.inner().provisioningState();
+    }
+
+    @Override
+    public String type() {
+        return this.inner().type();
+    }
+
+    @Override
     public PrivateEndpointConnectionImpl withId(String id) {
         this.inner().withId(id);
         return this;
@@ -116,6 +132,12 @@ class PrivateEndpointConnectionImpl extends CreatableUpdatableImpl<PrivateEndpoi
     @Override
     public PrivateEndpointConnectionImpl withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.inner().withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
+        return this;
+    }
+
+    @Override
+    public PrivateEndpointConnectionImpl withProvisioningState(ProvisioningState provisioningState) {
+        this.inner().withProvisioningState(provisioningState);
         return this;
     }
 

@@ -13,6 +13,61 @@ import java.util.Collection;
  */
 public final class AccessTierOptional extends ExpandableStringEnum<AccessTierOptional> {
     /**
+     * Static value P4 for AccessTierOptional.
+     */
+    public static final AccessTierOptional P4 = fromString("P4");
+
+    /**
+     * Static value P6 for AccessTierOptional.
+     */
+    public static final AccessTierOptional P6 = fromString("P6");
+
+    /**
+     * Static value P10 for AccessTierOptional.
+     */
+    public static final AccessTierOptional P10 = fromString("P10");
+
+    /**
+     * Static value P15 for AccessTierOptional.
+     */
+    public static final AccessTierOptional P15 = fromString("P15");
+
+    /**
+     * Static value P20 for AccessTierOptional.
+     */
+    public static final AccessTierOptional P20 = fromString("P20");
+
+    /**
+     * Static value P30 for AccessTierOptional.
+     */
+    public static final AccessTierOptional P30 = fromString("P30");
+
+    /**
+     * Static value P40 for AccessTierOptional.
+     */
+    public static final AccessTierOptional P40 = fromString("P40");
+
+    /**
+     * Static value P50 for AccessTierOptional.
+     */
+    public static final AccessTierOptional P50 = fromString("P50");
+
+    /**
+     * Static value P60 for AccessTierOptional.
+     */
+    public static final AccessTierOptional P60 = fromString("P60");
+
+    /**
+     * Static value P70 for AccessTierOptional.
+     */
+    public static final AccessTierOptional P70 = fromString("P70");
+
+    /**
+     * Static value P80 for AccessTierOptional.
+     */
+    public static final AccessTierOptional P80 = fromString("P80");
+
+    /**
      * Static value Hot for AccessTierOptional.
      */
     public static final AccessTierOptional HOT = fromString("Hot");

@@ -31,15 +31,16 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
     private HTTPGetterInfo info;
     private ByteBuffer scenarioData;
 
-    DownloadResponseMockFlux(int scenario) {
+    DownloadResponseMockFlux(int scenario, APISpec apiSpec) {
         this.scenario = scenario;
+
         switch (this.scenario) {
             case DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK:
-                this.scenarioData = APISpec.getRandomData(512 * 1024);
+                this.scenarioData = apiSpec.getRandomData(512 * 1024);
                 break;
             case DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK:
             case DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
-                this.scenarioData = APISpec.getRandomData(1024);
+                this.scenarioData = apiSpec.getRandomData(1024);
                 break;
             case DR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED:
             case DR_TEST_SCENARIO_NON_RETRYABLE_ERROR:

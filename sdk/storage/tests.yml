@@ -15,3 +15,5 @@ jobs:
         BLOB_STORAGE_ACCOUNT_KEY: $(java-storage-test-blob-account-key)
         PREMIUM_STORAGE_ACCOUNT_NAME: $(java-storage-test-premium-account-name)
         PREMIUM_STORAGE_ACCOUNT_KEY: $(java-storage-test-premium-account-key)
+        AZURE_STORAGE_ACCESS_KEY: $(java-storage-test-access-key)
+        AZURE_STORAGE_FILE_ENDPOINT: $(java-storage-test-file-endpoint)

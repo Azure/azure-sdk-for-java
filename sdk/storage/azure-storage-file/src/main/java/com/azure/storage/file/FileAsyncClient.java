@@ -892,9 +892,7 @@ public class FileAsyncClient {
 
     /**
      * Closes a handle or handles opened on a file at the service. It is intended to be used alongside {@link
-     * FileAsyncClient#listHandles()} (Integer)} . TODO: Will change the return type to how many handles have been
-     * closed. Implement one more API to force close all handles. TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github
-     * Issue 4525</a>
+     * FileAsyncClient#listHandles()} (Integer)} .
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -910,6 +908,8 @@ public class FileAsyncClient {
      * @return The counts of number of handles closed
      */
     public Flux<Integer> forceCloseHandles(String handleId) {
+        // TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
+        // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github
         return azureFileStorageClient.files().forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, null, snapshot, Context.NONE)
             .flatMapMany(response -> nextPageForForceCloseHandles(response, handleId));
     }

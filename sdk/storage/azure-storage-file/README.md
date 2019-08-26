@@ -397,7 +397,7 @@ shareClient.setAccessPolicy(Collections.singletonList(permission));
 Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory)
 
 ```Java
-Iterable<HandleItem> handleItems = directoryClient.getHandles(null, true);
+Iterable<HandleItem> handleItems = directoryClient.listHandles(null, true);
 ```
 
 ### Force close handles on handle id
@@ -481,3 +481,5 @@ If you would like to become an active contributor to this project please follow 
 [samples_directory]: src/samples/java/com/azure/storage/file/DirectorySample.java
 [samples_file]: src/samples/java/com/azure/storage/file/FileSample.java
 [samples_async]: src/samples/java/com/azure/storage/file/AsyncSample.java
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-file/README.png)
