@@ -25,6 +25,8 @@
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
+      "x-ms-server-encrypted" : "true",
+      "x-ms-type" : "File",
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "ResourceNotFound",

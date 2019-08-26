@@ -345,15 +345,15 @@ public class DirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#getHandles(Integer, boolean)}
+     * Generates a code sample for using {@link DirectoryAsyncClient#listHandles(Integer, boolean)}
      */
-    public void getHandlesAsync() {
+    public void listHandlesAsync() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.getHandles
-        directoryAsyncClient.getHandles(10, true)
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean
+        directoryAsyncClient.listHandles(10, true)
             .subscribe(handleItem -> System.out.printf("Get handles completed with handle id %s",
                 handleItem.handleId()));
-        // END: com.azure.storage.file.directoryAsyncClient.getHandles
+        // END: com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean
     }
 
     /**
@@ -362,7 +362,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
     public void forceCloseHandlesAsync() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.forceCloseHandles
-        directoryAsyncClient.getHandles(10, true)
+        directoryAsyncClient.listHandles(10, true)
             .subscribe(handleItem -> {
                 directoryAsyncClient.forceCloseHandles(handleItem.handleId(), true)
                     .subscribe(numOfClosedHandles ->

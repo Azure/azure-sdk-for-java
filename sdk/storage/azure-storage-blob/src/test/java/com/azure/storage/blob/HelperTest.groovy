@@ -4,7 +4,6 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.rest.Response
-import com.azure.core.http.rest.VoidResponse
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.models.UserDelegationKey
@@ -28,7 +27,7 @@ class HelperTest extends APISpec {
     // TODO (alzimmer): Turn this on when nextPageLink can be passed into listing
     /*def "responseError"() {
         when:
-        cu.listBlobsFlat().iterator().hasNext()
+        cc.listBlobsFlat().iterator().hasNext()
 
         then:
         def e = thrown(StorageException)
@@ -44,7 +43,7 @@ class HelperTest extends APISpec {
      */
     def "Request property"() {
         when:
-        VoidResponse response = cu.deleteWithResponse(null, null, null)
+        def response = cc.deleteWithResponse(null, null, null)
 
         then:
         response.request() != null
@@ -80,7 +79,7 @@ class HelperTest extends APISpec {
         setup:
         String containerName = generateContainerName()
         String blobName = generateBlobName()
-        ContainerClient cu = primaryServiceURL.createContainer(containerName)
+        ContainerClient cu = primaryBlobServiceClient.createContainer(containerName)
         BlockBlobClient bu = cu.getBlockBlobClient(blobName)
         bu.upload(defaultInputStream.get(), defaultDataSize) // need something to snapshot
         String snapshotId = bu.createSnapshot().getSnapshotId()
@@ -98,10 +97,10 @@ class HelperTest extends APISpec {
 
         BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
             .permissions(p.toString())
-            .startTime(OffsetDateTime.now().minusDays(1))
-            .expiryTime(OffsetDateTime.now().plusDays(1))
+            .startTime(getUTCNow())
+            .expiryTime(getUTCNow().plusDays(1))
             .resource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
-            .canonicalName(String.format("/blob/%s/%s/%s", primaryCreds.accountName(), containerName, blobName))
+            .canonicalName(String.format("/blob/%s/%s/%s", primaryCredential.accountName(), containerName, blobName))
             .snapshotId(snapshotId)
             .ipRange(ipR)
             .protocol(SASProtocol.HTTPS_ONLY)
@@ -113,11 +112,9 @@ class HelperTest extends APISpec {
 
         when:
         BlobURLParts parts = URLParser.parse(bu.getBlobUrl())
-        parts.sasQueryParameters(v.generateSASQueryParameters(primaryCreds)).scheme("https")
+        parts.sasQueryParameters(v.generateSASQueryParameters(primaryCredential)).scheme("https")
         // base blob with snapshot SAS
-        AppendBlobClient bsu = new BlobClientBuilder()
-            .endpoint(parts.toURL().toString())
-            .buildAppendBlobClient()
+        AppendBlobClient bsu = getBlobClient(parts.toURL().toString(), null).asAppendBlobClient()
 
         bsu.download(new ByteArrayOutputStream())
 
@@ -128,10 +125,8 @@ class HelperTest extends APISpec {
         when:
         // blob snapshot with snapshot SAS
         parts.snapshot(snapshotId)
-        bsu = new BlobClientBuilder()
-            .endpoint(parts.toURL().toString())
-            .credential(SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode()))
-            .buildAppendBlobClient()
+        bsu = getBlobClient(parts.toURL().toString(), SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode()))
+            .asAppendBlobClient()
 
         ByteArrayOutputStream data = new ByteArrayOutputStream()
         bsu.download(data)
@@ -174,7 +169,7 @@ class HelperTest extends APISpec {
         }
 
         v.startTime(startTime)
-            .canonicalName(String.format("/blob/%s/containerName/blobName", primaryCreds.accountName()))
+            .canonicalName(String.format("/blob/%s/containerName/blobName", primaryCredential.accountName()))
             .snapshotId(snapId)
 
         if (expiryTime == null) {
@@ -195,21 +190,21 @@ class HelperTest extends APISpec {
             .contentLanguage(language)
             .contentType(type)
 
-        BlobServiceSASQueryParameters token = v.generateSASQueryParameters(primaryCreds)
+        BlobServiceSASQueryParameters token = v.generateSASQueryParameters(primaryCredential)
 
         if (startTime != null) {
             expectedStringToSign = String.format(expectedStringToSign,
                 Utility.ISO_8601_UTC_DATE_FORMATTER.format(startTime),
                 Utility.ISO_8601_UTC_DATE_FORMATTER.format(expiryTime),
-                primaryCreds.accountName())
+                primaryCredential.accountName())
         } else {
             expectedStringToSign = String.format(expectedStringToSign,
                 Utility.ISO_8601_UTC_DATE_FORMATTER.format(expiryTime),
-                primaryCreds.accountName())
+                primaryCredential.accountName())
         }
 
         then:
-        token.signature() == primaryCreds.computeHmac256(expectedStringToSign)
+        token.signature() == primaryCredential.computeHmac256(expectedStringToSign)
 
         /*
         We don't test the blob or containerName properties because canonicalized resource is always added as at least
@@ -244,7 +239,7 @@ class HelperTest extends APISpec {
         }
 
         v.startTime(startTime)
-            .canonicalName(String.format("/blob/%s/containerName/blobName", primaryCreds.accountName()))
+            .canonicalName(String.format("/blob/%s/containerName/blobName", primaryCredential.accountName()))
             .snapshotId(snapId)
 
         if (expiryTime == null) {
@@ -281,7 +276,7 @@ class HelperTest extends APISpec {
 
         BlobServiceSASQueryParameters token = v.generateSASQueryParameters(key)
 
-        expectedStringToSign = String.format(expectedStringToSign, Utility.ISO_8601_UTC_DATE_FORMATTER.format(v.expiryTime()), primaryCreds.accountName())
+        expectedStringToSign = String.format(expectedStringToSign, Utility.ISO_8601_UTC_DATE_FORMATTER.format(v.expiryTime()), primaryCredential.accountName())
 
         then:
         token.signature() == Utility.computeHMac256(key.value(), expectedStringToSign)
@@ -317,7 +312,7 @@ class HelperTest extends APISpec {
             .expiryTime(expiryTime)
             .permissions(new BlobSASPermission().toString())
             .resource(expectedResource)
-            .canonicalName(String.format("/blob/%s/%s", primaryCreds.accountName(), containerName))
+            .canonicalName(String.format("/blob/%s/%s", primaryCredential.accountName(), containerName))
             .snapshotId(snapId)
 
         if (blobName != null) {
@@ -326,13 +321,13 @@ class HelperTest extends APISpec {
 
         expectedStringToSign = String.format(expectedStringToSign,
             Utility.ISO_8601_UTC_DATE_FORMATTER.format(expiryTime),
-            primaryCreds.accountName())
+            primaryCredential.accountName())
 
         when:
-        BlobServiceSASQueryParameters token = v.generateSASQueryParameters(primaryCreds)
+        BlobServiceSASQueryParameters token = v.generateSASQueryParameters(primaryCredential)
 
         then:
-        token.signature() == primaryCreds.computeHmac256(expectedStringToSign)
+        token.signature() == primaryCredential.computeHmac256(expectedStringToSign)
         token.resource() == expectedResource
 
         where:
@@ -362,10 +357,10 @@ class HelperTest extends APISpec {
         e.getMessage().contains(parameter)
 
         where:
-        containerName | version | creds        | blobName || parameter
-        "c"           | null    | primaryCreds | "b"       | "version"
-        "c"           | "v"     | null         | "b"       | "sharedKeyCredentials"
-        "c"           | "v"     | primaryCreds | null      | "canonicalName"
+        containerName | version | creds             | blobName || parameter
+        "c"           | null    | primaryCredential | "b"       | "version"
+        "c"           | "v"     | null              | "b"       | "sharedKeyCredentials"
+        "c"           | "v"     | primaryCredential | null      | "canonicalName"
     }
 
     @Unroll
@@ -545,12 +540,12 @@ class HelperTest extends APISpec {
             v.ipRange(new IPRange().ipMin("ip"))
         }
 
-        def token = v.generateSASQueryParameters(primaryCreds)
+        def token = v.generateSASQueryParameters(primaryCredential)
 
-        expectedStringToSign = String.format(expectedStringToSign, primaryCreds.accountName())
+        expectedStringToSign = String.format(expectedStringToSign, primaryCredential.accountName())
 
         then:
-        token.signature() == primaryCreds.computeHmac256(expectedStringToSign)
+        token.signature() == primaryCredential.computeHmac256(expectedStringToSign)
 
         where:
         startTime                                                 | ipRange       | protocol               || expectedStringToSign
@@ -577,13 +572,13 @@ class HelperTest extends APISpec {
         e.getMessage().contains(parameter)
 
         where:
-        permissions | service | resourceType | expiryTime           | version | creds        || parameter
-        null        | "b"     | "c"          | OffsetDateTime.now() | "v"     | primaryCreds || "permissions"
-        "c"         | null    | "c"          | OffsetDateTime.now() | "v"     | primaryCreds || "services"
-        "c"         | "b"     | null         | OffsetDateTime.now() | "v"     | primaryCreds || "resourceTypes"
-        "c"         | "b"     | "c"          | null                 | "v"     | primaryCreds || "expiryTime"
-        "c"         | "b"     | "c"          | OffsetDateTime.now() | null    | primaryCreds || "version"
-        "c"         | "b"     | "c"          | OffsetDateTime.now() | "v"     | null         || "SharedKeyCredential"
+        permissions | service | resourceType | expiryTime           | version | creds             || parameter
+        null        | "b"     | "c"          | OffsetDateTime.now() | "v"     | primaryCredential || "permissions"
+        "c"         | null    | "c"          | OffsetDateTime.now() | "v"     | primaryCredential || "services"
+        "c"         | "b"     | null         | OffsetDateTime.now() | "v"     | primaryCredential || "resourceTypes"
+        "c"         | "b"     | "c"          | null                 | "v"     | primaryCredential || "expiryTime"
+        "c"         | "b"     | "c"          | OffsetDateTime.now() | null    | primaryCredential || "version"
+        "c"         | "b"     | "c"          | OffsetDateTime.now() | "v"     | null              || "SharedKeyCredential"
     }
 
     @Unroll
@@ -710,10 +705,10 @@ class HelperTest extends APISpec {
         BlobServiceSASSignatureValues sasValues = new BlobServiceSASSignatureValues()
             .expiryTime(OffsetDateTime.now(ZoneOffset.UTC).plusDays(1))
             .permissions("r")
-            .canonicalName(String.format("/blob/%s/container/blob", primaryCreds.accountName()))
+            .canonicalName(String.format("/blob/%s/container/blob", primaryCredential.accountName()))
             .resource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
 
-        parts.sasQueryParameters(sasValues.generateSASQueryParameters(primaryCreds))
+        parts.sasQueryParameters(sasValues.generateSASQueryParameters(primaryCredential))
 
         when:
         String[] splitParts = parts.toURL().toString().split("\\?")
