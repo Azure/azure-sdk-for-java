@@ -9,7 +9,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.tcp.ProxyProvider;
 
-import java.util.concurrent.ThreadFactory;
 import java.util.function.Supplier;
 
 /**
@@ -21,8 +20,7 @@ public class NettyAsyncHttpClientBuilder {
     private Supplier<ProxyOptions> proxyOptions;
     private boolean enableWiretap;
     private int port;
-    private ThreadFactory threadFactory;
-    private int threadCount;
+    private NioEventLoopGroup nioEventLoopGroup;
 
     /**
      *
@@ -39,8 +37,8 @@ public class NettyAsyncHttpClientBuilder {
             .port(port)
             .wiretap(enableWiretap)
             .tcpConfiguration(tcpConfig -> {
-                if (threadFactory != null) {
-                    tcpConfig = tcpConfig.runOn(new NioEventLoopGroup(threadCount, threadFactory));
+                if (nioEventLoopGroup != null) {
+                    tcpConfig = tcpConfig.runOn(nioEventLoopGroup);
                 }
 
                 if (proxyOptions == null) {
@@ -98,24 +96,13 @@ public class NettyAsyncHttpClientBuilder {
     }
 
     /**
-     * Sets the thread factory and number of threads that will be used to handle IO.
+     * Sets the NIO event loop group that will be used to handle IO.
      *
-     * @param threadFactory the thread factory
-     * @return a HttpClient with the thread factory applied
+     * @param nioEventLoopGroup the thread factory
+     * @return a HttpClient with the NIO event loop group applied
      */
-    public NettyAsyncHttpClientBuilder threadFactory(ThreadFactory threadFactory) {
-        this.threadFactory = threadFactory;
-        return this;
-    }
-
-    /**
-     * Sets the number of threads that will be used to handle IO.
-     *
-     * @param threadCount number of threads
-     * @return a HttpClient using the number of threads applied
-     */
-    public NettyAsyncHttpClientBuilder threadCount(int threadCount) {
-        this.threadCount = threadCount;
+    public NettyAsyncHttpClientBuilder nioEventLoopGroup(NioEventLoopGroup nioEventLoopGroup) {
+        this.nioEventLoopGroup = nioEventLoopGroup;
         return this;
     }
 }
