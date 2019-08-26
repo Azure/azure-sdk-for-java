@@ -880,6 +880,7 @@ public class ShareAsyncClient {
         // Set canonical name
         fileServiceSASSignatureValues.canonicalName(this.shareName, accountName);
 
+        // Set resource
         fileServiceSASSignatureValues.resource(Constants.UrlConstants.SAS_SHARE_CONSTANT);
 
         return fileServiceSASSignatureValues;
