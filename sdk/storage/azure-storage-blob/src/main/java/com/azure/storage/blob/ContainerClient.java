@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
@@ -20,7 +21,6 @@ import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -387,7 +387,7 @@ public final class ContainerClient {
 
     /**
      * Returns a lazy loaded list of blobs in this container, with folder structures flattened. The returned {@link
-     * Iterable} can be iterated through while new items are automatically retrieved as needed.
+     * PagedIterable} can be consumed through while new items are automatically retrieved as needed.
      *
      * <p>
      * Blob names are returned in lexicographic order.
@@ -397,13 +397,13 @@ public final class ContainerClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      * @return The listed blobs, flattened.
      */
-    public Iterable<BlobItem> listBlobsFlat() {
+    public PagedIterable<BlobItem> listBlobsFlat() {
         return this.listBlobsFlat(new ListBlobsOptions(), null);
     }
 
     /**
      * Returns a lazy loaded list of blobs in this container, with folder structures flattened. The returned {@link
-     * Iterable} can be iterated through while new items are automatically retrieved as needed.
+     * PagedIterable} can be consumed through while new items are automatically retrieved as needed.
      *
      * <p>
      * Blob names are returned in lexicographic order.
@@ -416,10 +416,8 @@ public final class ContainerClient {
      *
      * @return The listed blobs, flattened.
      */
-    public Iterable<BlobItem> listBlobsFlat(ListBlobsOptions options, Duration timeout) {
-        Flux<BlobItem> response = containerAsyncClient.listBlobsFlat(options);
-
-        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
+    public PagedIterable<BlobItem> listBlobsFlat(ListBlobsOptions options, Duration timeout) {
+        return new PagedIterable<>(containerAsyncClient.listBlobsFlatWithOptionalTimeout(options, timeout));
     }
 
     /**
@@ -449,7 +447,7 @@ public final class ContainerClient {
      *
      * @return A reactive response emitting the prefixes and blobs.
      */
-    public Iterable<BlobItem> listBlobsHierarchy(String directory) {
+    public PagedIterable<BlobItem> listBlobsHierarchy(String directory) {
         return this.listBlobsHierarchy("/", new ListBlobsOptions().prefix(directory), null);
     }
 
@@ -482,10 +480,8 @@ public final class ContainerClient {
      *
      * @return A reactive response emitting the prefixes and blobs.
      */
-    public Iterable<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
-        Flux<BlobItem> response = containerAsyncClient.listBlobsHierarchy(delimiter, options);
-
-        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
+    public PagedIterable<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
+        return new PagedIterable<>(containerAsyncClient.listBlobsHierarchyWithOptionalTimeout(delimiter, options, timeout));
     }
 
     /**

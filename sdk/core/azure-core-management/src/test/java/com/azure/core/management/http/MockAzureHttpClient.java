@@ -288,7 +288,7 @@ public class MockAzureHttpClient implements HttpClient {
     }
 
     private static String bodyToString(HttpRequest request) throws IOException {
-        Mono<String> asyncString = FluxUtil.collectBytesInByteBufStream(request.body(), false)
+        Mono<String> asyncString = FluxUtil.collectBytesInByteBufferStream(request.body())
                 .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
         return asyncString.block();
     }

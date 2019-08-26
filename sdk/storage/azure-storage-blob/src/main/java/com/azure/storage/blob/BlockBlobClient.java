@@ -10,15 +10,13 @@ import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlockBlobItem;
-import com.azure.storage.blob.models.BlockItem;
+import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -27,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.List;
 
@@ -94,7 +93,7 @@ public final class BlockBlobClient extends BlobClient {
      * @throws StorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(BlobAccessConditions accessConditions) {
-        return new BlobOutputStream(blockBlobAsyncClient, accessConditions);
+        return BlobOutputStream.blockBlobOutputStream(blockBlobAsyncClient, accessConditions);
     }
 
     /**
@@ -138,7 +137,7 @@ public final class BlockBlobClient extends BlobClient {
      */
     public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHTTPHeaders headers,
                                                       Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) throws IOException {
-        Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE))
+        Flux<ByteBuffer> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE))
             .map(i -> i * BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
             .concatMap(pos -> Mono.fromCallable(() -> {
                 long count = pos + BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE > length ? length - pos : BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
@@ -147,7 +146,7 @@ public final class BlockBlobClient extends BlobClient {
                 while (read < count) {
                     read += data.read(cache, read, (int) count - read);
                 }
-                return ByteBufAllocator.DEFAULT.buffer((int) count).writeBytes(cache);
+                return ByteBuffer.wrap(cache);
             }));
 
         Mono<Response<BlockBlobItem>> upload = blockBlobAsyncClient
@@ -226,7 +225,7 @@ public final class BlockBlobClient extends BlobClient {
     public VoidResponse stageBlockWithResponse(String base64BlockID, InputStream data, long length,
         LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
 
-        Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE))
+        Flux<ByteBuffer> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE))
             .map(i -> i * BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
             .concatMap(pos -> Mono.fromCallable(() -> {
                 long count = pos + BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE > length ? length - pos : BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
@@ -235,7 +234,7 @@ public final class BlockBlobClient extends BlobClient {
                 while (read < count) {
                     read += data.read(cache, read, (int) count - read);
                 }
-                return ByteBufAllocator.DEFAULT.buffer((int) count).writeBytes(cache);
+                return ByteBuffer.wrap(cache);
             }));
 
         Mono<VoidResponse> response = blockBlobAsyncClient.stageBlockWithResponse(base64BlockID,
@@ -297,8 +296,8 @@ public final class BlockBlobClient extends BlobClient {
      *
      * @return The list of blocks.
      */
-    public Iterable<BlockItem> listBlocks(BlockListType listType) {
-        return this.listBlocks(listType, null, null);
+    public BlockList listBlocks(BlockListType listType) {
+        return this.listBlocksWithResponse(listType, null, null).value();
     }
 
     /**
@@ -313,11 +312,11 @@ public final class BlockBlobClient extends BlobClient {
      *
      * @return The list of blocks.
      */
-    public Iterable<BlockItem> listBlocks(BlockListType listType,
+    public Response<BlockList> listBlocksWithResponse(BlockListType listType,
                                           LeaseAccessConditions leaseAccessConditions, Duration timeout) {
-        Flux<BlockItem> response = blockBlobAsyncClient.listBlocks(listType, leaseAccessConditions);
+        Mono<Response<BlockList>> response = blockBlobAsyncClient.listBlocks(listType, leaseAccessConditions);
 
-        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**

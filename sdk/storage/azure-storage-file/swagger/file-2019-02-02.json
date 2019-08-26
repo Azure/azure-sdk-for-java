@@ -44,8 +44,8 @@
                 "operationId": "Service_SetProperties",
                 "description": "Sets properties for a storage account's File service endpoint, including properties for Storage Analytics metrics and CORS (Cross-Origin Resource Sharing) rules.",
                 "parameters": [{
-                        "$ref": "#/parameters/StorageServiceProperties"
-                    },
+                    "$ref": "#/parameters/StorageServiceProperties"
+                },
                     {
                         "$ref": "#/parameters/Timeout"
                     },
@@ -90,8 +90,8 @@
                 "operationId": "Service_GetProperties",
                 "description": "Gets the properties of a storage account's File service, including properties for Storage Analytics metrics and CORS (Cross-Origin Resource Sharing) rules.",
                 "parameters": [{
-                        "$ref": "#/parameters/Timeout"
-                    },
+                    "$ref": "#/parameters/Timeout"
+                },
                     {
                         "$ref": "#/parameters/ApiVersionParameter"
                     }
@@ -130,14 +130,14 @@
                 }
             },
             "parameters": [{
-                    "name": "restype",
-                    "in": "query",
-                    "required": true,
-                    "type": "string",
-                    "enum": [
-                        "service"
-                    ]
-                },
+                "name": "restype",
+                "in": "query",
+                "required": true,
+                "type": "string",
+                "enum": [
+                    "service"
+                ]
+            },
                 {
                     "name": "comp",
                     "in": "query",
@@ -157,8 +157,8 @@
                 "operationId": "Service_ListSharesSegment",
                 "description": "The List Shares Segment operation returns a list of the shares and share snapshots under the specified account.",
                 "parameters": [{
-                        "$ref": "#/parameters/Prefix"
-                    },
+                    "$ref": "#/parameters/Prefix"
+                },
                     {
                         "$ref": "#/parameters/Marker"
                     },
@@ -229,8 +229,8 @@
                 "operationId": "Share_Create",
                 "description": "Creates a new share under the specified account. If the share with the same name already exists, the operation fails.",
                 "parameters": [{
-                        "$ref": "#/parameters/Timeout"
-                    },
+                    "$ref": "#/parameters/Timeout"
+                },
                     {
                         "$ref": "#/parameters/Metadata"
                     },
@@ -293,8 +293,8 @@
                 "operationId": "Share_GetProperties",
                 "description": "Returns all user-defined metadata and system properties for the specified share or share snapshot. The data returned does not include the share's list of files.",
                 "parameters": [{
-                        "$ref": "#/parameters/ShareSnapshot"
-                    },
+                    "$ref": "#/parameters/ShareSnapshot"
+                },
                     {
                         "$ref": "#/parameters/Timeout"
                     },
@@ -365,8 +365,8 @@
                 "operationId": "Share_Delete",
                 "description": "Operation marks the specified share or share snapshot for deletion. The share or share snapshot and any files contained within it are later deleted during garbage collection.",
                 "parameters": [{
-                        "$ref": "#/parameters/ShareSnapshot"
-                    },
+                    "$ref": "#/parameters/ShareSnapshot"
+                },
                     {
                         "$ref": "#/parameters/Timeout"
                     },
@@ -430,8 +430,8 @@
                 "operationId": "Share_CreateSnapshot",
                 "description": "Creates a read-only snapshot of a share.",
                 "parameters": [{
-                        "$ref": "#/parameters/Timeout"
-                    },
+                    "$ref": "#/parameters/Timeout"
+                },
                     {
                         "$ref": "#/parameters/Metadata"
                     },
@@ -490,14 +490,14 @@
                 }
             },
             "parameters": [{
-                    "name": "restype",
-                    "in": "query",
-                    "required": true,
-                    "type": "string",
-                    "enum": [
-                        "share"
-                    ]
-                },
+                "name": "restype",
+                "in": "query",
+                "required": true,
+                "type": "string",
+                "enum": [
+                    "share"
+                ]
+            },
                 {
                     "name": "comp",
                     "in": "query",
@@ -517,8 +517,8 @@
                 "operationId": "Share_CreatePermission",
                 "description": "Create a permission (a security descriptor).",
                 "parameters": [{
-                        "$ref": "#/parameters/Timeout"
-                    },
+                    "$ref": "#/parameters/Timeout"
+                },
                     {
                         "$ref": "#/parameters/ApiVersionParameter"
                     }
@@ -541,9 +541,9 @@
                                 "type": "string",
                                 "format": "date-time-rfc1123",
                                 "description": "A UTC date/time value generated by the service that indicates the time at which the response was initiated."
-                            },       
+                            },
                             "x-ms-file-permission-key": {
-                                "x-ms-client-name": "FilePermissonKey",
+                                "x-ms-client-name": "FilePermissionKey",
                                 "type": "string",
                                 "description": "Key of the permission set for the directory/file."
                             }
@@ -570,8 +570,8 @@
                 "operationId": "Share_GetPermission",
                 "description": "Returns the permission (security descriptor) for a given key",
                 "parameters": [{
-                        "$ref": "#/parameters/FilePermissionKey"
-                    },
+                    "$ref": "#/parameters/FilePermissionKey"
+                },
                     {
                         "$ref": "#/parameters/Timeout"
                     },
@@ -615,14 +615,14 @@
                 }
             },
             "parameters": [{
-                    "name": "restype",
-                    "in": "query",
-                    "required": true,
-                    "type": "string",
-                    "enum": [
-                        "share"
-                    ]
-                },
+                "name": "restype",
+                "in": "query",
+                "required": true,
+                "type": "string",
+                "enum": [
+                    "share"
+                ]
+            },
                 {
                     "name": "comp",
                     "in": "query",
@@ -642,8 +642,8 @@
                 "operationId": "Share_SetQuota",
                 "description": "Sets quota for the specified share.",
                 "parameters": [{
-                        "$ref": "#/parameters/Timeout"
-                    },
+                    "$ref": "#/parameters/Timeout"
+                },
                     {
                         "$ref": "#/parameters/ApiVersionParameter"
                     },
@@ -697,14 +697,14 @@
                 }
             },
             "parameters": [{
-                    "name": "restype",
-                    "in": "query",
-                    "required": true,
-                    "type": "string",
-                    "enum": [
-                        "share"
-                    ]
-                },
+                "name": "restype",
+                "in": "query",
+                "required": true,
+                "type": "string",
+                "enum": [
+                    "share"
+                ]
+            },
                 {
                     "name": "comp",
                     "in": "query",
@@ -724,8 +724,8 @@
                 "operationId": "Share_SetMetadata",
                 "description": "Sets one or more user-defined name-value pairs for the specified share.",
                 "parameters": [{
-                        "$ref": "#/parameters/Timeout"
-                    },
+                    "$ref": "#/parameters/Timeout"
+                },
                     {
                         "$ref": "#/parameters/Metadata"
                     },
@@ -779,14 +779,14 @@
                 }
             },
             "parameters": [{
-                    "name": "restype",
-                    "in": "query",
-                    "required": true,
-                    "type": "string",
-                    "enum": [
-                        "share"
-                    ]
-                },
+                "name": "restype",
+                "in": "query",
+                "required": true,
+                "type": "string",
+                "enum": [
+                    "share"
+                ]
+            },
                 {
                     "name": "comp",
                     "in": "query",
@@ -806,8 +806,8 @@
                 "operationId": "Share_GetAccessPolicy",
                 "description": "Returns information about stored access policies specified on the share.",
                 "parameters": [{
-                        "$ref": "#/parameters/Timeout"
-                    },
+                    "$ref": "#/parameters/Timeout"
+                },
                     {
                         "$ref": "#/parameters/ApiVersionParameter"
                     }
@@ -867,8 +867,8 @@
                 "operationId": "Share_SetAccessPolicy",
                 "description": "Sets a stored access policy for use with shared access signatures.",
                 "parameters": [{
-                        "$ref": "#/parameters/ShareAcl"
-                    },
+                    "$ref": "#/parameters/ShareAcl"
+                },
                     {
                         "$ref": "#/parameters/Timeout"
                     },
@@ -922,14 +922,14 @@
                 }
             },
             "parameters": [{
-                    "name": "restype",
-                    "in": "query",
-                    "required": true,
-                    "type": "string",
-                    "enum": [
-                        "share"
-                    ]
-                },
+                "name": "restype",
+                "in": "query",
+                "required": true,
+                "type": "string",
+                "enum": [
+                    "share"
+                ]
+            },
                 {
                     "name": "comp",
                     "in": "query",
@@ -949,8 +949,8 @@
                 "operationId": "Share_GetStatistics",
                 "description": "Retrieves statistics related to the share.",
                 "parameters": [{
-                        "$ref": "#/parameters/Timeout"
-                    },
+                    "$ref": "#/parameters/Timeout"
+                },
                     {
                         "$ref": "#/parameters/ApiVersionParameter"
                     }
@@ -1004,14 +1004,14 @@
                 }
             },
             "parameters": [{
-                    "name": "restype",
-                    "in": "query",
-                    "required": true,
-                    "type": "string",
-                    "enum": [
-                        "share"
-                    ]
-                },
+                "name": "restype",
+                "in": "query",
+                "required": true,
+                "type": "string",
+                "enum": [
+                    "share"
+                ]
+            },
                 {
                     "name": "comp",
                     "in": "query",
@@ -1031,8 +1031,8 @@
                 "operationId": "Directory_Create",
                 "description": "Creates a new directory under the specified share or parent directory.",
                 "parameters": [{
-                        "$ref": "#/parameters/Timeout"
-                    },
+                    "$ref": "#/parameters/Timeout"
+                },
                     {
                         "$ref": "#/parameters/Metadata"
                     },
@@ -1090,7 +1090,7 @@
                                 "description": "The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm, and false otherwise."
                             },
                             "x-ms-file-permission-key": {
-                                "x-ms-client-name": "FilePermissonKey",
+                                "x-ms-client-name": "FilePermissionKey",
                                 "type": "string",
                                 "description": "Key of the permission set for the directory."
                             },
@@ -1150,8 +1150,8 @@
                 "operationId": "Directory_GetProperties",
                 "description": "Returns all system properties for the specified directory, and can also be used to check the existence of a directory. The data returned does not include the files in the directory or any subdirectories.",
                 "parameters": [{
-                        "$ref": "#/parameters/ShareSnapshot"
-                    },
+                    "$ref": "#/parameters/ShareSnapshot"
+                },
                     {
                         "$ref": "#/parameters/Timeout"
                     },
@@ -1260,8 +1260,8 @@
                 "operationId": "Directory_Delete",
                 "description": "Removes the specified empty directory. Note that the directory must be empty before it can be deleted.",
                 "parameters": [{
-                        "$ref": "#/parameters/Timeout"
-                    },
+                    "$ref": "#/parameters/Timeout"
+                },
                     {
                         "$ref": "#/parameters/ApiVersionParameter"
                     }
@@ -1319,8 +1319,8 @@
                 "operationId": "Directory_SetProperties",
                 "description": "Sets properties on the directory.",
                 "parameters": [{
-                        "$ref": "#/parameters/Timeout"
-                    },
+                    "$ref": "#/parameters/Timeout"
+                },
                     {
                         "$ref": "#/parameters/ApiVersionParameter"
                     },
@@ -1428,15 +1428,26 @@
                     }
                 }
             },
-            "parameters": [{
-                "name": "comp",
-                "in": "query",
-                "required": true,
-                "type": "string",
-                "enum": [
-                    "properties"
-                ]
-            }]
+            "parameters": [
+                {
+                    "name": "restype",
+                    "in": "query",
+                    "required": true,
+                    "type": "string",
+                    "enum": [
+                        "directory"
+                    ]
+                },
+                {
+                    "name": "comp",
+                    "in": "query",
+                    "required": true,
+                    "type": "string",
+                    "enum": [
+                        "properties"
+                    ]
+                }
+            ]
         },
         "/{shareName}/{directory}?restype=directory&comp=metadata": {
             "put": {
@@ -1446,8 +1457,8 @@
                 "operationId": "Directory_SetMetadata",
                 "description": "Updates user defined metadata for the specified directory.",
                 "parameters": [{
-                        "$ref": "#/parameters/Timeout"
-                    },
+                    "$ref": "#/parameters/Timeout"
+                },
                     {
                         "$ref": "#/parameters/Metadata"
                     },
@@ -1500,7 +1511,8 @@
                     }
                 }
             },
-            "parameters": [{
+            "parameters": [
+                {
                     "name": "restype",
                     "in": "query",
                     "required": true,
@@ -1593,14 +1605,14 @@
                 }
             },
             "parameters": [{
-                    "name": "restype",
-                    "in": "query",
-                    "required": true,
-                    "type": "string",
-                    "enum": [
-                        "directory"
-                    ]
-                },
+                "name": "restype",
+                "in": "query",
+                "required": true,
+                "type": "string",
+                "enum": [
+                    "directory"
+                ]
+            },
                 {
                     "name": "comp",
                     "in": "query",
@@ -1682,14 +1694,14 @@
                 }
             },
             "parameters": [{
-                    "name": "comp",
-                    "in": "query",
-                    "required": true,
-                    "type": "string",
-                    "enum": [
-                        "listhandles"
-                    ]
-                }
+                "name": "comp",
+                "in": "query",
+                "required": true,
+                "type": "string",
+                "enum": [
+                    "listhandles"
+                ]
+            }
             ]
         },
         "/{shareName}/{directory}?comp=forceclosehandles": {
@@ -1773,7 +1785,7 @@
                     "forceclosehandles"
                 ]
             }
-        ]
+            ]
         },
         "/{shareName}/{directory}/{fileName}": {
             "put": {
@@ -1783,8 +1795,8 @@
                 "operationId": "File_Create",
                 "description": "Creates a new file or replaces a file. Note it only initializes the file with no content.",
                 "parameters": [{
-                        "$ref": "#/parameters/Timeout"
-                    },
+                    "$ref": "#/parameters/Timeout"
+                },
                     {
                         "$ref": "#/parameters/ApiVersionParameter"
                     },
@@ -1932,8 +1944,8 @@
                 "operationId": "File_Download",
                 "description": "Reads or downloads a file from the system, including its metadata and properties.",
                 "parameters": [{
-                        "$ref": "#/parameters/Timeout"
-                    },
+                    "$ref": "#/parameters/Timeout"
+                },
                     {
                         "$ref": "#/parameters/ApiVersionParameter"
                     },
@@ -2236,6 +2248,44 @@
                                 "x-ms-client-name": "IsServerEncrypted",
                                 "type": "boolean",
                                 "description": "The value of this header is set to true if the file data and application metadata are completely encrypted using the specified algorithm. Otherwise, the value is set to false (when the file is unencrypted, or if only parts of the file/application metadata are encrypted)."
+                            },
+                            "x-ms-file-attributes": {
+                                "x-ms-client-name": "FileAttributes",
+                                "type": "string",
+                                "description": "Attributes set for the file."
+                            },
+                            "x-ms-file-creation-time": {
+                                "x-ms-client-name": "FileCreationTime",
+                                "type": "string",
+                                "format": "date-time-rfc1123",
+                                "description": "Creation time for the file."
+                            },
+                            "x-ms-file-last-write-time": {
+                                "x-ms-client-name": "FileLastWriteTime",
+                                "type": "string",
+                                "format": "date-time-rfc1123",
+                                "description": "Last write time for the file."
+                            },
+                            "x-ms-file-change-time": {
+                                "x-ms-client-name": "FileChangeTime",
+                                "type": "string",
+                                "format": "date-time-rfc1123",
+                                "description": "Change time for the file."
+                            },
+                            "x-ms-file-permission-key": {
+                                "x-ms-client-name": "FilePermissionKey",
+                                "type": "string",
+                                "description": "Key of the permission set for the file."
+                            },
+                            "x-ms-file-id": {
+                                "x-ms-client-name": "FileId",
+                                "type": "string",
+                                "description": "The fileId of the file."
+                            },
+                            "x-ms-file-parent-id": {
+                                "x-ms-client-name": "FileParentId",
+                                "type": "string",
+                                "description": "The parent fileId of the file."
                             }
                         },
                         "schema": {
@@ -2264,8 +2314,8 @@
                 "operationId": "File_GetProperties",
                 "description": "Returns all user-defined metadata, standard HTTP properties, and system properties for the file. It does not return the content of the file.",
                 "parameters": [{
-                        "$ref": "#/parameters/ShareSnapshot"
-                    },
+                    "$ref": "#/parameters/ShareSnapshot"
+                },
                     {
                         "$ref": "#/parameters/Timeout"
                     },
@@ -2453,8 +2503,8 @@
                 "operationId": "File_Delete",
                 "description": "removes the file from the storage account.",
                 "parameters": [{
-                        "$ref": "#/parameters/Timeout"
-                    },
+                    "$ref": "#/parameters/Timeout"
+                },
                     {
                         "$ref": "#/parameters/ApiVersionParameter"
                     }
@@ -2506,8 +2556,8 @@
                 "operationId": "File_SetHTTPHeaders",
                 "description": "Sets HTTP headers on the file.",
                 "parameters": [{
-                        "$ref": "#/parameters/Timeout"
-                    },
+                    "$ref": "#/parameters/Timeout"
+                },
                     {
                         "$ref": "#/parameters/ApiVersionParameter"
                     },
@@ -2660,8 +2710,8 @@
                 "operationId": "File_SetMetadata",
                 "description": "Updates user-defined metadata for the specified file.",
                 "parameters": [{
-                        "$ref": "#/parameters/Timeout"
-                    },
+                    "$ref": "#/parameters/Timeout"
+                },
                     {
                         "$ref": "#/parameters/Metadata"
                     },
@@ -2735,8 +2785,8 @@
                     "application/octet-stream"
                 ],
                 "parameters": [{
-                        "$ref": "#/parameters/OptionalBody"
-                    },
+                    "$ref": "#/parameters/OptionalBody"
+                },
                     {
                         "$ref": "#/parameters/Timeout"
                     },
@@ -2952,8 +3002,8 @@
                 "operationId": "File_GetRangeList",
                 "description": "Returns the list of valid ranges for a file.",
                 "parameters": [{
-                        "$ref": "#/parameters/ShareSnapshot"
-                    },
+                    "$ref": "#/parameters/ShareSnapshot"
+                },
                     {
                         "$ref": "#/parameters/Timeout"
                     },
@@ -3041,8 +3091,8 @@
                 "operationId": "File_StartCopy",
                 "description": "Copies a blob or file to a destination file within the storage account.",
                 "parameters": [{
-                        "$ref": "#/parameters/Timeout"
-                    },
+                    "$ref": "#/parameters/Timeout"
+                },
                     {
                         "$ref": "#/parameters/ApiVersionParameter"
                     },
@@ -3130,8 +3180,8 @@
                 "operationId": "File_AbortCopy",
                 "description": "Aborts a pending Copy File operation, and leaves a destination file with zero length and full metadata.",
                 "parameters": [{
-                        "$ref": "#/parameters/CopyId"
-                    },
+                    "$ref": "#/parameters/CopyId"
+                },
                     {
                         "$ref": "#/parameters/Timeout"
                     },
@@ -3254,14 +3304,14 @@
                 }
             },
             "parameters": [{
-                    "name": "comp",
-                    "in": "query",
-                    "required": true,
-                    "type": "string",
-                    "enum": [
-                        "listhandles"
-                    ]
-                }
+                "name": "comp",
+                "in": "query",
+                "required": true,
+                "type": "string",
+                "enum": [
+                    "listhandles"
+                ]
+            }
             ]
         },
         "/{shareName}/{directory}/{fileName}?comp=forceclosehandles": {
@@ -3282,8 +3332,8 @@
                         "$ref": "#/parameters/ShareSnapshot"
                     },
                     {
-						"$ref": "#/parameters/HandleId"
-					},
+                        "$ref": "#/parameters/HandleId"
+                    },
                     {
                         "$ref": "#/parameters/ApiVersionParameter"
                     }
@@ -3342,7 +3392,7 @@
                     "forceclosehandles"
                 ]
             }
-        ]
+            ]
         }
     },
     "definitions": {
@@ -4283,49 +4333,49 @@
             "x-ms-parameter-location": "method"
         },
         "SourceContentCrc64": {
-          "name": "x-ms-source-content-crc64",
-          "x-ms-client-name": "sourceContentCrc64",
-          "in": "header",
-          "required": false,
-          "type": "string",
-          "format": "byte",
-          "x-ms-parameter-location": "method",
-          "description": "Specify the crc64 calculated for the range of bytes that must be read from the copy source."
+            "name": "x-ms-source-content-crc64",
+            "x-ms-client-name": "sourceContentCrc64",
+            "in": "header",
+            "required": false,
+            "type": "string",
+            "format": "byte",
+            "x-ms-parameter-location": "method",
+            "description": "Specify the crc64 calculated for the range of bytes that must be read from the copy source."
         },
         "SourceIfMatchCrc64": {
-          "name": "x-ms-source-if-match-crc64",
-          "x-ms-client-name": "sourceIfMatchCrc64",
-          "in": "header",
-          "required": false,
-          "type": "string",
-          "format": "byte",
-          "x-ms-parameter-location": "method",
-          "x-ms-parameter-grouping": {
-            "name": "source-modified-access-conditions"
-          },
-          "description": "Specify the crc64 value to operate only on range with a matching crc64 checksum."
+            "name": "x-ms-source-if-match-crc64",
+            "x-ms-client-name": "sourceIfMatchCrc64",
+            "in": "header",
+            "required": false,
+            "type": "string",
+            "format": "byte",
+            "x-ms-parameter-location": "method",
+            "x-ms-parameter-grouping": {
+                "name": "source-modified-access-conditions"
+            },
+            "description": "Specify the crc64 value to operate only on range with a matching crc64 checksum."
         },
         "SourceIfNoneMatchCrc64": {
-          "name": "x-ms-source-if-none-match-crc64",
-          "x-ms-client-name": "sourceIfNoneMatchCrc64",
-          "in": "header",
-          "required": false,
-          "type": "string",
-          "format": "byte",
-          "x-ms-parameter-location": "method",
-          "x-ms-parameter-grouping": {
-            "name": "source-modified-access-conditions"
-          },
-          "description": "Specify the crc64 value to operate only on range without a matching crc64 checksum."
+            "name": "x-ms-source-if-none-match-crc64",
+            "x-ms-client-name": "sourceIfNoneMatchCrc64",
+            "in": "header",
+            "required": false,
+            "type": "string",
+            "format": "byte",
+            "x-ms-parameter-location": "method",
+            "x-ms-parameter-grouping": {
+                "name": "source-modified-access-conditions"
+            },
+            "description": "Specify the crc64 value to operate only on range without a matching crc64 checksum."
         },
         "SourceRange": {
-          "name": "x-ms-source-range",
-          "x-ms-client-name": "sourceRange",
-          "in": "header",
-          "required": false,
-          "type": "string",
-          "x-ms-parameter-location": "method",
-          "description": "Bytes of source data in the specified range."
+            "name": "x-ms-source-range",
+            "x-ms-client-name": "sourceRange",
+            "in": "header",
+            "required": false,
+            "type": "string",
+            "x-ms-parameter-location": "method",
+            "description": "Bytes of source data in the specified range."
         },
         "StorageServiceProperties": {
             "name": "StorageServiceProperties",
@@ -4337,15 +4387,15 @@
             },
             "x-ms-parameter-location": "method"
         },
-      "TargetRange": {
-        "name": "x-ms-range",
-        "x-ms-client-name": "Range",
-        "in": "header",
-        "required": true,
-        "type": "string",
-        "x-ms-parameter-location": "method",
-        "description": "Writes data to the specified byte range in the file."
-      },
+        "TargetRange": {
+            "name": "x-ms-range",
+            "x-ms-client-name": "Range",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "x-ms-parameter-location": "method",
+            "description": "Writes data to the specified byte range in the file."
+        },
         "Timeout": {
             "name": "timeout",
             "in": "query",

@@ -256,13 +256,6 @@ public final class BlobDownloadHeaders {
     private String encryptionKeySha256;
 
     /*
-     * The encryption scope used to encrypt the blob. This header is only
-     * returned when the blob was encrypted with customer specified encryption.
-     */
-    @JsonProperty(value = "x-ms-encryption-scope")
-    private String encryptionScope;
-
-    /*
      * If the blob has a MD5 hash, and if request contains range header (Range
      * or x-ms-range), this response header is returned with the value of the
      * whole blob's MD5 value. This value may or may not be equal to the value
@@ -271,12 +264,6 @@ public final class BlobDownloadHeaders {
      */
     @JsonProperty(value = "x-ms-blob-content-md5")
     private byte[] blobContentMD5;
-
-    /*
-     * The number of tags corresponding to the blob.
-     */
-    @JsonProperty(value = "x-ms-tag-count")
-    private Integer tagCount;
 
     /*
      * If the request is to read a specified range and the
@@ -1050,30 +1037,6 @@ public final class BlobDownloadHeaders {
     }
 
     /**
-     * Get the encryptionScope property: The encryption scope used to encrypt
-     * the blob. This header is only returned when the blob was encrypted with
-     * customer specified encryption.
-     *
-     * @return the encryptionScope value.
-     */
-    public String encryptionScope() {
-        return this.encryptionScope;
-    }
-
-    /**
-     * Set the encryptionScope property: The encryption scope used to encrypt
-     * the blob. This header is only returned when the blob was encrypted with
-     * customer specified encryption.
-     *
-     * @param encryptionScope the encryptionScope value to set.
-     * @return the BlobDownloadHeaders object itself.
-     */
-    public BlobDownloadHeaders encryptionScope(String encryptionScope) {
-        this.encryptionScope = encryptionScope;
-        return this;
-    }
-
-    /**
      * Get the blobContentMD5 property: If the blob has a MD5 hash, and if
      * request contains range header (Range or x-ms-range), this response
      * header is returned with the value of the whole blob's MD5 value. This
@@ -1098,26 +1061,6 @@ public final class BlobDownloadHeaders {
      */
     public BlobDownloadHeaders blobContentMD5(byte[] blobContentMD5) {
         this.blobContentMD5 = ImplUtils.clone(blobContentMD5);
-        return this;
-    }
-
-    /**
-     * Get the tagCount property: The number of tags corresponding to the blob.
-     *
-     * @return the tagCount value.
-     */
-    public Integer tagCount() {
-        return this.tagCount;
-    }
-
-    /**
-     * Set the tagCount property: The number of tags corresponding to the blob.
-     *
-     * @param tagCount the tagCount value to set.
-     * @return the BlobDownloadHeaders object itself.
-     */
-    public BlobDownloadHeaders tagCount(Integer tagCount) {
-        this.tagCount = tagCount;
         return this;
     }
 

@@ -98,18 +98,6 @@ public final class ContainerGetPropertiesHeaders {
     private PublicAccessType blobPublicAccess;
 
     /*
-     * Default encryption scope on this container
-     */
-    @JsonProperty(value = "x-ms-default-encryption-scope")
-    private String defaultEncryptionScope;
-
-    /*
-     * Whether to reject the write request with encryption scope
-     */
-    @JsonProperty(value = "x-ms-deny-encryption-scope-override")
-    private Boolean denyEncryptionScopeOverride;
-
-    /*
      * Indicates whether the container has an immutability policy set on it.
      */
     @JsonProperty(value = "x-ms-has-immutability-policy")
@@ -392,51 +380,6 @@ public final class ContainerGetPropertiesHeaders {
      */
     public ContainerGetPropertiesHeaders blobPublicAccess(PublicAccessType blobPublicAccess) {
         this.blobPublicAccess = blobPublicAccess;
-        return this;
-    }
-
-    /**
-     * Get the defaultEncryptionScope property: Default encryption scope on
-     * this container.
-     *
-     * @return the defaultEncryptionScope value.
-     */
-    public String defaultEncryptionScope() {
-        return this.defaultEncryptionScope;
-    }
-
-    /**
-     * Set the defaultEncryptionScope property: Default encryption scope on
-     * this container.
-     *
-     * @param defaultEncryptionScope the defaultEncryptionScope value to set.
-     * @return the ContainerGetPropertiesHeaders object itself.
-     */
-    public ContainerGetPropertiesHeaders defaultEncryptionScope(String defaultEncryptionScope) {
-        this.defaultEncryptionScope = defaultEncryptionScope;
-        return this;
-    }
-
-    /**
-     * Get the denyEncryptionScopeOverride property: Whether to reject the
-     * write request with encryption scope.
-     *
-     * @return the denyEncryptionScopeOverride value.
-     */
-    public Boolean denyEncryptionScopeOverride() {
-        return this.denyEncryptionScopeOverride;
-    }
-
-    /**
-     * Set the denyEncryptionScopeOverride property: Whether to reject the
-     * write request with encryption scope.
-     *
-     * @param denyEncryptionScopeOverride the denyEncryptionScopeOverride value
-     * to set.
-     * @return the ContainerGetPropertiesHeaders object itself.
-     */
-    public ContainerGetPropertiesHeaders denyEncryptionScopeOverride(Boolean denyEncryptionScopeOverride) {
-        this.denyEncryptionScopeOverride = denyEncryptionScopeOverride;
         return this;
     }
 

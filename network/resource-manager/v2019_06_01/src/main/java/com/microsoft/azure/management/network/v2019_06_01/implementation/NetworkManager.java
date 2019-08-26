@@ -39,6 +39,8 @@ import com.microsoft.azure.management.network.v2019_06_01.ExpressRouteConnection
 import com.microsoft.azure.management.network.v2019_06_01.ExpressRoutePortsLocations;
 import com.microsoft.azure.management.network.v2019_06_01.ExpressRoutePorts;
 import com.microsoft.azure.management.network.v2019_06_01.ExpressRouteLinks;
+import com.microsoft.azure.management.network.v2019_06_01.FirewallPolicies;
+import com.microsoft.azure.management.network.v2019_06_01.FirewallPolicyRuleGroups;
 import com.microsoft.azure.management.network.v2019_06_01.LoadBalancers;
 import com.microsoft.azure.management.network.v2019_06_01.LoadBalancerBackendAddressPools;
 import com.microsoft.azure.management.network.v2019_06_01.LoadBalancerFrontendIPConfigurations;
@@ -126,6 +128,8 @@ public final class NetworkManager extends ManagerCore<NetworkManager, NetworkMan
     private ExpressRoutePortsLocations expressRoutePortsLocations;
     private ExpressRoutePorts expressRoutePorts;
     private ExpressRouteLinks expressRouteLinks;
+    private FirewallPolicies firewallPolicies;
+    private FirewallPolicyRuleGroups firewallPolicyRuleGroups;
     private LoadBalancers loadBalancers;
     private LoadBalancerBackendAddressPools loadBalancerBackendAddressPools;
     private LoadBalancerFrontendIPConfigurations loadBalancerFrontendIPConfigurations;
@@ -458,6 +462,26 @@ public final class NetworkManager extends ManagerCore<NetworkManager, NetworkMan
             this.expressRouteLinks = new ExpressRouteLinksImpl(this);
         }
         return this.expressRouteLinks;
+    }
+
+    /**
+     * @return Entry point to manage FirewallPolicies.
+     */
+    public FirewallPolicies firewallPolicies() {
+        if (this.firewallPolicies == null) {
+            this.firewallPolicies = new FirewallPoliciesImpl(this);
+        }
+        return this.firewallPolicies;
+    }
+
+    /**
+     * @return Entry point to manage FirewallPolicyRuleGroups.
+     */
+    public FirewallPolicyRuleGroups firewallPolicyRuleGroups() {
+        if (this.firewallPolicyRuleGroups == null) {
+            this.firewallPolicyRuleGroups = new FirewallPolicyRuleGroupsImpl(this);
+        }
+        return this.firewallPolicyRuleGroups;
     }
 
     /**

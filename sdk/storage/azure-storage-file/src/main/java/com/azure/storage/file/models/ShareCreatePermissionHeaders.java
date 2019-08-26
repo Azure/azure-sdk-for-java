@@ -40,7 +40,7 @@ public final class ShareCreatePermissionHeaders {
      * Key of the permission set for the directory/file.
      */
     @JsonProperty(value = "x-ms-file-permission-key")
-    private String filePermissonKey;
+    private String filePermissionKey;
 
     /*
      * The errorCode property.
@@ -122,24 +122,24 @@ public final class ShareCreatePermissionHeaders {
     }
 
     /**
-     * Get the filePermissonKey property: Key of the permission set for the
+     * Get the filePermissionKey property: Key of the permission set for the
      * directory/file.
      *
-     * @return the filePermissonKey value.
+     * @return the filePermissionKey value.
      */
-    public String filePermissonKey() {
-        return this.filePermissonKey;
+    public String filePermissionKey() {
+        return this.filePermissionKey;
     }
 
     /**
-     * Set the filePermissonKey property: Key of the permission set for the
+     * Set the filePermissionKey property: Key of the permission set for the
      * directory/file.
      *
-     * @param filePermissonKey the filePermissonKey value to set.
+     * @param filePermissionKey the filePermissionKey value to set.
      * @return the ShareCreatePermissionHeaders object itself.
      */
-    public ShareCreatePermissionHeaders filePermissonKey(String filePermissonKey) {
-        this.filePermissonKey = filePermissonKey;
+    public ShareCreatePermissionHeaders filePermissionKey(String filePermissionKey) {
+        this.filePermissionKey = filePermissionKey;
         return this;
     }
 

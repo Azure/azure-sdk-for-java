@@ -80,13 +80,13 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-identity</artifactId>
-      <version>1.0.0-preview.3</version>
-      <scope>test</scope>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.0.0-preview.4</version>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.0.0-preview.3</version>
       <scope>test</scope>
     </dependency>
     <dependency>

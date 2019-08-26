@@ -4,17 +4,17 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.implementation.annotation.Immutable;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 
 import java.time.Instant;
 import java.util.Arrays;
 
 /**
- * Holds information about Event Hubs which can come handy while performing data-plane operations like
- * {@link EventHubAsyncClient#createConsumer(String, String, EventPosition)} and
- * {@link EventHubAsyncClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)}.
+ * Holds information about an Event Hub which can come handy while performing operations like
+ * {@link EventHubClient#createConsumer(String, String, EventPosition) creating an EventHubConsumer} or
+ * {@link EventHubAsyncClient#createConsumer(String, String, EventPosition) an EventHubAsyncConsumer}.
  *
+ * @see EventHubClient
  * @see EventHubAsyncClient
  */
 @Immutable
