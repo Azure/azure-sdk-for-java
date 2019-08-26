@@ -4,6 +4,7 @@
 package com.azure.storage.file.spock
 
 import com.azure.core.exception.HttpResponseException
+import com.azure.core.implementation.exception.UnexpectedLengthException
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.FileAsyncClient
 import com.azure.storage.file.models.FileHTTPHeaders
@@ -26,7 +27,7 @@ class FileAsyncAPITests extends APISpec {
     FileAsyncClient primaryFileAsyncClient
     def shareName
     def filePath
-    static def defaultData = ByteBuffer.allocate(8).wrap("default".getBytes(StandardCharsets.UTF_8))
+    static def defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8))
     static def dataLength = defaultData.remaining()
     static def testMetadata
     static def httpHeaders
@@ -91,7 +92,6 @@ class FileAsyncAPITests extends APISpec {
         1024    | httpHeaders     | Collections.singletonMap("testMeta", "value") | 403        | StorageErrorCode.AUTHENTICATION_FAILED
     }
 
-    @Ignore
     def "Upload and download data"() {
         given:
         primaryFileAsyncClient.create(dataLength).block()
@@ -146,6 +146,26 @@ class FileAsyncAPITests extends APISpec {
         updateDataErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
         }
+    }
+
+    @Unroll
+    def "Upload data length mismatch"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+        when:
+        def uploadErrorVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData),
+            size, 0, FileRangeWriteType.UPDATE))
+        then:
+        uploadErrorVerifier.verifyErrorSatisfies {
+            assert it instanceof UnexpectedLengthException
+            assert it.getMessage().contains(errMsg)
+        }
+        cleanup:
+        defaultData.clear()
+        where:
+        size | errMsg
+        6 | "more bytes than"
+        8 | "less bytes than"
     }
 
     def "Download data error"() {

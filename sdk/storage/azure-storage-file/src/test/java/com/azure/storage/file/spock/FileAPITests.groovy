@@ -5,6 +5,7 @@ package com.azure.storage.file.spock
 
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.http.rest.Response
+import com.azure.core.implementation.exception.UnexpectedLengthException
 import com.azure.core.implementation.util.FluxUtil
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.FileClient
@@ -29,7 +30,7 @@ class FileAPITests extends APISpec {
     FileClient primaryFileClient
     def shareName
     def filePath
-    static def defaultData = ByteBuffer.allocate(8).wrap("default".getBytes(StandardCharsets.UTF_8))
+    static def defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8))
     static def dataLength = defaultData.remaining()
     static def testMetadata
     static def httpHeaders
@@ -92,7 +93,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(dataLength)
         def dataBytes = new byte[dataLength]
         defaultData.get(dataBytes)
-
+        defaultData.flip()
         when:
         def uploadResponse = primaryFileClient.uploadWithResponse(defaultData, dataLength, null)
         def downloadResponse = primaryFileClient.downloadWithPropertiesWithResponse(null, null, null)
@@ -134,6 +135,23 @@ class FileAPITests extends APISpec {
         then:
         def e = thrown(StorageErrorException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
+    }
+
+    @Unroll
+    def "Upload data length mismatch"() {
+        given:
+        primaryFileClient.create(1024)
+        when:
+        primaryFileClient.uploadWithResponse(defaultData, size, 0, FileRangeWriteType.UPDATE, null)
+        then:
+        def e = thrown(UnexpectedLengthException)
+        e.getMessage().contains(errMsg)
+        cleanup:
+        defaultData.clear()
+        where:
+        size | errMsg
+        6 | "more bytes than"
+        8 | "less bytes than"
     }
 
     def "Download data error"() {

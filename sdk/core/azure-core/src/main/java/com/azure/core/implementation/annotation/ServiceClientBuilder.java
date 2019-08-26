@@ -14,7 +14,7 @@ import static java.lang.annotation.ElementType.TYPE;
  */
 @Target({TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ServiceClientBuilder {
+public @interface ServiceClientBuilder  {
 
     /**
      * An array of classes that this builder can build.

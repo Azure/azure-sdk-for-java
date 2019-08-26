@@ -22,6 +22,7 @@ import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.implementation.exception.UnexpectedLengthException;
 import com.azure.core.implementation.http.ContentType;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.http.UrlBuilder;
@@ -140,9 +141,10 @@ public class RestProxy implements InvocationHandler {
                 methodParser = methodParser(method);
                 request = createHttpRequest(methodParser, args);
                 Context context = methodParser.context(args).addData("caller-method", methodParser.fullyQualifiedMethodName());
-                context = startTracingSpan(method, context);
+                final Context context1 = startTracingSpan(method, context);
 
-                final Mono<HttpResponse> asyncResponse = send(request, context);
+                final Mono<HttpResponse> asyncResponse = validateLength(request).then(
+                    send(request, context1));
                 //
                 Mono<HttpDecodedResponse> asyncDecodedResponse = this.decoder.decode(asyncResponse, methodParser);
                 //
@@ -152,6 +154,29 @@ public class RestProxy implements InvocationHandler {
         } catch (Exception e) {
             throw logger.logExceptionAsError(Exceptions.propagate(e));
         }
+    }
+
+    private Mono<HttpRequest> validateLength(final HttpRequest request) {
+        Flux<ByteBuffer> body = request.body();
+        if (body == null) {
+            return Mono.just(request);
+        }
+        Long expectedLength = Long.valueOf(request.headers().value("Content-Length"));
+        return FluxUtil.collectBytesInByteBufferStream(body).doOnNext(bb -> {
+            if (bb.length > expectedLength) {
+                throw new UnexpectedLengthException(
+                    String.format("Request body emitted more bytes than the expected %d bytes.",
+                        expectedLength),
+                    bb.length,
+                    expectedLength);
+            } else if (bb.length != expectedLength) {
+                throw new UnexpectedLengthException(
+                    String.format("Request body emitted less bytes than the expected %d bytes.",
+                        expectedLength),
+                    bb.length,
+                    expectedLength);
+            }
+        }).then(Mono.just(request));
     }
 
     private Method determineResumeMethod(Method method, String resumeMethodName) {

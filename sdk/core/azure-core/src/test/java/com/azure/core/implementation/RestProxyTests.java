@@ -125,6 +125,15 @@ public abstract class RestProxyTests {
         @Get("bytes/{numberOfBytes}")
         @ExpectedResponses({200})
         Mono<byte[]> getByteArrayAsync(@HostParam("hostName") String host, @PathParam("numberOfBytes") int numberOfBytes);
+
+        @Put("bytes/{numberOfBytes}")
+        @ExpectedResponses({200})
+        Mono<byte[]> lengthValidationAsync(@HostParam("hostName") String host, @PathParam("numberOfBytes") int numberOfBytes);
+    }
+
+    @Test
+    public void lengthValidationWithMismatchLength() {
+
     }
 
     @Test
