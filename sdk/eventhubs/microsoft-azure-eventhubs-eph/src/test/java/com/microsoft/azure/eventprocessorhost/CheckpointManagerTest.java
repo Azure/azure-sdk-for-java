@@ -263,11 +263,12 @@ public class CheckpointManagerTest extends TestBase {
             checkpointMgr = new InMemoryCheckpointManager();
         } else {
             TestBase.logInfo("Container name: " + containerName);
-            AzureStorageCheckpointLeaseManager azMgr = new AzureStorageCheckpointLeaseManager(azureStorageConnectionString, containerName, null);
 
-            if (useProxy) {
-                azMgr.setProxyConfiguration(proxyConfiguration);
-            }
+            AzureStorageCheckpointLeaseManager azMgr = new AzureStorageCheckpointLeaseManager(
+                azureStorageConnectionString,
+                containerName,
+                null,
+                useProxy ? proxyConfiguration : null);
 
             leaseMgr = azMgr;
             checkpointMgr = azMgr;

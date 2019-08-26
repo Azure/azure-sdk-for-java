@@ -281,7 +281,7 @@ public class LeaseManagerTest extends TestBase {
         } else {
             TestBase.logInfo("Container name: " + containerName);
             String azureStorageConnectionString = TestUtilities.getStorageConnectionString();
-            AzureStorageCheckpointLeaseManager azMgr = new AzureStorageCheckpointLeaseManager(azureStorageConnectionString, containerName, null);
+            AzureStorageCheckpointLeaseManager azMgr = new AzureStorageCheckpointLeaseManager(azureStorageConnectionString, containerName, null, null);
             leaseMgr = azMgr;
             checkpointMgr = azMgr;
         }

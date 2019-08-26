@@ -63,9 +63,9 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     private Gson gson;
 
     private Hashtable<String, Checkpoint> latestCheckpoint = new Hashtable<String, Checkpoint>();
-    private ProxyConfiguration proxyConfiguration;
 
-    AzureStorageCheckpointLeaseManager(String storageConnectionString, String storageContainerName, String storageBlobPrefix) {
+    AzureStorageCheckpointLeaseManager(String storageConnectionString, String storageContainerName,
+                                       String storageBlobPrefix, ProxyConfiguration proxyConfiguration) {
         if ((storageConnectionString == null) || storageConnectionString.trim().isEmpty()) {
             throw new IllegalArgumentException("Provide valid Azure Storage connection string when using Azure Storage");
         }
@@ -80,9 +80,12 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         // Convert all-whitespace prefix to empty string. Convert null prefix to empty string.
         // Then the rest of the code only has one case to worry about.
         this.storageBlobPrefix = (storageBlobPrefix != null) ? storageBlobPrefix.trim() : "";
+
+        configureOperationContext(proxyConfiguration);
     }
 
-    AzureStorageCheckpointLeaseManager(StorageCredentials storageCredentials, String storageContainerName, String storageBlobPrefix) {
+    AzureStorageCheckpointLeaseManager(StorageCredentials storageCredentials, String storageContainerName,
+                                       String storageBlobPrefix, ProxyConfiguration proxyConfiguration) {
         if (storageCredentials == null) {
             throw new IllegalArgumentException("Provide valid Azure Storage credentials when using Azure Storage");
         }
@@ -97,10 +100,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         // Convert all-whitespace prefix to empty string. Convert null prefix to empty string.
         // Then the rest of the code only has one case to worry about.
         this.storageBlobPrefix = (storageBlobPrefix != null) ? storageBlobPrefix.trim() : "";
-    }
 
-    void setProxyConfiguration(ProxyConfiguration proxyConfiguration) {
-        this.proxyConfiguration = proxyConfiguration;
+        configureOperationContext(proxyConfiguration);
     }
 
     // The EventProcessorHost can't pass itself to the AzureStorageCheckpointLeaseManager constructor
@@ -124,17 +125,6 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
                     + "Every dash (-) character must be immediately preceded and followed by a letter or number; consecutive dashes are not permitted in container names. "
                     + "All letters in a container name must be lowercase. "
                     + "Must be from 3 to 63 characters long.");
-        }
-
-        if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()) {
-            OperationContext.setDefaultProxy(proxyConfiguration.proxyAddress());
-
-            if (proxyConfiguration.hasUserDefinedCredentials()) {
-                final PasswordAuthentication credentials = proxyConfiguration.credentials();
-
-                OperationContext.setDefaultProxyUsername(credentials.getUserName());
-                OperationContext.setDefaultProxyPassword(String.valueOf(credentials.getPassword()));
-            }
         }
 
         CloudStorageAccount storageAccount;
@@ -766,6 +756,21 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
             }
         }
         return retval;
+    }
+
+    private static void configureOperationContext(ProxyConfiguration configuration) {
+        if (configuration != null && configuration.isProxyAddressConfigured()) {
+            TRACE_LOGGER.info("Configuring proxy '{}' for storage", configuration.proxyAddress());
+            OperationContext.setDefaultProxy(configuration.proxyAddress());
+
+            if (configuration.hasUserDefinedCredentials()) {
+                TRACE_LOGGER.info("Configuring proxy credentials.");
+                final PasswordAuthentication credentials = configuration.credentials();
+
+                OperationContext.setDefaultProxyUsername(credentials.getUserName());
+                OperationContext.setDefaultProxyPassword(String.valueOf(credentials.getPassword()));
+            }
+        }
     }
 
     private enum UploadActivity { Create, Acquire, Release, Update }

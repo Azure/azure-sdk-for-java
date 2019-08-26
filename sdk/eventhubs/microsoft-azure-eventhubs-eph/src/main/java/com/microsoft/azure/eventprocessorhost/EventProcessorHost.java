@@ -14,7 +14,6 @@ import com.microsoft.azure.eventhubs.TransportType;
 import com.microsoft.azure.eventhubs.impl.StringUtil;
 import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -544,8 +543,7 @@ public final class EventProcessorHost {
             // ManagerStep
             private ICheckpointManager checkpointManager;
             private ILeaseManager leaseManager;
-            private boolean initializeManagers = false;
-
+            private StorageInfo storageInfo;
 
             Steps(final String hostName, final String consumerGroupName) {
                 if (StringUtil.isNullOrWhiteSpace(hostName) || StringUtil.isNullOrWhiteSpace(consumerGroupName)) {
@@ -645,17 +643,15 @@ public final class EventProcessorHost {
             @Override
             public AuthStep useAzureStorageCheckpointLeaseManager(final String storageConnectionString,
                     final String storageContainerName, final String storageBlobPrefix) {
-                AzureStorageCheckpointLeaseManager mgr = new AzureStorageCheckpointLeaseManager(storageConnectionString, storageContainerName, storageBlobPrefix);
-                this.initializeManagers = true;
-                return useUserCheckpointAndLeaseManagers(mgr, mgr);
+                storageInfo = new StorageInfo(storageConnectionString, storageContainerName, storageBlobPrefix);
+                return this;
             }
 
             @Override
             public AuthStep useAzureStorageCheckpointLeaseManager(final StorageCredentials storageCredentials,
                     final String storageContainerName, final String storageBlobPrefix) {
-                AzureStorageCheckpointLeaseManager mgr = new AzureStorageCheckpointLeaseManager(storageCredentials, storageContainerName, storageBlobPrefix);
-                this.initializeManagers = true;
-                return useUserCheckpointAndLeaseManagers(mgr, mgr);
+                storageInfo = new StorageInfo(storageCredentials, storageContainerName, storageBlobPrefix);
+                return this;
             }
 
             @Override
@@ -671,6 +667,22 @@ public final class EventProcessorHost {
 
             @Override
             public EventProcessorHost build() {
+                final boolean initializeManagers = storageInfo != null;
+                if (initializeManagers) {
+                    final AzureStorageCheckpointLeaseManager manager;
+                    if (storageInfo.credentials != null) {
+                        manager = new AzureStorageCheckpointLeaseManager(storageInfo.credentials,
+                            storageInfo.containerName, storageInfo.prefix, this.proxyConfiguration);
+                    } else {
+                        manager = new AzureStorageCheckpointLeaseManager(storageInfo.connectionString,
+                            storageInfo.containerName, storageInfo.prefix, this.proxyConfiguration);
+                    }
+
+                    useUserCheckpointAndLeaseManagers(manager, manager);
+                }
+
+                // create managers here.
+
                 // One of these conditions MUST be true. Can't get to the OptionalStep interface where build() is available
                 // without setting one of the auth options.
                 EventHubClientFactory ehcFactory = null;
@@ -685,13 +697,14 @@ public final class EventProcessorHost {
                     ehcFactory = new EventHubClientFactory.EHCFWithTokenProvider(this.endpoint, this.eventHubPath,
                         this.tokenProvider, packOptions());
                 }
+
                 return new EventProcessorHost(this.hostName,
                         this.eventHubPath,
                         this.consumerGroupName,
                         ehcFactory,
                         this.checkpointManager,
                         this.leaseManager,
-                        this.initializeManagers,
+                        initializeManagers,
                         this.executor);
             }
 
@@ -737,6 +750,27 @@ public final class EventProcessorHost {
                 }
 
                 this.eventHubConnectionString = csb.toString();
+            }
+        }
+
+        private static class StorageInfo {
+            private final String connectionString;
+            private final String containerName;
+            private final String prefix;
+            private final StorageCredentials credentials;
+
+            StorageInfo(String connectionString, String containerName, String prefix) {
+                this.connectionString = connectionString;
+                this.containerName = containerName;
+                this.prefix = prefix;
+                this.credentials = null;
+            }
+
+            StorageInfo(StorageCredentials credentials, String containerName, String prefix) {
+                this.credentials = credentials;
+                this.containerName = containerName;
+                this.prefix = prefix;
+                this.connectionString = null;
             }
         }
     }
