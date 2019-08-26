@@ -362,7 +362,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
     public void forceCloseHandlesAsync() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.forceCloseHandles
-        directoryAsyncClient.getHandles(10, true)
+        directoryAsyncClient.listHandles(10, true)
             .subscribe(handleItem -> directoryAsyncClient.forceCloseHandles(handleItem.handleId(), true)
                 .subscribe(numOfClosedHandles -> System.out.printf("Closed %d handles.", numOfClosedHandles)));
         // END: com.azure.storage.file.directoryAsyncClient.forceCloseHandles
