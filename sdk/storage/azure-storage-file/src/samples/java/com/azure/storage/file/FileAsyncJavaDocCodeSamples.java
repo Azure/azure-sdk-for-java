@@ -108,7 +108,7 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.create#long-filehttpheaders-map
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
         fileAsyncClient.create(1024)
-            .doOnSuccess(response -> System.out.printf("Creating the file completed."));
+            .doOnSuccess(response -> System.out.println("Creating the file completed."));
         // END: com.azure.storage.file.fileAsyncClient.create#long-filehttpheaders-map
     }
 
@@ -163,7 +163,7 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.abortCopy#string
         fileAsyncClient.abortCopy("someCopyId")
-            .doOnSuccess(response -> System.out.printf("Abort copying the file completed."));
+            .doOnSuccess(response -> System.out.println("Abort copying the file completed."));
         // END: com.azure.storage.file.fileAsyncClient.abortCopy#string
     }
 
@@ -419,7 +419,7 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.setMetadata#map
         fileAsyncClient.setMetadata(Collections.singletonMap("file", "updatedMetadata"))
-            .doOnSuccess(response -> System.out.printf("Setting the file metadata completed."));
+            .doOnSuccess(response -> System.out.println("Setting the file metadata completed."));
         // END: com.azure.storage.file.fileAsyncClient.setMetadata#map
     }
 
@@ -454,7 +454,7 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.setMetadata#map.clearMetadata
         fileAsyncClient.setMetadata(null).subscribe(
-            response -> System.out.printf("Setting the file metadata completed.")
+            response -> System.out.println("Setting the file metadata completed.")
         );
         // END: com.azure.storage.file.fileAsyncClient.setMetadata#map.clearMetadata
     }
@@ -467,7 +467,7 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.setHttpHeaders#long-filehttpheaders
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
         fileAsyncClient.setHttpHeaders(1024, httpHeaders)
-            .doOnSuccess(response -> System.out.printf("Setting the file httpHeaders completed."));
+            .doOnSuccess(response -> System.out.println("Setting the file httpHeaders completed."));
         // END: com.azure.storage.file.fileAsyncClient.setHttpHeaders#long-filehttpheaders
     }
 
@@ -505,7 +505,7 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.setHttpHeaders#long-filehttpheaders.clearHttpHeaders
         fileAsyncClient.setHttpHeaders(1024, null)
-            .subscribe(response -> System.out.printf("Setting the file httpHeaders completed."));
+            .subscribe(response -> System.out.println("Setting the file httpHeaders completed."));
         // END: com.azure.storage.file.fileAsyncClient.setHttpHeaders#long-filehttpheaders.clearHttpHeaders
     }
 
@@ -581,7 +581,8 @@ public class FileAsyncJavaDocCodeSamples {
             .filePath("myfiile")
             .snapshot(currentTime.toString())
             .buildAsyncClient();
-        fileAsyncClient.getShareSnapshotId();
+
+        System.out.printf("Snapshot ID: %s%n", fileAsyncClient.getShareSnapshotId());
         // END: com.azure.storage.file.fileAsyncClient.getShareSnapshotId
     }
 }

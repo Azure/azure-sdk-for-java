@@ -10,6 +10,7 @@ package com.microsoft.azure.management.network.v2019_06_01.implementation;
 
 import java.util.List;
 import com.microsoft.azure.management.network.v2019_06_01.PrivateLinkServiceIpConfiguration;
+import com.microsoft.azure.management.network.v2019_06_01.ProvisioningState;
 import com.microsoft.azure.management.network.v2019_06_01.PrivateLinkServicePropertiesVisibility;
 import com.microsoft.azure.management.network.v2019_06_01.PrivateLinkServicePropertiesAutoApproval;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -43,11 +44,11 @@ public class PrivateLinkServiceInner extends Resource {
     private List<NetworkInterfaceInner> networkInterfaces;
 
     /**
-     * The provisioning state of the private link service. Possible values are:
-     * 'Updating', 'Succeeded', and 'Failed'.
+     * The provisioning state of the private link service. Possible values
+     * include: 'Succeeded', 'Updating', 'Deleting', 'Failed'.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    @JsonProperty(value = "properties.provisioningState")
+    private ProvisioningState provisioningState;
 
     /**
      * An array of list about connections to the private endpoint.
@@ -80,8 +81,7 @@ public class PrivateLinkServiceInner extends Resource {
     private String alias;
 
     /**
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag")
     private String etag;
@@ -142,12 +142,23 @@ public class PrivateLinkServiceInner extends Resource {
     }
 
     /**
-     * Get the provisioning state of the private link service. Possible values are: 'Updating', 'Succeeded', and 'Failed'.
+     * Get the provisioning state of the private link service. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'.
      *
      * @return the provisioningState value
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioning state of the private link service. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set
+     * @return the PrivateLinkServiceInner object itself.
+     */
+    public PrivateLinkServiceInner withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**
@@ -240,7 +251,7 @@ public class PrivateLinkServiceInner extends Resource {
     }
 
     /**
-     * Get gets a unique read-only string that changes whenever the resource is updated.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -249,7 +260,7 @@ public class PrivateLinkServiceInner extends Resource {
     }
 
     /**
-     * Set gets a unique read-only string that changes whenever the resource is updated.
+     * Set a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the PrivateLinkServiceInner object itself.

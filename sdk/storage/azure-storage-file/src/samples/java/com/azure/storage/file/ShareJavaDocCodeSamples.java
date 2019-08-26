@@ -298,7 +298,7 @@ public class ShareJavaDocCodeSamples {
     public void setQuota() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.setQuota
-        System.out.printf("Setting the share quota completed." + shareClient.setQuota(1024));
+        System.out.println("Setting the share quota completed." + shareClient.setQuota(1024));
         // END: com.azure.storage.file.shareClient.setQuota
     }
 
@@ -319,8 +319,8 @@ public class ShareJavaDocCodeSamples {
     public void setMetadata() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.setMetadata#map
-        System.out.printf("Setting the share metadata.", shareClient.setMetadata(
-            Collections.singletonMap("share", "updatedMetadata")));
+        shareClient.setMetadata(Collections.singletonMap("share", "updatedMetadata"));
+        System.out.println("Setting the share metadata.");
         // END: com.azure.storage.file.shareClient.setMetadata#map
     }
 
@@ -344,7 +344,8 @@ public class ShareJavaDocCodeSamples {
     public void clearMetadata() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.clearMetadata#map
-        System.out.printf("Clear metadata completed.", shareClient.setMetadata(null));
+        shareClient.setMetadata(null);
+        System.out.println("Clear metadata completed.");
         // END: com.azure.storage.file.shareClient.clearMetadata#map
     }
 
@@ -374,7 +375,7 @@ public class ShareJavaDocCodeSamples {
         SignedIdentifier permission = new SignedIdentifier().id("mypolicy").accessPolicy(accessPolicy);
 
         shareClient.setAccessPolicy(Collections.singletonList(permission));
-        System.out.printf("Setting access policies completed.");
+        System.out.println("Setting access policies completed.");
         // END: com.azure.storage.file.shareClient.setAccessPolicy
     }
 
@@ -430,7 +431,8 @@ public class ShareJavaDocCodeSamples {
             .shareName("myshare")
             .snapshot(currentTime.toString())
             .buildClient();
-        shareClient.getSnapshotId();
+
+        System.out.printf("Snapshot ID: %s%n", shareClient.getSnapshotId());
         // END: com.azure.storage.file.shareClient.getSnapshotId
     }
 }

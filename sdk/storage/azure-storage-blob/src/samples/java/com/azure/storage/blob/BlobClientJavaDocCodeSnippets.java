@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.common.Constants;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -63,7 +64,7 @@ public class BlobClientJavaDocCodeSnippets {
     public void abortCopyFromURL() {
         // BEGIN: com.azure.storage.blob.BlobClient.abortCopyFromURL#String
         client.abortCopyFromURL(copyId);
-        System.out.printf("Aborted copy completed.");
+        System.out.println("Aborted copy completed.");
         // END: com.azure.storage.blob.BlobClient.abortCopyFromURL#String
     }
 
@@ -82,7 +83,7 @@ public class BlobClientJavaDocCodeSnippets {
     public void download() {
         // BEGIN: com.azure.storage.blob.BlobClient.download#OutputStream
         client.download(new ByteArrayOutputStream());
-        System.out.printf("Download completed.");
+        System.out.println("Download completed.");
         // END: com.azure.storage.blob.BlobClient.download#OutputStream
     }
 
@@ -100,7 +101,7 @@ public class BlobClientJavaDocCodeSnippets {
         BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
-        client.downloadToFile(file, range, null, options, null, false, timeout, new Context(key2, value2));
+        client.downloadToFile(file, range, 4 * Constants.MB, options, null, false, timeout, new Context(key2, value2));
         System.out.println("Completed download to file");
         // END: com.azure.storage.blob.BlobClient.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
     }
@@ -111,7 +112,7 @@ public class BlobClientJavaDocCodeSnippets {
     public void delete() {
         // BEGIN: com.azure.storage.blob.BlobClient.delete
         client.delete();
-        System.out.printf("Delete completed.");
+        System.out.println("Delete completed.");
         // END: com.azure.storage.blob.BlobClient.delete
     }
 
@@ -133,7 +134,7 @@ public class BlobClientJavaDocCodeSnippets {
         client.setHTTPHeaders(new BlobHTTPHeaders()
             .blobContentLanguage("en-US")
             .blobContentType("binary"));
-        System.out.printf("Set HTTP headers completed");
+        System.out.println("Set HTTP headers completed");
         // END: com.azure.storage.blob.BlobClient.setHTTPHeaders#BlobHTTPHeaders
     }
 
@@ -143,7 +144,7 @@ public class BlobClientJavaDocCodeSnippets {
     public void setMetadata() {
         // BEGIN: com.azure.storage.blob.BlobClient.setMetadata#Metadata
         client.setMetadata(new Metadata(Collections.singletonMap("metadata", "value")));
-        System.out.printf("Set metadata completed");
+        System.out.println("Set metadata completed");
         // END: com.azure.storage.blob.BlobClient.setMetadata#Metadata
     }
 
