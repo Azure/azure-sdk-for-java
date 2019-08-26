@@ -23,6 +23,9 @@ public class NetworkCallRecord {
     @JsonProperty("Response")
     private Map<String, String> response;
 
+    @JsonProperty("Exception")
+    private NetworkCallError exception;
+
     /**
      * Gets the HTTP method for with this network call
      *
@@ -95,5 +98,23 @@ public class NetworkCallRecord {
      */
     public void response(Map<String, String> response) {
         this.response = response;
+    }
+
+    /**
+     * Gets the throwable thrown during evaluation of the network call.
+     *
+     * @return Throwable thrown during the network call.
+     */
+    public NetworkCallError exception() {
+        return exception;
+    }
+
+    /**
+     * Sets the throwable thrown during evaluation of the network call.
+     *
+     * @param exception Throwable thrown during the network call.
+     */
+    public void exception(NetworkCallError exception) {
+        this.exception = exception;
     }
 }

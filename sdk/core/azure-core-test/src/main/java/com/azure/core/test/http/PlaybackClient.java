@@ -7,12 +7,14 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
+import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,8 +32,8 @@ public final class PlaybackClient implements HttpClient {
     private final RecordedData recordedData;
 
     /**
-     * Creates a PlaybackClient that replays network calls from {@code recordedData} and replaces
-     * {@link NetworkCallRecord#response() response text} for any rules specified in {@code textReplacementRules}.
+     * Creates a PlaybackClient that replays network calls from {@code recordedData} and replaces {@link
+     * NetworkCallRecord#response() response text} for any rules specified in {@code textReplacementRules}.
      *
      * @param recordedData The data to playback.
      * @param textReplacementRules A set of rules to replace text in network call responses.
@@ -93,6 +95,10 @@ public final class PlaybackClient implements HttpClient {
             return Mono.error(new IllegalStateException("==> Unexpected request: " + incomingMethod + " " + incomingUrl));
         }
 
+        if (networkCallRecord.exception() != null) {
+            throw logger.logExceptionAsWarning(Exceptions.propagate(networkCallRecord.exception().get()));
+        }
+
         int recordStatusCode = Integer.parseInt(networkCallRecord.response().get("StatusCode"));
         HttpHeaders headers = new HttpHeaders();
 
@@ -109,7 +115,7 @@ public final class PlaybackClient implements HttpClient {
         }
 
         String rawBody = networkCallRecord.response().get("Body");
-        byte[] bytes = new byte[0];
+        byte[] bytes = null;
 
         if (rawBody != null) {
             for (Map.Entry<String, String> rule : textReplacementRules.entrySet()) {
@@ -118,7 +124,20 @@ public final class PlaybackClient implements HttpClient {
                 }
             }
 
-            bytes = rawBody.getBytes(StandardCharsets.UTF_8);
+            String contentType = networkCallRecord.response().get("Content-Type");
+
+            // octet-stream's are written to disk using Arrays.toString() which creates an output such as "[12, -1]".
+            if (contentType != null && contentType.equalsIgnoreCase("application/octet-stream")) {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                for (String piece : rawBody.substring(1, rawBody.length() - 1).split(", ")) {
+                    outputStream.write(Byte.parseByte(piece));
+                }
+
+                bytes = outputStream.toByteArray();
+            } else {
+                bytes = rawBody.getBytes(StandardCharsets.UTF_8);
+            }
+
             if (bytes.length > 0) {
                 headers.put("Content-Length", String.valueOf(bytes.length));
             }
@@ -138,7 +157,12 @@ public final class PlaybackClient implements HttpClient {
     }
 
     private static String removeHost(String url) {
-        URI uri = URI.create(url);
-        return String.format("%s?%s", uri.getPath(), uri.getQuery());
+        UrlBuilder urlBuilder = UrlBuilder.parse(url);
+
+        if (urlBuilder.query().containsKey("sig")) {
+            urlBuilder.setQueryParameter("sig", "REDACTED");
+        }
+
+        return String.format("%s%s", urlBuilder.path(), urlBuilder.queryString());
     }
 }

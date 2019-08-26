@@ -321,14 +321,14 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#getHandles(Integer, boolean)}
+     * Generates a code sample for using {@link DirectoryClient#listHandles(Integer, boolean)}
      */
-    public void getHandles() {
+    public void listHandles() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.getHandles
-        Iterable<HandleItem> result = directoryClient.getHandles(10, true);
+        // BEGIN: com.azure.storage.file.directoryClient.listHandles
+        Iterable<HandleItem> result = directoryClient.listHandles(10, true);
         System.out.printf("Get handles completed with handle id %s", result.iterator().next().handleId());
-        // END: com.azure.storage.file.directoryClient.getHandles
+        // END: com.azure.storage.file.directoryClient.listHandles
     }
 
     /**
@@ -337,13 +337,15 @@ public class DirectoryJavaDocCodeSamples {
     public void forceCloseHandles() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.forceCloseHandles
-        Iterable<HandleItem> result = directoryClient.getHandles(10, true);
+        Iterable<HandleItem> result = directoryClient.listHandles(10, true);
         result.forEach(handleItem ->  {
             directoryClient.forceCloseHandles(handleItem.handleId(), true).forEach(numOfClosedHandles ->
                 System.out.printf("Get handles completed with handle id %s", handleItem.handleId()));
         });
         // END: com.azure.storage.file.directoryClient.forceCloseHandles
     }
+
+
 
     /**
      * Generates a code sample for using {@link DirectoryClient#getShareSnapshotId()}
@@ -358,7 +360,8 @@ public class DirectoryJavaDocCodeSamples {
             .directoryPath("mydirectory")
             .snapshot(currentTime.toString())
             .buildClient();
-        directoryClient.getShareSnapshotId();
+
+        System.out.printf("Snapshot ID: %s%n", directoryClient.getShareSnapshotId());
         // END: com.azure.storage.file.directoryClient.getShareSnapshotId
     }
 }

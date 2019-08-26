@@ -175,8 +175,8 @@ public final class BlobProperties {
     private Integer remainingRetentionDays;
 
     /*
-     * Possible values include: 'P4', 'P6', 'P10', 'P20', 'P30', 'P40', 'P50',
-     * 'Hot', 'Cool', 'Archive'
+     * Possible values include: 'P4', 'P6', 'P10', 'P15', 'P20', 'P30', 'P40',
+     * 'P50', 'P60', 'P70', 'P80', 'Hot', 'Cool', 'Archive'
      */
     @JsonProperty(value = "AccessTier")
     private AccessTier accessTier;
@@ -201,22 +201,10 @@ public final class BlobProperties {
     private String customerProvidedKeySha256;
 
     /*
-     * The encryptionScope property.
-     */
-    @JsonProperty(value = "EncryptionScope")
-    private String encryptionScope;
-
-    /*
      * The accessTierChangeTime property.
      */
     @JsonProperty(value = "AccessTierChangeTime")
     private DateTimeRfc1123 accessTierChangeTime;
-
-    /*
-     * The number of tags corresponding to the blob.
-     */
-    @JsonProperty(value = "TagCount", required = true)
-    private int tagCount;
 
     /**
      * Get the creationTime property: The creationTime property.
@@ -782,7 +770,8 @@ public final class BlobProperties {
 
     /**
      * Get the accessTier property: Possible values include: 'P4', 'P6', 'P10',
-     * 'P20', 'P30', 'P40', 'P50', 'Hot', 'Cool', 'Archive'.
+     * 'P15', 'P20', 'P30', 'P40', 'P50', 'P60', 'P70', 'P80', 'Hot', 'Cool',
+     * 'Archive'.
      *
      * @return the accessTier value.
      */
@@ -792,7 +781,8 @@ public final class BlobProperties {
 
     /**
      * Set the accessTier property: Possible values include: 'P4', 'P6', 'P10',
-     * 'P20', 'P30', 'P40', 'P50', 'Hot', 'Cool', 'Archive'.
+     * 'P15', 'P20', 'P30', 'P40', 'P50', 'P60', 'P70', 'P80', 'Hot', 'Cool',
+     * 'Archive'.
      *
      * @param accessTier the accessTier value to set.
      * @return the BlobProperties object itself.
@@ -868,26 +858,6 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the encryptionScope property: The encryptionScope property.
-     *
-     * @return the encryptionScope value.
-     */
-    public String encryptionScope() {
-        return this.encryptionScope;
-    }
-
-    /**
-     * Set the encryptionScope property: The encryptionScope property.
-     *
-     * @param encryptionScope the encryptionScope value to set.
-     * @return the BlobProperties object itself.
-     */
-    public BlobProperties encryptionScope(String encryptionScope) {
-        this.encryptionScope = encryptionScope;
-        return this;
-    }
-
-    /**
      * Get the accessTierChangeTime property: The accessTierChangeTime
      * property.
      *
@@ -913,26 +883,6 @@ public final class BlobProperties {
         } else {
             this.accessTierChangeTime = new DateTimeRfc1123(accessTierChangeTime);
         }
-        return this;
-    }
-
-    /**
-     * Get the tagCount property: The number of tags corresponding to the blob.
-     *
-     * @return the tagCount value.
-     */
-    public int tagCount() {
-        return this.tagCount;
-    }
-
-    /**
-     * Set the tagCount property: The number of tags corresponding to the blob.
-     *
-     * @param tagCount the tagCount value to set.
-     * @return the BlobProperties object itself.
-     */
-    public BlobProperties tagCount(int tagCount) {
-        this.tagCount = tagCount;
         return this;
     }
 }

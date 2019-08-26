@@ -19,6 +19,13 @@ import com.microsoft.azure.SubResource;
 @JsonFlatten
 public class PrivateLinkServiceConnection extends SubResource {
     /**
+     * The provisioning state of the private link service connection. Possible
+     * values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'.
+     */
+    @JsonProperty(value = "properties.provisioningState")
+    private ProvisioningState provisioningState;
+
+    /**
      * The resource id of private link service.
      */
     @JsonProperty(value = "properties.privateLinkServiceId")
@@ -51,6 +58,38 @@ public class PrivateLinkServiceConnection extends SubResource {
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /**
+     * The resource type.
+     */
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    private String type;
+
+    /**
+     * A unique read-only string that changes whenever the resource is updated.
+     */
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    private String etag;
+
+    /**
+     * Get the provisioning state of the private link service connection. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'.
+     *
+     * @return the provisioningState value
+     */
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioning state of the private link service connection. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set
+     * @return the PrivateLinkServiceConnection object itself.
+     */
+    public PrivateLinkServiceConnection withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
 
     /**
      * Get the resource id of private link service.
@@ -150,6 +189,24 @@ public class PrivateLinkServiceConnection extends SubResource {
     public PrivateLinkServiceConnection withName(String name) {
         this.name = name;
         return this;
+    }
+
+    /**
+     * Get the resource type.
+     *
+     * @return the type value
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get a unique read-only string that changes whenever the resource is updated.
+     *
+     * @return the etag value
+     */
+    public String etag() {
+        return this.etag;
     }
 
 }

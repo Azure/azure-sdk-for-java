@@ -67,15 +67,14 @@ public final class AzureFileStorageBuilder {
      * @return an instance of AzureFileStorageImpl.
      */
     public AzureFileStorageImpl build() {
-        if (version == null) {
-            this.version = "2019-02-02";
-        }
         if (pipeline == null) {
             this.pipeline = RestProxy.createDefaultPipeline();
         }
         AzureFileStorageImpl client = new AzureFileStorageImpl(pipeline);
         if (this.version != null) {
             client.setVersion(this.version);
+        } else {
+            client.setVersion("2019-02-02");
         }
         if (this.url != null) {
             client.setUrl(this.url);
