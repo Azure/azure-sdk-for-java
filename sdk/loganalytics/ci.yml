@@ -34,6 +34,6 @@ stages:
     parameters:
       ServiceDirectory: loganalytics
       Artifacts:
-        - name: microsoft-azure-loganalytics
-          safeName: microsoftazureloganalytics
+        - name: azure-loganalytics
+          safeName: azureloganalytics
           stagingProfileId: 534d15ee3800f4
