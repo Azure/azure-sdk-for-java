@@ -28,7 +28,7 @@ public class VaultPatchParameters {
     private VaultPatchProperties properties;
 
     /**
-     * Get the tags value.
+     * Get the tags that will be assigned to the key vault.
      *
      * @return the tags value
      */
@@ -37,7 +37,7 @@ public class VaultPatchParameters {
     }
 
     /**
-     * Set the tags value.
+     * Set the tags that will be assigned to the key vault.
      *
      * @param tags the tags value to set
      * @return the VaultPatchParameters object itself.
@@ -48,7 +48,7 @@ public class VaultPatchParameters {
     }
 
     /**
-     * Get the properties value.
+     * Get properties of the vault.
      *
      * @return the properties value
      */
@@ -57,7 +57,7 @@ public class VaultPatchParameters {
     }
 
     /**
-     * Set the properties value.
+     * Set properties of the vault.
      *
      * @param properties the properties value to set
      * @return the VaultPatchParameters object itself.

@@ -29,7 +29,7 @@ public class VaultInner extends Resource {
     private String name;
 
     /**
-     * Get the properties value.
+     * Get properties of the vault.
      *
      * @return the properties value
      */
@@ -38,7 +38,7 @@ public class VaultInner extends Resource {
     }
 
     /**
-     * Set the properties value.
+     * Set properties of the vault.
      *
      * @param properties the properties value to set
      * @return the VaultInner object itself.
@@ -49,7 +49,7 @@ public class VaultInner extends Resource {
     }
 
     /**
-     * Get the name value.
+     * Get the name of the key vault.
      *
      * @return the name value
      */
@@ -58,7 +58,7 @@ public class VaultInner extends Resource {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the key vault.
      *
      * @param name the name value to set
      * @return the VaultInner object itself.
