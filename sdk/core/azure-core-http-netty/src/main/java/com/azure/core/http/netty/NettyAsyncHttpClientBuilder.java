@@ -5,9 +5,11 @@ package com.azure.core.http.netty;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
+import io.netty.channel.nio.NioEventLoopGroup;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.tcp.ProxyProvider;
 
+import java.util.concurrent.ThreadFactory;
 import java.util.function.Supplier;
 
 /**
@@ -19,6 +21,8 @@ public class NettyAsyncHttpClientBuilder {
     private Supplier<ProxyOptions> proxyOptions;
     private boolean enableWiretap;
     private int port;
+    private ThreadFactory threadFactory;
+    private int threadCount;
 
     /**
      *
@@ -34,13 +38,17 @@ public class NettyAsyncHttpClientBuilder {
         HttpClient nettyHttpClient = HttpClient.create()
             .port(port)
             .wiretap(enableWiretap)
-            .tcpConfiguration(c -> {
+            .tcpConfiguration(tcpConfig -> {
+                if (threadFactory != null) {
+                    tcpConfig = tcpConfig.runOn(new NioEventLoopGroup(threadCount, threadFactory));
+                }
+
                 if (proxyOptions == null) {
-                    return c;
+                    return tcpConfig;
                 }
                 ProxyOptions options = proxyOptions.get();
                 if (options == null) {
-                    return c;
+                    return tcpConfig;
                 }
                 ProxyProvider.Proxy nettyProxy;
                 switch (options.type()) {
@@ -50,7 +58,8 @@ public class NettyAsyncHttpClientBuilder {
                     default:
                         throw logger.logExceptionAsWarning(new IllegalStateException("Unknown Proxy type '" + options.type() + "' in use. Not configuring Netty proxy."));
                 }
-                return c.proxy(ts -> ts.type(nettyProxy).address(options.address()));
+
+                return tcpConfig.proxy(ts -> ts.type(nettyProxy).address(options.address()));
             });
         return new NettyAsyncHttpClient(nettyHttpClient);
     }
@@ -85,6 +94,28 @@ public class NettyAsyncHttpClientBuilder {
      */
     public NettyAsyncHttpClientBuilder port(int port) {
         this.port = port;
+        return this;
+    }
+
+    /**
+     * Sets the thread factory and number of threads that will be used to handle IO.
+     *
+     * @param threadFactory the thread factory
+     * @return a HttpClient with the thread factory applied
+     */
+    public NettyAsyncHttpClientBuilder threadFactory(ThreadFactory threadFactory) {
+        this.threadFactory = threadFactory;
+        return this;
+    }
+
+    /**
+     * Sets the number of threads that will be used to handle IO.
+     *
+     * @param threadCount number of threads
+     * @return a HttpClient using the number of threads applied
+     */
+    public NettyAsyncHttpClientBuilder threadCount(int threadCount) {
+        this.threadCount = threadCount;
         return this;
     }
 }
