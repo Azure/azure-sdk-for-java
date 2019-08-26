@@ -201,7 +201,7 @@ public class DirectoryAsyncClient {
      *
      * <p>Delete the directory</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.delete}
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.delete}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>

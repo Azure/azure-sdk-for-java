@@ -135,8 +135,4 @@
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck" files="com.azure.core.http.HttpResponse.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck" files="com.azure.security.keyvault.keys.KeyAsyncClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck" files="com.azure.security.keyvault.keys.KeyClient.java"/>
-
-  <!-- CodeSnippet Suppression for now, which need code owner's attention -->
-  <suppress checks="com.azure.tools.checkstyle.checks.JavadocCodeSnippetCheck" files="com.azure.data.appconfiguration.ConfigurationAsyncClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.JavadocCodeSnippetCheck" files="com.azure.messaging.eventhubs.EventData.java"/>
 </suppressions>

@@ -299,7 +299,7 @@ public class DirectoryClient {
      *
      * <p>Get 10 handles with recursive call.</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.listHandles}
+     * {@codesnippet com.azure.storage.file.directoryClient.listHandles#Integer-boolean}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>

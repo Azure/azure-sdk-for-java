@@ -41,8 +41,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
     private String packageName;
     // A container to contains all class name visited, remove the class name when leave the same token
     private Deque<String> classNameStack = new ArrayDeque<>();
-//    // A container to contains all METHOD_DEF node visited, remove the node whenever leave the same token
-//    private Deque<DetailAST> methodDefStack = new ArrayDeque<>();
+    // Current METHOD_DEF token while traversal tree
     private DetailAST methodDefToken = null;
 
     @Override

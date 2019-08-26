@@ -325,10 +325,10 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void listHandles() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.listHandles
+        // BEGIN: com.azure.storage.file.directoryClient.listHandles#Integer-boolean
         Iterable<HandleItem> result = directoryClient.listHandles(10, true);
         System.out.printf("Get handles completed with handle id %s", result.iterator().next().handleId());
-        // END: com.azure.storage.file.directoryClient.listHandles
+        // END: com.azure.storage.file.directoryClient.listHandles#Integer-boolean
     }
 
     /**
