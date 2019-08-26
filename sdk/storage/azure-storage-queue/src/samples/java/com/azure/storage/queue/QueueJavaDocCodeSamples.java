@@ -219,7 +219,7 @@ public class QueueJavaDocCodeSamples {
         queueClient.dequeueMessages().forEach(
             dequeuedMessage -> {
                 UpdatedMessage response = queueClient.updateMessage("newText",
-                    dequeuedMessage.messageId(), dequeuedMessage.popReceipt(), null);
+                    dequeuedMessage.messageId(), dequeuedMessage.popReceipt(), Duration.ofSeconds(5));
                 System.out.println("Complete updating the message.");
             }
         );
@@ -235,7 +235,8 @@ public class QueueJavaDocCodeSamples {
         queueClient.dequeueMessages().forEach(
             dequeuedMessage -> {
                 Response<UpdatedMessage> response = queueClient.updateMessageWithResponse("newText",
-                    dequeuedMessage.messageId(), dequeuedMessage.popReceipt(), null, new Context(key1, value1));
+                    dequeuedMessage.messageId(), dequeuedMessage.popReceipt(),
+                    Duration.ofSeconds(5), new Context(key1, value1));
                 System.out.println("Complete updating the message with status code " + response.statusCode());
             }
         );

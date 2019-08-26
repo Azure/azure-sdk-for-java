@@ -193,7 +193,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.setProperties#storageServiceProperties
         StorageServiceProperties properties = queueServiceAsyncClient.getProperties().block();
         queueServiceAsyncClient.setProperties(properties)
-            .doOnSuccess(response -> System.out.printf("Setting Queue service properties completed."));
+            .doOnSuccess(response -> System.out.println("Setting Queue service properties completed."));
         // END: com.azure.storage.queue.queueServiceAsyncClient.setProperties#storageServiceProperties
     }
 
@@ -217,11 +217,13 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     public void setPropertiesEnableMetrics() {
         QueueServiceAsyncClient queueServiceAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesEnableMetrics#storageServiceProperties
-        StorageServiceProperties properties = queueServiceAsyncClient.getProperties().block();
-        properties.minuteMetrics().enabled(true);
-        properties.hourMetrics().enabled(true);
-        queueServiceAsyncClient.setProperties(properties).subscribe(
-            response -> System.out.printf("Setting Queue service properties completed."));
+        queueServiceAsyncClient.getProperties().subscribe(properties -> {
+            properties.minuteMetrics().enabled(true);
+            properties.hourMetrics().enabled(true);
+
+            queueServiceAsyncClient.setProperties(properties).subscribe(response ->
+                System.out.println("Setting Queue service properties completed."));
+        });
         // END: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesEnableMetrics#storageServiceProperties
     }
 
@@ -231,12 +233,14 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     public void setPropertiesAsyncEnableMetrics() {
         QueueServiceAsyncClient queueServiceAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponseEnableMetrics#storageServiceProperties
-        StorageServiceProperties properties = queueServiceAsyncClient.getProperties().block();
-        properties.minuteMetrics().enabled(true);
-        properties.hourMetrics().enabled(true);
-        queueServiceAsyncClient.setPropertiesWithResponse(properties)
-            .subscribe(response -> System.out.printf("Setting Queue service properties completed with status code %d",
-                response.statusCode()));
+        queueServiceAsyncClient.getProperties().subscribe(properties -> {
+            properties.minuteMetrics().enabled(true);
+            properties.hourMetrics().enabled(true);
+
+            queueServiceAsyncClient.setPropertiesWithResponse(properties).subscribe(response ->
+                System.out.printf("Setting Queue service properties completed with status code %d",
+                    response.statusCode()));
+        });
         // END: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponseEnableMetrics#storageServiceProperties
     }
 

@@ -358,7 +358,8 @@ public class DirectoryJavaDocCodeSamples {
             .directoryPath("mydirectory")
             .snapshot(currentTime.toString())
             .buildClient();
-        directoryClient.getShareSnapshotId();
+
+        System.out.printf("Snapshot ID: %s%n", directoryClient.getShareSnapshotId());
         // END: com.azure.storage.file.directoryClient.getShareSnapshotId
     }
 }
