@@ -34,5 +34,6 @@ stages:
     parameters:
       ServiceDirectory: mediaservices
       Artifacts:
-        - name: microsoft-azure-media
-          safeName: microsoftazuremedia
+        - name: azure-media
+          safeName: azuremedia
+          stagingProfileId: 534d15ee3800f4
