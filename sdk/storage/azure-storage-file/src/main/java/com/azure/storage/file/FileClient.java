@@ -539,7 +539,7 @@ public class FileClient {
      *
      * <p>Clear the range starting from 1024 with length of 1024. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.clearRange#long-long-Context}
+     * {@codesnippet com.azure.storage.file.fileClient.clearRangeWithResponse#long-long-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>

@@ -223,11 +223,11 @@ public class FileJavaDocCodeSamples {
      */
     public void clearRangeMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.clearRange#long-long-Context
+        // BEGIN: com.azure.storage.file.fileClient.clearRangeWithResponse#long-long-Context
         Response<FileUploadInfo> response = fileClient.clearRangeWithResponse(1024, 1024,
             new Context(key1, value1));
         System.out.println("Complete clearing the range with status code: " + response.statusCode());
-        // END: com.azure.storage.file.fileClient.clearRange#long-long-Context
+        // END: com.azure.storage.file.fileClient.clearRangeWithResponse#long-long-Context
     }
 
     /**
