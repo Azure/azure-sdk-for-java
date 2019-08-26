@@ -12,3 +12,4 @@ steps:
     key: $(Agent.JobName)|$(CacheSalt)|$(Build.SourcesDirectory)/sdk/**/pom.xml
     path: $(Maven.RepositoryPath)
   displayName: 'Download/upload cache'
+  condition: ne(variables['EnableCaching'], 'false')
