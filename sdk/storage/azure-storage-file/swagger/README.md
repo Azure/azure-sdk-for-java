@@ -334,6 +334,9 @@ directive:
         op.get.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
+        op.get.responses["206"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.get.responses["206"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.get.responses["206"].headers["x-ms-file-change-time"].format = "date-time";
         op.head.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
         op.head.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.head.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
