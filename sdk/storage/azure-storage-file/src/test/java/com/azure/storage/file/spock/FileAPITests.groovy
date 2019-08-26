@@ -7,7 +7,6 @@ import com.azure.core.exception.HttpResponseException
 import com.azure.core.http.rest.Response
 import com.azure.core.implementation.exception.UnexpectedLengthException
 import com.azure.core.implementation.util.FluxUtil
-import com.azure.core.util.Context
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.FileClient
 import com.azure.storage.file.ShareClient
