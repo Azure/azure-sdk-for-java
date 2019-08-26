@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Model Class Method:
+ * Model Class Method check requirements:
  * <ol>
 *  <li>Fluent Methods: All methods that return an instance of the class, and that have one parameter.</li>
  * <li>The method name should not start with {@code avoidStartWords}.</li>
@@ -66,7 +66,7 @@ public class FluentMethodNameCheck extends AbstractCheck {
     public void visitToken(DetailAST token) {
         switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
-                classNameStack.push(token.findFirstToken(TokenTypes.IDENT).getText());
+                classNameStack.addLast(token.findFirstToken(TokenTypes.IDENT).getText());
                 break;
             case TokenTypes.METHOD_DEF:
                 if (!isFluentMethod(token)) {
@@ -90,7 +90,7 @@ public class FluentMethodNameCheck extends AbstractCheck {
         switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
                 if (!classNameStack.isEmpty()) {
-                    classNameStack.pop();
+                    classNameStack.removeLast();
                 }
                 break;
             default:
@@ -117,18 +117,17 @@ public class FluentMethodNameCheck extends AbstractCheck {
         }
 
         if (!TokenUtil.findFirstTokenByPredicate(
-            typeToken, c -> c.getType() == TokenTypes.IDENT && c.getText().equals(classNameStack.peek())).isPresent()) {
+            typeToken, c -> c.getType() == TokenTypes.IDENT && c.getText().equals(classNameStack.peekLast())).isPresent()) {
             return;
         }
 
         final String methodName = methodDefToken.findFirstToken(TokenTypes.IDENT).getText();
         // 3, log if the method name start with avoid substring
-        for (String avoidStartWord : avoidStartWords) {
+        avoidStartWords.forEach(avoidStartWord -> {
             if (methodName.length() >= avoidStartWord.length() && methodName.startsWith(avoidStartWord)) {
                 log(methodDefToken, String.format(FLUENT_METHOD_ERR, methodName, avoidStartWord));
-                return;
             }
-        }
+        });
     }
 
     /**
