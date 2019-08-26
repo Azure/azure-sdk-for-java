@@ -15,6 +15,8 @@ import com.microsoft.azure.management.network.v2019_06_01.AzureFirewallNetworkRu
 import com.microsoft.azure.management.network.v2019_06_01.AzureFirewallIPConfiguration;
 import com.microsoft.azure.management.network.v2019_06_01.ProvisioningState;
 import com.microsoft.azure.management.network.v2019_06_01.AzureFirewallThreatIntelMode;
+import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.v2019_06_01.HubIPAddresses;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.rest.SkipParentValidation;
@@ -63,6 +65,24 @@ public class AzureFirewallInner extends Resource {
      */
     @JsonProperty(value = "properties.threatIntelMode")
     private AzureFirewallThreatIntelMode threatIntelMode;
+
+    /**
+     * The virtualHub to which the firewall belongs.
+     */
+    @JsonProperty(value = "properties.virtualHub")
+    private SubResource virtualHub;
+
+    /**
+     * The firewallPolicy associated with this azure firewall.
+     */
+    @JsonProperty(value = "properties.firewallPolicy")
+    private SubResource firewallPolicy;
+
+    /**
+     * IP addresses associated with AzureFirewall.
+     */
+    @JsonProperty(value = "properties.hubIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
+    private HubIPAddresses hubIpAddresses;
 
     /**
      * A list of availability zones denoting where the resource needs to come
@@ -202,6 +222,55 @@ public class AzureFirewallInner extends Resource {
     public AzureFirewallInner withThreatIntelMode(AzureFirewallThreatIntelMode threatIntelMode) {
         this.threatIntelMode = threatIntelMode;
         return this;
+    }
+
+    /**
+     * Get the virtualHub to which the firewall belongs.
+     *
+     * @return the virtualHub value
+     */
+    public SubResource virtualHub() {
+        return this.virtualHub;
+    }
+
+    /**
+     * Set the virtualHub to which the firewall belongs.
+     *
+     * @param virtualHub the virtualHub value to set
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withVirtualHub(SubResource virtualHub) {
+        this.virtualHub = virtualHub;
+        return this;
+    }
+
+    /**
+     * Get the firewallPolicy associated with this azure firewall.
+     *
+     * @return the firewallPolicy value
+     */
+    public SubResource firewallPolicy() {
+        return this.firewallPolicy;
+    }
+
+    /**
+     * Set the firewallPolicy associated with this azure firewall.
+     *
+     * @param firewallPolicy the firewallPolicy value to set
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withFirewallPolicy(SubResource firewallPolicy) {
+        this.firewallPolicy = firewallPolicy;
+        return this;
+    }
+
+    /**
+     * Get iP addresses associated with AzureFirewall.
+     *
+     * @return the hubIpAddresses value
+     */
+    public HubIPAddresses hubIpAddresses() {
+        return this.hubIpAddresses;
     }
 
     /**
