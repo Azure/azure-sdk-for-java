@@ -365,10 +365,10 @@ public class FileJavaDocCodeSamples {
      */
     public void setMetadata() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.FileClient.setMetadataWithResponse#Map-Context
+        // BEGIN: com.azure.storage.file.fileClient.setMetadata#map
         fileClient.setMetadata(Collections.singletonMap("file", "updatedMetadata"));
         System.out.printf("Setting the file metadata completed.");
-        // END: com.azure.storage.file.FileClient.setMetadataWithResponse#Map-Context
+        // END: com.azure.storage.file.fileClient.setMetadata#map
     }
 
     /**
