@@ -79,8 +79,7 @@ public abstract class BaseSASQueryParameters {
      * @param permissions A {@code String} representing the storage permissions or {@code null}.
      * @param signature A {@code String} representing the signature for the SAS token.
      */
-    protected BaseSASQueryParameters(String version, SASProtocol protocol, OffsetDateTime startTime,
-        OffsetDateTime expiryTime,
+    public BaseSASQueryParameters(String version, SASProtocol protocol, OffsetDateTime startTime, OffsetDateTime expiryTime,
         IPRange ipRange, String permissions, String signature) {
         this.version = version;
         this.protocol = protocol;

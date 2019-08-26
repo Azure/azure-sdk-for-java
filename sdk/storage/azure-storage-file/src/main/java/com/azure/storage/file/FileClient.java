@@ -692,7 +692,7 @@ public class FileClient {
     /**
      * Generates a SAS token with the specified parameters
      *
-     * @param identifier The {@code String} name of the access policy on the container this SAS references if any
+     * @param identifier The {@code String} name of the access policy on the share this SAS references if any
      * @return A string that represents the SAS token
      */
     public String generateSAS(String identifier) {
@@ -702,7 +702,7 @@ public class FileClient {
     /**
      * Generates a SAS token with the specified parameters
      *
-     * @param identifier The {@code String} name of the access policy on the container this SAS references if any
+     * @param identifier The {@code String} name of the access policy on the share this SAS references if any
      * @param permissions The {@code FileSASPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
@@ -720,7 +720,7 @@ public class FileClient {
     /**
      * Generates a SAS token with the specified parameters
      *
-     * @param identifier The {@code String} name of the access policy on the container this SAS references if any
+     * @param identifier The {@code String} name of the access policy on the share this SAS references if any
      * @param permissions The {@code FileSASPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
