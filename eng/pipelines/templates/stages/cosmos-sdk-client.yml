@@ -22,7 +22,7 @@ stages:
         PreTestSteps:
           - template: ../steps/install-reporting-tools.yml
 
-    - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    - template: ../jobs/archetype-sdk-tests.yml
       parameters:
         TestName: Emulator
         ServiceDirectory: cosmos
