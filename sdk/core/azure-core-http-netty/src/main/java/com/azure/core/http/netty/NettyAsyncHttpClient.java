@@ -1,15 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.netty.implementation;
+package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.ProxyOptions;
-import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
@@ -21,46 +19,32 @@ import reactor.netty.Connection;
 import reactor.netty.NettyOutbound;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
-import reactor.netty.tcp.ProxyProvider;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.Objects;
 import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * HttpClient that is implemented using reactor-netty.
  */
-class ReactorNettyClient implements HttpClient {
-    private final ClientLogger logger = new ClientLogger(ReactorNettyClient.class);
-    private reactor.netty.http.client.HttpClient httpClient;
+public class NettyAsyncHttpClient implements HttpClient {
+    final reactor.netty.http.client.HttpClient nettyClient;
 
     /**
      * Creates default ReactorNettyClient.
      */
-    ReactorNettyClient() {
+    NettyAsyncHttpClient() {
         this(reactor.netty.http.client.HttpClient.create());
     }
 
     /**
      * Creates ReactorNettyClient with provided http client.
      *
-     * @param httpClient the reactor http client
+     * @param nettyClient the reactor http client
      */
-    private ReactorNettyClient(reactor.netty.http.client.HttpClient httpClient) {
-        this.httpClient = httpClient;
-    }
-
-    /**
-     *  Creates ReactorNettyClient with provided http client with configuration applied.
-     *
-     * @param httpClient the reactor http client
-     * @param config the configuration to apply on the http client
-     */
-    private ReactorNettyClient(reactor.netty.http.client.HttpClient httpClient, Function<reactor.netty.http.client.HttpClient, reactor.netty.http.client.HttpClient> config) {
-        this.httpClient = config.apply(httpClient);
+    NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient) {
+        this.nettyClient = nettyClient;
     }
 
     @Override
@@ -68,8 +52,8 @@ class ReactorNettyClient implements HttpClient {
         Objects.requireNonNull(request.httpMethod());
         Objects.requireNonNull(request.url());
         Objects.requireNonNull(request.url().getProtocol());
-        //
-        return httpClient
+
+        return nettyClient
             .request(HttpMethod.valueOf(request.httpMethod().toString()))
             .uri(request.url().toString())
             .send(bodySendDelegate(request))
@@ -108,32 +92,6 @@ class ReactorNettyClient implements HttpClient {
     private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(final HttpRequest restRequest) {
         return (reactorNettyResponse, reactorNettyConnection) ->
             Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection).request(restRequest));
-    }
-
-    @Override
-    public final HttpClient proxy(Supplier<ProxyOptions> proxyOptionsSupplier) {
-        return new ReactorNettyClient(this.httpClient, client -> client.tcpConfiguration(c -> {
-            ProxyOptions options = proxyOptionsSupplier.get();
-            ProxyProvider.Proxy nettyProxy;
-            switch (options.type()) {
-                case HTTP: nettyProxy = ProxyProvider.Proxy.HTTP; break;
-                case SOCKS4: nettyProxy = ProxyProvider.Proxy.SOCKS4; break;
-                case SOCKS5: nettyProxy = ProxyProvider.Proxy.SOCKS5; break;
-                default:
-                    throw logger.logExceptionAsWarning(new IllegalStateException("Unknown Proxy type '" + options.type() + "' in use. Not configuring Netty proxy."));
-            }
-            return c.proxy(ts -> ts.type(nettyProxy).address(options.address()));
-        }));
-    }
-
-    @Override
-    public final HttpClient wiretap(boolean enableWiretap) {
-        return new ReactorNettyClient(this.httpClient, client -> client.wiretap(enableWiretap));
-    }
-
-    @Override
-    public final HttpClient port(int port) {
-        return new ReactorNettyClient(this.httpClient, client -> client.port(port));
     }
 
     static class ReactorNettyHttpResponse extends HttpResponse {
