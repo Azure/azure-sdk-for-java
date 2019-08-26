@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.keyvault.v2016_10_01.implementation;
 
+import com.microsoft.azure.management.keyvault.v2016_10_01.AccessPolicyUpdateKind;
 import com.microsoft.azure.management.keyvault.v2016_10_01.VaultAccessPolicyParameters;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
@@ -26,7 +27,7 @@ class VaultAccessPolicyParametersImpl extends CreatableUpdatableImpl<VaultAccess
         super(name, new VaultAccessPolicyParametersInner());
         this.manager = manager;
         // Set resource name
-        this.operationKind = name;
+//        this.operationKind = name;
         //
         this.uproperties = new VaultAccessPolicyProperties();
     }
@@ -35,7 +36,7 @@ class VaultAccessPolicyParametersImpl extends CreatableUpdatableImpl<VaultAccess
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.operationKind = inner.name();
+//        this.operationKind = inner.name();
         // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.vaultName = IdParsingUtils.getValueFromIdByName(inner.id(), "vaults");
