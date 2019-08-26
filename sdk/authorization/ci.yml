@@ -36,3 +36,4 @@ stages:
       Artifacts:
         - name: microsoft-azure-authentication-msi-token-provider
           safeName: microsoftazureauthenticationmsitokenprovider
+          stagingProfileId: 534d15ee3800f4
