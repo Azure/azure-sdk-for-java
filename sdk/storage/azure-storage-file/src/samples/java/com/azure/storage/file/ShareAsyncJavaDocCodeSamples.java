@@ -198,7 +198,7 @@ public class ShareAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareAsyncClient.createFile#string-long-filehttpheaders-map
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
         shareAsyncClient.createFile("myfile", 1024)
-            .doOnSuccess(response -> System.out.printf("Creating the file completed."));
+            .doOnSuccess(response -> System.out.println("Creating the file completed."));
         // END: com.azure.storage.file.shareAsyncClient.createFile#string-long-filehttpheaders-map
     }
 
@@ -306,7 +306,7 @@ public class ShareAsyncJavaDocCodeSamples {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.setQuota
         shareAsyncClient.setQuota(1024).doOnSuccess(response ->
-            System.out.printf("Setting the share quota completed.")
+            System.out.println("Setting the share quota completed.")
         );
         // END: com.azure.storage.file.shareAsyncClient.setQuota
     }
@@ -332,7 +332,7 @@ public class ShareAsyncJavaDocCodeSamples {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.setMetadata#map
         shareAsyncClient.setMetadata(Collections.singletonMap("share", "updatedMetadata")).doOnSuccess(response ->
-            System.out.printf("Setting the share metadata completed.")
+            System.out.println("Setting the share metadata completed.")
         );
         // END: com.azure.storage.file.shareAsyncClient.setMetadata#map
     }
@@ -357,7 +357,7 @@ public class ShareAsyncJavaDocCodeSamples {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.clearMetadata#map
         shareAsyncClient.setMetadata(null).doOnSuccess(response ->
-            System.out.printf("Setting the share metadata completed.")
+            System.out.println("Setting the share metadata completed.")
         );
         // END: com.azure.storage.file.shareAsyncClient.clearMetadata#map
     }
@@ -387,7 +387,7 @@ public class ShareAsyncJavaDocCodeSamples {
 
         SignedIdentifier permission = new SignedIdentifier().id("mypolicy").accessPolicy(accessPolicy);
         shareAsyncClient.setAccessPolicy(Collections.singletonList(permission)).doOnSuccess(
-            response -> System.out.printf("Setting access policies completed."));
+            response -> System.out.println("Setting access policies completed."));
         // END: com.azure.storage.file.shareAsyncClient.setAccessPolicy
     }
 
@@ -441,7 +441,8 @@ public class ShareAsyncJavaDocCodeSamples {
             .shareName("myshare")
             .snapshot(currentTime.toString())
             .buildAsyncClient();
-        shareAysncClient.getSnapshotId();
+
+        System.out.printf("Snapshot ID: %s%n", shareAysncClient.getSnapshotId());
         // END: com.azure.storage.file.shareAsyncClient.getSnapshotId
     }
 }

@@ -98,7 +98,7 @@ public class FileServiceJavaDocCodeSamples {
         FileServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceClient.createShare#string
         fileServiceClient.createShare("myshare");
-        System.out.printf("Creating the share completed.");
+        System.out.println("Creating the share completed.");
         // END: com.azure.storage.file.fileServiceClient.createShare#string
     }
 
@@ -222,7 +222,7 @@ public class FileServiceJavaDocCodeSamples {
         properties.hourMetrics().enabled(true);
 
         fileServiceClient.setProperties(properties);
-        System.out.printf("Setting File service properties completed.");
+        System.out.println("Setting File service properties completed.");
         // END: com.azure.storage.file.fileServiceClient.setProperties#fileServiceProperties
     }
 

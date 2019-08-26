@@ -461,7 +461,7 @@ public class FileJavaDocCodeSamples {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.listHandles
         fileClient.listHandles()
-            .forEach(handleItem -> System.out.printf("List handles completed with handleId %d",
+            .forEach(handleItem -> System.out.printf("List handles completed with handleId %s",
                 handleItem.handleId()));
         // END: com.azure.storage.file.fileClient.listHandles
     }
@@ -473,7 +473,7 @@ public class FileJavaDocCodeSamples {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.listHandles#integer
         fileClient.listHandles(10)
-            .forEach(handleItem -> System.out.printf("List handles completed with handleId %d",
+            .forEach(handleItem -> System.out.printf("List handles completed with handleId %s",
                 handleItem.handleId()));
         // END: com.azure.storage.file.fileClient.listHandles#integer
     }
@@ -505,7 +505,8 @@ public class FileJavaDocCodeSamples {
             .filePath("myfile")
             .snapshot(currentTime.toString())
             .buildClient();
-        fileClient.getShareSnapshotId();
+
+        System.out.printf("Snapshot ID: %s%n", fileClient.getShareSnapshotId());
         // END: com.azure.storage.file.fileClient.getShareSnapshotId
     }
 }

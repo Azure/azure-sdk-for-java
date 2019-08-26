@@ -219,13 +219,13 @@ public class FileServiceAsyncJavaDocCodeSamples {
     public void setPropertiesAsync() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.setProperties#fileServiceProperties
-        FileServiceProperties properties = fileServiceAsyncClient.getPropertiesWithResponse().block().value();
+        fileServiceAsyncClient.getProperties().subscribe(properties -> {
+            properties.minuteMetrics().enabled(true);
+            properties.hourMetrics().enabled(true);
 
-        properties.minuteMetrics().enabled(true);
-        properties.hourMetrics().enabled(true);
-
-        fileServiceAsyncClient.setProperties(properties)
-            .doOnSuccess(response -> System.out.printf("Setting File service properties completed."));
+            fileServiceAsyncClient.setProperties(properties)
+                .subscribe(r -> System.out.println("Setting File service properties completed."));
+        });
         // END: com.azure.storage.file.fileServiceAsyncClient.setProperties#fileServiceProperties
     }
 
@@ -236,14 +236,14 @@ public class FileServiceAsyncJavaDocCodeSamples {
     public void setPropertiesWithResponseAsync() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.setPropertiesWithResponseAsync#fileServiceProperties
-        FileServiceProperties properties = fileServiceAsyncClient.getPropertiesWithResponse().block().value();
+        fileServiceAsyncClient.getPropertiesWithResponse().subscribe(response -> {
+            FileServiceProperties properties = response.value();
+            properties.minuteMetrics().enabled(true);
+            properties.hourMetrics().enabled(true);
 
-        properties.minuteMetrics().enabled(true);
-        properties.hourMetrics().enabled(true);
-
-        fileServiceAsyncClient.setPropertiesWithResponse(properties)
-            .subscribe(response -> System.out.printf("Setting File service properties completed with status code %d",
-            response.statusCode()));
+            fileServiceAsyncClient.setPropertiesWithResponse(properties).subscribe(r ->
+                System.out.printf("Setting File service properties completed with status code %d", r.statusCode()));
+        });
         // END: com.azure.storage.file.fileServiceAsyncClient.setPropertiesWithResponseAsync#fileServiceProperties
     }
 
@@ -253,12 +253,13 @@ public class FileServiceAsyncJavaDocCodeSamples {
     public void clearPropertiesAsync() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.setPropertiesWithResponse#fileServiceProperties.clearCORS
-        FileServiceProperties properties = fileServiceAsyncClient.getPropertiesWithResponse().block().value();
-        properties.cors(Collections.emptyList());
+        fileServiceAsyncClient.getProperties().subscribe(properties -> {
+            properties.cors(Collections.emptyList());
 
-        fileServiceAsyncClient.setPropertiesWithResponse(properties)
-            .subscribe(response -> System.out.printf("Setting File service properties completed with status code %d",
-                response.statusCode()));
+            fileServiceAsyncClient.setPropertiesWithResponse(properties).subscribe(response ->
+                System.out.printf("Setting File service properties completed with status code %d",
+                    response.statusCode()));
+        });
         // END: com.azure.storage.file.fileServiceAsyncClient.setPropertiesWithResponse#fileServiceProperties.clearCORS
     }
 }
