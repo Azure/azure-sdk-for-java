@@ -34,39 +34,57 @@ stages:
     parameters:
       ServiceDirectory: cognitiveservices
       Artifacts:
-        - name: microsoft-azure-cognitiveservices-autosuggest
-          safeName: microsoftazurecognitiveservicesautosuggest
-        - name: microsoft-azure-cognitiveservices-computervision
-          safeName: microsoftazurecognitiveservicescomputervision
-        - name: microsoft-azure-cognitiveservices-contentmoderator
-          safeName: microsoftazurecognitiveservicescontentmoderator
-        - name: microsoft-azure-cognitiveservices-customimagesearch
-          safeName: microsoftazurecognitiveservicescustomimagesearch
-        - name: microsoft-azure-cognitiveservices-customsearch
-          safeName: microsoftazurecognitiveservicescustomsearch
-        - name: microsoft-azure-cognitiveservices-customvision-prediction
-          safeName: microsoftazurecognitiveservicescustomvisionprediction
-        - name: microsoft-azure-cognitiveservices-customvision-training
-          safeName: microsoftazurecognitiveservicescustomvisiontraining
-        - name: microsoft-azure-cognitiveservices-entitysearch
-          safeName: microsoftazurecognitiveservicesentitysearch
-        - name: microsoft-azure-cognitiveservices-faceapi
-          safeName: microsoftazurecognitiveservicesfaceapi
-        - name: microsoft-azure-cognitiveservices-imagesearch
-          safeName: microsoftazurecognitiveservicesimagesearch
-        - name: microsoft-azure-cognitiveservices-luis-authoring
-          safeName: microsoftazurecognitiveservicesluisauthoring
-        - name: microsoft-azure-cognitiveservices-luis-runtime
-          safeName: microsoftazurecognitiveservicesluisruntime
-        - name: microsoft-azure-cognitiveservices-newssearch
-          safeName: microsoftazurecognitiveservicesnewssearch
-        - name: microsoft-azure-cognitiveservices-spellcheck
-          safeName: microsoftazurecognitiveservicesspellcheck
-        - name: microsoft-azure-cognitiveservices-textanalytics
-          safeName: microsoftazurecognitiveservicestextanalytics
-        - name: microsoft-azure-cognitiveservices-videosearch
-          safeName: microsoftazurecognitiveservicesvideosearch
-        - name: microsoft-azure-cognitiveservices-visualsearch
-          safeName: microsoftazurecognitiveservicesvisualsearch
-        - name: microsoft-azure-cognitiveservices-websearch
-          safeName: microsoftazurecognitiveserviceswebsearch
+        - name: azure-cognitiveservices-autosuggest
+          safeName: azurecognitiveservicesautosuggest
+          stagingProfileId: 534d15ee3800f4
+        - name: azure-cognitiveservices-computervision
+          safeName: azurecognitiveservicescomputervision
+          stagingProfileId: 534d15ee3800f4
+        - name: azure-cognitiveservices-contentmoderator
+          safeName: azurecognitiveservicescontentmoderator
+          stagingProfileId: 534d15ee3800f4
+        - name: azure-cognitiveservices-customimagesearch
+          safeName: azurecognitiveservicescustomimagesearch
+          stagingProfileId: 534d15ee3800f4
+        - name: azure-cognitiveservices-customsearch
+          safeName: azurecognitiveservicescustomsearch
+          stagingProfileId: 534d15ee3800f4
+        - name: azure-cognitiveservices-customvision-prediction
+          safeName: azurecognitiveservicescustomvisionprediction
+          stagingProfileId: 534d15ee3800f4
+        - name: azure-cognitiveservices-customvision-training
+          safeName: azurecognitiveservicescustomvisiontraining
+          stagingProfileId: 534d15ee3800f4
+        - name: azure-cognitiveservices-entitysearch
+          safeName: azurecognitiveservicesentitysearch
+          stagingProfileId: 534d15ee3800f4
+        - name: azure-cognitiveservices-faceapi
+          safeName: azurecognitiveservicesfaceapi
+          stagingProfileId: 534d15ee3800f4
+        - name: azure-cognitiveservices-imagesearch
+          safeName: azurecognitiveservicesimagesearch
+          stagingProfileId: 534d15ee3800f4
+        - name: azure-cognitiveservices-luis-authoring
+          safeName: azurecognitiveservicesluisauthoring
+          stagingProfileId: 534d15ee3800f4
+        - name: azure-cognitiveservices-luis-runtime
+          safeName: azurecognitiveservicesluisruntime
+          stagingProfileId: 534d15ee3800f4
+        - name: azure-cognitiveservices-newssearch
+          safeName: azurecognitiveservicesnewssearch
+          stagingProfileId: 534d15ee3800f4
+        - name: azure-cognitiveservices-spellcheck
+          safeName: azurecognitiveservicesspellcheck
+          stagingProfileId: 534d15ee3800f4
+        - name: azure-cognitiveservices-textanalytics
+          safeName: azurecognitiveservicestextanalytics
+          stagingProfileId: 534d15ee3800f4
+        - name: azure-cognitiveservices-videosearch
+          safeName: azurecognitiveservicesvideosearch
+          stagingProfileId: 534d15ee3800f4
+        - name: azure-cognitiveservices-visualsearch
+          safeName: azurecognitiveservicesvisualsearch
+          stagingProfileId: 534d15ee3800f4
+        - name: azure-cognitiveservices-websearch
+          safeName: azurecognitiveserviceswebsearch
+          stagingProfileId: 534d15ee3800f4
