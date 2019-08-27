@@ -261,7 +261,7 @@ public final class FileServiceClient {
      *
      * <p>Create the share "test" with a quota of 10 GB</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.createShareWithResponse#string-map-integer.quota-Context}
+     * {@codesnippet com.azure.storage.file.FileServiceClient.createShareWithResponse#String-Map-Integer-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>

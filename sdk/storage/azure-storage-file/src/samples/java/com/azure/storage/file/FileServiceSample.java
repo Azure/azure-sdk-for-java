@@ -41,7 +41,7 @@ public class FileServiceSample {
         try {
             FileServiceProperties properties = fileServiceClient.getProperties();
 
-            System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b\n",
+            System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b%n",
                 properties.hourMetrics(), properties.minuteMetrics());
         } catch (StorageErrorException e) {
             System.out.println("Failed to get the account properties. Reasons: " + e.getMessage());
@@ -50,7 +50,7 @@ public class FileServiceSample {
         fileServiceClient.listShares().forEach(
             shareItem -> {
                 try {
-                    System.out.printf("This is the share name: %s in the file account.\n", shareItem.name());
+                    System.out.printf("This is the share name: %s in the file account.%n", shareItem.name());
                     fileServiceClient.deleteShare(shareItem.name());
                     System.out.println("The share has been deleted from the storage file account!");
                 } catch (StorageErrorException e) {
