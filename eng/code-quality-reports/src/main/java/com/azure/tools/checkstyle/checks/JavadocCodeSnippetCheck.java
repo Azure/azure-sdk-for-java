@@ -67,15 +67,8 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
 
     @Override
     public void leaveToken(DetailAST token) {
-        switch (token.getType()) {
-            case TokenTypes.CLASS_DEF:
-                if (!classNameStack.isEmpty()) {
-                    classNameStack.pop();
-                }
-                break;
-            default:
-                // Checkstyle complains if there's no default block in switch
-                break;
+        if (token.getType() == TokenTypes.CLASS_DEF && !classNameStack.isEmpty()) {
+            classNameStack.pop();
         }
     }
 
