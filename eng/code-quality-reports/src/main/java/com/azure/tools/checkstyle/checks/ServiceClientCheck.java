@@ -67,9 +67,9 @@ public class ServiceClientCheck extends AbstractCheck {
     private static final String RESPONSE = "Response";
     private static final String PAGED_ITERABLE = "PagedIterable";
 
-    private static final String RETURN_TYPE_WITH_RESPONSE_ERROR = "Return type is ''%s'', the method name must %s end with ''%s''.";
+    private static final String RETURN_TYPE_WITH_RESPONSE_ERROR = "Return type is ''%s'', the method name %s end with ''%s''.";
     private static final String RETURN_TYPE_ERROR =  "''%s'' service client with ''%s'' should use type ''%s'' as the return type.";
-    private static final String RESPONSE_METHOD_NAME_ERROR = "''%s'' service client with ''%s', should always use return type ''%s'' if method name ends with ''%s'' or should always named method name ends with ''%s'' if the return type is ''%s''.";
+    private static final String RESPONSE_METHOD_NAME_ERROR = "''%s'' service client with ''%s'', should always use return type ''%s'' if method name ends with ''%s'' or should always named method name ends with ''%s'' if the return type is ''%s''.";
     private static final String ASYNC_CONTEXT_ERROR = "Asynchronous method with annotation @ServiceMethod must not has ''%s'' as a method parameter.";
     private static final String SYNC_CONTEXT_ERROR = "Synchronous method with annotation @ServiceMethod must has ''%s'' as a method parameter.";
 
@@ -215,9 +215,9 @@ public class ServiceClientCheck extends AbstractCheck {
         // Class named <ServiceName>AsyncClient, the property 'isAsync' must set to true
         // Class named <ServiceName>Client, the property 'isAsync' must to be false or use the default value
         if (className.endsWith(ASYNC_CLIENT) && !isAsync) {
-            log(classDefToken, String.format("Asynchronous Client, class ''%s'' must set property ''%s'' to true.", className, IS_ASYNC));
+            log(classDefToken, String.format("class ''%s'' is an asynchronous client, must set property ''%s'' to true.", className, IS_ASYNC));
         } else if (className.endsWith(CLIENT) && !className.endsWith(ASYNC_CLIENT) && isAsync) {
-            log(classDefToken, String.format("Synchronous Client, class ''%s'' must set property ''%s'' to false or without the property.", className, IS_ASYNC));
+            log(classDefToken, String.format("class ''%s'' is a synchronous client, must set property ''%s'' to false or without the property.", className, IS_ASYNC));
         }
     }
 
@@ -231,7 +231,7 @@ public class ServiceClientCheck extends AbstractCheck {
      *      3.2) The return type for async single value should be of type? extends Mono.
      *      3.3) The return type for sync collection should be of type? extends PagedIterable.
      *      3.4) The return type for sync single value should be of type? extends Response.
-     *    4) naming pattern for 'WithResponse'.
+     *    4) Naming pattern for 'WithResponse'.
      *    5) Synchronous method with annotation @ServiceMethod has to have {@code Context} as a parameter.
      *    Asynchronous method with annotation @ServiceMethod must not has {@code Context} as a parameter.
      *
@@ -349,11 +349,11 @@ public class ServiceClientCheck extends AbstractCheck {
 
         if (methodName.endsWith(WITH_RESPONSE)) {
             if (!returnType.startsWith(RESPONSE_BRACKET) && !returnType.startsWith(MONO_RESPONSE_BRACKET)) {
-                log(methodDefToken, String.format(RETURN_TYPE_WITH_RESPONSE_ERROR, returnType, "", WITH_RESPONSE));
+                log(methodDefToken, String.format(RETURN_TYPE_WITH_RESPONSE_ERROR, returnType, "must not", WITH_RESPONSE));
             }
         } else {
             if (returnType.startsWith(RESPONSE_BRACKET) || returnType.startsWith(MONO_RESPONSE_BRACKET)) {
-                log(methodDefToken, String.format(RETURN_TYPE_WITH_RESPONSE_ERROR, returnType, "not", WITH_RESPONSE));
+                log(methodDefToken, String.format(RETURN_TYPE_WITH_RESPONSE_ERROR, returnType, "must", WITH_RESPONSE));
             }
         }
     }
@@ -367,17 +367,22 @@ public class ServiceClientCheck extends AbstractCheck {
      */
     private void checkContextInRightPlace(DetailAST methodDefToken) {
         final DetailAST parametersToken = methodDefToken.findFirstToken(TokenTypes.PARAMETERS);
-        final String returnType = getReturnType(methodDefToken, new StringBuilder()).toString();
+        final String returnType = getReturnType(methodDefToken.findFirstToken(TokenTypes.TYPE), new StringBuilder()).toString();
 
         final boolean containsTypeParameter = TokenUtil.findFirstTokenByPredicate(parametersToken,
-            node -> node.getType() == TokenTypes.PARAMETER_DEF && node.findFirstToken(TokenTypes.TYPE).findFirstToken(TokenTypes.IDENT) != null
-            && node.findFirstToken(TokenTypes.TYPE).findFirstToken(TokenTypes.IDENT).getText().equals(CONTEXT)).isPresent();
+            parameterToken -> parameterToken.getType() == TokenTypes.PARAMETER_DEF
+                && parameterToken.findFirstToken(TokenTypes.TYPE).findFirstToken(TokenTypes.IDENT) != null
+                && parameterToken.findFirstToken(TokenTypes.TYPE).findFirstToken(TokenTypes.IDENT)
+                    .getText().equals(CONTEXT))
+            .isPresent();
 
         if (containsTypeParameter) {
+            // MONO and PagedFlux return type implies Asynchronous method
             if (returnType.startsWith(MONO_BRACKET) || returnType.startsWith(PAGED_FLUX_BRACKET)) {
                 log(methodDefToken, String.format(ASYNC_CONTEXT_ERROR, CONTEXT));
             }
         } else {
+            // Response and PagedIterable return type implies Synchronous method
             if (returnType.startsWith(RESPONSE_BRACKET) || returnType.startsWith(PAGED_ITERABLE_BRACKET)) {
                 log(methodDefToken, String.format(SYNC_CONTEXT_ERROR, CONTEXT));
             }
