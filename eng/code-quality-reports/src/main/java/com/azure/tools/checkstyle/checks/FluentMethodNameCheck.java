@@ -73,7 +73,8 @@ public class FluentMethodNameCheck extends AbstractCheck {
 
                 // logs error if the @Fluent method has 'throws' at the method declaration.
                 if (token.findFirstToken(TokenTypes.LITERAL_THROWS) != null) {
-                    log(token, String.format("Fluent Method ''%s'' must not be declared to throw any checked exceptions"));
+                    log(token, String.format(
+                        "Fluent Method ''%s'' must not be declared to throw any checked exceptions"));
                 }
                 break;
             default:
@@ -111,7 +112,8 @@ public class FluentMethodNameCheck extends AbstractCheck {
         // method name should not start with words in the avoid string list
         avoidStartWords.forEach(avoidStartWord -> {
             if (methodName.length() >= avoidStartWord.length() && methodName.startsWith(avoidStartWord)) {
-                log(methodDefToken, String.format("''%s'' fluent method name should not start with keyword ''%s''.", methodName, avoidStartWord));
+                log(methodDefToken, String.format("''%s'' fluent method name should not start with keyword ''%s''.",
+                    methodName, avoidStartWord));
             }
         });
     }
