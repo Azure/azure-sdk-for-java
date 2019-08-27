@@ -6,8 +6,8 @@ package com.azure.storage.blob
 import com.azure.storage.blob.models.AccessPolicy
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.SignedIdentifier
-import com.azure.storage.blob.models.StorageErrorException
-import com.azure.storage.blob.models.StorageErrorException
+import com.azure.storage.blob.models.StorageException
+import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.models.UserDelegationKey
 import com.azure.storage.common.AccountSASPermission
@@ -145,7 +145,7 @@ class SASTest extends APISpec {
         properties.contentDisposition() == "disposition"
         properties.contentEncoding() == "encoding"
         properties.contentLanguage() == "language"
-        notThrown(StorageErrorException)
+        notThrown(StorageException)
     }
 
     def "serviceSASSignatureValues network test blob snapshot"() {
@@ -228,7 +228,7 @@ class SASTest extends APISpec {
         client2.listBlobsFlat().iterator().hasNext()
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(StorageException)
     }
 
     def "serviceSASSignatureValues network test blob user delegation"() {
@@ -280,7 +280,7 @@ class SASTest extends APISpec {
         properties.contentDisposition() == "disposition"
         properties.contentEncoding() == "encoding"
         properties.contentLanguage() == "language"
-        notThrown(StorageErrorException)
+        notThrown(StorageException)
     }
 
     def "BlobServiceSAS network test blob snapshot"() {
@@ -338,7 +338,7 @@ class SASTest extends APISpec {
         snapClient.download(data)
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(StorageException)
         data.toByteArray() == defaultData.array()
 
         and:
@@ -402,7 +402,7 @@ class SASTest extends APISpec {
         client2.download(os)
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(StorageException)
         os.toString() == new String(data)
 
         and:
@@ -436,7 +436,7 @@ class SASTest extends APISpec {
         client.listBlobsFlat().iterator().hasNext()
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(StorageException)
     }
 
     def "accountSAS network test blob read"() {
@@ -537,7 +537,7 @@ class SASTest extends APISpec {
         sc.createContainer(generateContainerName())
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(StorageException)
     }
 
     /*
