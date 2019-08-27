@@ -52,7 +52,6 @@ public final class FluxUtil {
      * @return A Mono which emits the concatenation of all the ByteBuffer instances given by the source Flux.
      */
     public static Mono<byte[]> collectBytesInByteBufferStream(Flux<ByteBuffer> stream) {
-
         return stream
             .collect(ByteArrayOutputStream::new, FluxUtil::accept)
             .map(ByteArrayOutputStream::toByteArray);

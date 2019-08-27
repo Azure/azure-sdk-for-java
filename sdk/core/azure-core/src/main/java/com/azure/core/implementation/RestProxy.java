@@ -317,6 +317,8 @@ public class RestProxy implements InvocationHandler {
                 if (!bodyContentString.isEmpty()) {
                     request.body(bodyContentString);
                 }
+            } else if(bodyContentObject instanceof ByteBuffer) {
+                request.body(Flux.just(((ByteBuffer) bodyContentObject)));
             } else {
                 final String bodyContentString = serializer.serialize(bodyContentObject, SerializerEncoding.fromHeaders(request.headers()));
                 request.body(bodyContentString);
