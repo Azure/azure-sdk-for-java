@@ -136,11 +136,6 @@ public abstract class RestProxyTests {
     }
 
     @Test
-    public void lengthValidationWithMismatchLength() {
-
-    }
-
-    @Test
     public void syncRequestWithByteArrayReturnTypeAndParameterizedHostAndPath() {
         final byte[] result = createService(Service2.class)
                 .getByteArray("httpbin", 50);
