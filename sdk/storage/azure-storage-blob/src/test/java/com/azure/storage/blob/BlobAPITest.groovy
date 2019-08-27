@@ -30,6 +30,7 @@ import com.azure.storage.blob.models.SyncCopyStatusType
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
+import java.nio.file.FileAlreadyExistsException
 import java.security.MessageDigest
 import java.time.OffsetDateTime
 
@@ -238,6 +239,38 @@ class BlobAPITest extends APISpec {
         ByteArrayOutputStream snapshotStream = new ByteArrayOutputStream()
         bc2.download(snapshotStream)
         snapshotStream.toByteArray() == originalStream.toByteArray()
+    }
+
+    def "Download to file exists"() {
+        setup:
+        def testFile = new File(testName + ".txt")
+        if (!testFile.exists()) {
+            assert testFile.createNewFile()
+        }
+
+        when:
+        bc.downloadToFile(testFile.getPath())
+
+        then:
+        thrown(FileAlreadyExistsException)
+    }
+
+    def "Download to file does not exist"() {
+        setup:
+        def testFile = new File(testName + ".txt")
+        if (testFile.exists()) {
+            assert testFile.delete()
+        }
+
+        when:
+        bc.downloadToFile(testFile.getPath())
+        def fileContent = new Scanner(testFile).useDelimiter("\\Z").next()
+
+        then:
+        fileContent == defaultText
+
+        cleanup:
+        testFile.delete()
     }
 
     def "Get properties default"() {

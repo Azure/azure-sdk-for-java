@@ -22,6 +22,7 @@ import reactor.core.publisher.Flux;
 
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.Map;
 
 /**
@@ -186,7 +187,10 @@ public class FileClient {
     }
 
     /**
-     * Downloads a file from the system, including its metadata and properties
+     * Downloads a file from the system, including its metadata and properties into a file specified by the path.
+     *
+     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
+     * will be thrown.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -204,7 +208,10 @@ public class FileClient {
     }
 
     /**
-     * Downloads a file from the system, including its metadata and properties
+     * Downloads a file from the system, including its metadata and properties into a file specified by the path.
+     *
+     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
+     * will be thrown.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
