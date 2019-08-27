@@ -20,6 +20,7 @@ import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Signal;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -351,9 +352,9 @@ public class EventHubAsyncProducer implements Closeable {
             if (eventSpanContext != null) {
                 Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
 
-                if(eventDiagnosticIdOptional.isPresent()) {
+                if (eventDiagnosticIdOptional.isPresent()) {
                     event.addProperty(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
-                    tracerProvider.endSpan(eventSpanContext, null);
+                    tracerProvider.endSpan(eventSpanContext, Signal.complete());
                     event.addContext(SPAN_CONTEXT, eventSpanContext);
                 }
             }

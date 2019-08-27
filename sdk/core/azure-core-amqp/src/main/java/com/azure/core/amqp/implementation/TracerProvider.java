@@ -52,14 +52,14 @@ public class TracerProvider {
             return;
         }
 
-        if (signal.isOnComplete() || signal == null) {
+        if (signal.isOnComplete()) {
             end("success", null, context);
             return;
         }
 
         String errorCondition = "";
         Throwable throwable = null;
-        if (signal != null && signal.hasError()) {
+        if (signal.hasError()) {
             // The last status available is on error, this contains the thrown error.
             throwable = signal.getThrowable();
 
