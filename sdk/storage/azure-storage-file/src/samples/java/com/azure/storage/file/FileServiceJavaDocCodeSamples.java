@@ -5,11 +5,11 @@ package com.azure.storage.file;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.storage.common.Utility;
+import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.ListSharesOptions;
-
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -20,6 +20,10 @@ import java.util.Map;
  * Contains code snippets when generating javadocs through doclets for {@link FileServiceClient} and {@link FileServiceAsyncClient}.
  */
 public class FileServiceJavaDocCodeSamples {
+
+    private String key1 = "key1";
+    private String value1 = "val1";
+
     /**
      * Generates code sample for {@link FileServiceClient} instantiation.
      */
@@ -57,19 +61,6 @@ public class FileServiceJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link FileServiceAsyncClient} with {@link SASTokenCredential}
-     * @return An instance of {@link FileServiceAsyncClient}
-     */
-    public FileServiceAsyncClient createAsyncClientWithSASToken() {
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.instantiation.sastoken
-        FileServiceAsyncClient fileServiceAsyncClient = new FileServiceClientBuilder()
-            .endpoint("https://{accountName}.file.core.windows.net?{SASToken}")
-            .buildAsyncClient();
-        // END: com.azure.storage.file.fileServiceAsyncClient.instantiation.sastoken
-        return fileServiceAsyncClient;
-    }
-
-    /**
      * Generates code sample for creating a {@link FileServiceClient} with {@link SASTokenCredential}
      * {@code SASTokenQueryParams} is composed of the Key
      * @return An instance of {@link FileServiceClient}
@@ -82,20 +73,6 @@ public class FileServiceJavaDocCodeSamples {
             .buildClient();
         // END: com.azure.storage.file.fileServiceClient.instantiation.credential
         return fileServiceClient;
-    }
-
-    /**
-     * Generates code sample for creating a {@link FileServiceAsyncClient} with {@link SASTokenCredential}
-     * @return An instance of {@link FileServiceAsyncClient}
-     */
-    public FileServiceAsyncClient createAsyncClientWithCredential() {
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.instantiation.credential
-        FileServiceAsyncClient fileServiceAsyncClient = new FileServiceClientBuilder()
-            .endpoint("https://{accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
-            .buildAsyncClient();
-        // END: com.azure.storage.file.fileServiceAsyncClient.instantiation.credential
-        return fileServiceAsyncClient;
     }
 
     /**
@@ -113,20 +90,6 @@ public class FileServiceJavaDocCodeSamples {
         return fileServiceClient;
     }
 
-    /**
-     * Generates code sample for creating a {@link FileServiceAsyncClient} with {@code connectionString} which turns into {@link SharedKeyCredential}
-     * @return An instance of {@link FileServiceAsyncClient}
-     */
-    public FileServiceAsyncClient createAsyncClientWithConnectionString() {
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.instantiation.connectionstring
-        String connectionString = "DefaultEndpointsProtocol=https;AccountName={name};AccountKey={key};"
-            + "EndpointSuffix={core.windows.net}";
-        FileServiceAsyncClient fileServiceAsyncClient = new FileServiceClientBuilder()
-            .connectionString(connectionString)
-            .buildAsyncClient();
-        // END: com.azure.storage.file.fileServiceAsyncClient.instantiation.connectionstring
-        return fileServiceAsyncClient;
-    }
 
     /**
      * Generates a code sample for using {@link FileServiceClient#createShare(String)}
@@ -134,77 +97,21 @@ public class FileServiceJavaDocCodeSamples {
     public void createShare() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceClient.createShare#string
-        Response<ShareClient> response = fileServiceClient.createShare("myshare");
-        System.out.printf("Creating the share completed with status code %d", response.statusCode());
+        fileServiceClient.createShare("myshare");
+        System.out.println("Creating the share completed.");
         // END: com.azure.storage.file.fileServiceClient.createShare#string
     }
 
     /**
-     * Generates a code sample for using {@link FileServiceAsyncClient#createShare(String)}
-     */
-    public void createShareAsync() {
-        FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.createShare#string
-        fileServiceAsyncClient.createShare("myshare").subscribe(
-            response -> { },
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete creating the share!")
-        );
-        // END: com.azure.storage.file.fileServiceAsyncClient.createShare#string
-    }
-
-    /**
-     * Generates a code sample for using {@link FileServiceClient#createShare(String, Map, Integer)} with metadata
+     * Generates a code sample for using {@link FileServiceClient#createShareWithResponse(String, Map, Integer, Context)} with metadata
      */
     public void createShareWithMetadata() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceClient.createShare#string-map-integer.metadata
-        Response<ShareClient> response = fileServiceClient.createShare("test",
-            Collections.singletonMap("share", "metadata"), null);
+        // BEGIN: com.azure.storage.file.FileServiceClient.createShareWithResponse#String-Map-Integer-Context
+        Response<ShareClient> response = fileServiceClient.createShareWithResponse("test",
+            Collections.singletonMap("share", "metadata"), null, new Context(key1, value1));
         System.out.printf("Creating the share completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.fileServiceClient.createShare#string-map-integer.metadata
-    }
-
-    /**
-     * Generates a code sample for using {@link FileServiceAsyncClient#createShare(String, Map, Integer)} with metadata
-     */
-    public void createShareAsyncWithMetadata() {
-        FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.createShare#string-map-integer.metadata
-        fileServiceAsyncClient.createShare("test", Collections.singletonMap("share", "metadata"), null)
-            .subscribe(
-                response -> System.out.printf("Creating the share completed with status code %d", response.statusCode()),
-                error -> System.err.print(error.toString()),
-                () -> System.out.println("Complete creating the share!")
-            );
-        // END: com.azure.storage.file.fileServiceAsyncClient.createShare#string-map-integer.metadata
-    }
-
-    /**
-     * Generates a code sample for using {@link FileServiceClient#createShare(String, Map, Integer)} with quota.
-     */
-    public void createShareWithQuota() {
-        FileServiceClient fileServiceClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceClient.createShare#string-map-integer.quota
-        Response<ShareClient> response = fileServiceClient.createShare("test", null, 10);
-        System.out.printf("Creating the share completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.fileServiceClient.createShare#string-map-integer.quota
-    }
-
-    /**
-     * Generates a code sample for using {@link FileServiceAsyncClient#createShare(String, Map, Integer)} with quota.
-     */
-    public void createShareAsyncWithQuota() {
-        FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.createShare#string-map-integer.quota
-        fileServiceAsyncClient.createShare("test", null, 10)
-            .subscribe(
-                response -> System.out.printf("Creating the share completed with status code %d",
-                    response.statusCode()),
-                error -> System.err.print(error.toString()),
-                () -> System.out.println("Complete creating the share!")
-            );
-        // END: com.azure.storage.file.fileServiceAsyncClient.createShare#string-map-integer.quota
+        // END: com.azure.storage.file.FileServiceClient.createShareWithResponse#String-Map-Integer-Context
     }
 
     /**
@@ -220,20 +127,6 @@ public class FileServiceJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileServiceAsyncClient#listShares()}
-     */
-    public void listSharesAsync() {
-        FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares
-        fileServiceAsyncClient.listShares().subscribe(
-            shareItem -> System.out.printf("Share %s exists in the account", shareItem.name()),
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete listing the shares!")
-        );
-        // END: com.azure.storage.file.fileServiceAsyncClient.listShares
-    }
-
-    /**
      * Generates a code sample for using {@link FileServiceClient#listShares(ListSharesOptions)} of prefix.
      */
     public void listSharesWithPrefix() {
@@ -243,20 +136,6 @@ public class FileServiceJavaDocCodeSamples {
             shareItem -> System.out.printf("Share %s exists in the account", shareItem.name())
         );
         // END: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix
-    }
-
-    /**
-     * Generates a code sample for using {@link FileServiceAsyncClient#listShares(ListSharesOptions)} of prefix.
-     */
-    public void listSharesAsyncWithPrefix() {
-        FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.prefix
-        fileServiceAsyncClient.listShares(new ListSharesOptions().prefix("azure")).subscribe(
-            shareItem -> System.out.printf("Share %s exists in the account", shareItem.name()),
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete listing the shares!")
-        );
-        // END: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.prefix
     }
 
     /**
@@ -273,21 +152,6 @@ public class FileServiceJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileServiceAsyncClient#listShares(ListSharesOptions)} of metadata and snapshot.
-     */
-    public void listSharesAsyncWithOverload() {
-        FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot
-        fileServiceAsyncClient.listShares(new ListSharesOptions().includeMetadata(true)
-            .includeSnapshots(true)).subscribe(
-                shareItem -> System.out.printf("Share %s exists in the account", shareItem.name()),
-                error -> System.err.print(error.toString()),
-                () -> System.out.println("Complete listing the shares!")
-        );
-        // END: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot
-    }
-
-    /**
      * Generates a code sample for using {@link FileServiceClient#deleteShare(String)}
      */
     public void deleteShare() {
@@ -298,40 +162,16 @@ public class FileServiceJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileServiceAsyncClient#deleteShare(String)}
-     */
-    public void deleteShareAsync() {
-        FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.deleteShare#string
-        fileServiceAsyncClient.deleteShare("test").subscribe(
-            response -> System.out.println("Deleting the share completed with status code: " + response.statusCode())
-        );
-        // END: com.azure.storage.file.fileServiceAsyncClient.deleteShare#string
-    }
-
-    /**
-     * Generates a code sample for using {@link FileServiceClient#deleteShare(String, String)}
+     * Generates a code sample for using {@link FileServiceClient#deleteShareWithResponse(String, String, Context)}
      */
     public void deleteShareMaxOverload() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceClient.deleteShare#string-string
+        // BEGIN: com.azure.storage.file.fileServiceClient.deleteShareWithResponse#string-string-Context
         OffsetDateTime midnight = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
-        VoidResponse response = fileServiceClient.deleteShare("test", midnight.toString());
+        VoidResponse response = fileServiceClient.deleteShareWithResponse("test", midnight.toString(),
+            new Context(key1, value1));
         System.out.printf("Deleting the snapshot completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.fileServiceClient.deleteShare#string-string
-    }
-
-    /**
-     * Generates a code sample for using {@link FileServiceAsyncClient#deleteShare(String, String)}
-     */
-    public void deleteShareAsyncMaxOverload() {
-        FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.deleteShare#string-string
-        OffsetDateTime midnight = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
-        fileServiceAsyncClient.deleteShare("test", midnight.toString())
-            .subscribe(response -> System.out.printf("Deleting the snapshot completed with status code %d",
-                response.statusCode()));
-        // END: com.azure.storage.file.fileServiceAsyncClient.deleteShare#string-string
+        // END: com.azure.storage.file.fileServiceClient.deleteShareWithResponse#string-string-Context
     }
 
     /**
@@ -340,25 +180,34 @@ public class FileServiceJavaDocCodeSamples {
     public void getProperties() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceClient.getProperties
-        FileServiceProperties properties = fileServiceClient.getProperties().value();
+        FileServiceProperties properties = fileServiceClient.getProperties();
         System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b", properties.hourMetrics().enabled(),
             properties.minuteMetrics().enabled());
         // END: com.azure.storage.file.fileServiceClient.getProperties
     }
 
     /**
-     * Generates a code sample for using {@link FileServiceAsyncClient#getProperties()}
+     * Generates a code sample for using {@link FileServiceClient#getPropertiesWithResponse(Context)}
      */
-    public void getPropertiesAsync() {
-        FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.getProperties
-        fileServiceAsyncClient.getProperties()
-            .subscribe(response -> {
-                FileServiceProperties properties = response.value();
-                System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b",
-                    properties.hourMetrics().enabled(), properties.minuteMetrics().enabled());
-            });
-        // END: com.azure.storage.file.fileServiceAsyncClient.getProperties
+    public void getPropertiesWithRespose() {
+        FileServiceClient fileServiceClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileServiceClient.getPropertiesWithRespose#Context
+        Response<FileServiceProperties> properties = fileServiceClient.getPropertiesWithResponse(new Context(key1, value1));
+        System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b", properties.value().hourMetrics().enabled(),
+            properties.value().minuteMetrics().enabled());
+        // END: com.azure.storage.file.fileServiceClient.getPropertiesWithRespose#Context
+    }
+
+    /**
+     * Generates a code sample for using {@link FileServiceClient#getPropertiesWithResponse(Context)}
+     */
+    public void getPropertiesWithResponse() {
+        FileServiceClient fileServiceClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileServiceClient.getPropertiesWithResponse#Context
+        FileServiceProperties properties = fileServiceClient.getPropertiesWithResponse(new Context(key1, value1)).value();
+        System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b", properties.hourMetrics().enabled(),
+            properties.minuteMetrics().enabled());
+        // END: com.azure.storage.file.fileServiceClient.getPropertiesWithResponse#Context
     }
 
     /**
@@ -367,31 +216,30 @@ public class FileServiceJavaDocCodeSamples {
     public void setProperties() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceClient.setProperties#fileServiceProperties
-        FileServiceProperties properties = fileServiceClient.getProperties().value();
+        FileServiceProperties properties = fileServiceClient.getProperties();
 
         properties.minuteMetrics().enabled(true);
         properties.hourMetrics().enabled(true);
 
-        VoidResponse response = fileServiceClient.setProperties(properties);
-        System.out.printf("Setting File service properties completed with status code %d", response.statusCode());
+        fileServiceClient.setProperties(properties);
+        System.out.println("Setting File service properties completed.");
         // END: com.azure.storage.file.fileServiceClient.setProperties#fileServiceProperties
     }
 
     /**
-     * Generates a code sample for using {@link FileServiceAsyncClient#setProperties(FileServiceProperties)}
+     * Generates a code sample for using {@link FileServiceClient#setProperties(FileServiceProperties)}
      */
-    public void setPropertiesAsync() {
-        FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.setProperties#fileServiceProperties
-        FileServiceProperties properties = fileServiceAsyncClient.getProperties().block().value();
+    public void setPropertiesWithResponse() {
+        FileServiceClient fileServiceClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileServiceClient.setPropertiesWithResponse#fileServiceProperties-Context
+        FileServiceProperties properties = fileServiceClient.getPropertiesWithResponse(new Context(key1, value1)).value();
 
         properties.minuteMetrics().enabled(true);
         properties.hourMetrics().enabled(true);
 
-        fileServiceAsyncClient.setProperties(properties)
-            .subscribe(response -> System.out.printf("Setting File service properties completed with status code %d",
-                response.statusCode()));
-        // END: com.azure.storage.file.fileServiceAsyncClient.setProperties#fileServiceProperties
+        VoidResponse response = fileServiceClient.setPropertiesWithResponse(properties, new Context(key1, value1));
+        System.out.printf("Setting File service properties completed with status code %d", response.statusCode());
+        // END: com.azure.storage.file.fileServiceClient.setPropertiesWithResponse#fileServiceProperties-Context
     }
 
     /**
@@ -399,27 +247,12 @@ public class FileServiceJavaDocCodeSamples {
      */
     public void clearProperties() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceClient.setProperties#fileServiceProperties.clearCORS
-        FileServiceProperties properties = fileServiceClient.getProperties().value();
+        // BEGIN: com.azure.storage.file.fileServiceClient.setPropertiesWithResponse#fileServiceProperties-Context.clearCORS
+        FileServiceProperties properties = fileServiceClient.getProperties();
         properties.cors(Collections.emptyList());
 
-        VoidResponse response = fileServiceClient.setProperties(properties);
+        VoidResponse response = fileServiceClient.setPropertiesWithResponse(properties, new Context(key1, value1));
         System.out.printf("Setting File service properties completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.fileServiceClient.setProperties#fileServiceProperties.clearCORS
-    }
-
-    /**
-     * Generates a code sample for using {@link FileServiceAsyncClient#setProperties(FileServiceProperties)} to clear CORS in file service.
-     */
-    public void clearPropertiesAsync() {
-        FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.setProperties#fileServiceProperties.clearCORS
-        FileServiceProperties properties = fileServiceAsyncClient.getProperties().block().value();
-        properties.cors(Collections.emptyList());
-
-        fileServiceAsyncClient.setProperties(properties)
-            .subscribe(response -> System.out.printf("Setting File service properties completed with status code %d",
-                response.statusCode()));
-        // END: com.azure.storage.file.fileServiceAsyncClient.setProperties#fileServiceProperties.clearCORS
+        // END: com.azure.storage.file.fileServiceClient.setPropertiesWithResponse#fileServiceProperties-Context.clearCORS
     }
 }

@@ -101,14 +101,6 @@ public final class PageBlobUploadPagesHeaders {
     private String encryptionKeySha256;
 
     /*
-     * The encryption scope used to encrypt the pages. This header is only
-     * returned when the pages were encrypted with customer specified
-     * encryption.
-     */
-    @JsonProperty(value = "x-ms-encryption-scope")
-    private String encryptionScope;
-
-    /*
      * The errorCode property.
      */
     @JsonProperty(value = "x-ms-error-code")
@@ -387,30 +379,6 @@ public final class PageBlobUploadPagesHeaders {
      */
     public PageBlobUploadPagesHeaders encryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
-        return this;
-    }
-
-    /**
-     * Get the encryptionScope property: The encryption scope used to encrypt
-     * the pages. This header is only returned when the pages were encrypted
-     * with customer specified encryption.
-     *
-     * @return the encryptionScope value.
-     */
-    public String encryptionScope() {
-        return this.encryptionScope;
-    }
-
-    /**
-     * Set the encryptionScope property: The encryption scope used to encrypt
-     * the pages. This header is only returned when the pages were encrypted
-     * with customer specified encryption.
-     *
-     * @param encryptionScope the encryptionScope value to set.
-     * @return the PageBlobUploadPagesHeaders object itself.
-     */
-    public PageBlobUploadPagesHeaders encryptionScope(String encryptionScope) {
-        this.encryptionScope = encryptionScope;
         return this;
     }
 

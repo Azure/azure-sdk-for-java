@@ -1,60 +1,73 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsstartcopyerror89839aac0a96f23de?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsstartcopyerror260587fd73ed9f9e2?restype=share",
     "Headers" : {
-      "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : {
-      "x-ms-version" : "2018-11-09",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7258EC2F917E9\"",
-      "Last-Modified" : "Tue, 20 Aug 2019 16:52:18 GMT",
+      "ETag" : "\"0x8D72829D73D0060\"",
+      "Last-Modified" : "Sat, 24 Aug 2019 00:27:26 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "249cbbfe-e01a-005a-3f77-5736f7000000",
-      "Date" : "Tue, 20 Aug 2019 16:52:18 GMT"
-    }
+      "x-ms-request-id" : "42bce474-801a-010a-5f12-5a6faa000000",
+      "Date" : "Sat, 24 Aug 2019 00:27:26 GMT",
+      "x-ms-client-request-id" : "433e082d-aca1-4c46-ba93-701aa57764a1"
+    },
+    "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsstartcopyerror89839aac0a96f23de/fileasyncapitestsstartcopyerror24901834cd62a98f6",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsstartcopyerror260587fd73ed9f9e2/fileasyncapitestsstartcopyerror78135aa3dc9a45e0d",
     "Headers" : {
-      "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : {
-      "x-ms-version" : "2018-11-09",
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "2189138948451189390*13168958551941065216",
+      "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7258EC2FF109B\"",
-      "Last-Modified" : "Tue, 20 Aug 2019 16:52:18 GMT",
+      "x-ms-file-creation-time" : "2019-08-24T00:27:26.6630347Z",
+      "Last-Modified" : "Sat, 24 Aug 2019 00:27:26 GMT",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "249cbc00-e01a-005a-4077-5736f7000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Tue, 20 Aug 2019 16:52:18 GMT"
-    }
+      "Date" : "Sat, 24 Aug 2019 00:27:26 GMT",
+      "ETag" : "\"0x8D72829D74556CB\"",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2019-08-24T00:27:26.6630347Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "42bce476-801a-010a-6012-5a6faa000000",
+      "x-ms-client-request-id" : "3a8b0a6c-8515-48af-b2f2-30728b51581a",
+      "x-ms-file-last-write-time" : "2019-08-24T00:27:26.6630347Z"
+    },
+    "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsstartcopyerror89839aac0a96f23de/fileasyncapitestsstartcopyerror24901834cd62a98f6",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsstartcopyerror260587fd73ed9f9e2/fileasyncapitestsstartcopyerror78135aa3dc9a45e0d",
     "Headers" : {
-      "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : {
-      "x-ms-version" : "2018-11-09",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "InvalidHeaderValue",
       "retry-after" : "0",
       "Content-Length" : "330",
       "StatusCode" : "400",
-      "x-ms-request-id" : "249cbc01-e01a-005a-4177-5736f7000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:249cbc01-e01a-005a-4177-5736f7000000\nTime:2019-08-20T16:52:18.3762733Z</Message><HeaderName>x-ms-copy-source</HeaderName><HeaderValue>some url</HeaderValue></Error>",
-      "Date" : "Tue, 20 Aug 2019 16:52:18 GMT",
+      "x-ms-request-id" : "42bce477-801a-010a-6112-5a6faa000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:42bce477-801a-010a-6112-5a6faa000000\nTime:2019-08-24T00:27:26.8356096Z</Message><HeaderName>x-ms-copy-source</HeaderName><HeaderValue>some url</HeaderValue></Error>",
+      "Date" : "Sat, 24 Aug 2019 00:27:26 GMT",
+      "x-ms-client-request-id" : "317dba6a-ee84-41e7-94a6-96e5212abac6",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "fileasyncapitestsstartcopyerror89839aac0a96f23de", "fileasyncapitestsstartcopyerror24901834cd62a98f6" ]
+  "variables" : [ "fileasyncapitestsstartcopyerror260587fd73ed9f9e2", "fileasyncapitestsstartcopyerror78135aa3dc9a45e0d" ]
 }

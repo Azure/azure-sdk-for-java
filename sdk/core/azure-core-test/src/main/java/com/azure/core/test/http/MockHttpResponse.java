@@ -10,12 +10,11 @@ import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.SerializerEncoding;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.implementation.util.ImplUtils;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -135,11 +134,11 @@ public class MockHttpResponse extends HttpResponse {
      * {@inheritDoc}
      */
     @Override
-    public Flux<ByteBuf> body() {
+    public Flux<ByteBuffer> body() {
         if (bodyBytes == null) {
             return Flux.empty();
         } else {
-            return Flux.just(Unpooled.wrappedBuffer(bodyBytes));
+            return Flux.just(ByteBuffer.wrap(bodyBytes));
         }
     }
 

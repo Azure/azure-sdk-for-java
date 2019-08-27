@@ -64,7 +64,7 @@ public final class DirectoryCreateHeaders {
      * Key of the permission set for the directory.
      */
     @JsonProperty(value = "x-ms-file-permission-key")
-    private String filePermissonKey;
+    private String filePermissionKey;
 
     /*
      * Attributes set for the directory.
@@ -261,24 +261,24 @@ public final class DirectoryCreateHeaders {
     }
 
     /**
-     * Get the filePermissonKey property: Key of the permission set for the
+     * Get the filePermissionKey property: Key of the permission set for the
      * directory.
      *
-     * @return the filePermissonKey value.
+     * @return the filePermissionKey value.
      */
-    public String filePermissonKey() {
-        return this.filePermissonKey;
+    public String filePermissionKey() {
+        return this.filePermissionKey;
     }
 
     /**
-     * Set the filePermissonKey property: Key of the permission set for the
+     * Set the filePermissionKey property: Key of the permission set for the
      * directory.
      *
-     * @param filePermissonKey the filePermissonKey value to set.
+     * @param filePermissionKey the filePermissionKey value to set.
      * @return the DirectoryCreateHeaders object itself.
      */
-    public DirectoryCreateHeaders filePermissonKey(String filePermissonKey) {
-        this.filePermissonKey = filePermissonKey;
+    public DirectoryCreateHeaders filePermissionKey(String filePermissionKey) {
+        this.filePermissionKey = filePermissionKey;
         return this;
     }
 

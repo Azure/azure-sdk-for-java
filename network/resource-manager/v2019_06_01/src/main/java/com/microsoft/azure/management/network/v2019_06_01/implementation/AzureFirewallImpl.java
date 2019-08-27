@@ -18,6 +18,8 @@ import com.microsoft.azure.management.network.v2019_06_01.AzureFirewallNetworkRu
 import com.microsoft.azure.management.network.v2019_06_01.AzureFirewallIPConfiguration;
 import com.microsoft.azure.management.network.v2019_06_01.ProvisioningState;
 import com.microsoft.azure.management.network.v2019_06_01.AzureFirewallThreatIntelMode;
+import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.v2019_06_01.HubIPAddresses;
 
 class AzureFirewallImpl extends GroupableResourceCoreImpl<AzureFirewall, AzureFirewallInner, AzureFirewallImpl, NetworkManager> implements AzureFirewall, AzureFirewall.Definition, AzureFirewall.Update {
     AzureFirewallImpl(String name, AzureFirewallInner inner, NetworkManager manager) {
@@ -61,6 +63,16 @@ class AzureFirewallImpl extends GroupableResourceCoreImpl<AzureFirewall, AzureFi
     }
 
     @Override
+    public SubResource firewallPolicy() {
+        return this.inner().firewallPolicy();
+    }
+
+    @Override
+    public HubIPAddresses hubIpAddresses() {
+        return this.inner().hubIpAddresses();
+    }
+
+    @Override
     public List<AzureFirewallIPConfiguration> ipConfigurations() {
         return this.inner().ipConfigurations();
     }
@@ -86,6 +98,11 @@ class AzureFirewallImpl extends GroupableResourceCoreImpl<AzureFirewall, AzureFi
     }
 
     @Override
+    public SubResource virtualHub() {
+        return this.inner().virtualHub();
+    }
+
+    @Override
     public List<String> zones() {
         return this.inner().zones();
     }
@@ -93,6 +110,12 @@ class AzureFirewallImpl extends GroupableResourceCoreImpl<AzureFirewall, AzureFi
     @Override
     public AzureFirewallImpl withApplicationRuleCollections(List<AzureFirewallApplicationRuleCollection> applicationRuleCollections) {
         this.inner().withApplicationRuleCollections(applicationRuleCollections);
+        return this;
+    }
+
+    @Override
+    public AzureFirewallImpl withFirewallPolicy(SubResource firewallPolicy) {
+        this.inner().withFirewallPolicy(firewallPolicy);
         return this;
     }
 
@@ -123,6 +146,12 @@ class AzureFirewallImpl extends GroupableResourceCoreImpl<AzureFirewall, AzureFi
     @Override
     public AzureFirewallImpl withThreatIntelMode(AzureFirewallThreatIntelMode threatIntelMode) {
         this.inner().withThreatIntelMode(threatIntelMode);
+        return this;
+    }
+
+    @Override
+    public AzureFirewallImpl withVirtualHub(SubResource virtualHub) {
+        this.inner().withVirtualHub(virtualHub);
         return this;
     }
 

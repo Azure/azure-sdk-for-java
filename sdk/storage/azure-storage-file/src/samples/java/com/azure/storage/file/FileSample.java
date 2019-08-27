@@ -2,18 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.file.models.CopyStatusType;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.StorageErrorException;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.UUID;
@@ -33,9 +31,8 @@ public class FileSample {
      * The main method shows how to do the base operation using file sync client.
      * @param args No args needed for the main method.
      * @throws RuntimeException If error occurs when make storage API call.
-     * @throws Exception If there are any IO exception occurs.
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         String shareName = generateRandomName();
         ShareClient shareClient = new ShareClientBuilder().endpoint(ENDPOINT).shareName(shareName).buildClient();
         shareClient.create();
@@ -56,9 +53,9 @@ public class FileSample {
 
         // Upload some data bytes to the src file.
         String dataText = "Hello, file client sample!";
-        ByteBuf uploadData = Unpooled.wrappedBuffer(dataText.getBytes(StandardCharsets.UTF_8));
+        ByteBuffer uploadData = ByteBuffer.wrap(dataText.getBytes(StandardCharsets.UTF_8));
         try {
-            srcFileClient.upload(uploadData, uploadData.readableBytes());
+            srcFileClient.upload(uploadData, uploadData.remaining());
         } catch (StorageErrorException e) {
             System.out.println("Failed to upload the data. Reasons: " + e.getMessage());
         }
@@ -69,12 +66,11 @@ public class FileSample {
         destFileClient.create(1024);
 
         // Copy the file from source file to destination file.
-        URL clientURL = null;
-        clientURL = srcFileClient.getFileUrl();
+        URL clientURL = srcFileClient.getFileUrl();
 
         String sourceURL = clientURL.toString() + "/" + shareName + "/" + parentDirName + "/" + srcFileName;
 
-        Response<FileCopyInfo> copyResponse = null;
+        FileCopyInfo copyResponse = null;
         try {
             copyResponse = destFileClient.startCopy(sourceURL, null);
         } catch (StorageErrorException e) {
@@ -82,17 +78,17 @@ public class FileSample {
         }
 
         // Abort the copy if the status is pending.
-        if (copyResponse.value().copyStatus() == CopyStatusType.PENDING) {
+        if (copyResponse.copyStatus() == CopyStatusType.PENDING) {
             try {
-                destFileClient.abortCopy(copyResponse.value().copyId());
+                destFileClient.abortCopy(copyResponse.copyId());
             } catch (StorageErrorException e) {
                 System.out.println("Failed to abort the copy. Reasons: " + e.getMessage());
             }
         }
 
         // Upload a local file to the storage.
-        URL fileFolder = FileSample.class.getClassLoader().getResource(".");
-        String uploadPath = fileFolder.getPath() + "testfiles/" + "uploadSample.txt";
+        String filePath = "C:/filePath/";
+        String uploadPath = filePath + "testfiles/" + "uploadSample.txt";
 
         try {
             srcFileClient.uploadFromFile(uploadPath);
@@ -101,11 +97,11 @@ public class FileSample {
         }
 
         // Download storage file to local file.
-        String downloadPath = fileFolder.getPath() + "testfiles/" + "downloadSample.txt";
+        String downloadPath = filePath + "testfiles/" + "downloadSample.txt";
         File downloadFile = new File(downloadPath);
         try {
-            if (!Files.exists(downloadFile.toPath())) {
-                downloadFile.createNewFile();
+            if (!Files.exists(downloadFile.toPath()) && !downloadFile.createNewFile()) {
+                throw new RuntimeException("Failed to create new upload file.");
             }
         } catch (IOException e) {
             throw new RuntimeException("Failed to create new upload file.");
@@ -116,14 +112,14 @@ public class FileSample {
             System.out.println("Failed to download file from storage. Reasons: " + e.getMessage());
         }
 
-        if (!Files.exists(downloadFile.toPath())) {
-            downloadFile.delete();
+        if (Files.exists(downloadFile.toPath()) && !downloadFile.delete()) {
+            System.out.println("Failed to delete download file.");
         }
 
         // Get the file properties
         try {
-            Response<FileProperties> propertiesResponse = srcFileClient.getProperties();
-            System.out.printf("This is the eTag: %s of the file. File type is : %s.", propertiesResponse.value().eTag(), propertiesResponse.value().fileType());
+            FileProperties propertiesResponse = srcFileClient.getProperties();
+            System.out.printf("This is the eTag: %s of the file. File type is : %s.", propertiesResponse.eTag(), propertiesResponse.fileType());
         } catch (StorageErrorException e) {
             System.out.println("Failed to get file properties. Reasons: " + e.getMessage());
         }

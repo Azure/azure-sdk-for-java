@@ -13,6 +13,7 @@ import com.microsoft.azure.management.network.v2019_06_01.PrivateLinkService;
 import rx.Observable;
 import java.util.List;
 import com.microsoft.azure.management.network.v2019_06_01.PrivateLinkServiceIpConfiguration;
+import com.microsoft.azure.management.network.v2019_06_01.ProvisioningState;
 import com.microsoft.azure.management.network.v2019_06_01.PrivateLinkServicePropertiesVisibility;
 import com.microsoft.azure.management.network.v2019_06_01.PrivateLinkServicePropertiesAutoApproval;
 import java.util.ArrayList;
@@ -110,7 +111,7 @@ class PrivateLinkServiceImpl extends GroupableResourceCoreImpl<PrivateLinkServic
     }
 
     @Override
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.inner().provisioningState();
     }
 
@@ -152,6 +153,12 @@ class PrivateLinkServiceImpl extends GroupableResourceCoreImpl<PrivateLinkServic
     @Override
     public PrivateLinkServiceImpl withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.inner().withPrivateEndpointConnections(privateEndpointConnections);
+        return this;
+    }
+
+    @Override
+    public PrivateLinkServiceImpl withProvisioningState(ProvisioningState provisioningState) {
+        this.inner().withProvisioningState(provisioningState);
         return this;
     }
 
