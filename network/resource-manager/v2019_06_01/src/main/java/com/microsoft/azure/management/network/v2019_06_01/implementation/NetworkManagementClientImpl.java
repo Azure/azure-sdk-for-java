@@ -450,6 +450,32 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The FirewallPoliciesInner object to access its operations.
+     */
+    private FirewallPoliciesInner firewallPolicies;
+
+    /**
+     * Gets the FirewallPoliciesInner object to access its operations.
+     * @return the FirewallPoliciesInner object.
+     */
+    public FirewallPoliciesInner firewallPolicies() {
+        return this.firewallPolicies;
+    }
+
+    /**
+     * The FirewallPolicyRuleGroupsInner object to access its operations.
+     */
+    private FirewallPolicyRuleGroupsInner firewallPolicyRuleGroups;
+
+    /**
+     * Gets the FirewallPolicyRuleGroupsInner object to access its operations.
+     * @return the FirewallPolicyRuleGroupsInner object.
+     */
+    public FirewallPolicyRuleGroupsInner firewallPolicyRuleGroups() {
+        return this.firewallPolicyRuleGroups;
+    }
+
+    /**
      * The LoadBalancersInner object to access its operations.
      */
     private LoadBalancersInner loadBalancers;
@@ -1248,6 +1274,8 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
         this.expressRoutePortsLocations = new ExpressRoutePortsLocationsInner(restClient().retrofit(), this);
         this.expressRoutePorts = new ExpressRoutePortsInner(restClient().retrofit(), this);
         this.expressRouteLinks = new ExpressRouteLinksInner(restClient().retrofit(), this);
+        this.firewallPolicies = new FirewallPoliciesInner(restClient().retrofit(), this);
+        this.firewallPolicyRuleGroups = new FirewallPolicyRuleGroupsInner(restClient().retrofit(), this);
         this.loadBalancers = new LoadBalancersInner(restClient().retrofit(), this);
         this.loadBalancerBackendAddressPools = new LoadBalancerBackendAddressPoolsInner(restClient().retrofit(), this);
         this.loadBalancerFrontendIPConfigurations = new LoadBalancerFrontendIPConfigurationsInner(restClient().retrofit(), this);

@@ -4,17 +4,16 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.util.Context;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.models.AccessPolicy;
-import com.azure.core.util.Context;
 import com.azure.storage.queue.models.DequeuedMessage;
 import com.azure.storage.queue.models.EnqueuedMessage;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.SignedIdentifier;
 import com.azure.storage.queue.models.UpdatedMessage;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -220,7 +219,7 @@ public class QueueJavaDocCodeSamples {
         queueClient.dequeueMessages().forEach(
             dequeuedMessage -> {
                 UpdatedMessage response = queueClient.updateMessage("newText",
-                    dequeuedMessage.messageId(), dequeuedMessage.popReceipt(), null);
+                    dequeuedMessage.messageId(), dequeuedMessage.popReceipt(), Duration.ofSeconds(5));
                 System.out.println("Complete updating the message.");
             }
         );
@@ -236,7 +235,8 @@ public class QueueJavaDocCodeSamples {
         queueClient.dequeueMessages().forEach(
             dequeuedMessage -> {
                 Response<UpdatedMessage> response = queueClient.updateMessageWithResponse("newText",
-                    dequeuedMessage.messageId(), dequeuedMessage.popReceipt(), null, new Context(key1, value1));
+                    dequeuedMessage.messageId(), dequeuedMessage.popReceipt(),
+                    Duration.ofSeconds(5), new Context(key1, value1));
                 System.out.println("Complete updating the message with status code " + response.statusCode());
             }
         );

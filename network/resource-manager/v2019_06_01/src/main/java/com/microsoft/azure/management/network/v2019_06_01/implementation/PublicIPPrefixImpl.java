@@ -16,6 +16,7 @@ import com.microsoft.azure.management.network.v2019_06_01.IPVersion;
 import java.util.List;
 import com.microsoft.azure.management.network.v2019_06_01.IpTag;
 import com.microsoft.azure.management.network.v2019_06_01.ReferencedPublicIpAddress;
+import com.microsoft.azure.SubResource;
 
 class PublicIPPrefixImpl extends GroupableResourceCoreImpl<PublicIPPrefix, PublicIPPrefixInner, PublicIPPrefixImpl, NetworkManager> implements PublicIPPrefix, PublicIPPrefix.Definition, PublicIPPrefix.Update {
     PublicIPPrefixImpl(String name, PublicIPPrefixInner inner, NetworkManager manager) {
@@ -61,6 +62,11 @@ class PublicIPPrefixImpl extends GroupableResourceCoreImpl<PublicIPPrefix, Publi
     @Override
     public List<IpTag> ipTags() {
         return this.inner().ipTags();
+    }
+
+    @Override
+    public SubResource loadBalancerFrontendIpConfiguration() {
+        return this.inner().loadBalancerFrontendIpConfiguration();
     }
 
     @Override

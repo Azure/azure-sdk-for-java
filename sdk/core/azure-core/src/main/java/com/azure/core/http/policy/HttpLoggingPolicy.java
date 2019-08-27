@@ -13,7 +13,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.implementation.util.FluxUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -91,7 +90,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
                 if (contentLength < MAX_BODY_LOG_SIZE && isHumanReadableContentType) {
                     try {
-                        Mono<byte[]> collectedBytes = FluxUtil.collectBytesInByteBufStream(request.body(), true);
+                        Mono<byte[]> collectedBytes = FluxUtil.collectBytesInByteBufferStream(request.body());
                         reqBodyLoggingMono = collectedBytes.flatMap(bytes -> {
                             String bodyString = new String(bytes, StandardCharsets.UTF_8);
                             bodyString = prettyPrintIfNeeded(logger, request.headers().value("Content-Type"), bodyString);
@@ -123,9 +122,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 bodySize = contentLengthString + "-byte";
             }
 
-            HttpResponseStatus responseStatus = HttpResponseStatus.valueOf(response.statusCode());
+//            HttpResponseStatus responseStatus = HttpResponseStatus.valueOf(response.statusCode());
             if (detailLevel.shouldLogURL()) {
-                logger.info("<-- {} {} {} ({} ms, {} body)", response.statusCode(), responseStatus.reasonPhrase(), url, tookMs, bodySize);
+                logger.info("<-- {} {} ({} ms, {} body)", response.statusCode(), url, tookMs, bodySize);
             }
 
             if (detailLevel.shouldLogHeaders()) {

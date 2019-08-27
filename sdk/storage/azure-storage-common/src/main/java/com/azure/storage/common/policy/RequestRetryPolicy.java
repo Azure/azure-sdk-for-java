@@ -11,12 +11,12 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.http.UrlBuilder;
-import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
@@ -92,7 +92,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
          duplicates the ByteBuffer object, not the underlying data.
          */
         context.httpRequest(originalRequest.buffer());
-        Flux<ByteBuf> bufferedBody = (context.httpRequest().body() == null) ? null : context.httpRequest().body().map(ByteBuf::duplicate);
+        Flux<ByteBuffer> bufferedBody = (context.httpRequest().body() == null) ? null : context.httpRequest().body().map(ByteBuffer::duplicate);
         context.httpRequest().body(bufferedBody);
         if (!tryingPrimary) {
             UrlBuilder builder = UrlBuilder.parse(context.httpRequest().url());
