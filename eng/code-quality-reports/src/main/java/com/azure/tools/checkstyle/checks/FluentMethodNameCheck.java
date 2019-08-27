@@ -27,14 +27,14 @@ public class FluentMethodNameCheck extends AbstractCheck {
     private static final String FLUENT_METHOD_ERR = "\"%s\" fluent method name should not start with keyword \"%s\".";
 
     /**
-     *  This is a custom defined set which contains all prefixes that are not allowed.
+     * This is a custom defined set which contains all prefixes that are not allowed.
      */
-    private Set<String> avoidStartWords = new HashSet<>();
+    private final Set<String> avoidStartWords = new HashSet<>();
 
     /**
-     *  Use this stack to track the status of the inner class names when traversals the AST tree.
+     * Use this stack to track the status of the inner class names when traversals the AST tree.
      */
-    private Deque<String> classNameStack = new ArrayDeque<>();
+    private final Deque<String> classNameStack = new ArrayDeque<>();
 
     /**
      * Adds words that methods in fluent classes should not be prefixed with.
@@ -87,15 +87,8 @@ public class FluentMethodNameCheck extends AbstractCheck {
 
     @Override
     public void leaveToken(DetailAST token) {
-        switch (token.getType()) {
-            case TokenTypes.CLASS_DEF:
-                if (!classNameStack.isEmpty()) {
-                    classNameStack.removeLast();
-                }
-                break;
-            default:
-                // Checkstyle complains if there's no default block in switch
-                break;
+        if (token.getType() == TokenTypes.CLASS_DEF && !classNameStack.isEmpty()) {
+            classNameStack.removeLast();
         }
     }
 
@@ -104,25 +97,24 @@ public class FluentMethodNameCheck extends AbstractCheck {
      * @param methodDefToken METHOD_DEF AST node
      */
     private void checkMethodNamePrefix(DetailAST methodDefToken) {
-        // 1, parameter count should be 1
-        if (!TokenUtil.findFirstTokenByPredicate(methodDefToken,
-            c -> c.getType() == TokenTypes.PARAMETERS && c.getChildCount() == 1).isPresent()) {
-            return;
+        // A fluent method should only has one parameter.
+        if (TokenUtil.findFirstTokenByPredicate(methodDefToken, parameters ->
+            parameters.getType() == TokenTypes.PARAMETERS && parameters.getChildCount() != 1).isPresent()) {
+            log(methodDefToken, "A fluent method should only has one parameter.");
         }
 
-        // 2, method type should be matched with class name
-        final DetailAST typeToken = methodDefToken.findFirstToken(TokenTypes.TYPE);
         if (classNameStack.isEmpty()) {
             return;
         }
-
-        if (!TokenUtil.findFirstTokenByPredicate(
-            typeToken, c -> c.getType() == TokenTypes.IDENT && c.getText().equals(classNameStack.peekLast())).isPresent()) {
-            return;
+        // A fluent method's return type should be the class itself
+        final DetailAST typeToken = methodDefToken.findFirstToken(TokenTypes.TYPE);
+        if (TokenUtil.findFirstTokenByPredicate(typeToken, ident -> ident.getType() == TokenTypes.IDENT
+            && !ident.getText().equals(classNameStack.peekLast())).isPresent()) {
+            log(methodDefToken, "Return type of fluent method should be the class itself");
         }
 
         final String methodName = methodDefToken.findFirstToken(TokenTypes.IDENT).getText();
-        // 3, log if the method name start with avoid substring
+        // method name should not start with words in the avoid string list
         avoidStartWords.forEach(avoidStartWord -> {
             if (methodName.length() >= avoidStartWord.length() && methodName.startsWith(avoidStartWord)) {
                 log(methodDefToken, String.format(FLUENT_METHOD_ERR, methodName, avoidStartWord));
