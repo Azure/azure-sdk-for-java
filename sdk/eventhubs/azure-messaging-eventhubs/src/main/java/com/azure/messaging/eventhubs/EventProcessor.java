@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.implementation.tracing.ProcessKind;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.PartitionContext;
@@ -266,7 +267,7 @@ public class EventProcessor {
             return Context.NONE;
         }
         Context spanContext = tracerProvider.extractContext(diagnosticId.toString(), Context.NONE);
-        return tracerProvider.startScopedSpan("process", spanContext);
+        return tracerProvider.startSpan(spanContext, ProcessKind.PROCESS);
     }
 
     /*
@@ -283,6 +284,6 @@ public class EventProcessor {
         } catch (IOException ioException) {
             logger.error("EventProcessor.run() endTracingSpan().close() failed with an error %s", ioException);
         }
-        tracerProvider.end(processSpanContext, signal);
+        tracerProvider.endSpan(processSpanContext, signal);
     }
 }

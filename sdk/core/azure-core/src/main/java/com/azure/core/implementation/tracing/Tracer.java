@@ -63,7 +63,7 @@ public interface Tracer {
     Context start(String methodName, Context context);
 
     /**
-     * Creates a new scoped tracing span.
+     * Creates a new tracing span.
      *
      * The {@code context} will be checked for containing information about a parent span. If a parent span is found the
      * new span will be added as a child, otherwise the span will be created and added to the context and any downstream
@@ -73,7 +73,7 @@ public interface Tracer {
      * @param context Additional metadata that is passed through the call stack.
      * @return An updated context object.
      */
-    Context startScopedSpan(String methodName, Context context);
+    Context start(String methodName, Context context, ProcessKind processKind);
 
     /**
      * Completes the current tracing span.

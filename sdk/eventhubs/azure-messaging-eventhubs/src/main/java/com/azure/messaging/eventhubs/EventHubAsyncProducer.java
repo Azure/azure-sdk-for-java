@@ -7,6 +7,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.implementation.tracing.ProcessKind;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -318,13 +319,13 @@ public class EventHubAsyncProducer implements Closeable {
                     return events.map(eventData -> {
                         Context parentContext = eventData.context();
                         Context entityContext = parentContext.addData(ENTITY_PATH, link.getEntityPath());
-                        sendSpanContext.set(tracerProvider.startSpan("send", entityContext.addData(HOST_NAME, link.getHostname())));
+                        sendSpanContext.set(tracerProvider.startSpan(entityContext.addData(HOST_NAME, link.getHostname()), ProcessKind.SEND));
                         // add span context on event data
                         return setSpanContext(eventData, parentContext);
                     }).collect(new EventDataCollector(batchOptions, 1, () -> link.getErrorContext()));
                 })
                 .flatMap(list -> sendInternal(Flux.fromIterable(list)))
-                .doOnEach(signal -> tracerProvider.end(sendSpanContext.get(), signal));
+                .doOnEach(signal -> tracerProvider.endSpan(sendSpanContext.get(), signal));
         });
     }
 
@@ -337,10 +338,10 @@ public class EventHubAsyncProducer implements Closeable {
             return event;
         } else {
             // Starting the span makes the sampling decision (nothing is logged at this time)
-            Context eventSpanContext = tracerProvider.startSpan("message", parentContext);
+            Context eventSpanContext = tracerProvider.startSpan(parentContext, ProcessKind.MESSAGE);
             if (eventSpanContext != null && eventSpanContext.getData(DIAGNOSTIC_ID_KEY).isPresent()) {
                 event.addProperty(DIAGNOSTIC_ID_KEY, eventSpanContext.getData(DIAGNOSTIC_ID_KEY).get().toString());
-                tracerProvider.end(eventSpanContext, null);
+                tracerProvider.endSpan(eventSpanContext, null);
                 event.addContext(SPAN_CONTEXT, eventSpanContext);
             }
         }

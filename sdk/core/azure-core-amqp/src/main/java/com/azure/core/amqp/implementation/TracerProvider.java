@@ -3,6 +3,7 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.implementation.tracing.ProcessKind;
 import com.azure.core.implementation.tracing.Tracer;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Signal;
@@ -23,15 +24,15 @@ public class TracerProvider {
      * new span will be added as a child, otherwise the span will be created and added to the context and any downstream
      * start calls will use the created span as the parent.
      *
-     * @param methodName Name of the method triggering the span creation.
      * @param context Additional metadata that is passed through the call stack.
+     * @param processKind
      * @return An updated context object.
      */
-    public Context startSpan(String methodName, Context context) {
+    public Context startSpan(Context context, ProcessKind processKind) {
         Context local = context;
-        String spanName = "Azure.eventhubs." + methodName;
+        String spanName = "Azure.eventhubs." + processKind.getProcessKind();
         for (Tracer tracer : tracers) {
-            local = tracer.start(spanName, local);
+            local = tracer.start(spanName, local, processKind);
         }
 
         return local;
@@ -44,12 +45,16 @@ public class TracerProvider {
      * @param context Additional metadata that is passed through the call stack.
      * @param signal The signal indicates the status and contains the metadata we need to end the tracing span.
      */
-    public void end(Context context, Signal<Void> signal) {
+    public void endSpan(Context context, Signal<Void> signal) {
         String errorCondition = "";
 
         // Get the context that was added to the mono, this will contain the information needed to end the span.
         if (!context.getData(OPENTELEMETRY_SPAN_KEY).isPresent()) {
             return;
+        }
+
+        if (signal == null) {
+            end("success", null, context);
         }
 
         Throwable throwable = null;
@@ -62,9 +67,7 @@ public class TracerProvider {
                 errorCondition = exception.getErrorCondition().getErrorCondition();
             }
         }
-        for (Tracer tracer : tracers) {
-            tracer.end(errorCondition, throwable, context);
-        }
+        end(errorCondition, throwable, context);
     }
 
     /**
@@ -90,23 +93,9 @@ public class TracerProvider {
         return local;
     }
 
-    /**
-     * For each tracer plugged into the SDK a new scoped tracing span is created.
-     *
-     * The {@code context} will be checked for containing information about a parent span. If a parent span is found the
-     * new span will be added as a child, otherwise the span will be created and added to the context and any downstream
-     * start calls will use the created span as the parent.
-     *
-     * @param methodName Name of the method triggering the span creation.
-     * @param context Additional metadata that is passed through the call stack.
-     * @return An updated context object.
-     */
-    public Context startScopedSpan(String methodName, Context context) {
-        Context local = context;
+    private void end(String statusMessage, Throwable throwable, Context context) {
         for (Tracer tracer : tracers) {
-            local = tracer.startScopedSpan(methodName, local);
+            tracer.end(statusMessage, throwable, context);
         }
-
-        return local;
     }
 }
