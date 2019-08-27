@@ -22,7 +22,7 @@ import java.util.Locale;
  * <ol>
  * <li>Package, class, and method names should be concatenated with a dot '.'. Ex., packageName.className.methodName</li>
  * <li>Methods arguments should be concatenated with a dash '-'. Ex. String-String  for methodName(String s, String s2)</li>
- * <li>Use '#' to concatenate 1) and 2), ex packageName.className.methodName#string-string</li>
+ * <li>Use '#' to concatenate 1) and 2), ex packageName.className.methodName#String-String</li>
  * <li>Ignore identifier after method arguments</li>
  * </ol>
  */
