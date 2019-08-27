@@ -759,7 +759,12 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     }
 
     private static void configureOperationContext(ProxyConfiguration configuration) {
-        if (configuration != null && configuration.isProxyAddressConfigured()) {
+        if (configuration == null) {
+            TRACE_LOGGER.info("No proxy to configure.");
+            return;
+        }
+
+        if (configuration.isProxyAddressConfigured()) {
             TRACE_LOGGER.info("Configuring proxy '{}' for storage", configuration.proxyAddress());
             OperationContext.setDefaultProxy(configuration.proxyAddress());
 
@@ -770,6 +775,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
                 OperationContext.setDefaultProxyUsername(credentials.getUserName());
                 OperationContext.setDefaultProxyPassword(String.valueOf(credentials.getPassword()));
             }
+        } else {
+            TRACE_LOGGER.info("No proxy address is set. Not configuring.");
         }
     }
 
