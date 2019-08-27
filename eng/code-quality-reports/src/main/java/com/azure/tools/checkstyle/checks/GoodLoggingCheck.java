@@ -31,7 +31,7 @@ public class GoodLoggingCheck extends AbstractCheck {
     private static final String LOGGER = "logger";
 
     private static final String LOGGER_NAME_ERROR = "ClientLogger instance naming: use ''%s'' instead of ''%s'' for consistency.";
-    private static final String STATIC_LOGGER_ERROR = "Reference to ClientLogger should not be static: remove static modifier.";
+    private static final String STATIC_LOGGER_ERROR = "ClientLogger should not be static. Remove static modifier.";
     private static final String NOT_CLIENT_LOGGER_ERROR = "Do not use %s class. Use ''%s'' as a logging mechanism instead of ''%s''.";
 
     // Boolean indicator that indicates if the java class imports ClientLogger
