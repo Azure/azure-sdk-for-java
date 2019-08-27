@@ -19,8 +19,9 @@ import java.util.Set;
 /**
  * Good Logging Practice:
  * <ol>
- * <li>Non-static Logger instance.</li>
- * <li>Logger variable name should be 'logger' in public class and not exist in an implementation package.</li>
+ * <li>A non-static instance logger.</li>
+ * <li>ClientLogger in public API should all named 'logger', public API classes are those classes that are declared
+ *     as public and that do not exist in an implementation package or subpackage.</li>
  * <li>Should not use any external logger class, only use ClientLogger. No slf4j, log4j, or other logging imports are allowed.</li>
  * <li>'System.out' and 'System.err' is not allowed as well.</li>
  * </ol>

@@ -357,7 +357,9 @@ page at http://checkstyle.sourceforge.net/config.html -->
     1) ClientLogger in public API should all named 'logger', public API classes are those classes that are declared
        as public and that do not exist in an implementation package or subpackage.
     2) ClientLogger should be non-static instance logger
-    3) All classes should use ServiceLogger as logger only but except ServiceLogger itself -->
+    3) Should not use any external logger class, only use ClientLogger. No slf4j, log4j, or other logging imports are allowed.
+      'System.out' and 'System.err' is not allowed as well.
+    4) All classes should use ClientLogger as logger only but except ClientLogger itself -->
     <module name="com.azure.tools.checkstyle.checks.GoodLoggingCheck"/>
   </module>
 </module>
