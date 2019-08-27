@@ -269,6 +269,9 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     public abstract void canSearchWithEscapedSpecialCharsInRegex();
 
     @Test
+    public abstract void canSearchWithMinimumCoverage();
+
+    @Test
     public void searchThrowsWhenSpecialCharInRegexIsUnescaped() {
         thrown.expect(HttpResponseException.class);
         thrown.expectMessage("Failed to parse query string at line 1, column 8.");

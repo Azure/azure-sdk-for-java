@@ -346,6 +346,16 @@ public class SearchSyncTests extends SearchTestBase {
         Assert.assertEquals(0, resultsList.size());
     }
 
+    @Override
+    public void canSearchWithMinimumCoverage() {
+        PagedIterable<SearchResult> results = client
+            .search("*", new SearchParameters().minimumCoverage(50.0), new SearchRequestOptions());
+        Assert.assertNotNull(results);
+
+        Iterator<PagedResponse<SearchResult>> resultsIterator = results.iterableByPage().iterator();
+        Assert.assertEquals(100.0, ((SearchPagedResponse) resultsIterator.next()).coverage(), 0);
+    }
+
     private List<Map<String, Object>> getSearchResults(PagedIterable<SearchResult> results) {
         Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
         List<Map<String, Object>> searchResults = new ArrayList<>();

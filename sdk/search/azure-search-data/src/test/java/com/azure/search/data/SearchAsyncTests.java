@@ -344,6 +344,16 @@ public class SearchAsyncTests extends SearchTestBase {
         Assert.assertEquals(0, searchResultsList.size());
     }
 
+    @Override
+    public void canSearchWithMinimumCoverage() {
+        Flux<PagedResponse<SearchResult>> results = client.search("*", new SearchParameters().minimumCoverage(50.0), new SearchRequestOptions()).byPage();
+        Assert.assertNotNull(results);
+
+        StepVerifier.create(results)
+            .assertNext(res -> Assert.assertEquals(100.0, ((SearchPagedResponse) res).coverage(), 0))
+            .verifyComplete();
+    }
+
     private void assertResponse(SearchPagedResponse response, List<Map<String, Object>> actualResults) {
         Assert.assertNull(response.count());
         Assert.assertNull(response.coverage());
