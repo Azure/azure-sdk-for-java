@@ -325,7 +325,7 @@ public class EventHubAsyncProducer implements Closeable {
                     }).collect(new EventDataCollector(batchOptions, 1, () -> link.getErrorContext()));
                 })
                 .flatMap(list -> sendInternal(Flux.fromIterable(list)))
-                .doOnEach(signal -> tracerProvider.endSpan(sendSpanContext.get(), signal));
+                .doOnEach(signal -> tracerProvider.endSpan(sendSpanContext.get() == null ? Context.NONE : sendSpanContext.get(), signal));
         });
     }
 
@@ -333,16 +333,29 @@ public class EventHubAsyncProducer implements Closeable {
         Optional<Object> eventContextData = event.context().getData(SPAN_CONTEXT);
         if (eventContextData.isPresent()) {
             // if message has context (in case of retries), link it to the span
-            tracerProvider.addSpanLinks((Context) eventContextData.get());
-            // builder.addLink((Context)eventContextData.get()); TODO: not supported in Opencensus yet
+            Object spanContextObject = eventContextData.get();
+            if (spanContextObject instanceof Context) {
+                tracerProvider.addSpanLinks((Context) eventContextData.get());
+                // TODO (samvaity): not supported in Opencensus yet
+                // builder.addLink((Context)eventContextData.get());
+            } else {
+                logger.warning(String.format(Locale.US,
+                    "Event Data context type is not of type Context, but type: %s. Not setting body contents.",
+                    spanContextObject != null ? spanContextObject.getClass() : "null"));
+            }
+
             return event;
         } else {
             // Starting the span makes the sampling decision (nothing is logged at this time)
-            Context eventSpanContext = tracerProvider.startSpan(parentContext, ProcessKind.MESSAGE);
-            if (eventSpanContext != null && eventSpanContext.getData(DIAGNOSTIC_ID_KEY).isPresent()) {
-                event.addProperty(DIAGNOSTIC_ID_KEY, eventSpanContext.getData(DIAGNOSTIC_ID_KEY).get().toString());
-                tracerProvider.endSpan(eventSpanContext, null);
-                event.addContext(SPAN_CONTEXT, eventSpanContext);
+            Context eventSpanContext = tracerProvider.startSpan(parentContext, ProcessKind.RECEIVE);
+            if (eventSpanContext != null) {
+                Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
+
+                if(eventDiagnosticIdOptional.isPresent()) {
+                    event.addProperty(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
+                    tracerProvider.endSpan(eventSpanContext, null);
+                    event.addContext(SPAN_CONTEXT, eventSpanContext);
+                }
             }
         }
         return  event;

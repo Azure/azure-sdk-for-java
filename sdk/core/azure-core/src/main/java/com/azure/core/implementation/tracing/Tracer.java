@@ -29,25 +29,25 @@ public interface Tracer {
      * Key for {@link Context} which indicates that the context contains the Entity Path, remote endpoint path.
      *
      */
-    String ENTITY_PATH = "entityPath";
+    String ENTITY_PATH = "entity-path";
 
     /**
      * Key for {@link Context} which indicates that the context contains the hostname.
      *
      */
-    String HOST_NAME = "hostName";
+    String HOST_NAME = "hostname";
 
     /**
      * Key for {@link Context} which indicates that the context contains message Span Context.
      *
      */
-    String SPAN_CONTEXT = "spanContext";
+    String SPAN_CONTEXT = "span-context";
 
     /**
      * Key for {@link Context} which indicates that the context contains the Diagnostic Id for the service call.
      *
      */
-    String DIAGNOSTIC_ID_KEY = "Diagnostic-Id";
+    String DIAGNOSTIC_ID_KEY = "diagnostic-id";
 
     /**
      * Creates a new tracing span.
@@ -151,9 +151,9 @@ public interface Tracer {
     void addLink(Context context);
 
     /**
-     * Extracts the span Context from the given event's diagnostic Id
+     * Extracts the span's {@link Context} from the given event's diagnostic id.
      *
-     * @param diagnosticId Unique identifier for the trace information of the event.
+     * @param diagnosticId Unique identifier for the trace information of the span.
      * @param context Additional metadata that is passed through the call stack.
      * @return An updated context object.
      */

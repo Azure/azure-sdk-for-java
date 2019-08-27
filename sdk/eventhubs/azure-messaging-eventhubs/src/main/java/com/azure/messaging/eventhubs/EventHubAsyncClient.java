@@ -188,7 +188,7 @@ public class EventHubAsyncClient implements Closeable {
                     .cast(AmqpSendLink.class);
             });
 
-        return new EventHubAsyncProducer(amqpLinkMono, clonedOptions, this.tracerProvider);
+        return new EventHubAsyncProducer(amqpLinkMono, clonedOptions, tracerProvider);
     }
 
     /**

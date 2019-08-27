@@ -77,7 +77,7 @@ public class EventData implements Comparable<EventData> {
      * @param body The data to set for this event.
      */
     public EventData(byte[] body) {
-        this(ByteBuffer.wrap(body));
+        this(body, Context.NONE);
     }
 
     /**
@@ -87,12 +87,7 @@ public class EventData implements Comparable<EventData> {
      * @param context A specified key-value pair of type {@link Context}.
      */
     public EventData(byte[] body, Context context) {
-        Objects.requireNonNull(body);
-
-        this.body = ByteBuffer.wrap(body);
-        this.properties = new HashMap<>();
-        this.systemProperties = new SystemProperties(Collections.emptyMap());
-        this.context = context;
+        this(ByteBuffer.wrap(body), context);
     }
 
     /**
@@ -102,12 +97,7 @@ public class EventData implements Comparable<EventData> {
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(ByteBuffer body) {
-        Objects.requireNonNull(body);
-
-        this.body = body;
-        this.properties = new HashMap<>();
-        this.systemProperties = new SystemProperties(Collections.emptyMap());
-        this.context = Context.NONE;
+        this(body, Context.NONE);
     }
 
     /**
@@ -212,10 +202,11 @@ public class EventData implements Comparable<EventData> {
      * @param key The key for this context object
      * @param value The value for this context object.
      * @return The updated EventData object.
+     * @throws NullPointerException if {@code key} or {@code value} is null.
      */
     public EventData addContext(String key, Object value) {
-        Objects.requireNonNull(key);
-        Objects.requireNonNull(value);
+        Objects.requireNonNull(key, "The key parameter cannot be null");
+        Objects.requireNonNull(value, "The value parameter cannot be null");
         this.context = context.addData(key, value);
         return this;
     }
@@ -242,9 +233,9 @@ public class EventData implements Comparable<EventData> {
     }
 
     /**
-     * A specified key-value pair of type {@link Context}.
+     * A specified key-value pair of type {@link Context} to set additional information on the event.
      *
-     * @return the new {@link Context} object
+     * @return the {@link Context} object set on the event
      */
     public Context context() {
         return context;

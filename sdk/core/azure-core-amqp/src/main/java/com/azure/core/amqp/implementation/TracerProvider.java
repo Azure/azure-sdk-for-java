@@ -24,8 +24,8 @@ public class TracerProvider {
      * new span will be added as a child, otherwise the span will be created and added to the context and any downstream
      * start calls will use the created span as the parent.
      *
-     * @param context Additional metadata that is passed through the call stack.
-     * @param processKind
+     * @param {@link Context context} Additional metadata that is passed through the call stack.
+     * @param {@link ProcessKind processKind} the invoking process type.
      * @return An updated context object.
      */
     public Context startSpan(Context context, ProcessKind processKind) {
@@ -46,17 +46,18 @@ public class TracerProvider {
      * @param signal The signal indicates the status and contains the metadata we need to end the tracing span.
      */
     public void endSpan(Context context, Signal<Void> signal) {
-        String errorCondition = "";
 
         // Get the context that was added to the mono, this will contain the information needed to end the span.
-        if (!context.getData(OPENTELEMETRY_SPAN_KEY).isPresent()) {
+        if (context != null && !context.getData(OPENTELEMETRY_SPAN_KEY).isPresent()) {
             return;
         }
 
-        if (signal == null) {
+        if (signal.isOnComplete() || signal == null) {
             end("success", null, context);
+            return;
         }
 
+        String errorCondition = "";
         Throwable throwable = null;
         if (signal != null && signal.hasError()) {
             // The last status available is on error, this contains the thrown error.
@@ -88,7 +89,7 @@ public class TracerProvider {
     public Context extractContext(String diagnosticId, Context context) {
         Context local = context;
         for (Tracer tracer : tracers) {
-            local = tracer.extractContext(diagnosticId, context);
+            local = tracer.extractContext(diagnosticId, local);
         }
         return local;
     }

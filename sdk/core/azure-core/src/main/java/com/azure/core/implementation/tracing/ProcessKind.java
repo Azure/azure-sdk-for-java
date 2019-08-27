@@ -8,15 +8,15 @@ package com.azure.core.implementation.tracing;
  */
 public enum ProcessKind {
     /**
-     * Eventhubs send process call.
+     * Amqp Send Message process call to send data.
      */
     SEND("send"),
     /**
-     * Eventhubs message process call.
+     * Amqp message process call to receive data.
      */
-    MESSAGE("message"),
+    RECEIVE("message"),
     /**
-     * Event Processor host Process process call.
+     * Custom process call to process received messages.
      */
     PROCESS("process");
 

@@ -62,7 +62,7 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
                     addSpanRequestAttributes(span, context, spanName);
                 }
                 return context.addData(OPENTELEMETRY_SPAN_KEY, span);
-            case MESSAGE:
+            case RECEIVE:
                 spanBuilder = startSpanWithExplicitParent(spanName, context);
                 span = spanBuilder.startSpan();
                 // Add diagnostic Id to Context
