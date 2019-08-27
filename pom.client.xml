@@ -342,13 +342,15 @@
             </footer>
             <linksource>false</linksource>
             <excludePackageNames>
+              *.impl*:
+              *.implementation*:
               com.azure.tools.checkstyle*
             </excludePackageNames>
             <groups>
               <group>
                 <title>Azure Core</title>
                 <packages>
-                  com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http:com.azure.core.http.policy:com.azure.core.http.rest:com.azure.core.configuration:com.azure.core.util*
+                  com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*:com.azure.core.configuration:com.azure.core.util*
                 </packages>
               </group>
               <group>
