@@ -20,7 +20,7 @@ import java.util.Locale;
 /**
  * Codesnippet description should match naming pattern requirement below:
  * <ol>
- * <li>Package, class and method names should be concatenated by dot '.'. Ex., packageName.className.methodName</li>
+ * <li>Package, class, and method names should be concatenated with a dot '.'. Ex., packageName.className.methodName</li>
  * <li>Methods arguments should be concatenated by dash '-'. Ex. string-string  for methodName(String s, String s2)</li>
  * <li>Use '#' to concatenate 1) and 2), ex packageName.className.methodName#string-string</li>
  * <li>Ignore identifier after method arguments</li>
