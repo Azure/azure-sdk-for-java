@@ -19,7 +19,7 @@ import java.util.Set;
  * <ol>
 *  <li>Fluent Methods: All methods that return an instance of the class, and that have one parameter.</li>
  * <li>The method name should not start with {@code avoidStartWords}.</li>
- * <li>All methods should not be declared to throws any checked exceptions.</li>
+ * <li>All methods should not throw checked exceptions.</li>
  * </ol>
  */
 public class FluentMethodNameCheck extends AbstractCheck {
