@@ -342,25 +342,13 @@ public class FileAsyncClient {
                         .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
                         .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException)))
                 .then(), this::channelCleanUp);
-
-//        AsynchronousFileChannel channel = channelSetup(downloadFilePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW);
-//        return sliceFileRange(range)
-//            .flatMap(chunk -> downloadWithPropertiesWithResponse(chunk, false)
-//                .map(dar -> dar.value().body())
-//                .subscribeOn(Schedulers.elastic())
-//                .flatMap(fbb -> FluxUtil.writeFile(fbb, channel, chunk.start() - (range == null ? 0 : range.start()))
-//                    .subscribeOn(Schedulers.elastic())
-//                    .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
-//                    .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException)))
-//            .then()
-//            .doOnTerminate(() -> channelCleanUp(channel));
     }
 
     private AsynchronousFileChannel channelSetup(String filePath, OpenOption... options) {
         try {
             return AsynchronousFileChannel.open(Paths.get(filePath), options);
         } catch (IOException e) {
-            throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(e)));
+            throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
@@ -822,14 +810,6 @@ public class FileAsyncClient {
                     .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
                     .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException))
                 .then(), this::channelCleanUp);
-
-//        AsynchronousFileChannel channel = channelSetup(uploadFilePath, StandardOpenOption.READ);
-//        return Flux.fromIterable(sliceFile(uploadFilePath))
-//            .flatMap(chunk -> upload(FluxUtil.readFile(channel, chunk.start(), chunk.end() - chunk.start() + 1), chunk.end() - chunk.start() + 1, chunk.start())
-//                .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
-//                .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException))
-//            .then()
-//            .doOnTerminate(() -> channelCleanUp(channel));
     }
 
     private List<FileRange> sliceFile(String path) {
