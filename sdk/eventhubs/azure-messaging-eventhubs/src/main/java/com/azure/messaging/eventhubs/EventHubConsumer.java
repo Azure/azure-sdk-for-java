@@ -31,14 +31,15 @@ import java.util.Objects;
  */
 public class EventHubConsumer implements Closeable {
     private final EventHubAsyncConsumer consumer;
-    private final EventHubConsumerOptions options;
+    private final Flux<EventData> receiveEvents;
+    private final Duration timeout;
 
     EventHubConsumer(EventHubAsyncConsumer consumer, EventHubConsumerOptions options) {
-        this.consumer = Objects.requireNonNull(consumer, "'consumer' cannot be null.");
-        this.options = Objects.requireNonNull(options, "'options' cannot be null.");
+        Objects.requireNonNull(options, "'options' cannot be null.");
 
-        //TODO (conniey): Keep track of the last sequence number as each method invoked.
-        this.consumer.receive().windowTimeout(options.prefetchCount(), this.options.retry().tryTimeout());
+        this.consumer = Objects.requireNonNull(consumer, "'consumer' cannot be null.");
+        this.timeout = options.retry().tryTimeout();
+        this.receiveEvents = this.consumer.receive();
     }
 
     /**
@@ -47,9 +48,10 @@ public class EventHubConsumer implements Closeable {
      * @param maximumMessageCount The maximum number of messages to receive in this batch.
      * @return A set of {@link EventData} that was received. The iterable contains up to {@code maximumMessageCount}
      *     events.
+     * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1.
      */
     public IterableStream<EventData> receive(int maximumMessageCount) {
-        return new IterableStream<>(Flux.empty());
+        return receive(maximumMessageCount, timeout);
     }
 
     /**
@@ -60,9 +62,23 @@ public class EventHubConsumer implements Closeable {
      *     batch; if not specified, the default wait time specified when the consumer was created will be used.
      * @return A set of {@link EventData} that was received. The iterable contains up to {@code maximumMessageCount}
      *     events.
+     * @throws NullPointerException if {@code maximumWaitTime} is null.
+     * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1 or {@code maximumWaitTime} is
+     *     zero or a negative duration.
      */
     public IterableStream<EventData> receive(int maximumMessageCount, Duration maximumWaitTime) {
-        return new IterableStream<>(Flux.empty());
+        Objects.requireNonNull(maximumWaitTime, "'maximumWaitTime' cannot be null.");
+
+        if (maximumMessageCount < 1) {
+            throw new IllegalArgumentException("'maximumMessageCount' cannot be less than 1.");
+        } else if (maximumWaitTime.isNegative() || maximumWaitTime.isZero()) {
+            throw new IllegalArgumentException("'maximumWaitTime' cannot be zero or less.");
+        }
+
+        final Flux<EventData> events = receiveEvents
+            .windowTimeout(maximumMessageCount, timeout)
+            .blockFirst(timeout);
+        return new IterableStream<>(events);
     }
 
     /**
