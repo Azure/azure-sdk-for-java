@@ -98,7 +98,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*\BlobOutputStream.java"/>
 
   <!-- Don't apply custom Checkstyle rules to files under test package -->
-  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientInstantiationCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|HttpPipelinePolicyCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck)"
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientInstantiationCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|HttpPipelinePolicyCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck)"
             files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
 
   <!-- Don't apply custom Checkstyle rules to files under implementation package -->
@@ -106,7 +106,7 @@
             files=".*[/\\]implementation[/\\].*\.java"/>
 
   <!-- Don't apply custom Checkstyle rules to files under samples package -->
-  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|HttpPipelinePolicyCheck|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck)"
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|HttpPipelinePolicyCheck|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck)"
             files=".*[/\\]samples[/\\].*\.java"/>
 
   <!-- Don't check for JavaDocPackage in samples or tests -->
@@ -139,4 +139,11 @@
   <!-- CodeSnippet Suppression for now, which need code owner's attention -->
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocCodeSnippetCheck" files="com.azure.data.appconfiguration.ConfigurationAsyncClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocCodeSnippetCheck" files="com.azure.messaging.eventhubs.EventData.java"/>
+
+  <!-- ClientLogger class suppression -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="ClientLogger.java"/>
+  <!-- Azure Core Test -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files=".*[/\\]core[/\\]test[/\\].*\.java"/>
+  <!-- Public API already released -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="CertificateUtil.java"/>
 </suppressions>
