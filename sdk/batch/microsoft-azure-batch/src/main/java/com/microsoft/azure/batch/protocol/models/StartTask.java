@@ -23,15 +23,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * all Tasks should be idempotent. This means Tasks need to tolerate being
  * interrupted and restarted without causing any corruption or duplicate data.
  * The best practice for long running Tasks is to use some form of
- * checkpointing. In some cases the start Task may be re-run even though the
- * Compute Node was not rebooted. Special care should be taken to avoid start
- * Tasks which create breakaway process or install/launch services from the
- * start Task working directory, as this will block Batch from being able to
- * re-run the start Task.
+ * checkpointing. In some cases the StartTask may be re-run even though the
+ * Compute Node was not rebooted. Special care should be taken to avoid
+ * StartTasks which create breakaway process or install/launch services from
+ * the StartTask working directory, as this will block Batch from being able to
+ * re-run the StartTask.
  */
 public class StartTask {
     /**
-     * The command line of the start Task.
+     * The command line of the StartTask.
      * The command line does not run under a shell, and therefore cannot take
      * advantage of shell features such as environment variable expansion. If
      * you want to take advantage of such features, you should invoke the shell
@@ -45,7 +45,7 @@ public class StartTask {
     private String commandLine;
 
     /**
-     * The settings for the container under which the start Task runs.
+     * The settings for the container under which the StartTask runs.
      * When this is specified, all directories recursively below the
      * AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node)
      * are mapped into the container, all Task environment variables are mapped
@@ -72,13 +72,13 @@ public class StartTask {
     private List<ResourceFile> resourceFiles;
 
     /**
-     * A list of environment variable settings for the start Task.
+     * A list of environment variable settings for the StartTask.
      */
     @JsonProperty(value = "environmentSettings")
     private List<EnvironmentSetting> environmentSettings;
 
     /**
-     * The user identity under which the start Task runs.
+     * The user identity under which the StartTask runs.
      * If omitted, the Task runs as a non-administrative user unique to the
      * Task.
      */
@@ -99,19 +99,19 @@ public class StartTask {
     private Integer maxTaskRetryCount;
 
     /**
-     * Whether the Batch service should wait for the start Task to complete
+     * Whether the Batch service should wait for the StartTask to complete
      * successfully (that is, to exit with exit code 0) before scheduling any
      * Tasks on the Compute Node.
-     * If true and the start Task fails on a Node, the Batch service retries
-     * the start Task up to its maximum retry count (maxTaskRetryCount). If the
-     * Task has still not completed successfully after all retries, then the
-     * Batch service marks the Node unusable, and will not schedule Tasks to
-     * it. This condition can be detected via the Compute Node state and
-     * failure info details. If false, the Batch service will not wait for the
-     * start Task to complete. In this case, other Tasks can start executing on
-     * the Compute Node while the start Task is still running; and even if the
-     * start Task fails, new Tasks will continue to be scheduled on the Compute
-     * Node. The default is false.
+     * If true and the StartTask fails on a Node, the Batch service retries the
+     * StartTask up to its maximum retry count (maxTaskRetryCount). If the Task
+     * has still not completed successfully after all retries, then the Batch
+     * service marks the Node unusable, and will not schedule Tasks to it. This
+     * condition can be detected via the Compute Node state and failure info
+     * details. If false, the Batch service will not wait for the StartTask to
+     * complete. In this case, other Tasks can start executing on the Compute
+     * Node while the StartTask is still running; and even if the StartTask
+     * fails, new Tasks will continue to be scheduled on the Compute Node. The
+     * default is true.
      */
     @JsonProperty(value = "waitForSuccess")
     private Boolean waitForSuccess;
@@ -237,7 +237,7 @@ public class StartTask {
     }
 
     /**
-     * Get if true and the start Task fails on a Node, the Batch service retries the start Task up to its maximum retry count (maxTaskRetryCount). If the Task has still not completed successfully after all retries, then the Batch service marks the Node unusable, and will not schedule Tasks to it. This condition can be detected via the Compute Node state and failure info details. If false, the Batch service will not wait for the start Task to complete. In this case, other Tasks can start executing on the Compute Node while the start Task is still running; and even if the start Task fails, new Tasks will continue to be scheduled on the Compute Node. The default is false.
+     * Get if true and the StartTask fails on a Node, the Batch service retries the StartTask up to its maximum retry count (maxTaskRetryCount). If the Task has still not completed successfully after all retries, then the Batch service marks the Node unusable, and will not schedule Tasks to it. This condition can be detected via the Compute Node state and failure info details. If false, the Batch service will not wait for the StartTask to complete. In this case, other Tasks can start executing on the Compute Node while the StartTask is still running; and even if the StartTask fails, new Tasks will continue to be scheduled on the Compute Node. The default is true.
      *
      * @return the waitForSuccess value
      */
@@ -246,7 +246,7 @@ public class StartTask {
     }
 
     /**
-     * Set if true and the start Task fails on a Node, the Batch service retries the start Task up to its maximum retry count (maxTaskRetryCount). If the Task has still not completed successfully after all retries, then the Batch service marks the Node unusable, and will not schedule Tasks to it. This condition can be detected via the Compute Node state and failure info details. If false, the Batch service will not wait for the start Task to complete. In this case, other Tasks can start executing on the Compute Node while the start Task is still running; and even if the start Task fails, new Tasks will continue to be scheduled on the Compute Node. The default is false.
+     * Set if true and the StartTask fails on a Node, the Batch service retries the StartTask up to its maximum retry count (maxTaskRetryCount). If the Task has still not completed successfully after all retries, then the Batch service marks the Node unusable, and will not schedule Tasks to it. This condition can be detected via the Compute Node state and failure info details. If false, the Batch service will not wait for the StartTask to complete. In this case, other Tasks can start executing on the Compute Node while the StartTask is still running; and even if the StartTask fails, new Tasks will continue to be scheduled on the Compute Node. The default is true.
      *
      * @param waitForSuccess the waitForSuccess value to set
      * @return the StartTask object itself.

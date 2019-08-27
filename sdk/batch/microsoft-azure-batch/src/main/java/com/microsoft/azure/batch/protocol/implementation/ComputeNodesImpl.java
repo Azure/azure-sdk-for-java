@@ -107,6 +107,66 @@ public class ComputeNodesImpl implements ComputeNodes {
         this.client = client;
     }
 
+    /**
+     * The interface defining all the services for ComputeNodes to be
+     * used by Retrofit to perform actually REST calls.
+     */
+    interface ComputeNodesService {
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes addUser" })
+        @POST("pools/{poolId}/nodes/{nodeId}/users")
+        Observable<Response<ResponseBody>> addUser(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Body ComputeNodeUser user, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes deleteUser" })
+        @HTTP(path = "pools/{poolId}/nodes/{nodeId}/users/{userName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteUser(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Path("userName") String userName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes updateUser" })
+        @PUT("pools/{poolId}/nodes/{nodeId}/users/{userName}")
+        Observable<Response<ResponseBody>> updateUser(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Path("userName") String userName, @Body NodeUpdateUserParameter nodeUpdateUserParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes get" })
+        @GET("pools/{poolId}/nodes/{nodeId}")
+        Observable<Response<ResponseBody>> get(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$select") String select, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes reboot" })
+        @POST("pools/{poolId}/nodes/{nodeId}/reboot")
+        Observable<Response<ResponseBody>> reboot(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Body NodeRebootParameter nodeRebootParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes reimage" })
+        @POST("pools/{poolId}/nodes/{nodeId}/reimage")
+        Observable<Response<ResponseBody>> reimage(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Body NodeReimageParameter nodeReimageParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes disableScheduling" })
+        @POST("pools/{poolId}/nodes/{nodeId}/disablescheduling")
+        Observable<Response<ResponseBody>> disableScheduling(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Body NodeDisableSchedulingParameter nodeDisableSchedulingParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes enableScheduling" })
+        @POST("pools/{poolId}/nodes/{nodeId}/enablescheduling")
+        Observable<Response<ResponseBody>> enableScheduling(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes getRemoteLoginSettings" })
+        @GET("pools/{poolId}/nodes/{nodeId}/remoteloginsettings")
+        Observable<Response<ResponseBody>> getRemoteLoginSettings(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes getRemoteDesktop" })
+        @GET("pools/{poolId}/nodes/{nodeId}/rdp")
+        @Streaming
+        Observable<Response<ResponseBody>> getRemoteDesktop(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes uploadBatchServiceLogs" })
+        @POST("pools/{poolId}/nodes/{nodeId}/uploadbatchservicelogs")
+        Observable<Response<ResponseBody>> uploadBatchServiceLogs(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Body UploadBatchServiceLogsConfiguration uploadBatchServiceLogsConfiguration, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes list" })
+        @GET("pools/{poolId}/nodes")
+        Observable<Response<ResponseBody>> list(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+
+    }
+
     //CUSTOM METHOD
     /**
      * Gets the Remote Desktop Protocol file for the specified compute node.
@@ -170,65 +230,6 @@ public class ComputeNodesImpl implements ComputeNodes {
             }).toBlocking().single();
     }
 
-    /**
-     * The interface defining all the services for ComputeNodes to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface ComputeNodesService {
-        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes addUser" })
-        @POST("pools/{poolId}/nodes/{nodeId}/users")
-        Observable<Response<ResponseBody>> addUser(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Body ComputeNodeUser user, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes deleteUser" })
-        @HTTP(path = "pools/{poolId}/nodes/{nodeId}/users/{userName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteUser(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Path("userName") String userName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes updateUser" })
-        @PUT("pools/{poolId}/nodes/{nodeId}/users/{userName}")
-        Observable<Response<ResponseBody>> updateUser(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Path("userName") String userName, @Body NodeUpdateUserParameter nodeUpdateUserParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes get" })
-        @GET("pools/{poolId}/nodes/{nodeId}")
-        Observable<Response<ResponseBody>> get(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$select") String select, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes reboot" })
-        @POST("pools/{poolId}/nodes/{nodeId}/reboot")
-        Observable<Response<ResponseBody>> reboot(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Body NodeRebootParameter nodeRebootParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes reimage" })
-        @POST("pools/{poolId}/nodes/{nodeId}/reimage")
-        Observable<Response<ResponseBody>> reimage(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Body NodeReimageParameter nodeReimageParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes disableScheduling" })
-        @POST("pools/{poolId}/nodes/{nodeId}/disablescheduling")
-        Observable<Response<ResponseBody>> disableScheduling(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Body NodeDisableSchedulingParameter nodeDisableSchedulingParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes enableScheduling" })
-        @POST("pools/{poolId}/nodes/{nodeId}/enablescheduling")
-        Observable<Response<ResponseBody>> enableScheduling(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes getRemoteLoginSettings" })
-        @GET("pools/{poolId}/nodes/{nodeId}/remoteloginsettings")
-        Observable<Response<ResponseBody>> getRemoteLoginSettings(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes getRemoteDesktop" })
-        @GET("pools/{poolId}/nodes/{nodeId}/rdp")
-        @Streaming
-        Observable<Response<ResponseBody>> getRemoteDesktop(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes uploadBatchServiceLogs" })
-        @POST("pools/{poolId}/nodes/{nodeId}/uploadbatchservicelogs")
-        Observable<Response<ResponseBody>> uploadBatchServiceLogs(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Body UploadBatchServiceLogsConfiguration uploadBatchServiceLogsConfiguration, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes list" })
-        @GET("pools/{poolId}/nodes")
-        Observable<Response<ResponseBody>> list(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.ComputeNodes listNext" })
-        @GET
-        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
-
-    }
 
     /**
      * Adds a user Account to the specified Compute Node.

@@ -9,8 +9,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 /**
@@ -72,7 +72,7 @@ public class BasicExample {
         BlockBlobClient blobClient = containerClient.getBlockBlobClient("HelloWorld.txt");
 
         String data = "Hello world!";
-        InputStream dataStream = new ByteArrayInputStream(data.getBytes());
+        InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
 
         /*
          * Create the blob with string (plain text) content.
@@ -84,15 +84,15 @@ public class BasicExample {
         /*
          * Download the blob's content to output stream.
          */
-        int dataSize = (int) blobClient.getProperties().value().blobSize();
-        OutputStream outputStream = new ByteArrayOutputStream(dataSize);
+        int dataSize = (int) blobClient.getProperties().blobSize();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(dataSize);
         blobClient.download(outputStream);
         outputStream.close();
 
         /*
          * Verify that the blob data round-tripped correctly.
          */
-        if (!data.equals(outputStream.toString())) {
+        if (!data.equals(new String(outputStream.toByteArray(), StandardCharsets.UTF_8))) {
             throw new RuntimeException("The downloaded data does not match the uploaded data.");
         }
 

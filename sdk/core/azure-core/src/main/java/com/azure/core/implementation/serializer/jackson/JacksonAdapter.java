@@ -7,6 +7,7 @@ import com.azure.core.implementation.CollectionFormat;
 import com.azure.core.implementation.serializer.MalformedValueException;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.SerializerEncoding;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -29,6 +30,8 @@ import java.util.List;
  * Implementation of {@link SerializerAdapter} for Jackson.
  */
 public class JacksonAdapter implements SerializerAdapter {
+    private final ClientLogger logger = new ClientLogger(JacksonAdapter.class);
+
     /**
      * An instance of {@link ObjectMapper} to serialize/deserialize objects.
      */
@@ -45,6 +48,11 @@ public class JacksonAdapter implements SerializerAdapter {
      * The lazily-created serializer for this ServiceClient.
      */
     private static SerializerAdapter serializerAdapter;
+
+    /*
+     * BOM header from some response bodies. To be removed in deserialization.
+     */
+    private static final String BOM = "\uFEFF";
 
     /**
      * Creates a new JacksonAdapter instance with default mapper settings.
@@ -135,8 +143,12 @@ public class JacksonAdapter implements SerializerAdapter {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T deserialize(String value, final Type type, SerializerEncoding encoding) throws IOException {
-        if (value == null || value.isEmpty()) {
+        if (value == null || value.isEmpty() || value.equals(BOM)) {
             return null;
+        }
+        // Remove BOM
+        if (value.startsWith(BOM)) {
+            value = value.replaceFirst(BOM, "");
         }
 
         final JavaType javaType = createJavaType(type);
@@ -147,7 +159,7 @@ public class JacksonAdapter implements SerializerAdapter {
                 return (T) serializer().readValue(value, javaType);
             }
         } catch (JsonParseException jpe) {
-            throw new MalformedValueException(jpe.getMessage(), jpe);
+            throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));
         }
     }
 

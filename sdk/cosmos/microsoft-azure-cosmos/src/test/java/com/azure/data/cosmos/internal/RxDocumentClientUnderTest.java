@@ -5,6 +5,7 @@ package com.azure.data.cosmos.internal;
 import com.azure.data.cosmos.ClientUnderTestBuilder;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
+import com.azure.data.cosmos.CosmosKeyCredential;
 import com.azure.data.cosmos.internal.http.HttpClient;
 import com.azure.data.cosmos.internal.http.HttpRequest;
 import com.azure.data.cosmos.internal.http.HttpResponse;
@@ -34,8 +35,9 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                                      String masterKey,
                                      ConnectionPolicy connectionPolicy,
                                      ConsistencyLevel consistencyLevel,
-                                     Configs configs) {
-        super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs);
+                                     Configs configs,
+                                     CosmosKeyCredential cosmosKeyCredential) {
+        super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential);
         init();
     }
 

@@ -85,7 +85,7 @@ public class FileGetFromTaskHeaders {
     /**
      * The length of the file.
      */
-    @JsonProperty(value = "Content-Length")
+    @JsonProperty(value = "content-length")
     private Long contentLength;
 
     /**

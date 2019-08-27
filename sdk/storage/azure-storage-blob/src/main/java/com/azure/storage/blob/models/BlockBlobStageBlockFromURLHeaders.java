@@ -18,12 +18,27 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class BlockBlobStageBlockFromURLHeaders {
     /*
-     * If the blob has an MD5 hash and this operation is to read the full blob,
-     * this response header is returned so that the client can check for
-     * message content integrity.
+     * This header is returned so that the client can check for message content
+     * integrity. The value of this header is computed by the Blob service; it
+     * is not necessarily the same value specified in the request headers.
      */
     @JsonProperty(value = "Content-MD5")
     private byte[] contentMD5;
+
+    /*
+     * This header is returned so that the client can check for message content
+     * integrity. The value of this header is computed by the Blob service; it
+     * is not necessarily the same value specified in the request headers.
+     */
+    @JsonProperty(value = "x-ms-content-crc64")
+    private byte[] xMsContentCrc64;
+
+    /*
+     * If a client request id header is sent in the request, this header will
+     * be present in the response with the same value.
+     */
+    @JsonProperty(value = "x-ms-client-request-id")
+    private String clientRequestId;
 
     /*
      * This header uniquely identifies the request that was made and can be
@@ -70,9 +85,10 @@ public final class BlockBlobStageBlockFromURLHeaders {
     private String errorCode;
 
     /**
-     * Get the contentMD5 property: If the blob has an MD5 hash and this
-     * operation is to read the full blob, this response header is returned so
-     * that the client can check for message content integrity.
+     * Get the contentMD5 property: This header is returned so that the client
+     * can check for message content integrity. The value of this header is
+     * computed by the Blob service; it is not necessarily the same value
+     * specified in the request headers.
      *
      * @return the contentMD5 value.
      */
@@ -81,15 +97,66 @@ public final class BlockBlobStageBlockFromURLHeaders {
     }
 
     /**
-     * Set the contentMD5 property: If the blob has an MD5 hash and this
-     * operation is to read the full blob, this response header is returned so
-     * that the client can check for message content integrity.
+     * Set the contentMD5 property: This header is returned so that the client
+     * can check for message content integrity. The value of this header is
+     * computed by the Blob service; it is not necessarily the same value
+     * specified in the request headers.
      *
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlockBlobStageBlockFromURLHeaders object itself.
      */
     public BlockBlobStageBlockFromURLHeaders contentMD5(byte[] contentMD5) {
         this.contentMD5 = ImplUtils.clone(contentMD5);
+        return this;
+    }
+
+    /**
+     * Get the xMsContentCrc64 property: This header is returned so that the
+     * client can check for message content integrity. The value of this header
+     * is computed by the Blob service; it is not necessarily the same value
+     * specified in the request headers.
+     *
+     * @return the xMsContentCrc64 value.
+     */
+    public byte[] xMsContentCrc64() {
+        return ImplUtils.clone(this.xMsContentCrc64);
+    }
+
+    /**
+     * Set the xMsContentCrc64 property: This header is returned so that the
+     * client can check for message content integrity. The value of this header
+     * is computed by the Blob service; it is not necessarily the same value
+     * specified in the request headers.
+     *
+     * @param xMsContentCrc64 the xMsContentCrc64 value to set.
+     * @return the BlockBlobStageBlockFromURLHeaders object itself.
+     */
+    public BlockBlobStageBlockFromURLHeaders xMsContentCrc64(byte[] xMsContentCrc64) {
+        this.xMsContentCrc64 = ImplUtils.clone(xMsContentCrc64);
+        return this;
+    }
+
+    /**
+     * Get the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
+     *
+     * @return the clientRequestId value.
+     */
+    public String clientRequestId() {
+        return this.clientRequestId;
+    }
+
+    /**
+     * Set the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
+     *
+     * @param clientRequestId the clientRequestId value to set.
+     * @return the BlockBlobStageBlockFromURLHeaders object itself.
+     */
+    public BlockBlobStageBlockFromURLHeaders clientRequestId(String clientRequestId) {
+        this.clientRequestId = clientRequestId;
         return this;
     }
 

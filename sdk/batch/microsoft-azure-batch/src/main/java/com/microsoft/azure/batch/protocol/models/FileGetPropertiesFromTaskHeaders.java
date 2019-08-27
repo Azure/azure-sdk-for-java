@@ -79,7 +79,7 @@ public class FileGetPropertiesFromTaskHeaders {
     /**
      * The content type of the file.
      */
-    @JsonProperty(value = "content-type")
+    @JsonProperty(value = "Content-Type")
     private String contentType;
 
     /**

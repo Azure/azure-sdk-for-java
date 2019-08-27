@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 class VirtualMachineMSICredential {
 
     private final IdentityClient identityClient;
-    private String clientId;
+    private final String clientId;
 
     /**
      * Creates an instance of VirtualMachineMSICredential.

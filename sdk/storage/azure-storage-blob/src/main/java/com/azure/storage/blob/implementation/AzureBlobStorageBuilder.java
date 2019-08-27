@@ -7,6 +7,7 @@ package com.azure.storage.blob.implementation;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
+import com.azure.storage.blob.models.PathRenameMode;
 
 /**
  * A builder for creating a new instance of the AzureBlobStorage type.
@@ -46,6 +47,22 @@ public final class AzureBlobStorageBuilder {
     }
 
     /*
+     * Determines the behavior of the rename operation. Possible values include: 'legacy', 'posix'
+     */
+    private PathRenameMode pathRenameMode;
+
+    /**
+     * Sets Determines the behavior of the rename operation. Possible values include: 'legacy', 'posix'.
+     *
+     * @param pathRenameMode the pathRenameMode value.
+     * @return the AzureBlobStorageBuilder.
+     */
+    public AzureBlobStorageBuilder pathRenameMode(PathRenameMode pathRenameMode) {
+        this.pathRenameMode = pathRenameMode;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -77,7 +94,10 @@ public final class AzureBlobStorageBuilder {
         if (this.version != null) {
             client.setVersion(this.version);
         } else {
-            client.setVersion("2018-11-09");
+            client.setVersion("2019-02-02");
+        }
+        if (this.pathRenameMode != null) {
+            client.setPathRenameMode(this.pathRenameMode);
         }
         return client;
     }

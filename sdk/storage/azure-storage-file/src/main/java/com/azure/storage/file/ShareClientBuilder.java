@@ -13,9 +13,12 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
@@ -69,7 +72,9 @@ import java.util.Objects;
  * @see SASTokenCredential
  * @see SharedKeyCredential
  */
+@ServiceClientBuilder(serviceClients = {ShareClient.class, ShareAsyncClient.class})
 public class ShareClientBuilder {
+    private final ClientLogger logger = new ClientLogger(ShareClientBuilder.class);
     private static final String ACCOUNT_NAME = "accountname";
     private final List<HttpPipelinePolicy> policies;
 
@@ -81,7 +86,7 @@ public class ShareClientBuilder {
     private HttpClient httpClient;
     private HttpPipeline pipeline;
     private HttpLogDetailLevel logLevel;
-    private RetryPolicy retryPolicy;
+    private final RetryPolicy retryPolicy;
     private Configuration configuration;
 
     /**
@@ -117,7 +122,7 @@ public class ShareClientBuilder {
         }
 
         if (sasTokenCredential == null && sharedKeyCredential == null) {
-            throw new IllegalArgumentException("Credentials are required for authorization");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Credentials are required for authorization"));
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -173,7 +178,7 @@ public class ShareClientBuilder {
      * <p>The first path segment, if the endpoint contains path segments, will be assumed to be the name of the share
      * that the client will interact with.</p>
      *
-     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQuery(String)}  in an
+     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQueryParameters(Map)} in an
      * attempt to generate a {@link SASTokenCredential} to authenticate requests sent to the service.</p>
      *
      * @param endpoint The URL of the Azure Storage File instance to send service requests to and receive responses from.
@@ -186,12 +191,12 @@ public class ShareClientBuilder {
             this.endpoint = new URL(fullURL.getProtocol() + "://" + fullURL.getHost());
 
             // Attempt to get the SAS token from the URL passed
-            this.sasTokenCredential = SASTokenCredential.fromQuery(fullURL.getQuery());
+            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
             if (this.sasTokenCredential != null) {
                 this.sharedKeyCredential = null;
             }
         } catch (MalformedURLException ex) {
-            throw new IllegalArgumentException("The Azure Storage File Service endpoint url is malformed.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage File Service endpoint url is malformed."));
         }
 
         return this;
@@ -248,8 +253,8 @@ public class ShareClientBuilder {
         try {
             this.endpoint = new URL(String.format("https://%s.file.core.windows.net", accountName));
         } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(String.format("There is no valid endpoint for the connection string. "
-                                                                 + "Connection String: %s", connectionString));
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format("There is no valid endpoint for"
+                + " the connection string. Connection String: %s", connectionString)));
         }
     }
 
@@ -271,10 +276,9 @@ public class ShareClientBuilder {
      *
      * @param snapshot Identifier of the snapshot
      * @return the updated ShareClientBuilder object
-     * @throws NullPointerException If {@code snapshot} is {@code null}.
      */
     public ShareClientBuilder snapshot(String snapshot) {
-        this.snapshot = Objects.requireNonNull(snapshot);
+        this.snapshot = snapshot;
         return this;
     }
 

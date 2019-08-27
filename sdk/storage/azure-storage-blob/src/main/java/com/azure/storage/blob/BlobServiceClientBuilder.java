@@ -14,9 +14,12 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
+import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -50,13 +53,16 @@ import java.util.Objects;
  * Once all the configurations are set on this builder, call {@code .buildClient()} to create a
  * {@link BlobServiceClient} or {@code .buildAsyncClient()} to create a {@link BlobServiceAsyncClient}.
  */
+@ServiceClientBuilder(serviceClients = {BlobServiceClient.class, BlobServiceAsyncClient.class})
 public final class BlobServiceClientBuilder {
     private static final String ACCOUNT_NAME = "accountname";
     private static final String ACCOUNT_KEY = "accountkey";
     private static final String ENDPOINT_PROTOCOL = "defaultendpointsprotocol";
     private static final String ENDPOINT_SUFFIX = "endpointsuffix";
 
-    private final List<HttpPipelinePolicy> policies;
+    private final ClientLogger logger = new ClientLogger(BlobServiceClientBuilder.class);
+
+    private final List<HttpPipelinePolicy> additionalPolicies;
 
     private String endpoint;
     private SharedKeyCredential sharedKeyCredential;
@@ -74,7 +80,7 @@ public final class BlobServiceClientBuilder {
     public BlobServiceClientBuilder() {
         retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
-        policies = new ArrayList<>();
+        additionalPolicies = new ArrayList<>();
     }
 
     /**
@@ -107,10 +113,12 @@ public final class BlobServiceClientBuilder {
         } else if (sasTokenCredential != null) {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         }
-
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RequestRetryPolicy(retryOptions));
 
-        policies.addAll(this.policies);
+        policies.addAll(this.additionalPolicies);
+
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(logLevel));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -135,13 +143,13 @@ public final class BlobServiceClientBuilder {
             URL url = new URL(endpoint);
             this.endpoint = url.getProtocol() + "://" + url.getAuthority();
 
-            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(URLParser.parse(url).sasQueryParameters());
+            this.sasTokenCredential = SASTokenCredential.fromSASTokenString(URLParser.parse(url).sasQueryParameters().encode());
             if (this.sasTokenCredential != null) {
                 this.tokenCredential = null;
                 this.sharedKeyCredential = null;
             }
         } catch (MalformedURLException ex) {
-            throw new IllegalArgumentException("The Azure Storage endpoint url is malformed.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage endpoint url is malformed."));
         }
 
         return this;
@@ -222,7 +230,7 @@ public final class BlobServiceClientBuilder {
         String endpointSuffix = connectionKVPs.get(ENDPOINT_SUFFIX);
 
         if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
-            throw new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'."));
         }
 
         if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
@@ -252,7 +260,7 @@ public final class BlobServiceClientBuilder {
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public BlobServiceClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.policies.add(Objects.requireNonNull(pipelinePolicy));
+        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy));
         return this;
     }
 

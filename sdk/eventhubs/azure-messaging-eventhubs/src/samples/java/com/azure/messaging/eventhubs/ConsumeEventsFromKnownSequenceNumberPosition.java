@@ -26,8 +26,8 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
      * @param args Unused arguments to the program.
      * @throws InterruptedException The countdown latch was interrupted while waiting for this sample to
      *         complete.
-     * @throws IOException If we were unable to dispose of the {@link EventHubAsyncClient}, {@link EventHubConsumer},
-     *         or the {@link EventHubProducer}
+     * @throws IOException If we were unable to dispose of the {@link EventHubAsyncClient}, {@link EventHubAsyncConsumer},
+     *         or the {@link EventHubAsyncProducer}
      */
     public static void main(String[] args) throws InterruptedException, IOException {
         Semaphore semaphore = new Semaphore(0);
@@ -74,7 +74,7 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
         // The "$Default" consumer group is created by default. This value can be found by going to the Event Hub
         // instance you are connecting to, and selecting the "Consumer groups" page. EventPosition.latest() tells the
         // service we only want events that are sent to the partition after we begin listening.
-        EventHubConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
+        EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
             lastEnqueuedSequencePartitionID, EventPosition.fromSequenceNumber(lastEnqueuedSequenceNumber, false));
 
         // We start receiving any events that come from `firstPartition`, print out the contents, and decrement the
@@ -93,7 +93,7 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
         // Because the consumer is only listening to new events, we need to send some events to `firstPartition`.
         // This creates a producer that only sends events to `lastEnqueuedSequencePartitionID`.
         EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(lastEnqueuedSequencePartitionID);
-        EventHubProducer producer = client.createProducer(producerOptions);
+        EventHubAsyncProducer producer = client.createProducer(producerOptions);
 
         producer.send(new EventData("Hello world!".getBytes(UTF_8))).block(OPERATION_TIMEOUT);
         // Acquiring the semaphore so that this sample does not end before all events are fetched.

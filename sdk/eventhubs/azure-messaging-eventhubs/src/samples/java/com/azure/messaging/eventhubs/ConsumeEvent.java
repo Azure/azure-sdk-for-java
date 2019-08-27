@@ -27,8 +27,8 @@ public class ConsumeEvent {
      * @param args Unused arguments to the program.
      * @throws InterruptedException The countdown latch was interrupted while waiting for this sample to
      *         complete.
-     * @throws IOException If we were unable to dispose of the {@link EventHubAsyncClient}, {@link EventHubConsumer},
-     *         or the {@link EventHubProducer}
+     * @throws IOException If we were unable to dispose of the {@link EventHubAsyncClient}, {@link EventHubAsyncConsumer},
+     *         or the {@link EventHubAsyncProducer}
      */
     public static void main(String[] args) throws InterruptedException, IOException {
         CountDownLatch countDownLatch = new CountDownLatch(NUMBER_OF_EVENTS);
@@ -51,11 +51,16 @@ public class ConsumeEvent {
         // TimeoutException is thrown.
         String firstPartition = client.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
 
+        // This shouldn't happen, but if we are unable to get the partitions within the timeout period.
+        if (firstPartition == null) {
+            firstPartition = "0";
+        }
+
         // Create a consumer.
         // The "$Default" consumer group is created by default. This value can be found by going to the Event Hub
         // instance you are connecting to, and selecting the "Consumer groups" page. EventPosition.latest() tells the
         // service we only want events that are sent to the partition after we begin listening.
-        EventHubConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
+        EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
             firstPartition, EventPosition.latest());
 
         // We start receiving any events that come from `firstPartition`, print out the contents, and decrement the
@@ -71,7 +76,7 @@ public class ConsumeEvent {
         // Because the consumer is only listening to new events, we need to send some events to `firstPartition`.
         // This creates a producer that only sends events to `firstPartition`.
         EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(firstPartition);
-        EventHubProducer producer = client.createProducer(producerOptions);
+        EventHubAsyncProducer producer = client.createProducer(producerOptions);
 
         // We create 10 events to send to the service and block until the send has completed.
         Flux.range(0, NUMBER_OF_EVENTS).flatMap(number -> {

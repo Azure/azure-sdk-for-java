@@ -4,16 +4,14 @@
 package com.azure.core.util.polling;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollResponse.OperationStatus;
 import reactor.core.Disposable;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.function.Consumer;
 import java.util.function.Function;
-
-import com.azure.core.util.polling.PollResponse.OperationStatus;
 
 /**
  * This class offers API that simplifies the task of executing long-running operations against Azure service.
@@ -51,7 +49,7 @@ import com.azure.core.util.polling.PollResponse.OperationStatus;
  * {@codesnippet com.azure.core.util.polling.poller.block}
  *
  * <p><strong>Disable auto polling and polling manually</strong></p>
- * {@codesnippet com.azure.core.util.polling.poller.poll}
+ * {@codesnippet com.azure.core.util.polling.poller.poll-manually}
  *
  * @param <T> Type of poll response value
  * @see PollResponse
@@ -69,7 +67,7 @@ public class Poller<T> {
     /*
      * poll interval before next auto poll. This value will be used if the PollResponse does not include retryAfter from the service.
      */
-    private Duration pollInterval;
+    private final Duration pollInterval;
 
     /*
      * This will save last poll response.
@@ -79,7 +77,7 @@ public class Poller<T> {
     /*
      * This will be called when cancel operation is triggered.
      */
-    private Consumer<Poller<T>> cancelOperation;
+    private final Consumer<Poller<T>> cancelOperation;
 
     /*
      * Indicate to poll automatically or not when poller is created.
@@ -92,7 +90,7 @@ public class Poller<T> {
      * This could be shared among many subscriber. One of the subscriber will be this poller itself.
      * Once subscribed, this Flux will continue to poll for status until poll operation is done/complete.
      */
-    private Flux<PollResponse<T>> fluxHandle;
+    private final Flux<PollResponse<T>> fluxHandle;
 
     /*
      * Since constructor create a subscriber and start auto polling.
@@ -118,26 +116,7 @@ public class Poller<T> {
      * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if {@code pollInterval} or {@code pollOperation} are {@code null}
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation) {
-        if (pollInterval == null || pollInterval.toNanos() <= 0) {
-            logger.logAndThrow(new IllegalArgumentException("Null, negative or zero value for poll interval is not allowed."));
-        }
-        if (pollOperation == null) {
-            logger.logAndThrow(new IllegalArgumentException("Null value for poll operation is not allowed."));
-        }
-
-        this.pollInterval = pollInterval;
-        this.pollOperation = pollOperation;
-        this.pollResponse = new PollResponse<>(OperationStatus.NOT_STARTED, null);
-
-        this.fluxHandle = asyncPollRequestWithDelay()
-            .flux()
-            .repeat()
-            .takeUntil(pollResponse -> hasCompleted())
-            .share();
-
-        // auto polling start here
-        this.fluxDisposable = fluxHandle.subscribe();
-        this.autoPollingEnabled = true;
+        this(pollInterval, pollOperation, null);
     }
 
     /**
@@ -156,7 +135,26 @@ public class Poller<T> {
      * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if {@code pollInterval} or {@code pollOperation} are {@code null}
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Consumer<Poller<T>> cancelOperation) {
-        this(pollInterval, pollOperation);
+        if (pollInterval == null || pollInterval.toNanos() <= 0) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("Null, negative or zero value for poll interval is not allowed."));
+        }
+        if (pollOperation == null) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("Null value for poll operation is not allowed."));
+        }
+
+        this.pollInterval = pollInterval;
+        this.pollOperation = pollOperation;
+        this.pollResponse = new PollResponse<>(OperationStatus.NOT_STARTED, null);
+
+        this.fluxHandle = asyncPollRequestWithDelay()
+            .flux()
+            .repeat()
+            .takeUntil(pollResponse -> hasCompleted())
+            .share();
+
+        // auto polling start here
+        this.fluxDisposable = fluxHandle.subscribe();
+        this.autoPollingEnabled = true;
         this.cancelOperation = cancelOperation;
     }
 
@@ -170,7 +168,7 @@ public class Poller<T> {
      */
     public void cancelOperation() throws UnsupportedOperationException {
         if (this.cancelOperation == null) {
-            throw new UnsupportedOperationException("Cancel operation is not supported on this service/resource.");
+            throw logger.logExceptionAsError(new UnsupportedOperationException("Cancel operation is not supported on this service/resource."));
         }
 
         // We can not cancel an operation if it was never started
@@ -201,7 +199,7 @@ public class Poller<T> {
      *
      * <p><strong>Manual Polling</strong></p>
      * <p>
-     * {@codesnippet com.azure.core.util.polling.poller.poll.indepth}
+     * {@codesnippet com.azure.core.util.polling.poller.poll-indepth}
      *
      * @return a Mono of {@link PollResponse} This will call poll operation once. The {@link Mono} returned here could be subscribed
      * for receiving {@link PollResponse} in async manner.
@@ -247,10 +245,10 @@ public class Poller<T> {
      */
     public PollResponse<T> blockUntil(OperationStatus statusToBlockFor, Duration timeout) {
         if (statusToBlockFor == null) {
-            logger.logAndThrow(new IllegalArgumentException("Null value for status is not allowed."));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("Null value for status is not allowed."));
         }
         if (timeout != null && timeout.toNanos() <= 0) {
-            logger.logAndThrow(new IllegalArgumentException("Negative or zero value for timeout is not allowed."));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("Negative or zero value for timeout is not allowed."));
         }
         if (!isAutoPollingEnabled()) {
             setAutoPollingEnabled(true);

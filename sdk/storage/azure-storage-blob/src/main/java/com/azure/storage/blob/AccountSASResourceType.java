@@ -30,8 +30,7 @@ public final class AccountSASResourceType {
      * Creates an {@code AccountSASResourceType} from the specified resource types string. This method will throw an
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid resource type.
      *
-     * @param resourceTypesString
-     *         A {@code String} which represents the {@code AccountSASResourceTypes}.
+     * @param resourceTypesString A {@code String} which represents the {@code AccountSASResourceTypes}.
      *
      * @return A {@code AccountSASResourceType} generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code resourceTypesString} contains a character other than s, c, or o.

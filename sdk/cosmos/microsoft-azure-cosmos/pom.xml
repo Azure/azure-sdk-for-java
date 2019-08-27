@@ -7,7 +7,7 @@ Licensed under the MIT License.
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-cosmos-parent</artifactId>
-    <version>3.0.1</version>
+    <version>3.1.0</version>
   </parent>
 
   <groupId>com.microsoft.azure</groupId>
@@ -114,6 +114,18 @@ Licensed under the MIT License.
     </dependency>
 
     <dependency>
+      <groupId>io.dropwizard.metrics</groupId>
+      <artifactId>metrics-core</artifactId>
+      <version>${metrics.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-core</artifactId>
+      <version>${micrometer.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
       <scope>test</scope>
@@ -130,15 +142,11 @@ Licensed under the MIT License.
     </dependency>
 
     <dependency>
-      <groupId>io.dropwizard.metrics</groupId>
-      <artifactId>metrics-core</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <scope>test</scope>
     </dependency>
+
   </dependencies>
 
   <build>

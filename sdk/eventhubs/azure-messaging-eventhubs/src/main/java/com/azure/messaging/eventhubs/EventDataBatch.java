@@ -9,7 +9,6 @@ import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpConstants;
 import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
-import com.azure.messaging.eventhubs.models.BatchOptions;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -18,6 +17,7 @@ import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 
+import java.nio.BufferOverflowException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,12 +25,13 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * A class for aggregating EventData into a single, size-limited, batch that will be treated as a single message when
- * sent to the Azure Event Hubs service.
+ * A class for aggregating EventData into a single, size-limited, batch. It is treated as a single message when sent to
+ * the Azure Event Hubs service.
  *
  * @see EventHubProducer#createBatch()
- * @see EventHubProducer#createBatch(BatchOptions)
- * @see EventHubProducer See EventHubProducer for examples.
+ * @see EventHubAsyncProducer#createBatch()
+ * @see EventHubProducer See EventHubProducer for examples using the synchronous producer.
+ * @see EventHubAsyncProducer See EventHubAsyncProducer for examples using the asynchronous producer.
  */
 public final class EventDataBatch {
     private final ClientLogger logger = new ClientLogger(EventDataBatch.class);
@@ -81,19 +82,16 @@ public final class EventDataBatch {
      */
     public boolean tryAdd(final EventData eventData) {
         if (eventData == null) {
-            logger.logAndThrow(new IllegalArgumentException("eventData cannot be null"));
-            return false;
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("eventData cannot be null"));
         }
 
         final int size;
         try {
             size = getSize(eventData, events.isEmpty());
-        } catch (java.nio.BufferOverflowException exception) {
-            logger.logAndThrow(new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+        } catch (BufferOverflowException exception) {
+            throw logger.logExceptionAsWarning(new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
                 String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb", maxMessageSize / 1024),
                 contextProvider.getErrorContext()));
-
-            return false;
         }
 
         synchronized (lock) {
@@ -117,7 +115,7 @@ public final class EventDataBatch {
     }
 
     private int getSize(final EventData eventData, final boolean isFirst) {
-        Objects.requireNonNull(eventData);
+        Objects.requireNonNull(eventData, "'eventData' cannot be null.");
 
         final Message amqpMessage = createAmqpMessage(eventData, partitionKey);
         int eventSize = amqpMessage.encode(this.eventBytes, 0, maxMessageSize); // actual encoded bytes size
@@ -196,7 +194,7 @@ public final class EventDataBatch {
                             message.setReplyToGroupId((String) value);
                             break;
                         default:
-                            logger.logAndThrow(new IllegalArgumentException(String.format(Locale.US, "Property is not a recognized reserved property name: %s", key)));
+                            throw logger.logExceptionAsWarning(new IllegalArgumentException(String.format(Locale.US, "Property is not a recognized reserved property name: %s", key)));
                     }
                 } else {
                     final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)

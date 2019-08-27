@@ -31,12 +31,10 @@ public class ExitOptions {
     /**
      * An action that the Batch service performs on Tasks that depend on this
      * Task.
-     * The default is 'satisfy' for exit code 0, and 'block' for all other exit
-     * conditions. If the Job's usesTaskDependencies property is set to false,
-     * then specifying the dependencyAction property returns an error and the
-     * add Task request fails with an invalid property value error; if you are
-     * calling the REST API directly, the HTTP status code is 400  (Bad
-     * Request). Possible values include: 'satisfy', 'block'.
+     * Possible values are 'satisfy' (allowing dependent tasks to progress) and
+     * 'block' (dependent tasks continue to wait). Batch does not yet support
+     * cancellation of dependent tasks. Possible values include: 'satisfy',
+     * 'block'.
      */
     @JsonProperty(value = "dependencyAction")
     private DependencyAction dependencyAction;
@@ -62,7 +60,7 @@ public class ExitOptions {
     }
 
     /**
-     * Get the default is 'satisfy' for exit code 0, and 'block' for all other exit conditions. If the Job's usesTaskDependencies property is set to false, then specifying the dependencyAction property returns an error and the add Task request fails with an invalid property value error; if you are calling the REST API directly, the HTTP status code is 400  (Bad Request). Possible values include: 'satisfy', 'block'.
+     * Get possible values are 'satisfy' (allowing dependent tasks to progress) and 'block' (dependent tasks continue to wait). Batch does not yet support cancellation of dependent tasks. Possible values include: 'satisfy', 'block'.
      *
      * @return the dependencyAction value
      */
@@ -71,7 +69,7 @@ public class ExitOptions {
     }
 
     /**
-     * Set the default is 'satisfy' for exit code 0, and 'block' for all other exit conditions. If the Job's usesTaskDependencies property is set to false, then specifying the dependencyAction property returns an error and the add Task request fails with an invalid property value error; if you are calling the REST API directly, the HTTP status code is 400  (Bad Request). Possible values include: 'satisfy', 'block'.
+     * Set possible values are 'satisfy' (allowing dependent tasks to progress) and 'block' (dependent tasks continue to wait). Batch does not yet support cancellation of dependent tasks. Possible values include: 'satisfy', 'block'.
      *
      * @param dependencyAction the dependencyAction value to set
      * @return the ExitOptions object itself.

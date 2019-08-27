@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Properties for the task that validates connection to Azure Database for
  * MySQL and target server requirements.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType", defaultImpl = ConnectToTargetAzureDbForMySqlTaskProperties.class)
 @JsonTypeName("ConnectToTarget.AzureDbForMySql")
 public class ConnectToTargetAzureDbForMySqlTaskProperties extends ProjectTaskProperties {
     /**

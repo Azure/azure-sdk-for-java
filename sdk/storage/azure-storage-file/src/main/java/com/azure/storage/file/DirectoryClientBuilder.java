@@ -13,9 +13,12 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
@@ -69,8 +72,11 @@ import java.util.Objects;
  * @see SASTokenCredential
  * @see SharedKeyCredential
  */
+@ServiceClientBuilder(serviceClients = {DirectoryClient.class, DirectoryAsyncClient.class})
 public class DirectoryClientBuilder {
     private static final String ACCOUNT_NAME = "accountname";
+
+    private final ClientLogger logger = new ClientLogger(DirectoryClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
     private final RetryPolicy retryPolicy;
 
@@ -120,7 +126,7 @@ public class DirectoryClientBuilder {
         }
 
         if (sasTokenCredential == null && sharedKeyCredential == null) {
-            throw new IllegalArgumentException("Credentials are required for authorization");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Credentials are required for authorization"));
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -176,7 +182,7 @@ public class DirectoryClientBuilder {
      * <p>The first path segment, if the endpoint contains path segments, will be assumed to be the name of the share
      * that the client will interact with. Rest of the path segments should be the path of the directory. </p>
      *
-     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQuery(String)} in an
+     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQueryParameters(Map)} in an
      * attempt to generate a {@link SASTokenCredential} to authenticate requests sent to the service.</p>
      *
      * @param endpoint The URL of the Azure Storage File instance to send service requests to and receive responses from.
@@ -194,12 +200,12 @@ public class DirectoryClientBuilder {
             this.directoryPath = length >= 3 ? pathSegments[2] : this.directoryPath;
 
             // Attempt to get the SAS token from the URL passed
-            this.sasTokenCredential = SASTokenCredential.fromQuery(fullURL.getQuery());
+            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
             if (this.sasTokenCredential != null) {
                 this.sharedKeyCredential = null;
             }
         } catch (MalformedURLException ex) {
-            throw new IllegalArgumentException("The Azure Storage Directory endpoint url is malformed.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage Directory endpoint url is malformed."));
         }
 
         return this;
@@ -256,8 +262,8 @@ public class DirectoryClientBuilder {
         try {
             this.endpoint = new URL(String.format("https://%s.file.core.windows.net", accountName));
         } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(String.format("There is no valid endpoint for the connection string. "
-                                                                 + "Connection String: %s", connectionString));
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format("There is no valid endpoint "
+                + "for the connection string. Connection String: %s", connectionString)));
         }
     }
 

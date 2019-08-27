@@ -1,0 +1,77 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsdeletemessageinvalidargs181211d12eef",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "364f3c7b-9003-011e-429f-58acce000000",
+      "Date" : "Thu, 22 Aug 2019 04:07:12 GMT"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsdeletemessageinvalidargs181211d12eef/messages",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "364f3c7f-9003-011e-459f-58acce000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>19995db2-cb55-434f-9f92-e142aedb3200</MessageId><InsertionTime>Thu, 22 Aug 2019 04:07:12 GMT</InsertionTime><ExpirationTime>Thu, 29 Aug 2019 04:07:12 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAA1BeDE59Y1QE=</PopReceipt><TimeNextVisible>Thu, 22 Aug 2019 04:07:12 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Thu, 22 Aug 2019 04:07:12 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsdeletemessageinvalidargs181211d12eef/messages?numofmessages=1&visibilitytimeout=30",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "364f3c86-9003-011e-4c9f-58acce000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>19995db2-cb55-434f-9f92-e142aedb3200</MessageId><InsertionTime>Thu, 22 Aug 2019 04:07:12 GMT</InsertionTime><ExpirationTime>Thu, 29 Aug 2019 04:07:12 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAyV1sJZ9Y1QE=</PopReceipt><TimeNextVisible>Thu, 22 Aug 2019 04:07:42 GMT</TimeNextVisible><DequeueCount>1</DequeueCount><MessageText>test message</MessageText></QueueMessage></QueueMessagesList>",
+      "Date" : "Thu, 22 Aug 2019 04:07:12 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsdeletemessageinvalidargs181211d12eef/messages/19995db2-cb55-434f-9f92-e142aedb3200Random?popreceipt=AgAAAAMAAAAAAAAAyV1sJZ9Y1QE%3d",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "MessageNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "221",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "364f3c8a-9003-011e-509f-58acce000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>MessageNotFound</Code><Message>The specified message does not exist.\nRequestId:364f3c8a-9003-011e-509f-58acce000000\nTime:2019-08-22T04:07:12.9740745Z</Message></Error>",
+      "Date" : "Thu, 22 Aug 2019 04:07:12 GMT",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "queueaysncapitestsdeletemessageinvalidargs181211d12eef" ]
+}

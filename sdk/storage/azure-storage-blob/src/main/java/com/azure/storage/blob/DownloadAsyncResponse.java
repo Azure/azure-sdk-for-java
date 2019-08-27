@@ -8,17 +8,18 @@ import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
-import io.netty.buffer.ByteBuf;
+import com.azure.storage.common.Utility;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.function.Function;
 
 /**
- * {@code DownloadAsyncResponse} wraps the protocol-layer response from {@link BlobAsyncClient#download(BlobRange,
- * ReliableDownloadOptions, BlobAccessConditions, boolean)} to automatically retry failed reads from the body as
+ * {@code DownloadAsyncResponse} wraps the protocol-layer response from {@link BlobAsyncClient#download(BlobRange, BlobAccessConditions, boolean)}
+ * to automatically retry failed reads from the body as
  * appropriate. If the download is interrupted, the {@code DownloadAsyncResponse} will make a request to resume the download
  * from where it left off, allowing the user to consume the data as one continuous stream, for any interruptions are
  * hidden. The retry behavior is defined by the options passed to the {@link #body(ReliableDownloadOptions)}. The
@@ -33,13 +34,13 @@ import java.util.function.Function;
 public final class DownloadAsyncResponse {
     private final HTTPGetterInfo info;
 
-    private final ResponseBase<BlobDownloadHeaders, Flux<ByteBuf>> rawResponse;
+    private final ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> rawResponse;
 
     private final Function<HTTPGetterInfo, Mono<DownloadAsyncResponse>> getter;
 
 
     // The constructor is package-private because customers should not be creating their own responses.
-    DownloadAsyncResponse(ResponseBase<BlobDownloadHeaders, Flux<ByteBuf>> response,
+    DownloadAsyncResponse(ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> response,
                           HTTPGetterInfo info, Function<HTTPGetterInfo, Mono<DownloadAsyncResponse>> getter) {
         Utility.assertNotNull("getter", getter);
         Utility.assertNotNull("info", info);
@@ -55,9 +56,9 @@ public final class DownloadAsyncResponse {
      * will make additional requests to reestablish a connection and continue reading.
      *
      * @param options {@link ReliableDownloadOptions}
-     * @return A {@link Flux} which emits the data as {@link ByteBuf ByteBufs}
+     * @return A {@link Flux} which emits the data as {@link ByteBuffer ByteBuffers}
      */
-    public Flux<ByteBuf> body(ReliableDownloadOptions options) {
+    public Flux<ByteBuffer> body(ReliableDownloadOptions options) {
         ReliableDownloadOptions optionsReal = options == null ? new ReliableDownloadOptions() : options;
         if (optionsReal.maxRetryRequests() == 0) {
             return this.rawResponse.value();
@@ -71,7 +72,7 @@ public final class DownloadAsyncResponse {
         return this.applyReliableDownload(this.rawResponse.value(), -1, optionsReal);
     }
 
-    private Flux<ByteBuf> tryContinueFlux(Throwable t, int retryCount, ReliableDownloadOptions options) {
+    private Flux<ByteBuffer> tryContinueFlux(Throwable t, int retryCount, ReliableDownloadOptions options) {
         // If all the errors are exhausted, return this error to the user.
         if (retryCount > options.maxRetryRequests() || !(t instanceof IOException)) {
             return Flux.error(t);
@@ -95,15 +96,15 @@ public final class DownloadAsyncResponse {
         }
     }
 
-    private Flux<ByteBuf> applyReliableDownload(Flux<ByteBuf> data, int currentRetryCount, ReliableDownloadOptions options) {
+    private Flux<ByteBuffer> applyReliableDownload(Flux<ByteBuffer> data, int currentRetryCount, ReliableDownloadOptions options) {
         return data.doOnNext(buffer -> {
             /*
             Update how much data we have received in case we need to retry and propagate to the user the data we
             have received.
              */
-            this.info.offset(this.info.offset() + buffer.readableBytes()); // was `remaining()` in Rx world
+            this.info.offset(this.info.offset() + buffer.remaining());
             if (this.info.count() != null) {
-                this.info.count(this.info.count() - buffer.readableBytes()); // was `remaining()` in Rx world
+                this.info.count(this.info.count() - buffer.remaining());
             }
         }).onErrorResume(t2 -> {
             // Increment the retry count and try again with the new exception.
@@ -135,7 +136,7 @@ public final class DownloadAsyncResponse {
     /**
      * @return the raw response
      */
-    public ResponseBase<BlobDownloadHeaders, Flux<ByteBuf>> rawResponse() {
+    public ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> rawResponse() {
         return this.rawResponse;
     }
 }

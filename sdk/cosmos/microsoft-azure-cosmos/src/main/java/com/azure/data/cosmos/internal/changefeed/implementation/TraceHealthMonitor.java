@@ -17,7 +17,7 @@ class TraceHealthMonitor implements HealthMonitor {
     public Mono<Void> inspect(HealthMonitoringRecord record) {
         return Mono.fromRunnable(() -> {
             if (record.getSeverity() == HealthMonitoringRecord.HealthSeverity.ERROR) {
-                logger.error(String.format("Unhealthiness detected in the operation %s for %s.", record.operation.name(), record.lease.getId()), record.throwable);
+                logger.error("Unhealthiness detected in the operation {} for {}.", record.operation.name(), record.lease.getId(), record.throwable);
             }
         });
     }

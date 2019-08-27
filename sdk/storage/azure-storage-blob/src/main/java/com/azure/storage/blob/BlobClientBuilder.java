@@ -14,11 +14,16 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
+import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -62,13 +67,18 @@ import java.util.Objects;
  *     <li>{@link BlobClientBuilder#buildPageBlobAsyncClient()} - {@link PageBlobAsyncClient}</li>
  * </ul>
  */
+@ServiceClientBuilder(serviceClients = {BlobClient.class, BlobAsyncClient.class, AppendBlobClient.class,
+    AppendBlobAsyncClient.class, BlockBlobClient.class, BlockBlobAsyncClient.class, PageBlobClient.class,
+    PageBlobAsyncClient.class})
 public final class BlobClientBuilder {
     private static final String ACCOUNT_NAME = "accountname";
     private static final String ACCOUNT_KEY = "accountkey";
     private static final String ENDPOINT_PROTOCOL = "defaultendpointsprotocol";
     private static final String ENDPOINT_SUFFIX = "endpointsuffix";
 
-    private final List<HttpPipelinePolicy> policies;
+    private final ClientLogger logger = new ClientLogger(BlobClientBuilder.class);
+
+    private final List<HttpPipelinePolicy> additionalPolicies;
 
     private String endpoint;
     private String containerName;
@@ -88,10 +98,10 @@ public final class BlobClientBuilder {
     public BlobClientBuilder() {
         retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
-        policies = new ArrayList<>();
+        additionalPolicies = new ArrayList<>();
     }
 
-    private AzureBlobStorageImpl buildImpl() {
+    private AzureBlobStorageImpl constructImpl() {
         Objects.requireNonNull(endpoint);
         Objects.requireNonNull(containerName);
         Objects.requireNonNull(blobName);
@@ -113,10 +123,11 @@ public final class BlobClientBuilder {
         } else if (sasTokenCredential != null) {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         }
-
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RequestRetryPolicy(retryOptions));
 
-        policies.addAll(this.policies);
+        policies.addAll(this.additionalPolicies);
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(logLevel));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -151,7 +162,7 @@ public final class BlobClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlobAsyncClient buildBlobAsyncClient() {
-        return new BlobAsyncClient(buildImpl(), snapshot);
+        return new BlobAsyncClient(constructImpl(), snapshot);
     }
 
     /**
@@ -175,7 +186,7 @@ public final class BlobClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public AppendBlobAsyncClient buildAppendBlobAsyncClient() {
-        return new AppendBlobAsyncClient(buildImpl(), snapshot);
+        return new AppendBlobAsyncClient(constructImpl(), snapshot);
     }
 
     /**
@@ -194,7 +205,7 @@ public final class BlobClientBuilder {
     /**
      * Creates a {@link BlockBlobAsyncClient} based on options set in the Builder. BlockBlobAsyncClients are used to
      * perform generic upload operations such as {@link BlockBlobAsyncClient#uploadFromFile(String) upload from file}
-     * and block blob specific operations such as {@link BlockBlobAsyncClient#stageBlock(String, Flux, long) stage block}
+     * and block blob specific operations such as {@link BlockBlobAsyncClient#stageBlockWithResponse(String, Flux, long, LeaseAccessConditions) stage block}
      * and {@link BlockBlobAsyncClient#commitBlockList(List) commit block list}, only use this when the blob is known to
      * be a block blob.
      *
@@ -202,7 +213,7 @@ public final class BlobClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlockBlobAsyncClient buildBlockBlobAsyncClient() {
-        return new BlockBlobAsyncClient(buildImpl(), snapshot);
+        return new BlockBlobAsyncClient(constructImpl(), snapshot);
     }
 
     /**
@@ -227,7 +238,7 @@ public final class BlobClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public PageBlobAsyncClient buildPageBlobAsyncClient() {
-        return new PageBlobAsyncClient(buildImpl(), snapshot);
+        return new PageBlobAsyncClient(constructImpl(), snapshot);
     }
 
     /**
@@ -246,13 +257,13 @@ public final class BlobClientBuilder {
             this.blobName = parts.blobName();
             this.snapshot = parts.snapshot();
 
-            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(parts.sasQueryParameters());
+            this.sasTokenCredential = SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode());
             if (this.sasTokenCredential != null) {
                 this.tokenCredential = null;
                 this.sharedKeyCredential = null;
             }
         } catch (MalformedURLException ex) {
-            throw new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed."));
         }
 
         return this;
@@ -362,7 +373,7 @@ public final class BlobClientBuilder {
         String endpointSuffix = connectionKVPs.get(ENDPOINT_SUFFIX);
 
         if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
-            throw new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'."));
         }
 
         if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
@@ -392,7 +403,7 @@ public final class BlobClientBuilder {
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}
      */
     public BlobClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.policies.add(Objects.requireNonNull(pipelinePolicy));
+        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy));
         return this;
     }
 

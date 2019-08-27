@@ -22,6 +22,11 @@ import com.microsoft.azure.management.network.v2019_06_01.implementation.Private
  */
 public interface PrivateEndpointConnection extends HasInner<PrivateEndpointConnectionInner>, Indexable, Updatable<PrivateEndpointConnection.Update>, HasManager<NetworkManager> {
     /**
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * @return the id value.
      */
     String id();
@@ -42,9 +47,19 @@ public interface PrivateEndpointConnection extends HasInner<PrivateEndpointConne
     PrivateLinkServiceConnectionState privateLinkServiceConnectionState();
 
     /**
+     * @return the provisioningState value.
+     */
+    ProvisioningState provisioningState();
+
+    /**
+     * @return the type value.
+     */
+    String type();
+
+    /**
      * The template for a PrivateEndpointConnection update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<PrivateEndpointConnection>, UpdateStages.WithId, UpdateStages.WithName, UpdateStages.WithPrivateEndpoint, UpdateStages.WithPrivateLinkServiceConnectionState {
+    interface Update extends Appliable<PrivateEndpointConnection>, UpdateStages.WithId, UpdateStages.WithName, UpdateStages.WithPrivateEndpoint, UpdateStages.WithPrivateLinkServiceConnectionState, UpdateStages.WithProvisioningState {
     }
 
     /**
@@ -97,6 +112,18 @@ public interface PrivateEndpointConnection extends HasInner<PrivateEndpointConne
              * @return the next update stage
              */
             Update withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState);
+        }
+
+        /**
+         * The stage of the privateendpointconnection update allowing to specify ProvisioningState.
+         */
+        interface WithProvisioningState {
+            /**
+             * Specifies provisioningState.
+             * @param provisioningState The provisioning state of the private endpoint connection. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+             * @return the next update stage
+             */
+            Update withProvisioningState(ProvisioningState provisioningState);
         }
 
     }

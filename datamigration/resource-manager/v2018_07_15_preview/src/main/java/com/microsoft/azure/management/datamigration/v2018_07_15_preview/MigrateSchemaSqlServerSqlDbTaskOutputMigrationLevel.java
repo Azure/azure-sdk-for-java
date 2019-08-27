@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The MigrateSchemaSqlServerSqlDbTaskOutputMigrationLevel model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = MigrateSchemaSqlServerSqlDbTaskOutputMigrationLevel.class)
 @JsonTypeName("MigrationLevelOutput")
 public class MigrateSchemaSqlServerSqlDbTaskOutputMigrationLevel extends MigrateSchemaSqlServerSqlDbTaskOutput {
     /**

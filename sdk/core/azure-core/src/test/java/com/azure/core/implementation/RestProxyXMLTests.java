@@ -116,7 +116,7 @@ public class RestProxyXMLTests {
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             if (request.url().toString().endsWith("SetContainerACLs")) {
-                return FluxUtil.collectBytesInByteBufStream(request.body(), false)
+                return FluxUtil.collectBytesInByteBufferStream(request.body())
                         .map(bytes -> {
                             receivedBytes = bytes;
                             return new MockHttpResponse(request, 200);

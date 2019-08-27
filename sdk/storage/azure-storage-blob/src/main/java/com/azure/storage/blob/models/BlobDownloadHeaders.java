@@ -197,6 +197,13 @@ public final class BlobDownloadHeaders {
     private LeaseStatusType leaseStatus;
 
     /*
+     * If a client request id header is sent in the request, this header will
+     * be present in the response with the same value.
+     */
+    @JsonProperty(value = "x-ms-client-request-id")
+    private String clientRequestId;
+
+    /*
      * This header uniquely identifies the request that was made and can be
      * used for troubleshooting the request.
      */
@@ -257,6 +264,16 @@ public final class BlobDownloadHeaders {
      */
     @JsonProperty(value = "x-ms-blob-content-md5")
     private byte[] blobContentMD5;
+
+    /*
+     * If the request is to read a specified range and the
+     * x-ms-range-get-content-crc64 is set to true, then the request returns a
+     * crc64 for the range, as long as the range size is less than or equal to
+     * 4 MB. If both x-ms-range-get-content-crc64 & x-ms-range-get-content-md5
+     * is specified in the same request, it will fail with 400(Bad Request)
+     */
+    @JsonProperty(value = "x-ms-content-crc64")
+    private byte[] contentCrc64;
 
     /*
      * The errorCode property.
@@ -825,6 +842,30 @@ public final class BlobDownloadHeaders {
     }
 
     /**
+     * Get the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
+     *
+     * @return the clientRequestId value.
+     */
+    public String clientRequestId() {
+        return this.clientRequestId;
+    }
+
+    /**
+     * Set the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
+     *
+     * @param clientRequestId the clientRequestId value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders clientRequestId(String clientRequestId) {
+        this.clientRequestId = clientRequestId;
+        return this;
+    }
+
+    /**
      * Get the requestId property: This header uniquely identifies the request
      * that was made and can be used for troubleshooting the request.
      *
@@ -1020,6 +1061,36 @@ public final class BlobDownloadHeaders {
      */
     public BlobDownloadHeaders blobContentMD5(byte[] blobContentMD5) {
         this.blobContentMD5 = ImplUtils.clone(blobContentMD5);
+        return this;
+    }
+
+    /**
+     * Get the contentCrc64 property: If the request is to read a specified
+     * range and the x-ms-range-get-content-crc64 is set to true, then the
+     * request returns a crc64 for the range, as long as the range size is less
+     * than or equal to 4 MB. If both x-ms-range-get-content-crc64 &amp;
+     * x-ms-range-get-content-md5 is specified in the same request, it will
+     * fail with 400(Bad Request).
+     *
+     * @return the contentCrc64 value.
+     */
+    public byte[] contentCrc64() {
+        return ImplUtils.clone(this.contentCrc64);
+    }
+
+    /**
+     * Set the contentCrc64 property: If the request is to read a specified
+     * range and the x-ms-range-get-content-crc64 is set to true, then the
+     * request returns a crc64 for the range, as long as the range size is less
+     * than or equal to 4 MB. If both x-ms-range-get-content-crc64 &amp;
+     * x-ms-range-get-content-md5 is specified in the same request, it will
+     * fail with 400(Bad Request).
+     *
+     * @param contentCrc64 the contentCrc64 value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders contentCrc64(byte[] contentCrc64) {
+        this.contentCrc64 = ImplUtils.clone(contentCrc64);
         return this;
     }
 

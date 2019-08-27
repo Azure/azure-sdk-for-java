@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network.v2019_06_01;
 
+import com.microsoft.azure.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -56,18 +57,18 @@ public class ApplicationGatewayOnDemandProbe {
     private ApplicationGatewayProbeHealthResponseMatch match;
 
     /**
-     * Name of backend pool of application gateway to which probe request will
-     * be sent.
+     * Reference of backend pool of application gateway to which probe request
+     * will be sent.
      */
-    @JsonProperty(value = "backendPoolName")
-    private String backendPoolName;
+    @JsonProperty(value = "backendAddressPool")
+    private SubResource backendAddressPool;
 
     /**
-     * Name of backend http setting of application gateway to be used for test
-     * probe.
+     * Reference of backend http setting of application gateway to be used for
+     * test probe.
      */
-    @JsonProperty(value = "backendHttpSettingName")
-    private String backendHttpSettingName;
+    @JsonProperty(value = "backendHttpSettings")
+    private SubResource backendHttpSettings;
 
     /**
      * Get the protocol used for the probe. Possible values include: 'Http', 'Https'.
@@ -190,42 +191,42 @@ public class ApplicationGatewayOnDemandProbe {
     }
 
     /**
-     * Get name of backend pool of application gateway to which probe request will be sent.
+     * Get reference of backend pool of application gateway to which probe request will be sent.
      *
-     * @return the backendPoolName value
+     * @return the backendAddressPool value
      */
-    public String backendPoolName() {
-        return this.backendPoolName;
+    public SubResource backendAddressPool() {
+        return this.backendAddressPool;
     }
 
     /**
-     * Set name of backend pool of application gateway to which probe request will be sent.
+     * Set reference of backend pool of application gateway to which probe request will be sent.
      *
-     * @param backendPoolName the backendPoolName value to set
+     * @param backendAddressPool the backendAddressPool value to set
      * @return the ApplicationGatewayOnDemandProbe object itself.
      */
-    public ApplicationGatewayOnDemandProbe withBackendPoolName(String backendPoolName) {
-        this.backendPoolName = backendPoolName;
+    public ApplicationGatewayOnDemandProbe withBackendAddressPool(SubResource backendAddressPool) {
+        this.backendAddressPool = backendAddressPool;
         return this;
     }
 
     /**
-     * Get name of backend http setting of application gateway to be used for test probe.
+     * Get reference of backend http setting of application gateway to be used for test probe.
      *
-     * @return the backendHttpSettingName value
+     * @return the backendHttpSettings value
      */
-    public String backendHttpSettingName() {
-        return this.backendHttpSettingName;
+    public SubResource backendHttpSettings() {
+        return this.backendHttpSettings;
     }
 
     /**
-     * Set name of backend http setting of application gateway to be used for test probe.
+     * Set reference of backend http setting of application gateway to be used for test probe.
      *
-     * @param backendHttpSettingName the backendHttpSettingName value to set
+     * @param backendHttpSettings the backendHttpSettings value to set
      * @return the ApplicationGatewayOnDemandProbe object itself.
      */
-    public ApplicationGatewayOnDemandProbe withBackendHttpSettingName(String backendHttpSettingName) {
-        this.backendHttpSettingName = backendHttpSettingName;
+    public ApplicationGatewayOnDemandProbe withBackendHttpSettings(SubResource backendHttpSettings) {
+        this.backendHttpSettings = backendHttpSettings;
         return this;
     }
 

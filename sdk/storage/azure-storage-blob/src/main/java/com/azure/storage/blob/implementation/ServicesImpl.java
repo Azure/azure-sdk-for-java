@@ -27,8 +27,11 @@ import com.azure.storage.blob.models.ServicesGetStatisticsResponse;
 import com.azure.storage.blob.models.ServicesGetUserDelegationKeyResponse;
 import com.azure.storage.blob.models.ServicesListContainersSegmentResponse;
 import com.azure.storage.blob.models.ServicesSetPropertiesResponse;
+import com.azure.storage.blob.models.ServicesSubmitBatchResponse;
 import com.azure.storage.blob.models.StorageErrorException;
 import com.azure.storage.blob.models.StorageServiceProperties;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -81,7 +84,7 @@ public final class ServicesImpl {
         @Get("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<ServicesListContainersSegmentResponse> listContainersSegment(@HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("include") ListContainersIncludeType include, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
+        Mono<ServicesListContainersSegmentResponse> listContainersSegment(@HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker1, @QueryParam("maxresults") Integer maxresults, @QueryParam("include") ListContainersIncludeType include, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
 
         @Post("")
         @ExpectedResponses({200})
@@ -92,6 +95,11 @@ public final class ServicesImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ServicesGetAccountInfoResponse> getAccountInfo(@HostParam("url") String url, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+
+        @Get("")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Mono<ServicesSubmitBatchResponse> submitBatch(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") Flux<ByteBuffer> body, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-Type") String multipartContentType, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
     }
 
     /**
@@ -276,5 +284,41 @@ public final class ServicesImpl {
         final String restype = "account";
         final String comp = "properties";
         return service.getAccountInfo(this.client.getUrl(), this.client.getVersion(), restype, comp, context);
+    }
+
+    /**
+     * The Batch operation allows multiple API calls to be embedded into a single HTTP request.
+     *
+     * @param body Initial data.
+     * @param contentLength The length of the request.
+     * @param multipartContentType Required. The value of this header must be multipart/mixed with a batch boundary. Example header value: multipart/mixed; boundary=batch_&lt;GUID&gt;.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ServicesSubmitBatchResponse> submitBatchWithRestResponseAsync(Flux<ByteBuffer> body, long contentLength, String multipartContentType, Context context) {
+        final Integer timeout = null;
+        final String requestId = null;
+        final String comp = "batch";
+        return service.submitBatch(this.client.getUrl(), body, contentLength, multipartContentType, timeout, this.client.getVersion(), requestId, comp, context);
+    }
+
+    /**
+     * The Batch operation allows multiple API calls to be embedded into a single HTTP request.
+     *
+     * @param body Initial data.
+     * @param contentLength The length of the request.
+     * @param multipartContentType Required. The value of this header must be multipart/mixed with a batch boundary. Example header value: multipart/mixed; boundary=batch_&lt;GUID&gt;.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ServicesSubmitBatchResponse> submitBatchWithRestResponseAsync(Flux<ByteBuffer> body, long contentLength, String multipartContentType, Integer timeout, String requestId, Context context) {
+        final String comp = "batch";
+        return service.submitBatch(this.client.getUrl(), body, contentLength, multipartContentType, timeout, this.client.getVersion(), requestId, comp, context);
     }
 }

@@ -175,8 +175,8 @@ public final class BlobProperties {
     private Integer remainingRetentionDays;
 
     /*
-     * Possible values include: 'P4', 'P6', 'P10', 'P20', 'P30', 'P40', 'P50',
-     * 'Hot', 'Cool', 'Archive'
+     * Possible values include: 'P4', 'P6', 'P10', 'P15', 'P20', 'P30', 'P40',
+     * 'P50', 'P60', 'P70', 'P80', 'Hot', 'Cool', 'Archive'
      */
     @JsonProperty(value = "AccessTier")
     private AccessTier accessTier;
@@ -770,7 +770,8 @@ public final class BlobProperties {
 
     /**
      * Get the accessTier property: Possible values include: 'P4', 'P6', 'P10',
-     * 'P20', 'P30', 'P40', 'P50', 'Hot', 'Cool', 'Archive'.
+     * 'P15', 'P20', 'P30', 'P40', 'P50', 'P60', 'P70', 'P80', 'Hot', 'Cool',
+     * 'Archive'.
      *
      * @return the accessTier value.
      */
@@ -780,7 +781,8 @@ public final class BlobProperties {
 
     /**
      * Set the accessTier property: Possible values include: 'P4', 'P6', 'P10',
-     * 'P20', 'P30', 'P40', 'P50', 'Hot', 'Cool', 'Archive'.
+     * 'P15', 'P20', 'P30', 'P40', 'P50', 'P60', 'P70', 'P80', 'Hot', 'Cool',
+     * 'Archive'.
      *
      * @param accessTier the accessTier value to set.
      * @return the BlobProperties object itself.

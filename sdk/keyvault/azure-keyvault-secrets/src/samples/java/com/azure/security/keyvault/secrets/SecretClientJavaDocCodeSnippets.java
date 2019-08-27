@@ -284,6 +284,18 @@ public final class SecretClientJavaDocCodeSnippets {
                 secretWithValue.name(), secretWithValue.value());
         }
         // END: com.azure.security.keyvault.secretclient.listSecrets#Context
+
+        // BEGIN: com.azure.security.keyvault.secretclient.listSecrets.iterableByPage
+        secretClient.listSecrets().iterableByPage().forEach(resp -> {
+            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.headers(),
+                resp.request().url(), resp.statusCode());
+            resp.items().forEach(value -> {
+                Secret secretWithValue  = secretClient.getSecret(value);
+                System.out.printf("Received secret with name %s and value %s",
+                    secretWithValue.name(), secretWithValue.value());
+            });
+        });
+        // END: com.azure.security.keyvault.secretclient.listSecrets.iterableByPage
     }
 
     /**
@@ -302,6 +314,16 @@ public final class SecretClientJavaDocCodeSnippets {
             System.out.printf("Deleted secret's recovery Id %s", deletedSecret.recoveryId());
         }
         // END: com.azure.security.keyvault.secretclient.listDeletedSecrets#Context
+
+        // BEGIN: com.azure.security.keyvault.secretclient.listDeletedSecrets.iterableByPage
+        secretClient.listDeletedSecrets().iterableByPage().forEach(resp -> {
+            System.out.printf("Got response headers . Url: %s, Status code: %d %n",
+                resp.request().url(), resp.statusCode());
+            resp.items().forEach(value -> {
+                System.out.printf("Deleted secret's recovery Id %s", value.recoveryId());
+            });
+        });
+        // END: com.azure.security.keyvault.secretclient.listDeletedSecrets.iterableByPage
     }
 
     /**
@@ -324,6 +346,18 @@ public final class SecretClientJavaDocCodeSnippets {
                 secretWithValue.name(), secretWithValue.value());
         }
         // END: com.azure.security.keyvault.secretclient.listSecretVersions#string-Context
+
+        // BEGIN: com.azure.security.keyvault.secretclient.listSecretVersions#string-Context-iterableByPage
+        secretClient.listSecretVersions("secretName", new Context(key1, value2)).iterableByPage().forEach(resp -> {
+            System.out.printf("Got response headers . Url: %s, Status code: %d %n",
+                resp.request().url(), resp.statusCode());
+            resp.items().forEach(value -> {
+                Secret secretWithValue  = secretClient.getSecret(value);
+                System.out.printf("Received secret's version with name %s and value %s",
+                    secretWithValue.name(), secretWithValue.value());
+            });
+        });
+        // END: com.azure.security.keyvault.secretclient.listSecretVersions#string-Context-iterableByPage
     }
 
     /**

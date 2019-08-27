@@ -6,14 +6,17 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
- * A simple in-memory implementation of a {@link PartitionManager}.
+ * A simple in-memory implementation of a {@link PartitionManager}. This implementation keeps track of partition
+ * ownership details including checkpointing information in-memory. Using this implementation will only facilitate
+ * checkpointing and load balancing of Event Processors running within this process.
  */
 public class InMemoryPartitionManager implements PartitionManager {
 

@@ -90,7 +90,7 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
                 // method name has prefix 'build' but not 'build*Client' or 'build*AsyncClient'
                 if (!methodName.endsWith("Client")) {
                     log(token, String.format(
-                        "@ServiceClientBuilder class should not have a method name, ''%s'' starting with ''build'' but not ending with ''Client''." , methodName));
+                        "@ServiceClientBuilder class should not have a method name, ''%s'' starting with ''build'' but not ending with ''Client''.", methodName));
                 }
                 break;
             default:

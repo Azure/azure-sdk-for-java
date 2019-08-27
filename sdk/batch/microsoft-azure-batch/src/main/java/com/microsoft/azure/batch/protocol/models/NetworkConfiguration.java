@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -60,6 +61,19 @@ public class NetworkConfiguration {
      */
     @JsonProperty(value = "endpointConfiguration")
     private PoolEndpointConfiguration endpointConfiguration;
+
+    /**
+     * The list of public IPs which the Batch service will use when
+     * provisioning Compute Nodes.
+     * The number of IPs specified here limits the maximum size of the Pool -
+     * 50 dedicated nodes or 20 low-priority nodes can be allocated for each
+     * public IP. For example, a pool needing 150 dedicated VMs would need at
+     * least 3 public IPs specified. Each element of this collection is of the
+     * form:
+     * /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}.
+     */
+    @JsonProperty(value = "publicIPs")
+    private List<String> publicIPs;
 
     /**
      * Get the virtual network must be in the same region and subscription as the Azure Batch Account. The specified subnet should have enough free IP addresses to accommodate the number of Compute Nodes in the Pool. If the subnet doesn't have enough free IP addresses, the Pool will partially allocate Nodes, and a resize error will occur. The 'MicrosoftAzureBatch' service principal must have the 'Classic Virtual Machine Contributor' Role-Based Access Control (RBAC) role for the specified VNet. The specified subnet must allow communication from the Azure Batch service to be able to schedule Tasks on the Nodes. This can be verified by checking if the specified VNet has any associated Network Security Groups (NSG). If communication to the Nodes in the specified subnet is denied by an NSG, then the Batch service will set the state of the Compute Nodes to unusable. For Pools created with virtualMachineConfiguration only ARM virtual networks ('Microsoft.Network/virtualNetworks') are supported, but for Pools created with cloudServiceConfiguration both ARM and classic virtual networks are supported. If the specified VNet has any associated Network Security Groups (NSG), then a few reserved system ports must be enabled for inbound communication. For Pools created with a virtual machine configuration, enable ports 29876 and 29877, as well as port 22 for Linux and port 3389 for Windows. For Pools created with a cloud service configuration, enable ports 10100, 20100, and 30100. Also enable outbound connections to Azure Storage on port 443. For more details see: https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
@@ -118,6 +132,26 @@ public class NetworkConfiguration {
      */
     public NetworkConfiguration withEndpointConfiguration(PoolEndpointConfiguration endpointConfiguration) {
         this.endpointConfiguration = endpointConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the number of IPs specified here limits the maximum size of the Pool - 50 dedicated nodes or 20 low-priority nodes can be allocated for each public IP. For example, a pool needing 150 dedicated VMs would need at least 3 public IPs specified. Each element of this collection is of the form: /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}.
+     *
+     * @return the publicIPs value
+     */
+    public List<String> publicIPs() {
+        return this.publicIPs;
+    }
+
+    /**
+     * Set the number of IPs specified here limits the maximum size of the Pool - 50 dedicated nodes or 20 low-priority nodes can be allocated for each public IP. For example, a pool needing 150 dedicated VMs would need at least 3 public IPs specified. Each element of this collection is of the form: /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}.
+     *
+     * @param publicIPs the publicIPs value to set
+     * @return the NetworkConfiguration object itself.
+     */
+    public NetworkConfiguration withPublicIPs(List<String> publicIPs) {
+        this.publicIPs = publicIPs;
         return this;
     }
 

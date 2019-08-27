@@ -5,21 +5,31 @@ package com.azure.storage.blob
 
 import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
+import com.azure.core.http.ProxyOptions
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.http.ProxyOptions
 import com.azure.core.http.rest.Response
+import com.azure.core.test.InterceptorManager
+import com.azure.core.test.TestMode
+import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.configuration.ConfigurationManager
-import com.azure.identity.credential.EnvironmentCredential
-import com.azure.storage.blob.models.*
+import com.azure.core.util.logging.ClientLogger
+import com.azure.identity.credential.EnvironmentCredentialBuilder
+import com.azure.storage.blob.models.ContainerItem
+import com.azure.storage.blob.models.CopyStatusType
+import com.azure.storage.blob.models.LeaseStateType
+import com.azure.storage.blob.models.ListContainersOptions
+import com.azure.storage.blob.models.Metadata
+import com.azure.storage.blob.models.RetentionPolicy
+import com.azure.storage.blob.models.StorageServiceProperties
+import com.azure.storage.common.Constants
+import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
-import io.netty.buffer.ByteBuf
-import org.junit.Assume
-import org.spockframework.lang.ISpecificationContext
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Shared
@@ -28,19 +38,21 @@ import spock.lang.Specification
 import java.nio.ByteBuffer
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
+import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.function.Supplier
 
 class APISpec extends Specification {
-    static final String RECORD_MODE = "RECORD"
-
     @Shared
-    Integer iterationNo = 0 // Used to generate stable container names for recording tests with multiple iterations.
+    private ClientLogger logger = new ClientLogger(APISpec.class)
 
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 
+    // both sync and async clients point to same container
     @Shared
-    ContainerClient cu
+    ContainerClient cc
+    @Shared
+    ContainerAsyncClient ccAsync
 
     // Fields used for conveniently creating blobs with data.
     static final String defaultText = "default"
@@ -54,15 +66,12 @@ class APISpec extends Specification {
         }
     }
 
-    static defaultDataSize = defaultData.remaining()
-
-    // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static boolean enableDebugging = false
+    static int defaultDataSize = defaultData.remaining()
 
     // Prefixes for blobs and containers
-    static String containerPrefix = "jtc" // java test container
+    String containerPrefix = "jtc" // java test container
 
-    static String blobPrefix = "javablob"
+    String blobPrefix = "javablob"
 
     /*
     The values below are used to create data-driven tests for access conditions.
@@ -87,143 +96,339 @@ class APISpec extends Specification {
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
-    /*
-    credential for various kinds of accounts.
-     */
-    @Shared
-    static SharedKeyCredential primaryCreds
+    static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
+    static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
+    static def SECONDARY_STORAGE = "SECONDARY_STORAGE_"
+    static def BLOB_STORAGE = "BLOB_STORAGE_"
+    static def PREMIUM_STORAGE = "PREMIUM_STORAGE_"
 
-    @Shared
-    static SharedKeyCredential alternateCreds
+    static SharedKeyCredential primaryCredential
+    static SharedKeyCredential alternateCredential
+    static SharedKeyCredential blobCredential
+    static SharedKeyCredential premiumCredential
+    static TestMode testMode
 
-    /*
-    URLs to various kinds of accounts.
-     */
-    BlobServiceClient primaryServiceURL
+    BlobServiceClient primaryBlobServiceClient
+    BlobServiceAsyncClient primaryBlobServiceAsyncClient
+    BlobServiceClient alternateBlobServiceClient
+    BlobServiceClient blobServiceClient
+    BlobServiceClient premiumBlobServiceClient
 
-    @Shared
-    static BlobServiceClient alternateServiceURL
+    private InterceptorManager interceptorManager
+    private TestResourceNamer resourceNamer
+    private String testName
 
-    @Shared
-    static BlobServiceClient blobStorageServiceURL
-
-    @Shared
-    static BlobServiceClient premiumServiceURL
-
-    /*
-    Constants for testing that the context parameter is properly passed to the pipeline.
-     */
-    static final String defaultContextKey = "Key"
-
-    static String getTestName(ISpecificationContext ctx) {
-        return ctx.getCurrentFeature().name.replace(' ', '').toLowerCase()
+    def setupSpec() {
+        testMode = setupTestMode()
+        primaryCredential = getCredential(PRIMARY_STORAGE)
+        alternateCredential = getCredential(SECONDARY_STORAGE)
+        blobCredential = getCredential(BLOB_STORAGE)
+        premiumCredential = getCredential(PREMIUM_STORAGE)
     }
 
-    def generateContainerName() {
-        generateContainerName(specificationContext, iterationNo, entityNo++)
+    def setup() {
+        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
+        String className = specificationContext.getCurrentSpec().getName()
+
+        int iterationIndex = fullTestName.lastIndexOf("[")
+        int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
+        this.testName = fullTestName.substring(0, substringIndex)
+        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
+        this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
+
+        primaryBlobServiceClient = setClient(primaryCredential)
+        primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
+        alternateBlobServiceClient = setClient(alternateCredential)
+        blobServiceClient = setClient(blobCredential)
+        premiumBlobServiceClient = setClient(premiumCredential)
+
+        def containerName = generateContainerName()
+        cc = primaryBlobServiceClient.getContainerClient(containerName)
+        ccAsync = primaryBlobServiceAsyncClient.getContainerAsyncClient(containerName)
+        cc.create()
     }
 
-    def generateBlobName() {
-        generateBlobName(specificationContext, iterationNo, entityNo++)
-    }
+    def cleanup() {
+        def options = new ListContainersOptions().prefix(containerPrefix + testName)
+        for (ContainerItem container : primaryBlobServiceClient.listContainers(options, Duration.ofSeconds(120))) {
+            ContainerClient containerClient = primaryBlobServiceClient.getContainerClient(container.name())
 
-    /**
-     * This function generates an entity name by concatenating the passed prefix, the name of the test requesting the
-     * entity name, and some unique suffix. This ensures that the entity name is unique for each test so there are
-     * no conflicts on the service. If we are not recording, we can just use the time. If we are recording, the suffix
-     * must always be the same so we can match requests. To solve this, we use the entityNo for how many entities have
-     * already been created by this test so far. This would sufficiently distinguish entities within a recording, but
-     * could still yield duplicates on the service for data-driven tests. Therefore, we also add the iteration number
-     * of the data driven tests.
-     *
-     * @param specificationContext
-     *      Used to obtain the name of the test running.
-     * @param prefix
-     *      Used to group all entities created by these tests under common prefixes. Useful for listing.
-     * @param iterationNo
-     *      Indicates which iteration of a data-driven test is being executed.
-     * @param entityNo
-     *      Indicates how man entities have been created by the test so far. This distinguishes multiple containers
-     *      or multiple blobs created by the same test. Only used when dealing with recordings.
-     * @return
-     */
-    static String generateResourceName(ISpecificationContext specificationContext, String prefix, int iterationNo,
-                                       int entityNo) {
-        String suffix = ""
-        suffix += System.currentTimeMillis() // For uniqueness between runs.
-        suffix += entityNo // For easy identification of which call created this resource.
-        return prefix + getTestName(specificationContext).take(63 - suffix.length() - prefix.length()) + suffix
-    }
+            if (container.properties().leaseState() == LeaseStateType.LEASED) {
+                containerClient.breakLeaseWithResponse(0, null, null, null)
+            }
 
-    static int updateIterationNo(ISpecificationContext specificationContext, int iterationNo) {
-        if (specificationContext.currentIteration.estimatedNumIterations > 1) {
-            return iterationNo + 1
-        } else {
-            return 0
+            containerClient.delete()
         }
+
+        interceptorManager.close()
     }
 
-    static String generateContainerName(ISpecificationContext specificationContext, int iterationNo, int entityNo) {
-        return generateResourceName(specificationContext, containerPrefix, iterationNo, entityNo)
+    static TestMode setupTestMode() {
+        String testMode = ConfigurationManager.getConfiguration().get(AZURE_TEST_MODE)
+
+        if (testMode != null) {
+            try {
+                return TestMode.valueOf(testMode.toUpperCase(Locale.US))
+            } catch (IllegalArgumentException ex) {
+                return TestMode.PLAYBACK
+            }
+        }
+
+        return TestMode.PLAYBACK
     }
 
-    static String generateBlobName(ISpecificationContext specificationContext, int iterationNo, int entityNo) {
-        return generateResourceName(specificationContext, blobPrefix, iterationNo, entityNo)
+    static boolean liveMode() {
+        return setupTestMode() == TestMode.RECORD
     }
 
-    static getGenericCreds(String accountType) {
-        String accountName = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_NAME")
-        String accountKey = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_KEY")
+    private SharedKeyCredential getCredential(String accountType) {
+        String accountName
+        String accountKey
+
+        if (testMode == TestMode.RECORD) {
+            accountName = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_NAME")
+            accountKey = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_KEY")
+        } else {
+            accountName = "storageaccount"
+            accountKey = "astorageaccountkey"
+        }
 
         if (accountName == null || accountKey == null) {
-            System.out.println("Account name or key for the " + accountType + " account was null. Test's requiring " +
-                "these credential will fail.")
+            logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
             return null
         }
+
         return new SharedKeyCredential(accountName, accountKey)
     }
 
-    static HttpClient getHttpClient() {
-        if (enableDebugging) {
-            return HttpClient.createDefault().proxy(new Supplier<ProxyOptions>() {
-                @Override
-                ProxyOptions get() {
-                    return new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
-                }
-            })
-        } else {
-            return HttpClient.createDefault()
+    BlobServiceClient setClient(SharedKeyCredential credential) {
+        try {
+            return getServiceClient(credential)
+        } catch (Exception ex) {
+            return null
         }
     }
 
-    static BlobServiceClient getGenericServiceURL(SharedKeyCredential creds) {
-        // TODO: logging?
-
-        return new BlobServiceClientBuilder()
-            .endpoint("https://" + creds.accountName() + ".blob.core.windows.net")
+    def getOAuthServiceClient() {
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
+            .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCredential.accountName()))
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-            .credential(creds)
-            .buildClient()
-    }
 
-    static void cleanupContainers() throws MalformedURLException {
-        BlobServiceClient serviceURL = new BlobServiceClientBuilder()
-            .endpoint("http://" + primaryCreds.accountName() + ".blob.core.windows.net")
-            .credential(primaryCreds)
-            .buildClient()
-        // There should not be more than 5000 containers from these tests
-        for (ContainerItem c : serviceURL.listContainers()) {
-            ContainerClient containerURL = serviceURL.getContainerClient(c.name())
-            if (c.properties().leaseState() == LeaseStateType.LEASED) {
-                containerURL.breakLease(0, null, null)
-            }
-            containerURL.delete()
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            return builder.credential(primaryCredential).buildClient()
         }
     }
 
-    static byte[] getRandomByteArray(int size) {
-        Random rand = new Random(getRandomSeed())
+    BlobServiceClient getServiceClient(String endpoint) {
+        return getServiceClient(null, endpoint, null)
+    }
+
+    BlobServiceClient getServiceClient(SharedKeyCredential credential) {
+        return getServiceClient(credential, String.format("https://%s.blob.core.windows.net", credential.accountName()), null)
+    }
+
+    BlobServiceClient getServiceClient(SharedKeyCredential credential, String endpoint) {
+        return getServiceClient(credential, endpoint, null)
+    }
+
+    BlobServiceClient getServiceClient(SharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        if (credential != null) {
+            builder.credential(credential)
+        }
+
+        return builder.buildClient()
+    }
+
+    BlobServiceClient getServiceClient(SASTokenCredential credential, String endpoint) {
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildClient()
+    }
+
+    BlobServiceAsyncClient getServiceAsyncClient(SharedKeyCredential credential) {
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
+            .credential(credential)
+            .endpoint(String.format("https://%s.blob.core.windows.net", credential.accountName()))
+            .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.buildAsyncClient()
+    }
+
+    ContainerClient getContainerClient(SASTokenCredential credential, String endpoint) {
+        ContainerClientBuilder builder = new ContainerClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        builder.credential(credential).buildClient()
+    }
+
+    BlobAsyncClient getBlobAsyncClient(SharedKeyCredential credential, String endpoint, String blobName) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName(blobName)
+            .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        builder.credential(credential).buildBlobAsyncClient()
+    }
+
+    BlobClient getBlobClient(SASTokenCredential credential, String endpoint, String blobName) {
+        return getBlobClient(credential, endpoint, blobName, null)
+    }
+
+    BlobClient getBlobClient(SASTokenCredential credential, String endpoint, String blobName, String snapshotId) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName(blobName)
+            .snapshot(snapshotId)
+            .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildBlobClient()
+    }
+
+    BlobClient getBlobClient(SharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildBlobClient()
+    }
+
+    BlobClient getBlobClient(SharedKeyCredential credential, String endpoint, String blobName) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName(blobName)
+            .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildBlobClient()
+    }
+
+    BlobClient getBlobClient(String endpoint, SASTokenCredential credential) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+
+        if (credential != null) {
+            builder.credential(credential)
+        }
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.buildBlobClient()
+    }
+
+    private HttpClient getHttpClient() {
+        HttpClient client
+        if (testMode == TestMode.RECORD) {
+            client = HttpClient.createDefault().wiretap(true)
+        } else {
+            client = interceptorManager.getPlaybackClient()
+        }
+
+        if (Boolean.parseBoolean(ConfigurationManager.getConfiguration().get("AZURE_TEST_DEBUGGING"))) {
+            return client.proxy(PROXY_OPTIONS)
+        } else {
+            return client
+        }
+    }
+
+    private Supplier<ProxyOptions> PROXY_OPTIONS = new Supplier<ProxyOptions>() {
+        @Override
+        ProxyOptions get() {
+            return new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
+        }
+    }
+
+    def generateContainerName() {
+        generateResourceName(containerPrefix, entityNo++)
+    }
+
+    def generateBlobName() {
+        generateResourceName(blobPrefix, entityNo++)
+    }
+
+    private String generateResourceName(String prefix, int entityNo) {
+        return resourceNamer.randomName(prefix + testName + entityNo, 63)
+    }
+
+    String getRandomUUID() {
+        return resourceNamer.randomUuid()
+    }
+
+    String getBlockID() {
+        return Base64.encoder.encodeToString(resourceNamer.randomUuid().getBytes(StandardCharsets.UTF_8))
+    }
+
+    OffsetDateTime getUTCNow() {
+        return resourceNamer.now()
+    }
+
+    byte[] getRandomByteArray(int size) {
+        long seed = UUID.fromString(resourceNamer.randomUuid()).getMostSignificantBits() & Long.MAX_VALUE
+        Random rand = new Random(seed)
         byte[] data = new byte[size]
         rand.nextBytes(data)
         return data
@@ -232,75 +437,22 @@ class APISpec extends Specification {
     /*
     Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
      */
-    static ByteBuffer getRandomData(int size) {
+
+    ByteBuffer getRandomData(int size) {
         return ByteBuffer.wrap(getRandomByteArray(size))
     }
 
     /*
     We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
      */
-    static File getRandomFile(int size) {
+
+    File getRandomFile(int size) {
         File file = File.createTempFile(UUID.randomUUID().toString(), ".txt")
         file.deleteOnExit()
         FileOutputStream fos = new FileOutputStream(file)
         fos.write(getRandomData(size).array())
         fos.close()
         return file
-    }
-
-    static long getRandomSeed() {
-        return System.currentTimeMillis()
-    }
-
-    def setupSpec() {
-        /*
-        We'll let primary creds throw and crash if there are no credential specified because everything else will fail.
-         */
-        primaryCreds = getGenericCreds("PRIMARY_STORAGE_")
-
-        /*
-        It's feasible someone wants to test a specific subset of tests, so we'll still attempt to create each of the
-        ServiceURLs separately. We don't really need to take any action here, as we've already reported to the user,
-        so we just swallow the exception and let the relevant tests fail later. Perhaps we can add annotations or
-        something in the future.
-         */
-        try {
-            alternateCreds = getGenericCreds("SECONDARY_STORAGE_")
-            alternateServiceURL = getGenericServiceURL(alternateCreds)
-        }
-        catch (Exception e) {
-        }
-
-        try {
-            blobStorageServiceURL = getGenericServiceURL(getGenericCreds("BLOB_STORAGE_"))
-        }
-        catch (Exception e) {
-        }
-
-        try {
-            premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_STORAGE_"))
-        }
-        catch (Exception e) {
-        }
-    }
-
-    def cleanupSpec() {
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
-        cleanupContainers()
-    }
-
-    def setup() {
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
-        String containerName = generateContainerName()
-
-        primaryServiceURL = getGenericServiceURL(primaryCreds)
-        cu = primaryServiceURL.getContainerClient(containerName)
-        cu.create()
-    }
-
-    def cleanup() {
-        // TODO: Scrub auth header here?
-        iterationNo = updateIterationNo(specificationContext, iterationNo)
     }
 
     /**
@@ -317,7 +469,7 @@ class APISpec extends Specification {
      */
     def setupBlobMatchCondition(BlobClient bu, String match) {
         if (match == receivedEtag) {
-            return bu.getProperties().headers().value("ETag")
+            bu.getPropertiesWithResponse(null, null, null).headers().value("ETag")
         } else {
             return match
         }
@@ -340,18 +492,15 @@ class APISpec extends Specification {
     def setupBlobLeaseCondition(BlobClient bu, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            responseLeaseId = bu.acquireLease(null, -1, null, null).value()
+            responseLeaseId = bu.acquireLease(null, -1)
         }
-        if (leaseID == receivedLeaseID) {
-            return responseLeaseId
-        } else {
-            return leaseID
-        }
+
+        return (leaseID == receivedLeaseID) ? responseLeaseId : leaseID
     }
 
     def setupContainerMatchCondition(ContainerClient cu, String match) {
         if (match == receivedEtag) {
-            return cu.getProperties().headers().value("ETag")
+            return cu.getPropertiesWithResponse(null, null, null).headers().value("ETag")
         } else {
             return match
         }
@@ -359,7 +508,7 @@ class APISpec extends Specification {
 
     def setupContainerLeaseCondition(ContainerClient cu, String leaseID) {
         if (leaseID == receivedLeaseID) {
-            return cu.acquireLease(null, -1).value()
+            return cu.acquireLeaseWithResponse(null, -1, null, null, null).value()
         } else {
             return leaseID
         }
@@ -367,7 +516,7 @@ class APISpec extends Specification {
 
     def getMockRequest() {
         HttpHeaders headers = new HttpHeaders()
-        headers.set(Constants.HeaderConstants.CONTENT_ENCODING, "en-US")
+        headers.put(Constants.HeaderConstants.CONTENT_ENCODING, "en-US")
         URL url = new URL("http://devtest.blob.core.windows.net/test-container/test-blob")
         HttpRequest request = new HttpRequest(HttpMethod.POST, url, headers, null)
         return request
@@ -376,12 +525,12 @@ class APISpec extends Specification {
     def waitForCopy(ContainerClient bu, String status) {
         OffsetDateTime start = OffsetDateTime.now()
         while (status != CopyStatusType.SUCCESS.toString()) {
-            status = bu.getProperties().headers().value("x-ms-copy-status")
+            status = bu.getPropertiesWithResponse(null, null, null).headers().value("x-ms-copy-status")
             OffsetDateTime currentTime = OffsetDateTime.now()
             if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long")
             }
-            sleep(1000)
+            sleepIfRecord(1000)
         }
     }
 
@@ -404,7 +553,7 @@ class APISpec extends Specification {
     }
 
     def validateBlobProperties(Response<BlobProperties> response, String cacheControl, String contentDisposition, String contentEncoding,
-        String contentLanguage, byte[] contentMD5, String contentType) {
+                               String contentLanguage, byte[] contentMD5, String contentType) {
         return response.value().cacheControl() == cacheControl &&
             response.value().contentDisposition() == contentDisposition &&
             response.value().contentEncoding() == contentEncoding &&
@@ -413,7 +562,7 @@ class APISpec extends Specification {
             response.headers().value("Content-Type") == contentType
     }
 
-    static Metadata getMetadataFromHeaders(HttpHeaders headers) {
+    Metadata getMetadataFromHeaders(HttpHeaders headers) {
         Metadata metadata = new Metadata()
 
         for (Map.Entry<String, String> header : headers.toMap()) {
@@ -427,75 +576,38 @@ class APISpec extends Specification {
     }
 
     def enableSoftDelete() {
-        primaryServiceURL.setProperties(new StorageServiceProperties()
+        primaryBlobServiceClient.setProperties(new StorageServiceProperties()
             .deleteRetentionPolicy(new RetentionPolicy().enabled(true).days(2)))
-        sleep(30000) // Wait for the policy to take effect.
+
+        sleepIfRecord(30000)
     }
 
     def disableSoftDelete() {
-        primaryServiceURL.setProperties(new StorageServiceProperties()
+        primaryBlobServiceClient.setProperties(new StorageServiceProperties()
             .deleteRetentionPolicy(new RetentionPolicy().enabled(false)))
 
-        sleep(30000) // Wait for the policy to take effect.
+        sleepIfRecord(30000)
     }
 
-
-
-    /*
-    This method returns a stub of an HttpResponse. This is for when we want to test policies in isolation but don't care
-     about the status code, so we stub a response that always returns a given value for the status code. We never care
-     about the number or nature of interactions with this stub.
-     */
-
-    def getStubResponse(int code) {
-        return Stub(HttpResponse) {
-            statusCode() >> code
+    // Only sleep if test is running in live mode
+    def sleepIfRecord(long milliseconds) {
+        if (testMode == TestMode.RECORD) {
+            sleep(milliseconds)
         }
     }
 
-    /*
-    This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
-    to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
-    with than was worth it.
-     */
-    def getStubResponse(int code, HttpRequest request) {
-        return new HttpResponse() {
-
-            @Override
-            int statusCode() {
-                return code
+    class MockRetryRangeResponsePolicy implements HttpPipelinePolicy {
+        @Override
+        Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            return next.process().flatMap { HttpResponse response ->
+                if (response.request().headers().value("x-ms-range") != "bytes=2-6") {
+                    return Mono.<HttpResponse> error(new IllegalArgumentException("The range header was not set correctly on retry."))
+                } else {
+                    // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
+                    return Mono.<HttpResponse> just(new MockDownloadHttpResponse(response, 206, Flux.error(new IOException())))
+                }
             }
-
-            @Override
-            String headerValue(String s) {
-                return null
-            }
-
-            @Override
-            HttpHeaders headers() {
-                return new HttpHeaders()
-            }
-
-            @Override
-            Flux<ByteBuffer> body() {
-                return Flux.empty()
-            }
-
-            @Override
-            Mono<byte[]> bodyAsByteArray() {
-                return Mono.just(new byte[0])
-            }
-
-            @Override
-            Mono<String> bodyAsString() {
-                return Mono.just("")
-            }
-
-            @Override
-            Mono<String> bodyAsString(Charset charset) {
-                return Mono.just("")
-            }
-        }.request(request)
+        }
     }
 
     /*
@@ -503,12 +615,13 @@ class APISpec extends Specification {
     to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
     with than was worth it. Because this type is just for BlobDownload, we don't need to accept a header type.
      */
-    static class MockDownloadHttpResponse extends HttpResponse {
+
+    class MockDownloadHttpResponse extends HttpResponse {
         private final int statusCode
         private final HttpHeaders headers
-        private final Flux<ByteBuf> body
+        private final Flux<ByteBuffer> body
 
-        MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuf> body) {
+        MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuffer> body) {
             this.request(response.request())
             this.statusCode = statusCode
             this.headers = response.headers()
@@ -531,7 +644,7 @@ class APISpec extends Specification {
         }
 
         @Override
-        Flux<ByteBuf> body() {
+        Flux<ByteBuffer> body() {
             return body
         }
 
@@ -549,34 +662,5 @@ class APISpec extends Specification {
         Mono<String> bodyAsString(Charset charset) {
             return Mono.error(new IOException())
         }
-    }
-
-    def getContextStubPolicy(int successCode, Class responseHeadersType) {
-        return Mock(HttpPipelinePolicy) {
-            process(_ as HttpPipelineCallContext, _ as HttpPipelineNextPolicy) >> {
-                HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
-                    if (!context.getData(defaultContextKey).isPresent()) {
-                        return Mono.error(new RuntimeException("Context key not present."))
-                    } else {
-                        return Mono.just(getStubResponse(successCode, context.httpRequest()))
-                    }
-            }
-        }
-    }
-
-    def getOAuthServiceURL() {
-        return new BlobServiceClientBuilder()
-            .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCreds.accountName()))
-            .credential(new EnvironmentCredential()) // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-            .buildClient()
-    }
-
-    def getTestMode(){
-        String testMode =  System.getenv("AZURE_TEST_MODE")
-        if(testMode == null){
-            testMode =  "PLAYBACK"
-        }
-        return testMode
     }
 }

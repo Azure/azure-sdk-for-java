@@ -1,30 +1,48 @@
 <!-- Copyright (c) Microsoft Corporation. All rights reserved.
      Licensed under the MIT License. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
   <artifactId>azure-keyvault-service</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0</version><!-- Need not change for every release-->
-  <modules>
 
-    <!-- Track 1 -->
-    <module>microsoft-azure-keyvault</module>
-    <module>microsoft-azure-keyvault-core</module>
-    <module>microsoft-azure-keyvault-webkey</module>
-    <module>microsoft-azure-keyvault-cryptography</module>
-    <module>microsoft-azure-keyvault-extensions</module>
-    <module>microsoft-azure-keyvault-complete</module>
-    
-    <!-- Track 2 -->
-    <module>../core/azure-core</module> <!-- NOTE: We need to build core so we can build against the version in the repo. -->
-    <module>../core/azure-core-test</module> <!-- NOTE: We need to build core so we can build against the version in the repo. -->
-    <module>../identity/azure-identity</module> <!-- NOTE: We need to build identity so we can build against the version in the repo. -->
-    <module>azure-keyvault-keys</module>
-    <module>azure-keyvault-secrets</module>
-    
-  </modules>
-
+  <version>1.0.0</version>  <!-- Need not change for every release-->
+  <profiles>
+    <profile>
+      <id>data</id>
+      <activation>
+        <property>
+          <name>env.SDKTYPE</name>
+          <value>data</value>
+        </property>
+      </activation>
+      <modules>
+        <module>microsoft-azure-keyvault</module>
+        <module>microsoft-azure-keyvault-complete</module>
+        <module>microsoft-azure-keyvault-core</module>
+        <module>microsoft-azure-keyvault-cryptography</module>
+        <module>microsoft-azure-keyvault-extensions</module>
+        <module>microsoft-azure-keyvault-test</module>
+        <module>microsoft-azure-keyvault-webkey</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>client</id>
+      <activation>
+        <property>
+          <name>env.SDKTYPE</name>
+          <value>!data</value>
+        </property>
+      </activation>
+      <modules>
+        <module>../core/azure-core</module>        <!-- NOTE: We need to build core so we can build against the version in the repo. -->
+        <module>../core/azure-core-test</module>        <!-- NOTE: We need to build core so we can build against the version in the repo. -->
+        <module>../core/azure-core-http-netty</module>
+        <module>../identity/azure-identity</module>        <!-- NOTE: We need to build identity so we can build against the version in the repo. -->
+        <module>azure-keyvault-keys</module>
+        <module>azure-keyvault-secrets</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

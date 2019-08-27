@@ -50,9 +50,7 @@ public final class RntbdContextNegotiator extends CombinedChannelDuplexHandler<R
      * @throws Exception thrown if an error occurs
      */
     @Override
-    public void write(
-        final ChannelHandlerContext context, final Object message, final ChannelPromise promise
-    ) throws Exception {
+    public void write(final ChannelHandlerContext context, final Object message, final ChannelPromise promise) throws Exception {
 
         checkArgument(message instanceof ByteBuf, "message: %s", message.getClass());
         final ByteBuf out = (ByteBuf)message;
@@ -77,7 +75,7 @@ public final class RntbdContextNegotiator extends CombinedChannelDuplexHandler<R
 
         final Channel channel = context.channel();
         final RntbdContextRequest request = new RntbdContextRequest(Utils.randomUUID(), this.userAgent);
-        final CompletableFuture<RntbdContextRequest> contextRequestFuture = this.manager.getRntbdContextRequestFuture();
+        final CompletableFuture<RntbdContextRequest> contextRequestFuture = this.manager.rntbdContextRequestFuture();
 
         super.write(context, request, channel.newPromise().addListener((ChannelFutureListener)future -> {
 

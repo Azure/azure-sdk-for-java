@@ -107,13 +107,15 @@ public class GatewayServiceConfigurationReader {
 
         httpHeaders.set(HttpConstants.HttpHeaders.USER_AGENT, userAgentContainer.getUserAgent());
         httpHeaders.set(HttpConstants.HttpHeaders.API_TYPE, Constants.Properties.SQL_API_TYPE);
+
+        String xDate = Utils.nowAsRFC1123();
+        httpHeaders.set(HttpConstants.HttpHeaders.X_DATE, xDate);
+
         String authorizationToken;
         if (this.hasAuthKeyResourceToken || baseAuthorizationTokenProvider == null) {
             authorizationToken = HttpUtils.urlEncode(this.authKeyResourceToken);
         } else {
             // Retrieve the document service properties.
-            String xDate = Utils.nowAsRFC1123();
-            httpHeaders.set(HttpConstants.HttpHeaders.X_DATE, xDate);
             Map<String, String> header = new HashMap<>();
             header.put(HttpConstants.HttpHeaders.X_DATE, xDate);
             authorizationToken = baseAuthorizationTokenProvider

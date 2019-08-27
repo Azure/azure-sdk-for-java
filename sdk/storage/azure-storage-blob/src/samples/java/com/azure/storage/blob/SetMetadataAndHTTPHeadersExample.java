@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -10,6 +11,7 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Locale;
 
@@ -22,6 +24,7 @@ public class SetMetadataAndHTTPHeadersExample {
     /**
      * Entry point into the setting metadata examples for Storage blobs.
      * @param args Unused. Arguments to the program.
+     *
      * @throws IOException If an I/O error occurs
      */
     public static void main(String[] args) throws IOException {
@@ -57,7 +60,7 @@ public class SetMetadataAndHTTPHeadersExample {
         /*
          * Create a container with the containerMetadata above.
          */
-        containerClient.create(containerMetadata, null, null);
+        containerClient.createWithResponse(containerMetadata, null, null, new Context("key1", "value1"));
 
         /*
          * Create a blob client.
@@ -75,8 +78,8 @@ public class SetMetadataAndHTTPHeadersExample {
          * Data which will upload to block blob.
          */
         String data = "Hello world!";
-        InputStream dataStream = new ByteArrayInputStream(data.getBytes());
-        blobClient.upload(dataStream, data.length(), blobHTTPHeaders, blobMetadata, null, null);
+        InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
+        blobClient.uploadWithResponse(dataStream, data.length(), blobHTTPHeaders, blobMetadata, null, null, null);
 
         /*
          * Clean up the container and blob.

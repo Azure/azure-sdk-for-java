@@ -22,7 +22,7 @@ public final class ValidationUtil {
             }
         }
         if (missing.size() > 0) {
-            logger.logAndThrow(new IllegalArgumentException("Must provide non-null values for "
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("Must provide non-null values for "
                 + String.join(", ", missing) + " properties in " + className));
         }
     }

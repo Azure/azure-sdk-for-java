@@ -70,7 +70,7 @@ public interface PrivateLinkService extends HasInner<PrivateLinkServiceInner>, R
     /**
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * @return the visibility value.
@@ -117,7 +117,7 @@ public interface PrivateLinkService extends HasInner<PrivateLinkServiceInner>, R
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag Gets a unique read-only string that changes whenever the resource is updated
+             * @param etag A unique read-only string that changes whenever the resource is updated
              * @return the next definition stage
              */
             WithCreate withEtag(String etag);
@@ -172,6 +172,18 @@ public interface PrivateLinkService extends HasInner<PrivateLinkServiceInner>, R
         }
 
         /**
+         * The stage of the privatelinkservice definition allowing to specify ProvisioningState.
+         */
+        interface WithProvisioningState {
+            /**
+             * Specifies provisioningState.
+             * @param provisioningState The provisioning state of the private link service. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+             * @return the next definition stage
+             */
+            WithCreate withProvisioningState(ProvisioningState provisioningState);
+        }
+
+        /**
          * The stage of the privatelinkservice definition allowing to specify Visibility.
          */
         interface WithVisibility {
@@ -188,13 +200,13 @@ public interface PrivateLinkService extends HasInner<PrivateLinkServiceInner>, R
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<PrivateLinkService>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAutoApproval, DefinitionStages.WithEtag, DefinitionStages.WithFqdns, DefinitionStages.WithIpConfigurations, DefinitionStages.WithLoadBalancerFrontendIpConfigurations, DefinitionStages.WithPrivateEndpointConnections, DefinitionStages.WithVisibility {
+        interface WithCreate extends Creatable<PrivateLinkService>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAutoApproval, DefinitionStages.WithEtag, DefinitionStages.WithFqdns, DefinitionStages.WithIpConfigurations, DefinitionStages.WithLoadBalancerFrontendIpConfigurations, DefinitionStages.WithPrivateEndpointConnections, DefinitionStages.WithProvisioningState, DefinitionStages.WithVisibility {
         }
     }
     /**
      * The template for a PrivateLinkService update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<PrivateLinkService>, Resource.UpdateWithTags<Update>, UpdateStages.WithAutoApproval, UpdateStages.WithEtag, UpdateStages.WithFqdns, UpdateStages.WithIpConfigurations, UpdateStages.WithLoadBalancerFrontendIpConfigurations, UpdateStages.WithPrivateEndpointConnections, UpdateStages.WithVisibility {
+    interface Update extends Appliable<PrivateLinkService>, Resource.UpdateWithTags<Update>, UpdateStages.WithAutoApproval, UpdateStages.WithEtag, UpdateStages.WithFqdns, UpdateStages.WithIpConfigurations, UpdateStages.WithLoadBalancerFrontendIpConfigurations, UpdateStages.WithPrivateEndpointConnections, UpdateStages.WithProvisioningState, UpdateStages.WithVisibility {
     }
 
     /**
@@ -219,7 +231,7 @@ public interface PrivateLinkService extends HasInner<PrivateLinkServiceInner>, R
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag Gets a unique read-only string that changes whenever the resource is updated
+             * @param etag A unique read-only string that changes whenever the resource is updated
              * @return the next update stage
              */
             Update withEtag(String etag);
@@ -271,6 +283,18 @@ public interface PrivateLinkService extends HasInner<PrivateLinkServiceInner>, R
              * @return the next update stage
              */
             Update withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections);
+        }
+
+        /**
+         * The stage of the privatelinkservice update allowing to specify ProvisioningState.
+         */
+        interface WithProvisioningState {
+            /**
+             * Specifies provisioningState.
+             * @param provisioningState The provisioning state of the private link service. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+             * @return the next update stage
+             */
+            Update withProvisioningState(ProvisioningState provisioningState);
         }
 
         /**

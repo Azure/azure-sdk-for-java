@@ -6,7 +6,9 @@ package com.azure.messaging.eventhubs.models;
 import com.azure.core.implementation.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubConsumer;
+import com.azure.messaging.eventhubs.EventHubAsyncClient;
+import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
+import com.azure.messaging.eventhubs.EventHubClient;
 
 import java.time.Instant;
 import java.util.Locale;
@@ -16,7 +18,8 @@ import java.util.Objects;
  * Defines a position of an {@link EventData} in the Event Hub partition. The position can be an offset, sequence
  * number, or enqueued time.
  *
- * @see EventHubConsumer
+ * @see EventHubClient#createConsumer(String, String, EventPosition)
+ * @see EventHubAsyncClient#createConsumer(String, String, EventPosition)
  */
 @Immutable
 public final class EventPosition {
@@ -37,11 +40,15 @@ public final class EventPosition {
 
     private final ClientLogger logger = new ClientLogger(EventPosition.class);
     private final boolean isInclusive;
-    private String offset;
-    private Long sequenceNumber;
-    private Instant enqueuedDateTime;
+    private final String offset;
+    private final Long sequenceNumber;
+    private final Instant enqueuedDateTime;
 
-    private EventPosition(boolean isInclusive) {
+    private EventPosition(final boolean isInclusive, final String offset, final Long sequenceNumber,
+                          final Instant enqueuedDateTime) {
+        this.offset = offset;
+        this.sequenceNumber = sequenceNumber;
+        this.enqueuedDateTime = enqueuedDateTime;
         this.isInclusive = isInclusive;
     }
 
@@ -57,8 +64,8 @@ public final class EventPosition {
 
     /**
      * Corresponds to the end of the partition, where no more events are currently enqueued. Use this position to begin
-     * receiving from the next event to be enqueued in the partition after an {@link EventHubConsumer} is created with
-     * this position.
+     * receiving from the next event to be enqueued in the partition after an {@link EventHubAsyncConsumer} is created
+     * with this position.
      *
      * @return An {@link EventPosition} set to the end of an Event Hubs stream and listens for new events.
      */
@@ -75,9 +82,7 @@ public final class EventPosition {
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromEnqueuedTime(Instant enqueuedDateTime) {
-        EventPosition position = new EventPosition(false);
-        position.enqueuedDateTime = enqueuedDateTime;
-        return position;
+        return new EventPosition(false, null, null, enqueuedDateTime);
     }
 
     /**
@@ -104,13 +109,12 @@ public final class EventPosition {
      * @param isInclusive If true, the event with the {@code offset} is included; otherwise, the next event will
      *         be received.
      * @return An {@link EventPosition} object.
+     * @throws NullPointerException if {@code offset} is null.
      */
     public static EventPosition fromOffset(String offset, boolean isInclusive) {
-        Objects.requireNonNull(offset);
+        Objects.requireNonNull(offset, "'offset' cannot be null.");
 
-        EventPosition position = new EventPosition(isInclusive);
-        position.offset = offset;
-        return position;
+        return new EventPosition(isInclusive, offset, null, null);
     }
 
     /**
@@ -134,14 +138,12 @@ public final class EventPosition {
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromSequenceNumber(long sequenceNumber, boolean isInclusive) {
-        EventPosition position = new EventPosition(isInclusive);
-        position.sequenceNumber = sequenceNumber;
-        return position;
+        return new EventPosition(isInclusive, null, sequenceNumber, null);
     }
 
     /**
-     * Gets the boolean value of if the event is included. If true, the event with the {@code sequenceNumber} is included;
-     * otherwise, the next event will be received.
+     * Gets the boolean value of if the event is included. If true, the event with the {@code sequenceNumber} is
+     * included; otherwise, the next event will be received.
      *
      * @return The boolean if the event will be received.
      */

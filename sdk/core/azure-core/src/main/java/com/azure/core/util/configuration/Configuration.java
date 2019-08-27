@@ -24,13 +24,14 @@ public class Configuration implements Cloneable {
 
     private final ClientLogger logger = new ClientLogger(Configuration.class);
 
-    private ConcurrentMap<String, String> configurations = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, String> configurations;
     private boolean loadedBaseConfigurations = false;
 
     /**
      * Constructs an empty configuration.
      */
     public Configuration() {
+        this.configurations = new ConcurrentHashMap<>();
     }
 
     private Configuration(ConcurrentMap<String, String> configurations) {
@@ -220,13 +221,19 @@ public class Configuration implements Cloneable {
      */
     private boolean loadFrom(String name, Function<String, String> loader, String logMessage) {
         String value = loader.apply(name);
-        if (!ImplUtils.isNullOrEmpty(value) && !value.equals(configurations.get(name))) {
+
+        if (value == null) {
+            // Nothing was loaded
+            return false;
+        } else if (value.equals(configurations.get(name))) {
+            // Value loaded is the same, no need to log anything.
+            return true;
+        } else {
+            // Value changed, log it!
             configurations.put(name, value);
             logger.info(logMessage, name, value);
             return true;
         }
-
-        return false;
     }
 
     /*

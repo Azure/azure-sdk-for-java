@@ -1,0 +1,48 @@
+jobs:
+  - job: SmokeTest
+    variables:
+      - template: ./templates/variables/globals.yml
+      - name: PomFile
+        value: eng/smoke-tests/pom.xml
+
+    strategy:
+      matrix:
+        Java 8:
+          ProfileFlag: ''
+          JavaVersion: '1.8'
+        Java LTS:
+          ProfileFlag: '-Djava-lts'
+          JavaVersion: '1.11'
+
+    steps:
+      - task: Maven@3
+        displayName: 'Build and Package'
+        inputs:
+          mavenPomFile: $(PomFile)
+          goals: 'package'
+          options: '$(DefaultOptions) $(ProfileFlag) -Dmaven.test.skip=true'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+
+      - task: Maven@3
+        displayName: 'Run Smoke Tests'
+        inputs:
+          mavenPomFile: $(PomFile)
+          goals: 'exec:java'
+          options: '$(DefaultOptions) $(ProfileFlag) -Dexec.mainClass="com.azure.App"'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+        env:
+          AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
+          AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
+          AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
+          AZURE_PROJECT_URL: $(smoke-tests-key-vault-project-url)
+          AZURE_EVENT_HUBS_CONNECTION_STRING: $(smoke-tests-event-hubs-connection-string)
+          AZURE_STORAGE_CONNECTION_STRING: $(smoke-tests-storage-connection-string)
+          AZURE_COSMOS_KEY: $(smoke-tests-cosmos-key)
+          AZURE_COSMOS_ENDPOINT: $(smoke-tests-cosmos-endpoint)
+          AZURE_LOG_LEVEL: 2

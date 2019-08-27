@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.RetryPolicy;
-import com.azure.messaging.eventhubs.EventHubConsumer;
+import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -28,7 +28,7 @@ public interface EventHubSession extends AmqpSession {
      * @param eventPositionExpression The position within the partition where the consumer should begin reading events.
      * @param timeout Timeout required for creating and opening AMQP link.
      * @param retry The retry policy to use when receiving messages.
-     * @param ownerLevel {@code null} if multiple {@link EventHubConsumer EventHubConsumers} can listen to the same
+     * @param ownerLevel {@code null} if multiple {@link EventHubAsyncConsumer EventHubConsumers} can listen to the same
      *         partition and consumer group. Otherwise, the {@code receiverPriority} that is the highest will listen to
      *         that partition exclusively.
      * @param consumerIdentifier Identifier for the consumer that is sent to the service.

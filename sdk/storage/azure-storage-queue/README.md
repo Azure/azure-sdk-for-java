@@ -1,8 +1,9 @@
 # Azure Storage Queue client library for Java
-Azure Queue storage is a service for storing large numbers of messages that can be accessed from anywhere in the world via authenticated calls using HTTP or HTTPS. 
+Azure Queue storage is a service for storing large numbers of messages that can be accessed from anywhere in the world via authenticated calls using HTTP or HTTPS.
 A single queue message can be up to 64 KB in size, and a queue can contain millions of messages, up to the total capacity limit of a storage account.
 
-[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation] | [Product documentation][storage_docs]
+[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][storage_docs] |
+[Samples][samples]
 
 ## Getting started
 
@@ -10,15 +11,15 @@ A single queue message can be up to 64 KB in size, and a queue can contain milli
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
 - [Azure Subscription][azure_subscription]
-- [Create Strorage Account][storage_account]
+- [Create Storage Account][storage_account]
 
 ### Adding the package to your product
 
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
-  <artifactId>azure-storage</artifactId>
-  <version>12.0.0</version>
+  <artifactId>azure-storage-queue</artifactId>
+  <version>12.0.0-preview.2</version>
 </dependency>
 ```
 
@@ -31,13 +32,13 @@ az group create --name storage-resource-group --location westus
 
 ### Authenticate the client
 
-In order to interact with the Storage service (Blob, Queue, Message, MessageId, File) you'll need to create an instance of the Service Client class. 
+In order to interact with the Storage service (Blob, Queue, Message, MessageId, File) you'll need to create an instance of the Service Client class.
 To make this possible you'll need the Account SAS (shared access signature) string of Storage account. Learn more at [SAS Token][sas_token]
 
 #### Get Credentials
 
 - **SAS Token**
- 
+
 a. Use the [Azure CLI][azure_cli] snippet below to get the SAS token from the Storage account.
 
 ```Powershell
@@ -76,7 +77,6 @@ Go to your storage account -> Access Keys -> Keys 1/ Key 2 -> Connection string
 ## Key concepts
 ### URL format
 Queues are addressable using the following URL format:
-https://<storage account>.queue.core.windows.net/<queue>
 The following URL addresses a queue in the diagram:
 https://myaccount.queue.core.windows.net/images-to-download
 
@@ -104,7 +104,7 @@ Every queue within an account must have a unique name. The queue name must be a 
 1. A queue name must be from 3 through 63 characters long.
 
 ### Queue Services
-The queue service do operations on the queues in the storage account and manage the queue properties. 
+The queue service do operations on the queues in the storage account and manage the queue properties.
 
 ### Queue Service Client
 
@@ -114,7 +114,7 @@ Once you have the value of the SASToken you can create the queue service client 
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", accountName)
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueURL).credential(SASToken).build();
 
-QueueClient newQueueServiceClient = queueServiceClient.createQueue("myqueue");
+QueueClient newQueueClient = queueServiceClient.createQueue("myqueue");
 ```
 
 or
@@ -136,7 +136,7 @@ queueServiceAsyncClient.createQueue("newAsyncQueue").subscribe(
 ```
 
 ### Queue
-Azure Queue storage is a service for storing large numbers of messages that can be accessed from anywhere in the world via authenticated calls using HTTP or HTTPS. 
+Azure Queue storage is a service for storing large numbers of messages that can be accessed from anywhere in the world via authenticated calls using HTTP or HTTPS.
 A single queue message can be up to 64 KB in size, and a queue can contain millions of messages, up to the total capacity limit of a storage account.
 
 ### QueueClient
@@ -144,8 +144,8 @@ Once you have the value of the SASToken you can create the queue service client 
 ```Java
 String queueURL = String.format("https://%s.queue.core.windows.net/%s", accountName, queueName);
 QueueClient queueClient = QueueClient.builder().endpoint(queueURL).credential(SASToken).build();
-// metadata is map of key-value pair, timeout is client side timeout
-QueueClient newQueueClient = queueClient.create(metadata, timeout);
+// metadata is map of key-value pair
+queueClient.createWithResponse(metadata, null);
 ```
 
 or
@@ -153,7 +153,7 @@ or
 ```Java
 String queueAsyncURL = String.format("https://%s.queue.core.windows.net/%s%s", accountName, queueAsyncName, sasToken)
 QueueAsyncClient queueAsyncClient = QueueAsyncClient.builder().endpoint(queueAsyncURL).build();
-queueAsyncClient.create(metadata, timeout).subscribe(
+queueAsyncClient.createWithResponse(metadata).subscribe(
     result -> {
       // do something when new queue created
     },
@@ -163,25 +163,24 @@ queueAsyncClient.create(metadata, timeout).subscribe(
     () -> {
       // completed, do something
     });
-```
-
+``` 
 ## Examples
 
 The following sections provide several code snippets covering some of the most common Configuration Service tasks, including:
 - [Build a client](#build-a-client)
-- [Create a Queue](#Create-a-queue)
-- [Delete a queue](#Delete-a-queue)
-- [List the queues in account](#List-queues-in-account)
-- [Get propertiesin Queue account](#Get-properties-in-queue-account)
-- [Set propertiesin Queue account](#Set-properties-in-queue-account)
-- [Get statistcs of queue](#Get-queue-service-statistics)
-- [Enqueue message into a queue](#Enqueue-message-into-a-queue)
-- [Update message into a queue](#Update-message-into-a-queue)
-- [Peek messages into a queue](#Peek-messages-into-a-queue)
-- [Dequeue messages from a queue](#Dequeue-messages-from-a-queue)
-- [Delete message from a queue](#Delete-message-from-a-queue)
-- [Get a Queue properties](#Get-a-queue-properties)
-- [Set/Update a Queue metadata](#Set-a-queue-metadata)
+- [Create a Queue](#create-a-queue)
+- [Delete a queue](#delete-a-queue)
+- [List the queues in account](#list-queues-in-account)
+- [Get properties in Queue account](#get-properties-in-queue-account)
+- [Set properties in Queue account](#set-properties-in-queue-account)
+- [Get statistics of queue](#get-queue-service-statistics)
+- [Enqueue message into a queue](#enqueue-message-into-a-queue)
+- [Update a message in a queue](#update-a-message-in-a-queue)
+- [Peek at messages in a queue](#peek-at-messages-in-a-queue)
+- [Dequeue messages from a queue](#dequeue-messages-from-a-queue)
+- [Delete message from a queue](#delete-message-from-a-queue)
+- [Get a Queue properties](#get-a-queue-properties)
+- [Set/Update a Queue metadata](#set-a-queue-metadata)
 
 ### Build a client
 We have two ways of building QueueService or Queue Client. Here will take queueServiceClient as an example. Same things apply to queueClient.
@@ -204,24 +203,24 @@ QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint
 
 ### Create a queue
 
-Create a queue in the Storage Account using `${SASToken}` as credential. 
+Create a queue in the Storage Account using `${SASToken}` as credential.
 Throws StorageErrorException If the queue fails to be created.
 
 ```Java
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", accountName);
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).credential(SASToken).buildClient();
 
-QueueClient newQueueServiceClient = queueServiceClient.createQueue("myqueue");
+QueueClient newQueueClient = queueServiceClient.createQueue("myqueue");
 ```
 ### Delete a queue
 
-Delete a queue in the Storage Account using `${SASToken}` as credential. 
+Delete a queue in the Storage Account using `${SASToken}` as credential.
 Throws StorageErrorException If the queue fails to be deleted.
 ```Java
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", accountName);
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).credential(SASToken).buildClient();
 
-QueueClient newQueueServiceClient = queueServiceClient.deleteQueue("myqueue");
+queueServiceClient.deleteQueue("myqueue");
 ```
 
 ### List queues in account
@@ -246,7 +245,7 @@ Use `${SASToken}` as credential.
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", accountName);
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).credential(SASToken).buildClient();
 
-Response<StorageServiceProperties> properties = queueServiceClient.getProperties();
+StorageServiceProperties properties = queueServiceClient.getProperties();
 ```
 
 ### Set properties in queue account
@@ -268,8 +267,8 @@ StorageServiceProperties properties = new StorageServiceProperties() {
 queueServiceClient.setProperties(properties);
 ```
 
-### Get queue service statistics 
-The `Get Queue Service Stats` operation retrieves statistics related to replication for the Queue service. 
+### Get queue service statistics
+The `Get Queue Service Stats` operation retrieves statistics related to replication for the Queue service.
 
 Use `${SASToken}` as credential.
 It is only available on the secondary location endpoint when read-access geo-redundant replication is enabled for the storage account.
@@ -277,11 +276,11 @@ It is only available on the secondary location endpoint when read-access geo-red
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", accountName);
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).credential(SASToken).buildClient();
 
-Response<StorageServiceStats> queueStats = queueServiceClient.getStatistics();
+StorageServiceStats queueStats = queueServiceClient.getStatistics();
 ```
 
 ### Enqueue message into a queue
-The operation adds a new message to the back of the message queue. A visibility timeout can also be specified to make the message invisible until the visibility timeout expires. 
+The operation adds a new message to the back of the message queue. A visibility timeout can also be specified to make the message invisible until the visibility timeout expires.
 
 Use `${SASToken}` as credential.
 A message must be in a format that can be included in an XML request with UTF-8 encoding. The encoded message can be up to 64 KB in size for versions 2011-08-18 and newer, or 8 KB in size for previous versions.
@@ -292,7 +291,7 @@ QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).credential
 queueClient.enqueueMessage("myMessage");
 ```
 
-### Update messaged from a queue
+### Update a message in a queue
 The operation updates a message in the message queue. Use `${SASToken}` as credential.
 ```Java
 String queueSURL = String.format("https://%s.queue.core.windows.net", accountName);
@@ -300,10 +299,10 @@ QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).credential
 // @param messageId Id of the message
 // @param popReceipt Unique identifier that must match the message for it to be updated
 // @param visibilityTimeout How long the message will be invisible in the queue in seconds
-queueClient.updateMessage(messageId, "new message", popReceipt, visibilityTimeout);
+queueClient.updateMessage("new message", messageId, popReceipt, visibilityTimeout);
 ```
 
-### Peek messages from a queue
+### Peek at messages in a queue
 The operation retrieves one or more messages from the front of the queue. Use `${SASToken}` as credential.
 ```Java
 String queueSURL = String.format("https://%s.queue.core.windows.net", accountName);
@@ -340,7 +339,7 @@ Use `${SASToken}` as credential.
 String queueSURL = String.format("https://%s.queue.core.windows.net", accountName);
 QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).credential(SASToken).queueName("myqueue").buildClient();
 
-Response<StorageServiceProperties> properties = queueClient.getProperties();
+StorageServiceProperties properties = queueClient.getProperties();
 ```
 
 ### Set a queue metadata
@@ -367,14 +366,11 @@ When you interact with queue using this Java client library, errors returned by 
 
 ## Next steps
 
-### More Samples
 Get started with our [Queue samples][samples]:
-- [QueueServiceSample](src/samples/java/queue/QueueServiceSample.java): Create, list and delete queues
-- [MessageSample](src/samples/java/queue/MessageSample.java): Enqueue, peek dequeue, update, clear and delete messages. Get properties of the queue.
-- [QueueExceptionSample](src/samples/java/queue/QueueExceptionSample.java): Handle the exceptions from storage queue service side.
-- [AsyncSample](src/samples/java/queue/AsyncSample.java): Create queue and enqueue message using async queue client call.
-
-[Quickstart: Create a Java Spring app with App Configuration](https://docs.microsoft.com/en-us/azure/azure-app-configuration/quickstart-java-spring-app)
+- [QueueServiceSample][samples_queue_service]: Create, list and delete queues
+- [MessageSample][samples_message]: Enqueue, peek dequeue, update, clear and delete messages. Get properties of the queue.
+- [QueueExceptionSample][samples_queue_exception]: Handle the exceptions from storage queue service side.
+- [AsyncSample][samples_async]: Create queue and enqueue message using async queue client call.
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
@@ -398,15 +394,20 @@ If you would like to become an active contributor to this project please follow 
 5. Create new Pull Request
 
 <!-- LINKS -->
-[source_code]: to-be-continue
-[package]: to-be-continue
-[api_documentation]: https://docs.microsoft.com/en-us/rest/api/storageservices/queue-service-rest-api
-[storage_docs]: https://docs.microsoft.com/en-us/azure/storage/queues/storage-queues-introduction
-[jdk]: https://docs.microsoft.com/en-us/java/azure/java-supported-jdk-runtime?view=azure-java-stable
+[source_code]: src
+[api_documentation]: https://docs.microsoft.com/rest/api/storageservices/queue-service-rest-api
+[storage_docs]: https://docs.microsoft.com/azure/storage/queues/storage-queues-introduction
+[jdk]: https://docs.microsoft.com/java/azure/java-supported-jdk-runtime?view=azure-java-stable
 [maven]: https://maven.apache.org/
-[azure_subscription]: https://azure.microsoft.com/en-us/free/
-[storage_account]: https://docs.microsoft.com/en-us/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[azure_subscription]: https://azure.microsoft.com/free/
+[storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [azure_cli]: https://docs.microsoft.com/cli/azure
-[sas_token]: https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1
-[storage_rest]: https://docs.microsoft.com/en-us/rest/api/storageservices/queue-service-error-codes
-[samples]: samples/
+[sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+[storage_rest]: https://docs.microsoft.com/rest/api/storageservices/queue-service-error-codes
+[samples]: src/samples
+[samples_queue_service]: src/samples/java/com/azure/storage/queue/QueueServiceSamples.java
+[samples_message]: src/samples/java/com/azure/storage/queue/MessageSamples.java
+[samples_queue_exception]: src/samples/java/com/azure/storage/queue/QueueExceptionSamples.java
+[samples_async]: src/samples/java/com/azure/storage/queue/AsyncSamples.java
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-queue/README.png)

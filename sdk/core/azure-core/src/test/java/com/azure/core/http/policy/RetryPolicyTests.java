@@ -5,11 +5,11 @@ package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.MockHttpClient;
 import com.azure.core.http.MockHttpResponse;
+import com.azure.core.http.clients.NoOpHttpClient;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
@@ -22,14 +22,14 @@ public class RetryPolicyTests {
     @Test
     public void exponentialRetryEndOn501() throws Exception {
         final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new MockHttpClient() {
+            .httpClient(new NoOpHttpClient() {
                 // Send 408, 500, 502, all retried, with a 501 ending
                 private final int[] codes = new int[]{408, 500, 502, 501};
                 private int count = 0;
 
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
-                    return Mono.<HttpResponse>just(new MockHttpResponse(request, codes[count++]));
+                    return Mono.just(new MockHttpResponse(request, codes[count++]));
                 }
             })
             .policies(new RetryPolicy(3, Duration.of(0, ChronoUnit.MILLIS)))
@@ -45,13 +45,13 @@ public class RetryPolicyTests {
     public void exponentialRetryMax() throws Exception {
         final int maxRetries = 5;
         final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new MockHttpClient() {
+            .httpClient(new NoOpHttpClient() {
                 int count = -1;
 
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     Assert.assertTrue(count++ < maxRetries);
-                    return Mono.<HttpResponse>just(new MockHttpResponse(request, 500));
+                    return Mono.just(new MockHttpResponse(request, 500));
                 }
             })
             .policies(new RetryPolicy(maxRetries, Duration.of(0, ChronoUnit.MILLIS)))

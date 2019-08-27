@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation;
 
+import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.implementation.annotation.BodyParam;
 import com.azure.core.implementation.annotation.ExpectedResponses;
 import com.azure.core.implementation.annotation.Get;
@@ -18,7 +19,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.MockHttpClient;
+import com.azure.core.http.clients.MockHttpClient;
 import com.azure.core.http.MockHttpResponse;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.rest.Page;
@@ -328,7 +329,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         ResponseBase<HeaderCollectionTypePackagePrivateFields, Void> packagePrivateFields();
     }
 
-    private static final HttpClient HEADER_COLLECTION_HTTP_CLIENT = new MockHttpClient() {
+    private static final HttpClient HEADER_COLLECTION_HTTP_CLIENT = new NoOpHttpClient() {
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             final HttpHeaders headers = new HttpHeaders().put("name", "Phillip")
@@ -336,7 +337,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
                 .put("header-collection-prefix-two", "2")
                 .put("header-collection-prefix-three", "3");
             final MockHttpResponse response = new MockHttpResponse(request, 200, headers);
-            return Mono.<HttpResponse>just(response);
+            return Mono.just(response);
         }
     };
 

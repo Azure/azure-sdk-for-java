@@ -15,10 +15,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for DependencyAction.
  */
 public enum DependencyAction {
-    /** Satisfy the Task's dependencies. */
+    /** Satisfy tasks waiting on this task; once all dependencies are satisfied, the task will be scheduled to run. */
     SATISFY("satisfy"),
 
-    /** Block the Task's dependencies. */
+    /** Blocks tasks waiting on this task, preventing them from being scheduled. */
     BLOCK("block");
 
     /** The actual serialized value for a DependencyAction instance. */

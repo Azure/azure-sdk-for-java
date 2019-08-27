@@ -6,7 +6,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-
+ 
 trigger:
   branches:
     include:
@@ -36,9 +36,13 @@ stages:
       Artifacts:
         - name: azure-core
           safeName: azurecore
+          stagingProfileId: 88192f04117501
         - name: azure-core-amqp
           safeName: azurecoreamqp
+          stagingProfileId: 88192f04117501
         - name: azure-core-management
           safeName: azurecoremanagement
+          stagingProfileId: 88192f04117501
         - name: azure-core-test
           safeName: azurecoretest
+          stagingProfileId: 88192f04117501

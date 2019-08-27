@@ -37,8 +37,8 @@ public class BackCompatTest extends ApiTestBase {
     private static final String PAYLOAD = "test-message";
 
     private EventHubAsyncClient client;
-    private EventHubProducer producer;
-    private EventHubConsumer consumer;
+    private EventHubAsyncProducer producer;
+    private EventHubAsyncConsumer consumer;
 
     public BackCompatTest() {
         super(new ClientLogger(BackCompatTest.class));
