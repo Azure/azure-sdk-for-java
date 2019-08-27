@@ -555,7 +555,8 @@ public class ShareClient {
      */
     public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata, Context context) {
         FileClient fileClient = getFileClient(fileName);
-        return new SimpleResponse<>(fileClient.createWithResponse(maxSize, httpHeaders, metadata, context), fileClient);
+        // TODO: Add file properties
+        return new SimpleResponse<>(fileClient.createWithResponse(maxSize, httpHeaders, null, null, metadata, context), fileClient);
     }
 
     /**

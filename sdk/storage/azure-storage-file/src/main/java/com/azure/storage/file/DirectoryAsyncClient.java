@@ -25,6 +25,7 @@ import com.azure.storage.file.models.DirectorysListHandlesResponse;
 import com.azure.storage.file.models.DirectorysSetMetadataResponse;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileRef;
+import com.azure.storage.file.models.FileSmbProperties;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageErrorException;
 import reactor.core.publisher.Flux;
@@ -559,7 +560,8 @@ public class DirectoryAsyncClient {
 
     Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata, Context context) {
         FileAsyncClient fileAsyncClient = getFileClient(fileName);
-        return fileAsyncClient.createWithResponse(maxSize, httpHeaders, metadata, context).map(response -> new SimpleResponse<>(response, fileAsyncClient));
+        // TODO : Allow addition of file properties
+        return fileAsyncClient.createWithResponse(maxSize, httpHeaders, null, null, metadata, context).map(response -> new SimpleResponse<>(response, fileAsyncClient));
     }
 
     /**
@@ -626,9 +628,9 @@ public class DirectoryAsyncClient {
     private Response<DirectoryInfo> createWithRestResponse(final DirectorysCreateResponse response) {
         String eTag = response.deserializedHeaders().eTag();
         OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
-        DirectoryInfo directoryInfo = new DirectoryInfo(eTag, lastModified);
+        FileSmbProperties smbProperties = new FileSmbProperties(response);
+        DirectoryInfo directoryInfo = new DirectoryInfo(eTag, lastModified, smbProperties);
         return new SimpleResponse<>(response, directoryInfo);
-
     }
 
     private Response<DirectoryProperties> getPropertiesResponse(DirectorysGetPropertiesResponse response) {
@@ -636,15 +638,14 @@ public class DirectoryAsyncClient {
         String eTag = response.deserializedHeaders().eTag();
         OffsetDateTime offsetDateTime = response.deserializedHeaders().lastModified();
         boolean isServerEncrypted = response.deserializedHeaders().isServerEncrypted();
-
-        DirectoryProperties directoryProperties = new DirectoryProperties(metadata, eTag, offsetDateTime, isServerEncrypted);
+        FileSmbProperties smbProperties = new FileSmbProperties(response);
+        DirectoryProperties directoryProperties = new DirectoryProperties(metadata, eTag, offsetDateTime, isServerEncrypted, smbProperties);
         return new SimpleResponse<>(response, directoryProperties);
     }
 
     private Response<DirectorySetMetadataInfo> setMetadataResponse(final DirectorysSetMetadataResponse response) {
         String eTag = response.deserializedHeaders().eTag();
         boolean isServerEncrypted = response.deserializedHeaders().isServerEncrypted();
-
         DirectorySetMetadataInfo directorySetMetadataInfo = new DirectorySetMetadataInfo(eTag, isServerEncrypted);
         return new SimpleResponse<>(response, directorySetMetadataInfo);
     }

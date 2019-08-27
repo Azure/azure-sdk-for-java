@@ -7,12 +7,15 @@ import com.azure.core.exception.HttpResponseException
 import com.azure.core.http.rest.Response
 import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.util.Context
+import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.FileClient
 import com.azure.storage.file.ShareClient
 import com.azure.storage.file.models.FileCopyInfo
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.FileRange
+import com.azure.storage.file.models.FileSmbProperties
+import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageErrorException
 import spock.lang.Ignore
@@ -33,6 +36,8 @@ class FileAPITests extends APISpec {
     def dataLength = defaultData.remaining()
     static def testMetadata
     static def httpHeaders
+    static def smbProperties
+    static def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
         shareName = testResourceName.randomName(methodName, 60)
@@ -43,6 +48,10 @@ class FileAPITests extends APISpec {
         testMetadata = Collections.singletonMap("testmetadata", "value")
         httpHeaders = new FileHTTPHeaders().fileContentLanguage("en")
             .fileContentType("application/octet-stream")
+        smbProperties = new FileSmbProperties()
+            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL))
+            .fileCreationTime(OffsetDateTime.now())
+            .fileLastWriteTime(OffsetDateTime.now())
     }
 
     def "Get file URL"() {
@@ -57,7 +66,7 @@ class FileAPITests extends APISpec {
 
     def "Create file"() {
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryFileClient.createWithResponse(1024, null, null, null), 201)
+        FileTestHelper.assertResponseStatusCode(primaryFileClient.createWithResponse(1024, null, null, null, null, null), 201)
     }
 
     def "Create file error"() {
@@ -70,13 +79,13 @@ class FileAPITests extends APISpec {
 
     def "Create file with args"() {
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryFileClient.createWithResponse(1024, httpHeaders, testMetadata, null), 201)
+        FileTestHelper.assertResponseStatusCode(primaryFileClient.createWithResponse(1024, httpHeaders, smbProperties, filePermission, testMetadata, null), 201)
     }
 
     @Unroll
     def "Create file with args error"() {
         when:
-        primaryFileClient.createWithResponse(maxSize, fileHttpHeaders, metadata, null)
+        primaryFileClient.createWithResponse(maxSize, fileHttpHeaders as FileHTTPHeaders, smbProperties, filePermission, metadata, null)
         then:
         def e = thrown(StorageErrorException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
@@ -84,6 +93,19 @@ class FileAPITests extends APISpec {
         maxSize | fileHttpHeaders | metadata                                      | statusCode | errMsg
         -1      | httpHeaders     | testMetadata                                  | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
         1024    | httpHeaders     | Collections.singletonMap("testMeta", "value") | 403        | StorageErrorCode.AUTHENTICATION_FAILED
+    }
+
+    @Unroll
+    def "Create file permission and key error"() {
+        when:
+        FileSmbProperties properties = new FileSmbProperties().filePermissionKey(filePermissionKey)
+        primaryFileClient.createWithResponse(1024, null, properties, permission, null, null)
+        then:
+        thrown(IllegalArgumentException)
+        where:
+        filePermissionKey   | permission
+        "filePermissionKey" | filePermission
+        null                | new String(FileTestHelper.getRandomBuffer(9 * Constants.KB))
     }
 
     def "Upload and download data"() {
@@ -253,7 +275,7 @@ class FileAPITests extends APISpec {
 
     def "Delete file"() {
         given:
-        primaryFileClient.createWithResponse(1024, null, null, null)
+        primaryFileClient.createWithResponse(1024, null, null, null, null, null)
         expect:
         FileTestHelper.assertResponseStatusCode(primaryFileClient.deleteWithResponse(null), 202)
     }
@@ -288,14 +310,16 @@ class FileAPITests extends APISpec {
     @Ignore
     def "Set httpHeaders"() {
         given:
-        primaryFileClient.createWithResponse(1024, httpHeaders, testMetadata, null)
+        // TODO: Add to test here
+        primaryFileClient.createWithResponse(1024, httpHeaders, null, null, testMetadata, null)
         expect:
         FileTestHelper.assertResponseStatusCode(primaryFileClient.setHttpHeadersWithResponse(512, httpHeaders, null), 200)
     }
 
     def "Set httpHeaders error"() {
         given:
-        primaryFileClient.createWithResponse(1024, httpHeaders, testMetadata, null)
+        // TODO: Add to test here
+        primaryFileClient.createWithResponse(1024, httpHeaders, null, null, testMetadata, null)
         when:
         primaryFileClient.setHttpHeadersWithResponse(-1, httpHeaders, null)
         then:
@@ -305,7 +329,7 @@ class FileAPITests extends APISpec {
 
     def "Set metadata"() {
         given:
-        primaryFileClient.createWithResponse(1024, httpHeaders, testMetadata, null)
+        primaryFileClient.createWithResponse(1024, httpHeaders, null, null, testMetadata, null)
         def updatedMetadata = Collections.singletonMap("update", "value")
         when:
         def getPropertiesBefore = primaryFileClient.getProperties()

@@ -657,7 +657,8 @@ public class ShareAsyncClient {
 
     Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata, Context context) {
         FileAsyncClient fileAsyncClient = getFileClient(fileName);
-        return fileAsyncClient.createWithResponse(maxSize, httpHeaders, metadata, context).map(response -> new SimpleResponse<>(response, fileAsyncClient));
+        // TODO: Add parameters for file properties
+        return fileAsyncClient.createWithResponse(maxSize, httpHeaders, null, null, metadata, context).map(response -> new SimpleResponse<>(response, fileAsyncClient));
     }
 
     /**

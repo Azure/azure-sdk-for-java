@@ -4,6 +4,7 @@
 package com.azure.storage.file.models;
 
 import com.azure.core.implementation.util.ImplUtils;
+
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ public final class FileProperties {
     private final String copySource;
     private final CopyStatusType copyStatus;
     private final Boolean isServerEncrypted;
+    private final FileSmbProperties smbProperties;
 
     /**
      * Creates an instance of property information about a specific File.
@@ -53,12 +55,14 @@ public final class FileProperties {
      *                       - aborted: Copy was ended by Abort Copy File.
      *                       - failed: Copy failed. See x-ms-copy-status-description for failure details.
      * @param isServerEncrypted The value of this header is set to true if the file data and application metadata are completely encrypted using the specified algorithm. Otherwise, the value is set to false.
+     * @param smbProperties The SMB properties of the file.
      */
     public FileProperties(final String eTag, final OffsetDateTime lastModified, final Map<String, String> metadata,
                           final String fileType, final Long contentLength, final String contentType, final byte[] contentMD5,
                           final String contentEncoding, final String cacheControl, final String contentDisposition,
                           final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final String copyId,
-                          final String copyProgress, final String copySource, final CopyStatusType copyStatus, final Boolean isServerEncrypted) {
+                          final String copyProgress, final String copySource, final CopyStatusType copyStatus,
+                          final Boolean isServerEncrypted, final FileSmbProperties smbProperties) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.metadata = metadata;
@@ -76,6 +80,7 @@ public final class FileProperties {
         this.copySource = copySource;
         this.copyStatus = copyStatus;
         this.isServerEncrypted = isServerEncrypted;
+        this.smbProperties = smbProperties;
     }
 
     /**
@@ -198,5 +203,12 @@ public final class FileProperties {
      */
     public Boolean isServerEncrypted() {
         return isServerEncrypted;
+    }
+
+    /**
+     * @return The SMB properties of the file.
+     */
+    public FileSmbProperties smbProperties() {
+        return smbProperties;
     }
 }

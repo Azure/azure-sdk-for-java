@@ -10,6 +10,7 @@ import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageBuilder;
@@ -24,6 +25,7 @@ import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileRangeWriteType;
+import com.azure.storage.file.models.FileSmbProperties;
 import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.FileUploadRangeHeaders;
 import com.azure.storage.file.models.FilesCreateResponse;
@@ -37,6 +39,7 @@ import com.azure.storage.file.models.FilesSetMetadataResponse;
 import com.azure.storage.file.models.FilesStartCopyResponse;
 import com.azure.storage.file.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.HandleItem;
+import com.azure.storage.file.models.NtfsFileAttributes;
 import com.azure.storage.file.models.StorageErrorException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -53,6 +56,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -160,7 +165,7 @@ public class FileAsyncClient {
      * an invalid resource name.
      */
     public Mono<FileInfo> create(long maxSize) {
-        return createWithResponse(maxSize, null, null).flatMap(FluxUtil::toMono);
+        return createWithResponse(maxSize, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -177,23 +182,32 @@ public class FileAsyncClient {
      *
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @param httpHeaders Additional parameters for the operation.
+     * @param smbProperties The SMB properties of the file.
+     * @param filePermission The file permission of the file.
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
      * @return A response containing the {@link FileInfo file info} and the status of creating the file.
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
-    public Mono<Response<FileInfo>> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata) {
-        return withContext(context -> createWithResponse(maxSize, httpHeaders, metadata, context));
+    public Mono<Response<FileInfo>> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
+        return withContext(context -> createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context));
     }
 
-    Mono<Response<FileInfo>> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata, Context context) {
+    Mono<Response<FileInfo>> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
          // TODO (alzimmer): These properties are dummy defaults to allow the new service version to be used. Remove these and use correct defaults when known (https://github.com/Azure/azure-sdk-for-java/issues/5039)
-        String fileAttributes = "None";
-        String filePermission = "inherit";
-        String fileCreationTime = "now";
-        String fileLastWriteTime = "now";
+
+        FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+
+        FileExtensions.filePermissionAndKeyHelper(filePermission, properties.filePermissionKey());
+
+        filePermission = (filePermission == null) && (properties.filePermissionKey() == null) ? "Inherit" : filePermission;
+        String filePermissionKey = properties.filePermissionKey();
+
+        String fileAttributes = properties.ntfsFileAttributes() == null ? "None" : NtfsFileAttributes.toString(properties.ntfsFileAttributes());
+        String fileCreationTime = properties.fileCreationTime() == null ? "Now" : Utility.parseFileSMBDate(properties.fileCreationTime());
+        String fileLastWriteTime = properties.fileLastWriteTime() == null ? "Now" : Utility.parseFileSMBDate(properties.fileLastWriteTime());
 
         return azureFileStorageClient.files().createWithRestResponseAsync(shareName, filePath, maxSize, fileAttributes,
-            fileCreationTime, fileLastWriteTime, null, metadata, filePermission, null, httpHeaders, context)
+            fileCreationTime, fileLastWriteTime, null, metadata, filePermission, filePermissionKey, httpHeaders, context)
             .map(this::createFileInfoResponse);
     }
 
@@ -965,7 +979,8 @@ public class FileAsyncClient {
         String eTag = response.deserializedHeaders().eTag();
         OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
         boolean isServerEncrypted = response.deserializedHeaders().isServerEncrypted();
-        FileInfo fileInfo = new FileInfo(eTag, lastModified, isServerEncrypted);
+        FileSmbProperties smbProperties = new FileSmbProperties(response);
+        FileInfo fileInfo = new FileInfo(eTag, lastModified, isServerEncrypted, smbProperties);
         return new SimpleResponse<>(response, fileInfo);
     }
 
@@ -982,7 +997,8 @@ public class FileAsyncClient {
         String eTag = response.deserializedHeaders().eTag();
         OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
         boolean isServerEncrypted = response.deserializedHeaders().isServerEncrypted();
-        FileInfo fileInfo = new FileInfo(eTag, lastModified, isServerEncrypted);
+        FileSmbProperties smbProperties = new FileSmbProperties(response);
+        FileInfo fileInfo = new FileInfo(eTag, lastModified, isServerEncrypted, smbProperties);
         return new SimpleResponse<>(response, fileInfo);
     }
 
@@ -994,7 +1010,8 @@ public class FileAsyncClient {
         String contentType = response.deserializedHeaders().contentType();
         String contentRange = response.deserializedHeaders().contentRange();
         Flux<ByteBuffer> body = response.value();
-        FileDownloadInfo fileDownloadInfo = new FileDownloadInfo(eTag, lastModified, metadata, contentLength, contentType, contentRange, body);
+        FileSmbProperties smbProperties = new FileSmbProperties(response);
+        FileDownloadInfo fileDownloadInfo = new FileDownloadInfo(eTag, lastModified, metadata, contentLength, contentType, contentRange, body, smbProperties);
         return new SimpleResponse<>(response, fileDownloadInfo);
     }
 
@@ -1022,9 +1039,10 @@ public class FileAsyncClient {
         String copySource = headers.copySource();
         CopyStatusType copyStatus = headers.copyStatus();
         Boolean isServerEncrpted = headers.isServerEncrypted();
+        FileSmbProperties smbProperties = new FileSmbProperties(response);
         FileProperties fileProperties = new FileProperties(eTag, lastModified, metadata, fileType, contentLength,
             contentType, contentMD5, contentEncoding, cacheControl, contentDisposition, copyCompletionTime, copyStatusDescription,
-            copyId, copyProgress, copySource, copyStatus, isServerEncrpted);
+            copyId, copyProgress, copySource, copyStatus, isServerEncrpted, smbProperties);
         return new SimpleResponse<>(response, fileProperties);
     }
 

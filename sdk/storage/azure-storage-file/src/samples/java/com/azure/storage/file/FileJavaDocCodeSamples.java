@@ -15,6 +15,7 @@ import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
+import com.azure.storage.file.models.FileSmbProperties;
 import com.azure.storage.file.models.FileUploadInfo;
 
 import java.nio.ByteBuffer;
@@ -109,13 +110,15 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#createWithResponse(long, FileHTTPHeaders, Map, Context)}
+     * Generates a code sample for using {@link FileClient#createWithResponse(long, FileHTTPHeaders, FileSmbProperties, String, Map, Context)}
      */
     public void createWithResponse() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.createWithResponse#long-filehttpheaders-map-Context
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
-        Response<FileInfo> response = fileClient.createWithResponse(1024, httpHeaders,
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        Response<FileInfo> response = fileClient.createWithResponse(1024, httpHeaders, smbProperties, filePermission,
             Collections.singletonMap("file", "updatedMetadata"), new Context(key1, value1));
         System.out.printf("Creating the file completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.fileClient.createWithResponse#long-filehttpheaders-map-Context

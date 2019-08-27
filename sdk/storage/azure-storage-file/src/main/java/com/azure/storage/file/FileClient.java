@@ -15,6 +15,7 @@ import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
+import com.azure.storage.file.models.FileSmbProperties;
 import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageErrorException;
@@ -77,7 +78,7 @@ public class FileClient {
      * @throws StorageErrorException If the file has already existed, the parent directory does not exist or fileName is an invalid resource name.
      */
     public FileInfo create(long maxSize) {
-        return createWithResponse(maxSize, null, null, Context.NONE).value();
+        return createWithResponse(maxSize, null, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -94,14 +95,16 @@ public class FileClient {
      *
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @param httpHeaders Additional parameters for the operation.
+     * @param smbProperties The SMB properties of the file.
+     * @param filePermission The file permission of the file.
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileInfo file info} and the status of creating the file.
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
-    public Response<FileInfo> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata, Context context) {
-        return fileAsyncClient.createWithResponse(maxSize, httpHeaders, metadata, context).block();
+    public Response<FileInfo> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
+        return fileAsyncClient.createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context).block();
     }
 
     /**

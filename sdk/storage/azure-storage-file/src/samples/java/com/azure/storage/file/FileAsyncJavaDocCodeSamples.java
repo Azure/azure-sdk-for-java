@@ -8,6 +8,7 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
+import com.azure.storage.file.models.FileSmbProperties;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -113,14 +114,16 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#createWithResponse(long, FileHTTPHeaders, Map)}
+     * Generates a code sample for using {@link FileAsyncClient#createWithResponse(long, FileHTTPHeaders, FileSmbProperties, String, Map)}
      */
     public void createWithResponse() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.createWithResponse#long-filehttpheaders-map
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
-        fileAsyncClient.createWithResponse(1024, httpHeaders, Collections.singletonMap("file",
-            "updatedMetadata"))
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        fileAsyncClient.createWithResponse(1024, httpHeaders, smbProperties, filePermission,
+            Collections.singletonMap("file", "updatedMetadata"))
             .subscribe(response -> System.out.printf("Creating the file completed with status code %d",
                 response.statusCode()));
         // END: com.azure.storage.file.fileAsyncClient.createWithResponse#long-filehttpheaders-map
