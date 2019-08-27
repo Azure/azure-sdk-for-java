@@ -23,9 +23,6 @@ import java.util.Set;
  * </ol>
  */
 public class FluentMethodNameCheck extends AbstractCheck {
-
-    private static final String FLUENT_METHOD_ERR = "\"%s\" fluent method name should not start with keyword \"%s\".";
-
     /**
      * This is a custom defined set which contains all prefixes that are not allowed.
      */
@@ -100,12 +97,9 @@ public class FluentMethodNameCheck extends AbstractCheck {
         // A fluent method should only has one parameter.
         if (TokenUtil.findFirstTokenByPredicate(methodDefToken, parameters ->
             parameters.getType() == TokenTypes.PARAMETERS && parameters.getChildCount() != 1).isPresent()) {
-            log(methodDefToken, "A fluent method should only has one parameter.");
+            log(methodDefToken, "A fluent method should only have one parameter.");
         }
 
-        if (classNameStack.isEmpty()) {
-            return;
-        }
         // A fluent method's return type should be the class itself
         final DetailAST typeToken = methodDefToken.findFirstToken(TokenTypes.TYPE);
         if (TokenUtil.findFirstTokenByPredicate(typeToken, ident -> ident.getType() == TokenTypes.IDENT
@@ -117,7 +111,7 @@ public class FluentMethodNameCheck extends AbstractCheck {
         // method name should not start with words in the avoid string list
         avoidStartWords.forEach(avoidStartWord -> {
             if (methodName.length() >= avoidStartWord.length() && methodName.startsWith(avoidStartWord)) {
-                log(methodDefToken, String.format(FLUENT_METHOD_ERR, methodName, avoidStartWord));
+                log(methodDefToken, String.format("''%s'' fluent method name should not start with keyword ''%s''.", methodName, avoidStartWord));
             }
         });
     }
@@ -131,19 +125,12 @@ public class FluentMethodNameCheck extends AbstractCheck {
     private boolean isFluentMethod(DetailAST methodDefToken) {
         // Always has MODIFIERS node
         final DetailAST modifiersToken = methodDefToken.findFirstToken(TokenTypes.MODIFIERS);
-
-        for (DetailAST annotationToken = modifiersToken.getFirstChild(); annotationToken != null;
-             annotationToken = annotationToken.getNextSibling()) {
-            if (annotationToken.getType() != TokenTypes.ANNOTATION) {
-                continue;
-            }
-            // One class could have multiple annotations, return true if found one.
-            final DetailAST annotationIdent = annotationToken.findFirstToken(TokenTypes.IDENT);
-            if (annotationIdent != null && "Fluent".equals(annotationIdent.getText())) {
-                return true;
-            }
-        }
         // If no @Fluent annotated with this class, return false
-        return false;
+        return TokenUtil.findFirstTokenByPredicate(modifiersToken,
+                    annotationToken -> annotationToken.getType() == TokenTypes.ANNOTATION
+                        && TokenUtil.findFirstTokenByPredicate(annotationToken,
+                            identToken -> identToken.getType() == TokenTypes.IDENT &&
+                                "Fluent".equals(identToken.getText())).isPresent())
+            .isPresent();
     }
 }
