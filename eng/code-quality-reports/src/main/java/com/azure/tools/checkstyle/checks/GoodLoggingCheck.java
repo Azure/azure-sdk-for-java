@@ -150,7 +150,7 @@ public class GoodLoggingCheck extends AbstractCheck {
             }
             // Check instantiation of ClientLogger
             final String containerClassName = FullIdent.createFullIdent(exprToken.getFirstChild()).getText();
-            // Add suffix of '.class' at the end ot class name
+            // Add suffix of '.class' at the end of class name
             final String className = classNameDeque.peekFirst();
             if (!containerClassName.equals(className + ".class")) {
                 log(exprToken, String.format("Not newing a ClientLogger with matching class name. Use ''%s.class'' instead of ''%s''", className, containerClassName));
