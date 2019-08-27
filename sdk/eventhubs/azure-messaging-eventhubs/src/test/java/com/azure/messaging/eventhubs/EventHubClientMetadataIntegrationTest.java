@@ -53,7 +53,7 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
 
         eventHubName = getConnectionOptions().eventHubName();
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
+        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, null);
     }
 
     @Override
@@ -134,7 +134,7 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
         final ConnectionOptions connectionOptions = new ConnectionOptions(original.endpoint().getHost(),
             original.eventHubName(), badTokenProvider, getAuthorizationType(), TransportType.AMQP, RETRY_OPTIONS,
             ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionOptions().scheduler());
-        final EventHubAsyncClient client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);
+        final EventHubAsyncClient client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider, null);
 
         // Act & Assert
         StepVerifier.create(client.getProperties())
@@ -159,7 +159,7 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
         final ConnectionOptions connectionOptions = new ConnectionOptions(original.endpoint().getHost(),
             "invalid-event-hub", getTokenCredential(), getAuthorizationType(), TransportType.AMQP,
             RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionOptions().scheduler());
-        final EventHubAsyncClient client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);
+        final EventHubAsyncClient client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider, null);
 
         // Act & Assert
         StepVerifier.create(client.getPartitionIds())

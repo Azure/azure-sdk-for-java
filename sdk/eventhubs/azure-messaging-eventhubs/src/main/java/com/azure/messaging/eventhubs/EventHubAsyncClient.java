@@ -8,6 +8,7 @@ import com.azure.core.amqp.RetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.implementation.RetryUtil;
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.annotation.ServiceMethod;
@@ -78,13 +79,15 @@ public class EventHubAsyncClient implements Closeable {
     private final String eventHubName;
     private final EventHubProducerOptions defaultProducerOptions;
     private final EventHubConsumerOptions defaultConsumerOptions;
+    private final TracerProvider tracerProvider;
 
-    EventHubAsyncClient(ConnectionOptions connectionOptions, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
+    EventHubAsyncClient(ConnectionOptions connectionOptions, ReactorProvider provider, ReactorHandlerProvider handlerProvider, TracerProvider tracerProvider) {
         Objects.requireNonNull(connectionOptions);
         Objects.requireNonNull(provider);
         Objects.requireNonNull(handlerProvider);
 
         this.connectionOptions = connectionOptions;
+        this.tracerProvider = tracerProvider;
         this.eventHubName = connectionOptions.eventHubName();
         this.connectionId = StringUtil.getRandomString("MF");
         this.connectionMono = Mono.fromCallable(() -> {
@@ -185,7 +188,7 @@ public class EventHubAsyncClient implements Closeable {
                     .cast(AmqpSendLink.class);
             });
 
-        return new EventHubAsyncProducer(amqpLinkMono, clonedOptions);
+        return new EventHubAsyncProducer(amqpLinkMono, clonedOptions, this.tracerProvider);
     }
 
     /**

@@ -76,7 +76,7 @@ public class EventProcessorTest {
                 testPartitionProcessor.checkpointManager = checkpointManager;
                 testPartitionProcessor.partitionContext = partitionContext;
                 return testPartitionProcessor;
-            }, EventPosition.latest(), partitionManager, "test-eh");
+            }, EventPosition.latest(), partitionManager, "test-eh", null);
         eventProcessor.start();
         Thread.sleep(TimeUnit.SECONDS.toMillis(2));
         eventProcessor.stop();
@@ -136,7 +136,7 @@ public class EventProcessorTest {
         final EventProcessor eventProcessor = new EventProcessor(eventHubAsyncClient,
             "test-consumer",
             (partitionContext, checkpointManager) -> faultyPartitionProcessor,
-            EventPosition.latest(), partitionManager, "test-eh");
+            EventPosition.latest(), partitionManager, "test-eh", null);
         eventProcessor.start();
         Thread.sleep(TimeUnit.SECONDS.toMillis(2));
         eventProcessor.stop();
@@ -182,7 +182,7 @@ public class EventProcessorTest {
         // Act
         final EventProcessor eventProcessor = new EventProcessor(eventHubAsyncClient,
             "test-consumer",
-            TestPartitionProcessor::new, EventPosition.latest(), partitionManager, "test-eh");
+            TestPartitionProcessor::new, EventPosition.latest(), partitionManager, "test-eh", null);
         eventProcessor.start();
         Thread.sleep(TimeUnit.SECONDS.toMillis(2));
         eventProcessor.stop();

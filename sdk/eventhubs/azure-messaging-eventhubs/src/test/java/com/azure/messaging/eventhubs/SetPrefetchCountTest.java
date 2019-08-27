@@ -64,7 +64,7 @@ public class SetPrefetchCountTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
+        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, null);
 
         setupEventTestData(client);
     }

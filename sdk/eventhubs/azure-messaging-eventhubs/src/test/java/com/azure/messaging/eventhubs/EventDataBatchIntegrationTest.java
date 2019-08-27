@@ -57,7 +57,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
 
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
 
-        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
+        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, null);
         producer = client.createProducer();
     }
 

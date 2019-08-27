@@ -76,7 +76,7 @@ public class EventHubAsyncConsumerIntegrationTest extends ApiTestBase {
             properties.eventHubName(), getTokenCredential(), getAuthorizationType(), TransportType.AMQP,
             RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
 
-        client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);
+        client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider, null);
     }
 
     @Override

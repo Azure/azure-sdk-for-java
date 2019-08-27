@@ -56,7 +56,7 @@ public class BackCompatTest extends ApiTestBase {
     protected void beforeTest() {
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
 
-        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
+        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, null);
         consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions()

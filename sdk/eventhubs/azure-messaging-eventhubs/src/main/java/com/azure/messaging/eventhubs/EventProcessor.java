@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.implementation.TraceUtil;
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.PartitionContext;
@@ -62,24 +62,25 @@ public class EventProcessor {
     private final String identifier;
     private final Map<String, EventHubAsyncConsumer> partitionConsumers = new ConcurrentHashMap<>();
     private final String eventHubName;
+    private final TracerProvider tracerProvider;
     private final AtomicBoolean started = new AtomicBoolean(false);
     private Disposable runner;
     private Scheduler scheduler;
 
     /**
      * Package-private constructor. Use {@link EventHubClientBuilder} to create an instance.
-     *
-     * @param eventHubAsyncClient The {@link EventHubAsyncClient}.
+     *  @param eventHubAsyncClient The {@link EventHubAsyncClient}.
      * @param consumerGroupName The consumer group name used in this event processor to consumer events.
      * @param partitionProcessorFactory The factory to create new partition processor(s).
      * @param initialEventPosition Initial event position to start consuming events.
      * @param partitionManager The partition manager.
      * @param eventHubName The Event Hub name.
+     * @param tracerProvider The tracer implementation
      */
     EventProcessor(EventHubAsyncClient eventHubAsyncClient, String consumerGroupName,
-        PartitionProcessorFactory partitionProcessorFactory, EventPosition initialEventPosition,
-        PartitionManager partitionManager,
-        String eventHubName) {
+                   PartitionProcessorFactory partitionProcessorFactory, EventPosition initialEventPosition,
+                   PartitionManager partitionManager,
+                   String eventHubName, TracerProvider tracerProvider) {
         this.eventHubAsyncClient = Objects
             .requireNonNull(eventHubAsyncClient, "eventHubAsyncClient cannot be null");
         this.consumerGroupName = Objects
@@ -92,6 +93,7 @@ public class EventProcessor {
             .requireNonNull(initialEventPosition, "initialEventPosition cannot be null");
         this.eventHubName = Objects
             .requireNonNull(eventHubName, "eventHubName cannot be null");
+        this.tracerProvider = tracerProvider;
         this.identifier = UUID.randomUUID().toString();
         logger.info("The instance ID for this event processors is {}", this.identifier);
     }
@@ -263,8 +265,8 @@ public class EventProcessor {
         if (diagnosticId == null) {
             return Context.NONE;
         }
-        Context spanContext = TraceUtil.extractContext(diagnosticId.toString(), Context.NONE);
-        return TraceUtil.startScopedSpan("process", spanContext);
+        Context spanContext = tracerProvider.extractContext(diagnosticId.toString(), Context.NONE);
+        return tracerProvider.startScopedSpan("process", spanContext);
     }
 
     /*
@@ -281,6 +283,6 @@ public class EventProcessor {
         } catch (IOException ioException) {
             logger.error("EventProcessor.run() endTracingSpan().close() failed with an error %s", ioException);
         }
-        TraceUtil.endTracingSpan(processSpanContext, signal);
+        tracerProvider.end(processSpanContext, signal);
     }
 }

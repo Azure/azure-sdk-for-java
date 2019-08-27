@@ -79,7 +79,7 @@ public class EventHubAsyncProducerTest {
         final SendOptions options = new SendOptions();
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
             .retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
-        final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(sendLink), producerOptions);
+        final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(sendLink), producerOptions, null);
 
         // Act
         StepVerifier.create(producer.send(testData, options))
@@ -107,7 +107,7 @@ public class EventHubAsyncProducerTest {
         final SendOptions options = new SendOptions();
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
             .retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
-        final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(sendLink), producerOptions);
+        final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(sendLink), producerOptions, null);
 
         // Act
         StepVerifier.create(producer.send(testData, options))
@@ -138,7 +138,7 @@ public class EventHubAsyncProducerTest {
             .retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)))
             .partitionId("my-partition-id");
 
-        final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(sendLink), producerOptions);
+        final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(sendLink), producerOptions, null);
 
         // Act & Assert
         try {
@@ -169,7 +169,7 @@ public class EventHubAsyncProducerTest {
 
         final SendOptions options = new SendOptions();
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
-        final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions);
+        final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions, null);
 
         // Act & Assert
         StepVerifier.create(producer.send(testData, options))
@@ -202,7 +202,7 @@ public class EventHubAsyncProducerTest {
         final EventData tooLargeEvent = new EventData(new byte[maxEventPayload + 1]);
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
-        final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions);
+        final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions, null);
 
         // Act & Assert
         StepVerifier.create(producer.createBatch())
@@ -240,7 +240,7 @@ public class EventHubAsyncProducerTest {
         final EventData event = new EventData(new byte[eventPayload]);
         final BatchOptions options = new BatchOptions().partitionKey("some-key");
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
-        final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions);
+        final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions, null);
 
         // Act & Assert
         StepVerifier.create(producer.createBatch(options))
@@ -266,7 +266,7 @@ public class EventHubAsyncProducerTest {
         // This event is 1024 bytes when serialized.
         final BatchOptions options = new BatchOptions().maximumSizeInBytes(batchSize);
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
-        final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions);
+        final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions, null);
 
         // Act & Assert
         StepVerifier.create(producer.createBatch(options))
@@ -299,7 +299,7 @@ public class EventHubAsyncProducerTest {
 
         final BatchOptions options = new BatchOptions().maximumSizeInBytes(batchSize);
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
-        final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions);
+        final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions, null);
 
         // Act & Assert
         StepVerifier.create(producer.createBatch(options))
@@ -328,7 +328,7 @@ public class EventHubAsyncProducerTest {
         final String originalKey = "some-key";
         final BatchOptions options = new BatchOptions().partitionKey(originalKey);
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
-        final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions);
+        final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions, null);
 
         // Act & Assert
         StepVerifier.create(producer.createBatch(options))
@@ -357,8 +357,9 @@ public class EventHubAsyncProducerTest {
         // This event will be 1025 bytes when serialized.
         final EventData tooLargeEvent = new EventData(new byte[maxEventPayload + 1]);
 
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
-        final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(
+            Duration.ofSeconds(30)));
+        final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions, null);
 
         // Act & Assert
         StepVerifier.create(producer.createBatch())

@@ -5,7 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
-import com.azure.core.amqp.implementation.TraceUtil;
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.implementation.annotation.Immutable;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
@@ -119,17 +119,19 @@ public class EventHubAsyncProducer implements Closeable {
     private final EventHubProducerOptions senderOptions;
     private final Mono<AmqpSendLink> sendLinkMono;
     private final boolean isPartitionSender;
+    private final TracerProvider tracerProvider;
 
     /**
      * Creates a new instance of this {@link EventHubAsyncProducer} that sends messages to {@link
      * EventHubProducerOptions#partitionId() options.partitionId()} if it is not {@code null} or an empty string,
      * otherwise, allows the service to load balance the messages amongst available partitions.
      */
-    EventHubAsyncProducer(Mono<AmqpSendLink> amqpSendLinkMono, EventHubProducerOptions options) {
+    EventHubAsyncProducer(Mono<AmqpSendLink> amqpSendLinkMono, EventHubProducerOptions options, TracerProvider tracerProvider) {
         // Caching the created link so we don't invoke another link creation.
         this.sendLinkMono = amqpSendLinkMono.cache();
         this.senderOptions = options;
         this.isPartitionSender = !ImplUtils.isNullOrEmpty(options.partitionId());
+        this.tracerProvider = tracerProvider;
     }
 
     /**
@@ -316,13 +318,13 @@ public class EventHubAsyncProducer implements Closeable {
                     return events.map(eventData -> {
                         Context parentContext = eventData.context();
                         Context entityContext = parentContext.addData(ENTITY_PATH, link.getEntityPath());
-                        sendSpanContext.set(TraceUtil.start("send", entityContext.addData(HOST_NAME, link.getHostname())));
+                        sendSpanContext.set(tracerProvider.startSpan("send", entityContext.addData(HOST_NAME, link.getHostname())));
                         // add span context on event data
                         return setSpanContext(eventData, parentContext);
                     }).collect(new EventDataCollector(batchOptions, 1, () -> link.getErrorContext()));
                 })
                 .flatMap(list -> sendInternal(Flux.fromIterable(list)))
-                .doOnEach(signal -> TraceUtil.endTracingSpan(sendSpanContext.get(), signal));
+                .doOnEach(signal -> tracerProvider.end(sendSpanContext.get(), signal));
         });
     }
 
@@ -330,15 +332,15 @@ public class EventHubAsyncProducer implements Closeable {
         Optional<Object> eventContextData = event.context().getData(SPAN_CONTEXT);
         if (eventContextData.isPresent()) {
             // if message has context (in case of retries), link it to the span
-            TraceUtil.addSpanLinks((Context) eventContextData.get());
+            tracerProvider.addSpanLinks((Context) eventContextData.get());
             // builder.addLink((Context)eventContextData.get()); TODO: not supported in Opencensus yet
             return event;
         } else {
             // Starting the span makes the sampling decision (nothing is logged at this time)
-            Context eventSpanContext = TraceUtil.start("message", parentContext);
+            Context eventSpanContext = tracerProvider.startSpan("message", parentContext);
             if (eventSpanContext != null && eventSpanContext.getData(DIAGNOSTIC_ID_KEY).isPresent()) {
                 event.addProperty(DIAGNOSTIC_ID_KEY, eventSpanContext.getData(DIAGNOSTIC_ID_KEY).get().toString());
-                TraceUtil.endTracingSpan(eventSpanContext, null);
+                tracerProvider.end(eventSpanContext, null);
                 event.addContext(SPAN_CONTEXT, eventSpanContext);
             }
         }

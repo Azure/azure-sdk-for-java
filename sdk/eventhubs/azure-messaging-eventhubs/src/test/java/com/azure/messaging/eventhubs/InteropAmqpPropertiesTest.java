@@ -57,7 +57,7 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
     @Override
     protected void beforeTest() {
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
+        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, null);
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID)
             .retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));

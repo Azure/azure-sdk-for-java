@@ -60,7 +60,7 @@ public class EventHubProducerTest {
 
         asyncProducer = new EventHubAsyncProducer(
             Mono.fromCallable(() -> sendLink),
-            new EventHubProducerOptions().retry(retryOptions));
+            new EventHubProducerOptions().retry(retryOptions), null);
     }
 
     @After
@@ -141,7 +141,7 @@ public class EventHubProducerTest {
         final EventData tooLargeEvent = new EventData(new byte[maxEventPayload + 1]);
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(retryOptions);
-        final EventHubAsyncProducer hubAsyncProducer = new EventHubAsyncProducer(Mono.fromCallable(() -> link), producerOptions);
+        final EventHubAsyncProducer hubAsyncProducer = new EventHubAsyncProducer(Mono.fromCallable(() -> link), producerOptions, null);
         final EventHubProducer hubProducer = new EventHubProducer(hubAsyncProducer, retryOptions.tryTimeout());
 
         // Act
