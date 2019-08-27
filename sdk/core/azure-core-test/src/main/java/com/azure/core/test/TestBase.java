@@ -82,8 +82,8 @@ public abstract class TestBase {
     /**
      * Gets the name of the current test being run.
      * <p>
-     * NOTE: This could not be implemented in the base class using {@link TestName} because it always returns {@code
-     * null}. See https://stackoverflow.com/a/16113631/4220757.
+     * NOTE: This could not be implemented in the base class using {@link TestName} because it always returns
+     * {@code null}. See https://stackoverflow.com/a/16113631/4220757.
      *
      * @return The name of the current test.
      */
