@@ -432,7 +432,7 @@ public class FileClient {
      *
      * <p>Set the metadata to "file:updatedMetadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setMetadata#map}
+     * {@codesnippet com.azure.storage.file.fileClient.setMetadataWithResponse#map-Context}
      *
      * <p>Clear the metadata of the file</p>
      *
