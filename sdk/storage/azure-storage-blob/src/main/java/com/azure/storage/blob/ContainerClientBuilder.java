@@ -21,6 +21,7 @@ import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
+import com.azure.storage.common.BaseClientBuilder;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -54,35 +55,17 @@ import java.util.Objects;
  * {@link ContainerClient} or {@code .buildAsyncClient()} to create a {@link ContainerAsyncClient}.
  */
 @ServiceClientBuilder(serviceClients = {ContainerClient.class, ContainerAsyncClient.class})
-public final class ContainerClientBuilder {
-    private static final String ACCOUNT_NAME = "accountname";
-    private static final String ACCOUNT_KEY = "accountkey";
-    private static final String ENDPOINT_PROTOCOL = "defaultendpointsprotocol";
-    private static final String ENDPOINT_SUFFIX = "endpointsuffix";
+public final class ContainerClientBuilder extends BaseClientBuilder {
 
     private final ClientLogger logger = new ClientLogger(ContainerClientBuilder.class);
 
-    private final List<HttpPipelinePolicy> additionalPolicies;
-
-    private String endpoint;
     private String containerName;
-    private SharedKeyCredential sharedKeyCredential;
-    private TokenCredential tokenCredential;
-    private SASTokenCredential sasTokenCredential;
-    private HttpClient httpClient;
-    private HttpLogDetailLevel logLevel;
-    private RequestRetryOptions retryOptions;
-    private Configuration configuration;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link ContainerClient ContainerClients}
      * and {@link ContainerAsyncClient ContainerAsyncClients}.
      */
-    public ContainerClientBuilder() {
-        retryOptions = new RequestRetryOptions();
-        logLevel = HttpLogDetailLevel.NONE;
-        additionalPolicies = new ArrayList<>();
-    }
+    public ContainerClientBuilder() {}
 
     /**
      * @return a {@link ContainerClient} created from the configurations in this builder.
@@ -98,36 +81,7 @@ public final class ContainerClientBuilder {
         Objects.requireNonNull(endpoint);
         Objects.requireNonNull(containerName);
 
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        if (configuration == null) {
-            configuration = ConfigurationManager.getConfiguration();
-        }
-        policies.add(new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, configuration));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddDatePolicy());
-
-        if (sharedKeyCredential != null) {
-            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
-        } else if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
-        } else if (sasTokenCredential != null) {
-            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
-        }
-
-        policies.add(new RequestRetryPolicy(retryOptions));
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-
-        policies.addAll(this.additionalPolicies);
-
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(logLevel));
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
+        HttpPipeline pipeline = buildPipeline();
 
         return new ContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(String.format("%s/%s", endpoint, containerName))
@@ -142,6 +96,12 @@ public final class ContainerClientBuilder {
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
      */
     public ContainerClientBuilder endpoint(String endpoint) {
+        this.setEndpoint(endpoint);
+        return this;
+    }
+
+    @Override
+    protected void setEndpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
             BlobURLParts parts = URLParser.parse(url);
@@ -157,8 +117,6 @@ public final class ContainerClientBuilder {
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed."));
         }
-
-        return this;
     }
 
     /**
@@ -182,9 +140,7 @@ public final class ContainerClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public ContainerClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = Objects.requireNonNull(credential);
-        this.tokenCredential = null;
-        this.sasTokenCredential = null;
+        super.setCredential(credential);
         return this;
     }
 
@@ -195,9 +151,7 @@ public final class ContainerClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public ContainerClientBuilder credential(TokenCredential credential) {
-        this.tokenCredential = Objects.requireNonNull(credential);
-        this.sharedKeyCredential = null;
-        this.sasTokenCredential = null;
+        super.setCredential(credential);
         return this;
     }
 
@@ -208,9 +162,7 @@ public final class ContainerClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public ContainerClientBuilder credential(SASTokenCredential credential) {
-        this.sasTokenCredential = Objects.requireNonNull(credential);
-        this.sharedKeyCredential = null;
-        this.tokenCredential = null;
+        super.setCredential(credential);
         return this;
     }
 
@@ -219,9 +171,7 @@ public final class ContainerClientBuilder {
      * @return the updated ContainerClientBuilder object
      */
     public ContainerClientBuilder anonymousCredential() {
-        this.sharedKeyCredential = null;
-        this.tokenCredential = null;
-        this.sasTokenCredential = null;
+        super.setAnonymousCredential();
         return this;
     }
 
@@ -232,30 +182,8 @@ public final class ContainerClientBuilder {
      * @throws IllegalArgumentException If {@code connectionString} doesn't contain AccountName or AccountKey
      */
     public ContainerClientBuilder connectionString(String connectionString) {
-        Objects.requireNonNull(connectionString);
-
-        Map<String, String> connectionKVPs = new HashMap<>();
-        for (String s : connectionString.split(";")) {
-            String[] kvp = s.split("=", 2);
-            connectionKVPs.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
-        }
-
-        String accountName = connectionKVPs.get(ACCOUNT_NAME);
-        String accountKey = connectionKVPs.get(ACCOUNT_KEY);
-        String endpointProtocol = connectionKVPs.get(ENDPOINT_PROTOCOL);
-        String endpointSuffix = connectionKVPs.get(ENDPOINT_SUFFIX);
-
-        if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'."));
-        }
-
-        if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
-            String endpoint = String.format("%s://%s.blob.%s", endpointProtocol, accountName, endpointSuffix.replaceFirst("^\\.", ""));
-            endpoint(endpoint);
-        }
-
-        // Use accountName and accountKey to get the SAS token using the credential class.
-        return credential(new SharedKeyCredential(accountName, accountKey));
+        super.parseConnectionString(connectionString);
+        return this;
     }
 
     /**
@@ -265,7 +193,7 @@ public final class ContainerClientBuilder {
      * @throws NullPointerException If {@code httpClient} is {@code null}.
      */
     public ContainerClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = Objects.requireNonNull(httpClient);
+        super.httpClient = Objects.requireNonNull(httpClient);
         return this;
     }
 
@@ -276,7 +204,7 @@ public final class ContainerClientBuilder {
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public ContainerClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy));
+        super.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy));
         return this;
     }
 
@@ -286,7 +214,7 @@ public final class ContainerClientBuilder {
      * @return the updated ContainerClientBuilder object
      */
     public ContainerClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        this.logLevel = logLevel;
+        super.logLevel = logLevel;
         return this;
     }
 
@@ -297,7 +225,7 @@ public final class ContainerClientBuilder {
      * @return the updated ContainerClientBuilder object
      */
     public ContainerClientBuilder configuration(Configuration configuration) {
-        this.configuration = configuration;
+        super.configuration = configuration;
         return this;
     }
 
@@ -308,7 +236,12 @@ public final class ContainerClientBuilder {
      * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
     public ContainerClientBuilder retryOptions(RequestRetryOptions retryOptions) {
-        this.retryOptions = Objects.requireNonNull(retryOptions);
+        super.retryOptions = Objects.requireNonNull(retryOptions);
         return this;
+    }
+
+    @Override
+    protected UserAgentPolicy getUserAgentPolicy() {
+        return new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, configuration);
     }
 }
