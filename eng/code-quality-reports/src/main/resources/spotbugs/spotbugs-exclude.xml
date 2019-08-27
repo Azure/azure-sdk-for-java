@@ -67,6 +67,7 @@
       <Class name="com.azure.storage.blob.implementation.AzureBlobStorageBuilder"/>
       <Class name="com.azure.storage.file.implementation.AzureFileStorageBuilder"/>
       <Class name="com.azure.storage.queue.implementation.AzureQueueStorageBuilder"/>
+      <Class name="com.azure.storage.blob.FileTransferExample"/>
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
