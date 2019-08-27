@@ -37,7 +37,7 @@ public class FluentMethodNameCheck extends AbstractCheck {
     private Deque<String> classNameStack = new ArrayDeque<>();
 
     /**
-     * Setter to specifies valid identifiers
+     * Adds words that methods in fluent classes should not be prefixed with.
      * @param avoidStartWords the starting strings that should not start with in fluent method
      */
     public final void setAvoidStartWords(String... avoidStartWords) {
