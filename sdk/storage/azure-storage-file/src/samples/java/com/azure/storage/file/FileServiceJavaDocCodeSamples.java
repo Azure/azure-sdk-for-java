@@ -113,11 +113,11 @@ public class FileServiceJavaDocCodeSamples {
      */
     public void createShareWithMetadata() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceClient.createShareWithResponse#string-map-integer.quota-Context
+        // BEGIN: com.azure.storage.file.FileServiceClient.createShareWithResponse#String-Map-Integer-Context
         Response<ShareClient> response = fileServiceClient.createShareWithResponse("test",
             Collections.singletonMap("share", "metadata"), null, new Context(key1, value1));
         System.out.printf("Creating the share completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.fileServiceClient.createShareWithResponse#string-map-integer.quota-Context
+        // END: com.azure.storage.file.FileServiceClient.createShareWithResponse#String-Map-Integer-Context
     }
 
     /**

@@ -277,7 +277,7 @@ public class ShareAsyncClient {
      *
      * <p>Delete the share</p>
      *
-     * {@codesnippet com.azure.storage.file.shareAsyncClient.delete}
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.deleteWithResponse}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
@@ -346,7 +346,7 @@ public class ShareAsyncClient {
      *
      * <p>Set the quota to 1024 GB</p>
      *
-     * {@codesnippet com.azure.storage.file.shareAsyncClient.setQuota}
+     * {@codesnippet com.azure.storage.file.ShareAsyncClient.setQuota#int}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -366,7 +366,7 @@ public class ShareAsyncClient {
      *
      * <p>Set the quota to 1024 GB</p>
      *
-     * {@codesnippet com.azure.storage.file.shareAsyncClient.setQuotaWithResponse}
+     * {@codesnippet com.azure.storage.file.ShareAsyncClient.setQuotaWithResponse#int}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -468,7 +468,7 @@ public class ShareAsyncClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * {@codesnippet com.azure.storage.file.shareAsyncClient.setAccessPolicy}
+     * {@codesnippet com.azure.storage.file.ShareAsyncClient.setAccessPolicy#List}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
@@ -490,7 +490,7 @@ public class ShareAsyncClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * {@codesnippet com.azure.storage.file.shareAsyncClient.setAccessPolicyWithResponse}
+     * {@codesnippet com.azure.storage.file.ShareAsyncClient.setAccessPolicyWithResponse#List}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>

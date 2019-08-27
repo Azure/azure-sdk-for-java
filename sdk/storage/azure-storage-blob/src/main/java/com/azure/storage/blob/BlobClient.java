@@ -649,7 +649,7 @@ public class BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.setTier#AccessTier-LeaseAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.BlobClient.setTierWithResponse#AccessTier-LeaseAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>

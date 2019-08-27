@@ -164,7 +164,7 @@ public final class CryptographyAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.encrypt#asymmetric-encrypt}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte}
      *
      * @param algorithm The algorithm to be used for encryption.
      * @param plaintext The content to be encrypted.
@@ -189,7 +189,7 @@ public final class CryptographyAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.encrypt#symmetric-encrypt}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte-byte-byte}
      *
      * @param algorithm The algorithm to be used for encryption.
      * @param plaintext The content to be encrypted.
@@ -231,7 +231,7 @@ public final class CryptographyAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.decrypt#asymmetric-decrypt}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte}
      *
      * @param algorithm The algorithm to be used for decryption.
      * @param cipherText The content to be decrypted.
@@ -255,7 +255,7 @@ public final class CryptographyAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.decrypt#symmetric-decrypt}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte-byte-byte-byte}
      *
      * @param algorithm The algorithm to be used for decryption.
      * @param cipherText The content to be decrypted.
@@ -297,7 +297,7 @@ public final class CryptographyAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.sign}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.sign#SignatureAlgorithm-byte}
      *
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature is to be created.
@@ -337,7 +337,7 @@ public final class CryptographyAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the specified digest. Subscribes to the call asynchronously and prints out the verification details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.verify}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verify#SignatureAlgorithm-byte-byte}
      *
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature is to be created.
@@ -375,7 +375,7 @@ public final class CryptographyAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Wraps the key content. Subscribes to the call asynchronously and prints out the wrapped key details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.wrap-key}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.wrapKey#KeyWrapAlgorithm-byte}
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param key The key content to be wrapped
@@ -413,7 +413,7 @@ public final class CryptographyAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Unwraps the key content. Subscribes to the call asynchronously and prints out the unwrapped key details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.unwrap-key}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.unwrapKey#KeyWrapAlgorithm-byte}
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param encryptedKey The encrypted key content to unwrap.
@@ -453,7 +453,7 @@ public final class CryptographyAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Signs the raw data. Subscribes to the call asynchronously and prints out the signature details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.sign-data}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.signData#SignatureAlgorithm-byte}
      *
      * @param algorithm The algorithm to use for signing.
      * @param data The content from which signature is to be created.
@@ -493,7 +493,7 @@ public final class CryptographyAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the raw data. Subscribes to the call asynchronously and prints out the verification details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.verify-data}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verifyData#SignatureAlgorithm-byte-byte}
      *
      * @param algorithm The algorithm to use for signing.
      * @param data The raw content against which signature is to be verified.
