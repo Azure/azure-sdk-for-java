@@ -9,23 +9,22 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.tcp.ProxyProvider;
 
-import java.util.function.Supplier;
-
 /**
  *
  */
 public class NettyAsyncHttpClientBuilder {
     private final ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
 
-    private Supplier<ProxyOptions> proxyOptions;
+    private ProxyOptions proxyOptions;
     private boolean enableWiretap;
-    private int port;
+    private int port = 80;
     private NioEventLoopGroup nioEventLoopGroup;
 
     /**
      *
      */
-    public NettyAsyncHttpClientBuilder() {    }
+    public NettyAsyncHttpClientBuilder() {
+    }
 
     /**
      *
@@ -44,31 +43,28 @@ public class NettyAsyncHttpClientBuilder {
                 if (proxyOptions == null) {
                     return tcpConfig;
                 }
-                ProxyOptions options = proxyOptions.get();
-                if (options == null) {
-                    return tcpConfig;
-                }
+
                 ProxyProvider.Proxy nettyProxy;
-                switch (options.type()) {
+                switch (proxyOptions.type()) {
                     case HTTP: nettyProxy = ProxyProvider.Proxy.HTTP; break;
                     case SOCKS4: nettyProxy = ProxyProvider.Proxy.SOCKS4; break;
                     case SOCKS5: nettyProxy = ProxyProvider.Proxy.SOCKS5; break;
                     default:
-                        throw logger.logExceptionAsWarning(new IllegalStateException("Unknown Proxy type '" + options.type() + "' in use. Not configuring Netty proxy."));
+                        throw logger.logExceptionAsWarning(new IllegalStateException("Unknown Proxy type '" + proxyOptions.type() + "' in use. Not configuring Netty proxy."));
                 }
 
-                return tcpConfig.proxy(ts -> ts.type(nettyProxy).address(options.address()));
+                return tcpConfig.proxy(ts -> ts.type(nettyProxy).address(proxyOptions.address()));
             });
         return new NettyAsyncHttpClient(nettyHttpClient);
     }
 
     /**
-     * Apply the provided proxy configuration to the HttpClient.
+     * Sets the {@link ProxyOptions proxy options} that the client will use.
      *
-     * @param proxyOptions the proxy configuration supplier
-     * @return a HttpClient with proxy applied
+     * @param proxyOptions The proxy configuration to use.
+     * @return the updated NettyAsyncHttpClientBuilder object
      */
-    public NettyAsyncHttpClientBuilder proxy(Supplier<ProxyOptions> proxyOptions) {
+    public NettyAsyncHttpClientBuilder proxy(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
         return this;
     }
@@ -76,8 +72,8 @@ public class NettyAsyncHttpClientBuilder {
     /**
      * Apply or remove a wire logger configuration.
      *
-     * @param enableWiretap wiretap config
-     * @return a HttpClient with wire logging enabled or disabled
+     * @param enableWiretap Flag indicating wiretap status
+     * @return the updated NettyAsyncHttpClientBuilder object
      */
     public NettyAsyncHttpClientBuilder wiretap(boolean enableWiretap) {
         this.enableWiretap = enableWiretap;
@@ -85,10 +81,10 @@ public class NettyAsyncHttpClientBuilder {
     }
 
     /**
-     * Set the port that client should connect to.
+     * Sets the port which this client should connect.
      *
-     * @param port the port
-     * @return a HttpClient with port applied
+     * @param port The port to connect to.
+     * @return the updated NettyAsyncHttpClientBuilder object
      */
     public NettyAsyncHttpClientBuilder port(int port) {
         this.port = port;
@@ -96,10 +92,10 @@ public class NettyAsyncHttpClientBuilder {
     }
 
     /**
-     * Sets the NIO event loop group that will be used to handle IO.
+     * Sets the NIO event loop group that will be used to run IO loops.
      *
-     * @param nioEventLoopGroup the thread factory
-     * @return a HttpClient with the NIO event loop group applied
+     * @param nioEventLoopGroup The {@link NioEventLoopGroup} that will run IO loops.
+     * @return the updated NettyAsyncHttpClientBuilder object
      */
     public NettyAsyncHttpClientBuilder nioEventLoopGroup(NioEventLoopGroup nioEventLoopGroup) {
         this.nioEventLoopGroup = nioEventLoopGroup;
