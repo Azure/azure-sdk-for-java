@@ -153,6 +153,4 @@
   issue link: https://github.com/Azure/azure-sdk-for-java/issues/5145 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.security.keyvault.secrets.SecretAsyncClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.security.keyvault.keys.KeyAsyncClient.java"/>
-  <!-- Synchronous method with annotation @ServiceMethod must has 'Context' as a method parameter.-->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="ConfigurationClient.java"/>
 </suppressions>

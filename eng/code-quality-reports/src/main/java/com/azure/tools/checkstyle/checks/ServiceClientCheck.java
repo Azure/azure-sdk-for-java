@@ -366,7 +366,8 @@ public class ServiceClientCheck extends AbstractCheck {
     }
 
     /**
-     * Checks the type Context should be in the right place.
+     * Checks the type Context should be in the right place. Context should be passed in as an argument to all public
+     * methods annotated with @ServiceMethod that return {@code Response<T>} in synchronous clients.
      * Synchronous method with annotation @ServiceMethod has to have {@code Context} as a parameter.
      * Asynchronous method with annotation @ServiceMethod must not has {@code Context} as a parameter.
      *
@@ -376,7 +377,7 @@ public class ServiceClientCheck extends AbstractCheck {
         final DetailAST parametersToken = methodDefToken.findFirstToken(TokenTypes.PARAMETERS);
         final String returnType = getReturnType(methodDefToken.findFirstToken(TokenTypes.TYPE), new StringBuilder()).toString();
 
-        final boolean containsTypeParameter = TokenUtil.findFirstTokenByPredicate(parametersToken,
+        final boolean containsContextParameter = TokenUtil.findFirstTokenByPredicate(parametersToken,
             parameterToken -> {
                 if (parameterToken.getType() != TokenTypes.PARAMETER_DEF) {
                     return false;
@@ -386,14 +387,15 @@ public class ServiceClientCheck extends AbstractCheck {
             })
             .isPresent();
 
-        if (containsTypeParameter) {
+        if (containsContextParameter) {
             // MONO and PagedFlux return type implies Asynchronous method
             if (returnType.startsWith(MONO_BRACKET) || returnType.startsWith(PAGED_FLUX_BRACKET)) {
                 log(methodDefToken, String.format(ASYNC_CONTEXT_ERROR, CONTEXT));
             }
         } else {
-            // Response and PagedIterable return type implies Synchronous method
-            if (returnType.startsWith(RESPONSE_BRACKET) || returnType.startsWith(PAGED_ITERABLE_BRACKET)) {
+            // Context should be passed in as an argument to all public methods annotated with @ServiceMethod that
+            // return Response<T> in sync clients.
+            if (returnType.startsWith(RESPONSE_BRACKET)) {
                 log(methodDefToken, String.format(SYNC_CONTEXT_ERROR, CONTEXT));
             }
         }
