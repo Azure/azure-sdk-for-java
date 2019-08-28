@@ -38,6 +38,7 @@ class FileSASTests extends APISpec {
         primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
         primaryShareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
         primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildClient()
+
     }
 
     @Unroll
@@ -168,8 +169,8 @@ class FileSASTests extends APISpec {
             .write(true)
             .create(true)
             .delete(true)
-        def startTime = OffsetDateTime.now().minusDays(1)
-        def expiryTime = OffsetDateTime.now().plusDays(1)
+        def startTime = getUTCNow().minusDays(1)
+        def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
             .ipMin("0.0.0.0")
             .ipMax("255.255.255.255")
@@ -187,12 +188,9 @@ class FileSASTests extends APISpec {
         sas != null
 
         when:
-        def client = new FileClientBuilder()
+        def client = fileBuilderHelper(interceptorManager, shareName, filePath)
             .endpoint(primaryFileClient.getFileUrl().toString())
-            .filePath(filePath)
-            .shareName(shareName)
             .credential(SASTokenCredential.fromSASTokenString(sas))
-            .httpClient(getHttpClient())
             .buildClient()
 
         def downloadResponse = client.downloadWithProperties()
@@ -218,8 +216,8 @@ class FileSASTests extends APISpec {
             .write(false)
             .create(true)
             .delete(true)
-        def startTime = OffsetDateTime.now().minusDays(1)
-        def expiryTime = OffsetDateTime.now().plusDays(1)
+        def startTime = getUTCNow().minusDays(1)
+        def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
             .ipMin("0.0.0.0")
             .ipMax("255.255.255.255")
@@ -233,12 +231,9 @@ class FileSASTests extends APISpec {
         when:
         def sas = primaryFileClient.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
-        def client = new FileClientBuilder()
+        def client = fileBuilderHelper(interceptorManager, shareName, filePath)
             .endpoint(primaryFileClient.getFileUrl().toString())
-            .filePath(filePath)
-            .shareName(shareName)
             .credential(SASTokenCredential.fromSASTokenString(sas))
-            .httpClient(getHttpClient())
             .buildClient()
 
         client.upload(ByteBuffer.wrap(data.getBytes()), (long) data.length())
@@ -258,7 +253,7 @@ class FileSASTests extends APISpec {
         SignedIdentifier identifier = new SignedIdentifier()
             .id("0000")
             .accessPolicy(new AccessPolicy().permission("rcwdl")
-                .expiry(OffsetDateTime.now().plusDays(1)))
+                .expiry(getUTCNow().plusDays(1)))
 
         primaryShareClient.setAccessPolicy(Arrays.asList(identifier))
 
@@ -270,16 +265,14 @@ class FileSASTests extends APISpec {
             .delete(true)
             .list(true)
 
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1)
+        OffsetDateTime expiryTime = getUTCNow().plusDays(1)
 
         when:
         String sasWithId = primaryShareClient.generateSAS(identifier.id())
 
-        ShareClient client1 = new ShareClientBuilder()
+        ShareClient client1 = shareBuilderHelper(interceptorManager, primaryShareClient.client.shareName)
             .endpoint(primaryShareClient.getShareUrl().toString())
-            .shareName(primaryShareClient.client.shareName)
             .credential(SASTokenCredential.fromSASTokenString(sasWithId))
-            .httpClient(getHttpClient())
             .buildClient()
 
         client1.createDirectory("dir")
@@ -287,11 +280,9 @@ class FileSASTests extends APISpec {
 
         String sasWithPermissions = primaryShareClient.generateSAS(expiryTime, permissions)
 
-        ShareClient client2 = new ShareClientBuilder()
-            .endpoint(primaryShareClient.getShareUrl().toString())
-            .shareName(primaryShareClient.client.shareName)
+        def client2 = shareBuilderHelper(interceptorManager, primaryShareClient.client.shareName)
+            .endpoint(primaryFileClient.getFileUrl().toString())
             .credential(SASTokenCredential.fromSASTokenString(sasWithPermissions))
-            .httpClient(getHttpClient())
             .buildClient()
 
         client2.createDirectory("dir")
@@ -313,7 +304,7 @@ class FileSASTests extends APISpec {
             .read(true)
             .create(true)
             .delete(true)
-        def expiryTime = OffsetDateTime.now().plusDays(1)
+        def expiryTime = getUTCNow().plusDays(1)
 
         when:
         def sas = primaryFileServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
@@ -322,9 +313,8 @@ class FileSASTests extends APISpec {
         sas != null
 
         when:
-        def scBuilder = new FileServiceClientBuilder()
+        def scBuilder = fileServiceBuilderHelper(interceptorManager)
         scBuilder.endpoint(primaryFileServiceClient.getFileServiceUrl().toString())
-            .httpClient(getHttpClient())
             .credential(SASTokenCredential.fromSASTokenString(sas))
         def sc = scBuilder.buildClient()
         sc.createShare("create")

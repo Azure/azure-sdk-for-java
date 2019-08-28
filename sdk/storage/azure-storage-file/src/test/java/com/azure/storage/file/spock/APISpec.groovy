@@ -8,6 +8,7 @@ import com.azure.core.http.ProxyOptions
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
+import com.azure.core.test.utils.ResourceNamer
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.core.util.logging.ClientLogger
@@ -20,6 +21,7 @@ import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.ListSharesOptions
 import spock.lang.Specification
 
+import java.time.OffsetDateTime
 import java.util.function.Supplier
 
 class APISpec extends Specification {
@@ -28,8 +30,8 @@ class APISpec extends Specification {
     def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     def tmpFolder = getClass().getClassLoader().getResource("tmptestfiles")
     def testFolder = getClass().getClassLoader().getResource("testfiles")
-    def interceptorManager
-    def testResourceName
+    InterceptorManager interceptorManager
+    TestResourceNamer testResourceName
 
     // Primary Clients used for API tests
     FileServiceClient primaryFileServiceClient
@@ -190,5 +192,9 @@ class APISpec extends Specification {
         } else {
             return HttpClient.createDefault()
         }
+    }
+
+    OffsetDateTime getUTCNow() {
+        return testResourceName.now()
     }
 }

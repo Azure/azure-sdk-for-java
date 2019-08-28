@@ -17,6 +17,7 @@ import com.azure.storage.queue.QueueServiceClientBuilder
 import com.azure.storage.queue.models.QueuesSegmentOptions
 import spock.lang.Specification
 
+import java.time.OffsetDateTime
 import java.util.function.Supplier
 
 class APISpec extends Specification {
@@ -135,6 +136,10 @@ class APISpec extends Specification {
             return fullName
         }
         return matcher[0][1] + matcher[0][3]
+    }
+
+    OffsetDateTime getUTCNow() {
+        return testResourceName.now()
     }
 
     static HttpClient getHttpClient() {

@@ -19,7 +19,6 @@ import org.junit.Test
 import spock.lang.Unroll
 
 import java.time.Duration
-import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 
 class QueueSASTests extends APISpec {
@@ -106,8 +105,8 @@ class QueueSASTests extends APISpec {
             .read(true)
             .add(true)
             .process(true)
-        def startTime = OffsetDateTime.now().minusDays(1)
-        def expiryTime = OffsetDateTime.now().plusDays(1)
+        def startTime = getUTCNow().minusDays(1)
+        def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
             .ipMin("0.0.0.0")
             .ipMax("255.255.255.255")
@@ -148,8 +147,8 @@ class QueueSASTests extends APISpec {
             .add(true)
             .process(true)
             .update(true)
-        def startTime = OffsetDateTime.now().minusDays(1)
-        def expiryTime = OffsetDateTime.now().plusDays(1)
+        def startTime = getUTCNow().minusDays(1)
+        def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
             .ipMin("0.0.0.0")
             .ipMax("255.255.255.255")
@@ -190,8 +189,8 @@ class QueueSASTests extends APISpec {
             .add(true)
             .update(true)
             .process(true)
-        def expiryTime = OffsetDateTime.now().plusDays(1).truncatedTo(ChronoUnit.SECONDS)
-        def startTime = OffsetDateTime.now().minusDays(1).truncatedTo(ChronoUnit.SECONDS)
+        def expiryTime = getUTCNow().plusDays(1).truncatedTo(ChronoUnit.SECONDS)
+        def startTime = getUTCNow().minusDays(1).truncatedTo(ChronoUnit.SECONDS)
 
         SignedIdentifier identifier = new SignedIdentifier()
             .id(UUID.randomUUID().toString())
@@ -229,7 +228,7 @@ class QueueSASTests extends APISpec {
             .read(true)
             .create(true)
             .delete(true)
-        def expiryTime = OffsetDateTime.now().plusDays(1)
+        def expiryTime = getUTCNow().plusDays(1)
 
         when:
         def sas = primaryQueueServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
@@ -261,7 +260,7 @@ class QueueSASTests extends APISpec {
             .object(true)
         def permissions = new AccountSASPermission()
             .list(true)
-        def expiryTime = OffsetDateTime.now().plusDays(1)
+        def expiryTime = getUTCNow().plusDays(1)
 
         when:
         def sas = primaryQueueServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
