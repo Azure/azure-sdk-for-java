@@ -84,18 +84,18 @@ class APISpec extends Specification {
      * </ul>
      */
     def getTestMode() {
-//        def azureTestMode = ConfigurationManager.getConfiguration().get(AZURE_TEST_MODE)
-//
-//        if (azureTestMode != null) {
-//            try {
-//                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US))
-//            } catch (IllegalArgumentException e) {
-//                logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode)
-//                return TestMode.PLAYBACK
-//            }
-//        }
-//
-//        logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE)
+        def azureTestMode = ConfigurationManager.getConfiguration().get(AZURE_TEST_MODE)
+
+        if (azureTestMode != null) {
+            try {
+                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US))
+            } catch (IllegalArgumentException e) {
+                logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode)
+                return TestMode.PLAYBACK
+            }
+        }
+
+        logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE)
         return TestMode.PLAYBACK
     }
 
