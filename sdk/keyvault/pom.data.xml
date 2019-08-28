@@ -34,7 +34,7 @@
   </scm>
 
   <properties>
-    <azure-keyvault.version>1.2.1</azure-keyvault.version>
+    <azure-keyvault.version>1.2.2</azure-keyvault.version>
   </properties>
 
   <dependencyManagement>
