@@ -4,7 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
@@ -15,14 +14,13 @@ import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlockBlobItem;
-import com.azure.storage.blob.models.BlockItem;
+import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.common.Constants;
-import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -30,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
@@ -41,8 +40,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
 
-import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link BlobClientBuilder}, via
@@ -115,7 +114,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * @return A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<BlockBlobItem> upload(Flux<ByteBuf> data, long length) {
+    public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, long length) {
         return uploadWithResponse(data, length, null, null, null).flatMap(FluxUtil::toMono);
     }
 
@@ -141,19 +140,18 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * @return A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuf> data, long length, BlobHTTPHeaders headers,
+    public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
                                                             Metadata metadata, BlobAccessConditions accessConditions) {
         return withContext(context -> uploadWithResponse(data, length, headers, metadata, accessConditions, context));
     }
 
-    Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuf> data, long length, BlobHTTPHeaders headers,
+    Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
                                                      Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
-            null, data, length, null, metadata, null, null, null,
-            null, null, null, headers, accessConditions.leaseAccessConditions(), null,
+            null, data, length, null, metadata, null, null, headers, accessConditions.leaseAccessConditions(), null,
             accessConditions.modifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
     }
@@ -193,7 +191,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
                     .doOnNext(chunk -> blockIds.put(chunk.offset(), getBlockID()))
                     .flatMap(chunk -> {
                         String blockId = blockIds.get(chunk.offset());
-                        return stageBlockWithResponse(blockId, FluxUtil.byteBufStreamFromFile(channel, chunk.offset(), chunk.count()), chunk.count(), null);
+                        return stageBlockWithResponse(blockId, FluxUtil.readFile(channel, chunk.offset(), chunk.count()), chunk.count(), null);
                     })
                     .then(Mono.defer(() -> commitBlockListWithResponse(new ArrayList<>(blockIds.values()), headers, metadata, accessConditions)))
                     .then()
@@ -262,8 +260,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> stageBlock(String base64BlockID, Flux<ByteBuf> data,
-                                 long length) {
+    public Mono<Void> stageBlock(String base64BlockID, Flux<ByteBuffer> data, long length) {
         return stageBlockWithResponse(base64BlockID, data, length, null).flatMap(FluxUtil::toMono);
     }
 
@@ -286,16 +283,15 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> stageBlockWithResponse(String base64BlockID, Flux<ByteBuf> data, long length,
+    public Mono<VoidResponse> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
                                                      LeaseAccessConditions leaseAccessConditions) {
         return withContext(context -> stageBlockWithResponse(base64BlockID, data, length, leaseAccessConditions, context));
     }
 
-    Mono<VoidResponse> stageBlockWithResponse(String base64BlockID, Flux<ByteBuf> data, long length,
+    Mono<VoidResponse> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
                                               LeaseAccessConditions leaseAccessConditions, Context context) {
         return postProcessResponse(this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null,
-            null, base64BlockID, length, data, null, null, null, null,
-            null, null, null, leaseAccessConditions, null, context))
+            null, base64BlockID, length, data, null, null, null, null, leaseAccessConditions, null, context))
             .map(VoidResponse::new);
     }
 
@@ -314,8 +310,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response signalling completion.
      */
     public Mono<Void> stageBlockFromURL(String base64BlockID, URL sourceURL, BlobRange sourceRange) {
-        return stageBlockFromURLWithResponse(base64BlockID, sourceURL, sourceRange, null,
-            null, null).flatMap(FluxUtil::toMono);
+        return this.stageBlockFromURLWithResponse(base64BlockID, sourceURL, sourceRange, null, null, null)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -351,8 +347,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         return postProcessResponse(
             this.azureBlobStorage.blockBlobs().stageBlockFromURLWithRestResponseAsync(null, null,
                 base64BlockID, 0, sourceURL, sourceRange.toHeaderValue(), sourceContentMD5, null, null,
-                null, null, null, null,
-                leaseAccessConditions, null, sourceModifiedAccessConditions, context))
+                null, null, leaseAccessConditions, sourceModifiedAccessConditions, context))
             .map(VoidResponse::new);
     }
 
@@ -365,8 +360,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * @return A reactive response containing the list of blocks.
      */
-    public Flux<BlockItem> listBlocks(BlockListType listType) {
-        return this.listBlocks(listType, null);
+    public Mono<BlockList> listBlocks(BlockListType listType) {
+        return this.listBlocks(listType, null).map(Response::value);
     }
 
     /**
@@ -380,19 +375,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * @return A reactive response containing the list of blocks.
      */
-    public Flux<BlockItem> listBlocks(BlockListType listType,
+    public Mono<Response<BlockList>> listBlocks(BlockListType listType,
                                       LeaseAccessConditions leaseAccessConditions) {
+
         return postProcessResponse(this.azureBlobStorage.blockBlobs().getBlockListWithRestResponseAsync(
-            null, null, listType, snapshot, null, null, null,
-            leaseAccessConditions, Context.NONE))
-            .map(ResponseBase::value)
-            .flatMapMany(bl -> {
-                Flux<BlockItem> committed = Flux.fromIterable(bl.committedBlocks())
-                    .map(block -> new BlockItem(block, true));
-                Flux<BlockItem> uncommitted = Flux.fromIterable(bl.uncommittedBlocks())
-                    .map(block -> new BlockItem(block, false));
-                return Flux.concat(committed, uncommitted);
-            });
+                null, null, listType, snapshot, null, null, leaseAccessConditions, Context.NONE))
+            .map(response -> new SimpleResponse<>(response, response.value()));
     }
 
     /**
@@ -439,8 +427,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(
-            null, null, new BlockLookupList().latest(base64BlockIDs), null, null, null, metadata, null,
-            null, null, null, null, null, headers,
+            null, null, new BlockLookupList().latest(base64BlockIDs), null, null, null, metadata, null, null, headers,
             accessConditions.leaseAccessConditions(), null, accessConditions.modifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));    }
 }

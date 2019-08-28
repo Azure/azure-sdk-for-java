@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob;
 
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Constants;
-import reactor.netty.ByteBufFlux;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -182,7 +182,7 @@ public final class BlobInputStream extends InputStream {
     private synchronized void dispatchRead(final int readLength) throws IOException {
         try {
             this.currentBuffer = this.blobClient.download(new BlobRange(this.currentAbsoluteReadPosition, (long) readLength), this.accessCondition, false)
-                .flatMap(res -> ByteBufFlux.fromInbound(res.body(null)).aggregate().asByteBuffer())
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.body(null)).map(ByteBuffer::wrap))
                 .block();
 
             this.bufferSize = readLength;

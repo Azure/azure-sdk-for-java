@@ -19,14 +19,13 @@ import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 
 /**
@@ -94,7 +93,7 @@ public final class PageBlobClient extends BlobClient {
      * @throws StorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(long length, BlobAccessConditions accessConditions) {
-        return new BlobOutputStream(pageBlobAsyncClient, length, accessConditions);
+        return BlobOutputStream.pageBlobOutputStream(pageBlobAsyncClient, length, accessConditions);
     }
 
     /**
@@ -175,7 +174,7 @@ public final class PageBlobClient extends BlobClient {
     public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body,
             PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
         long length = pageRange.end() - pageRange.start();
-        Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) PAGE_BYTES))
+        Flux<ByteBuffer> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) PAGE_BYTES))
             .map(i -> i * PAGE_BYTES)
             .concatMap(pos -> Mono.fromCallable(() -> {
                 byte[] cache = new byte[PAGE_BYTES];
@@ -184,7 +183,7 @@ public final class PageBlobClient extends BlobClient {
                     read += body.read(cache, read, PAGE_BYTES - read);
                 }
 
-                return ByteBufAllocator.DEFAULT.buffer(read).writeBytes(cache);
+                return ByteBuffer.wrap(cache);
             }));
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponse(pageRange,

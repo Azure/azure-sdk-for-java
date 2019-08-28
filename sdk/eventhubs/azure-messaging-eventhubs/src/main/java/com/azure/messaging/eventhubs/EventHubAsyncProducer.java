@@ -69,28 +69,24 @@ import static com.azure.core.implementation.tracing.Tracer.SPAN_CONTEXT;
  * <p><strong>Create a producer that routes events to any partition</strong></p>
  * To allow automatic routing of messages to available partition, do not specify the {@link
  * EventHubProducerOptions#partitionId() partitionId} when creating the {@link EventHubAsyncProducer}.
- * <p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation}
  *
  * <p><strong>Create a producer that publishes events to partition "foo" with a timeout of 45 seconds.</strong></p>
- * <p>
  * Developers can push events to a single partition by specifying the {@link EventHubProducerOptions#partitionId(String)
  * partitionId} when creating an {@link EventHubAsyncProducer}.
- * <p>
+ *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation#partitionId}
  *
  * <p><strong>Publish events to the same partition, grouped together using {@link SendOptions#partitionKey(String)}.</strong></p>
- * <p>
  * If developers want to push similar events to end up at the same partition, but do not require them to go to a
  * specific partition, they can use {@link SendOptions#partitionKey(String)}.
  * <p>
  * In the sample below, all the "sandwiches" end up in the same partition, but it could end up in partition 0, 1, etc.
  * of the available partitions. All that matters to the end user is that they are grouped together.
- * <p>
+ * </p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducer.send#publisher-sendOptions}
  *
  * <p><strong>Publish events using an {@link EventDataBatch}.</strong></p>
- * <p>
  * Developers can create an {@link EventDataBatch}, add the events they want into it, and publish these
  * events together. When creating a {@link EventDataBatch batch}, developers can specify a set of {@link BatchOptions
  * options} to configure this batch.
@@ -99,10 +95,11 @@ import static com.azure.core.implementation.tracing.Tracer.SPAN_CONTEXT;
  * users' gaming systems, but do not want to slow down the network with telemetry. So they limit the size of their
  * {@link EventDataBatch batches} to be no larger than 256 bytes. The events within the batch also get hashed to the
  * same partition because they all share the same {@link BatchOptions#partitionKey()}.
- * <p>
+ * </p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducer.send#eventDataBatch}
  *
  * @see EventHubAsyncClient#createProducer()
+ * @see EventHubAsyncClient#createProducer(EventHubProducerOptions)
  */
 @Immutable
 public class EventHubAsyncProducer implements Closeable {
@@ -151,7 +148,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
      */
     public Mono<EventDataBatch> createBatch(BatchOptions options) {
-        Objects.requireNonNull(options);
+        Objects.requireNonNull(options, "'options' cannot be null.");
 
         final BatchOptions clone = options.clone();
 
@@ -192,7 +189,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when the event is pushed to the service.
      */
     public Mono<Void> send(EventData event) {
-        Objects.requireNonNull(event);
+        Objects.requireNonNull(event, "'event' cannot be null.");
 
         return send(Flux.just(event));
     }
@@ -212,8 +209,8 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when the event is pushed to the service.
      */
     public Mono<Void> send(EventData event, SendOptions options) {
-        Objects.requireNonNull(event);
-        Objects.requireNonNull(options);
+        Objects.requireNonNull(event, "'event' cannot be null.");
+        Objects.requireNonNull(options, "'options' cannot be null.");
 
         return send(Flux.just(event), options);
     }
@@ -227,7 +224,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Iterable<EventData> events) {
-        Objects.requireNonNull(events);
+        Objects.requireNonNull(events, "'events' cannot be null.");
 
         return send(Flux.fromIterable(events));
     }
@@ -242,7 +239,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Iterable<EventData> events, SendOptions options) {
-        Objects.requireNonNull(events);
+        Objects.requireNonNull(events, "'options' cannot be null.");
 
         return send(Flux.fromIterable(events), options);
     }
@@ -256,7 +253,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Flux<EventData> events) {
-        Objects.requireNonNull(events);
+        Objects.requireNonNull(events, "'events' cannot be null.");
 
         return send(events, DEFAULT_SEND_OPTIONS);
     }
@@ -271,8 +268,8 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Flux<EventData> events, SendOptions options) {
-        Objects.requireNonNull(events);
-        Objects.requireNonNull(options);
+        Objects.requireNonNull(events, "'events' cannot be null.");
+        Objects.requireNonNull(options, "'options' cannot be null.");
 
         return sendInternal(events, options);
     }
@@ -287,7 +284,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @see EventHubAsyncProducer#createBatch(BatchOptions)
      */
     public Mono<Void> send(EventDataBatch batch) {
-        Objects.requireNonNull(batch);
+        Objects.requireNonNull(batch, "'batch' cannot be null.");
 
         if (batch.getEvents().isEmpty()) {
             logger.info("Cannot send an EventBatch that is empty.");

@@ -13,6 +13,7 @@ import com.microsoft.azure.management.network.v2019_06_01.IPVersion;
 import java.util.List;
 import com.microsoft.azure.management.network.v2019_06_01.IpTag;
 import com.microsoft.azure.management.network.v2019_06_01.ReferencedPublicIpAddress;
+import com.microsoft.azure.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.rest.SkipParentValidation;
@@ -59,6 +60,13 @@ public class PublicIPPrefixInner extends Resource {
      */
     @JsonProperty(value = "properties.publicIPAddresses")
     private List<ReferencedPublicIpAddress> publicIPAddresses;
+
+    /**
+     * The reference to load balancer frontend IP configuration associated with
+     * the public IP prefix.
+     */
+    @JsonProperty(value = "properties.loadBalancerFrontendIpConfiguration", access = JsonProperty.Access.WRITE_ONLY)
+    private SubResource loadBalancerFrontendIpConfiguration;
 
     /**
      * The resource GUID property of the public IP prefix resource.
@@ -210,6 +218,15 @@ public class PublicIPPrefixInner extends Resource {
     public PublicIPPrefixInner withPublicIPAddresses(List<ReferencedPublicIpAddress> publicIPAddresses) {
         this.publicIPAddresses = publicIPAddresses;
         return this;
+    }
+
+    /**
+     * Get the reference to load balancer frontend IP configuration associated with the public IP prefix.
+     *
+     * @return the loadBalancerFrontendIpConfiguration value
+     */
+    public SubResource loadBalancerFrontendIpConfiguration() {
+        return this.loadBalancerFrontendIpConfiguration;
     }
 
     /**

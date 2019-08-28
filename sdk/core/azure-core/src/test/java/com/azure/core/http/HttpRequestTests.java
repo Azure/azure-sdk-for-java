@@ -3,7 +3,6 @@
 
 package com.azure.core.http;
 
-import io.netty.buffer.Unpooled;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 
@@ -32,7 +31,7 @@ public class HttpRequestTests {
                 HttpMethod.PUT,
                 new URL("http://request.url"),
                 headers,
-                Flux.just(Unpooled.buffer(0, 0)));
+                Flux.empty());
 
         final HttpRequest bufferedRequest = request.buffer();
 

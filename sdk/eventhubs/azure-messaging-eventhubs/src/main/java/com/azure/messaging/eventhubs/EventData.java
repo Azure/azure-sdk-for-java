@@ -46,6 +46,7 @@ import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAM
  * types) and Data section is not supported.
  * </p>
  *
+ * @see EventHubProducer
  * @see EventHubAsyncProducer
  */
 public class EventData implements Comparable<EventData> {
@@ -108,7 +109,7 @@ public class EventData implements Comparable<EventData> {
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(ByteBuffer body, Context context) {
-        Objects.requireNonNull(body);
+        Objects.requireNonNull(body, "'body' cannot be null.");
 
         this.body = body;
         this.properties = new HashMap<>();
@@ -189,8 +190,8 @@ public class EventData implements Comparable<EventData> {
      * @throws NullPointerException if {@code key} or {@code value} is null.
      */
     public EventData addProperty(String key, Object value) {
-        Objects.requireNonNull(key);
-        Objects.requireNonNull(value);
+        Objects.requireNonNull(key, "'key' cannot be null.");
+        Objects.requireNonNull(value, "'value' cannot be null.");
 
         properties.put(key, value);
         return this;
