@@ -17,7 +17,7 @@ public interface Tracer {
      * If no span data is listed when the SDK creates its first span it will be used as the parent for all further spans
      * it creates.
      */
-    String OPENTELEMETRY_SPAN_KEY = "opentelemetry-span";
+    String OPENCENSUS_SPAN_KEY = "opencensus-span";
 
     /**
      * Key for {@link Context} which indicates that the context contains the name for the OpenTelemetry spans that are
@@ -25,7 +25,7 @@ public interface Tracer {
      *
      * If no span name is listed when the span is created it will default to using the calling method's name.
      */
-    String OPENTELEMETRY_SPAN_NAME_KEY = "opentelemetry-span-name";
+    String OPENCENSUS_SPAN_NAME_KEY = "opencensus-span-name";
 
     /**
      * Key for {@link Context} which indicates that the context contains the Entity Path, remote endpoint path.
