@@ -77,9 +77,11 @@ public class ServiceClientCheck extends AbstractCheck {
         "upsert", "set", "create", "update", "replace", "delete", "add", "get", "list"
     )));
 
+    // Add all imported classes into a map, key is the name of class and value is the full package path of class.
+    private final Map<String, String> simpleClassNameToQualifiedNameMap = new HashMap<>();
+
     private boolean isAsync;
     private boolean isServiceClientAnnotation;
-    private final Map<String, String> simpleClassNameToQualifiedNameMap = new HashMap<>();
 
     @Override
     public int[] getDefaultTokens() {
@@ -413,7 +415,8 @@ public class ServiceClientCheck extends AbstractCheck {
                 }
                 final DetailAST annotationIdentToken = node.findFirstToken(TokenTypes.IDENT);
                 return annotationIdentToken != null && SERVICE_CLIENT.equals(annotationIdentToken.getText());
-        });
+            }
+        );
         if (serviceClientAnnotationOption.isPresent()) {
             isAsync = isAsyncServiceClient(serviceClientAnnotationOption.get());
             return true;
@@ -482,6 +485,7 @@ public class ServiceClientCheck extends AbstractCheck {
             switch (currentToken.getType()) {
                 case TokenTypes.TYPE_ARGUMENT:
                 case TokenTypes.TYPE_ARGUMENTS:
+                    // Recursive call
                     getReturnType(currentToken, sb);
                     break;
                 default:
