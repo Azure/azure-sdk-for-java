@@ -399,8 +399,10 @@ public class DirectoryAsyncClient {
      * @return {@link HandleItem handles} in the directory that satisfy the requirements
      */
     public Flux<HandleItem> listHandles(Integer maxResult, boolean recursive) {
-        return azureFileStorageClient.directorys().listHandlesWithRestResponseAsync(shareName, directoryPath, null, maxResult, null, snapshot, recursive, Context.NONE)
-                   .flatMapMany(response -> nextPageForHandles(response, maxResult, recursive));
+        return postProcessResponse(azureFileStorageClient.directorys()
+            .listHandlesWithRestResponseAsync(shareName, directoryPath, null, maxResult, null,
+                snapshot, recursive, Context.NONE))
+            .flatMapMany(response -> nextPageForHandles(response, maxResult, recursive));
     }
 
     /**
@@ -422,7 +424,9 @@ public class DirectoryAsyncClient {
     public Flux<Integer> forceCloseHandles(String handleId, boolean recursive) {
         // TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
         // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
-        return azureFileStorageClient.directorys().forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, handleId, null, null, snapshot, recursive, Context.NONE)
+        return postProcessResponse(azureFileStorageClient.directorys()
+            .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, handleId, null, null,
+                snapshot, recursive, Context.NONE))
             .flatMapMany(response -> nextPageForForceCloseHandles(response, handleId, recursive));
     }
 

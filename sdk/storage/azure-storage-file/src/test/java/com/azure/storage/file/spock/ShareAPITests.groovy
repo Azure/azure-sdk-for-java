@@ -11,7 +11,6 @@ import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageException
-import com.azure.storage.file.models.StorageException
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -81,7 +80,7 @@ class ShareAPITests extends APISpec {
         where:
         metadata                                 | quota | statusCode | errMessage
         Collections.singletonMap("", "value")    | 1     | 400        | StorageErrorCode.EMPTY_METADATA_KEY
-        Collections.singletonMap("a@B", "value") | 1     | 400        | StorageErrorCode.fromString("Bad Request")
+        Collections.singletonMap("aB!", "value") | 1     | 400        | StorageErrorCode.INVALID_METADATA
         testMetadata                             | 6000  | 400        | StorageErrorCode.INVALID_HEADER_VALUE
     }
 
@@ -259,7 +258,7 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
         where:
         fileName    | maxSize | statusCode | errMsg
-        "test\file" | 1024    | 400        | "Bad Request"
+        "testfile:" | 1024    | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
         "fileName"  | -1      | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
 
     }
@@ -278,18 +277,20 @@ class ShareAPITests extends APISpec {
     def "Create file maxOverload invalid args"() {
         given:
         primaryShareClient.create()
+
         when:
-        primaryShareClient.createFile("test\file", maxSize)
+        primaryShareClient.createFileWithResponse(fileName, maxSize, httpHeaders, metadata, null)
+
         then:
         def e = thrown(StorageException)
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.fromString("Bad Request"))
-        where:
-        fileName    | maxSize | httpHeaders                                       | metadata
-        "test\file" | 1024    | new FileHTTPHeaders()                             | testMetadata
-        "fileName"  | -1      | new FileHTTPHeaders()                             | testMetadata
-        "fileName"  | 1024    | new FileHTTPHeaders().fileContentMD5(new byte[0]) | testMetadata
-        "fileName"  | 1024    | new FileHTTPHeaders()                             | Collections.singletonMap("", "value")
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, errMsg)
 
+        where:
+        fileName    | maxSize | httpHeaders                                       | metadata                              | errMsg
+        "testfile:" | 1024    | new FileHTTPHeaders()                             | testMetadata                          | StorageErrorCode.INVALID_RESOURCE_NAME
+        "fileName"  | -1      | new FileHTTPHeaders()                             | testMetadata                          | StorageErrorCode.OUT_OF_RANGE_INPUT
+        "fileName"  | 1024    | new FileHTTPHeaders().fileContentMD5(new byte[0]) | testMetadata                          | StorageErrorCode.INVALID_HEADER_VALUE
+        "fileName"  | 1024    | new FileHTTPHeaders()                             | Collections.singletonMap("", "value") | StorageErrorCode.EMPTY_METADATA_KEY
     }
 
     def "Delete directory"() {

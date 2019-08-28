@@ -330,7 +330,7 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
         where:
         fileName    | maxSize | statusCode | errMsg
-        "test\file" | 1024    | 400        | StorageErrorCode.fromString("Bad Request")
+        "testfile:" | 1024    | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
         "fileName"  | -1      | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
 
     }
@@ -350,16 +350,16 @@ class DirectoryAPITests extends APISpec {
         given:
         primaryDirectoryClient.create()
         when:
-        primaryDirectoryClient.createFileWithResponse("test\file", maxSize, null, null, null)
+        primaryDirectoryClient.createFileWithResponse(fileName, maxSize, httpHeaders, metadata, null)
         then:
         def e = thrown(StorageException)
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.fromString("Bad Request"))
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, errMsg)
         where:
-        fileName    | maxSize | httpHeaders                                       | metadata
-        "test\file" | 1024    | new FileHTTPHeaders()                             | testMetadata
-        "fileName"  | -1      | new FileHTTPHeaders()                             | testMetadata
-        "fileName"  | 1024    | new FileHTTPHeaders().fileContentMD5(new byte[0]) | testMetadata
-        "fileName"  | 1024    | new FileHTTPHeaders()                             | Collections.singletonMap("", "value")
+        fileName    | maxSize | httpHeaders                                       | metadata                              | errMsg
+        "testfile:" | 1024    | new FileHTTPHeaders()                             | testMetadata                          | StorageErrorCode.INVALID_RESOURCE_NAME
+        "fileName"  | -1      | new FileHTTPHeaders()                             | testMetadata                          | StorageErrorCode.OUT_OF_RANGE_INPUT
+        "fileName"  | 1024    | new FileHTTPHeaders().fileContentMD5(new byte[0]) | testMetadata                          | StorageErrorCode.INVALID_HEADER_VALUE
+        "fileName"  | 1024    | new FileHTTPHeaders()                             | Collections.singletonMap("", "value") | StorageErrorCode.EMPTY_METADATA_KEY
 
     }
 

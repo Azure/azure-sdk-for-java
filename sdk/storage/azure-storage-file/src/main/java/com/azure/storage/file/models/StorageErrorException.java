@@ -12,7 +12,7 @@ import com.azure.core.http.HttpResponse;
  */
 public final class StorageErrorException extends HttpResponseException {
     /**
-     * Initializes a new instance of the StorageException class.
+     * Initializes a new instance of the StorageErrorException class.
      *
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
@@ -22,7 +22,7 @@ public final class StorageErrorException extends HttpResponseException {
     }
 
     /**
-     * Initializes a new instance of the StorageException class.
+     * Initializes a new instance of the StorageErrorException class.
      *
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.

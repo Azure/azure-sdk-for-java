@@ -223,9 +223,9 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "List handles error"() {
         when:
-        def listHandesVerifier = StepVerifier.create(primaryDirectoryAsyncClient.listHandles(null, true))
+        def listHandlesVerifier = StepVerifier.create(primaryDirectoryAsyncClient.listHandles(null, true))
         then:
-        listHandesVerifier.verifyErrorSatisfies {
+        listHandlesVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
         }
     }
@@ -333,7 +333,7 @@ class DirectoryAsyncAPITests extends APISpec {
         }
         where:
         fileName    | maxSize | statusCode | errMsg
-        "test\file" | 1024    | 400        | StorageErrorCode.fromString("Bad Request")
+        "testfile:" | 1024    | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
         "fileName"  | -1      | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
 
     }
@@ -354,19 +354,21 @@ class DirectoryAsyncAPITests extends APISpec {
     def "Create file maxOverload invalid args"() {
         given:
         primaryDirectoryAsyncClient.create().block()
+
         when:
-        def createFileErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createFile("test\file", maxSize))
+        def errorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse(fileName, maxSize, httpHeaders, metadata))
+
         then:
-        createFileErrorVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.fromString("Bad Request"))
-        }
+        errorVerifier.verifyErrorSatisfies({
+            FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, errMsg)
+        })
 
         where:
-        fileName    | maxSize | httpHeaders                                       | metadata
-        "test\file" | 1024    | new FileHTTPHeaders()                             | testMetadata
-        "fileName"  | -1      | new FileHTTPHeaders()                             | testMetadata
-        "fileName"  | 1024    | new FileHTTPHeaders().fileContentMD5(new byte[0]) | testMetadata
-        "fileName"  | 1024    | new FileHTTPHeaders()                             | Collections.singletonMap("", "value")
+        fileName    | maxSize | httpHeaders                                       | metadata                              | errMsg
+        "testfile:" | 1024    | new FileHTTPHeaders()                             | testMetadata                          | StorageErrorCode.INVALID_FILE_OR_DIRECTORY_PATH_NAME
+        "fileName"  | -1      | new FileHTTPHeaders()                             | testMetadata                          | StorageErrorCode.OUT_OF_RANGE_INPUT
+        "fileName"  | 1024    | new FileHTTPHeaders().fileContentMD5(new byte[0]) | testMetadata                          | StorageErrorCode.INVALID_HEADER_VALUE
+        "fileName"  | 1024    | new FileHTTPHeaders()                             | Collections.singletonMap("", "value") | StorageErrorCode.EMPTY_METADATA_KEY
 
     }
 

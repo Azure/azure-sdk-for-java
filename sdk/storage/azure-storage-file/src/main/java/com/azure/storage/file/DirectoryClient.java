@@ -374,7 +374,7 @@ public class DirectoryClient {
      */
     public Response<DirectoryClient> createSubDirectoryWithResponse(String subDirectoryName, Map<String, String> metadata, Context context) {
         DirectoryClient directoryClient = getSubDirectoryClient(subDirectoryName);
-        return new SimpleResponse<>(directoryClient.createSubDirectoryWithResponse(subDirectoryName, metadata, context), directoryClient);
+        return new SimpleResponse<>(directoryClient.createWithResponse(metadata, context), directoryClient);
     }
 
     /**
