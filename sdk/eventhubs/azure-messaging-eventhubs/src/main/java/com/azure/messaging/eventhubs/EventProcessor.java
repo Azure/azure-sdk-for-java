@@ -7,26 +7,27 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.implementation.tracing.ProcessKind;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.models.PartitionContext;
-import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
-
-import java.io.Closeable;
-import java.io.IOException;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-
+import com.azure.messaging.eventhubs.models.PartitionContext;
+import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import org.reactivestreams.Publisher;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Signal;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
+
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.core.implementation.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.implementation.tracing.Tracer.SPAN_CONTEXT;
@@ -263,7 +264,7 @@ public class EventProcessor {
      */
     private Context startProcessTracingSpan(EventData eventData) {
         Object diagnosticId = eventData.properties().get(DIAGNOSTIC_ID_KEY);
-        if (diagnosticId == null || tracerProvider == null) {
+        if (diagnosticId == null || !tracerProvider.isEnabled()) {
             return Context.NONE;
         }
         Context spanContext = tracerProvider.extractContext(diagnosticId.toString(), Context.NONE);
@@ -274,16 +275,24 @@ public class EventProcessor {
      * Ends the process tracing span and the scope of that span.
      */
     private void endProcessTracingSpan(Context processSpanContext, Signal<Void> signal) {
+        Optional<Object> spanScope = processSpanContext.getData("scope");
         // Disposes of the scope when the trace span closes.
-        if (!processSpanContext.getData("scope").isPresent() || tracerProvider == null) {
+        if (!spanScope.isPresent() || !tracerProvider.isEnabled()) {
             return;
         }
-        Closeable close = (Closeable) processSpanContext.getData("scope").get();
-        try {
-            close.close();
-        } catch (IOException ioException) {
-            logger.error("EventProcessor.run() endTracingSpan().close() failed with an error %s", ioException);
+        if (spanScope.get() instanceof Closeable) {
+            Closeable close = (Closeable) processSpanContext.getData("scope").get();
+            try {
+                close.close();
+                tracerProvider.endSpan(processSpanContext, signal);
+            } catch (IOException ioException) {
+                logger.error("EventProcessor.run() endTracingSpan().close() failed with an error %s", ioException);
+            }
+
+        } else {
+            logger.warning(String.format(Locale.US,
+                "Process span scope type is not of type Closeable, but type: %s. Not closing the scope and span",
+                spanScope.get() != null ? spanScope.getClass() : "null"));
         }
-        tracerProvider.endSpan(processSpanContext, signal);
     }
 }

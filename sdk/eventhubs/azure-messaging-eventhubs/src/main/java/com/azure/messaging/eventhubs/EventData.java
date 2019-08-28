@@ -86,6 +86,7 @@ public class EventData implements Comparable<EventData> {
      *
      * @param body The data to set for this event.
      * @param context A specified key-value pair of type {@link Context}.
+     * @throws NullPointerException if {@code body} or if {@code context} is {@code null}.
      */
     public EventData(byte[] body, Context context) {
         this(ByteBuffer.wrap(body), context);
@@ -106,10 +107,11 @@ public class EventData implements Comparable<EventData> {
      *
      * @param body The data to set for this event.
      * @param context A specified key-value pair of type {@link Context}.
-     * @throws NullPointerException if {@code body} is {@code null}.
+     * @throws NullPointerException if {@code body} or if {@code context} is {@code null}.
      */
     public EventData(ByteBuffer body, Context context) {
         Objects.requireNonNull(body, "'body' cannot be null.");
+        Objects.requireNonNull(body, "'context' cannot be null.");
 
         this.body = body;
         this.properties = new HashMap<>();
@@ -247,7 +249,7 @@ public class EventData implements Comparable<EventData> {
      * <b>received</b> EventData.
      *
      * @return an encapsulation of all SystemProperties appended by EventHubs service into EventData. {@code null} if
-     * the {@link EventData} is not received and is created by the public constructors.
+     *      the {@link EventData} is not received and is created by the public constructors.
      */
     public Map<String, Object> systemProperties() {
         return systemProperties;
@@ -301,8 +303,8 @@ public class EventData implements Comparable<EventData> {
      * is unique for every message received in the Event Hub partition.
      *
      * @return Sequence number for this event.
-     * @throws IllegalStateException if {@link #systemProperties()} does not contain the sequence number in a retrieved
-     *         event.
+     * @throws IllegalStateException if {@link #systemProperties()} does not contain the sequence number in a
+     *      retrieved event.
      */
     public long sequenceNumber() {
         return systemProperties.sequenceNumber();
@@ -395,8 +397,8 @@ public class EventData implements Comparable<EventData> {
          * Event Hub.
          *
          * @return Sequence number for this event.
-         * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a retrieved
-         *         event.
+         * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a
+         *      retrieved event.
          */
         private long sequenceNumber() {
             final Long sequenceNumber = this.getSystemProperty(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());

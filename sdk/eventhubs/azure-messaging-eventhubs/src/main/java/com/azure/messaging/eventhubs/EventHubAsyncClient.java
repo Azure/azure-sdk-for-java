@@ -87,9 +87,10 @@ public class EventHubAsyncClient implements Closeable {
     private final TracerProvider tracerProvider;
 
     EventHubAsyncClient(ConnectionOptions connectionOptions, ReactorProvider provider, ReactorHandlerProvider handlerProvider, TracerProvider tracerProvider) {
-        Objects.requireNonNull(connectionOptions);
-        Objects.requireNonNull(provider);
-        Objects.requireNonNull(handlerProvider);
+        Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.");
+        Objects.requireNonNull(provider, "'provider' cannot be null.");
+        Objects.requireNonNull(handlerProvider, "'handlerProvider' cannot be null.");
+        Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
 
         this.connectionOptions = connectionOptions;
         this.tracerProvider = tracerProvider;

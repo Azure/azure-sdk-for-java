@@ -8,15 +8,20 @@ import com.azure.core.implementation.tracing.Tracer;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Signal;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
 
 public class TracerProvider {
-    private final Iterable<Tracer> tracers;
+    private final List<Tracer> tracers;
 
-    public TracerProvider(Iterable<Tracer> tracers) {
-        this.tracers = Objects.requireNonNull(tracers, "'tracers' cannot be null.");
+    public TracerProvider(List<Tracer> tracers) {
+        this.tracers = Objects.requireNonNull(tracers);
+    }
+
+    public boolean isEnabled() {
+        return tracers.size() > 0;
     }
 
     /**
@@ -31,9 +36,8 @@ public class TracerProvider {
      * @return An updated context object.
      */
     public Context startSpan(Context context, ProcessKind processKind) {
-        Objects.requireNonNull(context, "'context' cannot be null");
+        Context local = Objects.requireNonNull(context, "'context' cannot be null");
         Objects.requireNonNull(processKind, "'processKind' cannot be null");
-        Context local = context;
         String spanName = "Azure.eventhubs." + processKind.getProcessKind();
         for (Tracer tracer : tracers) {
             local = tracer.start(spanName, local, processKind);
@@ -50,28 +54,39 @@ public class TracerProvider {
      * @param signal The signal indicates the status and contains the metadata we need to end the tracing span.
      */
     public void endSpan(Context context, Signal<Void> signal) {
+        Objects.requireNonNull(context, "'context' cannot be null");
+        Objects.requireNonNull(signal, "'signal' cannot be null");
 
         // Get the context that was added to the mono, this will contain the information needed to end the span.
-        if (context != null && !context.getData(OPENTELEMETRY_SPAN_KEY).isPresent()) {
+        if (!context.getData(OPENTELEMETRY_SPAN_KEY).isPresent()) {
             return;
         }
 
-        if (signal.isOnComplete()) {
-            end("success", null, context);
-            return;
+        String errorCondition;
+        Throwable throwable;
+
+        switch (signal.getType()) {
+            case ON_COMPLETE:
+                end("success", null, context);
+                return;
+            case ON_ERROR:
+                errorCondition = "";
+                throwable = null;
+                if (signal.hasError()) {
+                    // The last status available is on error, this contains the thrown error.
+                    throwable = signal.getThrowable();
+
+                    if (throwable instanceof AmqpException) {
+                        AmqpException exception = (AmqpException) throwable;
+                        errorCondition = exception.getErrorCondition().getErrorCondition();
+                    }
+                }
+                break;
+            default:
+                // ON_SUBSCRIBE and ON_NEXT don't have the information to end the span so just return.
+                return;
         }
 
-        String errorCondition = "";
-        Throwable throwable = null;
-        if (signal.hasError()) {
-            // The last status available is on error, this contains the thrown error.
-            throwable = signal.getThrowable();
-
-            if (throwable instanceof AmqpException) {
-                AmqpException exception = (AmqpException) throwable;
-                errorCondition = exception.getErrorCondition().getErrorCondition();
-            }
-        }
         end(errorCondition, throwable, context);
     }
 
@@ -92,9 +107,8 @@ public class TracerProvider {
      * @param diagnosticId Unique identifier of an external call from producer to the queue.
      */
     public Context extractContext(String diagnosticId, Context context) {
-        Objects.requireNonNull(context, "'context' cannot be null");
+        Context local = Objects.requireNonNull(context, "'context' cannot be null");
         Objects.requireNonNull(diagnosticId, "'diagnosticId' cannot be null");
-        Context local = context;
         for (Tracer tracer : tracers) {
             local = tracer.extractContext(diagnosticId, local);
         }

@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
 import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
@@ -25,6 +26,7 @@ import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -57,7 +59,8 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
     @Override
     protected void beforeTest() {
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, null);
+        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
+        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, tracerProvider);
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID)
             .retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));

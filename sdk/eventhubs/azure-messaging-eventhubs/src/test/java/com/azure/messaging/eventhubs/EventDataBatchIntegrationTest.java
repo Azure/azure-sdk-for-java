@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
@@ -21,6 +22,7 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -56,8 +58,9 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
         MockitoAnnotations.initMocks(this);
 
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
+        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
-        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, null);
+        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, tracerProvider);
         producer = client.createProducer();
     }
 

@@ -30,8 +30,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.azure.core.implementation.tracing.Tracer.DIAGNOSTIC_ID_KEY;
@@ -89,6 +89,11 @@ public class EventHubProducerTest {
     @Test
     public void sendSingleMessage() {
         // Arrange
+        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
+
+        EventHubAsyncProducer asyncProducer = new EventHubAsyncProducer(
+            Mono.fromCallable(() -> sendLink),
+            new EventHubProducerOptions().retry(retryOptions), tracerProvider);
         final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.tryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
 
@@ -110,7 +115,7 @@ public class EventHubProducerTest {
     public void sendStartSpanSingleMessage() {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        List<Tracer> tracers = new ArrayList<>(Arrays.asList(tracer1));
+        final List<Tracer> tracers = Arrays.asList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
 
         EventHubAsyncProducer asyncProducer = new EventHubAsyncProducer(
@@ -148,7 +153,7 @@ public class EventHubProducerTest {
     public void sendMessageAddlink() {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        List<Tracer> tracers = new ArrayList<>(Arrays.asList(tracer1));
+        final List<Tracer> tracers = Arrays.asList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
 
         EventHubAsyncProducer asyncProducer = new EventHubAsyncProducer(
@@ -187,6 +192,11 @@ public class EventHubProducerTest {
         }).toIterable();
 
         final SendOptions options = new SendOptions();
+        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
+
+        EventHubAsyncProducer asyncProducer = new EventHubAsyncProducer(
+            Mono.fromCallable(() -> sendLink),
+            new EventHubProducerOptions().retry(retryOptions), tracerProvider);
         final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.tryTimeout());
 
         // Act

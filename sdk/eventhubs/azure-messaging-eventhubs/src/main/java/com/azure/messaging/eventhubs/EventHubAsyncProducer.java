@@ -304,7 +304,7 @@ public class EventHubAsyncProducer implements Closeable {
         final String partitionKey = options.partitionKey();
 
         verifyPartitionKey(partitionKey);
-        if (tracerProvider != null) {
+        if (tracerProvider.isEnabled()) {
             return sendInternalTracingEnabled(events, partitionKey);
         } else {
             return sendInternalTracingDisabled(events, partitionKey);
@@ -362,7 +362,7 @@ public class EventHubAsyncProducer implements Closeable {
                 // builder.addLink((Context)eventContextData.get());
             } else {
                 logger.warning(String.format(Locale.US,
-                    "Event Data context type is not of type Context, but type: %s. Not setting body contents.",
+                    "Event Data context type is not of type Context, but type: %s. Not adding span links.",
                     spanContextObject != null ? spanContextObject.getClass() : "null"));
             }
 

@@ -30,7 +30,6 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 
 import java.io.Closeable;
 import java.util.concurrent.TimeUnit;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.HashMap;
@@ -140,7 +139,7 @@ public class EventProcessorTest {
     public void testProcessSpans() throws Exception {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        List<Tracer> tracers = new ArrayList<>(Arrays.asList(tracer1));
+        final List<Tracer> tracers = Arrays.asList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
@@ -202,7 +201,7 @@ public class EventProcessorTest {
     public void testErrorProcessSpans() throws Exception {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        List<Tracer> tracers = new ArrayList<>(Arrays.asList(tracer1));
+        final List<Tracer> tracers = Arrays.asList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
