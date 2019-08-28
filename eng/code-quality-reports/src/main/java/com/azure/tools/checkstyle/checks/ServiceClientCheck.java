@@ -240,8 +240,13 @@ public class ServiceClientCheck extends AbstractCheck {
     private void checkMethodNamingPattern(DetailAST methodDefToken) {
         final DetailAST modifiersToken = methodDefToken.findFirstToken(TokenTypes.MODIFIERS);
         final Optional<DetailAST> serviceMethodAnnotationOption = TokenUtil.findFirstTokenByPredicate(modifiersToken,
-            node -> node.getType() == TokenTypes.ANNOTATION && node.findFirstToken(TokenTypes.IDENT) != null
-                && node.findFirstToken(TokenTypes.IDENT).getText().equals("ServiceMethod"));
+            node -> {
+                if (node.getType() != TokenTypes.ANNOTATION) {
+                    return false;
+                }
+                final DetailAST annotationIdentToken = node.findFirstToken(TokenTypes.IDENT);
+                return annotationIdentToken != null && "ServiceMethod".equals(annotationIdentToken.getText());
+            });
         // NOT a @ServiceMethod method
         if (!serviceMethodAnnotationOption.isPresent()) {
             return;
@@ -370,10 +375,13 @@ public class ServiceClientCheck extends AbstractCheck {
         final String returnType = getReturnType(methodDefToken.findFirstToken(TokenTypes.TYPE), new StringBuilder()).toString();
 
         final boolean containsTypeParameter = TokenUtil.findFirstTokenByPredicate(parametersToken,
-            parameterToken -> parameterToken.getType() == TokenTypes.PARAMETER_DEF
-                && parameterToken.findFirstToken(TokenTypes.TYPE).findFirstToken(TokenTypes.IDENT) != null
-                && parameterToken.findFirstToken(TokenTypes.TYPE).findFirstToken(TokenTypes.IDENT)
-                    .getText().equals(CONTEXT))
+            parameterToken -> {
+                if (parameterToken.getType() != TokenTypes.PARAMETER_DEF) {
+                    return false;
+                }
+                final DetailAST paramTypeIdentToken = parameterToken.findFirstToken(TokenTypes.TYPE).findFirstToken(TokenTypes.IDENT);
+                return paramTypeIdentToken != null && CONTEXT.equals(paramTypeIdentToken.getText());
+            })
             .isPresent();
 
         if (containsTypeParameter) {
@@ -399,9 +407,13 @@ public class ServiceClientCheck extends AbstractCheck {
         // Always has MODIFIERS node
         final DetailAST modifiersToken = classDefToken.findFirstToken(TokenTypes.MODIFIERS);
         final Optional<DetailAST> serviceClientAnnotationOption = TokenUtil.findFirstTokenByPredicate(modifiersToken,
-            node -> node.getType() == TokenTypes.ANNOTATION && node.findFirstToken(TokenTypes.IDENT) != null
-                && SERVICE_CLIENT.equals(node.findFirstToken(TokenTypes.IDENT).getText()));
-
+            node -> {
+                if (node.getType() != TokenTypes.ANNOTATION) {
+                    return false;
+                }
+                final DetailAST annotationIdentToken = node.findFirstToken(TokenTypes.IDENT);
+                return annotationIdentToken != null && SERVICE_CLIENT.equals(annotationIdentToken.getText());
+        });
         if (serviceClientAnnotationOption.isPresent()) {
             isAsync = isAsyncServiceClient(serviceClientAnnotationOption.get());
             return true;
