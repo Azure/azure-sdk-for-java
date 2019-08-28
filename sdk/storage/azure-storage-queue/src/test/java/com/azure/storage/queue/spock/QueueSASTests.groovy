@@ -1,8 +1,5 @@
 package com.azure.storage.queue.spock
 
-import com.azure.core.http.HttpClient
-import com.azure.core.http.ProxyOptions
-import com.azure.core.http.rest.Response
 import com.azure.storage.common.AccountSASPermission
 import com.azure.storage.common.AccountSASResourceType
 import com.azure.storage.common.AccountSASService
@@ -18,7 +15,6 @@ import com.azure.storage.queue.models.AccessPolicy
 import com.azure.storage.queue.models.EnqueuedMessage
 import com.azure.storage.queue.models.SignedIdentifier
 import com.azure.storage.queue.models.StorageErrorException
-import com.azure.storage.queue.models.StorageException
 import org.junit.Test
 import spock.lang.Unroll
 

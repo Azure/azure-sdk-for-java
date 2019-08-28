@@ -160,7 +160,6 @@ class FileSASTests extends APISpec {
     def "FileSAS network test download upload"() {
         setup:
         String data = "test"
-        primaryShareClient.create()
         primaryFileClient.create(Constants.KB)
         primaryFileClient.upload(ByteBuffer.wrap(data.getBytes()), (long) data.length())
 
@@ -202,7 +201,6 @@ class FileSASTests extends APISpec {
 
         client.upload(ByteBuffer.wrap(data.getBytes()), (long) data.length())
 
-        primaryShareClient.delete()
         then:
         notThrown(StorageErrorException)
         for(int i = 0; i < data.length(); i++) {
@@ -213,7 +211,6 @@ class FileSASTests extends APISpec {
     def "FileSAS network test upload fails"() {
         setup:
         String data = "test"
-        primaryShareClient.create()
         primaryFileClient.create(Constants.KB)
 
         def permissions = new FileSASPermission()
@@ -252,7 +249,6 @@ class FileSASTests extends APISpec {
         when:
         client.delete()
 
-        primaryShareClient.delete()
         then:
         notThrown(StorageErrorException)
     }
@@ -263,7 +259,6 @@ class FileSASTests extends APISpec {
             .id("0000")
             .accessPolicy(new AccessPolicy().permission("rcwdl")
                 .expiry(OffsetDateTime.now().plusDays(1)))
-        primaryShareClient.create()
 
         primaryShareClient.setAccessPolicy(Arrays.asList(identifier))
 
@@ -301,7 +296,6 @@ class FileSASTests extends APISpec {
 
         client2.createDirectory("dir")
         client2.deleteDirectory("dir")
-        primaryShareClient.delete()
 
         then:
         notThrown(StorageErrorException)
