@@ -60,7 +60,10 @@ public final class BlobServiceClientBuilder extends BaseClientBuilder {
      * @return a {@link BlobServiceAsyncClient} created from the configurations in this builder.
      */
     public BlobServiceAsyncClient buildAsyncClient() {
-        HttpPipeline pipeline = super.buildPipeline();
+        HttpPipeline pipeline = super.getPipeline();
+        if (pipeline == null) {
+            pipeline = super.buildPipeline();
+        }
 
         return new BlobServiceAsyncClient(new AzureBlobStorageBuilder()
             .url(super.endpoint)
@@ -203,6 +206,20 @@ public final class BlobServiceClientBuilder extends BaseClientBuilder {
      */
     public BlobServiceClientBuilder retryOptions(RequestRetryOptions retryOptions) {
         super.setRetryOptions(retryOptions);
+        return this;
+    }
+
+    /**
+     * Sets the HTTP pipeline to use for the service client.
+     *
+     * If {@code pipeline} is set, all other settings are ignored, aside from
+     * {@link BlobServiceClientBuilder#endpoint(String) endpoint} when building clients.
+     *
+     * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
+     * @return The updated BlobServiceClientBuilder object.
+     */
+    public BlobServiceClientBuilder pipeline(HttpPipeline pipeline) {
+        super.setPipeline(pipeline);
         return this;
     }
 

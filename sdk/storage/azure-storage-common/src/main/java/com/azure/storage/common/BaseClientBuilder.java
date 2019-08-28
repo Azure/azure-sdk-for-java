@@ -42,6 +42,10 @@ public abstract class BaseClientBuilder {
 
     private final ClientLogger logger = new ClientLogger(BaseClientBuilder.class);
 
+    // for when a user wants to manage the pipeline themselves
+    private HttpPipeline pipeline;
+
+    // for when a user wants to add policies to our pre-constructed pipeline
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
 
     protected String endpoint;
@@ -178,16 +182,33 @@ public abstract class BaseClientBuilder {
         this.logLevel = Objects.requireNonNull(logLevel);
     }
 
-    public void setConfiguration(Configuration configuration) {
+    protected void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
 
-    public Configuration getConfiguration() {
+    protected Configuration getConfiguration() {
         return this.configuration;
     }
 
-    public void setRetryOptions(RequestRetryOptions retryOptions) {
+    protected void setRetryOptions(RequestRetryOptions retryOptions) {
         this.retryOptions = Objects.requireNonNull(retryOptions);
+    }
+
+    /**
+     * Sets the HTTP pipeline to use for the client.
+     *
+     * If {@code pipeline} is set, all other settings are ignored, aside from {@link BaseClientBuilder#endpoint endpoint}
+     * when building clients.
+     *
+     * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
+     * @throws NullPointerException If {@code pipeline} is {@code null}.
+     */
+    protected void setPipeline(HttpPipeline pipeline) {
+        this.pipeline = pipeline;
+    }
+
+    protected HttpPipeline getPipeline() {
+        return this.pipeline;
     }
 
     /**
