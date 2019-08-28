@@ -51,9 +51,6 @@ stages:
         - name: azure-keyvault-extensions
           safeName: azurekeyvaultextensions
           stagingProfileId: 534d15ee3800f4
-        - name: azure-keyvault-test
-          safeName: azurekeyvaulttest
-          stagingProfileId: 534d15ee3800f4
         - name: azure-keyvault-webkey
           safeName: azurekeyvaultwebkey
           stagingProfileId: 534d15ee3800f4
