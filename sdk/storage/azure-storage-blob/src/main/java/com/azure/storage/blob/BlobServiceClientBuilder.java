@@ -20,7 +20,6 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Objects;
 
 /**
  * Fluent BlobServiceClientBuilder for instantiating a {@link BlobServiceClient} or {@link BlobServiceAsyncClient}
@@ -61,8 +60,6 @@ public final class BlobServiceClientBuilder extends BaseClientBuilder {
      * @return a {@link BlobServiceAsyncClient} created from the configurations in this builder.
      */
     public BlobServiceAsyncClient buildAsyncClient() {
-        Objects.requireNonNull(super.endpoint);
-
         HttpPipeline pipeline = super.buildPipeline();
 
         return new BlobServiceAsyncClient(new AzureBlobStorageBuilder()
@@ -89,10 +86,9 @@ public final class BlobServiceClientBuilder extends BaseClientBuilder {
             URL url = new URL(endpoint);
             super.endpoint = url.getProtocol() + "://" + url.getAuthority();
 
-            this.sasTokenCredential = SASTokenCredential.fromSASTokenString(URLParser.parse(url).sasQueryParameters().encode());
-            if (this.sasTokenCredential != null) {
-                this.tokenCredential = null;
-                this.sharedKeyCredential = null;
+            SASTokenCredential sasTokenCredential = SASTokenCredential.fromSASTokenString(URLParser.parse(url).sasQueryParameters().encode());
+            if (sasTokenCredential != null) {
+                super.setCredential(sasTokenCredential);
             }
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage endpoint url is malformed."));
@@ -163,7 +159,7 @@ public final class BlobServiceClientBuilder extends BaseClientBuilder {
      * @throws NullPointerException If {@code httpClient} is {@code null}.
      */
     public BlobServiceClientBuilder httpClient(HttpClient httpClient) {
-        super.httpClient = Objects.requireNonNull(httpClient);
+        super.setHttpClient(httpClient);
         return this;
     }
 
@@ -174,7 +170,7 @@ public final class BlobServiceClientBuilder extends BaseClientBuilder {
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public BlobServiceClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        super.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy));
+        super.setAdditionalPolicy(pipelinePolicy);
         return this;
     }
 
@@ -184,7 +180,7 @@ public final class BlobServiceClientBuilder extends BaseClientBuilder {
      * @return the updated BlobServiceClientBuilder object
      */
     public BlobServiceClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        super.logLevel = logLevel;
+        super.setHttpLogDetailLevel(logLevel);
         return this;
     }
 
@@ -195,7 +191,7 @@ public final class BlobServiceClientBuilder extends BaseClientBuilder {
      * @return the updated BlobServiceClientBuilder object
      */
     public BlobServiceClientBuilder configuration(Configuration configuration) {
-        super.configuration = configuration;
+        super.setConfiguration(configuration);
         return this;
     }
 
@@ -206,12 +202,12 @@ public final class BlobServiceClientBuilder extends BaseClientBuilder {
      * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
     public BlobServiceClientBuilder retryOptions(RequestRetryOptions retryOptions) {
-        super.retryOptions = Objects.requireNonNull(retryOptions);
+        super.setRetryOptions(retryOptions);
         return this;
     }
 
     @Override
     protected UserAgentPolicy getUserAgentPolicy() {
-        return new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, configuration);
+        return new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, super.getConfiguration());
     }
 }

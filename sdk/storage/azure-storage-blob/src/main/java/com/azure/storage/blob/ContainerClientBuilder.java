@@ -62,7 +62,6 @@ public final class ContainerClientBuilder extends BaseClientBuilder {
      * @return a {@link ContainerAsyncClient} created from the configurations in this builder.
      */
     public ContainerAsyncClient buildAsyncClient() {
-        Objects.requireNonNull(endpoint);
         Objects.requireNonNull(containerName);
 
         HttpPipeline pipeline = buildPipeline();
@@ -93,10 +92,9 @@ public final class ContainerClientBuilder extends BaseClientBuilder {
             this.endpoint = parts.scheme() + "://" + parts.host();
             this.containerName = parts.containerName();
 
-            this.sasTokenCredential = SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode());
-            if (this.sasTokenCredential != null) {
-                this.tokenCredential = null;
-                this.sharedKeyCredential = null;
+            SASTokenCredential sasTokenCredential = SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode());
+            if (sasTokenCredential != null) {
+                super.setCredential(sasTokenCredential);
             }
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed."));
@@ -177,7 +175,7 @@ public final class ContainerClientBuilder extends BaseClientBuilder {
      * @throws NullPointerException If {@code httpClient} is {@code null}.
      */
     public ContainerClientBuilder httpClient(HttpClient httpClient) {
-        super.httpClient = Objects.requireNonNull(httpClient);
+        super.setHttpClient(httpClient);
         return this;
     }
 
@@ -188,7 +186,7 @@ public final class ContainerClientBuilder extends BaseClientBuilder {
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public ContainerClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        super.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy));
+        super.setAdditionalPolicy(Objects.requireNonNull(pipelinePolicy));
         return this;
     }
 
@@ -198,7 +196,7 @@ public final class ContainerClientBuilder extends BaseClientBuilder {
      * @return the updated ContainerClientBuilder object
      */
     public ContainerClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        super.logLevel = logLevel;
+        super.setHttpLogDetailLevel(logLevel);
         return this;
     }
 
@@ -209,7 +207,7 @@ public final class ContainerClientBuilder extends BaseClientBuilder {
      * @return the updated ContainerClientBuilder object
      */
     public ContainerClientBuilder configuration(Configuration configuration) {
-        super.configuration = configuration;
+        super.setConfiguration(configuration);
         return this;
     }
 
@@ -220,12 +218,12 @@ public final class ContainerClientBuilder extends BaseClientBuilder {
      * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
     public ContainerClientBuilder retryOptions(RequestRetryOptions retryOptions) {
-        super.retryOptions = Objects.requireNonNull(retryOptions);
+        super.setRetryOptions(retryOptions);
         return this;
     }
 
     @Override
     protected UserAgentPolicy getUserAgentPolicy() {
-        return new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, configuration);
+        return new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, super.getConfiguration());
     }
 }

@@ -42,18 +42,20 @@ public abstract class BaseClientBuilder {
 
     private final ClientLogger logger = new ClientLogger(BaseClientBuilder.class);
 
-    protected final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
 
     protected String endpoint;
-    protected SharedKeyCredential sharedKeyCredential;
-    protected TokenCredential tokenCredential;
-    protected SASTokenCredential sasTokenCredential;
-    protected HttpClient httpClient;
-    protected HttpLogDetailLevel logLevel = HttpLogDetailLevel.NONE;
-    protected RequestRetryOptions retryOptions = new RequestRetryOptions();
-    protected Configuration configuration;
+    private SharedKeyCredential sharedKeyCredential;
+    private TokenCredential tokenCredential;
+    private SASTokenCredential sasTokenCredential;
+    private HttpClient httpClient;
+    private HttpLogDetailLevel logLevel = HttpLogDetailLevel.NONE;
+    private RequestRetryOptions retryOptions = new RequestRetryOptions();
+    private Configuration configuration;
 
     protected HttpPipeline buildPipeline() {
+        Objects.requireNonNull(this.endpoint);
+
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -162,6 +164,30 @@ public abstract class BaseClientBuilder {
 
         // Use accountName and accountKey to get the SAS token using the credential class.
         setCredential(new SharedKeyCredential(accountName, accountKey));
+    }
+
+    protected void setHttpClient(HttpClient httpClient) {
+        this.httpClient = httpClient; // builder implicitly handles default creation if null, so no null check
+    }
+
+    protected void setAdditionalPolicy(HttpPipelinePolicy pipelinePolicy) {
+        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy));
+    }
+
+    protected void setHttpLogDetailLevel(HttpLogDetailLevel logLevel) {
+        this.logLevel = Objects.requireNonNull(logLevel);
+    }
+
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
+    public Configuration getConfiguration() {
+        return this.configuration;
+    }
+
+    public void setRetryOptions(RequestRetryOptions retryOptions) {
+        this.retryOptions = Objects.requireNonNull(retryOptions);
     }
 
     /**
