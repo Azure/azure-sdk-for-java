@@ -276,13 +276,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="com.azure.tools.checkstyle.checks.JavadocThrowsChecks"/>
 
     <!-- CUSTOM CHECKS -->
-    <!-- Verifies that subclasses of ServiceClient meet a set of guidelines.
-    1) They cannot have public or protected constructors
-    2) They must implement a public static method named builder
-    -->
-    <module name="com.azure.tools.checkstyle.checks.ServiceClientChecks"/>
-
-    <!-- CUSTOM CHECKS -->
     <!-- Checks for the public API that should
     1) not return classes in the implementation package
     2) no class of implementation package as method's parameters -->
