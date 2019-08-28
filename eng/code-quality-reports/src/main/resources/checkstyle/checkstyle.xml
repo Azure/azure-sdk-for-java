@@ -10,6 +10,11 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
 <module name="Checker">
 
+  <!-- Exclude module-info.java from checks, as CheckStyle does not presently support it -->
+  <module name="BeforeExecutionExclusionFileFilter">
+    <property name="fileNamePattern" value="module\-info\.java$"/>
+  </module>
+
   <module name="SuppressionFilter">
     <property name="file" value="${samedir}/checkstyle-suppressions.xml"/>
     <property name="optional" value="true"/>
