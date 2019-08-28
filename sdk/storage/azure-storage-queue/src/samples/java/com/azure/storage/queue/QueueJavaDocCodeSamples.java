@@ -38,12 +38,12 @@ public class QueueJavaDocCodeSamples {
      * Generates code sample for creating a {@link QueueClient}.
      */
     public void buildQueueClient() {
-        // BEGIN: com.azure.storage.queue.QueueClient.instantiation
+        // BEGIN: com.azure.storage.queue.queueClient.instantiation
         QueueClient client = new QueueClientBuilder()
             .connectionString("connectionstring")
             .endpoint("endpoint")
             .buildClient();
-        // END: com.azure.storage.queue.QueueClient.instantiation
+        // END: com.azure.storage.queue.queueClient.instantiation
     }
 
     /**
@@ -51,11 +51,11 @@ public class QueueJavaDocCodeSamples {
      * @return An instance of {@link QueueClient}
      */
     public QueueClient createClientWithSASToken() {
-        // BEGIN: com.azure.storage.queue.QueueClient.instantiation.sastoken
+        // BEGIN: com.azure.storage.queue.queueClient.instantiation.sastoken
         QueueClient client = new QueueClientBuilder()
             .endpoint("https://${accountName}.queue.core.windows.net?${SASToken}")
             .buildClient();
-        // END: com.azure.storage.queue.QueueClient.instantiation.sastoken
+        // END: com.azure.storage.queue.queueClient.instantiation.sastoken
         return client;
     }
 
@@ -64,13 +64,13 @@ public class QueueJavaDocCodeSamples {
      * @return An instance of {@link QueueClient}
      */
     public QueueClient createClientWithCredential() {
-        // BEGIN: com.azure.storage.queue.QueueClient.instantiation.credential
+        // BEGIN: com.azure.storage.queue.queueClient.instantiation.credential
         QueueClient client = new QueueClientBuilder()
             .endpoint("https://${accountName}.queue.core.windows.net")
             .queueName("myqueue")
             .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("{SASTokenQueryParams}")))
             .buildClient();
-        // END: com.azure.storage.queue.QueueClient.instantiation.credential
+        // END: com.azure.storage.queue.queueClient.instantiation.credential
         return client;
     }
 
@@ -79,13 +79,13 @@ public class QueueJavaDocCodeSamples {
      * @return An instance of {@link QueueClient}
      */
     public QueueClient createClientWithConnectionString() {
-        // BEGIN: com.azure.storage.queue.QueueClient.instantiation.connectionstring
+        // BEGIN: com.azure.storage.queue.queueClient.instantiation.connectionstring
         String connectionString = "DefaultEndpointsProtocol=https;AccountName={name};"
                     + "AccountKey={key};EndpointSuffix={core.windows.net}";
         QueueClient client = new QueueClientBuilder()
             .connectionString(connectionString)
             .buildClient();
-        // END: com.azure.storage.queue.QueueClient.instantiation.connectionstring
+        // END: com.azure.storage.queue.queueClient.instantiation.connectionstring
         return client;
     }
 
@@ -93,10 +93,10 @@ public class QueueJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueClient#create()}
      */
     public void createQueue() {
-        // BEGIN: com.azure.storage.queue.QueueClient.create
+        // BEGIN: com.azure.storage.queue.queueClient.create
         client.create();
         System.out.println("Complete creating queue.");
-        // END: com.azure.storage.queue.QueueClient.create
+        // END: com.azure.storage.queue.queueClient.create
     }
 
     /**
@@ -104,11 +104,11 @@ public class QueueJavaDocCodeSamples {
      */
     public void createQueueMaxOverload() {
         
-        // BEGIN: com.azure.storage.queue.QueueClient.createWithResponse#map-Context
+        // BEGIN: com.azure.storage.queue.queueClient.createWithResponse#map-Context
         VoidResponse response = client.createWithResponse(Collections.singletonMap("queue", "metadataMap"),
             new Context(key1, value1));
         System.out.println("Complete creating queue with status code: " + response.statusCode());
-        // END: com.azure.storage.queue.QueueClient.createWithResponse#map-Context
+        // END: com.azure.storage.queue.queueClient.createWithResponse#map-Context
     }
 
     /**
@@ -116,10 +116,10 @@ public class QueueJavaDocCodeSamples {
      */
     public void enqueueMessage() {
         
-        // BEGIN: com.azure.storage.queue.QueueClient.enqueueMessage#string
+        // BEGIN: com.azure.storage.queue.queueClient.enqueueMessage#string
         EnqueuedMessage response = client.enqueueMessage("hello msg");
         System.out.println("Complete enqueuing the message with message Id" + response.messageId());
-        // END: com.azure.storage.queue.QueueClient.enqueueMessage#string
+        // END: com.azure.storage.queue.queueClient.enqueueMessage#string
     }
 
     /**
@@ -127,22 +127,22 @@ public class QueueJavaDocCodeSamples {
      */
     public void enqueueMessageWithTimeoutOverload() {
         
-        // BEGIN: com.azure.storage.queue.QueueClient.enqueueMessageWithResponse#string-duration-duration-Context
+        // BEGIN: com.azure.storage.queue.queueClient.enqueueMessageWithResponse#string-duration-duration-Context
         EnqueuedMessage enqueuedMessage = client.enqueueMessageWithResponse("Hello, Azure",
             Duration.ofSeconds(5), null, new Context(key1, value1)).value();
         System.out.printf("Message %s expires at %s", enqueuedMessage.messageId(), enqueuedMessage.expirationTime());
-        // END: com.azure.storage.queue.QueueClient.enqueueMessageWithResponse#string-duration-duration-Context
+        // END: com.azure.storage.queue.queueClient.enqueueMessageWithResponse#string-duration-duration-Context
     }
 
     /**
      * Generates a code sample for using {@link QueueClient#enqueueMessageWithResponse(String, Duration, Duration, Context)}
      */
     public void enqueueMessageWithLiveTimeOverload() {
-        // BEGIN: com.azure.storage.queue.QueueClient.enqueueMessageWithResponse-liveTime#String-Duration-Duration-Context
+        // BEGIN: com.azure.storage.queue.queueClient.enqueueMessageWithResponse-liveTime#String-Duration-Duration-Context
         EnqueuedMessage enqueuedMessage = client.enqueueMessageWithResponse("Goodbye, Azure",
             null, Duration.ofSeconds(5), new Context(key1, value1)).value();
         System.out.printf("Message %s expires at %s", enqueuedMessage.messageId(), enqueuedMessage.expirationTime());
-        // END: com.azure.storage.queue.QueueClient.enqueueMessageWithResponse-liveTime#String-Duration-Duration-Context
+        // END: com.azure.storage.queue.queueClient.enqueueMessageWithResponse-liveTime#String-Duration-Duration-Context
     }
 
     /**
@@ -150,13 +150,13 @@ public class QueueJavaDocCodeSamples {
      */
     public void dequeueMessage() {
         
-        // BEGIN: com.azure.storage.queue.QueueClient.dequeueMessages
+        // BEGIN: com.azure.storage.queue.queueClient.dequeueMessages
         client.dequeueMessages().forEach(
             dequeuedMessage -> {
                 System.out.println("Complete dequeuing the message: " + dequeuedMessage.messageText());
             }
         );
-        // END: com.azure.storage.queue.QueueClient.dequeueMessages
+        // END: com.azure.storage.queue.queueClient.dequeueMessages
     }
 
     /**
@@ -164,12 +164,12 @@ public class QueueJavaDocCodeSamples {
      */
     public void dequeueMessageWithOverload() {
         
-        // BEGIN: com.azure.storage.queue.QueueClient.dequeueMessages#integer
+        // BEGIN: com.azure.storage.queue.queueClient.dequeueMessages#integer
         for (DequeuedMessage dequeuedMessage : client.dequeueMessages(5)) {
             System.out.printf("Dequeued %s and it becomes visible at %s",
                 dequeuedMessage.messageId(), dequeuedMessage.timeNextVisible());
         }
-        // END: com.azure.storage.queue.QueueClient.dequeueMessages#integer
+        // END: com.azure.storage.queue.queueClient.dequeueMessages#integer
     }
 
     /**
@@ -177,12 +177,12 @@ public class QueueJavaDocCodeSamples {
      */
     public void dequeueMessageMaxOverload() {
         
-        // BEGIN: com.azure.storage.queue.QueueClient.dequeueMessages#integer-duration
+        // BEGIN: com.azure.storage.queue.queueClient.dequeueMessages#integer-duration
         for (DequeuedMessage dequeuedMessage : client.dequeueMessages(5, Duration.ofSeconds(60))) {
             System.out.printf("Dequeued %s and it becomes visible at %s",
                 dequeuedMessage.messageId(), dequeuedMessage.timeNextVisible());
         }
-        // END: com.azure.storage.queue.QueueClient.dequeueMessages#integer-duration
+        // END: com.azure.storage.queue.queueClient.dequeueMessages#integer-duration
     }
 
     /**
@@ -190,13 +190,13 @@ public class QueueJavaDocCodeSamples {
      */
     public void peekMessage() {
         
-        // BEGIN: com.azure.storage.queue.QueueClient.peekMessages
+        // BEGIN: com.azure.storage.queue.queueClient.peekMessages
         client.peekMessages().forEach(
             peekedMessage -> {
                 System.out.println("Complete peeking the message: " + peekedMessage.messageText());
             }
         );
-        // END: com.azure.storage.queue.QueueClient.peekMessages
+        // END: com.azure.storage.queue.queueClient.peekMessages
     }
 
     /**
@@ -204,19 +204,19 @@ public class QueueJavaDocCodeSamples {
      */
     public void peekMessageMaxOverload() {
         
-        // BEGIN: com.azure.storage.queue.QueueClient.peekMessages#integer
+        // BEGIN: com.azure.storage.queue.queueClient.peekMessages#integer
         client.peekMessages(5).forEach(
             peekMessage -> System.out.printf("Peeked message %s has been dequeued %d times",
                 peekMessage.messageId(), peekMessage.dequeueCount())
         );
-        // END: com.azure.storage.queue.QueueClient.peekMessages#integer
+        // END: com.azure.storage.queue.queueClient.peekMessages#integer
     }
 
     /**
      * Generates a code sample for using {@link QueueClient#updateMessage(String, String, String, Duration)}
      */
     public void updateMessage() {
-        // BEGIN: com.azure.storage.queue.QueueClient.updateMessage#String-String-String-Duration
+        // BEGIN: com.azure.storage.queue.queueClient.updateMessage#String-String-String-Duration
         client.dequeueMessages().forEach(
 
             dequeuedMessage -> {
@@ -226,14 +226,14 @@ public class QueueJavaDocCodeSamples {
                 System.out.println("Complete updating the message.");
             }
         );
-        // END: com.azure.storage.queue.QueueClient.updateMessage#String-String-String-Duration
+        // END: com.azure.storage.queue.queueClient.updateMessage#String-String-String-Duration
     }
 
     /**
      * Generates a code sample for using {@link QueueClient#updateMessageWithResponse(String, String, String, Duration, Context)}
      */
     public void updateMessageWithResponse() {
-        // BEGIN: com.azure.storage.queue.QueueClient.updateMessageWithResponse#String-String-String-Duration-Context
+        // BEGIN: com.azure.storage.queue.queueClient.updateMessageWithResponse#String-String-String-Duration-Context
         client.dequeueMessages().forEach(
             dequeuedMessage -> {
                 Response<UpdatedMessage> response = client.updateMessageWithResponse("newText",
@@ -242,28 +242,28 @@ public class QueueJavaDocCodeSamples {
                 System.out.println("Complete updating the message with status code " + response.statusCode());
             }
         );
-        // END: com.azure.storage.queue.QueueClient.updateMessageWithResponse#String-String-String-Duration-Context
+        // END: com.azure.storage.queue.queueClient.updateMessageWithResponse#String-String-String-Duration-Context
     }
 
     /**
      * Generates a code sample for using {@link QueueClient#deleteMessage(String, String)}
      */
     public void deleteMessage() {
-        // BEGIN: com.azure.storage.queue.QueueClient.deleteMessage#String-String
+        // BEGIN: com.azure.storage.queue.queueClient.deleteMessage#String-String
         client.dequeueMessages().forEach(
             dequeuedMessage -> {
                 client.deleteMessage(dequeuedMessage.messageId(), dequeuedMessage.popReceipt());
                 System.out.println("Complete deleting the message.");
             }
         );
-        // END: com.azure.storage.queue.QueueClient.deleteMessage#String-String
+        // END: com.azure.storage.queue.queueClient.deleteMessage#String-String
     }
 
     /**
      * Generates a code sample for using {@link QueueClient#deleteMessageWithResponse(String, String, Context)}
      */
     public void deleteMessageWithResponse() {
-        // BEGIN: com.azure.storage.queue.QueueClient.deleteMessageWithResponse#String-String-Context
+        // BEGIN: com.azure.storage.queue.queueClient.deleteMessageWithResponse#String-String-Context
         client.dequeueMessages().forEach(
             dequeuedMessage -> {
                 VoidResponse response = client.deleteMessageWithResponse(dequeuedMessage.messageId(),
@@ -271,7 +271,7 @@ public class QueueJavaDocCodeSamples {
                 System.out.println("Complete deleting the message with status code " + response.statusCode());
             }
         );
-        // END: com.azure.storage.queue.QueueClient.deleteMessageWithResponse#String-String-Context
+        // END: com.azure.storage.queue.queueClient.deleteMessageWithResponse#String-String-Context
     }
 
     /**
@@ -279,10 +279,10 @@ public class QueueJavaDocCodeSamples {
      */
     public void deleteQueue() {
         
-        // BEGIN: com.azure.storage.queue.QueueClient.delete
+        // BEGIN: com.azure.storage.queue.queueClient.delete
         client.delete();
         System.out.println("Complete deleting the queue.");
-        // END: com.azure.storage.queue.QueueClient.delete
+        // END: com.azure.storage.queue.queueClient.delete
     }
 
     /**
@@ -290,10 +290,10 @@ public class QueueJavaDocCodeSamples {
      */
     public void deleteWithResponse() {
         
-        // BEGIN: com.azure.storage.queue.QueueClient.deleteWithResponse#Context
+        // BEGIN: com.azure.storage.queue.queueClient.deleteWithResponse#Context
         VoidResponse response = client.deleteWithResponse(new Context(key1, value1));
         System.out.println("Complete deleting the queue with status code: " + response.statusCode());
-        // END: com.azure.storage.queue.QueueClient.deleteWithResponse#Context
+        // END: com.azure.storage.queue.queueClient.deleteWithResponse#Context
     }
 
     /**
@@ -301,11 +301,11 @@ public class QueueJavaDocCodeSamples {
      */
     public void getProperties() {
         
-        // BEGIN: com.azure.storage.queue.QueueClient.getProperties
+        // BEGIN: com.azure.storage.queue.queueClient.getProperties
         QueueProperties properties = client.getProperties();
         System.out.printf("Metadata: %s, Approximate message count: %d", properties.metadata(),
             properties.approximateMessagesCount());
-        // END: com.azure.storage.queue.QueueClient.getProperties
+        // END: com.azure.storage.queue.queueClient.getProperties
     }
 
     /**
@@ -313,11 +313,11 @@ public class QueueJavaDocCodeSamples {
      */
     public void getPropertiesWithResponse() {
         
-        // BEGIN: com.azure.storage.queue.QueueClient.getPropertiesWithResponse#Context
+        // BEGIN: com.azure.storage.queue.queueClient.getPropertiesWithResponse#Context
         QueueProperties properties = client.getPropertiesWithResponse(new Context(key1, value1)).value();
         System.out.printf("Metadata: %s, Approximate message count: %d", properties.metadata(),
             properties.approximateMessagesCount());
-        // END: com.azure.storage.queue.QueueClient.getPropertiesWithResponse#Context
+        // END: com.azure.storage.queue.queueClient.getPropertiesWithResponse#Context
     }
 
     /**
@@ -325,10 +325,10 @@ public class QueueJavaDocCodeSamples {
      */
     public void setMetadata() {
         
-        // BEGIN: com.azure.storage.queue.QueueClient.setMetadata#map
+        // BEGIN: com.azure.storage.queue.queueClient.setMetadata#map
         client.setMetadata(Collections.singletonMap("queue", "metadataMap"));
         System.out.printf("Setting metadata completed.");
-        // END: com.azure.storage.queue.QueueClient.setMetadata#map
+        // END: com.azure.storage.queue.queueClient.setMetadata#map
     }
 
     /**
@@ -336,10 +336,10 @@ public class QueueJavaDocCodeSamples {
      */
     public void setMetadataWithResponse() {
         
-        // BEGIN: com.azure.storage.queue.QueueClient.setMetadataWithResponse#map-Context
+        // BEGIN: com.azure.storage.queue.queueClient.setMetadataWithResponse#map-Context
         client.setMetadataWithResponse(Collections.singletonMap("queue", "metadataMap"), new Context(key1, value1));
         System.out.printf("Setting metadata completed.");
-        // END: com.azure.storage.queue.QueueClient.setMetadataWithResponse#map-Context
+        // END: com.azure.storage.queue.queueClient.setMetadataWithResponse#map-Context
     }
 
     /**
@@ -347,10 +347,10 @@ public class QueueJavaDocCodeSamples {
      */
     public void clearMetadata() {
         
-        // BEGIN: com.azure.storage.queue.QueueClient.clearMetadata#map
+        // BEGIN: com.azure.storage.queue.queueClient.clearMetadata#map
         client.setMetadata(null);
         System.out.printf("Clearing metadata completed.");
-        // END: com.azure.storage.queue.QueueClient.clearMetadata#map
+        // END: com.azure.storage.queue.queueClient.clearMetadata#map
     }
 
     /**
@@ -358,10 +358,10 @@ public class QueueJavaDocCodeSamples {
      */
     public void clearMetadataWithResponse() {
         
-        // BEGIN: com.azure.storage.queue.QueueClient.clearMetadataWithResponse#map-Context
+        // BEGIN: com.azure.storage.queue.queueClient.clearMetadataWithResponse#map-Context
         VoidResponse response = client.setMetadataWithResponse(null, new Context(key1, value1));
         System.out.printf("Clearing metadata completed with status code %d", response.statusCode());
-        // END: com.azure.storage.queue.QueueClient.clearMetadataWithResponse#map-Context
+        // END: com.azure.storage.queue.queueClient.clearMetadataWithResponse#map-Context
     }
 
     /**
@@ -369,26 +369,26 @@ public class QueueJavaDocCodeSamples {
      */
     public void getAccessPolicy() {
         
-        // BEGIN: com.azure.storage.queue.QueueClient.getAccessPolicy
+        // BEGIN: com.azure.storage.queue.queueClient.getAccessPolicy
         for (SignedIdentifier permission : client.getAccessPolicy()) {
             System.out.printf("Access policy %s allows these permissions: %s", permission.id(),
                 permission.accessPolicy().permission());
         }
-        // END: com.azure.storage.queue.QueueClient.getAccessPolicy
+        // END: com.azure.storage.queue.queueClient.getAccessPolicy
     }
 
     /**
      * Generates a code sample for using {@link QueueClient#setAccessPolicy(List)}
      */
     public void setAccessPolicy() {
-        // BEGIN: com.azure.storage.queue.QueueClient.setAccessPolicy#List
+        // BEGIN: com.azure.storage.queue.queueClient.setAccessPolicy#List
         AccessPolicy accessPolicy = new AccessPolicy().permission("r")
             .start(OffsetDateTime.now(ZoneOffset.UTC))
             .expiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
         SignedIdentifier permission = new SignedIdentifier().id("mypolicy").accessPolicy(accessPolicy);
         client.setAccessPolicy(Collections.singletonList(permission));
         System.out.printf("Setting access policies completed.");
-        // END: com.azure.storage.queue.QueueClient.setAccessPolicy#List
+        // END: com.azure.storage.queue.queueClient.setAccessPolicy#List
     }
 
     /**
@@ -396,7 +396,7 @@ public class QueueJavaDocCodeSamples {
      */
     public void setAccessPolicyWithResponse() {
         
-        // BEGIN: com.azure.storage.queue.QueueClient.setAccessPolicyWithResponse#List-Context
+        // BEGIN: com.azure.storage.queue.queueClient.setAccessPolicyWithResponse#List-Context
         AccessPolicy accessPolicy = new AccessPolicy().permission("r")
             .start(OffsetDateTime.now(ZoneOffset.UTC))
             .expiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
@@ -404,7 +404,7 @@ public class QueueJavaDocCodeSamples {
         VoidResponse response = client.setAccessPolicyWithResponse(Collections.singletonList(permission),
             new Context(key1, value1));
         System.out.printf("Setting access policies completed with status code %d", response.statusCode());
-        // END: com.azure.storage.queue.QueueClient.setAccessPolicyWithResponse#List-Context
+        // END: com.azure.storage.queue.queueClient.setAccessPolicyWithResponse#List-Context
     }
 
     /**
@@ -412,10 +412,10 @@ public class QueueJavaDocCodeSamples {
      */
     public void clearMessages() {
         
-        // BEGIN: com.azure.storage.queue.QueueClient.clearMessages
+        // BEGIN: com.azure.storage.queue.queueClient.clearMessages
         client.clearMessages();
         System.out.printf("Clearing messages completed.");
-        // END: com.azure.storage.queue.QueueClient.clearMessages
+        // END: com.azure.storage.queue.queueClient.clearMessages
     }
 
     /**
@@ -423,10 +423,10 @@ public class QueueJavaDocCodeSamples {
      */
     public void clearMessagesWithResponse() {
         
-        // BEGIN: com.azure.storage.queue.QueueClient.clearMessagesWithResponse#Context
+        // BEGIN: com.azure.storage.queue.queueClient.clearMessagesWithResponse#Context
         VoidResponse response = client.clearMessagesWithResponse(new Context(key1, value1));
         System.out.printf("Clearing messages completed with status code %d", response.statusCode());
-        // END: com.azure.storage.queue.QueueClient.clearMessagesWithResponse#Context
+        // END: com.azure.storage.queue.queueClient.clearMessagesWithResponse#Context
     }
 
     /**
@@ -434,7 +434,7 @@ public class QueueJavaDocCodeSamples {
      * String, SASProtocol, IPRange)}
      */
     public void generateSASCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.QueueClient.generateSAS
+        // BEGIN: com.azure.storage.queue.queueClient.generateSAS
         QueueSASPermission permissions = new QueueSASPermission()
             .read(true)
             .add(true)
@@ -451,6 +451,6 @@ public class QueueJavaDocCodeSamples {
 
         // Note either "identifier", or "expiryTime and permissions" are required to be set
         String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange);
-        // END: com.azure.storage.blob.QueueClient.generateSAS
+        // END: com.azure.storage.queue.queueClient.generateSAS
     }
 }
