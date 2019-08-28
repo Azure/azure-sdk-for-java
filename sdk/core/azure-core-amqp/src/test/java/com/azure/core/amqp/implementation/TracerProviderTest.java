@@ -101,20 +101,6 @@ public class TracerProviderTest {
         verify(tracer1, never()).end("", null, Context.NONE);
     }
 
-    // @Test
-    // public void endSpanNoContext() {
-    //     // Arrange
-    //     final Tracer tracer1 = mock(Tracer.class);
-    //     List<Tracer> tracers = Arrays.asList(tracer1);
-    //     final TracerProvider tracerProvider = new TracerProvider(tracers);
-    //
-    //     // Act
-    //     tracerProvider.endSpan(null, Signal.complete());
-    //
-    //     // Assert
-    //     verify(tracer1, never()).end("", null, Context.NONE);
-    // }
-
     @Test
     public void endSpanError() {
         // Arrange
@@ -144,6 +130,6 @@ public class TracerProviderTest {
         tracerProvider.endSpan(sendContext, Signal.error(exception));
 
         // Assert
-        verify(tracer1, times(1)).end("amqp:not-found", exception, sendContext);
+        verify(tracer1, times(1)).end(ErrorCondition.NOT_FOUND.getErrorCondition(), exception, sendContext);
     }
 }

@@ -8,16 +8,20 @@ import com.azure.core.implementation.tracing.Tracer;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Signal;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 import static com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
 
 public class TracerProvider {
-    private final List<Tracer> tracers;
 
-    public TracerProvider(List<Tracer> tracers) {
-        this.tracers = Objects.requireNonNull(tracers);
+    private final List<Tracer> tracers = new ArrayList<>();
+
+    public TracerProvider(Iterable<Tracer> tracers) {
+        Objects.requireNonNull(tracers, "'tracers' cannot be null.");
+        tracers.forEach(e -> this.tracers.add(e));
     }
 
     public boolean isEnabled() {
@@ -68,7 +72,6 @@ public class TracerProvider {
         switch (signal.getType()) {
             case ON_COMPLETE:
                 end("success", null, context);
-                return;
             case ON_ERROR:
                 errorCondition = "";
                 throwable = null;
@@ -81,13 +84,12 @@ public class TracerProvider {
                         errorCondition = exception.getErrorCondition().getErrorCondition();
                     }
                 }
-                break;
+                end(errorCondition, throwable, context);
             default:
                 // ON_SUBSCRIBE and ON_NEXT don't have the information to end the span so just return.
-                return;
+                break;
         }
 
-        end(errorCondition, throwable, context);
     }
 
     /**

@@ -300,7 +300,7 @@ public class EventHubClientBuilder {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
-        final TracerProvider tracerProvider = new TracerProvider(getTracerList(ServiceLoader.load(Tracer.class)));
+            final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
         return new EventHubAsyncClient(connectionOptions, provider, handlerProvider, tracerProvider);
     }
@@ -333,7 +333,7 @@ public class EventHubClientBuilder {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
-        final TracerProvider tracerProvider = new TracerProvider(getTracerList(ServiceLoader.load(Tracer.class)));
+        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
         final EventHubAsyncClient client = new EventHubAsyncClient(connectionOptions, provider, handlerProvider, tracerProvider);
 
         return new EventHubClient(client, connectionOptions);
@@ -417,7 +417,7 @@ public class EventHubClientBuilder {
         EventPosition initialEventPosition =
             this.initialEventPosition == null ? EventPosition.earliest()
                 : this.initialEventPosition;
-        final TracerProvider tracerProvider = new TracerProvider(getTracerList(ServiceLoader.load(Tracer.class)));
+        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
         return new EventProcessor(buildAsyncClient(), this.consumerGroupName,
             this.partitionProcessorFactory, initialEventPosition, partitionManager, eventHubName, tracerProvider);
@@ -490,13 +490,5 @@ public class EventHubClientBuilder {
         final String password = configuration.get(ProxyConfiguration.PROXY_PASSWORD);
 
         return new ProxyConfiguration(authentication, proxy, username, password);
-    }
-
-    private List<Tracer> getTracerList(ServiceLoader<Tracer> tracerServiceLoader) {
-        List<Tracer> tracerList = new ArrayList<>();
-        for (Tracer tracer : tracerServiceLoader) {
-            tracerList.add(tracer);
-        }
-        return tracerList;
     }
 }
