@@ -1216,10 +1216,9 @@ class ContainerAPITest extends APISpec {
 
         // If running in live mode wait for the lease to expire to ensure we are actually renewing it
         sleepIfRecord(16000)
-        def renewedId = cc.renewLease(leaseID)
+        def renewLeaseResponse = cc.renewLeaseWithResponse(leaseID, null, null, null)
 
         expect:
-        renewedId != null
         cc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-lease-state") == LeaseStateType.LEASED.toString()
         validateBasicHeaders(renewLeaseResponse.headers())
     }

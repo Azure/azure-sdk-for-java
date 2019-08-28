@@ -254,7 +254,22 @@ class APISpec extends Specification {
         return getServiceClient(credential, endpoint, null)
     }
 
-    BlobServiceClient getServiceClient(SharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
+    BlobServiceClient getServiceClient(SharedKeyCredential credential, String endpoint,
+                                       HttpPipelinePolicy... policies) {
+        return getServiceClientBuilder(credential, endpoint, policies).buildClient()
+    }
+
+    BlobServiceClient getServiceClient(SASTokenCredential credential, String endpoint) {
+        return getServiceClientBuilder(null, endpoint, null).credential(credential).buildClient()
+    }
+
+    BlobServiceAsyncClient getServiceAsyncClient(SharedKeyCredential credential) {
+        return getServiceClientBuilder(credential, String.format(defaultEndpointTemplate, credential.accountName()))
+            .buildAsyncClient()
+    }
+
+    BlobServiceClientBuilder getServiceClientBuilder(SharedKeyCredential credential, String endpoint,
+                                                     HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
@@ -272,34 +287,7 @@ class APISpec extends Specification {
             builder.credential(credential)
         }
 
-        return builder.buildClient()
-    }
-
-    BlobServiceClient getServiceClient(SASTokenCredential credential, String endpoint) {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(endpoint)
-            .httpClient(getHttpClient())
-            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
-
-        return builder.credential(credential).buildClient()
-    }
-
-    BlobServiceAsyncClient getServiceAsyncClient(SharedKeyCredential credential) {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .credential(credential)
-            .endpoint(String.format(defaultEndpointTemplate, credential.accountName()))
-            .httpClient(getHttpClient())
-            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
-
-        return builder.buildAsyncClient()
+        return builder
     }
 
     ContainerClient getContainerClient(SASTokenCredential credential, String endpoint) {

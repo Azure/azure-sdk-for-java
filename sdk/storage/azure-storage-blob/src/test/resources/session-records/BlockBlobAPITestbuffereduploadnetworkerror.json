@@ -1,0 +1,140 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://xclientdev3.blob.core.windows.net/jtcbuffereduploadnetworkerror034264099c924ea4014d?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D72BDB12C11E5A\"",
+      "Last-Modified" : "Wed, 28 Aug 2019 17:13:40 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "36c3d714-301e-00da-7bc3-5df1ff000000",
+      "Date" : "Wed, 28 Aug 2019 17:13:40 GMT",
+      "x-ms-client-request-id" : "6d18aad6-e1be-4b65-aab9-32352c7a6150"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://xclientdev3.blob.core.windows.net/jtcbuffereduploadnetworkerror034264099c924ea4014d/javablobbuffereduploadnetworkerror136656b7c18d09c73",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Wed, 28 Aug 2019 17:13:40 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 28 Aug 2019 17:13:40 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "ETag" : "\"0x8D72BDB12C61609\"",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "36c3d72c-301e-00da-11c3-5df1ff000000",
+      "x-ms-client-request-id" : "ec9f5db0-da65-427e-bd8f-ffcc0b6717cd"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://xclientdev3.blob.core.windows.net/jtcbuffereduploadnetworkerror034264099c924ea4014d/javablobbuffereduploadnetworkerror2000983666d3f2db6",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Wed, 28 Aug 2019 17:13:40 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 28 Aug 2019 17:13:40 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "ETag" : "\"0x8D72BDB12CB2007\"",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "36c3d742-301e-00da-25c3-5df1ff000000",
+      "x-ms-client-request-id" : "6f564849-b39a-4ae4-9a2e-98f18a722d7d"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://xclientdev3.blob.core.windows.net/jtcbuffereduploadnetworkerror034264099c924ea4014d/javablobbuffereduploadnetworkerror2000983666d3f2db6",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-lease-status" : "unlocked",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-tag-count" : "0",
+      "x-ms-lease-state" : "available",
+      "Last-Modified" : "Wed, 28 Aug 2019 17:13:40 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 28 Aug 2019 17:13:40 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "Accept-Ranges" : "bytes",
+      "x-ms-server-encrypted" : "true",
+      "ETag" : "\"0x8D72BDB12CB2007\"",
+      "x-ms-creation-time" : "Wed, 28 Aug 2019 17:13:40 GMT",
+      "Content-Length" : "7",
+      "x-ms-request-id" : "36c3d758-301e-00da-3ac3-5df1ff000000",
+      "Body" : "[100, 101, 102, 97, 117, 108, 116]",
+      "x-ms-client-request-id" : "9a213ab1-d6fc-428b-9cab-0e9c6f661143",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://xclientdev3.blob.core.windows.net?prefix=jtcbuffereduploadnetworkerror&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "36c3dc0a-301e-00da-7cc3-5df1ff000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://xclientdev3.blob.core.windows.net/\"><Prefix>jtcbuffereduploadnetworkerror</Prefix><Containers><Container><Name>jtcbuffereduploadnetworkerror034264099c924ea4014d</Name><Properties><Last-Modified>Wed, 28 Aug 2019 17:13:40 GMT</Last-Modified><Etag>\"0x8D72BDB12C11E5A\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Wed, 28 Aug 2019 17:13:42 GMT",
+      "x-ms-client-request-id" : "6a313345-83c7-4ef7-9c8b-3b5a3a1ab1d8",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://xclientdev3.blob.core.windows.net/jtcbuffereduploadnetworkerror034264099c924ea4014d?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "36c3dc1f-301e-00da-10c3-5df1ff000000",
+      "Date" : "Wed, 28 Aug 2019 17:13:42 GMT",
+      "x-ms-client-request-id" : "9d1da9b8-62ac-4706-9765-445c965166d3"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcbuffereduploadnetworkerror034264099c924ea4014d", "javablobbuffereduploadnetworkerror136656b7c18d09c73", "javablobbuffereduploadnetworkerror2000983666d3f2db6", "jtcbuffereduploadnetworkerror35495338a19ca7f87f4f", "javablobbuffereduploadnetworkerror4236175b9fc6f7f75" ]
+}
