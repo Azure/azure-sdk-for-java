@@ -107,27 +107,6 @@ public class FileAsyncClient {
     }
 
     /**
-     * Creates a FileAsyncClient that sends requests to the storage account at {@code endpoint}. Each service call goes
-     * through the {@code httpPipeline}.
-     *
-     * @param endpoint URL for the Storage File service
-     * @param httpPipeline HttpPipeline that HTTP requests and response flow through
-     * @param shareName Name of the share
-     * @param filePath Path to the file
-     * @param snapshot Optional snapshot of the share
-     */
-    FileAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String filePath, String snapshot) {
-        Objects.requireNonNull(shareName);
-        Objects.requireNonNull(filePath);
-        this.shareName = shareName;
-        this.filePath = filePath;
-        this.snapshot = snapshot;
-        this.azureFileStorageClient = new AzureFileStorageBuilder().pipeline(httpPipeline)
-            .url(endpoint.toString())
-            .build();
-    }
-
-    /**
      * Get the url of the storage file client.
      *
      * @return the URL of the storage file client

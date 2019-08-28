@@ -33,7 +33,7 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient client = new FileClientBuilder()
             .connectionString("${connectionString}")
             .endpoint("${endpoint}")
-            .buildAsyncClient();
+            .buildFileAsyncClient();
         // END: com.azure.storage.file.fileAsyncClient.instantiation
     }
 
@@ -48,7 +48,7 @@ public class FileAsyncJavaDocCodeSamples {
             .endpoint("https://{accountName}.file.core.windows.net?{SASToken}")
             .shareName("myshare")
             .filePath("myfilepath")
-            .buildAsyncClient();
+            .buildFileAsyncClient();
         // END: com.azure.storage.file.fileAsyncClient.instantiation.sastoken
         return fileAsyncClient;
     }
@@ -64,7 +64,7 @@ public class FileAsyncJavaDocCodeSamples {
             .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
             .shareName("myshare")
             .filePath("myfilepath")
-            .buildAsyncClient();
+            .buildFileAsyncClient();
         // END: com.azure.storage.file.fileAsyncClient.instantiation.credential
         return fileAsyncClient;
     }
@@ -80,7 +80,7 @@ public class FileAsyncJavaDocCodeSamples {
             + "EndpointSuffix={core.windows.net}";
         FileAsyncClient fileAsyncClient = new FileClientBuilder()
             .connectionString(connectionString).shareName("myshare").filePath("myfilepath")
-            .buildAsyncClient();
+            .buildFileAsyncClient();
         // END: com.azure.storage.file.fileAsyncClient.instantiation.connectionstring
         return fileAsyncClient;
     }
@@ -580,7 +580,7 @@ public class FileAsyncJavaDocCodeSamples {
             .shareName("myshare")
             .filePath("myfiile")
             .snapshot(currentTime.toString())
-            .buildAsyncClient();
+            .buildFileAsyncClient();
 
         System.out.printf("Snapshot ID: %s%n", fileAsyncClient.getShareSnapshotId());
         // END: com.azure.storage.file.fileAsyncClient.getShareSnapshotId

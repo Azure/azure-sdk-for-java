@@ -5,38 +5,29 @@ package com.azure.storage.file;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
-import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.BaseClientBuilder;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.common.policy.SASTokenCredentialPolicy;
-import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import com.azure.storage.file.implementation.AzureFileStorageBuilder;
+import com.azure.storage.file.implementation.AzureFileStorageImpl;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link FileServiceClient FileServiceClients}
- * and {@link FileServiceAsyncClient FileServiceAsyncClients}, calling {@link FileServiceClientBuilder#buildClient() buildClient}
- * constructs an instance of FileServiceClient and calling {@link FileServiceClientBuilder#buildAsyncClient() buildAsyncClient}
+ * and {@link FileServiceAsyncClient FileServiceAsyncClients}, calling {@link FileServiceClientBuilder#buildClient() buildFileClient}
+ * constructs an instance of FileServiceClient and calling {@link FileServiceClientBuilder#buildAsyncClient() buildFileAsyncClient}
  * constructs an instance of FileServiceAsyncClient.
  *
  * <p>The client needs the endpoint of the Azure Storage File service and authorization credential.
@@ -73,33 +64,33 @@ import java.util.Objects;
  * @see SharedKeyCredential
  */
 @ServiceClientBuilder(serviceClients = {FileServiceClient.class, FileServiceAsyncClient.class})
-public final class FileServiceClientBuilder {
+public final class FileServiceClientBuilder extends BaseClientBuilder {
     private final ClientLogger logger = new ClientLogger(FileServiceClientBuilder.class);
-    private static final String ACCOUNT_NAME = "accountname";
-    private final List<HttpPipelinePolicy> policies;
-
-    private URL endpoint;
-    private SASTokenCredential sasTokenCredential;
-    private SharedKeyCredential sharedKeyCredential;
-    private HttpClient httpClient;
-    private HttpPipeline pipeline;
-    private HttpLogDetailLevel logLevel;
-    private final RetryPolicy retryPolicy;
-    private Configuration configuration;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link FileServiceClient FileServiceClients}
      * and {@link FileServiceAsyncClient FileServiceAsyncClients}.
      */
-    public FileServiceClientBuilder() {
-        retryPolicy = new RetryPolicy();
-        logLevel = HttpLogDetailLevel.NONE;
-        policies = new ArrayList<>();
-        configuration = ConfigurationManager.getConfiguration();
+    public FileServiceClientBuilder() {}
+
+    private AzureFileStorageImpl constructImpl() {
+        if (!super.hasCredential()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Credentials are required for authorization"));
+        }
+
+        HttpPipeline pipeline = super.getPipeline();
+        if (pipeline == null) {
+            pipeline = super.buildPipeline();
+        }
+
+        return new AzureFileStorageBuilder()
+            .url(super.endpoint)
+            .pipeline(pipeline)
+            .build();
     }
 
     /**
-     * Creates a {@link FileServiceAsyncClient} based on options set in the builder. Every time {@code buildAsyncClient()} is
+     * Creates a {@link FileServiceAsyncClient} based on options set in the builder. Every time {@code buildFileAsyncClient()} is
      * called a new instance of {@link FileServiceAsyncClient} is created.
      *
      * <p>
@@ -112,45 +103,11 @@ public final class FileServiceClientBuilder {
      * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
      */
     public FileServiceAsyncClient buildAsyncClient() {
-        if (pipeline != null) {
-            return new FileServiceAsyncClient(endpoint, pipeline);
-        }
-
-        if (sasTokenCredential == null && sharedKeyCredential == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Credentials are required for authorization"));
-        }
-
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        policies.add(new UserAgentPolicy(FileConfiguration.NAME, FileConfiguration.VERSION, configuration));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddDatePolicy());
-
-        if (sharedKeyCredential != null) {
-            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
-        } else {
-            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
-        }
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-
-        policies.add(retryPolicy);
-
-        policies.addAll(this.policies);
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(logLevel));
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
-
-        return new FileServiceAsyncClient(endpoint, pipeline);
+        return new FileServiceAsyncClient(constructImpl());
     }
 
     /**
-     * Creates a {@link FileServiceClient} based on options set in the builder. Every time {@code buildClient()} is
+     * Creates a {@link FileServiceClient} based on options set in the builder. Every time {@code buildFileClient()} is
      * called a new instance of {@link FileServiceClient} is created.
      *
      * <p>
@@ -178,20 +135,25 @@ public final class FileServiceClientBuilder {
      * @throws IllegalArgumentException If {@code endpoint} isn't a proper URL
      */
     public FileServiceClientBuilder endpoint(String endpoint) {
+        this.setEndpoint(endpoint);
+        return this;
+    }
+
+
+    @Override
+    protected void setEndpoint(String endpoint) {
         try {
             URL fullURL = new URL(endpoint);
-            this.endpoint = new URL(fullURL.getProtocol() + "://" + fullURL.getHost());
+            super.endpoint = fullURL.getProtocol() + "://" + fullURL.getHost();
 
             // Attempt to get the SAS token from the URL passed
-            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
-            if (this.sasTokenCredential != null) {
-                this.sharedKeyCredential = null;
+            SASTokenCredential sasTokenCredential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
+            if (sasTokenCredential != null) {
+                super.setCredential(sasTokenCredential);
             }
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage File Service endpoint url is malformed."));
         }
-
-        return this;
     }
 
     /**
@@ -202,8 +164,7 @@ public final class FileServiceClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public FileServiceClientBuilder credential(SASTokenCredential credential) {
-        this.sasTokenCredential = Objects.requireNonNull(credential);
-        this.sharedKeyCredential = null;
+        super.setCredential(credential);
         return this;
     }
 
@@ -215,10 +176,11 @@ public final class FileServiceClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public FileServiceClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = Objects.requireNonNull(credential);
-        this.sasTokenCredential = null;
+        super.setCredential(credential);
         return this;
     }
+
+    // File service does not support oauth, so the setter for a TokenCredential is not exposed.
 
     /**
      * Creates a {@link SharedKeyCredential} from the {@code connectionString} used to authenticate requests sent to the
@@ -229,25 +191,8 @@ public final class FileServiceClientBuilder {
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      */
     public FileServiceClientBuilder connectionString(String connectionString) {
-        Objects.requireNonNull(connectionString);
-        this.sharedKeyCredential = SharedKeyCredential.fromConnectionString(connectionString);
-        getEndPointFromConnectionString(connectionString);
+        super.parseConnectionString(connectionString);
         return this;
-    }
-
-    private void getEndPointFromConnectionString(String connectionString) {
-        Map<String, String> connectionStringPieces = new HashMap<>();
-        for (String connectionStringPiece : connectionString.split(";")) {
-            String[] kvp = connectionStringPiece.split("=", 2);
-            connectionStringPieces.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
-        }
-        String accountName = connectionStringPieces.get(ACCOUNT_NAME);
-        try {
-            this.endpoint = new URL(String.format("https://%s.file.core.windows.net", accountName));
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format("There is no valid endpoint for"
-                + " the connection string. Connection String: %s", connectionString)));
-        }
     }
 
     /**
@@ -258,7 +203,7 @@ public final class FileServiceClientBuilder {
      * @throws NullPointerException If {@code httpClient} is {@code null}.
      */
     public FileServiceClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = Objects.requireNonNull(httpClient);
+        super.setHttpClient(httpClient);
         return this;
     }
 
@@ -270,8 +215,7 @@ public final class FileServiceClientBuilder {
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public FileServiceClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        Objects.requireNonNull(pipelinePolicy);
-        this.policies.add(pipelinePolicy);
+        super.setAdditionalPolicy(pipelinePolicy);
         return this;
     }
 
@@ -282,7 +226,7 @@ public final class FileServiceClientBuilder {
      * @return The updated FileServiceClientBuilder object.
      */
     public FileServiceClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        this.logLevel = logLevel;
+        super.setHttpLogDetailLevel(logLevel);
         return this;
     }
 
@@ -297,7 +241,7 @@ public final class FileServiceClientBuilder {
      * @throws NullPointerException If {@code pipeline} is {@code null}.
      */
     public FileServiceClientBuilder pipeline(HttpPipeline pipeline) {
-        this.pipeline = Objects.requireNonNull(pipeline);
+        super.setPipeline(pipeline);
         return this;
     }
 
@@ -312,7 +256,17 @@ public final class FileServiceClientBuilder {
      * @throws NullPointerException If {@code configuration} is {@code null}.
      */
     public FileServiceClientBuilder configuration(Configuration configuration) {
-        this.configuration = Objects.requireNonNull(configuration);
+        super.setConfiguration(configuration);
         return this;
+    }
+
+    @Override
+    protected UserAgentPolicy getUserAgentPolicy() {
+        return new UserAgentPolicy(FileConfiguration.NAME, FileConfiguration.VERSION, super.getConfiguration());
+    }
+
+    @Override
+    protected String getServiceUrlMidfix() {
+        return "file";
     }
 }

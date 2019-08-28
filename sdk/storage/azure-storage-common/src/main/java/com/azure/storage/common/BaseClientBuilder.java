@@ -63,9 +63,6 @@ public abstract class BaseClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        if (configuration == null) {
-            configuration = ConfigurationManager.getConfiguration();
-        }
         policies.add(getUserAgentPolicy());
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
@@ -137,6 +134,12 @@ public abstract class BaseClientBuilder {
         this.sasTokenCredential = null;
     }
 
+    protected boolean hasCredential() {
+        return this.sharedKeyCredential != null ||
+            this.tokenCredential != null ||
+            this.sasTokenCredential != null;
+    }
+
     /**
      * Sets the connection string for the service, parses it for authentication information (account name, account key)
      *
@@ -162,13 +165,15 @@ public abstract class BaseClientBuilder {
         }
 
         if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
-            String endpoint = String.format("%s://%s.blob.%s", endpointProtocol, accountName, endpointSuffix.replaceFirst("^\\.", ""));
+            String endpoint = String.format("%s://%s.%s.%s", endpointProtocol, accountName, getServiceUrlMidfix(), endpointSuffix.replaceFirst("^\\.", ""));
             setEndpoint(endpoint);
         }
 
         // Use accountName and accountKey to get the SAS token using the credential class.
         setCredential(new SharedKeyCredential(accountName, accountKey));
     }
+
+    protected abstract String getServiceUrlMidfix();
 
     protected void setHttpClient(HttpClient httpClient) {
         this.httpClient = httpClient; // builder implicitly handles default creation if null, so no null check
@@ -187,6 +192,10 @@ public abstract class BaseClientBuilder {
     }
 
     protected Configuration getConfiguration() {
+        if (this.configuration == null) {
+            this.configuration = ConfigurationManager.getConfiguration();
+        }
+
         return this.configuration;
     }
 

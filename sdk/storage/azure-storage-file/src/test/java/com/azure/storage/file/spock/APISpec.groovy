@@ -9,7 +9,7 @@ import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.core.util.logging.ClientLogger
-import com.azure.storage.file.DirectoryClientBuilder
+
 import com.azure.storage.file.FileClientBuilder
 import com.azure.storage.file.FileServiceAsyncClient
 import com.azure.storage.file.FileServiceClient
@@ -126,17 +126,17 @@ class APISpec extends Specification {
 
     def directoryBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String directoryPath) {
         if (testMode == TestMode.RECORD) {
-            return new DirectoryClientBuilder()
+            return new FileClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
-                .directoryPath(directoryPath)
+                .filePath(directoryPath)
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
         } else {
-            return new DirectoryClientBuilder()
+            return new FileClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
-                .directoryPath(directoryPath)
+                .filePath(directoryPath)
                 .httpClient(interceptorManager.getPlaybackClient())
         }
     }

@@ -42,7 +42,7 @@ public class FileSample {
         // Create a source file client
         String srcFileName = generateRandomName();
         FileClient srcFileClient = new FileClientBuilder().endpoint(ENDPOINT).shareName(shareName)
-                                    .filePath(parentDirName + "/" + srcFileName).buildClient();
+                                    .filePath(parentDirName + "/" + srcFileName).buildFileClient();
 
         // Create a source file
         try {
@@ -62,7 +62,7 @@ public class FileSample {
         // Create a destination file client.
         String destFileName = generateRandomName();
         FileClient destFileClient = new FileClientBuilder().endpoint(ENDPOINT).shareName(shareName)
-                                        .filePath(parentDirName + "/" + destFileName).buildClient();
+                                        .filePath(parentDirName + "/" + destFileName).buildFileClient();
         destFileClient.create(1024);
 
         // Copy the file from source file to destination file.

@@ -373,4 +373,9 @@ public final class BlobClientBuilder extends BaseClientBuilder {
     protected UserAgentPolicy getUserAgentPolicy() {
         return new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, super.getConfiguration());
     }
+
+    @Override
+    protected String getServiceUrlMidfix() {
+        return "blob";
+    }
 }

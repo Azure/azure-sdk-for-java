@@ -23,10 +23,10 @@ public class DirectoryAsyncJavaDocCodeSamples {
      */
     public void asyncInitialization() {
         // BEGIN: com.azure.storage.file.directoryAsyncClient.instantiation
-        DirectoryAsyncClient client = new DirectoryClientBuilder()
+        DirectoryAsyncClient client = new FileClientBuilder()
             .connectionString("${connectionString}")
             .endpoint("${endpoint}")
-            .buildAsyncClient();
+            .buildDirectoryAsyncClient();
         // END: com.azure.storage.file.directoryAsyncClient.instantiation
     }
 
@@ -36,11 +36,11 @@ public class DirectoryAsyncJavaDocCodeSamples {
      */
     public DirectoryAsyncClient createAsyncClientWithSASToken() {
         // BEGIN: com.azure.storage.file.directoryAsyncClient.instantiation.sastoken
-        DirectoryAsyncClient directoryAsyncClient = new DirectoryClientBuilder()
+        DirectoryAsyncClient directoryAsyncClient = new FileClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net?{SASToken}")
             .shareName("myshare")
-            .directoryPath("mydirectory")
-            .buildAsyncClient();
+            .filePath("mydirectory")
+            .buildDirectoryAsyncClient();
         // END: com.azure.storage.file.directoryAsyncClient.instantiation.sastoken
         return directoryAsyncClient;
     }
@@ -51,12 +51,12 @@ public class DirectoryAsyncJavaDocCodeSamples {
      */
     public DirectoryAsyncClient createAsyncClientWithCredential() {
         // BEGIN: com.azure.storage.file.directoryAsyncClient.instantiation.credential
-        DirectoryAsyncClient direcotryAsyncClient = new DirectoryClientBuilder()
+        DirectoryAsyncClient direcotryAsyncClient = new FileClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
             .shareName("myshare")
-            .directoryPath("mydirectory")
-            .buildAsyncClient();
+            .filePath("mydirectory")
+            .buildDirectoryAsyncClient();
         // END: com.azure.storage.file.directoryAsyncClient.instantiation.credential
         return direcotryAsyncClient;
     }
@@ -69,9 +69,9 @@ public class DirectoryAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryAsyncClient.instantiation.connectionstring
         String connectionString = "DefaultEndpointsProtocol=https;AccountName={name};AccountKey={key};"
             + "EndpointSuffix={core.windows.net}";
-        DirectoryAsyncClient directoryAsyncClient = new DirectoryClientBuilder()
-            .connectionString(connectionString).shareName("myshare").directoryPath("mydirectory")
-            .buildAsyncClient();
+        DirectoryAsyncClient directoryAsyncClient = new FileClientBuilder()
+            .connectionString(connectionString).shareName("myshare").filePath("mydirectory")
+            .buildDirectoryAsyncClient();
         // END: com.azure.storage.file.directoryAsyncClient.instantiation.connectionstring
         return directoryAsyncClient;
     }
@@ -374,13 +374,13 @@ public class DirectoryAsyncJavaDocCodeSamples {
     public void getShareSnapshotIdAsync() {
         // BEGIN: com.azure.storage.file.directoryAsyncClient.getShareSnapshotId
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
-        DirectoryAsyncClient directoryAsyncClient = new DirectoryClientBuilder()
+        DirectoryAsyncClient directoryAsyncClient = new FileClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
             .shareName("myshare")
-            .directoryPath("mydirectory")
+            .filePath("mydirectory")
             .snapshot(currentTime.toString())
-            .buildAsyncClient();
+            .buildDirectoryAsyncClient();
 
         System.out.printf("Snapshot ID: %s%n", directoryAsyncClient.getShareSnapshotId());
         // END: com.azure.storage.file.directoryAsyncClient.getShareSnapshotId

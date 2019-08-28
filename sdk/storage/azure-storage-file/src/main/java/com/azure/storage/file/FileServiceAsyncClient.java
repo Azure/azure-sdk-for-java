@@ -3,7 +3,6 @@
 
 package com.azure.storage.file;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
@@ -13,7 +12,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.models.CorsRule;
 import com.azure.storage.file.models.DeleteSnapshotsOptionType;
@@ -24,14 +22,15 @@ import com.azure.storage.file.models.ListSharesResponse;
 import com.azure.storage.file.models.ServicesListSharesSegmentResponse;
 import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.StorageErrorException;
+import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
@@ -59,13 +58,10 @@ public final class FileServiceAsyncClient {
      * Creates a FileServiceClient that sends requests to the storage account at {@code endpoint}.
      * Each service call goes through the {@code httpPipeline}.
      *
-     * @param endpoint URL for the Storage File service
-     * @param httpPipeline HttpPipeline that the HTTP requests and responses flow through
+     * @param azureFileStorage Client that interacts with the service interfaces.
      */
-    FileServiceAsyncClient(URL endpoint, HttpPipeline httpPipeline) {
-        this.azureFileStorageClient = new AzureFileStorageBuilder().pipeline(httpPipeline)
-            .url(endpoint.toString())
-            .build();
+    FileServiceAsyncClient(AzureFileStorageImpl azureFileStorage) {
+        this.azureFileStorageClient = azureFileStorage;
     }
 
     /**
@@ -92,7 +88,21 @@ public final class FileServiceAsyncClient {
      * @return a ShareAsyncClient that interacts with the specified share
      */
     public ShareAsyncClient getShareAsyncClient(String shareName) {
-        return new ShareAsyncClient(azureFileStorageClient, shareName);
+        return this.getShareAsyncClient(shareName, null);
+    }
+
+    /**
+     * Constructs a ShareAsyncClient that interacts with the specified share.
+     *
+     * <p>If the share doesn't exist in the storage account {@link ShareAsyncClient#create() create} in the azureFileStorageClient will
+     * need to be called before interaction with the share can happen.</p>
+     *
+     * @param shareName Name of the share
+     * @param snapshot Snapshot ID of the share
+     * @return a ShareAsyncClient that interacts with the specified share
+     */
+    public ShareAsyncClient getShareAsyncClient(String shareName, String snapshot) {
+        return new ShareAsyncClient(azureFileStorageClient, shareName, snapshot);
     }
 
     /**
@@ -367,7 +377,7 @@ public final class FileServiceAsyncClient {
     }
 
     Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata, Integer quotaInGB, Context context) {
-        ShareAsyncClient shareAsyncClient = new ShareAsyncClient(azureFileStorageClient, shareName);
+        ShareAsyncClient shareAsyncClient = new ShareAsyncClient(azureFileStorageClient, shareName, null);
 
         return shareAsyncClient.createWithResponse(metadata, quotaInGB, context)
             .map(response -> new SimpleResponse<>(response, shareAsyncClient));

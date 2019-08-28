@@ -83,26 +83,6 @@ public class DirectoryAsyncClient {
     }
 
     /**
-     * Creates a DirectoryAsyncClient that sends requests to this directory at {@code endpoint}.
-     * Each service call goes through the {@code httpPipeline}.
-     * @param endpoint URL for the Storage File service
-     * @param httpPipeline HttpPipeline that HTTP requests and response flow through
-     * @param shareName Name of the share
-     * @param directoryPath Name of the directory
-     * @param snapshot Optional snapshot of the share
-     */
-    DirectoryAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String directoryPath, String snapshot) {
-        Objects.requireNonNull(shareName);
-        Objects.requireNonNull(directoryPath);
-        this.shareName = shareName;
-        this.directoryPath = directoryPath;
-        this.snapshot = snapshot;
-        this.azureFileStorageClient = new AzureFileStorageBuilder().pipeline(httpPipeline)
-                                          .url(endpoint.toString())
-                                          .build();
-    }
-
-    /**
      * Get the url of the storage directory client.
      * @return the URL of the storage directory client
      * @throws RuntimeException If the directory is using a malformed URL.
