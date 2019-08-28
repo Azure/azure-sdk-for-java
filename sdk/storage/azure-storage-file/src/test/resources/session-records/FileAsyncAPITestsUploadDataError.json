@@ -1,0 +1,46 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsuploaddataerror18927c1731c9fdb1?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D72829D404B2D5\"",
+      "Last-Modified" : "Sat, 24 Aug 2019 00:27:21 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "42bce43c-801a-010a-3412-5a6faa000000",
+      "Date" : "Sat, 24 Aug 2019 00:27:20 GMT",
+      "x-ms-client-request-id" : "d7a3dcb8-4905-4bb8-bcab-f19f59f8bbd4"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsuploaddataerror18927c1731c9fdb1/fileasyncapitestsuploaddataerror5159665ca37aaf75?comp=range",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "42bce43e-801a-010a-3512-5a6faa000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:42bce43e-801a-010a-3512-5a6faa000000\nTime:2019-08-24T00:27:21.5765964Z</Message></Error>",
+      "Date" : "Sat, 24 Aug 2019 00:27:21 GMT",
+      "x-ms-client-request-id" : "dc89737b-72f7-43fe-98c2-d756f6eae46c",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fileasyncapitestsuploaddataerror18927c1731c9fdb1", "fileasyncapitestsuploaddataerror5159665ca37aaf75" ]
+}

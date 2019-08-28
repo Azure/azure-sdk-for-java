@@ -750,6 +750,7 @@
     <module>./sdk/core/azure-core</module>
     <module>./sdk/core/azure-core-amqp</module>
     <module>./sdk/core/azure-core-management</module>
+    <module>./sdk/core/azure-core-http-netty</module>
     <module>./sdk/core/azure-core-test</module>
     <module>./sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>./sdk/keyvault/azure-keyvault-secrets</module>

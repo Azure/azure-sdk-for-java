@@ -25,3 +25,5 @@ Azure Core is split into a number of sub-components:
 * [azure-core-test](azure-core-test) provides utilities and API to make writing tests for Azure Core simpler and consistent.
 
 For documentation on using Azure Core, refer to the [azure-core readme](azure-core).
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/core/README.png)

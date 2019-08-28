@@ -39,24 +39,18 @@ stages:
     parameters:
       ServiceDirectory: keyvault
       Artifacts:
-        - name: microsoft-azure-keyvault
-          safeName: microsoftazurekeyvault
+        - name: azure-keyvault
+          safeName: azurekeyvault
           stagingProfileId: 534d15ee3800f4
-        - name: microsoft-azure-keyvault-complete
-          safeName: microsoftazurekeyvaultcomplete
+        - name: azure-keyvault-core
+          safeName: azurekeyvaultcore
           stagingProfileId: 534d15ee3800f4
-        - name: microsoft-azure-keyvault-core
-          safeName: microsoftazurekeyvaultcore
+        - name: azure-keyvault-cryptography
+          safeName: azurekeyvaultcryptography
           stagingProfileId: 534d15ee3800f4
-        - name: microsoft-azure-keyvault-cryptography
-          safeName: microsoftazurekeyvaultcryptography
+        - name: azure-keyvault-extensions
+          safeName: azurekeyvaultextensions
           stagingProfileId: 534d15ee3800f4
-        - name: microsoft-azure-keyvault-extensions
-          safeName: microsoftazurekeyvaultextensions
-          stagingProfileId: 534d15ee3800f4
-        - name: microsoft-azure-keyvault-test
-          safeName: microsoftazurekeyvaulttest
-          stagingProfileId: 534d15ee3800f4
-        - name: microsoft-azure-keyvault-webkey
-          safeName: microsoftazurekeyvaultwebkey
+        - name: azure-keyvault-webkey
+          safeName: azurekeyvaultwebkey
           stagingProfileId: 534d15ee3800f4

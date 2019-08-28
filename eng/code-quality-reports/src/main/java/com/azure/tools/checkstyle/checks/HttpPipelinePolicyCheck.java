@@ -48,7 +48,7 @@ public class HttpPipelinePolicyCheck extends AbstractCheck {
 
         switch (token.getType()) {
             case TokenTypes.PACKAGE_DEF:
-                final String packageName = FullIdent.createFullIdentBelow(token).getText();
+                final String packageName = FullIdent.createFullIdent(token.findFirstToken(TokenTypes.DOT)).getText();
                 isImplementationPackage = packageName.contains("implementation");
                 break;
             case TokenTypes.CLASS_DEF:

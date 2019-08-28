@@ -5,10 +5,10 @@ package com.azure.storage.common.credentials;
 
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.common.Utility;
-import io.netty.handler.codec.http.QueryStringDecoder;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -181,15 +181,14 @@ public final class SharedKeyCredential {
         }
 
         // The URL object's query field doesn't include the '?'. The QueryStringDecoder expects it.
-        QueryStringDecoder queryDecoder = new QueryStringDecoder("?" + requestURL.getQuery());
-        Map<String, List<String>> queryParams = queryDecoder.parameters();
+        Map<String, String[]> queryParams = Utility.parseQueryStringSplitValues(requestURL.getQuery());
 
         ArrayList<String> queryParamNames = new ArrayList<>(queryParams.keySet());
         Collections.sort(queryParamNames);
 
         for (String queryParamName : queryParamNames) {
-            final List<String> queryParamValues = queryParams.get(queryParamName);
-            Collections.sort(queryParamValues);
+            String[] queryParamValues = queryParams.get(queryParamName);
+            Arrays.sort(queryParamValues);
             String queryParamValuesStr = String.join(",", queryParamValues);
             canonicalizedResource.append("\n")
                 .append(queryParamName.toLowerCase(Locale.ROOT))

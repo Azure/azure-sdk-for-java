@@ -34,6 +34,12 @@
       <artifactId>oauth2-oidc-sdk</artifactId>
     </dependency>
 
+    <!-- used for creating an HTTP server in AuthorizationCodeListener only -->
+    <dependency>
+      <groupId>io.projectreactor.netty</groupId>
+      <artifactId>reactor-netty</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

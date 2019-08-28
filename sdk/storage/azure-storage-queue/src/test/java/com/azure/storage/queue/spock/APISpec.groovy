@@ -9,6 +9,7 @@ import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.queue.QueueClientBuilder
+import com.azure.storage.queue.QueueServiceAsyncClient
 import com.azure.storage.queue.QueueServiceClient
 import com.azure.storage.queue.QueueServiceClientBuilder
 import com.azure.storage.queue.models.QueuesSegmentOptions
@@ -22,14 +23,14 @@ class APISpec extends Specification {
     def testResourceName
 
     // Clients for API tests
-    def primaryQueueServiceClient
-    def primaryQueueServiceAsyncClient
+    QueueServiceClient primaryQueueServiceClient
+    QueueServiceAsyncClient primaryQueueServiceAsyncClient
 
 
     // Test name for test method name.
     def methodName
     def testMode = getTestMode()
-    def connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
+    def connectionString
 
     /**
      * Setup the QueueServiceClient and QueueClient common used for the API tests.
@@ -42,6 +43,12 @@ class APISpec extends Specification {
         interceptorManager = new InterceptorManager(methodName, testMode)
         testResourceName = new TestResourceNamer(methodName, testMode,
             interceptorManager.getRecordedData())
+        if (getTestMode() == TestMode.RECORD) {
+            connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
+        } else {
+            connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;" +
+                "EndpointSuffix=core.windows.net"
+        }
     }
 
     /**

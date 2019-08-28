@@ -8,8 +8,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobsDownloadResponse;
 import com.azure.storage.blob.models.StorageErrorException;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -19,7 +17,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
-class DownloadResponseMockFlux extends Flux<ByteBuf> {
+class DownloadResponseMockFlux extends Flux<ByteBuffer> {
     static final int DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK = 0;
     static final int DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK = 1;
     static final int DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES = 2;
@@ -33,15 +31,16 @@ class DownloadResponseMockFlux extends Flux<ByteBuf> {
     private HTTPGetterInfo info;
     private ByteBuffer scenarioData;
 
-    DownloadResponseMockFlux(int scenario) {
+    DownloadResponseMockFlux(int scenario, APISpec apiSpec) {
         this.scenario = scenario;
+
         switch (this.scenario) {
             case DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK:
-                this.scenarioData = APISpec.getRandomData(512 * 1024);
+                this.scenarioData = apiSpec.getRandomData(512 * 1024);
                 break;
             case DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK:
             case DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
-                this.scenarioData = APISpec.getRandomData(1024);
+                this.scenarioData = apiSpec.getRandomData(1024);
                 break;
             case DR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED:
             case DR_TEST_SCENARIO_NON_RETRYABLE_ERROR:
@@ -62,10 +61,10 @@ class DownloadResponseMockFlux extends Flux<ByteBuf> {
     }
 
     @Override
-    public void subscribe(CoreSubscriber<? super ByteBuf> subscriber) {
+    public void subscribe(CoreSubscriber<? super ByteBuffer> subscriber) {
         switch (this.scenario) {
             case DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK:
-                subscriber.onNext(Unpooled.wrappedBuffer(this.scenarioData.duplicate()));
+                subscriber.onNext(this.scenarioData.duplicate());
                 Operators.complete(subscriber);
                 break;
 
@@ -74,7 +73,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuf> {
                     ByteBuffer toSend = this.scenarioData.duplicate();
                     toSend.position(i * 256);
                     toSend.limit((i + 1) * 256);
-                    subscriber.onNext(Unpooled.wrappedBuffer(toSend));
+                    subscriber.onNext(toSend);
                 }
                 Operators.complete(subscriber);
                 break;
@@ -90,7 +89,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuf> {
                     ByteBuffer toSend = this.scenarioData.duplicate();
                     toSend.position((this.tryNumber - 1) * 256);
                     toSend.limit(this.tryNumber * 256);
-                    subscriber.onNext(Unpooled.wrappedBuffer(toSend));
+                    subscriber.onNext(toSend);
                     Operators.error(subscriber, new IOException());
                     break;
                 }
@@ -102,7 +101,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuf> {
                 ByteBuffer toSend = this.scenarioData.duplicate();
                 toSend.position((this.tryNumber - 1) * 256);
                 toSend.limit(this.tryNumber * 256);
-                subscriber.onNext(Unpooled.wrappedBuffer(toSend));
+                subscriber.onNext(toSend);
                 Operators.complete(subscriber);
                 break;
 
@@ -179,7 +178,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuf> {
                             }
 
                             @Override
-                            public Flux<ByteBuf> body() {
+                            public Flux<ByteBuffer> body() {
                                 return null;
                             }
 
