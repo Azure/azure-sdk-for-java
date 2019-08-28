@@ -20,18 +20,18 @@ import java.util.function.Supplier;
  *
  * <p>To process one item at a time, simply subscribe to this flux as shown below </p>
  * <p><strong>Code sample</strong></p>
- * {@codesnippet com.azure.core.http.rest.pagedflux.items}
+ * {@codesnippet com.azure.core.http.rest.pagedfluxbase.items}
  *
  * <p>To process one page at a time, use {@link #byPage} method as shown below </p>
  * <p><strong>Code sample</strong></p>
- * {@codesnippet com.azure.core.http.rest.pagedflux.pages}
+ * {@codesnippet com.azure.core.http.rest.pagedfluxbase.pages}
  *
  * <p>To process items one page at a time starting from any page associated with a continuation token,
  * use {@link #byPage(String)} as shown below</p>
  * <p><strong>Code sample</strong></p>
- * {@codesnippet com.azure.core.http.rest.pagedflux.pagesWithContinuationToken}
+ * {@codesnippet com.azure.core.http.rest.pagedfluxbase.pagesWithContinuationToken}
  *
- * @param <T> The type of items in a {@link PagedResponse}
+ * @param <T> The type of items in <P> which extends {@link PagedResponse}
  *
  * @see PagedResponse
  * @see Page
@@ -46,9 +46,9 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
      * argument to this constructor therefore is a supplier that fetches the first (and known-only) page of {@code T}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.core.http.rest.pagedflux.singlepage.instantiation}
+     * {@codesnippet com.azure.core.http.rest.pagedfluxbase.singlepage.instantiation}
      *
-     * @param firstPageRetriever Supplier that retrieves the first .
+     * @param firstPageRetriever Supplier that retrieves the first page
      */
     public PagedFluxBase(Supplier<Mono<P>> firstPageRetriever) {
         this(firstPageRetriever, token -> Mono.empty());
@@ -60,7 +60,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
      * function that fetches subsequent pages of {@code T}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.core.http.rest.pagedflux.instantiation}
+     * {@codesnippet com.azure.core.http.rest.pagedfluxbase.instantiation}
      *
      * @param firstPageRetriever Supplier that retrieves the first page
      * @param nextPageRetriever Function that retrieves the next page given a continuation token
@@ -77,7 +77,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
      * Creates a flux of {@link PagedResponse} starting from the first page.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.core.http.rest.pagedflux.bypage}
+     * {@codesnippet com.azure.core.http.rest.pagedfluxbase.bypage}
      *
      * @return A {@link PagedFluxBase} starting from the first page
      */
@@ -90,7 +90,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
      * continuation token. To start from first page, use {@link #byPage()} instead.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.core.http.rest.pagedflux.bypage#String}
+     * {@codesnippet com.azure.core.http.rest.pagedfluxbase.bypage#String}
      *
      * @param continuationToken The continuation token used to fetch the next page
      * @return A {@link PagedFluxBase} starting from the page associated with the continuation token
@@ -105,7 +105,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
      * page when required and provide with a {@link Flux} of items.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.core.http.rest.pagedflux.subscribe}
+     * {@codesnippet com.azure.core.http.rest.pagedfluxbase.subscribe}
      *
      * @param coreSubscriber The subscriber for this {@link PagedFluxBase}
      */
