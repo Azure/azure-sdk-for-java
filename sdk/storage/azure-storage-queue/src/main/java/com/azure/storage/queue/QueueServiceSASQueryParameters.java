@@ -7,11 +7,9 @@ import com.azure.storage.common.BaseSASQueryParameters;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
-import com.azure.storage.common.Utility;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * Represents the components that make up an Azure Storage SAS' query parameters. This type is not constructed directly
@@ -47,8 +45,7 @@ public final class QueueServiceSASQueryParameters extends BaseSASQueryParameters
      * @param protocol A {@code String} representing the allowed HTTP protocol(s) or {@code null}.
      * @param startTime A {@code java.util.Date} representing the start time for this SAS token or {@code null}.
      * @param expiryTime A {@code java.util.Date} representing the expiry time for this SAS token.
-     * @param ipRange A {@link IPRange} representing the range of valid IP addresses for this SAS token or {@code
-     * null}.
+     * @param ipRange A {@link IPRange} representing the range of valid IP addresses for this SAS token or {@code null}.
      * @param identifier A {@code String} representing the signed identifier (only for Service SAS) or {@code null}.
      * @param permissions A {@code String} representing the storage permissions or {@code null}.
      * @param signature A {@code String} representing the signature for the SAS token.

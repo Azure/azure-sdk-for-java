@@ -48,10 +48,26 @@ public abstract class BaseSASQueryParameters {
         this.signature = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNATURE, removeSASParametersFromMap);
     }
 
+    /**
+     * Helper method to get a query parameter
+     * @param parameters A {@code Map} of parameters to values to search.
+     * @param name The name of parameter to find.
+     * @param remove Whether or not to remove the parameter from the map.
+     * @return A String representing the query parameter
+     */
     protected String getQueryParameter(Map<String, String[]> parameters, String name, boolean remove) {
         return getQueryParameter(parameters, name, remove, value -> value);
     }
 
+    /**
+     * Helper method to get a query parameter
+     * @param parameters A {@code Map} of parameters to values to search.
+     * @param name The name of parameter to find.
+     * @param remove Whether or not to remove the parameter from the map.
+     * @param converter Function that transforms the value to a String.
+     * @param <T> The object type.
+     * @return The object
+     */
     protected <T> T getQueryParameter(Map<String, String[]> parameters, String name, Boolean remove, Function<String,
         T> converter) {
         String[] parameterValue = parameters.get(name);
@@ -74,8 +90,7 @@ public abstract class BaseSASQueryParameters {
      * @param protocol A {@code String} representing the allowed HTTP protocol(s) or {@code null}.
      * @param startTime A {@code java.util.Date} representing the start time for this SAS token or {@code null}.
      * @param expiryTime A {@code java.util.Date} representing the expiry time for this SAS token.
-     * @param ipRange A {@link IPRange} representing the range of valid IP addresses for this SAS token or {@code
-     * null}.
+     * @param ipRange A {@link IPRange} representing the range of valid IP addresses for this SAS token or {@code null}.
      * @param permissions A {@code String} representing the storage permissions or {@code null}.
      * @param signature A {@code String} representing the signature for the SAS token.
      */
@@ -139,6 +154,12 @@ public abstract class BaseSASQueryParameters {
         return signature;
     }
 
+    /**
+     * Shared helper method to append a SAS query parameter.
+     * @param sb The {@code StringBuilder} to append to.
+     * @param param The {@code String} parameter to append.
+     * @param value The value of the parameter to append.
+     */
     protected void tryAppendQueryParameter(StringBuilder sb, String param, Object value) {
         if (value != null) {
             if (sb.length() != 0) {
@@ -148,6 +169,11 @@ public abstract class BaseSASQueryParameters {
         }
     }
 
+    /**
+     * Formats date time SAS query parameters.
+     * @param dateTime The SAS date time.
+     * @return A String representing the SAS date time.
+     */
     protected String formatQueryParameterDate(OffsetDateTime dateTime) {
         if (dateTime == null) {
             return null;

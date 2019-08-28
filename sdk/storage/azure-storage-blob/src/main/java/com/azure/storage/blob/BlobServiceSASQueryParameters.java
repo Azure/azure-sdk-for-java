@@ -12,7 +12,6 @@ import com.azure.storage.common.Utility;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * Represents the components that make up an Azure Storage SAS' query parameters. This type is not constructed directly

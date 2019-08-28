@@ -10,7 +10,6 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.AccountSASPermission;
-import com.azure.storage.common.AccountSASQueryParameters;
 import com.azure.storage.common.AccountSASResourceType;
 import com.azure.storage.common.AccountSASService;
 import com.azure.storage.common.AccountSASSignatureValues;
