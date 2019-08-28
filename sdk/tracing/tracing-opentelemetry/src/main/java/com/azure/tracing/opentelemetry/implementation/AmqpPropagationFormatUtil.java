@@ -27,9 +27,13 @@ public class AmqpPropagationFormatUtil {
     }
 
     /**
-     * Parse span context and get the diagnostic Id for that event.
+     * The traceparent HTTP header field identifies the incoming request in a tracing system with four fields:
+     * version, trace-id, parent-id, trace-flags.
      *
-     * @param spanContext the span context.
+     * Please refer to the <a href=https://www.w3.org/TR/trace-context/#traceparent-header>Traceparent Header</a>
+     * for more information on the conversion of these fields to Span Context format.
+     *
+     * @param spanContext is a specification defines an agreed-upon format for the exchange of trace context propagation data
      * @retrun The dignostic Id providing an unique identifier for individual traces and requests,
      * allowing trace data of multiple providers to be linked together.
      */
