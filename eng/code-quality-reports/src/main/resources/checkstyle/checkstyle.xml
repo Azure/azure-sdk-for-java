@@ -361,5 +361,13 @@ page at http://checkstyle.sourceforge.net/config.html -->
       'System.out' and 'System.err' is not allowed as well.
     4) All classes should use ClientLogger as logger only but except ClientLogger itself -->
     <module name="com.azure.tools.checkstyle.checks.GoodLoggingCheck"/>
+
+    <!-- CUSTOM CHECKS -->
+    <!-- Fluent method checks:
+    (1) A method returns an instance of the class, and that have one parameter,
+    (2) should not start with the words in the avoidStartWords list.-->
+    <module name="com.azure.tools.checkstyle.checks.FluentMethodNameCheck">
+      <property name="avoidStartWords" value="with,set"/>
+    </module>
   </module>
 </module>
