@@ -252,7 +252,11 @@ class BlobAPITest extends APISpec {
         bc.downloadToFile(testFile.getPath())
 
         then:
-        thrown(FileAlreadyExistsException)
+        def ex = thrown(UncheckedIOException)
+        ex.getCause() instanceof FileAlreadyExistsException
+
+        cleanup:
+        testFile.delete()
     }
 
     def "Download to file does not exist"() {
