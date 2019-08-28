@@ -295,8 +295,16 @@ class FileAPITests extends APISpec {
         def getPropertiesResponse = primaryFileClient.getPropertiesWithResponse(null)
         then:
         FileTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
-        getPropertiesResponse.value().eTag() != null
-        getPropertiesResponse.value().lastModified() != null
+        getPropertiesResponse.value().eTag()
+        getPropertiesResponse.value().lastModified()
+        getPropertiesResponse.value().smbProperties()
+        getPropertiesResponse.value().smbProperties().filePermissionKey()
+        getPropertiesResponse.value().smbProperties().ntfsFileAttributes()
+        getPropertiesResponse.value().smbProperties().fileLastWriteTime()
+        getPropertiesResponse.value().smbProperties().fileCreationTime()
+        getPropertiesResponse.value().smbProperties().parentId()
+        getPropertiesResponse.value().smbProperties().fileId()
+
     }
 
     def "Get properties error"() {
