@@ -316,8 +316,8 @@ public class ServiceClientCheck extends AbstractCheck {
             if (SINGLE_RETURN_TYPE.equals(returnsAnnotationMemberValue)) {
                 // If value of 'returns' is SINGLE, and then log error if the return type of the method is not start
                 // with {@code Response<T>} when the method name ends with 'WithResponse'.
-                if (returnType.startsWith(RESPONSE_BRACKET) && !methodName.endsWith(WITH_RESPONSE)
-                    || !returnType.startsWith(RESPONSE_BRACKET) && methodName.endsWith(WITH_RESPONSE)) {
+                if ((returnType.startsWith(RESPONSE_BRACKET) && !methodName.endsWith(WITH_RESPONSE))
+                    || (!returnType.startsWith(RESPONSE_BRACKET) && methodName.endsWith(WITH_RESPONSE))) {
                     log(methodDefToken, String.format(RESPONSE_METHOD_NAME_ERROR, "Synchronous", SINGLE_RETURN_TYPE,
                         RESPONSE, WITH_RESPONSE, WITH_RESPONSE, RESPONSE));
                 }
