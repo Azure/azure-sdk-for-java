@@ -10,7 +10,10 @@ import reactor.netty.http.client.HttpClient;
 import reactor.netty.tcp.ProxyProvider;
 
 /**
+ * Builder class responsible for creating instances of {@link NettyAsyncHttpClient}.
  *
+ * @see NettyAsyncHttpClient
+ * @see HttpClient
  */
 public class NettyAsyncHttpClientBuilder {
     private final ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
@@ -21,15 +24,18 @@ public class NettyAsyncHttpClientBuilder {
     private NioEventLoopGroup nioEventLoopGroup;
 
     /**
-     *
+     * Creates a new builder instance, where a builder is capable of generating multiple instances of
+     * {@link NettyAsyncHttpClient}.
      */
     public NettyAsyncHttpClientBuilder() {
     }
 
     /**
+     * Creates a new {@link NettyAsyncHttpClient} instance on every call, using the configuration set in the builder at
+     * the time of the build method call.
      *
-     * @return A new NettyAsyncHttpClient instance
-     * @throws IllegalStateException If proxy type is unknown.
+     * @return A new NettyAsyncHttpClient instance.
+     * @throws IllegalStateException If the builder is configured to use an unknown proxy type.
      */
     public NettyAsyncHttpClient build() {
         HttpClient nettyHttpClient = HttpClient.create()
@@ -70,7 +76,7 @@ public class NettyAsyncHttpClientBuilder {
     }
 
     /**
-     * Apply or remove a wire logger configuration.
+     * Enables the Netty wiretap feature.
      *
      * @param enableWiretap Flag indicating wiretap status
      * @return the updated NettyAsyncHttpClientBuilder object
@@ -81,7 +87,7 @@ public class NettyAsyncHttpClientBuilder {
     }
 
     /**
-     * Sets the port which this client should connect.
+     * Sets the port which this client should connect, which by default will be set to port 80.
      *
      * @param port The port to connect to.
      * @return the updated NettyAsyncHttpClientBuilder object

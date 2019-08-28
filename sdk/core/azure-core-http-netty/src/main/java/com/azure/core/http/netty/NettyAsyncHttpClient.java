@@ -8,8 +8,10 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.ProxyOptions;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.HttpMethod;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
@@ -26,27 +28,35 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 
 /**
- * HttpClient that is implemented using reactor-netty.
+ * This class implements the {@link HttpClient} interface with a Netty-based implementation. Creating an instance of
+ * this class can be achieved by using the {@link NettyAsyncHttpClientBuilder} class, which offers Netty-specific API
+ * for features such as {@link NettyAsyncHttpClientBuilder#nioEventLoopGroup(NioEventLoopGroup) thread pooling},
+ * {@link NettyAsyncHttpClientBuilder#wiretap(boolean) wiretapping},
+ * {@link NettyAsyncHttpClientBuilder#proxy(ProxyOptions) proxy configuration}, and much more.
+ *
+ * @see HttpClient
+ * @see NettyAsyncHttpClientBuilder
  */
 public class NettyAsyncHttpClient implements HttpClient {
     final reactor.netty.http.client.HttpClient nettyClient;
 
     /**
-     * Creates default ReactorNettyClient.
+     * Creates default NettyAsyncHttpClient.
      */
     NettyAsyncHttpClient() {
         this(reactor.netty.http.client.HttpClient.create());
     }
 
     /**
-     * Creates ReactorNettyClient with provided http client.
+     * Creates NettyAsyncHttpClient with provided http client.
      *
-     * @param nettyClient the reactor http client
+     * @param nettyClient the reactor-netty http client
      */
     NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient) {
         this.nettyClient = nettyClient;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Mono<HttpResponse> send(final HttpRequest request) {
         Objects.requireNonNull(request.httpMethod());
