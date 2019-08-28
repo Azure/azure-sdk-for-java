@@ -4,12 +4,9 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerItem;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -139,7 +136,7 @@ public class Sample {
             .flatMap(listItem ->
                 finalContainerClient.getBlobAsyncClient(listItem.name())
                     .download()
-                    .flatMapMany(Response::value)
+                    .flatMapMany(flux -> flux)
                     .map(buffer -> new String(buffer.array()))
                     .doOnNext(string -> System.out.println(listItem.name() + ": " + string)))
             // cleanup

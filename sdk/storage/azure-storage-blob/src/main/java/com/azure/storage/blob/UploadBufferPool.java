@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Flux;
 
@@ -29,6 +30,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Once the source terminates, it should call flush.
  */
 final class UploadBufferPool {
+    private final ClientLogger logger = new ClientLogger(UploadBufferPool.class);
 
     /*
     Note that a blocking on a syncrhonized object is not the same as blocking on a reactive operation; blocking on this
@@ -134,8 +136,8 @@ final class UploadBufferPool {
                 result = this.buffers.take();
 
             } catch (InterruptedException e) {
-                throw new IllegalStateException("BufferedUpload thread interrupted." + " Thread:"
-                        + Thread.currentThread().getId());
+                throw logger.logExceptionAsError(new IllegalStateException("BufferedUpload thread interrupted." + " Thread:"
+                        + Thread.currentThread().getId()));
             }
         }
         return result;
@@ -164,7 +166,7 @@ final class UploadBufferPool {
         try {
             this.buffers.put(b);
         } catch (InterruptedException e) {
-            throw new IllegalStateException("UploadFromStream thread interrupted.");
+            throw logger.logExceptionAsError(new IllegalStateException("UploadFromStream thread interrupted."));
         }
     }
 }

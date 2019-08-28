@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License
+// Licensed under the MIT License.
 
 package com.azure.storage.blob;
 
-import com.azure.core.http.rest.Response;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import reactor.core.publisher.Flux;
 
@@ -54,9 +53,9 @@ public class AsyncBufferedUploadExample {
         argument list.
          */
         Flux<ByteBuffer> sourceData = getSourceBlobClient(endpoint, credential, containerName).download()
-            .flatMapMany(Response::value)
+            .flatMapMany(flux -> flux)
             // Perform some unpredicatable transformation.
-            .map(buffer -> (ByteBuffer)buffer.limit(new Random().nextInt(buffer.limit())));
+            .map(buffer -> (ByteBuffer) buffer.limit(new Random().nextInt(buffer.limit())));
 
         /*
         This upload overload permits the use of such unreliable data sources. The length need not be specified, but

@@ -33,7 +33,13 @@ import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.Objects;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
@@ -173,31 +179,27 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * <p>
      * Typically, the greater the number of buffers used, the greater the possible parallelism when transferring the
      * data. Larger buffers means we will have to stage fewer blocks and therefore require fewer IO operations. The
-     * tradeoffs between these valeus are context-dependent, so some exerimentation may be required to optimize inputs
+     * trade-offs between these values are context-dependent, so some experimentation may be required to optimize inputs
      * for a given scenario.
      *
-     * @param data
-     *         The data to write to the blob. Unlike other upload methods, this method does not require that the
+     * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      *         {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is
      *         not expected to produce the same values across subscriptions.
-     * @param blockSize
-     *         The size of each block that will be staged. This value also determines the size that each buffer used by
+     * @param blockSize The size of each block that will be staged. This value also determines the size that each buffer used by
      *         this method will be and determines the number of requests that need to be made. The amount of memory
      *         consumed by this method may be up to blockSize * numBuffers. If block size is large, this method will
      *         make fewer network calls, but each individual call will send more data and will therefore take longer.
-     * @param numBuffers
-     *         The maximum number of buffers this method should allocate. Must be at least two. Typically, the larger
+     * @param numBuffers The maximum number of buffers this method should allocate. Must be at least two. Typically, the larger
      *         the number of buffers, the more parallel, and thus faster, the upload portion of this operation will be.
      *         The amount of memory consumed by this method may be up to blockSize * numBuffers.
-     * @return
-     *     A reactive response containing the information of the uploaded block blob.
+     * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<Response<BlockBlobItem>> upload(Flux<ByteBuffer> data, int blockSize, int numBuffers) {
         return this.upload(data, blockSize, numBuffers, null, null, null);
     }
 
     /**
-     *Creates a new block blob, or updates the content of an existing block blob.
+     * Creates a new block blob, or updates the content of an existing block blob.
      * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not
      * supported with this method; the content of the existing blob is overwritten with the new content. To
      * perform a partial update of a block blob's, use
@@ -216,38 +218,31 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * <p>
      * Typically, the greater the number of buffers used, the greater the possible parallelism when transferring the
      * data. Larger buffers means we will have to stage fewer blocks and therefore require fewer IO operations. The
-     * tradeoffs between these valeus are context-dependent, so some exerimentation may be required to optimize inputs
+     * trade-offs between these values are context-dependent, so some experimentation may be required to optimize inputs
      * for a given scenario.
      *
-     * @param data
-     *         The data to write to the blob. Unlike other upload methods, this method does not require that the
+     * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      *         {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is
      *         not expected to produce the same values across subscriptions.
-     * @param blockSize
-     *         The size of each block that will be staged. This value also determines the size that each buffer used by
+     * @param blockSize The size of each block that will be staged. This value also determines the size that each buffer used by
      *         this method will be and determines the number of requests that need to be made. The amount of memory
      *         consumed by this method may be up to blockSize * numBuffers. If block size is large, this method will
      *         make fewer network calls, but each individual call will send more data and will therefore take longer.
-     * @param numBuffers
-     *         The maximum number of buffers this method should allocate. Must be at least two. Typically, the larger
+     * @param numBuffers The maximum number of buffers this method should allocate. Must be at least two. Typically, the larger
      *         the number of buffers, the more parallel, and thus faster, the upload portion of this operation will be.
      *         The amount of memory consumed by this method may be up to blockSize * numBuffers.
-     * @param headers
-     *         {@link BlobHTTPHeaders}
-     * @param metadata
-     *         {@link Metadata}
-     * @param accessConditions
-     *         {@link BlobAccessConditions}
-     * @return
-     *     A reactive response containing the information of the uploaded block blob.
+     * @param headers {@link BlobHTTPHeaders}
+     * @param metadata {@link Metadata}
+     * @param accessConditions {@link BlobAccessConditions}
+     * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<Response<BlockBlobItem>> upload(Flux<ByteBuffer> data, int blockSize, int numBuffers,
         BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
         // TODO: Parallelism parameter? Or let Reactor handle it?
         // TODO: Sample/api reference
         Objects.requireNonNull(data, "data must not be null");
-        BlobAccessConditions accessConditionsFinal = accessConditions == null ?
-            new BlobAccessConditions() : accessConditions;
+        BlobAccessConditions accessConditionsFinal = accessConditions == null
+            ? new BlobAccessConditions() : accessConditions;
 
         // TODO: Progress reporting.
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
