@@ -34,8 +34,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ServiceLoader;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * This class provides a fluent builder API to aid the instantiation of {@link EventHubAsyncClient} and
@@ -300,7 +298,7 @@ public class EventHubClientBuilder {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
-            final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
+        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
         return new EventHubAsyncClient(connectionOptions, provider, handlerProvider, tracerProvider);
     }

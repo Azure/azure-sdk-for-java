@@ -118,6 +118,22 @@ public class TracerProviderTest {
     }
 
     @Test
+    public void endSpanOnSubscribe() {
+        // Arrange
+        final Tracer tracer1 = mock(Tracer.class);
+        List<Tracer> tracers = Arrays.asList(tracer1);
+        final TracerProvider tracerProvider = new TracerProvider(tracers);
+        Throwable testThrow = new Throwable("testError");
+        Context sendContext = new Context(OPENTELEMETRY_SPAN_KEY, "value");
+
+        // Act
+        tracerProvider.endSpan(sendContext, Signal.error(testThrow));
+
+        // Assert
+        verify(tracer1, times(1)).end("", testThrow, sendContext);
+    }
+
+    @Test
     public void endSpanAmqpException() {
         // Arrange
         final Tracer tracer1 = mock(Tracer.class);

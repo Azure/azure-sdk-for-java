@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
@@ -24,10 +25,7 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -76,8 +74,9 @@ public class EventHubAsyncClientIntegrationTest extends ApiTestBase {
 
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         final ConnectionOptions connectionOptions = getConnectionOptions();
+        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
-        client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider, null);
+        client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider, tracerProvider);
 
         setupEventTestData(client);
     }

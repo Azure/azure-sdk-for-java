@@ -9,7 +9,6 @@ import com.azure.core.util.Context;
 import reactor.core.publisher.Signal;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -66,15 +65,13 @@ public class TracerProvider {
             return;
         }
 
-        String errorCondition;
-        Throwable throwable;
-
         switch (signal.getType()) {
             case ON_COMPLETE:
                 end("success", null, context);
+                break;
             case ON_ERROR:
-                errorCondition = "";
-                throwable = null;
+                String errorCondition = "";
+                Throwable throwable = null;
                 if (signal.hasError()) {
                     // The last status available is on error, this contains the thrown error.
                     throwable = signal.getThrowable();
@@ -85,11 +82,11 @@ public class TracerProvider {
                     }
                 }
                 end(errorCondition, throwable, context);
+                break;
             default:
                 // ON_SUBSCRIBE and ON_NEXT don't have the information to end the span so just return.
                 break;
         }
-
     }
 
     /**

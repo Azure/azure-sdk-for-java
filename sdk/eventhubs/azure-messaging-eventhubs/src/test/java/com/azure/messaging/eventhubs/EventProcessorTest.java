@@ -29,11 +29,8 @@ import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 
 import java.io.Closeable;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.Arrays;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -84,6 +81,7 @@ public class EventProcessorTest {
         final InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
 
         final long beforeTest = System.currentTimeMillis();
+        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
         // Act
         final EventProcessor eventProcessor = new EventProcessor(eventHubAsyncClient,
@@ -92,7 +90,7 @@ public class EventProcessorTest {
                 testPartitionProcessor.checkpointManager = checkpointManager;
                 testPartitionProcessor.partitionContext = partitionContext;
                 return testPartitionProcessor;
-            }, EventPosition.latest(), partitionManager, "test-eh", null);
+            }, EventPosition.latest(), partitionManager, "test-eh", tracerProvider);
         eventProcessor.start();
         Thread.sleep(TimeUnit.SECONDS.toMillis(2));
         eventProcessor.stop();
@@ -268,12 +266,13 @@ public class EventProcessorTest {
 
         final FaultyPartitionProcessor faultyPartitionProcessor = new FaultyPartitionProcessor();
         final InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
+        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
         // Act
         final EventProcessor eventProcessor = new EventProcessor(eventHubAsyncClient,
             "test-consumer",
             (partitionContext, checkpointManager) -> faultyPartitionProcessor,
-            EventPosition.latest(), partitionManager, "test-eh", null);
+            EventPosition.latest(), partitionManager, "test-eh", tracerProvider);
         eventProcessor.start();
         Thread.sleep(TimeUnit.SECONDS.toMillis(2));
         eventProcessor.stop();
@@ -316,10 +315,12 @@ public class EventProcessorTest {
         when(eventData4.offset()).thenReturn("1");
 
         final InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
+        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
+
         // Act
         final EventProcessor eventProcessor = new EventProcessor(eventHubAsyncClient,
             "test-consumer",
-            TestPartitionProcessor::new, EventPosition.latest(), partitionManager, "test-eh", null);
+            TestPartitionProcessor::new, EventPosition.latest(), partitionManager, "test-eh", tracerProvider);
         eventProcessor.start();
         Thread.sleep(TimeUnit.SECONDS.toMillis(2));
         eventProcessor.stop();

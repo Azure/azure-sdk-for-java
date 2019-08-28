@@ -20,6 +20,7 @@ import io.opencensus.trace.SpanContext;
 import io.opencensus.trace.AttributeValue;
 import io.opencensus.trace.Link;
 
+import java.util.Locale;
 import java.util.Optional;
 
 import static io.opencensus.trace.Link.Type.PARENT_LINKED_SPAN;
@@ -120,14 +121,19 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
             logger.warning("Failed to find span to end it.");
             return;
         }
+        if (spanOptional.get() instanceof Span) {
+            Span span = (Span) spanOptional.get();
 
-        Span span = (Span) spanOptional.get();
+            if (span.getOptions().contains(Options.RECORD_EVENTS)) {
+                span.setStatus(AmqpTraceUtil.parseStatusMessage(statusMessage, throwable));
+            }
 
-        if (span.getOptions().contains(Options.RECORD_EVENTS)) {
-            span.setStatus(AmqpTraceUtil.parseStatusMessage(statusMessage, throwable));
+            span.end();
+        } else {
+            logger.warning(String.format(Locale.US,
+                "Span type is not of type Span, but type: %s. Failed to end the span.",
+                spanOptional.get() != null ? spanOptional.get().getClass() : "null"));
         }
-
-        span.end();
     }
 
     @Override
@@ -153,8 +159,9 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
 
     private Context startScopedSpan(String spanName, Context context) {
         Span span;
-        if (context.getData(SPAN_CONTEXT).isPresent()) {
-            span = startSpanWithRemoteParent(spanName, (SpanContext) context.getData(SPAN_CONTEXT).get());
+        Optional<Object> optionalSpanContext = context.getData(SPAN_CONTEXT);
+        if (optionalSpanContext.isPresent() && optionalSpanContext.get() instanceof SpanContext) {
+            span = startSpanWithRemoteParent(spanName, (SpanContext) optionalSpanContext.get());
         } else {
             SpanBuilder spanBuilder = startSpanWithExplicitParent(spanName, context);
             span = spanBuilder.setSpanKind(Span.Kind.SERVER).startSpan();
@@ -163,8 +170,19 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
     }
 
     private SpanBuilder startSpanWithExplicitParent(String spanName, Context context) {
-        Span parentSpan = (Span) context.getData(OPENTELEMETRY_SPAN_KEY).orElse(TRACER.getCurrentSpan());
-        String spanNameKey = (String) context.getData(OPENTELEMETRY_SPAN_NAME_KEY).orElse(spanName);
+        Optional<Object> optionalSpanKey = context.getData(OPENTELEMETRY_SPAN_KEY);
+        Optional<Object> optionalSpanNameKey = context.getData(OPENTELEMETRY_SPAN_KEY);
+        Span parentSpan = null;
+        String spanNameKey = null;
+
+        if (optionalSpanKey.get() instanceof Span && optionalSpanNameKey.get() instanceof String) {
+            parentSpan = (Span) context.getData(OPENTELEMETRY_SPAN_KEY).orElse(TRACER.getCurrentSpan());
+            spanNameKey = (String) context.getData(OPENTELEMETRY_SPAN_NAME_KEY).orElse(spanName);
+        } else {
+            logger.warning(String.format(Locale.US,
+                "Parent span type is not of type Span, but type: %s. Failed to add span links.",
+                optionalSpanKey.get() != null ? optionalSpanKey.get().getClass() : "null"));
+        }
 
         SpanBuilder spanBuilder = TRACER.spanBuilderWithExplicitParent(spanNameKey, parentSpan);
         return spanBuilder;

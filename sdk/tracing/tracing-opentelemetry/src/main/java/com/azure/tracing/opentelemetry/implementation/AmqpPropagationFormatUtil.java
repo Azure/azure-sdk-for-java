@@ -11,7 +11,6 @@ import io.opencensus.trace.Tracestate;
 
 import static com.azure.core.implementation.tracing.Tracer.SPAN_CONTEXT;
 
-
 public class AmqpPropagationFormatUtil {
 
     private AmqpPropagationFormatUtil() { }

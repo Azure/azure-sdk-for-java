@@ -69,10 +69,11 @@ public class EventHubProducerTest {
         when(sendLink.getErrorContext()).thenReturn(new ErrorContext("test-namespace"));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
         when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
+        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
         asyncProducer = new EventHubAsyncProducer(
             Mono.fromCallable(() -> sendLink),
-            new EventHubProducerOptions().retry(retryOptions), null);
+            new EventHubProducerOptions().retry(retryOptions), tracerProvider);
     }
 
     @After
@@ -89,11 +90,6 @@ public class EventHubProducerTest {
     @Test
     public void sendSingleMessage() {
         // Arrange
-        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-
-        EventHubAsyncProducer asyncProducer = new EventHubAsyncProducer(
-            Mono.fromCallable(() -> sendLink),
-            new EventHubProducerOptions().retry(retryOptions), tracerProvider);
         final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.tryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
 
@@ -192,11 +188,7 @@ public class EventHubProducerTest {
         }).toIterable();
 
         final SendOptions options = new SendOptions();
-        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
-        EventHubAsyncProducer asyncProducer = new EventHubAsyncProducer(
-            Mono.fromCallable(() -> sendLink),
-            new EventHubProducerOptions().retry(retryOptions), tracerProvider);
         final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.tryTimeout());
 
         // Act
@@ -234,7 +226,9 @@ public class EventHubProducerTest {
         final EventData tooLargeEvent = new EventData(new byte[maxEventPayload + 1]);
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(retryOptions);
-        final EventHubAsyncProducer hubAsyncProducer = new EventHubAsyncProducer(Mono.fromCallable(() -> link), producerOptions, null);
+        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
+
+        final EventHubAsyncProducer hubAsyncProducer = new EventHubAsyncProducer(Mono.fromCallable(() -> link), producerOptions, tracerProvider);
         final EventHubProducer hubProducer = new EventHubProducer(hubAsyncProducer, retryOptions.tryTimeout());
 
         // Act
