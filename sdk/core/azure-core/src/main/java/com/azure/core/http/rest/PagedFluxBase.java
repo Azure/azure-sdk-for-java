@@ -45,6 +45,9 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
      * Creates an instance of {@link PagedFluxBase} that consists of only a single page of results. The only
      * argument to this constructor therefore is a supplier that fetches the first (and known-only) page of {@code T}.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.core.http.rest.pagedflux.singlepage.instantiation}
+     *
      * @param firstPageRetriever Supplier that retrieves the first .
      */
     public PagedFluxBase(Supplier<Mono<P>> firstPageRetriever) {
