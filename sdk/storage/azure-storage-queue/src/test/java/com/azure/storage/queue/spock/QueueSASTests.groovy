@@ -7,9 +7,7 @@ import com.azure.storage.common.IPRange
 import com.azure.storage.common.SASProtocol
 import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.queue.QueueClient
-import com.azure.storage.queue.QueueClientBuilder
 import com.azure.storage.queue.QueueSASPermission
-import com.azure.storage.queue.QueueServiceClientBuilder
 import com.azure.storage.queue.QueueServiceSASSignatureValues
 import com.azure.storage.queue.models.AccessPolicy
 import com.azure.storage.queue.models.EnqueuedMessage
@@ -115,11 +113,10 @@ class QueueSASTests extends APISpec {
         when:
         def sasPermissions = queueClient.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange)
 
-        def clientPermissions = new QueueClientBuilder()
+        def clientPermissions = queueBuilderHelper(interceptorManager)
             .endpoint(queueClient.getQueueUrl().toString())
             .queueName(queueClient.client.queueName)
             .credential(SASTokenCredential.fromSASTokenString(sasPermissions))
-            .httpClient(getHttpClient())
             .buildClient()
         clientPermissions.enqueueMessage("sastest")
         def dequeueMsgIterPermissions = clientPermissions.dequeueMessages(2).iterator()
@@ -157,11 +154,10 @@ class QueueSASTests extends APISpec {
         when:
         def sasPermissions = queueClient.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange)
 
-        def clientPermissions = new QueueClientBuilder()
+        def clientPermissions = queueBuilderHelper(interceptorManager)
             .endpoint(queueClient.getQueueUrl().toString())
             .queueName(queueClient.client.queueName)
             .credential(SASTokenCredential.fromSASTokenString(sasPermissions))
-            .httpClient(getHttpClient())
             .buildClient()
         clientPermissions.updateMessage("testing", resp.messageId(), resp.popReceipt(), Duration.ZERO)
         def dequeueMsgIterPermissions = clientPermissions.dequeueMessages(1).iterator()
@@ -193,7 +189,7 @@ class QueueSASTests extends APISpec {
         def startTime = getUTCNow().minusDays(1).truncatedTo(ChronoUnit.SECONDS)
 
         SignedIdentifier identifier = new SignedIdentifier()
-            .id(UUID.randomUUID().toString())
+            .id(testResourceName.randomUuid())
             .accessPolicy(new AccessPolicy().permission(permissions.toString())
                 .expiry(expiryTime).start(startTime))
         queueClient.setAccessPolicy(Arrays.asList(identifier))
@@ -201,11 +197,11 @@ class QueueSASTests extends APISpec {
         when:
         def sasIdentifier = queueClient.generateSAS(identifier.id())
 
-        def clientIdentifier = new QueueClientBuilder()
+        def clientBuilder = queueBuilderHelper(interceptorManager)
+        def clientIdentifier = clientBuilder
             .endpoint(queueClient.getQueueUrl().toString())
             .queueName(queueClient.client.queueName)
             .credential(SASTokenCredential.fromSASTokenString(sasIdentifier))
-            .httpClient(getHttpClient())
             .buildClient()
         clientIdentifier.enqueueMessage("sastest")
         def dequeueMsgIterIdentifier = clientIdentifier.dequeueMessages(2).iterator()
@@ -233,9 +229,8 @@ class QueueSASTests extends APISpec {
         when:
         def sas = primaryQueueServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
 
-        def scBuilder = new QueueServiceClientBuilder()
+        def scBuilder = queueServiceBuilderHelper(interceptorManager)
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl().toString())
-            .httpClient(getHttpClient())
             .credential(SASTokenCredential.fromSASTokenString(sas))
         def sc = scBuilder.buildClient()
         sc.createQueue("queue")
@@ -265,9 +260,8 @@ class QueueSASTests extends APISpec {
         when:
         def sas = primaryQueueServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
 
-        def scBuilder = new QueueServiceClientBuilder()
+        def scBuilder = queueServiceBuilderHelper(interceptorManager)
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl().toString())
-            .httpClient(getHttpClient())
             .credential(SASTokenCredential.fromSASTokenString(sas))
         def sc = scBuilder.buildClient()
 
