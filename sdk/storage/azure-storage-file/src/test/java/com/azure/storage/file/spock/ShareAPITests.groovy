@@ -78,10 +78,10 @@ class ShareAPITests extends APISpec {
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMessage)
         where:
-        metadata                                 | quota | statusCode | errMessage
-        Collections.singletonMap("", "value")    | 1     | 400        | StorageErrorCode.EMPTY_METADATA_KEY
-        Collections.singletonMap("aB!", "value") | 1     | 400        | StorageErrorCode.INVALID_METADATA
-        testMetadata                             | 6000  | 400        | StorageErrorCode.INVALID_HEADER_VALUE
+        metadata                                       | quota | statusCode | errMessage
+        Collections.singletonMap("", "value")          | 1     | 400        | StorageErrorCode.EMPTY_METADATA_KEY
+        Collections.singletonMap("metadata!", "value") | 1     | 400        | StorageErrorCode.INVALID_METADATA
+        testMetadata                                   | 6000  | 400        | StorageErrorCode.INVALID_HEADER_VALUE
     }
 
     def "Create snapshot"() {

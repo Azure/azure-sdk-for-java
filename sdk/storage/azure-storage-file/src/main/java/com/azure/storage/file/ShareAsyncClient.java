@@ -26,6 +26,7 @@ import com.azure.storage.file.models.SharesCreateSnapshotResponse;
 import com.azure.storage.file.models.SharesGetPropertiesResponse;
 import com.azure.storage.file.models.SharesGetStatisticsResponse;
 import com.azure.storage.file.models.SignedIdentifier;
+import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
