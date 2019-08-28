@@ -50,16 +50,16 @@ public class EventHubProducerOptions implements Cloneable {
     /**
      * Gets the retry options used to govern retry attempts when an issue is encountered while sending.
      *
-     * @return the retry options used to govern retry attempts when an issue is encountered while sending. If {@code
-     *         null}, then the retry options configured on the associated {@link EventHubAsyncClient} is used.
+     * @return the retry options used to govern retry attempts when an issue is encountered while sending. If
+     *         {@code null}, then the retry options configured on the associated {@link EventHubAsyncClient} is used.
      */
     public RetryOptions retry() {
         return retryOptions;
     }
 
     /**
-     * Gets the identifier of the Event Hub partition that the {@link EventHubAsyncProducer} will be bound to, limiting it to
-     * sending events to only that partition.
+     * Gets the identifier of the Event Hub partition that the {@link EventHubAsyncProducer} will be bound to, limiting
+     * it to sending events to only that partition.
      *
      * If the identifier is not specified, the Event Hubs service will be responsible for routing events that are sent
      * to an available partition.

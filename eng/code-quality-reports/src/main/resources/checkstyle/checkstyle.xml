@@ -276,7 +276,14 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="com.azure.tools.checkstyle.checks.JavadocThrowsChecks"/>
 
     <!-- CUSTOM CHECKS -->
-    <!--Checks for the public API that should
+    <!-- Verifies that subclasses of ServiceClient meet a set of guidelines.
+    1) They cannot have public or protected constructors
+    2) They must implement a public static method named builder
+    -->
+    <module name="com.azure.tools.checkstyle.checks.ServiceClientChecks"/>
+
+    <!-- CUSTOM CHECKS -->
+    <!-- Checks for the public API that should
     1) not return classes in the implementation package
     2) no class of implementation package as method's parameters -->
     <module name="com.azure.tools.checkstyle.checks.NoImplInPublicAPI"/>
@@ -340,5 +347,37 @@ page at http://checkstyle.sourceforge.net/config.html -->
     1) Must be a public class.
     2) Not in an implementation package or sub-package. -->
     <module name="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"/>
+
+    <!-- CUSTOM CHECKS -->
+    <!-- Javadoc inline check should:
+    1) Use {@codesnippet ...} instead of '<code>', '<pre>', or '{@code ...}' if these tags span multiple lines.
+       Inline code sample are fine as-is.
+    2) No check on class-level Javadoc. -->
+    <module name="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck"/>
+
+    <!-- CUSTOM CHECKS -->
+    <!-- {@codesnippet ...} description should match naming pattern requirement below:
+    1) Package, class and method names should be concatenated by dot '.'. Ex. packageName.className.methodName
+    2) Methods arguments should be concatenated by dash '-'. Ex. string-string  for methodName(String s, String s2)
+    3) Use '#' to concatenate 1) and 2), ex packageName.className.methodName#string-string -->
+    <module name="com.azure.tools.checkstyle.checks.JavadocCodeSnippetCheck"/>
+
+    <!--CUSTOM CHECKS-->
+    <!-- Good Logging Practice
+    1) ClientLogger in public API should all named 'logger', public API classes are those classes that are declared
+       as public and that do not exist in an implementation package or subpackage.
+    2) ClientLogger should be non-static instance logger
+    3) Should not use any external logger class, only use ClientLogger. No slf4j, log4j, or other logging imports are allowed.
+      'System.out' and 'System.err' is not allowed as well.
+    4) All classes should use ClientLogger as logger only but except ClientLogger itself -->
+    <module name="com.azure.tools.checkstyle.checks.GoodLoggingCheck"/>
+
+    <!-- CUSTOM CHECKS -->
+    <!-- Fluent method checks:
+    (1) A method returns an instance of the class, and that have one parameter,
+    (2) should not start with the words in the avoidStartWords list.-->
+    <module name="com.azure.tools.checkstyle.checks.FluentMethodNameCheck">
+      <property name="avoidStartWords" value="with,set"/>
+    </module>
   </module>
 </module>
