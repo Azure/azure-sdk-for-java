@@ -13,7 +13,7 @@ import java.io.IOException;
 /*
  * Deals with the actual cache file: read/write/create/clear file
  * */
-class MsalCacheStorage {
+public class MsalCacheStorage {
 
     private String CACHE_LOCATION;
     private String LOCKFILE_LOCATION;
