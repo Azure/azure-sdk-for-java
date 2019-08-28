@@ -137,20 +137,9 @@ public final class BlockBlobClient extends BlobClient {
      */
     public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHTTPHeaders headers,
                                                       Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) throws IOException {
-        Flux<ByteBuffer> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE))
-            .map(i -> i * BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
-            .concatMap(pos -> Mono.fromCallable(() -> {
-                long count = pos + BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE > length ? length - pos : BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
-                byte[] cache = new byte[(int) count];
-                int read = 0;
-                while (read < count) {
-                    read += data.read(cache, read, (int) count - read);
-                }
-                return ByteBuffer.wrap(cache);
-            }));
-
+        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
         Mono<Response<BlockBlobItem>> upload = blockBlobAsyncClient
-            .uploadWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, accessConditions, context);
+            .uploadWithResponse(fbb, length, headers, metadata, accessConditions, context);
 
         try {
             return Utility.blockWithOptionalTimeout(upload, timeout);
@@ -224,18 +213,7 @@ public final class BlockBlobClient extends BlobClient {
      */
     public VoidResponse stageBlockWithResponse(String base64BlockID, InputStream data, long length,
         LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
-
-        Flux<ByteBuffer> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE))
-            .map(i -> i * BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
-            .concatMap(pos -> Mono.fromCallable(() -> {
-                long count = pos + BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE > length ? length - pos : BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
-                byte[] cache = new byte[(int) count];
-                int read = 0;
-                while (read < count) {
-                    read += data.read(cache, read, (int) count - read);
-                }
-                return ByteBuffer.wrap(cache);
-            }));
+        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
 
         Mono<VoidResponse> response = blockBlobAsyncClient.stageBlockWithResponse(base64BlockID,
             fbb.subscribeOn(Schedulers.elastic()), length, leaseAccessConditions, context);

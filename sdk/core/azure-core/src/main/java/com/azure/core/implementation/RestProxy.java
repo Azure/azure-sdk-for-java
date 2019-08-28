@@ -37,6 +37,7 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.implementation.util.TypeUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import org.reactivestreams.Publisher;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -59,6 +60,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import reactor.core.publisher.SignalType;
 
 /**
  * Type to create a proxy implementation for an interface describing REST API methods.
@@ -118,6 +120,9 @@ public class RestProxy implements InvocationHandler {
      * @return a {@link Mono} that emits HttpResponse asynchronously
      */
     public Mono<HttpResponse> send(HttpRequest request, Context contextData) {
+        if(request.body() != null){
+            request.body().map(ByteBuffer::reset);
+        }
         return httpPipeline.send(request, contextData);
     }
 
@@ -141,12 +146,17 @@ public class RestProxy implements InvocationHandler {
                 methodParser = methodParser(method);
                 request = createHttpRequest(methodParser, args);
                 Context context = methodParser.context(args).addData("caller-method", methodParser.fullyQualifiedMethodName());
-                context = startTracingSpan(method, context);
+                final Context context1 = startTracingSpan(method, context);
 
+                if (request.body() != null) {
+                    request.body(validateLength(request, request.body()));
+                }
+               final Mono<HttpResponse> asyncResponse = send(request, context1);
+               // final Mono<HttpResponse> asyncResponse = send(request, context1);
+               // final Mono<HttpResponse> asyncResponse = validateLength(request).then(send(request, context1));
+//                final Mono<HttpResponse> asyncResponse = validateLength(request)
+//                    .then(this.send(request, context));
 
-                final Mono<HttpResponse> asyncResponse = validateLength(request).then(
-                    send(request, context));
-                //
                 Mono<HttpDecodedResponse> asyncDecodedResponse = this.decoder.decode(asyncResponse, methodParser);
                 //
                 return handleHttpResponse(request, asyncDecodedResponse, methodParser, methodParser.returnType(), context);
@@ -157,28 +167,58 @@ public class RestProxy implements InvocationHandler {
         }
     }
 
+    private Flux<ByteBuffer> validateLength(final HttpRequest request, final Flux<ByteBuffer> bbFlux) {
+        if (bbFlux == null) {
+            return Flux.empty();
+        }
+        return Flux.defer(new Supplier<Publisher<ByteBuffer>>() {
+            @Override
+            public Publisher<ByteBuffer> get() {
+                Long expectedLength = Long.valueOf(request.headers().value("Content-Length"));
+                Mono<byte[]> bbMono = FluxUtil.collectBytesInByteBufferStream(bbFlux).doOnNext(actualLength -> {
+                    if (actualLength.length > expectedLength) {
+                        throw new UnexpectedLengthException(
+                            String.format("Request body emitted more bytes than the expected %d bytes.",
+                                expectedLength), actualLength.length, expectedLength);
+                    } else if (actualLength.length < expectedLength) {
+                        throw new UnexpectedLengthException(
+                            String.format("Request body emitted less bytes than the expected %d bytes.",
+                                expectedLength), actualLength.length, expectedLength);
+                    }
+                });
+
+                return bbMono.flatMapMany(new Function<byte[], Publisher<ByteBuffer>>() {
+                    @Override
+                    public Publisher<ByteBuffer> apply(final byte[] bytes) {
+                        return Flux.just(ByteBuffer.wrap(bytes));
+                    }
+                });
+            }
+        });
+    }
+
     private Mono<HttpRequest> validateLength(final HttpRequest request) {
         Flux<ByteBuffer> body = request.body();
         if (body == null) {
-            return Mono.just(request);
+            return Mono.empty();
         }
         Long expectedLength = Long.valueOf(request.headers().value("Content-Length"));
+        return FluxUtil.collectBytesInByteBufferStream(body).doOnNext(actualLength -> {
+                if (actualLength.length > expectedLength) {
+                    throw new UnexpectedLengthException(
+                        String.format("Request body emitted more bytes than the expected %d bytes.",
+                            expectedLength), actualLength.length, expectedLength);
+                } else if (actualLength.length < expectedLength) {
+                    throw new UnexpectedLengthException(
+                        String.format("Request body emitted less bytes than the expected %d bytes.",
+                            expectedLength), actualLength.length, expectedLength);
+                }
+            }).then(Mono.just(request));
+    }
 
-        return FluxUtil.collectBytesInByteBufferStream(body).doOnNext(bb -> {
-            if (bb.length > expectedLength) {
-                throw new UnexpectedLengthException(
-                    String.format("Request body emitted more bytes than the expected %d bytes.",
-                        expectedLength),
-                    bb.length,
-                    expectedLength);
-            } else if (bb.length != expectedLength) {
-                throw new UnexpectedLengthException(
-                    String.format("Request body emitted less bytes than the expected %d bytes.",
-                        expectedLength),
-                    bb.length,
-                    expectedLength);
-            }
-        }).then(Mono.just(request));
+    private int len(ByteBuffer input) {
+        int result = input.remaining();
+        return result;
     }
 
     private Method determineResumeMethod(Method method, String resumeMethodName) {
