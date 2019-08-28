@@ -60,5 +60,10 @@
       <artifactId>powermock-api-mockito2</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna-platform</artifactId>
+      <version>4.1.0</version>
+    </dependency>
   </dependencies>
 </project>
