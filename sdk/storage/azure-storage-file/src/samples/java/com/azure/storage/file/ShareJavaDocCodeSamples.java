@@ -116,10 +116,10 @@ public class ShareJavaDocCodeSamples {
      */
     public void createWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareClient.createWithResponse#map-integer.quota
+        // BEGIN: com.azure.storage.file.ShareClient.createWithResponse#Map-Integer-Context.quota
         Response<ShareInfo> response = shareClient.createWithResponse(null, 10, new Context(key1, value1));
         System.out.println("Complete creating the shares with status code: " + response.statusCode());
-        // END: com.azure.storage.file.shareClient.createWithResponse#map-integer.quota
+        // END: com.azure.storage.file.ShareClient.createWithResponse#Map-Integer-Context.quota
     }
 
     /**
@@ -127,11 +127,11 @@ public class ShareJavaDocCodeSamples {
      */
     public void createWithResponseMetadata() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareClient.createWithResponse#map-integer.metadata
+        // BEGIN: com.azure.storage.file.ShareClient.createWithResponse#Map-Integer-Context.metadata
         Response<ShareInfo> response = shareClient.createWithResponse(Collections.singletonMap("share", "metadata"), null,
             new Context(key1, value1));
         System.out.println("Complete creating the shares with status code: " + response.statusCode());
-        // END: com.azure.storage.file.shareClient.createWithResponse#map-integer.metadata
+        // END: com.azure.storage.file.ShareClient.createWithResponse#Map-Integer-Context.metadata
     }
 
     /**
@@ -297,9 +297,9 @@ public class ShareJavaDocCodeSamples {
      */
     public void setQuota() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareClient.setQuota
-        System.out.printf("Setting the share quota completed." + shareClient.setQuota(1024));
-        // END: com.azure.storage.file.shareClient.setQuota
+        // BEGIN: com.azure.storage.file.ShareClient.setQuota#int
+        System.out.println("Setting the share quota completed." + shareClient.setQuota(1024));
+        // END: com.azure.storage.file.ShareClient.setQuota#int
     }
 
     /**
@@ -319,8 +319,8 @@ public class ShareJavaDocCodeSamples {
     public void setMetadata() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.setMetadata#map
-        System.out.printf("Setting the share metadata.", shareClient.setMetadata(
-            Collections.singletonMap("share", "updatedMetadata")));
+        shareClient.setMetadata(Collections.singletonMap("share", "updatedMetadata"));
+        System.out.println("Setting the share metadata.");
         // END: com.azure.storage.file.shareClient.setMetadata#map
     }
 
@@ -344,7 +344,8 @@ public class ShareJavaDocCodeSamples {
     public void clearMetadata() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.clearMetadata#map
-        System.out.printf("Clear metadata completed.", shareClient.setMetadata(null));
+        shareClient.setMetadata(null);
+        System.out.println("Clear metadata completed.");
         // END: com.azure.storage.file.shareClient.clearMetadata#map
     }
 
@@ -366,7 +367,7 @@ public class ShareJavaDocCodeSamples {
      */
     public void setAccessPolicy() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareClient.setAccessPolicy
+        // BEGIN: com.azure.storage.file.ShareClient.setAccessPolicy#List
         AccessPolicy accessPolicy = new AccessPolicy().permission("r")
             .start(OffsetDateTime.now(ZoneOffset.UTC))
             .expiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
@@ -374,8 +375,8 @@ public class ShareJavaDocCodeSamples {
         SignedIdentifier permission = new SignedIdentifier().id("mypolicy").accessPolicy(accessPolicy);
 
         shareClient.setAccessPolicy(Collections.singletonList(permission));
-        System.out.printf("Setting access policies completed.");
-        // END: com.azure.storage.file.shareClient.setAccessPolicy
+        System.out.println("Setting access policies completed.");
+        // END: com.azure.storage.file.ShareClient.setAccessPolicy#List
     }
 
     /**
@@ -430,7 +431,8 @@ public class ShareJavaDocCodeSamples {
             .shareName("myshare")
             .snapshot(currentTime.toString())
             .buildClient();
-        shareClient.getSnapshotId();
+
+        System.out.printf("Snapshot ID: %s%n", shareClient.getSnapshotId());
         // END: com.azure.storage.file.shareClient.getSnapshotId
     }
 }
