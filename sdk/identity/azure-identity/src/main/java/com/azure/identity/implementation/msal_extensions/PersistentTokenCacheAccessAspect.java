@@ -3,7 +3,8 @@
 
 package com.azure.identity.implementation.msal_extensions;
 
-import com.azure.identity.implementation.msal_extensions.cacheProtector.PlatformNotSupportedException;
+import com.azure.identity.implementation.msal_extensions.cachePersister.CachePersister;
+import com.azure.identity.implementation.msal_extensions.cachePersister.PlatformNotSupportedException;
 import com.microsoft.aad.msal4j.ITokenCacheAccessAspect;
 import com.microsoft.aad.msal4j.ITokenCacheAccessContext;
 
@@ -15,14 +16,14 @@ import java.io.IOException;
  * */
 public class PersistentTokenCacheAccessAspect implements ITokenCacheAccessAspect {
 
-    private MsalCacheStorage storage;
+    private CachePersister cachePersister;
 
     public PersistentTokenCacheAccessAspect() throws IOException, PlatformNotSupportedException {
-        storage = new MsalCacheStorage.Builder().build();
+        cachePersister = new CachePersister.Builder().build();
     }
 
-    public PersistentTokenCacheAccessAspect(MsalCacheStorage customCacheStorage) {
-        storage = customCacheStorage;
+    public PersistentTokenCacheAccessAspect(CachePersister customCachePersister) {
+        cachePersister = customCachePersister;
     }
 
     /*
@@ -30,7 +31,7 @@ public class PersistentTokenCacheAccessAspect implements ITokenCacheAccessAspect
      * */
     public void beforeCacheAccess(ITokenCacheAccessContext iTokenCacheAccessContext) {
 
-        byte[] bytes = storage.readCache();
+        byte[] bytes = cachePersister.readCache();
         String data = new String(bytes);
 
         iTokenCacheAccessContext.tokenCache().deserialize(data);
@@ -43,11 +44,11 @@ public class PersistentTokenCacheAccessAspect implements ITokenCacheAccessAspect
 
         if (iTokenCacheAccessContext.hasCacheChanged()) {
             String newData = iTokenCacheAccessContext.tokenCache().serialize();
-            storage.writeCache(newData.getBytes());
+            cachePersister.writeCache(newData.getBytes());
         }
     }
 
     public void deleteCache() {
-        storage.deleteCache();
+        cachePersister.deleteCache();
     }
 }

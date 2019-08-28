@@ -3,7 +3,7 @@
 
 package com.azure.identity.implementation.msalExtensionsTests;
 
-import com.azure.identity.implementation.msal_extensions.MsalCacheStorage;
+import com.azure.identity.implementation.msal_extensions.cachePersister.CachePersister;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,13 +14,13 @@ import java.io.IOException;
 
 public class MsalCacheStorageTest {
 
-    MsalCacheStorage storage;
-    String cacheLocation;
+    private CachePersister cachePersister;
+    private String cacheLocation;
 
     @Before
     public void setup() throws Exception {
         cacheLocation = java.nio.file.Paths.get(System.getProperty("user.home"), "test.cache").toString();
-        storage = new MsalCacheStorage.Builder()
+        cachePersister = new CachePersister.Builder()
                 .cacheLocation(cacheLocation)
                 .lockfileLocation(cacheLocation + ".lockfile")
                 .build();
@@ -28,32 +28,21 @@ public class MsalCacheStorageTest {
 
     @After
     public void cleanup() {
-        storage.deleteCache();
-    }
-
-    @Test
-    public void createsNewCacheTest() throws IOException {
-        storage.createCache();
-        File f = new File(cacheLocation);
-
-        Assert.assertTrue(f.exists());
-
-        storage.deleteCache();
+        cachePersister.deleteCache();
     }
 
     @Test
     public void writesReadsCacheData() throws IOException {
-        storage.createCache();
         File f = new File(cacheLocation);
 
         String testString = "hello world";
 
-        storage.writeCache(testString.getBytes());
-        String receivedString = new String(storage.readCache());
+        cachePersister.writeCache(testString.getBytes());
+        String receivedString = new String(cachePersister.readCache());
 
         Assert.assertEquals(receivedString, testString);
 
-        storage.deleteCache();
+        cachePersister.deleteCache();
     }
 
 }

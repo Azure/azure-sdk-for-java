@@ -1,7 +1,7 @@
 package com.azure.identity.implementation.msalExtensionsTests;
 
-import com.azure.identity.implementation.msal_extensions.MsalCacheStorage;
 import com.azure.identity.implementation.msal_extensions.PersistentTokenCacheAccessAspect;
+import com.azure.identity.implementation.msal_extensions.cachePersister.CachePersister;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -26,7 +26,7 @@ import java.util.concurrent.CompletableFuture;
  * */
 public class CrossProgramVSTest {
 
-    MsalCacheStorage storage;
+    CachePersister cachePersister;
     PersistentTokenCacheAccessAspect accessAspect;
 
     private ConfidentialClientApplication confApp;
@@ -36,8 +36,8 @@ public class CrossProgramVSTest {
 
     @Before
     public void setup() throws Exception {
-        //using the default storage and accessAspect objects
-        storage = new MsalCacheStorage.Builder().build();
+        //using the default cachePersister and accessAspect objects
+        cachePersister = new CachePersister.Builder().build();
         accessAspect = new PersistentTokenCacheAccessAspect();
 
         confApp = ConfidentialClientApplication.builder(TestConfiguration.CONFIDENTIAL_CLIENT_ID,
@@ -53,7 +53,7 @@ public class CrossProgramVSTest {
 
     @Test
     public void readCacheAfterVSAzureLogin() {
-        byte[] currJsonBytes = storage.readCache();
+        byte[] currJsonBytes = cachePersister.readCache();
         String currJson = new String(currJsonBytes);
 
         JsonObject jsonObj = new JsonParser().parse(currJson).getAsJsonObject();
@@ -71,7 +71,7 @@ public class CrossProgramVSTest {
 
     @Test
     public void writeToSameCacheFileAfterVSAzureLogin() {
-        String currJson = new String(storage.readCache());
+        String currJson = new String(cachePersister.readCache());
         JsonObject jsonObj = new JsonParser().parse(currJson).getAsJsonObject();
 
         int set = jsonObj.get("AccessToken").getAsJsonObject().keySet().size();
@@ -86,7 +86,7 @@ public class CrossProgramVSTest {
 
         }).join();
 
-        currJson = new String(storage.readCache());
+        currJson = new String(cachePersister.readCache());
         jsonObj = new JsonParser().parse(currJson).getAsJsonObject();
 
         int newSet = jsonObj.get("AccessToken").getAsJsonObject().keySet().size();
@@ -99,7 +99,7 @@ public class CrossProgramVSTest {
 
     @Test
     public void CountCache() {
-        byte[] currJsonBytes = storage.readCache();
+        byte[] currJsonBytes = cachePersister.readCache();
         String currJson = new String(currJsonBytes);
 
         JsonObject jsonObj = new JsonParser().parse(currJson).getAsJsonObject();
@@ -109,7 +109,7 @@ public class CrossProgramVSTest {
 
     @Test
     public void readCacheAfterPowershellAzureLogin() {
-        byte[] currJsonBytes = storage.readCache();
+        byte[] currJsonBytes = cachePersister.readCache();
         String currJson = new String(currJsonBytes);
 
         JsonObject jsonObj = new JsonParser().parse(currJson).getAsJsonObject();

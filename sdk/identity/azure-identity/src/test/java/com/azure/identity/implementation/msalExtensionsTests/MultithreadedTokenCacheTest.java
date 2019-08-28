@@ -3,8 +3,8 @@
 
 package com.azure.identity.implementation.msalExtensionsTests;
 
-import com.azure.identity.implementation.msal_extensions.MsalCacheStorage;
 import com.azure.identity.implementation.msal_extensions.PersistentTokenCacheAccessAspect;
+import com.azure.identity.implementation.msal_extensions.cachePersister.CachePersister;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.microsoft.aad.msal4j.*;
@@ -20,7 +20,7 @@ import java.util.function.Consumer;
 public class MultithreadedTokenCacheTest {
 
     private PersistentTokenCacheAccessAspect accessAspect;
-    private MsalCacheStorage storage;
+    private CachePersister cachePersister;
 
     private ConfidentialClientApplication confApp;
     private ConfidentialClientApplication confApp2;
@@ -31,11 +31,11 @@ public class MultithreadedTokenCacheTest {
     @Before
     public void setup() throws Exception {
         // custom MsalCacheStorage for testing purposes so we don't overwrite the real one
-        storage = new MsalCacheStorage.Builder()
+        cachePersister = new CachePersister.Builder()
                 .cacheLocation(java.nio.file.Paths.get(System.getProperty("user.home"), "test.cache").toString())
                 .build();
 
-        accessAspect = new PersistentTokenCacheAccessAspect(storage);
+        accessAspect = new PersistentTokenCacheAccessAspect(cachePersister);
 
         confApp = ConfidentialClientApplication.builder(TestConfiguration.CONFIDENTIAL_CLIENT_ID,
                 ClientCredentialFactory.create(TestConfiguration.CONFIDENTIAL_CLIENT_SECRET))
@@ -85,7 +85,7 @@ public class MultithreadedTokenCacheTest {
             System.out.printf("Error with threads");
         }
 
-        byte[] currJsonBytes = storage.readCache();
+        byte[] currJsonBytes = cachePersister.readCache();
         String currJson = new String(currJsonBytes);
 
         JsonObject jsonObj = new JsonParser().parse(currJson).getAsJsonObject();
@@ -129,7 +129,7 @@ public class MultithreadedTokenCacheTest {
         }
 
 
-        byte[] currJsonBytes = storage.readCache();
+        byte[] currJsonBytes = cachePersister.readCache();
         String currJson = new String(currJsonBytes);
 
         JsonObject jsonObj = new JsonParser().parse(currJson).getAsJsonObject();
