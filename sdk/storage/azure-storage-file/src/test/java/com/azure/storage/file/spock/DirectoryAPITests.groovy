@@ -8,7 +8,7 @@ import com.azure.storage.file.DirectoryClient
 import com.azure.storage.file.FileClient
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.StorageErrorCode
-import com.azure.storage.file.models.StorageErrorException
+import com.azure.storage.file.models.StorageException
 import spock.lang.Ignore
 import spock.lang.Unroll
 
@@ -66,7 +66,7 @@ class DirectoryAPITests extends APISpec {
         when:
         directoryBuilderHelper(interceptorManager, testShareName, directoryPath).buildClient().create()
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.SHARE_NOT_FOUND)
     }
 
@@ -81,7 +81,7 @@ class DirectoryAPITests extends APISpec {
         when:
         primaryDirectoryClient.createWithResponse(errorMetadata, null)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 403, StorageErrorCode.AUTHENTICATION_FAILED)
     }
 
@@ -96,7 +96,7 @@ class DirectoryAPITests extends APISpec {
         when:
         primaryDirectoryClient.delete()
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
     }
 
@@ -113,7 +113,7 @@ class DirectoryAPITests extends APISpec {
         when:
         primaryDirectoryClient.getPropertiesWithResponse(null)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
     }
 
@@ -138,7 +138,7 @@ class DirectoryAPITests extends APISpec {
         when:
         primaryDirectoryClient.setMetadata(errorMetadata)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.EMPTY_METADATA_KEY)
     }
 
@@ -236,7 +236,7 @@ class DirectoryAPITests extends APISpec {
         when:
         primaryDirectoryClient.listHandles(null, true)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
     }
 
@@ -251,7 +251,7 @@ class DirectoryAPITests extends APISpec {
         when:
         primaryDirectoryClient.forceCloseHandles("handleId", true)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.INVALID_HEADER_VALUE)
     }
 
@@ -269,7 +269,7 @@ class DirectoryAPITests extends APISpec {
         when:
         primaryDirectoryClient.createSubDirectory("test/subdirectory")
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.PARENT_NOT_FOUND)
     }
 
@@ -287,7 +287,7 @@ class DirectoryAPITests extends APISpec {
         when:
         primaryDirectoryClient.createSubDirectoryWithResponse("testsubdirectory", Collections.singletonMap("", "value"), null)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.EMPTY_METADATA_KEY)
     }
 
@@ -306,7 +306,7 @@ class DirectoryAPITests extends APISpec {
         when:
         primaryDirectoryClient.deleteSubDirectory("testsubdirectory")
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
     }
 
@@ -326,11 +326,11 @@ class DirectoryAPITests extends APISpec {
         when:
         primaryDirectoryClient.createFileWithResponse(fileName, maxSize, null, null, null)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
         where:
         fileName    | maxSize | statusCode | errMsg
-        "test\file" | 1024    | 400        | "Bad Request"
+        "test\file" | 1024    | 400        | StorageErrorCode.fromString("Bad Request")
         "fileName"  | -1      | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
 
     }
@@ -352,8 +352,8 @@ class DirectoryAPITests extends APISpec {
         when:
         primaryDirectoryClient.createFileWithResponse("test\file", maxSize, null, null, null)
         then:
-        def e = thrown(StorageErrorException)
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, "Bad Request")
+        def e = thrown(StorageException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.fromString("Bad Request"))
         where:
         fileName    | maxSize | httpHeaders                                       | metadata
         "test\file" | 1024    | new FileHTTPHeaders()                             | testMetadata
@@ -379,7 +379,7 @@ class DirectoryAPITests extends APISpec {
         when:
         primaryDirectoryClient.deleteFileWithResponse("testfile", null)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
     }
 

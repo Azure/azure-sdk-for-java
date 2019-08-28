@@ -333,7 +333,7 @@ class DirectoryAsyncAPITests extends APISpec {
         }
         where:
         fileName    | maxSize | statusCode | errMsg
-        "test\file" | 1024    | 400        | "Bad Request"
+        "test\file" | 1024    | 400        | StorageErrorCode.fromString("Bad Request")
         "fileName"  | -1      | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
 
     }
@@ -358,7 +358,7 @@ class DirectoryAsyncAPITests extends APISpec {
         def createFileErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createFile("test\file", maxSize))
         then:
         createFileErrorVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, "Bad Request")
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.fromString("Bad Request"))
         }
 
         where:

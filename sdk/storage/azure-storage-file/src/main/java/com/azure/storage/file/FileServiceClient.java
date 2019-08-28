@@ -13,7 +13,7 @@ import com.azure.storage.file.models.CorsRule;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.ListSharesOptions;
 import com.azure.storage.file.models.ShareItem;
-import com.azure.storage.file.models.StorageErrorException;
+import com.azure.storage.file.models.StorageException;
 
 import java.net.URL;
 import java.util.Map;
@@ -178,7 +178,7 @@ public final class FileServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-service-properties">Azure Docs</a>.</p>
      *
      * @param properties Storage account File service properties
-     * @throws StorageErrorException When one of the following is true
+     * @throws StorageException When one of the following is true
      * <ul>
      *     <li>A CORS rule is missing one of its fields</li>
      *     <li>More than five CORS rules will exist for the Queue service</li>
@@ -217,7 +217,7 @@ public final class FileServiceClient {
      * @param properties Storage account File service properties
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException When one of the following is true
+     * @throws StorageException When one of the following is true
      * <ul>
      *     <li>A CORS rule is missing one of its fields</li>
      *     <li>More than five CORS rules will exist for the Queue service</li>
@@ -247,7 +247,7 @@ public final class FileServiceClient {
      *
      * @param shareName Name of the share
      * @return The {@link ShareClient ShareClient}
-     * @throws StorageErrorException If a share with the same name already exists
+     * @throws StorageException If a share with the same name already exists
      */
     public ShareClient createShare(String shareName) {
         return createShareWithResponse(shareName, null, null, Context.NONE).value();
@@ -272,7 +272,7 @@ public final class FileServiceClient {
      * less than or equal to 5120. The default value is 5120.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link ShareClient ShareClient} and the status of creating the share.
-     * @throws StorageErrorException If a share with the same name already exists or {@code quotaInGB} is outside the
+     * @throws StorageException If a share with the same name already exists or {@code quotaInGB} is outside the
      * allowed range.
      */
     public Response<ShareClient> createShareWithResponse(String shareName, Map<String, String> metadata, Integer quotaInGB, Context context) {
@@ -293,7 +293,7 @@ public final class FileServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
      * @param shareName Name of the share
-     * @throws StorageErrorException If the share doesn't exist
+     * @throws StorageException If the share doesn't exist
      */
     public void deleteShare(String shareName) {
         deleteShareWithResponse(shareName, null, Context.NONE);
@@ -316,7 +316,7 @@ public final class FileServiceClient {
      * @param snapshot Identifier of the snapshot
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If the share doesn't exist or the snapshot doesn't exist
+     * @throws StorageException If the share doesn't exist or the snapshot doesn't exist
      */
     public VoidResponse deleteShareWithResponse(String shareName, String snapshot, Context context) {
         return fileServiceAsyncClient.deleteShareWithResponse(shareName, snapshot, context).block();

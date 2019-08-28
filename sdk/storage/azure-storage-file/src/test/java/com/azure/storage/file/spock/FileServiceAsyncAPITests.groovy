@@ -109,7 +109,7 @@ class FileServiceAsyncAPITests extends APISpec {
         def deleteShareVerifier = StepVerifier.create(primaryFileServiceAsyncClient.deleteShare(testResourceName.randomName(methodName, 60)))
         then:
         deleteShareVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, "ShareNotFound")
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.fromString("ShareNotFound"))
         }
     }
 

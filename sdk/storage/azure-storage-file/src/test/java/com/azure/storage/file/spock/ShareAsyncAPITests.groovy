@@ -88,7 +88,7 @@ class ShareAsyncAPITests extends APISpec {
         where:
         metadata                                 | quota | statusCode | errMessage
         Collections.singletonMap("", "value")    | 1     | 400        | StorageErrorCode.EMPTY_METADATA_KEY
-        Collections.singletonMap("a@B", "value") | 1     | 400        | "Bad Request"
+        Collections.singletonMap("a@B", "value") | 1     | 400        | StorageErrorCode.fromString("Bad Request")
         testMetadata                             | 6000  | 400        | StorageErrorCode.INVALID_HEADER_VALUE
     }
 
@@ -302,7 +302,7 @@ class ShareAsyncAPITests extends APISpec {
         }
         where:
         fileName    | maxSize | statusCode | errMsg
-        "test\file" | 1024    | 400        | "Bad Request"
+        "test\file" | 1024    | 400        | StorageErrorCode.fromString("Bad Request")
         "fileName"  | -1      | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
 
     }
@@ -326,7 +326,7 @@ class ShareAsyncAPITests extends APISpec {
         def createFileVerifier = StepVerifier.create(primaryShareAsyncClient.createFile("test\file", maxSize))
         then:
         createFileVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, "Bad Request")
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.fromString("Bad Request"))
         }
         where:
         fileName    | maxSize | httpHeaders                                       | metadata

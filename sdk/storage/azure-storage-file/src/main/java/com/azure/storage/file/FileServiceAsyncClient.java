@@ -23,17 +23,19 @@ import com.azure.storage.file.models.ListSharesOptions;
 import com.azure.storage.file.models.ListSharesResponse;
 import com.azure.storage.file.models.ServicesListSharesSegmentResponse;
 import com.azure.storage.file.models.ShareItem;
-import com.azure.storage.file.models.StorageErrorException;
+import com.azure.storage.file.models.StorageException;
+import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.file.PostProcessor.postProcessResponse;
 
 /**
  * This class provides a azureFileStorageClient that contains all the operations for interacting with a file account in Azure Storage.
@@ -232,11 +234,11 @@ public final class FileServiceAsyncClient {
      * @return A response containing the Storage account {@link FileServiceProperties File service properties}
      */
     public Mono<Response<FileServiceProperties>> getPropertiesWithResponse() {
-        return withContext(context -> getPropertiesWithResponse(context));
+        return withContext(this::getPropertiesWithResponse);
     }
 
     Mono<Response<FileServiceProperties>> getPropertiesWithResponse(Context context) {
-        return azureFileStorageClient.services().getPropertiesWithRestResponseAsync(context)
+        return postProcessResponse(azureFileStorageClient.services().getPropertiesWithRestResponseAsync(context))
             .map(response -> new SimpleResponse<>(response, response.value()));
     }
 
@@ -258,7 +260,7 @@ public final class FileServiceAsyncClient {
      *
      * @param properties Storage account File service properties
      * @return An empty response
-     * @throws StorageErrorException When one of the following is true
+     * @throws StorageException When one of the following is true
      * <ul>
      *     <li>A CORS rule is missing one of its fields</li>
      *     <li>More than five CORS rules will exist for the Queue service</li>
@@ -296,7 +298,7 @@ public final class FileServiceAsyncClient {
      *
      * @param properties Storage account File service properties
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException When one of the following is true
+     * @throws StorageException When one of the following is true
      * <ul>
      *     <li>A CORS rule is missing one of its fields</li>
      *     <li>More than five CORS rules will exist for the Queue service</li>
@@ -313,7 +315,8 @@ public final class FileServiceAsyncClient {
     }
 
     Mono<VoidResponse> setPropertiesWithResponse(FileServiceProperties properties, Context context) {
-        return azureFileStorageClient.services().setPropertiesWithRestResponseAsync(properties, context)
+        return postProcessResponse(azureFileStorageClient.services()
+            .setPropertiesWithRestResponseAsync(properties, context))
             .map(VoidResponse::new);
     }
 
@@ -331,7 +334,7 @@ public final class FileServiceAsyncClient {
      *
      * @param shareName Name of the share
      * @return The {@link ShareAsyncClient ShareAsyncClient}
-     * @throws StorageErrorException If a share with the same name already exists
+     * @throws StorageException If a share with the same name already exists
      */
     public Mono<ShareAsyncClient> createShare(String shareName) {
         return createShareWithResponse(shareName, null, null).flatMap(FluxUtil::toMono);
@@ -359,7 +362,7 @@ public final class FileServiceAsyncClient {
      * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
      * less than or equal to 5120. The default value is 5120.
      * @return A response containing the {@link ShareAsyncClient ShareAsyncClient} and the status of creating the share.
-     * @throws StorageErrorException If a share with the same name already exists or {@code quotaInGB} is outside the
+     * @throws StorageException If a share with the same name already exists or {@code quotaInGB} is outside the
      * allowed range.
      */
     public Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata, Integer quotaInGB) {
@@ -369,7 +372,7 @@ public final class FileServiceAsyncClient {
     Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata, Integer quotaInGB, Context context) {
         ShareAsyncClient shareAsyncClient = new ShareAsyncClient(azureFileStorageClient, shareName);
 
-        return shareAsyncClient.createWithResponse(metadata, quotaInGB, context)
+        return postProcessResponse(shareAsyncClient.createWithResponse(metadata, quotaInGB, context))
             .map(response -> new SimpleResponse<>(response, shareAsyncClient));
     }
 
@@ -387,7 +390,7 @@ public final class FileServiceAsyncClient {
      *
      * @param shareName Name of the share
      * @return An empty response
-     * @throws StorageErrorException If the share doesn't exist
+     * @throws StorageException If the share doesn't exist
      */
     public Mono<Void> deleteShare(String shareName) {
         return deleteShareWithResponse(shareName, null).flatMap(FluxUtil::toMono);
@@ -409,7 +412,7 @@ public final class FileServiceAsyncClient {
      * @param shareName Name of the share
      * @param snapshot Identifier of the snapshot
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If the share doesn't exist or the snapshot doesn't exist
+     * @throws StorageException If the share doesn't exist or the snapshot doesn't exist
      */
     public Mono<VoidResponse> deleteShareWithResponse(String shareName, String snapshot) {
         return withContext(context -> deleteShareWithResponse(shareName, snapshot, context));
@@ -420,8 +423,8 @@ public final class FileServiceAsyncClient {
         if (ImplUtils.isNullOrEmpty(snapshot)) {
             deleteSnapshots = DeleteSnapshotsOptionType.fromString(DeleteSnapshotsOptionType.INCLUDE.toString());
         }
-        return azureFileStorageClient.shares().deleteWithRestResponseAsync(shareName, snapshot, null, deleteSnapshots, context)
+        return postProcessResponse(azureFileStorageClient.shares()
+            .deleteWithRestResponseAsync(shareName, snapshot, null, deleteSnapshots, context))
             .map(VoidResponse::new);
     }
-
 }

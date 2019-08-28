@@ -599,9 +599,7 @@ public final class ContainerAsyncClient {
                         response.deserializedHeaders());
                 });
 
-        return new PagedFlux<>(
-            () -> func.apply(null),
-            marker -> func.apply(marker));
+        return new PagedFlux<>(() -> func.apply(null), func);
     }
 
     /*
