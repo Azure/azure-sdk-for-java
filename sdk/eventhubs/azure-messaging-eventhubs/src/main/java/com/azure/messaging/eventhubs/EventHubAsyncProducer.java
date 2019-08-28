@@ -307,7 +307,29 @@ public class EventHubAsyncProducer implements Closeable {
         final String partitionKey = options.partitionKey();
 
         verifyPartitionKey(partitionKey);
+        if (tracerProvider != null) {
+            return sendInternalTracingEnabled(events, partitionKey);
+        } else {
+            return sendInternalTracingDisabled(events, partitionKey);
+        }
+    }
 
+    private Mono<Void> sendInternalTracingDisabled(Flux<EventData> events, String partitionKey) {
+        return sendLinkMono.flatMap(link -> {
+            return link.getLinkSize()
+                .flatMap(size -> {
+                    final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
+                    final BatchOptions batchOptions = new BatchOptions()
+                        .partitionKey(partitionKey)
+                        .maximumSizeInBytes(batchSize);
+
+                    return events.collect(new EventDataCollector(batchOptions, 1, () -> link.getErrorContext()));
+                })
+                .flatMap(list -> sendInternal(Flux.fromIterable(list)));
+        });
+    }
+
+    private Mono<Void> sendInternalTracingEnabled(Flux<EventData> events, String partitionKey) {
         return sendLinkMono.flatMap(link -> {
             final AtomicReference<Context> sendSpanContext = new AtomicReference<>(Context.NONE);
             return link.getLinkSize()
@@ -326,7 +348,9 @@ public class EventHubAsyncProducer implements Closeable {
                     }).collect(new EventDataCollector(batchOptions, 1, () -> link.getErrorContext()));
                 })
                 .flatMap(list -> sendInternal(Flux.fromIterable(list)))
-                .doOnEach(signal -> tracerProvider.endSpan(sendSpanContext.get() == null ? Context.NONE : sendSpanContext.get(), signal));
+                .doOnEach(signal -> {
+                    tracerProvider.endSpan(sendSpanContext.get(), signal);
+                });
         });
     }
 

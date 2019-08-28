@@ -8,13 +8,15 @@ import com.azure.core.implementation.tracing.Tracer;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Signal;
 
+import java.util.Objects;
+
 import static com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
 
 public class TracerProvider {
     private final Iterable<Tracer> tracers;
 
     public TracerProvider(Iterable<Tracer> tracers) {
-        this.tracers = tracers;
+        this.tracers = Objects.requireNonNull(tracers, "'tracers' cannot be null.");
     }
 
     /**
@@ -29,6 +31,8 @@ public class TracerProvider {
      * @return An updated context object.
      */
     public Context startSpan(Context context, ProcessKind processKind) {
+        Objects.requireNonNull(context, "'context' cannot be null");
+        Objects.requireNonNull(processKind, "'processKind' cannot be null");
         Context local = context;
         String spanName = "Azure.eventhubs." + processKind.getProcessKind();
         for (Tracer tracer : tracers) {
@@ -78,6 +82,7 @@ public class TracerProvider {
      * @param context Additional metadata that is passed through the call stack.
      */
     public void addSpanLinks(Context context) {
+        Objects.requireNonNull(context, "'context' cannot be null");
         tracers.forEach(tracer -> tracer.addLink(context));
     }
 
@@ -87,6 +92,8 @@ public class TracerProvider {
      * @param diagnosticId Unique identifier of an external call from producer to the queue.
      */
     public Context extractContext(String diagnosticId, Context context) {
+        Objects.requireNonNull(context, "'context' cannot be null");
+        Objects.requireNonNull(diagnosticId, "'diagnosticId' cannot be null");
         Context local = context;
         for (Tracer tracer : tracers) {
             local = tracer.extractContext(diagnosticId, local);

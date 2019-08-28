@@ -147,6 +147,7 @@ public class EventData implements Comparable<EventData> {
             addMapEntry(receiveProperties, MessageConstant.REPLY_TO_GROUP_ID, message.getReplyToGroupId());
         }
 
+        this.context = Context.NONE;
         this.systemProperties = new SystemProperties(receiveProperties);
         this.properties = message.getApplicationProperties() == null
             ? new HashMap<>()
@@ -165,7 +166,6 @@ public class EventData implements Comparable<EventData> {
         }
 
         message.clear();
-        this.context = Context.NONE;
     }
 
     /**
@@ -205,8 +205,8 @@ public class EventData implements Comparable<EventData> {
      * @throws NullPointerException if {@code key} or {@code value} is null.
      */
     public EventData addContext(String key, Object value) {
-        Objects.requireNonNull(key, "The key parameter cannot be null");
-        Objects.requireNonNull(value, "The value parameter cannot be null");
+        Objects.requireNonNull(key, "The 'key' parameter cannot be null.");
+        Objects.requireNonNull(value, "The 'value' parameter cannot be null.");
         this.context = context.addData(key, value);
         return this;
     }

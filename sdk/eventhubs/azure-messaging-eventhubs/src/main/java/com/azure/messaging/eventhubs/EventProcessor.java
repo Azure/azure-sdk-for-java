@@ -263,7 +263,7 @@ public class EventProcessor {
      */
     private Context startProcessTracingSpan(EventData eventData) {
         Object diagnosticId = eventData.properties().get(DIAGNOSTIC_ID_KEY);
-        if (diagnosticId == null) {
+        if (diagnosticId == null || tracerProvider == null) {
             return Context.NONE;
         }
         Context spanContext = tracerProvider.extractContext(diagnosticId.toString(), Context.NONE);
@@ -275,7 +275,7 @@ public class EventProcessor {
      */
     private void endProcessTracingSpan(Context processSpanContext, Signal<Void> signal) {
         // Disposes of the scope when the trace span closes.
-        if (!processSpanContext.getData("scope").isPresent()) {
+        if (!processSpanContext.getData("scope").isPresent() || tracerProvider == null) {
             return;
         }
         Closeable close = (Closeable) processSpanContext.getData("scope").get();
