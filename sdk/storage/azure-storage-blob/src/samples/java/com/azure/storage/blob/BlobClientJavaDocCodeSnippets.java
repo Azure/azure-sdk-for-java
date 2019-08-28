@@ -501,7 +501,8 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobClient#generateUserDelegationSAS(UserDelegationKey, String, BlobSASPermission, OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     * Code snippet for {@link BlobClient#generateUserDelegationSAS(UserDelegationKey, String, BlobSASPermission,
+     * OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
      */
     public void generateUserDelegationSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobClient.generateUserDelegationSAS
@@ -526,12 +527,15 @@ public class BlobClientJavaDocCodeSnippets {
         UserDelegationKey userDelegationKey = new UserDelegationKey();
         String accountName = "accountName";
 
-        String sas = client.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+        String sas = client.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
+            startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
+            contentLanguage, contentType);
         // END: com.azure.storage.blob.BlobClient.generateUserDelegationSAS
     }
 
     /**
-     * Code snippet for {@link BlobClient#generateSAS(String, BlobSASPermission, OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     * Code snippet for {@link BlobClient#generateSAS(String, BlobSASPermission, OffsetDateTime, OffsetDateTime, String,
+     * SASProtocol, IPRange, String, String, String, String, String)}
      */
     public void generateSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobClient.generateSAS
@@ -556,7 +560,8 @@ public class BlobClientJavaDocCodeSnippets {
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
         // Note either "identifier", or "expiryTime and permissions" are required to be set
-        String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+        String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange,
+            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
         // END: com.azure.storage.blob.BlobClient.generateSAS
     }
 }

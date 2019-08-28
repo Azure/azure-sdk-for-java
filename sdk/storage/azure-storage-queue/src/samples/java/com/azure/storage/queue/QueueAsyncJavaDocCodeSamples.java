@@ -470,7 +470,8 @@ public class QueueAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Code snippet for {@link QueueAsyncClient#generateSAS(String, QueueSASPermission, OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange)}
+     * Code snippet for {@link QueueAsyncClient#generateSAS(String, QueueSASPermission, OffsetDateTime, OffsetDateTime,
+     * String, SASProtocol, IPRange)}
      */
     public void generateSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.QueueAsyncClient.generateSAS

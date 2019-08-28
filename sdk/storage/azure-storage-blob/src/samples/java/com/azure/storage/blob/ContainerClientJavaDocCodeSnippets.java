@@ -12,7 +12,9 @@ public class ContainerClientJavaDocCodeSnippets {
     private ContainerClient client = JavaDocCodeSnippetsHelpers.getContainerClient();
 
     /**
-     * Code snippet for {@link ContainerClient#generateUserDelegationSAS(UserDelegationKey, String, ContainerSASPermission, OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     * Code snippet for {@link ContainerClient#generateUserDelegationSAS(UserDelegationKey, String,
+     * ContainerSASPermission, OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String,
+     * String, String)}
      */
     public void generateUserDelegationSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.ContainerClient.generateUserDelegationSAS
@@ -38,12 +40,15 @@ public class ContainerClientJavaDocCodeSnippets {
         String accountName = "accountName";
         UserDelegationKey userDelegationKey = new UserDelegationKey();
 
-        String sas = client.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+        String sas = client.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
+            startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
+            contentLanguage, contentType);
         // END: com.azure.storage.blob.ContainerClient.generateUserDelegationSAS
     }
 
     /**
-     * Code snippet for {@link ContainerClient#generateSAS(String, ContainerSASPermission, OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     * Code snippet for {@link ContainerClient#generateSAS(String, ContainerSASPermission, OffsetDateTime,
+     * OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
      */
     public void generateSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.ContainerClient.generateSAS
@@ -69,7 +74,8 @@ public class ContainerClientJavaDocCodeSnippets {
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
         // Note either "identifier", or "expiryTime and permissions" are required to be set
-        String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+        String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange,
+            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
         // END: com.azure.storage.blob.ContainerClient.generateSAS
     }
 }

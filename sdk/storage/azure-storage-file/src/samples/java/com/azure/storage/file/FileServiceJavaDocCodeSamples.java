@@ -263,7 +263,8 @@ public class FileServiceJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileServiceClient#generateAccountSAS(AccountSASService, AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IPRange, SASProtocol)}
+     * Generates a code sample for using {@link FileServiceClient#generateAccountSAS(AccountSASService,
+     * AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IPRange, SASProtocol)}
      */
     public void generateAccountSAS() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
@@ -294,7 +295,8 @@ public class FileServiceJavaDocCodeSamples {
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
-        String sas = fileServiceClient.generateAccountSAS(service, resourceType, permission, expiryTime, startTime, version, ipRange, sasProtocol);
+        String sas = fileServiceClient.generateAccountSAS(service, resourceType, permission, expiryTime, startTime,
+            version, ipRange, sasProtocol);
         // END: com.azure.storage.queue.FileServiceClient.generateAccountSAS
     }
 
