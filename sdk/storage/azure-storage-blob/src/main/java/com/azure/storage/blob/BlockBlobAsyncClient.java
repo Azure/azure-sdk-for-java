@@ -287,7 +287,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
                 final String blockId = Base64.getEncoder().encodeToString(
                     UUID.randomUUID().toString().getBytes(UTF_8));
 
-
                 return this.stageBlockWithResponse(blockId, Flux.just(buffer), buffer.remaining(),
                     accessConditionsFinal.leaseAccessConditions())
                     // We only care about the stageBlock insofar as it was successful, but we need to collect the ids.

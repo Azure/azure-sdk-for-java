@@ -30,7 +30,6 @@ import com.azure.storage.blob.models.StorageServiceProperties
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
-import io.netty.buffer.ByteBuf
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Shared
@@ -41,12 +40,11 @@ import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.OffsetDateTime
-import java.util.function.BiConsumer
-import java.util.function.Function
 import java.util.function.Supplier
 
 class APISpec extends Specification {
-    private final ClientLogger logger = new ClientLogger(APISpec.class)
+    @Shared
+    ClientLogger logger = new ClientLogger(APISpec.class)
 
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 
@@ -69,10 +67,9 @@ class APISpec extends Specification {
         }
     }
 
-
     static int defaultDataSize = defaultData.remaining()
 
-    static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData)
+    static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map{buffer -> buffer.duplicate()}
 
     // Prefixes for blobs and containers
     String containerPrefix = "jtc" // java test container
@@ -102,7 +99,7 @@ class APISpec extends Specification {
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
-    public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net/"
+    public static final String defaultEndpointTemplate = "http://%s.blob.core.windows.net/"
 
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
@@ -489,6 +486,14 @@ class APISpec extends Specification {
     def setupBlobMatchCondition(BlobClient bc, String match) {
         if (match == receivedEtag) {
             return bc.getPropertiesWithResponse(null, null, null).headers().value("ETag")
+        } else {
+            return match
+        }
+    }
+
+    def setupBlobMatchCondition(BlobAsyncClient bac, String match) {
+        if (match == receivedEtag) {
+            return bac.getPropertiesWithResponse(null, null).block().headers().value("ETag")
         } else {
             return match
         }

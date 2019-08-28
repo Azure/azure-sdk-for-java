@@ -4,28 +4,12 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.http.HttpHeaders
+import com.azure.core.http.*
 import com.azure.core.http.policy.HttpLogDetailLevel
-import com.azure.storage.blob.models.BlobAccessConditions
-import com.azure.storage.blob.models.BlobHTTPHeaders
-import com.azure.storage.blob.models.BlobRange
-import com.azure.storage.blob.models.BlockItem
-import com.azure.storage.blob.models.BlockListType
-import com.azure.storage.blob.models.LeaseAccessConditions
-import com.azure.storage.blob.models.Metadata
-import com.azure.storage.blob.models.ModifiedAccessConditions
-import com.azure.storage.blob.models.PublicAccessType
-import com.azure.storage.blob.models.SourceModifiedAccessConditions
-import com.azure.storage.blob.models.StorageErrorCode
-import com.azure.storage.blob.models.StorageErrorException
-import com.azure.storage.blob.models.StorageException
-import com.azure.core.http.HttpMethod
-import com.azure.core.http.HttpPipelineCallContext
-import com.azure.core.http.HttpPipelineNextPolicy
-import com.azure.core.http.HttpRequest
-import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
+import com.azure.storage.blob.BlobProperties
+import com.azure.storage.blob.models.*
 import com.azure.storage.common.policy.RequestRetryOptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -79,10 +63,10 @@ class BlockBlobAPITest extends APISpec {
         exceptionType.isInstance(e)
 
         where:
-        getBlockId   | data                 | dataSize            | exceptionType
-        false        | defaultInputStream   | defaultDataSize     | StorageException
-        true         | null                 | defaultDataSize     | NullPointerException
-        true         | defaultInputStream   | defaultDataSize + 1 | IndexOutOfBoundsException
+        getBlockId | data               | dataSize            | exceptionType
+        false      | defaultInputStream | defaultDataSize     | StorageException
+        true       | null               | defaultDataSize     | NullPointerException
+        true       | defaultInputStream | defaultDataSize + 1 | IndexOutOfBoundsException
         // TODO (alzimmer): This doesn't throw an error as the stream is larger than the stated size
         //true         | defaultInputStream   | defaultDataSize - 1 | IllegalArgumentException
     }
@@ -185,9 +169,9 @@ class BlockBlobAPITest extends APISpec {
         thrown(StorageException)
 
         where:
-        getBlockId   | sourceURL
-        false        | new URL("http://www.example.com")
-        true         | null
+        getBlockId | sourceURL
+        false      | new URL("http://www.example.com")
+        true       | null
     }
 
     def "Stage block from URL range"() {
@@ -648,9 +632,9 @@ class BlockBlobAPITest extends APISpec {
         validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                    | contentType
-        null         | null               | null            | null            | null                                                          | null
-        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array())  | "type"
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
+        null         | null               | null            | null            | null                                                         | null
+        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
     }
 
     @Unroll
@@ -795,7 +779,9 @@ class BlockBlobAPITest extends APISpec {
          */
         setup:
         def totalSize = 0
-        dataList.each { buffer -> totalSize += buffer.remaining() }
+        dataSizeList.each { size -> totalSize += size }
+        List<ByteBuffer> dataList = new ArrayList<>()
+        dataSizeList.each { size -> dataList.add(getRandomData(size)) }
         bac.upload(Flux.fromIterable(dataList), bufferSize, numBuffers).block()
 
         expect:
@@ -803,11 +789,11 @@ class BlockBlobAPITest extends APISpec {
         bac.listBlocks(BlockListType.ALL).block().committedBlocks().size() == blockCount
 
         where:
-        dataList                                                                                                                       | bufferSize | numBuffers || blockCount
-        [getRandomData(7), getRandomData(7)]                                                                                           | 10         | 2          || 2 // First item fits entirely in the buffer, next item spans two buffers
-        [getRandomData(3), getRandomData(3), getRandomData(3), getRandomData(3), getRandomData(3), getRandomData(3), getRandomData(3)] | 10         | 2          || 3 // Multiple items fit non-exactly in one buffer.
-        [getRandomData(10), getRandomData(10)]                                                                                         | 10         | 2          || 2 // Data fits exactly and does not need chunking.
-        [getRandomData(50), getRandomData(51), getRandomData(49)]                                                                      | 10         | 2          || 15 // Data needs chunking and does not fit neatly in buffers. Requires waiting for buffers to be released.
+        dataSizeList          | bufferSize | numBuffers || blockCount
+        [7, 7]                | 10         | 2          || 2 // First item fits entirely in the buffer, next item spans two buffers
+        [3, 3, 3, 3, 3, 3, 3] | 10         | 2          || 3 // Multiple items fit non-exactly in one buffer.
+        [10, 10]              | 10         | 2          || 2 // Data fits exactly and does not need chunking.
+        [50, 51, 49]          | 10         | 2          || 15 // Data needs chunking and does not fit neatly in buffers. Requires waiting for buffers to be released.
         // The case of one large buffer needing to be broken up is tested in the previous test.
     }
 
@@ -816,7 +802,7 @@ class BlockBlobAPITest extends APISpec {
         bac.upload(null, 4, 4)
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(NullPointerException)
     }
 
     @Unroll
@@ -837,7 +823,7 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     def "Buffered upload headers"() {
         when:
-        bac.upload(Flux.just(defaultData), 10, 2, new BlobHTTPHeaders().blobCacheControl(cacheControl)
+        bac.upload(defaultFlux, 10, 2, new BlobHTTPHeaders().blobCacheControl(cacheControl)
             .blobContentDisposition(contentDisposition).blobContentEncoding(contentEncoding)
             .blobContentLanguage(contentLanguage).blobContentMD5(contentMD5).blobContentType(contentType),
             null, null).block()
