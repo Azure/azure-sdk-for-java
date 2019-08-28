@@ -42,9 +42,6 @@ stages:
         - name: azure-keyvault
           safeName: azurekeyvault
           stagingProfileId: 534d15ee3800f4
-        - name: azure-keyvault-complete
-          safeName: azurekeyvaultcomplete
-          stagingProfileId: 534d15ee3800f4
         - name: azure-keyvault-core
           safeName: azurekeyvaultcore
           stagingProfileId: 534d15ee3800f4
