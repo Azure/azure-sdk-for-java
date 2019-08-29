@@ -8,7 +8,6 @@ import com.azure.storage.queue.models.AccessPolicy
 import com.azure.storage.queue.models.SignedIdentifier
 import com.azure.storage.queue.models.StorageErrorCode
 import com.azure.storage.queue.models.StorageException
-import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Unroll
 
@@ -89,7 +88,7 @@ class QueueAPITests extends APISpec {
         expectMetadataInCreate.equals(getPropertiesResponseBefore.value().metadata())
         QueueTestHelper.assertResponseStatusCode(setMetadataResponse, 204)
         QueueTestHelper.assertResponseStatusCode(getPropertiesResponseAfter, 200)
-        expectMetadataInSet.equals(getPropertiesResponseAfter.value().metadata)
+        expectMetadataInSet.equals(getPropertiesResponseAfter.value().metadata())
         where:
         matadataInCreate | metadataInSet | expectMetadataInCreate | expectMetadataInSet
         null             | testMetadata  | Collections.emptyMap() | testMetadata
@@ -359,7 +358,7 @@ class QueueAPITests extends APISpec {
 
     def "Clear messages error"() {
         when:
-        StepVerifier.create(queueClient.clearMessagesWithResponse(null))
+        queueClient.clearMessagesWithResponse(null)
         then:
         def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
