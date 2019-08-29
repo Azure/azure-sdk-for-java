@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.netty.implementation;
+package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
@@ -35,7 +35,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.azure.core.http.netty.implementation.ReactorNettyClient.ReactorNettyHttpResponse;
+import static com.azure.core.http.netty.NettyAsyncHttpClient.ReactorNettyHttpResponse;
 
 public class ReactorNettyClientTests {
 
@@ -302,11 +302,11 @@ public class ReactorNettyClientTests {
     }
 
     private static ReactorNettyHttpResponse getResponse(String path) {
-        ReactorNettyClient client = new ReactorNettyClient();
+        NettyAsyncHttpClient client = new NettyAsyncHttpClient();
         return getResponse(client, path);
     }
 
-    private static ReactorNettyHttpResponse getResponse(ReactorNettyClient client, String path) {
+    private static ReactorNettyHttpResponse getResponse(NettyAsyncHttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
         return (ReactorNettyHttpResponse) client.send(request).block();
     }
@@ -328,14 +328,14 @@ public class ReactorNettyClientTests {
     }
 
     private void checkBodyReceived(String expectedBody, String path) {
-        ReactorNettyClient client = new ReactorNettyClient();
+        NettyAsyncHttpClient client = new NettyAsyncHttpClient();
         HttpResponse response = doRequest(client, path);
         String s = new String(response.bodyAsByteArray().block(),
                 StandardCharsets.UTF_8);
         Assert.assertEquals(expectedBody, s);
     }
 
-    private ReactorNettyHttpResponse doRequest(ReactorNettyClient client, String path) {
+    private ReactorNettyHttpResponse doRequest(NettyAsyncHttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
         ReactorNettyHttpResponse response = (ReactorNettyHttpResponse) client.send(request).block();
         return response;
