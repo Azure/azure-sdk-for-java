@@ -6,7 +6,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.ProxyOptions;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
@@ -19,7 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Supplier;
 
 /**
  * HTTP client that plays back {@link NetworkCallRecord NetworkCallRecords}.
@@ -58,31 +56,7 @@ public final class PlaybackClient implements HttpClient {
         });
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public HttpClient proxy(Supplier<ProxyOptions> supplier) {
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public HttpClient wiretap(boolean b) {
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public HttpClient port(int i) {
-        return this;
-    }
-
-    private Mono<HttpResponse> playbackHttpResponse(final HttpRequest request) throws Exception {
+    private Mono<HttpResponse> playbackHttpResponse(final HttpRequest request) throws Exception{
         final String incomingUrl = applyReplacementRule(request.url().toString());
         final String incomingMethod = request.httpMethod().toString();
 
@@ -100,11 +74,6 @@ public final class PlaybackClient implements HttpClient {
             return Mono.error(new IllegalStateException("==> Unexpected request: " + incomingMethod + " " + incomingUrl));
         }
         constructExceptionType(networkCallRecord);
-//        if (networkCallRecord.exception() != null ) {
-//            throw (Exception) networkCallRecord.exception().className().getConstructor().newInstance();
-//        }
-//        throw (Exception) networkCallRecord.exception().className().getConstructor(
-//            networkCallRecord.exception().argTypes()).newInstance(networkCallRecord.exception().argValues());
         int recordStatusCode = Integer.parseInt(networkCallRecord.response().get("StatusCode"));
         HttpHeaders headers = new HttpHeaders();
 

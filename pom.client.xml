@@ -383,6 +383,10 @@
                 <packages>com.azure.core.auth*</packages>
               </group>
               <group>
+                <title>Azure Core - HTTP - Netty</title>
+                <packages>com.azure.core.http.netty*</packages>
+              </group>
+              <group>
                 <title>Azure Core - Management</title>
                 <packages>com.azure.core.management*</packages>
               </group>
