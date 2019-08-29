@@ -10,6 +10,11 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
 <module name="Checker">
 
+  <!-- Exclude module-info.java from checks, as CheckStyle does not presently support it -->
+  <module name="BeforeExecutionExclusionFileFilter">
+    <property name="fileNamePattern" value="module\-info\.java$"/>
+  </module>
+
   <module name="SuppressionFilter">
     <property name="file" value="${samedir}/checkstyle-suppressions.xml"/>
     <property name="optional" value="true"/>
@@ -276,14 +281,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="com.azure.tools.checkstyle.checks.JavadocThrowsChecks"/>
 
     <!-- CUSTOM CHECKS -->
-    <!-- Verifies that subclasses of ServiceClient meet a set of guidelines.
-    1) They cannot have public or protected constructors
-    2) They must implement a public static method named builder
-    -->
-    <module name="com.azure.tools.checkstyle.checks.ServiceClientChecks"/>
-
-    <!-- CUSTOM CHECKS -->
-    <!--Checks for the public API that should
+    <!-- Checks for the public API that should
     1) not return classes in the implementation package
     2) no class of implementation package as method's parameters -->
     <module name="com.azure.tools.checkstyle.checks.NoImplInPublicAPI"/>
@@ -292,8 +290,18 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- Verify the classes with annotation @ServiceClient should have following rules:
     1) No public or protected constructors
     2) No public static method named 'builder'
-    3) Since these classes are supposed to be immutable, all fields in the service client classes should be final -->
-    <module name="com.azure.tools.checkstyle.checks.ServiceClientInstantiationCheck"/>
+    3) Since these classes are supposed to be immutable, all fields in the service client classes should be final.
+
+    Also, verify all methods that have a @ServiceMethod annotation in a class annotated with @ServiceClient should
+    follow below rules:
+    1) Follows method naming pattern. Refer to Java Spec.
+    2) Methods should not have "Async" added to the method name
+    3) The return type of async and sync clients should be as per guidelines:
+      3.1) The return type for async collection should be of type? extends PagedFlux
+      3.2) The return type for async single value should be of type? extends Mono
+      3.3) The return type for sync collection should be of type? extends PagedIterable
+      3.4) The return type for sync single value should be of type? extends Response -->
+    <module name="com.azure.tools.checkstyle.checks.ServiceClientCheck"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- Checks for no external dependency exposed in the public API.
@@ -328,11 +336,11 @@ page at http://checkstyle.sourceforge.net/config.html -->
      parameter name or return -->
     <module name="com.azure.tools.checkstyle.checks.JavaDocFormatting"/>
 
-    <!--CUSTOM CHECKS-->
+    <!-- CUSTOM CHECKS -->
     <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
     <module name="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"/>
 
-    <!--CUSTOM CHECKS-->
+    <!-- CUSTOM CHECKS -->
     <!-- Any class that implements the HttpPipelinePolicy interface should:
     1) Must be a public class.
     2) Not in an implementation package or sub-package. -->
