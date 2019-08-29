@@ -32,6 +32,10 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <project.automatic.module.name>com.azure.security.keyvault.keys</project.automatic.module.name>
+  </properties>
+
   <dependencies>
 
     <dependency>

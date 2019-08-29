@@ -239,7 +239,7 @@ public final class ServicesImpl {
     }
 
     /**
-     * Retrieves a user delgation key for the Blob service. This is only a valid operation when using bearer token authentication.
+     * Retrieves a user delegation key for the Blob service. This is only a valid operation when using bearer token authentication.
      *
      * @param keyInfo the KeyInfo value.
      * @param context The context to associate with this operation.
@@ -256,7 +256,7 @@ public final class ServicesImpl {
     }
 
     /**
-     * Retrieves a user delgation key for the Blob service. This is only a valid operation when using bearer token authentication.
+     * Retrieves a user delegation key for the Blob service. This is only a valid operation when using bearer token authentication.
      *
      * @param keyInfo the KeyInfo value.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.

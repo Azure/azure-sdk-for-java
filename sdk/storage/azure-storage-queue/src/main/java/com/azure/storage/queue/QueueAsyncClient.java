@@ -299,7 +299,7 @@ public final class QueueAsyncClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.setAccessPolicy}
+     * {@codesnippet com.azure.storage.queue.QueueAsyncClient.setAccessPolicy#List}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
@@ -320,7 +320,7 @@ public final class QueueAsyncClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.setAccessPolicyWithResponse}
+     * {@codesnippet com.azure.storage.queue.QueueAsyncClient.setAccessPolicyWithResponse#List}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
@@ -415,7 +415,7 @@ public final class QueueAsyncClient {
      *
      * <p>Add a message of "Goodbye, Azure" that has a time to live of 5 seconds</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.enqueueMessageWithResponseLiveTime#string-duration-duration}
+     * {@codesnippet com.azure.storage.queue.QueueAsyncClient.enqueueMessageWithResponse-liveTime#String-Duration-Duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-message">Azure Docs</a>.</p>
@@ -575,7 +575,7 @@ public final class QueueAsyncClient {
      *
      * <p>Dequeue the first message and update it to "Hello again, Azure" and hide it for 5 seconds</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.updateMessage}
+     * {@codesnippet com.azure.storage.queue.QueueAsyncClient.updateMessage#String-String-String-Duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/update-message">Azure Docs</a>.</p>
@@ -601,7 +601,7 @@ public final class QueueAsyncClient {
      *
      * <p>Dequeue the first message and update it to "Hello again, Azure" and hide it for 5 seconds</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.updateMessageWithResponse}
+     * {@codesnippet com.azure.storage.queue.QueueAsyncClient.updateMessageWithResponse#String-String-String-Duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/update-message">Azure Docs</a>.</p>
@@ -633,7 +633,7 @@ public final class QueueAsyncClient {
      *
      * <p>Delete the first message</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.deleteMessage}
+     * {@codesnippet com.azure.storage.queue.QueueAsyncClient.deleteMessage#String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-message2">Azure Docs</a>.</p>
@@ -654,7 +654,7 @@ public final class QueueAsyncClient {
      *
      * <p>Delete the first message</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.deleteMessageWithResponse}
+     * {@codesnippet com.azure.storage.queue.QueueAsyncClient.deleteMessageWithResponse#String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-message2">Azure Docs</a>.</p>

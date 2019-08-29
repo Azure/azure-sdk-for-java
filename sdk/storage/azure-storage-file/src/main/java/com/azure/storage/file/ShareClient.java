@@ -116,11 +116,11 @@ public class ShareClient {
      *
      * <p>Create the share with metadata "share:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.createWithResponse#map-integer.metadata}
+     * {@codesnippet com.azure.storage.file.ShareClient.createWithResponse#Map-Integer-Context.metadata}
      *
      * <p>Create the share with a quota of 10 GB</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.createWithResponse#map-integer.quota}
+     * {@codesnippet com.azure.storage.file.ShareClient.createWithResponse#Map-Integer-Context.quota}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
@@ -266,7 +266,7 @@ public class ShareClient {
      *
      * <p>Set the quota to 1024 GB</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.setQuota}
+     * {@codesnippet com.azure.storage.file.ShareClient.setQuota#int}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -375,7 +375,7 @@ public class ShareClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.setAccessPolicy}
+     * {@codesnippet com.azure.storage.file.ShareClient.setAccessPolicy#List}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
