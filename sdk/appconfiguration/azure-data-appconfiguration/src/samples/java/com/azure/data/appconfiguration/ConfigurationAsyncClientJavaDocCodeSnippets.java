@@ -255,6 +255,6 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
      * @return {@code null}
      */
     private ConfigurationAsyncClient getAsyncClient() {
-        return new ConfigurationClientBuilder().buildAsyncClient();
+        return new ConfigurationClientBuilder().credential(new ConfigurationClientCredentials("connectionString")).buildAsyncClient();
     }
 }
