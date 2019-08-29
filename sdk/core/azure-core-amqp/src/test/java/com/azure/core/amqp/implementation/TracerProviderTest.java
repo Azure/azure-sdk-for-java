@@ -12,19 +12,19 @@ import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Signal;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.never;
 
 public class TracerProviderTest {
 
@@ -32,11 +32,11 @@ public class TracerProviderTest {
     public void startSpan() {
         // Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        List<Tracer> tracers = Arrays.asList(tracer1);
+        List<Tracer> tracers = Collections.singletonList(tracer1);
         final TracerProvider tracerProvider = new TracerProvider(tracers);
 
         // Act
-        Context updatedContext = tracerProvider.startSpan(Context.NONE, ProcessKind.SEND);
+        tracerProvider.startSpan(Context.NONE, ProcessKind.SEND);
 
         // Assert
         verify(tracer1, times(1)).start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND));
@@ -49,14 +49,14 @@ public class TracerProviderTest {
         final TracerProvider tracerProvider = new TracerProvider(tracers);
 
         // Act & Assert
-        Assert.assertEquals(false, tracerProvider.isEnabled());
+        Assert.assertFalse(tracerProvider.isEnabled());
     }
 
     @Test
     public void startSpanReturnsUpdatedContext() {
         // Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        List<Tracer> tracers = Arrays.asList(tracer1);
+        List<Tracer> tracers = Collections.singletonList(tracer1);
         final TracerProvider tracerProvider = new TracerProvider(tracers);
         when(tracer1.start("Azure.eventhubs.send", Context.NONE, ProcessKind.SEND)).thenAnswer(
             invocation -> {
@@ -70,14 +70,17 @@ public class TracerProviderTest {
 
         // Assert
         Assert.assertEquals(Context.class, updatedContext.getClass());
-        Assert.assertEquals(updatedContext.getData(OPENTELEMETRY_SPAN_KEY).get(), "value");
+
+        final Optional<Object> actual = updatedContext.getData(OPENTELEMETRY_SPAN_KEY);
+        Assert.assertTrue(actual.isPresent());
+        Assert.assertEquals(actual.get(), "value");
     }
 
     @Test
     public void endSpanSuccess() {
         // Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        List<Tracer> tracers = Arrays.asList(tracer1);
+        final List<Tracer> tracers = Collections.singletonList(tracer1);
         final TracerProvider tracerProvider = new TracerProvider(tracers);
 
         // Act
@@ -91,7 +94,7 @@ public class TracerProviderTest {
     public void endSpanNoKey() {
         // Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        List<Tracer> tracers = Arrays.asList(tracer1);
+        final List<Tracer> tracers = Collections.singletonList(tracer1);
         final TracerProvider tracerProvider = new TracerProvider(tracers);
 
         // Act
@@ -105,7 +108,7 @@ public class TracerProviderTest {
     public void endSpanError() {
         // Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        List<Tracer> tracers = Arrays.asList(tracer1);
+        final List<Tracer> tracers = Collections.singletonList(tracer1);
         final TracerProvider tracerProvider = new TracerProvider(tracers);
         Throwable testThrow = new Throwable("testError");
         Context sendContext = new Context(OPENTELEMETRY_SPAN_KEY, "value");
@@ -121,7 +124,7 @@ public class TracerProviderTest {
     public void endSpanOnSubscribe() {
         // Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        List<Tracer> tracers = Arrays.asList(tracer1);
+        final List<Tracer> tracers = Collections.singletonList(tracer1);
         final TracerProvider tracerProvider = new TracerProvider(tracers);
         Throwable testThrow = new Throwable("testError");
         Context sendContext = new Context(OPENTELEMETRY_SPAN_KEY, "value");
@@ -137,15 +140,16 @@ public class TracerProviderTest {
     public void endSpanAmqpException() {
         // Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        List<Tracer> tracers = Arrays.asList(tracer1);
+        final List<Tracer> tracers = Collections.singletonList(tracer1);
         final TracerProvider tracerProvider = new TracerProvider(tracers);
-        final Exception exception = new AmqpException(true, ErrorCondition.NOT_FOUND, "", null);
+        final ErrorCondition errorCondition = ErrorCondition.NOT_FOUND;
+        final Exception exception = new AmqpException(true, errorCondition, "", null);
         Context sendContext = new Context(OPENTELEMETRY_SPAN_KEY, "value");
 
         // Act
         tracerProvider.endSpan(sendContext, Signal.error(exception));
 
         // Assert
-        verify(tracer1, times(1)).end(ErrorCondition.NOT_FOUND.getErrorCondition(), exception, sendContext);
+        verify(tracer1, times(1)).end(errorCondition.getErrorCondition(), exception, sendContext);
     }
 }
