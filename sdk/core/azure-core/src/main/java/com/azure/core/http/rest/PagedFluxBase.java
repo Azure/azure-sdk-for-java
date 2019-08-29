@@ -43,7 +43,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
 
     /**
      * Creates an instance of {@link PagedFluxBase} that consists of only a single page of results. The only
-     * argument to this constructor therefore is a supplier that fetches the first (and known-only) page of {@code T}.
+     * argument to this constructor therefore is a supplier that fetches the first (and known-only) page from {@code P}.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.core.http.rest.pagedfluxbase.singlepage.instantiation}
@@ -56,8 +56,8 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
 
     /**
      * Creates an instance of {@link PagedFluxBase}. The constructor takes in two arguments. The first
-     * argument is a supplier that fetches the first page of {@code T}. The second argument is a
-     * function that fetches subsequent pages of {@code T}.
+     * argument is a supplier that fetches the first page from {@code P}. The second argument is a
+     * function that fetches subsequent pages from {@code P}.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.core.http.rest.pagedfluxbase.instantiation}
