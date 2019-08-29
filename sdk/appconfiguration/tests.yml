@@ -5,4 +5,5 @@ jobs:
     parameters:
       ServiceDirectory: appconfiguration
       EnvVars:
+        AZURE_TEST_MODE: RECORD
         AZCONFIG_CONNECTION_STRING: $(java-azconfig-test-connection-string)
