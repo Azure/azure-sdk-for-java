@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 /**
- * A sample implementation of {@link PartitionProcessor}. This implementation logs the APIs that were called by {@link
- * EventProcessor} while processing a partition.
+ * A sample implementation of {@link PartitionProcessor}. This implementation logs the APIs that are called by
+ * {@link EventProcessor} while processing a partition.
  */
 public class LogPartitionProcessor extends PartitionProcessor {
 

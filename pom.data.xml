@@ -6,7 +6,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-data-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.1.0</version>
+  <version>1.2.0</version>
 
   <name>Microsoft Azure SDK for Java - Data Plane Libraries</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
@@ -259,6 +259,10 @@
             <linksource>false</linksource>
             <excludePackageNames>com.microsoft.azure.template:*.impl.*:*.implementation.*</excludePackageNames>
             <groups>
+              <group>
+                <title>Azure Application Insights</title>
+                <packages>com.microsoft.azure.applicationinsights*</packages>
+              </group>
               <group>
                 <title>Azure Batch</title>
                 <packages>com.microsoft.azure.batch*</packages>
@@ -542,8 +546,11 @@
 
   <modules>
     <module>./sdk/batch/microsoft-azure-batch</module>
+    <module>./sdk/applicationinsights/microsoft-azure-applicationinsights-query</module>
     <module>./sdk/cosmos</module>
-    <module>./sdk/eventhubs/pom.data.xml</module>
+    <module>./sdk/eventhubs/microsoft-azure-eventhubs/pom.xml</module>
+    <module>./sdk/eventhubs/microsoft-azure-eventhubs-eph/pom.xml</module>
+    <module>./sdk/eventhubs/microsoft-azure-eventhubs-extensions/pom.xml</module>
     <module>./sdk/keyvault/pom.data.xml</module>
     <module>./sdk/servicebus/microsoft-azure-servicebus</module>
     <module>./sdk/storage/microsoft-azure-storage-blob</module>

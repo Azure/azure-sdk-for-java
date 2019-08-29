@@ -49,7 +49,7 @@ public interface PrivateEndpoint extends HasInner<PrivateEndpointInner>, Resourc
     /**
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * @return the subnet value.
@@ -84,7 +84,7 @@ public interface PrivateEndpoint extends HasInner<PrivateEndpointInner>, Resourc
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag Gets a unique read-only string that changes whenever the resource is updated
+             * @param etag A unique read-only string that changes whenever the resource is updated
              * @return the next definition stage
              */
             WithCreate withEtag(String etag);
@@ -115,6 +115,18 @@ public interface PrivateEndpoint extends HasInner<PrivateEndpointInner>, Resourc
         }
 
         /**
+         * The stage of the privateendpoint definition allowing to specify ProvisioningState.
+         */
+        interface WithProvisioningState {
+            /**
+             * Specifies provisioningState.
+             * @param provisioningState The provisioning state of the private endpoint. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+             * @return the next definition stage
+             */
+            WithCreate withProvisioningState(ProvisioningState provisioningState);
+        }
+
+        /**
          * The stage of the privateendpoint definition allowing to specify Subnet.
          */
         interface WithSubnet {
@@ -131,13 +143,13 @@ public interface PrivateEndpoint extends HasInner<PrivateEndpointInner>, Resourc
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<PrivateEndpoint>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithEtag, DefinitionStages.WithManualPrivateLinkServiceConnections, DefinitionStages.WithPrivateLinkServiceConnections, DefinitionStages.WithSubnet {
+        interface WithCreate extends Creatable<PrivateEndpoint>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithEtag, DefinitionStages.WithManualPrivateLinkServiceConnections, DefinitionStages.WithPrivateLinkServiceConnections, DefinitionStages.WithProvisioningState, DefinitionStages.WithSubnet {
         }
     }
     /**
      * The template for a PrivateEndpoint update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<PrivateEndpoint>, Resource.UpdateWithTags<Update>, UpdateStages.WithEtag, UpdateStages.WithManualPrivateLinkServiceConnections, UpdateStages.WithPrivateLinkServiceConnections, UpdateStages.WithSubnet {
+    interface Update extends Appliable<PrivateEndpoint>, Resource.UpdateWithTags<Update>, UpdateStages.WithEtag, UpdateStages.WithManualPrivateLinkServiceConnections, UpdateStages.WithPrivateLinkServiceConnections, UpdateStages.WithProvisioningState, UpdateStages.WithSubnet {
     }
 
     /**
@@ -150,7 +162,7 @@ public interface PrivateEndpoint extends HasInner<PrivateEndpointInner>, Resourc
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag Gets a unique read-only string that changes whenever the resource is updated
+             * @param etag A unique read-only string that changes whenever the resource is updated
              * @return the next update stage
              */
             Update withEtag(String etag);
@@ -178,6 +190,18 @@ public interface PrivateEndpoint extends HasInner<PrivateEndpointInner>, Resourc
              * @return the next update stage
              */
             Update withPrivateLinkServiceConnections(List<PrivateLinkServiceConnection> privateLinkServiceConnections);
+        }
+
+        /**
+         * The stage of the privateendpoint update allowing to specify ProvisioningState.
+         */
+        interface WithProvisioningState {
+            /**
+             * Specifies provisioningState.
+             * @param provisioningState The provisioning state of the private endpoint. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+             * @return the next update stage
+             */
+            Update withProvisioningState(ProvisioningState provisioningState);
         }
 
         /**

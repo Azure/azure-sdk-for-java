@@ -4,7 +4,7 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpClient;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedFlux;
@@ -44,7 +44,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         } else {
             client = clientSetup(credentials -> new ConfigurationClientBuilder()
                     .credential(credentials)
-                    .httpClient(HttpClient.createDefault().wiretap(true))
+                    .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .addPolicy(new RetryPolicy())

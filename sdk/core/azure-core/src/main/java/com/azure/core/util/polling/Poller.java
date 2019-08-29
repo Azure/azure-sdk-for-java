@@ -49,7 +49,7 @@ import java.util.function.Function;
  * {@codesnippet com.azure.core.util.polling.poller.block}
  *
  * <p><strong>Disable auto polling and polling manually</strong></p>
- * {@codesnippet com.azure.core.util.polling.poller.poll}
+ * {@codesnippet com.azure.core.util.polling.poller.poll-manually}
  *
  * @param <T> Type of poll response value
  * @see PollResponse
@@ -199,7 +199,7 @@ public class Poller<T> {
      *
      * <p><strong>Manual Polling</strong></p>
      * <p>
-     * {@codesnippet com.azure.core.util.polling.poller.poll.indepth}
+     * {@codesnippet com.azure.core.util.polling.poller.poll-indepth}
      *
      * @return a Mono of {@link PollResponse} This will call poll operation once. The {@link Mono} returned here could be subscribed
      * for receiving {@link PollResponse} in async manner.

@@ -19,6 +19,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -54,6 +55,13 @@ public class RsaKeyTest {
 
     protected void setProvider(Provider provider) {
         this.provider = provider;
+    }
+
+    @Test
+    public void testRsaKeyEmptyConstructor() throws NoSuchAlgorithmException {
+        RsaKey key = new RsaKey();
+
+        assertNotNull(key);
     }
 
     @Test

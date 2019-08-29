@@ -1,41 +1,45 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatedirectoryerror801891b6b31fb9?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatedirectoryerror44617f32834228?restype=share",
     "Headers" : {
-      "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : {
-      "x-ms-version" : "2018-11-09",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7258EB61A625D\"",
-      "Last-Modified" : "Tue, 20 Aug 2019 16:51:56 GMT",
+      "ETag" : "\"0x8D72829BF8614AB\"",
+      "Last-Modified" : "Sat, 24 Aug 2019 00:26:46 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d6338ffe-b01a-002f-1177-57b14c000000",
-      "Date" : "Tue, 20 Aug 2019 16:51:55 GMT"
-    }
+      "x-ms-request-id" : "799c28e1-e01a-00d9-7512-5a965a000000",
+      "Date" : "Sat, 24 Aug 2019 00:26:46 GMT",
+      "x-ms-client-request-id" : "3047eefd-5ee1-4b99-b190-303cb555ead9"
+    },
+    "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatedirectoryerror919681a97d2aff/directoryapitestscreatedirectoryerror5910493113da5a?restype=directory",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatedirectoryerror68209aca543bde/directoryapitestscreatedirectoryerror1771122b60bdf5?restype=directory",
     "Headers" : {
-      "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : {
-      "x-ms-version" : "2018-11-09",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "ShareNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "d6339000-b01a-002f-1277-57b14c000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:d6339000-b01a-002f-1277-57b14c000000\nTime:2019-08-20T16:51:56.7421106Z</Message></Error>",
-      "Date" : "Tue, 20 Aug 2019 16:51:56 GMT",
+      "x-ms-request-id" : "799c28e4-e01a-00d9-7612-5a965a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:799c28e4-e01a-00d9-7612-5a965a000000\nTime:2019-08-24T00:26:46.8650490Z</Message></Error>",
+      "Date" : "Sat, 24 Aug 2019 00:26:46 GMT",
+      "x-ms-client-request-id" : "6ff17057-8782-4401-9938-494bf629bcd3",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "directoryapitestscreatedirectoryerror801891b6b31fb9", "directoryapitestscreatedirectoryerror5910493113da5a", "directoryapitestscreatedirectoryerror919681a97d2aff" ]
+  "variables" : [ "directoryapitestscreatedirectoryerror44617f32834228", "directoryapitestscreatedirectoryerror1771122b60bdf5", "directoryapitestscreatedirectoryerror68209aca543bde" ]
 }

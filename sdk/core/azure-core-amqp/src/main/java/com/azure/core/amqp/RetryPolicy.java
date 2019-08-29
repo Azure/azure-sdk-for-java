@@ -101,8 +101,8 @@ public abstract class RetryPolicy implements Cloneable {
     }
 
     /**
-     * Calculates the amount of time to delay before the next retry attempt based on the {@code retryCound}, {@code
-     * baseDelay}, and {@code baseJitter}.
+     * Calculates the amount of time to delay before the next retry attempt based on the {@code retryCound},
+     * {@code baseDelay}, and {@code baseJitter}.
      *
      * @param retryCount The number of attempts that have been made, including the initial attempt before any
      *         retries.
