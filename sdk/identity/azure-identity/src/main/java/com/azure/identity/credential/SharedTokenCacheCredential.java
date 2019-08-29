@@ -27,22 +27,34 @@ import java.util.Iterator;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * A credential provider that provides token credentials from the MSAL shared token cache.
+ * Requires a username and client ID. If a username is not provided, then the AZURE_USERNAME
+ * environment variable will be used
+ */
 @Immutable
 public class SharedTokenCacheCredential implements TokenCredential {
     private String username;
     private final String clientID;
-    private final IdentityClientOptions options;
+    private final IdentityClientOptions identityClientOptions;
     private final Configuration configuration;
 
     private final PublicClientApplication pubClient;
     private final AtomicReference<MsalToken> cachedToken;
 
-    SharedTokenCacheCredential(String username, String clientID, IdentityClientOptions options){
+    /**
+     * Creates an instance of the Shared Token Cache Credential Provider.
+     *
+     * @param username the username of the account for the application
+     * @param clientID the client ID of the application
+     * @param identityClientOptions the options for configuring the identity client
+     */
+    SharedTokenCacheCredential(String username, String clientID, IdentityClientOptions identityClientOptions){
         this.configuration = ConfigurationManager.getConfiguration().clone();
 
         this.username = username;
         this.clientID = clientID;
-        this.options = options;
+        this.identityClientOptions = identityClientOptions;
 
         cachedToken = new AtomicReference<>();
 
@@ -58,12 +70,15 @@ public class SharedTokenCacheCredential implements TokenCredential {
         pubClient = PublicClientApplication.builder(clientID).setTokenCacheAccessAspect(accessAspect).build();
     }
 
+    /**
+     * Gets token from shared token cache
+     * */
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
 
         IAccount requestedAccount = null;
 
-        // find if the pubclient app with the requested username exists
+        // find if the Public Client app with the requested username exists
         Collection<IAccount> accounts = pubClient.getAccounts().join();
         Iterator<IAccount> iter = accounts.iterator();
 

@@ -11,11 +11,23 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+/**
+ * Cache Protector for Windows which uses Windows DPAPI to encrypt the cache
+ * */
 public class WindowsDPAPICacheProtector extends CacheProtectorBase {
 
     private String CACHE_FILENAME;
     private File cache_file;
 
+    /**
+     * Constructor to initialize WindowsDPAPICacheProtector
+     * Calls super constructor to initialize lock
+     *
+     * @param cacheLocation
+     * @param lockfileLocation
+     *
+     * @throws IOException if cache_file File isn't created
+     * */
     public WindowsDPAPICacheProtector(String cacheLocation, String lockfileLocation) throws IOException {
         super(lockfileLocation);
         CACHE_FILENAME = cacheLocation;
@@ -24,7 +36,12 @@ public class WindowsDPAPICacheProtector extends CacheProtectorBase {
         makeSureFileExists();
     }
 
-    protected String unprotect() throws IOException {
+    /**
+     * Uses DPAPI to read and decrypt cache contents
+     *
+     * @return  byte[] cache contents
+     * */
+    protected byte[] unprotect() throws IOException {
         makeSureFileExists();
 
         byte[] encrypted_bytes = new byte[(int) cache_file.length()];
@@ -34,28 +51,38 @@ public class WindowsDPAPICacheProtector extends CacheProtectorBase {
         stream.close();
 
         byte[] decrypted_bytes = Crypt32Util.cryptUnprotectData(encrypted_bytes);
-
-        return new String(decrypted_bytes, "UTF-8");
+        return decrypted_bytes;
     }
 
-    protected void protect(String data) throws IOException {
+    /**
+     * Uses DPAPI to write and protect cache contents
+     *
+     * @param data contents to write to cache
+     * */
+    protected void protect(byte[] data) throws IOException {
         makeSureFileExists();
 
-        byte[] encrypted_bytes = Crypt32Util.cryptProtectData(data.getBytes("UTF-8"));
+        byte[] encrypted_bytes = Crypt32Util.cryptProtectData(data);
 
         FileOutputStream stream = new FileOutputStream(cache_file);
         stream.write(encrypted_bytes);
         stream.close();
     }
 
+    /**
+     * Make sure file exists - and write " " if it was just created
+     * Just a backup in case the cache was deleted
+     * */
     private void makeSureFileExists() throws IOException {
-        // make sure file exists - and write empty string
         if (!cache_file.exists()) {
             cache_file.createNewFile();
-            protect(" ");
+            protect(" ".getBytes());
         }
     }
 
+    /**
+     * Deletes the cache file
+     * */
     public void deleteCacheHelper() {
         cache_file.delete();
     }

@@ -8,24 +8,38 @@ import com.azure.identity.implementation.msal_extensions.CacheLockNotObtainedExc
 
 import java.io.IOException;
 
+/**
+ * Abstract class for Cache Protectors
+ * Provides methods to read and write cache while using a CacheLock
+ * */
 public abstract class CacheProtectorBase {
 
     private String LOCKFILE_LOCATION;
     private CacheLock lock;
 
+
+    /**
+     * Constructor
+     * initializes cacheLock
+     * */
     public CacheProtectorBase(String lockfileLocation) {
         this.LOCKFILE_LOCATION = lockfileLocation;
         lock = new CacheLock(LOCKFILE_LOCATION);
     }
 
+    /**
+     * Obtains lock and uses unprotect() to read and decrypt contents of the cache
+     *
+     * @return byte[] contents of cache
+     * */
     public byte[] readCache() {
-        String contents = " ";
+        byte[] contents = null;
 
         try {
             lock.lock();
         } catch (CacheLockNotObtainedException ex) {
             System.out.println("issue in locking");
-            return contents.getBytes();
+            return contents;
         }
 
         try {
@@ -36,9 +50,14 @@ public abstract class CacheProtectorBase {
         }
 
         lock.unlock();
-        return contents.getBytes();
+        return contents;
     }
 
+    /**
+     * Obtains lock and uses protect() to read and encrypt contents of the cache
+     *
+     * @param data data to write to cache
+     * */
     public void writeCache(byte[] data) {
 
         try {
@@ -49,7 +68,7 @@ public abstract class CacheProtectorBase {
         }
 
         try {
-            protect(new String(data));
+            protect(data);
         } catch (IOException e) {
             System.out.println("issue in writing");
         }
@@ -57,13 +76,32 @@ public abstract class CacheProtectorBase {
         lock.unlock();
     }
 
-    protected String unprotect() throws IOException {
+    /**
+     * Decrypts data from cache
+     *
+     * @return byte[] of cache contents
+     *
+     * Overwritten by subclasses; each OS handles differently
+     * */
+    protected byte[] unprotect() throws IOException {
         return null;
     }
 
-    protected void protect(String data) throws IOException {
+    /**
+     * Encrypts data and writes to cache
+     *
+     * @param data
+     *
+     * Overwritten by subclasses; each OS handles differently
+     * */
+    protected void protect(byte[] data) throws IOException {
     }
 
+    /**
+     * Obtains lock and deletes cache using deleteCacheHelper()
+     *
+     * @return true if cache is deleted, false otherwise
+     * */
     public boolean deleteCache() {
         try {
             lock.lock();
@@ -78,6 +116,9 @@ public abstract class CacheProtectorBase {
         return true;
     }
 
+    /**
+     * Overwritten by subclasses; each OS handles differently
+     * */
     protected void deleteCacheHelper() {
     }
 }

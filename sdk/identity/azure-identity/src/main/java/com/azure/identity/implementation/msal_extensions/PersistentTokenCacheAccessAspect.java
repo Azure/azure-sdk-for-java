@@ -10,24 +10,37 @@ import com.microsoft.aad.msal4j.ITokenCacheAccessContext;
 
 import java.io.IOException;
 
-/*
- * Access Aspect for accessing the cache
+/**
+ * Access Aspect for accessing the token cache
  * Allows for notifications for the cache before/after access so the lock can be used
  * */
 public class PersistentTokenCacheAccessAspect implements ITokenCacheAccessAspect {
 
     private CachePersister cachePersister;
 
+    /**
+     * Default constructor, creates a CachePersister object
+     *
+     * @throws IOException from errors in creating the CachePersister
+     * @throws PlatformNotSupportedException  from errors in creating the CachePersister
+     * */
     public PersistentTokenCacheAccessAspect() throws IOException, PlatformNotSupportedException {
         cachePersister = new CachePersister.Builder().build();
     }
 
+    /**
+     * Constructor with a custom CachePersister object
+     *
+     * @param customCachePersister
+     * */
     public PersistentTokenCacheAccessAspect(CachePersister customCachePersister) {
         cachePersister = customCachePersister;
     }
 
-    /*
-     * Load token cache to memory - deserialize data in file to Token Cache class
+    /**
+     * Loads token cache to memory using CachePersister - deserialize data in file to Token Cache class
+     *
+     * @param  iTokenCacheAccessContext
      * */
     public void beforeCacheAccess(ITokenCacheAccessContext iTokenCacheAccessContext) {
 
@@ -37,8 +50,10 @@ public class PersistentTokenCacheAccessAspect implements ITokenCacheAccessAspect
         iTokenCacheAccessContext.tokenCache().deserialize(data);
     }
 
-    /*
-     * Read memory and write to token cache file
+    /**
+     * Reads memory and writes to token cache file using CachePersister
+     *
+     * @param iTokenCacheAccessContext
      * */
     public void afterCacheAccess(ITokenCacheAccessContext iTokenCacheAccessContext) {
 
@@ -48,6 +63,9 @@ public class PersistentTokenCacheAccessAspect implements ITokenCacheAccessAspect
         }
     }
 
+    /**
+     * Wrapper method to delete cache
+     * */
     public void deleteCache() {
         cachePersister.deleteCache();
     }
