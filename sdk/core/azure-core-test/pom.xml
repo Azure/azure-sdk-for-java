@@ -32,6 +32,10 @@
     <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
   </scm>
 
+  <properties>
+    <project.automatic.module.name>com.azure.core.test</project.automatic.module.name>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

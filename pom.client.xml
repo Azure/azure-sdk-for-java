@@ -107,6 +107,27 @@
 
   <build>
     <plugins>
+      <!-- Enforce Maven 3.6.1 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-maven</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>3.6.1</version>
+                </requireMavenVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <!-- This plugin scans checkstyle issues in the code -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -671,6 +692,32 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
               <additionalJOption>--no-module-directories</additionalJOption>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Add Automatic-Module-Name -->
+    <profile>
+      <id>modulename</id>
+      <activation>
+        <file>
+          <missing>src/main/java/module-info.java</missing>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <configuration>
+              <archive>
+                <manifestEntries>
+                  <!-- This value will be read out of each projects properties and inserted into its manifest -->
+                  <Automatic-Module-Name>${project.automatic.module.name}</Automatic-Module-Name>
+                </manifestEntries>
+              </archive>
             </configuration>
           </plugin>
         </plugins>
