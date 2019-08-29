@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.spock
 
+import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
@@ -17,15 +18,12 @@ import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.ListSharesOptions
 import spock.lang.Specification
 
-import java.nio.file.Files
-
 class APISpec extends Specification {
     // Field common used for all APIs.
     def logger = new ClientLogger(APISpec.class)
     def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     def tmpFolder = getClass().getClassLoader().getResource("tmptestfiles")
     def testFolder = getClass().getClassLoader().getResource("testfiles")
-   // def testFolder = "src/test/resources/testfiles/"
     def interceptorManager
     def testResourceName
 
@@ -51,7 +49,7 @@ class APISpec extends Specification {
         testResourceName = new TestResourceNamer(methodName, testMode,
             interceptorManager.getRecordedData())
         if (getTestMode() == TestMode.RECORD) {
-            connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING")
+            connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
         } else {
             connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;" +
                 "AccountKey=atestaccountkey;EndpointSuffix=core.windows.net"
@@ -102,6 +100,7 @@ class APISpec extends Specification {
         if (testMode == TestMode.RECORD) {
             return new FileServiceClientBuilder()
                 .connectionString(connectionString)
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
         } else {
             return new FileServiceClientBuilder()
@@ -115,6 +114,7 @@ class APISpec extends Specification {
             return new ShareClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
         } else {
             return new ShareClientBuilder()
@@ -130,6 +130,7 @@ class APISpec extends Specification {
                 .connectionString(connectionString)
                 .shareName(shareName)
                 .directoryPath(directoryPath)
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
         } else {
             return new DirectoryClientBuilder()
@@ -146,6 +147,7 @@ class APISpec extends Specification {
                 .connectionString(connectionString)
                 .shareName(shareName)
                 .filePath(filePath)
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
         } else {
             return new FileClientBuilder()

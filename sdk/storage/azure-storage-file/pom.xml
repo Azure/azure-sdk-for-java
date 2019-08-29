@@ -32,6 +32,10 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <project.automatic.module.name>com.azure.storage.file</project.automatic.module.name>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
@@ -64,6 +68,11 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.0.0-preview.4</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

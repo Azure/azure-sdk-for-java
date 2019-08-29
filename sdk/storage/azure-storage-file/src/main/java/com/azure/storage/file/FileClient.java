@@ -15,7 +15,6 @@ import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
-import com.azure.storage.file.models.FileRangeWriteType;
 import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageErrorException;
@@ -430,7 +429,7 @@ public class FileClient {
      *
      * <p>Set the metadata to "file:updatedMetadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setMetadata#map}
+     * {@codesnippet com.azure.storage.file.fileClient.setMetadataWithResponse#map-Context}
      *
      * <p>Clear the metadata of the file</p>
      *
@@ -453,9 +452,9 @@ public class FileClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Upload "default" to the file. </p>
+     * <p>Upload data "default" to the file in Storage File Service. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.upload#flux-long}
+     * {@codesnippet com.azure.storage.file.fileClient.upload#bytebuffer-long}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -476,7 +475,7 @@ public class FileClient {
      *
      * <p>Upload "default" to the file. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.uploadWithResponse#flux-long}
+     * {@codesnippet com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -496,27 +495,62 @@ public class FileClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Upload the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
+     * <p>Upload data "default" starting from 1024. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-int-filerangewritetype-Context}
+     * {@codesnippet com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-long-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
+     * @param length Specifies the number of bytes being transmitted in the request body.
      * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code null}
-     * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is set to clear, the value of this header must be set to zero.
-     * @param type You may specify one of the following options:
-     * <ul>
-     *      <li>Update: Writes the bytes specified by the request body into the specified range.</li>
-     *      <li>Clear: Clears the specified range and releases the space used in storage for that range. To clear a range, set the Content-Length header to zero.</li>
-     * </ul>
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileUploadInfo file upload info} with headers and response status code
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
-    public Response<FileUploadInfo> uploadWithResponse(ByteBuffer data, long length, int offset, FileRangeWriteType type, Context context) {
-        return fileAsyncClient.uploadWithResponse(Flux.just(data), length, offset, type, context).block();
+    public Response<FileUploadInfo> uploadWithResponse(ByteBuffer data, long length, long offset, Context context) {
+        return fileAsyncClient.uploadWithResponse(Flux.just(data), length, offset, context).block();
+    }
+
+    /**
+     * Clears a range of bytes to specific of a file in storage file service. Clear operations performs an in-place write on the specified file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Clears the first 1024 bytes. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileClient.clearRange#long}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param length Specifies the number of bytes being cleared.
+     * @return The {@link FileUploadInfo file upload info}
+     */
+    public FileUploadInfo clearRange(long length) {
+        return clearRangeWithResponse(length, 0, Context.NONE).value();
+    }
+
+    /**
+     * Clears a range of bytes to specific of a file in storage file service. Upload operations performs an in-place write on the specified file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Clear the range starting from 1024 with length of 1024. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileClient.clearRangeWithResponse#long-long-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param length Specifies the number of bytes being transmitted in the request body.
+     * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code null}
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the {@link FileUploadInfo file upload info} with headers and response status code
+     */
+    public Response<FileUploadInfo> clearRangeWithResponse(long length, long offset, Context context) {
+        return fileAsyncClient.clearRangeWithResponse(length, offset, context).block();
     }
 
     /**
@@ -536,32 +570,7 @@ public class FileClient {
      * @param uploadFilePath The path where store the source file to upload
      */
     public void uploadFromFile(String uploadFilePath) {
-        uploadFromFile(uploadFilePath, FileRangeWriteType.UPDATE);
-    }
-
-    /**
-     * Uploads file to storage file service.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p> Upload the file from the source file path. </p>
-     *
-     * {@codesnippet com.azure.storage.file.fileClient.uploadFromFile#string-filerangewritetype}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs Create File</a>
-     * and
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs Upload</a>.</p>
-     *
-     * @param uploadFilePath The path where store the source file to upload
-     * @param type You may specify one of the following options:
-     * <ul>
-     *      <li>Update: Writes the bytes specified by the request body into the specified range.</li>
-     *      <li>Clear: Clears the specified range and releases the space used in storage for that range. To clear a range, set the Content-Length header to zero.</li>
-     * </ul>
-     */
-    public void uploadFromFile(String uploadFilePath, FileRangeWriteType type) {
-        fileAsyncClient.uploadFromFile(uploadFilePath, type).block();
+        fileAsyncClient.uploadFromFile(uploadFilePath).block();
     }
 
     /**
@@ -640,8 +649,6 @@ public class FileClient {
 
     /**
      * Closes a handle or handles opened on a file at the service. It is intended to be used alongside {@link FileClient#listHandles()} (Integer)} .
-     * TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
-     * TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -656,6 +663,8 @@ public class FileClient {
      * @return The counts of number of handles closed
      */
     public Iterable<Integer> forceCloseHandles(String handleId) {
+        // TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
+        // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
         return fileAsyncClient.forceCloseHandles(handleId).toIterable();
     }
 

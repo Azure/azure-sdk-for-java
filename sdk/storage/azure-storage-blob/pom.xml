@@ -32,6 +32,10 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <project.automatic.module.name>com.azure.storage.blob</project.automatic.module.name>
+  </properties>
+
   <pluginRepositories>
     <pluginRepository>
       <id>bintray</id>
@@ -90,11 +94,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <scope>test</scope>
@@ -117,11 +116,6 @@
     <dependency>
       <groupId>cglib</groupId>
       <artifactId>cglib-nodep</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>uk.org.lidalia</groupId>
-      <artifactId>slf4j-test</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -305,7 +305,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.setMetadata#map
         directoryAsyncClient.setMetadata(Collections.singletonMap("directory", "updatedMetadata"))
-            .subscribe(response -> System.out.printf("Setting the directory metadata completed."));
+            .subscribe(response -> System.out.println("Setting the directory metadata completed."));
         // END: com.azure.storage.file.directoryAsyncClient.setMetadata#map
     }
 
@@ -316,7 +316,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.setMetadata#map.clearMetadata
         directoryAsyncClient.setMetadata(null)
-            .doOnSuccess(response ->  System.out.printf("Clearing the directory metadata compleetd"));
+            .doOnSuccess(response ->  System.out.println("Clearing the directory metadata completed"));
         // END: com.azure.storage.file.directoryAsyncClient.setMetadata#map.clearMetadata
     }
 
@@ -339,21 +339,21 @@ public class DirectoryAsyncJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.setMetadataWithResponse#map
         directoryAsyncClient.setMetadataWithResponse(Collections.singletonMap("directory", "updatedMetadata"))
-            .subscribe(response -> System.out.printf("Setting the directory metadata completed with status code:"
+            .subscribe(response -> System.out.println("Setting the directory metadata completed with status code:"
                 + response.statusCode()));
         // END: com.azure.storage.file.directoryAsyncClient.setMetadataWithResponse#map
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#getHandles(Integer, boolean)}
+     * Generates a code sample for using {@link DirectoryAsyncClient#listHandles(Integer, boolean)}
      */
-    public void getHandlesAsync() {
+    public void listHandlesAsync() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.getHandles
-        directoryAsyncClient.getHandles(10, true)
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean
+        directoryAsyncClient.listHandles(10, true)
             .subscribe(handleItem -> System.out.printf("Get handles completed with handle id %s",
                 handleItem.handleId()));
-        // END: com.azure.storage.file.directoryAsyncClient.getHandles
+        // END: com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean
     }
 
     /**
@@ -362,12 +362,9 @@ public class DirectoryAsyncJavaDocCodeSamples {
     public void forceCloseHandlesAsync() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.forceCloseHandles
-        directoryAsyncClient.getHandles(10, true)
-            .subscribe(handleItem -> {
-                directoryAsyncClient.forceCloseHandles(handleItem.handleId(), true)
-                    .subscribe(numOfClosedHandles ->
-                    System.out.printf("Close %d handles.", numOfClosedHandles));
-            });
+        directoryAsyncClient.listHandles(10, true)
+            .subscribe(handleItem -> directoryAsyncClient.forceCloseHandles(handleItem.handleId(), true)
+                .subscribe(numOfClosedHandles -> System.out.printf("Closed %d handles.", numOfClosedHandles)));
         // END: com.azure.storage.file.directoryAsyncClient.forceCloseHandles
     }
 
@@ -384,7 +381,8 @@ public class DirectoryAsyncJavaDocCodeSamples {
             .directoryPath("mydirectory")
             .snapshot(currentTime.toString())
             .buildAsyncClient();
-        directoryAsyncClient.getShareSnapshotId();
+
+        System.out.printf("Snapshot ID: %s%n", directoryAsyncClient.getShareSnapshotId());
         // END: com.azure.storage.file.directoryAsyncClient.getShareSnapshotId
     }
 }

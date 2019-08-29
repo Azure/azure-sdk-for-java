@@ -94,8 +94,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
         accessConditions = (accessConditions == null) ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null,
-            null, 0, null, metadata, null, null, null,
-            null, null, headers, accessConditions.leaseAccessConditions(), null,
+            null, 0, null, metadata, null, headers, accessConditions.leaseAccessConditions(), null,
             accessConditions.modifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
     }
@@ -140,8 +139,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
             : appendBlobAccessConditions;
 
         return postProcessResponse(this.azureBlobStorage.appendBlobs().appendBlockWithRestResponseAsync(
-            null, null, data, length, null, null, null,
-            null, null, null, null,
+            null, null, data, length, null, null, null, null,
             appendBlobAccessConditions.leaseAccessConditions(),
             appendBlobAccessConditions.appendPositionAccessConditions(), null,
             appendBlobAccessConditions.modifiedAccessConditions(), context))
@@ -193,7 +191,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
 
         return postProcessResponse(
             this.azureBlobStorage.appendBlobs().appendBlockFromUrlWithRestResponseAsync(null, null,
-                sourceURL, 0, sourceRange.toString(), sourceContentMD5, null, null, null, null,
+                sourceURL, 0, sourceRange.toString(), sourceContentMD5, null, null, null, null, null,
                 destAccessConditions.leaseAccessConditions(),
                 destAccessConditions.appendPositionAccessConditions(),
                 destAccessConditions.modifiedAccessConditions(), sourceAccessConditions, context))

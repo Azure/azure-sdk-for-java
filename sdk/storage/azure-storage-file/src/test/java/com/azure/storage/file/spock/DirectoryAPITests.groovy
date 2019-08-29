@@ -225,7 +225,7 @@ class DirectoryAPITests extends APISpec {
         given:
         primaryDirectoryClient.create()
         expect:
-        primaryDirectoryClient.getHandles(maxResult, recursive).size() == 0
+        primaryDirectoryClient.listHandles(maxResult, recursive).size() == 0
         where:
         maxResult | recursive
         2         | true
@@ -234,7 +234,7 @@ class DirectoryAPITests extends APISpec {
 
     def "List handles error"() {
         when:
-        primaryDirectoryClient.getHandles(null, true)
+        primaryDirectoryClient.listHandles(null, true)
         then:
         def e = thrown(StorageErrorException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)

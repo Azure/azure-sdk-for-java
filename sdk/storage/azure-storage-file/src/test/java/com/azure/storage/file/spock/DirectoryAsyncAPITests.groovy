@@ -214,7 +214,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.getHandles(maxResult, recursive)).verifyComplete()
+        StepVerifier.create(primaryDirectoryAsyncClient.listHandles(maxResult, recursive)).verifyComplete()
         where:
         maxResult | recursive
         2         | true
@@ -223,7 +223,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "List handles error"() {
         when:
-        def listHandesVerifier = StepVerifier.create(primaryDirectoryAsyncClient.getHandles(null, true))
+        def listHandesVerifier = StepVerifier.create(primaryDirectoryAsyncClient.listHandles(null, true))
         then:
         listHandesVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
