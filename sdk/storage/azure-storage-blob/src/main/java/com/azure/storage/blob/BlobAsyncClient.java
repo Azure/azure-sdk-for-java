@@ -531,8 +531,8 @@ public class BlobAsyncClient {
 
     Mono<Void> downloadToFile(String filePath, BlobRange range, Integer blockSize, ReliableDownloadOptions options,
                               BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Context context) {
-        if (blockSize != null && (blockSize < 0 || blockSize > BLOB_MAX_DOWNLOAD_BLOCK_SIZE)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Block size should not exceed 100MB"));
+        if (blockSize != null) {
+            Utility.assertInBounds("blockSize", blockSize, 0, BLOB_MAX_DOWNLOAD_BLOCK_SIZE);
         }
 
         return Mono.using(() -> downloadToFileResourceSupplier(filePath),
