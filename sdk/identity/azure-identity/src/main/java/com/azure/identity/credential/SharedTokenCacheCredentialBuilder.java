@@ -13,11 +13,25 @@ public class SharedTokenCacheCredentialBuilder extends CredentialBuilderBase<Man
     private String username;
 
 
+    /**
+     * Sets clientId
+     *
+     * @param clientId client id for application
+     *
+     * @return SharedTokenCacheCredentialBuilder
+     * */
     public SharedTokenCacheCredentialBuilder clientId(String clientId) {
         this.clientId = clientId;
         return this;
     }
 
+    /**
+     * Sets username
+     *
+     * @param username username for user account
+     *
+     * @return SharedTokenCacheCredentialBuilder
+     * */
     public SharedTokenCacheCredentialBuilder username(String username) {
         this.username = username;
         return this;

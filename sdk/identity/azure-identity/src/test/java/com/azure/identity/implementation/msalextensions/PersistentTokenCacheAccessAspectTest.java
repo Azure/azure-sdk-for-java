@@ -1,10 +1,9 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.azure.identity.implementation.msalExtensionsTests;
+package com.azure.identity.implementation.msalextensions;
 
-import com.azure.identity.implementation.msal_extensions.PersistentTokenCacheAccessAspect;
-import com.azure.identity.implementation.msal_extensions.cachePersister.CachePersister;
+import com.azure.identity.implementation.msalextensions.cachepersister.CachePersister;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.microsoft.aad.msal4j.*;

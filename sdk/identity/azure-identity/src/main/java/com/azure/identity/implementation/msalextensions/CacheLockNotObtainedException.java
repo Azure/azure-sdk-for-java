@@ -1,7 +1,7 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.azure.identity.implementation.msal_extensions;
+package com.azure.identity.implementation.msalextensions;
 
 /**
  * Exception for when the {@link CacheLock} cannot be obtained when trying cacheLock.lock()

@@ -1,9 +1,9 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.azure.identity.implementation.msal_extensions.cachePersister.windows;
+package com.azure.identity.implementation.msalextensions.cachepersister.windows;
 
-import com.azure.identity.implementation.msal_extensions.cachePersister.CacheProtectorBase;
+import com.azure.identity.implementation.msalextensions.cachepersister.CacheProtectorBase;
 import com.sun.jna.platform.win32.Crypt32Util;
 
 import java.io.File;
@@ -16,8 +16,8 @@ import java.io.IOException;
  * */
 public class WindowsDPAPICacheProtector extends CacheProtectorBase {
 
-    private String CACHE_FILENAME;
-    private File cache_file;
+    private final String cacheFilename;
+    private File cacheFile;
 
     /**
      * Constructor to initialize WindowsDPAPICacheProtector
@@ -26,12 +26,12 @@ public class WindowsDPAPICacheProtector extends CacheProtectorBase {
      * @param cacheLocation
      * @param lockfileLocation
      *
-     * @throws IOException if cache_file File isn't created
+     * @throws IOException if cacheFile File isn't created
      * */
     public WindowsDPAPICacheProtector(String cacheLocation, String lockfileLocation) throws IOException {
         super(lockfileLocation);
-        CACHE_FILENAME = cacheLocation;
-        cache_file = new File(CACHE_FILENAME);
+        cacheFilename = cacheLocation;
+        cacheFile = new File(cacheFilename);
 
         makeSureFileExists();
     }
@@ -44,14 +44,14 @@ public class WindowsDPAPICacheProtector extends CacheProtectorBase {
     protected byte[] unprotect() throws IOException {
         makeSureFileExists();
 
-        byte[] encrypted_bytes = new byte[(int) cache_file.length()];
+        byte[] encryptedBytes = new byte[(int) cacheFile.length()];
 
-        FileInputStream stream = new FileInputStream(cache_file);
-        stream.read(encrypted_bytes);
+        FileInputStream stream = new FileInputStream(cacheFile);
+        stream.read(encryptedBytes);
         stream.close();
 
-        byte[] decrypted_bytes = Crypt32Util.cryptUnprotectData(encrypted_bytes);
-        return decrypted_bytes;
+        byte[] decryptedBytes = Crypt32Util.cryptUnprotectData(encryptedBytes);
+        return decryptedBytes;
     }
 
     /**
@@ -62,10 +62,10 @@ public class WindowsDPAPICacheProtector extends CacheProtectorBase {
     protected void protect(byte[] data) throws IOException {
         makeSureFileExists();
 
-        byte[] encrypted_bytes = Crypt32Util.cryptProtectData(data);
+        byte[] encryptedBytes = Crypt32Util.cryptProtectData(data);
 
-        FileOutputStream stream = new FileOutputStream(cache_file);
-        stream.write(encrypted_bytes);
+        FileOutputStream stream = new FileOutputStream(cacheFile);
+        stream.write(encryptedBytes);
         stream.close();
     }
 
@@ -74,8 +74,8 @@ public class WindowsDPAPICacheProtector extends CacheProtectorBase {
      * Just a backup in case the cache was deleted
      * */
     private void makeSureFileExists() throws IOException {
-        if (!cache_file.exists()) {
-            cache_file.createNewFile();
+        if (!cacheFile.exists()) {
+            cacheFile.createNewFile();
             protect(" ".getBytes());
         }
     }
@@ -84,7 +84,7 @@ public class WindowsDPAPICacheProtector extends CacheProtectorBase {
      * Deletes the cache file
      * */
     public void deleteCacheHelper() {
-        cache_file.delete();
+        cacheFile.delete();
     }
 
 }

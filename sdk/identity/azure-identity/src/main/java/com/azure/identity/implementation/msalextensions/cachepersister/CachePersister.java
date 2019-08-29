@@ -1,9 +1,9 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.azure.identity.implementation.msal_extensions.cachePersister;
+package com.azure.identity.implementation.msalextensions.cachepersister;
 
-import com.azure.identity.implementation.msal_extensions.cachePersister.windows.WindowsDPAPICacheProtector;
+import com.azure.identity.implementation.msalextensions.cachepersister.windows.WindowsDPAPICacheProtector;
 import com.sun.jna.Platform;
 
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.io.IOException;
  * Determines the type of CacheProtector to use (if possible) and instantiates it
  * Also contains wrapper methods for read, write, and delete cache
  * */
-public class CachePersister {
+public final class CachePersister {
 
     private CacheProtectorBase cacheProtector;
 

@@ -1,7 +1,9 @@
-package com.azure.identity.implementation.msalExtensionsTests;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-import com.azure.identity.implementation.msal_extensions.PersistentTokenCacheAccessAspect;
-import com.azure.identity.implementation.msal_extensions.cachePersister.CachePersister;
+package com.azure.identity.implementation.msalextensions;
+
+import com.azure.identity.implementation.msalextensions.cachepersister.CachePersister;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -36,7 +38,7 @@ public class CrossProgramVSTest {
 
     @Before
     public void setup() throws Exception {
-        //using the default cachePersister and accessAspect objects
+        //using the default cachepersister and accessAspect objects
         cachePersister = new CachePersister.Builder().build();
         accessAspect = new PersistentTokenCacheAccessAspect();
 
@@ -98,7 +100,7 @@ public class CrossProgramVSTest {
     }
 
     @Test
-    public void CountCache() {
+    public void countCache() {
         byte[] currJsonBytes = cachePersister.readCache();
         String currJson = new String(currJsonBytes);
 

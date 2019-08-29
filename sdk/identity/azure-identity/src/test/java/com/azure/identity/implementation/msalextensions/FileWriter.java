@@ -1,9 +1,7 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.azure.identity.implementation.msalExtensionsTests;
-
-import com.azure.identity.implementation.msal_extensions.CacheLock;
+package com.azure.identity.implementation.msalextensions;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,8 +24,9 @@ public class FileWriter {
         try {
             lock.lock();
 
-            if (!file.exists())
+            if (!file.exists()) {
                 file.createNewFile();
+            }
             FileOutputStream os = new FileOutputStream(file, true);
 
             os.write(("< " + args[0] + "\n").getBytes());

@@ -1,9 +1,13 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.azure.identity.implementation.msal_extensions;
+package com.azure.identity.implementation.msalextensions;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
@@ -17,10 +21,10 @@ import java.util.Random;
  * */
 public class CacheLock {
 
-    private int LockfileRetryWait = 100;
-    private int LockfileRetryCount = 60000 / LockfileRetryWait;
+    private int lockfileRetryWait = 100;
+    private int lockfileRetryCount = 60000 / lockfileRetryWait;
 
-    private File LOCK_FILE;
+    private File lockFile;
 
     private FileOutputStream fos;
     private FileChannel channel;
@@ -28,7 +32,7 @@ public class CacheLock {
 
     private File debugFile;
     private String debugFilename = java.nio.file.Paths.get(System.getProperty("user.home"), "Desktop", "debug").toString();
-    private boolean DEBUG_FLAG = false;
+    private final boolean debugFlag;
 
     /**
      * Default constructor to be used to initialize CacheLock
@@ -36,7 +40,8 @@ public class CacheLock {
      * @param lockfileName path of the lock file to be used
      * */
     public CacheLock(String lockfileName) {
-        LOCK_FILE = new File(lockfileName);
+        lockFile = new File(lockfileName);
+        debugFlag = false;
     }
 
     /**
@@ -47,22 +52,22 @@ public class CacheLock {
      * @param id name of the current process so
      * */
     public CacheLock(String lockfileName, String id) {
-        LOCK_FILE = new File(lockfileName);
+        lockFile = new File(lockfileName);
         debugFile = new File(debugFilename + id + ".txt");
-        DEBUG_FLAG = true;
+        debugFlag = true;
     }
 
     /**
-     * Tries to obtain the lock by creating a file lock on the provided LOCK_FILE
-     * If it cannot be obtained right away, it retries LockfileRetryCount = 60000 / LockfileRetryWait times
+     * Tries to obtain the lock by creating a file lock on the provided lockFile
+     * If it cannot be obtained right away, it retries lockfileRetryCount = 60000 / lockfileRetryWait times
      *
      * @throws CacheLockNotObtainedException if the lock cannot be obtained after all these tries.
      * */
     public void lock() throws CacheLockNotObtainedException {
         try {
-            for (int tryCount = 0; tryCount < LockfileRetryCount; tryCount++) {
+            for (int tryCount = 0; tryCount < lockfileRetryCount; tryCount++) {
 
-                if (DEBUG_FLAG) {
+                if (debugFlag) {
                     try {
                         fos = new FileOutputStream(debugFile, true);
                     } catch (FileNotFoundException e) {
@@ -70,12 +75,12 @@ public class CacheLock {
                     }
                 }
 
-                if (!LOCK_FILE.exists()) {    // file doesn't already exist so now you have to make a new one
-                    if (LOCK_FILE.createNewFile()) {
-                        LOCK_FILE.deleteOnExit();
+                if (!lockFile.exists()) {    // file doesn't already exist so now you have to make a new one
+                    if (lockFile.createNewFile()) {
+                        lockFile.deleteOnExit();
 
                         try {
-                            channel = new RandomAccessFile(LOCK_FILE, "rw").getChannel();
+                            channel = new RandomAccessFile(lockFile, "rw").getChannel();
                             lock = channel.tryLock();
 
                             printToFileIfDebug("Locked!\n");
@@ -100,7 +105,7 @@ public class CacheLock {
                     Random rand = new Random(System.currentTimeMillis());
                     int offset = rand.nextInt(10);
                     // slight offset in case multiple threads/processes have the same wait time
-                    Thread.sleep(LockfileRetryWait + offset);
+                    Thread.sleep(lockfileRetryWait + offset);
                 } catch (InterruptedException ex) {
                     printToFileIfDebug("thread sleep issue");
                 }
@@ -122,7 +127,7 @@ public class CacheLock {
         try {
             lock.release();
             channel.close();
-            Files.delete(java.nio.file.Paths.get(LOCK_FILE.getPath()));
+            Files.delete(java.nio.file.Paths.get(lockFile.getPath()));
 
             printToFileIfDebug("unlocked\n");
 
@@ -134,10 +139,10 @@ public class CacheLock {
     }
 
     /**
-     * If DEBUG_FLAG is true, then this will print logs to the file, otherwise it will do nothing
+     * If debugFlag is true, then this will print logs to the file, otherwise it will do nothing
      */
     private void printToFileIfDebug(String message) {
-        if (DEBUG_FLAG && fos != null) {
+        if (debugFlag && fos != null) {
             try {
                 fos.write(message.getBytes());
             } catch (IOException e) {

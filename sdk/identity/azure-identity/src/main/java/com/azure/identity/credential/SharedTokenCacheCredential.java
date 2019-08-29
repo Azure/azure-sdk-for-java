@@ -11,7 +11,7 @@ import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalToken;
-import com.azure.identity.implementation.msal_extensions.PersistentTokenCacheAccessAspect;
+import com.azure.identity.implementation.msalextensions.PersistentTokenCacheAccessAspect;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.PublicClientApplication;
@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Immutable
 public class SharedTokenCacheCredential implements TokenCredential {
-    private String username;
+    private final String username;
     private final String clientID;
     private final IdentityClientOptions identityClientOptions;
     private final Configuration configuration;
@@ -49,10 +49,19 @@ public class SharedTokenCacheCredential implements TokenCredential {
      * @param clientID the client ID of the application
      * @param identityClientOptions the options for configuring the identity client
      */
-    SharedTokenCacheCredential(String username, String clientID, IdentityClientOptions identityClientOptions){
+    SharedTokenCacheCredential(String username, String clientID, IdentityClientOptions identityClientOptions) {
         this.configuration = ConfigurationManager.getConfiguration().clone();
 
-        this.username = username;
+        if (username == null) {
+            if (configuration.contains(BaseConfigurations.AZURE_USERNAME)) {
+                this.username = configuration.get(BaseConfigurations.AZURE_USERNAME);
+            } else {
+                this.username = null;
+            }
+        } else {
+            this.username = username;
+        }
+
         this.clientID = clientID;
         this.identityClientOptions = identityClientOptions;
 
@@ -62,8 +71,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
 
         try {
             accessAspect = new PersistentTokenCacheAccessAspect();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             pubClient = null;
             return;
         }
@@ -76,30 +84,25 @@ public class SharedTokenCacheCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
 
+        if (username == null) {
+            return Mono.error(new RuntimeException("No username provided"));
+        }
+
         IAccount requestedAccount = null;
 
         // find if the Public Client app with the requested username exists
         Collection<IAccount> accounts = pubClient.getAccounts().join();
         Iterator<IAccount> iter = accounts.iterator();
 
-        if(username == null) {
-            if (configuration.contains(BaseConfigurations.AZURE_USERNAME)) {
-                username = configuration.get(BaseConfigurations.AZURE_USERNAME);
-
-            }else{
-                return Mono.error(new RuntimeException("No username provided"));
-            }
-        }
-
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             IAccount account =  iter.next();
-            if(account.username().equals(username)) {
+            if (account.username().equals(username)) {
                 requestedAccount = account;
                 break;
             }
         }
 
-        if(requestedAccount == null) {
+        if (requestedAccount == null) {
             return Mono.error(new RuntimeException("Requested account was not found"));
         }
 
@@ -110,8 +113,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
         try {
             future = pubClient.acquireTokenSilently(params);
             return Mono.fromFuture(() -> future).map(result ->
-                new AccessToken(result.accessToken(), result.expiresOnDate().toInstant().atOffset(ZoneOffset.UTC)) );
-
+                new AccessToken(result.accessToken(), result.expiresOnDate().toInstant().atOffset(ZoneOffset.UTC)));
 
         } catch (MalformedURLException e) {
             e.printStackTrace();

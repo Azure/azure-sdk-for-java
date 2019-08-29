@@ -1,10 +1,10 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.azure.identity.implementation.msal_extensions.cachePersister;
+package com.azure.identity.implementation.msalextensions.cachepersister;
 
-import com.azure.identity.implementation.msal_extensions.CacheLock;
-import com.azure.identity.implementation.msal_extensions.CacheLockNotObtainedException;
+import com.azure.identity.implementation.msalextensions.CacheLock;
+import com.azure.identity.implementation.msalextensions.CacheLockNotObtainedException;
 
 import java.io.IOException;
 
@@ -14,7 +14,7 @@ import java.io.IOException;
  * */
 public abstract class CacheProtectorBase {
 
-    private String LOCKFILE_LOCATION;
+    private String lockfileLocation;
     private CacheLock lock;
 
 
@@ -23,8 +23,8 @@ public abstract class CacheProtectorBase {
      * initializes cacheLock
      * */
     public CacheProtectorBase(String lockfileLocation) {
-        this.LOCKFILE_LOCATION = lockfileLocation;
-        lock = new CacheLock(LOCKFILE_LOCATION);
+        this.lockfileLocation = lockfileLocation;
+        lock = new CacheLock(this.lockfileLocation);
     }
 
     /**

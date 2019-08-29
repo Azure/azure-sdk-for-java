@@ -1,7 +1,7 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.azure.identity.implementation.msal_extensions.cachePersister;
+package com.azure.identity.implementation.msalextensions.cachepersister;
 
 /**
  * Exception for when the current OS is not supported by {@link CachePersister}

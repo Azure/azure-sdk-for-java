@@ -1,10 +1,10 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.azure.identity.implementation.msal_extensions;
+package com.azure.identity.implementation.msalextensions;
 
-import com.azure.identity.implementation.msal_extensions.cachePersister.CachePersister;
-import com.azure.identity.implementation.msal_extensions.cachePersister.PlatformNotSupportedException;
+import com.azure.identity.implementation.msalextensions.cachepersister.CachePersister;
+import com.azure.identity.implementation.msalextensions.cachepersister.PlatformNotSupportedException;
 import com.microsoft.aad.msal4j.ITokenCacheAccessAspect;
 import com.microsoft.aad.msal4j.ITokenCacheAccessContext;
 

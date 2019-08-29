@@ -1,9 +1,9 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.azure.identity.implementation.msalExtensionsTests;
+package com.azure.identity.implementation.msalextensions;
 
-import com.azure.identity.implementation.msal_extensions.cachePersister.CachePersister;
+import com.azure.identity.implementation.msalextensions.cachepersister.CachePersister;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
