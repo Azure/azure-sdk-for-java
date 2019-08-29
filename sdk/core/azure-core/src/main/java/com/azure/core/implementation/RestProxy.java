@@ -146,19 +146,16 @@ public class RestProxy implements InvocationHandler {
                 methodParser = methodParser(method);
                 request = createHttpRequest(methodParser, args);
                 Context context = methodParser.context(args).addData("caller-method", methodParser.fullyQualifiedMethodName());
-                final Context context1 = startTracingSpan(method, context);
+                context = startTracingSpan(method, context);
 
                 if (request.body() != null) {
                     request.body(validateLength(request, request.body()));
                 }
-               final Mono<HttpResponse> asyncResponse = send(request, context1);
-               // final Mono<HttpResponse> asyncResponse = send(request, context1);
-               // final Mono<HttpResponse> asyncResponse = validateLength(request).then(send(request, context1));
-//                final Mono<HttpResponse> asyncResponse = validateLength(request)
-//                    .then(this.send(request, context));
+
+                final Mono<HttpResponse> asyncResponse = send(request, context);
 
                 Mono<HttpDecodedResponse> asyncDecodedResponse = this.decoder.decode(asyncResponse, methodParser);
-                //
+
                 return handleHttpResponse(request, asyncDecodedResponse, methodParser, methodParser.returnType(), context);
             }
 
@@ -175,46 +172,64 @@ public class RestProxy implements InvocationHandler {
             @Override
             public Publisher<ByteBuffer> get() {
                 Long expectedLength = Long.valueOf(request.headers().value("Content-Length"));
-                Mono<byte[]> bbMono = FluxUtil.collectBytesInByteBufferStream(bbFlux).doOnNext(actualLength -> {
-                    if (actualLength.length > expectedLength) {
-                        throw new UnexpectedLengthException(
-                            String.format("Request body emitted more bytes than the expected %d bytes.",
-                                expectedLength), actualLength.length, expectedLength);
-                    } else if (actualLength.length < expectedLength) {
-                        throw new UnexpectedLengthException(
-                            String.format("Request body emitted less bytes than the expected %d bytes.",
-                                expectedLength), actualLength.length, expectedLength);
-                    }
-                });
-
-                return bbMono.flatMapMany(new Function<byte[], Publisher<ByteBuffer>>() {
-                    @Override
-                    public Publisher<ByteBuffer> apply(final byte[] bytes) {
-                        return Flux.just(ByteBuffer.wrap(bytes));
+                List<Integer> bufferLengthList = new ArrayList<>();
+                return bbFlux.doOnEach(s -> {
+                    if (s.isOnNext()) {
+                        Long currentTotalLength = Long.valueOf(
+                            bufferLengthList.stream().reduce(Integer::sum).orElse(0)) + s.get().remaining();
+                        if (currentTotalLength > expectedLength) {
+                            throw new UnexpectedLengthException(
+                            String.format("Request body emitted %d bytes more than the expected %d bytes.",
+                                currentTotalLength, expectedLength), currentTotalLength, expectedLength);
+                        }
+                        bufferLengthList.add(s.get().remaining());
+                    } else if (s.isOnComplete()) {
+                        Long currentTotalLength = Long.valueOf(
+                            bufferLengthList.stream().reduce(Integer::sum).orElse(0));
+                        if (expectedLength.compareTo(currentTotalLength) != 0) {
+                            throw new UnexpectedLengthException(
+                            String.format("Request body emitted %d bytes less than the expected %d bytes.",
+                                currentTotalLength, expectedLength), currentTotalLength, expectedLength);
+                        }
+                    } else {
+                        logger.logExceptionAsError(new RuntimeException("Error occurs when validating "
+                            + "the request body legnth and the header content length. Error details: "
+                            + s.getThrowable().getMessage()));
                     }
                 });
             }
         });
     }
 
-    private Mono<HttpRequest> validateLength(final HttpRequest request) {
-        Flux<ByteBuffer> body = request.body();
-        if (body == null) {
-            return Mono.empty();
-        }
-        Long expectedLength = Long.valueOf(request.headers().value("Content-Length"));
-        return FluxUtil.collectBytesInByteBufferStream(body).doOnNext(actualLength -> {
-                if (actualLength.length > expectedLength) {
-                    throw new UnexpectedLengthException(
-                        String.format("Request body emitted more bytes than the expected %d bytes.",
-                            expectedLength), actualLength.length, expectedLength);
-                } else if (actualLength.length < expectedLength) {
-                    throw new UnexpectedLengthException(
-                        String.format("Request body emitted less bytes than the expected %d bytes.",
-                            expectedLength), actualLength.length, expectedLength);
-                }
-            }).then(Mono.just(request));
-    }
+//    private Flux<ByteBuffer> validateLength(final HttpRequest request, final Flux<ByteBuffer> bbFlux) {
+//        if (bbFlux == null) {
+//            return Flux.empty();
+//        }
+//        return Flux.defer(new Supplier<Publisher<ByteBuffer>>() {
+//            @Override
+//            public Publisher<ByteBuffer> get() {
+//                Long expectedLength = Long.valueOf(request.headers().value("Content-Length"));
+//                Mono<byte[]> bbMono = FluxUtil.collectBytesInByteBufferStream(bbFlux).doOnNext(actualLength -> {
+//                    if (actualLength.length > expectedLength) {
+//                        throw new UnexpectedLengthException(
+//                            String.format("Request body emitted more bytes than the expected %d bytes.",
+//                                expectedLength), actualLength.length, expectedLength);
+//                    } else if (actualLength.length < expectedLength) {
+//                        throw new UnexpectedLengthException(
+//                            String.format("Request body emitted less bytes than the expected %d bytes.",
+//                                expectedLength), actualLength.length, expectedLength);
+//                    }
+//                });
+//
+//                return bbMono.flatMapMany(new Function<byte[], Publisher<ByteBuffer>>() {
+//                    @Override
+//                    public Publisher<ByteBuffer> apply(final byte[] bytes) {
+//                        return Flux.just(ByteBuffer.wrap(bytes));
+//                    }
+//                });
+//            }
+//        });
+//    }
 
     private int len(ByteBuffer input) {
         int result = input.remaining();

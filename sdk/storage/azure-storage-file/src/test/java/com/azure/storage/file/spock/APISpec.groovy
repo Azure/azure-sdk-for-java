@@ -21,8 +21,6 @@ import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.ListSharesOptions
 import spock.lang.Specification
 
-import java.util.function.Supplier
-
 class APISpec extends Specification {
     // Field common used for all APIs.
     def logger = new ClientLogger(APISpec.class)

@@ -158,8 +158,8 @@ class FileAsyncAPITests extends APISpec {
         defaultData.clear()
         where:
         size | errMsg
-        6 | "more bytes than"
-        8 | "less bytes than"
+        6 | "more than"
+        8 | "less than"
     }
 
     def "Download data error"() {
@@ -242,8 +242,8 @@ class FileAsyncAPITests extends APISpec {
     def "Upload and download file"() {
         given:
         def testFolder = getClass().getClassLoader().getResource("testfiles")
-        File uploadFile = new File(testFolder.getPath(), "/helloworld")
-        File downloadFile = new File(testFolder.getPath(), "/testDownload")
+        File uploadFile = new File(testFolder.getPath(), "helloworld")
+        File downloadFile = new File(testFolder.getPath(), "testDownload")
 
         if (!Files.exists(downloadFile.toPath())) {
             downloadFile.createNewFile().block()

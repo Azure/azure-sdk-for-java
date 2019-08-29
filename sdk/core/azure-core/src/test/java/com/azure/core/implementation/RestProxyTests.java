@@ -534,7 +534,7 @@ public abstract class RestProxyTests {
     public void syncPutRequestWithBodyLessThanContentLength() {
         ByteBuffer body = ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8));
         thrown.expect(UnexpectedLengthException.class);
-        thrown.expectMessage("less bytes than");
+        thrown.expectMessage("less than");
         createService(Service9.class)
             .putBodyAndContentLength(body, 5L);
         body.clear();
@@ -544,7 +544,7 @@ public abstract class RestProxyTests {
     public void syncPutRequestWithBodyMoreThanContentLength() {
         ByteBuffer body = ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8));
         thrown.expect(UnexpectedLengthException.class);
-        thrown.expectMessage("more bytes than");
+        thrown.expectMessage("more than");
         createService(Service9.class)
             .putBodyAndContentLength(body, 3L);
         body.clear();
@@ -573,7 +573,7 @@ public abstract class RestProxyTests {
             .verifyErrorSatisfies(
                 exception -> {
                     assertTrue(exception instanceof UnexpectedLengthException);
-                    assertTrue(exception.getMessage().contains("less bytes than"));
+                    assertTrue(exception.getMessage().contains("less than"));
                 }
             );
     }
@@ -586,7 +586,7 @@ public abstract class RestProxyTests {
             .verifyErrorSatisfies(
                 exception -> {
                     assertTrue(exception instanceof UnexpectedLengthException);
-                    assertTrue(exception.getMessage().contains("more bytes than"));
+                    assertTrue(exception.getMessage().contains("more than"));
                 }
             );
     }

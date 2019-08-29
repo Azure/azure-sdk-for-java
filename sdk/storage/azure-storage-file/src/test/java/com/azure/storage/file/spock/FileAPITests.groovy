@@ -204,8 +204,8 @@ class FileAPITests extends APISpec {
         defaultData.clear()
         where:
         size | errMsg
-        6 | "more bytes than"
-        8 | "less bytes than"
+        6 | "more than"
+        8 | "less than"
     }
 
     def "Download data error"() {
