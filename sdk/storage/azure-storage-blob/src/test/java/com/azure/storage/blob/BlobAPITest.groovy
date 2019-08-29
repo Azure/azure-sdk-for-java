@@ -1666,14 +1666,14 @@ class BlobAPITest extends APISpec {
         setup:
         ContainerClient cc = premiumBlobServiceClient.createContainer(generateContainerName())
 
-        def bc = cc.getPageBlobClient(generateBlobName())
-        bc.create(512)
+        def pageBlobClient = cc.getPageBlobClient(generateBlobName())
+        pageBlobClient.create(512)
 
         when:
-        bc.setTierWithResponse(tier, null, null, null)
+        pageBlobClient.setTierWithResponse(tier, null, null, null)
 
         then:
-        bc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-access-tier") == tier.toString()
+        pageBlobClient.getPropertiesWithResponse(null, null, null).headers().value("x-ms-access-tier") == tier.toString()
         cc.listBlobsFlat().iterator().next().properties().accessTier() == tier
 
         cleanup:
