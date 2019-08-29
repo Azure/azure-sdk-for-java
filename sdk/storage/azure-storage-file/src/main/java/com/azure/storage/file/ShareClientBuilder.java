@@ -96,7 +96,7 @@ public class ShareClientBuilder extends BaseFileClientBuilder<ShareClientBuilder
     }
 
     /**
-     * Creates a {@link ShareAsyncClient} based on options set in the builder. Every time {@code buildFileAsyncClient()} is
+     * Creates a {@link ShareAsyncClient} based on options set in the builder. Every time {@code buildAsyncClient()} is
      * called a new instance of {@link ShareAsyncClient} is created.
      *
      * <p>
