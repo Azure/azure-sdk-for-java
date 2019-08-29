@@ -1,19 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.s
+// Licensed under the MIT License.
 
 package com.azure.identity.implementation.msalextensions;
 
 public class TestConfiguration {
 
-    final static String TENANT_SPECIFIC_AUTHORITY = "https://login.microsoftonline.com/[insert here]/";
+    static final String TENANT_SPECIFIC_AUTHORITY = "https://login.microsoftonline.com/[insert here]/";
 
-    final static String PUBLIC_CLIENT_ID = "";
+    static final String PUBLIC_CLIENT_ID = "";
 
-    final static String GRAPH_DEFAULT_SCOPE = "https://graph.windows.net/.default";
+    static final String GRAPH_DEFAULT_SCOPE = "https://graph.windows.net/.default";
 
-    final static String CONFIDENTIAL_CLIENT_ID = "";
-    final static String CONFIDENTIAL_CLIENT_ID_2 = "";
+    static final String CONFIDENTIAL_CLIENT_ID = "";
+    static final String CONFIDENTIAL_CLIENT_ID_2 = "";
 
-    final static String CONFIDENTIAL_CLIENT_SECRET = "";
-    final static String CONFIDENTIAL_CLIENT_SECRET_2 = "";
+    static final String CONFIDENTIAL_CLIENT_SECRET = "";
+    static final String CONFIDENTIAL_CLIENT_SECRET_2 = "";
 }

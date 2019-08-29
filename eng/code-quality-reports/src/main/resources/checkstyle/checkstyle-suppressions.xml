@@ -117,6 +117,7 @@
 
   <!-- OpenCensus should only be depended on from within the tracing-opencensus module -->
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]tracing[/\\]opentelemetry[/\\]*"/>
+  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]identity[/\\]*"/>
 
   <!-- Suppress warnings for Event Processor until the usage of "Client" is discussed and resolved: https://github.com/Azure/azure-sdk/issues/321 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*EventHubClientBuilder.java"/>
