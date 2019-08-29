@@ -3,6 +3,8 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.storage.file.FileSmbProperties;
+
 import java.time.OffsetDateTime;
 
 /**

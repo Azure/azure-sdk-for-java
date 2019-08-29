@@ -4,6 +4,7 @@
 package com.azure.storage.file.models;
 
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.storage.file.FileSmbProperties;
 
 import java.time.OffsetDateTime;
 import java.util.Map;

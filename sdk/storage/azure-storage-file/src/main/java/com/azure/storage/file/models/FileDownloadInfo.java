@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.storage.file.FileSmbProperties;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;

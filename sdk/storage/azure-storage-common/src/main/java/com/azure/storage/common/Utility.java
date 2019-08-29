@@ -11,7 +11,6 @@ import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
-import com.sun.scenario.effect.Offset;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -46,10 +45,6 @@ public final class Utility {
 
     public static final DateTimeFormatter ISO_8601_UTC_DATE_FORMATTER =
         DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).withZone(ZoneId.of("UTC"));
-    /**
-     * Stores a reference to the date/time pattern expected for File SMB properties
-     */
-    public static final String FILE_SMB_DATE_STRING = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'";
     /**
      * Stores a reference to the date/time pattern with the greatest precision Java.util.Date is capable of expressing.
      */
@@ -338,16 +333,6 @@ public final class Utility {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ROOT);
         return LocalDateTime.parse(dateString, formatter).atZone(ZoneOffset.UTC).toOffsetDateTime();
-    }
-
-    /**
-     * Given an OffsetDateTime object, generates a String representing a date in the format needed for file SMB properties
-     * @param time the <code>OffsetDateTime</code> to be interpreted as a {@code String}
-     * @return The String representing the date
-     */
-    // TODO : Check for possible exceptions
-    public static String parseFileSMBDate(OffsetDateTime time) {
-        return time.format(DateTimeFormatter.ofPattern(FILE_SMB_DATE_STRING));
     }
 
     /**
