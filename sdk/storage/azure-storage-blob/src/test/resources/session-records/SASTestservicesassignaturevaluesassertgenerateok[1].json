@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.blob.core.windows.net/jtcservicesassignaturevaluesassertgenerateok0380631b2a2b?restype=container",
+    "Uri" : "http://gapradev.blob.core.windows.net/jtcservicesassignaturevaluesassertgenerateok007025645c93?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72BF2ACFD6E0B\"",
-      "Last-Modified" : "Wed, 28 Aug 2019 20:02:38 GMT",
+      "ETag" : "\"0x8D72C9B62BF0061\"",
+      "Last-Modified" : "Thu, 29 Aug 2019 16:10:18 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "242df30c-101e-001a-4bdb-5df3e4000000",
-      "Date" : "Wed, 28 Aug 2019 20:02:37 GMT",
-      "x-ms-client-request-id" : "f3958ebe-1f51-43b9-a3ba-e57d179f9bfd"
+      "x-ms-request-id" : "dd75b9c3-c01e-0009-2b84-5ed7e8000000",
+      "Date" : "Thu, 29 Aug 2019 16:10:18 GMT",
+      "x-ms-client-request-id" : "f59e10c1-bb5a-4496-aebe-a9b1aa871200"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://gapradev.blob.core.windows.net?prefix=jtcservicesassignaturevaluesassertgenerateok&comp=list",
+    "Uri" : "http://gapradev.blob.core.windows.net?prefix=jtcservicesassignaturevaluesassertgenerateok&comp=list",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
@@ -32,16 +32,16 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "242df310-101e-001a-4edb-5df3e4000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gapradev.blob.core.windows.net/\"><Prefix>jtcservicesassignaturevaluesassertgenerateok</Prefix><Containers><Container><Name>jtcservicesassignaturevaluesassertgenerateok0380631b2a2b</Name><Properties><Last-Modified>Wed, 28 Aug 2019 20:02:38 GMT</Last-Modified><Etag>\"0x8D72BF2ACFD6E0B\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Wed, 28 Aug 2019 20:02:37 GMT",
-      "x-ms-client-request-id" : "69ed685b-be43-437b-87c6-ff628b542d69",
+      "x-ms-request-id" : "dd75b9c8-c01e-0009-2e84-5ed7e8000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://gapradev.blob.core.windows.net/\"><Prefix>jtcservicesassignaturevaluesassertgenerateok</Prefix><Containers><Container><Name>jtcservicesassignaturevaluesassertgenerateok007025645c93</Name><Properties><Last-Modified>Thu, 29 Aug 2019 16:10:18 GMT</Last-Modified><Etag>\"0x8D72C9B62BF0061\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 29 Aug 2019 16:10:18 GMT",
+      "x-ms-client-request-id" : "7589c418-8346-44c5-a4a3-c6da695af84d",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://gapradev.blob.core.windows.net/jtcservicesassignaturevaluesassertgenerateok0380631b2a2b?restype=container",
+    "Uri" : "http://gapradev.blob.core.windows.net/jtcservicesassignaturevaluesassertgenerateok007025645c93?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
@@ -52,11 +52,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "242df314-101e-001a-52db-5df3e4000000",
-      "Date" : "Wed, 28 Aug 2019 20:02:37 GMT",
-      "x-ms-client-request-id" : "697e2f47-fa1e-4ab7-8768-22f4f3bd1d9f"
+      "x-ms-request-id" : "dd75b9cc-c01e-0009-3284-5ed7e8000000",
+      "Date" : "Thu, 29 Aug 2019 16:10:18 GMT",
+      "x-ms-client-request-id" : "36d09338-3088-439b-80aa-42b91e0890d5"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcservicesassignaturevaluesassertgenerateok0380631b2a2b" ]
+  "variables" : [ "jtcservicesassignaturevaluesassertgenerateok007025645c93" ]
 }

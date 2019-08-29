@@ -211,7 +211,7 @@ class APISpec extends Specification {
 
     def getOAuthServiceClient() {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCredential.accountName()))
+            .endpoint(String.format("http://%s.blob.core.windows.net/", primaryCredential.accountName()))
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
@@ -231,7 +231,7 @@ class APISpec extends Specification {
     }
 
     BlobServiceClient getServiceClient(SharedKeyCredential credential) {
-        return getServiceClient(credential, String.format("https://%s.blob.core.windows.net", credential.accountName()), null)
+        return getServiceClient(credential, String.format("http://%s.blob.core.windows.net", credential.accountName()), null)
     }
 
     BlobServiceClient getServiceClient(SharedKeyCredential credential, String endpoint) {
@@ -275,7 +275,7 @@ class APISpec extends Specification {
     BlobServiceAsyncClient getServiceAsyncClient(SharedKeyCredential credential) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .credential(credential)
-            .endpoint(String.format("https://%s.blob.core.windows.net", credential.accountName()))
+            .endpoint(String.format("http://%s.blob.core.windows.net", credential.accountName()))
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
