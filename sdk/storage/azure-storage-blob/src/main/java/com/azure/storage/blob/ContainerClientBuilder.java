@@ -3,20 +3,11 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.credentials.TokenCredential;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
-import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-import com.azure.storage.common.BaseClientBuilder;
 import com.azure.storage.common.credentials.SASTokenCredential;
-import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.common.policy.RequestRetryOptions;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -39,7 +30,7 @@ import java.util.Objects;
  * {@link ContainerClient} or {@code .buildAsyncClient()} to create a {@link ContainerAsyncClient}.
  */
 @ServiceClientBuilder(serviceClients = {ContainerClient.class, ContainerAsyncClient.class})
-public final class ContainerClientBuilder extends BaseClientBuilder {
+public final class ContainerClientBuilder extends BaseBlobClientBuilder<ContainerClientBuilder> {
 
     private final ClientLogger logger = new ClientLogger(ContainerClientBuilder.class);
 
@@ -81,13 +72,8 @@ public final class ContainerClientBuilder extends BaseClientBuilder {
      * @return the updated ContainerClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
      */
-    public ContainerClientBuilder endpoint(String endpoint) {
-        this.setEndpoint(endpoint);
-        return this;
-    }
-
     @Override
-    protected void setEndpoint(String endpoint) {
+    public ContainerClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
             BlobURLParts parts = URLParser.parse(url);
@@ -97,11 +83,13 @@ public final class ContainerClientBuilder extends BaseClientBuilder {
 
             SASTokenCredential sasTokenCredential = SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode());
             if (sasTokenCredential != null) {
-                super.setCredential(sasTokenCredential);
+                super.credential(sasTokenCredential);
             }
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed."));
         }
+
+        return this;
     }
 
     /**
@@ -116,136 +104,5 @@ public final class ContainerClientBuilder extends BaseClientBuilder {
 
     String endpoint() {
         return this.endpoint;
-    }
-
-    /**
-     * Sets the credential used to authorize requests sent to the service
-     * @param credential authorization credential
-     * @return the updated ContainerClientBuilder object
-     * @throws NullPointerException If {@code credential} is {@code null}.
-     */
-    public ContainerClientBuilder credential(SharedKeyCredential credential) {
-        super.setCredential(credential);
-        return this;
-    }
-
-    /**
-     * Sets the credential used to authorize requests sent to the service
-     * @param credential authorization credential
-     * @return the updated ContainerClientBuilder object
-     * @throws NullPointerException If {@code credential} is {@code null}.
-     */
-    public ContainerClientBuilder credential(TokenCredential credential) {
-        super.setCredential(credential);
-        return this;
-    }
-
-    /**
-     * Sets the credential used to authorize requests sent to the service
-     * @param credential authorization credential
-     * @return the updated ContainerClientBuilder object
-     * @throws NullPointerException If {@code credential} is {@code null}.
-     */
-    public ContainerClientBuilder credential(SASTokenCredential credential) {
-        super.setCredential(credential);
-        return this;
-    }
-
-    /**
-     * Clears the credential used to authorize requests sent to the service
-     * @return the updated ContainerClientBuilder object
-     */
-    public ContainerClientBuilder anonymousCredential() {
-        super.setAnonymousCredential();
-        return this;
-    }
-
-    /**
-     * Sets the connection string for the service, parses it for authentication information (account name, account key)
-     * @param connectionString connection string from access keys section
-     * @return the updated ContainerClientBuilder object
-     * @throws IllegalArgumentException If {@code connectionString} doesn't contain AccountName or AccountKey
-     */
-    public ContainerClientBuilder connectionString(String connectionString) {
-        super.parseConnectionString(connectionString);
-        return this;
-    }
-
-    /**
-     * Sets the http client used to send service requests
-     * @param httpClient http client to send requests
-     * @return the updated ContainerClientBuilder object
-     * @throws NullPointerException If {@code httpClient} is {@code null}.
-     */
-    public ContainerClientBuilder httpClient(HttpClient httpClient) {
-        super.setHttpClient(httpClient);
-        return this;
-    }
-
-    /**
-     * Adds a pipeline policy to apply on each request sent
-     * @param pipelinePolicy a pipeline policy
-     * @return the updated ContainerClientBuilder object
-     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
-     */
-    public ContainerClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        super.setAdditionalPolicy(Objects.requireNonNull(pipelinePolicy));
-        return this;
-    }
-
-    /**
-     * Sets the logging level for service requests
-     * @param logLevel logging level
-     * @return the updated ContainerClientBuilder object
-     */
-    public ContainerClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        super.setHttpLogDetailLevel(logLevel);
-        return this;
-    }
-
-    /**
-     * Sets the configuration object used to retrieve environment configuration values used to buildClient the client with
-     * when they are not set in the appendBlobClientBuilder, defaults to Configuration.NONE
-     * @param configuration configuration store
-     * @return the updated ContainerClientBuilder object
-     */
-    public ContainerClientBuilder configuration(Configuration configuration) {
-        super.setConfiguration(configuration);
-        return this;
-    }
-
-    /**
-     * Sets the request retry options for all the requests made through the client.
-     * @param retryOptions the options to configure retry behaviors
-     * @return the updated ContainerClientBuilder object
-     * @throws NullPointerException If {@code retryOptions} is {@code null}.
-     */
-    public ContainerClientBuilder retryOptions(RequestRetryOptions retryOptions) {
-        super.setRetryOptions(retryOptions);
-        return this;
-    }
-
-    /**
-     * Sets the HTTP pipeline to use for the service client.
-     *
-     * If {@code pipeline} is set, all other settings are ignored, aside from
-     * {@link ContainerClientBuilder#endpoint(String) endpoint} when building clients.
-     *
-     * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return The updated BlobServiceClientBuilder object.
-     */
-    public ContainerClientBuilder pipeline(HttpPipeline pipeline) {
-        super.setPipeline(pipeline);
-        return this;
-    }
-
-    @Override
-    protected UserAgentPolicy getUserAgentPolicy() {
-        return new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, super.getConfiguration());
-    }
-
-    @Override
-    protected String getServiceUrlMidfix() {
-        return "blob";
     }
 }

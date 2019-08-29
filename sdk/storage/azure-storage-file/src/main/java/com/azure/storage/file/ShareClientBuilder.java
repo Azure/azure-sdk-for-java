@@ -65,7 +65,8 @@ import java.util.Objects;
  * @see SharedKeyCredential
  */
 @ServiceClientBuilder(serviceClients = {ShareClient.class, ShareAsyncClient.class})
-public class ShareClientBuilder extends BaseClientBuilder {
+public class ShareClientBuilder extends BaseFileClientBuilder<ShareClientBuilder> {
+
     private final ClientLogger logger = new ClientLogger(ShareClientBuilder.class);
     private String shareName;
     private String snapshot;
@@ -143,14 +144,8 @@ public class ShareClientBuilder extends BaseClientBuilder {
      * @return the updated ShareClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is an invalid URL
      */
-    public ShareClientBuilder endpoint(String endpoint) {
-        this.setEndpoint(endpoint);
-        return this;
-    }
-
-
     @Override
-    protected void setEndpoint(String endpoint) {
+    public ShareClientBuilder endpoint(String endpoint) {
         try {
             URL fullURL = new URL(endpoint);
             super.endpoint = fullURL.getProtocol() + "://" + fullURL.getHost();
@@ -167,49 +162,12 @@ public class ShareClientBuilder extends BaseClientBuilder {
             // Attempt to get the SAS token from the URL passed
             SASTokenCredential sasTokenCredential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
             if (sasTokenCredential != null) {
-                super.setCredential(sasTokenCredential);
+                super.credential(sasTokenCredential);
             }
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage File Service endpoint url is malformed."));
         }
-    }
 
-    /**
-     * Sets the {@link SASTokenCredential} used to authenticate requests sent to the File service.
-     *
-     * @param credential SAS token credential generated from the Storage account that authorizes requests
-     * @return the updated ShareClientBuilder object
-     * @throws NullPointerException If {@code credential} is {@code null}.
-     */
-    public ShareClientBuilder credential(SASTokenCredential credential) {
-        super.setCredential(credential);
-        return this;
-    }
-
-    /**
-     * Sets the {@link SharedKeyCredential} used to authenticate requests sent to the File service.
-     *
-     * @param credential Shared key credential generated from the Storage account that authorizes requests
-     * @return the updated ShareClientBuilder object
-     * @throws NullPointerException If {@code credential} is {@code null}.
-     */
-    public ShareClientBuilder credential(SharedKeyCredential credential) {
-        super.setCredential(credential);
-        return this;
-    }
-
-    // File service does not support oauth, so the setter for a TokenCredential is not exposed.
-
-    /**
-     * Creates a {@link SharedKeyCredential} from the {@code connectionString} used to authenticate requests sent to the
-     * File service.
-     *
-     * @param connectionString Connection string from the Access Keys section in the Storage account
-     * @return the updated ShareClientBuilder object
-     * @throws NullPointerException If {@code connectionString} is {@code null}.
-     */
-    public ShareClientBuilder connectionString(String connectionString) {
-        super.parseConnectionString(connectionString);
         return this;
     }
 
@@ -235,81 +193,5 @@ public class ShareClientBuilder extends BaseClientBuilder {
     public ShareClientBuilder snapshot(String snapshot) {
         this.snapshot = snapshot;
         return this;
-    }
-
-    /**
-     * Sets the HTTP client to use for sending and receiving requests to and from the service.
-     *
-     * @param httpClient The HTTP client to use for requests.
-     * @return The updated ShareClientBuilder object.
-     * @throws NullPointerException If {@code httpClient} is {@code null}.
-     */
-    public ShareClientBuilder httpClient(HttpClient httpClient) {
-        super.setHttpClient(httpClient);
-        return this;
-    }
-
-    /**
-     * Adds a policy to the set of existing policies that are executed after the {@link RetryPolicy}.
-     *
-     * @param pipelinePolicy The retry policy for service requests.
-     * @return The updated ShareClientBuilder object.
-     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
-     */
-    public ShareClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        super.setAdditionalPolicy(pipelinePolicy);
-        return this;
-    }
-
-    /**
-     * Sets the logging level for HTTP requests and responses.
-     *
-     * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
-     * @return The updated ShareClientBuilder object.
-     */
-    public ShareClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        super.setHttpLogDetailLevel(logLevel);
-        return this;
-    }
-
-    /**
-     * Sets the HTTP pipeline to use for the service client.
-     *
-     * <p>If {@code pipeline} is set, all other settings are ignored, aside from {@link ShareClientBuilder#endpoint(String) endpoint},
-     * {@link ShareClientBuilder#shareName(String) shareName}, and {@link ShareClientBuilder#snapshot(String) snaphotShot}
-     * when building clients.</p>
-     *
-     * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return The updated ShareClientBuilder object.
-     * @throws NullPointerException If {@code pipeline} is {@code null}.
-     */
-    public ShareClientBuilder pipeline(HttpPipeline pipeline) {
-        super.setPipeline(pipeline);
-        return this;
-    }
-
-    /**
-     * Sets the configuration store that is used during construction of the service client.
-     *
-     * The default configuration store is a clone of the {@link ConfigurationManager#getConfiguration() global
-     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
-     *
-     * @param configuration The configuration store used to
-     * @return The updated ShareClientBuilder object.
-     * @throws NullPointerException If {@code configuration} is {@code null}.
-     */
-    public ShareClientBuilder configuration(Configuration configuration) {
-        super.setConfiguration(configuration);
-        return this;
-    }
-
-    @Override
-    protected UserAgentPolicy getUserAgentPolicy() {
-        return new UserAgentPolicy(FileConfiguration.NAME, FileConfiguration.VERSION, super.getConfiguration());
-    }
-
-    @Override
-    protected String getServiceUrlMidfix() {
-        return "file";
     }
 }

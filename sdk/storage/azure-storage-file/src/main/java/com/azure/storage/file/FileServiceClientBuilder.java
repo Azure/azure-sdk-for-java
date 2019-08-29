@@ -3,17 +3,9 @@
 
 package com.azure.storage.file;
 
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.BaseClientBuilder;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -64,7 +56,8 @@ import java.util.Map;
  * @see SharedKeyCredential
  */
 @ServiceClientBuilder(serviceClients = {FileServiceClient.class, FileServiceAsyncClient.class})
-public final class FileServiceClientBuilder extends BaseClientBuilder {
+public final class FileServiceClientBuilder extends BaseFileClientBuilder<FileServiceClientBuilder> {
+
     private final ClientLogger logger = new ClientLogger(FileServiceClientBuilder.class);
 
     /**
@@ -134,14 +127,8 @@ public final class FileServiceClientBuilder extends BaseClientBuilder {
      * @return the updated FileServiceClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} isn't a proper URL
      */
-    public FileServiceClientBuilder endpoint(String endpoint) {
-        this.setEndpoint(endpoint);
-        return this;
-    }
-
-
     @Override
-    protected void setEndpoint(String endpoint) {
+    public FileServiceClientBuilder endpoint(String endpoint) {
         try {
             URL fullURL = new URL(endpoint);
             super.endpoint = fullURL.getProtocol() + "://" + fullURL.getHost();
@@ -149,124 +136,12 @@ public final class FileServiceClientBuilder extends BaseClientBuilder {
             // Attempt to get the SAS token from the URL passed
             SASTokenCredential sasTokenCredential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
             if (sasTokenCredential != null) {
-                super.setCredential(sasTokenCredential);
+                super.credential(sasTokenCredential);
             }
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage File Service endpoint url is malformed."));
         }
-    }
 
-    /**
-     * Sets the {@link SASTokenCredential} used to authenticate requests sent to the Queue service.
-     *
-     * @param credential SAS token credential generated from the Storage account that authorizes requests
-     * @return the updated FileServiceClientBuilder object
-     * @throws NullPointerException If {@code credential} is {@code null}.
-     */
-    public FileServiceClientBuilder credential(SASTokenCredential credential) {
-        super.setCredential(credential);
         return this;
-    }
-
-    /**
-     * Sets the {@link SharedKeyCredential} used to authenticate requests sent to the Queue service.
-     *
-     * @param credential Shared key credential generated from the Storage account that authorizes requests
-     * @return the updated FileServiceClientBuilder object
-     * @throws NullPointerException If {@code credential} is {@code null}.
-     */
-    public FileServiceClientBuilder credential(SharedKeyCredential credential) {
-        super.setCredential(credential);
-        return this;
-    }
-
-    // File service does not support oauth, so the setter for a TokenCredential is not exposed.
-
-    /**
-     * Creates a {@link SharedKeyCredential} from the {@code connectionString} used to authenticate requests sent to the
-     * File service.
-     *
-     * @param connectionString Connection string from the Access Keys section in the Storage account
-     * @return the updated FileServiceClientBuilder object
-     * @throws NullPointerException If {@code connectionString} is {@code null}.
-     */
-    public FileServiceClientBuilder connectionString(String connectionString) {
-        super.parseConnectionString(connectionString);
-        return this;
-    }
-
-    /**
-     * Sets the HTTP client to use for sending and receiving requests to and from the service.
-     *
-     * @param httpClient The HTTP client to use for requests.
-     * @return The updated FileServiceClientBuilder object.
-     * @throws NullPointerException If {@code httpClient} is {@code null}.
-     */
-    public FileServiceClientBuilder httpClient(HttpClient httpClient) {
-        super.setHttpClient(httpClient);
-        return this;
-    }
-
-    /**
-     * Adds a policy to the set of existing policies that are executed after the {@link RetryPolicy}.
-     *
-     * @param pipelinePolicy The retry policy for service requests.
-     * @return The updated FileServiceClientBuilder object.
-     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
-     */
-    public FileServiceClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        super.setAdditionalPolicy(pipelinePolicy);
-        return this;
-    }
-
-    /**
-     * Sets the logging level for HTTP requests and responses.
-     *
-     * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
-     * @return The updated FileServiceClientBuilder object.
-     */
-    public FileServiceClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        super.setHttpLogDetailLevel(logLevel);
-        return this;
-    }
-
-    /**
-     * Sets the HTTP pipeline to use for the service client.
-     *
-     * If {@code pipeline} is set, all other settings are ignored, aside from {@link FileServiceClientBuilder#endpoint(String) endpoint}
-     * when building clients.
-     *
-     * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return The updated FileServiceClientBuilder object.
-     * @throws NullPointerException If {@code pipeline} is {@code null}.
-     */
-    public FileServiceClientBuilder pipeline(HttpPipeline pipeline) {
-        super.setPipeline(pipeline);
-        return this;
-    }
-
-    /**
-     * Sets the configuration store that is used during construction of the service client.
-     *
-     * The default configuration store is a clone of the {@link ConfigurationManager#getConfiguration() global
-     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
-     *
-     * @param configuration The configuration store used to
-     * @return The updated FileServiceClientBuilder object.
-     * @throws NullPointerException If {@code configuration} is {@code null}.
-     */
-    public FileServiceClientBuilder configuration(Configuration configuration) {
-        super.setConfiguration(configuration);
-        return this;
-    }
-
-    @Override
-    protected UserAgentPolicy getUserAgentPolicy() {
-        return new UserAgentPolicy(FileConfiguration.NAME, FileConfiguration.VERSION, super.getConfiguration());
-    }
-
-    @Override
-    protected String getServiceUrlMidfix() {
-        return "file";
     }
 }

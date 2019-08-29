@@ -3,23 +3,14 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.credentials.TokenCredential;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
-import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageRange;
-import com.azure.storage.common.BaseClientBuilder;
 import com.azure.storage.common.credentials.SASTokenCredential;
-import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.common.policy.RequestRetryOptions;
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
@@ -56,7 +47,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {BlobClient.class, BlobAsyncClient.class, AppendBlobClient.class,
     AppendBlobAsyncClient.class, BlockBlobClient.class, BlockBlobAsyncClient.class, PageBlobClient.class,
     PageBlobAsyncClient.class})
-public final class BlobClientBuilder extends BaseClientBuilder {
+public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBuilder> {
 
     private final ClientLogger logger = new ClientLogger(BlobClientBuilder.class);
 
@@ -190,13 +181,8 @@ public final class BlobClientBuilder extends BaseClientBuilder {
      * @return the updated BlobClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
      */
-    public BlobClientBuilder endpoint(String endpoint) {
-        this.setEndpoint(endpoint);
-        return this;
-    }
-
     @Override
-    protected void setEndpoint(String endpoint) {
+    public BlobClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
             BlobURLParts parts = URLParser.parse(url);
@@ -208,11 +194,12 @@ public final class BlobClientBuilder extends BaseClientBuilder {
 
             SASTokenCredential sasTokenCredential = SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode());
             if (sasTokenCredential != null) {
-                super.setCredential(sasTokenCredential);
+                super.credential(sasTokenCredential);
             }
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed."));
         }
+        return this;
     }
 
     /**
@@ -245,137 +232,5 @@ public final class BlobClientBuilder extends BaseClientBuilder {
     public BlobClientBuilder snapshot(String snapshot) {
         this.snapshot = snapshot;
         return this;
-    }
-
-    /**
-     * Sets the credential used to authorize requests sent to the service
-     * @param credential authorization credential
-     * @return the updated BlobClientBuilder object
-     * @throws NullPointerException If {@code credential} is {@code null}
-     */
-    public BlobClientBuilder credential(SharedKeyCredential credential) {
-        super.setCredential(credential);
-        return this;
-    }
-
-    /**
-     * Sets the credential used to authorize requests sent to the service
-     * @param credential authorization credential
-     * @return the updated BlobClientBuilder object
-     * @throws NullPointerException If {@code credential} is {@code null}
-     */
-    public BlobClientBuilder credential(TokenCredential credential) {
-        super.setCredential(credential);
-        return this;
-    }
-
-    /**
-     * Sets the credential used to authorize requests sent to the service
-     * @param credential authorization credential
-     * @return the updated BlobClientBuilder object
-     * @throws NullPointerException If {@code credential} is {@code null}
-     */
-    public BlobClientBuilder credential(SASTokenCredential credential) {
-        super.setCredential(credential);
-        return this;
-    }
-
-    /**
-     * Clears the credential used to authorize requests sent to the service
-     * @return the updated BlobClientBuilder object
-     */
-    public BlobClientBuilder anonymousCredential() {
-        super.setAnonymousCredential();
-        return this;
-    }
-
-    /**
-     * Sets the connection string for the service, parses it for authentication information (account name, account key)
-     * @param connectionString connection string from access keys section
-     * @return the updated BlobClientBuilder object
-     * @throws NullPointerException If {@code connectionString} is {@code null}
-     * @throws IllegalArgumentException If {@code connectionString} doesn't contain AccountName or AccountKey.
-     */
-    public BlobClientBuilder connectionString(String connectionString) {
-        super.parseConnectionString(connectionString);
-        return this;
-    }
-
-    /**
-     * Sets the http client used to send service requests
-     * @param httpClient http client to send requests
-     * @return the updated BlobClientBuilder object
-     * @throws NullPointerException If {@code httpClient} is {@code null}
-     */
-    public BlobClientBuilder httpClient(HttpClient httpClient) {
-        super.setHttpClient(httpClient);
-        return this;
-    }
-
-    /**
-     * Adds a pipeline policy to apply on each request sent
-     * @param pipelinePolicy a pipeline policy
-     * @return the updated BlobClientBuilder object
-     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}
-     */
-    public BlobClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        super.setAdditionalPolicy(Objects.requireNonNull(pipelinePolicy));
-        return this;
-    }
-
-    /**
-     * Sets the logging level for service requests
-     * @param logLevel logging level
-     * @return the updated BlobClientBuilder object
-     */
-    public BlobClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        super.setHttpLogDetailLevel(logLevel);
-        return this;
-    }
-
-    /**
-     * Sets the configuration object used to retrieve environment configuration values used to buildClient the client with
-     * when they are not set in the appendBlobClientBuilder, defaults to Configuration.NONE
-     * @param configuration configuration store
-     * @return the updated BlobClientBuilder object
-     */
-    public BlobClientBuilder configuration(Configuration configuration) {
-        super.setConfiguration(configuration);
-        return this;
-    }
-
-    /**
-     * Sets the request retry options for all the requests made through the client.
-     * @param retryOptions the options to configure retry behaviors
-     * @return the updated BlobClientBuilder object
-     * @throws NullPointerException If {@code retryOptions} is {@code null}
-     */
-    public BlobClientBuilder retryOptions(RequestRetryOptions retryOptions) {
-        super.setRetryOptions(retryOptions);
-        return this;
-    }
-
-    /**
-     * Sets the HTTP pipeline to use for the service client.
-     *
-     * If {@code pipeline} is set, all other settings are ignored, aside from
-     * {@link BlobClientBuilder#endpoint(String) endpoint} when building clients.
-     *
-     * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return The updated BlobServiceClientBuilder object.
-     */
-    public BlobClientBuilder pipeline(HttpPipeline pipeline) {
-        super.setPipeline(pipeline);
-        return this;
-    }
-
-    @Override
-    protected UserAgentPolicy getUserAgentPolicy() {
-        return new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, super.getConfiguration());
-    }
-
-    @Override
-    protected String getServiceUrlMidfix() {
-        return "blob";
     }
 }

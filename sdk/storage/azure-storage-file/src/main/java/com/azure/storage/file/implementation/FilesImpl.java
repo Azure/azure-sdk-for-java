@@ -76,69 +76,69 @@ public final class FilesImpl {
     @Host("{url}")
     @ServiceInterface(name = "AzureFileStorageFiles")
     private interface FilesService {
-        @Put("{shareName}/{filePath}")
+        @Put("{shareName}/{resourcePath}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesCreateResponse> create(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") long fileContentLength, @HeaderParam("x-ms-type") String fileTypeConstant, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") String fileCreationTime, @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime, @HeaderParam("x-ms-content-type") String fileContentType, @HeaderParam("x-ms-content-encoding") String fileContentEncoding, @HeaderParam("x-ms-content-language") String fileContentLanguage, @HeaderParam("x-ms-cache-control") String fileCacheControl, @HeaderParam("x-ms-content-md5") String fileContentMD5, @HeaderParam("x-ms-content-disposition") String fileContentDisposition, Context context);
+        Mono<FilesCreateResponse> create(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") long fileContentLength, @HeaderParam("x-ms-type") String fileTypeConstant, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") String fileCreationTime, @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime, @HeaderParam("x-ms-content-type") String fileContentType, @HeaderParam("x-ms-content-encoding") String fileContentEncoding, @HeaderParam("x-ms-content-language") String fileContentLanguage, @HeaderParam("x-ms-cache-control") String fileCacheControl, @HeaderParam("x-ms-content-md5") String fileContentMD5, @HeaderParam("x-ms-content-disposition") String fileContentDisposition, Context context);
 
-        @Get("{shareName}/{filePath}")
+        @Get("{shareName}/{resourcePath}")
         @ExpectedResponses({200, 206})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesDownloadResponse> download(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5, Context context);
+        Mono<FilesDownloadResponse> download(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5, Context context);
 
-        @Head("{shareName}/{filePath}")
+        @Head("{shareName}/{resourcePath}")
         @ExpectedResponses({200})
-        Mono<FilesGetPropertiesResponse> getProperties(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, Context context);
+        Mono<FilesGetPropertiesResponse> getProperties(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, Context context);
 
-        @Delete("{shareName}/{filePath}")
+        @Delete("{shareName}/{resourcePath}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesDeleteResponse> delete(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, Context context);
+        Mono<FilesDeleteResponse> delete(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, Context context);
 
-        @Put("{shareName}/{filePath}")
+        @Put("{shareName}/{resourcePath}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesSetHTTPHeadersResponse> setHTTPHeaders(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") Long fileContentLength, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") String fileCreationTime, @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime, @QueryParam("comp") String comp, @HeaderParam("x-ms-content-type") String fileContentType, @HeaderParam("x-ms-content-encoding") String fileContentEncoding, @HeaderParam("x-ms-content-language") String fileContentLanguage, @HeaderParam("x-ms-cache-control") String fileCacheControl, @HeaderParam("x-ms-content-md5") String fileContentMD5, @HeaderParam("x-ms-content-disposition") String fileContentDisposition, Context context);
+        Mono<FilesSetHTTPHeadersResponse> setHTTPHeaders(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") Long fileContentLength, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") String fileCreationTime, @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime, @QueryParam("comp") String comp, @HeaderParam("x-ms-content-type") String fileContentType, @HeaderParam("x-ms-content-encoding") String fileContentEncoding, @HeaderParam("x-ms-content-language") String fileContentLanguage, @HeaderParam("x-ms-cache-control") String fileCacheControl, @HeaderParam("x-ms-content-md5") String fileContentMD5, @HeaderParam("x-ms-content-disposition") String fileContentDisposition, Context context);
 
-        @Put("{shareName}/{filePath}")
+        @Put("{shareName}/{resourcePath}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesSetMetadataResponse> setMetadata(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
+        Mono<FilesSetMetadataResponse> setMetadata(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
 
-        @Put("{shareName}/{filePath}")
+        @Put("{shareName}/{resourcePath}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesUploadRangeResponse> uploadRange(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-write") FileRangeWriteType fileRangeWrite, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-MD5") String contentMD5, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
+        Mono<FilesUploadRangeResponse> uploadRange(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-write") FileRangeWriteType fileRangeWrite, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-MD5") String contentMD5, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
 
-        @Put("{shareName}/{filePath}")
+        @Put("{shareName}/{resourcePath}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesUploadRangeFromURLResponse> uploadRangeFromURL(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-copy-source") String copySource, @HeaderParam("x-ms-source-range") String sourceRange, @HeaderParam("x-ms-write") String fileRangeWriteFromUrl, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-source-content-crc64") String sourceContentCrc64, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, @HeaderParam("x-ms-source-if-match-crc64") String sourceIfMatchCrc64, @HeaderParam("x-ms-source-if-none-match-crc64") String sourceIfNoneMatchCrc64, Context context);
+        Mono<FilesUploadRangeFromURLResponse> uploadRangeFromURL(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-copy-source") String copySource, @HeaderParam("x-ms-source-range") String sourceRange, @HeaderParam("x-ms-write") String fileRangeWriteFromUrl, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-source-content-crc64") String sourceContentCrc64, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, @HeaderParam("x-ms-source-if-match-crc64") String sourceIfMatchCrc64, @HeaderParam("x-ms-source-if-none-match-crc64") String sourceIfNoneMatchCrc64, Context context);
 
-        @Get("{shareName}/{filePath}")
+        @Get("{shareName}/{resourcePath}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesGetRangeListResponse> getRangeList(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range, @QueryParam("comp") String comp, Context context);
+        Mono<FilesGetRangeListResponse> getRangeList(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range, @QueryParam("comp") String comp, Context context);
 
-        @Put("{shareName}/{filePath}")
+        @Put("{shareName}/{resourcePath}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesStartCopyResponse> startCopy(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-copy-source") String copySource, Context context);
+        Mono<FilesStartCopyResponse> startCopy(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-copy-source") String copySource, Context context);
 
-        @Put("{shareName}/{filePath}")
+        @Put("{shareName}/{resourcePath}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesAbortCopyResponse> abortCopy(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("copyid") String copyId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-copy-action") String copyActionAbortConstant, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
+        Mono<FilesAbortCopyResponse> abortCopy(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("copyid") String copyId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-copy-action") String copyActionAbortConstant, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
 
-        @Get("{shareName}/{filePath}")
+        @Get("{shareName}/{resourcePath}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesListHandlesResponse> listHandles(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("timeout") Integer timeout, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
+        Mono<FilesListHandlesResponse> listHandles(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("timeout") Integer timeout, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
 
-        @Put("{shareName}/{filePath}")
+        @Put("{shareName}/{resourcePath}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesForceCloseHandlesResponse> forceCloseHandles(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("marker") String marker, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-handle-id") String handleId, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
+        Mono<FilesForceCloseHandlesResponse> forceCloseHandles(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("marker") String marker, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-handle-id") String handleId, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
     }
 
     /**

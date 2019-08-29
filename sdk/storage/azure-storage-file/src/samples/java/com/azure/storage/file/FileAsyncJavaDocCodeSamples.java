@@ -47,7 +47,7 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = new FileClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net?{SASToken}")
             .shareName("myshare")
-            .filePath("myfilepath")
+            .resourcePath("myfilepath")
             .buildFileAsyncClient();
         // END: com.azure.storage.file.fileAsyncClient.instantiation.sastoken
         return fileAsyncClient;
@@ -63,7 +63,7 @@ public class FileAsyncJavaDocCodeSamples {
             .endpoint("https://{accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
             .shareName("myshare")
-            .filePath("myfilepath")
+            .resourcePath("myfilepath")
             .buildFileAsyncClient();
         // END: com.azure.storage.file.fileAsyncClient.instantiation.credential
         return fileAsyncClient;
@@ -79,7 +79,7 @@ public class FileAsyncJavaDocCodeSamples {
         String connectionString = "DefaultEndpointsProtocol=https;AccountName={name};AccountKey={key};"
             + "EndpointSuffix={core.windows.net}";
         FileAsyncClient fileAsyncClient = new FileClientBuilder()
-            .connectionString(connectionString).shareName("myshare").filePath("myfilepath")
+            .connectionString(connectionString).shareName("myshare").resourcePath("myfilepath")
             .buildFileAsyncClient();
         // END: com.azure.storage.file.fileAsyncClient.instantiation.connectionstring
         return fileAsyncClient;
@@ -578,7 +578,7 @@ public class FileAsyncJavaDocCodeSamples {
             .endpoint("https://${accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
             .shareName("myshare")
-            .filePath("myfiile")
+            .resourcePath("myfiile")
             .snapshot(currentTime.toString())
             .buildFileAsyncClient();
 

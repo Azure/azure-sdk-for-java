@@ -129,14 +129,14 @@ class APISpec extends Specification {
             return new FileClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
-                .filePath(directoryPath)
+                .resourcePath(directoryPath)
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
         } else {
             return new FileClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
-                .filePath(directoryPath)
+                .resourcePath(directoryPath)
                 .httpClient(interceptorManager.getPlaybackClient())
         }
     }
@@ -146,14 +146,14 @@ class APISpec extends Specification {
             return new FileClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
-                .filePath(filePath)
+                .resourcePath(filePath)
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
         } else {
             return new FileClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
-                .filePath(filePath)
+                .resourcePath(filePath)
                 .httpClient(interceptorManager.getPlaybackClient())
         }
     }

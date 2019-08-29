@@ -3,16 +3,9 @@
 
 package com.azure.storage.file;
 
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
-import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.BaseClientBuilder;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -33,7 +26,7 @@ import java.util.Objects;
  *
  * <p>The client needs the endpoint of the Azure Storage File service, name of the share, and authorization credential.
  * {@link FileClientBuilder#endpoint(String) endpoint} gives the builder the endpoint and may give the builder the
- * {@link FileClientBuilder#shareName(String)}, {@link FileClientBuilder#filePath(String)} and a {@link SASTokenCredential} that authorizes the client.</p>
+ * {@link FileClientBuilder#shareName(String)}, {@link FileClientBuilder#resourcePath(String)} and a {@link SASTokenCredential} that authorizes the client.</p>
  *
  * <p><strong>Instantiating a synchronous File Client with SAS token</strong></p>
  * {@codesnippet com.azure.storage.file.fileClient.instantiation.sastoken}
@@ -64,8 +57,10 @@ import java.util.Objects;
  * @see SASTokenCredential
  * @see SharedKeyCredential
  */
-@ServiceClientBuilder(serviceClients = {FileClient.class, FileAsyncClient.class})
-public class FileClientBuilder extends BaseClientBuilder {
+@ServiceClientBuilder(serviceClients = {FileClient.class, FileAsyncClient.class, DirectoryClient.class,
+    DirectoryAsyncClient.class})
+public class FileClientBuilder extends BaseFileClientBuilder<FileClientBuilder> {
+
     private final ClientLogger logger = new ClientLogger(FileClientBuilder.class);
 
     private String shareName;
@@ -184,13 +179,8 @@ public class FileClientBuilder extends BaseClientBuilder {
      * @return the updated FileClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is an invalid URL
      */
-    public FileClientBuilder endpoint(String endpoint) {
-        this.setEndpoint(endpoint);
-        return this;
-    }
-
     @Override
-    protected void setEndpoint(String endpoint) {
+    public FileClientBuilder endpoint(String endpoint) {
         try {
             URL fullURL = new URL(endpoint);
             super.endpoint = fullURL.getProtocol() + "://" + fullURL.getHost();
@@ -205,49 +195,12 @@ public class FileClientBuilder extends BaseClientBuilder {
             // Attempt to get the SAS token from the URL passed
             SASTokenCredential sasTokenCredential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
             if (sasTokenCredential != null) {
-                super.setCredential(sasTokenCredential);
+                super.credential(sasTokenCredential);
             }
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage File endpoint url is malformed."));
         }
-    }
 
-    /**
-     * Sets the {@link SASTokenCredential} used to authenticate requests sent to the File service.
-     *
-     * @param credential SAS token credential generated from the Storage account that authorizes requests
-     * @return the updated FileClientBuilder object
-     * @throws NullPointerException If {@code credential} is {@code null}.
-     */
-    public FileClientBuilder credential(SASTokenCredential credential) {
-        super.setCredential(credential);
-        return this;
-    }
-
-    /**
-     * Sets the {@link SharedKeyCredential} used to authenticate requests sent to the File service.
-     *
-     * @param credential Shared key credential generated from the Storage account that authorizes requests
-     * @return the updated ShareClientBuilder object
-     * @throws NullPointerException If {@code credential} is {@code null}.
-     */
-    public FileClientBuilder credential(SharedKeyCredential credential) {
-        super.setCredential(credential);
-        return this;
-    }
-
-    // File service does not support oauth, so the setter for a TokenCredential is not exposed.
-
-    /**
-     * Creates a {@link SharedKeyCredential} from the {@code connectionString} used to authenticate requests sent to the
-     * File service.
-     *
-     * @param connectionString Connection string from the Access Keys section in the Storage account
-     * @return the updated FileClientBuilder object
-     * @throws NullPointerException If {@code connectionString} is {@code null}.
-     */
-    public FileClientBuilder connectionString(String connectionString) {
-        super.parseConnectionString(connectionString);
         return this;
     }
 
@@ -279,84 +232,12 @@ public class FileClientBuilder extends BaseClientBuilder {
     /**
      * Sets the file that the constructed clients will interact with
      *
-     * @param filePath Path of the file (or directory).
+     * @param resourcePath Path of the file (or directory).
      * @return the updated FileClientBuilder object
      * @throws NullPointerException If {@code resourcePath} is {@code null}.
      */
-    public FileClientBuilder filePath(String filePath) {
-        this.resourcePath = filePath;
+    public FileClientBuilder resourcePath(String resourcePath) {
+        this.resourcePath = resourcePath;
         return this;
-    }
-
-    /**
-     * Sets the HTTP client to use for sending and receiving requests to and from the service.
-     *
-     * @param httpClient The HTTP client to use for requests.
-     * @return The updated FileClientBuilder object.
-     * @throws NullPointerException If {@code httpClient} is {@code null}.
-     */
-    public FileClientBuilder httpClient(HttpClient httpClient) {
-        super.setHttpClient(httpClient);
-        return this;
-    }
-
-    /**
-     * Adds a policy to the set of existing policies that are executed after the {@link RetryPolicy}.
-     *
-     * @param pipelinePolicy The retry policy for service requests.
-     * @return The updated FileClientBuilder object.
-     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
-     */
-    public FileClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        super.setAdditionalPolicy(pipelinePolicy);
-        return this;
-    }
-
-    /**
-     * Sets the logging level for HTTP requests and responses.
-     *
-     * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
-     * @return The updated FileClientBuilder object.
-     */
-    public FileClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        super.setHttpLogDetailLevel(logLevel);
-        return this;
-    }
-
-    /**
-     * Sets the HTTP pipeline to use for the service client.
-     *
-     * <p>If {@code pipeline} is set, all other settings are ignored, aside from {@link FileClientBuilder#endpoint(String) endpoint},
-     * {@link FileClientBuilder#shareName(String) shareName} @{link FileClientBuilder#resourcePath(String) resourcePath}, and {@link FileClientBuilder#snapshot(String) snaphotShot}
-     * when building clients.</p>
-     *
-     * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return The updated FileClientBuilder object.
-     * @throws NullPointerException If {@code pipeline} is {@code null}.
-     */
-    public FileClientBuilder pipeline(HttpPipeline pipeline) {
-        super.setPipeline(pipeline);
-        return this;
-    }
-
-    /**
-     * Sets the configuration object used to retrieve environment configuration values used to buildFileClient the client with
-     * when they are not set in the builder, defaults to Configuration.NONE
-     * @param configuration configuration store
-     * @return the updated FileClientBuilder object
-     */
-    public FileClientBuilder configuration(Configuration configuration) {
-        super.setConfiguration(configuration);
-        return this;
-    }
-
-    @Override
-    protected UserAgentPolicy getUserAgentPolicy() {
-        return new UserAgentPolicy(FileConfiguration.NAME, FileConfiguration.VERSION, super.getConfiguration());
-    }
-
-    @Override
-    protected String getServiceUrlMidfix() {
-        return "file";
     }
 }

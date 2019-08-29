@@ -49,7 +49,7 @@ public class DirectoryJavaDocCodeSamples {
         DirectoryClient directoryClient = new FileClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net?${SASToken}")
             .shareName("myshare")
-            .filePath("mydirectory")
+            .resourcePath("mydirectory")
             .buildDirectoryClient();
         // END: com.azure.storage.file.directoryClient.instantiation.sastoken
         return directoryClient;
@@ -66,7 +66,7 @@ public class DirectoryJavaDocCodeSamples {
             .endpoint("https://${accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
             .shareName("myshare")
-            .filePath("mydirectory")
+            .resourcePath("mydirectory")
             .buildDirectoryClient();
         // END: com.azure.storage.file.directoryClient.instantiation.credential
         return directoryClient;
@@ -83,7 +83,7 @@ public class DirectoryJavaDocCodeSamples {
         DirectoryClient directoryClient = new FileClientBuilder()
             .connectionString(connectionString)
             .shareName("myshare")
-            .filePath("mydirectory")
+            .resourcePath("mydirectory")
             .buildDirectoryClient();
         // END: com.azure.storage.file.directoryClient.instantiation.connectionstring
         return directoryClient;
@@ -357,7 +357,7 @@ public class DirectoryJavaDocCodeSamples {
             .endpoint("https://${accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
             .shareName("myshare")
-            .filePath("mydirectory")
+            .resourcePath("mydirectory")
             .snapshot(currentTime.toString())
             .buildDirectoryClient();
 

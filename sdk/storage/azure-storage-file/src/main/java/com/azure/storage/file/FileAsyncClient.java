@@ -180,7 +180,7 @@ public class FileAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Copy file from source url to the {@code filePath} </p>
+     * <p>Copy file from source url to the {@code resourcePath} </p>
      *
      * {@codesnippet com.azure.storage.file.fileAsyncClient.startCopy#string-map}
      *
@@ -201,7 +201,7 @@ public class FileAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Copy file from source url to the {@code filePath} </p>
+     * <p>Copy file from source url to the {@code resourcePath} </p>
      *
      * {@codesnippet com.azure.storage.file.fileAsyncClient.startCopyWithResponse#string-map}
      *

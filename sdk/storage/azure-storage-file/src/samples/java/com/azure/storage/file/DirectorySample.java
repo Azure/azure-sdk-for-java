@@ -31,7 +31,7 @@ public class DirectorySample {
         // Build up a directory client
         DirectoryClient directoryClient = new FileClientBuilder().endpoint(ENDPOINT).shareName(generateRandomName())
                                             .shareName(shareName)
-                                            .filePath(generateRandomName()).buildDirectoryClient();
+                                            .resourcePath(generateRandomName()).buildDirectoryClient();
         // Create a parent directory
         try {
             directoryClient.create();

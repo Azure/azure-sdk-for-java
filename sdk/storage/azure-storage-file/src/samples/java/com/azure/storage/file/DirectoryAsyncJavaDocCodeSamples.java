@@ -39,7 +39,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = new FileClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net?{SASToken}")
             .shareName("myshare")
-            .filePath("mydirectory")
+            .resourcePath("mydirectory")
             .buildDirectoryAsyncClient();
         // END: com.azure.storage.file.directoryAsyncClient.instantiation.sastoken
         return directoryAsyncClient;
@@ -55,7 +55,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
             .endpoint("https://{accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
             .shareName("myshare")
-            .filePath("mydirectory")
+            .resourcePath("mydirectory")
             .buildDirectoryAsyncClient();
         // END: com.azure.storage.file.directoryAsyncClient.instantiation.credential
         return direcotryAsyncClient;
@@ -70,7 +70,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         String connectionString = "DefaultEndpointsProtocol=https;AccountName={name};AccountKey={key};"
             + "EndpointSuffix={core.windows.net}";
         DirectoryAsyncClient directoryAsyncClient = new FileClientBuilder()
-            .connectionString(connectionString).shareName("myshare").filePath("mydirectory")
+            .connectionString(connectionString).shareName("myshare").resourcePath("mydirectory")
             .buildDirectoryAsyncClient();
         // END: com.azure.storage.file.directoryAsyncClient.instantiation.connectionstring
         return directoryAsyncClient;
@@ -378,7 +378,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
             .endpoint("https://${accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
             .shareName("myshare")
-            .filePath("mydirectory")
+            .resourcePath("mydirectory")
             .snapshot(currentTime.toString())
             .buildDirectoryAsyncClient();
 

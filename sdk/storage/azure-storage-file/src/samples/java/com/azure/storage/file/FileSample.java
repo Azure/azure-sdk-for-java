@@ -42,7 +42,7 @@ public class FileSample {
         // Create a source file client
         String srcFileName = generateRandomName();
         FileClient srcFileClient = new FileClientBuilder().endpoint(ENDPOINT).shareName(shareName)
-                                    .filePath(parentDirName + "/" + srcFileName).buildFileClient();
+                                    .resourcePath(parentDirName + "/" + srcFileName).buildFileClient();
 
         // Create a source file
         try {
@@ -62,7 +62,7 @@ public class FileSample {
         // Create a destination file client.
         String destFileName = generateRandomName();
         FileClient destFileClient = new FileClientBuilder().endpoint(ENDPOINT).shareName(shareName)
-                                        .filePath(parentDirName + "/" + destFileName).buildFileClient();
+                                        .resourcePath(parentDirName + "/" + destFileName).buildFileClient();
         destFileClient.create(1024);
 
         // Copy the file from source file to destination file.
@@ -87,7 +87,7 @@ public class FileSample {
         }
 
         // Upload a local file to the storage.
-        String filePath = "C:/filePath/";
+        String filePath = "C:/resourcePath/";
         String uploadPath = filePath + "testfiles/" + "uploadSample.txt";
 
         try {
