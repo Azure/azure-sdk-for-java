@@ -12,6 +12,10 @@ import reactor.netty.tcp.ProxyProvider;
 /**
  * Builder class responsible for creating instances of {@link NettyAsyncHttpClient}.
  *
+ * <p><strong>Building a new HttpClient instance</strong></p>
+ *
+ * {@codesnippet com.azure.core.http.netty.instantiation-simple}
+ *
  * @see NettyAsyncHttpClient
  * @see HttpClient
  */
@@ -98,7 +102,10 @@ public class NettyAsyncHttpClientBuilder {
     }
 
     /**
-     * Sets the NIO event loop group that will be used to run IO loops.
+     * Sets the NIO event loop group that will be used to run IO loops. For example, a fixed thread pool can be
+     * specified as shown below:
+     *
+     * {@codesnippet com.azure.core.http.netty.NettyAsyncHttpClientBuilder#NioEventLoopGroup}
      *
      * @param nioEventLoopGroup The {@link NioEventLoopGroup} that will run IO loops.
      * @return the updated NettyAsyncHttpClientBuilder object
