@@ -3,6 +3,7 @@
 
 package com.azure.identity.implementation.msalextensions.cachepersister;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.msalextensions.CacheLock;
 import com.azure.identity.implementation.msalextensions.CacheLockNotObtainedException;
 
@@ -17,12 +18,15 @@ public abstract class CacheProtectorBase {
     private String lockfileLocation;
     private CacheLock lock;
 
+    private ClientLogger logger;
 
     /**
      * Constructor
      * initializes cacheLock
      * */
     public CacheProtectorBase(String lockfileLocation) {
+        logger = new ClientLogger(CacheProtectorBase.class);
+
         this.lockfileLocation = lockfileLocation;
         lock = new CacheLock(this.lockfileLocation);
     }
@@ -38,15 +42,14 @@ public abstract class CacheProtectorBase {
         try {
             lock.lock();
         } catch (CacheLockNotObtainedException ex) {
-            System.out.println("issue in locking");
+            logger.error("readCache() - Issue in locking");
             return contents;
         }
 
         try {
             contents = unprotect();
         } catch (IOException ex) {
-            System.out.println("Issue in reading");
-            ex.printStackTrace();
+            logger.error("readCache() - Issue in reading");
         }
 
         lock.unlock();
@@ -63,14 +66,14 @@ public abstract class CacheProtectorBase {
         try {
             lock.lock();
         } catch (CacheLockNotObtainedException e) {
-            System.out.println("issue in locking");
+            logger.error("writeCache() - Issue in locking");
             return;
         }
 
         try {
             protect(data);
         } catch (IOException e) {
-            System.out.println("issue in writing");
+            logger.error("writeCache() - Issue in writing");
         }
 
         lock.unlock();
@@ -106,7 +109,7 @@ public abstract class CacheProtectorBase {
         try {
             lock.lock();
         } catch (CacheLockNotObtainedException e) {
-            System.out.println("issue in locking");
+            logger.error("deleteCache() - issue in locking");
             return false;
         }
 
