@@ -28,9 +28,9 @@ import java.util.Map;
  *
  * {@codesnippet com.azure.storage.file.directoryClient.instantiation}
  *
- * <p>View {@link DirectoryClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link FileClientBuilder this} for additional ways to construct the client.</p>
  *
- * @see DirectoryClientBuilder
+ * @see FileClientBuilder
  * @see DirectoryClient
  * @see SharedKeyCredential
  * @see SASTokenCredential

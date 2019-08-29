@@ -49,7 +49,7 @@ public final class ContainerClientBuilder extends BaseClientBuilder {
      * Creates a builder instance that is able to configure and construct {@link ContainerClient ContainerClients}
      * and {@link ContainerAsyncClient ContainerAsyncClients}.
      */
-    public ContainerClientBuilder() {}
+    public ContainerClientBuilder() { }
 
     /**
      * @return a {@link ContainerClient} created from the configurations in this builder.

@@ -12,7 +12,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
@@ -50,9 +49,9 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  *
  * {@codesnippet com.azure.storage.file.directoryAsyncClient.instantiation}
  *
- * <p>View {@link DirectoryClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link FileClientBuilder this} for additional ways to construct the client.</p>
  *
- * @see DirectoryClientBuilder
+ * @see FileClientBuilder
  * @see DirectoryClient
  * @see SharedKeyCredential
  * @see SASTokenCredential

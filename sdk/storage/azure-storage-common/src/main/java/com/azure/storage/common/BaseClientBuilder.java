@@ -33,6 +33,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * RESERVED FOR INTERNAL USE.
+ * Base class for Storage client builders. Holds common code for managing resources and pipeline settings.
+ */
 public abstract class BaseClientBuilder {
 
     private static final String ACCOUNT_NAME = "accountname";
@@ -57,6 +61,11 @@ public abstract class BaseClientBuilder {
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private Configuration configuration;
 
+    /**
+     * Assembles the pipeline based on Storage's standard policies and any custom policies set by the user.
+     *
+     * @return The pipeline.
+     */
     protected HttpPipeline buildPipeline() {
         Objects.requireNonNull(this.endpoint);
 
@@ -134,10 +143,15 @@ public abstract class BaseClientBuilder {
         this.sasTokenCredential = null;
     }
 
+    /**
+     * Whether or not this builder has a credential to use with the pipeline.
+     *
+     * @return The boolean value of the expression.
+     */
     protected boolean hasCredential() {
-        return this.sharedKeyCredential != null ||
-            this.tokenCredential != null ||
-            this.sasTokenCredential != null;
+        return this.sharedKeyCredential != null
+            || this.tokenCredential != null
+            || this.sasTokenCredential != null;
     }
 
     /**
@@ -173,24 +187,54 @@ public abstract class BaseClientBuilder {
         setCredential(new SharedKeyCredential(accountName, accountKey));
     }
 
+    /**
+     * Gets the storage service segment to use for the URL hostname when assembling from a connection string.
+     *
+     * @return The midfix.
+     */
     protected abstract String getServiceUrlMidfix();
 
+    /**
+     * Sets the HttpClient to use in the pipeline. Azure-core will use a default if none is present.
+     *
+     * @param httpClient The client to use.
+     */
     protected void setHttpClient(HttpClient httpClient) {
         this.httpClient = httpClient; // builder implicitly handles default creation if null, so no null check
     }
 
+    /**
+     * Adds an HttpPipelinePolicy to the list of custom policies to add in the pipeline.
+     *
+     * @param pipelinePolicy The policy to add.
+     */
     protected void setAdditionalPolicy(HttpPipelinePolicy pipelinePolicy) {
         this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy));
     }
 
+    /**
+     * Sets the HttpLogDetailLevel for this pipeline's logging policy.
+     *
+     * @param logLevel The log level to set.
+     */
     protected void setHttpLogDetailLevel(HttpLogDetailLevel logLevel) {
         this.logLevel = Objects.requireNonNull(logLevel);
     }
 
+    /**
+     * Sets the Configuration for various pipeline policies.
+     *
+     * @param configuration The configuration to set.
+     */
     protected void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
 
+    /**
+     * Gets the configuration being used to construct the pipeline.
+     *
+     * @return The configuration.
+     */
     protected Configuration getConfiguration() {
         if (this.configuration == null) {
             this.configuration = ConfigurationManager.getConfiguration();
@@ -199,6 +243,11 @@ public abstract class BaseClientBuilder {
         return this.configuration;
     }
 
+    /**
+     * Sets the retry options for use in the pipeline's retry policy.
+     *
+     * @param retryOptions The options to set.
+     */
     protected void setRetryOptions(RequestRetryOptions retryOptions) {
         this.retryOptions = Objects.requireNonNull(retryOptions);
     }
@@ -216,6 +265,11 @@ public abstract class BaseClientBuilder {
         this.pipeline = pipeline;
     }
 
+    /**
+     * Gets the optional custom pipeline to use in constructed clients.
+     *
+     * @return The pipeline. Null if the builder should construct one.
+     */
     protected HttpPipeline getPipeline() {
         return this.pipeline;
     }
@@ -228,5 +282,10 @@ public abstract class BaseClientBuilder {
      */
     protected abstract void setEndpoint(String endpoint);
 
+    /**
+     * Gets the user agent policy to use for pipelines constructed by this builder.
+     *
+     * @return The policy.
+     */
     protected abstract UserAgentPolicy getUserAgentPolicy();
 }

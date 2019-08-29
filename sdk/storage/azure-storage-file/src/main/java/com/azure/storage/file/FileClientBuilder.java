@@ -22,8 +22,6 @@ import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -78,7 +76,7 @@ public class FileClientBuilder extends BaseClientBuilder {
      * Creates a builder instance that is able to configure and construct {@link FileClient FileClients}
      * and {@link FileAsyncClient FileAsyncClients}.
      */
-    public FileClientBuilder() {}
+    public FileClientBuilder() { }
 
     private AzureFileStorageImpl constructImpl() {
         Objects.requireNonNull(shareName);
@@ -104,8 +102,8 @@ public class FileClientBuilder extends BaseClientBuilder {
      * called a new instance of {@link DirectoryAsyncClient} is created.
      *
      * <p>
-     * If {@link DirectoryClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link DirectoryClientBuilder#endpoint(String) endpoint} are used to create the
+     * If {@link FileClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
+     * {@link FileClientBuilder#endpoint(String) endpoint} are used to create the
      * {@link DirectoryAsyncClient client}. All other builder settings are ignored.
      * </p>
      *
@@ -122,8 +120,8 @@ public class FileClientBuilder extends BaseClientBuilder {
      * called a new instance of {@link DirectoryClient} is created.
      *
      * <p>
-     * If {@link DirectoryClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link DirectoryClientBuilder#endpoint(String) endpoint} are used to create the
+     * If {@link FileClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
+     * {@link FileClientBuilder#endpoint(String) endpoint} are used to create the
      * {@link DirectoryClient client}. All other builder settings are ignored.
      * </p>
      *

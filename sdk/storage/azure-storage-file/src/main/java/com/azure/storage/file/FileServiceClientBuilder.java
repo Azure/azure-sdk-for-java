@@ -71,7 +71,7 @@ public final class FileServiceClientBuilder extends BaseClientBuilder {
      * Creates a builder instance that is able to configure and construct {@link FileServiceClient FileServiceClients}
      * and {@link FileServiceAsyncClient FileServiceAsyncClients}.
      */
-    public FileServiceClientBuilder() {}
+    public FileServiceClientBuilder() { }
 
     private AzureFileStorageImpl constructImpl() {
         if (!super.hasCredential()) {

@@ -5,16 +5,11 @@ package com.azure.storage.file;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
-import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.logging.ClientLogger;
@@ -22,19 +17,11 @@ import com.azure.storage.common.BaseClientBuilder;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.common.policy.SASTokenCredentialPolicy;
-import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -87,7 +74,7 @@ public class ShareClientBuilder extends BaseClientBuilder {
      * Creates a builder instance that is able to configure and construct {@link ShareClient ShareClients}
      * and {@link ShareAsyncClient ShareAsyncClients}.
      */
-    public ShareClientBuilder() {}
+    public ShareClientBuilder() { }
 
     private AzureFileStorageImpl constructImpl() {
         Objects.requireNonNull(shareName);

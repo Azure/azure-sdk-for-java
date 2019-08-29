@@ -47,7 +47,7 @@ public final class BlobServiceClientBuilder extends BaseClientBuilder {
      * Creates a builder instance that is able to configure and construct {@link BlobServiceClient BlobServiceClients}
      * and {@link BlobServiceAsyncClient BlobServiceAsyncClients}.
      */
-    public BlobServiceClientBuilder() {}
+    public BlobServiceClientBuilder() { }
 
     /**
      * @return a {@link BlobServiceClient} created from the configurations in this builder.

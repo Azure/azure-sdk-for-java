@@ -11,7 +11,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.DequeuedMessage;
 import com.azure.storage.queue.models.EnqueuedMessage;
@@ -25,7 +24,6 @@ import com.azure.storage.queue.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.models.SignedIdentifier;
 import com.azure.storage.queue.models.StorageErrorException;
 import com.azure.storage.queue.models.UpdatedMessage;
-import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -34,6 +32,7 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
@@ -68,28 +67,7 @@ public final class QueueAsyncClient {
     QueueAsyncClient(AzureQueueStorageImpl client, String queueName) {
         Objects.requireNonNull(queueName);
         this.queueName = queueName;
-
-        this.client = new AzureQueueStorageBuilder().pipeline(client.getHttpPipeline())
-            .url(client.getUrl())
-            .version(client.getVersion())
-            .build();
-    }
-
-    /**
-     * Creates a QueueAsyncClient that sends requests to the storage queue service at {@code endpoint}.
-     * Each service call goes through the {@code httpPipeline}.
-     *
-     * @param endpoint URL for the Storage Queue service
-     * @param httpPipeline HttpPipeline that the HTTP requests and response flow through
-     * @param queueName Name of the queue
-     */
-    QueueAsyncClient(URL endpoint, HttpPipeline httpPipeline, String queueName) {
-        Objects.requireNonNull(queueName);
-        this.queueName = queueName;
-
-        this.client = new AzureQueueStorageBuilder().pipeline(httpPipeline)
-            .url(endpoint.toString())
-            .build();
+        this.client = client;
     }
 
     /**

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
@@ -11,7 +10,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.CorsRule;
 import com.azure.storage.queue.models.ListQueuesIncludeType;
@@ -22,7 +20,6 @@ import com.azure.storage.queue.models.ServicesListQueuesSegmentResponse;
 import com.azure.storage.queue.models.StorageErrorException;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
-import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -31,6 +28,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
@@ -61,10 +59,8 @@ public final class QueueServiceAsyncClient {
      * @param endpoint URL for the Storage Queue service
      * @param httpPipeline HttpPipeline that the HTTP requests and response flow through
      */
-    QueueServiceAsyncClient(URL endpoint, HttpPipeline httpPipeline) {
-        this.client = new AzureQueueStorageBuilder().pipeline(httpPipeline)
-            .url(endpoint.toString())
-            .build();
+    QueueServiceAsyncClient(AzureQueueStorageImpl azureQueueStorage) {
+        this.client = azureQueueStorage;
     }
 
     /**

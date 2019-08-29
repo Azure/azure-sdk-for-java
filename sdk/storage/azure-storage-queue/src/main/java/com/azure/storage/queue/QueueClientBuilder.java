@@ -5,33 +5,24 @@ package com.azure.storage.queue;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
-import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.BaseClientBuilder;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.common.policy.SASTokenCredentialPolicy;
-import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
+import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -78,32 +69,32 @@ import java.util.Objects;
  * @see SharedKeyCredential
  */
 @ServiceClientBuilder(serviceClients = {QueueClient.class, QueueAsyncClient.class})
-public final class QueueClientBuilder {
+public final class QueueClientBuilder extends BaseClientBuilder {
     private final ClientLogger logger = new ClientLogger(QueueClientBuilder.class);
-    private static final String ACCOUNT_NAME = "accountname";
-    private final List<HttpPipelinePolicy> policies;
-
-    private URL endpoint;
     private String queueName;
-    private SASTokenCredential sasTokenCredential;
-    private SharedKeyCredential sharedKeyCredential;
-    private TokenCredential bearerTokenCredential;
-    private HttpClient httpClient;
-    private HttpPipeline pipeline;
-    private HttpLogDetailLevel logLevel;
-    private final RetryPolicy retryPolicy;
-    private Configuration configuration;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link QueueClient QueueClients}
      * and {@link QueueAsyncClient QueueAsyncClients}.
      */
-    public QueueClientBuilder() {
-        retryPolicy = new RetryPolicy();
-        logLevel = HttpLogDetailLevel.NONE;
-        policies = new ArrayList<>();
+    public QueueClientBuilder() { }
 
-        configuration = ConfigurationManager.getConfiguration();
+    private AzureQueueStorageImpl constructImpl() {
+        Objects.requireNonNull(queueName);
+
+        if (!super.hasCredential()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Credentials are required for authorization"));
+        }
+
+        HttpPipeline pipeline = super.getPipeline();
+        if (pipeline == null) {
+            pipeline = super.buildPipeline();
+        }
+
+        return new AzureQueueStorageBuilder()
+            .url(super.endpoint)
+            .pipeline(pipeline)
+            .build();
     }
 
     /**
@@ -141,44 +132,7 @@ public final class QueueClientBuilder {
      * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
      */
     public QueueAsyncClient buildAsyncClient() {
-        Objects.requireNonNull(endpoint);
-
-        if (sasTokenCredential == null && sharedKeyCredential == null && bearerTokenCredential == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Credentials are required for authorization"));
-        }
-
-        if (pipeline != null) {
-            return new QueueAsyncClient(endpoint, pipeline, queueName);
-        }
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        policies.add(new UserAgentPolicy(QueueConfiguration.NAME, QueueConfiguration.VERSION, configuration));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddDatePolicy());
-
-        if (sharedKeyCredential != null) {
-            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
-        } else if (bearerTokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(bearerTokenCredential, String.format("%s/.default", endpoint)));
-        } else if (sasTokenCredential != null) {
-            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
-        }
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-
-        policies.add(retryPolicy);
-
-        policies.addAll(this.policies);
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(logLevel));
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
-
-        return new QueueAsyncClient(endpoint, pipeline, queueName);
+        return new QueueAsyncClient(constructImpl(), queueName);
     }
 
     /**
@@ -195,10 +149,16 @@ public final class QueueClientBuilder {
      * @throws IllegalArgumentException If {@code endpoint} isn't a proper URL
      */
     public QueueClientBuilder endpoint(String endpoint) {
+        this.setEndpoint(endpoint);
+        return this;
+    }
+
+    @Override
+    protected void setEndpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
         try {
             URL fullURL = new URL(endpoint);
-            this.endpoint = new URL(fullURL.getProtocol() + "://" + fullURL.getHost());
+            this.endpoint = fullURL.getProtocol() + "://" + fullURL.getHost();
 
             // Attempt to get the queue name from the URL passed
             String[] pathSegments = fullURL.getPath().split("/", 2);
@@ -207,16 +167,13 @@ public final class QueueClientBuilder {
             }
 
             // Attempt to get the SAS token from the URL passed
-            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
-            if (this.sasTokenCredential != null) {
-                this.sharedKeyCredential = null;
-                this.bearerTokenCredential = null;
+            SASTokenCredential sasTokenCredential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
+            if (sasTokenCredential != null) {
+                super.setCredential(sasTokenCredential);
             }
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed. Endpoint: " + endpoint));
         }
-
-        return this;
     }
 
     /**
@@ -239,9 +196,7 @@ public final class QueueClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public QueueClientBuilder credential(SASTokenCredential credential) {
-        this.sasTokenCredential = Objects.requireNonNull(credential);
-        this.sharedKeyCredential = null;
-        this.bearerTokenCredential = null;
+        super.setCredential(credential);
         return this;
     }
 
@@ -253,9 +208,7 @@ public final class QueueClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public QueueClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = Objects.requireNonNull(credential);
-        this.sasTokenCredential = null;
-        this.bearerTokenCredential = null;
+        super.setCredential(credential);
         return this;
     }
 
@@ -266,9 +219,7 @@ public final class QueueClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}
      */
     public QueueClientBuilder credential(TokenCredential credential) {
-        this.bearerTokenCredential = Objects.requireNonNull(credential);
-        this.sharedKeyCredential = null;
-        this.sasTokenCredential = null;
+        super.setCredential(credential);
         return this;
     }
 
@@ -281,25 +232,8 @@ public final class QueueClientBuilder {
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      */
     public QueueClientBuilder connectionString(String connectionString) {
-        Objects.requireNonNull(connectionString);
-        this.sharedKeyCredential = SharedKeyCredential.fromConnectionString(connectionString);
-        getEndPointFromConnectionString(connectionString);
+        super.parseConnectionString(connectionString);
         return this;
-    }
-
-    private void getEndPointFromConnectionString(String connectionString) {
-        HashMap<String, String> connectionStringPieces = new HashMap<>();
-        for (String connectionStringPiece : connectionString.split(";")) {
-            String[] kvp = connectionStringPiece.split("=", 2);
-            connectionStringPieces.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
-        }
-        String accountName = connectionStringPieces.get(ACCOUNT_NAME);
-        try {
-            this.endpoint = new URL(String.format("https://%s.queue.core.windows.net", accountName));
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format("There is no valid account for the connection string. "
-                + "Connection String: %s", connectionString)));
-        }
     }
 
     /**
@@ -310,7 +244,7 @@ public final class QueueClientBuilder {
      * @throws NullPointerException If {@code httpClient} is {@code null}.
      */
     public QueueClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = Objects.requireNonNull(httpClient);
+        super.setHttpClient(httpClient);
         return this;
     }
 
@@ -322,8 +256,7 @@ public final class QueueClientBuilder {
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public QueueClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        Objects.requireNonNull(pipelinePolicy);
-        this.policies.add(pipelinePolicy);
+        super.setAdditionalPolicy(pipelinePolicy);
         return this;
     }
 
@@ -334,7 +267,7 @@ public final class QueueClientBuilder {
      * @return The updated QueueClientBuilder object.
      */
     public QueueClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        this.logLevel = logLevel;
+        super.setHttpLogDetailLevel(logLevel);
         return this;
     }
 
@@ -349,8 +282,7 @@ public final class QueueClientBuilder {
      * @throws NullPointerException If {@code pipeline} is {@code null}.
      */
     public QueueClientBuilder pipeline(HttpPipeline pipeline) {
-        Objects.requireNonNull(pipeline);
-        this.pipeline = pipeline;
+        super.setPipeline(pipeline);
         return this;
     }
 
@@ -364,7 +296,17 @@ public final class QueueClientBuilder {
      * @return The updated QueueClientBuilder object.
      */
     public QueueClientBuilder configuration(Configuration configuration) {
-        this.configuration = configuration;
+        super.setConfiguration(configuration);
         return this;
+    }
+
+    @Override
+    protected String getServiceUrlMidfix() {
+        return null;
+    }
+
+    @Override
+    protected UserAgentPolicy getUserAgentPolicy() {
+        return null;
     }
 }

@@ -67,7 +67,7 @@ public final class BlobClientBuilder extends BaseClientBuilder {
     /**
      * Creates a builder instance that is able to configure and construct Storage Blob clients.
      */
-    public BlobClientBuilder() {}
+    public BlobClientBuilder() { }
 
     private AzureBlobStorageImpl constructImpl() {
         Objects.requireNonNull(containerName);
