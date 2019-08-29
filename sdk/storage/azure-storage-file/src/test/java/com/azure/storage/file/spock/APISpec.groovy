@@ -3,9 +3,12 @@
 
 package com.azure.storage.file.spock
 
+import com.azure.core.http.HttpClient
+import com.azure.core.http.ProxyOptions
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
+import com.azure.core.test.utils.ResourceNamer
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.core.util.logging.ClientLogger
@@ -18,14 +21,17 @@ import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.ListSharesOptions
 import spock.lang.Specification
 
+import java.time.OffsetDateTime
+import java.util.function.Supplier
+
 class APISpec extends Specification {
     // Field common used for all APIs.
     def logger = new ClientLogger(APISpec.class)
     def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     def tmpFolder = getClass().getClassLoader().getResource("tmptestfiles")
     def testFolder = getClass().getClassLoader().getResource("testfiles")
-    def interceptorManager
-    def testResourceName
+    InterceptorManager interceptorManager
+    TestResourceNamer testResourceName
 
     // Primary Clients used for API tests
     FileServiceClient primaryFileServiceClient
@@ -36,6 +42,9 @@ class APISpec extends Specification {
     def methodName
     def testMode = getTestMode()
     def connectionString
+
+    // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
+    static boolean enableDebugging = false
 
     /**
      * Setup the File service clients commonly used for the API tests.
@@ -102,6 +111,7 @@ class APISpec extends Specification {
                 .connectionString(connectionString)
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
+                .httpClient(getHttpClient())
         } else {
             return new FileServiceClientBuilder()
                 .connectionString(connectionString)
@@ -116,6 +126,7 @@ class APISpec extends Specification {
                 .shareName(shareName)
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
+                .httpClient(getHttpClient())
         } else {
             return new ShareClientBuilder()
                 .connectionString(connectionString)
@@ -132,6 +143,7 @@ class APISpec extends Specification {
                 .resourcePath(directoryPath)
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
+                .httpClient(getHttpClient())
         } else {
             return new FileClientBuilder()
                 .connectionString(connectionString)
@@ -149,6 +161,7 @@ class APISpec extends Specification {
                 .resourcePath(filePath)
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
+                .httpClient(getHttpClient())
         } else {
             return new FileClientBuilder()
                 .connectionString(connectionString)
@@ -166,5 +179,22 @@ class APISpec extends Specification {
             return fullName
         }
         return matcher[0][1] + matcher[0][3]
+    }
+
+    static HttpClient getHttpClient() {
+        if (enableDebugging) {
+            return HttpClient.createDefault().proxy(new Supplier<ProxyOptions>() {
+                @Override
+                ProxyOptions get() {
+                    return new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
+                }
+            })
+        } else {
+            return HttpClient.createDefault()
+        }
+    }
+
+    OffsetDateTime getUTCNow() {
+        return testResourceName.now()
     }
 }

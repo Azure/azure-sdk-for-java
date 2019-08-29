@@ -18,6 +18,9 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.blob.models.StorageServiceStats;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.AccountSASPermission;
+import com.azure.storage.common.AccountSASResourceType;
+import com.azure.storage.common.AccountSASService;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
@@ -293,7 +296,7 @@ public final class BlobServiceClient {
      * @return A string that represents the SAS token
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
-                                     AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
         return this.blobServiceAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime);
     }
 
@@ -311,8 +314,8 @@ public final class BlobServiceClient {
      * @return A string that represents the SAS token
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
-                                     AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version, IPRange ipRange,
-                                     SASProtocol sasProtocol) {
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        IPRange ipRange, SASProtocol sasProtocol) {
         return this.blobServiceAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
     }
 }

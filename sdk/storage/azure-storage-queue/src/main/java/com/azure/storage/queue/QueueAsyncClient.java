@@ -9,6 +9,9 @@ import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
@@ -30,6 +33,8 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -335,6 +340,26 @@ public final class QueueAsyncClient {
     }
 
     Mono<VoidResponse> setAccessPolicyWithResponse(List<SignedIdentifier> permissions, Context context) {
+
+        /*
+        We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
+        OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
+        allows for proper serialization with no real detriment to users as sub-second precision on active time for
+        signed identifiers is not really necessary.
+         */
+        if (permissions != null) {
+            for (SignedIdentifier permission : permissions) {
+                if (permission.accessPolicy() != null && permission.accessPolicy().start() != null) {
+                    permission.accessPolicy().start(
+                        permission.accessPolicy().start().truncatedTo(ChronoUnit.SECONDS));
+                }
+                if (permission.accessPolicy() != null && permission.accessPolicy().expiry() != null) {
+                    permission.accessPolicy().expiry(
+                        permission.accessPolicy().expiry().truncatedTo(ChronoUnit.SECONDS));
+                }
+            }
+        }
+
         return client.queues().setAccessPolicyWithRestResponseAsync(queueName, permissions, null,  null, context)
             .map(VoidResponse::new);
     }
@@ -671,6 +696,60 @@ public final class QueueAsyncClient {
     Mono<VoidResponse> deleteMessageWithResponse(String messageId, String popReceipt, Context context) {
         return client.messageIds().deleteWithRestResponseAsync(queueName, messageId, popReceipt, context)
             .map(VoidResponse::new);
+    }
+
+    /**
+     * Generates a SAS token with the specified parameters
+     *
+     * @param permissions The {@code QueueSASPermission} permission for the SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateSAS(QueueSASPermission permissions, OffsetDateTime expiryTime) {
+        return this.generateSAS(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
+        version */, null /* sasProtocol */, null /* ipRange */);
+    }
+
+    /**
+     * Generates a SAS token with the specified parameters
+     *
+     * @param identifier The {@code String} name of the access policy on the queue this SAS references if any
+     * @return A string that represents the SAS token
+     */
+    public String generateSAS(String identifier) {
+        return this.generateSAS(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
+            null /* version */, null /* sasProtocol */, null /* ipRange */);
+    }
+
+    /**
+     * Generates a SAS token with the specified parameters
+     *
+     * @param identifier The {@code String} name of the access policy on the queue this SAS references if any
+     * @param permissions The {@code QueueSASPermission} permission for the SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
+     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
+     * @param version An optional {@code String} version for the SAS
+     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateSAS(String identifier, QueueSASPermission permissions, OffsetDateTime expiryTime,
+        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
+
+        QueueServiceSASSignatureValues queueServiceSASSignatureValues = new QueueServiceSASSignatureValues(version, sasProtocol,
+            startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange, identifier);
+
+        SharedKeyCredential sharedKeyCredential =
+            Utility.getSharedKeyCredential(this.client.getHttpPipeline());
+
+        Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
+
+        // Set canonical name
+        QueueServiceSASSignatureValues values = queueServiceSASSignatureValues.canonicalName(this.queueName, sharedKeyCredential.accountName());
+
+        QueueServiceSASQueryParameters queueServiceSasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
+
+        return queueServiceSasQueryParameters.encode();
     }
 
     /*

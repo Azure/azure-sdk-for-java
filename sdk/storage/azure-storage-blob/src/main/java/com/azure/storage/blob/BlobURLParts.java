@@ -34,7 +34,7 @@ final class BlobURLParts {
 
     private String snapshot;
 
-    private SASQueryParameters sasQueryParameters;
+    private BlobServiceSASQueryParameters blobServiceSasQueryParameters;
 
     private Map<String, String[]> unparsedParameters;
 
@@ -123,19 +123,19 @@ final class BlobURLParts {
     }
 
     /**
-     * A {@link SASQueryParameters} representing the SAS query parameters or {@code null} if there were no such
+     * A {@link BlobServiceSASQueryParameters} representing the SAS query parameters or {@code null} if there were no such
      * parameters.
      */
-    public SASQueryParameters sasQueryParameters() {
-        return sasQueryParameters;
+    public BlobServiceSASQueryParameters sasQueryParameters() {
+        return blobServiceSasQueryParameters;
     }
 
     /**
-     * A {@link SASQueryParameters} representing the SAS query parameters or {@code null} if there were no such
+     * A {@link BlobServiceSASQueryParameters} representing the SAS query parameters or {@code null} if there were no such
      * parameters.
      */
-    public BlobURLParts sasQueryParameters(SASQueryParameters sasQueryParameters) {
-        this.sasQueryParameters = sasQueryParameters;
+    public BlobURLParts sasQueryParameters(BlobServiceSASQueryParameters blobServiceSasQueryParameters) {
+        this.blobServiceSasQueryParameters = blobServiceSasQueryParameters;
         return this;
     }
 
@@ -180,8 +180,8 @@ final class BlobURLParts {
         if (this.snapshot != null) {
             url.setQueryParameter(Constants.SNAPSHOT_QUERY_PARAMETER, this.snapshot);
         }
-        if (this.sasQueryParameters != null) {
-            String encodedSAS = this.sasQueryParameters.encode();
+        if (this.blobServiceSasQueryParameters != null) {
+            String encodedSAS = this.blobServiceSasQueryParameters.encode();
             if (encodedSAS.length() != 0) {
                 url.query(encodedSAS);
             }
