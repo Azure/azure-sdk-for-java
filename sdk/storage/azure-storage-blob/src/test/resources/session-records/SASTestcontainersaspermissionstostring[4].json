@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccontainersaspermissionstostring00402868efa8f6ffd?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccontainersaspermissionstostring033049a12873a4bad?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -9,14 +9,14 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72CB2720732FE\"",
-      "Last-Modified" : "Thu, 29 Aug 2019 18:55:22 GMT",
+      "ETag" : "\"0x8D72CB5F7B421F4\"",
+      "Last-Modified" : "Thu, 29 Aug 2019 19:20:35 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "8bd42078-601e-0122-329b-5e1815000000",
-      "Date" : "Thu, 29 Aug 2019 18:55:22 GMT",
-      "x-ms-client-request-id" : "b3c61164-c7e7-425f-81af-f5b68c06d27b"
+      "x-ms-request-id" : "1385a19c-c01e-00e7-6f9e-5e207b000000",
+      "Date" : "Thu, 29 Aug 2019 19:20:34 GMT",
+      "x-ms-client-request-id" : "07ae55d2-0855-4299-b851-2572c445b7b2"
     },
     "Exception" : null
   }, {
@@ -28,22 +28,20 @@
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "Access-Control-Allow-Origin" : "*",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "8bd4209b-601e-0122-4c9b-5e1815000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtccontainersaspermissionstostring</Prefix><Containers><Container><Name>jtccontainersaspermissionstostring00402868efa8f6ffd</Name><Properties><Last-Modified>Thu, 29 Aug 2019 18:55:22 GMT</Last-Modified><Etag>\"0x8D72CB2720732FE\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 29 Aug 2019 18:55:22 GMT",
-      "x-ms-client-request-id" : "bace0c81-cf09-4403-8855-9f1d9a774892",
+      "x-ms-request-id" : "1385a1b6-c01e-00e7-059e-5e207b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtccontainersaspermissionstostring</Prefix><Containers><Container><Name>jtccontainersaspermissionstostring033049a12873a4bad</Name><Properties><Last-Modified>Thu, 29 Aug 2019 19:20:35 GMT</Last-Modified><Etag>\"0x8D72CB5F7B421F4\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 29 Aug 2019 19:20:34 GMT",
+      "x-ms-client-request-id" : "1e7bdfae-c47a-4ae3-8fef-39d9bd32f8f0",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccontainersaspermissionstostring00402868efa8f6ffd?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccontainersaspermissionstostring033049a12873a4bad?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -54,11 +52,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "8bd420b3-601e-0122-639b-5e1815000000",
-      "Date" : "Thu, 29 Aug 2019 18:55:22 GMT",
-      "x-ms-client-request-id" : "751c3465-5c7e-4e7f-9553-656574e0331e"
+      "x-ms-request-id" : "1385a1bf-c01e-00e7-0d9e-5e207b000000",
+      "Date" : "Thu, 29 Aug 2019 19:20:34 GMT",
+      "x-ms-client-request-id" : "1c03fcb5-9e87-4988-8e9f-c3b37742b1be"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtccontainersaspermissionstostring00402868efa8f6ffd" ]
+  "variables" : [ "jtccontainersaspermissionstostring033049a12873a4bad" ]
 }

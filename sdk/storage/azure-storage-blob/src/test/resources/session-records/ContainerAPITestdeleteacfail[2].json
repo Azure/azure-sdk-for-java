@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcdeleteacfail0containerapitestdeleteacfail43d74047f7db3?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcdeleteacfail0containerapitestdeleteacfaile4499432ccdd1?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72CB0F3B385E5\"",
-      "Last-Modified" : "Thu, 29 Aug 2019 18:44:41 GMT",
+      "ETag" : "\"0x8D72CB6D85AACC1\"",
+      "Last-Modified" : "Thu, 29 Aug 2019 19:26:52 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "600a5440-301e-00b6-0399-5e3e8e000000",
-      "Date" : "Thu, 29 Aug 2019 18:44:41 GMT",
-      "x-ms-client-request-id" : "b161a668-ea60-4301-90d0-87d8488ac687"
+      "x-ms-request-id" : "7bc8a1b9-301e-007a-729f-5e5a3b000000",
+      "Date" : "Thu, 29 Aug 2019 19:26:51 GMT",
+      "x-ms-client-request-id" : "61d586bc-bc92-4b3f-9f31-d34dcff8df26"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcdeleteacfail0containerapitestdeleteacfail43d74047f7db3?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcdeleteacfail0containerapitestdeleteacfaile4499432ccdd1?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -33,10 +33,10 @@
       "retry-after" : "0",
       "Content-Length" : "251",
       "StatusCode" : "412",
-      "x-ms-request-id" : "600a545f-301e-00b6-1e99-5e3e8e000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>LeaseNotPresentWithContainerOperation</Code><Message>There is currently no lease on the container.\nRequestId:600a545f-301e-00b6-1e99-5e3e8e000000\nTime:2019-08-29T18:44:41.1089837Z</Message></Error>",
-      "Date" : "Thu, 29 Aug 2019 18:44:41 GMT",
-      "x-ms-client-request-id" : "3bf373bb-fca1-46be-9fac-e9b71714215c",
+      "x-ms-request-id" : "7bc8a1cc-301e-007a-7e9f-5e5a3b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>LeaseNotPresentWithContainerOperation</Code><Message>There is currently no lease on the container.\nRequestId:7bc8a1cc-301e-007a-7e9f-5e5a3b000000\nTime:2019-08-29T19:26:52.2066004Z</Message></Error>",
+      "Date" : "Thu, 29 Aug 2019 19:26:51 GMT",
+      "x-ms-client-request-id" : "ba051808-05bb-4207-a5f1-3ef5c150def7",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
@@ -53,16 +53,16 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "600a546b-301e-00b6-2999-5e3e8e000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcdeleteacfail</Prefix><Containers><Container><Name>jtcdeleteacfail0containerapitestdeleteacfail43d74047f7db3</Name><Properties><Last-Modified>Thu, 29 Aug 2019 18:44:41 GMT</Last-Modified><Etag>\"0x8D72CB0F3B385E5\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 29 Aug 2019 18:44:41 GMT",
-      "x-ms-client-request-id" : "64dab55a-015d-493d-a65d-8b05d2fe5a7c",
+      "x-ms-request-id" : "7bc8a1dc-301e-007a-0d9f-5e5a3b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcdeleteacfail</Prefix><Containers><Container><Name>jtcdeleteacfail0containerapitestdeleteacfaile4499432ccdd1</Name><Properties><Last-Modified>Thu, 29 Aug 2019 19:26:52 GMT</Last-Modified><Etag>\"0x8D72CB6D85AACC1\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 29 Aug 2019 19:26:52 GMT",
+      "x-ms-client-request-id" : "d568336d-c97e-4531-8588-608e79b7e364",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcdeleteacfail0containerapitestdeleteacfail43d74047f7db3?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcdeleteacfail0containerapitestdeleteacfaile4499432ccdd1?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -73,11 +73,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "600a5474-301e-00b6-3199-5e3e8e000000",
-      "Date" : "Thu, 29 Aug 2019 18:44:41 GMT",
-      "x-ms-client-request-id" : "eb5e48cb-5f7e-4f91-8a72-c18823efdc0f"
+      "x-ms-request-id" : "7bc8a1e7-301e-007a-179f-5e5a3b000000",
+      "Date" : "Thu, 29 Aug 2019 19:26:52 GMT",
+      "x-ms-client-request-id" : "7e2ac82d-660a-4fba-9723-471d7e1a4dea"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcdeleteacfail0containerapitestdeleteacfail43d74047f7db3" ]
+  "variables" : [ "jtcdeleteacfail0containerapitestdeleteacfaile4499432ccdd1" ]
 }

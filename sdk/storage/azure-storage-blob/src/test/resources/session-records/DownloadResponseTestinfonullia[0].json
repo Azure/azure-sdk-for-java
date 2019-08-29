@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcinfonullia0downloadresponsetestinfonulliad7f951888fd09?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcinfonullia0downloadresponsetestinfonullia11040690ec0cb?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72CA682AE0FE3\"",
-      "Last-Modified" : "Thu, 29 Aug 2019 17:29:56 GMT",
+      "ETag" : "\"0x8D72CB75F85C714\"",
+      "Last-Modified" : "Thu, 29 Aug 2019 19:30:38 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "e3b9d03d-a01e-00de-198f-5e60df000000",
-      "Date" : "Thu, 29 Aug 2019 17:29:55 GMT",
-      "x-ms-client-request-id" : "b4cff06a-c0d9-41ba-911f-e6d7ced5a511"
+      "x-ms-request-id" : "f2169f3f-101e-0083-49a0-5e90db000000",
+      "Date" : "Thu, 29 Aug 2019 19:30:38 GMT",
+      "x-ms-client-request-id" : "3962592f-aeb3-47a4-9bcb-4f62017c98d2"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcinfonullia0downloadresponsetestinfonulliad7f951888fd09/javablobinfonullia1downloadresponsetestinfonulliad7f0985165c",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcinfonullia0downloadresponsetestinfonullia11040690ec0cb/javablobinfonullia1downloadresponsetestinfonullia11070373961",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
@@ -31,16 +31,16 @@
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-content-crc64" : "6RYQPwaVsyQ=",
-      "Last-Modified" : "Thu, 29 Aug 2019 17:29:56 GMT",
+      "Last-Modified" : "Thu, 29 Aug 2019 19:30:38 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Thu, 29 Aug 2019 17:29:56 GMT",
+      "Date" : "Thu, 29 Aug 2019 19:30:38 GMT",
       "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
-      "ETag" : "\"0x8D72CA682B3D36F\"",
+      "ETag" : "\"0x8D72CB75F8BA012\"",
       "Content-Length" : "0",
-      "x-ms-request-id" : "e3b9d051-a01e-00de-298f-5e60df000000",
-      "x-ms-client-request-id" : "069527b8-6f07-4de5-8318-0da7a760bfbd"
+      "x-ms-request-id" : "f2169f5d-101e-0083-64a0-5e90db000000",
+      "x-ms-client-request-id" : "b7882b53-3cba-4ef5-93f0-8f7c7fac2a3b"
     },
     "Exception" : null
   }, {
@@ -56,16 +56,16 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "e3b9d062-a01e-00de-388f-5e60df000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcinfonullia</Prefix><Containers><Container><Name>jtcinfonullia0downloadresponsetestinfonulliad7f951888fd09</Name><Properties><Last-Modified>Thu, 29 Aug 2019 17:29:56 GMT</Last-Modified><Etag>\"0x8D72CA682AE0FE3\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 29 Aug 2019 17:29:56 GMT",
-      "x-ms-client-request-id" : "8fb6719f-ac4e-4174-86e6-1d381a138f09",
+      "x-ms-request-id" : "f2169f7b-101e-0083-7da0-5e90db000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcinfonullia</Prefix><Containers><Container><Name>jtcinfonullia0downloadresponsetestinfonullia11040690ec0cb</Name><Properties><Last-Modified>Thu, 29 Aug 2019 19:30:38 GMT</Last-Modified><Etag>\"0x8D72CB75F85C714\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 29 Aug 2019 19:30:38 GMT",
+      "x-ms-client-request-id" : "b4685174-d64b-4b73-ac79-41002f5be98e",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcinfonullia0downloadresponsetestinfonulliad7f951888fd09?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcinfonullia0downloadresponsetestinfonullia11040690ec0cb?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -76,11 +76,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "e3b9d06f-a01e-00de-458f-5e60df000000",
-      "Date" : "Thu, 29 Aug 2019 17:29:56 GMT",
-      "x-ms-client-request-id" : "59d2b33c-b6df-4a89-827d-4b97c9bcf6da"
+      "x-ms-request-id" : "f2169f8c-101e-0083-0da0-5e90db000000",
+      "Date" : "Thu, 29 Aug 2019 19:30:38 GMT",
+      "x-ms-client-request-id" : "a11a7306-d67b-443a-8538-8cddab288c82"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcinfonullia0downloadresponsetestinfonulliad7f951888fd09", "javablobinfonullia1downloadresponsetestinfonulliad7f0985165c", "ac880a18-7c89-4118-b2c2-81bf2b518f92" ]
+  "variables" : [ "jtcinfonullia0downloadresponsetestinfonullia11040690ec0cb", "javablobinfonullia1downloadresponsetestinfonullia11070373961", "37f779cd-aa2c-464f-a15b-61d86e461f23" ]
 }

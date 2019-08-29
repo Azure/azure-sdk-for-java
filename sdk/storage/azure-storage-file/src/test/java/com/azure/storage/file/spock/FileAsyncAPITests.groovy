@@ -142,26 +142,6 @@ class FileAsyncAPITests extends APISpec {
         defaultData.clear()
     }
 
-    @Unroll
-    def "Upload data length mismatch"() {
-        given:
-        primaryFileAsyncClient.create(1024).block()
-        when:
-        def uploadErrorVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData),
-            size, 0))
-        then:
-        uploadErrorVerifier.verifyErrorSatisfies {
-            assert it instanceof UnexpectedLengthException
-            assert it.getMessage().contains(errMsg)
-        }
-        cleanup:
-        defaultData.clear()
-        where:
-        size | errMsg
-        6 | "more bytes than"
-        8 | "less bytes than"
-    }
-
     def "Download data error"() {
         when:
         def downloadDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(0, 1023), false, null))

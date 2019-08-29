@@ -114,7 +114,7 @@ public final class BlobServiceClientBuilder {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         }
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-       // policies.add(new RequestRetryPolicy(retryOptions));
+        policies.add(new RequestRetryPolicy(retryOptions));
 
         policies.addAll(this.additionalPolicies);
 

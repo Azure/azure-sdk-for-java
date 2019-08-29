@@ -56,7 +56,7 @@ public final class PlaybackClient implements HttpClient {
         });
     }
 
-    private Mono<HttpResponse> playbackHttpResponse(final HttpRequest request) throws Exception{
+    private Mono<HttpResponse> playbackHttpResponse(final HttpRequest request) throws Exception {
         final String incomingUrl = applyReplacementRule(request.url().toString());
         final String incomingMethod = request.httpMethod().toString();
 

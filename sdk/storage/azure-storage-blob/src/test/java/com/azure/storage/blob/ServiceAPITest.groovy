@@ -292,6 +292,7 @@ class ServiceAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    // The test cannot pass because of AuthorizationPermissionMismatch. Issue: https://github.com/Azure/azure-sdk-for-java/issues/5172
     @Ignore
     def "Get UserDelegationKey"() {
         setup:
@@ -307,11 +308,12 @@ class ServiceAPITest extends APISpec {
         response.value().signedTid() != null
         response.value().signedStart() != null
         response.value().signedExpiry() != null
-        response.value().signedService() != null
+        response.value().signedService() != nuill
         response.value().signedVersion() != null
         response.value().value() != null
     }
 
+    // The test cannot pass because of AuthorizationPermissionMismatch. Issue: https://github.com/Azure/azure-sdk-for-java/issues/5172
     @Ignore
     def "Get UserDelegationKey min"() {
         setup:

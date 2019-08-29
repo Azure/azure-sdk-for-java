@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccontainersaspermissionsparse064031ebb3691f28234?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccontainersaspermissionsparse024025a605fcd7d7794?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -9,14 +9,14 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72CB272B0BB84\"",
-      "Last-Modified" : "Thu, 29 Aug 2019 18:55:23 GMT",
+      "ETag" : "\"0x8D72CB5F88B54CA\"",
+      "Last-Modified" : "Thu, 29 Aug 2019 19:20:36 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "8bd4225d-601e-0122-509b-5e1815000000",
-      "Date" : "Thu, 29 Aug 2019 18:55:23 GMT",
-      "x-ms-client-request-id" : "c7a17413-61ce-42b9-bf22-a2de72132797"
+      "x-ms-request-id" : "1385a401-c01e-00e7-6c9e-5e207b000000",
+      "Date" : "Thu, 29 Aug 2019 19:20:35 GMT",
+      "x-ms-client-request-id" : "62008e16-3808-47a2-b978-33173d447f57"
     },
     "Exception" : null
   }, {
@@ -28,22 +28,20 @@
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "Access-Control-Allow-Origin" : "*",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "8bd42272-601e-0122-629b-5e1815000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtccontainersaspermissionsparse</Prefix><Containers><Container><Name>jtccontainersaspermissionsparse064031ebb3691f28234</Name><Properties><Last-Modified>Thu, 29 Aug 2019 18:55:23 GMT</Last-Modified><Etag>\"0x8D72CB272B0BB84\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 29 Aug 2019 18:55:23 GMT",
-      "x-ms-client-request-id" : "ff4f201f-f43b-4df6-84c5-3f2d9920c06b",
+      "x-ms-request-id" : "1385a418-c01e-00e7-7b9e-5e207b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtccontainersaspermissionsparse</Prefix><Containers><Container><Name>jtccontainersaspermissionsparse024025a605fcd7d7794</Name><Properties><Last-Modified>Thu, 29 Aug 2019 19:20:36 GMT</Last-Modified><Etag>\"0x8D72CB5F88B54CA\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 29 Aug 2019 19:20:35 GMT",
+      "x-ms-client-request-id" : "a270c86b-ccb1-42bc-acc4-c5425e1859bd",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccontainersaspermissionsparse064031ebb3691f28234?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccontainersaspermissionsparse024025a605fcd7d7794?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -54,11 +52,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "8bd42283-601e-0122-729b-5e1815000000",
-      "Date" : "Thu, 29 Aug 2019 18:55:23 GMT",
-      "x-ms-client-request-id" : "eebbf20f-311c-4f59-9cd6-b7f405f9b51d"
+      "x-ms-request-id" : "1385a423-c01e-00e7-059e-5e207b000000",
+      "Date" : "Thu, 29 Aug 2019 19:20:35 GMT",
+      "x-ms-client-request-id" : "13980a27-947a-462d-b21b-4f1de97a0df2"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtccontainersaspermissionsparse064031ebb3691f28234" ]
+  "variables" : [ "jtccontainersaspermissionsparse024025a605fcd7d7794" ]
 }

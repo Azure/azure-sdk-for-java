@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcservicesassignaturesstringtosign060394d7a2722c39c?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcservicesassignaturesstringtosign08571035732c631af?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -9,14 +9,14 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72CB26F09B40B\"",
-      "Last-Modified" : "Thu, 29 Aug 2019 18:55:17 GMT",
+      "ETag" : "\"0x8D72CB5F4C2DBE6\"",
+      "Last-Modified" : "Thu, 29 Aug 2019 19:20:30 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "8bd41648-601e-0122-799b-5e1815000000",
-      "Date" : "Thu, 29 Aug 2019 18:55:17 GMT",
-      "x-ms-client-request-id" : "8cf03b4f-bf6f-4a04-8d77-caa08b3bb84d"
+      "x-ms-request-id" : "138597fd-c01e-00e7-179e-5e207b000000",
+      "Date" : "Thu, 29 Aug 2019 19:20:29 GMT",
+      "x-ms-client-request-id" : "be5b122c-0120-40c8-b381-2b3551a95f8e"
     },
     "Exception" : null
   }, {
@@ -28,22 +28,20 @@
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "Access-Control-Allow-Origin" : "*",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "8bd41666-601e-0122-149b-5e1815000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcservicesassignaturesstringtosign</Prefix><Containers><Container><Name>jtcservicesassignaturesstringtosign060394d7a2722c39c</Name><Properties><Last-Modified>Thu, 29 Aug 2019 18:55:17 GMT</Last-Modified><Etag>\"0x8D72CB26F09B40B\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 29 Aug 2019 18:55:17 GMT",
-      "x-ms-client-request-id" : "86dbc154-e262-4cbc-b1db-2767ebaab1f2",
+      "x-ms-request-id" : "13859813-c01e-00e7-299e-5e207b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcservicesassignaturesstringtosign</Prefix><Containers><Container><Name>jtcservicesassignaturesstringtosign08571035732c631af</Name><Properties><Last-Modified>Thu, 29 Aug 2019 19:20:30 GMT</Last-Modified><Etag>\"0x8D72CB5F4C2DBE6\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 29 Aug 2019 19:20:29 GMT",
+      "x-ms-client-request-id" : "6b98bed5-78ec-473c-9d2f-297b7f11b156",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcservicesassignaturesstringtosign060394d7a2722c39c?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcservicesassignaturesstringtosign08571035732c631af?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -54,11 +52,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "8bd41677-601e-0122-249b-5e1815000000",
-      "Date" : "Thu, 29 Aug 2019 18:55:17 GMT",
-      "x-ms-client-request-id" : "f9599038-0a2d-41dd-ad32-be28f05f6770"
+      "x-ms-request-id" : "13859829-c01e-00e7-3d9e-5e207b000000",
+      "Date" : "Thu, 29 Aug 2019 19:20:29 GMT",
+      "x-ms-client-request-id" : "483e92ed-7650-4355-9f92-11862d94a5ed"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcservicesassignaturesstringtosign060394d7a2722c39c" ]
+  "variables" : [ "jtcservicesassignaturesstringtosign08571035732c631af" ]
 }

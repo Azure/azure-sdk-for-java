@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtclistblobsflaterror0201966b6bfce38cca41fcbf?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtclistblobsflaterror0503557f5aed9f54024449b8?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72CB11E49CB62\"",
-      "Last-Modified" : "Thu, 29 Aug 2019 18:45:52 GMT",
+      "ETag" : "\"0x8D72CB7032901C3\"",
+      "Last-Modified" : "Thu, 29 Aug 2019 19:28:03 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "600ad6df-301e-00b6-2199-5e3e8e000000",
-      "Date" : "Thu, 29 Aug 2019 18:45:52 GMT",
-      "x-ms-client-request-id" : "99ea38fa-8f16-4927-adba-b88cdfc48e1b"
+      "x-ms-request-id" : "7bc93300-301e-007a-019f-5e5a3b000000",
+      "Date" : "Thu, 29 Aug 2019 19:28:03 GMT",
+      "x-ms-client-request-id" : "5186a586-5280-492c-9dab-2f31fc426974"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtclistblobsflaterror164200a9b6de73535643b5b2?include=&restype=container&comp=list",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtclistblobsflaterror19665723f40e8af7294b95a5?include=&restype=container&comp=list",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -33,10 +33,10 @@
       "retry-after" : "0",
       "Content-Length" : "225",
       "StatusCode" : "404",
-      "x-ms-request-id" : "600ad6ed-301e-00b6-2d99-5e3e8e000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:600ad6ed-301e-00b6-2d99-5e3e8e000000\nTime:2019-08-29T18:45:52.5541082Z</Message></Error>",
-      "Date" : "Thu, 29 Aug 2019 18:45:52 GMT",
-      "x-ms-client-request-id" : "03c6fd5d-087f-476c-bd20-08558f6e2587",
+      "x-ms-request-id" : "7bc9330c-301e-007a-0c9f-5e5a3b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:7bc9330c-301e-007a-0c9f-5e5a3b000000\nTime:2019-08-29T19:28:04.0221237Z</Message></Error>",
+      "Date" : "Thu, 29 Aug 2019 19:28:03 GMT",
+      "x-ms-client-request-id" : "57e219e3-7b67-4ed6-a552-82a3599fb7db",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
@@ -53,16 +53,16 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "600ad6fe-301e-00b6-3999-5e3e8e000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtclistblobsflaterror</Prefix><Containers><Container><Name>jtclistblobsflaterror0201966b6bfce38cca41fcbf</Name><Properties><Last-Modified>Thu, 29 Aug 2019 18:45:52 GMT</Last-Modified><Etag>\"0x8D72CB11E49CB62\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 29 Aug 2019 18:45:52 GMT",
-      "x-ms-client-request-id" : "ed22bb64-8a2d-47cf-a510-d35a2fcfae3f",
+      "x-ms-request-id" : "7bc9331f-301e-007a-1c9f-5e5a3b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtclistblobsflaterror</Prefix><Containers><Container><Name>jtclistblobsflaterror0503557f5aed9f54024449b8</Name><Properties><Last-Modified>Thu, 29 Aug 2019 19:28:03 GMT</Last-Modified><Etag>\"0x8D72CB7032901C3\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 29 Aug 2019 19:28:03 GMT",
+      "x-ms-client-request-id" : "b02065f0-e476-4593-9eb3-d4cd646f63a5",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtclistblobsflaterror0201966b6bfce38cca41fcbf?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtclistblobsflaterror0503557f5aed9f54024449b8?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -73,11 +73,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "600ad703-301e-00b6-3e99-5e3e8e000000",
-      "Date" : "Thu, 29 Aug 2019 18:45:52 GMT",
-      "x-ms-client-request-id" : "2e2dea8e-2865-49e2-9531-2f5f90e67a27"
+      "x-ms-request-id" : "7bc93339-301e-007a-2f9f-5e5a3b000000",
+      "Date" : "Thu, 29 Aug 2019 19:28:03 GMT",
+      "x-ms-client-request-id" : "672f7320-32a3-49a3-a578-646b761a7c9d"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtclistblobsflaterror0201966b6bfce38cca41fcbf", "jtclistblobsflaterror164200a9b6de73535643b5b2" ]
+  "variables" : [ "jtclistblobsflaterror0503557f5aed9f54024449b8", "jtclistblobsflaterror19665723f40e8af7294b95a5" ]
 }

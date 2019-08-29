@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetaccountinfoerror062521bbeb6b6b8abd4b068?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetaccountinfoerror017464a7138b69291343f58?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72CA67545DC38\"",
-      "Last-Modified" : "Thu, 29 Aug 2019 17:29:33 GMT",
+      "ETag" : "\"0x8D72CB753BE228F\"",
+      "Last-Modified" : "Thu, 29 Aug 2019 19:30:19 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "da4c277a-701e-005f-0f8f-5ec288000000",
-      "Date" : "Thu, 29 Aug 2019 17:29:33 GMT",
-      "x-ms-client-request-id" : "fd976f95-414a-4043-adec-49d572ed8de9"
+      "x-ms-request-id" : "2db33054-501e-002e-44a0-5eb0b1000000",
+      "Date" : "Thu, 29 Aug 2019 19:30:18 GMT",
+      "x-ms-client-request-id" : "7290fee3-9955-45ad-aff4-06167f7cc3b5"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetaccountinfoerror179640b26147a293a6477c8?restype=account&comp=properties",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetaccountinfoerror115101bfc0c31452f041cab?restype=account&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -33,10 +33,10 @@
       "retry-after" : "0",
       "Content-Length" : "223",
       "StatusCode" : "404",
-      "x-ms-request-id" : "da4c2783-701e-005f-168f-5ec288000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:da4c2783-701e-005f-168f-5ec288000000\nTime:2019-08-29T17:29:34.0240748Z</Message></Error>",
-      "Date" : "Thu, 29 Aug 2019 17:29:33 GMT",
-      "x-ms-client-request-id" : "6104ba92-ea07-43d7-899f-d0574a0c9159",
+      "x-ms-request-id" : "2db33090-501e-002e-7da0-5eb0b1000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:2db33090-501e-002e-7da0-5eb0b1000000\nTime:2019-08-29T19:30:19.2251874Z</Message></Error>",
+      "Date" : "Thu, 29 Aug 2019 19:30:18 GMT",
+      "x-ms-client-request-id" : "82ce4d43-121f-49fb-b082-143b184fcb4a",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
@@ -53,16 +53,16 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "da4c278d-701e-005f-1d8f-5ec288000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcgetaccountinfoerror</Prefix><Containers><Container><Name>jtcgetaccountinfoerror062521bbeb6b6b8abd4b068</Name><Properties><Last-Modified>Thu, 29 Aug 2019 17:29:33 GMT</Last-Modified><Etag>\"0x8D72CA67545DC38\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 29 Aug 2019 17:29:33 GMT",
-      "x-ms-client-request-id" : "474e3a6d-61b8-480b-8069-fb0e4f4234af",
+      "x-ms-request-id" : "2db330bb-501e-002e-26a0-5eb0b1000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcgetaccountinfoerror</Prefix><Containers><Container><Name>jtcgetaccountinfoerror017464a7138b69291343f58</Name><Properties><Last-Modified>Thu, 29 Aug 2019 19:30:19 GMT</Last-Modified><Etag>\"0x8D72CB753BE228F\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 29 Aug 2019 19:30:18 GMT",
+      "x-ms-client-request-id" : "91f314c5-0ade-4413-aff9-74ee7ef18f4d",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetaccountinfoerror062521bbeb6b6b8abd4b068?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetaccountinfoerror017464a7138b69291343f58?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -73,11 +73,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "da4c27aa-701e-005f-318f-5ec288000000",
-      "Date" : "Thu, 29 Aug 2019 17:29:33 GMT",
-      "x-ms-client-request-id" : "b2ecec50-62f9-4b92-988f-f52ee515b7a5"
+      "x-ms-request-id" : "2db330e0-501e-002e-48a0-5eb0b1000000",
+      "Date" : "Thu, 29 Aug 2019 19:30:18 GMT",
+      "x-ms-client-request-id" : "551fe023-1a70-4c2f-b1e1-6a48e7d6bf26"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcgetaccountinfoerror062521bbeb6b6b8abd4b068", "jtcgetaccountinfoerror179640b26147a293a6477c8" ]
+  "variables" : [ "jtcgetaccountinfoerror017464a7138b69291343f58", "jtcgetaccountinfoerror115101bfc0c31452f041cab" ]
 }

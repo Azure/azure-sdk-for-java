@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetaccountinfomin0serviceapitestgetaccountinfominc0803602a?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetaccountinfomin0serviceapitestgetaccountinfomin46233792c?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -9,14 +9,14 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72CB0A8F7EDE0\"",
-      "Last-Modified" : "Thu, 29 Aug 2019 18:42:35 GMT",
+      "ETag" : "\"0x8D72CB69E34B6D2\"",
+      "Last-Modified" : "Thu, 29 Aug 2019 19:25:14 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "4bcbc3e0-001e-003d-7a99-5e8550000000",
-      "Date" : "Thu, 29 Aug 2019 18:42:35 GMT",
-      "x-ms-client-request-id" : "da49902d-8a72-4905-8628-709dcebb286f"
+      "x-ms-request-id" : "ddd3efbd-401e-007e-2d9f-5eafb9000000",
+      "Date" : "Thu, 29 Aug 2019 19:25:14 GMT",
+      "x-ms-client-request-id" : "39f19dd7-eb86-4b6f-a196-99852cda6001"
     },
     "Exception" : null
   }, {
@@ -33,9 +33,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "4bcbc3ee-001e-003d-0599-5e8550000000",
-      "Date" : "Thu, 29 Aug 2019 18:42:35 GMT",
-      "x-ms-client-request-id" : "2df23909-52aa-43b6-8b41-9d3b3fb6b5b2"
+      "x-ms-request-id" : "ddd3efc9-401e-007e-379f-5eafb9000000",
+      "Date" : "Thu, 29 Aug 2019 19:25:14 GMT",
+      "x-ms-client-request-id" : "710ba8b6-7f06-4f61-ba1b-05c0f045e157"
     },
     "Exception" : null
   }, {
@@ -55,9 +55,9 @@
       "Content-Length" : "0",
       "x-ms-sku-name" : "Standard_RAGRS",
       "StatusCode" : "200",
-      "x-ms-request-id" : "4bcbc400-001e-003d-1199-5e8550000000",
-      "Date" : "Thu, 29 Aug 2019 18:42:35 GMT",
-      "x-ms-client-request-id" : "b7ebba84-8506-4016-a21a-8ef304d22543"
+      "x-ms-request-id" : "ddd3efdc-401e-007e-499f-5eafb9000000",
+      "Date" : "Thu, 29 Aug 2019 19:25:14 GMT",
+      "x-ms-client-request-id" : "3e7bd41d-220e-4e18-972a-db3e7205dd24"
     },
     "Exception" : null
   }, {
@@ -74,9 +74,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "4bcbc409-001e-003d-1899-5e8550000000",
-      "Date" : "Thu, 29 Aug 2019 18:42:35 GMT",
-      "x-ms-client-request-id" : "7814d673-3849-45ff-a0c1-b518a93c38af"
+      "x-ms-request-id" : "ddd3efe7-401e-007e-529f-5eafb9000000",
+      "Date" : "Thu, 29 Aug 2019 19:25:14 GMT",
+      "x-ms-client-request-id" : "127eeefa-deed-4c53-9aca-44e2a66c58ad"
     },
     "Exception" : null
   }, {
@@ -94,16 +94,16 @@
       "Access-Control-Allow-Origin" : "*",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "4bcbc41a-001e-003d-2499-5e8550000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcgetaccountinfomin</Prefix><Containers><Container><Name>jtcgetaccountinfomin0serviceapitestgetaccountinfominc0803602a</Name><Properties><Last-Modified>Thu, 29 Aug 2019 18:42:35 GMT</Last-Modified><Etag>\"0x8D72CB0A8F7EDE0\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 29 Aug 2019 18:42:35 GMT",
-      "x-ms-client-request-id" : "631114f8-ce57-491d-95f8-21241127b6d2",
+      "x-ms-request-id" : "ddd3efee-401e-007e-599f-5eafb9000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcgetaccountinfomin</Prefix><Containers><Container><Name>jtcgetaccountinfomin0serviceapitestgetaccountinfomin46233792c</Name><Properties><Last-Modified>Thu, 29 Aug 2019 19:25:14 GMT</Last-Modified><Etag>\"0x8D72CB69E34B6D2\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 29 Aug 2019 19:25:14 GMT",
+      "x-ms-client-request-id" : "4f9166b5-03ef-433c-b512-97499b1ac186",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetaccountinfomin0serviceapitestgetaccountinfominc0803602a?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetaccountinfomin0serviceapitestgetaccountinfomin46233792c?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -114,11 +114,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "4bcbc421-001e-003d-2a99-5e8550000000",
-      "Date" : "Thu, 29 Aug 2019 18:42:35 GMT",
-      "x-ms-client-request-id" : "c1a14a08-9372-422e-a842-f481f25e4734"
+      "x-ms-request-id" : "ddd3eff2-401e-007e-5d9f-5eafb9000000",
+      "Date" : "Thu, 29 Aug 2019 19:25:14 GMT",
+      "x-ms-client-request-id" : "200a87fe-27af-4e7c-be8a-1418e4dc00e1"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcgetaccountinfomin0serviceapitestgetaccountinfominc0803602a" ]
+  "variables" : [ "jtcgetaccountinfomin0serviceapitestgetaccountinfomin46233792c" ]
 }

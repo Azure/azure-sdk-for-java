@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetaccesspolicyerror0717760837fe46ff304096b?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetaccesspolicyerror094254b61257c45fdf461bb?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72CB0F31B8DA1\"",
-      "Last-Modified" : "Thu, 29 Aug 2019 18:44:40 GMT",
+      "ETag" : "\"0x8D72CB6D76C1BB0\"",
+      "Last-Modified" : "Thu, 29 Aug 2019 19:26:50 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "600a525f-301e-00b6-4799-5e3e8e000000",
-      "Date" : "Thu, 29 Aug 2019 18:44:40 GMT",
-      "x-ms-client-request-id" : "49b94a44-4665-4093-a0ba-3f9b2f37069b"
+      "x-ms-request-id" : "7bc89e13-301e-007a-7a9f-5e5a3b000000",
+      "Date" : "Thu, 29 Aug 2019 19:26:50 GMT",
+      "x-ms-client-request-id" : "7cb9d44f-3d23-41e8-8488-49e6daa2b5c2"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetaccesspolicyerror134487b4d3700e3aa344e4b?restype=container&comp=acl",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetaccesspolicyerror185606a999710542704dbeb?restype=container&comp=acl",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -33,10 +33,10 @@
       "retry-after" : "0",
       "Content-Length" : "225",
       "StatusCode" : "404",
-      "x-ms-request-id" : "600a5274-301e-00b6-5a99-5e3e8e000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:600a5274-301e-00b6-5a99-5e3e8e000000\nTime:2019-08-29T18:44:40.1080298Z</Message></Error>",
-      "Date" : "Thu, 29 Aug 2019 18:44:40 GMT",
-      "x-ms-client-request-id" : "24ef2798-8a33-42a3-ba58-c539012fa31b",
+      "x-ms-request-id" : "7bc89e1e-301e-007a-049f-5e5a3b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:7bc89e1e-301e-007a-049f-5e5a3b000000\nTime:2019-08-29T19:26:50.6411284Z</Message></Error>",
+      "Date" : "Thu, 29 Aug 2019 19:26:50 GMT",
+      "x-ms-client-request-id" : "718a4883-3d5e-4ed4-881b-e2726658722d",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
@@ -53,16 +53,16 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "600a527f-301e-00b6-6599-5e3e8e000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcgetaccesspolicyerror</Prefix><Containers><Container><Name>jtcgetaccesspolicyerror0717760837fe46ff304096b</Name><Properties><Last-Modified>Thu, 29 Aug 2019 18:44:40 GMT</Last-Modified><Etag>\"0x8D72CB0F31B8DA1\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 29 Aug 2019 18:44:40 GMT",
-      "x-ms-client-request-id" : "b1e6ac41-e74d-4f4b-925d-8f160b591e6f",
+      "x-ms-request-id" : "7bc89e26-301e-007a-0c9f-5e5a3b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcgetaccesspolicyerror</Prefix><Containers><Container><Name>jtcgetaccesspolicyerror094254b61257c45fdf461bb</Name><Properties><Last-Modified>Thu, 29 Aug 2019 19:26:50 GMT</Last-Modified><Etag>\"0x8D72CB6D76C1BB0\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 29 Aug 2019 19:26:50 GMT",
+      "x-ms-client-request-id" : "85bbcb1c-ebf3-4441-ab10-3446dd36d068",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetaccesspolicyerror0717760837fe46ff304096b?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcgetaccesspolicyerror094254b61257c45fdf461bb?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0"
@@ -73,11 +73,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "600a5288-301e-00b6-6e99-5e3e8e000000",
-      "Date" : "Thu, 29 Aug 2019 18:44:40 GMT",
-      "x-ms-client-request-id" : "48ea458e-4a80-4859-9f06-70773b2fe762"
+      "x-ms-request-id" : "7bc89e2e-301e-007a-149f-5e5a3b000000",
+      "Date" : "Thu, 29 Aug 2019 19:26:50 GMT",
+      "x-ms-client-request-id" : "3d9ef8c9-4c70-4b9c-9446-1773293cbbc0"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcgetaccesspolicyerror0717760837fe46ff304096b", "jtcgetaccesspolicyerror134487b4d3700e3aa344e4b" ]
+  "variables" : [ "jtcgetaccesspolicyerror094254b61257c45fdf461bb", "jtcgetaccesspolicyerror185606a999710542704dbeb" ]
 }
