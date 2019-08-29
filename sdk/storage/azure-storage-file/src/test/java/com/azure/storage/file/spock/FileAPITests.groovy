@@ -5,7 +5,6 @@ package com.azure.storage.file.spock
 
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.http.rest.Response
-import com.azure.core.implementation.exception.UnexpectedLengthException
 import com.azure.core.implementation.util.FluxUtil
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.FileClient
@@ -20,7 +19,8 @@ import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
-import java.nio.file.Files
+import java.nio.file.FileAlreadyExistsException
+import java.nio.file.NoSuchFileException
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -199,25 +199,71 @@ class FileAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
     }
 
-    def "Upload and download file"() {
+    def "Upload file does not exist"() {
         given:
-        def testFolder = getClass().getClassLoader().getResource("testfiles")
-        File uploadFile = new File(testFolder.getPath(), "helloworld")
-        File downloadFile = new File(testFolder.getPath(), "testDownload")
+        def uploadFile = new File(testFolder.getPath(), "fakefile.txt")
 
-        if (!Files.exists(downloadFile.toPath())) {
-            downloadFile.createNewFile()
+        if (uploadFile.exists()) {
+            assert uploadFile.delete()
         }
 
-        primaryFileClient.create(uploadFile.length())
         when:
-        primaryFileClient.uploadFromFile(uploadFile.toString())
-        primaryFileClient.downloadToFile(downloadFile.toString())
-        then:
-        FileTestHelper.assertTwoFilesAreSame(uploadFile, downloadFile)
-        cleanup:
-        FileTestHelper.deleteFolderIfExists(testFolder.toString())
+        primaryFileClient.uploadFromFile(uploadFile.getPath())
 
+        then:
+        def ex = thrown(UncheckedIOException)
+        ex.getCause() instanceof NoSuchFileException
+
+        cleanup:
+        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+    }
+
+    def "Upload and download file exists"() {
+        given:
+        def data = "Download file exists"
+        def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), methodName))
+
+        if (!downloadFile.exists()) {
+            assert downloadFile.createNewFile()
+        }
+
+        primaryFileClient.create(data.length())
+        primaryFileClient.upload(ByteBuffer.wrap(data.getBytes(StandardCharsets.UTF_8)), data.length())
+
+        when:
+        primaryFileClient.downloadToFile(downloadFile.getPath())
+
+        then:
+        def ex = thrown(UncheckedIOException)
+        ex.getCause() instanceof FileAlreadyExistsException
+
+        cleanup:
+        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+    }
+
+    def "Upload and download to file does not exist"() {
+        given:
+        def testFolder = getClass().getClassLoader().getResource("testfiles")
+        def data = "Download file does not exist"
+        def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), methodName))
+
+        if (downloadFile.exists()) {
+            assert downloadFile.delete()
+        }
+
+        primaryFileClient.create(data.length())
+        primaryFileClient.upload(ByteBuffer.wrap(data.getBytes(StandardCharsets.UTF_8)), data.length())
+
+        when:
+        primaryFileClient.downloadToFile(downloadFile.getPath())
+
+        then:
+        def scanner = new Scanner(downloadFile).useDelimiter("\\Z")
+        data == scanner.next()
+        scanner.close()
+
+        cleanup:
+        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
     }
 
     def "Start copy"() {

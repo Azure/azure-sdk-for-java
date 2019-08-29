@@ -117,7 +117,7 @@ class APISpec extends Specification {
 
     private InterceptorManager interceptorManager
     private TestResourceNamer resourceNamer
-    private String testName
+    protected String testName
 
     def setupSpec() {
         testMode = setupTestMode()
@@ -434,19 +434,6 @@ class APISpec extends Specification {
 
     ByteBuffer getRandomData(int size) {
         return ByteBuffer.wrap(getRandomByteArray(size))
-    }
-
-    /*
-    We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
-     */
-
-    File getRandomFile(int size) {
-        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt")
-        file.deleteOnExit()
-        FileOutputStream fos = new FileOutputStream(file)
-        fos.write(getRandomData(size).array())
-        fos.close()
-        return file
     }
 
     /**
