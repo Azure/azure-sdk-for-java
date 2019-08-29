@@ -360,12 +360,12 @@ class DirectoryAsyncAPITests extends APISpec {
 
         then:
         errorVerifier.verifyErrorSatisfies({
-            FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, errMsg)
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, errMsg)
         })
 
         where:
         fileName    | maxSize | httpHeaders                                       | metadata                              | errMsg
-        "testfile:" | 1024    | new FileHTTPHeaders()                             | testMetadata                          | StorageErrorCode.INVALID_FILE_OR_DIRECTORY_PATH_NAME
+        "testfile:" | 1024    | new FileHTTPHeaders()                             | testMetadata                          | StorageErrorCode.INVALID_RESOURCE_NAME
         "fileName"  | -1      | new FileHTTPHeaders()                             | testMetadata                          | StorageErrorCode.OUT_OF_RANGE_INPUT
         "fileName"  | 1024    | new FileHTTPHeaders().fileContentMD5(new byte[0]) | testMetadata                          | StorageErrorCode.INVALID_HEADER_VALUE
         "fileName"  | 1024    | new FileHTTPHeaders()                             | Collections.singletonMap("", "value") | StorageErrorCode.EMPTY_METADATA_KEY
