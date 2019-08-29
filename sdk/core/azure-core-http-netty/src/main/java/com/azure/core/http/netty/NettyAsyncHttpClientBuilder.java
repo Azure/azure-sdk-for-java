@@ -50,20 +50,26 @@ public class NettyAsyncHttpClientBuilder {
                     tcpConfig = tcpConfig.runOn(nioEventLoopGroup);
                 }
 
-                if (proxyOptions == null) {
-                    return tcpConfig;
+                if (proxyOptions != null) {
+                    ProxyProvider.Proxy nettyProxy;
+                    switch (proxyOptions.type()) {
+                        case HTTP:
+                            nettyProxy = ProxyProvider.Proxy.HTTP;
+                            break;
+                        case SOCKS4:
+                            nettyProxy = ProxyProvider.Proxy.SOCKS4;
+                            break;
+                        case SOCKS5:
+                            nettyProxy = ProxyProvider.Proxy.SOCKS5;
+                            break;
+                        default:
+                            throw logger.logExceptionAsWarning(new IllegalStateException("Unknown Proxy type '" + proxyOptions.type() + "' in use. Not configuring Netty proxy."));
+                    }
+
+                    return tcpConfig.proxy(ts -> ts.type(nettyProxy).address(proxyOptions.address()));
                 }
 
-                ProxyProvider.Proxy nettyProxy;
-                switch (proxyOptions.type()) {
-                    case HTTP: nettyProxy = ProxyProvider.Proxy.HTTP; break;
-                    case SOCKS4: nettyProxy = ProxyProvider.Proxy.SOCKS4; break;
-                    case SOCKS5: nettyProxy = ProxyProvider.Proxy.SOCKS5; break;
-                    default:
-                        throw logger.logExceptionAsWarning(new IllegalStateException("Unknown Proxy type '" + proxyOptions.type() + "' in use. Not configuring Netty proxy."));
-                }
-
-                return tcpConfig.proxy(ts -> ts.type(nettyProxy).address(proxyOptions.address()));
+                return tcpConfig;
             });
         return new NettyAsyncHttpClient(nettyHttpClient);
     }
