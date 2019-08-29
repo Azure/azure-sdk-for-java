@@ -68,7 +68,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2018-11-09";
+        public static final String TARGET_STORAGE_VERSION = "2019-02-02";
 
         /**
          * Error code returned from the service.
@@ -211,6 +211,21 @@ public final class Constants {
          * The SAS blob snapshot constant.
          */
         public static final String SAS_CONTAINER_CONSTANT = "c";
+
+        /**
+         * The SAS file constant.
+         */
+        public static final String SAS_FILE_CONSTANT = "f";
+
+        /**
+         * The SAS share constant.
+         */
+        public static final String SAS_SHARE_CONSTANT = "s";
+
+        /**
+         * The SAS queue constant.
+         */
+        public static final String SAS_QUEUE_CONSTANT = "q";
 
         private UrlConstants() {
             // Private to prevent construction.

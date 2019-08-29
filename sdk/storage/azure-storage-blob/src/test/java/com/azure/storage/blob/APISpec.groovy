@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.ProxyOptions
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
@@ -381,24 +382,17 @@ class APISpec extends Specification {
     }
 
     private HttpClient getHttpClient() {
-        HttpClient client
+        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
         if (testMode == TestMode.RECORD) {
-            client = HttpClient.createDefault().wiretap(true)
-        } else {
-            client = interceptorManager.getPlaybackClient()
-        }
+            builder.wiretap(true)
 
-        if (Boolean.parseBoolean(ConfigurationManager.getConfiguration().get("AZURE_TEST_DEBUGGING"))) {
-            return client.proxy(PROXY_OPTIONS)
-        } else {
-            return client
-        }
-    }
+            if (Boolean.parseBoolean(ConfigurationManager.getConfiguration().get("AZURE_TEST_DEBUGGING"))) {
+                builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+            }
 
-    private Supplier<ProxyOptions> PROXY_OPTIONS = new Supplier<ProxyOptions>() {
-        @Override
-        ProxyOptions get() {
-            return new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
+            return builder.build();
+        } else {
+            return interceptorManager.getPlaybackClient()
         }
     }
 

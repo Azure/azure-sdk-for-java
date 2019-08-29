@@ -33,12 +33,6 @@ class QueueAPITests extends APISpec {
         QueueTestHelper.assertResponseStatusCode(queueClient.createWithResponse(null, null), 201)
     }
 
-    // TODO: Will implement the test after introduce the sas token generator
-    @Ignore
-    def "Create queue with sas token"() {
-
-    }
-
     def "Delete exist queue"() {
         given:
         queueClient.create()
@@ -119,7 +113,7 @@ class QueueAPITests extends APISpec {
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMessage)
         where:
         invalidKey     | statusCode | errMessage
-        "invalidMeta"  | 403        | StorageErrorCode.AUTHENTICATION_ERROR
+        "invalidMeta"  | 403        | StorageErrorCode.fromString("AuthenticationError") // TODO (alzimmer): Get this enum into the Swagger
         "invalid-meta" | 400        | StorageErrorCode.INVALID_METADATA
         "12345"        | 400        | StorageErrorCode.INVALID_METADATA
         ""             | 400        | StorageErrorCode.EMPTY_METADATA_KEY
