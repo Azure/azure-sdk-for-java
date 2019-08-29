@@ -28,7 +28,7 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 
 /**
- * This class implements the {@link HttpClient} interface with a Netty-based implementation. Creating an instance of
+ * This class provides a Netty-based implementation for the {@link HttpClient} interface. Creating an instance of
  * this class can be achieved by using the {@link NettyAsyncHttpClientBuilder} class, which offers Netty-specific API
  * for features such as {@link NettyAsyncHttpClientBuilder#nioEventLoopGroup(NioEventLoopGroup) thread pooling},
  * {@link NettyAsyncHttpClientBuilder#wiretap(boolean) wiretapping},
