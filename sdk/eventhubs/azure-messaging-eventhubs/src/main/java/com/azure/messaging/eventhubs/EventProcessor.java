@@ -29,11 +29,11 @@ import reactor.core.scheduler.Schedulers;
  * of a consumer group. Event Processor based application consists of one or more instances of EventProcessor which are
  * set up to consume events from the same Event Hub, consumer group to balance the workload across different instances
  * and track progress when events are processed. Based on the number of instances running, each Event Processor may own
- * 0 or more partitions to balance the workload among all the instances.
+ * zero or more partitions to balance the workload among all the instances.
  *
  * <p>
  * Event Processor based application consists of one or more instances of {@link EventProcessor} which are set up to
- * consume events from the same Event Hub + consumer group and to balance the workload across different instances and
+ * consume events from the same Event Hub and consumer group and to balance the workload across different instances and
  * track progress when events are processed.
  * </p>
  *

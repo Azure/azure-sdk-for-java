@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
  * <li>Consumer group name.</li>
  * <li>{@link EventHubAsyncClient} - An asynchronous Event Hub client the {@link EventProcessor} will use for
  * consuming events.</li>
- * <li>{@link #processEvent(Function)} - A lambda function that will be called when new events are received.</li>
+ * <li>{@link #processEvent(Function)} - A callback for processing new events as they are received.</li>
  * </ul>
  *
  * <p>
@@ -34,9 +34,7 @@ import reactor.core.publisher.Mono;
  *  {@link PartitionProcessorFactory} instead of {@link #processEvent(Function)} lambda function.
  * </p>
  *
- * <p>
- * <strong>Creating an {@link EventProcessor} using {@link PartitionProcessorFactory}</strong>
- * </p>
+ * <p><strong>Creating an {@link EventProcessor} using {@link PartitionProcessorFactory}</strong></p>
  * {@codesnippet com.azure.messaging.eventhubs.eventprocessorbuilder.partitionprocessorfactory}
  *
  * @see EventProcessor
@@ -75,10 +73,10 @@ public class EventProcessorBuilder {
     }
 
     /**
-     * Sets the lambda function that will be used to process events from all partitions this {@link EventProcessor} is
+     * Sets the callback for processing new events as they are received from all partitions this {@link EventProcessor} is
      * responsible for.
      *
-     * @param processEvent The lambda function that will be used to process events.
+     * @param processEvent A callback for processing new events as they are received.
      * @return The updated {@link EventProcessorBuilder} instance.
      */
     public EventProcessorBuilder processEvent(Function<EventData, Mono<Void>> processEvent) {
@@ -121,8 +119,7 @@ public class EventProcessorBuilder {
     }
 
     /**
-     * Sets the initial event position. If this property is not set and if checkpoint for a partition doesn't exist,
-     * {@link EventPosition#earliest()} will be used as the initial event position to start consuming events.
+     * Sets the initial event position, defaulting to {@link EventPosition#earliest()} if this property is not set.
      *
      * @param initialEventPosition The initial event position.
      * @return The updated {@link EventProcessorBuilder} instance.
