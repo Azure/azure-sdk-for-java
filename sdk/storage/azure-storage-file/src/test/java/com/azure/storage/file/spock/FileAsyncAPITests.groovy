@@ -224,7 +224,7 @@ class FileAsyncAPITests extends APISpec {
         File downloadFile = new File(testFolder.getPath() + "/testDownload")
 
         if (!Files.exists(downloadFile.toPath())) {
-            downloadFile.createNewFile().block()
+            downloadFile.createNewFile()
         }
 
         primaryFileAsyncClient.create(uploadFile.length()).block()
