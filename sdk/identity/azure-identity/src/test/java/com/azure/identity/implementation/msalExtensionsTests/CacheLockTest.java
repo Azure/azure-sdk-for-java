@@ -3,13 +3,13 @@
 
 package com.azure.identity.implementation.msalExtensionsTests;
 
-import com.azure.identity.implementation.msal_extensions.CrossPlatLock;
+import com.azure.identity.implementation.msal_extensions.CacheLock;
 import org.junit.*;
 
 import java.io.*;
 import java.util.Stack;
 
-public class CrossPlatLockTest {
+public class CacheLockTest {
 
     private static String FOLDER;
     private static String tester_filename;
@@ -188,7 +188,7 @@ public class CrossPlatLockTest {
         }
 
         public void run() {
-            CrossPlatLock lock = new CrossPlatLock(lockfile);
+            CacheLock lock = new CacheLock(lockfile);
             try {
                 lock.lock();
                 try {

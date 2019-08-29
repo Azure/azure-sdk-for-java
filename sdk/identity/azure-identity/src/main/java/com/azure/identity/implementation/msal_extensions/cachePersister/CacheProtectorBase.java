@@ -3,19 +3,19 @@
 
 package com.azure.identity.implementation.msal_extensions.cachePersister;
 
-import com.azure.identity.implementation.msal_extensions.CrossPlatLock;
-import com.azure.identity.implementation.msal_extensions.CrossPlatLockNotObtainedException;
+import com.azure.identity.implementation.msal_extensions.CacheLock;
+import com.azure.identity.implementation.msal_extensions.CacheLockNotObtainedException;
 
 import java.io.IOException;
 
 public abstract class CacheProtectorBase {
 
     private String LOCKFILE_LOCATION;
-    private CrossPlatLock lock;
+    private CacheLock lock;
 
     public CacheProtectorBase(String lockfileLocation) {
         this.LOCKFILE_LOCATION = lockfileLocation;
-        lock = new CrossPlatLock(LOCKFILE_LOCATION);
+        lock = new CacheLock(LOCKFILE_LOCATION);
     }
 
     public byte[] readCache() {
@@ -23,7 +23,7 @@ public abstract class CacheProtectorBase {
 
         try {
             lock.lock();
-        } catch (CrossPlatLockNotObtainedException ex) {
+        } catch (CacheLockNotObtainedException ex) {
             System.out.println("issue in locking");
             return contents.getBytes();
         }
@@ -43,7 +43,7 @@ public abstract class CacheProtectorBase {
 
         try {
             lock.lock();
-        } catch (CrossPlatLockNotObtainedException e) {
+        } catch (CacheLockNotObtainedException e) {
             System.out.println("issue in locking");
             return;
         }
@@ -67,7 +67,7 @@ public abstract class CacheProtectorBase {
     public boolean deleteCache() {
         try {
             lock.lock();
-        } catch (CrossPlatLockNotObtainedException e) {
+        } catch (CacheLockNotObtainedException e) {
             System.out.println("issue in locking");
             return false;
         }

@@ -10,7 +10,7 @@ import java.nio.channels.OverlappingFileLockException;
 import java.nio.file.Files;
 import java.util.Random;
 
-public class CrossPlatLock {
+public class CacheLock {
 
     private int LockfileRetryWait = 100;
     private int LockfileRetryCount = 60000 / LockfileRetryWait;
@@ -25,18 +25,18 @@ public class CrossPlatLock {
 
     private boolean DEBUG_FLAG = false;
 
-    public CrossPlatLock(String lockfileName) {
+    public CacheLock(String lockfileName) {
         lockFile = new File(lockfileName);
     }
 
     // Use for debugging
-    public CrossPlatLock(String lockfileName, String id) {
+    public CacheLock(String lockfileName, String id) {
         lockFile = new File(lockfileName);
         debugFile = new File(debugFilename + id + ".txt");
         DEBUG_FLAG = true;
     }
 
-    public void lock() throws CrossPlatLockNotObtainedException {
+    public void lock() throws CacheLockNotObtainedException {
         try {
             for (int tryCount = 0; tryCount < LockfileRetryCount; tryCount++) {
 
@@ -88,7 +88,7 @@ public class CrossPlatLock {
             printToFileIfDebug("general exception, not sure what happened here...no retries\n");
         }
 
-        throw new CrossPlatLockNotObtainedException("Maximum retries used; could not obtain CrossPlatLock");
+        throw new CacheLockNotObtainedException("Maximum retries used; could not obtain CacheLock");
     }
 
     public boolean unlock() {

@@ -3,7 +3,7 @@
 
 package com.azure.identity.implementation.msalExtensionsTests;
 
-import com.azure.identity.implementation.msal_extensions.CrossPlatLock;
+import com.azure.identity.implementation.msal_extensions.CacheLock;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,7 +21,7 @@ public class FileWriter {
             System.out.println("wrong number of args lol????");
             return;
         }
-        CrossPlatLock lock = new CrossPlatLock(lockfile);
+        CacheLock lock = new CacheLock(lockfile);
 
         try {
             lock.lock();
