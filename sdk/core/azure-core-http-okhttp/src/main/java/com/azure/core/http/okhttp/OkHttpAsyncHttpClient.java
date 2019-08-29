@@ -10,6 +10,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -20,6 +22,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 class OkHttpAsyncHttpClient implements HttpClient {
@@ -36,27 +39,32 @@ class OkHttpAsyncHttpClient implements HttpClient {
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
         return Mono.create(sink -> sink.onRequest(value -> {
-            // Using MonoSink::onRequest to enable back pressure.
-            okhttp3.Request okHttpRequest;
-            try {
-                okHttpRequest = toOkHttpRequest(request);
-            } catch (Throwable t) {
-                sink.error(t);
-                return;
-            }
+            // Using MonoSink::onRequest for back pressure support.
 
-            okhttp3.Call call = httpClient.newCall(okHttpRequest);
-            call.enqueue(new okhttp3.Callback() {
-                @Override
-                public void onFailure(okhttp3.Call call, IOException e) {
-                    sink.error(e);
-                }
+            // The blocking behaviour toOkHttpRequest(r).subscribe call:
+            //
+            // The okhttp3.Request emitted by toOkHttpRequest(r) is chained from the body of request Flux<ByteBuffer>:
+            //   1. If Flux<ByteBuffer> synchronous and send(r) caller does not apply subscribeOn then
+            //      subscribe block on caller thread.
+            //   2. If Flux<ByteBuffer> synchronous and send(r) caller apply subscribeOn then
+            //      does not block caller thread but block on scheduler thread.
+            //   3. If Flux<ByteBuffer> asynchronous then subscribe does not block caller thread
+            //      but block on the thread backing flux. This ignore any subscribeOn applied to send(r)
+            //
+            toOkHttpRequest(request).subscribe(okHttpRequest -> {
+                okhttp3.Call call = httpClient.newCall(okHttpRequest);
+                call.enqueue(new okhttp3.Callback() {
+                    @Override
+                    public void onFailure(okhttp3.Call call, IOException e) {
+                        sink.error(e);
+                    }
 
-                @Override
-                public void onResponse(okhttp3.Call call, okhttp3.Response response) {
-                    sink.success(new OkHttpResponse(response, request));
-                }
-            });
+                    @Override
+                    public void onResponse(okhttp3.Call call, okhttp3.Response response) {
+                        sink.success(new OkHttpResponse(response, request));
+                    }
+                });
+            }, throwable -> sink.error(throwable));
         }));
     }
 
@@ -64,47 +72,51 @@ class OkHttpAsyncHttpClient implements HttpClient {
      * Converts the given azure-core request to okhttp request.
      *
      * @param request the azure-core request
-     * @return okhttp request
+     * @return the Mono emitting okhttp request
      */
-    private static okhttp3.Request toOkHttpRequest(HttpRequest request) {
-        okhttp3.Request.Builder requestBuilder = new okhttp3.Request.Builder();
-        requestBuilder.url(request.url());
-        if (request.headers() != null) {
-            requestBuilder.headers(okhttp3.Headers.of(request.headers().toMap()));
-        } else {
-            requestBuilder.headers(okhttp3.Headers.of((new HashMap<>())));
-        }
-        if (request.httpMethod() == HttpMethod.GET) {
-            requestBuilder.get();
-        } else if (request.httpMethod() == HttpMethod.HEAD) {
-            requestBuilder.head();
-        } else {
-            requestBuilder.method(request.httpMethod().toString(), toOkHttpRequestBody(request.body(), request.headers()));
-        }
-        return requestBuilder.build();
+    private static Mono<okhttp3.Request> toOkHttpRequest(HttpRequest request) {
+        return Mono.just(new okhttp3.Request.Builder())
+                .map(rb -> {
+                    rb.url(request.url());
+                    if (request.headers() != null) {
+                        return rb.headers(okhttp3.Headers.of(request.headers().toMap()));
+                    } else {
+                        return rb.headers(okhttp3.Headers.of((new HashMap<>())));
+                    }
+                })
+                .flatMap((Function<Request.Builder, Mono<Request.Builder>>) rb -> {
+                    if (request.httpMethod() == HttpMethod.GET) {
+                        return Mono.just(rb.get());
+                    } else if (request.httpMethod() == HttpMethod.HEAD) {
+                        return Mono.just(rb.head());
+                    } else {
+                        return toOkHttpRequestBody(request.body(), request.headers())
+                                .map(requestBody -> rb.method(request.httpMethod().toString(), requestBody));
+                    }
+                })
+                .map(rb -> rb.build());
     }
 
     /**
-     * Create a okhttp3.RequestBody from the given java.nio.ByteBuffer Flux.
-     *
-     * This method aggregate the Flux and blocks until it finishes.
-     *
+     * Create a Mono of okhttp3.RequestBody from the given java.nio.ByteBuffer Flux.
      *
      * @param bbFlux stream of java.nio.ByteBuffer representing request content
      * @param headers the headers associated with the original request
-     * @return the okhttp3.RequestBody
+     * @return the Mono emitting okhttp3.RequestBody
      */
-    private static okhttp3.RequestBody toOkHttpRequestBody(Flux<ByteBuffer> bbFlux, HttpHeaders headers) {
-        okio.ByteString byteString = okio.ByteString.EMPTY;
-        if (bbFlux != null) {
-            byteString = aggregate(bbFlux).block();
-        }
-        String contentType = headers.value("Content-Type");
-        if (contentType == null) {
-            return okhttp3.RequestBody.create(byteString, MEDIA_TYPE_OCTET_STREAM);
-        } else {
-            return okhttp3.RequestBody.create(byteString, okhttp3.MediaType.parse(contentType));
-        }
+    private static Mono<okhttp3.RequestBody> toOkHttpRequestBody(Flux<ByteBuffer> bbFlux, HttpHeaders headers) {
+        Mono<okio.ByteString> bsMono = bbFlux == null
+                ? EMPTY_BYTE_STRING_MONO
+                : aggregate(bbFlux);
+        //
+        return bsMono.map(byteString1 -> {
+            String contentType = headers.value("Content-Type");
+            if (contentType == null) {
+                return RequestBody.create(byteString1, MEDIA_TYPE_OCTET_STREAM);
+            } else {
+                return RequestBody.create(byteString1, okhttp3.MediaType.parse(contentType));
+            }
+        });
     }
 
     /**
@@ -153,7 +165,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
     /**
      * An implementation of azure-core HttpResponse for OkHttp.
      */
-    public static class OkHttpResponse extends HttpResponse {
+    private static class OkHttpResponse extends HttpResponse {
         private final okhttp3.Response inner;
         private final HttpHeaders headers;
         private final static int BYTE_BUFFER_CHUNK_SIZE = 1024;

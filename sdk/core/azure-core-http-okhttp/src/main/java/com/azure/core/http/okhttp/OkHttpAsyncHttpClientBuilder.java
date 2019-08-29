@@ -9,42 +9,46 @@ import okhttp3.Authenticator;
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
 
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Builder to configure and build an implementation of com.azure.core.http.HttpClient for OkHttp.
  */
 public class OkHttpAsyncHttpClientBuilder {
     private final ClientLogger logger = new ClientLogger(OkHttpAsyncHttpClientBuilder.class);
-    private okhttp3.OkHttpClient.Builder httpClientBuilder;
-    private Dispatcher dispatcher;
-    private ConnectionPool connectionPool;
+    private final okhttp3.OkHttpClient okHttpClient;
     //
-    private final static long DEFAULT_READ_TIMEOUT_IN_SEC = 120;
-    private final static long DEFAULT_CONNECT_TIMEOUT_IN_SEC = 60;
+    private final static Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(120);
+    private final static Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60);
+    //
+    private List<Interceptor> networkInterceptors = new ArrayList<>();
+    private Duration readTimeout;
+    private Duration connectionTimeout;
+    private ConnectionPool connectionPool;
+    private Dispatcher dispatcher;
+    private java.net.Proxy proxy;
+    private Authenticator proxyAuthenticator;
 
     /**
      * Creates OkHttpAsyncHttpClientBuilder.
      */
     public OkHttpAsyncHttpClientBuilder() {
-        this(new okhttp3.OkHttpClient.Builder());
+        this.okHttpClient = null;
     }
 
     /**
-     * Creates OkHttpAsyncHttpClientBuilder from an existing OkHttp builder.
+     * Creates OkHttpAsyncHttpClientBuilder from the builder of an existing OkHttpClient.
      *
-     * @param httpClientBuilder the base builder to use.
+     * @param okHttpClient the httpclient
      */
-    public OkHttpAsyncHttpClientBuilder(okhttp3.OkHttpClient.Builder httpClientBuilder) {
-        Objects.requireNonNull(httpClientBuilder);
-        // Builder with default settings
-        this.httpClientBuilder = httpClientBuilder
-                .readTimeout(DEFAULT_READ_TIMEOUT_IN_SEC, TimeUnit.SECONDS)
-                .connectTimeout(DEFAULT_CONNECT_TIMEOUT_IN_SEC, TimeUnit.SECONDS);
+    public OkHttpAsyncHttpClientBuilder(okhttp3.OkHttpClient okHttpClient) {
+        this.okHttpClient = Objects.requireNonNull(okHttpClient, "okHttpClient == null");
     }
-
 
     /**
      * Add a network layer interceptor to Http request pipeline.
@@ -54,31 +58,46 @@ public class OkHttpAsyncHttpClientBuilder {
      */
     public OkHttpAsyncHttpClientBuilder networkInterceptor(Interceptor networkInterceptor) {
         Objects.requireNonNull(networkInterceptor);
-        this.httpClientBuilder.addNetworkInterceptor(networkInterceptor);
+        this.networkInterceptors.add(networkInterceptor);
         return this;
     }
 
     /**
-     * Set the read timeout, default is 120 seconds.
+     * Add network layer interceptors to Http request pipeline.
      *
-     * @param timeout the timeout
-     * @param unit the time unit for the timeout
+     * @param networkInterceptors the interceptors to add
      * @return the builder
      */
-    public OkHttpAsyncHttpClientBuilder readTimeout(long timeout, TimeUnit unit) {
-        this.httpClientBuilder.readTimeout(timeout, unit);
+    public OkHttpAsyncHttpClientBuilder networkInterceptors(List<Interceptor> networkInterceptors) {
+        this.networkInterceptors = Objects.requireNonNull(networkInterceptors);
         return this;
     }
 
     /**
-     * Set the connection timeout, default is 60 seconds.
+     * Sets the read timeout.
      *
-     * @param timeout the timeout
-     * @param unit the time unit for the timeout
+     * The default read timeout is 120 seconds.
+     *
+     * @param readTimeout the timeout
      * @return the builder
      */
-    public OkHttpAsyncHttpClientBuilder connectionTimeout(long timeout, TimeUnit unit) {
-        this.httpClientBuilder.connectTimeout(timeout, unit);
+    public OkHttpAsyncHttpClientBuilder readTimeout(Duration readTimeout) {
+        // readTimeout can be null
+        this.readTimeout = readTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the connection timeout.
+     *
+     * The default read timeout is 60 seconds.
+     *
+     * @param connectionTimeout the timeout
+     * @return the builder
+     */
+    public OkHttpAsyncHttpClientBuilder connectionTimeout(Duration connectionTimeout) {
+        // connectionTimeout can be null
+        this.connectionTimeout = connectionTimeout;
         return this;
     }
 
@@ -89,17 +108,19 @@ public class OkHttpAsyncHttpClientBuilder {
      * @return the builder
      */
     public OkHttpAsyncHttpClientBuilder connectionPool(ConnectionPool connectionPool) {
+        // Null ConnectionPool is not allowed
         this.connectionPool = Objects.requireNonNull(connectionPool, "connectionPool == null");
         return this;
     }
 
     /**
-     * Sets the dispatcher that also composes  the thread pool for executing HTTP requests.
+     * Sets the dispatcher that also composes the thread pool for executing HTTP requests.
      *
      * @param dispatcher the dispatcher to use
      * @return the builder
      */
     public OkHttpAsyncHttpClientBuilder dispatcher(Dispatcher dispatcher) {
+        // Null Dispatcher is not allowed
         this.dispatcher = Objects.requireNonNull(dispatcher, "dispatcher == null");
         return this;
     }
@@ -111,7 +132,8 @@ public class OkHttpAsyncHttpClientBuilder {
      * @return the builder
      */
     public OkHttpAsyncHttpClientBuilder proxy(java.net.Proxy proxy) {
-        this.httpClientBuilder.proxy(proxy);
+        // Proxy can be null
+        this.proxy = proxy;
         return this;
     }
 
@@ -122,7 +144,8 @@ public class OkHttpAsyncHttpClientBuilder {
      * @return the builder
      */
     public OkHttpAsyncHttpClientBuilder proxyAuthenticator(Authenticator proxyAuthenticator) {
-        this.httpClientBuilder.proxyAuthenticator(proxyAuthenticator);
+        // Null Authenticator is not allowed
+        this.proxyAuthenticator = Objects.requireNonNull(proxyAuthenticator, "proxyAuthenticator == null");
         return this;
     }
 
@@ -132,13 +155,33 @@ public class OkHttpAsyncHttpClientBuilder {
      * @return a {@link HttpClient}.
      */
     public HttpClient build() {
-        if (connectionPool != null) {
-            this.httpClientBuilder = httpClientBuilder.connectionPool(connectionPool);
+        OkHttpClient.Builder httpClientBuilder = this.okHttpClient == null
+                ? new OkHttpClient.Builder()
+                : this.okHttpClient.newBuilder();
+        //
+        for (Interceptor interceptor : this.networkInterceptors) {
+            httpClientBuilder = httpClientBuilder.addNetworkInterceptor(interceptor);
         }
-        if (dispatcher != null) {
-            this.httpClientBuilder = httpClientBuilder.dispatcher(dispatcher);
+        if (this.readTimeout != null) {
+            httpClientBuilder = httpClientBuilder.readTimeout(this.readTimeout);
+        } else {
+            httpClientBuilder = httpClientBuilder.readTimeout(DEFAULT_READ_TIMEOUT);
         }
-        return new OkHttpAsyncHttpClient(this.httpClientBuilder.build());
+        if (this.connectionTimeout != null) {
+            httpClientBuilder = httpClientBuilder.connectTimeout(this.connectionTimeout);
+        } else {
+            httpClientBuilder = httpClientBuilder.connectTimeout(DEFAULT_CONNECT_TIMEOUT);
+        }
+        if (this.connectionPool != null) {
+            httpClientBuilder = httpClientBuilder.connectionPool(connectionPool);
+        }
+        if (this.dispatcher != null) {
+            httpClientBuilder = httpClientBuilder.dispatcher(dispatcher);
+        }
+        httpClientBuilder = httpClientBuilder.proxy(this.proxy);
+        if (this.proxyAuthenticator != null) {
+            httpClientBuilder = httpClientBuilder.authenticator(this.proxyAuthenticator);
+        }
+        return new OkHttpAsyncHttpClient(httpClientBuilder.build());
     }
-
 }
