@@ -73,17 +73,17 @@ public class EventProcessor {
         PartitionManager partitionManager,
         String eventHubName) {
         this.eventHubAsyncClient = Objects
-            .requireNonNull(eventHubAsyncClient, "eventHubAsyncClient cannot be null");
+            .requireNonNull(eventHubAsyncClient, EventHubsConstants.EVENTHUB_ASYNC_CLIENT_CANNOT_NULL);
         this.consumerGroupName = Objects
-            .requireNonNull(consumerGroupName, "consumerGroupname cannot be null");
+            .requireNonNull(consumerGroupName, EventHubsConstants.CONSUMER_GROUP_NAME_CANNOT_NULL);
         this.partitionProcessorFactory = Objects
-            .requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null");
+            .requireNonNull(partitionProcessorFactory, EventHubsConstants.PARTITION_PROCESSOR_FACTORY_CANNOT_NULL);
         this.partitionManager = Objects
-            .requireNonNull(partitionManager, "partitionManager cannot be null");
+            .requireNonNull(partitionManager, EventHubsConstants.PARTITION_MANAGER_CANNOT_NULL);
         this.initialEventPosition = Objects
-            .requireNonNull(initialEventPosition, "initialEventPosition cannot be null");
+            .requireNonNull(initialEventPosition, EventHubsConstants.INITIAL_EVENT_POSITION_CANNOT_NULL);
         this.eventHubName = Objects
-            .requireNonNull(eventHubName, "eventHubName cannot be null");
+            .requireNonNull(eventHubName, EventHubsConstants.EVENTHUB_NAME_CANNOT_NULL);
         this.identifier = UUID.randomUUID().toString();
         logger.info("The instance ID for this event processors is {}", this.identifier);
     }

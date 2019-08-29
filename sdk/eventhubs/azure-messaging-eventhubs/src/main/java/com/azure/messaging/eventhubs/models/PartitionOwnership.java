@@ -4,6 +4,8 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.implementation.annotation.Fluent;
+import com.azure.messaging.eventhubs.EventHubsConstants;
+
 import java.util.Objects;
 
 /**
@@ -38,7 +40,7 @@ public class PartitionOwnership {
      * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership eventHubName(String eventHubName) {
-        this.eventHubName = Objects.requireNonNull(eventHubName, "eventHubName cannot be null");
+        this.eventHubName = Objects.requireNonNull(eventHubName, EventHubsConstants.EVENTHUB_NAME_CANNOT_NULL);
         return this;
     }
 
@@ -58,7 +60,7 @@ public class PartitionOwnership {
      * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership consumerGroupName(String consumerGroupName) {
-        this.consumerGroupName = Objects.requireNonNull(consumerGroupName, "consumerGroupName cannot be null");
+        this.consumerGroupName = Objects.requireNonNull(consumerGroupName, EventHubsConstants.CONSUMER_GROUP_NAME_CANNOT_NULL);
         return this;
     }
 
@@ -78,7 +80,7 @@ public class PartitionOwnership {
      * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership partitionId(String partitionId) {
-        this.partitionId = Objects.requireNonNull(partitionId, "partitionId cannot be null");
+        this.partitionId = Objects.requireNonNull(partitionId, EventHubsConstants.PARTITION_ID_CANNOT_NULL);
         return this;
     }
 
@@ -98,7 +100,7 @@ public class PartitionOwnership {
      * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership ownerId(String ownerId) {
-        this.ownerId = Objects.requireNonNull(ownerId, "ownerId cannot be null");
+        this.ownerId = Objects.requireNonNull(ownerId, EventHubsConstants.OWNER_ID_CANNOT_NULL);
         return this;
     }
 

@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.MessageConstant;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.messaging.eventhubs.EventData;
+import com.azure.messaging.eventhubs.EventHubsConstants;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -157,7 +158,8 @@ public class EventDataUtil {
                         message.setReplyToGroupId((String) value);
                         break;
                     default:
-                        throw new IllegalArgumentException(String.format(Locale.US, "Property is not a recognized reserved property name: %s", key));
+                        throw new IllegalArgumentException(String.format(Locale.US,
+                            EventHubsConstants.UNRESERVED_PROPERTY_NAME, key));
                 }
             } else {
                 final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
@@ -234,7 +236,8 @@ public class EventDataUtil {
             return Double.BYTES;
         }
 
-        throw new IllegalArgumentException(String.format(Locale.US, "Encoding Type: %s is not supported", obj.getClass()));
+        throw new IllegalArgumentException(String.format(Locale.US, EventHubsConstants.ENCODING_TYPE_NOT_SUPPORTED,
+            obj.getClass()));
     }
 
     private EventDataUtil() {

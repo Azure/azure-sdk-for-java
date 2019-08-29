@@ -85,17 +85,16 @@ public class EventHubAsyncClient implements Closeable {
     private final EventHubConsumerOptions defaultConsumerOptions;
 
     EventHubAsyncClient(ConnectionOptions connectionOptions, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
-        Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.");
-        Objects.requireNonNull(provider, "'provider' cannot be null.");
-        Objects.requireNonNull(handlerProvider, "'handlerProvider' cannot be null.");
+        Objects.requireNonNull(connectionOptions, EventHubsConstants.CONNECTION_OPTIONS_CANNOT_NULL);
+        Objects.requireNonNull(provider, EventHubsConstants.REACTOR_PROVIDER_CANNOT_NULL);
+        Objects.requireNonNull(handlerProvider, EventHubsConstants.REACTOR_HANDLER_PROVIDER_CANNOT_NULL);
 
         this.connectionOptions = connectionOptions;
         this.eventHubName = connectionOptions.eventHubName();
         this.connectionId = StringUtil.getRandomString("MF");
-        this.connectionMono = Mono.fromCallable(() -> {
-            return (EventHubConnection) new ReactorConnection(connectionId, connectionOptions, provider,
-                handlerProvider, new ResponseMapper());
-        }).doOnSubscribe(c -> hasConnection.set(true))
+        this.connectionMono = Mono.fromCallable(() ->
+            (EventHubConnection) new ReactorConnection(connectionId, connectionOptions, provider,
+            handlerProvider, new ResponseMapper())).doOnSubscribe(c -> hasConnection.set(true))
             .cache();
 
         this.defaultProducerOptions = new EventHubProducerOptions()
@@ -135,9 +134,7 @@ public class EventHubAsyncClient implements Closeable {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
         return connectionMono.flatMap(
-            connection -> connection.getManagementNode().flatMap(node -> {
-                return node.getPartitionProperties(partitionId);
-            }));
+            connection -> connection.getManagementNode().flatMap(node -> node.getPartitionProperties(partitionId)));
     }
 
     /**
@@ -161,7 +158,7 @@ public class EventHubAsyncClient implements Closeable {
      * @throws NullPointerException if {@code options} is {@code null}.
      */
     public EventHubAsyncProducer createProducer(EventHubProducerOptions options) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
+        Objects.requireNonNull(options, EventHubsConstants.OPTIONS_CANNOT_NULL);
 
         final EventHubProducerOptions clonedOptions = options.clone();
 
@@ -247,15 +244,15 @@ public class EventHubAsyncClient implements Closeable {
      */
     public EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
                                                 EventHubConsumerOptions options) {
-        Objects.requireNonNull(eventPosition, "'eventPosition' cannot be null.");
-        Objects.requireNonNull(options, "'options' cannot be null.");
-        Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null.");
-        Objects.requireNonNull(partitionId, "'partitionId' cannot be null.");
+        Objects.requireNonNull(eventPosition, EventHubsConstants.EVENT_POSITION_CANNOT_NULL);
+        Objects.requireNonNull(options, EventHubsConstants.OPTIONS_CANNOT_NULL);
+        Objects.requireNonNull(consumerGroup, EventHubsConstants.CONSUMER_GROUP_CANNOT_NULL);
+        Objects.requireNonNull(partitionId, EventHubsConstants.PARTITION_ID_CANNOT_NULL);
 
         if (consumerGroup.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'consumerGroup' cannot be an empty string."));
+            throw logger.logExceptionAsError(new IllegalArgumentException(EventHubsConstants.CONSUMER_GROUP_CANNOT_EMPTY));
         } else if (partitionId.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'partitionId' cannot be an empty string."));
+            throw logger.logExceptionAsError(new IllegalArgumentException(EventHubsConstants.PARTITION_ID_CANNOT_EMPTY));
         }
 
         final EventHubConsumerOptions clonedOptions = options.clone();
@@ -297,7 +294,8 @@ public class EventHubAsyncClient implements Closeable {
                     connection.close();
                 }
             } catch (IOException exception) {
-                throw logger.logExceptionAsError(new AmqpException(false, "Unable to close connection to service", exception,
+                throw logger.logExceptionAsError(new AmqpException(false,
+                    EventHubsConstants.UNABLE_CLOSE_CONNECTION_TO_SERVICE, exception,
                     new ErrorContext(connectionOptions.host())));
             }
         }
@@ -326,7 +324,7 @@ public class EventHubAsyncClient implements Closeable {
             return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), isInclusiveFlag, ms);
         }
 
-        throw new IllegalArgumentException("No starting position was set.");
+        throw new IllegalArgumentException(EventHubsConstants.NO_STARTING_POSITION_SET);
     }
 
     private static class ResponseMapper implements AmqpResponseMapper {

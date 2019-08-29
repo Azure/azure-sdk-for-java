@@ -86,7 +86,7 @@ public class EventData implements Comparable<EventData> {
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(ByteBuffer body) {
-        Objects.requireNonNull(body, "'body' cannot be null.");
+        Objects.requireNonNull(body, EventHubsConstants.BODY_CANNOT_NULL);
 
         this.body = body;
         this.properties = new HashMap<>();
@@ -98,7 +98,7 @@ public class EventData implements Comparable<EventData> {
      */
     EventData(Message message) {
         if (message == null) {
-            throw new IllegalArgumentException("'message' cannot be null");
+            throw new IllegalArgumentException(EventHubsConstants.MESSAGE_CANNOT_NULL);
         }
 
         final Map<Symbol, Object> messageAnnotations = message.getMessageAnnotations().getValue();
@@ -165,8 +165,8 @@ public class EventData implements Comparable<EventData> {
      * @throws NullPointerException if {@code key} or {@code value} is null.
      */
     public EventData addProperty(String key, Object value) {
-        Objects.requireNonNull(key, "'key' cannot be null.");
-        Objects.requireNonNull(value, "'value' cannot be null.");
+        Objects.requireNonNull(key, EventHubsConstants.PROPERTY_KEY_CANNOT_NULL);
+        Objects.requireNonNull(value, EventHubsConstants.PROPERTY_VALUE_CANNOT_NULL);
 
         properties.put(key, value);
         return this;
@@ -347,7 +347,7 @@ public class EventData implements Comparable<EventData> {
             final Long sequenceNumber = this.getSystemProperty(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
 
             if (sequenceNumber == null) {
-                throw new IllegalStateException(String.format(Locale.US, "sequenceNumber: %s should always be in map.", SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
+                throw new IllegalStateException(String.format(Locale.US, EventHubsConstants.NULL_SEQUENCE_NUM_IN_MAP, SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
             }
 
             return sequenceNumber;

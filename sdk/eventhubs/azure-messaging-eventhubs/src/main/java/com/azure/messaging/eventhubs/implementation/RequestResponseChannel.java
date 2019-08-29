@@ -10,6 +10,7 @@ import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.EventHubsConstants;
 import com.azure.messaging.eventhubs.implementation.handler.ReceiveLinkHandler;
 import com.azure.messaging.eventhubs.implementation.handler.SendLinkHandler;
 import org.apache.qpid.proton.Proton;
@@ -104,13 +105,13 @@ class RequestResponseChannel implements Closeable {
         start();
 
         if (message == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("message cannot be null"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(EventHubsConstants.MESSAGE_CANNOT_NULL));
         }
         if (message.getMessageId() != null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("message.getMessageId() should be null"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(EventHubsConstants.MESSAGE_ID_SHOULD_BE_NULL));
         }
         if (message.getReplyTo() != null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("message.getReplyTo() should be null"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(EventHubsConstants.MESSAGE_REPLY_TO_SHOULD_BE_NULL));
         }
 
         final UnsignedLong messageId = UnsignedLong.valueOf(requestId.incrementAndGet());

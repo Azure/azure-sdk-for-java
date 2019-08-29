@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.EventHubsConstants;
 import com.azure.messaging.eventhubs.implementation.handler.DispatchHandler;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.reactor.Reactor;
@@ -83,13 +84,15 @@ public final class ReactorDispatcher {
         final RejectedExecutionException rejectedException = this.reactor.attachments()
             .get(RejectedExecutionException.class, RejectedExecutionException.class);
         if (rejectedException != null) {
-            throw logger.logExceptionAsError(new RejectedExecutionException(rejectedException.getMessage(), rejectedException));
+            throw logger.logExceptionAsError(new RejectedExecutionException(
+                rejectedException.getMessage(), rejectedException));
         }
 
         // throw when the pipe is in closed state - in which case,
         // signalling the new event-dispatch will fail
         if (!this.ioSignal.sink().isOpen()) {
-            throw logger.logExceptionAsError(new RejectedExecutionException("ReactorDispatcher instance is closed."));
+            throw logger.logExceptionAsError(
+                new RejectedExecutionException(EventHubsConstants.REACTOR_DISPATCHER_CLOSED));
         }
     }
 

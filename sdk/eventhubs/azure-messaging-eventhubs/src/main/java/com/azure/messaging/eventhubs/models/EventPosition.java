@@ -9,6 +9,7 @@ import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
 import com.azure.messaging.eventhubs.EventHubClient;
+import com.azure.messaging.eventhubs.EventHubsConstants;
 
 import java.time.Instant;
 import java.util.Locale;
@@ -38,7 +39,6 @@ public final class EventPosition {
     private static final EventPosition EARLIEST = fromOffset(START_OF_STREAM, false);
     private static final EventPosition LATEST = fromOffset(END_OF_STREAM, false);
 
-    private final ClientLogger logger = new ClientLogger(EventPosition.class);
     private final boolean isInclusive;
     private final String offset;
     private final Long sequenceNumber;
@@ -112,7 +112,7 @@ public final class EventPosition {
      * @throws NullPointerException if {@code offset} is null.
      */
     public static EventPosition fromOffset(String offset, boolean isInclusive) {
-        Objects.requireNonNull(offset, "'offset' cannot be null.");
+        Objects.requireNonNull(offset, EventHubsConstants.OFFSET_CANNOT_NULL);
 
         return new EventPosition(isInclusive, offset, null, null);
     }
@@ -184,7 +184,7 @@ public final class EventPosition {
     public String toString() {
         return String.format(Locale.US, "offset[%s], sequenceNumber[%s], enqueuedTime[%s], isInclusive[%s]",
             offset, sequenceNumber,
-            enqueuedDateTime != null ? enqueuedDateTime.toEpochMilli() : "null",
+            enqueuedDateTime != null ? enqueuedDateTime.toEpochMilli() : EventHubsConstants.NULL,
             isInclusive);
     }
 

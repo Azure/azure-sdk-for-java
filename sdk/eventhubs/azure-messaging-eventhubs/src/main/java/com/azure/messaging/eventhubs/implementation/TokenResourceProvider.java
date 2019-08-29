@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.EventHubsConstants;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -35,7 +36,7 @@ class TokenResourceProvider {
                 return String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, host, resource);
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
-                    "'%s' is not supported authorization type for token audience.", authorizationType)));
+                    EventHubsConstants.UNSUPPORTED_AUTHORIZATION_TYPE, authorizationType)));
         }
     }
 }

@@ -3,6 +3,8 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.messaging.eventhubs.EventHubsConstants;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
@@ -37,9 +39,9 @@ public class ConnectionStringProperties {
      *     an invalid format.
      */
     public ConnectionStringProperties(String connectionString) {
-        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
+        Objects.requireNonNull(connectionString, EventHubsConstants.CONNECTION_STRING_CANNOT_NULL);
         if (connectionString.isEmpty()) {
-            throw new IllegalArgumentException("'connectionString' cannot be an empty string.");
+            throw new IllegalArgumentException(EventHubsConstants.CONNECTION_STRING_CANNOT_EMPTY);
         }
 
         final String[] tokenValuePairs = connectionString.split(TOKEN_VALUE_PAIR_DELIMITER);
@@ -51,7 +53,8 @@ public class ConnectionStringProperties {
         for (String tokenValuePair : tokenValuePairs) {
             final String[] pair = tokenValuePair.split(TOKEN_VALUE_SEPARATOR, 2);
             if (pair.length != 2) {
-                throw new IllegalArgumentException(String.format(Locale.US, "Connection string has invalid key value pair: %s", tokenValuePair));
+                throw new IllegalArgumentException(String.format(Locale.US,
+                    EventHubsConstants.CONNECTION_STRING_HAS_INVALID_KV_PAIR, tokenValuePair));
             }
 
             final String key = pair[0].trim();
@@ -61,12 +64,12 @@ public class ConnectionStringProperties {
                 try {
                     endpoint = new URI(value);
                 } catch (URISyntaxException e) {
-                    throw new IllegalArgumentException(String.format(Locale.US, "Invalid endpoint: %s", tokenValuePair), e);
+                    throw new IllegalArgumentException(String.format(Locale.US, EventHubsConstants.INVALID_ENDPOINT_MSG, tokenValuePair), e);
                 }
 
                 if (!SCHEME.equalsIgnoreCase(endpoint.getScheme())) {
                     throw new IllegalArgumentException(String.format(Locale.US,
-                        "Endpoint is not the correct scheme. Expected: %s. Actual Endpoint: %s", SCHEME, endpoint.toString()));
+                        EventHubsConstants.INCORRECT_SCHEME_ENDPOINT, SCHEME, endpoint.toString()));
                 }
             } else if (key.equalsIgnoreCase(SHARED_ACCESS_KEY_NAME)) {
                 sharedAccessKeyName = value;
@@ -76,7 +79,7 @@ public class ConnectionStringProperties {
                 eventHubName = value;
             } else {
                 throw new IllegalArgumentException(
-                    String.format(Locale.US, "Illegal connection string parameter name: %s", key));
+                    String.format(Locale.US, EventHubsConstants.ILLEGAL_CONNECTION_STRING_PARAMS, key));
             }
         }
 

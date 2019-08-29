@@ -8,6 +8,7 @@ import com.azure.core.amqp.RetryOptions;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubProperties;
+import com.azure.messaging.eventhubs.EventHubsConstants;
 import com.azure.messaging.eventhubs.PartitionProperties;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -132,12 +133,14 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
 
             return channelMono.flatMap(x -> x.sendWithAck(request, provider.getReactorDispatcher())).map(message -> {
                 if (!(message.getBody() instanceof AmqpValue)) {
-                    throw logger.logExceptionAsError(new IllegalArgumentException("Expected message.getBody() to be AmqpValue, but is: " + message.getBody()));
+                    throw logger.logExceptionAsError(new IllegalArgumentException(
+                        EventHubsConstants.MESSAGE_BODY_EXPECT_AMQP_VALUE + message.getBody()));
                 }
 
                 AmqpValue body = (AmqpValue) message.getBody();
                 if (!(body.getValue() instanceof Map)) {
-                    throw logger.logExceptionAsError(new IllegalArgumentException("Expected message.getBody().getValue() to be of type Map"));
+                    throw logger.logExceptionAsError(new IllegalArgumentException(
+                        EventHubsConstants.MESSAGE_BODY_VALUE_EXPECT_MAP_TYPE));
                 }
 
                 Map<?, ?> map = (Map<?, ?>) body.getValue();

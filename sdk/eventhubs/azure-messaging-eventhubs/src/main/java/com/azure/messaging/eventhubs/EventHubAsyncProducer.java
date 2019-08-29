@@ -135,7 +135,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
      */
     public Mono<EventDataBatch> createBatch(BatchOptions options) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
+        Objects.requireNonNull(options, EventHubsConstants.OPTIONS_CANNOT_NULL);
 
         final BatchOptions clone = options.clone();
 
@@ -149,7 +149,7 @@ public class EventHubAsyncProducer implements Closeable {
 
                 if (clone.maximumSizeInBytes() > maximumLinkSize) {
                     return Mono.error(new IllegalArgumentException(String.format(Locale.US,
-                        "BatchOptions.maximumSizeInBytes (%s bytes) is larger than the link size (%s bytes).",
+                        EventHubsConstants.BATCH_OPTIONS_LARGER_THAN_LINK_SIZE,
                         clone.maximumSizeInBytes(), maximumLinkSize)));
                 }
 
@@ -176,7 +176,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when the event is pushed to the service.
      */
     public Mono<Void> send(EventData event) {
-        Objects.requireNonNull(event, "'event' cannot be null.");
+        Objects.requireNonNull(event, EventHubsConstants.EVENT_CANNOT_NULL);
 
         return send(Flux.just(event));
     }
@@ -196,8 +196,8 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when the event is pushed to the service.
      */
     public Mono<Void> send(EventData event, SendOptions options) {
-        Objects.requireNonNull(event, "'event' cannot be null.");
-        Objects.requireNonNull(options, "'options' cannot be null.");
+        Objects.requireNonNull(event, EventHubsConstants.EVENT_CANNOT_NULL);
+        Objects.requireNonNull(options, EventHubsConstants.OPTIONS_CANNOT_NULL);
 
         return send(Flux.just(event), options);
     }
@@ -211,7 +211,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Iterable<EventData> events) {
-        Objects.requireNonNull(events, "'events' cannot be null.");
+        Objects.requireNonNull(events, EventHubsConstants.EVENTS_CANNOT_NULL);
 
         return send(Flux.fromIterable(events));
     }
@@ -226,7 +226,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Iterable<EventData> events, SendOptions options) {
-        Objects.requireNonNull(events, "'options' cannot be null.");
+        Objects.requireNonNull(events, EventHubsConstants.OPTIONS_CANNOT_NULL);
 
         return send(Flux.fromIterable(events), options);
     }
@@ -240,7 +240,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Flux<EventData> events) {
-        Objects.requireNonNull(events, "'events' cannot be null.");
+        Objects.requireNonNull(events, EventHubsConstants.EVENTS_CANNOT_NULL);
 
         return send(events, DEFAULT_SEND_OPTIONS);
     }
@@ -255,8 +255,8 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Flux<EventData> events, SendOptions options) {
-        Objects.requireNonNull(events, "'events' cannot be null.");
-        Objects.requireNonNull(options, "'options' cannot be null.");
+        Objects.requireNonNull(events, EventHubsConstants.EVENTS_CANNOT_NULL);
+        Objects.requireNonNull(options, EventHubsConstants.OPTIONS_CANNOT_NULL);
 
         return sendInternal(events, options);
     }
@@ -271,7 +271,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @see EventHubAsyncProducer#createBatch(BatchOptions)
      */
     public Mono<Void> send(EventDataBatch batch) {
-        Objects.requireNonNull(batch, "'batch' cannot be null.");
+        Objects.requireNonNull(batch, EventHubsConstants.BATCH_CANNOT_NULL);
 
         if (batch.getEvents().isEmpty()) {
             logger.info("Cannot send an EventBatch that is empty.");
@@ -327,7 +327,7 @@ public class EventHubAsyncProducer implements Closeable {
                 senderOptions.partitionId())));
         } else if (partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
-                "PartitionKey '%s' exceeds the maximum allowed length: '%s'.", partitionKey, MAX_PARTITION_KEY_LENGTH)));
+                EventHubsConstants.PARTITION_KEY_EXCEEDS_MAX_LENGTH, partitionKey, MAX_PARTITION_KEY_LENGTH)));
         }
     }
 
@@ -386,9 +386,10 @@ public class EventHubAsyncProducer implements Closeable {
 
                 if (maxNumberOfBatches != null && list.size() == maxNumberOfBatches) {
                     final String message = String.format(Locale.US,
-                        "EventData does not fit into maximum number of batches. '%s'", maxNumberOfBatches);
+                        EventHubsConstants.EVENT_DATA_EXCEEDS_MAX_NUM_BATCHES, maxNumberOfBatches);
 
-                    throw new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message, contextProvider.getErrorContext());
+                    throw new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message,
+                        contextProvider.getErrorContext());
                 }
 
                 currentBatch = new EventDataBatch(maxMessageSize, partitionKey, contextProvider);

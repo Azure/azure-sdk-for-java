@@ -68,16 +68,16 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
     public EventHubSharedAccessKeyCredential(String policyName, String sharedAccessKey, Duration tokenValidity)
         throws NoSuchAlgorithmException, InvalidKeyException {
 
-        Objects.requireNonNull(sharedAccessKey, "'sharedAccessKey' cannot be null.");
-        this.policyName = Objects.requireNonNull(policyName, "'sharedAccessKey' cannot be null.");
-        this.tokenValidity = Objects.requireNonNull(tokenValidity, "'tokenValidity' cannot be null.");
+        Objects.requireNonNull(sharedAccessKey, EventHubsConstants.SHARED_ACCESS_KEY_CANNOT_NULL);
+        this.policyName = Objects.requireNonNull(policyName, EventHubsConstants.POLICY_NAME_CANNOT_NULL);
+        this.tokenValidity = Objects.requireNonNull(tokenValidity, EventHubsConstants.TOKEN_VALIDITY_CANNOT_NULL);
 
         if (policyName.isEmpty()) {
-            throw new IllegalArgumentException("'policyName' cannot be an empty string.");
+            throw new IllegalArgumentException(EventHubsConstants.POLICY_NAME_CANNOT_EMPTY);
         } else if (sharedAccessKey.isEmpty()) {
-            throw new IllegalArgumentException("'sharedAccessKey' cannot be an empty string.");
+            throw new IllegalArgumentException(EventHubsConstants.SHARED_ACCESS_KEY_CANNOT_EMPTY);
         } else if (tokenValidity.isZero() || tokenValidity.isNegative()) {
-            throw new IllegalArgumentException("'tokenTimeToLive' has to positive and in the order-of seconds");
+            throw new IllegalArgumentException(EventHubsConstants.TOKEN_TIME_TO_LIVE_ERROR_MSG);
         }
 
         hmac = Mac.getInstance(HASH_ALGORITHM);
@@ -99,7 +99,7 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
         if (scopes.length != 1) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'scopes' should only contain a single argument that is the token audience or resource name."));
+            throw logger.logExceptionAsError(new IllegalArgumentException(EventHubsConstants.SCOPES_RULES));
         }
 
         return Mono.fromCallable(() -> generateSharedAccessSignature(scopes[0]));
@@ -107,7 +107,7 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
 
     private AccessToken generateSharedAccessSignature(final String resource) throws UnsupportedEncodingException {
         if (ImplUtils.isNullOrEmpty(resource)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("resource cannot be empty"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(EventHubsConstants.RESOURCE_CANNOT_EMPTY));
         }
 
         final String utf8Encoding = UTF_8.name();

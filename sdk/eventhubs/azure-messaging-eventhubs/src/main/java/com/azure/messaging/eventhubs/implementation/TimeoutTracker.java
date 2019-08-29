@@ -3,6 +3,8 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.messaging.eventhubs.EventHubsConstants;
+
 import java.time.Duration;
 import java.time.Instant;
 
@@ -20,7 +22,7 @@ class TimeoutTracker {
      */
     TimeoutTracker(Duration timeout, boolean startTrackingTimeout) {
         if (timeout.compareTo(Duration.ZERO) < 0) {
-            throw new IllegalArgumentException("timeout should be non-negative");
+            throw new IllegalArgumentException(EventHubsConstants.NON_NEGATIVE_TIMEOUT);
         }
 
         this.originalTimeout = timeout;
