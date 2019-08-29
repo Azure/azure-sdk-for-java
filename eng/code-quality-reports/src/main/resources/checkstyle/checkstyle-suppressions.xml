@@ -126,8 +126,10 @@
 
   <!-- Suppress IO exception for now, which need code owner's attention -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.core.implementation.util.ClientLoggerJavaDocCodeSnippets.java"/>
+  <!-- The throwable is generic type which could be checked exception. Cannot guarantee it throws RuntimeException. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.core.test.http.PlaybackClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.core.test.models.NetworkCallError.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.BlobInputStream.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.BlobOutputStream.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.BlockBlobClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.PageBlobAsyncClient.java"/>
 
@@ -139,8 +141,11 @@
   <!-- CodeSnippet Suppression for now, which need code owner's attention -->
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocCodeSnippetCheck" files="com.azure.data.appconfiguration.ConfigurationAsyncClient.java"/>
 
+  <!-- Use logger in Utility class with static. Suppress the static checking.-->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.common.Utility.java"/>
   <!-- ClientLogger class suppression -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="ClientLogger.java"/>
+
   <!-- Azure Core Test -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files=".*[/\\]core[/\\]test[/\\].*\.java"/>
   <!-- Class has static methods which using static logger instance, issue link: https://github.com/Azure/azure-sdk-for-java/issues/5137-->

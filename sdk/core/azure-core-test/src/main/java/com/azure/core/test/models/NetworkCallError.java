@@ -3,11 +3,9 @@
 
 package com.azure.core.test.models;
 
-import com.azure.core.implementation.exception.UnexpectedLengthException;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.net.UnknownHostException;
 
 /**
  * This class represents a caught throwable during a network call. It is used to serialize exceptions that were thrown
@@ -35,6 +33,7 @@ public class NetworkCallError {
      * Constructs the class setting the throwable and its class name.
      *
      * @param throwable Throwable thrown during a network call.
+     * @throws RuntimeException when I/O error occurs.
      */
     public NetworkCallError(Throwable throwable) {
         try {
@@ -54,6 +53,8 @@ public class NetworkCallError {
 
     /**
      * @return the thrown throwable as the class it was thrown as by converting is using its class name.
+     * @throws Exception Cast the exception which recorded in json files to generic exception.
+     * @throws RuntimeException when I/O error occurs.
      */
     public Throwable get() {
         try {
@@ -73,32 +74,65 @@ public class NetworkCallError {
      * as the actual class that was thrown.
      *
      * @param className Class name of the throwable.
+     * @return The instance of NetworkCallError class.
      */
     public NetworkCallError className(Class<?> className) {
         this.className = className;
         return this;
     }
 
+    /**
+     * Gets the name of the class of the throwable. This is used during deserialization the construct the throwable
+     * as the actual class that was thrown.
+     *
+     * @return The class name which is Class type.
+     */
     public Class<?> className() {
         return this.className;
     }
 
+    /**
+     * Sets the throwable argument types which needed for new instance constructor. This is used during deserialization the construct the throwable
+     * as the actual class that was thrown.
+     *
+     * @param argTypes The array of argument types.
+     * @return The instance of NetworkCallError class.
+     */
     public NetworkCallError argTypes(Class<?>[] argTypes) {
-        this.argTypes = argTypes;
+        this.argTypes = ImplUtils.clone(argTypes);
         return this;
     }
 
+    /**
+     * Gets the throwable argument types which needed for new instance constructor. This is used during deserialization the construct the throwable
+     * as the actual class that was thrown.
+     *
+     * @return The array of argument types.
+     */
     public Class<?>[] argTypes() {
-        return this.argTypes;
+        return ImplUtils.clone(this.argTypes);
     }
 
+    /**
+     * Sets the throwable argument default values which needed for new instance constructor. This is used during deserialization the construct the throwable
+     * as the actual class that was thrown.
+     *
+     * @param argValues The array of argument values.
+     * @return The instance of NetworkCallError class.
+     */
     public NetworkCallError argValues(Object[] argValues) {
-        this.argValues = argValues;
+        this.argValues = ImplUtils.clone(argValues);
         return this;
     }
 
+    /**
+     * Gets the throwable argument default values which needed for new instance constructor. This is used during deserialization the construct the throwable
+     * as the actual class that was thrown.
+     *
+     * @return The array of argument values.
+     */
     public Object[] argValues() {
-        return this.argValues;
+        return ImplUtils.clone(this.argValues);
     }
 
     private Object getDefaultValue(Class<?> type) throws Exception {

@@ -173,18 +173,8 @@ public final class PageBlobClient extends BlobClient {
      */
     public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body,
             PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
-        long length = pageRange.end() - pageRange.start();
-        Flux<ByteBuffer> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) PAGE_BYTES))
-            .map(i -> i * PAGE_BYTES)
-            .concatMap(pos -> Mono.fromCallable(() -> {
-                byte[] cache = new byte[PAGE_BYTES];
-                int read = 0;
-                while (read < PAGE_BYTES) {
-                    read += body.read(cache, read, PAGE_BYTES - read);
-                }
-
-                return ByteBuffer.wrap(cache);
-            }));
+        long length = pageRange.end() - pageRange.start() + 1;
+        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(body, length, PAGE_BYTES);
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponse(pageRange,
             fbb.subscribeOn(Schedulers.elastic()),

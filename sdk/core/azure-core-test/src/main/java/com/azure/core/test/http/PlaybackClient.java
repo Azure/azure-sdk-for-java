@@ -11,7 +11,6 @@ import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
@@ -100,14 +99,12 @@ public final class PlaybackClient implements HttpClient {
 
             return Mono.error(new IllegalStateException("==> Unexpected request: " + incomingMethod + " " + incomingUrl));
         }
-
-        if (networkCallRecord.exception() != null) {
-            if (networkCallRecord.exception().argTypes() == null) {
-                throw (Exception) networkCallRecord.exception().className().getConstructor().newInstance();
-            }
-            throw (Exception) networkCallRecord.exception().className().getConstructor(
-                networkCallRecord.exception().argTypes()).newInstance(networkCallRecord.exception().argValues());
-        }
+        constructExceptionType(networkCallRecord);
+//        if (networkCallRecord.exception() != null ) {
+//            throw (Exception) networkCallRecord.exception().className().getConstructor().newInstance();
+//        }
+//        throw (Exception) networkCallRecord.exception().className().getConstructor(
+//            networkCallRecord.exception().argTypes()).newInstance(networkCallRecord.exception().argValues());
         int recordStatusCode = Integer.parseInt(networkCallRecord.response().get("StatusCode"));
         HttpHeaders headers = new HttpHeaders();
 
@@ -175,18 +172,14 @@ public final class PlaybackClient implements HttpClient {
         return String.format("%s%s", urlBuilder.path(), urlBuilder.queryString());
     }
 
-    private void constructExceptionType(final NetworkCallRecord networkCallRecord) {
-        try {
-            if (networkCallRecord.exception() != null) {
-                if (networkCallRecord.exception().argTypes() == null) {
-                    throw (Exception) networkCallRecord.exception().className().getConstructor().newInstance();
-                }
-                throw (Exception) networkCallRecord.exception().className().getConstructor(
-                    networkCallRecord.exception().argTypes()).newInstance(networkCallRecord.exception().argValues());
-            }
-        } catch (Exception e) {
-            logger.logExceptionAsError(new RuntimeException("Error construct the exception class. Details: "
-                + e.getMessage()));
+    private void constructExceptionType(final NetworkCallRecord networkCallRecord) throws Exception {
+        if (networkCallRecord.exception() == null) {
+            return;
         }
+        if (networkCallRecord.exception() != null && networkCallRecord.exception().argTypes() == null) {
+            throw (Exception) networkCallRecord.exception().className().getConstructor().newInstance();
+        }
+        throw (Exception) networkCallRecord.exception().className().getConstructor(
+            networkCallRecord.exception().argTypes()).newInstance(networkCallRecord.exception().argValues());
     }
 }
