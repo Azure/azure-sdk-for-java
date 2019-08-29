@@ -42,6 +42,7 @@ import com.azure.storage.file.models.FilesStartCopyResponse;
 import com.azure.storage.file.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageErrorException;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -53,12 +54,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -292,7 +295,10 @@ public class FileAsyncClient {
     }
 
     /**
-     * Downloads a file from the system, including its metadata and properties
+     * Downloads a file from the system, including its metadata and properties into a file specified by the path.
+     *
+     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
+     * will be thrown.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -311,7 +317,10 @@ public class FileAsyncClient {
     }
 
     /**
-     * Downloads a file from the system, including its metadata and properties
+     * Downloads a file from the system, including its metadata and properties into a file specified by the path.
+     *
+     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
+     * will be thrown.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -327,22 +336,21 @@ public class FileAsyncClient {
      * @return An empty response.
      */
     public Mono<Void> downloadToFile(String downloadFilePath, FileRange range) {
-        AsynchronousFileChannel channel = channelSetup(downloadFilePath);
-        return sliceFileRange(range)
-            .flatMap(chunk -> downloadWithPropertiesWithResponse(chunk, false)
-                .map(dar -> dar.value().body())
-                .subscribeOn(Schedulers.elastic())
-                .flatMap(fbb -> FluxUtil.writeFile(fbb, channel, chunk.start() - (range == null ? 0 : range.start()))
+        return Mono.using(() -> channelSetup(downloadFilePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW),
+            channel -> sliceFileRange(range)
+                .flatMap(chunk -> downloadWithPropertiesWithResponse(chunk, false)
+                    .map(dar -> dar.value().body())
                     .subscribeOn(Schedulers.elastic())
-                    .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
-                    .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException)))
-            .then()
-            .doOnTerminate(() -> channelCleanUp(channel));
+                    .flatMap(fbb -> FluxUtil.writeFile(fbb, channel, chunk.start() - (range == null ? 0 : range.start()))
+                        .subscribeOn(Schedulers.elastic())
+                        .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
+                        .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException)))
+                .then(), this::channelCleanUp);
     }
 
-    private AsynchronousFileChannel channelSetup(String filePath) {
+    private AsynchronousFileChannel channelSetup(String filePath, OpenOption... options) {
         try {
-            return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ, StandardOpenOption.WRITE);
+            return AsynchronousFileChannel.open(Paths.get(filePath), options);
         } catch (IOException e) {
             throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
@@ -352,7 +360,7 @@ public class FileAsyncClient {
         try {
             channel.close();
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
+            throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(e)));
         }
     }
 
@@ -364,7 +372,7 @@ public class FileAsyncClient {
         } else {
             end = Mono.empty();
         }
-        end = end.switchIfEmpty(getProperties().map(rb -> rb.contentLength()));
+        end = end.switchIfEmpty(getProperties().map(FileProperties::contentLength));
         return end
             .map(e -> {
                 List<FileRange> chunks = new ArrayList<>();
@@ -459,7 +467,7 @@ public class FileAsyncClient {
      * @throws StorageErrorException If the directory doesn't exist or the file doesn't exist.
      */
     public Mono<VoidResponse> deleteWithResponse() {
-        return withContext(context -> deleteWithResponse(context));
+        return withContext(this::deleteWithResponse);
     }
 
     Mono<VoidResponse> deleteWithResponse(Context context) {
@@ -502,7 +510,7 @@ public class FileAsyncClient {
      * @return A response containing the {@link FileProperties storage file properties} and response status code
      */
     public Mono<Response<FileProperties>> getPropertiesWithResponse() {
-        return withContext(context -> getPropertiesWithResponse(context));
+        return withContext(this::getPropertiesWithResponse);
     }
 
     Mono<Response<FileProperties>> getPropertiesWithResponse(Context context) {
@@ -798,15 +806,12 @@ public class FileAsyncClient {
      * @throws UncheckedIOException If an I/O error occurs.
      */
     public Mono<Void> uploadFromFile(String uploadFilePath) {
-        AsynchronousFileChannel channel = channelSetup(uploadFilePath);
-        return Flux.fromIterable(sliceFile(uploadFilePath))
-            .flatMap(chunk -> {
-                return upload(FluxUtil.readFile(channel, chunk.start(), chunk.end() - chunk.start() + 1), chunk.end() - chunk.start() + 1, chunk.start())
+        return Mono.using(() -> channelSetup(uploadFilePath, StandardOpenOption.READ),
+            channel -> Flux.fromIterable(sliceFile(uploadFilePath))
+                .flatMap(chunk -> upload(FluxUtil.readFile(channel, chunk.start(), chunk.end() - chunk.start() + 1), chunk.end() - chunk.start() + 1, chunk.start())
                     .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
-                    .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException);
-            })
-            .then()
-            .doOnTerminate(() -> channelCleanUp(channel));
+                    .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException))
+                .then(), this::channelCleanUp);
     }
 
     private List<FileRange> sliceFile(String path) {
@@ -1038,7 +1043,7 @@ public class FileAsyncClient {
     }
 
     private Flux<Integer> nextPageForForceCloseHandles(final FilesForceCloseHandlesResponse response, final String handleId) {
-        List<Integer> handleCount = Arrays.asList(response.deserializedHeaders().numberOfHandlesClosed());
+        List<Integer> handleCount = Collections.singletonList(response.deserializedHeaders().numberOfHandlesClosed());
 
         if (response.deserializedHeaders().marker() == null) {
             return Flux.fromIterable(handleCount);
