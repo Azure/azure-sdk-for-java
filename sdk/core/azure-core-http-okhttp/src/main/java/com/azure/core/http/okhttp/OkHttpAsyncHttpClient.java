@@ -8,7 +8,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -23,8 +22,10 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
+/**
+ * HttpClient implementation for OkHttp.
+ */
 class OkHttpAsyncHttpClient implements HttpClient {
     private final ClientLogger logger = new ClientLogger(OkHttpAsyncHttpClient.class);
     private final okhttp3.OkHttpClient httpClient;
@@ -145,21 +146,6 @@ class OkHttpAsyncHttpClient implements HttpClient {
                 .map(b -> okio.ByteString.of(b.readByteArray())),
                 okio.Buffer::clear)
             .switchIfEmpty(EMPTY_BYTE_STRING_MONO);
-    }
-
-    @Override
-    public HttpClient proxy(Supplier<ProxyOptions> proxyOptions) {
-        throw new RuntimeException("Functionality moved to Builder, TODO: remove it, once core HttpClient is fixed");
-    }
-
-    @Override
-    public HttpClient wiretap(boolean enableWiretap) {
-        throw new RuntimeException("Not a valid configuration for OkHttp, TODO: remove it, once core HttpClient is fixed");
-    }
-
-    @Override
-    public HttpClient port(int port) {
-        throw new RuntimeException("Port is property of okhttp3.Request not client, TODO: remove it, once core HttpClient is fixed");
     }
 
     /**
