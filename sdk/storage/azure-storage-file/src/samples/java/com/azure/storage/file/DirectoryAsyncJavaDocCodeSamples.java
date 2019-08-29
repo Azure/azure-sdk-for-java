@@ -92,16 +92,18 @@ public class DirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#createWithResponse(Map)}
+     * Generates a code sample for using {@link DirectoryAsyncClient#createWithResponse(FileSmbProperties, String, Map)}
      */
     public void createDirectoryWithResponseAsync() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.createWithResponse#Map
-        directoryAsyncClient.createWithResponse(Collections.singletonMap("directory", "metadata")).subscribe(
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.createWithResponse#filesmbproperties-string-map
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        directoryAsyncClient.createWithResponse(smbProperties, filePermission, Collections.singletonMap("directory", "metadata")).subscribe(
             response -> System.out.println("Completed creating the directory with status code:" + response.statusCode()),
             error -> System.err.print(error.toString())
         );
-        // END: com.azure.storage.file.directoryAsyncClient.createWithResponse#Map
+        // END: com.azure.storage.file.directoryAsyncClient.createWithResponse#filesmbproperties-string-map
     }
 
     /**
@@ -116,19 +118,21 @@ public class DirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#createSubDirectoryWithResponse(String, Map)}
+     * Generates a code sample for using {@link DirectoryAsyncClient#createSubDirectoryWithResponse(String, FileSmbProperties, String, Map)}
      */
     public void createSubDirectoryAsyncMaxOverload() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.createSubDirectoryWithResponse#string-map
-        directoryAsyncClient.createSubDirectoryWithResponse("subdir",
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.createSubDirectoryWithResponse#string-filesmbproperties-string-map
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        directoryAsyncClient.createSubDirectoryWithResponse("subdir", smbProperties, filePermission,
             Collections.singletonMap("directory", "metadata")).subscribe(
                 response ->
                     System.out.println("Successfully creating the subdirectory with status code: "
                         + response.statusCode()),
                 error -> System.err.println(error.toString())
         );
-        // END: com.azure.storage.file.directoryAsyncClient.createSubDirectoryWithResponse#string-map
+        // END: com.azure.storage.file.directoryAsyncClient.createSubDirectoryWithResponse#string-filesmbproperties-string-map
     }
 
     /**

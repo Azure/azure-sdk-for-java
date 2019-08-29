@@ -160,7 +160,7 @@ public class DirectoryAsyncClient {
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
      */
     public Mono<DirectoryInfo> create() {
-        return createWithResponse(null).flatMap(FluxUtil::toMono);
+        return createWithResponse(null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -170,26 +170,39 @@ public class DirectoryAsyncClient {
      *
      * <p>Create the directory</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.createWithResponse#Map}
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.createWithResponse#filesmbproperties-string-map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
      * @param metadata Optional metadata to associate with the directory
      * @return A response containing the directory info and the status of creating the directory.
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
      */
-    public Mono<Response<DirectoryInfo>> createWithResponse(Map<String, String> metadata) {
-        return withContext(context -> createWithResponse(metadata, context));
+    public Mono<Response<DirectoryInfo>> createWithResponse(FileSmbProperties smbProperties, String filePermission,
+        Map<String, String> metadata) {
+        return withContext(context -> createWithResponse(smbProperties, filePermission, metadata, context));
     }
 
-    Mono<Response<DirectoryInfo>> createWithResponse(Map<String, String> metadata, Context context) {
-        // TODO (alzimmer): These properties are dummy defaults to allow the new service version to be used. Remove these and use correct defaults when known (https://github.com/Azure/azure-sdk-for-java/issues/5039)
-        String fileAttributes = "None";
-        String filePermission = "inherit";
-        String fileCreationTime = "now";
-        String fileLastWriteTime = "now";
-        return azureFileStorageClient.directorys().createWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime, fileLastWriteTime, null, metadata, filePermission, null, context)
+    Mono<Response<DirectoryInfo>> createWithResponse(FileSmbProperties smbProperties, String filePermission,
+        Map<String, String> metadata, Context context) {
+        FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+
+        // Checks that file permission and file permission key are valid
+        FileExtensions.filePermissionAndKeyHelper(filePermission, properties.filePermissionKey());
+
+        // If file permission and file permission key are both not set then set default value
+        filePermission = properties.filePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
+        String filePermissionKey = properties.filePermissionKey();
+
+        String fileAttributes = properties.ntfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
+        String fileCreationTime = properties.fileCreationTime(FileConstants.FILE_TIME_NOW);
+        String fileLastWriteTime = properties.fileLastWriteTime(FileConstants.FILE_TIME_NOW);
+
+        return azureFileStorageClient.directorys().createWithRestResponseAsync(shareName, directoryPath, fileAttributes,
+            fileCreationTime, fileLastWriteTime, null, metadata, filePermission, filePermissionKey, context)
             .map(this::createWithRestResponse);
     }
 
@@ -437,7 +450,7 @@ public class DirectoryAsyncClient {
      * @throws StorageErrorException If the subdirectory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
     public Mono<DirectoryAsyncClient> createSubDirectory(String subDirectoryName) {
-        return createSubDirectoryWithResponse(subDirectoryName, null).flatMap(FluxUtil::toMono);
+        return createSubDirectoryWithResponse(subDirectoryName, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -447,23 +460,28 @@ public class DirectoryAsyncClient {
      *
      * <p>Create the subdirectory named "subdir", with metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.createSubDirectoryWithResponse#string-map}
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.createSubDirectoryWithResponse#string-filesmbproperties-string-map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param subDirectoryName Name of the subdirectory
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
      * @param metadata Optional metadata to associate with the subdirectory
      * @return A response containing the subdirectory client and the status of creating the directory.
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or subdirectory is an invalid resource name.
      */
-    public Mono<Response<DirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName, Map<String, String> metadata) {
-        return withContext(context -> createSubDirectoryWithResponse(subDirectoryName, metadata, context));
+    public Mono<Response<DirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName,
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
+        return withContext(context -> createSubDirectoryWithResponse(subDirectoryName, smbProperties, filePermission,
+            metadata, context));
     }
 
-    Mono<Response<DirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName, Map<String, String> metadata, Context context) {
+    Mono<Response<DirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName,
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         DirectoryAsyncClient createSubClient = getSubDirectoryClient(subDirectoryName);
-        return createSubClient.createWithResponse(metadata, context)
+        return createSubClient.createWithResponse(smbProperties, filePermission, metadata, context)
             .map(response -> new SimpleResponse<>(response, createSubClient));
     }
 

@@ -205,9 +205,7 @@ public class FileAsyncClient {
         String filePermissionKey = properties.filePermissionKey();
 
         String fileAttributes = properties.ntfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
-
         String fileCreationTime = properties.fileCreationTime(FileConstants.FILE_TIME_NOW);
-
         String fileLastWriteTime = properties.fileLastWriteTime(FileConstants.FILE_TIME_NOW);
 
         return azureFileStorageClient.files().createWithRestResponseAsync(shareName, filePath, maxSize, fileAttributes,
@@ -596,9 +594,7 @@ public class FileAsyncClient {
         String filePermissionKey = properties.filePermissionKey();
 
         String fileAttributes = properties.ntfsFileAttributes(FileConstants.PRESERVE);
-
         String fileCreationTime = properties.fileCreationTime(FileConstants.PRESERVE);
-
         String fileLastWriteTime = properties.fileLastWriteTime(FileConstants.PRESERVE);
 
         return azureFileStorageClient.files().setHTTPHeadersWithRestResponseAsync(shareName, filePath, fileAttributes,

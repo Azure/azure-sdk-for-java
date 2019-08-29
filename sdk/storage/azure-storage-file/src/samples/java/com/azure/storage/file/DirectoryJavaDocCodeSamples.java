@@ -99,15 +99,17 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#createWithResponse(Map, Context)}
+     * Generates a code sample for using {@link DirectoryClient#createWithResponse(FileSmbProperties, String, Map, Context)}
      */
     public void createWithResponse() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.createWithResponse#map-Context
-        Response<DirectoryInfo> response = directoryClient.createWithResponse(
+        // BEGIN: com.azure.storage.file.directoryClient.createWithResponse#filesmbproperties-string-map-context
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        Response<DirectoryInfo> response = directoryClient.createWithResponse(smbProperties, filePermission,
             Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
         System.out.println("Completed creating the directory with status code: " + response.statusCode());
-        // END: com.azure.storage.file.directoryClient.createWithResponse#map-Context
+        // END: com.azure.storage.file.directoryClient.createWithResponse#filesmbproperties-string-map-context
     }
 
     /**
@@ -122,15 +124,17 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#createSubDirectoryWithResponse(String, Map, Context)}
+     * Generates a code sample for using {@link DirectoryClient#createSubDirectoryWithResponse(String, FileSmbProperties, String, Map, Context)}
      */
     public void createSubDirectoryMaxOverload() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-map-Context
-        Response<DirectoryClient> response = directoryClient.createSubDirectoryWithResponse("subdir",
-            Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
+        // BEGIN: com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-filesmbproperties-string-map-context
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        Response<DirectoryClient> response = directoryClient.createSubDirectoryWithResponse("subdir", smbProperties,
+            filePermission, Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
         System.out.printf("Creating the sub directory completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-map-Context
+        // END: com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-filesmbproperties-string-map-context
     }
 
     /**

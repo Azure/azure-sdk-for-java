@@ -469,7 +469,7 @@ public class ShareClient {
      * being deleted, or the parent directory for the new directory doesn't exist
      */
     public DirectoryClient createDirectory(String directoryName) {
-        return createDirectoryWithResponse(directoryName, null, Context.NONE).value();
+        return createDirectoryWithResponse(directoryName, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -479,12 +479,14 @@ public class ShareClient {
      *
      * <p>Create the directory "documents" with metadata "directory:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.createDirectoryWithResponse#string-map-Context}
+     * {@codesnippet com.azure.storage.file.shareClient.createDirectoryWithResponse#string-filesmbproperties-string-map-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
      * @param metadata Optional metadata to associate with the directory
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing a {@link DirectoryAsyncClient} to interact with the created directory and the
@@ -493,9 +495,10 @@ public class ShareClient {
      * being deleted, the parent directory for the new directory doesn't exist, or the metadata is using an illegal
      * key name
      */
-    public Response<DirectoryClient> createDirectoryWithResponse(String directoryName, Map<String, String> metadata, Context context) {
+    public Response<DirectoryClient> createDirectoryWithResponse(String directoryName, FileSmbProperties smbProperties,
+        String filePermission, Map<String, String> metadata, Context context) {
         DirectoryClient directoryClient = getDirectoryClient(directoryName);
-        return new SimpleResponse<>(directoryClient.createWithResponse(metadata, context), directoryClient);
+        return new SimpleResponse<>(directoryClient.createWithResponse(smbProperties, filePermission, metadata, context), directoryClient);
     }
 
     /**

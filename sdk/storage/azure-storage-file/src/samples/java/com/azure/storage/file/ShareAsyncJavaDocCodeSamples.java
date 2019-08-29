@@ -12,6 +12,7 @@ import com.azure.storage.file.models.AccessPolicy;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.SignedIdentifier;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -182,15 +183,18 @@ public class ShareAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#createDirectoryWithResponse(String, Map)}
+     * Generates a code sample for using {@link ShareAsyncClient#createDirectoryWithResponse(String, FileSmbProperties, String, Map)}
      */
     public void createDirectoryWithResponse() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.createDirectoryWithResponse#string-map
-        shareAsyncClient.createDirectoryWithResponse("documents", Collections.singletonMap("directory", "metadata"))
+        // BEGIN: com.azure.storage.file.shareAsyncClient.createDirectoryWithResponse#string-filesmbproperties-string-map
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        shareAsyncClient.createDirectoryWithResponse("documents", smbProperties, filePermission,
+            Collections.singletonMap("directory", "metadata"))
             .subscribe(response -> System.out.printf("Creating the directory completed with status code %d",
                 response.statusCode()));
-        // END: com.azure.storage.file.shareAsyncClient.createDirectoryWithResponse#string-map
+        // END: com.azure.storage.file.shareAsyncClient.createDirectoryWithResponse#string-filesmbproperties-string-map
     }
 
     /**
@@ -206,17 +210,19 @@ public class ShareAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#createFileWithResponse(String, long, FileHTTPHeaders, Map)}
+     * Generates a code sample for using {@link ShareAsyncClient#createFileWithResponse(String, long, FileHTTPHeaders, FileSmbProperties, String, Map)}
      */
     public void createFileWithResponse() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-filehttpheaders-map
+        // BEGIN: com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
-        shareAsyncClient.createFileWithResponse("myfile", 1024, httpHeaders,
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        shareAsyncClient.createFileWithResponse("myfile", 1024, httpHeaders, smbProperties, filePermission,
             Collections.singletonMap("directory", "metadata"))
             .subscribe(response -> System.out.printf("Creating the file completed with status code %d",
                 response.statusCode()));
-        // END: com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-filehttpheaders-map
+        // END: com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map
     }
 
     /**

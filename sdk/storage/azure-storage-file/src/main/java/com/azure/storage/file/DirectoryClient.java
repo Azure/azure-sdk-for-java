@@ -99,7 +99,7 @@ public class DirectoryClient {
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
      */
     public DirectoryInfo create() {
-        return createWithResponse(null, Context.NONE).value();
+        return createWithResponse(null, null, null, Context.NONE).value();
     }
 
     /**
@@ -109,18 +109,21 @@ public class DirectoryClient {
      *
      * <p>Create the directory</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.createWithResponse#map-Context}
+     * {@codesnippet com.azure.storage.file.directoryClient.createWithResponse#filesmbproperties-string-map-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
      * @param metadata Optional metadata to associate with the directory.
      * @return A response containing the directory info and the status of creating the directory.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
      */
-    public Response<DirectoryInfo> createWithResponse(Map<String, String> metadata, Context context) {
-        return directoryAsyncClient.createWithResponse(metadata, context).block();
+    public Response<DirectoryInfo> createWithResponse(FileSmbProperties smbProperties, String filePermission,
+        Map<String, String> metadata, Context context) {
+        return directoryAsyncClient.createWithResponse(smbProperties, filePermission, metadata, context).block();
     }
 
     /**
@@ -351,7 +354,7 @@ public class DirectoryClient {
      * @throws StorageErrorException If the subdirectory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
     public DirectoryClient createSubDirectory(String subDirectoryName) {
-        return createSubDirectoryWithResponse(subDirectoryName, null, Context.NONE).value();
+        return createSubDirectoryWithResponse(subDirectoryName, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -361,20 +364,23 @@ public class DirectoryClient {
      *
      * <p>Create the subdirectory named "subdir", with metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-map-Context}
+     * {@codesnippet com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-filesmbproperties-string-map-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param subDirectoryName Name of the subdirectory
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
      * @param metadata Optional metadata to associate with the subdirectory
      * @return A response containing the subdirectory client and the status of creating the directory.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or subdirectory is an invalid resource name.
      */
-    public Response<DirectoryClient> createSubDirectoryWithResponse(String subDirectoryName, Map<String, String> metadata, Context context) {
+    public Response<DirectoryClient> createSubDirectoryWithResponse(String subDirectoryName, FileSmbProperties smbProperties,
+        String filePermission, Map<String, String> metadata, Context context) {
         DirectoryClient directoryClient = getSubDirectoryClient(subDirectoryName);
-        return new SimpleResponse<>(directoryClient.createWithResponse(metadata, context), directoryClient);
+        return new SimpleResponse<>(directoryClient.createWithResponse(smbProperties, filePermission, metadata, context), directoryClient);
     }
 
     /**

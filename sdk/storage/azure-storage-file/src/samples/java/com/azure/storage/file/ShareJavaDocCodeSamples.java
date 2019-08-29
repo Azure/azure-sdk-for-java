@@ -149,15 +149,17 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#createDirectoryWithResponse(String, Map, Context)}
+     * Generates a code sample for using {@link ShareClient#createDirectoryWithResponse(String, FileSmbProperties, String, Map, Context)}
      */
     public void createDirectoryWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareClient.createDirectoryWithResponse#string-map-Context
-        Response<DirectoryClient> response = shareClient.createDirectoryWithResponse("documents",
-            Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
+        // BEGIN: com.azure.storage.file.shareClient.createDirectoryWithResponse#string-filesmbproperties-string-map-context
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        Response<DirectoryClient> response = shareClient.createDirectoryWithResponse("documents", smbProperties,
+            filePermission, Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
         System.out.printf("Creating the directory completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.shareClient.createDirectoryWithResponse#string-map-Context
+        // END: com.azure.storage.file.shareClient.createDirectoryWithResponse#string-filesmbproperties-string-map-context
     }
 
     /**
