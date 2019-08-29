@@ -39,6 +39,7 @@ class BlobAPITest extends APISpec {
     def setup() {
         bc = cc.getBlockBlobClient(generateBlobName())
         bc.upload(defaultInputStream.get(), defaultDataSize)
+        defaultInputStream.get().reset();
     }
 
     def "Download all null"() {
@@ -49,7 +50,7 @@ class BlobAPITest extends APISpec {
         HttpHeaders headers = response.headers()
 
         then:
-        body == defaultData
+        defaultData.compareTo(body) == 0
         ImplUtils.isNullOrEmpty(getMetadataFromHeaders(headers))
         headers.value("Content-Length") != null
         headers.value("Content-Type") != null

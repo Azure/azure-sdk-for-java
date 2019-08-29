@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-
 package com.azure.storage.blob
 
 import com.azure.core.http.HttpHeaders
+import com.azure.core.implementation.exception.UnexpectedLengthException;
 import com.azure.storage.blob.models.BlobAccessConditions
 import com.azure.storage.blob.models.BlobHTTPHeaders
 import com.azure.storage.blob.models.BlobRange
@@ -18,6 +18,7 @@ import com.azure.storage.blob.models.SourceModifiedAccessConditions
 import com.azure.storage.blob.models.StorageErrorCode
 import com.azure.storage.blob.models.StorageErrorException
 import com.azure.storage.blob.models.StorageException
+import reactor.core.publisher.Flux
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -58,16 +59,15 @@ class BlockBlobAPITest extends APISpec {
         bc.stageBlock(blockID, data == null ? null : data.get(), dataSize)
 
         then:
-        def e = thrown(Exception)
+        def e = thrown(exceptionType)
         exceptionType.isInstance(e)
 
         where:
         getBlockId   | data                 | dataSize            | exceptionType
         false        | defaultInputStream   | defaultDataSize     | StorageException
         true         | null                 | defaultDataSize     | NullPointerException
-        true         | defaultInputStream   | defaultDataSize + 1 | IndexOutOfBoundsException
-        // TODO (alzimmer): This doesn't throw an error as the stream is larger than the stated size
-        //true         | defaultInputStream   | defaultDataSize - 1 | IllegalArgumentException
+        true         | defaultInputStream   | defaultDataSize + 1 | UnexpectedLengthException
+        true         | defaultInputStream   | defaultDataSize - 1 | UnexpectedLengthException
     }
 
     def "Stage block empty body"() {
@@ -83,7 +83,7 @@ class BlockBlobAPITest extends APISpec {
         bc.stageBlock(getBlockID(), null, 0)
 
         then:
-        thrown(StorageException)
+        thrown(NullPointerException)
     }
 
     def "Stage block lease"() {
@@ -186,6 +186,20 @@ class BlockBlobAPITest extends APISpec {
         uncommittedBlock.hasNext()
         uncommittedBlock.hasNext()
         uncommittedBlock.hasNext()
+    }
+
+    def "test"() {
+        byte[] bytes = new byte[3];
+        bytes[0] = 'A';
+        bytes[1] = 'C';
+        bytes[2] = 'D';
+        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+        System.out.println(byteBuffer.position());
+        //
+        Flux<ByteBuffer> bb = Flux.just(byteBuffer);
+        bb.toStream();
+        //
+        System.out.println(byteBuffer.position());
     }
 
     def "Stage block from URL MD5"() {
@@ -583,15 +597,14 @@ class BlockBlobAPITest extends APISpec {
         bc.upload(data, dataSize)
 
         then:
-        def e = thrown(Exception)
+        def e = thrown(exceptionType)
         exceptionType.isInstance(e)
 
         where:
         data                     | dataSize            | exceptionType
         null                     | defaultDataSize     | NullPointerException
-        defaultInputStream.get() | defaultDataSize + 1 | IndexOutOfBoundsException
-        // This doesn't error as it isn't reading the entire stream which is valid in the new client
-        // defaultInputStream.get() | defaultDataSize - 1 | StorageErrorException
+        defaultInputStream.get() | defaultDataSize + 1 | UnexpectedLengthException
+        defaultInputStream.get() | defaultDataSize - 1 | UnexpectedLengthException
     }
 
     def "Upload empty body"() {
@@ -600,8 +613,10 @@ class BlockBlobAPITest extends APISpec {
     }
 
     def "Upload null body"() {
-        expect:
-        bc.uploadWithResponse(null, 0, null, null, null, null, null).statusCode() == 201
+        when:
+        bc.uploadWithResponse(null, 0, null, null, null, null, null)
+        then:
+        thrown(NullPointerException)
     }
 
     @Unroll

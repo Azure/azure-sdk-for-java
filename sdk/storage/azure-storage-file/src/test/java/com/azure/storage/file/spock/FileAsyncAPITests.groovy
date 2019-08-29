@@ -4,6 +4,7 @@
 package com.azure.storage.file.spock
 
 import com.azure.core.exception.HttpResponseException
+import com.azure.core.implementation.exception.UnexpectedLengthException
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.FileAsyncClient
 import com.azure.storage.file.models.FileHTTPHeaders
@@ -141,6 +142,26 @@ class FileAsyncAPITests extends APISpec {
         defaultData.clear()
     }
 
+    @Unroll
+    def "Upload data length mismatch"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+        when:
+        def uploadErrorVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData),
+            size, 0))
+        then:
+        uploadErrorVerifier.verifyErrorSatisfies {
+            assert it instanceof UnexpectedLengthException
+            assert it.getMessage().contains(errMsg)
+        }
+        cleanup:
+        defaultData.clear()
+        where:
+        size | errMsg
+        6 | "more bytes than"
+        8 | "less bytes than"
+    }
+
     def "Download data error"() {
         when:
         def downloadDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(0, 1023), false, null))
@@ -220,8 +241,9 @@ class FileAsyncAPITests extends APISpec {
 
     def "Upload and download file"() {
         given:
-        File uploadFile = new File(testFolder.getPath() + "/helloworld")
-        File downloadFile = new File(testFolder.getPath() + "/testDownload")
+        def testFolder = getClass().getClassLoader().getResource("testfiles")
+        File uploadFile = new File(testFolder.getPath(), "helloworld")
+        File downloadFile = new File(testFolder.getPath(), "testDownload")
 
         if (!Files.exists(downloadFile.toPath())) {
             downloadFile.createNewFile()

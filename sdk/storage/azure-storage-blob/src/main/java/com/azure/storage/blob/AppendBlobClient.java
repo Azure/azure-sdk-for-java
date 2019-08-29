@@ -162,19 +162,7 @@ public final class AppendBlobClient extends BlobClient {
      */
     public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length,
                                                 AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout, Context context) {
-        Flux<ByteBuffer> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) MAX_APPEND_BLOCK_BYTES))
-            .map(i -> i * MAX_APPEND_BLOCK_BYTES)
-            .concatMap(pos -> Mono.fromCallable(() -> {
-                long count = pos + MAX_APPEND_BLOCK_BYTES > length ? length - pos : MAX_APPEND_BLOCK_BYTES;
-                byte[] cache = new byte[(int) count];
-                int read = 0;
-                while (read < count) {
-                    read += data.read(cache, read, (int) count - read);
-                }
-
-                return ByteBuffer.wrap(cache);
-            }));
-
+        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, MAX_APPEND_BLOCK_BYTES);
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, appendBlobAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

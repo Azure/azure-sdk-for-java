@@ -7,10 +7,19 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.implementation.exception.UnexpectedLengthException;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -40,6 +49,7 @@ import java.util.TreeMap;
 import java.util.function.Function;
 
 public final class Utility {
+    private static final ClientLogger logger = new ClientLogger(Utility.class);
     private static final String DESERIALIZED_HEADERS = "deserializedHeaders";
     private static final String ETAG = "eTag";
 
@@ -482,4 +492,36 @@ public final class Utility {
         }
         return null;
     }
+
+    public static Flux<ByteBuffer> convertStreamToByteBuffer (InputStream data, long length, int blockSize ) {
+        final List<Long> lengthInChunk = new ArrayList<>();
+        return Flux.range(0, (int) Math.ceil((double) length / (double) blockSize))
+            .map(i -> i * blockSize)
+            .concatMap(pos -> Mono.fromCallable(() -> {
+                long count = pos + blockSize > length ? length - pos : blockSize;
+                byte[] cache = new byte[(int) count];
+                int lastIndex = data.read(cache);
+                lengthInChunk.add((long) lastIndex);
+                if (lastIndex < count) {
+                    throw new UnexpectedLengthException(
+                        String.format("Request body emitted %d bytes, less bytes than the expected %d bytes.",
+                            pos + lastIndex, length), pos + lastIndex, length);
+                }
+                return ByteBuffer.wrap(cache);
+            }))
+            .doOnComplete(() -> {
+                try {
+                    if (data.available() > 0) {
+                        Long totalLength = lengthInChunk.stream().reduce(Long::sum).orElse(0L) + data.available();
+                        throw new UnexpectedLengthException(
+                            String.format("Request body emitted %d bytes, more bytes than the expected %d bytes.",
+                                totalLength, length), totalLength, length);
+                    }
+                } catch (IOException e) {
+                    logger.logExceptionAsError(new RuntimeException("I/O errors occurs. Error deatils: "
+                        + e.getMessage()));
+                }
+            });
+    }
+   // }
 }

@@ -89,9 +89,10 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
         return next.process()
             .doOnError(throwable -> {
+                //handle the case when exception thrown after the interceptorManager
                 networkCallRecord.exception(new NetworkCallError(throwable));
                 recordedData.addNetworkCall(networkCallRecord);
-                throw logger.logExceptionAsWarning(Exceptions.propagate(throwable));
+                constructExceptionType(networkCallRecord);
             }).flatMap(httpResponse -> {
                 final HttpResponse bufferedResponse = httpResponse.buffer();
 
@@ -203,5 +204,22 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         }
 
         return content;
+    }
+
+    private Throwable constructExceptionType(final NetworkCallRecord networkCallRecord) {
+        try {
+            if (networkCallRecord.exception() != null) {
+                if (networkCallRecord.exception().argTypes() == null) {
+                    return (Exception) networkCallRecord.exception().className().getConstructor().newInstance();
+                }
+                return (Exception) networkCallRecord.exception().className().getConstructor(
+                    networkCallRecord.exception().argTypes()).newInstance(networkCallRecord.exception().argValues());
+            }
+        } catch (Exception e) {
+            logger.logExceptionAsError(new RuntimeException("Error construct the exception class. Details: "
+                + e.getMessage()));
+            return null;
+        }
+        return null;
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.rest.Response
+import com.azure.core.implementation.exception.UnexpectedLengthException;
 import com.azure.storage.blob.models.AppendBlobAccessConditions
 import com.azure.storage.blob.models.AppendBlobItem
 import com.azure.storage.blob.models.AppendPositionAccessConditions
@@ -186,15 +187,13 @@ class AppendBlobAPITest extends APISpec {
         bc.appendBlock(data, dataSize)
 
         then:
-        def e = thrown(Exception)
+        def e = thrown(exceptionType)
         exceptionType.isInstance(e)
-
         where:
         data                     | dataSize            | exceptionType
         null                     | defaultDataSize     | NullPointerException
-        defaultInputStream.get() | defaultDataSize + 1 | IndexOutOfBoundsException
-        // TODO (alzimmer): This doesn't throw an error as the stream is larger than the stated size
-        //defaultInputStream.get()    | defaultDataSize - 1 | StorageException
+        defaultInputStream.get() | defaultDataSize + 1 | UnexpectedLengthException
+        defaultInputStream.get()    | defaultDataSize - 1 | UnexpectedLengthException
     }
 
     def "Append block empty body"() {
@@ -264,10 +263,10 @@ class AppendBlobAPITest extends APISpec {
 
         when:
         bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, bac, null, null)
-
         then:
         thrown(StorageException)
-
+        cleanup:
+        defaultInputStream.get().reset()
         where:
         modified | unmodified | match       | noneMatch    | leaseID        | appendPosE | maxSizeLTE
         newDate  | null       | null        | null         | null           | null       | null
@@ -277,6 +276,7 @@ class AppendBlobAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID | null       | null
         null     | null       | null        | null         | null           | 1          | null
         null     | null       | null        | null         | null           | null       | 1
+
     }
 
     def "Append block error"() {
@@ -325,6 +325,8 @@ class AppendBlobAPITest extends APISpec {
         ByteArrayOutputStream downloadStream = new ByteArrayOutputStream(1024)
         destURL.download(downloadStream)
         downloadStream.toByteArray() == Arrays.copyOfRange(data, 2 * 1024, 3 * 1024)
+        cleanup:
+        defaultInputStream.get().reset()
     }
 
     def "Append block from URL MD5"() {
@@ -342,6 +344,8 @@ class AppendBlobAPITest extends APISpec {
 
         then:
         notThrown(StorageException)
+        cleanup:
+        defaultInputStream.get().reset()
     }
 
     def "Append block from URL MD5 fail"() {

@@ -201,7 +201,7 @@ class PageBlobAPITest extends APISpec {
         bc.uploadPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES * 2 - 1), data)
 
         then:
-        def e = thrown(Exception)
+        def e = thrown(exceptionType)
         exceptionType.isInstance(e)
 
         where:

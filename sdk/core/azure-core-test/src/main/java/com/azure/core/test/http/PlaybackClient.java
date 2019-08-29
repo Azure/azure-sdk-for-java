@@ -50,7 +50,13 @@ public final class PlaybackClient implements HttpClient {
      */
     @Override
     public Mono<HttpResponse> send(final HttpRequest request) {
-        return Mono.defer(() -> playbackHttpResponse(request));
+        return Mono.defer(() -> {
+            try {
+                return playbackHttpResponse(request);
+            } catch (Exception e) {
+                return Mono.error(e);
+            }
+        });
     }
 
     /**
@@ -77,7 +83,7 @@ public final class PlaybackClient implements HttpClient {
         return this;
     }
 
-    private Mono<HttpResponse> playbackHttpResponse(final HttpRequest request) {
+    private Mono<HttpResponse> playbackHttpResponse(final HttpRequest request) throws Exception {
         final String incomingUrl = applyReplacementRule(request.url().toString());
         final String incomingMethod = request.httpMethod().toString();
 
@@ -96,9 +102,12 @@ public final class PlaybackClient implements HttpClient {
         }
 
         if (networkCallRecord.exception() != null) {
-            throw logger.logExceptionAsWarning(Exceptions.propagate(networkCallRecord.exception().get()));
+            if (networkCallRecord.exception().argTypes() == null) {
+                throw (Exception) networkCallRecord.exception().className().getConstructor().newInstance();
+            }
+            throw (Exception) networkCallRecord.exception().className().getConstructor(
+                networkCallRecord.exception().argTypes()).newInstance(networkCallRecord.exception().argValues());
         }
-
         int recordStatusCode = Integer.parseInt(networkCallRecord.response().get("StatusCode"));
         HttpHeaders headers = new HttpHeaders();
 
@@ -164,5 +173,20 @@ public final class PlaybackClient implements HttpClient {
         }
 
         return String.format("%s%s", urlBuilder.path(), urlBuilder.queryString());
+    }
+
+    private void constructExceptionType(final NetworkCallRecord networkCallRecord) {
+        try {
+            if (networkCallRecord.exception() != null) {
+                if (networkCallRecord.exception().argTypes() == null) {
+                    throw (Exception) networkCallRecord.exception().className().getConstructor().newInstance();
+                }
+                throw (Exception) networkCallRecord.exception().className().getConstructor(
+                    networkCallRecord.exception().argTypes()).newInstance(networkCallRecord.exception().argValues());
+            }
+        } catch (Exception e) {
+            logger.logExceptionAsError(new RuntimeException("Error construct the exception class. Details: "
+                + e.getMessage()));
+        }
     }
 }

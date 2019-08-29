@@ -22,6 +22,7 @@ import com.azure.storage.blob.models.UserDelegationKey
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RequestRetryPolicy
+import spock.lang.Ignore
 
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -291,6 +292,7 @@ class ServiceAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    @Ignore
     def "Get UserDelegationKey"() {
         setup:
         def start = OffsetDateTime.now()
@@ -310,6 +312,7 @@ class ServiceAPITest extends APISpec {
         response.value().value() != null
     }
 
+    @Ignore
     def "Get UserDelegationKey min"() {
         setup:
         def expiry = OffsetDateTime.now().plusDays(1)
