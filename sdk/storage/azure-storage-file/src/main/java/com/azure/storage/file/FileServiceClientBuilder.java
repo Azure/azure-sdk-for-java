@@ -18,7 +18,7 @@ import java.util.Map;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link FileServiceClient FileServiceClients}
- * and {@link FileServiceAsyncClient FileServiceAsyncClients}, calling {@link FileServiceClientBuilder#buildClient() buildFileClient}
+ * and {@link FileServiceAsyncClient FileServiceAsyncClients}, calling {@link FileServiceClientBuilder#buildClient() buildClient}
  * constructs an instance of FileServiceClient and calling {@link FileServiceClientBuilder#buildAsyncClient() buildFileAsyncClient}
  * constructs an instance of FileServiceAsyncClient.
  *
@@ -83,7 +83,7 @@ public final class FileServiceClientBuilder extends BaseFileClientBuilder<FileSe
     }
 
     /**
-     * Creates a {@link FileServiceAsyncClient} based on options set in the builder. Every time {@code buildFileAsyncClient()} is
+     * Creates a {@link FileServiceAsyncClient} based on options set in the builder. Every time this method is
      * called a new instance of {@link FileServiceAsyncClient} is created.
      *
      * <p>
@@ -100,7 +100,7 @@ public final class FileServiceClientBuilder extends BaseFileClientBuilder<FileSe
     }
 
     /**
-     * Creates a {@link FileServiceClient} based on options set in the builder. Every time {@code buildFileClient()} is
+     * Creates a {@link FileServiceClient} based on options set in the builder. Every time {@code buildClient()} is
      * called a new instance of {@link FileServiceClient} is created.
      *
      * <p>

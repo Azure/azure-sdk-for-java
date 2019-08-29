@@ -19,10 +19,13 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link FileClient FileClients}
- * and {@link FileAsyncClient FileAsyncClients}, calling {@link FileClientBuilder#buildFileClient() buildFileClient}
- * constructs an instance of FileClient and calling {@link FileClientBuilder#buildFileAsyncClient() buildFileAsyncClient}
- * constructs an instance of FileAsyncClient.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of the
+ * {@link FileClient FileClients}, {@link FileAsyncClient FileAsyncClients}, {@link DirectoryClient DirectoryClients},
+ * and {@link DirectoryAsyncClient DirectoryAsyncClients}. Calling {@link FileClientBuilder#buildFileClient() buildFileClient},
+ * {@link FileClientBuilder#buildFileAsyncClient() buildFileAsyncClient},
+ * {@link FileClientBuilder#buildDirectoryClient() buildDirectoryClient}, or
+ * {@link FileClientBuilder#buildDirectoryAsyncClient() buildDirectoryAsyncClient} constructs an instance of {@link FileClient},
+ * {@link FileAsyncClient}, {@link DirectoryClient}, or {@link DirectoryAsyncClient} respectively.
  *
  * <p>The client needs the endpoint of the Azure Storage File service, name of the share, and authorization credential.
  * {@link FileClientBuilder#endpoint(String) endpoint} gives the builder the endpoint and may give the builder the
@@ -111,7 +114,7 @@ public class FileClientBuilder extends BaseFileClientBuilder<FileClientBuilder> 
     }
 
     /**
-     * Creates a {@link DirectoryClient} based on options set in the builder. Every time {@code buildFileClient()} is
+     * Creates a {@link DirectoryClient} based on options set in the builder. Every time {@code buildDirectoryClient()} is
      * called a new instance of {@link DirectoryClient} is created.
      *
      * <p>

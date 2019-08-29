@@ -27,9 +27,9 @@ import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link ShareClient ShareClients}
- * and {@link ShareAsyncClient SahreAsyncClients}, calling {@link ShareClientBuilder#buildClient() buildFileClient}
- * constructs an instance of ShareClient and calling {@link ShareClientBuilder#buildAsyncClient() buildFileAsyncClient}
- * constructs an instance of SahreAsyncClient.
+ * and {@link ShareAsyncClient ShareAsyncClients}, calling {@link ShareClientBuilder#buildClient() buildClient}
+ * constructs an instance of ShareClient and calling {@link ShareClientBuilder#buildAsyncClient() buildAsyncClient}
+ * constructs an instance of ShareAsyncClient.
  *
  * <p>The client needs the endpoint of the Azure Storage File service, name of the share, and authorization credential.
  * {@link ShareClientBuilder#endpoint(String) endpoint} gives the builder the endpoint and may give the builder the
@@ -114,7 +114,7 @@ public class ShareClientBuilder extends BaseFileClientBuilder<ShareClientBuilder
     }
 
     /**
-     * Creates a {@link ShareClient} based on options set in the builder. Every time {@code buildFileClient()} is
+     * Creates a {@link ShareClient} based on options set in the builder. Every time {@code buildClient()} is
      * called a new instance of {@link ShareClient} is created.
      *
      * <p>
