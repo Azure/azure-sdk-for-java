@@ -145,7 +145,7 @@ public final class PlaybackClient implements HttpClient {
         if (networkCallRecord.exception() == null) {
             return;
         }
-        if (networkCallRecord.exception() != null && networkCallRecord.exception().argTypes() == null) {
+        if (networkCallRecord.exception().argTypes() == null) {
             throw (Exception) networkCallRecord.exception().className().getConstructor().newInstance();
         }
         throw (Exception) networkCallRecord.exception().className().getConstructor(
