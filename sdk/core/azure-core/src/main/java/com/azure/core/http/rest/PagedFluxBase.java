@@ -31,7 +31,8 @@ import java.util.function.Supplier;
  * <p><strong>Code sample</strong></p>
  * {@codesnippet com.azure.core.http.rest.pagedfluxbase.pagesWithContinuationToken}
  *
- * @param <T> The type of items in <P> which extends {@link PagedResponse}
+ * @param <T> The type of items in {@code P}
+ * @param <P> The {@link PagedResponse} holding items of type {@code T}
  *
  * @see PagedResponse
  * @see Page
