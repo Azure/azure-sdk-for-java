@@ -1,11 +1,17 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.queue;
 
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.BaseClientBuilder;
 
-abstract class BaseQueueClientBuilder<T extends BaseClientBuilder> extends BaseClientBuilder<T> {
+abstract class BaseQueueClientBuilder<T extends BaseClientBuilder<T>> extends BaseClientBuilder<T> {
 
     private static final String QUEUE_ENDPOINT_MIDFIX = "queue";
+
+    private final ClientLogger logger = new ClientLogger(BaseQueueClientBuilder.class);
 
     @Override
     protected final UserAgentPolicy getUserAgentPolicy() {
@@ -21,9 +27,10 @@ abstract class BaseQueueClientBuilder<T extends BaseClientBuilder> extends BaseC
      * UNSUPPORTED OPERATION: Azure Storage queue service does not support anonymous access.
      * Clears the credential used to authorize requests sent to the service
      *
-     * @return the updated {@link T} object
+     * @return the updated builder
      */
     public final T setAnonymousCredential() {
-        throw new UnsupportedOperationException("Azure Storage file service does not support anonymous access.");
+        throw logger.logExceptionAsError(new UnsupportedOperationException(
+            "Azure Storage file service does not support anonymous access."));
     }
 }

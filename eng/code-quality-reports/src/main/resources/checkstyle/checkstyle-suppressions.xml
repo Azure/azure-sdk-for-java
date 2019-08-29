@@ -135,6 +135,9 @@
 
   <!-- Suppress requirement that abstract builder classes require the ServiceClientBuilder annotation -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.storage.common.BaseClientBuilder.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.storage.blob.BaseBlobClientBuilder.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.storage.file.BaseFileClientBuilder.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.storage.queue.BaseQueueClientBuilder.java"/>
 
   <!-- Suppress external dependency Checkstyle on Netty HttpClient package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.http.netty.NettyAsyncHttpClientBuilder"/>

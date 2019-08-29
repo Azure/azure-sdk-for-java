@@ -37,7 +37,7 @@ import java.util.Objects;
  * RESERVED FOR INTERNAL USE.
  * Base class for Storage client builders. Holds common code for managing resources and pipeline settings.
  */
-public abstract class BaseClientBuilder<T extends BaseClientBuilder> {
+public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
 
     private static final String ACCOUNT_NAME = "accountname";
     private static final String ACCOUNT_KEY = "accountkey";
@@ -102,7 +102,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder> {
      * Sets the blob service endpoint, additionally parses it for information (SAS token, path information, etc.)
      *
      * @param endpoint URL of the service
-     * @return the updated {@link T} object
+     * @return the updated builder
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
      */
     public abstract T endpoint(String endpoint);
@@ -111,9 +111,10 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder> {
      * Sets the credential used to authorize requests sent to the service
      *
      * @param credential authorization credential
-     * @return the updated {@link T} object
+     * @return the updated builder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @SuppressWarnings("unchecked")
     public final T credential(SharedKeyCredential credential) {
         this.sharedKeyCredential = Objects.requireNonNull(credential);
         this.tokenCredential = null;
@@ -126,9 +127,10 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder> {
      * Sets the credential used to authorize requests sent to the service
      *
      * @param credential authorization credential
-     * @return the updated {@link T} object
+     * @return the updated builder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @SuppressWarnings("unchecked")
     public T credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential);
         this.sharedKeyCredential = null;
@@ -141,9 +143,10 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder> {
      * Sets the credential used to authorize requests sent to the service
      *
      * @param credential authorization credential
-     * @return the updated {@link T} object
+     * @return the updated builder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @SuppressWarnings("unchecked")
     public final T credential(SASTokenCredential credential) {
         this.sasTokenCredential = Objects.requireNonNull(credential);
         this.sharedKeyCredential = null;
@@ -155,8 +158,9 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder> {
     /**
      * Clears the credential used to authorize requests sent to the service
      *
-     * @return the updated {@link T} object
+     * @return the updated buildr
      */
+    @SuppressWarnings("unchecked")
     public T setAnonymousCredential() {
         this.sharedKeyCredential = null;
         this.tokenCredential = null;
@@ -165,7 +169,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder> {
         return (T) this;
     }
 
-    /*
+    /**
      * Whether or not this builder has a credential to use with the pipeline.
      *
      * @return The boolean value of the expression.
@@ -180,9 +184,10 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder> {
      * Sets the connection string for the service, parses it for authentication information (account name, account key)
      *
      * @param connectionString connection string from access keys section
-     * @return the updated {@link T} object
+     * @return the updated builder
      * @throws IllegalArgumentException If {@code connectionString} doesn't contain AccountName or AccountKey.
      */
+    @SuppressWarnings("unchecked")
     public final T connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
 
@@ -222,8 +227,9 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder> {
     /**
      * Sets the http client used to send service requests. A default will be used if none is provided.
      * @param httpClient http client to send requests
-     * @return the updated {@link T} object
+     * @return the updated buildr
      */
+    @SuppressWarnings("unchecked")
     public final T httpClient(HttpClient httpClient) {
         this.httpClient = httpClient; // builder implicitly handles default creation if null, so no null check
         return (T) this;
@@ -232,9 +238,10 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder> {
     /**
      * Adds a pipeline policy to apply on each request sent
      * @param pipelinePolicy a pipeline policy
-     * @return the updated {@link T} object
+     * @return the updated builder
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}
      */
+    @SuppressWarnings("unchecked")
     public final T addPolicy(HttpPipelinePolicy pipelinePolicy) {
         this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy));
         return (T) this;
@@ -243,9 +250,10 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder> {
     /**
      * Sets the logging level for service requests
      * @param logLevel logging level
-     * @return the updated {@link T} object
+     * @return the updated builder
      * @throws NullPointerException If {@code logLevel} is {@code null}
      */
+    @SuppressWarnings("unchecked")
     public final T httpLogDetailLevel(HttpLogDetailLevel logLevel) {
         this.logLevel = Objects.requireNonNull(logLevel);
         return (T) this;
@@ -255,8 +263,9 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder> {
      * Sets the configuration object used to retrieve environment configuration values used to buildClient the client with
      * when they are not set in the appendBlobClientBuilder, defaults to Configuration.NONE
      * @param configuration configuration store
-     * @return the updated {@link T} object
+     * @return the updated buildr
      */
+    @SuppressWarnings("unchecked")
     public final T configuration(Configuration configuration) {
         this.configuration = configuration;
         return (T) this;
@@ -278,9 +287,10 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder> {
     /**
      * Sets the request retry options for all the requests made through the client.
      * @param retryOptions the options to configure retry behaviors
-     * @return the updated {@link T} object
+     * @return the updated builder
      * @throws NullPointerException If {@code retryOptions} is {@code null}
      */
+    @SuppressWarnings("unchecked")
     public final T retryOptions(RequestRetryOptions retryOptions) {
         this.retryOptions = Objects.requireNonNull(retryOptions);
         return (T) this;
@@ -293,8 +303,9 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder> {
      * {@link BaseClientBuilder#endpoint(String) endpoint} when building clients.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return The updated BlobServiceClientBuilder object.
+     * @return The updated builder.
      */
+    @SuppressWarnings("unchecked")
     public final T pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return (T) this;
