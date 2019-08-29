@@ -13,7 +13,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * This class is a flux that can operate on a {@link PagedResponse} and
+ * This class is a flux that can operate on any type that extends {@link PagedResponse} and
  * also provides the ability to operate on individual items. When processing the response by page,
  * each response will contain the items in the page as well as the request details like
  * status code and headers.
