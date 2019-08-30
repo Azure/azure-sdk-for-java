@@ -1,9 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+
 package com.azure.storage.blob
 
 import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpMethod
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpRequest
+import com.azure.core.http.policy.HttpLogDetailLevel
+import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.http.rest.Response
 import com.azure.core.implementation.exception.UnexpectedLengthException;
 import com.azure.storage.blob.models.BlobAccessConditions
 import com.azure.storage.blob.models.BlobHTTPHeaders
@@ -18,7 +26,9 @@ import com.azure.storage.blob.models.SourceModifiedAccessConditions
 import com.azure.storage.blob.models.StorageErrorCode
 import com.azure.storage.blob.models.StorageErrorException
 import com.azure.storage.blob.models.StorageException
+import com.azure.storage.common.policy.RequestRetryOptions
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -27,10 +37,13 @@ import java.security.MessageDigest
 
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient bc
+    BlockBlobAsyncClient bac
 
     def setup() {
         bc = cc.getBlockBlobClient(generateBlobName())
         bc.upload(defaultInputStream.get(), defaultDataSize)
+        bac = ccAsync.getBlockBlobAsyncClient(generateBlobName())
+        bac.upload(defaultFlux, defaultDataSize)
     }
 
     def "Stage block"() {
@@ -48,8 +61,11 @@ class BlockBlobAPITest extends APISpec {
     }
 
     def "Stage block min"() {
-        expect:
-        bc.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, null, null, null).statusCode() == 201
+        when:
+        bc.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize) == 201
+
+        then:
+        bc.listBlocks(BlockListType.ALL).uncommittedBlocks().size() == 1
     }
 
     @Unroll
@@ -63,11 +79,11 @@ class BlockBlobAPITest extends APISpec {
         exceptionType.isInstance(e)
 
         where:
-        getBlockId   | data                 | dataSize            | exceptionType
-        false        | defaultInputStream   | defaultDataSize     | StorageException
-        true         | null                 | defaultDataSize     | NullPointerException
-        true         | defaultInputStream   | defaultDataSize + 1 | UnexpectedLengthException
-        true         | defaultInputStream   | defaultDataSize - 1 | UnexpectedLengthException
+        getBlockId | data               | dataSize            | exceptionType
+        false      | defaultInputStream | defaultDataSize     | StorageException
+        true       | null               | defaultDataSize     | NullPointerException
+        true       | defaultInputStream | defaultDataSize + 1 | UnexpectedLengthException
+        true       | defaultInputStream | defaultDataSize - 1 | UnexpectedLengthException
     }
 
     def "Stage block empty body"() {
@@ -168,9 +184,9 @@ class BlockBlobAPITest extends APISpec {
         thrown(StorageException)
 
         where:
-        getBlockId   | sourceURL
-        false        | new URL("http://www.example.com")
-        true         | null
+        getBlockId | sourceURL
+        false      | new URL("http://www.example.com")
+        true       | null
     }
 
     def "Stage block from URL range"() {
@@ -403,10 +419,10 @@ class BlockBlobAPITest extends APISpec {
         BlobAccessConditions bac = new BlobAccessConditions()
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
             .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifModifiedSince(modified)
-                .ifUnmodifiedSince(unmodified)
-                .ifMatch(match)
-                .ifNoneMatch(noneMatch))
+            .ifModifiedSince(modified)
+            .ifUnmodifiedSince(unmodified)
+            .ifMatch(match)
+            .ifNoneMatch(noneMatch))
 
 
         expect:
@@ -430,10 +446,10 @@ class BlockBlobAPITest extends APISpec {
         BlobAccessConditions bac = new BlobAccessConditions()
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
             .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifModifiedSince(modified)
-                .ifUnmodifiedSince(unmodified)
-                .ifMatch(match)
-                .ifNoneMatch(noneMatch))
+            .ifModifiedSince(modified)
+            .ifUnmodifiedSince(unmodified)
+            .ifMatch(match)
+            .ifNoneMatch(noneMatch))
 
         when:
         bc.commitBlockListWithResponse(null, null, null, bac, null, null)
@@ -566,15 +582,20 @@ class BlockBlobAPITest extends APISpec {
         response.statusCode() == 201
         def outStream = new ByteArrayOutputStream()
         bc.download(outStream)
-        outStream.toByteArray() == "default".getBytes(StandardCharsets.UTF_8)
+        outStream.toByteArray() == defaultText.getBytes(StandardCharsets.UTF_8)
         validateBasicHeaders(response.headers())
         response.headers().value("Content-MD5") != null
         Boolean.parseBoolean(response.headers().value("x-ms-request-server-encrypted"))
     }
 
     def "Upload min"() {
-        expect:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null).statusCode() == 201
+        when:
+        bc.upload(defaultInputStream.get(), defaultDataSize)
+
+        then:
+        def outStream = new ByteArrayOutputStream()
+        bc.download(outStream)
+        outStream.toByteArray() == defaultText.getBytes(StandardCharsets.UTF_8)
     }
 
     @Unroll
@@ -627,9 +648,9 @@ class BlockBlobAPITest extends APISpec {
         validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                    | contentType
-        null         | null               | null            | null            | null                                                          | null
-        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array())  | "type"
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
+        null         | null               | null            | null            | null                                                         | null
+        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
     }
 
     @Unroll
@@ -665,10 +686,10 @@ class BlockBlobAPITest extends APISpec {
         BlobAccessConditions bac = new BlobAccessConditions()
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
             .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifModifiedSince(modified)
-                .ifUnmodifiedSince(unmodified)
-                .ifMatch(match)
-                .ifNoneMatch(noneMatch))
+            .ifModifiedSince(modified)
+            .ifUnmodifiedSince(unmodified)
+            .ifMatch(match)
+            .ifNoneMatch(noneMatch))
 
 
         expect:
@@ -692,10 +713,10 @@ class BlockBlobAPITest extends APISpec {
         BlobAccessConditions bac = new BlobAccessConditions()
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
             .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifModifiedSince(modified)
-                .ifUnmodifiedSince(unmodified)
-                .ifMatch(match)
-                .ifNoneMatch(noneMatch))
+            .ifModifiedSince(modified)
+            .ifUnmodifiedSince(unmodified)
+            .ifMatch(match)
+            .ifNoneMatch(noneMatch))
 
         when:
         bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, bac, null, null)
@@ -725,5 +746,272 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    @Unroll
+    def "Async buffered upload"() {
+        when:
+        def data = getRandomData(dataSize)
+        bac.upload(Flux.just(data), bufferSize, numBuffs).block()
+        data.position(0)
+
+        then:
+        // Due to memory issues, this check only runs on small to medium sized data sets.
+        if (dataSize < 100 * 1024 * 1024) {
+            assert collectBytesInBuffer(bac.download().block()).block() == data
+        }
+        bac.listBlocks(BlockListType.ALL).block().committedBlocks().size() == blockCount
+
+        where:
+        dataSize          | bufferSize        | numBuffs || blockCount
+        350               | 50                | 2        || 7 // Requires cycling through the same buffers multiple times.
+        350               | 50                | 5        || 7 // Most buffers may only be used once.
+        10 * 1024 * 1024  | 1 * 1024 * 1024   | 2        || 10 // Larger data set.
+        10 * 1024 * 1024  | 1 * 1024 * 1024   | 5        || 10 // Larger number of Buffs.
+        10 * 1024 * 1024  | 1 * 1024 * 1024   | 10       || 10 // Exactly enough buffer space to hold all the data.
+        500 * 1024 * 1024 | 100 * 1024 * 1024 | 2        || 5 // Larger data.
+        100 * 1024 * 1024 | 20 * 1024 * 1024  | 4        || 5
+        10 * 1024 * 1024  | 3 * 512 * 1024    | 3        || 7 // Data does not squarely fit in buffers.
+    }
+
+    def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
+        result.position(0)
+        for (ByteBuffer buffer : buffers) {
+            buffer.position(0)
+            result.limit(result.position() + buffer.remaining())
+            if (buffer != result) {
+                return false
+            }
+            result.position(result.position() + buffer.remaining())
+        }
+        return result.remaining() == 0
+    }
+
+    @Unroll
+    def "Buffered upload chunked source"() {
+        /*
+        This test should validate that the upload should work regardless of what format the passed data is in because
+        it will be chunked appropriately.
+         */
+        setup:
+        List<ByteBuffer> dataList = new ArrayList<>()
+        dataSizeList.each { size -> dataList.add(getRandomData(size)) }
+        bac.upload(Flux.fromIterable(dataList), bufferSize, numBuffers).block()
+
+        expect:
+        compareListToBuffer(dataList, collectBytesInBuffer(bac.download().block()).block())
+        bac.listBlocks(BlockListType.ALL).block().committedBlocks().size() == blockCount
+
+        where:
+        dataSizeList          | bufferSize | numBuffers || blockCount
+        [7, 7]                | 10         | 2          || 2 // First item fits entirely in the buffer, next item spans two buffers
+        [3, 3, 3, 3, 3, 3, 3] | 10         | 2          || 3 // Multiple items fit non-exactly in one buffer.
+        [10, 10]              | 10         | 2          || 2 // Data fits exactly and does not need chunking.
+        [50, 51, 49]          | 10         | 2          || 15 // Data needs chunking and does not fit neatly in buffers. Requires waiting for buffers to be released.
+        // The case of one large buffer needing to be broken up is tested in the previous test.
+    }
+
+    def "Buffered upload illegal arguments null"() {
+        when:
+        bac.upload(null, 4, 4)
+
+        then:
+        thrown(NullPointerException)
+    }
+
+    @Unroll
+    def "Buffered upload illegal args out of bounds"() {
+        when:
+        bac.upload(Flux.just(defaultData), bufferSize, numBuffs)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        bufferSize                                     | numBuffs
+        0                                              | 5
+        BlockBlobAsyncClient.MAX_STAGE_BLOCK_BYTES + 1 | 5
+        5                                              | 1
+    }
+
+    @Unroll
+    def "Buffered upload headers"() {
+        when:
+        bac.uploadWithResponse(defaultFlux, 10, 2, new BlobHTTPHeaders().blobCacheControl(cacheControl)
+            .blobContentDisposition(contentDisposition).blobContentEncoding(contentEncoding)
+            .blobContentLanguage(contentLanguage).blobContentMD5(contentMD5).blobContentType(contentType),
+            null, null).block()
+
+        then:
+        validateBlobProperties(bac.getPropertiesWithResponse(null).block(), cacheControl, contentDisposition, contentEncoding,
+            contentLanguage, contentMD5, contentType == null ? "application/octet-stream" : contentType)
+        // HTTP default content type is application/octet-stream.
+
+        where:
+        // The MD5 is simply set on the blob for commitBlockList, not validated.
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
+        null         | null               | null            | null            | null                                                         | null
+        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
+    }
+
+    @Unroll
+    def "Buffered upload metadata"() {
+        setup:
+        Metadata metadata = new Metadata()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        bac.uploadWithResponse(Flux.just(getRandomData(10)), 10, 10, null, metadata, null).block()
+        Response<BlobProperties> response = bac.getPropertiesWithResponse(null).block()
+
+        then:
+        response.statusCode() == 200
+        response.value().metadata() == metadata
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    @Unroll
+    def "Buffered upload AC"() {
+        setup:
+        bac.upload(defaultFlux, defaultDataSize).block()
+        match = setupBlobMatchCondition(bac, match)
+        leaseID = setupBlobLeaseCondition(bac, leaseID)
+        def accessConditions = new BlobAccessConditions().modifiedAccessConditions(
+            new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
+                .ifMatch(match).ifNoneMatch(noneMatch))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
+
+        expect:
+        bac.uploadWithResponse(Flux.just(getRandomData(10)), 10, 2, null, null, accessConditions).block().statusCode() == 201
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Buffered upload AC fail"() {
+        setup:
+        bac.upload(defaultFlux, defaultDataSize).block()
+        noneMatch = setupBlobMatchCondition(bac, noneMatch)
+        leaseID = setupBlobLeaseCondition(bac, leaseID)
+        BlobAccessConditions accessConditions = new BlobAccessConditions().modifiedAccessConditions(
+            new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
+                .ifMatch(match).ifNoneMatch(noneMatch))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
+
+        when:
+        bac.uploadWithResponse(Flux.just(getRandomData(10)), 10, 2, null, null, accessConditions).block()
+
+        then:
+        def e = thrown(StorageException)
+        e.errorCode() == StorageErrorCode.CONDITION_NOT_MET ||
+            e.errorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    /*def "Upload NRF progress"() {
+        setup:
+        def data = getRandomData(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 1)
+        def numBlocks = data.remaining() / BlockBlobURL.MAX_STAGE_BLOCK_BYTES
+        long prevCount = 0
+        def mockReceiver = Mock(IProgressReceiver)
+
+
+        when:
+        TransferManager.uploadFromNonReplayableFlowable(Flowable.just(data), bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, 10,
+            new TransferManagerUploadToBlockBlobOptions(mockReceiver, null, null, null, 20)).blockingGet()
+        data.position(0)
+
+        then:
+        // We should receive exactly one notification of the completed progress.
+        1 * mockReceiver.reportProgress(data.remaining()) */
+
+    /*
+    We should receive at least one notification reporting an intermediary value per block, but possibly more
+    notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
+    will be the total size as above. Finally, we assert that the number reported monotonically increases.
+     */
+    /*(numBlocks - 1.._) * mockReceiver.reportProgress(!data.remaining()) >> { long bytesTransferred ->
+        if (!(bytesTransferred > prevCount)) {
+            throw new IllegalArgumentException("Reported progress should monotonically increase")
+        } else {
+            prevCount = bytesTransferred
+        }
+    }
+
+    // We should receive no notifications that report more progress than the size of the file.
+    0 * mockReceiver.reportProgress({ it > data.remaining() })
+    notThrown(IllegalArgumentException)
+}*/
+
+    def "Buffered upload network error"() {
+        setup:
+        /*
+         This test uses a Flowable that does not allow multiple subscriptions and therefore ensures that we are
+         buffering properly to allow for retries even given this source behavior.
+         */
+        bac.upload(Flux.just(defaultData), defaultDataSize).block()
+        def nonReplayableFlux = bac.download().block()
+
+        // Mock a response that will always be retried.
+        def mockHttpResponse = getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com")))
+
+        // Mock a policy that will always then check that the data is still the same and return a retryable error.
+        def mockPolicy = Mock(HttpPipelinePolicy) {
+            process(*_) >> { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
+                return collectBytesInBuffer(context.httpRequest().body())
+                    .map { b ->
+                    return b == defaultData
+                }
+                .flatMap { b ->
+                    if (b) {
+                        return Mono.just(mockHttpResponse)
+                    }
+                    return Mono.error(new IllegalArgumentException())
+                }
+            }
+        }
+
+        // Build the pipeline
+        bac = new BlobServiceClientBuilder()
+            .credential(primaryCredential)
+            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.accountName()))
+            .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+            .retryOptions(new RequestRetryOptions(null, 3, null, 500, 1500, null))
+            .addPolicy(mockPolicy).buildAsyncClient()
+            .getContainerAsyncClient(generateContainerName()).getBlockBlobAsyncClient(generateBlobName())
+
+        when:
+        // Try to upload the flowable, which will hit a retry. A normal upload would throw, but buffering prevents that.
+        bac.upload(nonReplayableFlux, 1024, 4).block()
+        // TODO: It could be that duplicates aren't getting made in the retry policy? Or before the retry policy?
+
+        then:
+        // A second subscription to a download stream will
+        def e = thrown(StorageException)
+        e.statusCode() == 500
     }
 }

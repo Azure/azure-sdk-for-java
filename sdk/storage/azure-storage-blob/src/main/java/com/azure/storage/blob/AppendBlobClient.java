@@ -125,7 +125,7 @@ public final class AppendBlobClient extends BlobClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the created appended blob.
      */
     public Response<AppendBlobItem> createWithResponse(BlobHTTPHeaders headers, Metadata metadata,
-                                           BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        BlobAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.createWithResponse(headers, metadata, accessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -165,10 +165,12 @@ public final class AppendBlobClient extends BlobClient {
      * @throws NullPointerException if the input data is null.
      */
     public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length,
-                                                AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout, Context context) {
+        AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout, Context context) {
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, MAX_APPEND_BLOCK_BYTES);
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, appendBlobAccessConditions, context);
+
+        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(
+            fbb.subscribeOn(Schedulers.elastic()), length, appendBlobAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -206,7 +208,8 @@ public final class AppendBlobClient extends BlobClient {
     public AppendBlobItem appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
             byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
             SourceModifiedAccessConditions sourceAccessConditions, Duration timeout) {
-        return this.appendBlockFromUrlWithResponse(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, timeout, Context.NONE).value();
+        return this.appendBlockFromUrlWithResponse(sourceURL, sourceRange, sourceContentMD5, destAccessConditions,
+            sourceAccessConditions, timeout, Context.NONE).value();
     }
 
     /**
