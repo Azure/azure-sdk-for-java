@@ -4,7 +4,7 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.rest.Response
-import com.azure.core.implementation.exception.UnexpectedLengthException;
+import com.azure.core.implementation.exception.UnexpectedLengthException
 import com.azure.storage.blob.models.AppendBlobAccessConditions
 import com.azure.storage.blob.models.AppendBlobItem
 import com.azure.storage.blob.models.AppendPositionAccessConditions
@@ -187,13 +187,13 @@ class AppendBlobAPITest extends APISpec {
         bc.appendBlock(data, dataSize)
 
         then:
-        def e = thrown(Exception)
+        def e = thrown(exceptionType)
         exceptionType.isInstance(e)
         where:
         data                     | dataSize            | exceptionType
         null                     | defaultDataSize     | NullPointerException
         defaultInputStream.get() | defaultDataSize + 1 | UnexpectedLengthException
-        defaultInputStream.get()    | defaultDataSize - 1 | UnexpectedLengthException
+        defaultInputStream.get() | defaultDataSize - 1 | UnexpectedLengthException
     }
 
     def "Append block empty body"() {
@@ -340,7 +340,7 @@ class AppendBlobAPITest extends APISpec {
 
         when:
         destURL.appendBlockFromUrl(bc.getBlobUrl(), null, MessageDigest.getInstance("MD5").digest(data),
-                null, null, null)
+            null, null, null)
 
         then:
         notThrown(StorageException)
@@ -359,7 +359,7 @@ class AppendBlobAPITest extends APISpec {
 
         when:
         destURL.appendBlockFromUrl(bc.getBlobUrl(), null, MessageDigest.getInstance("MD5").digest("garbage".getBytes()),
-                null, null, null)
+            null, null, null)
 
         then:
         thrown(StorageException)

@@ -446,7 +446,7 @@ public abstract class RestProxyTests {
         @Put("put")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MyRestException.class)
-        Mono<HttpBinJSON> putAsyncBodyAndContentLength (@BodyParam("application/octet-stream") Flux<ByteBuffer> body, @HeaderParam("Content-Length") long contentLength);
+        Mono<HttpBinJSON> putAsyncBodyAndContentLength(@BodyParam("application/octet-stream") Flux<ByteBuffer> body, @HeaderParam("Content-Length") long contentLength);
 
         @Put("put")
         @ExpectedResponses({201})

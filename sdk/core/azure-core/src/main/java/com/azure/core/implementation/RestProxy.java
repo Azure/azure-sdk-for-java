@@ -60,7 +60,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import reactor.core.publisher.SignalType;
 
 /**
  * Type to create a proxy implementation for an interface describing REST API methods.
@@ -120,9 +119,6 @@ public class RestProxy implements InvocationHandler {
      * @return a {@link Mono} that emits HttpResponse asynchronously
      */
     public Mono<HttpResponse> send(HttpRequest request, Context contextData) {
-        if(request.body() != null){
-            request.body().map(ByteBuffer::reset);
-        }
         return httpPipeline.send(request, contextData);
     }
 
@@ -149,7 +145,7 @@ public class RestProxy implements InvocationHandler {
                 context = startTracingSpan(method, context);
 
                 if (request.body() != null) {
-                    request.body(validateLength(request, request.body()));
+                    request.body(validateLength(request));
                 }
 
                 final Mono<HttpResponse> asyncResponse = send(request, context);
@@ -164,7 +160,8 @@ public class RestProxy implements InvocationHandler {
         }
     }
 
-    private Flux<ByteBuffer> validateLength(final HttpRequest request, final Flux<ByteBuffer> bbFlux) {
+    private Flux<ByteBuffer> validateLength(final HttpRequest request) {
+        final Flux<ByteBuffer> bbFlux = request.body();
         if (bbFlux == null) {
             return Flux.empty();
         }
@@ -172,68 +169,29 @@ public class RestProxy implements InvocationHandler {
             @Override
             public Publisher<ByteBuffer> get() {
                 Long expectedLength = Long.valueOf(request.headers().value("Content-Length"));
-                List<Integer> bufferLengthList = new ArrayList<>();
+                List<Long> bufferLengthList = new ArrayList<>();
                 return bbFlux.doOnEach(s -> {
                     if (s.isOnNext()) {
-                        Long currentTotalLength = Long.valueOf(
-                            bufferLengthList.stream().reduce(Integer::sum).orElse(0)) + s.get().remaining();
+                        Long currentLength = Long.valueOf(s.get().remaining());
+                        Long currentTotalLength = bufferLengthList.stream().reduce(Long::sum).orElse(0L)
+                            + currentLength;
                         if (currentTotalLength > expectedLength) {
                             throw new UnexpectedLengthException(
                             String.format("Request body emitted %d bytes more than the expected %d bytes.",
                                 currentTotalLength, expectedLength), currentTotalLength, expectedLength);
                         }
-                        bufferLengthList.add(s.get().remaining());
+                        bufferLengthList.add(currentLength);
                     } else if (s.isOnComplete()) {
-                        Long currentTotalLength = Long.valueOf(
-                            bufferLengthList.stream().reduce(Integer::sum).orElse(0));
+                        Long currentTotalLength = bufferLengthList.stream().reduce(Long::sum).orElse(0L);
                         if (expectedLength.compareTo(currentTotalLength) != 0) {
                             throw new UnexpectedLengthException(
-                            String.format("Request body emitted %d bytes less than the expected %d bytes.",
-                                currentTotalLength, expectedLength), currentTotalLength, expectedLength);
+                                String.format("Request body emitted %d bytes less than the expected %d bytes.",
+                                    currentTotalLength, expectedLength), currentTotalLength, expectedLength);
                         }
-                    } else {
-                        logger.logExceptionAsError(new RuntimeException("Error occurs when validating "
-                            + "the request body legnth and the header content length. Error details: "
-                            + s.getThrowable().getMessage()));
                     }
                 });
             }
         });
-    }
-
-//    private Flux<ByteBuffer> validateLength(final HttpRequest request, final Flux<ByteBuffer> bbFlux) {
-//        if (bbFlux == null) {
-//            return Flux.empty();
-//        }
-//        return Flux.defer(new Supplier<Publisher<ByteBuffer>>() {
-//            @Override
-//            public Publisher<ByteBuffer> get() {
-//                Long expectedLength = Long.valueOf(request.headers().value("Content-Length"));
-//                Mono<byte[]> bbMono = FluxUtil.collectBytesInByteBufferStream(bbFlux).doOnNext(actualLength -> {
-//                    if (actualLength.length > expectedLength) {
-//                        throw new UnexpectedLengthException(
-//                            String.format("Request body emitted more bytes than the expected %d bytes.",
-//                                expectedLength), actualLength.length, expectedLength);
-//                    } else if (actualLength.length < expectedLength) {
-//                        throw new UnexpectedLengthException(
-//                            String.format("Request body emitted less bytes than the expected %d bytes.",
-//                                expectedLength), actualLength.length, expectedLength);
-//                    }
-//                });
-//
-//                return bbMono.flatMapMany(new Function<byte[], Publisher<ByteBuffer>>() {
-//                    @Override
-//                    public Publisher<ByteBuffer> apply(final byte[] bytes) {
-//                        return Flux.just(ByteBuffer.wrap(bytes));
-//                    }
-//                });
-//            }
-//        });
-//    }
-
-    private int len(ByteBuffer input) {
-        int result = input.remaining();
-        return result;
     }
 
     private Method determineResumeMethod(Method method, String resumeMethodName) {
@@ -372,8 +330,8 @@ public class RestProxy implements InvocationHandler {
                 if (!bodyContentString.isEmpty()) {
                     request.body(bodyContentString);
                 }
-            } else if(bodyContentObject instanceof ByteBuffer) {
-                request.body(Flux.just(((ByteBuffer) bodyContentObject)));
+            } else if (bodyContentObject instanceof ByteBuffer) {
+                request.body(Flux.just((ByteBuffer) bodyContentObject));
             } else {
                 final String bodyContentString = serializer.serialize(bodyContentObject, SerializerEncoding.fromHeaders(request.headers()));
                 request.body(bodyContentString);

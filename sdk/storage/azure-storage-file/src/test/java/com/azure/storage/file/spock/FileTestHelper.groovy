@@ -205,8 +205,7 @@ class FileTestHelper {
     static String createRandomFileWithLength(int size, String folder, String fileName) {
         def path = Paths.get(folder)
         if (path == null) {
-            logger.logExceptionAsError("The folder path does not exist.")
-            return null
+            throw logger.logExceptionAsError(new RuntimeException("The folder path does not exist."))
         }
 
         if (!Files.exists(path)) {

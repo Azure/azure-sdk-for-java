@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-
 package com.azure.storage.blob
 
 import com.azure.core.http.HttpHeaders
@@ -60,7 +59,7 @@ class BlockBlobAPITest extends APISpec {
         bc.stageBlock(blockID, data == null ? null : data.get(), dataSize)
 
         then:
-        def e = thrown(Exception)
+        def e = thrown(exceptionType)
         exceptionType.isInstance(e)
 
         where:
@@ -598,7 +597,7 @@ class BlockBlobAPITest extends APISpec {
         bc.upload(data, dataSize)
 
         then:
-        def e = thrown(Exception)
+        def e = thrown(exceptionType)
         exceptionType.isInstance(e)
 
         where:
