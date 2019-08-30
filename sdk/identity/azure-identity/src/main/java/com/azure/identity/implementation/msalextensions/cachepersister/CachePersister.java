@@ -33,9 +33,13 @@ public final class CachePersister {
      *
      * @throws PlatformNotSupportedException if the current OS is not supported
      * */
-    private void createCacheProtector(String cacheLocation, String lockfileLocation, String serviceName, String accountName) throws IOException, PlatformNotSupportedException {
+    private void createCacheProtector(String cacheLocation, String lockfileLocation, String serviceName, String accountName) throws RuntimeException {
         if (Platform.isWindows()) {
-            cacheProtector = new WindowsDPAPICacheProtector(cacheLocation, lockfileLocation);
+            try {
+                cacheProtector = new WindowsDPAPICacheProtector(cacheLocation, lockfileLocation);
+            } catch (IOException e) {
+                throw new RuntimeException("IO Exception in creating the WindowsDPAPICacheProtector");
+            }
         } else {
             throw new PlatformNotSupportedException("Platform is not supported");
         }
@@ -129,7 +133,7 @@ public final class CachePersister {
          *
          * @return newly instantiated CachePersister
          * */
-        public CachePersister build() throws PlatformNotSupportedException, IOException {
+        public CachePersister build() throws RuntimeException {
             CachePersister cachePersister = new CachePersister();
             cachePersister.createCacheProtector(cacheLocation, lockfileLocation, serviceName, accountName);
 

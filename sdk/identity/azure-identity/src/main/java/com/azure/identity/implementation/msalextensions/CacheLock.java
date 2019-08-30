@@ -111,7 +111,7 @@ public class CacheLock {
                 }
             }
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             printToFileIfDebug("general exception, not sure what happened here...no retries\n");
         }
 

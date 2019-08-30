@@ -10,7 +10,6 @@ import com.azure.core.util.configuration.BaseConfigurations;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.identity.implementation.IdentityClientOptions;
-import com.azure.identity.implementation.MsalToken;
 import com.azure.identity.implementation.msalextensions.PersistentTokenCacheAccessAspect;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
@@ -25,7 +24,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A credential provider that provides token credentials from the MSAL shared token cache.
@@ -40,7 +38,6 @@ public class SharedTokenCacheCredential implements TokenCredential {
     private final Configuration configuration;
 
     private final PublicClientApplication pubClient;
-    private final AtomicReference<MsalToken> cachedToken;
 
     /**
      * Creates an instance of the Shared Token Cache Credential Provider.
@@ -65,17 +62,11 @@ public class SharedTokenCacheCredential implements TokenCredential {
         this.clientID = clientID;
         this.identityClientOptions = identityClientOptions;
 
-        cachedToken = new AtomicReference<>();
-
         PersistentTokenCacheAccessAspect accessAspect;
 
-        try {
-            accessAspect = new PersistentTokenCacheAccessAspect();
-        } catch (Exception ex) {
-            pubClient = null;
-            return;
-        }
-        pubClient = PublicClientApplication.builder(clientID).setTokenCacheAccessAspect(accessAspect).build();
+        accessAspect = new PersistentTokenCacheAccessAspect();
+
+        pubClient = PublicClientApplication.builder(this.clientID).setTokenCacheAccessAspect(accessAspect).build();
     }
 
     /**

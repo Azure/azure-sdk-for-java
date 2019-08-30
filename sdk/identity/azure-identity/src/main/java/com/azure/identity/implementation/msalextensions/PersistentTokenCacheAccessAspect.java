@@ -27,7 +27,7 @@ public class PersistentTokenCacheAccessAspect implements ITokenCacheAccessAspect
      * @throws IOException from errors in creating the CachePersister
      * @throws PlatformNotSupportedException  from errors in creating the CachePersister
      * */
-    public PersistentTokenCacheAccessAspect() throws IOException, PlatformNotSupportedException {
+    public PersistentTokenCacheAccessAspect() throws RuntimeException, PlatformNotSupportedException {
         logger = new ClientLogger(PersistentTokenCacheAccessAspect.class);
 
         cachePersister = new CachePersister.Builder().build();
@@ -50,7 +50,12 @@ public class PersistentTokenCacheAccessAspect implements ITokenCacheAccessAspect
     public void beforeCacheAccess(ITokenCacheAccessContext iTokenCacheAccessContext) {
 
         byte[] bytes = cachePersister.readCache();
-        String data = new String(bytes);
+        String data;
+        try {
+            data = new String(bytes, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            data = "";
+        }
 
         iTokenCacheAccessContext.tokenCache().deserialize(data);
     }
