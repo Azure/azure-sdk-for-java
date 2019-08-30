@@ -42,7 +42,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
         return Mono.create(sink -> sink.onRequest(value -> {
             // Using MonoSink::onRequest for back pressure support.
 
-            // The blocking behaviour toOkHttpRequest(r).subscribe call:
+            // The blocking behavior toOkHttpRequest(r).subscribe call:
             //
             // The okhttp3.Request emitted by toOkHttpRequest(r) is chained from the body of request Flux<ByteBuffer>:
             //   1. If Flux<ByteBuffer> synchronous and send(r) caller does not apply subscribeOn then
@@ -82,7 +82,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
                     if (request.headers() != null) {
                         return rb.headers(okhttp3.Headers.of(request.headers().toMap()));
                     } else {
-                        return rb.headers(okhttp3.Headers.of((new HashMap<>())));
+                        return rb.headers(okhttp3.Headers.of(new HashMap<>()));
                     }
                 })
                 .flatMap((Function<Request.Builder, Mono<Request.Builder>>) rb -> {

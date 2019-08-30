@@ -65,6 +65,8 @@ public class OkHttpAsyncHttpClientBuilder {
     /**
      * Add network layer interceptors to Http request pipeline.
      *
+     * This replaces all previously-set interceptors.
+     *
      * @param networkInterceptors the interceptors to add
      * @return the builder
      */
