@@ -64,6 +64,11 @@
       <version>1.0.0-preview.4</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <scope>test</scope>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/org.spockframework/spock-core -->
     <dependency>
       <groupId>org.spockframework</groupId>
