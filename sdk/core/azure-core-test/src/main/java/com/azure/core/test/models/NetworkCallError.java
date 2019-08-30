@@ -16,8 +16,8 @@ public class NetworkCallError {
     @JsonProperty("ClassName")
     private String className;
 
-    @JsonProperty("ErrorMsg")
-    private String errorMsg;
+    @JsonProperty("ErrorMessage")
+    private String errorMessage;
 
     private Throwable throwable;
 
@@ -35,7 +35,7 @@ public class NetworkCallError {
     public NetworkCallError(Throwable throwable) {
         this.throwable = throwable;
         this.className = throwable.getClass().getName();
-        this.errorMsg = throwable.getMessage();
+        this.errorMessage = throwable.getMessage();
     }
 
     /**
@@ -44,16 +44,16 @@ public class NetworkCallError {
     public Throwable get() {
         switch (className) {
             case "java.lang.NullPointerException":
-                return new NullPointerException(this.errorMsg);
+                return new NullPointerException(this.errorMessage);
 
             case "java.lang.IndexOutOfBoundsException":
-                return new IndexOutOfBoundsException(this.errorMsg);
+                return new IndexOutOfBoundsException(this.errorMessage);
 
             case "java.net.UnknownHostException":
-                return new UnknownHostException(this.errorMsg);
+                return new UnknownHostException(this.errorMessage);
 
             case "com.azure.core.implementation.UnexpectedLengthException":
-                return new UnexpectedLengthException(this.errorMsg, 0L, 0L);
+                return new UnexpectedLengthException(this.errorMessage, 0L, 0L);
 
             default:
                 return throwable;
@@ -86,6 +86,6 @@ public class NetworkCallError {
      * @param errorMessage Error msg from the exception.
      */
     public void errorMessage(String errorMessage) {
-        this.errorMsg = errorMessage;
+        this.errorMessage = errorMessage;
     }
 }
