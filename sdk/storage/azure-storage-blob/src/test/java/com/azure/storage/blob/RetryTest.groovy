@@ -4,6 +4,7 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.HttpResponse
+import com.azure.core.implementation.UnexpectedLengthException
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
 import spock.lang.Unroll

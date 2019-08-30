@@ -12,17 +12,6 @@ public final class UnexpectedLengthException extends IllegalStateException {
 
     /**
      * Constructor of the UnexpectedLengthException.
-     *
-     * @param message The message for the exception.
-     */
-    public UnexpectedLengthException(String message) {
-        super(message);
-        this.bytesRead = 0L;
-        this.bytesExpected = 0L;
-    }
-
-    /**
-     * Constructor of the UnexpectedLengthException.
      * @param message The message for the exception.
      * @param bytesRead The number of bytes read from resource.
      * @param bytesExpected The number of bytes expected from the receiver.
