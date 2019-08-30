@@ -114,7 +114,7 @@ public class FileClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Copy file from source getDirectoryUrl to the {@code filePath} </p>
+     * <p>Copy file from source getDirectoryUrl to the {@code resourcePath} </p>
      *
      * {@codesnippet com.azure.storage.file.fileClient.startCopy#string-map}
      *
@@ -135,7 +135,7 @@ public class FileClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Copy file from source getDirectoryUrl to the {@code filePath} </p>
+     * <p>Copy file from source getDirectoryUrl to the {@code resourcePath} </p>
      *
      * {@codesnippet com.azure.storage.file.fileClient.startCopyWithResponse#string-map-Context}
      *

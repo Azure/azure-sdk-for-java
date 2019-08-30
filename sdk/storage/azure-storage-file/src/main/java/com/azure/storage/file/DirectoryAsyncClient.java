@@ -15,7 +15,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
@@ -53,9 +52,9 @@ import static com.azure.storage.file.PostProcessor.postProcessResponse;
  *
  * {@codesnippet com.azure.storage.file.directoryAsyncClient.instantiation}
  *
- * <p>View {@link DirectoryClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link FileClientBuilder this} for additional ways to construct the client.</p>
  *
- * @see DirectoryClientBuilder
+ * @see FileClientBuilder
  * @see DirectoryClient
  * @see SharedKeyCredential
  * @see SASTokenCredential
@@ -83,26 +82,6 @@ public class DirectoryAsyncClient {
         this.directoryPath = directoryPath;
         this.snapshot = snapshot;
         this.azureFileStorageClient = azureFileStorageClient;
-    }
-
-    /**
-     * Creates a DirectoryAsyncClient that sends requests to this directory at {@code endpoint}.
-     * Each service call goes through the {@code httpPipeline}.
-     * @param endpoint URL for the Storage File service
-     * @param httpPipeline HttpPipeline that HTTP requests and response flow through
-     * @param shareName Name of the share
-     * @param directoryPath Name of the directory
-     * @param snapshot Optional snapshot of the share
-     */
-    DirectoryAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String directoryPath, String snapshot) {
-        Objects.requireNonNull(shareName);
-        Objects.requireNonNull(directoryPath);
-        this.shareName = shareName;
-        this.directoryPath = directoryPath;
-        this.snapshot = snapshot;
-        this.azureFileStorageClient = new AzureFileStorageBuilder().pipeline(httpPipeline)
-                                          .url(endpoint.toString())
-                                          .build();
     }
 
     /**

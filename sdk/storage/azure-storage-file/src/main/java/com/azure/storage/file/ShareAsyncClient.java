@@ -20,7 +20,6 @@ import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.ShareCreateSnapshotHeaders;
@@ -78,31 +77,12 @@ public class ShareAsyncClient {
      * @param client Client that interacts with the service interfaces
      * @param shareName Name of the share
      */
-    ShareAsyncClient(AzureFileStorageImpl client, String shareName) {
-        Objects.requireNonNull(shareName);
-        this.shareName = shareName;
-        this.snapshot = null;
-
-        this.azureFileStorageClient = client;
-    }
-
-    /**
-     * Creates a ShareAsyncClient that sends requests to the storage share at {@code endpoint}.
-     * Each service call goes through the {@code httpPipeline}.
-     *
-     * @param endpoint URL for the Storage File service
-     * @param httpPipeline HttpPipeline that the HTTP requests and response flow through
-     * @param shareName Name of the share
-     * @param snapshot Optional specific snapshot of the share
-     */
-    ShareAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String snapshot) {
+    ShareAsyncClient(AzureFileStorageImpl client, String shareName, String snapshot) {
         Objects.requireNonNull(shareName);
         this.shareName = shareName;
         this.snapshot = snapshot;
 
-        this.azureFileStorageClient = new AzureFileStorageBuilder().pipeline(httpPipeline)
-            .url(endpoint.toString())
-            .build();
+        this.azureFileStorageClient = client;
     }
 
     /**
