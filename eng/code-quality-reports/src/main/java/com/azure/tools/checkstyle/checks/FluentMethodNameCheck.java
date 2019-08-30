@@ -10,8 +10,8 @@ import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
 import java.util.ArrayDeque;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.HashSet;
+import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -29,9 +29,9 @@ public class FluentMethodNameCheck extends AbstractCheck {
     private final Set<String> avoidStartWords = new HashSet<>();
 
     /**
-     * Use this stack to track the status of the inner class names when traversals the AST tree.
+     * A LIFO Queue tracks the status of the inner class names when traversals the AST tree.
      */
-    private final Deque<String> classNameStack = new ArrayDeque<>();
+    private final Queue<String> classNameStack = Collections.asLifoQueue(new ArrayDeque<>());
 
     /**
      * Adds words that methods in fluent classes should not be prefixed with.
@@ -63,7 +63,7 @@ public class FluentMethodNameCheck extends AbstractCheck {
     public void visitToken(DetailAST token) {
         switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
-                classNameStack.addLast(token.findFirstToken(TokenTypes.IDENT).getText());
+                classNameStack.offer(token.findFirstToken(TokenTypes.IDENT).getText());
                 break;
             case TokenTypes.METHOD_DEF:
                 if (!isFluentMethod(token)) {
@@ -86,7 +86,7 @@ public class FluentMethodNameCheck extends AbstractCheck {
     @Override
     public void leaveToken(DetailAST token) {
         if (token.getType() == TokenTypes.CLASS_DEF && !classNameStack.isEmpty()) {
-            classNameStack.removeLast();
+            classNameStack.poll();
         }
     }
 
@@ -104,7 +104,7 @@ public class FluentMethodNameCheck extends AbstractCheck {
         // A fluent method's return type should be the class itself
         final DetailAST typeToken = methodDefToken.findFirstToken(TokenTypes.TYPE);
         if (TokenUtil.findFirstTokenByPredicate(typeToken, ident -> ident.getType() == TokenTypes.IDENT
-            && !ident.getText().equals(classNameStack.peekLast())).isPresent()) {
+            && !ident.getText().equals(classNameStack.peek())).isPresent()) {
             log(methodDefToken, "Return type of fluent method should be the class itself");
         }
 
@@ -129,10 +129,10 @@ public class FluentMethodNameCheck extends AbstractCheck {
         final DetailAST modifiersToken = methodDefToken.findFirstToken(TokenTypes.MODIFIERS);
         // If no @Fluent annotated with this class, return false
         return TokenUtil.findFirstTokenByPredicate(modifiersToken,
-                    annotationToken -> annotationToken.getType() == TokenTypes.ANNOTATION
-                        && TokenUtil.findFirstTokenByPredicate(annotationToken,
-                            identToken -> identToken.getType() == TokenTypes.IDENT &&
-                                "Fluent".equals(identToken.getText())).isPresent())
+            annotationToken -> annotationToken.getType() == TokenTypes.ANNOTATION
+                && TokenUtil.findFirstTokenByPredicate(annotationToken,
+                    identToken -> identToken.getType() == TokenTypes.IDENT
+                        && "Fluent".equals(identToken.getText())).isPresent())
             .isPresent();
     }
 }

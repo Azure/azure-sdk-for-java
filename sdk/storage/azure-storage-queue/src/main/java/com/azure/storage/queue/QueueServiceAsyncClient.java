@@ -9,6 +9,13 @@ import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.AccountSASPermission;
+import com.azure.storage.common.AccountSASResourceType;
+import com.azure.storage.common.AccountSASService;
+import com.azure.storage.common.AccountSASSignatureValues;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
@@ -19,20 +26,22 @@ import com.azure.storage.queue.models.ListQueuesSegmentResponse;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.ServicesListQueuesSegmentResponse;
-import com.azure.storage.queue.models.StorageErrorException;
+import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
-import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.queue.PostProcessor.postProcessResponse;
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue account in Azure Storage.
@@ -104,7 +113,7 @@ public final class QueueServiceAsyncClient {
      *
      * @param queueName Name of the queue
      * @return The {@link QueueAsyncClient QueueAsyncClient}
-     * @throws StorageErrorException If a queue with the same name and different metadata already exists
+     * @throws StorageException If a queue with the same name and different metadata already exists
      */
     public Mono<QueueAsyncClient> createQueue(String queueName) {
         return createQueueWithResponse(queueName, null).flatMap(FluxUtil::toMono);
@@ -123,7 +132,7 @@ public final class QueueServiceAsyncClient {
      * @param queueName Name of the queue
      * @param metadata Metadata to associate with the queue
      * @return A response containing the {@link QueueAsyncClient QueueAsyncClient} and the status of creating the queue
-     * @throws StorageErrorException If a queue with the same name and different metadata already exists
+     * @throws StorageException If a queue with the same name and different metadata already exists
      */
     public Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata) {
         Objects.requireNonNull(queueName);
@@ -133,7 +142,7 @@ public final class QueueServiceAsyncClient {
     Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata, Context context) {
         QueueAsyncClient queueAsyncClient = new QueueAsyncClient(client, queueName);
 
-        return queueAsyncClient.createWithResponse(metadata, context)
+        return postProcessResponse(queueAsyncClient.createWithResponse(metadata, context))
             .map(response -> new SimpleResponse<>(response, queueAsyncClient));
     }
 
@@ -148,7 +157,7 @@ public final class QueueServiceAsyncClient {
      *
      * @param queueName Name of the queue
      * @return An empty response
-     * @throws StorageErrorException If the queue doesn't exist
+     * @throws StorageException If the queue doesn't exist
      */
     public Mono<Void> deleteQueue(String queueName) {
         return deleteQueueWithResponse(queueName).flatMap(FluxUtil::toMono);
@@ -165,7 +174,7 @@ public final class QueueServiceAsyncClient {
      *
      * @param queueName Name of the queue
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If the queue doesn't exist
+     * @throws StorageException If the queue doesn't exist
      */
     public Mono<VoidResponse> deleteQueueWithResponse(String queueName) {
         return withContext(context -> deleteQueueWithResponse(queueName, context));
@@ -302,11 +311,11 @@ public final class QueueServiceAsyncClient {
      * @return A response containing the Storage account {@link StorageServiceProperties Queue service properties}
      */
     public Mono<Response<StorageServiceProperties>> getPropertiesWithResponse() {
-        return withContext(context -> getPropertiesWithResponse(context));
+        return withContext(this::getPropertiesWithResponse);
     }
 
     Mono<Response<StorageServiceProperties>> getPropertiesWithResponse(Context context) {
-        return client.services().getPropertiesWithRestResponseAsync(context)
+        return postProcessResponse(client.services().getPropertiesWithRestResponseAsync(context))
             .map(response -> new SimpleResponse<>(response, response.value()));
     }
 
@@ -332,7 +341,7 @@ public final class QueueServiceAsyncClient {
      *
      * @param properties Storage account Queue service properties
      * @return An empty response
-     * @throws StorageErrorException When one of the following is true
+     * @throws StorageException When one of the following is true
      * <ul>
      *     <li>A CORS rule is missing one of its fields</li>
      *     <li>More than five CORS rules will exist for the Queue service</li>
@@ -370,7 +379,7 @@ public final class QueueServiceAsyncClient {
      *
      * @param properties Storage account Queue service properties
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException When one of the following is true
+     * @throws StorageException When one of the following is true
      * <ul>
      *     <li>A CORS rule is missing one of its fields</li>
      *     <li>More than five CORS rules will exist for the Queue service</li>
@@ -387,7 +396,7 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<VoidResponse> setPropertiesWithResponse(StorageServiceProperties properties, Context context) {
-        return client.services().setPropertiesWithRestResponseAsync(properties, context)
+        return postProcessResponse(client.services().setPropertiesWithRestResponseAsync(properties, context))
             .map(VoidResponse::new);
     }
 
@@ -424,11 +433,50 @@ public final class QueueServiceAsyncClient {
      * @return A response containing the geo replication information about the Queue service
      */
     public Mono<Response<StorageServiceStats>> getStatisticsWithResponse() {
-        return withContext(context -> getStatisticsWithResponse(context));
+        return withContext(this::getStatisticsWithResponse);
     }
 
     Mono<Response<StorageServiceStats>> getStatisticsWithResponse(Context context) {
-        return client.services().getStatisticsWithRestResponseAsync(context)
+        return postProcessResponse(client.services().getStatisticsWithRestResponseAsync(context))
             .map(response -> new SimpleResponse<>(response, response.value()));
+    }
+
+    /**
+     * Generates an account SAS token with the specified parameters
+     *
+     * @param accountSASService The {@code AccountSASService} services for the account SAS
+     * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
+     * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
+        return this.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime,
+            null /* startTime */, null /* version */, null /* ipRange */, null /* sasProtocol */);
+    }
+
+    /**
+     * Generates an account SAS token with the specified parameters
+     *
+     * @param accountSASService The {@code AccountSASService} services for the account SAS
+     * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
+     * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
+     * @param startTime The {@code OffsetDateTime} start time for the account SAS
+     * @param version The {@code String} version for the account SAS
+     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version, IPRange ipRange,
+        SASProtocol sasProtocol) {
+
+        SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.client.getHttpPipeline());
+        Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
+
+        return AccountSASSignatureValues.generateAccountSAS(sharedKeyCredential, accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
+
     }
 }

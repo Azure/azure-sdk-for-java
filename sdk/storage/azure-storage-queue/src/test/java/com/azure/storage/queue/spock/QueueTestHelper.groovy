@@ -13,7 +13,7 @@ import com.azure.storage.queue.models.QueueItem
 import com.azure.storage.queue.models.RetentionPolicy
 import com.azure.storage.queue.models.SignedIdentifier
 import com.azure.storage.queue.models.StorageErrorCode
-import com.azure.storage.queue.models.StorageErrorException
+import com.azure.storage.queue.models.StorageException
 import com.azure.storage.queue.models.StorageServiceProperties
 
 import java.time.Duration
@@ -23,28 +23,10 @@ class QueueTestHelper {
         return expectedStatusCode == response.statusCode()
     }
 
-    static boolean assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode, String errMessage) {
-        return assertExceptionStatusCode(throwable, expectedStatusCode) && assertExceptionErrorMessage(throwable, errMessage)
-    }
-
     static boolean assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode, StorageErrorCode errMessage) {
-        return assertExceptionStatusCode(throwable, expectedStatusCode) && assertExceptionErrorMessage(throwable, errMessage)
-    }
-
-    static boolean assertExceptionStatusCode(Throwable throwable, int expectedStatusCode) {
-        if (!throwable instanceof StorageErrorException) {
-            return false
-        }
-        StorageErrorException storageErrorException = (StorageErrorException) throwable
-        return expectedStatusCode == storageErrorException.response().statusCode()
-    }
-
-    static boolean assertExceptionErrorMessage(Throwable throwable, String errMessage) {
-        return throwable instanceof StorageErrorException && throwable.getMessage().contains(errMessage)
-    }
-
-    static boolean assertExceptionErrorMessage(Throwable throwable, StorageErrorCode errMessage) {
-        return throwable instanceof StorageErrorException && throwable.getMessage().contains(errMessage.toString())
+        return throwable instanceof StorageException &&
+            ((StorageException) throwable).statusCode() == expectedStatusCode &&
+            ((StorageException) throwable).errorCode() == errMessage
     }
 
     static boolean assertQueuesAreEqual(QueueItem expected, QueueItem actual) {
