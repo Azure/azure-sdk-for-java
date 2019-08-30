@@ -110,7 +110,7 @@
     <groovy-eclipse-compiler.version>3.4.0-01</groovy-eclipse-compiler.version>
     <groovy-eclipse-batch.version>2.5.8-01</groovy-eclipse-batch.version>
     <client-runtime.version.v2>2.1.1</client-runtime.version.v2>
-    <slf4j-api.version>1.7.6</slf4j-api.version>
+    <slf4j-api.version>1.7.26</slf4j-api.version>
     <slf4j-log4j12.version>1.7.0</slf4j-log4j12.version>
     <reactor-core.version>3.2.10.RELEASE</reactor-core.version>
     <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
@@ -144,7 +144,7 @@
     <azure-mgmt-graph-rbac.version>1.3.0</azure-mgmt-graph-rbac.version>
     <azure-mgmt-storage.version>1.3.0</azure-mgmt-storage.version>
     <azure-storage.version>8.0.0</azure-storage.version>
-    <spock-core.version>1.1-groovy-2.4</spock-core.version>
+    <spock-core.version>1.3-groovy-2.5</spock-core.version>
     <cglib-nodep.version>3.2.7</cglib-nodep.version>
     <slf4j-test.version>1.2.0</slf4j-test.version>
     <reactor-test.version>3.2.3.RELEASE</reactor-test.version>
@@ -162,7 +162,7 @@
     <sdk-build-tools.version>1.0.0</sdk-build-tools.version>
     <maven-javadoc.version>3.0.1</maven-javadoc.version>
     <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
-    <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     <jetty-maven-plugin.version>9.3.22.v20171030</jetty-maven-plugin.version>
     <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
     <maven-resources-plugin.version>2.4.3</maven-resources-plugin.version>
@@ -184,6 +184,7 @@
     <maven-exec-plugin.version>1.2.1</maven-exec-plugin.version>
     <maven-eclipse-plugin.version>2.8</maven-eclipse-plugin.version>
     <maven-assembly-plugin.version>2.2</maven-assembly-plugin.version>
+    <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -439,6 +440,12 @@
         <version>${oauth2-oidc-sdk.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire-plugin.version}</version>
+      </dependency>
+
       <!-- Test dependencies -->
       <dependency>
         <groupId>com.microsoft.azure</groupId>
@@ -665,6 +672,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven-surefire-plugin.version}</version>
           <configuration>
             <!-- Sets the VM argument line used when unit tests are run. -->
             <argLine>${surefireArgLine}</argLine>
