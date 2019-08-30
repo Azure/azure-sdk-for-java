@@ -527,7 +527,7 @@ public class ShareClient {
      * </ul>
      */
     public FileClient createFile(String fileName, long maxSize) {
-        return createFileWithResponse(fileName, maxSize, null, null, Context.NONE).value();
+        return createFileWithResponse(fileName, maxSize, null, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -537,7 +537,7 @@ public class ShareClient {
      *
      * <p>Create the file "myfile" with length of 1024 bytes, some headers and metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.createFileWithResponse#string-long-filehttpheaders-map-Context}
+     * {@codesnippet com.azure.storage.file.shareClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -545,6 +545,8 @@ public class ShareClient {
      * @param fileName Name of the file.
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @param httpHeaders Additional parameters for the operation.
+     * @param smbProperties The SMB properties of the file.
+     * @param filePermission The file permission of the file.
      * @param metadata Optional metadata to associate with the file.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing a {@link FileClient} to interact with the created file and the
@@ -559,10 +561,10 @@ public class ShareClient {
      *     </li>
      * </ul>
      */
-    public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata, Context context) {
+    public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         FileClient fileClient = getFileClient(fileName);
-        // TODO: Add file properties
-        return new SimpleResponse<>(fileClient.createWithResponse(maxSize, httpHeaders, null, null, metadata, context), fileClient);
+        return new SimpleResponse<>(fileClient.createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context), fileClient);
     }
 
     /**

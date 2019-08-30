@@ -149,16 +149,18 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#createFileWithResponse(String, long, FileHTTPHeaders, Map, Context)}
+     * Generates a code sample for using {@link DirectoryClient#createFileWithResponse(String, long, FileHTTPHeaders, FileSmbProperties, String, Map, Context)}
      */
     public void createFileMaxOverload() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-map-Context
+        // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-fileSMBProperties-string-map-Context
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
-        Response<FileClient> response = directoryClient.createFileWithResponse("myFile", 1024,
-            httpHeaders, Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        Response<FileClient> response = directoryClient.createFileWithResponse("myFile", 1024, httpHeaders,
+            smbProperties, filePermission, Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
         System.out.println("Completed creating the file with status code: " + response.statusCode());
-        // END: com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-map-Context
+        // END: com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-fileSMBProperties-string-map-Context
     }
 
     /**

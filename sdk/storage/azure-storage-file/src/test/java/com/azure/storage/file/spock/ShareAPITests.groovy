@@ -6,9 +6,11 @@ package com.azure.storage.file.spock
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.DirectoryClient
 import com.azure.storage.file.FileClient
+import com.azure.storage.file.FileSmbProperties
 import com.azure.storage.file.ShareClient
 import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.FileHTTPHeaders
+import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageErrorException
 import spock.lang.Unroll
@@ -21,12 +23,16 @@ class ShareAPITests extends APISpec {
     ShareClient primaryShareClient
     def shareName
     static def testMetadata
+    static def smbProperties
+    static def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
         shareName = testResourceName.randomName(methodName, 60)
         primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
         primaryShareClient = primaryFileServiceClient.getShareClient(shareName)
         testMetadata = Collections.singletonMap("testmetadata", "value")
+        smbProperties = new FileSmbProperties()
+            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL))
     }
 
     def "Get share URL"() {
@@ -76,7 +82,7 @@ class ShareAPITests extends APISpec {
         primaryShareClient.createWithResponse(metadata, quota, null)
         then:
         def e = thrown(StorageErrorException)
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMessage)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMessage as String)
         where:
         metadata                                 | quota | statusCode | errMessage
         Collections.singletonMap("", "value")    | 1     | 400        | StorageErrorCode.EMPTY_METADATA_KEY
@@ -208,7 +214,26 @@ class ShareAPITests extends APISpec {
         primaryShareClient.create()
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryShareClient.createDirectoryWithResponse("testCreateDirectory", null, null), 201)
+            primaryShareClient.createDirectoryWithResponse("testCreateDirectory", null, null, null, null), 201)
+    }
+
+    def "Create directory file permission"() {
+        given:
+        primaryShareClient.create()
+        expect:
+        FileTestHelper.assertResponseStatusCode(
+            primaryShareClient.createDirectoryWithResponse("testCreateDirectory", null, filePermission, null, null), 201)
+    }
+
+    def "Create directory file permission key"() {
+        given:
+        primaryShareClient.create()
+        smbProperties.fileCreationTime(getUTCNow())
+            .fileLastWriteTime(getUTCNow())
+        // TODO: add file permission key
+        expect:
+        FileTestHelper.assertResponseStatusCode(
+            primaryShareClient.createDirectoryWithResponse("testCreateDirectory", smbProperties, null, null, null), 201)
     }
 
     def "Create directory invalid name"() {
@@ -226,14 +251,14 @@ class ShareAPITests extends APISpec {
         primaryShareClient.create()
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryShareClient.createDirectoryWithResponse("testCreateDirectory", testMetadata, null), 201)
+            primaryShareClient.createDirectoryWithResponse("testCreateDirectory", null, null, testMetadata, null), 201)
     }
 
     def "Create directory metadata error"() {
         given:
         primaryShareClient.create()
         when:
-        primaryShareClient.createDirectoryWithResponse("testdirectory", Collections.singletonMap("", "value"), null)
+        primaryShareClient.createDirectoryWithResponse("testdirectory", null, null, Collections.singletonMap("", "value"), null)
         then:
         def e = thrown(StorageErrorException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.EMPTY_METADATA_KEY)
@@ -244,7 +269,26 @@ class ShareAPITests extends APISpec {
         primaryShareClient.create()
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, null, null), 201)
+            primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, null, null, null, null), 201)
+    }
+
+    def "Create file file permission"() {
+        given:
+        primaryShareClient.create()
+        expect:
+        FileTestHelper.assertResponseStatusCode(
+            primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, null, filePermission, null, null), 201)
+    }
+
+    def "Create file file permission key"() {
+        given:
+        primaryShareClient.create()
+        smbProperties.fileCreationTime(getUTCNow())
+            .fileLastWriteTime(getUTCNow())
+        // TODO: add file permission key
+        expect:
+        FileTestHelper.assertResponseStatusCode(
+            primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, smbProperties, null, null, null), 201)
     }
 
     @Unroll
@@ -252,10 +296,10 @@ class ShareAPITests extends APISpec {
         given:
         primaryShareClient.create()
         when:
-        primaryShareClient.createFileWithResponse(fileName, maxSize, null, null, null)
+        primaryShareClient.createFileWithResponse(fileName, maxSize, null, null, null, null, null)
         then:
         def e = thrown(StorageErrorException)
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg as String)
         where:
         fileName    | maxSize | statusCode | errMsg
         "test\file" | 1024    | 400        | "Bad Request"
@@ -268,9 +312,11 @@ class ShareAPITests extends APISpec {
         primaryShareClient.create()
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
             .fileContentType("txt")
+        smbProperties.fileCreationTime(getUTCNow())
+            .fileLastWriteTime(getUTCNow())
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryShareClient.createFileWithResponse("testCreateFile", 1024, httpHeaders, testMetadata, null), 201)
+            primaryShareClient.createFileWithResponse("testCreateFile", 1024, httpHeaders, smbProperties, filePermission, testMetadata, null), 201)
     }
 
     @Unroll

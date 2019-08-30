@@ -4,6 +4,7 @@
 package com.azure.storage.file.spock
 
 import com.azure.core.exception.HttpResponseException
+import com.azure.core.http.rest.Response
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.FileAsyncClient
@@ -35,7 +36,6 @@ class FileAsyncAPITests extends APISpec {
     static def smbProperties
     static def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
-
     def setup() {
         shareName = testResourceName.randomName(methodName, 60)
         filePath = testResourceName.randomName(methodName, 60)
@@ -51,12 +51,12 @@ class FileAsyncAPITests extends APISpec {
 
     def "Get file URL"() {
         given:
-        def accoutName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
-        def expectURL = String.format("https://%s.file.core.windows.net", accoutName)
+        def accountName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
+        def expectURL = String.format("https://%s.file.core.windows.net", accountName)
         when:
         def fileURL = primaryFileAsyncClient.getFileUrl().toString()
         then:
-        expectURL.equals(fileURL)
+        expectURL == fileURL
     }
 
     def "Create file"() {
@@ -116,7 +116,7 @@ class FileAsyncAPITests extends APISpec {
     def "Create file permission and key error"() {
         when:
         FileSmbProperties properties = new FileSmbProperties().filePermissionKey(filePermissionKey)
-        primaryFileAsyncClient.createWithResponse(1024, null, properties, permission, null, null)
+        primaryFileAsyncClient.createWithResponse(1024, null, properties, permission, null)
         then:
         thrown(IllegalArgumentException)
         where:

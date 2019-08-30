@@ -150,19 +150,21 @@ public class DirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#createFileWithResponse(String, long, FileHTTPHeaders, Map)}
+     * Generates a code sample for using {@link DirectoryAsyncClient#createFileWithResponse(String, long, FileHTTPHeaders, FileSmbProperties, String, Map)}
      */
     public void createFileWithResponse() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-fileHTTPHeaders-map
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-fileHTTPHeaders-fileSMBProperties-string-map
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
-        directoryAsyncClient.createFileWithResponse("myFile", 1024, httpHeaders,
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        directoryAsyncClient.createFileWithResponse("myFile", 1024, httpHeaders, smbProperties, filePermission,
             Collections.singletonMap("directory", "metadata")).subscribe(
                 response ->  System.out.printf("Creating the file completed with status code %d", response.statusCode()),
                 error -> System.err.println(error.toString()),
                 () -> System.out.println("Completed creating the file.")
         );
-        // END: com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-fileHTTPHeaders-map
+        // END: com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-fileHTTPHeaders-fileSMBProperties-string-map
     }
 
     /**

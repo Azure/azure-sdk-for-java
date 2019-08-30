@@ -441,7 +441,7 @@ public class DirectoryClient {
      * @throws StorageErrorException If the file has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
     public FileClient createFile(String fileName, long maxSize) {
-        return createFileWithResponse(fileName, maxSize, null, null, Context.NONE).value();
+        return createFileWithResponse(fileName, maxSize, null, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -451,7 +451,7 @@ public class DirectoryClient {
      *
      * <p>Create the file named "myFile"</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-map-Context}
+     * {@codesnippet com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-fileSMBProperties-string-map-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -459,13 +459,16 @@ public class DirectoryClient {
      * @param fileName Name of the file
      * @param maxSize Max size of the file
      * @param httpHeaders the Http headers set to the file
+     * @param smbProperties The SMB properties of the file.
+     * @param filePermission The file permission of the file.
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the directory info and the status of creating the directory.
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
-    public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata, Context context) {
-        return directoryAsyncClient.createFileWithResponse(fileName, maxSize, httpHeaders, metadata, context)
+    public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
+        return directoryAsyncClient.createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata, context)
             .map(response -> new SimpleResponse<>(response, new FileClient(response.value()))).block();
     }
 
