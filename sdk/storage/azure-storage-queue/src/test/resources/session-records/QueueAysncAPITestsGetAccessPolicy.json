@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsgetaccesspolicy13402477ddf897a6",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsgetaccesspolicy1114847cca6b3942",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -12,15 +12,16 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "86d0b45e-d003-0034-5388-539fde000000",
-      "Date" : "Thu, 15 Aug 2019 16:40:33 GMT"
-    }
+      "x-ms-request-id" : "9c19090e-9003-0099-34cf-5ebfb4000000",
+      "Date" : "Fri, 30 Aug 2019 01:11:40 GMT"
+    },
+    "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsgetaccesspolicy13402477ddf897a6?comp=acl",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsgetaccesspolicy1114847cca6b3942?comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -29,11 +30,12 @@
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "86d0b469-d003-0034-5b88-539fde000000",
+      "x-ms-request-id" : "9c190915-9003-0099-3acf-5ebfb4000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><SignedIdentifiers />",
-      "Date" : "Thu, 15 Aug 2019 16:40:33 GMT",
+      "Date" : "Fri, 30 Aug 2019 01:11:40 GMT",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "queueaysncapitestsgetaccesspolicy13402477ddf897a6" ]
+  "variables" : [ "queueaysncapitestsgetaccesspolicy1114847cca6b3942" ]
 }

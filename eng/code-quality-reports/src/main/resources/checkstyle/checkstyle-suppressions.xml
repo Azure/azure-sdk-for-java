@@ -166,4 +166,6 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.security.keyvault.secrets.SecretAsyncClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.security.keyvault.keys.KeyAsyncClient.java"/>
 
+  <!-- InvalidKeyException is not a runtime exception, issue link: https://github.com/Azure/azure-sdk-for-java/issues/5178 -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.security.keyvault.keys.cryptography.AesCbc.java"/>
 </suppressions>

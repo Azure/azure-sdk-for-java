@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetandclearmetadata1133922d063e915d5",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetandclearmetadata18581451871f4f0cc",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -12,15 +12,16 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "86d0ab5e-d003-0034-5f88-539fde000000",
-      "Date" : "Thu, 15 Aug 2019 16:40:14 GMT"
-    }
+      "x-ms-request-id" : "9c1903bb-9003-0099-69cf-5ebfb4000000",
+      "Date" : "Fri, 30 Aug 2019 01:11:25 GMT"
+    },
+    "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetandclearmetadata1133922d063e915d5?comp=metadata",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetandclearmetadata18581451871f4f0cc?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -31,15 +32,16 @@
       "x-ms-approximate-messages-count" : "0",
       "x-ms-meta-metadata1" : "value",
       "StatusCode" : "200",
-      "x-ms-request-id" : "86d0ab66-d003-0034-6688-539fde000000",
-      "Date" : "Thu, 15 Aug 2019 16:40:14 GMT"
-    }
+      "x-ms-request-id" : "9c1903c2-9003-0099-6ecf-5ebfb4000000",
+      "Date" : "Fri, 30 Aug 2019 01:11:25 GMT"
+    },
+    "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetandclearmetadata1133922d063e915d5?comp=metadata",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetandclearmetadata18581451871f4f0cc?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -47,15 +49,16 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "86d0ab6d-d003-0034-6d88-539fde000000",
-      "Date" : "Thu, 15 Aug 2019 16:40:14 GMT"
-    }
+      "x-ms-request-id" : "9c1903c4-9003-0099-70cf-5ebfb4000000",
+      "Date" : "Fri, 30 Aug 2019 01:11:25 GMT"
+    },
+    "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetandclearmetadata1133922d063e915d5?comp=metadata",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetandclearmetadata18581451871f4f0cc?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -66,9 +69,10 @@
       "Content-Length" : "0",
       "x-ms-approximate-messages-count" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "86d0ab74-d003-0034-7488-539fde000000",
-      "Date" : "Thu, 15 Aug 2019 16:40:14 GMT"
-    }
+      "x-ms-request-id" : "9c1903c9-9003-0099-74cf-5ebfb4000000",
+      "Date" : "Fri, 30 Aug 2019 01:11:25 GMT"
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "queueapitestssetandclearmetadata1133922d063e915d5" ]
+  "variables" : [ "queueapitestssetandclearmetadata18581451871f4f0cc" ]
 }

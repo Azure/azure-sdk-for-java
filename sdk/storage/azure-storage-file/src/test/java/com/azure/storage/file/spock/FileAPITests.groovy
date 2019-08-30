@@ -13,13 +13,14 @@ import com.azure.storage.file.models.FileCopyInfo
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.FileRange
 import com.azure.storage.file.models.StorageErrorCode
-import com.azure.storage.file.models.StorageErrorException
+import com.azure.storage.file.models.StorageException
 import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
-import java.nio.file.Files
+import java.nio.file.FileAlreadyExistsException
+import java.nio.file.NoSuchFileException
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -63,7 +64,7 @@ class FileAPITests extends APISpec {
         when:
         primaryFileClient.create(-1)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.OUT_OF_RANGE_INPUT)
     }
 
@@ -77,7 +78,7 @@ class FileAPITests extends APISpec {
         when:
         primaryFileClient.createWithResponse(maxSize, fileHttpHeaders, metadata, null)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
         where:
         maxSize | fileHttpHeaders | metadata                                      | statusCode | errMsg
@@ -128,7 +129,7 @@ class FileAPITests extends APISpec {
         when:
         primaryFileClient.uploadWithResponse(defaultData, dataLength, 1, null)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
         cleanup:
         defaultData.clear()
@@ -177,7 +178,7 @@ class FileAPITests extends APISpec {
         when:
         primaryFileClient.clearRange(30)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 416, StorageErrorCode.INVALID_RANGE)
     }
 
@@ -190,7 +191,7 @@ class FileAPITests extends APISpec {
         when:
         primaryFileClient.clearRangeWithResponse(7, 20, null)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 416, StorageErrorCode.INVALID_RANGE)
     }
 
@@ -198,28 +199,74 @@ class FileAPITests extends APISpec {
         when:
         primaryFileClient.downloadWithPropertiesWithResponse(new FileRange(0, 1023), false, null)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
     }
 
-    def "Upload and download file"() {
+    def "Upload file does not exist"() {
         given:
-        File uploadFile = new File(testFolder.getPath() + "/helloworld")
-        File downloadFile = new File(testFolder.getPath() + "/testDownload")
+        def uploadFile = new File(testFolder.getPath() + "/fakefile.txt")
 
-        if (!Files.exists(downloadFile.toPath())) {
-            downloadFile.createNewFile()
+        if (uploadFile.exists()) {
+            assert uploadFile.delete()
         }
 
-        primaryFileClient.create(uploadFile.length())
         when:
-        primaryFileClient.uploadFromFile(uploadFile.toString())
-        primaryFileClient.downloadToFile(downloadFile.toString())
-        then:
-        FileTestHelper.assertTwoFilesAreSame(uploadFile, downloadFile)
-        cleanup:
-        FileTestHelper.deleteFolderIfExists(testFolder.toString())
+        primaryFileClient.uploadFromFile(uploadFile.getPath())
 
+        then:
+        def ex = thrown(UncheckedIOException)
+        ex.getCause() instanceof NoSuchFileException
+
+        cleanup:
+        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+    }
+
+    def "Upload and download file exists"() {
+        given:
+        def data = "Download file exists"
+        def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), methodName))
+
+        if (!downloadFile.exists()) {
+            assert downloadFile.createNewFile()
+        }
+
+        primaryFileClient.create(data.length())
+        primaryFileClient.upload(ByteBuffer.wrap(data.getBytes(StandardCharsets.UTF_8)), data.length())
+
+        when:
+        primaryFileClient.downloadToFile(downloadFile.getPath())
+
+        then:
+        def ex = thrown(UncheckedIOException)
+        ex.getCause() instanceof FileAlreadyExistsException
+
+        cleanup:
+        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+    }
+
+    def "Upload and download to file does not exist"() {
+        given:
+        def data = "Download file does not exist"
+        def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), methodName))
+
+        if (downloadFile.exists()) {
+            assert downloadFile.delete()
+        }
+
+        primaryFileClient.create(data.length())
+        primaryFileClient.upload(ByteBuffer.wrap(data.getBytes(StandardCharsets.UTF_8)), data.length())
+
+        when:
+        primaryFileClient.downloadToFile(downloadFile.getPath())
+
+        then:
+        def scanner = new Scanner(downloadFile).useDelimiter("\\Z")
+        data == scanner.next()
+        scanner.close()
+
+        cleanup:
+        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
     }
 
     def "Start copy"() {
@@ -241,7 +288,7 @@ class FileAPITests extends APISpec {
         when:
         primaryFileClient.startCopyWithResponse("some url", testMetadata, null)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.INVALID_HEADER_VALUE)
     }
 
@@ -261,7 +308,7 @@ class FileAPITests extends APISpec {
         when:
         primaryFileClient.deleteWithResponse(null)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
     }
 
@@ -298,7 +345,7 @@ class FileAPITests extends APISpec {
         when:
         primaryFileClient.setHttpHeadersWithResponse(-1, httpHeaders, null)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.OUT_OF_RANGE_INPUT)
     }
 
@@ -323,7 +370,7 @@ class FileAPITests extends APISpec {
         when:
         primaryFileClient.setMetadataWithResponse(errorMetadata, null)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.EMPTY_METADATA_KEY)
     }
 

@@ -22,7 +22,7 @@ parameters:
 jobs:
   - job: ${{ parameters.TestName }}
     timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
-    
+
     variables:
       - template: ../variables/globals.yml
     strategy:
