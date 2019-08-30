@@ -76,7 +76,7 @@ public class WindowsDPAPICacheProtector extends CacheProtectorBase {
     private void makeSureFileExists() throws IOException {
         if (!cacheFile.exists()) {
             cacheFile.createNewFile();
-            protect(" ".getBytes());
+            protect(" ".getBytes("UTF-8"));
         }
     }
 

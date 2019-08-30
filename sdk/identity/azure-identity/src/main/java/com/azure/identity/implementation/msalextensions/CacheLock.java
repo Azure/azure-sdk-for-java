@@ -144,7 +144,7 @@ public class CacheLock {
     private void printToFileIfDebug(String message) {
         if (debugFlag && fos != null) {
             try {
-                fos.write(message.getBytes());
+                fos.write(message.getBytes("UTF-8"));
             } catch (IOException e) {
                 e.printStackTrace();
             }

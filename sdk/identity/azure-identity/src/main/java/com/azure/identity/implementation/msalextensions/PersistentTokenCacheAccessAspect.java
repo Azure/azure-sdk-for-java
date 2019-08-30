@@ -3,12 +3,14 @@
 
 package com.azure.identity.implementation.msalextensions;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.msalextensions.cachepersister.CachePersister;
 import com.azure.identity.implementation.msalextensions.cachepersister.PlatformNotSupportedException;
 import com.microsoft.aad.msal4j.ITokenCacheAccessAspect;
 import com.microsoft.aad.msal4j.ITokenCacheAccessContext;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Access Aspect for accessing the token cache
@@ -17,6 +19,7 @@ import java.io.IOException;
 public class PersistentTokenCacheAccessAspect implements ITokenCacheAccessAspect {
 
     private CachePersister cachePersister;
+    private ClientLogger logger;
 
     /**
      * Default constructor, creates a CachePersister object
@@ -25,6 +28,8 @@ public class PersistentTokenCacheAccessAspect implements ITokenCacheAccessAspect
      * @throws PlatformNotSupportedException  from errors in creating the CachePersister
      * */
     public PersistentTokenCacheAccessAspect() throws IOException, PlatformNotSupportedException {
+        logger = new ClientLogger(PersistentTokenCacheAccessAspect.class);
+
         cachePersister = new CachePersister.Builder().build();
     }
 
@@ -59,7 +64,12 @@ public class PersistentTokenCacheAccessAspect implements ITokenCacheAccessAspect
 
         if (iTokenCacheAccessContext.hasCacheChanged()) {
             String newData = iTokenCacheAccessContext.tokenCache().serialize();
-            cachePersister.writeCache(newData.getBytes());
+            try {
+                cachePersister.writeCache(newData.getBytes("UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                // don't update cache
+                logger.error("was not able to write to cache");
+            }
         }
     }
 

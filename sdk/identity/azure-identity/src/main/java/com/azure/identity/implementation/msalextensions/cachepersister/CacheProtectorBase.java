@@ -87,7 +87,8 @@ public abstract class CacheProtectorBase {
      * Overwritten by subclasses; each OS handles differently
      * */
     protected byte[] unprotect() throws IOException {
-        return null;
+        byte[] empty = {};
+        return empty;
     }
 
     /**
