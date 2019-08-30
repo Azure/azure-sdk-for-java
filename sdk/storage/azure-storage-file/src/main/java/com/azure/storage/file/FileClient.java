@@ -19,12 +19,13 @@ import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.HandleItem;
-import com.azure.storage.file.models.StorageErrorException;
+import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Flux;
 
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.nio.ByteBuffer;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.Map;
 
 /**
@@ -77,7 +78,7 @@ public class FileClient {
      *
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @return The {@link FileInfo file info}
-     * @throws StorageErrorException If the file has already existed, the parent directory does not exist or fileName is an invalid resource name.
+     * @throws StorageException If the file has already existed, the parent directory does not exist or fileName is an invalid resource name.
      */
     public FileInfo create(long maxSize) {
         return createWithResponse(maxSize, null, null, Context.NONE).value();
@@ -101,7 +102,7 @@ public class FileClient {
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileInfo file info} and the status of creating the file.
-     * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory is an invalid resource name.
+     * @throws StorageException If the directory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
     public Response<FileInfo> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata, Context context) {
         return fileAsyncClient.createWithResponse(maxSize, httpHeaders, metadata, context).block();
@@ -189,7 +190,10 @@ public class FileClient {
     }
 
     /**
-     * Downloads a file from the system, including its metadata and properties
+     * Downloads a file from the system, including its metadata and properties into a file specified by the path.
+     *
+     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
+     * will be thrown.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -207,7 +211,10 @@ public class FileClient {
     }
 
     /**
-     * Downloads a file from the system, including its metadata and properties
+     * Downloads a file from the system, including its metadata and properties into a file specified by the path.
+     *
+     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
+     * will be thrown.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -276,7 +283,7 @@ public class FileClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
-     * @throws StorageErrorException If the directory doesn't exist or the file doesn't exist.
+     * @throws StorageException If the directory doesn't exist or the file doesn't exist.
      */
     public void delete() {
         deleteWithResponse(Context.NONE);
@@ -297,7 +304,7 @@ public class FileClient {
      *
      * @return A response that only contains headers and response status code
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws StorageErrorException If the directory doesn't exist or the file doesn't exist.
+     * @throws StorageException If the directory doesn't exist or the file doesn't exist.
      */
     public VoidResponse deleteWithResponse(Context context) {
         return fileAsyncClient.deleteWithResponse(context).block();
@@ -417,7 +424,7 @@ public class FileClient {
      *
      * @param metadata Options.Metadata to set on the file, if null is passed the metadata for the file is cleared
      * @return The {@link FileMetadataInfo file meta info}
-     * @throws StorageErrorException If the file doesn't exist or the metadata contains invalid keys
+     * @throws StorageException If the file doesn't exist or the metadata contains invalid keys
      */
     public FileMetadataInfo setMetadata(Map<String, String> metadata) {
         return setMetadataWithResponse(metadata, Context.NONE).value();
@@ -444,7 +451,7 @@ public class FileClient {
      * @param metadata Options.Metadata to set on the file, if null is passed the metadata for the file is cleared
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Response containing the {@link FileMetadataInfo file meta info} with headers and status code
-     * @throws StorageErrorException If the file doesn't exist or the metadata contains invalid keys
+     * @throws StorageException If the file doesn't exist or the metadata contains invalid keys
      */
     public Response<FileMetadataInfo> setMetadataWithResponse(Map<String, String> metadata, Context context) {
         return fileAsyncClient.setMetadataWithResponse(metadata, context).block();
@@ -465,7 +472,7 @@ public class FileClient {
      * @param data The data which will upload to the storage file.
      * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is set to clear, the value of this header must be set to zero..
      * @return The {@link FileUploadInfo file upload info}
-     * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
+     * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
     public FileUploadInfo upload(ByteBuffer data, long length) {
         return uploadWithResponse(data, length, Context.NONE).value();
@@ -487,7 +494,7 @@ public class FileClient {
      * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is set to clear, the value of this header must be set to zero..
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link FileUploadInfo file upload info}
-     * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
+     * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
     public Response<FileUploadInfo> uploadWithResponse(ByteBuffer data, long length, Context context) {
         return fileAsyncClient.uploadWithResponse(Flux.just(data), length, context).block();
@@ -510,7 +517,7 @@ public class FileClient {
      * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code null}
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileUploadInfo file upload info} with headers and response status code
-     * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
+     * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
     public Response<FileUploadInfo> uploadWithResponse(ByteBuffer data, long length, long offset, Context context) {
         return fileAsyncClient.uploadWithResponse(Flux.just(data), length, offset, context).block();

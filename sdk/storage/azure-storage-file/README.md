@@ -208,7 +208,7 @@ The following sections provide several code snippets covering some of the most c
 - [Set file httpHeaders](#Set-file-httpheaders)
 
 ### Create a share
-Create a share in the Storage Account. Throws StorageErrorException If the share fails to be created.
+Create a share in the Storage Account. Throws StorageException If the share fails to be created.
 Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services).
 
 ```Java
