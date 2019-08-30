@@ -146,9 +146,9 @@ class FileAsyncAPITests extends APISpec {
         when:
         def downloadDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(0, 1023), false))
         then:
-        downloadDataErrorVerifier.assertNext {
+        downloadDataErrorVerifier.verifyErrorSatisfies({
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
-        }
+        })
     }
 
     def "Upload and clear range" () {
@@ -158,7 +158,7 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.create(fullInfoString.length()).block()
         primaryFileAsyncClient.upload(Flux.just(fullInfoData), fullInfoString.length()).block()
         when:
-        def clearRangeVerifier = StepVerifier.create(primaryFileAsyncClient.clearRange(7))
+        def clearRangeVerifier = StepVerifier.create(primaryFileAsyncClient.clearRangeWithResponse(7, 0))
         def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(0, 6), false))
         then:
         clearRangeVerifier.assertNext {
