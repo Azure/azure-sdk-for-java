@@ -7,6 +7,7 @@ import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.BaseClientBuilder;
+import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 
 abstract class BaseFileClientBuilder<T extends BaseClientBuilder<T>> extends BaseClientBuilder<T> {
 
@@ -46,5 +47,10 @@ abstract class BaseFileClientBuilder<T extends BaseClientBuilder<T>> extends Bas
     public final T setAnonymousCredential() {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Azure Storage file service does not support anonymous access."));
+    }
+
+    @Override
+    protected final void applyServiceSpecificValidations(ResponseValidationPolicyBuilder builder) {
+        // for file service validations
     }
 }
