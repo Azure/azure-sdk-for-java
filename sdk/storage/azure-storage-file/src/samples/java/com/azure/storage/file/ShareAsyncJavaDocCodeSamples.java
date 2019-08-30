@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
+import com.azure.storage.common.Constants;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -304,11 +307,11 @@ public class ShareAsyncJavaDocCodeSamples {
     */
     public void setQuotaAsync() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.setQuota
+        // BEGIN: com.azure.storage.file.ShareAsyncClient.setQuota#int
         shareAsyncClient.setQuota(1024).doOnSuccess(response ->
             System.out.println("Setting the share quota completed.")
         );
-        // END: com.azure.storage.file.shareAsyncClient.setQuota
+        // END: com.azure.storage.file.ShareAsyncClient.setQuota#int
     }
 
     /**
@@ -316,12 +319,12 @@ public class ShareAsyncJavaDocCodeSamples {
      */
     public void setQuotaWithResponse() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.setQuotaWithResponse
+        // BEGIN: com.azure.storage.file.ShareAsyncClient.setQuotaWithResponse#int
         shareAsyncClient.setQuotaWithResponse(1024)
             .subscribe(response ->
                 System.out.printf("Setting the share quota completed with status code %d", response.statusCode())
             );
-        // END: com.azure.storage.file.shareAsyncClient.setQuotaWithResponse
+        // END: com.azure.storage.file.ShareAsyncClient.setQuotaWithResponse#int
     }
 
 
@@ -380,7 +383,7 @@ public class ShareAsyncJavaDocCodeSamples {
     */
     public void setAccessPolicyAsync() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.setAccessPolicy
+        // BEGIN: com.azure.storage.file.ShareAsyncClient.setAccessPolicy#List
         AccessPolicy accessPolicy = new AccessPolicy().permission("r")
             .start(OffsetDateTime.now(ZoneOffset.UTC))
             .expiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
@@ -388,7 +391,7 @@ public class ShareAsyncJavaDocCodeSamples {
         SignedIdentifier permission = new SignedIdentifier().id("mypolicy").accessPolicy(accessPolicy);
         shareAsyncClient.setAccessPolicy(Collections.singletonList(permission)).doOnSuccess(
             response -> System.out.println("Setting access policies completed."));
-        // END: com.azure.storage.file.shareAsyncClient.setAccessPolicy
+        // END: com.azure.storage.file.ShareAsyncClient.setAccessPolicy#List
     }
 
     /**
@@ -396,7 +399,7 @@ public class ShareAsyncJavaDocCodeSamples {
      */
     public void setAccessPolicyWithResponse() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.setAccessPolicyWithResponse
+        // BEGIN: com.azure.storage.file.ShareAsyncClient.setAccessPolicyWithResponse#List
         AccessPolicy accessPolicy = new AccessPolicy().permission("r")
             .start(OffsetDateTime.now(ZoneOffset.UTC))
             .expiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
@@ -405,7 +408,7 @@ public class ShareAsyncJavaDocCodeSamples {
         shareAsyncClient.setAccessPolicyWithResponse(Collections.singletonList(permission))
             .subscribe(response -> System.out.printf("Setting access policies completed completed with status code %d",
                 response.statusCode()));
-        // END: com.azure.storage.file.shareAsyncClient.setAccessPolicyWithResponse
+        // END: com.azure.storage.file.ShareAsyncClient.setAccessPolicyWithResponse#List
     }
 
     /**
@@ -444,5 +447,36 @@ public class ShareAsyncJavaDocCodeSamples {
 
         System.out.printf("Snapshot ID: %s%n", shareAysncClient.getSnapshotId());
         // END: com.azure.storage.file.shareAsyncClient.getSnapshotId
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareAsyncClient#generateSAS(String, ShareSASPermission, OffsetDateTime,
+     * OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     */
+    public void generateSASAsync() {
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.shareAsyncClient.generateSAS
+        String identifier = "identifier";
+        ShareSASPermission permissions = new ShareSASPermission()
+            .read(true)
+            .create(true)
+            .delete(true)
+            .write(true)
+            .list(true);
+        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        IPRange ipRange = new IPRange()
+            .ipMin("0.0.0.0")
+            .ipMax("255.255.255.255");
+        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        String cacheControl = "cache";
+        String contentDisposition = "disposition";
+        String contentEncoding = "encoding";
+        String contentLanguage = "language";
+        String contentType = "type";
+        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+        String sas = shareAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
+            ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+        // END: com.azure.storage.file.shareAsyncClient.generateSAS
     }
 }

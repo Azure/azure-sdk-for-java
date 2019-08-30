@@ -9,8 +9,8 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.ProxyOptions;
 import com.azure.core.implementation.exception.UnexpectedLengthException;
+import com.azure.core.http.ProxyOptions;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
@@ -29,7 +29,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.function.Supplier;
 
 import static java.lang.StrictMath.pow;
 
@@ -353,21 +352,6 @@ class RequestRetryTestFactory {
                 default:
                     throw new IllegalArgumentException("Invalid retry test scenario.");
             }
-        }
-
-        @Override
-        public HttpClient proxy(Supplier<ProxyOptions> supplier) {
-            return null;
-        }
-
-        @Override
-        public HttpClient wiretap(boolean b) {
-            return null;
-        }
-
-        @Override
-        public HttpClient port(int i) {
-            return null;
         }
 
         /*

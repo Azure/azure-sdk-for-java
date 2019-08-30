@@ -44,14 +44,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
 /**
  * Client to a blob of any type: block, append, or page. It may only be instantiated through a {@link BlobClientBuilder}
@@ -472,12 +473,13 @@ public class BlobAsyncClient {
 
 
     /**
-     * Downloads the entire blob into a file specified by the path. The file will be created if it doesn't exist.
-     * Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
-     * AppendBlobClient}.
-     * <p>
-     * This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra call,
-     * use the other overload providing the {@link BlobRange} parameter.
+     * Downloads the entire blob into a file specified by the path.
+     *
+     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
+     * will be thrown.</p>
+     *
+     * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
+     * AppendBlobClient}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -494,12 +496,16 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Downloads a range of bytes  blob into a file specified by the path. The file will be created if it doesn't exist.
-     * Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
-     * AppendBlobClient}.
-     * <p>
-     * This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra call,
-     * provide the {@link BlobRange} parameter.
+     * Downloads the entire blob into a file specified by the path.
+     *
+     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
+     * will be thrown.</p>
+     *
+     * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
+     * AppendBlobClient}.</p>
+     *
+     * <p>This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra call,
+     * provide the {@link BlobRange} parameter.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -525,8 +531,8 @@ public class BlobAsyncClient {
 
     Mono<Void> downloadToFile(String filePath, BlobRange range, Integer blockSize, ReliableDownloadOptions options,
                               BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Context context) {
-        if (blockSize < 0 || blockSize > BLOB_MAX_DOWNLOAD_BLOCK_SIZE) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Block size should not exceed 100MB"));
+        if (blockSize != null) {
+            Utility.assertInBounds("blockSize", blockSize, 0, BLOB_MAX_DOWNLOAD_BLOCK_SIZE);
         }
 
         return Mono.using(() -> downloadToFileResourceSupplier(filePath),
@@ -541,7 +547,7 @@ public class BlobAsyncClient {
 
     private AsynchronousFileChannel downloadToFileResourceSupplier(String filePath) {
         try {
-            return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ, StandardOpenOption.WRITE);
+            return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW);
         } catch (IOException e) {
             throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
@@ -1149,7 +1155,7 @@ public class BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.getAccountInfo}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.getAccountInfoWithResponse}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a></p>
@@ -1176,7 +1182,7 @@ public class BlobAsyncClient {
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-                                            BlobSASPermission permissions, OffsetDateTime expiryTime) {
+        BlobSASPermission permissions, OffsetDateTime expiryTime) {
         return this.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, null /*
         startTime */, null /* version */, null /*sasProtocol */, null /* ipRange */, null /* cacheControl */, null
             /*contentDisposition */, null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
@@ -1196,8 +1202,8 @@ public class BlobAsyncClient {
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-                                            BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-                                            SASProtocol sasProtocol, IPRange ipRange) {
+        BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        SASProtocol sasProtocol, IPRange ipRange) {
         return this.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, startTime,
             version, sasProtocol, ipRange, null /* cacheControl */, null /* contentDisposition */, null /*
             contentEncoding */, null /* contentLanguage */, null /* contentType */);
@@ -1208,7 +1214,7 @@ public class BlobAsyncClient {
      *
      * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
      * @param accountName The {@code String} account name for the SAS
-     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param permissions The {@code BlobSASPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
@@ -1222,25 +1228,25 @@ public class BlobAsyncClient {
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-                                            BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-                                            SASProtocol sasProtocol, IPRange ipRange, String cacheControl, String contentDisposition,
-                                            String contentEncoding, String contentLanguage, String contentType) {
+        BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        SASProtocol sasProtocol, IPRange ipRange, String cacheControl, String contentDisposition,
+        String contentEncoding, String contentLanguage, String contentType) {
 
-        ServiceSASSignatureValues serviceSASSignatureValues = new ServiceSASSignatureValues(version, sasProtocol,
+        BlobServiceSASSignatureValues blobServiceSASSignatureValues = new BlobServiceSASSignatureValues(version, sasProtocol,
             startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange, null /* identifier*/,
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
 
-        ServiceSASSignatureValues values = configureServiceSASSignatureValues(serviceSASSignatureValues, accountName);
+        BlobServiceSASSignatureValues values = configureServiceSASSignatureValues(blobServiceSASSignatureValues, accountName);
 
-        SASQueryParameters sasQueryParameters = values.generateSASQueryParameters(userDelegationKey);
+        BlobServiceSASQueryParameters blobServiceSasQueryParameters = values.generateSASQueryParameters(userDelegationKey);
 
-        return sasQueryParameters.encode();
+        return blobServiceSasQueryParameters.encode();
     }
 
     /**
      * Generates a SAS token with the specified parameters
      *
-     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param permissions The {@code BlobSASPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @return A string that represents the SAS token
      */
@@ -1266,7 +1272,7 @@ public class BlobAsyncClient {
      * Generates a SAS token with the specified parameters
      *
      * @param identifier The {@code String} name of the access policy on the container this SAS references if any
-     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param permissions The {@code BlobSASPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
@@ -1275,7 +1281,7 @@ public class BlobAsyncClient {
      * @return A string that represents the SAS token
      */
     public String generateSAS(String identifier, BlobSASPermission permissions, OffsetDateTime expiryTime,
-                              OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
+        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
         return this.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
             /* cacheControl */, null /* contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */,
             null /* contentType */);
@@ -1285,7 +1291,7 @@ public class BlobAsyncClient {
      * Generates a SAS token with the specified parameters
      *
      * @param identifier The {@code String} name of the access policy on the container this SAS references if any
-     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param permissions The {@code BlobSASPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
@@ -1299,10 +1305,10 @@ public class BlobAsyncClient {
      * @return A string that represents the SAS token
      */
     public String generateSAS(String identifier, BlobSASPermission permissions, OffsetDateTime expiryTime,
-                              OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
-                              String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
+        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
+        String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
 
-        ServiceSASSignatureValues serviceSASSignatureValues = new ServiceSASSignatureValues(version, sasProtocol,
+        BlobServiceSASSignatureValues blobServiceSASSignatureValues = new BlobServiceSASSignatureValues(version, sasProtocol,
             startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange, identifier,
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
 
@@ -1311,34 +1317,34 @@ public class BlobAsyncClient {
 
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
-        ServiceSASSignatureValues values = configureServiceSASSignatureValues(serviceSASSignatureValues,
+        BlobServiceSASSignatureValues values = configureServiceSASSignatureValues(blobServiceSASSignatureValues,
             sharedKeyCredential.accountName());
 
-        SASQueryParameters sasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
+        BlobServiceSASQueryParameters blobServiceSasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
 
-        return sasQueryParameters.encode();
+        return blobServiceSasQueryParameters.encode();
     }
 
     /**
-     * Sets serviceSASSignatureValues parameters dependent on the current blob type
+     * Sets blobServiceSASSignatureValues parameters dependent on the current blob type
      */
-    ServiceSASSignatureValues configureServiceSASSignatureValues(ServiceSASSignatureValues serviceSASSignatureValues,
-                                                                 String accountName) {
+    BlobServiceSASSignatureValues configureServiceSASSignatureValues(BlobServiceSASSignatureValues blobServiceSASSignatureValues,
+        String accountName) {
 
         // Set canonical name
-        serviceSASSignatureValues.canonicalName(this.azureBlobStorage.getUrl(), accountName);
+        blobServiceSASSignatureValues.canonicalName(this.azureBlobStorage.getUrl(), accountName);
 
         // Set snapshotId
-        serviceSASSignatureValues.snapshotId(getSnapshotId());
+        blobServiceSASSignatureValues.snapshotId(getSnapshotId());
 
         // Set resource
         if (isSnapshot()) {
-            serviceSASSignatureValues.resource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT);
+            blobServiceSASSignatureValues.resource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT);
         } else {
-            serviceSASSignatureValues.resource(Constants.UrlConstants.SAS_BLOB_CONSTANT);
+            blobServiceSASSignatureValues.resource(Constants.UrlConstants.SAS_BLOB_CONSTANT);
         }
 
-        return serviceSASSignatureValues;
+        return blobServiceSASSignatureValues;
     }
 
     /**

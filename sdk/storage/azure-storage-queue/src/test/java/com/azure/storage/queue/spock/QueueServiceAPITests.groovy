@@ -10,7 +10,7 @@ import com.azure.storage.queue.models.QueueItem
 import com.azure.storage.queue.models.QueuesSegmentOptions
 import com.azure.storage.queue.models.RetentionPolicy
 import com.azure.storage.queue.models.StorageErrorCode
-import com.azure.storage.queue.models.StorageErrorException
+import com.azure.storage.queue.models.StorageException
 import com.azure.storage.queue.models.StorageServiceProperties
 import spock.lang.Unroll
 
@@ -41,7 +41,7 @@ class QueueServiceAPITests extends APISpec {
         when:
         primaryQueueServiceClient.createQueue(queueName)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMesage)
         where:
         queueName      | statusCode | errMesage
@@ -79,10 +79,10 @@ class QueueServiceAPITests extends APISpec {
         given:
         def queueName = testResourceName.randomName(methodName, 16)
         when:
-        primaryQueueServiceClient.createQueueWithResponse(queueName, Collections.singletonMap("meta@data", "value"), null)
+        primaryQueueServiceClient.createQueueWithResponse(queueName, Collections.singletonMap("metadata!", "value"), null)
         then:
-        def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, "Bad Request")
+        def e = thrown(StorageException)
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.INVALID_METADATA)
     }
 
     def "Delete queue"() {
@@ -94,7 +94,7 @@ class QueueServiceAPITests extends APISpec {
         queueClient.enqueueMessage("Expecting exception as queue has been deleted.")
         then:
         QueueTestHelper.assertResponseStatusCode(deleteQueueResponse, 204)
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
@@ -102,7 +102,7 @@ class QueueServiceAPITests extends APISpec {
         when:
         primaryQueueServiceClient.deleteQueueWithResponse(testResourceName.randomName(methodName, 60), null)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 

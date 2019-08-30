@@ -93,10 +93,10 @@ class QueueServiceAsyncAPITests extends APISpec {
         given:
         def queueName = testResourceName.randomName(methodName, 60)
         when:
-        def createQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueueWithResponse(queueName, Collections.singletonMap("meta@data", "value")))
+        def createQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueueWithResponse(queueName, Collections.singletonMap("metadata!", "value")))
         then:
         createQueueVerifier.verifyErrorSatisfies {
-            assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, "Bad Request")
+            assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.INVALID_METADATA)
         }
     }
 

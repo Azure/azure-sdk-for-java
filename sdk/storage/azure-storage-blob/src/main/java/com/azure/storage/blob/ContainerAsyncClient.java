@@ -1019,7 +1019,7 @@ public final class ContainerAsyncClient {
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-                                            ContainerSASPermission permissions, OffsetDateTime expiryTime) {
+        ContainerSASPermission permissions, OffsetDateTime expiryTime) {
         return this.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, null, null,
             null, null, null, null, null, null, null);
     }
@@ -1038,8 +1038,8 @@ public final class ContainerAsyncClient {
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-                                            ContainerSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-                                            SASProtocol sasProtocol, IPRange ipRange) {
+        ContainerSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        SASProtocol sasProtocol, IPRange ipRange) {
         return this.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, startTime,
             version, sasProtocol, ipRange, null /* cacheControl */, null /* contentDisposition */, null /*
             contentEncoding */, null /* contentLanguage */, null /* contentType */);
@@ -1064,18 +1064,18 @@ public final class ContainerAsyncClient {
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-                                            ContainerSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-                                            SASProtocol sasProtocol, IPRange ipRange, String cacheControl, String contentDisposition,
-                                            String contentEncoding, String contentLanguage, String contentType) {
-        ServiceSASSignatureValues serviceSASSignatureValues = new ServiceSASSignatureValues(version, sasProtocol,
+        ContainerSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        SASProtocol sasProtocol, IPRange ipRange, String cacheControl, String contentDisposition,
+        String contentEncoding, String contentLanguage, String contentType) {
+        BlobServiceSASSignatureValues blobServiceSASSignatureValues = new BlobServiceSASSignatureValues(version, sasProtocol,
             startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange, null /* identifier*/,
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
 
-        ServiceSASSignatureValues values = configureServiceSASSignatureValues(serviceSASSignatureValues, accountName);
+        BlobServiceSASSignatureValues values = configureServiceSASSignatureValues(blobServiceSASSignatureValues, accountName);
 
-        SASQueryParameters sasQueryParameters = values.generateSASQueryParameters(userDelegationKey);
+        BlobServiceSASQueryParameters blobServiceSasQueryParameters = values.generateSASQueryParameters(userDelegationKey);
 
-        return sasQueryParameters.encode();
+        return blobServiceSasQueryParameters.encode();
     }
 
     /**
@@ -1116,8 +1116,7 @@ public final class ContainerAsyncClient {
      * @return A string that represents the SAS token
      */
     public String generateSAS(String identifier, ContainerSASPermission permissions, OffsetDateTime expiryTime,
-                              OffsetDateTime startTime,
-                              String version, SASProtocol sasProtocol, IPRange ipRange) {
+        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
         return this.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
             /* cacheControl */, null /* contentDisposition */, null /* contentEncoding */, null /* contentLanguage */,
             null /*contentType*/);
@@ -1141,9 +1140,9 @@ public final class ContainerAsyncClient {
      * @return A string that represents the SAS token
      */
     public String generateSAS(String identifier, ContainerSASPermission permissions, OffsetDateTime expiryTime,
-                              OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
-                              String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
-        ServiceSASSignatureValues serviceSASSignatureValues = new ServiceSASSignatureValues(version, sasProtocol,
+        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
+        String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
+        BlobServiceSASSignatureValues blobServiceSASSignatureValues = new BlobServiceSASSignatureValues(version, sasProtocol,
             startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange, identifier,
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
 
@@ -1152,26 +1151,26 @@ public final class ContainerAsyncClient {
 
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
-        ServiceSASSignatureValues values = configureServiceSASSignatureValues(serviceSASSignatureValues,
+        BlobServiceSASSignatureValues values = configureServiceSASSignatureValues(blobServiceSASSignatureValues,
             sharedKeyCredential.accountName());
 
-        SASQueryParameters sasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
+        BlobServiceSASQueryParameters blobServiceSasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
 
-        return sasQueryParameters.encode();
+        return blobServiceSasQueryParameters.encode();
     }
 
     /**
-     * Sets serviceSASSignatureValues parameters dependent on the current blob type
+     * Sets blobServiceSASSignatureValues parameters dependent on the current blob type
      */
-    private ServiceSASSignatureValues configureServiceSASSignatureValues(ServiceSASSignatureValues serviceSASSignatureValues, String accountName) {
+    private BlobServiceSASSignatureValues configureServiceSASSignatureValues(BlobServiceSASSignatureValues blobServiceSASSignatureValues, String accountName) {
         // Set canonical name
-        serviceSASSignatureValues.canonicalName(this.azureBlobStorage.getUrl(), accountName);
+        blobServiceSASSignatureValues.canonicalName(this.azureBlobStorage.getUrl(), accountName);
 
         // Set snapshotId to null
-        serviceSASSignatureValues.snapshotId(null);
+        blobServiceSASSignatureValues.snapshotId(null);
 
         // Set resource
-        serviceSASSignatureValues.resource(Constants.UrlConstants.SAS_CONTAINER_CONSTANT);
-        return serviceSASSignatureValues;
+        blobServiceSASSignatureValues.resource(Constants.UrlConstants.SAS_CONTAINER_CONSTANT);
+        return blobServiceSASSignatureValues;
     }
 }

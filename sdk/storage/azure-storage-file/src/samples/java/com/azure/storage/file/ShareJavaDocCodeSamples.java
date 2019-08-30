@@ -4,6 +4,9 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.storage.common.Constants;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -116,10 +119,10 @@ public class ShareJavaDocCodeSamples {
      */
     public void createWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareClient.createWithResponse#map-integer.quota
+        // BEGIN: com.azure.storage.file.ShareClient.createWithResponse#Map-Integer-Context.quota
         Response<ShareInfo> response = shareClient.createWithResponse(null, 10, new Context(key1, value1));
         System.out.println("Complete creating the shares with status code: " + response.statusCode());
-        // END: com.azure.storage.file.shareClient.createWithResponse#map-integer.quota
+        // END: com.azure.storage.file.ShareClient.createWithResponse#Map-Integer-Context.quota
     }
 
     /**
@@ -127,11 +130,11 @@ public class ShareJavaDocCodeSamples {
      */
     public void createWithResponseMetadata() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareClient.createWithResponse#map-integer.metadata
+        // BEGIN: com.azure.storage.file.ShareClient.createWithResponse#Map-Integer-Context.metadata
         Response<ShareInfo> response = shareClient.createWithResponse(Collections.singletonMap("share", "metadata"), null,
             new Context(key1, value1));
         System.out.println("Complete creating the shares with status code: " + response.statusCode());
-        // END: com.azure.storage.file.shareClient.createWithResponse#map-integer.metadata
+        // END: com.azure.storage.file.ShareClient.createWithResponse#Map-Integer-Context.metadata
     }
 
     /**
@@ -297,9 +300,9 @@ public class ShareJavaDocCodeSamples {
      */
     public void setQuota() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareClient.setQuota
+        // BEGIN: com.azure.storage.file.ShareClient.setQuota#int
         System.out.println("Setting the share quota completed." + shareClient.setQuota(1024));
-        // END: com.azure.storage.file.shareClient.setQuota
+        // END: com.azure.storage.file.ShareClient.setQuota#int
     }
 
     /**
@@ -367,7 +370,7 @@ public class ShareJavaDocCodeSamples {
      */
     public void setAccessPolicy() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareClient.setAccessPolicy
+        // BEGIN: com.azure.storage.file.ShareClient.setAccessPolicy#List
         AccessPolicy accessPolicy = new AccessPolicy().permission("r")
             .start(OffsetDateTime.now(ZoneOffset.UTC))
             .expiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
@@ -376,7 +379,7 @@ public class ShareJavaDocCodeSamples {
 
         shareClient.setAccessPolicy(Collections.singletonList(permission));
         System.out.println("Setting access policies completed.");
-        // END: com.azure.storage.file.shareClient.setAccessPolicy
+        // END: com.azure.storage.file.ShareClient.setAccessPolicy#List
     }
 
     /**
@@ -434,5 +437,36 @@ public class ShareJavaDocCodeSamples {
 
         System.out.printf("Snapshot ID: %s%n", shareClient.getSnapshotId());
         // END: com.azure.storage.file.shareClient.getSnapshotId
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareClient#generateSAS(String, ShareSASPermission, OffsetDateTime,
+     * OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     */
+    public void generateSAS() {
+        ShareClient shareClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.ShareClient.generateSAS
+        String identifier = "identifier";
+        ShareSASPermission permissions = new ShareSASPermission()
+            .read(true)
+            .create(true)
+            .delete(true)
+            .write(true)
+            .list(true);
+        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        IPRange ipRange = new IPRange()
+            .ipMin("0.0.0.0")
+            .ipMax("255.255.255.255");
+        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        String cacheControl = "cache";
+        String contentDisposition = "disposition";
+        String contentEncoding = "encoding";
+        String contentLanguage = "language";
+        String contentType = "type";
+        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+        String sas = shareClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
+            ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+        // END: com.azure.storage.file.ShareClient.generateSAS
     }
 }

@@ -3,15 +3,18 @@
 
 package com.azure.core.implementation.exception;
 
-public class UnexpectedLengthException extends IllegalStateException {
+/**
+ * This exception class represents an error when the specified input length doesn't match the data length.
+ */
+public final class UnexpectedLengthException extends IllegalStateException {
     private final long bytesRead;
     private final long bytesExpected;
 
     /**
-     * Creates an UnexpectedLengthException.
-     * @param message the message
-     * @param bytesRead the number of bytes actually read in the stream
-     * @param bytesExpected the number of bytes expected to be read in the stream
+     * Constructor of the UnexpectedLengthException.
+     * @param message The message for the exception.
+     * @param bytesRead The number of bytes read from resource.
+     * @param bytesExpected The number of bytes expected from the receiver.
      */
     public UnexpectedLengthException(String message, long bytesRead, long bytesExpected) {
         super(message);
@@ -20,16 +23,16 @@ public class UnexpectedLengthException extends IllegalStateException {
     }
 
     /**
-     * @return the number of bytes actually read in the stream
+     * @return the number of bytes read from the input
      */
     public long bytesRead() {
-        return bytesRead;
+        return this.bytesRead;
     }
 
     /**
-     * @return the number of bytes expected to be read in the stream
+     * @return the number of bytes that were expected to be read from the input
      */
     public long bytesExpected() {
-        return bytesExpected;
+        return this.bytesExpected;
     }
 }

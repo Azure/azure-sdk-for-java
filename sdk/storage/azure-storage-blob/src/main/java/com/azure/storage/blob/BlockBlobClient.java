@@ -137,7 +137,7 @@ public final class BlockBlobClient extends BlobClient {
      * @throws IOException If an I/O error occurs
      */
     public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHTTPHeaders headers,
-                                                      Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) throws IOException {
+        Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) throws IOException {
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
         Mono<Response<BlockBlobItem>> upload = blockBlobAsyncClient
             .uploadWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, accessConditions, context);

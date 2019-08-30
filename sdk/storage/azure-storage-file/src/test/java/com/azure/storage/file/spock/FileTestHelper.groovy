@@ -7,21 +7,19 @@ import com.azure.core.http.rest.Response
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.file.models.CorsRule
-import com.azure.storage.file.models.FileRef
 import com.azure.storage.file.models.FileServiceProperties
 import com.azure.storage.file.models.Metrics
 import com.azure.storage.file.models.RetentionPolicy
 import com.azure.storage.file.models.ShareItem
 import com.azure.storage.file.models.SignedIdentifier
 import com.azure.storage.file.models.StorageErrorCode
-import com.azure.storage.file.models.StorageErrorException
+import com.azure.storage.file.models.StorageException
 import com.azure.storage.file.models.StorageServiceProperties
 
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.security.NoSuchAlgorithmException
 import java.time.Duration
-import java.util.logging.Logging
 
 class FileTestHelper {
     private static final ClientLogger logger = new ClientLogger(FileTestHelper.class)
@@ -30,28 +28,18 @@ class FileTestHelper {
         return expectedStatusCode == response.statusCode()
     }
 
-    static boolean assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode, String errMessage) {
-        return assertExceptionStatusCode(throwable, expectedStatusCode) && assertExceptionErrorMessage(throwable, errMessage)
-    }
-
-    static boolean assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode, StorageErrorCode errMessage) {
+    static <T extends Throwable> boolean assertExceptionStatusCodeAndMessage(T throwable, int expectedStatusCode, StorageErrorCode errMessage) {
         return assertExceptionStatusCode(throwable, expectedStatusCode) && assertExceptionErrorMessage(throwable, errMessage)
     }
 
     static boolean assertExceptionStatusCode(Throwable throwable, int expectedStatusCode) {
-        if (!throwable instanceof StorageErrorException) {
-            return false
-        }
-        StorageErrorException storageErrorException = (StorageErrorException) throwable
-        return expectedStatusCode == storageErrorException.response().statusCode()
-    }
-
-    static boolean assertExceptionErrorMessage(Throwable throwable, String errMessage) {
-        return throwable instanceof StorageErrorException && throwable.getMessage().contains(errMessage)
+        return throwable instanceof StorageException &&
+            ((StorageException) throwable).statusCode() == expectedStatusCode
     }
 
     static boolean assertExceptionErrorMessage(Throwable throwable, StorageErrorCode errMessage) {
-        return throwable instanceof StorageErrorException && throwable.getMessage().contains(errMessage.toString())
+        return throwable instanceof StorageException &&
+            ((StorageException) throwable).errorCode() == errMessage
     }
 
     static boolean assertFileServicePropertiesAreEqual(StorageServiceProperties expected, StorageServiceProperties actual) {
@@ -60,7 +48,6 @@ class FileTestHelper {
         } else {
             return assertMetricsAreEqual(expected.hourMetrics(), actual.hourMetrics()) &&
                 assertMetricsAreEqual(expected.minuteMetrics(), actual.minuteMetrics()) &&
-                assertLoggingAreEqual(expected.logging(), actual.logging()) &&
                 assertCorsAreEqual(expected.cors(), actual.cors())
         }
     }
@@ -71,18 +58,6 @@ class FileTestHelper {
         } else {
             return Objects.equals(expected.enabled(), actual.enabled()) &&
                 Objects.equals(expected.includeAPIs(), actual.includeAPIs()) &&
-                Objects.equals(expected.version(), actual.version()) &&
-                assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy())
-        }
-    }
-
-    static boolean assertLoggingAreEqual(Logging expected, Logging actual) {
-        if (expected == null) {
-            return actual == null
-        } else {
-            return Objects.equals(expected.read(), actual.read()) &&
-                Objects.equals(expected.write(), actual.write()) &&
-                Objects.equals(expected.delete(), actual.delete()) &&
                 Objects.equals(expected.version(), actual.version()) &&
                 assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy())
         }
@@ -216,13 +191,6 @@ class FileTestHelper {
         raf.setLength(size)
         raf.close()
         return randomFile.getPath()
-    }
-
-    static boolean assertFileRefName(FileRef fileRef, String name) {
-        if (fileRef != null) {
-            return Objects.equals(name, fileRef.name())
-        }
-        return true
     }
 
     static void deleteFolderIfExists(String folder) {

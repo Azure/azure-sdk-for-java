@@ -6,9 +6,9 @@ jobs:
       ServiceDirectory: storage
       EnvVars:
         AZURE_TEST_MODE: RECORD
-        MICROSOFT_AD_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
-        MICROSOFT_AD_CLIENT_ID: $(aad-azure-sdk-test-client-id)
-        MICROSOFT_AD_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
+        AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
+        AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
+        AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
         PRIMARY_STORAGE_ACCOUNT_NAME: $(java-storage-test-primary-account-name)
         PRIMARY_STORAGE_ACCOUNT_KEY: $(java-storage-test-primary-account-key)
         SECONDARY_STORAGE_ACCOUNT_NAME: $(java-storage-test-secondary-account-name)
@@ -19,3 +19,6 @@ jobs:
         PREMIUM_STORAGE_ACCOUNT_KEY: $(java-storage-test-premium-account-key)
         AZURE_STORAGE_ACCESS_KEY: $(java-storage-test-access-key)
         AZURE_STORAGE_FILE_ENDPOINT: $(java-storage-test-file-endpoint)
+        AZURE_STORAGE_FILE_CONNECTION_STRING: $(java-storage-test-file-connection-string)
+        AZURE_STORAGE_QUEUE_ENDPOINT: $(java-storage-test-queue-endpoint)
+        AZURE_STORAGE_QUEUE_CONNECTION_STRING: $(java-storage-test-queue-connection-string)
