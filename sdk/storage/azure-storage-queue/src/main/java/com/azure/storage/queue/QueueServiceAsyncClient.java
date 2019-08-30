@@ -3,9 +3,12 @@
 package com.azure.storage.queue;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -22,14 +25,11 @@ import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.CorsRule;
 import com.azure.storage.queue.models.ListQueuesIncludeType;
-import com.azure.storage.queue.models.ListQueuesSegmentResponse;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
-import com.azure.storage.queue.models.ServicesListQueuesSegmentResponse;
 import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 import static com.azure.storage.queue.PostProcessor.postProcessResponse;
@@ -198,7 +199,7 @@ public final class QueueServiceAsyncClient {
      *
      * @return {@link QueueItem Queues} in the storage account
      */
-    public Flux<QueueItem> listQueues() {
+    public PagedFlux<QueueItem> listQueues() {
         return listQueues(null, null);
     }
 
@@ -220,7 +221,7 @@ public final class QueueServiceAsyncClient {
      * @param options Options for listing queues
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      */
-    public Flux<QueueItem> listQueues(QueuesSegmentOptions options) {
+    public PagedFlux<QueueItem> listQueues(QueuesSegmentOptions options) {
         return listQueues(null, options);
     }
 
@@ -234,46 +235,29 @@ public final class QueueServiceAsyncClient {
      * @param options Options for listing queues
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      */
-    Flux<QueueItem> listQueues(String marker, QueuesSegmentOptions options) {
-        String prefix = null;
-        Integer maxResults = null;
+    PagedFlux<QueueItem> listQueues(String marker, QueuesSegmentOptions options) {
+        final String prefix = (options != null) ? options.prefix() : null;
+        final Integer maxResults = (options != null) ? options.maxResults() : null;
         final List<ListQueuesIncludeType> include = new ArrayList<>();
 
         if (options != null) {
-            prefix = options.prefix();
-            maxResults = options.maxResults();
             if (options.includeMetadata()) {
                 include.add(ListQueuesIncludeType.fromString(ListQueuesIncludeType.METADATA.toString()));
             }
         }
 
-        Mono<ServicesListQueuesSegmentResponse> result = client.services()
-            .listQueuesSegmentWithRestResponseAsync(prefix, marker, maxResults, include, null, null, Context.NONE);
+        Function<String, Mono<PagedResponse<QueueItem>>> retriever =
+            nextMarker -> postProcessResponse(this.client.services()
+                .listQueuesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include,
+                    null, null, Context.NONE))
+                .map(response -> new PagedResponseBase<>(response.request(),
+                    response.statusCode(),
+                    response.headers(),
+                    response.value().queueItems(),
+                    response.value().nextMarker(),
+                    response.deserializedHeaders()));
 
-        return result.flatMapMany(response -> extractAndFetchQueues(response, include, Context.NONE));
-    }
-
-    /*
-     * Helper function used to auto-enumerate through paged responses
-     */
-    private Flux<QueueItem> listQueues(ServicesListQueuesSegmentResponse response, List<ListQueuesIncludeType> include, Context context) {
-        ListQueuesSegmentResponse value = response.value();
-        Mono<ServicesListQueuesSegmentResponse> result = client.services()
-            .listQueuesSegmentWithRestResponseAsync(value.prefix(), value.nextMarker(), value.maxResults(), include, null, null, context);
-
-        return result.flatMapMany(r -> extractAndFetchQueues(r, include, context));
-    }
-
-    /*
-     * Helper function used to auto-enumerate though paged responses
-     */
-    private Flux<QueueItem> extractAndFetchQueues(ServicesListQueuesSegmentResponse response, List<ListQueuesIncludeType> include, Context context) {
-        String nextPageLink = response.value().nextMarker();
-        if (nextPageLink == null) {
-            return Flux.fromIterable(response.value().queueItems());
-        }
-
-        return Flux.fromIterable(response.value().queueItems()).concatWith(listQueues(response, include, context));
+        return new PagedFlux<>(() -> retriever.apply(marker), retriever);
     }
 
     /**
