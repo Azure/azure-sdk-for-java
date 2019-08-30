@@ -204,6 +204,49 @@ public class DirectoryClient {
     }
 
     /**
+     * Sets the properties of this directory.
+     * The properties include the file SMB properties and the file permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set directory properties</p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryClient.setProperties#filesmbproperties-string}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-properties">Azure Docs</a>.</p>
+     *
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
+     * @return The storage directory SMB properties
+     */
+    public FileSmbProperties setProperties(FileSmbProperties smbProperties, String filePermission) {
+        return setPropertiesWithResponse(smbProperties, filePermission, Context.NONE).value();
+    }
+
+    /**
+     * Sets the properties of this directory.
+     * The properties include the file SMB properties and the file permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set directory properties</p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryClient.setPropertiesWithResponse#filesmbproperties-string-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-properties">Azure Docs</a>.</p>
+     *
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the storage directory smb properties with headers and response status code
+     */
+    public Response<FileSmbProperties> setPropertiesWithResponse(FileSmbProperties smbProperties, String filePermission, Context context) {
+        return directoryAsyncClient.setPropertiesWithResponse(smbProperties, filePermission, context).block();
+    }
+
+    /**
      * Sets the user-defined metadata to associate to the directory.
      *
      * <p>If {@code null} is passed for the metadata it will clear the metadata associated to the directory.</p>

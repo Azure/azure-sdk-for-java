@@ -305,6 +305,34 @@ public class DirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link DirectoryAsyncClient#setProperties(FileSmbProperties, String)}
+     */
+    public void setPropertiesAsync() {
+        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.setProperties#filesmbproperties-string
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        directoryAsyncClient.setProperties(smbProperties, filePermission).subscribe(properties -> {
+            System.out.printf("Directory latest change time is %s.", properties.fileChangeTime());
+        });
+        // END: com.azure.storage.file.directoryAsyncClient.setProperties#filesmbproperties-string
+    }
+
+    /**
+     * Generates a code sample for using {@link DirectoryAsyncClient#setPropertiesWithResponse(FileSmbProperties, String)}
+     */
+    public void setPropertiesWithResponse() {
+        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.setPropertiesWithResponse#filesmbproperties-string
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        directoryAsyncClient.setPropertiesWithResponse(smbProperties, filePermission).subscribe(properties -> {
+            System.out.printf("Directory latest change time is %s:", properties.value().fileChangeTime());
+        });
+        // END: com.azure.storage.file.directoryAsyncClient.setPropertiesWithResponse#filesmbproperties-string
+    }
+
+    /**
      * Generates a code sample for using {@link DirectoryAsyncClient#setMetadata(Map)}
      */
     public void setMetadataAsync() {

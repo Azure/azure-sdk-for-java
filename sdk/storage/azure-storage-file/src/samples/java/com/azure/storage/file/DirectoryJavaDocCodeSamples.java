@@ -279,6 +279,32 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link DirectoryClient#setProperties(FileSmbProperties, String)}
+     */
+    public void setProperties() {
+        DirectoryClient directoryClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.directoryClient.setProperties#filesmbproperties-string
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        FileSmbProperties response = directoryClient.setProperties(smbProperties, filePermission);
+        System.out.printf("Directory change time is %s.", response.fileChangeTime());
+        // END: com.azure.storage.file.directoryClient.setProperties#filesmbproperties-string
+    }
+
+    /**
+     * Generates a code sample for using {@link DirectoryClient#setPropertiesWithResponse(FileSmbProperties, String,Context)}
+     */
+    public void setPropertiesWithResponse() {
+        DirectoryClient directoryClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.directoryClient.setPropertiesWithResponse#filesmbproperties-string-Context
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        Response<FileSmbProperties> response = directoryClient.setPropertiesWithResponse(smbProperties, filePermission, new Context(key1, value1));
+        System.out.printf("Directory change time is %s.", response.value().fileChangeTime());
+        // END: com.azure.storage.file.directoryClient.setPropertiesWithResponse#filesmbproperties-string-Context
+    }
+
+    /**
      * Generates a code sample for using {@link DirectoryClient#setMetadata(Map)}
      */
     public void setMetadata() {

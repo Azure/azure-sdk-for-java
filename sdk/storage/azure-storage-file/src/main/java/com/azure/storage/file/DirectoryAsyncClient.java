@@ -23,6 +23,7 @@ import com.azure.storage.file.models.DirectorysGetPropertiesResponse;
 import com.azure.storage.file.models.DirectorysListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.models.DirectorysListHandlesResponse;
 import com.azure.storage.file.models.DirectorysSetMetadataResponse;
+import com.azure.storage.file.models.DirectorysSetPropertiesResponse;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileRef;
 import com.azure.storage.file.models.HandleItem;
@@ -293,6 +294,70 @@ public class DirectoryAsyncClient {
         return postProcessResponse(azureFileStorageClient.directorys()
             .getPropertiesWithRestResponseAsync(shareName, directoryPath, snapshot, null, context))
             .map(this::getPropertiesResponse);
+    }
+
+    /**
+     * Sets the properties of this directory.
+     * The properties include the file SMB properties and the file permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set directory properties</p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.setProperties#filesmbproperties-string}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-properties">Azure Docs</a>.</p>
+     *
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
+     * @return The storage directory SMB properties
+     */
+    public Mono<FileSmbProperties> setProperties(FileSmbProperties smbProperties, String filePermission) {
+        return setPropertiesWithResponse(smbProperties, filePermission).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Sets the properties of this directory.
+     * The properties include the file SMB properties and the file permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set directory properties</p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.setPropertiesWithResponse#filesmbproperties-string}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-properties">Azure Docs</a>.</p>
+     *
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
+     * @return A response containing the storage directory smb properties with headers and response status code
+     */
+    public Mono<Response<FileSmbProperties>> setPropertiesWithResponse(FileSmbProperties smbProperties, String filePermission) {
+        return withContext(context -> setPropertiesWithResponse(smbProperties, filePermission, Context.NONE));
+    }
+
+    Mono<Response<FileSmbProperties>> setPropertiesWithResponse(FileSmbProperties smbProperties, String filePermission,
+        Context context) {
+
+        FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+
+        // Checks that file permission and file permission key are valid
+        FileExtensions.filePermissionAndKeyHelper(filePermission, properties.filePermissionKey());
+
+        // If file permission and file permission key are both not set then set default value
+        filePermission = properties.filePermission(filePermission, FileConstants.PRESERVE);
+        String filePermissionKey = properties.filePermissionKey();
+
+        String fileAttributes = properties.ntfsFileAttributes(FileConstants.PRESERVE);
+        String fileCreationTime = properties.fileCreationTime(FileConstants.PRESERVE);
+        String fileLastWriteTime = properties.fileLastWriteTime(FileConstants.PRESERVE);
+
+        return postProcessResponse(azureFileStorageClient.directorys()
+            .setPropertiesWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime,
+                fileLastWriteTime, null, filePermission, filePermissionKey, context)
+            .map(this::setPropertiesResponse));
     }
 
     /**
@@ -670,6 +735,11 @@ public class DirectoryAsyncClient {
         FileSmbProperties smbProperties = new FileSmbProperties(response);
         DirectoryProperties directoryProperties = new DirectoryProperties(metadata, eTag, offsetDateTime, isServerEncrypted, smbProperties);
         return new SimpleResponse<>(response, directoryProperties);
+    }
+
+    private Response<FileSmbProperties> setPropertiesResponse(final DirectorysSetPropertiesResponse response) {
+        FileSmbProperties smbProperties = new FileSmbProperties(response);
+        return new SimpleResponse<>(response, smbProperties);
     }
 
     private Response<DirectorySetMetadataInfo> setMetadataResponse(final DirectorysSetMetadataResponse response) {
