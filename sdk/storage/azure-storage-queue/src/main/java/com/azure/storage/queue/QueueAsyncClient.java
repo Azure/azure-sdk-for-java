@@ -14,7 +14,6 @@ import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.DequeuedMessage;
 import com.azure.storage.queue.models.EnqueuedMessage;
@@ -74,28 +73,7 @@ public final class QueueAsyncClient {
     QueueAsyncClient(AzureQueueStorageImpl client, String queueName) {
         Objects.requireNonNull(queueName);
         this.queueName = queueName;
-
-        this.client = new AzureQueueStorageBuilder().pipeline(client.getHttpPipeline())
-            .url(client.getUrl())
-            .version(client.getVersion())
-            .build();
-    }
-
-    /**
-     * Creates a QueueAsyncClient that sends requests to the storage queue service at {@code endpoint}.
-     * Each service call goes through the {@code httpPipeline}.
-     *
-     * @param endpoint URL for the Storage Queue service
-     * @param httpPipeline HttpPipeline that the HTTP requests and response flow through
-     * @param queueName Name of the queue
-     */
-    QueueAsyncClient(URL endpoint, HttpPipeline httpPipeline, String queueName) {
-        Objects.requireNonNull(queueName);
-        this.queueName = queueName;
-
-        this.client = new AzureQueueStorageBuilder().pipeline(httpPipeline)
-            .url(endpoint.toString())
-            .build();
+        this.client = client;
     }
 
     /**
