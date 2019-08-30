@@ -230,7 +230,7 @@ class FileSASTests extends APISpec {
         def client = fileBuilderHelper(interceptorManager, shareName, filePath)
             .endpoint(primaryFileClient.getFileUrl().toString())
             .credential(SASTokenCredential.fromSASTokenString(sas))
-            .buildClient()
+            .buildFileClient()
 
         client.upload(ByteBuffer.wrap(data.getBytes()), (long) data.length())
 
