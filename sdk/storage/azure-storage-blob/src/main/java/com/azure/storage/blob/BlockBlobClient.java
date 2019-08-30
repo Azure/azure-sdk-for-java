@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.exception.UnexpectedLengthException;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -135,6 +136,8 @@ public final class BlockBlobClient extends BlobClient {
      *
      * @return The information of the uploaded block blob.
      * @throws IOException If an I/O error occurs
+     * @throws {@link UnexpectedLengthException} when the length of data does not match the input {@code length}.
+     * @throws NullPointerException if the input data is null.
      */
     public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHTTPHeaders headers,
                                                       Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) throws IOException {
@@ -213,9 +216,12 @@ public final class BlockBlobClient extends BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A response containing status code and HTTP headers
+     * @throws {@link UnexpectedLengthException} when the length of data does not match the input {@code length}.
+     * @throws NullPointerException if the input data is null.
      */
     public VoidResponse stageBlockWithResponse(String base64BlockID, InputStream data, long length,
         LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
+        Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
 
         Mono<VoidResponse> response = blockBlobAsyncClient.stageBlockWithResponse(base64BlockID,

@@ -73,7 +73,12 @@ public final class PlaybackClient implements HttpClient {
 
             return Mono.error(new IllegalStateException("==> Unexpected request: " + incomingMethod + " " + incomingUrl));
         }
-        constructExceptionType(networkCallRecord);
+
+        // Deserialize the exception class when the exception is not null.
+        if (networkCallRecord.exception() != null) {
+            deserializeException(networkCallRecord);
+        }
+
         int recordStatusCode = Integer.parseInt(networkCallRecord.response().get("StatusCode"));
         HttpHeaders headers = new HttpHeaders();
 
@@ -141,10 +146,7 @@ public final class PlaybackClient implements HttpClient {
         return String.format("%s%s", urlBuilder.path(), urlBuilder.queryString());
     }
 
-    private void constructExceptionType(final NetworkCallRecord networkCallRecord) throws Exception {
-        if (networkCallRecord.exception() == null) {
-            return;
-        }
+    private void deserializeException(final NetworkCallRecord networkCallRecord) throws Exception {
         if (networkCallRecord.exception().argTypes() == null) {
             throw (Exception) networkCallRecord.exception().className().getConstructor().newInstance();
         }
