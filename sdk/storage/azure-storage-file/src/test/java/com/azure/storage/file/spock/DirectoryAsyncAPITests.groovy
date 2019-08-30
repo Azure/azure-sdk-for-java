@@ -182,6 +182,63 @@ class DirectoryAsyncAPITests extends APISpec {
         }
     }
 
+    def "Set properties file permission"() {
+        given:
+        primaryDirectoryAsyncClient.createWithResponse(null, null, null).block()
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.setPropertiesWithResponse(null, filePermission))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 200)
+                assert it.value()
+                assert it.value().filePermissionKey()
+                assert it.value().ntfsFileAttributes()
+                assert it.value().fileLastWriteTime()
+                assert it.value().fileCreationTime()
+                assert it.value().fileChangeTime()
+                assert it.value().parentId()
+                assert it.value().fileId()
+            }.verifyComplete()
+    }
+
+    def "Set properties file permission key"() {
+        given:
+        smbProperties.fileCreationTime(getUTCNow())
+            .fileLastWriteTime(getUTCNow())
+        // TODO: add file permission key
+        primaryDirectoryAsyncClient.createWithResponse(null, null, null).block()
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.setPropertiesWithResponse(smbProperties, null))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 200)
+                assert it.value()
+                assert it.value().filePermissionKey()
+                assert it.value().ntfsFileAttributes()
+                assert it.value().fileLastWriteTime()
+                assert it.value().fileCreationTime()
+                assert it.value().fileChangeTime()
+                assert it.value().parentId()
+                assert it.value().fileId()
+            }.verifyComplete()
+    }
+
+    def "Set properties error"() {
+        setup:
+        primaryDirectoryAsyncClient.createWithResponse(null, null, null).block()
+        when:
+        FileSmbProperties properties = new FileSmbProperties().filePermissionKey("filePermissionKey")
+        def setPropertiesVerifier = StepVerifier.create(primaryDirectoryAsyncClient.setProperties(properties, filePermission))
+        then:
+        setPropertiesVerifier.verifyErrorSatisfies {
+            assert it instanceof IllegalArgumentException
+        }
+        when:
+        setPropertiesVerifier = StepVerifier.create(primaryDirectoryAsyncClient.setProperties(null, new String(FileTestHelper.getRandomBuffer(9 * Constants.KB))))
+        then:
+        setPropertiesVerifier.verifyErrorSatisfies {
+            assert it instanceof IllegalArgumentException
+        }
+    }
+
     def "Set metadata"() {
         given:
         primaryDirectoryAsyncClient.createWithResponse(null, null, testMetadata).block()

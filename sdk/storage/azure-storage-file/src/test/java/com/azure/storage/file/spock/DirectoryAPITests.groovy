@@ -181,6 +181,55 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
     }
 
+    def "Set properties file permission"() {
+        given:
+        primaryDirectoryClient.create()
+        def resp = primaryDirectoryClient.setPropertiesWithResponse(null, filePermission, null)
+        expect:
+        FileTestHelper.assertResponseStatusCode(resp, 200)
+        resp.value()
+        resp.value().filePermissionKey()
+        resp.value().ntfsFileAttributes()
+        resp.value().fileLastWriteTime()
+        resp.value().fileCreationTime()
+        resp.value().fileChangeTime()
+        resp.value().parentId()
+        resp.value().fileId()
+    }
+
+    def "Set properties file permission key"() {
+        given:
+        smbProperties.fileCreationTime(getUTCNow())
+            .fileLastWriteTime(getUTCNow())
+        // TODO: add file permission key
+        primaryDirectoryClient.create()
+        def resp = primaryDirectoryClient.setPropertiesWithResponse(smbProperties, null, null)
+        expect:
+        FileTestHelper.assertResponseStatusCode(resp, 200)
+        resp.value()
+        resp.value().filePermissionKey()
+        resp.value().ntfsFileAttributes()
+        resp.value().fileLastWriteTime()
+        resp.value().fileCreationTime()
+        resp.value().fileChangeTime()
+        resp.value().parentId()
+        resp.value().fileId()
+    }
+
+    @Unroll
+    def "Set properties error"() {
+        when:
+        FileSmbProperties properties = new FileSmbProperties().filePermissionKey(filePermissionKey)
+        primaryDirectoryClient.create()
+        primaryDirectoryClient.setPropertiesWithResponse(properties, permission, null)
+        then:
+        thrown(IllegalArgumentException)
+        where:
+        filePermissionKey   | permission
+        "filePermissionKey" | filePermission
+        null                | new String(FileTestHelper.getRandomBuffer(9 * Constants.KB))
+    }
+
     def "Set metadata"() {
         given:
         primaryDirectoryClient.createWithResponse(null, null, testMetadata, null)
