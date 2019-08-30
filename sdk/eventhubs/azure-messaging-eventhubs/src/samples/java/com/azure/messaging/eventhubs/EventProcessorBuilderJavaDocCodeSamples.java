@@ -33,6 +33,7 @@ public class EventProcessorBuilderJavaDocCodeSamples {
                 System.out.println(eventData.bodyAsString());
                 checkpointManager.updateCheckpoint(eventData).subscribe();
             })
+            .partitionManager(new InMemoryPartitionManager())
             .buildEventProcessor();
         // END: com.azure.messaging.eventhubs.eventprocessorbuilder.processevent
     }
@@ -55,6 +56,7 @@ public class EventProcessorBuilderJavaDocCodeSamples {
             .consumerGroup("consumer-group")
             .eventHubClient(eventHubAsyncClient)
             .partitionProcessorFactory((PartitionProcessorImpl::new))
+            .partitionManager(new InMemoryPartitionManager())
             .buildEventProcessor();
         return eventProcessor;
     }

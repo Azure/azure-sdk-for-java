@@ -88,6 +88,7 @@ public class EventProcessorBuilderTest {
             .consumerGroup("consumer-group")
             .eventHubClient(eventHubAsyncClient)
             .processEvent((eventData, partitionContext, checkpointManager) -> System.out.println(eventData.sequenceNumber()))
+            .partitionManager(new InMemoryPartitionManager())
             .buildEventProcessor();
         assertNotNull(eventProcessor);
     }
@@ -108,6 +109,7 @@ public class EventProcessorBuilderTest {
                         return Mono.fromRunnable(() -> System.out.println(eventData.sequenceNumber()));
                     }
                 }))
+            .partitionManager(new InMemoryPartitionManager())
             .buildEventProcessor();
         assertNotNull(eventProcessor);
     }

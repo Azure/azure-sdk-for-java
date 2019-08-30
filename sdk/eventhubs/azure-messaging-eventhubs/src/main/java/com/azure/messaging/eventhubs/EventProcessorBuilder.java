@@ -26,20 +26,12 @@ import reactor.core.publisher.Mono;
  * </ul>
  *
  * <p>
- * <strong>Creating an {@link EventProcessor} using a {@link #processEvent(ProcessEventConsumer)} function</strong>
- * </p>
- * {@codesnippet com.azure.messaging.eventhubs.eventprocessorbuilder.processevent}
- *
- * <p>
  *  To create a more advanced {@link EventProcessor}, use the
  *  {@link #partitionProcessorFactory(PartitionProcessorFactory)} instead of {@link #processEvent(ProcessEventConsumer)}.
  *  The {@link PartitionProcessorFactory} provides the ability to control when checkpoints are updated, handle
  *  errors that might occur during event processing and perform partition-specific initialization of
  *  {@link PartitionProcessor}.
  * </p>
- *
- * <p><strong>Creating an {@link EventProcessor} using {@link PartitionProcessorFactory}</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventprocessorbuilder.partitionprocessorfactory}
  *
  * @see EventProcessor
  * @see EventHubConsumer
