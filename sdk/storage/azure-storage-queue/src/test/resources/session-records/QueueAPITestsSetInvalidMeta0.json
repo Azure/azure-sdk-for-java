@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetinvalidmeta086912efa51a8ecf394",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetinvalidmeta082995a68049e856274",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -12,15 +12,16 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "86d0ac2d-d003-0034-2288-539fde000000",
-      "Date" : "Thu, 15 Aug 2019 16:40:15 GMT"
-    }
+      "x-ms-request-id" : "9c19042e-9003-0099-46cf-5ebfb4000000",
+      "Date" : "Fri, 30 Aug 2019 01:11:26 GMT"
+    },
+    "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetinvalidmeta086912efa51a8ecf394?comp=metadata",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetinvalidmeta082995a68049e856274?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
     },
     "Response" : {
       "Server" : "Microsoft-HTTPAPI/2.0",
@@ -28,11 +29,12 @@
       "retry-after" : "0",
       "Content-Length" : "787",
       "StatusCode" : "403",
-      "x-ms-request-id" : "86d0ac31-d003-0034-2588-539fde000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:86d0ac31-d003-0034-2588-539fde000000\nTime:2019-08-15T16:40:15.9366308Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'eFSCtqZMmfvr497wo8VI4QmqpGPc177ZljiKa2e1R9U=' is not the same as any computed signature. Server used following string to sign: 'PUT\n\n\n\n\n\nThu, 15 Aug 2019 16:40:15 GMT\n\n\n\n\n\nx-ms-client-request-id:0fc39ac3-c8b7-4559-9dc7-d7626792fc6c\nx-ms-meta-invalidmeta:value\nx-ms-version:2018-03-28\n/azstoragesdkaccount/queueapitestssetinvalidmeta086912efa51a8ecf394\ncomp:metadata'.</AuthenticationErrorDetail></Error>",
-      "Date" : "Thu, 15 Aug 2019 16:40:15 GMT",
+      "x-ms-request-id" : "9c19043a-9003-0099-50cf-5ebfb4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:9c19043a-9003-0099-50cf-5ebfb4000000\nTime:2019-08-30T01:11:27.1583483Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'EIfxnJH8o0KlxIpGNBn4w2hh8v9s5ao4gkPnEYqtshk=' is not the same as any computed signature. Server used following string to sign: 'PUT\n\n\n\n\n\nFri, 30 Aug 2019 01:11:27 GMT\n\n\n\n\n\nx-ms-client-request-id:dc13e623-f0d1-4f40-84f4-f09b8c1b5ca7\nx-ms-meta-invalidmeta:value\nx-ms-version:2018-03-28\n/azstoragesdkaccount/queueapitestssetinvalidmeta082995a68049e856274\ncomp:metadata'.</AuthenticationErrorDetail></Error>",
+      "Date" : "Fri, 30 Aug 2019 01:11:26 GMT",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "queueapitestssetinvalidmeta086912efa51a8ecf394" ]
+  "variables" : [ "queueapitestssetinvalidmeta082995a68049e856274" ]
 }
