@@ -76,7 +76,7 @@ public final class PlaybackClient implements HttpClient {
 
         // Deserialize the exception class when the exception is not null.
         if (networkCallRecord.exception() != null) {
-            throw deserializeException(networkCallRecord);
+            return Mono.error(deserializeException(networkCallRecord));
         }
 
         int recordStatusCode = Integer.parseInt(networkCallRecord.response().get("StatusCode"));
@@ -148,7 +148,7 @@ public final class PlaybackClient implements HttpClient {
 
     private Exception deserializeException(final NetworkCallRecord networkCallRecord) throws Exception {
         if (networkCallRecord.exception().argTypes() == null) {
-            return (Exception) networkCallRecord.exception().className().getConstructor().newInstance();
+            return (Exception) networkCallRecord.exception().className().newInstance();
         }
         return (Exception) networkCallRecord.exception().className().getConstructor(
             networkCallRecord.exception().argTypes()).newInstance(networkCallRecord.exception().argValues());
