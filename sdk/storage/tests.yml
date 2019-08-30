@@ -17,3 +17,6 @@ jobs:
         PREMIUM_STORAGE_ACCOUNT_KEY: $(java-storage-test-premium-account-key)
         AZURE_STORAGE_ACCESS_KEY: $(java-storage-test-access-key)
         AZURE_STORAGE_FILE_ENDPOINT: $(java-storage-test-file-endpoint)
+        AZURE_STORAGE_FILE_CONNECTION_STRING: $(java-storage-test-file-connection-string)
+        AZURE_STORAGE_QUEUE_ENDPOINT: $(java-storage-test-queue-endpoint)
+        AZURE_STORAGE_QUEUE_CONNECTION_STRING: $(java-storage-test-queue-connection-string)

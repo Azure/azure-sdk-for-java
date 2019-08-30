@@ -72,6 +72,14 @@ public final class PagedFluxJavaDocCodeSnippets {
         PagedFlux<Integer> pagedFlux = new PagedFlux<>(firstPageRetriever,
             nextPageRetriever);
         // END: com.azure.core.http.rest.pagedflux.instantiation
+
+        // BEGIN: com.azure.core.http.rest.pagedflux.singlepage.instantiation
+        // A supplier that fetches the first page of data from source/service
+        Supplier<Mono<PagedResponse<Integer>>> firstPageRetrieverFunction = () -> getFirstPage();
+
+        PagedFlux<Integer> pagedFluxInstance = new PagedFlux<>(firstPageRetrieverFunction,
+            nextPageRetriever);
+        // END: com.azure.core.http.rest.pagedflux.singlepage.instantiation
         return pagedFlux;
     }
 

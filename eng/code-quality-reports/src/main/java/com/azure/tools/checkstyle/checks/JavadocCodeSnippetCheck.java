@@ -14,8 +14,9 @@ import com.puppycrawl.tools.checkstyle.utils.BlockCommentPosition;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 
 import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.Collections;
 import java.util.Locale;
+import java.util.Queue;
 
 /**
  * Codesnippet description should match naming pattern requirement below:
@@ -40,8 +41,8 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
     };
 
     private String packageName;
-    // A container to contains all class name visited, remove the class name when leave the same token
-    private Deque<String> classNameStack = new ArrayDeque<>();
+    // A LIFO queue contains all class name visited, remove the class name when leave the same token
+    private Queue<String> classNameStack = Collections.asLifoQueue(new ArrayDeque<>());
     // Current METHOD_DEF token while traversal tree
     private DetailAST methodDefToken = null;
 
@@ -68,7 +69,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
     @Override
     public void leaveToken(DetailAST token) {
         if (token.getType() == TokenTypes.CLASS_DEF && !classNameStack.isEmpty()) {
-            classNameStack.pop();
+            classNameStack.poll();
         }
     }
 
@@ -79,7 +80,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
                 packageName = FullIdent.createFullIdent(token.findFirstToken(TokenTypes.DOT)).getText();
                 break;
             case TokenTypes.CLASS_DEF:
-                classNameStack.push(token.findFirstToken(TokenTypes.IDENT).getText());
+                classNameStack.offer(token.findFirstToken(TokenTypes.IDENT).getText());
                 break;
             case TokenTypes.METHOD_DEF:
                 methodDefToken = token;
