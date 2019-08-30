@@ -14,6 +14,7 @@ import com.azure.core.http.ProxyOptions
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
+import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
@@ -167,16 +168,9 @@ class APISpec extends Specification {
         interceptorManager.close()
     }
 
-    //TODO: Should this go in core. Are we leaking ByteBufs when we copy to ByteBuffers?
-     static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content, int size) {
-         return content.collect({
-                 return ByteBuffer.allocate(size)},
-             { byteBuffer, byteBuffer2 ->
-                 byteBuffer.put(byteBuffer2)
-         }).map({ byteBuffer ->
-                 byteBuffer.position(0)
-                 return byteBuffer
-         })
+    //TODO: Should this go in core.
+     static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
+         return FluxUtil.collectBytesInByteBufferStream(content).map{bytes -> ByteBuffer.wrap(bytes)}
     }
 
     static TestMode setupTestMode() {

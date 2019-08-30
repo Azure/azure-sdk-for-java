@@ -41,6 +41,7 @@ final class UploadBufferPool {
 
     private final int maxBuffs;
 
+    // The number of buffs we have allocated. We can query the queue for how many are available.
     private int numBuffs = 0;
 
     private final int buffSize;
@@ -72,7 +73,7 @@ final class UploadBufferPool {
     Note that the upload method will be calling write sequentially as there is only one worker reading from the source
     and calling write. This means operations like currentBuf.remaining() will not result in race conditions.
      */
-    public Flux<ByteBuffer> write(ByteBuffer buf) {
+    Flux<ByteBuffer> write(ByteBuffer buf) {
         // Check if there's a buffer holding any data from a previous call to write. If not, get a new one.
         if (this.currentBuf == null) {
             this.currentBuf = this.getBuffer();
@@ -106,7 +107,7 @@ final class UploadBufferPool {
 
             // Reset the position so we can read the buffer.
             this.currentBuf.position(0);
-            result =  Flux.just(this.currentBuf);
+            result = Flux.just(this.currentBuf);
 
             /*
             Get a new buffer and fill it with whatever is left from buf. Note that this relies on the assumption that
@@ -126,7 +127,12 @@ final class UploadBufferPool {
      */
     private ByteBuffer getBuffer() {
         ByteBuffer result;
-        // There are no buffers in the queue and we have space to allocate one.
+        /*
+         There are no buffers in the queue and we have space to allocate one. We do not add the new buffer to the queue
+         because we want to make immediate use of it. This is effectively equivalent to a buffers.add(newBuffer) and
+         then result = buffers.pop()--because we only get here when the queue is empty, the buffer returned is the one
+         we just created. The new buffer will be added to buffers when it is returned to the pool.
+         */
         if (this.buffers.isEmpty() && this.numBuffs < this.maxBuffs) {
             result = ByteBuffer.allocate(this.buffSize);
             this.numBuffs++;

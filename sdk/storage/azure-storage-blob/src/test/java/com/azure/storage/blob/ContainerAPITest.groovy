@@ -340,7 +340,7 @@ class ContainerAPITest extends APISpec {
         ids.push(identifier2)
 
         when:
-        def response = cc.setAccessPolicy(null, ids, null, null, null)
+        def response = cc.setAccessPolicyWithResponse(null, ids, null, null, null)
         def receivedIdentifiers = cc.getAccessPolicyWithResponse(null, null, null).value().getIdentifiers()
 
         then:

@@ -742,7 +742,7 @@ class BlockBlobAPITest extends APISpec {
         then:
         // Due to memory issues, this check only runs on small to medium sized data sets.
         if (dataSize < 100 * 1024 * 1024) {
-            assert collectBytesInBuffer(bac.download().block(), dataSize).block() == data
+            assert collectBytesInBuffer(bac.download().block()).block() == data
         }
         bac.listBlocks(BlockListType.ALL).block().committedBlocks().size() == blockCount
 
@@ -778,14 +778,12 @@ class BlockBlobAPITest extends APISpec {
         it will be chunked appropriately.
          */
         setup:
-        def totalSize = 0
-        dataSizeList.each { size -> totalSize += size }
         List<ByteBuffer> dataList = new ArrayList<>()
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
         bac.upload(Flux.fromIterable(dataList), bufferSize, numBuffers).block()
 
         expect:
-        compareListToBuffer(dataList, collectBytesInBuffer(bac.download().block(), totalSize).block())
+        compareListToBuffer(dataList, collectBytesInBuffer(bac.download().block()).block())
         bac.listBlocks(BlockListType.ALL).block().committedBlocks().size() == blockCount
 
         where:
@@ -967,7 +965,7 @@ class BlockBlobAPITest extends APISpec {
         // Mock a policy that will always then check that the data is still the same and return a retryable error.
         def mockPolicy = Mock(HttpPipelinePolicy) {
             process(*_) >> { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
-                return collectBytesInBuffer(context.httpRequest().body(), defaultDataSize)
+                return collectBytesInBuffer(context.httpRequest().body())
                     .map { b ->
                     return b == defaultData
                 }

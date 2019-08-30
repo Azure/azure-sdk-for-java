@@ -123,6 +123,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
 
     /**
      * Creates a new block blob, or updates the content of an existing block blob.
+     * <p>
      * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not
      * supported with PutBlob; the content of the existing blob is overwritten with the new content. To
      * perform a partial update of a block blob's, use PutBlock and PutBlockList.
@@ -161,14 +162,15 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
 
     /**
      * Creates a new block blob, or updates the content of an existing block blob.
+     * <p>
      * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not
      * supported with this method; the content of the existing blob is overwritten with the new content. To
      * perform a partial update of a block blob's, use
      * {@link BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and
-     * {@link BlockBlobAsyncClient#commitBlockList(List)}, which this method uses internally.
+     * {@link BlockBlobAsyncClient#commitBlockList(List)}.
      * For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
      * <p>
      * The data passed need not support multiple subscriptions/be replayable as is required in other upload methods when
      * retries are enabled, and the length of the data need not be known in advance. Therefore, this method should
@@ -194,8 +196,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *         The amount of memory consumed by this method may be up to blockSize * numBuffers.
      * @return A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<Response<BlockBlobItem>> upload(Flux<ByteBuffer> data, int blockSize, int numBuffers) {
-        return this.upload(data, blockSize, numBuffers, null, null, null);
+    public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, int blockSize, int numBuffers) {
+        return this.uploadWithResponse(data, blockSize, numBuffers, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -206,8 +208,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * {@link BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and
      * {@link BlockBlobAsyncClient#commitBlockList(List)}, which this method uses internally.
      * For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
      * <p>
      * The data passed need not support multiple subscriptions/be replayable as is required in other upload methods when
      * retries are enabled, and the length of the data need not be known in advance. Therefore, this method should
@@ -236,7 +238,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<Response<BlockBlobItem>> upload(Flux<ByteBuffer> data, int blockSize, int numBuffers,
+    public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, int blockSize, int numBuffers,
         BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
         // TODO: Parallelism parameter? Or let Reactor handle it?
         // TODO: Sample/api reference
@@ -262,16 +264,14 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
             if (buffer.remaining() <= blockSize) {
                 return Flux.just(buffer);
             }
-            List<ByteBuffer> smallerChunks = new ArrayList<>();
             int numSplits = (int) Math.ceil(buffer.remaining() / (double) blockSize);
-            for (int i = 0; i < numSplits; i++) {
-                // Note that duplicate does not duplicate data. It simply creates a duplicate view of the data.
-                ByteBuffer duplicate = buffer.duplicate();
-                duplicate.position(i * blockSize);
-                duplicate.limit(Math.min(duplicate.limit(), (i + 1) * blockSize));
-                smallerChunks.add(duplicate);
-            }
-            return Flux.fromIterable(smallerChunks);
+            return Flux.range(0, numSplits)
+                .map(i -> {
+                    ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
+                    duplicate.position(i * blockSize);
+                    duplicate.limit(Math.min(duplicate.limit(), (i + 1) * blockSize));
+                    return duplicate;
+                });
         });
 
         /*
@@ -294,7 +294,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
                         pool.returnBuffer(buffer);
                         return blockId;
                     }).flux();
-
 
             }) // TODO: parallelism?
             .collect(Collectors.toList())
