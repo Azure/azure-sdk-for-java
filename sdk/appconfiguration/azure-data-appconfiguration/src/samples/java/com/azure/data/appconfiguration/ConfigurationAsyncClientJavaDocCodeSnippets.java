@@ -267,5 +267,6 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+        return null;
     }
 }
