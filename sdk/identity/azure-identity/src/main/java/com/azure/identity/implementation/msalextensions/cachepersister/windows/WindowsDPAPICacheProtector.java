@@ -81,10 +81,12 @@ public class WindowsDPAPICacheProtector extends CacheProtectorBase {
     }
 
     /**
-     * Deletes the cache file
+     * Deletes the cache file if it exists
      * */
     public void deleteCacheHelper() {
-        cacheFile.delete();
+        if (cacheFile.exists()) {
+            cacheFile.delete();
+        }
     }
 
 }

@@ -69,7 +69,9 @@ public class PersistentTokenCacheAccessAspectTest {
 
     @After
     public void cleanup() {
-        accessAspect.deleteCache();
+        if (accessAspect != null) {
+            accessAspect.deleteCache();
+        }
     }
 
     @Test

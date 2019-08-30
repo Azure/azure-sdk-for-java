@@ -68,7 +68,9 @@ public class MultithreadedTokenCacheTest {
 
     @After
     public void cleanup() {
-        accessAspect.deleteCache();
+        if (accessAspect != null) {
+            accessAspect.deleteCache();
+        }
     }
 
     @Test
