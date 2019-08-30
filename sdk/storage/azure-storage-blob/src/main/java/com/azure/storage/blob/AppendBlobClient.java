@@ -123,7 +123,7 @@ public final class AppendBlobClient extends BlobClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the created appended blob.
      */
     public Response<AppendBlobItem> createWithResponse(BlobHTTPHeaders headers, Metadata metadata,
-                                           BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        BlobAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.createWithResponse(headers, metadata, accessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -161,7 +161,7 @@ public final class AppendBlobClient extends BlobClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the append blob operation.
      */
     public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length,
-                                                AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout, Context context) {
+        AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout, Context context) {
         Flux<ByteBuffer> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) MAX_APPEND_BLOCK_BYTES))
             .map(i -> i * MAX_APPEND_BLOCK_BYTES)
             .concatMap(pos -> Mono.fromCallable(() -> {
@@ -175,7 +175,8 @@ public final class AppendBlobClient extends BlobClient {
                 return ByteBuffer.wrap(cache);
             }));
 
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, appendBlobAccessConditions, context);
+        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(
+            fbb.subscribeOn(Schedulers.elastic()), length, appendBlobAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -213,7 +214,8 @@ public final class AppendBlobClient extends BlobClient {
     public AppendBlobItem appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
             byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
             SourceModifiedAccessConditions sourceAccessConditions, Duration timeout) {
-        return this.appendBlockFromUrlWithResponse(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, timeout, Context.NONE).value();
+        return this.appendBlockFromUrlWithResponse(sourceURL, sourceRange, sourceContentMD5, destAccessConditions,
+            sourceAccessConditions, timeout, Context.NONE).value();
     }
 
     /**
