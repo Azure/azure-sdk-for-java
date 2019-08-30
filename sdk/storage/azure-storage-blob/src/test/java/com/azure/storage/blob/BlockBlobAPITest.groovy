@@ -821,7 +821,7 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     def "Buffered upload headers"() {
         when:
-        bac.upload(defaultFlux, 10, 2, new BlobHTTPHeaders().blobCacheControl(cacheControl)
+        bac.uploadWithResponse(defaultFlux, 10, 2, new BlobHTTPHeaders().blobCacheControl(cacheControl)
             .blobContentDisposition(contentDisposition).blobContentEncoding(contentEncoding)
             .blobContentLanguage(contentLanguage).blobContentMD5(contentMD5).blobContentType(contentType),
             null, null).block()
@@ -850,7 +850,7 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        bac.upload(Flux.just(getRandomData(10)), 10, 10, null, metadata, null).block()
+        bac.uploadWithResponse(Flux.just(getRandomData(10)), 10, 10, null, metadata, null).block()
         Response<BlobProperties> response = bac.getPropertiesWithResponse(null).block()
 
         then:
@@ -875,7 +875,7 @@ class BlockBlobAPITest extends APISpec {
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
 
         expect:
-        bac.upload(Flux.just(getRandomData(10)), 10, 2, null, null, accessConditions).block().statusCode() == 201
+        bac.uploadWithResponse(Flux.just(getRandomData(10)), 10, 2, null, null, accessConditions).block().statusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -899,7 +899,7 @@ class BlockBlobAPITest extends APISpec {
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
 
         when:
-        bac.upload(Flux.just(getRandomData(10)), 10, 2, null, null, accessConditions).block()
+        bac.uploadWithResponse(Flux.just(getRandomData(10)), 10, 2, null, null, accessConditions).block()
 
         then:
         def e = thrown(StorageException)

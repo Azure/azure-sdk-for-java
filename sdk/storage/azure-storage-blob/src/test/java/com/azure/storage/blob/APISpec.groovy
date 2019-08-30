@@ -379,7 +379,7 @@ class APISpec extends Specification {
         return builder.buildBlobClient()
     }
 
-    private HttpClient getHttpClient() {
+    HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
         if (testMode == TestMode.RECORD) {
             builder.wiretap(true)
