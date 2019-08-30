@@ -1,559 +1,54 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcstageblockillegalarguments05987332379d57c9d948?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcstageblockillegalarguments05792373c6d079f11247?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7281327E43E8A\"",
-      "Last-Modified" : "Fri, 23 Aug 2019 21:45:03 GMT",
+      "ETag" : "\"0x8D72DA3E0AD956F\"",
+      "Last-Modified" : "Fri, 30 Aug 2019 23:43:36 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d51f84af-201e-00c4-03fc-594fb0000000",
-      "Date" : "Fri, 23 Aug 2019 21:45:03 GMT",
-      "x-ms-client-request-id" : "56665d90-cf50-44ea-b5cf-753e93ec2cf9"
+      "x-ms-request-id" : "fadbe712-b01e-0120-578c-5f1aef000000",
+      "Date" : "Fri, 30 Aug 2019 23:43:36 GMT",
+      "x-ms-client-request-id" : "d71d1137-4da8-4ca9-a721-dd28453b5df6"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcstageblockillegalarguments05987332379d57c9d948/javablobstageblockillegalarguments126478c6703e48549",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcstageblockillegalarguments05792373c6d079f11247/javablobstageblockillegalarguments1336651dca93e7cb1",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-content-crc64" : "6RYQPwaVsyQ=",
-      "Last-Modified" : "Fri, 23 Aug 2019 21:45:03 GMT",
+      "Last-Modified" : "Fri, 30 Aug 2019 23:43:36 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Fri, 23 Aug 2019 21:45:03 GMT",
+      "Date" : "Fri, 30 Aug 2019 23:43:36 GMT",
       "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
-      "ETag" : "\"0x8D7281327E9E7A0\"",
+      "ETag" : "\"0x8D72DA3E0B57D6C\"",
       "Content-Length" : "0",
-      "x-ms-request-id" : "d51f84bd-201e-00c4-0ffc-594fb0000000",
-      "x-ms-client-request-id" : "14a53439-555a-46cc-b55a-7f45190df121"
+      "x-ms-request-id" : "fadbe72c-b01e-0120-6f8c-5f1aef000000",
+      "x-ms-client-request-id" : "68ec00ab-34ba-4a79-b23d-273ddb9dae0c"
     },
     "Exception" : null
-  }, {
-    "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcstageblockillegalarguments05987332379d57c9d948/javablobstageblockillegalarguments126478c6703e48549?blockid=Y2JiNDkwYzctODY3OC00MjQ4LWJmYzUtMjA3YzY2YWI2NThk&comp=block",
-    "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
-      "Content-Type" : "application/octet-stream"
-    },
-    "Response" : null,
-    "Exception" : {
-      "Throwable" : {
-        "cause" : null,
-        "stackTrace" : [ {
-          "methodName" : "lambda$null$4",
-          "fileName" : "BlockBlobClient.java",
-          "lineNumber" : 235,
-          "className" : "com.azure.storage.blob.BlockBlobClient",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "call",
-          "fileName" : "MonoCallable.java",
-          "lineNumber" : 91,
-          "className" : "reactor.core.publisher.MonoCallable",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "drain",
-          "fileName" : "FluxConcatMap.java",
-          "lineNumber" : 402,
-          "className" : "reactor.core.publisher.FluxConcatMap$ConcatMapImmediate",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "onNext",
-          "fileName" : "FluxConcatMap.java",
-          "lineNumber" : 244,
-          "className" : "reactor.core.publisher.FluxConcatMap$ConcatMapImmediate",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "onNext",
-          "fileName" : "FluxMapFuseable.java",
-          "lineNumber" : 121,
-          "className" : "reactor.core.publisher.FluxMapFuseable$MapFuseableSubscriber",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "request",
-          "fileName" : "FluxJust.java",
-          "lineNumber" : 99,
-          "className" : "reactor.core.publisher.FluxJust$WeakScalarSubscription",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "request",
-          "fileName" : "FluxMapFuseable.java",
-          "lineNumber" : 162,
-          "className" : "reactor.core.publisher.FluxMapFuseable$MapFuseableSubscriber",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "onSubscribe",
-          "fileName" : "FluxConcatMap.java",
-          "lineNumber" : 229,
-          "className" : "reactor.core.publisher.FluxConcatMap$ConcatMapImmediate",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "onSubscribe",
-          "fileName" : "FluxMapFuseable.java",
-          "lineNumber" : 90,
-          "className" : "reactor.core.publisher.FluxMapFuseable$MapFuseableSubscriber",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "subscribe",
-          "fileName" : "FluxJust.java",
-          "lineNumber" : 70,
-          "className" : "reactor.core.publisher.FluxJust",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "subscribe",
-          "fileName" : "FluxMapFuseable.java",
-          "lineNumber" : 63,
-          "className" : "reactor.core.publisher.FluxMapFuseable",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "subscribe",
-          "fileName" : "FluxConcatMap.java",
-          "lineNumber" : 121,
-          "className" : "reactor.core.publisher.FluxConcatMap",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "subscribe",
-          "fileName" : "Flux.java",
-          "lineNumber" : 7921,
-          "className" : "reactor.core.publisher.Flux",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "FluxSubscribeOn.java",
-          "lineNumber" : 194,
-          "className" : "reactor.core.publisher.FluxSubscribeOn$SubscribeOnSubscriber",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "call",
-          "fileName" : "WorkerTask.java",
-          "lineNumber" : 84,
-          "className" : "reactor.core.scheduler.WorkerTask",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "call",
-          "fileName" : "WorkerTask.java",
-          "lineNumber" : 37,
-          "className" : "reactor.core.scheduler.WorkerTask",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "FutureTask.java",
-          "lineNumber" : 266,
-          "className" : "java.util.concurrent.FutureTask",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "access$201",
-          "fileName" : "ScheduledThreadPoolExecutor.java",
-          "lineNumber" : 180,
-          "className" : "java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "ScheduledThreadPoolExecutor.java",
-          "lineNumber" : 293,
-          "className" : "java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "runWorker",
-          "fileName" : "ThreadPoolExecutor.java",
-          "lineNumber" : 1149,
-          "className" : "java.util.concurrent.ThreadPoolExecutor",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "ThreadPoolExecutor.java",
-          "lineNumber" : 624,
-          "className" : "java.util.concurrent.ThreadPoolExecutor$Worker",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "Thread.java",
-          "lineNumber" : 748,
-          "className" : "java.lang.Thread",
-          "nativeMethod" : false
-        } ],
-        "message" : null,
-        "localizedMessage" : null,
-        "suppressed" : [ {
-          "cause" : null,
-          "stackTrace" : [ {
-            "methodName" : "blockingGet",
-            "fileName" : "BlockingSingleSubscriber.java",
-            "lineNumber" : 93,
-            "className" : "reactor.core.publisher.BlockingSingleSubscriber",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "block",
-            "fileName" : "Mono.java",
-            "lineNumber" : 1494,
-            "className" : "reactor.core.publisher.Mono",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "blockWithOptionalTimeout",
-            "fileName" : "Utility.java",
-            "lineNumber" : 235,
-            "className" : "com.azure.storage.common.Utility",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "stageBlockWithResponse",
-            "fileName" : "BlockBlobClient.java",
-            "lineNumber" : 242,
-            "className" : "com.azure.storage.blob.BlockBlobClient",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "stageBlock",
-            "fileName" : "BlockBlobClient.java",
-            "lineNumber" : 205,
-            "className" : "com.azure.storage.blob.BlockBlobClient",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "invoke0",
-            "fileName" : "NativeMethodAccessorImpl.java",
-            "lineNumber" : -2,
-            "className" : "sun.reflect.NativeMethodAccessorImpl",
-            "nativeMethod" : true
-          }, {
-            "methodName" : "invoke",
-            "fileName" : "NativeMethodAccessorImpl.java",
-            "lineNumber" : 62,
-            "className" : "sun.reflect.NativeMethodAccessorImpl",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "invoke",
-            "fileName" : "DelegatingMethodAccessorImpl.java",
-            "lineNumber" : 43,
-            "className" : "sun.reflect.DelegatingMethodAccessorImpl",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "invoke",
-            "fileName" : "Method.java",
-            "lineNumber" : 498,
-            "className" : "java.lang.reflect.Method",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "invoke",
-            "fileName" : "PojoMetaMethodSite.java",
-            "lineNumber" : 213,
-            "className" : "org.codehaus.groovy.runtime.callsite.PojoMetaMethodSite$PojoCachedMethodSiteNoUnwrap",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "call",
-            "fileName" : "PojoMetaMethodSite.java",
-            "lineNumber" : 56,
-            "className" : "org.codehaus.groovy.runtime.callsite.PojoMetaMethodSite",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "defaultCall",
-            "fileName" : "CallSiteArray.java",
-            "lineNumber" : 48,
-            "className" : "org.codehaus.groovy.runtime.callsite.CallSiteArray",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "call",
-            "fileName" : "PojoMetaMethodSite.java",
-            "lineNumber" : 58,
-            "className" : "org.codehaus.groovy.runtime.callsite.PojoMetaMethodSite",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "call",
-            "fileName" : "AbstractCallSite.java",
-            "lineNumber" : 141,
-            "className" : "org.codehaus.groovy.runtime.callsite.AbstractCallSite",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "$spock_feature_1_2",
-            "fileName" : "BlockBlobAPITest.groovy",
-            "lineNumber" : 58,
-            "className" : "com.azure.storage.blob.BlockBlobAPITest",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "invoke0",
-            "fileName" : "NativeMethodAccessorImpl.java",
-            "lineNumber" : -2,
-            "className" : "sun.reflect.NativeMethodAccessorImpl",
-            "nativeMethod" : true
-          }, {
-            "methodName" : "invoke",
-            "fileName" : "NativeMethodAccessorImpl.java",
-            "lineNumber" : 62,
-            "className" : "sun.reflect.NativeMethodAccessorImpl",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "invoke",
-            "fileName" : "DelegatingMethodAccessorImpl.java",
-            "lineNumber" : 43,
-            "className" : "sun.reflect.DelegatingMethodAccessorImpl",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "invoke",
-            "fileName" : "Method.java",
-            "lineNumber" : 498,
-            "className" : "java.lang.reflect.Method",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "invokeMethod",
-            "fileName" : "ReflectionUtil.java",
-            "lineNumber" : 188,
-            "className" : "org.spockframework.util.ReflectionUtil",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "invoke",
-            "fileName" : "MethodInfo.java",
-            "lineNumber" : 84,
-            "className" : "org.spockframework.runtime.model.MethodInfo",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "invokeRaw",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 481,
-            "className" : "org.spockframework.runtime.BaseSpecRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "invoke",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 464,
-            "className" : "org.spockframework.runtime.BaseSpecRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "runFeatureMethod",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 406,
-            "className" : "org.spockframework.runtime.BaseSpecRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "doRunIteration",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 324,
-            "className" : "org.spockframework.runtime.BaseSpecRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "invoke",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 309,
-            "className" : "org.spockframework.runtime.BaseSpecRunner$6",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "invokeRaw",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 481,
-            "className" : "org.spockframework.runtime.BaseSpecRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "invoke",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 464,
-            "className" : "org.spockframework.runtime.BaseSpecRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "runIteration",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 288,
-            "className" : "org.spockframework.runtime.BaseSpecRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "initializeAndRunIteration",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 278,
-            "className" : "org.spockframework.runtime.BaseSpecRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "runIterations",
-            "fileName" : "ParameterizedSpecRunner.java",
-            "lineNumber" : 139,
-            "className" : "org.spockframework.runtime.ParameterizedSpecRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "runParameterizedFeature",
-            "fileName" : "ParameterizedSpecRunner.java",
-            "lineNumber" : 41,
-            "className" : "org.spockframework.runtime.ParameterizedSpecRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "doRunFeature",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 262,
-            "className" : "org.spockframework.runtime.BaseSpecRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "invoke",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 246,
-            "className" : "org.spockframework.runtime.BaseSpecRunner$5",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "invokeRaw",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 481,
-            "className" : "org.spockframework.runtime.BaseSpecRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "invoke",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 464,
-            "className" : "org.spockframework.runtime.BaseSpecRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "runFeature",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 238,
-            "className" : "org.spockframework.runtime.BaseSpecRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "runFeatures",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 188,
-            "className" : "org.spockframework.runtime.BaseSpecRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "doRunSpec",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 98,
-            "className" : "org.spockframework.runtime.BaseSpecRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "invoke",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 84,
-            "className" : "org.spockframework.runtime.BaseSpecRunner$1",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "invokeRaw",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 481,
-            "className" : "org.spockframework.runtime.BaseSpecRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "invoke",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 464,
-            "className" : "org.spockframework.runtime.BaseSpecRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "runSpec",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 76,
-            "className" : "org.spockframework.runtime.BaseSpecRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "run",
-            "fileName" : "BaseSpecRunner.java",
-            "lineNumber" : 67,
-            "className" : "org.spockframework.runtime.BaseSpecRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "run",
-            "fileName" : "Sputnik.java",
-            "lineNumber" : 63,
-            "className" : "org.spockframework.runtime.Sputnik",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "runChild",
-            "fileName" : "Suite.java",
-            "lineNumber" : 128,
-            "className" : "org.junit.runners.Suite",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "runChild",
-            "fileName" : "Suite.java",
-            "lineNumber" : 27,
-            "className" : "org.junit.runners.Suite",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "run",
-            "fileName" : "ParentRunner.java",
-            "lineNumber" : 290,
-            "className" : "org.junit.runners.ParentRunner$3",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "schedule",
-            "fileName" : "ParentRunner.java",
-            "lineNumber" : 71,
-            "className" : "org.junit.runners.ParentRunner$1",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "runChildren",
-            "fileName" : "ParentRunner.java",
-            "lineNumber" : 288,
-            "className" : "org.junit.runners.ParentRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "access$000",
-            "fileName" : "ParentRunner.java",
-            "lineNumber" : 58,
-            "className" : "org.junit.runners.ParentRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "evaluate",
-            "fileName" : "ParentRunner.java",
-            "lineNumber" : 268,
-            "className" : "org.junit.runners.ParentRunner$2",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "run",
-            "fileName" : "ParentRunner.java",
-            "lineNumber" : 363,
-            "className" : "org.junit.runners.ParentRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "run",
-            "fileName" : "JUnitCore.java",
-            "lineNumber" : 137,
-            "className" : "org.junit.runner.JUnitCore",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "startRunnerWithArgs",
-            "fileName" : "JUnit4IdeaTestRunner.java",
-            "lineNumber" : 68,
-            "className" : "com.intellij.junit4.JUnit4IdeaTestRunner",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "startRunnerWithArgs",
-            "fileName" : "IdeaTestRunner.java",
-            "lineNumber" : 47,
-            "className" : "com.intellij.rt.execution.junit.IdeaTestRunner$Repeater",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "prepareStreamsAndStart",
-            "fileName" : "JUnitStarter.java",
-            "lineNumber" : 242,
-            "className" : "com.intellij.rt.execution.junit.JUnitStarter",
-            "nativeMethod" : false
-          }, {
-            "methodName" : "main",
-            "fileName" : "JUnitStarter.java",
-            "lineNumber" : 70,
-            "className" : "com.intellij.rt.execution.junit.JUnitStarter",
-            "nativeMethod" : false
-          } ],
-          "message" : "#block terminated with an error",
-          "localizedMessage" : "#block terminated with an error",
-          "suppressed" : [ ]
-        } ]
-      },
-      "ClassName" : "java.lang.NullPointerException"
-    }
   }, {
     "Method" : "GET",
     "Uri" : "https://azstoragesdkaccount.blob.core.windows.net?prefix=jtcstageblockillegalarguments&comp=list",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -561,19 +56,19 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "4a536bfc-101e-004f-4bfc-59f46e000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcstageblockillegalarguments</Prefix><Containers><Container><Name>jtcstageblockillegalarguments05987332379d57c9d948</Name><Properties><Last-Modified>Fri, 23 Aug 2019 21:45:03 GMT</Last-Modified><Etag>\"0x8D7281327E43E8A\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 23 Aug 2019 21:45:03 GMT",
-      "x-ms-client-request-id" : "957bd219-8504-4f27-b5ee-d9c48e9a17c4",
+      "x-ms-request-id" : "fadbe73a-b01e-0120-7d8c-5f1aef000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcstageblockillegalarguments</Prefix><Containers><Container><Name>jtcstageblockillegalarguments05792373c6d079f11247</Name><Properties><Last-Modified>Fri, 30 Aug 2019 23:43:36 GMT</Last-Modified><Etag>\"0x8D72DA3E0AD956F\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 30 Aug 2019 23:43:36 GMT",
+      "x-ms-client-request-id" : "2f2644a5-94b6-4320-b45f-2e82ff2c62cd",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcstageblockillegalarguments05987332379d57c9d948?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcstageblockillegalarguments05792373c6d079f11247?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -581,11 +76,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "4a536c0e-101e-004f-5bfc-59f46e000000",
-      "Date" : "Fri, 23 Aug 2019 21:45:03 GMT",
-      "x-ms-client-request-id" : "784dacf3-0731-415a-afe0-e667f2ce6f9d"
+      "x-ms-request-id" : "fadbe75b-b01e-0120-1c8c-5f1aef000000",
+      "Date" : "Fri, 30 Aug 2019 23:43:36 GMT",
+      "x-ms-client-request-id" : "aa9acf87-a064-4910-b1de-9f42e72b9c84"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcstageblockillegalarguments05987332379d57c9d948", "javablobstageblockillegalarguments126478c6703e48549", "cbb490c7-8678-4248-bfc5-207c66ab658d" ]
+  "variables" : [ "jtcstageblockillegalarguments05792373c6d079f11247", "javablobstageblockillegalarguments1336651dca93e7cb1", "a3c3a014-0c8c-4c78-81b6-9757746003fe" ]
 }

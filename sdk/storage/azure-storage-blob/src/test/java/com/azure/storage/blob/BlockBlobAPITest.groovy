@@ -83,7 +83,7 @@ class BlockBlobAPITest extends APISpec {
         bc.stageBlock(getBlockID(), null, 0)
 
         then:
-        thrown(StorageException)
+        thrown(NullPointerException)
     }
 
     def "Stage block lease"() {
@@ -186,20 +186,6 @@ class BlockBlobAPITest extends APISpec {
         uncommittedBlock.hasNext()
         uncommittedBlock.hasNext()
         uncommittedBlock.hasNext()
-    }
-
-    def "test"() {
-        byte[] bytes = new byte[3];
-        bytes[0] = 'A';
-        bytes[1] = 'C';
-        bytes[2] = 'D';
-        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
-        System.out.println(byteBuffer.position());
-        //
-        Flux<ByteBuffer> bb = Flux.just(byteBuffer);
-        bb.toStream();
-        //
-        System.out.println(byteBuffer.position());
     }
 
     def "Stage block from URL MD5"() {

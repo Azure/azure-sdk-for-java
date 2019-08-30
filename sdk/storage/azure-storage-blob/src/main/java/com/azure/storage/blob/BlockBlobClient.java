@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
+import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -213,6 +214,7 @@ public final class BlockBlobClient extends BlobClient {
      */
     public VoidResponse stageBlockWithResponse(String base64BlockID, InputStream data, long length,
         LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
+        Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
 
         Mono<VoidResponse> response = blockBlobAsyncClient.stageBlockWithResponse(base64BlockID,
