@@ -68,9 +68,9 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
             });
         // Update the value of the setting to "updated_db_connection"
         client.setSetting("prodDBConnection", "updated_db_connection")
-             .subscribe(response -> {
-                 System.out.printf("Key: %s, Value: %s", response.key(), response.value());
-             });
+            .subscribe(response -> {
+                System.out.printf("Key: %s, Value: %s", response.key(), response.value());
+            });
         // END: com.azure.data.appconfiguration.configurationasyncclient.setSetting#string-string
 
         /**
@@ -187,7 +187,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         // END: com.azure.data.appconfiguration.configurationasyncclient.getSettingWithResponse#ConfigurationSetting
     }
 
-   /**
+    /**
      * Code snippets for {@link ConfigurationAsyncClient#deleteSetting(String)}
      */
     public void deleteSettingsCodeSnippet() {
@@ -252,9 +252,16 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
 
     /**
      * Implementation not provided
+     *
      * @return {@code null}
      */
     private ConfigurationAsyncClient getAsyncClient() {
-        return new ConfigurationClientBuilder().credential(new ConfigurationClientCredentials("connectionString")).buildAsyncClient();
+        try {
+            return new ConfigurationClientBuilder().credential(new ConfigurationClientCredentials("connectionString")).buildAsyncClient();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
     }
 }
