@@ -26,8 +26,9 @@ import com.azure.storage.file.models.ServicesGetPropertiesResponse;
 import com.azure.storage.file.models.ServicesListSharesSegmentResponse;
 import com.azure.storage.file.models.ServicesSetPropertiesResponse;
 import com.azure.storage.file.models.StorageErrorException;
-import java.util.List;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined in

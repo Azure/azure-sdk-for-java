@@ -4,6 +4,12 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.storage.common.AccountSASPermission;
+import com.azure.storage.common.AccountSASResourceType;
+import com.azure.storage.common.AccountSASService;
+import com.azure.storage.common.Constants;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -255,4 +261,44 @@ public class FileServiceJavaDocCodeSamples {
         System.out.printf("Setting File service properties completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.fileServiceClient.setPropertiesWithResponse#fileServiceProperties-Context.clearCORS
     }
+
+    /**
+     * Generates a code sample for using {@link FileServiceClient#generateAccountSAS(AccountSASService,
+     * AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IPRange, SASProtocol)}
+     */
+    public void generateAccountSAS() {
+        FileServiceClient fileServiceClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.queue.FileServiceClient.generateAccountSAS
+        AccountSASService service = new AccountSASService()
+            .blob(true)
+            .file(true)
+            .queue(true)
+            .table(true);
+        AccountSASResourceType resourceType = new AccountSASResourceType()
+            .container(true)
+            .object(true)
+            .service(true);
+        AccountSASPermission permission = new AccountSASPermission()
+            .read(true)
+            .add(true)
+            .create(true)
+            .write(true)
+            .delete(true)
+            .list(true)
+            .processMessages(true)
+            .update(true);
+        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        IPRange ipRange = new IPRange()
+            .ipMin("0.0.0.0")
+            .ipMax("255.255.255.255");
+        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+
+        String sas = fileServiceClient.generateAccountSAS(service, resourceType, permission, expiryTime, startTime,
+            version, ipRange, sasProtocol);
+        // END: com.azure.storage.queue.FileServiceClient.generateAccountSAS
+    }
+
+
 }
