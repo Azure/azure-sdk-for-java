@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.ContainerGetPropertiesHeaders;
+import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.PublicAccessType;
 
 import java.time.OffsetDateTime;
@@ -18,11 +19,14 @@ public final class ContainerProperties {
 
     private final OffsetDateTime lastModified;
 
+    private final Metadata metadata;
+
     ContainerProperties(ContainerGetPropertiesHeaders generatedResponseHeaders) {
         this.blobPublicAccess = generatedResponseHeaders.blobPublicAccess();
         this.hasImmutabilityPolicy = generatedResponseHeaders.hasImmutabilityPolicy();
         this.hasLegalHold = generatedResponseHeaders.hasLegalHold();
         this.lastModified = generatedResponseHeaders.lastModified();
+        this.metadata = new Metadata(generatedResponseHeaders.metadata());
     }
 
     /**
@@ -51,5 +55,12 @@ public final class ContainerProperties {
      */
     public OffsetDateTime lastModified() {
         return lastModified;
+    }
+
+    /**
+     * @return the metadata associated with the container
+     */
+    public Metadata  metadata() {
+        return metadata;
     }
 }

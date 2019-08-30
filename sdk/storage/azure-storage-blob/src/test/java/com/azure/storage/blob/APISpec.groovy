@@ -25,7 +25,6 @@ import com.azure.storage.blob.models.ContainerItem
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListContainersOptions
-import com.azure.storage.blob.models.Metadata
 import com.azure.storage.blob.models.RetentionPolicy
 import com.azure.storage.blob.models.StorageServiceProperties
 import com.azure.storage.common.Constants
@@ -541,19 +540,6 @@ class APISpec extends Specification {
             response.value().contentLanguage() == contentLanguage &&
             response.value().contentMD5() == contentMD5 &&
             response.headers().value("Content-Type") == contentType
-    }
-
-    Metadata getMetadataFromHeaders(HttpHeaders headers) {
-        Metadata metadata = new Metadata()
-
-        for (Map.Entry<String, String> header : headers.toMap()) {
-            if (header.getKey().startsWith("x-ms-meta-")) {
-                String metadataKey = header.getKey().substring(10)
-                metadata.put(metadataKey, header.getValue())
-            }
-        }
-
-        return metadata
     }
 
     def enableSoftDelete() {

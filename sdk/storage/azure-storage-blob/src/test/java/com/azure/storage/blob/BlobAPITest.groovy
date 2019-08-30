@@ -44,14 +44,14 @@ class BlobAPITest extends APISpec {
 
     def "Download all null"() {
         when:
-        ByteArrayOutputStream stream = new ByteArrayOutputStream()
-        VoidResponse response = bc.downloadWithResponse(stream, null, null, null, false, null, null)
-        ByteBuffer body = ByteBuffer.wrap(stream.toByteArray())
-        HttpHeaders headers = response.headers()
+        def stream = new ByteArrayOutputStream()
+        def response = bc.downloadWithResponse(stream, null, null, null, false, null, null)
+        def body = ByteBuffer.wrap(stream.toByteArray())
+        def headers = response.headers()
 
         then:
         body == defaultData
-        ImplUtils.isNullOrEmpty(getMetadataFromHeaders(headers))
+        headers.toMap().keySet().stream().noneMatch({ it.startsWith("x-ms-meta-") })
         headers.value("Content-Length") != null
         headers.value("Content-Type") != null
         headers.value("Content-Range") == null
@@ -279,11 +279,12 @@ class BlobAPITest extends APISpec {
 
     def "Get properties default"() {
         when:
-        def headers = bc.getPropertiesWithResponse(null, null, null).headers()
+        def response = bc.getPropertiesWithResponse(null, null, null)
+        def headers = response.headers()
 
         then:
         validateBasicHeaders(headers)
-        ImplUtils.isNullOrEmpty(getMetadataFromHeaders(headers))
+        ImplUtils.isNullOrEmpty(response.value().metadata())
         headers.value("x-ms-blob-type") == BlobType.BLOCK_BLOB.toString()
         headers.value("x-ms-copy-completion-time") == null // tested in "copy"
         headers.value("x-ms-copy-status-description") == null // only returned when the service has errors; cannot validate.

@@ -56,7 +56,7 @@ class ContainerAPITest extends APISpec {
     def "Create metadata"() {
         setup:
         cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
-        Metadata metadata = new Metadata()
+        def metadata = new Metadata()
         if (key1 != null) {
             metadata.put(key1, value1)
         }
@@ -66,10 +66,10 @@ class ContainerAPITest extends APISpec {
 
         when:
         cc.createWithResponse(metadata, null, null, null)
-        Response<ContainerProperties> response = cc.getPropertiesWithResponse(null, null, null)
+        def response = cc.getPropertiesWithResponse(null, null, null)
 
         then:
-        getMetadataFromHeaders(response.headers()) == metadata
+        response.value().metadata() == metadata
 
         where:
         key1  | value1 | key2   | value2
@@ -119,7 +119,7 @@ class ContainerAPITest extends APISpec {
         response.headers().value("x-ms-lease-duration") == null
         response.headers().value("x-ms-lease-state") == LeaseStateType.AVAILABLE.toString()
         response.headers().value("x-ms-lease-status") == LeaseStatusType.UNLOCKED.toString()
-        getMetadataFromHeaders(response.headers()).size() == 0
+        response.value().metadata().size() == 0
     }
 
     def "Get properties min"() {
@@ -167,25 +167,25 @@ class ContainerAPITest extends APISpec {
         then:
         response.statusCode() == 200
         validateBasicHeaders(response.headers())
-        getMetadataFromHeaders(cc.getPropertiesWithResponse(null, null, null).headers()).size() == 0
+        cc.getPropertiesWithResponse(null, null, null).value().metadata().size() == 0
     }
 
     def "Set metadata min"() {
         setup:
-        Metadata metadata = new Metadata()
+        def metadata = new Metadata()
         metadata.put("foo", "bar")
 
         when:
         cc.setMetadata(metadata)
 
         then:
-        getMetadataFromHeaders(cc.getPropertiesWithResponse(null, null, null).headers()) == metadata
+        cc.getPropertiesWithResponse(null, null, null).value().metadata() == metadata
     }
 
     @Unroll
     def "Set metadata metadata"() {
         setup:
-        Metadata metadata = new Metadata()
+        def metadata = new Metadata()
         if (key1 != null) {
             metadata.put(key1, value1)
         }
@@ -195,7 +195,7 @@ class ContainerAPITest extends APISpec {
 
         expect:
         cc.setMetadataWithResponse(metadata, null, null, null).statusCode() == 200
-        getMetadataFromHeaders(cc.getPropertiesWithResponse(null, null, null).headers()) == metadata
+        cc.getPropertiesWithResponse(null, null, null).value().metadata() == metadata
 
         where:
         key1  | value1 | key2   | value2
