@@ -33,7 +33,7 @@ class FileSASTests extends APISpec {
     def setup() {
         primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
         primaryShareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
-        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildClient()
+        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileClient()
 
     }
 
@@ -187,7 +187,7 @@ class FileSASTests extends APISpec {
         def client = fileBuilderHelper(interceptorManager, shareName, filePath)
             .endpoint(primaryFileClient.getFileUrl().toString())
             .credential(SASTokenCredential.fromSASTokenString(sas))
-            .buildClient()
+            .buildFileClient()
 
         def downloadResponse = client.downloadWithProperties()
 
