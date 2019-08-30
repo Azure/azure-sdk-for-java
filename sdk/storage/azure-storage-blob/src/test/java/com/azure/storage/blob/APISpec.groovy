@@ -189,7 +189,7 @@ class APISpec extends Specification {
     }
 
     static boolean liveMode() {
-        return setupTestMode() == TestMode.RECORD && false
+        return setupTestMode() == TestMode.RECORD
     }
 
     private SharedKeyCredential getCredential(String accountType) {
