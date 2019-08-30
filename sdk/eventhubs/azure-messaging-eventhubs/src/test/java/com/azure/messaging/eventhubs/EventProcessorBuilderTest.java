@@ -42,7 +42,7 @@ public class EventProcessorBuilderTest {
     @Test(expected = NullPointerException.class)
     public void testEventProcessorBuilderMissingProperties() {
         EventProcessor eventProcessor = new EventProcessorBuilder()
-            .processEvent(eventData -> Mono.fromRunnable(() -> System.out.println(eventData.sequenceNumber())))
+            .processEvent((eventData, partitionContext, checkpointManager) -> System.out.println(eventData.sequenceNumber()))
             .buildEventProcessor();
     }
 
@@ -66,7 +66,7 @@ public class EventProcessorBuilderTest {
         EventProcessor eventProcessor = new EventProcessorBuilder()
             .consumerGroup("consumer-group")
             .eventHubClient(eventHubAsyncClient)
-            .processEvent(eventData -> Mono.fromRunnable(() -> System.out.println(eventData.sequenceNumber())))
+            .processEvent((eventData, partitionContext, checkpointManager) -> System.out.println(eventData.sequenceNumber()))
             .partitionProcessorFactory(
                 ((partitionContext, checkpointManager) -> new PartitionProcessor(partitionContext, checkpointManager) {
                     @Override
@@ -87,7 +87,7 @@ public class EventProcessorBuilderTest {
         EventProcessor eventProcessor = new EventProcessorBuilder()
             .consumerGroup("consumer-group")
             .eventHubClient(eventHubAsyncClient)
-            .processEvent(eventData -> Mono.fromRunnable(() -> System.out.println(eventData.sequenceNumber())))
+            .processEvent((eventData, partitionContext, checkpointManager) -> System.out.println(eventData.sequenceNumber()))
             .buildEventProcessor();
         assertNotNull(eventProcessor);
     }

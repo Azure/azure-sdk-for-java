@@ -5,7 +5,6 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import java.util.function.Function;
 import reactor.core.publisher.Mono;
 
 /**
@@ -13,25 +12,30 @@ import reactor.core.publisher.Mono;
  * EventProcessor}. Calling {@link #buildEventProcessor()} constructs a new instance of {@link EventProcessor}.
  *
  * <p>
- * To create an instance of {@link EventProcessor} that processes events with user-provided lambda function and
- * checkpoints after successfully processing every event, configure the following fields:
+ * To create an instance of {@link EventProcessor} that processes events with user-provided callback, configure the
+ * following fields:
  *
  * <ul>
- * <li>Consumer group name.</li>
- * <li>{@link EventHubAsyncClient} - An asynchronous Event Hub client the {@link EventProcessor} will use for
+ * <li><b>Consumer group name.</b></li>
+ * <li><b>{@link EventHubAsyncClient}</b> - An asynchronous Event Hub client the {@link EventProcessor} will use for
  * consuming events.</li>
- * <li>{@link #processEvent(Function)} - A callback for processing new events as they are received.</li>
+ * <li><b>{@link #processEvent(ProcessEventConsumer)}</b> - A callback for processing new events as they are received.</li>
+ * <li><b>{@link PartitionManager}</b> - An instance of PartitionManager. To get started, you can pass an instance of
+ * {@link InMemoryPartitionManager}. For production, choose an implementation that will store checkpoints and partition
+ * ownership details to a durable store.</li>
  * </ul>
  *
  * <p>
- * <strong>Creating an {@link EventProcessor} using a {@link #processEvent(Function)} function</strong>
+ * <strong>Creating an {@link EventProcessor} using a {@link #processEvent(ProcessEventConsumer)} function</strong>
  * </p>
  * {@codesnippet com.azure.messaging.eventhubs.eventprocessorbuilder.processevent}
  *
  * <p>
- *  To create a more advanced {@link EventProcessor} that allows you to control the creation of
- *  {@link PartitionProcessor}s and lets you control the frequency of checkpointing, configure the
- *  {@link PartitionProcessorFactory} instead of {@link #processEvent(Function)} lambda function.
+ *  To create a more advanced {@link EventProcessor}, use the
+ *  {@link #partitionProcessorFactory(PartitionProcessorFactory)} instead of {@link #processEvent(ProcessEventConsumer)}.
+ *  The {@link PartitionProcessorFactory} provides the ability to control when checkpoints are updated, handle
+ *  errors that might occur during event processing and perform partition-specific initialization of
+ *  {@link PartitionProcessor}.
  * </p>
  *
  * <p><strong>Creating an {@link EventProcessor} using {@link PartitionProcessorFactory}</strong></p>
@@ -41,6 +45,7 @@ import reactor.core.publisher.Mono;
  * @see EventHubConsumer
  */
 public class EventProcessorBuilder {
+
     private final ClientLogger logger = new ClientLogger(EventProcessorBuilder.class);
 
     private EventPosition initialEventPosition;
@@ -48,7 +53,7 @@ public class EventProcessorBuilder {
     private String consumerGroup;
     private PartitionManager partitionManager;
     private EventHubAsyncClient eventHubAsyncClient;
-    private Function<EventData, Mono<Void>> processEvent;
+    private ProcessEventConsumer processEvent;
 
     /**
      * Sets the Event Hub client the {@link EventProcessor} will use to connect to the Event Hub for consuming events.
@@ -73,13 +78,13 @@ public class EventProcessorBuilder {
     }
 
     /**
-     * Sets the callback for processing new events as they are received from all partitions this {@link EventProcessor} is
-     * responsible for.
+     * Sets the callback for processing new events as they are received from all partitions this {@link EventProcessor}
+     * is responsible for. Instance of a {@link CheckpointManager} is also provided for updating checkpoints.
      *
      * @param processEvent A callback for processing new events as they are received.
      * @return The updated {@link EventProcessorBuilder} instance.
      */
-    public EventProcessorBuilder processEvent(Function<EventData, Mono<Void>> processEvent) {
+    public EventProcessorBuilder processEvent(ProcessEventConsumer processEvent) {
         this.processEvent = processEvent;
         return this;
     }
@@ -140,7 +145,7 @@ public class EventProcessorBuilder {
      * </p>
      *
      * @return A new instance of {@link EventProcessor}.
-     * @throws IllegalStateException if either one of {@link #processEvent(Function)} or {@link
+     * @throws IllegalStateException if either one of {@link #processEvent(ProcessEventConsumer)} or {@link
      * #partitionProcessorFactory(PartitionProcessorFactory)} is not set. This exception will also be thrown if both are
      * set.
      */
@@ -172,8 +177,12 @@ public class EventProcessorBuilder {
         return (partitionContext, checkpointManager) -> new PartitionProcessor(partitionContext, checkpointManager) {
             @Override
             public Mono<Void> processEvent(EventData eventData) {
-                return processEvent.apply(eventData)
-                    .flatMap(unused -> checkpointManager.updateCheckpoint(eventData));
+                try {
+                    processEvent.processEvent(eventData, partitionContext, checkpointManager);
+                    return Mono.empty();
+                } catch (Exception ex) {
+                    return Mono.error(ex);
+                }
             }
         };
     }

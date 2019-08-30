@@ -26,20 +26,15 @@ import reactor.core.scheduler.Schedulers;
 
 /**
  * Event Processor provides a convenient mechanism to consume events from all partitions of an Event Hub in the context
- * of a consumer group. Event Processor based application consists of one or more instances of EventProcessor which are
- * set up to consume events from the same Event Hub, consumer group to balance the workload across different instances
- * and track progress when events are processed. Based on the number of instances running, each Event Processor may own
- * zero or more partitions to balance the workload among all the instances.
- *
- * <p>
- * Event Processor based application consists of one or more instances of {@link EventProcessor} which are set up to
- * consume events from the same Event Hub and consumer group and to balance the workload across different instances and
- * track progress when events are processed.
- * </p>
+ * of a consumer group. Event Processor-based application consists of one or more instances of EventProcessor(s) which
+ * are set up to consume events from the same Event Hub, consumer group to balance the workload across different
+ * instances and track progress when events are processed. Based on the number of instances running, each Event
+ * Processor may own zero or more partitions to balance the workload among all the instances.
  *
  * <p>
  * To create an instance of EventProcessor, use the fluent {@link EventProcessorBuilder}.
  * </p>
+ *
  * @see EventProcessorBuilder
  */
 public class EventProcessor {
@@ -69,7 +64,7 @@ public class EventProcessor {
      * @param partitionProcessorFactory The factory to create new partition processor(s).
      * @param initialEventPosition Initial event position to start consuming events.
      * @param partitionManager The partition manager used for reading and updating partition ownership and checkpoint
-     *        information.
+     * information.
      */
     EventProcessor(EventHubAsyncClient eventHubAsyncClient, String consumerGroupName,
         PartitionProcessorFactory partitionProcessorFactory, EventPosition initialEventPosition,
@@ -90,13 +85,10 @@ public class EventProcessor {
     }
 
     /**
-     * Looks for a user-defined PartitionManager implementation in classpath. If none found, {@link
-     * InMemoryPartitionManager} will be returned that will have no visibility into other EventProcessors that are running
-     * and can only update checkpoints in memory.
-     *
+     * Looks for a user-defined PartitionManager implementation in classpath.
      * <p>
-     *  If there are more than one user-defined PartitionManagers, this method will throw an exception. User has to
-     *  specify a PartitionManager explicitly in {@link EventProcessorBuilder}.
+     * If there are more than one user-defined PartitionManagers, this method will throw an exception. User has to
+     * specify a PartitionManager explicitly in {@link EventProcessorBuilder}.
      * </p>
      *
      * @return A {@link PartitionManager} implementation found in classpath, or {@link InMemoryPartitionManager}
@@ -115,17 +107,15 @@ public class EventProcessor {
                         + "EventProcessorOptions"));
             }
             if (!(partitionManagerInClassPath instanceof InMemoryPartitionManager)) {
-                // Don't consider InMemoryPartitionManager yet.
+                // Don't consider InMemoryPartitionManager.
                 partitionManager = partitionManagerInClassPath;
             }
         }
 
         if (partitionManager == null) {
-            // No PartitionManagers found in classpath. Use InMemoryPartitionManager as default.
-            logger
-                .info("No PartitionManager implementation found in class path. Using in-memory partition manager "
-                    + "which has no visibility into other EventProcessors and can only update checkpoints in-memory.");
-            partitionManager = new InMemoryPartitionManager();
+            // No PartitionManagers found in classpath.
+            throw logger.logExceptionAsWarning(
+                new IllegalStateException("No PartitionManager implementation found in classpath."));
         }
         return partitionManager;
     }

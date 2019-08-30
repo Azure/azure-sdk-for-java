@@ -8,6 +8,9 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 /**
  * A functional interface to create new instance(s) of {@link PartitionProcessor} when provided with a {@link
  * PartitionContext} and {@link CheckpointManager}.
+ *
+ * <p><strong>Code sample</strong></p>
+ * {@codesnippet com.azure.messaging.eventhubs.partitionprocessorfactory.instantiation}
  */
 @FunctionalInterface
 public interface PartitionProcessorFactory {

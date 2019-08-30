@@ -4,16 +4,20 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.PartitionContext;
-import java.util.function.Function;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import reactor.core.publisher.Mono;
 
+/**
+ * Code snippets for {@link EventProcessorBuilder}.
+ */
 public class EventProcessorBuilderJavaDocCodeSamples {
 
     /**
      * Code snippet for showing how to create a new instance of {@link EventProcessor} using the {@link
-     * EventProcessorBuilder#processEvent(Function)} lambda function.
+     * EventProcessorBuilder#processEvent(ProcessEventConsumer)}.
      */
-    public void createInstanceUsingLambdaFunction() {
+    public void createInstanceUsingProcessEventConsumer() {
         // BEGIN: com.azure.messaging.eventhubs.eventprocessorbuilder.processevent
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
             + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
@@ -21,10 +25,14 @@ public class EventProcessorBuilderJavaDocCodeSamples {
             .connectionString(connectionString)
             .buildAsyncClient();
 
+        final Map<String, Long> partitionEventCount = new ConcurrentHashMap<>();
         EventProcessor eventProcessor = new EventProcessorBuilder()
             .consumerGroup("consumer-group")
             .eventHubClient(eventHubAsyncClient)
-            .processEvent(eventData -> Mono.fromRunnable(() -> System.out.println(eventData.bodyAsString())))
+            .processEvent((eventData, partitionContext, checkpointManager) -> {
+                System.out.println(eventData.bodyAsString());
+                checkpointManager.updateCheckpoint(eventData).subscribe();
+            })
             .buildEventProcessor();
         // END: com.azure.messaging.eventhubs.eventprocessorbuilder.processevent
     }
