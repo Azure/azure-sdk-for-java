@@ -30,7 +30,10 @@ import com.azure.storage.file.models.SharesCreateSnapshotResponse;
 import com.azure.storage.file.models.SharesGetPropertiesResponse;
 import com.azure.storage.file.models.SharesGetStatisticsResponse;
 import com.azure.storage.file.models.SignedIdentifier;
-import com.azure.storage.file.models.StorageErrorException;
+import com.azure.storage.file.models.StorageException;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.OffsetDateTime;
@@ -38,10 +41,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.file.PostProcessor.postProcessResponse;
 
 /**
  * This class provides a azureFileStorageClient that contains all the operations for interacting with a share in Azure Storage Share.
@@ -166,7 +168,7 @@ public class ShareAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
      * @return The information about the {@link ShareInfo share}
-     * @throws StorageErrorException If the share already exists with different metadata
+     * @throws StorageException If the share already exists with different metadata
      */
     public Mono<ShareInfo> create() {
         return createWithResponse(null, null).flatMap(FluxUtil::toMono);
@@ -192,7 +194,7 @@ public class ShareAsyncClient {
      * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
      * less than or equal to 5120. The default value is 5120.
      * @return A response containing information about the {@link ShareInfo share} and the status its creation.
-     * @throws StorageErrorException If the share already exists with different metadata or {@code quotaInGB} is outside the
+     * @throws StorageException If the share already exists with different metadata or {@code quotaInGB} is outside the
      * allowed range.
      */
     public Mono<Response<ShareInfo>> createWithResponse(Map<String, String> metadata, Integer quotaInGB) {
@@ -200,7 +202,8 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<ShareInfo>> createWithResponse(Map<String, String> metadata, Integer quotaInGB, Context context) {
-        return azureFileStorageClient.shares().createWithRestResponseAsync(shareName, null, metadata, quotaInGB, context)
+        return postProcessResponse(azureFileStorageClient.shares()
+            .createWithRestResponseAsync(shareName, null, metadata, quotaInGB, context))
             .map(this::mapToShareInfoResponse);
     }
 
@@ -217,7 +220,7 @@ public class ShareAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-share">Azure Docs</a>.</p>
      *
      * @return The information about the {@link ShareSnapshotInfo snapshot of share}.
-     * @throws StorageErrorException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is
+     * @throws StorageException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is
      * in progress for the share
      */
     public Mono<ShareSnapshotInfo> createSnapshot() {
@@ -239,7 +242,7 @@ public class ShareAsyncClient {
      * @param metadata Optional metadata to associate with the snapshot. If {@code null} the metadata of the share
      * will be copied to the snapshot.
      * @return A response containing information about the {@link ShareSnapshotInfo snapshot of share}.
-     * @throws StorageErrorException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is
+     * @throws StorageException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is
      * in progress for the share
      */
     public Mono<Response<ShareSnapshotInfo>> createSnapshotWithResponse(Map<String, String> metadata) {
@@ -247,7 +250,8 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<ShareSnapshotInfo>> createSnapshotWithResponse(Map<String, String> metadata, Context context) {
-        return azureFileStorageClient.shares().createSnapshotWithRestResponseAsync(shareName, null, metadata, context)
+        return postProcessResponse(azureFileStorageClient.shares()
+            .createSnapshotWithRestResponseAsync(shareName, null, metadata, context))
             .map(this::mapCreateSnapshotResponse);
     }
 
@@ -264,7 +268,7 @@ public class ShareAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
      * @return An empty response
-     * @throws StorageErrorException If the share doesn't exist
+     * @throws StorageException If the share doesn't exist
      */
     public Mono<Void> delete() {
         return deleteWithResponse().flatMap(FluxUtil::toMono);
@@ -283,14 +287,15 @@ public class ShareAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If the share doesn't exist
+     * @throws StorageException If the share doesn't exist
      */
     public Mono<VoidResponse> deleteWithResponse() {
-        return withContext(context -> deleteWithResponse(context));
+        return withContext(this::deleteWithResponse);
     }
 
     Mono<VoidResponse> deleteWithResponse(Context context) {
-        return azureFileStorageClient.shares().deleteWithRestResponseAsync(shareName, snapshot, null, null,  context)
+        return postProcessResponse(azureFileStorageClient.shares()
+            .deleteWithRestResponseAsync(shareName, snapshot, null, null,  context))
             .map(VoidResponse::new);
     }
 
@@ -308,7 +313,7 @@ public class ShareAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
      * @return The {@link ShareProperties properties of the share}
-     * @throws StorageErrorException If the share doesn't exist
+     * @throws StorageException If the share doesn't exist
      */
     public Mono<ShareProperties> getProperties() {
         return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
@@ -328,14 +333,15 @@ public class ShareAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
      * @return A response containing the {@link ShareProperties properties of the share} with headers and response status code
-     * @throws StorageErrorException If the share doesn't exist
+     * @throws StorageException If the share doesn't exist
      */
     public Mono<Response<ShareProperties>> getPropertiesWithResponse() {
-        return withContext(context -> getPropertiesWithResponse(context));
+        return withContext(this::getPropertiesWithResponse);
     }
 
     Mono<Response<ShareProperties>> getPropertiesWithResponse(Context context) {
-        return azureFileStorageClient.shares().getPropertiesWithRestResponseAsync(shareName, snapshot, null, context)
+        return postProcessResponse(azureFileStorageClient.shares()
+            .getPropertiesWithRestResponseAsync(shareName, snapshot, null, context))
             .map(this::mapGetPropertiesResponse);
     }
 
@@ -353,7 +359,7 @@ public class ShareAsyncClient {
      *
      * @param quotaInGB Size in GB to limit the share's growth. The quota in GB must be between 1 and 5120.
      * @return The {@link ShareInfo information about the share}
-     * @throws StorageErrorException If the share doesn't exist or {@code quotaInGB} is outside the allowed bounds
+     * @throws StorageException If the share doesn't exist or {@code quotaInGB} is outside the allowed bounds
      */
     public Mono<ShareInfo> setQuota(int quotaInGB) {
         return setQuotaWithResponse(quotaInGB).flatMap(FluxUtil::toMono);
@@ -373,14 +379,15 @@ public class ShareAsyncClient {
      *
      * @param quotaInGB Size in GB to limit the share's growth. The quota in GB must be between 1 and 5120.
      * @return A response containing the {@link ShareInfo information about the share} with headers and response status code
-     * @throws StorageErrorException If the share doesn't exist or {@code quotaInGB} is outside the allowed bounds
+     * @throws StorageException If the share doesn't exist or {@code quotaInGB} is outside the allowed bounds
      */
     public Mono<Response<ShareInfo>> setQuotaWithResponse(int quotaInGB) {
         return withContext(context -> setQuotaWithResponse(quotaInGB, context));
     }
 
     Mono<Response<ShareInfo>> setQuotaWithResponse(int quotaInGB, Context context) {
-        return azureFileStorageClient.shares().setQuotaWithRestResponseAsync(shareName, null, quotaInGB, context)
+        return postProcessResponse(azureFileStorageClient.shares()
+            .setQuotaWithRestResponseAsync(shareName, null, quotaInGB, context))
             .map(this::mapToShareInfoResponse);
     }
 
@@ -404,7 +411,7 @@ public class ShareAsyncClient {
      *
      * @param metadata Metadata to set on the share, if null is passed the metadata for the share is cleared
      * @return The {@link ShareInfo information about the share}
-     * @throws StorageErrorException If the share doesn't exist or the metadata contains invalid keys
+     * @throws StorageException If the share doesn't exist or the metadata contains invalid keys
      */
     public Mono<ShareInfo> setMetadata(Map<String, String> metadata) {
         return setMetadataWithResponse(metadata).flatMap(FluxUtil::toMono);
@@ -430,14 +437,15 @@ public class ShareAsyncClient {
      *
      * @param metadata Metadata to set on the share, if null is passed the metadata for the share is cleared
      * @return A response containing the {@link ShareInfo information about the share} with headers and response status code
-     * @throws StorageErrorException If the share doesn't exist or the metadata contains invalid keys
+     * @throws StorageException If the share doesn't exist or the metadata contains invalid keys
      */
     public Mono<Response<ShareInfo>> setMetadataWithResponse(Map<String, String> metadata) {
         return withContext(context -> setMetadataWithResponse(metadata, context));
     }
 
     Mono<Response<ShareInfo>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
-        return azureFileStorageClient.shares().setMetadataWithRestResponseAsync(shareName, null, metadata, context)
+        return postProcessResponse(azureFileStorageClient.shares()
+            .setMetadataWithRestResponseAsync(shareName, null, metadata, context))
             .map(this::mapToShareInfoResponse);
     }
 
@@ -454,7 +462,7 @@ public class ShareAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
      *
      * @return The stored access policies specified on the queue.
-     * @throws StorageErrorException If the share doesn't exist
+     * @throws StorageException If the share doesn't exist
      */
     public Flux<SignedIdentifier> getAccessPolicy() {
         return azureFileStorageClient.shares().getAccessPolicyWithRestResponseAsync(shareName, Context.NONE)
@@ -475,7 +483,7 @@ public class ShareAsyncClient {
      *
      * @param permissions Access policies to set on the queue
      * @return The {@link ShareInfo information about the share}
-     * @throws StorageErrorException If the share doesn't exist, a stored access policy doesn't have all fields filled out,
+     * @throws StorageException If the share doesn't exist, a stored access policy doesn't have all fields filled out,
      * or the share will have more than five policies.
      */
 
@@ -497,7 +505,7 @@ public class ShareAsyncClient {
      *
      * @param permissions Access policies to set on the queue
      * @return A response containing the {@link ShareInfo information about the share} with headers and response status code
-     * @throws StorageErrorException If the share doesn't exist, a stored access policy doesn't have all fields filled out,
+     * @throws StorageException If the share doesn't exist, a stored access policy doesn't have all fields filled out,
      * or the share will have more than five policies.
      */
     public Mono<Response<ShareInfo>> setAccessPolicyWithResponse(List<SignedIdentifier> permissions) {
@@ -524,7 +532,8 @@ public class ShareAsyncClient {
             }
         }
 
-        return azureFileStorageClient.shares().setAccessPolicyWithRestResponseAsync(shareName, permissions, null, context)
+        return postProcessResponse(azureFileStorageClient.shares()
+            .setAccessPolicyWithRestResponseAsync(shareName, permissions, null, context))
             .map(this::mapToShareInfoResponse);
     }
 
@@ -561,11 +570,12 @@ public class ShareAsyncClient {
      * @return A response containing the storage {@link ShareStatistics statistics of the share} with headers and response status code
      */
     public Mono<Response<ShareStatistics>> getStatisticsWithResponse() {
-        return withContext(context -> getStatisticsWithResponse(context));
+        return withContext(this::getStatisticsWithResponse);
     }
 
     Mono<Response<ShareStatistics>> getStatisticsWithResponse(Context context) {
-        return azureFileStorageClient.shares().getStatisticsWithRestResponseAsync(shareName, context)
+        return postProcessResponse(azureFileStorageClient.shares()
+            .getStatisticsWithRestResponseAsync(shareName, context))
             .map(this::mapGetStatisticsResponse);
     }
 
@@ -583,7 +593,7 @@ public class ShareAsyncClient {
      *
      * @param directoryName Name of the directory
      * @return The {@link DirectoryAsyncClient} to interact with the created directory.
-     * @throws StorageErrorException If the share doesn't exist, the directory already exists or is in the process of
+     * @throws StorageException If the share doesn't exist, the directory already exists or is in the process of
      * being deleted, or the parent directory for the new directory doesn't exist
      */
     public Mono<DirectoryAsyncClient> createDirectory(String directoryName) {
@@ -606,7 +616,7 @@ public class ShareAsyncClient {
      * @param metadata Optional metadata to associate with the directory
      * @return A response containing a {@link DirectoryAsyncClient} to interact with the created directory and the
      * status of its creation.
-     * @throws StorageErrorException If the share doesn't exist, the directory already exists or is in the process of
+     * @throws StorageException If the share doesn't exist, the directory already exists or is in the process of
      * being deleted, the parent directory for the new directory doesn't exist, or the metadata is using an illegal
      * key name
      */
@@ -616,7 +626,8 @@ public class ShareAsyncClient {
 
     Mono<Response<DirectoryAsyncClient>> createDirectoryWithResponse(String directoryName, Map<String, String> metadata, Context context) {
         DirectoryAsyncClient directoryAsyncClient = getDirectoryClient(directoryName);
-        return directoryAsyncClient.createWithResponse(metadata).map(response -> new SimpleResponse<>(response, directoryAsyncClient));
+        return postProcessResponse(directoryAsyncClient.createWithResponse(metadata))
+            .map(response -> new SimpleResponse<>(response, directoryAsyncClient));
     }
 
     /**
@@ -634,7 +645,7 @@ public class ShareAsyncClient {
      * @param fileName Name of the file.
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @return The {@link FileAsyncClient} to interact with the created file.
-     * @throws StorageErrorException If one of the following cases happen:
+     * @throws StorageException If one of the following cases happen:
      * <ul>
      *     <li>
      *         If the share or parent directory does not exist.
@@ -666,7 +677,7 @@ public class ShareAsyncClient {
      * @param metadata Optional metadata to associate with the file.
      * @return A response containing a {@link FileAsyncClient} to interact with the created file and the
      * status of its creation.
-     * @throws StorageErrorException If one of the following cases happen:
+     * @throws StorageException If one of the following cases happen:
      * <ul>
      *     <li>
      *         If the share or parent directory does not exist.
@@ -682,7 +693,8 @@ public class ShareAsyncClient {
 
     Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata, Context context) {
         FileAsyncClient fileAsyncClient = getFileClient(fileName);
-        return fileAsyncClient.createWithResponse(maxSize, httpHeaders, metadata, context).map(response -> new SimpleResponse<>(response, fileAsyncClient));
+        return postProcessResponse(fileAsyncClient.createWithResponse(maxSize, httpHeaders, metadata, context))
+            .map(response -> new SimpleResponse<>(response, fileAsyncClient));
     }
 
     /**
@@ -699,7 +711,7 @@ public class ShareAsyncClient {
      *
      * @param directoryName Name of the directory
      * @return An empty response
-     * @throws StorageErrorException If the share doesn't exist or the directory isn't empty
+     * @throws StorageException If the share doesn't exist or the directory isn't empty
      */
     public Mono<Void> deleteDirectory(String directoryName) {
         return deleteDirectoryWithResponse(directoryName).flatMap(FluxUtil::toMono);
@@ -719,14 +731,15 @@ public class ShareAsyncClient {
      *
      * @param directoryName Name of the directory
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If the share doesn't exist or the directory isn't empty
+     * @throws StorageException If the share doesn't exist or the directory isn't empty
      */
     public Mono<VoidResponse> deleteDirectoryWithResponse(String directoryName) {
         return withContext(context -> deleteDirectoryWithResponse(directoryName, context));
     }
 
     Mono<VoidResponse> deleteDirectoryWithResponse(String directoryName, Context context) {
-        return getDirectoryClient(directoryName).deleteWithResponse(context).map(VoidResponse::new);
+        return postProcessResponse(getDirectoryClient(directoryName).deleteWithResponse(context))
+            .map(VoidResponse::new);
     }
 
     /**
@@ -743,7 +756,7 @@ public class ShareAsyncClient {
      *
      * @param fileName Name of the file.
      * @return A empty response
-     * @throws StorageErrorException If the share or the file doesn't exist.
+     * @throws StorageException If the share or the file doesn't exist.
      */
     public Mono<Void> deleteFile(String fileName) {
         return deleteFileWithResponse(fileName).flatMap(FluxUtil::toMono);
@@ -763,14 +776,15 @@ public class ShareAsyncClient {
      *
      * @param fileName Name of the file.
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If the share or the file doesn't exist.
+     * @throws StorageException If the share or the file doesn't exist.
      */
     public Mono<VoidResponse> deleteFileWithResponse(String fileName) {
         return withContext(context -> deleteFileWithResponse(fileName, context));
     }
 
     Mono<VoidResponse> deleteFileWithResponse(String fileName, Context context) {
-        return getFileClient(fileName).deleteWithResponse(context).map(VoidResponse::new);
+        return postProcessResponse(getFileClient(fileName).deleteWithResponse(context))
+            .map(VoidResponse::new);
     }
 
     /**

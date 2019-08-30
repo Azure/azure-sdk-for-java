@@ -3,35 +3,36 @@
 
 package com.azure.core.http.rest;
 
-import java.util.function.Function;
-import java.util.function.Supplier;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Mono;
 
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 /**
- * Code snippets for {@link PagedFlux}
+ * Code snippets for {@link PagedFluxBase}
  */
-public final class PagedFluxJavaDocCodeSnippets {
+public final class PagedFluxBaseJavaDocCodeSnippets {
 
     /**
-     * Code snippets for showing usage of {@link PagedFlux} in class docs
+     * Code snippets for showing usage of {@link PagedFluxBase} in class docs
      */
     public void classDocSnippet() {
-        PagedFlux<Integer> pagedFlux = createAnInstance();
-        // BEGIN: com.azure.core.http.rest.pagedflux.items
+        PagedFluxBase<Integer, PagedResponse<Integer>> pagedFluxBase = createAnInstance();
+        // BEGIN: com.azure.core.http.rest.pagedfluxbase.items
         // Subscribe to process one item at a time
-        pagedFlux
+        pagedFluxBase
             .log()
             .doOnSubscribe(
                 ignoredVal -> System.out.println("Subscribed to paged flux processing items"))
             .doOnNext(item -> System.out.println("Processing item " + item))
             .doOnComplete(() -> System.out.println("Completed processing"))
             .subscribe();
-        // END: com.azure.core.http.rest.pagedflux.items
+        // END: com.azure.core.http.rest.pagedfluxbase.items
 
-        // BEGIN: com.azure.core.http.rest.pagedflux.pages
+        // BEGIN: com.azure.core.http.rest.pagedfluxbase.pages
         // Subscribe to process one page at a time from the beginning
-        pagedFlux
+        pagedFluxBase
             .byPage()
             .log()
             .doOnSubscribe(ignoredVal -> System.out
@@ -39,13 +40,13 @@ public final class PagedFluxJavaDocCodeSnippets {
             .doOnNext(page -> System.out.println("Processing page containing " + page.items()))
             .doOnComplete(() -> System.out.println("Completed processing"))
             .subscribe();
-        // END: com.azure.core.http.rest.pagedflux.pages
+        // END: com.azure.core.http.rest.pagedfluxbase.pages
 
-        // BEGIN: com.azure.core.http.rest.pagedflux.pagesWithContinuationToken
+        // BEGIN: com.azure.core.http.rest.pagedfluxbase.pagesWithContinuationToken
         // Subscribe to process one page at a time starting from a page associated with
         // a continuation token
         String continuationToken = getContinuationToken();
-        pagedFlux
+        pagedFluxBase
             .byPage(continuationToken)
             .log()
             .doOnSubscribe(ignoredVal -> System.out
@@ -53,15 +54,15 @@ public final class PagedFluxJavaDocCodeSnippets {
             .doOnNext(page -> System.out.println("Processing page containing " + page.items()))
             .doOnComplete(() -> System.out.println("Completed processing"))
             .subscribe();
-        // END: com.azure.core.http.rest.pagedflux.pagesWithContinuationToken
+        // END: com.azure.core.http.rest.pagedfluxbase.pagesWithContinuationToken
     }
     /**
-     * Code snippets for creating an instance of {@link PagedFlux}
-     * @return An instance of {@link PagedFlux}
+     * Code snippets for creating an instance of {@link PagedFluxBase}
+     * @return An instance of {@link PagedFluxBase}
      */
-    public PagedFlux<Integer> createAnInstance() {
+    public PagedFluxBase<Integer, PagedResponse<Integer>> createAnInstance() {
 
-        // BEGIN: com.azure.core.http.rest.pagedflux.instantiation
+        // BEGIN: com.azure.core.http.rest.pagedfluxbase.instantiation
         // A supplier that fetches the first page of data from source/service
         Supplier<Mono<PagedResponse<Integer>>> firstPageRetriever = () -> getFirstPage();
 
@@ -69,63 +70,63 @@ public final class PagedFluxJavaDocCodeSnippets {
         Function<String, Mono<PagedResponse<Integer>>> nextPageRetriever =
             continuationToken -> getNextPage(continuationToken);
 
-        PagedFlux<Integer> pagedFlux = new PagedFlux<>(firstPageRetriever,
+        PagedFluxBase<Integer, PagedResponse<Integer>> pagedFluxBase = new PagedFluxBase<>(firstPageRetriever,
             nextPageRetriever);
-        // END: com.azure.core.http.rest.pagedflux.instantiation
+        // END: com.azure.core.http.rest.pagedfluxbase.instantiation
 
-        // BEGIN: com.azure.core.http.rest.pagedflux.singlepage.instantiation
+        // BEGIN: com.azure.core.http.rest.pagedfluxbase.singlepage.instantiation
         // A supplier that fetches the first page of data from source/service
         Supplier<Mono<PagedResponse<Integer>>> firstPageRetrieverFunction = () -> getFirstPage();
 
-        PagedFlux<Integer> pagedFluxInstance = new PagedFlux<>(firstPageRetrieverFunction,
+        PagedFluxBase<Integer, PagedResponse<Integer>> pagedFluxBaseInstance = new PagedFluxBase<>(firstPageRetrieverFunction,
             nextPageRetriever);
-        // END: com.azure.core.http.rest.pagedflux.singlepage.instantiation
-        return pagedFlux;
+        // END: com.azure.core.http.rest.pagedfluxbase.singlepage.instantiation
+        return pagedFluxBase;
     }
 
     /**
-     * Code snippets for using {@link PagedFlux#byPage()} and {@link PagedFlux#byPage(String)}
+     * Code snippets for using {@link PagedFluxBase#byPage()} and {@link PagedFluxBase#byPage(String)}
      */
     public void byPageSnippet() {
-        PagedFlux<Integer> pagedFlux = createAnInstance();
+        PagedFluxBase<Integer, PagedResponse<Integer>> pagedFluxBase = createAnInstance();
 
-        // BEGIN: com.azure.core.http.rest.pagedflux.bypage
+        // BEGIN: com.azure.core.http.rest.pagedfluxbase.bypage
         // Start processing the results from first page
-        pagedFlux.byPage()
+        pagedFluxBase.byPage()
             .log()
             .doOnSubscribe(ignoredVal -> System.out
                 .println("Subscribed to paged flux processing pages starting from first page"))
             .doOnNext(page -> System.out.println("Processing page containing " + page.items()))
             .doOnComplete(() -> System.out.println("Completed processing"))
             .subscribe();
-        // END: com.azure.core.http.rest.pagedflux.bypage
+        // END: com.azure.core.http.rest.pagedfluxbase.bypage
 
-        // BEGIN: com.azure.core.http.rest.pagedflux.bypage#String
+        // BEGIN: com.azure.core.http.rest.pagedfluxbase.bypage#String
         // Start processing the results from a page associated with the continuation token
         String continuationToken = getContinuationToken();
-        pagedFlux.byPage(continuationToken)
+        pagedFluxBase.byPage(continuationToken)
             .log()
             .doOnSubscribe(ignoredVal -> System.out.println(
                 "Subscribed to paged flux processing page starting from " + continuationToken))
             .doOnNext(page -> System.out.println("Processing page containing " + page.items()))
             .doOnComplete(() -> System.out.println("Completed processing"))
             .subscribe();
-        // END: com.azure.core.http.rest.pagedflux.bypage#String
+        // END: com.azure.core.http.rest.pagedfluxbase.bypage#String
     }
 
     /**
-     * Code snippets for using {@link PagedFlux#subscribe(CoreSubscriber)}
+     * Code snippets for using {@link PagedFluxBase#subscribe(CoreSubscriber)}
      */
     public void byTSnippet() {
-        PagedFlux<Integer> pagedFlux = createAnInstance();
+        PagedFluxBase<Integer, PagedResponse<Integer>> pagedFluxBase = createAnInstance();
 
-        // BEGIN: com.azure.core.http.rest.pagedflux.subscribe
-        pagedFlux.log()
+        // BEGIN: com.azure.core.http.rest.pagedfluxbase.subscribe
+        pagedFluxBase.log()
             .doOnSubscribe(ignoredVal -> System.out.println("Subscribed to paged flux processing items"))
             .doOnNext(item -> System.out.println("Processing item " + item))
             .doOnComplete(() -> System.out.println("Completed processing"))
             .subscribe();
-        // END: com.azure.core.http.rest.pagedflux.subscribe
+        // END: com.azure.core.http.rest.pagedfluxbase.subscribe
     }
 
     /**

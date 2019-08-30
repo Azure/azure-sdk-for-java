@@ -16,9 +16,10 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.models.CorsRule;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
-import com.azure.storage.queue.models.StorageErrorException;
+import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
+
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -81,7 +82,7 @@ public final class QueueServiceClient {
      *
      * @param queueName Name of the queue
      * @return A response containing the QueueClient and the status of creating the queue
-     * @throws StorageErrorException If a queue with the same name and different metadata already exists
+     * @throws StorageException If a queue with the same name and different metadata already exists
      */
     public QueueClient createQueue(String queueName) {
         return createQueueWithResponse(queueName, null, Context.NONE).value();
@@ -101,7 +102,7 @@ public final class QueueServiceClient {
      * @param metadata Metadata to associate with the queue
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the QueueClient and the status of creating the queue
-     * @throws StorageErrorException If a queue with the same name and different metadata already exists
+     * @throws StorageException If a queue with the same name and different metadata already exists
      */
     public Response<QueueClient> createQueueWithResponse(String queueName, Map<String, String> metadata, Context context) {
         Response<QueueAsyncClient> response = client.createQueueWithResponse(queueName, metadata, context).block();
@@ -119,7 +120,7 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.deleteQueue#string}
      *
      * @param queueName Name of the queue
-     * @throws StorageErrorException If the queue doesn't exist
+     * @throws StorageException If the queue doesn't exist
      */
     public void deleteQueue(String queueName) {
         deleteQueueWithResponse(queueName, Context.NONE);
@@ -137,7 +138,7 @@ public final class QueueServiceClient {
      * @param queueName Name of the queue
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the status of deleting the queue
-     * @throws StorageErrorException If the queue doesn't exist
+     * @throws StorageException If the queue doesn't exist
      */
     public VoidResponse deleteQueueWithResponse(String queueName, Context context) {
         return client.deleteQueueWithResponse(queueName, context).block();
@@ -257,7 +258,7 @@ public final class QueueServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure Docs</a>.</p>
      *
      * @param properties Storage account Queue service properties
-     * @throws StorageErrorException When one of the following is true
+     * @throws StorageException When one of the following is true
      * <ul>
      *     <li>A CORS rule is missing one of its fields</li>
      *     <li>More than five CORS rules will exist for the Queue service</li>
@@ -296,7 +297,7 @@ public final class QueueServiceClient {
      * @param properties Storage account Queue service properties
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException When one of the following is true
+     * @throws StorageException When one of the following is true
      * <ul>
      *     <li>A CORS rule is missing one of its fields</li>
      *     <li>More than five CORS rules will exist for the Queue service</li>
