@@ -16,6 +16,8 @@ import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -45,7 +47,7 @@ import java.util.TreeMap;
 import java.util.function.Function;
 
 public final class Utility {
-    private static final ClientLogger logger = new ClientLogger(Utility.class);
+    private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
     private static final String DESERIALIZED_HEADERS = "deserializedHeaders";
     private static final String ETAG = "eTag";
 
@@ -489,24 +491,45 @@ public final class Utility {
         return null;
     }
 
-    public static Flux<ByteBuffer> convertStreamToByteBuffer (InputStream data, long length, int blockSize ) {
+    /**
+     * A utility method for converting the input stream to Flux of ByteBuffer. Will check the equality of
+     * entity length and the input length.
+     *
+     * @param data The input data which needs to convert to ByteBuffer.
+     * @param length The expected input data length.
+     * @param blockSize The size of each ByteBuffer.
+     * @return {@link ByteBuffer} which contains the input data.
+     * @throws UnexpectedLengthException when input data length mismatch input length.
+     * @throws RuntimeException When I/O error occurs.
+     */
+    public static Flux<ByteBuffer> convertStreamToByteBuffer(InputStream data, long length, int blockSize) {
+        final List<Long> lengthInChunk = new ArrayList<>();
         return Flux.range(0, (int) Math.ceil((double) length / (double) blockSize))
             .map(i -> i * blockSize)
             .concatMap(pos -> Mono.fromCallable(() -> {
                 long count = pos + blockSize > length ? length - pos : blockSize;
                 byte[] cache = new byte[(int) count];
-                if (data.available() > count) {
-                    throw new UnexpectedLengthException(
-                        String.format("Request body emitted more bytes than the expected %d bytes.",
-                            length), count, length);
-                }
                 int lastIndex = data.read(cache);
-                if (lastIndex != -1 && lastIndex < count) {
-                   throw new UnexpectedLengthException(
-                       String.format("Request body emitted less bytes than the expected %d bytes.",
-                           length), count, length);
+                lengthInChunk.add((long) lastIndex);
+                if (lastIndex < count) {
+                    throw new UnexpectedLengthException(
+                        String.format("Request body emitted %d bytes less than the expected %d bytes.",
+                            pos + lastIndex, length), pos + lastIndex, length);
                 }
                 return ByteBuffer.wrap(cache);
-            }));
+            }))
+            .doOnComplete(() -> {
+                try {
+                    if (data.available() > 0) {
+                        Long totalLength = lengthInChunk.stream().reduce(Long::sum).orElse(0L) + data.available();
+                        throw new UnexpectedLengthException(
+                            String.format("Request body emitted %d bytes more than the expected %d bytes.",
+                                totalLength, length), totalLength, length);
+                    }
+                } catch (IOException e) {
+                    throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurs. Error deatils: "
+                        + e.getMessage()));
+                }
+            });
     }
 }

@@ -60,7 +60,6 @@ public final class FluxUtil {
     private static void accept(ByteArrayOutputStream byteOutputStream, ByteBuffer byteBuffer) {
         try {
             byteOutputStream.write(byteBufferToArray(byteBuffer));
-            byteBuffer.rewind();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -77,7 +76,6 @@ public final class FluxUtil {
         int length = byteBuffer.remaining();
         byte[] byteArray = new byte[length];
         byteBuffer.get(byteArray);
-        byteBuffer.rewind();
         return byteArray;
     }
 
