@@ -8,6 +8,9 @@ import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import reactor.util.context.Context;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * Code snippets for {@link ConfigurationAsyncClient}
  */
