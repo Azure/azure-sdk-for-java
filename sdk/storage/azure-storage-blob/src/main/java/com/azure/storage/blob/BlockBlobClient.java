@@ -144,7 +144,7 @@ public final class BlockBlobClient extends BlobClient {
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
         Mono<Response<BlockBlobItem>> upload = blockBlobAsyncClient
-            .uploadWithResponse(fbb, length, headers, metadata, accessConditions, context);
+            .uploadWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, accessConditions, context);
 
         try {
             return Utility.blockWithOptionalTimeout(upload, timeout);
@@ -196,7 +196,6 @@ public final class BlockBlobClient extends BlobClient {
      *         provided in the {@link InputStream}.
      */
     public void stageBlock(String base64BlockID, InputStream data, long length) {
-        Objects.requireNonNull(data);
         stageBlockWithResponse(base64BlockID, data, length, null, null, Context.NONE);
     }
 
