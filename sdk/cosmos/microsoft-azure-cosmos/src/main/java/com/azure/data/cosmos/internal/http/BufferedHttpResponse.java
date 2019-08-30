@@ -7,6 +7,8 @@ import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -51,6 +53,11 @@ public class BufferedHttpResponse extends HttpResponse {
     @Override
     public Flux<ByteBuf> body() {
         return bodyAsByteArray().flatMapMany(bytes -> Flux.just(Unpooled.wrappedBuffer(bytes)));
+    }
+
+    @Override
+    public Flux<InputStream> bodyAsInputStream() {
+        return bodyAsByteArray().flatMapMany(bytes -> Flux.just(new ByteArrayInputStream(bytes)));
     }
 
     @Override

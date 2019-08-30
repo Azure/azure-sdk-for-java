@@ -18,7 +18,7 @@ public final class ConnectionPolicy {
     private static final int DEFAULT_MEDIA_REQUEST_TIMEOUT_IN_MILLIS = 300 * 1000;
     private static final int DEFAULT_IDLE_CONNECTION_TIMEOUT_IN_MILLIS = 60 * 1000;
 
-    private static final int DEFAULT_MAX_POOL_SIZE = 1000;
+    private static final int DEFAULT_MAX_POOL_SIZE = 500;
 
     private static ConnectionPolicy default_policy = null;
     private int requestTimeoutInMillis;
@@ -38,7 +38,7 @@ public final class ConnectionPolicy {
      * Constructor.
      */
     public ConnectionPolicy() {
-        this.connectionMode = ConnectionMode.GATEWAY;
+        this.connectionMode = ConnectionMode.DIRECT;
         this.enableReadRequestsFallback = null;
         this.idleConnectionTimeoutInMillis = DEFAULT_IDLE_CONNECTION_TIMEOUT_IN_MILLIS;
         this.maxPoolSize = DEFAULT_MAX_POOL_SIZE;
@@ -62,7 +62,7 @@ public final class ConnectionPolicy {
 
     /**
      * Gets the request timeout (time to wait for response from network peer) in
-     * milliseconds. 
+     * milliseconds.
      *
      * @return the request timeout in milliseconds.
      */

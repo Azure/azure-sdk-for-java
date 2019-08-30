@@ -8,6 +8,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.Connection;
 
+import java.io.InputStream;
 import java.nio.charset.Charset;
 
 /**
@@ -67,6 +68,13 @@ public abstract class HttpResponse implements AutoCloseable {
      * @return The response's content as a stream of {@link ByteBuf}.
      */
     public abstract Flux<ByteBuf> body();
+
+    /**
+     * Get the response content as InputStream.
+     *
+     * @return this response content as InputStream
+     */
+    public abstract Flux<InputStream> bodyAsInputStream();
 
     /**
      * Get the response content as a byte[].
