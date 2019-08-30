@@ -163,5 +163,5 @@
   <!-- TODO (gvinay): Remove this when you clean up logging issues -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.security.keyvault.keys.cryptography.AesCbc.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.security.keyvault.keys.cryptography.AesKw.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.security.keyvault.keys.cryptography.Aes256CbcHmacSha2.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.security.keyvault.keys.cryptography.AesCbcHmacSha2.java"/>
 </suppressions>
