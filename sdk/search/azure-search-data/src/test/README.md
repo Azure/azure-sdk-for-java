@@ -62,7 +62,7 @@ Before running the tests on PLAYBACK mode, you need to run them on RECORD mode t
 
 To run tests in Playback mode:
 
-1. Set the value of the **AZURE_TEST_MODE** environment variable to *'RECORD'* (or delete it). You can also delete all other environment variables.
+1. Set the value of the **AZURE_TEST_MODE** environment variable to *'PLAYBACK'* (or delete it). You can also delete all other environment variables.
 2. Run the tests.
 
 ## Example of creating test environment in Azure

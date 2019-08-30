@@ -345,6 +345,21 @@ public class SearchAsyncTests extends SearchTestBase {
     }
 
     @Override
+    public void searchWithScoringProfileBoostsScore() {
+        SearchParameters searchParameters = new SearchParameters()
+            .scoringProfile("nearest")
+            .scoringParameters(Arrays.asList("myloc-'-122','49'"))
+            .filter("Rating eq 5 or Rating eq 1");
+
+        Flux<SearchResult> response = client.search("hotel", searchParameters, new SearchRequestOptions()).log();
+
+        StepVerifier.create(response)
+            .assertNext(res -> Assert.assertEquals("2", getSearchResultId(res, "HotelId")))
+            .assertNext(res -> Assert.assertEquals("1", getSearchResultId(res, "HotelId")))
+            .verifyComplete();
+    }
+
+    @Override
     public void canSearchWithMinimumCoverage() {
         Flux<PagedResponse<SearchResult>> results = client.search("*", new SearchParameters().minimumCoverage(50.0), new SearchRequestOptions()).byPage();
         Assert.assertNotNull(results);

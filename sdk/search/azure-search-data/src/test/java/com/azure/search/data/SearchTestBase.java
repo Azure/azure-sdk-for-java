@@ -282,6 +282,9 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         search("/.*/.*/", invalidSearchParameters, new SearchRequestOptions());
     }
 
+    @Test
+    public abstract void searchWithScoringProfileBoostsScore();
+
     abstract void search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions);
 
     abstract void indexDocuments(List<IndexAction> indexActions);

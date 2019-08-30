@@ -347,6 +347,21 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
+    public void searchWithScoringProfileBoostsScore() {
+        SearchParameters searchParameters = new SearchParameters()
+            .scoringProfile("nearest")
+            .scoringParameters(Arrays.asList("myloc-'-122','49'"))
+            .filter("Rating eq 5 or Rating eq 1");
+
+        List<Map<String, Object>> response = getSearchResults(
+            client.search("hotel", searchParameters, new SearchRequestOptions()));
+        Assert.assertEquals(2, response.size());
+        Assert.assertEquals(
+            Arrays.asList("2", "1"),
+            response.stream().map(res -> res.get("HotelId").toString()).collect(Collectors.toList()));
+    }
+
+    @Override
     public void canSearchWithMinimumCoverage() {
         PagedIterable<SearchResult> results = client
             .search("*", new SearchParameters().minimumCoverage(50.0), new SearchRequestOptions());
