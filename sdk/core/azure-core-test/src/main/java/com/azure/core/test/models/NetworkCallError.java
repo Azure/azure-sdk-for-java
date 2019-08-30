@@ -83,9 +83,9 @@ public class NetworkCallError {
      * Sets the error message of the class of the throwable. This is used during deserialization the construct the
      * throwable as the actual class that was thrown.
      *
-     * @param errorMsg Error msg from the exception.
+     * @param errorMessage Error msg from the exception.
      */
-    public void errorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
+    public void errorMessage(String errorMessage) {
+        this.errorMsg = errorMessage;
     }
 }
