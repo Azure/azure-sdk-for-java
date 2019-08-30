@@ -4,17 +4,20 @@
 package com.azure.storage.file;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageBuilder;
@@ -31,7 +34,6 @@ import com.azure.storage.file.models.SharesGetPropertiesResponse;
 import com.azure.storage.file.models.SharesGetStatisticsResponse;
 import com.azure.storage.file.models.SignedIdentifier;
 import com.azure.storage.file.models.StorageException;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -41,6 +43,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 import static com.azure.storage.file.PostProcessor.postProcessResponse;
@@ -464,9 +467,18 @@ public class ShareAsyncClient {
      * @return The stored access policies specified on the queue.
      * @throws StorageException If the share doesn't exist
      */
-    public Flux<SignedIdentifier> getAccessPolicy() {
-        return azureFileStorageClient.shares().getAccessPolicyWithRestResponseAsync(shareName, Context.NONE)
-            .flatMapMany(response -> Flux.fromIterable(response.value()));
+    public PagedFlux<SignedIdentifier> getAccessPolicy() {
+        Function<String, Mono<PagedResponse<SignedIdentifier>>> retriever =
+            marker -> postProcessResponse(this.azureFileStorageClient.shares()
+                .getAccessPolicyWithRestResponseAsync(shareName, Context.NONE))
+            .map(response -> new PagedResponseBase<>(response.request(),
+                response.statusCode(),
+                response.headers(),
+                response.value(),
+                null,
+                response.deserializedHeaders()));
+
+        return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
     /**

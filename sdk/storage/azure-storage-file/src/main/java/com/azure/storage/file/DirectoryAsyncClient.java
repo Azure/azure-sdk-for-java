@@ -4,9 +4,12 @@
 package com.azure.storage.file;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -18,16 +21,13 @@ import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.DirectorysCreateResponse;
-import com.azure.storage.file.models.DirectorysForceCloseHandlesResponse;
 import com.azure.storage.file.models.DirectorysGetPropertiesResponse;
 import com.azure.storage.file.models.DirectorysListFilesAndDirectoriesSegmentResponse;
-import com.azure.storage.file.models.DirectorysListHandlesResponse;
 import com.azure.storage.file.models.DirectorysSetMetadataResponse;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileRef;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -35,9 +35,11 @@ import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 import static com.azure.storage.file.PostProcessor.postProcessResponse;
@@ -356,7 +358,7 @@ public class DirectoryAsyncClient {
      *
      * @return {@link FileRef File info} in the storage directory
      */
-    public Flux<FileRef> listFilesAndDirectories() {
+    public PagedFlux<FileRef> listFilesAndDirectories() {
         return listFilesAndDirectories(null, null);
     }
 
@@ -377,9 +379,19 @@ public class DirectoryAsyncClient {
      *                   If the request does not specify maxresults or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @return {@link FileRef File info} in this directory with prefix and max number of return results.
      */
-    public Flux<FileRef> listFilesAndDirectories(String prefix, Integer maxResults) {
-        return azureFileStorageClient.directorys().listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryPath, prefix, snapshot, null, maxResults, null, Context.NONE)
-                  .flatMapMany(response -> nextPageForFileAndDirectories(response, prefix, maxResults));
+    public PagedFlux<FileRef> listFilesAndDirectories(String prefix, Integer maxResults) {
+        Function<String, Mono<PagedResponse<FileRef>>> retriever =
+            marker -> postProcessResponse(this.azureFileStorageClient.directorys()
+                .listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryPath, prefix, snapshot,
+                    marker, maxResults, null, Context.NONE))
+                .map(response -> new PagedResponseBase<>(response.request(),
+                    response.statusCode(),
+                    response.headers(),
+                    convertResponseAndGetNumOfResults(response),
+                    response.value().nextMarker(),
+                    response.deserializedHeaders()));
+
+        return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
     /**
@@ -398,11 +410,19 @@ public class DirectoryAsyncClient {
      * @param recursive Specifies operation should apply to the directory specified in the URI, its files, its subdirectories and their files.
      * @return {@link HandleItem handles} in the directory that satisfy the requirements
      */
-    public Flux<HandleItem> listHandles(Integer maxResult, boolean recursive) {
-        return postProcessResponse(azureFileStorageClient.directorys()
-            .listHandlesWithRestResponseAsync(shareName, directoryPath, null, maxResult, null,
-                snapshot, recursive, Context.NONE))
-            .flatMapMany(response -> nextPageForHandles(response, maxResult, recursive));
+    public PagedFlux<HandleItem> listHandles(Integer maxResult, boolean recursive) {
+        Function<String, Mono<PagedResponse<HandleItem>>> retriever =
+            marker -> postProcessResponse(this.azureFileStorageClient.directorys()
+            .listHandlesWithRestResponseAsync(shareName, directoryPath, marker, maxResult, null, snapshot, recursive,
+                Context.NONE))
+            .map(response -> new PagedResponseBase<>(response.request(),
+                response.statusCode(),
+                response.headers(),
+                response.value().handleList(),
+                response.value().nextMarker(),
+                response.deserializedHeaders()));
+
+        return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
     /**
@@ -421,13 +441,21 @@ public class DirectoryAsyncClient {
      * @param recursive A boolean value that specifies if the operation should also apply to the files and subdirectories of the directory specified in the URI.
      * @return The counts of number of handles closed
      */
-    public Flux<Integer> forceCloseHandles(String handleId, boolean recursive) {
+    public PagedFlux<Integer> forceCloseHandles(String handleId, boolean recursive) {
         // TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
         // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
-        return postProcessResponse(azureFileStorageClient.directorys()
-            .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, handleId, null, null,
-                snapshot, recursive, Context.NONE))
-            .flatMapMany(response -> nextPageForForceCloseHandles(response, handleId, recursive));
+        Function<String, Mono<PagedResponse<Integer>>> retriever =
+            marker -> postProcessResponse(this.azureFileStorageClient.directorys()
+            .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, handleId, null, marker, snapshot,
+                recursive, Context.NONE))
+            .map(response -> new PagedResponseBase<>(response.request(),
+                response.statusCode(),
+                response.headers(),
+                Collections.singletonList(response.deserializedHeaders().numberOfHandlesClosed()),
+                response.deserializedHeaders().marker(),
+                response.deserializedHeaders()));
+
+        return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
     /**
@@ -660,45 +688,14 @@ public class DirectoryAsyncClient {
         return new SimpleResponse<>(response, directorySetMetadataInfo);
     }
 
-    private Flux<FileRef> nextPageForFileAndDirectories(final DirectorysListFilesAndDirectoriesSegmentResponse response, final String prefix, final Integer maxResult) {
-        List<FileRef> fileRefs = convertResponseAndGetNumOfResults(response);
-
-        if (response.value().nextMarker() == null) {
-            return Flux.fromIterable(fileRefs);
-        }
-        Mono<DirectorysListFilesAndDirectoriesSegmentResponse> listResponse = azureFileStorageClient.directorys().listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryPath, prefix, snapshot, response.value().nextMarker(), maxResult, null, Context.NONE);
-        Flux<FileRef> fileRefPublisher = listResponse.flatMapMany(newResponse -> nextPageForFileAndDirectories(newResponse, prefix, maxResult));
-        return Flux.fromIterable(fileRefs).concatWith(fileRefPublisher);
-    }
-
-    private Flux<HandleItem> nextPageForHandles(DirectorysListHandlesResponse response, Integer maxResult, boolean recursive) {
-        List<HandleItem> handleItems = response.value().handleList();
-
-        if (response.value().nextMarker() == null) {
-            return Flux.fromIterable(handleItems);
-        }
-        Mono<DirectorysListHandlesResponse> listResponse = azureFileStorageClient.directorys().listHandlesWithRestResponseAsync(shareName, directoryPath, response.value().nextMarker(), maxResult, null, snapshot,  recursive, Context.NONE);
-        Flux<HandleItem> fileRefPublisher = listResponse.flatMapMany(newResponse -> nextPageForHandles(newResponse, maxResult, recursive));
-        return Flux.fromIterable(handleItems).concatWith(fileRefPublisher);
-    }
-
-    private Flux<Integer> nextPageForForceCloseHandles(DirectorysForceCloseHandlesResponse response, String handleId, boolean recursive) {
-        List<Integer> handleCount = Collections.singletonList(response.deserializedHeaders().numberOfHandlesClosed());
-
-        if (response.deserializedHeaders().marker() == null) {
-            return Flux.fromIterable(handleCount);
-        }
-        Mono<DirectorysForceCloseHandlesResponse> listResponse = azureFileStorageClient.directorys().forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, handleId, null, response.deserializedHeaders().marker(), snapshot, recursive, Context.NONE);
-        Flux<Integer> fileRefPublisher = listResponse.flatMapMany(newResponse -> nextPageForForceCloseHandles(newResponse, handleId, recursive));
-        return Flux.fromIterable(handleCount).concatWith(fileRefPublisher);
-    }
-
     private List<FileRef> convertResponseAndGetNumOfResults(DirectorysListFilesAndDirectoriesSegmentResponse response) {
         List<FileRef> fileRefs = new ArrayList<>();
         if (response.value().segment() != null) {
             response.value().segment().directoryItems().forEach(directoryItem -> fileRefs.add(new FileRef(directoryItem.name(), true, null)));
             response.value().segment().fileItems().forEach(fileItem -> fileRefs.add(new FileRef(fileItem.name(), false, fileItem.properties())));
         }
+
+        fileRefs.sort(Comparator.comparing(FileRef::name));
         return fileRefs;
     }
 }

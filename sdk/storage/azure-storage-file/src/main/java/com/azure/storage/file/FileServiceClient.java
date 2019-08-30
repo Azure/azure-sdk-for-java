@@ -3,6 +3,7 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
@@ -88,7 +89,7 @@ public final class FileServiceClient {
      *
      * @return {@link ShareItem Shares} in the storage account without their metadata or snapshots
      */
-    public Iterable<ShareItem> listShares() {
+    public PagedIterable<ShareItem> listShares() {
         return listShares(null);
     }
 
@@ -120,8 +121,8 @@ public final class FileServiceClient {
      * @param options Options for listing shares
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
-    public Iterable<ShareItem> listShares(ListSharesOptions options) {
-        return fileServiceAsyncClient.listShares(options).toIterable();
+    public PagedIterable<ShareItem> listShares(ListSharesOptions options) {
+        return new PagedIterable<>(fileServiceAsyncClient.listShares(options));
     }
 
     /**
