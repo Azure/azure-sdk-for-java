@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsgetaccesspolicydoeserror56212d23d22?comp=acl",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsgetaccesspolicydoeserror76559706bcb?comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -13,11 +13,12 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "86d0b489-d003-0034-7888-539fde000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:86d0b489-d003-0034-7888-539fde000000\nTime:2019-08-15T16:40:34.0060234Z</Message></Error>",
-      "Date" : "Thu, 15 Aug 2019 16:40:33 GMT",
+      "x-ms-request-id" : "9c190920-9003-0099-43cf-5ebfb4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:9c190920-9003-0099-43cf-5ebfb4000000\nTime:2019-08-30T01:11:41.0722534Z</Message></Error>",
+      "Date" : "Fri, 30 Aug 2019 01:11:40 GMT",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "queueaysncapitestsgetaccesspolicydoeserror56212d23d22" ]
+  "variables" : [ "queueaysncapitestsgetaccesspolicydoeserror76559706bcb" ]
 }

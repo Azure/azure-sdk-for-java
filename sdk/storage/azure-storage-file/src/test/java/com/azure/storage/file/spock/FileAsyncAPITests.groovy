@@ -20,7 +20,8 @@ import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
-import java.nio.file.Files
+import java.nio.file.FileAlreadyExistsException
+import java.nio.file.NoSuchFileException
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -112,19 +113,6 @@ class FileAsyncAPITests extends APISpec {
         1024    | httpHeaders     | Collections.singletonMap("testMeta", "value") | 403        | StorageErrorCode.AUTHENTICATION_FAILED
     }
 
-    @Unroll
-    def "Create file permission and key error"() {
-        when:
-        FileSmbProperties properties = new FileSmbProperties().filePermissionKey(filePermissionKey)
-        primaryFileAsyncClient.createWithResponse(1024, null, properties, permission, null)
-        then:
-        thrown(IllegalArgumentException)
-        where:
-        filePermissionKey   | permission
-        "filePermissionKey" | filePermission
-        null                | new String(FileTestHelper.getRandomBuffer(9 * Constants.KB))
-    }
-
     def "Upload and download data"() {
         given:
         primaryFileAsyncClient.create(dataLength).block()
@@ -186,11 +174,11 @@ class FileAsyncAPITests extends APISpec {
 
     def "Download data error"() {
         when:
-        def downloadDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(0, 1023), false, null))
+        def downloadDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(0, 1023), false))
         then:
-        downloadDataErrorVerifier.assertNext {
+        downloadDataErrorVerifier.verifyErrorSatisfies({
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
-        }
+        })
     }
 
     def "Upload and clear range" () {
@@ -200,8 +188,8 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.create(fullInfoString.length()).block()
         primaryFileAsyncClient.upload(Flux.just(fullInfoData), fullInfoString.length()).block()
         when:
-        def clearRangeVerifier = StepVerifier.create(primaryFileAsyncClient.clearRange(7))
-        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(0, 6), false, null))
+        def clearRangeVerifier = StepVerifier.create(primaryFileAsyncClient.clearRangeWithResponse(7, 0))
+        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(0, 6), false))
         then:
         clearRangeVerifier.assertNext {
             FileTestHelper.assertResponseStatusCode(it, 201)
@@ -219,7 +207,7 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.upload(Flux.just(fullInfoData), fullInfoString.length()).block()
         when:
         def clearRangeVerifier = StepVerifier.create(primaryFileAsyncClient.clearRangeWithResponse(7, 1))
-        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(1, 7), false, null))
+        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(1, 7), false))
         then:
         clearRangeVerifier.assertNext {
             FileTestHelper.assertResponseStatusCode(it, 201)
@@ -261,25 +249,69 @@ class FileAsyncAPITests extends APISpec {
         fullInfoData.clear()
     }
 
-    def "Upload and download file"() {
+    def "Upload file does not exist"() {
         given:
-        File uploadFile = new File(testFolder.getPath() + "/helloworld")
-        File downloadFile = new File(testFolder.getPath() + "/testDownload")
+        def uploadFile = new File(testFolder.getPath() + "/fakefile.txt")
 
-        if (!Files.exists(downloadFile.toPath())) {
-            downloadFile.createNewFile()
+        if (uploadFile.exists()) {
+            assert uploadFile.delete()
         }
 
-        primaryFileAsyncClient.create(uploadFile.length()).block()
         when:
-        def uploadFileVerifier = StepVerifier.create(primaryFileAsyncClient.uploadFromFile(uploadFile.toString()))
-        def downloadFileVerifier = StepVerifier.create(primaryFileAsyncClient.downloadToFile(downloadFile.toString()))
+        def uploadFromFileErrorVerifier = StepVerifier.create(primaryFileAsyncClient.uploadFromFile(uploadFile.getPath()))
+
         then:
-        uploadFileVerifier.verifyComplete()
-        downloadFileVerifier.verifyComplete()
-        assert FileTestHelper.assertTwoFilesAreSame(uploadFile, downloadFile)
+        uploadFromFileErrorVerifier.verifyErrorSatisfies({ it instanceof NoSuchFileException })
+
         cleanup:
-        FileTestHelper.deleteFolderIfExists(testFolder.toString())
+        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+    }
+
+    def "Upload and download file exists"() {
+        given:
+        def data = "Download file exists"
+        def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), methodName))
+
+        if (!downloadFile.exists()) {
+            assert downloadFile.createNewFile()
+        }
+
+        primaryFileAsyncClient.create(data.length()).block()
+        primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes(StandardCharsets.UTF_8))), data.length()).block()
+
+        when:
+        def downloadToFileErrorVerifier = StepVerifier.create(primaryFileAsyncClient.downloadToFile(downloadFile.getPath()))
+
+        then:
+        downloadToFileErrorVerifier.verifyErrorSatisfies({ it instanceof FileAlreadyExistsException })
+
+        cleanup:
+        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+    }
+
+    def "Upload and download to file does not exist"() {
+        given:
+        def data = "Download file does not exist"
+        def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), methodName))
+
+        if (downloadFile.exists()) {
+            assert downloadFile.delete()
+        }
+
+        primaryFileAsyncClient.create(data.length()).block()
+        primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes(StandardCharsets.UTF_8))), data.length()).block()
+
+        when:
+        def downloadFromFileVerifier = StepVerifier.create(primaryFileAsyncClient.downloadToFile(downloadFile.getPath()))
+
+        then:
+        downloadFromFileVerifier.verifyComplete()
+        def scanner = new Scanner(downloadFile).useDelimiter("\\Z")
+        data == scanner.next()
+        scanner.close()
+
+        cleanup:
+        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
     }
 
     def "Start copy"() {
@@ -341,6 +373,7 @@ class FileAsyncAPITests extends APISpec {
         getPropertiesVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 200)
             assert it.value().eTag()
+            assert it.value().lastModified()
             assert it.value().lastModified()
             assert it.value().smbProperties()
             assert it.value().smbProperties().filePermissionKey()

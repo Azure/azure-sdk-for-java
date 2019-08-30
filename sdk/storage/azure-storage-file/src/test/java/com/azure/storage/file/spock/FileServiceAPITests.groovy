@@ -13,7 +13,7 @@ import com.azure.storage.file.models.RetentionPolicy
 import com.azure.storage.file.models.ShareItem
 import com.azure.storage.file.models.ShareProperties
 import com.azure.storage.file.models.StorageErrorCode
-import com.azure.storage.file.models.StorageErrorException
+import com.azure.storage.file.models.StorageException
 import spock.lang.Unroll
 
 class FileServiceAPITests extends APISpec {
@@ -71,7 +71,7 @@ class FileServiceAPITests extends APISpec {
         when:
         primaryFileServiceClient.createShareWithResponse(shareName, metadata, quota, null)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
         where:
         metadata                                      | quota | statusCode | errMsg
@@ -92,7 +92,7 @@ class FileServiceAPITests extends APISpec {
         when:
         primaryFileServiceClient.deleteShare(testResourceName.randomName(methodName, 60))
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.SHARE_NOT_FOUND)
     }
 
@@ -186,7 +186,7 @@ class FileServiceAPITests extends APISpec {
             .minuteMetrics(metrics).cors(coreList)
         primaryFileServiceClient.setProperties(updatedProperties)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
         where:
         coreList               | statusCode | errMsg
