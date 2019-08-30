@@ -13,6 +13,7 @@ import com.azure.storage.queue.models.AccessPolicy
 import com.azure.storage.queue.models.EnqueuedMessage
 import com.azure.storage.queue.models.SignedIdentifier
 import com.azure.storage.queue.models.StorageErrorException
+import com.azure.storage.queue.models.StorageException
 import org.junit.Test
 import spock.lang.Unroll
 
@@ -122,7 +123,7 @@ class QueueSASTests extends APISpec {
         def dequeueMsgIterPermissions = clientPermissions.dequeueMessages(2).iterator()
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(StorageException)
         "test" == dequeueMsgIterPermissions.next().messageText()
         "sastest" == dequeueMsgIterPermissions.next().messageText()
 
@@ -130,7 +131,7 @@ class QueueSASTests extends APISpec {
         clientPermissions.updateMessage("testing", resp.messageId(), resp.popReceipt(), Duration.ofHours(1))
 
         then:
-        thrown(StorageErrorException)
+        thrown(StorageException)
     }
 
     @Test
@@ -163,14 +164,14 @@ class QueueSASTests extends APISpec {
         def dequeueMsgIterPermissions = clientPermissions.dequeueMessages(1).iterator()
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(StorageException)
         "testing" == dequeueMsgIterPermissions.next().messageText()
 
         when:
         clientPermissions.delete()
 
         then:
-        thrown(StorageErrorException)
+        thrown(StorageException)
     }
 
     // NOTE: Serializer for set access policy keeps milliseconds
