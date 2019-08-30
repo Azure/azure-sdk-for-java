@@ -4,6 +4,8 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
 import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -17,6 +19,7 @@ import com.azure.storage.queue.models.UpdatedMessage;
 
 import java.net.URL;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -593,5 +596,44 @@ public final class QueueClient {
      */
     public VoidResponse deleteMessageWithResponse(String messageId, String popReceipt, Context context) {
         return client.deleteMessageWithResponse(messageId, popReceipt, context).block();
+    }
+
+    /**
+     * Generates a SAS token with the specified parameters
+     *
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
+     * @param permissions The {@code QueueSASPermission} permission for the SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateSAS(OffsetDateTime expiryTime, QueueSASPermission permissions) {
+        return this.client.generateSAS(permissions, expiryTime);
+    }
+
+    /**
+     * Generates a SAS token with the specified parameters
+     *
+     * @param identifier The {@code String} name of the access policy on the queue this SAS references if any
+     * @return A string that represents the SAS token
+     */
+    public String generateSAS(String identifier) {
+        return this.client.generateSAS(identifier);
+    }
+
+    /**
+     * Generates a SAS token with the specified parameters
+     *
+     * @param identifier The {@code String} name of the access policy on the queue this SAS references if any
+     * @param permissions The {@code QueueSASPermission} permission for the SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
+     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
+     * @param version An optional {@code String} version for the SAS
+     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateSAS(String identifier, QueueSASPermission permissions, OffsetDateTime expiryTime,
+        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
+        return this.client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
+            ipRange);
     }
 }

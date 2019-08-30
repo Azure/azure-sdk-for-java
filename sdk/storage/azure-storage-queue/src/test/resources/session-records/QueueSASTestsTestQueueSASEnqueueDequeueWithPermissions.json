@@ -1,0 +1,102 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gapradev.queue.core.windows.net/queuesasteststestqueuesasenqueuedequeuewithpermissions61622",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "8d7b5824-3003-001d-65f2-5d9f87000000",
+      "Date" : "Wed, 28 Aug 2019 22:43:33 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://gapradev.queue.core.windows.net/queuesasteststestqueuesasenqueuedequeuewithpermissions61622/messages",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "8d7b5826-3003-001d-66f2-5d9f87000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>f2f7f41a-567c-4b33-b44e-4f718238ca8e</MessageId><InsertionTime>Wed, 28 Aug 2019 22:43:34 GMT</InsertionTime><ExpirationTime>Wed, 04 Sep 2019 22:43:34 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAwb1VBvJd1QE=</PopReceipt><TimeNextVisible>Wed, 28 Aug 2019 22:43:34 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Wed, 28 Aug 2019 22:43:33 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://gapradev.queue.core.windows.net/queuesasteststestqueuesasenqueuedequeuewithpermissions61622/messages?sv=2019-02-02&spr=https%2Chttp&st=2019-08-27T22%3A43%3A34Z&se=2019-08-29T22%3A43%3A34Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "8d7b5827-3003-001d-67f2-5d9f87000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>6b37f534-67a0-4cca-9b11-8509ad0ddfe3</MessageId><InsertionTime>Wed, 28 Aug 2019 22:43:34 GMT</InsertionTime><ExpirationTime>Wed, 04 Sep 2019 22:43:34 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAUeZnBvJd1QE=</PopReceipt><TimeNextVisible>Wed, 28 Aug 2019 22:43:34 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Wed, 28 Aug 2019 22:43:34 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://gapradev.queue.core.windows.net/queuesasteststestqueuesasenqueuedequeuewithpermissions61622/messages?numofmessages=2&visibilitytimeout=30&sv=2019-02-02&spr=https%2Chttp&st=2019-08-27T22%3A43%3A34Z&se=2019-08-29T22%3A43%3A34Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "8d7b5828-3003-001d-68f2-5d9f87000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>f2f7f41a-567c-4b33-b44e-4f718238ca8e</MessageId><InsertionTime>Wed, 28 Aug 2019 22:43:34 GMT</InsertionTime><ExpirationTime>Wed, 04 Sep 2019 22:43:34 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAXC9YGPJd1QE=</PopReceipt><TimeNextVisible>Wed, 28 Aug 2019 22:44:04 GMT</TimeNextVisible><DequeueCount>1</DequeueCount><MessageText>test</MessageText></QueueMessage><QueueMessage><MessageId>6b37f534-67a0-4cca-9b11-8509ad0ddfe3</MessageId><InsertionTime>Wed, 28 Aug 2019 22:43:34 GMT</InsertionTime><ExpirationTime>Wed, 04 Sep 2019 22:43:34 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAXC9YGPJd1QE=</PopReceipt><TimeNextVisible>Wed, 28 Aug 2019 22:44:04 GMT</TimeNextVisible><DequeueCount>1</DequeueCount><MessageText>sastest</MessageText></QueueMessage></QueueMessagesList>",
+      "Date" : "Wed, 28 Aug 2019 22:43:34 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://gapradev.queue.core.windows.net/queuesasteststestqueuesasenqueuedequeuewithpermissions61622/messages/f2f7f41a-567c-4b33-b44e-4f718238ca8e?popreceipt=AgAAAAMAAAAAAAAAwb1VBvJd1QE%3d&visibilitytimeout=3600&sv=2019-02-02&spr=https%2Chttp&st=2019-08-27T22%3A43%3A34Z&se=2019-08-29T22%3A43%3A34Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "AuthorizationPermissionMismatch",
+      "retry-after" : "0",
+      "Content-Length" : "279",
+      "StatusCode" : "403",
+      "x-ms-request-id" : "8d7b5829-3003-001d-69f2-5d9f87000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthorizationPermissionMismatch</Code><Message>This request is not authorized to perform this operation using this permission.\nRequestId:8d7b5829-3003-001d-69f2-5d9f87000000\nTime:2019-08-28T22:43:35.0565836Z</Message></Error>",
+      "Date" : "Wed, 28 Aug 2019 22:43:34 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "queuesasteststestqueuesasenqueuedequeuewithpermissions61622", "2019-08-28T22:43:34.765Z", "2019-08-28T22:43:34.767Z", "queue213007d7" ]
+}

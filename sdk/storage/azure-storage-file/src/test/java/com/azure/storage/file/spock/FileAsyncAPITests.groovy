@@ -16,7 +16,8 @@ import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
-import java.nio.file.Files
+import java.nio.file.FileAlreadyExistsException
+import java.nio.file.NoSuchFileException
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -218,25 +219,69 @@ class FileAsyncAPITests extends APISpec {
         fullInfoData.clear()
     }
 
-    def "Upload and download file"() {
+    def "Upload file does not exist"() {
         given:
-        File uploadFile = new File(testFolder.getPath() + "/helloworld")
-        File downloadFile = new File(testFolder.getPath() + "/testDownload")
+        def uploadFile = new File(testFolder.getPath() + "/fakefile.txt")
 
-        if (!Files.exists(downloadFile.toPath())) {
-            downloadFile.createNewFile()
+        if (uploadFile.exists()) {
+            assert uploadFile.delete()
         }
 
-        primaryFileAsyncClient.create(uploadFile.length()).block()
         when:
-        def uploadFileVerifier = StepVerifier.create(primaryFileAsyncClient.uploadFromFile(uploadFile.toString()))
-        def downloadFileVerifier = StepVerifier.create(primaryFileAsyncClient.downloadToFile(downloadFile.toString()))
+        def uploadFromFileErrorVerifier = StepVerifier.create(primaryFileAsyncClient.uploadFromFile(uploadFile.getPath()))
+
         then:
-        uploadFileVerifier.verifyComplete()
-        downloadFileVerifier.verifyComplete()
-        assert FileTestHelper.assertTwoFilesAreSame(uploadFile, downloadFile)
+        uploadFromFileErrorVerifier.verifyErrorSatisfies({ it instanceof NoSuchFileException })
+
         cleanup:
-        FileTestHelper.deleteFolderIfExists(testFolder.toString())
+        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+    }
+
+    def "Upload and download file exists"() {
+        given:
+        def data = "Download file exists"
+        def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), methodName))
+
+        if (!downloadFile.exists()) {
+            assert downloadFile.createNewFile()
+        }
+
+        primaryFileAsyncClient.create(data.length()).block()
+        primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes(StandardCharsets.UTF_8))), data.length()).block()
+
+        when:
+        def downloadToFileErrorVerifier = StepVerifier.create(primaryFileAsyncClient.downloadToFile(downloadFile.getPath()))
+
+        then:
+        downloadToFileErrorVerifier.verifyErrorSatisfies({ it instanceof FileAlreadyExistsException })
+
+        cleanup:
+        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+    }
+
+    def "Upload and download to file does not exist"() {
+        given:
+        def data = "Download file does not exist"
+        def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), methodName))
+
+        if (downloadFile.exists()) {
+            assert downloadFile.delete()
+        }
+
+        primaryFileAsyncClient.create(data.length()).block()
+        primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes(StandardCharsets.UTF_8))), data.length()).block()
+
+        when:
+        def downloadFromFileVerifier = StepVerifier.create(primaryFileAsyncClient.downloadToFile(downloadFile.getPath()))
+
+        then:
+        downloadFromFileVerifier.verifyComplete()
+        def scanner = new Scanner(downloadFile).useDelimiter("\\Z")
+        data == scanner.next()
+        scanner.close()
+
+        cleanup:
+        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
     }
 
     def "Start copy"() {
@@ -297,8 +342,8 @@ class FileAsyncAPITests extends APISpec {
         then:
         getPropertiesVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 200)
-            assert it.eTag() != null
-            assert it.lastModified() != null
+            assert it.value().eTag() != null
+            assert it.value().lastModified() != null
         }
     }
 

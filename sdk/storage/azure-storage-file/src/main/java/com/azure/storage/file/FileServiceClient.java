@@ -6,6 +6,11 @@ package com.azure.storage.file;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.storage.common.AccountSASPermission;
+import com.azure.storage.common.AccountSASResourceType;
+import com.azure.storage.common.AccountSASService;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
 import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -16,6 +21,7 @@ import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.StorageException;
 
 import java.net.URL;
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
@@ -320,5 +326,38 @@ public final class FileServiceClient {
      */
     public VoidResponse deleteShareWithResponse(String shareName, String snapshot, Context context) {
         return fileServiceAsyncClient.deleteShareWithResponse(shareName, snapshot, context).block();
+    }
+
+    /**
+     * Generates an account SAS token with the specified parameters
+     *
+     * @param accountSASService The {@code AccountSASService} services for the account SAS
+     * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
+     * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
+        return this.fileServiceAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime);
+    }
+
+    /**
+     * Generates an account SAS token with the specified parameters
+     *
+     * @param accountSASService The {@code AccountSASService} services for the account SAS
+     * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
+     * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
+     * @param startTime The {@code OffsetDateTime} start time for the account SAS
+     * @param version The {@code String} version for the account SAS
+     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        IPRange ipRange, SASProtocol sasProtocol) {
+        return this.fileServiceAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
     }
 }
