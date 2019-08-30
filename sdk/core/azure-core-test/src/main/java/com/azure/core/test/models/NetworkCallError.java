@@ -3,7 +3,7 @@
 
 package com.azure.core.test.models;
 
-import com.azure.core.implementation.UnexpectedLengthException;
+import com.azure.core.implementation.exception.UnexpectedLengthException;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.net.UnknownHostException;
@@ -52,7 +52,7 @@ public class NetworkCallError {
             case "java.net.UnknownHostException":
                 return new UnknownHostException(this.errorMessage);
 
-            case "com.azure.core.implementation.UnexpectedLengthException":
+            case "com.azure.core.implementation.exception.UnexpectedLengthException":
                 return new UnexpectedLengthException(this.errorMessage, 0L, 0L);
 
             default:
