@@ -25,6 +25,9 @@ import reactor.core.publisher.Mono;
  * ownership details to a durable store.</li>
  * </ul>
  *
+ * <p><strong>Creating an {@link EventProcessor} using a {@link #processEvent(ProcessEventConsumer)} function</strong></p>
+ * {@codesnippet com.azure.messaging.eventhubs.eventprocessorbuilder.processevent}
+ *
  * <p>
  *  To create a more advanced {@link EventProcessor}, use the
  *  {@link #partitionProcessorFactory(PartitionProcessorFactory)} instead of {@link #processEvent(ProcessEventConsumer)}.
@@ -32,6 +35,9 @@ import reactor.core.publisher.Mono;
  *  errors that might occur during event processing and perform partition-specific initialization of
  *  {@link PartitionProcessor}.
  * </p>
+ *
+ * <p><strong>Creating an {@link EventProcessor} using {@link PartitionProcessorFactory}</strong></p>
+ * {@codesnippet com.azure.messaging.eventhubs.eventprocessorbuilder.partitionprocessorfactory}
  *
  * @see EventProcessor
  * @see EventHubConsumer
