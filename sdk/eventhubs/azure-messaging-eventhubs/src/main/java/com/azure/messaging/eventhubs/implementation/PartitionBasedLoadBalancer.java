@@ -82,7 +82,7 @@ public final class PartitionBasedLoadBalancer {
      * most one</b> new partition.
      * <p>
      * The load is considered balanced when no active EventProcessor owns 2 partitions more than any other active
-     * EventProcessor.Given that each invocation to this method results in ownership claim of at most one partition,
+     * EventProcessor. Given that each invocation to this method results in ownership claim of at most one partition,
      * this algorithm converges gradually towards a steady state.
      * </p>
      * When a new partition is claimed, this method is also responsible for starting a partition pump that creates an
@@ -138,7 +138,8 @@ public final class PartitionBasedLoadBalancer {
             }
 
             /*
-             * Remove all partitions' ownership that have not be modified for a configuration period of time. This means
+             * Remove all partitions' ownership that have not been modified for a configuration period of time. This
+             * means
              * that the previous EventProcessor that owned the partition is probably down and the partition is now eligible
              * to be claimed by other EventProcessors.
              */
@@ -196,7 +197,7 @@ public final class PartitionBasedLoadBalancer {
             if (!shouldOwnMorePartitions(minPartitionsPerEventProcessor, ownerPartitionMap)) {
                 // This event processor already has enough partitions and shouldn't own more.
                 logger.info("This event processor owns {} partitions and shouldn't own more",
-                    ownerPartitionMap.get(ownerId));
+                    ownerPartitionMap.get(ownerId).size());
                 return;
             }
 
