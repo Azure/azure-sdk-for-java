@@ -1,30 +1,30 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcinvalidaccountname0serviceapitestinvalidaccountname4dd87860?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcinvalidaccountname0serviceapitestinvalidaccountname5fe67382?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D728142128B84E\"",
-      "Last-Modified" : "Fri, 23 Aug 2019 21:52:01 GMT",
+      "ETag" : "\"0x8D72DAB95F5163B\"",
+      "Last-Modified" : "Sat, 31 Aug 2019 00:38:47 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "cfe0116d-201e-004c-29fc-59f769000000",
-      "Date" : "Fri, 23 Aug 2019 21:52:00 GMT",
-      "x-ms-client-request-id" : "8802edd9-92be-4366-93c2-5a3fb9e177a3"
+      "x-ms-request-id" : "6178ed74-c01e-008a-7594-5f8a55000000",
+      "Date" : "Sat, 31 Aug 2019 00:38:46 GMT",
+      "x-ms-client-request-id" : "5a66e2f4-2435-4655-aa20-145df7d5f1f0"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net?restype=service&comp=properties",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -33,9 +33,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "cfe0117b-201e-004c-31fc-59f769000000",
-      "Date" : "Fri, 23 Aug 2019 21:52:01 GMT",
-      "x-ms-client-request-id" : "c07e44ae-3fe4-4225-abc4-15c204aea9cb"
+      "x-ms-request-id" : "6178ee35-c01e-008a-2894-5f8a55000000",
+      "Date" : "Sat, 31 Aug 2019 00:38:47 GMT",
+      "x-ms-client-request-id" : "2f79d616-687b-4f72-b242-de44c1c0d206"
     },
     "Exception" : null
   }, {
@@ -43,1759 +43,103 @@
     "Uri" : "http://fake.blobfake.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : null,
     "Exception" : {
-      "Throwable" : {
-        "cause" : null,
-        "stackTrace" : [ {
-          "methodName" : "lookupAllHostAddr",
-          "fileName" : "Inet6AddressImpl.java",
-          "lineNumber" : -2,
-          "className" : "java.net.Inet6AddressImpl",
-          "nativeMethod" : true
-        }, {
-          "methodName" : "lookupAllHostAddr",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 929,
-          "className" : "java.net.InetAddress$2",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAddressesFromNameService",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1324,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAllByName0",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1277,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAllByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1193,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAllByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1127,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1077,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 146,
-          "className" : "io.netty.util.internal.SocketUtils$8",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 143,
-          "className" : "io.netty.util.internal.SocketUtils$8",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doPrivileged",
-          "fileName" : "AccessController.java",
-          "lineNumber" : -2,
-          "className" : "java.security.AccessController",
-          "nativeMethod" : true
-        }, {
-          "methodName" : "addressByName",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 143,
-          "className" : "io.netty.util.internal.SocketUtils",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "DefaultNameResolver.java",
-          "lineNumber" : 43,
-          "className" : "io.netty.resolver.DefaultNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "SimpleNameResolver.java",
-          "lineNumber" : 63,
-          "className" : "io.netty.resolver.SimpleNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "SimpleNameResolver.java",
-          "lineNumber" : 55,
-          "className" : "io.netty.resolver.SimpleNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "InetSocketAddressResolver.java",
-          "lineNumber" : 57,
-          "className" : "io.netty.resolver.InetSocketAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "InetSocketAddressResolver.java",
-          "lineNumber" : 32,
-          "className" : "io.netty.resolver.InetSocketAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "AbstractAddressResolver.java",
-          "lineNumber" : 108,
-          "className" : "io.netty.resolver.AbstractAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolveAndConnect0",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 208,
-          "className" : "io.netty.bootstrap.Bootstrap",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "access$000",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 49,
-          "className" : "io.netty.bootstrap.Bootstrap",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "operationComplete",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 188,
-          "className" : "io.netty.bootstrap.Bootstrap$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "operationComplete",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 174,
-          "className" : "io.netty.bootstrap.Bootstrap$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListener0",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 511,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListenersNow",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 485,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListeners",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 424,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "trySuccess",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 103,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "trySuccess",
-          "fileName" : "DefaultChannelPromise.java",
-          "lineNumber" : 84,
-          "className" : "io.netty.channel.DefaultChannelPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "safeSetSuccess",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 982,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "register0",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 516,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "access$200",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 427,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 486,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "safeExecute",
-          "fileName" : "AbstractEventExecutor.java",
-          "lineNumber" : 163,
-          "className" : "io.netty.util.concurrent.AbstractEventExecutor",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "runAllTasks",
-          "fileName" : "SingleThreadEventExecutor.java",
-          "lineNumber" : 404,
-          "className" : "io.netty.util.concurrent.SingleThreadEventExecutor",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "NioEventLoop.java",
-          "lineNumber" : 495,
-          "className" : "io.netty.channel.nio.NioEventLoop",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SingleThreadEventExecutor.java",
-          "lineNumber" : 905,
-          "className" : "io.netty.util.concurrent.SingleThreadEventExecutor$5",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "Thread.java",
-          "lineNumber" : 748,
-          "className" : "java.lang.Thread",
-          "nativeMethod" : false
-        } ],
-        "message" : "fake.blobfake.core.windows.net",
-        "localizedMessage" : "fake.blobfake.core.windows.net",
-        "suppressed" : [ ]
-      },
-      "ClassName" : "java.net.UnknownHostException"
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "fake.blobfake.core.windows.net"
     }
   }, {
     "Method" : "GET",
     "Uri" : "http://fake.blobfake.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : null,
     "Exception" : {
-      "Throwable" : {
-        "cause" : null,
-        "stackTrace" : [ {
-          "methodName" : "getAllByName0",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1281,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAllByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1193,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAllByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1127,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1077,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 146,
-          "className" : "io.netty.util.internal.SocketUtils$8",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 143,
-          "className" : "io.netty.util.internal.SocketUtils$8",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doPrivileged",
-          "fileName" : "AccessController.java",
-          "lineNumber" : -2,
-          "className" : "java.security.AccessController",
-          "nativeMethod" : true
-        }, {
-          "methodName" : "addressByName",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 143,
-          "className" : "io.netty.util.internal.SocketUtils",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "DefaultNameResolver.java",
-          "lineNumber" : 43,
-          "className" : "io.netty.resolver.DefaultNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "SimpleNameResolver.java",
-          "lineNumber" : 63,
-          "className" : "io.netty.resolver.SimpleNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "SimpleNameResolver.java",
-          "lineNumber" : 55,
-          "className" : "io.netty.resolver.SimpleNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "InetSocketAddressResolver.java",
-          "lineNumber" : 57,
-          "className" : "io.netty.resolver.InetSocketAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "InetSocketAddressResolver.java",
-          "lineNumber" : 32,
-          "className" : "io.netty.resolver.InetSocketAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "AbstractAddressResolver.java",
-          "lineNumber" : 108,
-          "className" : "io.netty.resolver.AbstractAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolveAndConnect0",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 208,
-          "className" : "io.netty.bootstrap.Bootstrap",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "access$000",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 49,
-          "className" : "io.netty.bootstrap.Bootstrap",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "operationComplete",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 188,
-          "className" : "io.netty.bootstrap.Bootstrap$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "operationComplete",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 174,
-          "className" : "io.netty.bootstrap.Bootstrap$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListener0",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 511,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListenersNow",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 485,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListeners",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 424,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "trySuccess",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 103,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "trySuccess",
-          "fileName" : "DefaultChannelPromise.java",
-          "lineNumber" : 84,
-          "className" : "io.netty.channel.DefaultChannelPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "safeSetSuccess",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 982,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "register0",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 516,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "access$200",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 427,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 486,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "safeExecute",
-          "fileName" : "AbstractEventExecutor.java",
-          "lineNumber" : 163,
-          "className" : "io.netty.util.concurrent.AbstractEventExecutor",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "runAllTasks",
-          "fileName" : "SingleThreadEventExecutor.java",
-          "lineNumber" : 404,
-          "className" : "io.netty.util.concurrent.SingleThreadEventExecutor",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "NioEventLoop.java",
-          "lineNumber" : 495,
-          "className" : "io.netty.channel.nio.NioEventLoop",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SingleThreadEventExecutor.java",
-          "lineNumber" : 905,
-          "className" : "io.netty.util.concurrent.SingleThreadEventExecutor$5",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "Thread.java",
-          "lineNumber" : 748,
-          "className" : "java.lang.Thread",
-          "nativeMethod" : false
-        } ],
-        "message" : "fake.blobfake.core.windows.net",
-        "localizedMessage" : "fake.blobfake.core.windows.net",
-        "suppressed" : [ ]
-      },
-      "ClassName" : "java.net.UnknownHostException"
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "fake.blobfake.core.windows.net"
     }
   }, {
     "Method" : "GET",
     "Uri" : "http://fake.blobfake.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : null,
     "Exception" : {
-      "Throwable" : {
-        "cause" : null,
-        "stackTrace" : [ {
-          "methodName" : "getAllByName0",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1281,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAllByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1193,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAllByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1127,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1077,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 146,
-          "className" : "io.netty.util.internal.SocketUtils$8",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 143,
-          "className" : "io.netty.util.internal.SocketUtils$8",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doPrivileged",
-          "fileName" : "AccessController.java",
-          "lineNumber" : -2,
-          "className" : "java.security.AccessController",
-          "nativeMethod" : true
-        }, {
-          "methodName" : "addressByName",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 143,
-          "className" : "io.netty.util.internal.SocketUtils",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "DefaultNameResolver.java",
-          "lineNumber" : 43,
-          "className" : "io.netty.resolver.DefaultNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "SimpleNameResolver.java",
-          "lineNumber" : 63,
-          "className" : "io.netty.resolver.SimpleNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "SimpleNameResolver.java",
-          "lineNumber" : 55,
-          "className" : "io.netty.resolver.SimpleNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "InetSocketAddressResolver.java",
-          "lineNumber" : 57,
-          "className" : "io.netty.resolver.InetSocketAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "InetSocketAddressResolver.java",
-          "lineNumber" : 32,
-          "className" : "io.netty.resolver.InetSocketAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "AbstractAddressResolver.java",
-          "lineNumber" : 108,
-          "className" : "io.netty.resolver.AbstractAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolveAndConnect0",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 208,
-          "className" : "io.netty.bootstrap.Bootstrap",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "access$000",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 49,
-          "className" : "io.netty.bootstrap.Bootstrap",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "operationComplete",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 188,
-          "className" : "io.netty.bootstrap.Bootstrap$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "operationComplete",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 174,
-          "className" : "io.netty.bootstrap.Bootstrap$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListener0",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 511,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListenersNow",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 485,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListeners",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 424,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "trySuccess",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 103,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "trySuccess",
-          "fileName" : "DefaultChannelPromise.java",
-          "lineNumber" : 84,
-          "className" : "io.netty.channel.DefaultChannelPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "safeSetSuccess",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 982,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "register0",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 516,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "access$200",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 427,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 486,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "safeExecute",
-          "fileName" : "AbstractEventExecutor.java",
-          "lineNumber" : 163,
-          "className" : "io.netty.util.concurrent.AbstractEventExecutor",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "runAllTasks",
-          "fileName" : "SingleThreadEventExecutor.java",
-          "lineNumber" : 404,
-          "className" : "io.netty.util.concurrent.SingleThreadEventExecutor",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "NioEventLoop.java",
-          "lineNumber" : 495,
-          "className" : "io.netty.channel.nio.NioEventLoop",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SingleThreadEventExecutor.java",
-          "lineNumber" : 905,
-          "className" : "io.netty.util.concurrent.SingleThreadEventExecutor$5",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "Thread.java",
-          "lineNumber" : 748,
-          "className" : "java.lang.Thread",
-          "nativeMethod" : false
-        } ],
-        "message" : "fake.blobfake.core.windows.net",
-        "localizedMessage" : "fake.blobfake.core.windows.net",
-        "suppressed" : [ ]
-      },
-      "ClassName" : "java.net.UnknownHostException"
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "fake.blobfake.core.windows.net"
     }
   }, {
     "Method" : "GET",
     "Uri" : "http://fake.blobfake.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : null,
     "Exception" : {
-      "Throwable" : {
-        "cause" : null,
-        "stackTrace" : [ {
-          "methodName" : "lookupAllHostAddr",
-          "fileName" : "Inet6AddressImpl.java",
-          "lineNumber" : -2,
-          "className" : "java.net.Inet6AddressImpl",
-          "nativeMethod" : true
-        }, {
-          "methodName" : "lookupAllHostAddr",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 929,
-          "className" : "java.net.InetAddress$2",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAddressesFromNameService",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1324,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAllByName0",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1277,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAllByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1193,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAllByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1127,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1077,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 146,
-          "className" : "io.netty.util.internal.SocketUtils$8",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 143,
-          "className" : "io.netty.util.internal.SocketUtils$8",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doPrivileged",
-          "fileName" : "AccessController.java",
-          "lineNumber" : -2,
-          "className" : "java.security.AccessController",
-          "nativeMethod" : true
-        }, {
-          "methodName" : "addressByName",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 143,
-          "className" : "io.netty.util.internal.SocketUtils",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "DefaultNameResolver.java",
-          "lineNumber" : 43,
-          "className" : "io.netty.resolver.DefaultNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "SimpleNameResolver.java",
-          "lineNumber" : 63,
-          "className" : "io.netty.resolver.SimpleNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "SimpleNameResolver.java",
-          "lineNumber" : 55,
-          "className" : "io.netty.resolver.SimpleNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "InetSocketAddressResolver.java",
-          "lineNumber" : 57,
-          "className" : "io.netty.resolver.InetSocketAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "InetSocketAddressResolver.java",
-          "lineNumber" : 32,
-          "className" : "io.netty.resolver.InetSocketAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "AbstractAddressResolver.java",
-          "lineNumber" : 108,
-          "className" : "io.netty.resolver.AbstractAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolveAndConnect0",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 208,
-          "className" : "io.netty.bootstrap.Bootstrap",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "access$000",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 49,
-          "className" : "io.netty.bootstrap.Bootstrap",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "operationComplete",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 188,
-          "className" : "io.netty.bootstrap.Bootstrap$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "operationComplete",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 174,
-          "className" : "io.netty.bootstrap.Bootstrap$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListener0",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 511,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListenersNow",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 485,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListeners",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 424,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "trySuccess",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 103,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "trySuccess",
-          "fileName" : "DefaultChannelPromise.java",
-          "lineNumber" : 84,
-          "className" : "io.netty.channel.DefaultChannelPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "safeSetSuccess",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 982,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "register0",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 516,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "access$200",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 427,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 486,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "safeExecute",
-          "fileName" : "AbstractEventExecutor.java",
-          "lineNumber" : 163,
-          "className" : "io.netty.util.concurrent.AbstractEventExecutor",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "runAllTasks",
-          "fileName" : "SingleThreadEventExecutor.java",
-          "lineNumber" : 404,
-          "className" : "io.netty.util.concurrent.SingleThreadEventExecutor",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "NioEventLoop.java",
-          "lineNumber" : 495,
-          "className" : "io.netty.channel.nio.NioEventLoop",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SingleThreadEventExecutor.java",
-          "lineNumber" : 905,
-          "className" : "io.netty.util.concurrent.SingleThreadEventExecutor$5",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "Thread.java",
-          "lineNumber" : 748,
-          "className" : "java.lang.Thread",
-          "nativeMethod" : false
-        } ],
-        "message" : "fake.blobfake.core.windows.net",
-        "localizedMessage" : "fake.blobfake.core.windows.net",
-        "suppressed" : [ ]
-      },
-      "ClassName" : "java.net.UnknownHostException"
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "fake.blobfake.core.windows.net"
     }
   }, {
     "Method" : "GET",
     "Uri" : "http://fake.blobfake.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : null,
     "Exception" : {
-      "Throwable" : {
-        "cause" : null,
-        "stackTrace" : [ {
-          "methodName" : "lookupAllHostAddr",
-          "fileName" : "Inet6AddressImpl.java",
-          "lineNumber" : -2,
-          "className" : "java.net.Inet6AddressImpl",
-          "nativeMethod" : true
-        }, {
-          "methodName" : "lookupAllHostAddr",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 929,
-          "className" : "java.net.InetAddress$2",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAddressesFromNameService",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1324,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAllByName0",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1277,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAllByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1193,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAllByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1127,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1077,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 146,
-          "className" : "io.netty.util.internal.SocketUtils$8",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 143,
-          "className" : "io.netty.util.internal.SocketUtils$8",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doPrivileged",
-          "fileName" : "AccessController.java",
-          "lineNumber" : -2,
-          "className" : "java.security.AccessController",
-          "nativeMethod" : true
-        }, {
-          "methodName" : "addressByName",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 143,
-          "className" : "io.netty.util.internal.SocketUtils",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "DefaultNameResolver.java",
-          "lineNumber" : 43,
-          "className" : "io.netty.resolver.DefaultNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "SimpleNameResolver.java",
-          "lineNumber" : 63,
-          "className" : "io.netty.resolver.SimpleNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "SimpleNameResolver.java",
-          "lineNumber" : 55,
-          "className" : "io.netty.resolver.SimpleNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "InetSocketAddressResolver.java",
-          "lineNumber" : 57,
-          "className" : "io.netty.resolver.InetSocketAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "InetSocketAddressResolver.java",
-          "lineNumber" : 32,
-          "className" : "io.netty.resolver.InetSocketAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "AbstractAddressResolver.java",
-          "lineNumber" : 108,
-          "className" : "io.netty.resolver.AbstractAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolveAndConnect0",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 208,
-          "className" : "io.netty.bootstrap.Bootstrap",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "access$000",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 49,
-          "className" : "io.netty.bootstrap.Bootstrap",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "operationComplete",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 188,
-          "className" : "io.netty.bootstrap.Bootstrap$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "operationComplete",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 174,
-          "className" : "io.netty.bootstrap.Bootstrap$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListener0",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 511,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListenersNow",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 485,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListeners",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 424,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "trySuccess",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 103,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "trySuccess",
-          "fileName" : "DefaultChannelPromise.java",
-          "lineNumber" : 84,
-          "className" : "io.netty.channel.DefaultChannelPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "safeSetSuccess",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 982,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "register0",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 516,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "access$200",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 427,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 486,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "safeExecute",
-          "fileName" : "AbstractEventExecutor.java",
-          "lineNumber" : 163,
-          "className" : "io.netty.util.concurrent.AbstractEventExecutor",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "runAllTasks",
-          "fileName" : "SingleThreadEventExecutor.java",
-          "lineNumber" : 404,
-          "className" : "io.netty.util.concurrent.SingleThreadEventExecutor",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "NioEventLoop.java",
-          "lineNumber" : 495,
-          "className" : "io.netty.channel.nio.NioEventLoop",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SingleThreadEventExecutor.java",
-          "lineNumber" : 905,
-          "className" : "io.netty.util.concurrent.SingleThreadEventExecutor$5",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "Thread.java",
-          "lineNumber" : 748,
-          "className" : "java.lang.Thread",
-          "nativeMethod" : false
-        } ],
-        "message" : "fake.blobfake.core.windows.net",
-        "localizedMessage" : "fake.blobfake.core.windows.net",
-        "suppressed" : [ ]
-      },
-      "ClassName" : "java.net.UnknownHostException"
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "fake.blobfake.core.windows.net"
     }
   }, {
     "Method" : "GET",
     "Uri" : "http://fake.blobfake.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : null,
     "Exception" : {
-      "Throwable" : {
-        "cause" : null,
-        "stackTrace" : [ {
-          "methodName" : "getAllByName0",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1281,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAllByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1193,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAllByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1127,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1077,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 146,
-          "className" : "io.netty.util.internal.SocketUtils$8",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 143,
-          "className" : "io.netty.util.internal.SocketUtils$8",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doPrivileged",
-          "fileName" : "AccessController.java",
-          "lineNumber" : -2,
-          "className" : "java.security.AccessController",
-          "nativeMethod" : true
-        }, {
-          "methodName" : "addressByName",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 143,
-          "className" : "io.netty.util.internal.SocketUtils",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "DefaultNameResolver.java",
-          "lineNumber" : 43,
-          "className" : "io.netty.resolver.DefaultNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "SimpleNameResolver.java",
-          "lineNumber" : 63,
-          "className" : "io.netty.resolver.SimpleNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "SimpleNameResolver.java",
-          "lineNumber" : 55,
-          "className" : "io.netty.resolver.SimpleNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "InetSocketAddressResolver.java",
-          "lineNumber" : 57,
-          "className" : "io.netty.resolver.InetSocketAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "InetSocketAddressResolver.java",
-          "lineNumber" : 32,
-          "className" : "io.netty.resolver.InetSocketAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "AbstractAddressResolver.java",
-          "lineNumber" : 108,
-          "className" : "io.netty.resolver.AbstractAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolveAndConnect0",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 208,
-          "className" : "io.netty.bootstrap.Bootstrap",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "access$000",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 49,
-          "className" : "io.netty.bootstrap.Bootstrap",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "operationComplete",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 188,
-          "className" : "io.netty.bootstrap.Bootstrap$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "operationComplete",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 174,
-          "className" : "io.netty.bootstrap.Bootstrap$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListener0",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 511,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListenersNow",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 485,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListeners",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 424,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "trySuccess",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 103,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "trySuccess",
-          "fileName" : "DefaultChannelPromise.java",
-          "lineNumber" : 84,
-          "className" : "io.netty.channel.DefaultChannelPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "safeSetSuccess",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 982,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "register0",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 516,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "access$200",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 427,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 486,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "safeExecute",
-          "fileName" : "AbstractEventExecutor.java",
-          "lineNumber" : 163,
-          "className" : "io.netty.util.concurrent.AbstractEventExecutor",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "runAllTasks",
-          "fileName" : "SingleThreadEventExecutor.java",
-          "lineNumber" : 404,
-          "className" : "io.netty.util.concurrent.SingleThreadEventExecutor",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "NioEventLoop.java",
-          "lineNumber" : 495,
-          "className" : "io.netty.channel.nio.NioEventLoop",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SingleThreadEventExecutor.java",
-          "lineNumber" : 905,
-          "className" : "io.netty.util.concurrent.SingleThreadEventExecutor$5",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "Thread.java",
-          "lineNumber" : 748,
-          "className" : "java.lang.Thread",
-          "nativeMethod" : false
-        } ],
-        "message" : "fake.blobfake.core.windows.net",
-        "localizedMessage" : "fake.blobfake.core.windows.net",
-        "suppressed" : [ ]
-      },
-      "ClassName" : "java.net.UnknownHostException"
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "fake.blobfake.core.windows.net"
     }
   }, {
     "Method" : "GET",
     "Uri" : "http://fake.blobfake.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : null,
     "Exception" : {
-      "Throwable" : {
-        "cause" : null,
-        "stackTrace" : [ {
-          "methodName" : "lookupAllHostAddr",
-          "fileName" : "Inet6AddressImpl.java",
-          "lineNumber" : -2,
-          "className" : "java.net.Inet6AddressImpl",
-          "nativeMethod" : true
-        }, {
-          "methodName" : "lookupAllHostAddr",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 929,
-          "className" : "java.net.InetAddress$2",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAddressesFromNameService",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1324,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAllByName0",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1277,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAllByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1193,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAllByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1127,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1077,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 146,
-          "className" : "io.netty.util.internal.SocketUtils$8",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 143,
-          "className" : "io.netty.util.internal.SocketUtils$8",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doPrivileged",
-          "fileName" : "AccessController.java",
-          "lineNumber" : -2,
-          "className" : "java.security.AccessController",
-          "nativeMethod" : true
-        }, {
-          "methodName" : "addressByName",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 143,
-          "className" : "io.netty.util.internal.SocketUtils",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "DefaultNameResolver.java",
-          "lineNumber" : 43,
-          "className" : "io.netty.resolver.DefaultNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "SimpleNameResolver.java",
-          "lineNumber" : 63,
-          "className" : "io.netty.resolver.SimpleNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "SimpleNameResolver.java",
-          "lineNumber" : 55,
-          "className" : "io.netty.resolver.SimpleNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "InetSocketAddressResolver.java",
-          "lineNumber" : 57,
-          "className" : "io.netty.resolver.InetSocketAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "InetSocketAddressResolver.java",
-          "lineNumber" : 32,
-          "className" : "io.netty.resolver.InetSocketAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "AbstractAddressResolver.java",
-          "lineNumber" : 108,
-          "className" : "io.netty.resolver.AbstractAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolveAndConnect0",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 208,
-          "className" : "io.netty.bootstrap.Bootstrap",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "access$000",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 49,
-          "className" : "io.netty.bootstrap.Bootstrap",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "operationComplete",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 188,
-          "className" : "io.netty.bootstrap.Bootstrap$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "operationComplete",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 174,
-          "className" : "io.netty.bootstrap.Bootstrap$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListener0",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 511,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListenersNow",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 485,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListeners",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 424,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "trySuccess",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 103,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "trySuccess",
-          "fileName" : "DefaultChannelPromise.java",
-          "lineNumber" : 84,
-          "className" : "io.netty.channel.DefaultChannelPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "safeSetSuccess",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 982,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "register0",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 516,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "access$200",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 427,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 486,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "safeExecute",
-          "fileName" : "AbstractEventExecutor.java",
-          "lineNumber" : 163,
-          "className" : "io.netty.util.concurrent.AbstractEventExecutor",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "runAllTasks",
-          "fileName" : "SingleThreadEventExecutor.java",
-          "lineNumber" : 404,
-          "className" : "io.netty.util.concurrent.SingleThreadEventExecutor",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "NioEventLoop.java",
-          "lineNumber" : 495,
-          "className" : "io.netty.channel.nio.NioEventLoop",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SingleThreadEventExecutor.java",
-          "lineNumber" : 905,
-          "className" : "io.netty.util.concurrent.SingleThreadEventExecutor$5",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "Thread.java",
-          "lineNumber" : 748,
-          "className" : "java.lang.Thread",
-          "nativeMethod" : false
-        } ],
-        "message" : "fake.blobfake.core.windows.net",
-        "localizedMessage" : "fake.blobfake.core.windows.net",
-        "suppressed" : [ ]
-      },
-      "ClassName" : "java.net.UnknownHostException"
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "fake.blobfake.core.windows.net"
     }
   }, {
     "Method" : "GET",
     "Uri" : "http://fake.blobfake.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : null,
     "Exception" : {
-      "Throwable" : {
-        "cause" : null,
-        "stackTrace" : [ {
-          "methodName" : "getAllByName0",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1281,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAllByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1193,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getAllByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1127,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "getByName",
-          "fileName" : "InetAddress.java",
-          "lineNumber" : 1077,
-          "className" : "java.net.InetAddress",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 146,
-          "className" : "io.netty.util.internal.SocketUtils$8",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 143,
-          "className" : "io.netty.util.internal.SocketUtils$8",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doPrivileged",
-          "fileName" : "AccessController.java",
-          "lineNumber" : -2,
-          "className" : "java.security.AccessController",
-          "nativeMethod" : true
-        }, {
-          "methodName" : "addressByName",
-          "fileName" : "SocketUtils.java",
-          "lineNumber" : 143,
-          "className" : "io.netty.util.internal.SocketUtils",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "DefaultNameResolver.java",
-          "lineNumber" : 43,
-          "className" : "io.netty.resolver.DefaultNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "SimpleNameResolver.java",
-          "lineNumber" : 63,
-          "className" : "io.netty.resolver.SimpleNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "SimpleNameResolver.java",
-          "lineNumber" : 55,
-          "className" : "io.netty.resolver.SimpleNameResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "InetSocketAddressResolver.java",
-          "lineNumber" : 57,
-          "className" : "io.netty.resolver.InetSocketAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolve",
-          "fileName" : "InetSocketAddressResolver.java",
-          "lineNumber" : 32,
-          "className" : "io.netty.resolver.InetSocketAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "resolve",
-          "fileName" : "AbstractAddressResolver.java",
-          "lineNumber" : 108,
-          "className" : "io.netty.resolver.AbstractAddressResolver",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "doResolveAndConnect0",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 208,
-          "className" : "io.netty.bootstrap.Bootstrap",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "access$000",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 49,
-          "className" : "io.netty.bootstrap.Bootstrap",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "operationComplete",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 188,
-          "className" : "io.netty.bootstrap.Bootstrap$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "operationComplete",
-          "fileName" : "Bootstrap.java",
-          "lineNumber" : 174,
-          "className" : "io.netty.bootstrap.Bootstrap$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListener0",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 511,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListenersNow",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 485,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "notifyListeners",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 424,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "trySuccess",
-          "fileName" : "DefaultPromise.java",
-          "lineNumber" : 103,
-          "className" : "io.netty.util.concurrent.DefaultPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "trySuccess",
-          "fileName" : "DefaultChannelPromise.java",
-          "lineNumber" : 84,
-          "className" : "io.netty.channel.DefaultChannelPromise",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "safeSetSuccess",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 982,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "register0",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 516,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "access$200",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 427,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "AbstractChannel.java",
-          "lineNumber" : 486,
-          "className" : "io.netty.channel.AbstractChannel$AbstractUnsafe$1",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "safeExecute",
-          "fileName" : "AbstractEventExecutor.java",
-          "lineNumber" : 163,
-          "className" : "io.netty.util.concurrent.AbstractEventExecutor",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "runAllTasks",
-          "fileName" : "SingleThreadEventExecutor.java",
-          "lineNumber" : 404,
-          "className" : "io.netty.util.concurrent.SingleThreadEventExecutor",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "NioEventLoop.java",
-          "lineNumber" : 495,
-          "className" : "io.netty.channel.nio.NioEventLoop",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "SingleThreadEventExecutor.java",
-          "lineNumber" : 905,
-          "className" : "io.netty.util.concurrent.SingleThreadEventExecutor$5",
-          "nativeMethod" : false
-        }, {
-          "methodName" : "run",
-          "fileName" : "Thread.java",
-          "lineNumber" : 748,
-          "className" : "java.lang.Thread",
-          "nativeMethod" : false
-        } ],
-        "message" : "fake.blobfake.core.windows.net",
-        "localizedMessage" : "fake.blobfake.core.windows.net",
-        "suppressed" : [ ]
-      },
-      "ClassName" : "java.net.UnknownHostException"
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "fake.blobfake.core.windows.net"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net?restype=service&comp=properties",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -1804,17 +148,17 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "cfe07b28-201e-004c-67fd-59f769000000",
-      "Date" : "Fri, 23 Aug 2019 21:53:01 GMT",
-      "x-ms-client-request-id" : "16cff8bb-4ebc-4600-a591-f7ceabc20dae"
+      "x-ms-request-id" : "6179828b-c01e-008a-0e94-5f8a55000000",
+      "Date" : "Sat, 31 Aug 2019 00:39:47 GMT",
+      "x-ms-client-request-id" : "f790dc6f-35eb-47a2-8633-f9f8d8210287"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net?prefix=jtcinvalidaccountname&comp=list",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net?prefix=jtcinvalidaccountname&comp=list",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -1822,19 +166,19 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "cfe07b72-201e-004c-21fd-59f769000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcinvalidaccountname</Prefix><Containers><Container><Name>jtcinvalidaccountname0serviceapitestinvalidaccountname4dd87860</Name><Properties><Last-Modified>Fri, 23 Aug 2019 21:52:01 GMT</Last-Modified><Etag>\"0x8D728142128B84E\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 23 Aug 2019 21:53:01 GMT",
-      "x-ms-client-request-id" : "66fa78cc-8be7-481a-99ae-f0d173d7fa60",
+      "x-ms-request-id" : "617982cb-c01e-008a-4294-5f8a55000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcinvalidaccountname</Prefix><Containers><Container><Name>jtcinvalidaccountname0serviceapitestinvalidaccountname5fe67382</Name><Properties><Last-Modified>Sat, 31 Aug 2019 00:38:47 GMT</Last-Modified><Etag>\"0x8D72DAB95F5163B\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Sat, 31 Aug 2019 00:39:47 GMT",
+      "x-ms-client-request-id" : "c0c35643-d5e1-4fcd-919f-4688d9a23bfe",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcinvalidaccountname0serviceapitestinvalidaccountname4dd87860?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcinvalidaccountname0serviceapitestinvalidaccountname5fe67382?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -1842,11 +186,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "cfe07b88-201e-004c-31fd-59f769000000",
-      "Date" : "Fri, 23 Aug 2019 21:53:01 GMT",
-      "x-ms-client-request-id" : "38d1de1d-f0da-4f76-93ad-bc35674fc8cb"
+      "x-ms-request-id" : "61798314-c01e-008a-8094-5f8a55000000",
+      "Date" : "Sat, 31 Aug 2019 00:39:47 GMT",
+      "x-ms-client-request-id" : "784ebcb0-77a1-4fc0-824a-108d3d15e25e"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcinvalidaccountname0serviceapitestinvalidaccountname4dd87860" ]
+  "variables" : [ "jtcinvalidaccountname0serviceapitestinvalidaccountname5fe67382" ]
 }

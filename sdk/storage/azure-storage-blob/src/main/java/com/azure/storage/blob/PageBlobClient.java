@@ -19,6 +19,7 @@ import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
+import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -173,18 +174,9 @@ public final class PageBlobClient extends BlobClient {
      */
     public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body,
             PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
-        long length = pageRange.end() - pageRange.start();
-        Flux<ByteBuffer> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) PAGE_BYTES))
-            .map(i -> i * PAGE_BYTES)
-            .concatMap(pos -> Mono.fromCallable(() -> {
-                byte[] cache = new byte[PAGE_BYTES];
-                int read = 0;
-                while (read < PAGE_BYTES) {
-                    read += body.read(cache, read, PAGE_BYTES - read);
-                }
-
-                return ByteBuffer.wrap(cache);
-            }));
+        Objects.requireNonNull(body);
+        long length = pageRange.end() - pageRange.start() + 1;
+        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(body, length, PAGE_BYTES);
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponse(pageRange,
             fbb.subscribeOn(Schedulers.elastic()),

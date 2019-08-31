@@ -37,7 +37,7 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.implementation.util.TypeUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import org.reactivestreams.Publisher;
+import java.util.concurrent.atomic.AtomicLong;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -165,32 +165,27 @@ public class RestProxy implements InvocationHandler {
         if (bbFlux == null) {
             return Flux.empty();
         }
-        return Flux.defer(new Supplier<Publisher<ByteBuffer>>() {
-            @Override
-            public Publisher<ByteBuffer> get() {
-                Long expectedLength = Long.valueOf(request.headers().value("Content-Length"));
-                List<Long> bufferLengthList = new ArrayList<>();
-                return bbFlux.doOnEach(s -> {
-                    if (s.isOnNext()) {
-                        Long currentLength = Long.valueOf(s.get().remaining());
-                        Long currentTotalLength = bufferLengthList.stream().reduce(Long::sum).orElse(0L)
-                            + currentLength;
-                        if (currentTotalLength > expectedLength) {
-                            throw new UnexpectedLengthException(
+
+        return Flux.defer(() -> {
+            Long expectedLength = Long.valueOf(request.headers().value("Content-Length"));
+            final AtomicLong tl = new AtomicLong(0L);
+            return bbFlux.doOnEach(s -> {
+                if (s.isOnNext()) {
+                    Long currentLength = Long.valueOf(s.get().remaining());
+                    tl.getAndAdd(currentLength);
+                    if (tl.get() > expectedLength) {
+                        throw new UnexpectedLengthException(
                             String.format("Request body emitted %d bytes more than the expected %d bytes.",
-                                currentTotalLength, expectedLength), currentTotalLength, expectedLength);
-                        }
-                        bufferLengthList.add(currentLength);
-                    } else if (s.isOnComplete()) {
-                        Long currentTotalLength = bufferLengthList.stream().reduce(Long::sum).orElse(0L);
-                        if (expectedLength.compareTo(currentTotalLength) != 0) {
-                            throw new UnexpectedLengthException(
-                                String.format("Request body emitted %d bytes less than the expected %d bytes.",
-                                    currentTotalLength, expectedLength), currentTotalLength, expectedLength);
-                        }
+                                tl.get(), expectedLength), tl.get(), expectedLength);
                     }
-                });
-            }
+                } else if (s.isOnComplete()) {
+                    if (expectedLength.compareTo(tl.get()) != 0) {
+                        throw new UnexpectedLengthException(
+                            String.format("Request body emitted %d bytes less than the expected %d bytes.",
+                                tl.get(), expectedLength), tl.get(), expectedLength);
+                    }
+                }
+            });
         });
     }
 

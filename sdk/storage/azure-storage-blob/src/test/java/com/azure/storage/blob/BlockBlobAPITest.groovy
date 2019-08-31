@@ -620,8 +620,11 @@ class BlockBlobAPITest extends APISpec {
     }
 
     def "Upload null body"() {
-        expect:
+        when:
         bc.uploadWithResponse(null, 0, null, null, null, null, null).statusCode() == 201
+
+        then:
+        thrown(NullPointerException)
     }
 
     @Unroll

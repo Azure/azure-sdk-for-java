@@ -4,6 +4,7 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.rest.Response
+import com.azure.core.implementation.exception.UnexpectedLengthException
 import com.azure.storage.blob.models.BlobAccessConditions
 import com.azure.storage.blob.models.BlobHTTPHeaders
 import com.azure.storage.blob.models.BlobRange
@@ -201,14 +202,14 @@ class PageBlobAPITest extends APISpec {
         bc.uploadPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES * 2 - 1), data)
 
         then:
-        def e = thrown(Exception)
+        def e = thrown(exceptionType)
         exceptionType.isInstance(e)
 
         where:
         dataSize                      | exceptionType
         null                          | NullPointerException
-        PageBlobClient.PAGE_BYTES     | IndexOutOfBoundsException
-        PageBlobClient.PAGE_BYTES * 3 | StorageException
+        PageBlobClient.PAGE_BYTES     | UnexpectedLengthException
+        PageBlobClient.PAGE_BYTES * 3 | UnexpectedLengthException
     }
 
     @Unroll
