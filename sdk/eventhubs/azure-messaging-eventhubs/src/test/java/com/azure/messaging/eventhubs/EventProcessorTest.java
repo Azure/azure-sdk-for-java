@@ -81,7 +81,7 @@ public class EventProcessorTest {
                 return testPartitionProcessor;
             }, EventPosition.latest(), partitionManager);
         eventProcessor.start();
-        Thread.sleep(TimeUnit.SECONDS.toMillis(2));
+        Thread.sleep(TimeUnit.SECONDS.toMillis(3));
         eventProcessor.stop();
 
         // Assert
@@ -142,7 +142,7 @@ public class EventProcessorTest {
             (partitionContext, checkpointManager) -> faultyPartitionProcessor,
             EventPosition.latest(), partitionManager);
         eventProcessor.start();
-        Thread.sleep(TimeUnit.SECONDS.toMillis(2));
+        Thread.sleep(TimeUnit.SECONDS.toMillis(3));
         eventProcessor.stop();
 
         // Assert
@@ -189,7 +189,7 @@ public class EventProcessorTest {
             "test-consumer",
             TestPartitionProcessor::new, EventPosition.latest(), partitionManager);
         eventProcessor.start();
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1));
+        Thread.sleep(TimeUnit.SECONDS.toMillis(3));
         eventProcessor.stop();
 
         // Assert

@@ -9,6 +9,7 @@ import com.azure.messaging.eventhubs.implementation.PartitionPumpManager;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import reactor.core.Disposable;
@@ -34,7 +35,7 @@ import reactor.core.scheduler.Schedulers;
 public class EventProcessor {
 
     private static final long INTERVAL_IN_SECONDS = 10; // run the load balancer every 10 seconds
-    private static final long INITIAL_DELAY = 0; // start immediately
+    private static final long BASE_JITTER_IN_SECONDS = 2; // the initial delay jitter before starting the processor
     private final ClientLogger logger = new ClientLogger(EventProcessor.class);
 
     private final String identifier;
@@ -102,8 +103,11 @@ public class EventProcessor {
         }
         logger.info("Starting a new event processor instance with id {}", this.identifier);
         scheduler = Schedulers.newElastic("EventProcessor");
-        runner = scheduler.schedulePeriodically(partitionBasedLoadBalancer::loadBalance, INITIAL_DELAY,
-            INTERVAL_IN_SECONDS /* TODO: make this configurable */, TimeUnit.SECONDS);
+        Double jitterInMillis =
+            ThreadLocalRandom.current().nextDouble() * TimeUnit.SECONDS.toMillis(BASE_JITTER_IN_SECONDS);
+        // Add a bit of jitter to initialDelay to minimize contention if multiple EventProcessors start at the same time
+        runner = scheduler.schedulePeriodically(partitionBasedLoadBalancer::loadBalance, jitterInMillis.longValue(),
+            TimeUnit.SECONDS.toMillis(INTERVAL_IN_SECONDS) /* TODO: make this configurable */, TimeUnit.MILLISECONDS);
     }
 
     /**

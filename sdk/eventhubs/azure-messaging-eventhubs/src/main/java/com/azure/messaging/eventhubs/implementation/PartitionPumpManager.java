@@ -96,9 +96,14 @@ public class PartitionPumpManager {
         PartitionProcessor partitionProcessor = this.partitionProcessorFactory
             .createPartitionProcessor(partitionContext, checkpointManager);
 
-        EventPosition startFromEventPosition =
-            claimedOwnership.sequenceNumber() == null ? initialEventPosition
-                : EventPosition.fromSequenceNumber(claimedOwnership.sequenceNumber());
+        EventPosition startFromEventPosition;
+        if (claimedOwnership.offset() != null) {
+            startFromEventPosition = EventPosition.fromOffset(claimedOwnership.offset());
+        } else if (claimedOwnership.sequenceNumber() != null) {
+            startFromEventPosition = EventPosition.fromSequenceNumber(claimedOwnership.sequenceNumber());
+        } else {
+            startFromEventPosition = initialEventPosition;
+        }
 
         EventHubConsumerOptions eventHubConsumerOptions = new EventHubConsumerOptions().ownerLevel(0L);
         EventHubAsyncConsumer eventHubConsumer = eventHubAsyncClient
