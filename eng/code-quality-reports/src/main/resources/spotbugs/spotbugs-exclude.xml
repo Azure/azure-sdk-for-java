@@ -451,7 +451,7 @@ anonymous inner classes. -->
     <Method name="endTracingSpan"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
-  
+
   <!-- Incorrect flagging, if the response is null a StorageException would have been thrown -->
   <Match>
     <Or>

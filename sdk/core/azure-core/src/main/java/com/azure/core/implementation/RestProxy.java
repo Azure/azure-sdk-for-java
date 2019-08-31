@@ -175,15 +175,15 @@ public class RestProxy implements InvocationHandler {
                     int currentLength = (byteBuffer == null) ? 0 : byteBuffer.remaining();
                     currentTotalLength.getAndAdd(currentLength);
                     if (currentTotalLength.get() > expectedLength) {
-                        throw new UnexpectedLengthException(
+                        throw logger.logExceptionAsError(new UnexpectedLengthException(
                             String.format("Request body emitted %d bytes more than the expected %d bytes.",
-                                currentTotalLength.get(), expectedLength), currentTotalLength.get(), expectedLength);
+                                currentTotalLength.get(), expectedLength), currentTotalLength.get(), expectedLength));
                     }
                 } else if (s.isOnComplete()) {
                     if (expectedLength.compareTo(currentTotalLength.get()) != 0) {
-                        throw new UnexpectedLengthException(
+                        throw logger.logExceptionAsError(new UnexpectedLengthException(
                             String.format("Request body emitted %d bytes less than the expected %d bytes.",
-                                currentTotalLength.get(), expectedLength), currentTotalLength.get(), expectedLength);
+                                currentTotalLength.get(), expectedLength), currentTotalLength.get(), expectedLength));
                     }
                 }
             });
