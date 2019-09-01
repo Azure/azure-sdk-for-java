@@ -8,6 +8,7 @@ import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.Locale;
 import java.util.Random;
 
@@ -55,7 +56,7 @@ public class AsyncBufferedUploadExample {
         Flux<ByteBuffer> sourceData = getSourceBlobClient(endpoint, credential, containerName).download()
             .flatMapMany(flux -> flux)
             // Perform some unpredicatable transformation.
-            .map(buffer -> (ByteBuffer) buffer.limit(new Random().nextInt(buffer.limit())));
+            .map(buffer -> buffer.limit(new Random().nextInt(buffer.limit())));
 
         /*
         This upload overload permits the use of such unreliable data sources. The length need not be specified, but
@@ -70,7 +71,7 @@ public class AsyncBufferedUploadExample {
 
     private static void uploadSourceBlob(String endpoint, SharedKeyCredential credential, String containerName) {
         getSourceBlobClient(endpoint, credential, containerName)
-            .upload(Flux.just(ByteBuffer.wrap("Hello world".getBytes())), "Hello world".length()).block();
+            .upload(Flux.just(ByteBuffer.wrap("Hello world".getBytes(Charset.defaultCharset()))), "Hello world".length()).block();
     }
 
     private static BlockBlobAsyncClient getSourceBlobClient(String endpoint, SharedKeyCredential credential,
