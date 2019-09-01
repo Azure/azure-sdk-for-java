@@ -53,14 +53,10 @@ public class AsyncBufferedUploadExample {
         impossible--the first two because retries would not work and the third one because we could not satisfy the
         argument list.
          */
-        // The JDK changed the return type of ByteBuffer#limit between 8 and 9. In 8 and below it returns Buffer, whereas
-        // in JDK 9 and later, it returns ByteBuffer. To compile on both, we explicitly cast the returned value to
-        // ByteBuffer.
-        @SuppressWarnings("all")
         Flux<ByteBuffer> sourceData = getSourceBlobClient(endpoint, credential, containerName).download()
             .flatMapMany(flux -> flux)
             // Perform some unpredicatable transformation.
-            .map(buffer -> (ByteBuffer) buffer.limit(new Random().nextInt(buffer.limit())));
+            .map(AsyncBufferedUploadExample::randomTransformation);
 
         /*
         This upload overload permits the use of such unreliable data sources. The length need not be specified, but
@@ -71,6 +67,15 @@ public class AsyncBufferedUploadExample {
         int blockSize = 10 * 1024;
         int numBuffers = 5;
         blobClient.upload(sourceData, blockSize, numBuffers).block();
+    }
+
+    @SuppressWarnings("cast")
+    private static ByteBuffer randomTransformation(ByteBuffer buffer) {
+        // The JDK changed the return type of ByteBuffer#limit between 8 and 9. In 8 and below it returns Buffer, whereas
+        // in JDK 9 and later, it returns ByteBuffer. To compile on both, we explicitly cast the returned value to
+        // ByteBuffer.
+        // See https://bugs-stage.openjdk.java.net/browse/JDK-8062376
+        return (ByteBuffer) buffer.limit(new Random().nextInt(buffer.limit()));
     }
 
     private static void uploadSourceBlob(String endpoint, SharedKeyCredential credential, String containerName) {
