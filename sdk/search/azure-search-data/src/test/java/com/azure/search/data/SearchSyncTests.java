@@ -374,14 +374,14 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canUseHitHighlighting() {
         //arrange
-        String Description = "Description";
-        String Category = "Category";
+        String description = "Description";
+        String category = "Category";
 
         SearchParameters sp = new SearchParameters();
         sp.filter("Rating eq 5");
         sp.highlightPreTag("<b>");
         sp.highlightPostTag("</b>");
-        sp.highlightFields(new LinkedList<>(Arrays.asList(Category, Description)));
+        sp.highlightFields(Arrays.asList(category, description));
 
         //act
         PagedIterable<SearchResult> results = client.search("luxury hotel", sp, new SearchRequestOptions());
@@ -397,10 +397,10 @@ public class SearchSyncTests extends SearchTestBase {
         Map<String, List<String>> highlights = documents.get(0).highlights();
         Assert.assertNotNull(highlights);
         Assert.assertEquals(2, highlights.keySet().size());
-        Assert.assertTrue(highlights.containsKey(Description));
-        Assert.assertTrue(highlights.containsKey(Category));
+        Assert.assertTrue(highlights.containsKey(description));
+        Assert.assertTrue(highlights.containsKey(category));
 
-        String categoryHighlight = highlights.get(Category).get(0);
+        String categoryHighlight = highlights.get(category).get(0);
 
         //asserts
         Assert.assertEquals("<b>Luxury</b>", categoryHighlight);
@@ -412,7 +412,7 @@ public class SearchSyncTests extends SearchTestBase {
                 "We highly recommend this <b>hotel</b>."
             );
 
-        Assert.assertEquals(expectedDescriptionHighlights, highlights.get(Description));
+        Assert.assertEquals(expectedDescriptionHighlights, highlights.get(description));
     }
 
     private List<Map<String, Object>> getSearchResults(PagedIterable<SearchResult> results) {
