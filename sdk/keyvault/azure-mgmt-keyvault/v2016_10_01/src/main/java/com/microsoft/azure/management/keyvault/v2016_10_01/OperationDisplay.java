@@ -33,13 +33,13 @@ public class OperationDisplay {
     private String operation;
 
     /**
-     * Description of operation.
+     * Decription of operation.
      */
     @JsonProperty(value = "description")
     private String description;
 
     /**
-     * Get service provider: Microsoft Key Vault.
+     * Get the provider value.
      *
      * @return the provider value
      */
@@ -48,7 +48,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Set service provider: Microsoft Key Vault.
+     * Set the provider value.
      *
      * @param provider the provider value to set
      * @return the OperationDisplay object itself.
@@ -59,7 +59,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Get resource on which the operation is performed etc.
+     * Get the resource value.
      *
      * @return the resource value
      */
@@ -68,7 +68,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Set resource on which the operation is performed etc.
+     * Set the resource value.
      *
      * @param resource the resource value to set
      * @return the OperationDisplay object itself.
@@ -79,7 +79,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Get type of operation: get, read, delete, etc.
+     * Get the operation value.
      *
      * @return the operation value
      */
@@ -88,7 +88,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Set type of operation: get, read, delete, etc.
+     * Set the operation value.
      *
      * @param operation the operation value to set
      * @return the OperationDisplay object itself.
@@ -99,7 +99,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Get description of operation.
+     * Get the description value.
      *
      * @return the description value
      */
@@ -108,7 +108,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Set description of operation.
+     * Set the description value.
      *
      * @param description the description value to set
      * @return the OperationDisplay object itself.

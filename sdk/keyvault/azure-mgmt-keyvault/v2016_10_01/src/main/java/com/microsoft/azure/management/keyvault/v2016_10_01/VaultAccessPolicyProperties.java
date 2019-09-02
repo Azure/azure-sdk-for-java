@@ -24,7 +24,7 @@ public class VaultAccessPolicyProperties {
     private List<AccessPolicyEntry> accessPolicies;
 
     /**
-     * Get an array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID.
+     * Get the accessPolicies value.
      *
      * @return the accessPolicies value
      */
@@ -33,7 +33,7 @@ public class VaultAccessPolicyProperties {
     }
 
     /**
-     * Set an array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID.
+     * Set the accessPolicies value.
      *
      * @param accessPolicies the accessPolicies value to set
      * @return the VaultAccessPolicyProperties object itself.

@@ -47,7 +47,7 @@ public class DeletedVaultProperties {
     private Map<String, String> tags;
 
     /**
-     * Get the resource id of the original vault.
+     * Get the vaultId value.
      *
      * @return the vaultId value
      */
@@ -56,7 +56,7 @@ public class DeletedVaultProperties {
     }
 
     /**
-     * Get the location of the original vault.
+     * Get the location value.
      *
      * @return the location value
      */
@@ -65,7 +65,7 @@ public class DeletedVaultProperties {
     }
 
     /**
-     * Get the deleted date.
+     * Get the deletionDate value.
      *
      * @return the deletionDate value
      */
@@ -74,7 +74,7 @@ public class DeletedVaultProperties {
     }
 
     /**
-     * Get the scheduled purged date.
+     * Get the scheduledPurgeDate value.
      *
      * @return the scheduledPurgeDate value
      */
@@ -83,7 +83,7 @@ public class DeletedVaultProperties {
     }
 
     /**
-     * Get tags of the original vault.
+     * Get the tags value.
      *
      * @return the tags value
      */

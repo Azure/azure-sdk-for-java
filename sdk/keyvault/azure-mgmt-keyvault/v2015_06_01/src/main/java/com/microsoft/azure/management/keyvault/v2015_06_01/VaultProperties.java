@@ -72,7 +72,7 @@ public class VaultProperties {
     private Boolean enableSoftDelete;
 
     /**
-     * Get the URI of the vault for performing operations on keys and secrets.
+     * Get the vaultUri value.
      *
      * @return the vaultUri value
      */
@@ -81,7 +81,7 @@ public class VaultProperties {
     }
 
     /**
-     * Set the URI of the vault for performing operations on keys and secrets.
+     * Set the vaultUri value.
      *
      * @param vaultUri the vaultUri value to set
      * @return the VaultProperties object itself.
@@ -92,7 +92,7 @@ public class VaultProperties {
     }
 
     /**
-     * Get the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
+     * Get the tenantId value.
      *
      * @return the tenantId value
      */
@@ -101,7 +101,7 @@ public class VaultProperties {
     }
 
     /**
-     * Set the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
+     * Set the tenantId value.
      *
      * @param tenantId the tenantId value to set
      * @return the VaultProperties object itself.
@@ -112,7 +112,7 @@ public class VaultProperties {
     }
 
     /**
-     * Get sKU details.
+     * Get the sku value.
      *
      * @return the sku value
      */
@@ -121,7 +121,7 @@ public class VaultProperties {
     }
 
     /**
-     * Set sKU details.
+     * Set the sku value.
      *
      * @param sku the sku value to set
      * @return the VaultProperties object itself.
@@ -132,7 +132,7 @@ public class VaultProperties {
     }
 
     /**
-     * Get an array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID.
+     * Get the accessPolicies value.
      *
      * @return the accessPolicies value
      */
@@ -141,7 +141,7 @@ public class VaultProperties {
     }
 
     /**
-     * Set an array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID.
+     * Set the accessPolicies value.
      *
      * @param accessPolicies the accessPolicies value to set
      * @return the VaultProperties object itself.
@@ -152,7 +152,7 @@ public class VaultProperties {
     }
 
     /**
-     * Get property to specify whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault.
+     * Get the enabledForDeployment value.
      *
      * @return the enabledForDeployment value
      */
@@ -161,7 +161,7 @@ public class VaultProperties {
     }
 
     /**
-     * Set property to specify whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault.
+     * Set the enabledForDeployment value.
      *
      * @param enabledForDeployment the enabledForDeployment value to set
      * @return the VaultProperties object itself.
@@ -172,7 +172,7 @@ public class VaultProperties {
     }
 
     /**
-     * Get property to specify whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys.
+     * Get the enabledForDiskEncryption value.
      *
      * @return the enabledForDiskEncryption value
      */
@@ -181,7 +181,7 @@ public class VaultProperties {
     }
 
     /**
-     * Set property to specify whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys.
+     * Set the enabledForDiskEncryption value.
      *
      * @param enabledForDiskEncryption the enabledForDiskEncryption value to set
      * @return the VaultProperties object itself.
@@ -192,7 +192,7 @@ public class VaultProperties {
     }
 
     /**
-     * Get property to specify whether Azure Resource Manager is permitted to retrieve secrets from the key vault.
+     * Get the enabledForTemplateDeployment value.
      *
      * @return the enabledForTemplateDeployment value
      */
@@ -201,7 +201,7 @@ public class VaultProperties {
     }
 
     /**
-     * Set property to specify whether Azure Resource Manager is permitted to retrieve secrets from the key vault.
+     * Set the enabledForTemplateDeployment value.
      *
      * @param enabledForTemplateDeployment the enabledForTemplateDeployment value to set
      * @return the VaultProperties object itself.
@@ -212,7 +212,7 @@ public class VaultProperties {
     }
 
     /**
-     * Get property to specify whether the 'soft delete' functionality is enabled for this key vault.
+     * Get the enableSoftDelete value.
      *
      * @return the enableSoftDelete value
      */
@@ -221,7 +221,7 @@ public class VaultProperties {
     }
 
     /**
-     * Set property to specify whether the 'soft delete' functionality is enabled for this key vault.
+     * Set the enableSoftDelete value.
      *
      * @param enableSoftDelete the enableSoftDelete value to set
      * @return the VaultProperties object itself.

@@ -23,7 +23,7 @@ public class VaultInner extends Resource {
     private VaultProperties properties;
 
     /**
-     * Get properties of the vault.
+     * Get the properties value.
      *
      * @return the properties value
      */
@@ -32,7 +32,7 @@ public class VaultInner extends Resource {
     }
 
     /**
-     * Set properties of the vault.
+     * Set the properties value.
      *
      * @param properties the properties value to set
      * @return the VaultInner object itself.

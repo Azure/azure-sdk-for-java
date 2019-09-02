@@ -32,8 +32,7 @@ public class VaultProperties {
     /**
      * An array of 0 to 16 identities that have access to the key vault. All
      * identities in the array must use the same tenant ID as the key vault's
-     * tenant ID. When `createMode` is set to `recover`, access policies are
-     * not required. Otherwise, access policies are required.
+     * tenant ID.
      */
     @JsonProperty(value = "accessPolicies")
     private List<AccessPolicyEntry> accessPolicies;
@@ -94,7 +93,7 @@ public class VaultProperties {
     private Boolean enablePurgeProtection;
 
     /**
-     * Get the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
+     * Get the tenantId value.
      *
      * @return the tenantId value
      */
@@ -103,7 +102,7 @@ public class VaultProperties {
     }
 
     /**
-     * Set the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
+     * Set the tenantId value.
      *
      * @param tenantId the tenantId value to set
      * @return the VaultProperties object itself.
@@ -114,7 +113,7 @@ public class VaultProperties {
     }
 
     /**
-     * Get sKU details.
+     * Get the sku value.
      *
      * @return the sku value
      */
@@ -123,7 +122,7 @@ public class VaultProperties {
     }
 
     /**
-     * Set sKU details.
+     * Set the sku value.
      *
      * @param sku the sku value to set
      * @return the VaultProperties object itself.
@@ -134,7 +133,7 @@ public class VaultProperties {
     }
 
     /**
-     * Get an array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID. When `createMode` is set to `recover`, access policies are not required. Otherwise, access policies are required.
+     * Get the accessPolicies value.
      *
      * @return the accessPolicies value
      */
@@ -143,7 +142,7 @@ public class VaultProperties {
     }
 
     /**
-     * Set an array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID. When `createMode` is set to `recover`, access policies are not required. Otherwise, access policies are required.
+     * Set the accessPolicies value.
      *
      * @param accessPolicies the accessPolicies value to set
      * @return the VaultProperties object itself.
@@ -154,7 +153,7 @@ public class VaultProperties {
     }
 
     /**
-     * Get the URI of the vault for performing operations on keys and secrets.
+     * Get the vaultUri value.
      *
      * @return the vaultUri value
      */
@@ -163,7 +162,7 @@ public class VaultProperties {
     }
 
     /**
-     * Set the URI of the vault for performing operations on keys and secrets.
+     * Set the vaultUri value.
      *
      * @param vaultUri the vaultUri value to set
      * @return the VaultProperties object itself.
@@ -174,7 +173,7 @@ public class VaultProperties {
     }
 
     /**
-     * Get property to specify whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault.
+     * Get the enabledForDeployment value.
      *
      * @return the enabledForDeployment value
      */
@@ -183,7 +182,7 @@ public class VaultProperties {
     }
 
     /**
-     * Set property to specify whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault.
+     * Set the enabledForDeployment value.
      *
      * @param enabledForDeployment the enabledForDeployment value to set
      * @return the VaultProperties object itself.
@@ -194,7 +193,7 @@ public class VaultProperties {
     }
 
     /**
-     * Get property to specify whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys.
+     * Get the enabledForDiskEncryption value.
      *
      * @return the enabledForDiskEncryption value
      */
@@ -203,7 +202,7 @@ public class VaultProperties {
     }
 
     /**
-     * Set property to specify whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys.
+     * Set the enabledForDiskEncryption value.
      *
      * @param enabledForDiskEncryption the enabledForDiskEncryption value to set
      * @return the VaultProperties object itself.
@@ -214,7 +213,7 @@ public class VaultProperties {
     }
 
     /**
-     * Get property to specify whether Azure Resource Manager is permitted to retrieve secrets from the key vault.
+     * Get the enabledForTemplateDeployment value.
      *
      * @return the enabledForTemplateDeployment value
      */
@@ -223,7 +222,7 @@ public class VaultProperties {
     }
 
     /**
-     * Set property to specify whether Azure Resource Manager is permitted to retrieve secrets from the key vault.
+     * Set the enabledForTemplateDeployment value.
      *
      * @param enabledForTemplateDeployment the enabledForTemplateDeployment value to set
      * @return the VaultProperties object itself.
@@ -234,7 +233,7 @@ public class VaultProperties {
     }
 
     /**
-     * Get property specifying whether recoverable deletion is enabled for this key vault. Setting this property to true activates the soft delete feature, whereby vaults or vault entities can be recovered after deletion. Enabling this functionality is irreversible - that is, the property does not accept false as its value.
+     * Get the enableSoftDelete value.
      *
      * @return the enableSoftDelete value
      */
@@ -243,7 +242,7 @@ public class VaultProperties {
     }
 
     /**
-     * Set property specifying whether recoverable deletion is enabled for this key vault. Setting this property to true activates the soft delete feature, whereby vaults or vault entities can be recovered after deletion. Enabling this functionality is irreversible - that is, the property does not accept false as its value.
+     * Set the enableSoftDelete value.
      *
      * @param enableSoftDelete the enableSoftDelete value to set
      * @return the VaultProperties object itself.
@@ -254,7 +253,7 @@ public class VaultProperties {
     }
 
     /**
-     * Get the vault's create mode to indicate whether the vault need to be recovered or not. Possible values include: 'recover', 'default'.
+     * Get the createMode value.
      *
      * @return the createMode value
      */
@@ -263,7 +262,7 @@ public class VaultProperties {
     }
 
     /**
-     * Set the vault's create mode to indicate whether the vault need to be recovered or not. Possible values include: 'recover', 'default'.
+     * Set the createMode value.
      *
      * @param createMode the createMode value to set
      * @return the VaultProperties object itself.
@@ -274,7 +273,7 @@ public class VaultProperties {
     }
 
     /**
-     * Get property specifying whether protection against purge is enabled for this vault. Setting this property to true activates protection against purge for this vault and its content - only the Key Vault service may initiate a hard, irrecoverable deletion. The setting is effective only if soft delete is also enabled. Enabling this functionality is irreversible - that is, the property does not accept false as its value.
+     * Get the enablePurgeProtection value.
      *
      * @return the enablePurgeProtection value
      */
@@ -283,7 +282,7 @@ public class VaultProperties {
     }
 
     /**
-     * Set property specifying whether protection against purge is enabled for this vault. Setting this property to true activates protection against purge for this vault and its content - only the Key Vault service may initiate a hard, irrecoverable deletion. The setting is effective only if soft delete is also enabled. Enabling this functionality is irreversible - that is, the property does not accept false as its value.
+     * Set the enablePurgeProtection value.
      *
      * @param enablePurgeProtection the enablePurgeProtection value to set
      * @return the VaultProperties object itself.
