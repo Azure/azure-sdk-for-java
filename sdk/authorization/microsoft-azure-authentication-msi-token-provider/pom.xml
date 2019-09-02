@@ -9,7 +9,7 @@
 
   <artifactId>azure-authentication-msi-token-provider</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-Beta-2</version>
+  <version>1.1.0-preview.1</version>
 
   <name>Azure Java Client MSI Authorization Token Provoider Library</name>
   <description>This package contains the MSI token provider classes for Azure.</description>
