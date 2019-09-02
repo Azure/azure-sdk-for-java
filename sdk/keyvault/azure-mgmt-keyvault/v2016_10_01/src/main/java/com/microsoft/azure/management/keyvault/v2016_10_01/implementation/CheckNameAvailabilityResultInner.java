@@ -38,7 +38,7 @@ public class CheckNameAvailabilityResultInner {
     private String message;
 
     /**
-     * Get a boolean value that indicates whether the name is available for you to use. If true, the name is available. If false, the name has already been taken or is invalid and cannot be used.
+     * Get the nameAvailable value.
      *
      * @return the nameAvailable value
      */
@@ -47,7 +47,7 @@ public class CheckNameAvailabilityResultInner {
     }
 
     /**
-     * Get the reason that a vault name could not be used. The Reason element is only returned if NameAvailable is false. Possible values include: 'AccountNameInvalid', 'AlreadyExists'.
+     * Get the reason value.
      *
      * @return the reason value
      */
@@ -56,7 +56,7 @@ public class CheckNameAvailabilityResultInner {
     }
 
     /**
-     * Get an error message explaining the Reason value in more detail.
+     * Get the message value.
      *
      * @return the message value
      */

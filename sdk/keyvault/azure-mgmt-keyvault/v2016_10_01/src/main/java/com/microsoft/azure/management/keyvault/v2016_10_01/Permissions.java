@@ -40,7 +40,7 @@ public class Permissions {
     private List<StoragePermissions> storage;
 
     /**
-     * Get permissions to keys.
+     * Get the keys value.
      *
      * @return the keys value
      */
@@ -49,7 +49,7 @@ public class Permissions {
     }
 
     /**
-     * Set permissions to keys.
+     * Set the keys value.
      *
      * @param keys the keys value to set
      * @return the Permissions object itself.
@@ -60,7 +60,7 @@ public class Permissions {
     }
 
     /**
-     * Get permissions to secrets.
+     * Get the secrets value.
      *
      * @return the secrets value
      */
@@ -69,7 +69,7 @@ public class Permissions {
     }
 
     /**
-     * Set permissions to secrets.
+     * Set the secrets value.
      *
      * @param secrets the secrets value to set
      * @return the Permissions object itself.
@@ -80,7 +80,7 @@ public class Permissions {
     }
 
     /**
-     * Get permissions to certificates.
+     * Get the certificates value.
      *
      * @return the certificates value
      */
@@ -89,7 +89,7 @@ public class Permissions {
     }
 
     /**
-     * Set permissions to certificates.
+     * Set the certificates value.
      *
      * @param certificates the certificates value to set
      * @return the Permissions object itself.
@@ -100,7 +100,7 @@ public class Permissions {
     }
 
     /**
-     * Get permissions to storage accounts.
+     * Get the storage value.
      *
      * @return the storage value
      */
@@ -109,7 +109,7 @@ public class Permissions {
     }
 
     /**
-     * Set permissions to storage accounts.
+     * Set the storage value.
      *
      * @param storage the storage value to set
      * @return the Permissions object itself.

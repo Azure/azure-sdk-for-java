@@ -29,14 +29,13 @@ public class Sku {
 
     /**
      * Creates an instance of Sku class.
-     * @param name sKU name to specify whether the key vault is a standard vault or a premium vault. Possible values include: 'standard', 'premium'.
      */
     public Sku() {
         family = "A";
     }
 
     /**
-     * Get sKU family name.
+     * Get the family value.
      *
      * @return the family value
      */
@@ -45,7 +44,7 @@ public class Sku {
     }
 
     /**
-     * Set sKU family name.
+     * Set the family value.
      *
      * @param family the family value to set
      * @return the Sku object itself.
@@ -56,7 +55,7 @@ public class Sku {
     }
 
     /**
-     * Get sKU name to specify whether the key vault is a standard vault or a premium vault. Possible values include: 'standard', 'premium'.
+     * Get the name value.
      *
      * @return the name value
      */
@@ -65,7 +64,7 @@ public class Sku {
     }
 
     /**
-     * Set sKU name to specify whether the key vault is a standard vault or a premium vault. Possible values include: 'standard', 'premium'.
+     * Set the name value.
      *
      * @param name the name value to set
      * @return the Sku object itself.

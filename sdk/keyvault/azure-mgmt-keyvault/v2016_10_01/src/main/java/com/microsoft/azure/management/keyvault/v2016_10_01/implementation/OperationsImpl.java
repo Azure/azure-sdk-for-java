@@ -37,8 +37,7 @@ class OperationsImpl extends WrapperImpl<OperationsInner> implements Operations 
             public Iterable<OperationInner> call(Page<OperationInner> page) {
                 return page.items();
             }
-        })
-        .map(new Func1<OperationInner, Operation>() {
+        })    .map(new Func1<OperationInner, Operation>() {
             @Override
             public Operation call(OperationInner inner) {
                 return new OperationImpl(inner, manager());

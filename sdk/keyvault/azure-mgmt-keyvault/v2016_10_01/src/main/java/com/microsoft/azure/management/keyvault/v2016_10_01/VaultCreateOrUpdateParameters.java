@@ -34,7 +34,7 @@ public class VaultCreateOrUpdateParameters {
     private VaultProperties properties;
 
     /**
-     * Get the supported Azure location where the key vault should be created.
+     * Get the location value.
      *
      * @return the location value
      */
@@ -43,7 +43,7 @@ public class VaultCreateOrUpdateParameters {
     }
 
     /**
-     * Set the supported Azure location where the key vault should be created.
+     * Set the location value.
      *
      * @param location the location value to set
      * @return the VaultCreateOrUpdateParameters object itself.
@@ -54,7 +54,7 @@ public class VaultCreateOrUpdateParameters {
     }
 
     /**
-     * Get the tags that will be assigned to the key vault.
+     * Get the tags value.
      *
      * @return the tags value
      */
@@ -63,7 +63,7 @@ public class VaultCreateOrUpdateParameters {
     }
 
     /**
-     * Set the tags that will be assigned to the key vault.
+     * Set the tags value.
      *
      * @param tags the tags value to set
      * @return the VaultCreateOrUpdateParameters object itself.
@@ -74,7 +74,7 @@ public class VaultCreateOrUpdateParameters {
     }
 
     /**
-     * Get properties of the vault.
+     * Get the properties value.
      *
      * @return the properties value
      */
@@ -83,7 +83,7 @@ public class VaultCreateOrUpdateParameters {
     }
 
     /**
-     * Set properties of the vault.
+     * Set the properties value.
      *
      * @param properties the properties value to set
      * @return the VaultCreateOrUpdateParameters object itself.

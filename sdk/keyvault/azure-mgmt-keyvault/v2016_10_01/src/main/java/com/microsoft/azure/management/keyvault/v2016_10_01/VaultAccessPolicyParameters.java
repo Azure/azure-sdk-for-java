@@ -62,8 +62,6 @@ public interface VaultAccessPolicyParameters extends HasInner<VaultAccessPolicyP
         interface WithProperties {
             /**
              * Specifies properties.
-             * @param properties Properties of the access policy
-             * @return the next update stage
              */
             Update withProperties(VaultAccessPolicyProperties properties);
         }
