@@ -39,7 +39,7 @@
     <commons.io.version>2.4</commons.io.version>
     <commons.codec.version>1.10</commons.codec.version>
     <jackson.version>2.9.9</jackson.version>
-    <jackson-databind.version>2.9.9.3</jackson.version>
+    <jackson-databind.version>2.9.9.3</jackson-databind.version>
     <jjwt.version>0.5.1</jjwt.version>
     <guava.version>24.1.1-jre</guava.version>
     <rxjava.version>1.2.4</rxjava.version>
