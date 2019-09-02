@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.exception.UnexpectedLengthException;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -171,6 +172,8 @@ public final class PageBlobClient extends BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The information of the uploaded pages.
+     * @throws {@link UnexpectedLengthException} when the length of data does not match the input {@code length}.
+     * @throws NullPointerException if the input data is null.
      */
     public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body,
             PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {

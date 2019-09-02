@@ -16,8 +16,7 @@ import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -503,25 +502,25 @@ public final class Utility {
      * @throws RuntimeException When I/O error occurs.
      */
     public static Flux<ByteBuffer> convertStreamToByteBuffer(InputStream data, long length, int blockSize) {
-        final List<Long> lengthInChunk = new ArrayList<>();
+        final AtomicLong lengthInChunk = new AtomicLong();
         return Flux.range(0, (int) Math.ceil((double) length / (double) blockSize))
             .map(i -> i * blockSize)
             .concatMap(pos -> Mono.fromCallable(() -> {
                 long count = pos + blockSize > length ? length - pos : blockSize;
                 byte[] cache = new byte[(int) count];
                 int lastIndex = data.read(cache);
-                lengthInChunk.add((long) lastIndex);
-                if (lastIndex < count) {
+                lengthInChunk.getAndAdd(lastIndex);
+                if (lengthInChunk.get() < count) {
                     throw new UnexpectedLengthException(
                         String.format("Request body emitted %d bytes less than the expected %d bytes.",
-                            pos + lastIndex, length), pos + lastIndex, length);
+                            lengthInChunk.get(), length), lengthInChunk.get(), length);
                 }
                 return ByteBuffer.wrap(cache);
             }))
             .doOnComplete(() -> {
                 try {
                     if (data.available() > 0) {
-                        Long totalLength = lengthInChunk.stream().reduce(Long::sum).orElse(0L) + data.available();
+                        Long totalLength = lengthInChunk.get() + data.available();
                         throw new UnexpectedLengthException(
                             String.format("Request body emitted %d bytes more than the expected %d bytes.",
                                 totalLength, length), totalLength, length);
