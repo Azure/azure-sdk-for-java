@@ -133,6 +133,7 @@
     <commons-validator.version>1.6</commons-validator.version>
     <commons-collections4.version>4.2</commons-collections4.version>
     <jcommander.version>1.58</jcommander.version>
+    <nanohttpd.version>2.3.1</nanohttpd.version>
 
     <!-- Test Dependency Versions -->
     <adal4j.version>1.6.3</adal4j.version>
@@ -347,6 +348,12 @@
         <groupId>io.netty</groupId>
         <artifactId>netty-buffer</artifactId>
         <version>${netty.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.nanohttpd</groupId>
+        <artifactId>nanohttpd</artifactId>
+        <version>${nanohttpd.version}</version>
       </dependency>
 
       <dependency>
