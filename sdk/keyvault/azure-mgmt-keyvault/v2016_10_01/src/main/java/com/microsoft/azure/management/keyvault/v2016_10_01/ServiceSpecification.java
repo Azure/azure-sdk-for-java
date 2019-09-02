@@ -22,7 +22,7 @@ public class ServiceSpecification {
     private List<LogSpecification> logSpecifications;
 
     /**
-     * Get log specifications of operation.
+     * Get the logSpecifications value.
      *
      * @return the logSpecifications value
      */
@@ -31,7 +31,7 @@ public class ServiceSpecification {
     }
 
     /**
-     * Set log specifications of operation.
+     * Set the logSpecifications value.
      *
      * @param logSpecifications the logSpecifications value to set
      * @return the ServiceSpecification object itself.

@@ -81,7 +81,7 @@ public class VaultPatchProperties {
     private Boolean enablePurgeProtection;
 
     /**
-     * Get the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
+     * Get the tenantId value.
      *
      * @return the tenantId value
      */
@@ -90,7 +90,7 @@ public class VaultPatchProperties {
     }
 
     /**
-     * Set the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
+     * Set the tenantId value.
      *
      * @param tenantId the tenantId value to set
      * @return the VaultPatchProperties object itself.
@@ -101,7 +101,7 @@ public class VaultPatchProperties {
     }
 
     /**
-     * Get sKU details.
+     * Get the sku value.
      *
      * @return the sku value
      */
@@ -110,7 +110,7 @@ public class VaultPatchProperties {
     }
 
     /**
-     * Set sKU details.
+     * Set the sku value.
      *
      * @param sku the sku value to set
      * @return the VaultPatchProperties object itself.
@@ -121,7 +121,7 @@ public class VaultPatchProperties {
     }
 
     /**
-     * Get an array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID.
+     * Get the accessPolicies value.
      *
      * @return the accessPolicies value
      */
@@ -130,7 +130,7 @@ public class VaultPatchProperties {
     }
 
     /**
-     * Set an array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID.
+     * Set the accessPolicies value.
      *
      * @param accessPolicies the accessPolicies value to set
      * @return the VaultPatchProperties object itself.
@@ -141,7 +141,7 @@ public class VaultPatchProperties {
     }
 
     /**
-     * Get property to specify whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault.
+     * Get the enabledForDeployment value.
      *
      * @return the enabledForDeployment value
      */
@@ -150,7 +150,7 @@ public class VaultPatchProperties {
     }
 
     /**
-     * Set property to specify whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault.
+     * Set the enabledForDeployment value.
      *
      * @param enabledForDeployment the enabledForDeployment value to set
      * @return the VaultPatchProperties object itself.
@@ -161,7 +161,7 @@ public class VaultPatchProperties {
     }
 
     /**
-     * Get property to specify whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys.
+     * Get the enabledForDiskEncryption value.
      *
      * @return the enabledForDiskEncryption value
      */
@@ -170,7 +170,7 @@ public class VaultPatchProperties {
     }
 
     /**
-     * Set property to specify whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys.
+     * Set the enabledForDiskEncryption value.
      *
      * @param enabledForDiskEncryption the enabledForDiskEncryption value to set
      * @return the VaultPatchProperties object itself.
@@ -181,7 +181,7 @@ public class VaultPatchProperties {
     }
 
     /**
-     * Get property to specify whether Azure Resource Manager is permitted to retrieve secrets from the key vault.
+     * Get the enabledForTemplateDeployment value.
      *
      * @return the enabledForTemplateDeployment value
      */
@@ -190,7 +190,7 @@ public class VaultPatchProperties {
     }
 
     /**
-     * Set property to specify whether Azure Resource Manager is permitted to retrieve secrets from the key vault.
+     * Set the enabledForTemplateDeployment value.
      *
      * @param enabledForTemplateDeployment the enabledForTemplateDeployment value to set
      * @return the VaultPatchProperties object itself.
@@ -201,7 +201,7 @@ public class VaultPatchProperties {
     }
 
     /**
-     * Get property specifying whether recoverable deletion ('soft' delete) is enabled for this key vault. The property may not be set to false.
+     * Get the enableSoftDelete value.
      *
      * @return the enableSoftDelete value
      */
@@ -210,7 +210,7 @@ public class VaultPatchProperties {
     }
 
     /**
-     * Set property specifying whether recoverable deletion ('soft' delete) is enabled for this key vault. The property may not be set to false.
+     * Set the enableSoftDelete value.
      *
      * @param enableSoftDelete the enableSoftDelete value to set
      * @return the VaultPatchProperties object itself.
@@ -221,7 +221,7 @@ public class VaultPatchProperties {
     }
 
     /**
-     * Get the vault's create mode to indicate whether the vault need to be recovered or not. Possible values include: 'recover', 'default'.
+     * Get the createMode value.
      *
      * @return the createMode value
      */
@@ -230,7 +230,7 @@ public class VaultPatchProperties {
     }
 
     /**
-     * Set the vault's create mode to indicate whether the vault need to be recovered or not. Possible values include: 'recover', 'default'.
+     * Set the createMode value.
      *
      * @param createMode the createMode value to set
      * @return the VaultPatchProperties object itself.
@@ -241,7 +241,7 @@ public class VaultPatchProperties {
     }
 
     /**
-     * Get property specifying whether protection against purge is enabled for this vault; it is only effective if soft delete is also enabled. Once activated, the property may no longer be reset to false.
+     * Get the enablePurgeProtection value.
      *
      * @return the enablePurgeProtection value
      */
@@ -250,7 +250,7 @@ public class VaultPatchProperties {
     }
 
     /**
-     * Set property specifying whether protection against purge is enabled for this vault; it is only effective if soft delete is also enabled. Once activated, the property may no longer be reset to false.
+     * Set the enablePurgeProtection value.
      *
      * @param enablePurgeProtection the enablePurgeProtection value to set
      * @return the VaultPatchProperties object itself.

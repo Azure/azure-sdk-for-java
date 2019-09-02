@@ -165,14 +165,10 @@ class VaultsImpl extends GroupableResourcesCoreImpl<Vault, VaultImpl, VaultInner
     public Observable<DeletedVault> getDeletedAsync(String vaultName, String location) {
         VaultsInner client = this.inner();
         return client.getDeletedAsync(vaultName, location)
-        .flatMap(new Func1<DeletedVaultInner, Observable<DeletedVault>>() {
+        .map(new Func1<DeletedVaultInner, DeletedVault>() {
             @Override
-            public Observable<DeletedVault> call(DeletedVaultInner inner) {
-                if (inner == null) {
-                    return Observable.empty();
-                } else {
-                    return Observable.just((DeletedVault)wrapDeletedVaultModel(inner));
-                }
+            public DeletedVault call(DeletedVaultInner inner) {
+                return wrapDeletedVaultModel(inner);
             }
        });
     }
@@ -192,8 +188,7 @@ class VaultsImpl extends GroupableResourcesCoreImpl<Vault, VaultImpl, VaultInner
             public Iterable<DeletedVaultInner> call(Page<DeletedVaultInner> page) {
                 return page.items();
             }
-        })
-        .map(new Func1<DeletedVaultInner, DeletedVault>() {
+        })    .map(new Func1<DeletedVaultInner, DeletedVault>() {
             @Override
             public DeletedVault call(DeletedVaultInner inner) {
                 return new DeletedVaultImpl(inner, manager());

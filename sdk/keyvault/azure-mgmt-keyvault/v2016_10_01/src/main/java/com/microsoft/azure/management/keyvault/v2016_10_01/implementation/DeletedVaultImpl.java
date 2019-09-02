@@ -21,7 +21,6 @@ class DeletedVaultImpl extends IndexableRefreshableWrapperImpl<DeletedVault, Del
     DeletedVaultImpl(DeletedVaultInner inner,  KeyVaultManager manager) {
         super(null, inner);
         this.manager = manager;
-        // set resource ancestor and positional variables
         this.vaultName = IdParsingUtils.getValueFromIdByName(inner.id(), "deletedVaults");
         this.location = IdParsingUtils.getValueFromIdByName(inner.id(), "locations");
     }
