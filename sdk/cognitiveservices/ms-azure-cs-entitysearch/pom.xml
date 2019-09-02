@@ -12,7 +12,7 @@
       <relativePath>../../../pom.data.xml</relativePath>
     </parent>
     <artifactId>azure-cognitiveservices-entitysearch</artifactId>
-    <version>1.0.2</version>
+    <version>1.1.0-preview.1</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Entity Search</name>
     <description>This package contains Microsoft Cognitive Service Entity Search SDK.</description>
