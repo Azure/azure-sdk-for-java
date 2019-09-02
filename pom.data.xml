@@ -519,7 +519,7 @@
     </profile>
 
     <profile>
-      <id>non-shippping-modules</id>
+      <id>non-shipping-modules</id>
       <activation>
         <property>
           <name>include-non-shipping-modules</name>
