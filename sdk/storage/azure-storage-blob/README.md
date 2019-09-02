@@ -238,12 +238,12 @@ doesn't exist in your Storage Account, a `404` error is returned, indicating `No
 
 Get started with our [Blob samples][samples]:
 
-1. [Basic Examples](src/samples/java/BasicExample.java): Create storage, container, blob clients, Upload, download, and list blobs.
-1. [File Transfer Examples](src/samples/java/FileTransferExample.java): Upload and download a large file through blobs.
-1. [Storage Error Examples](src/samples/java/StorageErrorHandlingExample.java): Handle the exceptions from storage blob service side.
-1. [List Container Examples](src/samples/java/ListContainersExample.java): Create, list and delete containers.
-1. [Set metadata and HTTPHeaders Examples](src/samples/java/SetMetadataAndHTTPHeadersExample.java): Set metadata for container and blob, and set HTTPHeaders for blob.
-1. [Azure Identity Examples](src/samples/java/AzureIdentityExample.java): Use DefaultAzureCredential to do the authentication.
+1. [Basic Examples](src/samples/java/com/azure/storage/blob/BasicExample.java): Create storage, container, blob clients, Upload, download, and list blobs.
+1. [File Transfer Examples](src/samples/java/com/azure/storage/blob/FileTransferExample.java): Upload and download a large file through blobs.
+1. [Storage Error Examples](src/samples/java/com/azure/storage/blob/StorageErrorHandlingExample.java): Handle the exceptions from storage blob service side.
+1. [List Container Examples](src/samples/java/com/azure/storage/blob/ListContainersExample.java): Create, list and delete containers.
+1. [Set metadata and HTTPHeaders Examples](src/samples/java/com/azure/storage/blob/SetMetadataAndHTTPHeadersExample.java): Set metadata for container and blob, and set HTTPHeaders for blob.
+1. [Azure Identity Examples](src/samples/java/com/azure/storage/blob/AzureIdentityExample.java): Use DefaultAzureCredential to do the authentication.
 
 ## Contributing
 
