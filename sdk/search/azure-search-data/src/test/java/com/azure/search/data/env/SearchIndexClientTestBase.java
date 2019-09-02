@@ -96,8 +96,8 @@ public class SearchIndexClientTestBase extends TestBase {
         List<IndexAction> indexActions = new ArrayList<>();
         assert documents != null;
         documents.forEach(h -> {
-            HashMap<String, Object> hotel = new HashMap<String, Object>(h);
-            addDocumentToIndexActions(indexActions, hotel);
+            HashMap<String, Object> doc = new HashMap<String, Object>(h);
+            addDocumentToIndexActions(indexActions, doc);
         });
 
         System.out.println("Indexing " + indexActions.size() + " docs");

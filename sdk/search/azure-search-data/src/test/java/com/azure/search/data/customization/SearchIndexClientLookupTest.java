@@ -4,13 +4,17 @@
 package com.azure.search.data.customization;
 
 import com.azure.search.data.SearchIndexAsyncClient;
+import com.azure.search.data.customization.models.GeoPoint;
 import com.azure.search.data.env.SearchIndexClientTestBase;
+import com.azure.search.data.env.SearchIndexService;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,12 +26,23 @@ import static java.lang.Double.NaN;
 public class SearchIndexClientLookupTest extends SearchIndexClientTestBase {
     private SearchIndexAsyncClient client;
     private static final String INDEX_NAME = "data-types-tests-index";
-
+    private static final String MODEL_WITH_DATA_TYPES_INDEX_JSON = "DataTypesTestsIndexData.json";
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
         client = builderSetup().indexName(INDEX_NAME).buildAsyncClient();
+
+        if (!interceptorManager.isPlaybackMode()) {
+            // In RECORDING mode (only), create a new index:
+            SearchIndexService searchIndexService = new SearchIndexService(
+                MODEL_WITH_DATA_TYPES_INDEX_JSON, searchServiceName, apiKey);
+            try {
+                searchIndexService.initialize();
+            } catch (IOException e) {
+                Assert.fail(e.getMessage());
+            }
+        }
     }
 
     /**
@@ -40,6 +55,7 @@ public class SearchIndexClientLookupTest extends SearchIndexClientTestBase {
     public void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundtripCorrectly() {
         client.setIndexName(INDEX_NAME);
         String docKey = "1";
+        Map geoPoint = GeoPoint.createWithDefaultCrs(100.0, 1.0).createObjectMap();
 
         // Creating the document to be indexed
         HashMap<String, Object> document = new HashMap<String, Object>();
@@ -50,7 +66,7 @@ public class SearchIndexClientLookupTest extends SearchIndexClientTestBase {
         document.put("Longs", new Long[]{9999999999999999L, 832372345832523L});
         document.put("Strings", new String[]{"hello", "bye"});
         document.put("Ints", new int[]{1, 2, 3, 4, -13, 5, 0});
-        document.put("Points", new Object[]{});
+        document.put("Points", new Object[]{geoPoint});
 
         // This is the expected document when querying the document later
         HashMap<String, Object> expectedDocument = new HashMap<String, Object>();
@@ -60,14 +76,11 @@ public class SearchIndexClientLookupTest extends SearchIndexClientTestBase {
         expectedDocument.put("Longs", Arrays.asList(9999999999999999L, 832372345832523L));
         expectedDocument.put("Strings", Arrays.asList("hello", "bye"));
         expectedDocument.put("Ints", Arrays.asList(1, 2, 3, 4, -13, 5, 0));
+        expectedDocument.put("Points", Collections.singletonList(geoPoint));
 
         // Todo: The decision is to support DateTime as string until we support user supplying the concrete class
         // in order to avoid trying to parse every string to a datetime (performance penalty)
-        expectedDocument.put("Dates", Arrays.asList("2019-08-13T14:30:00Z"));
-
-        // Todo: Support Geographic point
-        expectedDocument.put("Points", Arrays.asList());
-
+        expectedDocument.put("Dates", Collections.singletonList("2019-08-13T14:30:00Z"));
 
         // Index the document
         indexDocument(client, document);

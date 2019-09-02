@@ -4,6 +4,7 @@
 package com.azure.search.data;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.search.data.customization.models.CoordinateSystem;
 import com.azure.search.data.customization.RangeFacetResult;
 import com.azure.search.data.customization.ValueFacetResult;
 import com.azure.search.data.env.SearchIndexClientTestBase;
@@ -101,10 +102,10 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
             Map<String, Object> result = searchIterator.next();
             Map<String, Object> hotel = hotelsIterator.next();
 
-            // do not compare location object
-            // TODO(Nava) - remove once geo location issue is resolved
-            result.remove("Location");
-            hotel.remove("Location");
+            Map loc = (Map) hotel.get("Location");
+            if (loc != null) {
+                loc.put("crs", CoordinateSystem.create().createObjectMap());
+            }
             assertTrue(hotel.entrySet().stream().allMatch(e -> checkEquals(e, result)));
         }
 
