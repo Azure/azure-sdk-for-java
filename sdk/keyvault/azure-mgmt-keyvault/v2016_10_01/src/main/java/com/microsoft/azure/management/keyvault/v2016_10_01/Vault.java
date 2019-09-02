@@ -10,12 +10,12 @@ package com.microsoft.azure.management.keyvault.v2016_10_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.keyvault.v2016_10_01.implementation.KeyVaultManager;
 import com.microsoft.azure.management.keyvault.v2016_10_01.implementation.VaultInner;
@@ -57,9 +57,7 @@ public interface Vault extends HasInner<VaultInner>, Resource, GroupableResource
         interface WithProperties {
            /**
             * Specifies properties.
-            * @param properties Properties of the vault
-            * @return the next definition stage
-*/
+            */
             WithCreate withProperties(VaultProperties properties);
         }
 
@@ -82,13 +80,11 @@ public interface Vault extends HasInner<VaultInner>, Resource, GroupableResource
      */
     interface UpdateStages {
         /**
-         * The stage of the vault update allowing to specify Properties.
+         * The stage of the vault {0} allowing to specify Properties.
          */
         interface WithProperties {
             /**
              * Specifies properties.
-             * @param properties Properties of the vault
-             * @return the next update stage
              */
             Update withProperties(VaultPatchProperties properties);
         }

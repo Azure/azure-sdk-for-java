@@ -44,7 +44,7 @@ public class AccessPolicyEntry {
     private Permissions permissions;
 
     /**
-     * Get the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
+     * Get the tenantId value.
      *
      * @return the tenantId value
      */
@@ -53,7 +53,7 @@ public class AccessPolicyEntry {
     }
 
     /**
-     * Set the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
+     * Set the tenantId value.
      *
      * @param tenantId the tenantId value to set
      * @return the AccessPolicyEntry object itself.
@@ -64,7 +64,7 @@ public class AccessPolicyEntry {
     }
 
     /**
-     * Get the object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies.
+     * Get the objectId value.
      *
      * @return the objectId value
      */
@@ -73,7 +73,7 @@ public class AccessPolicyEntry {
     }
 
     /**
-     * Set the object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies.
+     * Set the objectId value.
      *
      * @param objectId the objectId value to set
      * @return the AccessPolicyEntry object itself.
@@ -84,7 +84,7 @@ public class AccessPolicyEntry {
     }
 
     /**
-     * Get application ID of the client making request on behalf of a principal.
+     * Get the applicationId value.
      *
      * @return the applicationId value
      */
@@ -93,7 +93,7 @@ public class AccessPolicyEntry {
     }
 
     /**
-     * Set application ID of the client making request on behalf of a principal.
+     * Set the applicationId value.
      *
      * @param applicationId the applicationId value to set
      * @return the AccessPolicyEntry object itself.
@@ -104,7 +104,7 @@ public class AccessPolicyEntry {
     }
 
     /**
-     * Get permissions the identity has for keys, secrets and certificates.
+     * Get the permissions value.
      *
      * @return the permissions value
      */
@@ -113,7 +113,7 @@ public class AccessPolicyEntry {
     }
 
     /**
-     * Set permissions the identity has for keys, secrets and certificates.
+     * Set the permissions value.
      *
      * @param permissions the permissions value to set
      * @return the AccessPolicyEntry object itself.
