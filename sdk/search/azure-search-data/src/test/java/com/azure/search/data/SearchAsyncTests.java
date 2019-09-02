@@ -369,6 +369,49 @@ public class SearchAsyncTests extends SearchTestBase {
             .verifyComplete();
     }
 
+    @Override
+    public void canUseHitHighlighting() {
+        //arrange
+        String Description = "Description";
+        String Category = "Category";
+
+        SearchParameters sp = new SearchParameters();
+        sp.filter("Rating eq 5");
+        sp.highlightPreTag("<b>");
+        sp.highlightPostTag("</b>");
+        sp.highlightFields(new LinkedList<>(Arrays.asList(Category, Description)));
+
+        //act
+        PagedFlux<SearchResult> results = client.search("luxury hotel", sp, new SearchRequestOptions());
+
+        //sanity
+        Assert.assertNotNull(results);
+
+        List<SearchResult> documents = results.log().collectList().block();
+
+        // sanity
+        Assert.assertEquals(1, documents.size());
+        Map<String, List<String>> highlights = documents.get(0).highlights();
+        Assert.assertNotNull(highlights);
+        Assert.assertEquals(2, highlights.keySet().size());
+        Assert.assertTrue(highlights.containsKey(Description));
+        Assert.assertTrue(highlights.containsKey(Category));
+
+        String categoryHighlight = highlights.get(Category).get(0);
+
+        //asserts
+        Assert.assertEquals("<b>Luxury</b>", categoryHighlight);
+
+        // Typed as IEnumerable so we get the right overload of Assert.Equals below.
+        List<String> expectedDescriptionHighlights =
+            Arrays.asList(
+                "Best <b>hotel</b> in town if you like <b>luxury</b> <b>hotels</b>.",
+                "We highly recommend this <b>hotel</b>."
+            );
+
+        Assert.assertEquals(expectedDescriptionHighlights, highlights.get(Description));
+    }
+
     private void assertResponse(SearchPagedResponse response, List<Map<String, Object>> actualResults) {
         Assert.assertNull(response.count());
         Assert.assertNull(response.coverage());
