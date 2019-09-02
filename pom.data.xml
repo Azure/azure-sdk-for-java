@@ -519,7 +519,7 @@
     </profile>
 
     <profile>
-      <id>non-shippping-modules</id>
+      <id>non-shipping-modules</id>
       <activation>
         <property>
           <name>include-non-shipping-modules</name>
@@ -551,7 +551,13 @@
     <module>./sdk/eventhubs/microsoft-azure-eventhubs/pom.xml</module>
     <module>./sdk/eventhubs/microsoft-azure-eventhubs-eph/pom.xml</module>
     <module>./sdk/eventhubs/microsoft-azure-eventhubs-extensions/pom.xml</module>
-    <module>./sdk/keyvault/pom.data.xml</module>
+    <module>./sdk/keyvault/microsoft-azure-keyvault/pom.xml</module>
+    <module>./sdk/keyvault/microsoft-azure-keyvault-complete/pom.xml</module>
+    <module>./sdk/keyvault/microsoft-azure-keyvault-core/pom.xml</module>
+    <module>./sdk/keyvault/microsoft-azure-keyvault-cryptography/pom.xml</module>
+    <module>./sdk/keyvault/microsoft-azure-keyvault-extensions/pom.xml</module>
+    <module>./sdk/keyvault/microsoft-azure-keyvault-test/pom.xml</module>
+    <module>./sdk/keyvault/microsoft-azure-keyvault-webkey/pom.xml</module>
     <module>./sdk/servicebus/microsoft-azure-servicebus</module>
     <module>./sdk/storage/microsoft-azure-storage-blob</module>
   </modules>

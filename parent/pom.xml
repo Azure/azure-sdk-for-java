@@ -133,6 +133,7 @@
     <commons-validator.version>1.6</commons-validator.version>
     <commons-collections4.version>4.2</commons-collections4.version>
     <jcommander.version>1.58</jcommander.version>
+    <nanohttpd.version>2.3.1</nanohttpd.version>
 
     <!-- Test Dependency Versions -->
     <adal4j.version>1.6.3</adal4j.version>
@@ -177,8 +178,8 @@
     <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
     <maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
     <maven-checkstyle-plugin.version>3.1.0</maven-checkstyle-plugin.version>
-    <checkstyle.version>8.19</checkstyle.version>
-    <mockito-core.version>2.28.2</mockito-core.version>
+    <checkstyle.version>8.24</checkstyle.version>
+    <mockito-core.version>3.0.0</mockito-core.version>
     <powermock.version>1.7.4</powermock.version>
     <jacoco-maven-plugin.version>0.8.4</jacoco-maven-plugin.version>
     <maven-exec-plugin.version>1.2.1</maven-exec-plugin.version>
@@ -347,6 +348,12 @@
         <groupId>io.netty</groupId>
         <artifactId>netty-buffer</artifactId>
         <version>${netty.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.nanohttpd</groupId>
+        <artifactId>nanohttpd</artifactId>
+        <version>${nanohttpd.version}</version>
       </dependency>
 
       <dependency>
