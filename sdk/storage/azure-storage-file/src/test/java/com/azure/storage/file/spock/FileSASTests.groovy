@@ -8,18 +8,14 @@ import com.azure.storage.common.IPRange
 import com.azure.storage.common.SASProtocol
 import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.file.FileClient
-import com.azure.storage.file.FileClientBuilder
 import com.azure.storage.file.FileSASPermission
 import com.azure.storage.file.FileServiceClient
-import com.azure.storage.file.FileServiceClientBuilder
 import com.azure.storage.file.FileServiceSASSignatureValues
 import com.azure.storage.file.ShareClient
-import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.ShareSASPermission
 import com.azure.storage.file.models.AccessPolicy
 import com.azure.storage.file.models.SignedIdentifier
-import com.azure.storage.file.models.StorageErrorException
-import spock.lang.Ignore
+import com.azure.storage.file.models.StorageException
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -37,7 +33,7 @@ class FileSASTests extends APISpec {
     def setup() {
         primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
         primaryShareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
-        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildClient()
+        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileClient()
 
     }
 
@@ -74,13 +70,13 @@ class FileSASTests extends APISpec {
         perms.create() == create
 
         where:
-        permString || read  | write | delete | create 
-        "r"        || true  | false | false  | false  
-        "w"        || false | true  | false  | false  
-        "d"        || false | false | true   | false  
-        "c"        || false | false | false  | true   
-        "rcwd"     || true  | true  | true   | true   
-        "dcwr"     || true  | true  | true   | true   
+        permString || read  | write | delete | create
+        "r"        || true  | false | false  | false
+        "w"        || false | true  | false  | false
+        "d"        || false | false | true   | false
+        "c"        || false | false | false  | true
+        "rcwd"     || true  | true  | true   | true
+        "dcwr"     || true  | true  | true   | true
     }
 
     def "FileSASPermissions parse IA"() {
@@ -191,7 +187,7 @@ class FileSASTests extends APISpec {
         def client = fileBuilderHelper(interceptorManager, shareName, filePath)
             .endpoint(primaryFileClient.getFileUrl().toString())
             .credential(SASTokenCredential.fromSASTokenString(sas))
-            .buildClient()
+            .buildFileClient()
 
         def downloadResponse = client.downloadWithProperties()
 
@@ -200,7 +196,7 @@ class FileSASTests extends APISpec {
         client.upload(ByteBuffer.wrap(data.getBytes()), (long) data.length())
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(StorageException)
         for(int i = 0; i < data.length(); i++) {
             responseBody.get(i) == data.getBytes()[i]
         }
@@ -234,18 +230,18 @@ class FileSASTests extends APISpec {
         def client = fileBuilderHelper(interceptorManager, shareName, filePath)
             .endpoint(primaryFileClient.getFileUrl().toString())
             .credential(SASTokenCredential.fromSASTokenString(sas))
-            .buildClient()
+            .buildFileClient()
 
         client.upload(ByteBuffer.wrap(data.getBytes()), (long) data.length())
 
         then:
-        thrown(StorageErrorException)
+        thrown(StorageException)
 
         when:
         client.delete()
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(StorageException)
     }
 
     def "ShareSAS network test identifier permissions create delete"() {
@@ -289,7 +285,7 @@ class FileSASTests extends APISpec {
         client2.deleteDirectory("dir")
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(StorageException)
     }
 
     def "AccountSAS FileService network test create delete share succeeds"() {
@@ -321,7 +317,7 @@ class FileSASTests extends APISpec {
         sc.deleteShare("create")
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(StorageException)
     }
 
 
