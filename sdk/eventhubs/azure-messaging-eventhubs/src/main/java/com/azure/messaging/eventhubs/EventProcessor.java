@@ -3,25 +3,34 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.implementation.tracing.ProcessKind;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.models.PartitionContext;
-import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.PartitionContext;
+import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import org.reactivestreams.Publisher;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Signal;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
+import java.io.Closeable;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.reactivestreams.Publisher;
-import reactor.core.Disposable;
-import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
+import static com.azure.core.implementation.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.implementation.tracing.Tracer.SPAN_CONTEXT;
 
 /**
  * This is the starting point for event processor.
@@ -44,6 +53,7 @@ public class EventProcessor {
     private static final long INTERVAL_IN_SECONDS = 10; // run every 10 seconds
     private static final long INITIAL_DELAY = 0; // start immediately
     private static final long OWNERSHIP_EXPIRATION_TIME_IN_MILLIS = TimeUnit.SECONDS.toMillis(30);
+
     private final ClientLogger logger = new ClientLogger(EventProcessor.class);
 
     private final EventHubAsyncClient eventHubAsyncClient;
@@ -54,24 +64,25 @@ public class EventProcessor {
     private final String identifier;
     private final Map<String, EventHubAsyncConsumer> partitionConsumers = new ConcurrentHashMap<>();
     private final String eventHubName;
+    private final TracerProvider tracerProvider;
     private final AtomicBoolean started = new AtomicBoolean(false);
     private Disposable runner;
     private Scheduler scheduler;
 
     /**
      * Package-private constructor. Use {@link EventHubClientBuilder} to create an instance.
-     *
-     * @param eventHubAsyncClient The {@link EventHubAsyncClient}.
+     *  @param eventHubAsyncClient The {@link EventHubAsyncClient}.
      * @param consumerGroupName The consumer group name used in this event processor to consumer events.
      * @param partitionProcessorFactory The factory to create new partition processor(s).
      * @param initialEventPosition Initial event position to start consuming events.
      * @param partitionManager The partition manager.
      * @param eventHubName The Event Hub name.
+     * @param tracerProvider The tracer implementation
      */
     EventProcessor(EventHubAsyncClient eventHubAsyncClient, String consumerGroupName,
-        PartitionProcessorFactory partitionProcessorFactory, EventPosition initialEventPosition,
-        PartitionManager partitionManager,
-        String eventHubName) {
+                   PartitionProcessorFactory partitionProcessorFactory, EventPosition initialEventPosition,
+                   PartitionManager partitionManager,
+                   String eventHubName, TracerProvider tracerProvider) {
         this.eventHubAsyncClient = Objects
             .requireNonNull(eventHubAsyncClient, "eventHubAsyncClient cannot be null");
         this.consumerGroupName = Objects
@@ -84,6 +95,7 @@ public class EventProcessor {
             .requireNonNull(initialEventPosition, "initialEventPosition cannot be null");
         this.eventHubName = Objects
             .requireNonNull(eventHubName, "eventHubName cannot be null");
+        this.tracerProvider = tracerProvider;
         this.identifier = UUID.randomUUID().toString();
         logger.info("The instance ID for this event processors is {}", this.identifier);
     }
@@ -231,12 +243,56 @@ public class EventProcessor {
         partitionProcessor.initialize().subscribe();
 
         consumer.receive().subscribeOn(Schedulers.newElastic("PartitionPump"))
-            .subscribe(eventData -> partitionProcessor.processEvent(eventData).subscribe(unused -> {
-            }, partitionProcessor::processError),
-                partitionProcessor::processError,
+            .subscribe(eventData -> {
+                Context processSpanContext = startProcessTracingSpan(eventData);
+                if (processSpanContext.getData(SPAN_CONTEXT).isPresent()) {
+                    eventData.addContext(SPAN_CONTEXT, processSpanContext);
+                }
+                partitionProcessor.processEvent(eventData).doOnEach(signal ->
+                    endProcessTracingSpan(processSpanContext, signal)).subscribe(unused -> {
+                    }, partitionProcessor::processError);
+            },
+            partitionProcessor::processError,
                 // Currently, there is no way to distinguish if the receiver was closed because
                 // another receiver with higher/same owner level(epoch) connected or because
                 // this event processor explicitly called close on this consumer.
                 () -> partitionProcessor.close(CloseReason.LOST_PARTITION_OWNERSHIP));
+    }
+
+    /*
+     * Starts a new process tracing span and attached context the EventData object for users.
+     */
+    private Context startProcessTracingSpan(EventData eventData) {
+        Object diagnosticId = eventData.properties().get(DIAGNOSTIC_ID_KEY);
+        if (diagnosticId == null || !tracerProvider.isEnabled()) {
+            return Context.NONE;
+        }
+        Context spanContext = tracerProvider.extractContext(diagnosticId.toString(), Context.NONE);
+        return tracerProvider.startSpan(spanContext, ProcessKind.PROCESS);
+    }
+
+    /*
+     * Ends the process tracing span and the scope of that span.
+     */
+    private void endProcessTracingSpan(Context processSpanContext, Signal<Void> signal) {
+        Optional<Object> spanScope = processSpanContext.getData("scope");
+        // Disposes of the scope when the trace span closes.
+        if (!spanScope.isPresent() || !tracerProvider.isEnabled()) {
+            return;
+        }
+        if (spanScope.get() instanceof Closeable) {
+            Closeable close = (Closeable) processSpanContext.getData("scope").get();
+            try {
+                close.close();
+                tracerProvider.endSpan(processSpanContext, signal);
+            } catch (IOException ioException) {
+                logger.error("EventProcessor.run() endTracingSpan().close() failed with an error %s", ioException);
+            }
+
+        } else {
+            logger.warning(String.format(Locale.US,
+                "Process span scope type is not of type Closeable, but type: %s. Not closing the scope and span",
+                spanScope.get() != null ? spanScope.getClass() : "null"));
+        }
     }
 }
