@@ -5,16 +5,23 @@ package com.azure.storage.queue;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.storage.common.AccountSASPermission;
+import com.azure.storage.common.AccountSASResourceType;
+import com.azure.storage.common.AccountSASService;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
 import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.models.CorsRule;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
-import com.azure.storage.queue.models.StorageErrorException;
+import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
+
 import java.net.URL;
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
@@ -75,7 +82,7 @@ public final class QueueServiceClient {
      *
      * @param queueName Name of the queue
      * @return A response containing the QueueClient and the status of creating the queue
-     * @throws StorageErrorException If a queue with the same name and different metadata already exists
+     * @throws StorageException If a queue with the same name and different metadata already exists
      */
     public QueueClient createQueue(String queueName) {
         return createQueueWithResponse(queueName, null, Context.NONE).value();
@@ -95,7 +102,7 @@ public final class QueueServiceClient {
      * @param metadata Metadata to associate with the queue
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the QueueClient and the status of creating the queue
-     * @throws StorageErrorException If a queue with the same name and different metadata already exists
+     * @throws StorageException If a queue with the same name and different metadata already exists
      */
     public Response<QueueClient> createQueueWithResponse(String queueName, Map<String, String> metadata, Context context) {
         Response<QueueAsyncClient> response = client.createQueueWithResponse(queueName, metadata, context).block();
@@ -113,7 +120,7 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.deleteQueue#string}
      *
      * @param queueName Name of the queue
-     * @throws StorageErrorException If the queue doesn't exist
+     * @throws StorageException If the queue doesn't exist
      */
     public void deleteQueue(String queueName) {
         deleteQueueWithResponse(queueName, Context.NONE);
@@ -131,7 +138,7 @@ public final class QueueServiceClient {
      * @param queueName Name of the queue
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the status of deleting the queue
-     * @throws StorageErrorException If the queue doesn't exist
+     * @throws StorageException If the queue doesn't exist
      */
     public VoidResponse deleteQueueWithResponse(String queueName, Context context) {
         return client.deleteQueueWithResponse(queueName, context).block();
@@ -251,7 +258,7 @@ public final class QueueServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure Docs</a>.</p>
      *
      * @param properties Storage account Queue service properties
-     * @throws StorageErrorException When one of the following is true
+     * @throws StorageException When one of the following is true
      * <ul>
      *     <li>A CORS rule is missing one of its fields</li>
      *     <li>More than five CORS rules will exist for the Queue service</li>
@@ -290,7 +297,7 @@ public final class QueueServiceClient {
      * @param properties Storage account Queue service properties
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException When one of the following is true
+     * @throws StorageException When one of the following is true
      * <ul>
      *     <li>A CORS rule is missing one of its fields</li>
      *     <li>More than five CORS rules will exist for the Queue service</li>
@@ -343,4 +350,36 @@ public final class QueueServiceClient {
         return client.getStatisticsWithResponse(context).block();
     }
 
+    /**
+     * Generates an account SAS token with the specified parameters
+     *
+     * @param accountSASService The {@code AccountSASService} services for the account SAS
+     * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
+     * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
+        return this.client.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime);
+    }
+
+    /**
+     * Generates an account SAS token with the specified parameters
+     *
+     * @param accountSASService The {@code AccountSASService} services for the account SAS
+     * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
+     * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
+     * @param startTime The {@code OffsetDateTime} start time for the account SAS
+     * @param version The {@code String} version for the account SAS
+     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        IPRange ipRange, SASProtocol sasProtocol) {
+        return this.client.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
+    }
 }

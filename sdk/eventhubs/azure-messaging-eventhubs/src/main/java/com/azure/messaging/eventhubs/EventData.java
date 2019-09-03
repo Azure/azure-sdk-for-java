@@ -220,14 +220,8 @@ public class EventData implements Comparable<EventData> {
      *
      * <p>
      * A common use case for {@code properties()} is to associate serialization hints for the {@link #body()} as an aid
-     * to consumers who wish to deserialize the binary data.
+     * to consumers who wish to deserialize the binary data. See {@link #addProperty(String, Object)} for a sample.
      * </p>
-     *
-     * <p>
-     * <strong>Adding serialization hint using {@link #addProperty(String, Object)}</strong>
-     * </p>
-     *
-     * {@codesnippet com.azure.messaging.eventhubs.eventdata.addProperty#string-object}
      *
      * @return Application properties associated with this {@link EventData}.
      */

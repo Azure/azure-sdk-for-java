@@ -52,6 +52,6 @@ public class ProxyOptions {
         /**
          * SOCKS5 proxy type.
          */
-        SOCKS5();
+        SOCKS5()
     }
 }

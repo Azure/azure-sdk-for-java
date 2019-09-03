@@ -1,42 +1,45 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatefilemaxoverloadinvalidargs103824a821?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatefilemaxoverloadinvalidargs188507a643?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72829BC00E555\"",
-      "Last-Modified" : "Sat, 24 Aug 2019 00:26:40 GMT",
+      "ETag" : "\"0x8D72C165DA74C66\"",
+      "Last-Modified" : "Thu, 29 Aug 2019 00:18:06 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "6f7a89d9-a01a-0134-4f12-5ad98b000000",
-      "Date" : "Sat, 24 Aug 2019 00:26:40 GMT",
-      "x-ms-client-request-id" : "8e270111-803b-4cfb-88c3-798c47e075e2"
+      "x-ms-request-id" : "f5828aec-c01a-00ce-1dff-5d5639000000",
+      "Date" : "Thu, 29 Aug 2019 00:18:06 GMT",
+      "x-ms-client-request-id" : "510758d0-680f-433a-a513-5f716afd56fe"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatefilemaxoverloadinvalidargs103824a821/test%0cile",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatefilemaxoverloadinvalidargs188507a643/fileName",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
     },
     "Response" : {
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "Connection" : "close",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "OutOfRangeInput",
       "retry-after" : "0",
-      "Content-Length" : "324",
+      "Content-Length" : "236",
       "StatusCode" : "400",
-      "Body" : "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"\"http://www.w3.org/TR/html4/strict.dtd\">\r\n<HTML><HEAD><TITLE>Bad Request</TITLE>\r\n<META HTTP-EQUIV=\"Content-Type\" Content=\"text/html; charset=us-ascii\"></HEAD>\r\n<BODY><h2>Bad Request - Invalid URL</h2>\r\n<hr><p>HTTP Error 400. The request URL is invalid.</p>\r\n</BODY></HTML>\r\n",
-      "Date" : "Sat, 24 Aug 2019 00:26:40 GMT",
-      "Content-Type" : "text/html; charset=us-ascii"
+      "x-ms-request-id" : "f5828aee-c01a-00ce-1eff-5d5639000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The file size exceeds the maximum permissible limit.\nRequestId:f5828aee-c01a-00ce-1eff-5d5639000000\nTime:2019-08-29T00:18:07.3287079Z</Message></Error>",
+      "Date" : "Thu, 29 Aug 2019 00:18:06 GMT",
+      "x-ms-client-request-id" : "a632acd5-e6d5-4c13-81ca-f1ccfa2fcb4d",
+      "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestscreatefilemaxoverloadinvalidargs103824a821" ]
+  "variables" : [ "shareapitestscreatefilemaxoverloadinvalidargs188507a643" ]
 }

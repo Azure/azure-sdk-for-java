@@ -14,7 +14,10 @@ import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.Constants;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -495,5 +498,70 @@ public class BlobClientJavaDocCodeSnippets {
         StorageAccountInfo accountInfo = client.getAccountInfoWithResponse(timeout, new Context(key1, value1)).value();
         System.out.printf("Account Kind: %s, SKU: %s%n", accountInfo.accountKind(), accountInfo.skuName());
         // END: com.azure.storage.blob.BlobClient.getAccountInfoWithResponse#Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlobClient#generateUserDelegationSAS(UserDelegationKey, String, BlobSASPermission,
+     * OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     */
+    public void generateUserDelegationSASCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobClient.generateUserDelegationSAS
+        BlobSASPermission permissions = new BlobSASPermission()
+            .read(true)
+            .write(true)
+            .create(true)
+            .delete(true)
+            .add(true);
+        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        IPRange ipRange = new IPRange()
+            .ipMin("0.0.0.0")
+            .ipMax("255.255.255.255");
+        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        String cacheControl = "cache";
+        String contentDisposition = "disposition";
+        String contentEncoding = "encoding";
+        String contentLanguage = "language";
+        String contentType = "type";
+        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+        UserDelegationKey userDelegationKey = new UserDelegationKey();
+        String accountName = "accountName";
+
+        String sas = client.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
+            startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
+            contentLanguage, contentType);
+        // END: com.azure.storage.blob.BlobClient.generateUserDelegationSAS
+    }
+
+    /**
+     * Code snippet for {@link BlobClient#generateSAS(String, BlobSASPermission, OffsetDateTime, OffsetDateTime, String,
+     * SASProtocol, IPRange, String, String, String, String, String)}
+     */
+    public void generateSASCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobClient.generateSAS
+        BlobSASPermission permissions = new BlobSASPermission()
+            .read(true)
+            .write(true)
+            .create(true)
+            .delete(true)
+            .add(true);
+        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        IPRange ipRange = new IPRange()
+            .ipMin("0.0.0.0")
+            .ipMax("255.255.255.255");
+        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        String cacheControl = "cache";
+        String contentDisposition = "disposition";
+        String contentEncoding = "encoding";
+        String contentLanguage = "language";
+        String contentType = "type";
+        String identifier = "identifier";
+        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+
+        // Note either "identifier", or "expiryTime and permissions" are required to be set
+        String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange,
+            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+        // END: com.azure.storage.blob.BlobClient.generateSAS
     }
 }

@@ -9,7 +9,8 @@ import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.Collections;
+import java.util.Queue;
 
 /**
  * To throw an exception, Must throw it through a 'logger.logExceptionAsError', rather than by directly calling 'throw exception'.
@@ -27,10 +28,10 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
     private static final String THROW_LOGGER_EXCEPTION_MESSAGE = "Directly throwing an exception is disallowed. Must "
         + "throw through ''ClientLogger'' API, either of ''%s'' or ''%s'' where ''logger'' is type of ClientLogger from Azure Core package.";
 
-    // A container stores the static status of class, skip this ThrowFromClientLoggerCheck if the class is static
-    private final Deque<Boolean> classStaticDeque = new ArrayDeque<>();
-    // A container stores the static status of method, skip this ThrowFromClientLoggerCheck if the method is static
-    private final Deque<Boolean> methodStaticDeque = new ArrayDeque<>();
+    // A LIFO queue stores the static status of class, skip this ThrowFromClientLoggerCheck if the class is static
+    private final Queue<Boolean> classStaticDeque = Collections.asLifoQueue(new ArrayDeque<>());
+    // A LIFO queue stores the static status of method, skip this ThrowFromClientLoggerCheck if the method is static
+    private final Queue<Boolean> methodStaticDeque = Collections.asLifoQueue(new ArrayDeque<>());
     // The variable is used to indicate if current node is still inside of constructor.
     private boolean isInConstructor = false;
 
@@ -58,13 +59,13 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
     public void leaveToken(DetailAST token) {
         switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
-                classStaticDeque.pop();
+                classStaticDeque.poll();
                 break;
             case TokenTypes.CTOR_DEF:
                 isInConstructor = false;
                 break;
             case TokenTypes.METHOD_DEF:
-                methodStaticDeque.pop();
+                methodStaticDeque.poll();
                 break;
             default:
                 // Checkstyle complains if there's no default block in switch
@@ -77,19 +78,19 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
         switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
                 DetailAST modifiersToken = token.findFirstToken(TokenTypes.MODIFIERS);
-                classStaticDeque.addLast(modifiersToken.branchContains(TokenTypes.LITERAL_STATIC));
+                classStaticDeque.offer(modifiersToken.branchContains(TokenTypes.LITERAL_STATIC));
                 break;
             case TokenTypes.CTOR_DEF:
                 isInConstructor = true;
                 break;
             case TokenTypes.METHOD_DEF:
                 DetailAST methodModifiersToken = token.findFirstToken(TokenTypes.MODIFIERS);
-                methodStaticDeque.addLast(methodModifiersToken.branchContains(TokenTypes.LITERAL_STATIC));
+                methodStaticDeque.offer(methodModifiersToken.branchContains(TokenTypes.LITERAL_STATIC));
                 break;
             case TokenTypes.LITERAL_THROW:
                 // Skip check if the throw exception from static class, constructor or static method
-                if (classStaticDeque.isEmpty() || classStaticDeque.peekLast() || isInConstructor
-                    || methodStaticDeque.isEmpty() || methodStaticDeque.peekLast()) {
+                if (classStaticDeque.isEmpty() || classStaticDeque.peek() || isInConstructor
+                    || methodStaticDeque.isEmpty() || methodStaticDeque.peek()) {
                     return;
                 }
                 DetailAST methodCallToken = token.findFirstToken(TokenTypes.EXPR).findFirstToken(TokenTypes.METHOD_CALL);

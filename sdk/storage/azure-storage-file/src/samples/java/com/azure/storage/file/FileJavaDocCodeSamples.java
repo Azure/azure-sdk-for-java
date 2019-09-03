@@ -4,6 +4,9 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.storage.common.Constants;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -43,7 +46,7 @@ public class FileJavaDocCodeSamples {
         FileClient client = new FileClientBuilder()
             .connectionString("${connectionString}")
             .endpoint("${endpoint}")
-            .buildClient();
+            .buildFileClient();
         // END: com.azure.storage.file.fileClient.instantiation
     }
 
@@ -57,8 +60,8 @@ public class FileJavaDocCodeSamples {
         FileClient fileClient = new FileClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net?${SASToken}")
             .shareName("myshare")
-            .filePath("myfilepath")
-            .buildClient();
+            .resourcePath("myfilepath")
+            .buildFileClient();
         // END: com.azure.storage.file.fileClient.instantiation.sastoken
         return fileClient;
     }
@@ -75,8 +78,8 @@ public class FileJavaDocCodeSamples {
             .endpoint("https://${accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
             .shareName("myshare")
-            .filePath("myfilepath")
-            .buildClient();
+            .resourcePath("myfilepath")
+            .buildFileClient();
         // END: com.azure.storage.file.fileClient.instantiation.credential
         return fileClient;
     }
@@ -91,8 +94,8 @@ public class FileJavaDocCodeSamples {
         String connectionString = "DefaultEndpointsProtocol=https;AccountName={name};AccountKey={key};"
             + "EndpointSuffix={core.windows.net}";
         FileClient fileClient = new FileClientBuilder()
-            .connectionString(connectionString).shareName("myshare").filePath("myfilepath")
-            .buildClient();
+            .connectionString(connectionString).shareName("myshare").resourcePath("myfilepath")
+            .buildFileClient();
         // END: com.azure.storage.file.fileClient.instantiation.connectionstring
         return fileClient;
     }
@@ -518,6 +521,36 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link FileClient#generateSAS(String, FileSASPermission, OffsetDateTime,
+     * OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     */
+    public void generateSAS() {
+        FileClient fileClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.FileClient.generateSAS
+        String identifier = "identifier";
+        FileSASPermission permissions = new FileSASPermission()
+            .read(true)
+            .create(true)
+            .delete(true)
+            .write(true);
+        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        IPRange ipRange = new IPRange()
+            .ipMin("0.0.0.0")
+            .ipMax("255.255.255.255");
+        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        String cacheControl = "cache";
+        String contentDisposition = "disposition";
+        String contentEncoding = "encoding";
+        String contentLanguage = "language";
+        String contentType = "type";
+        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+        String sas = fileClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
+            ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+        // END: com.azure.storage.file.FileClient.generateSAS
+    }
+
+     /**
      * Generates a code sample for using {@link FileClient#getShareSnapshotId()}
      */
     public void getShareSnapshotId() {
@@ -527,9 +560,9 @@ public class FileJavaDocCodeSamples {
             .endpoint("https://${accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
             .shareName("myshare")
-            .filePath("myfile")
+            .resourcePath("myfile")
             .snapshot(currentTime.toString())
-            .buildClient();
+            .buildFileClient();
 
         System.out.printf("Snapshot ID: %s%n", fileClient.getShareSnapshotId());
         // END: com.azure.storage.file.fileClient.getShareSnapshotId
