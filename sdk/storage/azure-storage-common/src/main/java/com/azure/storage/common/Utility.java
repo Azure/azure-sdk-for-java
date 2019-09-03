@@ -510,9 +510,9 @@ public final class Utility {
                 int lastIndex = data.read(cache);
                 currentTotalLength[0] += lastIndex;
                 if (currentTotalLength[0] < count) {
-                    throw new UnexpectedLengthException(
+                    throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
                         String.format("Request body emitted %d bytes less than the expected %d bytes.",
-                            currentTotalLength[0], length), currentTotalLength[0], length);
+                            currentTotalLength[0], length), currentTotalLength[0], length));
                 }
                 return ByteBuffer.wrap(cache);
             }))
@@ -520,9 +520,9 @@ public final class Utility {
                 try {
                     if (data.available() > 0) {
                         Long totalLength = currentTotalLength[0] + data.available();
-                        throw new UnexpectedLengthException(
+                        throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
                             String.format("Request body emitted %d bytes more than the expected %d bytes.",
-                                totalLength, length), totalLength, length);
+                                totalLength, length), totalLength, length));
                     }
                 } catch (IOException e) {
                     throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurs. Error deatils: "
