@@ -5,6 +5,7 @@ omitted_paths:
   - sdk/applicationinsights/microsoft-azure-applicationinsights-query/samples/*
   - sdk/loganalytics/microsoft-azure-loganalytics/samples/*
   - "*/resource-manager/*"
+  - "sdk/*/*mgmt*/*"
   - eng/*
 language: java
 root_check_enabled: True
