@@ -40,7 +40,6 @@ class BlobAPITest extends APISpec {
     def setup() {
         bc = cc.getBlockBlobClient(generateBlobName())
         bc.upload(defaultInputStream.get(), defaultDataSize)
-        defaultInputStream.get().reset();
     }
 
     def "Download all null"() {
