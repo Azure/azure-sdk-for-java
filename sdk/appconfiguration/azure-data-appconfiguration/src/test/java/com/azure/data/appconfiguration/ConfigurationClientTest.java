@@ -43,7 +43,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         } else {
             client = clientSetup(credentials -> new ConfigurationClientBuilder()
                 .credential(credentials)
-                .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+                .httpClient(new NettyAsyncHttpClientBuilder().setWiretap(true).build())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())
