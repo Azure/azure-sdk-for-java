@@ -10,15 +10,6 @@ import com.azure.core.util.Context;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionContext;
-import java.io.IOException;
-import java.io.Closeable;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -26,6 +17,14 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.implementation.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
