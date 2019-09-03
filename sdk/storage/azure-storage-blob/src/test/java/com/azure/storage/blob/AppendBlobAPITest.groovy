@@ -269,7 +269,7 @@ class AppendBlobAPITest extends APISpec {
 
         cleanup:
         defaultInputStream.get().reset()
-        
+
         where:
         modified | unmodified | match       | noneMatch    | leaseID        | appendPosE | maxSizeLTE
         newDate  | null       | null        | null         | null           | null       | null
@@ -328,8 +328,6 @@ class AppendBlobAPITest extends APISpec {
         ByteArrayOutputStream downloadStream = new ByteArrayOutputStream(1024)
         destURL.download(downloadStream)
         downloadStream.toByteArray() == Arrays.copyOfRange(data, 2 * 1024, 3 * 1024)
-        cleanup:
-        defaultInputStream.get().reset()
     }
 
     def "Append block from URL MD5"() {
@@ -347,8 +345,6 @@ class AppendBlobAPITest extends APISpec {
 
         then:
         notThrown(StorageException)
-        cleanup:
-        defaultInputStream.get().reset()
     }
 
     def "Append block from URL MD5 fail"() {

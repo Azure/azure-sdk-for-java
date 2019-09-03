@@ -51,7 +51,7 @@ class BlobAPITest extends APISpec {
         HttpHeaders headers = response.headers()
 
         then:
-        defaultData.compareTo(body) == 0
+        body == defaultData
         ImplUtils.isNullOrEmpty(getMetadataFromHeaders(headers))
         headers.value("Content-Length") != null
         headers.value("Content-Type") != null
