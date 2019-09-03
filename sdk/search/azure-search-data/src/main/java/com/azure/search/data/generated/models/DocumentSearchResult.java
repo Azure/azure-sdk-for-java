@@ -6,7 +6,6 @@ package com.azure.search.data.generated.models;
 
 import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 import java.util.Map;
 

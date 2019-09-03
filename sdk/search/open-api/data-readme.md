@@ -15,9 +15,9 @@ autorest .\readme.md
 ```yaml
 openapi-type: data-plane
 tag: package-2019-05
-input-file: ./2019-05-06/modifiedSearchindex.json
+input-file: ./2019-05-06/data/modifiedSearchindex.json
 java:
-    output-folder: azure-search-data
+    output-folder: ../azure-search-data
     namespace: com.azure.search.data.generated
     azure-arm: false
     add-credentials: true
