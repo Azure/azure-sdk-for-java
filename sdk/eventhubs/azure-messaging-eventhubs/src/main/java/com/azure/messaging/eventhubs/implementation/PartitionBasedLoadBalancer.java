@@ -29,10 +29,10 @@ import reactor.util.function.Tuple2;
 
 /**
  * This class is responsible for balancing the load of processing events from all partitions of an Event Hub by
- * distributing the number of partitions uniformly among all the  active {@link EventProcessor}s.
+ * distributing the number of partitions uniformly among all the  active {@link EventProcessor EventProcessors}.
  * <p>
  * This load balancer will retrieve partition ownership details from the {@link PartitionManager} to find the number of
- * active {@link EventProcessor}s. It uses the last modified time to decide if an EventProcessor is active. If a
+ * active {@link EventProcessor EventProcessors}. It uses the last modified time to decide if an EventProcessor is active. If a
  * partition ownership entry has not be updated for a specified duration of time, the owner of that partition is
  * considered inactive and the partition is available for other EventProcessors to own.
  * </p>
