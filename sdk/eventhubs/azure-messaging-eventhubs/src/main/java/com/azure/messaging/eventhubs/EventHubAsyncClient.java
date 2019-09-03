@@ -8,6 +8,7 @@ import com.azure.core.amqp.RetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.implementation.RetryUtil;
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.annotation.ServiceMethod;
@@ -83,8 +84,9 @@ public class EventHubAsyncClient implements Closeable {
     private final String eventHubName;
     private final EventHubProducerOptions defaultProducerOptions;
     private final EventHubConsumerOptions defaultConsumerOptions;
+    private final TracerProvider tracerProvider;
 
-    EventHubAsyncClient(ConnectionOptions connectionOptions, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
+    EventHubAsyncClient(ConnectionOptions connectionOptions, ReactorProvider provider, ReactorHandlerProvider handlerProvider, TracerProvider tracerProvider) {
         Objects.requireNonNull(connectionOptions,
             EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONNECTION_OPTIONS_CANNOT_NULL));
         Objects.requireNonNull(provider,
@@ -92,12 +94,16 @@ public class EventHubAsyncClient implements Closeable {
         Objects.requireNonNull(handlerProvider,
             EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.REACTOR_HANDLER_PROVIDER_CANNOT_NULL));
 
+        Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
+
         this.connectionOptions = connectionOptions;
+        this.tracerProvider = tracerProvider;
         this.eventHubName = connectionOptions.eventHubName();
         this.connectionId = StringUtil.getRandomString("MF");
-        this.connectionMono = Mono.fromCallable(() ->
-            (EventHubConnection) new ReactorConnection(connectionId, connectionOptions, provider,
-            handlerProvider, new ResponseMapper())).doOnSubscribe(c -> hasConnection.set(true))
+        this.connectionMono = Mono.fromCallable(() -> {
+            return (EventHubConnection) new ReactorConnection(connectionId, connectionOptions, provider,
+                handlerProvider, new ResponseMapper());
+        }).doOnSubscribe(c -> hasConnection.set(true))
             .cache();
 
         this.defaultProducerOptions = new EventHubProducerOptions()
@@ -191,7 +197,7 @@ public class EventHubAsyncClient implements Closeable {
                     .cast(AmqpSendLink.class);
             });
 
-        return new EventHubAsyncProducer(amqpLinkMono, clonedOptions);
+        return new EventHubAsyncProducer(amqpLinkMono, clonedOptions, tracerProvider);
     }
 
     /**
@@ -336,6 +342,10 @@ public class EventHubAsyncClient implements Closeable {
 
         throw new IllegalArgumentException(
             EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.NO_STARTING_POSITION_SET));
+    }
+
+    String eventHubName() {
+        return this.eventHubName;
     }
 
     private static class ResponseMapper implements AmqpResponseMapper {

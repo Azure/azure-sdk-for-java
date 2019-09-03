@@ -121,6 +121,11 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
     }
 
     @Override
+    public String getHostname() {
+        return handler.getHostname();
+    }
+
+    @Override
     public void close() {
         if (isDisposed.getAndSet(true)) {
             return;

@@ -6,7 +6,7 @@ the MIT License. See License.txt in the project root for license information. --
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-data-sdk-parent</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <relativePath>../../../pom.data.xml</relativePath>
   </parent>
 

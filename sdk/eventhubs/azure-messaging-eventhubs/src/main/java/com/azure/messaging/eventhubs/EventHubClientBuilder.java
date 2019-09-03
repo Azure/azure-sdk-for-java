@@ -5,9 +5,11 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
+import com.azure.core.implementation.tracing.Tracer;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.BaseConfigurations;
 import com.azure.core.util.configuration.Configuration;
@@ -31,6 +33,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.ServiceLoader;
 
 /**
  * This class provides a fluent builder API to aid the instantiation of {@link EventHubAsyncClient} and
@@ -311,8 +314,9 @@ public class EventHubClientBuilder {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
+        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-        return new EventHubAsyncClient(connectionOptions, provider, handlerProvider);
+        return new EventHubAsyncClient(connectionOptions, provider, handlerProvider, tracerProvider);
     }
 
     /**
@@ -343,7 +347,8 @@ public class EventHubClientBuilder {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
-        final EventHubAsyncClient client = new EventHubAsyncClient(connectionOptions, provider, handlerProvider);
+        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
+        final EventHubAsyncClient client = new EventHubAsyncClient(connectionOptions, provider, handlerProvider, tracerProvider);
 
         return new EventHubClient(client, connectionOptions);
     }
@@ -426,9 +431,9 @@ public class EventHubClientBuilder {
         EventPosition initialEventPosition =
             this.initialEventPosition == null ? EventPosition.earliest()
                 : this.initialEventPosition;
-
-        return new EventProcessor(buildAsyncClient(), this.consumerGroupName,
-            this.partitionProcessorFactory, initialEventPosition, partitionManager, eventHubName);
+        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
+        return new EventProcessor(buildAsyncClient(), consumerGroupName, partitionProcessorFactory,
+            initialEventPosition, partitionManager, tracerProvider);
     }
 
     private ConnectionOptions getConnectionOptions() {

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
@@ -18,7 +17,6 @@ import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.CorsRule;
 import com.azure.storage.queue.models.ListQueuesIncludeType;
@@ -70,10 +68,8 @@ public final class QueueServiceAsyncClient {
      * @param endpoint URL for the Storage Queue service
      * @param httpPipeline HttpPipeline that the HTTP requests and response flow through
      */
-    QueueServiceAsyncClient(URL endpoint, HttpPipeline httpPipeline) {
-        this.client = new AzureQueueStorageBuilder().pipeline(httpPipeline)
-            .url(endpoint.toString())
-            .build();
+    QueueServiceAsyncClient(AzureQueueStorageImpl azureQueueStorage) {
+        this.client = azureQueueStorage;
     }
 
     /**

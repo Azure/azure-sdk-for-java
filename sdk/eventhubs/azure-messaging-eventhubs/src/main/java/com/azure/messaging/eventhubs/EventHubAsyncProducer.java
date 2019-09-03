@@ -5,8 +5,11 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.implementation.tracing.ProcessKind;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpSendLink;
 import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
@@ -17,6 +20,7 @@ import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Signal;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -25,13 +29,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+
+import static com.azure.core.implementation.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.implementation.tracing.Tracer.ENTITY_PATH;
+import static com.azure.core.implementation.tracing.Tracer.HOST_NAME;
+import static com.azure.core.implementation.tracing.Tracer.SPAN_CONTEXT;
 
 /**
  * A producer responsible for transmitting {@link EventData} to a specific Event Hub, grouped together in batches.
@@ -107,17 +118,19 @@ public class EventHubAsyncProducer implements Closeable {
     private final EventHubProducerOptions senderOptions;
     private final Mono<AmqpSendLink> sendLinkMono;
     private final boolean isPartitionSender;
+    private final TracerProvider tracerProvider;
 
     /**
      * Creates a new instance of this {@link EventHubAsyncProducer} that sends messages to {@link
      * EventHubProducerOptions#partitionId() options.partitionId()} if it is not {@code null} or an empty string,
      * otherwise, allows the service to load balance the messages amongst available partitions.
      */
-    EventHubAsyncProducer(Mono<AmqpSendLink> amqpSendLinkMono, EventHubProducerOptions options) {
+    EventHubAsyncProducer(Mono<AmqpSendLink> amqpSendLinkMono, EventHubProducerOptions options, TracerProvider tracerProvider) {
         // Caching the created link so we don't invoke another link creation.
         this.sendLinkMono = amqpSendLinkMono.cache();
         this.senderOptions = options;
         this.isPartitionSender = !ImplUtils.isNullOrEmpty(options.partitionId());
+        this.tracerProvider = tracerProvider;
     }
 
     /**
@@ -302,7 +315,14 @@ public class EventHubAsyncProducer implements Closeable {
         final String partitionKey = options.partitionKey();
 
         verifyPartitionKey(partitionKey);
+        if (tracerProvider.isEnabled()) {
+            return sendInternalTracingEnabled(events, partitionKey);
+        } else {
+            return sendInternalTracingDisabled(events, partitionKey);
+        }
+    }
 
+    private Mono<Void> sendInternalTracingDisabled(Flux<EventData> events, String partitionKey) {
         return sendLinkMono.flatMap(link -> {
             return link.getLinkSize()
                 .flatMap(size -> {
@@ -315,6 +335,63 @@ public class EventHubAsyncProducer implements Closeable {
                 })
                 .flatMap(list -> sendInternal(Flux.fromIterable(list)));
         });
+    }
+
+    private Mono<Void> sendInternalTracingEnabled(Flux<EventData> events, String partitionKey) {
+        return sendLinkMono.flatMap(link -> {
+            final AtomicReference<Context> sendSpanContext = new AtomicReference<>(Context.NONE);
+            return link.getLinkSize()
+                .flatMap(size -> {
+                    final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
+                    final BatchOptions batchOptions = new BatchOptions()
+                        .partitionKey(partitionKey)
+                        .maximumSizeInBytes(batchSize);
+
+                    return events.map(eventData -> {
+                        Context parentContext = eventData.context();
+                        Context entityContext = parentContext.addData(ENTITY_PATH, link.getEntityPath());
+                        sendSpanContext.set(tracerProvider.startSpan(entityContext.addData(HOST_NAME, link.getHostname()), ProcessKind.SEND));
+                        // add span context on event data
+                        return setSpanContext(eventData, parentContext);
+                    }).collect(new EventDataCollector(batchOptions, 1, () -> link.getErrorContext()));
+                })
+                .flatMap(list -> sendInternal(Flux.fromIterable(list)))
+                .doOnEach(signal -> {
+                    tracerProvider.endSpan(sendSpanContext.get(), signal);
+                });
+        });
+    }
+
+    private EventData setSpanContext(EventData event, Context parentContext) {
+        Optional<Object> eventContextData = event.context().getData(SPAN_CONTEXT);
+        if (eventContextData.isPresent()) {
+            // if message has context (in case of retries), link it to the span
+            Object spanContextObject = eventContextData.get();
+            if (spanContextObject instanceof Context) {
+                tracerProvider.addSpanLinks((Context) eventContextData.get());
+                // TODO (samvaity): not supported in Opencensus yet
+                // builder.addLink((Context)eventContextData.get());
+            } else {
+                logger.warning(String.format(Locale.US,
+                    "Event Data context type is not of type Context, but type: %s. Not adding span links.",
+                    spanContextObject != null ? spanContextObject.getClass() : "null"));
+            }
+
+            return event;
+        } else {
+            // Starting the span makes the sampling decision (nothing is logged at this time)
+            Context eventSpanContext = tracerProvider.startSpan(parentContext, ProcessKind.RECEIVE);
+            if (eventSpanContext != null) {
+                Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
+
+                if (eventDiagnosticIdOptional.isPresent()) {
+                    event.addProperty(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
+                    tracerProvider.endSpan(eventSpanContext, Signal.complete());
+                    event.addContext(SPAN_CONTEXT, eventSpanContext);
+                }
+            }
+        }
+        return  event;
     }
 
     private Mono<Void> sendInternal(Flux<EventDataBatch> eventBatches) {

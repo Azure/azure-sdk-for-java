@@ -7,14 +7,14 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-data-sdk-parent</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <relativePath>../../../pom.data.xml</relativePath>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-eventhubs-eph</artifactId>
-  <version>3.0.0</version>
+  <version>3.1.0</version>
 
   <name>Microsoft Azure SDK for Event Hubs Event Processor Host(EPH)</name>
   <description>EPH is built on top of the Azure Event Hubs Client and provides a number of features not present in that lower layer</description>
@@ -35,7 +35,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-eventhubs</artifactId>
-      <version>3.0.0</version>
+      <version>3.1.0</version>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>

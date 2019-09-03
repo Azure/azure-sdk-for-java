@@ -16,7 +16,6 @@ import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.models.CopyStatusType;
 import com.azure.storage.file.models.FileCopyInfo;
@@ -115,27 +114,6 @@ public class FileAsyncClient {
     }
 
     /**
-     * Creates a FileAsyncClient that sends requests to the storage account at {@code endpoint}. Each service call goes
-     * through the {@code httpPipeline}.
-     *
-     * @param endpoint URL for the Storage File service
-     * @param httpPipeline HttpPipeline that HTTP requests and response flow through
-     * @param shareName Name of the share
-     * @param filePath Path to the file
-     * @param snapshot Optional snapshot of the share
-     */
-    FileAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String filePath, String snapshot) {
-        Objects.requireNonNull(shareName);
-        Objects.requireNonNull(filePath);
-        this.shareName = shareName;
-        this.filePath = filePath;
-        this.snapshot = snapshot;
-        this.azureFileStorageClient = new AzureFileStorageBuilder().pipeline(httpPipeline)
-            .url(endpoint.toString())
-            .build();
-    }
-
-    /**
      * Get the url of the storage file client.
      *
      * @return the URL of the storage file client
@@ -211,7 +189,7 @@ public class FileAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Copy file from source url to the {@code filePath} </p>
+     * <p>Copy file from source url to the {@code resourcePath} </p>
      *
      * {@codesnippet com.azure.storage.file.fileAsyncClient.startCopy#string-map}
      *
@@ -232,7 +210,7 @@ public class FileAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Copy file from source url to the {@code filePath} </p>
+     * <p>Copy file from source url to the {@code resourcePath} </p>
      *
      * {@codesnippet com.azure.storage.file.fileAsyncClient.startCopyWithResponse#string-map}
      *
