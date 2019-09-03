@@ -6,6 +6,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.implementation.tracing.ProcessKind;
 import com.azure.core.implementation.tracing.Tracer;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Signal;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.Objects;
 import static com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
 
 public class TracerProvider {
-
+    private final ClientLogger logger = new ClientLogger(TracerProvider.class);
     private final List<Tracer> tracers = new ArrayList<>();
 
     public TracerProvider(Iterable<Tracer> tracers) {
@@ -41,7 +42,8 @@ public class TracerProvider {
     public Context startSpan(Context context, ProcessKind processKind) {
         Context local = Objects.requireNonNull(context, "'context' cannot be null");
         Objects.requireNonNull(processKind, "'processKind' cannot be null");
-        String spanName = "Azure.eventhubs." + processKind.getProcessKind();
+        String spanName = getSpanName(processKind);
+
         for (Tracer tracer : tracers) {
             local = tracer.start(spanName, local, processKind);
         }
@@ -118,5 +120,25 @@ public class TracerProvider {
         for (Tracer tracer : tracers) {
             tracer.end(statusMessage, throwable, context);
         }
+    }
+
+    private String getSpanName(ProcessKind processKind) {
+        String spanName = "Azure.eventhubs.";
+        switch (processKind) {
+            case SEND:
+                spanName += "send";
+                break;
+            case RECEIVE:
+                spanName += "message";
+                break;
+            case PROCESS:
+                spanName += "process";
+                break;
+            default:
+                logger.warning("Unknown processKind type: {}", processKind);
+                break;
+        }
+
+        return spanName;
     }
 }
