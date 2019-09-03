@@ -9,6 +9,7 @@ import com.azure.storage.file.DirectoryClient
 import com.azure.storage.file.FileClient
 import com.azure.storage.file.FileSmbProperties
 import com.azure.storage.file.models.FileHTTPHeaders
+import com.azure.storage.file.models.FileProperties
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageException
@@ -448,7 +449,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryDirectoryClient.createFileWithResponse("testCreateFile", 1024, null, null, null, null, null), 201)
+            primaryDirectoryClient.createFileWithResponse("testCreateFile", 1024, null, null), 201)
     }
 
     @Unroll
@@ -456,7 +457,7 @@ class DirectoryAPITests extends APISpec {
         given:
         primaryDirectoryClient.create()
         when:
-        primaryDirectoryClient.createFileWithResponse(fileName, maxSize, null, null, null, null, null)
+        primaryDirectoryClient.createFileWithResponse(fileName, maxSize, null, null)
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
@@ -474,9 +475,10 @@ class DirectoryAPITests extends APISpec {
             .fileContentType("txt")
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
+        FileProperties properties = new FileProperties("txt", null, null, null, null, null, testMetadata, smbProperties, filePermission)
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryDirectoryClient.createFileWithResponse("testCreateFile", 1024, httpHeaders, smbProperties, filePermission, testMetadata, null), 201)
+            primaryDirectoryClient.createFileWithResponse("testCreateFile", 1024, properties, null), 201)
     }
 
     @Unroll
@@ -484,16 +486,18 @@ class DirectoryAPITests extends APISpec {
         given:
         primaryDirectoryClient.create()
         when:
-        primaryDirectoryClient.createFileWithResponse(fileName, maxSize, httpHeaders, null, null, metadata, null)
+        FileProperties properties = new FileProperties("txt", null, null, null, fileContentMD5, null, metadata, null, null)
+
+        primaryDirectoryClient.createFileWithResponse(fileName, maxSize, properties, null)
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, errMsg)
         where:
-        fileName    | maxSize | httpHeaders                                       | metadata                              | errMsg
-        "testfile:" | 1024    | new FileHTTPHeaders()                             | testMetadata                          | StorageErrorCode.INVALID_RESOURCE_NAME
-        "fileName"  | -1      | new FileHTTPHeaders()                             | testMetadata                          | StorageErrorCode.OUT_OF_RANGE_INPUT
-        "fileName"  | 1024    | new FileHTTPHeaders().fileContentMD5(new byte[0]) | testMetadata                          | StorageErrorCode.INVALID_HEADER_VALUE
-        "fileName"  | 1024    | new FileHTTPHeaders()                             | Collections.singletonMap("", "value") | StorageErrorCode.EMPTY_METADATA_KEY
+        fileName    | maxSize | fileContentMD5  | metadata                              | errMsg
+        "testfile:" | 1024    | null            | testMetadata                          | StorageErrorCode.INVALID_RESOURCE_NAME
+        "fileName"  | -1      | null            | testMetadata                          | StorageErrorCode.OUT_OF_RANGE_INPUT
+        "fileName"  | 1024    | new byte[0]     | testMetadata                          | StorageErrorCode.INVALID_HEADER_VALUE
+        "fileName"  | 1024    | null            | Collections.singletonMap("", "value") | StorageErrorCode.EMPTY_METADATA_KEY
 
     }
 

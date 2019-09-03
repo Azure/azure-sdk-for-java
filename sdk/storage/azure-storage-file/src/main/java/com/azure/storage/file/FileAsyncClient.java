@@ -147,7 +147,7 @@ public class FileAsyncClient {
      * an invalid resource name.
      */
     public Mono<FileInfo> create(long maxSize) {
-        return createWithResponse(maxSize, null, null, null, null).flatMap(FluxUtil::toMono);
+        return createWithResponse(maxSize, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -155,43 +155,47 @@ public class FileAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Create the file with length of 1024 bytes, some headers and metadata.</p>
+     * <p>Create the file with length of 1024 bytes, some headers, file smb properties and metadata.</p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.createWithResponse##long-filehttpheaders-filesmbproperties-string-map}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.createWithResponse##long-fileproperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
-     * @param httpHeaders Additional parameters for the operation.
-     * @param smbProperties The SMB properties of the file.
-     * @param filePermission The file permission of the file.
-     * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
+     * @param fileProperties The user settable file properties.
      * @return A response containing the {@link FileInfo file info} and the status of creating the file.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
-    public Mono<Response<FileInfo>> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders,
-        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
-        return withContext(context -> createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context));
+    public Mono<Response<FileInfo>> createWithResponse(long maxSize, FileProperties fileProperties) {
+        return withContext(context -> createWithResponse(maxSize, fileProperties, context));
     }
 
-    Mono<Response<FileInfo>> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties,
-        String filePermission, Map<String, String> metadata, Context context) {
-        FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+    Mono<Response<FileInfo>> createWithResponse(long maxSize, FileProperties fileProperties, Context context) {
+        FileProperties properties = fileProperties == null ? new FileProperties() : fileProperties;
+        FileSmbProperties smbProperties = properties.smbProperties() == null ? new FileSmbProperties() : properties.smbProperties();
 
         // Checks that file permission and file permission key are valid
-        FileExtensions.filePermissionAndKeyHelper(filePermission, properties.filePermissionKey());
+        FileExtensions.filePermissionAndKeyHelper(properties.filePermission(), smbProperties.filePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
-        filePermission = properties.filePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
-        String filePermissionKey = properties.filePermissionKey();
+        String filePermission = smbProperties.filePermission(properties.filePermission(), FileConstants.FILE_PERMISSION_INHERIT);
+        String filePermissionKey = smbProperties.filePermissionKey();
 
-        String fileAttributes = properties.ntfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
-        String fileCreationTime = properties.fileCreationTime(FileConstants.FILE_TIME_NOW);
-        String fileLastWriteTime = properties.fileLastWriteTime(FileConstants.FILE_TIME_NOW);
+        String fileAttributes = smbProperties.ntfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
+        String fileCreationTime = smbProperties.fileCreationTime(FileConstants.FILE_TIME_NOW);
+        String fileLastWriteTime = smbProperties.fileLastWriteTime(FileConstants.FILE_TIME_NOW);
+
+        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
+            .fileCacheControl(properties.cacheControl())
+            .fileContentDisposition(properties.contentDisposition())
+            .fileContentEncoding(properties.contentEncoding())
+            .fileContentLanguage(properties.contentLanguage())
+            .fileContentMD5(properties.contentMD5())
+            .fileContentType(properties.contentType());
 
         return postProcessResponse(azureFileStorageClient.files().createWithRestResponseAsync(shareName, filePath, maxSize, fileAttributes,
-            fileCreationTime, fileLastWriteTime, null, metadata, filePermission, filePermissionKey, httpHeaders, context))
+            fileCreationTime, fileLastWriteTime, null, properties.metadata(), filePermission, filePermissionKey, httpHeaders, context))
             .map(this::createFileInfoResponse);
     }
 
@@ -515,9 +519,10 @@ public class FileAsyncClient {
     }
 
     /**
-     * Sets the user-defined httpHeaders to associate to the file.
+     * Sets the user-defined file properties to associate to the file.
      *
-     * <p>If {@code null} is passed for the httpHeaders it will clear the httpHeaders associated to the file.</p>
+     * <p>If {@code null} is passed for the fileProperties.httpHeaders it will clear the httpHeaders associated to the file.
+     * If {@code null} is passed for the fileProperties.filesmbproperties it will preserve the filesmb properties associated with the file.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -539,15 +544,16 @@ public class FileAsyncClient {
      * @return The {@link FileInfo file info}
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public Mono<FileInfo> setHttpHeaders(long newFileSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties,
+    public Mono<FileInfo> setProperties(long newFileSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties,
         String filePermission) {
-        return setHttpHeadersWithResponse(newFileSize, httpHeaders, smbProperties, filePermission).flatMap(FluxUtil::toMono);
+        return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Sets the user-defined httpHeaders to associate to the file.
+     * Sets the user-defined file properties to associate to the file.
      *
-     * <p>If {@code null} is passed for the httpHeaders it will clear the httpHeaders associated to the file.</p>
+     * <p>If {@code null} is passed for the fileProperties.httpHeaders it will clear the httpHeaders associated to the file.
+     * If {@code null} is passed for the fileProperties.filesmbproperties it will preserve the filesmb properties associated with the file.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -569,12 +575,12 @@ public class FileAsyncClient {
      * @return Response containing the {@link FileInfo file info} and response status code
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public Mono<Response<FileInfo>> setHttpHeadersWithResponse(long newFileSize, FileHTTPHeaders httpHeaders,
+    public Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, FileHTTPHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission) {
-        return withContext(context -> setHttpHeadersWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, context));
+        return withContext(context -> setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, context));
     }
 
-    Mono<Response<FileInfo>> setHttpHeadersWithResponse(long newFileSize, FileHTTPHeaders httpHeaders,
+    Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, FileHTTPHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Context context) {
         FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 

@@ -12,6 +12,7 @@ import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
+import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.HandleItem;
 
 import java.time.LocalDateTime;
@@ -151,18 +152,26 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#createFileWithResponse(String, long, FileHTTPHeaders, FileSmbProperties, String, Map, Context)}
+     * Generates a code sample for using {@link DirectoryClient#createFileWithResponse(String, long, FileProperties, Context)}
      */
     public void createFileMaxOverload() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-fileSMBProperties-string-map-Context
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
+        // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long-fileproperties-context
+        String contentType = "text/html";
+        String contentEncoding = "gzip";
+        String contentLanguage = "tr,en";
+        String cacheControl = "no-transform";
+        byte[] contentMd5 = new byte[0];
+        String contentDisposition = "attachment";
+        Map<String,String> metadata = Collections.singletonMap("directory", "metadata");
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
-        Response<FileClient> response = directoryClient.createFileWithResponse("myFile", 1024, httpHeaders,
-            smbProperties, filePermission, Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
+        FileProperties fileProperties = new FileProperties(contentType, contentEncoding, contentLanguage, cacheControl,
+            contentMd5, contentDisposition, metadata, smbProperties, filePermission);
+        Response<FileClient> response = directoryClient.createFileWithResponse("myFile", 1024,
+            fileProperties, new Context(key1, value1));
         System.out.println("Completed creating the file with status code: " + response.statusCode());
-        // END: com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-fileSMBProperties-string-map-Context
+        // END: com.azure.storage.file.directoryClient.createFile#string-long-fileproperties-context
     }
 
     /**

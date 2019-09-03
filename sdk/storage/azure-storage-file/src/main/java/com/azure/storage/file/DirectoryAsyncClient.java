@@ -24,6 +24,7 @@ import com.azure.storage.file.models.DirectorysListHandlesResponse;
 import com.azure.storage.file.models.DirectorysSetMetadataResponse;
 import com.azure.storage.file.models.DirectorysSetPropertiesResponse;
 import com.azure.storage.file.models.FileHTTPHeaders;
+import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRef;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
@@ -600,7 +601,7 @@ public class DirectoryAsyncClient {
      * @throws StorageException If the file has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
     public Mono<FileAsyncClient> createFile(String fileName, long maxSize) {
-        return createFileWithResponse(fileName, maxSize, null, null, null, null).flatMap(FluxUtil::toMono);
+        return createFileWithResponse(fileName, maxSize, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -610,29 +611,24 @@ public class DirectoryAsyncClient {
      *
      * <p>Create the file named "myFile"</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-fileHTTPHeaders-fileSMBProperties-string-map}
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-fileproperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file
      * @param maxSize Max size of the file
-     * @param httpHeaders the Http headers set to the file
-     * @param smbProperties The SMB properties of the file.
-     * @param filePermission The file permission of the file.
-     * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
+     * @param fileProperties The user settable file properties of the file.
      * @return A response containing the directory info and the status of creating the directory.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
-    public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders,
-        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
-        return withContext(context -> createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata, context));
+    public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties) {
+        return withContext(context -> createFileWithResponse(fileName, maxSize, fileProperties, context));
     }
 
-    Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders,
-        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
+    Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties, Context context) {
         FileAsyncClient fileAsyncClient = getFileClient(fileName);
-        return postProcessResponse(fileAsyncClient.createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context))
+        return postProcessResponse(fileAsyncClient.createWithResponse(maxSize, fileProperties, context))
             .map(response -> new SimpleResponse<>(response, fileAsyncClient));
     }
 

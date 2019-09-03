@@ -13,6 +13,7 @@ import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
+import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRef;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
@@ -484,7 +485,7 @@ public class DirectoryClient {
      * @throws StorageException If the file has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
     public FileClient createFile(String fileName, long maxSize) {
-        return createFileWithResponse(fileName, maxSize, null, null, null, null, Context.NONE).value();
+        return createFileWithResponse(fileName, maxSize,  null, Context.NONE).value();
     }
 
     /**
@@ -494,24 +495,20 @@ public class DirectoryClient {
      *
      * <p>Create the file named "myFile"</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-fileSMBProperties-string-map-Context}
+     * {@codesnippet com.azure.storage.file.directoryClient.createFile#string-long-fileproperties-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file
      * @param maxSize Max size of the file
-     * @param httpHeaders the Http headers set to the file
-     * @param smbProperties The SMB properties of the file.
-     * @param filePermission The file permission of the file.
-     * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
+     * @param fileProperties The user settable file properties of the file.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the directory info and the status of creating the directory.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
-    public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders,
-        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
-        return directoryAsyncClient.createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata, context)
+    public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties, Context context) {
+        return directoryAsyncClient.createFileWithResponse(fileName, maxSize, fileProperties, context)
             .map(response -> new SimpleResponse<>(response, new FileClient(response.value()))).block();
     }
 

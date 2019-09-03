@@ -13,26 +13,63 @@ import java.util.Map;
  * Contains property information about a File in the storage File service.
  */
 public final class FileProperties {
-    private final String eTag;
-    private final OffsetDateTime lastModified;
-    private final Map<String, String> metadata;
-    private final String fileType;
-    private final Long contentLength;
-    private final String contentType;
-    private final byte[] contentMD5;
-    private final String contentEncoding;
-    private final String cacheControl;
-    private final String contentDisposition;
-    private final OffsetDateTime copyCompletionTime;
-    private final String copyStatusDescription;
-    private final String copyId;
-    private final String copyProgress;
-    private final String copySource;
-    private final CopyStatusType copyStatus;
-    private final Boolean isServerEncrypted;
-    private final FileSmbProperties smbProperties;
+    private String eTag;
+    private OffsetDateTime lastModified;
+    private Map<String, String> metadata;
+    private String fileType;
+    private Long contentLength;
+    private String contentType;
+    private byte[] contentMD5;
+    private String contentEncoding;
+    private String cacheControl;
+    private String contentDisposition;
+    private String contentLanguage;
+    private OffsetDateTime copyCompletionTime;
+    private String copyStatusDescription;
+    private String copyId;
+    private String copyProgress;
+    private String copySource;
+    private CopyStatusType copyStatus;
+    private Boolean isServerEncrypted;
+    private FileSmbProperties smbProperties;
+    private String filePermission;
 
     /**
+     * Creates an empty instance of FileProperties
+     */
+    public FileProperties() {
+    }
+
+    /**
+     * Creates an instance of user settable property information about a specific File.
+     *
+     * @param contentType The Content-Type specified for the file. The default content type is application/octet-stream.
+     * @param contentEncoding The Content-Encoding request header.
+     * @param contentLanguage The Content-Language request header.
+     * @param cacheControl The Cache-Control request header.
+     * @param contentMD5 The MD5 hash of the file to check the message content integrity.
+     * @param contentDisposition The Content-Disposition header that specifies how to process the response.
+     * @param metadata A set of name-value pairs associated with this file as user-defined metadata.
+     * @param smbProperties The SMB properties of the file.
+     * @param filePermission The file permission of the file. smbProperties.filePermissionKey and filePermission must
+     *                       not both be set simultaneously
+     */
+    public FileProperties(final String contentType, final String contentEncoding, final String contentLanguage,
+        final String cacheControl, final byte[] contentMD5, final String contentDisposition,
+        final Map<String, String> metadata, final FileSmbProperties smbProperties, final String filePermission) {
+        this.contentType = contentType;
+        this.contentEncoding = contentEncoding;
+        this.contentLanguage = contentLanguage;
+        this.cacheControl = cacheControl;
+        this.contentMD5 = ImplUtils.clone(contentMD5);
+        this.contentDisposition = contentDisposition;
+        this.metadata = metadata;
+        this.smbProperties = smbProperties;
+        this.filePermission = filePermission;
+    }
+
+    /**
+     * RESERVED FOR INTERNAL USE ONLY
      * Creates an instance of property information about a specific File.
      *
      * @param eTag Entity tag that corresponds to the directory.
@@ -154,6 +191,13 @@ public final class FileProperties {
     }
 
     /**
+     * @return The value that was specified for the Content-Language request header.
+     */
+    public String contentLanguage() {
+        return contentLanguage;
+    }
+
+    /**
      * @return Conclusion time of the last attempted Copy File operation where this file was the destination file.
      */
     public OffsetDateTime copyCompletionTime() {
@@ -211,5 +255,12 @@ public final class FileProperties {
      */
     public FileSmbProperties smbProperties() {
         return smbProperties;
+    }
+
+    /**
+     * @return The file permission of the file.
+     */
+    public String filePermission() {
+        return filePermission;
     }
 }

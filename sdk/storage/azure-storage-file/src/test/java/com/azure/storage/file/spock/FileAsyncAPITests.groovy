@@ -4,11 +4,11 @@
 package com.azure.storage.file.spock
 
 import com.azure.core.exception.HttpResponseException
-import com.azure.core.http.rest.Response
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.FileAsyncClient
 import com.azure.storage.file.models.FileHTTPHeaders
+import com.azure.storage.file.models.FileProperties
 import com.azure.storage.file.models.FileRange
 import com.azure.storage.file.FileSmbProperties
 import com.azure.storage.file.models.NtfsFileAttributes
@@ -77,12 +77,15 @@ class FileAsyncAPITests extends APISpec {
         }
     }
 
-    def "Create file with args"() {
+    def "Create file with args fpk"() {
         setup:
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
+        FileProperties fileProperties = new FileProperties(httpHeaders.fileContentType, httpHeaders.fileContentEncoding, httpHeaders.fileContentLanguage,
+            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, testMetadata, smbProperties, null)
+        // TODO : Add file permission key
         expect:
-        StepVerifier.create(primaryFileAsyncClient.createWithResponse(1024, httpHeaders, smbProperties, filePermission, testMetadata))
+        StepVerifier.create(primaryFileAsyncClient.createWithResponse(1024, fileProperties))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
                 assert it.value().lastModified()
@@ -97,20 +100,41 @@ class FileAsyncAPITests extends APISpec {
             }.verifyComplete()
     }
 
-    // TODO: Add test that tests create with a file permission key once create file permission and get file permission APIs are created
+    def "Create file with args fp"() {
+        setup:
+        smbProperties.fileCreationTime(getUTCNow())
+            .fileLastWriteTime(getUTCNow())
+        FileProperties fileProperties = new FileProperties(httpHeaders.fileContentType, httpHeaders.fileContentEncoding, httpHeaders.fileContentLanguage,
+            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, testMetadata, smbProperties, filePermission)
+        expect:
+        StepVerifier.create(primaryFileAsyncClient.createWithResponse(1024, fileProperties))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 201)
+                assert it.value().lastModified()
+                assert it.value().smbProperties()
+                assert it.value().smbProperties().filePermissionKey()
+                assert it.value().smbProperties().ntfsFileAttributes()
+                assert it.value().smbProperties().fileLastWriteTime()
+                assert it.value().smbProperties().fileCreationTime()
+                assert it.value().smbProperties().fileChangeTime()
+                assert it.value().smbProperties().parentId()
+                assert it.value().smbProperties().fileId()
+            }.verifyComplete()
+    }
 
     @Unroll
     def "Create file with args error"() {
         when:
-        def createFileErrorVerifier = StepVerifier.create(primaryFileAsyncClient.createWithResponse(maxSize, fileHttpHeaders as FileHTTPHeaders, null, null, metadata))
+        FileProperties fileProperties = new FileProperties(null, null, null, null, null, null, metadata, null, null)
+        def createFileErrorVerifier = StepVerifier.create(primaryFileAsyncClient.createWithResponse(maxSize, fileProperties))
         then:
         createFileErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMsg)
         }
         where:
-        maxSize | fileHttpHeaders | metadata                                      | statusCode | errMsg
-        -1      | httpHeaders     | testMetadata                                  | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
-        1024    | httpHeaders     | Collections.singletonMap("testMeta", "value") | 403        | StorageErrorCode.AUTHENTICATION_FAILED
+        maxSize | metadata                                      | statusCode | errMsg
+        -1      | testMetadata                                  | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
+        1024    | Collections.singletonMap("testMeta", "value") | 403        | StorageErrorCode.AUTHENTICATION_FAILED
     }
 
     def "Upload and download data"() {
@@ -399,9 +423,9 @@ class FileAsyncAPITests extends APISpec {
         given:
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
-        primaryFileAsyncClient.createWithResponse(1024, httpHeaders, null, null, testMetadata).block()
+        primaryFileAsyncClient.createWithResponse(1024, null).block()
         expect:
-        StepVerifier.create(primaryFileAsyncClient.setHttpHeadersWithResponse(512, httpHeaders, smbProperties, filePermission))
+        StepVerifier.create(primaryFileAsyncClient.setPropertiesWithResponse(512, httpHeaders, smbProperties, filePermission))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 200)
                 assert it.value().smbProperties()
@@ -419,9 +443,9 @@ class FileAsyncAPITests extends APISpec {
 
     def "Set httpHeaders error"() {
         given:
-        primaryFileAsyncClient.createWithResponse(1024, httpHeaders, null, null, testMetadata).block()
+        primaryFileAsyncClient.createWithResponse(1024, null).block()
         when:
-        def setHttpHeaderVerifier = StepVerifier.create(primaryFileAsyncClient.setHttpHeaders(-1, httpHeaders, null, null))
+        def setHttpHeaderVerifier = StepVerifier.create(primaryFileAsyncClient.setProperties(-1, httpHeaders, null, null))
         then:
         setHttpHeaderVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.OUT_OF_RANGE_INPUT)
@@ -430,7 +454,9 @@ class FileAsyncAPITests extends APISpec {
 
     def "Set metadata"() {
         given:
-        primaryFileAsyncClient.createWithResponse(1024, httpHeaders, null, null, testMetadata).block()
+        FileProperties fileProperties = new FileProperties(httpHeaders.fileContentType, httpHeaders.fileContentEncoding, httpHeaders.fileContentLanguage,
+            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, testMetadata, null, null)
+        primaryFileAsyncClient.createWithResponse(1024, fileProperties).block()
         def updatedMetadata = Collections.singletonMap("update", "value")
         when:
         def getPropertiesBeforeVerifier = StepVerifier.create(primaryFileAsyncClient.getProperties())
@@ -462,7 +488,7 @@ class FileAsyncAPITests extends APISpec {
 
     def "List ranges"() {
         given:
-        primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).block()
+        primaryFileAsyncClient.createWithResponse(1024, null, null).block()
         def fileName = testResourceName.randomName("file", 60)
         def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder.toString(), fileName)
         primaryFileAsyncClient.uploadFromFile(uploadFile).block()
@@ -478,7 +504,7 @@ class FileAsyncAPITests extends APISpec {
 
     def "List ranges with range"() {
         given:
-        primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).block()
+        primaryFileAsyncClient.createWithResponse(1024, null, null).block()
         def fileName = testResourceName.randomName("file", 60)
         def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder.toString(), fileName)
         primaryFileAsyncClient.uploadFromFile(uploadFile).block()
