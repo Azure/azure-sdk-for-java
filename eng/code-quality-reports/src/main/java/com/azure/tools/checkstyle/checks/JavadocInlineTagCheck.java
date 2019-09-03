@@ -66,8 +66,8 @@ public class JavadocInlineTagCheck extends AbstractJavadocCheck {
     }
 
     /**
-     * Use {@literal {@codesnippet ...}} instead of '<code>', '<pre>', or {@literal {@code ...}) if these tags span
-     * multiple lines. Inline code sample are fine as-is.
+     * Use {@literal {@codesnippet ...}} instead of {@literal <code>}, {@literal <pre>}, or {@literal {@code ...}}
+     * if these tags span multiple lines. Inline code sample are fine as-is.
      *
      * @param htmlElementStartNode HTML_ELEMENT_START node
      */

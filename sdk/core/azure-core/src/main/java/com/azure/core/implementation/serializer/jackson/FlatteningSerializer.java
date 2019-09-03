@@ -42,7 +42,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * {'properties' : { 'name' : 'my_name' }} in the serialized payload.
  */
 class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSerializer {
-    private final transient ClientLogger logger = new ClientLogger(FlatteningSerializer.class);
+    private final ClientLogger logger = new ClientLogger(FlatteningSerializer.class);
 
     /**
      * The default mapperAdapter for the current type.

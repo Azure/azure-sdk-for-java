@@ -11,8 +11,11 @@ import java.util.Stack;
 
 /**
  * The @ServiceClientBuilder class should have the following rules:
- *  1) All service client builder should be named <ServiceName>ClientBuilder and annotated with @ServiceClientBuilder.
- *  2) No other method have prefix 'build' other than 'build*Client' or 'build*AsyncClient'.
+ * <ol>
+ * <li>All service client builder should be named &lt;ServiceName&gt;ClientBuilder and annotated with
+ * {@literal @ServiceClientBuilder}.</li>
+ * <li>No other method have prefix 'build' other than 'build*Client' or 'build*AsyncClient'.</li>
+ * </ol>
  */
 public class ServiceClientBuilderCheck extends AbstractCheck {
     private static final String SERVICE_CLIENT_BUILDER = "ServiceClientBuilder";
