@@ -31,9 +31,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 final class TestUtils {
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);
-    static final String OFFSET = "an-offset-of-sorts";
+    static final Long OFFSET = 1534L;
     static final String PARTITION_KEY = "a-partition-key";
-    static final long SEQUENCE_NUMBER = 1025L;
+    static final Long SEQUENCE_NUMBER = 1025L;
     static final String OTHER_SYSTEM_PROPERTY = "Some-other-system-property";
     static final Boolean OTHER_SYSTEM_PROPERTY_VALUE = Boolean.TRUE;
     static final Map<String, Object> APPLICATION_PROPERTIES = new HashMap<>();

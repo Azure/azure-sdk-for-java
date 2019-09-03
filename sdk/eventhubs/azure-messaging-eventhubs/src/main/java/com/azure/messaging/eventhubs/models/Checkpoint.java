@@ -17,8 +17,8 @@ public class Checkpoint {
     private String consumerGroupName;
     private String ownerId;
     private String partitionId;
-    private String offset;
-    private long sequenceNumber;
+    private Long offset;
+    private Long sequenceNumber;
     private String eTag;
 
     /**
@@ -106,7 +106,7 @@ public class Checkpoint {
      *
      * @return The offset of the last successfully processed event to store as checkpoint.
      */
-    public String offset() {
+    public long offset() {
         return offset;
     }
 
@@ -116,7 +116,7 @@ public class Checkpoint {
      * @param offset The offset of the last successfully processed event to store as checkpoint.
      * @return The updated {@link Checkpoint} instance.
      */
-    public Checkpoint offset(String offset) {
+    public Checkpoint offset(Long offset) {
         this.offset = offset;
         return this;
     }
