@@ -106,7 +106,7 @@ public class Checkpoint {
      *
      * @return The offset of the last successfully processed event to store as checkpoint.
      */
-    public long offset() {
+    public Long offset() {
         return offset;
     }
 
