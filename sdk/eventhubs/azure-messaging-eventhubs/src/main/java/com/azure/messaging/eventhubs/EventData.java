@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Data;
@@ -58,6 +59,7 @@ public class EventData implements Comparable<EventData> {
     private final Map<String, Object> properties;
     private final ByteBuffer body;
     private final SystemProperties systemProperties;
+    private Context context;
 
     static {
         final Set<String> properties = new HashSet<>();
@@ -76,7 +78,18 @@ public class EventData implements Comparable<EventData> {
      * @param body The data to set for this event.
      */
     public EventData(byte[] body) {
-        this(ByteBuffer.wrap(body));
+        this(body, Context.NONE);
+    }
+
+    /**
+     * Creates an event containing the {@code data}.
+     *
+     * @param body The data to set for this event.
+     * @param context A specified key-value pair of type {@link Context}.
+     * @throws NullPointerException if {@code body} or if {@code context} is {@code null}.
+     */
+    public EventData(byte[] body, Context context) {
+        this(ByteBuffer.wrap(body), context);
     }
 
     /**
@@ -86,11 +99,24 @@ public class EventData implements Comparable<EventData> {
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(ByteBuffer body) {
+        this(body, Context.NONE);
+    }
+
+    /**
+     * Creates an event containing the {@code body}.
+     *
+     * @param body The data to set for this event.
+     * @param context A specified key-value pair of type {@link Context}.
+     * @throws NullPointerException if {@code body} or if {@code context} is {@code null}.
+     */
+    public EventData(ByteBuffer body, Context context) {
         Objects.requireNonNull(body, "'body' cannot be null.");
+        Objects.requireNonNull(body, "'context' cannot be null.");
 
         this.body = body;
         this.properties = new HashMap<>();
         this.systemProperties = new SystemProperties(Collections.emptyMap());
+        this.context = context;
     }
 
     /*
@@ -124,6 +150,7 @@ public class EventData implements Comparable<EventData> {
             addMapEntry(receiveProperties, MessageConstant.REPLY_TO_GROUP_ID, message.getReplyToGroupId());
         }
 
+        this.context = Context.NONE;
         this.systemProperties = new SystemProperties(receiveProperties);
         this.properties = message.getApplicationProperties() == null
             ? new HashMap<>()
@@ -173,6 +200,21 @@ public class EventData implements Comparable<EventData> {
     }
 
     /**
+     * Adds a new key value pair to the existing context on Event Data.
+     *
+     * @param key The key for this context object
+     * @param value The value for this context object.
+     * @return The updated EventData object.
+     * @throws NullPointerException if {@code key} or {@code value} is null.
+     */
+    public EventData addContext(String key, Object value) {
+        Objects.requireNonNull(key, "The 'key' parameter cannot be null.");
+        Objects.requireNonNull(value, "The 'value' parameter cannot be null.");
+        this.context = context.addData(key, value);
+        return this;
+    }
+
+    /**
      * The set of free-form event properties which may be used for passing metadata associated with the event with the
      * event body during Event Hubs operations.
      *
@@ -188,11 +230,20 @@ public class EventData implements Comparable<EventData> {
     }
 
     /**
+     * A specified key-value pair of type {@link Context} to set additional information on the event.
+     *
+     * @return the {@link Context} object set on the event
+     */
+    public Context context() {
+        return context;
+    }
+
+    /**
      * Properties that are populated by EventHubService. As these are populated by Service, they are only present on a
      * <b>received</b> EventData.
      *
      * @return an encapsulation of all SystemProperties appended by EventHubs service into EventData. {@code null} if
-     *         the {@link EventData} is not received and is created by the public constructors.
+     *      the {@link EventData} is not received and is created by the public constructors.
      */
     public Map<String, Object> systemProperties() {
         return systemProperties;
@@ -247,7 +298,7 @@ public class EventData implements Comparable<EventData> {
      *
      * @return Sequence number for this event.
      * @throws IllegalStateException if {@link #systemProperties()} does not contain the sequence number in a
-     *         retrieved event.
+     *      retrieved event.
      */
     public long sequenceNumber() {
         return systemProperties.sequenceNumber();
@@ -341,7 +392,7 @@ public class EventData implements Comparable<EventData> {
          *
          * @return Sequence number for this event.
          * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a
-         *         retrieved event.
+         *      retrieved event.
          */
         private long sequenceNumber() {
             final Long sequenceNumber = this.getSystemProperty(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
