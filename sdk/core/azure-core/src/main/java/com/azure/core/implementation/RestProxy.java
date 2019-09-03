@@ -168,22 +168,22 @@ public class RestProxy implements InvocationHandler {
 
         return Flux.defer(() -> {
             Long expectedLength = Long.valueOf(request.headers().value("Content-Length"));
-            final AtomicLong currentTotalLength = new AtomicLong(0L);
+            final long[] currentTotalLength = new long[1];
             return bbFlux.doOnEach(s -> {
                 if (s.isOnNext()) {
                     ByteBuffer byteBuffer = s.get();
                     int currentLength = (byteBuffer == null) ? 0 : byteBuffer.remaining();
-                    currentTotalLength.getAndAdd(currentLength);
-                    if (currentTotalLength.get() > expectedLength) {
+                    currentTotalLength[0] = currentTotalLength[0] + currentLength;
+                    if (currentTotalLength[0] > expectedLength) {
                         throw logger.logExceptionAsError(new UnexpectedLengthException(
                             String.format("Request body emitted %d bytes more than the expected %d bytes.",
-                                currentTotalLength.get(), expectedLength), currentTotalLength.get(), expectedLength));
+                                currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
                     }
                 } else if (s.isOnComplete()) {
-                    if (expectedLength.compareTo(currentTotalLength.get()) != 0) {
+                    if (expectedLength.compareTo(currentTotalLength[0]) != 0) {
                         throw logger.logExceptionAsError(new UnexpectedLengthException(
                             String.format("Request body emitted %d bytes less than the expected %d bytes.",
-                                currentTotalLength.get(), expectedLength), currentTotalLength.get(), expectedLength));
+                                currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
                     }
                 }
             });
