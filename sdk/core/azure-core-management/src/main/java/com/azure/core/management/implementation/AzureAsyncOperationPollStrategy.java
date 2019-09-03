@@ -11,6 +11,7 @@ import com.azure.core.implementation.SwaggerMethodParser;
 import com.azure.core.management.AsyncOperationResource;
 import com.azure.core.management.CloudException;
 import com.azure.core.management.OperationState;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -23,6 +24,8 @@ import java.net.URL;
  * running operation.
  */
 public final class AzureAsyncOperationPollStrategy extends PollStrategy {
+    private final ClientLogger logger = new ClientLogger(AzureAsyncOperationPollStrategy.class);
+
     private AzureAsyncOperationPollStrategyData data;
 
     /**
@@ -100,7 +103,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
                 pollUrl = data.originalResourceUrl;
             }
         } else {
-            throw new IllegalStateException("Polling is completed and did not succeed. Cannot create a polling request.");
+            throw logger.logExceptionAsError(new IllegalStateException("Polling is completed and did not succeed. Cannot create a polling request."));
         }
 
         return new HttpRequest(HttpMethod.GET, pollUrl);
@@ -122,7 +125,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
                                     } catch (IOException ignored) { }
                                     //
                                     if (operationResource == null || operationResource.status() == null) {
-                                        throw new CloudException("The polling response does not contain a valid body", bufferedHttpPollResponse, null);
+                                        throw logger.logExceptionAsError(new CloudException("The polling response does not contain a valid body", bufferedHttpPollResponse, null));
                                     } else {
                                         final String status = operationResource.status();
                                         setStatus(status);
@@ -133,7 +136,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
                                             clearDelayInMilliseconds();
 
                                             if (!data.pollingSucceeded) {
-                                                throw new CloudException("Async operation failed with provisioning state: " + status, bufferedHttpPollResponse);
+                                                throw logger.logExceptionAsError(new CloudException("Async operation failed with provisioning state: " + status, bufferedHttpPollResponse));
                                             }
 
                                             if (operationResource.id() != null) {

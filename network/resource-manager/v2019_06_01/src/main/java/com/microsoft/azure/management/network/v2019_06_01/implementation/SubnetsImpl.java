@@ -50,6 +50,12 @@ class SubnetsImpl extends WrapperImpl<SubnetsInner> implements Subnets {
     }
 
     @Override
+    public Completable unprepareNetworkPoliciesAsync(String resourceGroupName, String virtualNetworkName, String subnetName) {
+        SubnetsInner client = this.inner();
+        return client.unprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName).toCompletable();
+    }
+
+    @Override
     public Observable<Subnet> listAsync(final String resourceGroupName, final String virtualNetworkName) {
         SubnetsInner client = this.inner();
         return client.listAsync(resourceGroupName, virtualNetworkName)

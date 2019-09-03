@@ -12,15 +12,15 @@ import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
+import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 
 
@@ -40,7 +40,7 @@ import java.time.Duration;
  * for more information.
  */
 public final class AppendBlobClient extends BlobClient {
-    private AppendBlobAsyncClient appendBlobAsyncClient;
+    private final AppendBlobAsyncClient appendBlobAsyncClient;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
@@ -84,7 +84,7 @@ public final class AppendBlobClient extends BlobClient {
      * @throws StorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(AppendBlobAccessConditions accessConditions) {
-        return new BlobOutputStream(appendBlobAsyncClient, accessConditions);
+        return BlobOutputStream.appendBlobOutputStream(appendBlobAsyncClient, accessConditions);
     }
 
     /**
@@ -123,7 +123,7 @@ public final class AppendBlobClient extends BlobClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the created appended blob.
      */
     public Response<AppendBlobItem> createWithResponse(BlobHTTPHeaders headers, Metadata metadata,
-                                           BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        BlobAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.createWithResponse(headers, metadata, accessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -161,8 +161,8 @@ public final class AppendBlobClient extends BlobClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the append blob operation.
      */
     public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length,
-                                                AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout, Context context) {
-        Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) MAX_APPEND_BLOCK_BYTES))
+        AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout, Context context) {
+        Flux<ByteBuffer> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) MAX_APPEND_BLOCK_BYTES))
             .map(i -> i * MAX_APPEND_BLOCK_BYTES)
             .concatMap(pos -> Mono.fromCallable(() -> {
                 long count = pos + MAX_APPEND_BLOCK_BYTES > length ? length - pos : MAX_APPEND_BLOCK_BYTES;
@@ -172,10 +172,11 @@ public final class AppendBlobClient extends BlobClient {
                     read += data.read(cache, read, (int) count - read);
                 }
 
-                return ByteBufAllocator.DEFAULT.buffer((int) count).writeBytes(cache);
+                return ByteBuffer.wrap(cache);
             }));
 
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, appendBlobAccessConditions, context);
+        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(
+            fbb.subscribeOn(Schedulers.elastic()), length, appendBlobAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -213,7 +214,8 @@ public final class AppendBlobClient extends BlobClient {
     public AppendBlobItem appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
             byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
             SourceModifiedAccessConditions sourceAccessConditions, Duration timeout) {
-        return this.appendBlockFromUrlWithResponse(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, timeout, Context.NONE).value();
+        return this.appendBlockFromUrlWithResponse(sourceURL, sourceRange, sourceContentMD5, destAccessConditions,
+            sourceAccessConditions, timeout, Context.NONE).value();
     }
 
     /**

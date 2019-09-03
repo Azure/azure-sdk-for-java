@@ -3,14 +3,13 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
-import com.azure.core.implementation.util.ImplUtils;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
- *  The set of properties that comprise a connection string from the Azure portal.
+ * The set of properties that comprise a connection string from the Azure portal.
  */
 public class ConnectionStringProperties {
     private static final String TOKEN_VALUE_SEPARATOR = "=";
@@ -33,12 +32,14 @@ public class ConnectionStringProperties {
      * Creates a new instance by parsing the {@code connectionString} into its components.
      *
      * @param connectionString The connection string to the Event Hub instance.
-     * @throws IllegalArgumentException if {@code connectionString} is {@code null} or empty, the connection string has
-     * an invalid format.
+     * @throws NullPointerException if {@code connectionString} is null.
+     * @throws IllegalArgumentException if {@code connectionString} is an empty string or the connection string has
+     *     an invalid format.
      */
     public ConnectionStringProperties(String connectionString) {
-        if (ImplUtils.isNullOrEmpty(connectionString)) {
-            throw new IllegalArgumentException("'connectionString' cannot be null or empty");
+        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
+        if (connectionString.isEmpty()) {
+            throw new IllegalArgumentException("'connectionString' cannot be an empty string.");
         }
 
         final String[] tokenValuePairs = connectionString.split(TOKEN_VALUE_PAIR_DELIMITER);

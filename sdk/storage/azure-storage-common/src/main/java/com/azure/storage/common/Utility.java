@@ -11,6 +11,7 @@ import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
@@ -62,13 +63,29 @@ public final class Utility {
     private static final int MAX_PRECISION_DATESTRING_LENGTH = MAX_PRECISION_PATTERN.replaceAll("'", "").length();
 
     /**
-     *Parses the query string into a key-value pair map that maintains key, query parameter key, order.
+     * Parses the query string into a key-value pair map that maintains key, query parameter key, order. The value is
+     * stored as a string (ex. key=val1,val2,val3 instead of key=[val1, val2, val3]).
      *
      * @param queryString Query string to parse
      * @return a mapping of query string pieces as key-value pairs.
      */
     public static TreeMap<String, String> parseQueryString(final String queryString) {
-        TreeMap<String, String> pieces = new TreeMap<>(String::compareTo);
+        return parseQueryStringHelper(queryString, Utility::urlDecode);
+    }
+
+    /**
+     * Parses the query string into a key-value pair map that maintains key, query parameter key, order. The value is
+     * stored as a parsed array (ex. key=[val1, val2, val3] instead of key=val1,val2,val3).
+     *
+     * @param queryString Query string to parse
+     * @return a mapping of query string pieces as key-value pairs.
+     */
+    public static TreeMap<String, String[]> parseQueryStringSplitValues(final String queryString) {
+        return parseQueryStringHelper(queryString, (value) -> urlDecode(value).split(","));
+    }
+
+    private static <T> TreeMap<String, T> parseQueryStringHelper(final String queryString, Function<String, T> valueParser) {
+        TreeMap<String, T> pieces = new TreeMap<>();
 
         if (ImplUtils.isNullOrEmpty(queryString)) {
             return pieces;
@@ -76,8 +93,8 @@ public final class Utility {
 
         for (String kvp : queryString.split("&")) {
             int equalIndex = kvp.indexOf("=");
-            String key = urlDecode(kvp.substring(0, equalIndex)).toLowerCase(Locale.ROOT);
-            String value = urlDecode(kvp.substring(equalIndex + 1));
+            String key = urlDecode(kvp.substring(0, equalIndex).toLowerCase(Locale.ROOT));
+            T value = valueParser.apply(kvp.substring(equalIndex + 1));
 
             pieces.putIfAbsent(key, value);
         }
@@ -219,6 +236,34 @@ public final class Utility {
         } else {
             return response.block(timeout);
         }
+    }
+
+    /**
+     * Applies a timeout to a publisher if the given timeout is not null.
+     *
+     * @param publisher Mono to apply optional timeout to.
+     * @param timeout Optional timeout.
+     * @param <T> Return type of the Mono.
+     * @return Mono with an applied timeout, if any.
+     */
+    public static <T> Mono<T> applyOptionalTimeout(Mono<T> publisher, Duration timeout) {
+        return timeout == null
+            ? publisher
+            : publisher.timeout(timeout);
+    }
+
+    /**
+     * Applies a timeout to a publisher if the given timeout is not null.
+     *
+     * @param publisher Flux to apply optional timeout to.
+     * @param timeout Optional timeout.
+     * @param <T> Return type of the Flux.
+     * @return Flux with an applied timeout, if any.
+     */
+    public static <T> Flux<T> applyOptionalTimeout(Flux<T> publisher, Duration timeout) {
+        return timeout == null
+            ? publisher
+            : publisher.timeout(timeout);
     }
 
     /**

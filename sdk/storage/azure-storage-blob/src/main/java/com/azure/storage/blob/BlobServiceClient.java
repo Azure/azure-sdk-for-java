@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
@@ -17,10 +18,12 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.blob.models.StorageServiceStats;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.AccountSASPermission;
+import com.azure.storage.common.AccountSASResourceType;
+import com.azure.storage.common.AccountSASService;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -125,18 +128,18 @@ public final class BlobServiceClient {
     }
 
     /**
-     * Returns a lazy loaded list of containers in this account. The returned {@link Iterable} can be iterated through
+     * Returns a lazy loaded list of containers in this account. The returned {@link PagedIterable} can be consumed
      * while new items are automatically retrieved as needed. For more information, see the <a
      * href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
      * @return The list of containers.
      */
-    public Iterable<ContainerItem> listContainers() {
+    public PagedIterable<ContainerItem> listContainers() {
         return this.listContainers(new ListContainersOptions(), null);
     }
 
     /**
-     * Returns a lazy loaded list of containers in this account. The returned {@link Iterable} can be iterated through
+     * Returns a lazy loaded list of containers in this account. The returned {@link PagedIterable} can be consumed
      * while new items are automatically retrieved as needed. For more information, see the <a
      * href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
@@ -144,10 +147,8 @@ public final class BlobServiceClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of containers.
      */
-    public Iterable<ContainerItem> listContainers(ListContainersOptions options, Duration timeout) {
-        Flux<ContainerItem> response = blobServiceAsyncClient.listContainers(options);
-
-        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
+    public PagedIterable<ContainerItem> listContainers(ListContainersOptions options, Duration timeout) {
+        return new PagedIterable<>(blobServiceAsyncClient.listContainersWithOptionalTimeout(options, timeout));
     }
 
     /**
@@ -295,7 +296,7 @@ public final class BlobServiceClient {
      * @return A string that represents the SAS token
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
-                                     AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
         return this.blobServiceAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime);
     }
 
@@ -313,8 +314,8 @@ public final class BlobServiceClient {
      * @return A string that represents the SAS token
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
-                                     AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version, IPRange ipRange,
-                                     SASProtocol sasProtocol) {
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        IPRange ipRange, SASProtocol sasProtocol) {
         return this.blobServiceAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
     }
 }

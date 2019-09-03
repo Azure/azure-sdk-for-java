@@ -14,6 +14,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.implementation.tracing.Tracer;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
@@ -255,6 +257,9 @@ public class PartitionBasedLoadBalancerTest {
 
     @Test
     public void testReceiveFailure() throws Exception {
+        final Tracer tracer1 = mock(Tracer.class);
+        final List<Tracer> tracers = Arrays.asList(tracer1);
+        TracerProvider tracerProvider = new TracerProvider(tracers);
         PartitionProcessor partitionProcessor = mock(PartitionProcessor.class);
 
         when(partitionProcessor.processEvent(any(EventData.class))).thenReturn(Mono.error(new IllegalStateException()));
@@ -265,7 +270,8 @@ public class PartitionBasedLoadBalancerTest {
         when(eventHubConsumer.receive()).thenReturn(Flux.error(new IllegalStateException()));
 
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(partitionManager,
-            (partitionContext, checkpointManager) -> partitionProcessor, EventPosition.earliest(), eventHubAsyncClient);
+            (partitionContext, checkpointManager) -> partitionProcessor, EventPosition.earliest(),
+            eventHubAsyncClient, tracerProvider);
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(partitionManager,
             eventHubAsyncClient, eventHubName, consumerGroupName, "owner", TimeUnit.SECONDS.toSeconds(5),
             partitionPumpManager);
@@ -278,6 +284,9 @@ public class PartitionBasedLoadBalancerTest {
 
     @Test
     public void testPartitionManagerFailure() throws Exception {
+        final Tracer tracer1 = mock(Tracer.class);
+        final List<Tracer> tracers = Arrays.asList(tracer1);
+        TracerProvider tracerProvider = new TracerProvider(tracers);
         PartitionManager partitionManager = mock(PartitionManager.class);
         when(partitionManager.listOwnership(any(), any())).thenReturn(Flux.error(new Exception("Listing failed")));
         PartitionProcessor partitionProcessor = mock(PartitionProcessor.class);
@@ -285,7 +294,8 @@ public class PartitionBasedLoadBalancerTest {
         List<String> partitionIds = Arrays.asList("1", "2", "3");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(partitionManager,
-            (partitionContext, checkpointManager) -> partitionProcessor, EventPosition.earliest(), eventHubAsyncClient);
+            (partitionContext, checkpointManager) -> partitionProcessor, EventPosition.earliest(),
+            eventHubAsyncClient, tracerProvider);
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(partitionManager,
             eventHubAsyncClient, eventHubName, consumerGroupName, "owner", TimeUnit.SECONDS.toSeconds(5),
             partitionPumpManager);
@@ -301,12 +311,16 @@ public class PartitionBasedLoadBalancerTest {
 
     @Test
     public void testEventHubClientFailure() throws Exception {
+        final Tracer tracer1 = mock(Tracer.class);
+        final List<Tracer> tracers = Arrays.asList(tracer1);
+        TracerProvider tracerProvider = new TracerProvider(tracers);
         PartitionProcessor partitionProcessor = mock(PartitionProcessor.class);
         when(partitionProcessor.processEvent(any(EventData.class))).thenReturn(Mono.error(new IllegalStateException()));
         List<String> partitionIds = new ArrayList<>();
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(partitionManager,
-            (partitionContext, checkpointManager) -> partitionProcessor, EventPosition.earliest(), eventHubAsyncClient);
+            (partitionContext, checkpointManager) -> partitionProcessor, EventPosition.earliest(),
+            eventHubAsyncClient, tracerProvider);
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(partitionManager,
             eventHubAsyncClient, eventHubName, consumerGroupName, "owner", TimeUnit.SECONDS.toSeconds(5),
             partitionPumpManager);
@@ -362,8 +376,11 @@ public class PartitionBasedLoadBalancerTest {
     }
 
     private PartitionBasedLoadBalancer createPartitionLoadBalancer(String owner) {
+        final Tracer tracer1 = mock(Tracer.class);
+        final List<Tracer> tracers = Arrays.asList(tracer1);
+        TracerProvider tracerProvider = new TracerProvider(tracers);
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(partitionManager,
-            LogPartitionProcessor::new, EventPosition.earliest(), eventHubAsyncClient);
+            LogPartitionProcessor::new, EventPosition.earliest(), eventHubAsyncClient, tracerProvider);
         return new PartitionBasedLoadBalancer(partitionManager, eventHubAsyncClient,
             eventHubName, consumerGroupName, owner, TimeUnit.SECONDS.toSeconds(5), partitionPumpManager);
     }

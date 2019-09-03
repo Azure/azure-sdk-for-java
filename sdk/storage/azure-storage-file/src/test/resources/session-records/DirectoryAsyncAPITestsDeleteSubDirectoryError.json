@@ -1,0 +1,73 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestsdeletesubdirectoryerror998289c684?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D72829ED0A6184\"",
+      "Last-Modified" : "Sat, 24 Aug 2019 00:28:03 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "b02cf6e5-c01a-0046-5612-5aeee0000000",
+      "Date" : "Sat, 24 Aug 2019 00:28:03 GMT",
+      "x-ms-client-request-id" : "fce82aea-0226-41a1-8013-ed241a1e319a"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestsdeletesubdirectoryerror998289c684/directoryasyncapitestsdeletesubdirectoryerror7491810131?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "16004293428625128841*13168958551941065216",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-08-24T00:28:03.2291707Z",
+      "Last-Modified" : "Sat, 24 Aug 2019 00:28:03 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Sat, 24 Aug 2019 00:28:03 GMT",
+      "ETag" : "\"0x8D72829ED10E37B\"",
+      "x-ms-file-attributes" : "Directory",
+      "x-ms-file-change-time" : "2019-08-24T00:28:03.2291707Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "b02cf6e8-c01a-0046-5712-5aeee0000000",
+      "x-ms-client-request-id" : "7fb9e6ee-64d4-4064-a37a-73b9740b6f85",
+      "x-ms-file-last-write-time" : "2019-08-24T00:28:03.2291707Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestsdeletesubdirectoryerror998289c684/directoryasyncapitestsdeletesubdirectoryerror7491810131%2ftestsubdirectory?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "b02cf6e9-c01a-0046-5812-5aeee0000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:b02cf6e9-c01a-0046-5812-5aeee0000000\nTime:2019-08-24T00:28:03.2826131Z</Message></Error>",
+      "Date" : "Sat, 24 Aug 2019 00:28:03 GMT",
+      "x-ms-client-request-id" : "4c61d30f-8f7e-4789-8d10-c826df8aa047",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "directoryasyncapitestsdeletesubdirectoryerror998289c684", "directoryasyncapitestsdeletesubdirectoryerror7491810131" ]
+}

@@ -208,7 +208,7 @@ The following sections provide several code snippets covering some of the most c
 - [Set file httpHeaders](#Set-file-httpheaders)
 
 ### Create a share
-Create a share in the Storage Account. Throws StorageErrorException If the share fails to be created.
+Create a share in the Storage Account. Throws StorageException If the share fails to be created.
 Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services).
 
 ```Java
@@ -246,7 +246,8 @@ Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) .
 
 ```Java
 String fileName = "testfile";
-directoryClient.createFile(fileName);
+long maxSize = 1024;
+directoryClient.createFile(fileName, maxSize);
 ```
 
 ### List all Shares
@@ -306,14 +307,14 @@ Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with string of sou
 
 ```Java
 String sourceURL = "https://myaccount.file.core.windows.net/myshare/myfile";
-Response<FileCopyInfo> copyInfoResponse = fileClient.startCopy(sourceURL, null);
+FileCopyInfo copyInfo = fileClient.startCopy(sourceURL, null);
 ```
 
 ### Abort copy a file
 Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with the copy info response returned above `${copyId}=[copyInfoResponse](#Copy-a-file)`.
 
 ```Java
-String copyId = copyInfoResponse.value().copyId();
+String copyId = copyInfoResponse.copyId();
 fileClient.abortCopy(copyId);
 ```
 
@@ -321,7 +322,7 @@ fileClient.abortCopy(copyId);
 Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with data of "default" .
 
 ```Java
-ByteBuf data = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8));
+ByteBuffer data = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
 fileClient.upload(data, data.readableBytes());
 ```
 
@@ -336,7 +337,7 @@ fileClient.uploadFromFile(filePath);
 Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with the range from 1024 to 2048.
 ```Java
 FileRange fileRange = new FileRange(1024, 2047);
-fileClient.downloadWithProperties(fileRange, false);
+fileClient.downloadWithProperties(fileRange, false, null);
 ```
 
 ### Download file from storage
@@ -357,12 +358,12 @@ fileServiceClient.getProperties();
 Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services) .
 
 ```Java
-FileServiceProperties properties = fileServiceClient.getProperties().value();
+FileServiceProperties properties = fileServiceClient.getProperties();
 
 properties.minuteMetrics().enabled(true);
 properties.hourMetrics().enabled(true);
 
-VoidResponse response = fileServiceClient.setProperties(properties);
+fileServiceClient.setProperties(properties);
 ```
 
 ### Set a share metadata
@@ -396,7 +397,7 @@ shareClient.setAccessPolicy(Collections.singletonList(permission));
 Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory)
 
 ```Java
-Iterable<HandleItem> handleItems = directoryClient.getHandles(null, true);
+Iterable<HandleItem> handleItems = directoryClient.listHandles(null, true);
 ```
 
 ### Force close handles on handle id
@@ -420,7 +421,8 @@ Taking the fileClient in KeyConcept, [`${fileClient}`](#File) .
 
 ```Java
 FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
-fileClient.setHttpHeaders(httpHeaders);
+long newFileSize = 1024;
+fileClient.setHttpHeaders(newFileSize, httpHeaders);
 ```
 
 ## Troubleshooting
@@ -479,3 +481,5 @@ If you would like to become an active contributor to this project please follow 
 [samples_directory]: src/samples/java/com/azure/storage/file/DirectorySample.java
 [samples_file]: src/samples/java/com/azure/storage/file/FileSample.java
 [samples_async]: src/samples/java/com/azure/storage/file/AsyncSample.java
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-file/README.png)

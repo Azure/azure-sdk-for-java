@@ -23,7 +23,13 @@ public final class StorageException extends HttpResponseException {
     private final StorageErrorCode errorCode;
     private final String message;
 
-    StorageException(StorageErrorException e, String responseBody) {
+    /**
+     * Constructs a {@code StorageException} from the given {@link StorageErrorException}.
+     *
+     * @param e The StorageErrorException returned from the service.
+     * @param responseBody The exception body.
+     */
+    public StorageException(StorageErrorException e, String responseBody) {
         super(e.getMessage(), e.response(), e);
         this.errorCode = StorageErrorCode.fromString(e.response().headers().value(ERROR_CODE));
         this.message = responseBody;

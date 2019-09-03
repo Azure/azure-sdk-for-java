@@ -23,7 +23,7 @@ import java.util.Set;
 public class ExternalDependencyExposedCheck extends AbstractCheck {
     private static final String EXTERNAL_DEPENDENCY_ERROR = "Class ''%s'', is a class from external dependency. You should not use it as a %s type.";
     private static final Set<String> VALID_DEPENDENCY_SET = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-        "java", "com.azure", "reactor", "io.netty.buffer.ByteBuf"
+        "java", "com.azure", "reactor"
     )));
 
     private final Map<String, String> simpleClassNameToQualifiedNameMap = new HashMap<>();

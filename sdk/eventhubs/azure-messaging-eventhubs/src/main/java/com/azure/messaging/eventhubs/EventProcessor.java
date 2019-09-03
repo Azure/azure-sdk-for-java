@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.PartitionBasedLoadBalancer;
 import com.azure.messaging.eventhubs.implementation.PartitionPumpManager;
@@ -42,6 +43,7 @@ public class EventProcessor {
     private final AtomicBoolean started = new AtomicBoolean(false);
     private final PartitionPumpManager partitionPumpManager;
     private final PartitionBasedLoadBalancer partitionBasedLoadBalancer;
+    private final TracerProvider tracerProvider;
 
     private Disposable runner;
     private Scheduler scheduler;
@@ -56,10 +58,11 @@ public class EventProcessor {
      * available for the partition.
      * @param partitionManager The partition manager this Event Processor will use for reading and writing partition
      * ownership and checkpoint information.
+     * @param tracerProvider The tracer implementation.
      */
     EventProcessor(EventHubAsyncClient eventHubAsyncClient, String consumerGroupName,
         PartitionProcessorFactory partitionProcessorFactory, EventPosition initialEventPosition,
-        PartitionManager partitionManager) {
+        PartitionManager partitionManager, TracerProvider tracerProvider) {
         Objects.requireNonNull(eventHubAsyncClient, "eventHubAsyncClient cannot be null");
         Objects.requireNonNull(consumerGroupName, "consumerGroupName cannot be null");
         Objects.requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null");
@@ -69,10 +72,11 @@ public class EventProcessor {
         this.identifier = UUID.randomUUID().toString();
         logger.info("The instance ID for this event processors is {}", this.identifier);
         this.partitionPumpManager = new PartitionPumpManager(partitionManager, partitionProcessorFactory,
-            initialEventPosition, eventHubAsyncClient);
+            initialEventPosition, eventHubAsyncClient, tracerProvider);
         this.partitionBasedLoadBalancer =
             new PartitionBasedLoadBalancer(partitionManager, eventHubAsyncClient, eventHubAsyncClient.eventHubName(),
                 consumerGroupName, identifier, TimeUnit.MINUTES.toSeconds(5), partitionPumpManager);
+        this.tracerProvider = tracerProvider;
     }
 
     /**
