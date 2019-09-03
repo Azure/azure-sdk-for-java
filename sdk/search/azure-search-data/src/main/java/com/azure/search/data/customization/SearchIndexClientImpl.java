@@ -21,7 +21,6 @@ import reactor.util.annotation.Nullable;
 import java.time.Duration;
 
 import java.util.List;
-import java.util.Map;
 
 public class SearchIndexClientImpl extends SearchIndexBaseClient implements SearchIndexClient {
 
@@ -82,14 +81,14 @@ public class SearchIndexClientImpl extends SearchIndexBaseClient implements Sear
     }
 
     @Override
-    public Map<String, Object> getDocument(String key) {
-        Mono<Map<String, Object>> results = asyncClient.getDocument(key);
+    public Document getDocument(String key) {
+        Mono<Document> results = asyncClient.getDocument(key);
         return blockWithOptionalTimeout(results, null);
     }
 
     @Override
-    public Map<String, Object> getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions) {
-        Mono<Map<String, Object>> results = asyncClient.getDocument(key, selectedFields, searchRequestOptions);
+    public Document getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions) {
+        Mono<Document> results = asyncClient.getDocument(key, selectedFields, searchRequestOptions);
         return blockWithOptionalTimeout(results, null);
     }
 

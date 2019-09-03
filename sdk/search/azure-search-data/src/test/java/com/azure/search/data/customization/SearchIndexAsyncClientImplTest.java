@@ -100,7 +100,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
             e.printStackTrace();
         }
 
-        Mono<Map<String, Object>> futureDoc = asyncClient.getDocument("1");
+        Mono<Document> futureDoc = asyncClient.getDocument("1");
 
         StepVerifier
             .create(futureDoc)
@@ -112,7 +112,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
     @Test
     public void getDocumentThrowsWhenDocumentNotFound() {
-        Mono<Map<String, Object>> futureDoc = asyncClient.getDocument("1000000001");
+        Mono<Document> futureDoc = asyncClient.getDocument("1000000001");
         StepVerifier
             .create(futureDoc)
             .verifyErrorSatisfies(error -> assertEquals(ResourceNotFoundException.class, error.getClass()));

@@ -136,4 +136,7 @@
 
 <!--  Storage still depends on 1.0.0-preview.2 azure core. suppress this rule for now until storage has upgraded to preview-3 azure core-->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*[/\\]storage[/\\].*\.java"/>
+  
+<!-- Suppress external dependency check for jacksonwrapper overriding deserialize method -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer.java"/>
 </suppressions>

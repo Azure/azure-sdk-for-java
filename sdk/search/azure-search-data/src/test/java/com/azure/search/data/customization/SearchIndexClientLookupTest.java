@@ -160,7 +160,7 @@ public class SearchIndexClientLookupTest extends SearchIndexClientTestBase {
      */
     private void getAndVerifyDoc(SearchIndexAsyncClient client, String docKey, HashMap<String, Object> expectedDocument) {
         // Get the indexed document
-        Mono<Map<String, Object>> futureDoc = client.getDocument(docKey);
+        Mono<Document> futureDoc = client.getDocument(docKey);
         // Verify that for every item we indexed we get the right response
         StepVerifier
                 .create(futureDoc)

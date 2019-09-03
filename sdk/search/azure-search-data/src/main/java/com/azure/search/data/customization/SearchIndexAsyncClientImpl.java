@@ -26,7 +26,6 @@ import com.azure.search.data.generated.models.SuggestResult;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
 import java.util.List;
-import java.util.Map;
 
 public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements SearchIndexAsyncClient {
 
@@ -177,29 +176,27 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
     }
 
     @Override
-    public Mono<Map<String, Object>> getDocument(String key) {
+    public Mono<Document> getDocument(String key) {
         return restClient
             .documents()
             .getAsync(key)
-            .map(DocumentResponseConversions::convertLinkedHashMapToMap)
-            .map(DocumentResponseConversions::dropUnnecessaryFields)
+            .map(DocumentResponseConversions::cleanupDocument)
             .onErrorMap(DocumentResponseConversions::exceptionMapper)
-            .doOnSuccess(s -> System.out.println("Document with key: " + key + " was retrieved succesfully"))
-            .doOnError(e -> System.out.println("An error occured in getDocument(key): " + e.getMessage()));
+            .doOnSuccess(s -> System.out.println("Document with key: " + key + " was retrieved successfully"))
+            .doOnError(e -> System.out.println("An error occurred in getDocument(key): " + e.getMessage()));
     }
 
     @Override
-    public Mono<Map<String, Object>> getDocument(
+    public Mono<Document> getDocument(
         String key, List<String> selectedFields,
         SearchRequestOptions searchRequestOptions) {
         return restClient
             .documents()
             .getAsync(key, selectedFields, searchRequestOptions)
-            .map(DocumentResponseConversions::convertLinkedHashMapToMap)
-            .map(DocumentResponseConversions::dropUnnecessaryFields)
+            .map(DocumentResponseConversions::cleanupDocument)
             .onErrorMap(DocumentResponseConversions::exceptionMapper)
-            .doOnSuccess(s -> System.out.println("Document with key: " + key + "and selectedFields: " + selectedFields.toString()  + " was retrieved succesfully"))
-            .doOnError(e -> System.out.println("An error occured in getDocument(key, selectedFields, searchRequestOptions): " + e.getMessage()));
+            .doOnSuccess(s -> System.out.println("Document with key: " + key + "and selectedFields: " + selectedFields.toString()  + " was retrieved successfully"))
+            .doOnError(e -> System.out.println("An error occurred in getDocument(key, selectedFields, searchRequestOptions): " + e.getMessage()));
     }
 
     @Override

@@ -7,6 +7,7 @@ package com.azure.search.data.generated;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceMethod;
+import com.azure.search.data.customization.Document;
 import com.azure.search.data.generated.models.AutocompleteParameters;
 import com.azure.search.data.generated.models.AutocompleteRequest;
 import com.azure.search.data.generated.models.AutocompleteResult;
@@ -153,7 +154,7 @@ public interface Documents {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SimpleResponse<Object>> getWithRestResponseAsync(String key);
+    Mono<SimpleResponse<Document>> getWithRestResponseAsync(String key);
 
     /**
      * Retrieves a document from the Azure Search index.
@@ -163,19 +164,7 @@ public interface Documents {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Object> getAsync(String key);
-
-    /**
-     * Retrieves a document from the Azure Search index.
-     *
-     * @param key The key of the document to retrieve.
-     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing from the returned document.
-     * @param searchRequestOptions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SimpleResponse<Object>> getWithRestResponseAsync(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions);
+    Mono<Document> getAsync(String key);
 
     /**
      * Retrieves a document from the Azure Search index.
@@ -187,7 +176,19 @@ public interface Documents {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Object> getAsync(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions);
+    Mono<SimpleResponse<Document>> getWithRestResponseAsync(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions);
+
+    /**
+     * Retrieves a document from the Azure Search index.
+     *
+     * @param key The key of the document to retrieve.
+     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing from the returned document.
+     * @param searchRequestOptions Additional parameters for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Document> getAsync(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions);
 
     /**
      * Suggests documents in the Azure Search index that match the given partial query text.

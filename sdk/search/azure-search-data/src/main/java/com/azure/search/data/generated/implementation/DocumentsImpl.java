@@ -20,6 +20,7 @@ import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceInterface;
 import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
+import com.azure.search.data.customization.Document;
 import com.azure.search.data.generated.Documents;
 import com.azure.search.data.generated.models.AutocompleteMode;
 import com.azure.search.data.generated.models.AutocompleteParameters;
@@ -87,7 +88,7 @@ public final class DocumentsImpl implements Documents {
 
         @Get("docs('{key}')")
         @ExpectedResponses({200})
-        Mono<SimpleResponse<Object>> get(@PathParam("key") String key, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @HostParam("indexName") String indexName, @QueryParam("$select") String selectedFields, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId);
+        Mono<SimpleResponse<Document>> get(@PathParam("key") String key, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @HostParam("indexName") String indexName, @QueryParam("$select") String selectedFields, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId);
 
         @Get("docs/search.suggest")
         @ExpectedResponses({200})
@@ -368,7 +369,7 @@ public final class DocumentsImpl implements Documents {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Object>> getWithRestResponseAsync(String key) {
+    public Mono<SimpleResponse<Document>> getWithRestResponseAsync(String key) {
         final UUID clientRequestId = null;
         String selectedFieldsConverted = null;
         return service.get(key, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), selectedFieldsConverted, this.client.getApiVersion(), clientRequestId);
@@ -382,9 +383,9 @@ public final class DocumentsImpl implements Documents {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getAsync(String key) {
+    public Mono<Document> getAsync(String key) {
         return getWithRestResponseAsync(key)
-            .flatMap((SimpleResponse<Object> res) -> Mono.just(res.value()));
+            .flatMap((SimpleResponse<Document> res) -> Mono.just(res.value()));
     }
 
     /**
@@ -397,7 +398,7 @@ public final class DocumentsImpl implements Documents {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Object>> getWithRestResponseAsync(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions) {
+    public Mono<SimpleResponse<Document>> getWithRestResponseAsync(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
             clientRequestId = searchRequestOptions.clientRequestId();
@@ -416,9 +417,9 @@ public final class DocumentsImpl implements Documents {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getAsync(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions) {
+    public Mono<Document> getAsync(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions) {
         return getWithRestResponseAsync(key, selectedFields, searchRequestOptions)
-            .flatMap((SimpleResponse<Object> res) -> Mono.just(res.value()));
+            .flatMap((SimpleResponse<Document> res) -> Mono.just(res.value()));
     }
 
     /**

@@ -1,4 +1,4 @@
-#SearchIndexClient
+# SearchIndexClient
 
 This is the AutoRest configuration file for SearchIndexClient
 
@@ -24,12 +24,20 @@ java:
     clear-output-folder: false
     generate-client-interfaces: true
 directive:
+	- from: src/main/java/com/azure/search/azure-search-data/Documents.java
+	  where: $
+	  transform: >-
+		return $
+		.replace(/(package com.azure.search.data.generated;)/g, "$1\nimport com.azure.search.data.customization.Document;")
+		.replace(/(Object)/g, "Document")
     # reduce accessibility to the generated class
     - from: src/main/java/com/azure/search/azure-search-data/implementation/DocumentsImpl.java
       where: $
       transform: >-
         return $
+		.replace(/(package com.azure.search.data.generated.implementation;)/g, "$1\nimport com.azure.search.data.customization.Document;")
         .replace(/(public final class DocumentsImpl implements Documents)/g, "final class DocumentsImpl implements Documents")
+		.replace(/(Object)/g, "Document")
     # reduce accessibility to the generated class
     - from: src/main/java/com/azure/search/azure-search-data/rest/implementation/SearchIndexClientBuilder.java
       where: $

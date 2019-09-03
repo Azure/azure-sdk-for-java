@@ -4,6 +4,7 @@
 package com.azure.search.data;
 
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.search.data.customization.Document;
 import com.azure.search.data.generated.models.AutocompleteParameters;
 import com.azure.search.data.generated.models.AutocompleteResult;
 import com.azure.search.data.generated.models.DocumentIndexResult;
@@ -16,7 +17,6 @@ import com.azure.search.data.generated.models.SuggestResult;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * The public (Customer facing) interface for SearchIndexASyncClient.
@@ -92,7 +92,7 @@ public interface SearchIndexAsyncClient {
      * @param key the name of the document
      * @return document object
      */
-    Mono<Map<String, Object>> getDocument(String key);
+    Mono<Document> getDocument(String key);
 
     /**
      * Retrieves a document from the Azure Search index.
@@ -102,7 +102,7 @@ public interface SearchIndexAsyncClient {
      * @param searchRequestOptions search request options
      * @return document object
      */
-    Mono<Map<String, Object>> getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions);
+    Mono<Document> getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions);
 
     /**
      * Suggests documents in the Azure Search index that match the given partial query text.

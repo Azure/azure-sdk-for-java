@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.data;
+package com.azure.search.data.tests;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.search.data.customization.models.CoordinateSystem;
@@ -225,6 +225,17 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     }
 
     @Test
+    public void searchThrowsWhenSpecialCharInRegexIsUnescaped() {
+        thrown.expect(HttpResponseException.class);
+        thrown.expectMessage("Failed to parse query string at line 1, column 8.");
+
+        SearchParameters invalidSearchParameters = new SearchParameters()
+            .queryType(QueryType.FULL);
+
+        search("/.*/.*/", invalidSearchParameters, new SearchRequestOptions());
+    }
+
+    @Test
     public abstract void canSearchDynamicDocuments();
 
     @Test
@@ -271,17 +282,6 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
 
     @Test
     public abstract void canSearchWithMinimumCoverage();
-
-    @Test
-    public void searchThrowsWhenSpecialCharInRegexIsUnescaped() {
-        thrown.expect(HttpResponseException.class);
-        thrown.expectMessage("Failed to parse query string at line 1, column 8.");
-
-        SearchParameters invalidSearchParameters = new SearchParameters()
-            .queryType(QueryType.FULL);
-
-        search("/.*/.*/", invalidSearchParameters, new SearchRequestOptions());
-    }
 
     @Test
     public abstract void searchWithScoringProfileBoostsScore();

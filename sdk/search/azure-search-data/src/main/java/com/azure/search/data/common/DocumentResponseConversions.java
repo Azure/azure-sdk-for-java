@@ -5,6 +5,7 @@ package com.azure.search.data.common;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.search.data.customization.Document;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,19 +52,7 @@ public class DocumentResponseConversions {
 
         return convertedMap;
     }
-
-    /**
-     * Drop fields that shouldn't be in the returned object
-     * @param map the map to drop items from
-     * @return the new map
-     */
-    public static Map<String, Object> dropUnnecessaryFields(Map<String, Object> map) {
-        map.remove(ODATA_CONTEXT);
-
-        return map;
-    }
-
-
+    
     /**
      * Convert Array Object elements
      * @param array which elements will be converted
@@ -95,5 +84,13 @@ public class DocumentResponseConversions {
         return throwable;
     }
 
-
+    /**
+     * Drop fields that shouldn't be in the returned object
+     * @param document document object
+     * @return document without the redundant fields
+     */
+    public static Document cleanupDocument(Document document) {
+        document.remove(ODATA_CONTEXT);
+        return document;
+    }
 }
