@@ -75,8 +75,7 @@ class BlockBlobAPITest extends APISpec {
         bc.stageBlock(blockID, data == null ? null : data.get(), dataSize)
 
         then:
-        def e = thrown(exceptionType)
-        exceptionType.isInstance(e)
+        thrown(exceptionType)
 
         where:
         getBlockId   | data                 | dataSize            | exceptionType
@@ -604,8 +603,7 @@ class BlockBlobAPITest extends APISpec {
         bc.upload(data, dataSize)
 
         then:
-        def e = thrown(exceptionType)
-        exceptionType.isInstance(e)
+        thrown(exceptionType)
 
         where:
         data                     | dataSize            | exceptionType

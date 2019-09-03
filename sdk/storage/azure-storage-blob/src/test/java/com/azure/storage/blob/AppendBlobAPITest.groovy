@@ -187,8 +187,8 @@ class AppendBlobAPITest extends APISpec {
         bc.appendBlock(data, dataSize)
 
         then:
-        def e = thrown(exceptionType)
-        exceptionType.isInstance(e)
+        thrown(exceptionType)
+
         where:
         data                     | dataSize            | exceptionType
         null                     | defaultDataSize     | NullPointerException

@@ -1035,8 +1035,7 @@ class ContainerAPITest extends APISpec {
         cc.listBlobsHierarchy(null, options, null).iterator().hasNext()
 
         then:
-        def e = thrown(Exception)
-        exceptionType.isInstance(e)
+        thrown(exceptionType)
 
         where:
         snapshots | maxResults | exceptionType
