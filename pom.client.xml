@@ -468,13 +468,10 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.2</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-failsafe-plugin</artifactId>
-          <version>2.22.2</version>
+          <version>${maven-surefire-plugin.version}</version>
+          <configuration>
+            <useSystemClassLoader>false</useSystemClassLoader>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -764,11 +761,10 @@
                 <arg>-Xlint:-serial</arg>
                 <arg>-Xlint:-deprecation</arg>
                 <arg>-Xlint:-processing</arg>
-<!--                <arg>-Xlint:-requires-transitive-automatic</arg>-->
               </compilerArgs>
             </configuration>
           </plugin>
-          <!-- Hack to extract dependencies for Surefire and Javadoc plugin -->
+<!--          &lt;!&ndash; Hack to extract dependencies for Surefire and Javadoc plugin &ndash;&gt;-->
 <!--          <plugin>-->
 <!--            <groupId>org.apache.maven.plugins</groupId>-->
 <!--            <artifactId>maven-dependency-plugin</artifactId>-->
@@ -788,14 +784,15 @@
 <!--            </executions>-->
 <!--          </plugin>-->
           <!-- Surefire plugin is broken, https://issues.apache.org/jira/browse/SUREFIRE-1501 -->
-<!--          <plugin>-->
-<!--            <groupId>org.apache.maven.plugins</groupId>-->
-<!--            <artifactId>maven-surefire-plugin</artifactId>-->
-<!--            <version>${maven-surefire-plugin.version}</version>-->
-<!--            <configuration>-->
-<!--              <argLine>&#45;&#45;module-path ${project.build.directory}/dependencies</argLine>-->
-<!--            </configuration>-->
-<!--          </plugin>-->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>${maven-surefire-plugin.version}</version>
+            <configuration>
+              <argLine>--add-opens com.azure.core/com.azure.core.entities=com.fasterxml.jackson.databind</argLine>
+              <useSystemClassLoader>false</useSystemClassLoader>
+            </configuration>
+          </plugin>
 <!--          &lt;!&ndash; Javadoc plugin v3.0.0 is broken, https://issues.apache.org/jira/browse/MJAVADOC-506 &ndash;&gt;-->
 <!--          <plugin>-->
 <!--            <groupId>org.apache.maven.plugins</groupId>-->

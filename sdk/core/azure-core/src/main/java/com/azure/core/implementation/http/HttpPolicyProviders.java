@@ -1,8 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.implementation.http.policy.spi;
+package com.azure.core.implementation.http;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.AfterRetryPolicyProvider;
+import com.azure.core.http.policy.BeforeRetryPolicyProvider;
+import com.azure.core.http.policy.PolicyProvider;
 
 import java.util.HashMap;
 import java.util.Iterator;

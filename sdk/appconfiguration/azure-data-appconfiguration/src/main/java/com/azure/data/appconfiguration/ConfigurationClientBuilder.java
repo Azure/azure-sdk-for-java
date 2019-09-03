@@ -22,7 +22,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
+import com.azure.core.implementation.http.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.net.MalformedURLException;

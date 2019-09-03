@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.implementation.http.spi;
+package com.azure.core.implementation.http;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpClientProvider;
 
 import java.util.Iterator;
 import java.util.ServiceLoader;

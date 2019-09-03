@@ -110,9 +110,9 @@
     <groovy-eclipse-compiler.version>3.4.0-01</groovy-eclipse-compiler.version>
     <groovy-eclipse-batch.version>2.5.8-01</groovy-eclipse-batch.version>
     <client-runtime.version.v2>2.1.1</client-runtime.version.v2>
-    <slf4j-api.version>1.7.26</slf4j-api.version>
+    <slf4j-api.version>1.7.28</slf4j-api.version>
     <slf4j-log4j12.version>1.7.0</slf4j-log4j12.version>
-    <reactor-core.version>3.2.10.RELEASE</reactor-core.version>
+    <reactor-core.version>3.2.11.RELEASE</reactor-core.version>
     <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
     <netty.version>4.1.33.Final</netty.version>
     <async-http-client.version>2.5.2</async-http-client.version>
@@ -151,7 +151,7 @@
     <wiremock-standalone.version>2.15.0</wiremock-standalone.version>
     <jetty-http.version>9.4.11.v20180605</jetty-http.version>
     <jetty-server.version>9.4.11.v20180605</jetty-server.version>
-    <junit.version>4.12</junit.version>
+    <junit.version>4.13-beta-3</junit.version>
     <log4j.version>1.2.17</log4j.version>
     <testng.version>6.14.3</testng.version>
     <assertj.version>3.11.1</assertj.version>
@@ -693,6 +693,7 @@
               <configurationAPIEnvironmentFound>environmentConfiguration</configurationAPIEnvironmentFound>
               <configurationAPIUseRuntimeFirst>environmentConfiguration</configurationAPIUseRuntimeFirst>
             </environmentVariables>
+            <useSystemClassLoader>false</useSystemClassLoader>
           </configuration>
         </plugin>
 
