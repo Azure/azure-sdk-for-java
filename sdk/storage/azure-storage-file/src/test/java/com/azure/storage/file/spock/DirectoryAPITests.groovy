@@ -32,7 +32,7 @@ class DirectoryAPITests extends APISpec {
         directoryPath = testResourceName.randomName(methodName, 60)
         def shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
         shareClient.create()
-        primaryDirectoryClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).buildClient()
+        primaryDirectoryClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).buildDirectoryClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
         smbProperties = new FileSmbProperties()
             .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL))
@@ -71,7 +71,7 @@ class DirectoryAPITests extends APISpec {
         given:
         def testShareName = testResourceName.randomName(methodName, 60)
         when:
-        directoryBuilderHelper(interceptorManager, testShareName, directoryPath).buildClient().create()
+        directoryBuilderHelper(interceptorManager, testShareName, directoryPath).buildDirectoryClient().create()
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.SHARE_NOT_FOUND)
@@ -522,7 +522,7 @@ class DirectoryAPITests extends APISpec {
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
             1, 1), ZoneOffset.UTC).toString()
         when:
-        def shareSnapshotClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).snapshot(snapshot).buildClient()
+        def shareSnapshotClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).snapshot(snapshot).buildDirectoryClient()
         then:
         snapshot == shareSnapshotClient.getShareSnapshotId()
     }

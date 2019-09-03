@@ -46,7 +46,7 @@ public class FileJavaDocCodeSamples {
         FileClient client = new FileClientBuilder()
             .connectionString("${connectionString}")
             .endpoint("${endpoint}")
-            .buildClient();
+            .buildFileClient();
         // END: com.azure.storage.file.fileClient.instantiation
     }
 
@@ -60,8 +60,8 @@ public class FileJavaDocCodeSamples {
         FileClient fileClient = new FileClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net?${SASToken}")
             .shareName("myshare")
-            .filePath("myfilepath")
-            .buildClient();
+            .resourcePath("myfilepath")
+            .buildFileClient();
         // END: com.azure.storage.file.fileClient.instantiation.sastoken
         return fileClient;
     }
@@ -78,8 +78,8 @@ public class FileJavaDocCodeSamples {
             .endpoint("https://${accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
             .shareName("myshare")
-            .filePath("myfilepath")
-            .buildClient();
+            .resourcePath("myfilepath")
+            .buildFileClient();
         // END: com.azure.storage.file.fileClient.instantiation.credential
         return fileClient;
     }
@@ -94,8 +94,8 @@ public class FileJavaDocCodeSamples {
         String connectionString = "DefaultEndpointsProtocol=https;AccountName={name};AccountKey={key};"
             + "EndpointSuffix={core.windows.net}";
         FileClient fileClient = new FileClientBuilder()
-            .connectionString(connectionString).shareName("myshare").filePath("myfilepath")
-            .buildClient();
+            .connectionString(connectionString).shareName("myshare").resourcePath("myfilepath")
+            .buildFileClient();
         // END: com.azure.storage.file.fileClient.instantiation.connectionstring
         return fileClient;
     }
@@ -566,9 +566,9 @@ public class FileJavaDocCodeSamples {
             .endpoint("https://${accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
             .shareName("myshare")
-            .filePath("myfile")
+            .resourcePath("myfile")
             .snapshot(currentTime.toString())
-            .buildClient();
+            .buildFileClient();
 
         System.out.printf("Snapshot ID: %s%n", fileClient.getShareSnapshotId());
         // END: com.azure.storage.file.fileClient.getShareSnapshotId

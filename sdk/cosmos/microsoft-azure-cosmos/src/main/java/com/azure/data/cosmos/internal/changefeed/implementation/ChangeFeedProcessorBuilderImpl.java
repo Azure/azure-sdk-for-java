@@ -69,7 +69,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
     private PartitionProcessorFactory partitionProcessorFactory;
     private LeaseStoreManager leaseStoreManager;
     private HealthMonitor healthMonitor;
-    private PartitionManager partitionManager;
+    private volatile PartitionManager partitionManager;
 
     private Scheduler scheduler;
 
@@ -82,7 +82,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
     public Mono<Void> start() {
         if (this.partitionManager == null) {
             return this.initializeCollectionPropertiesForBuild()
-                .then(this.getLeaseStoreManager()
+                .flatMap( value -> this.getLeaseStoreManager()
                     .flatMap(leaseStoreManager -> this.buildPartitionManager(leaseStoreManager)))
                 .flatMap(partitionManager1 -> {
                     this.partitionManager = partitionManager1;
@@ -101,7 +101,10 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      */
     @Override
     public Mono<Void> stop() {
-        return partitionManager.stop();
+        if (this.partitionManager == null || !this.partitionManager.isRunning()) {
+            throw new IllegalStateException("The ChangeFeedProcessor instance has not fully started");
+        }
+        return this.partitionManager.stop();
     }
 
     /**
@@ -312,7 +315,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
         this.partitionManager = partitionManager;
     }
 
-    private Mono<Void> initializeCollectionPropertiesForBuild() {
+    private Mono<ChangeFeedProcessor> initializeCollectionPropertiesForBuild() {
         if (this.changeFeedProcessorOptions == null) {
             this.changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
         }
@@ -327,9 +330,8 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
                 .readContainer(this.feedContextClient.getContainerClient(), null)
                 .map(documentCollectionResourceResponse -> {
                     this.collectionResourceId = documentCollectionResourceResponse.container().id();
-                    return this.collectionResourceId;
-                }))
-            .then();
+                    return this;
+                }));
     }
 
     private Mono<LeaseStoreManager> getLeaseStoreManager() {
