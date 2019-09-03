@@ -4,21 +4,20 @@
 package com.azure.tracing.opentelemetry;
 
 import com.azure.core.implementation.tracing.ProcessKind;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
-
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.tracing.opentelemetry.implementation.AmqpPropagationFormatUtil;
 import com.azure.tracing.opentelemetry.implementation.AmqpTraceUtil;
 import com.azure.tracing.opentelemetry.implementation.HttpTraceUtil;
+import io.opencensus.trace.AttributeValue;
+import io.opencensus.trace.Link;
 import io.opencensus.trace.Span;
 import io.opencensus.trace.Span.Options;
 import io.opencensus.trace.SpanBuilder;
+import io.opencensus.trace.SpanContext;
 import io.opencensus.trace.Tracer;
 import io.opencensus.trace.Tracing;
-import io.opencensus.trace.SpanContext;
-import io.opencensus.trace.AttributeValue;
-import io.opencensus.trace.Link;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -78,13 +77,10 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
 
     @Override
     public void end(int responseCode, Throwable throwable, Context context) {
-        Optional<Object> spanOptional = context.getData(OPENTELEMETRY_SPAN_KEY);
-        if (!spanOptional.isPresent()) {
-            logger.warning("Failed to find span to end it.");
+        final Span span = getSpan(context);
+        if (span == null) {
             return;
         }
-
-        Span span = (Span) spanOptional.get();
 
         if (span.getOptions().contains(Options.RECORD_EVENTS)) {
             span.setStatus(HttpTraceUtil.parseResponseStatus(responseCode, throwable));
@@ -100,9 +96,8 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
             return;
         }
 
-        Optional<Object> spanOptional = context.getData(OPENTELEMETRY_SPAN_KEY);
-        if (spanOptional.isPresent()) {
-            Span span = (Span) spanOptional.get();
+        final Span span = getSpan(context);
+        if (span != null) {
             span.putAttribute(key, AttributeValue.stringAttributeValue(value));
         } else {
             logger.warning("Failed to find span to add attribute.");
@@ -116,38 +111,40 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
 
     @Override
     public void end(String statusMessage, Throwable throwable, Context context) {
-        Optional<Object> spanOptional = context.getData(OPENTELEMETRY_SPAN_KEY);
-        if (!spanOptional.isPresent()) {
+        final Span span = getSpan(context);
+        if (span == null) {
             logger.warning("Failed to find span to end it.");
             return;
         }
-        if (spanOptional.get() instanceof Span) {
-            Span span = (Span) spanOptional.get();
 
-            if (span.getOptions().contains(Options.RECORD_EVENTS)) {
-                span.setStatus(AmqpTraceUtil.parseStatusMessage(statusMessage, throwable));
-            }
-
-            span.end();
-        } else {
-            logger.warning(String.format(Locale.US,
-                "Span type is not of type Span, but type: %s. Failed to end the span.",
-                spanOptional.get() != null ? spanOptional.get().getClass() : "null"));
+        if (span.getOptions().contains(Options.RECORD_EVENTS)) {
+            span.setStatus(AmqpTraceUtil.parseStatusMessage(statusMessage, throwable));
         }
+
+        span.end();
     }
 
     @Override
     public void addLink(Context eventContext) {
-        Optional<Object> spanContextOptional = eventContext.getData(SPAN_CONTEXT);
-        Optional<Object> spanOptional = eventContext.getData(OPENTELEMETRY_SPAN_KEY);
-
-        if (!spanOptional.isPresent()) {
+        final Span span = getSpan(eventContext);
+        if (span == null) {
             logger.warning("Failed to find span to link it.");
             return;
         }
-        SpanContext spanContext = (SpanContext) spanContextOptional.get();
-        Span span = (Span) spanOptional.get();
-        // TODO: Needs to be updated with Opentelemtery support to addLink using Span Context before span is started
+
+        final Optional<Object> spanContextOptional = eventContext.getData(SPAN_CONTEXT);
+        if (!spanContextOptional.isPresent()) {
+            logger.warning("Failed to find Span context to link it.");
+            return;
+        } else if (!(spanContextOptional.get() instanceof SpanContext)) {
+            logger.warning("Context in event is not of type SpanContext. Actual: {}",
+                spanContextOptional.get().getClass());
+            return;
+        }
+
+        final SpanContext spanContext = (SpanContext) spanContextOptional.get();
+
+        // TODO: Needs to be updated with Open Telemetry support to addLink using Span Context before span is started
         // and no link type is needed.
         span.addLink(Link.fromSpanContext(spanContext, PARENT_LINKED_SPAN));
     }
@@ -171,7 +168,7 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
 
     private SpanBuilder startSpanWithExplicitParent(String spanName, Context context) {
         Optional<Object> optionalSpanKey = context.getData(OPENTELEMETRY_SPAN_KEY);
-        Optional<Object> optionalSpanNameKey = context.getData(OPENTELEMETRY_SPAN_KEY);
+        Optional<Object> optionalSpanNameKey = context.getData(OPENTELEMETRY_SPAN_NAME_KEY);
         Span parentSpan = null;
         String spanNameKey = null;
 
@@ -211,5 +208,29 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
 
     private static String parseComponentValue(String spanName) {
         return spanName.substring(spanName.indexOf(".") + 1, spanName.lastIndexOf("."));
+    }
+
+    /**
+     * Extracts a {@link Span} from the given {@code context}.
+     *
+     * @param context The context containing the span.
+     * @return The {@link Span} contained in the context, and {@code null} if it does not.
+     */
+    private Span getSpan(Context context) {
+        final Optional<Object> spanOptional = context.getData(OPENTELEMETRY_SPAN_KEY);
+        if (!spanOptional.isPresent()) {
+            logger.warning("Failed to find span in the context.");
+            return null;
+        }
+
+        final Object value = spanOptional.get();
+        if (!(value instanceof Span)) {
+            logger.warning("Could not extract span. Data in {} is not of type Span. Actual class: {}",
+                OPENTELEMETRY_SPAN_KEY,
+                value.getClass());
+            return null;
+        }
+
+        return (Span) value;
     }
 }
