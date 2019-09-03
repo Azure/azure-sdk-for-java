@@ -38,6 +38,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Function;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
@@ -668,13 +670,14 @@ public class DirectoryAsyncClient {
     }
 
     private List<FileRef> convertResponseAndGetNumOfResults(DirectorysListFilesAndDirectoriesSegmentResponse response) {
-        List<FileRef> fileRefs = new ArrayList<>();
+        Set<FileRef> fileRefs = new TreeSet<>(Comparator.comparing(FileRef::name));
         if (response.value().segment() != null) {
-            response.value().segment().directoryItems().forEach(directoryItem -> fileRefs.add(new FileRef(directoryItem.name(), true, null)));
-            response.value().segment().fileItems().forEach(fileItem -> fileRefs.add(new FileRef(fileItem.name(), false, fileItem.properties())));
+            response.value().segment().directoryItems()
+                .forEach(directoryItem -> fileRefs.add(new FileRef(directoryItem.name(), true, null)));
+            response.value().segment().fileItems()
+                .forEach(fileItem -> fileRefs.add(new FileRef(fileItem.name(), false, fileItem.properties())));
         }
 
-        fileRefs.sort(Comparator.comparing(FileRef::name));
-        return fileRefs;
+        return new ArrayList<>(fileRefs);
     }
 }
