@@ -121,7 +121,7 @@ class FileServiceAPITests extends APISpec {
         new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter")                        | 3      | false           | true
         new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter").includeMetadata(true)  | 3      | true            | true
         new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter").includeMetadata(false) | 3      | false           | true
-        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter").maxResults(2)          | 3      | true            | true
+        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter").maxResults(2)          | 3      | false           | true
     }
 
     @Unroll
