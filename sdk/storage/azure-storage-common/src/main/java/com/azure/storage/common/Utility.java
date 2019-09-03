@@ -502,25 +502,25 @@ public final class Utility {
      * @throws RuntimeException When I/O error occurs.
      */
     public static Flux<ByteBuffer> convertStreamToByteBuffer(InputStream data, long length, int blockSize) {
-        final AtomicLong lengthInChunk = new AtomicLong();
+        final long[] currentTotalLength = new long[1];
         return Flux.range(0, (int) Math.ceil((double) length / (double) blockSize))
             .map(i -> i * blockSize)
             .concatMap(pos -> Mono.fromCallable(() -> {
                 long count = pos + blockSize > length ? length - pos : blockSize;
                 byte[] cache = new byte[(int) count];
                 int lastIndex = data.read(cache);
-                lengthInChunk.getAndAdd(lastIndex);
-                if (lengthInChunk.get() < count) {
+                currentTotalLength[0] += lastIndex;
+                if (currentTotalLength[0] < count) {
                     throw new UnexpectedLengthException(
                         String.format("Request body emitted %d bytes less than the expected %d bytes.",
-                            lengthInChunk.get(), length), lengthInChunk.get(), length);
+                            currentTotalLength[0], length), currentTotalLength[0], length);
                 }
                 return ByteBuffer.wrap(cache);
             }))
             .doOnComplete(() -> {
                 try {
                     if (data.available() > 0) {
-                        Long totalLength = lengthInChunk.get() + data.available();
+                        Long totalLength = currentTotalLength[0] + data.available();
                         throw new UnexpectedLengthException(
                             String.format("Request body emitted %d bytes more than the expected %d bytes.",
                                 totalLength, length), totalLength, length);
