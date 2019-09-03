@@ -93,9 +93,9 @@ public class PartitionBasedLoadBalancerTest {
         });
     }
 
-    void sleep(int i) {
+    void sleep(int secondsToSleep) {
         try {
-            TimeUnit.SECONDS.sleep(i);
+            TimeUnit.SECONDS.sleep(secondsToSleep);
         } catch (InterruptedException ex) {
 
         }
@@ -241,7 +241,7 @@ public class PartitionBasedLoadBalancerTest {
             }
         });
 
-        sleep(3);
+        sleep(6);
         partitionOwnership = partitionManager.listOwnership(eventHubName,
             consumerGroupName).collectList().block();
 
@@ -300,7 +300,7 @@ public class PartitionBasedLoadBalancerTest {
             eventHubAsyncClient, eventHubName, consumerGroupName, "owner", TimeUnit.SECONDS.toSeconds(5),
             partitionPumpManager);
         loadBalancer.loadBalance();
-        sleep(2);
+        sleep(5);
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
         verify(eventHubAsyncClient, never()).createConsumer(any(), any(), any());
         verify(eventHubConsumer, never()).receive();
