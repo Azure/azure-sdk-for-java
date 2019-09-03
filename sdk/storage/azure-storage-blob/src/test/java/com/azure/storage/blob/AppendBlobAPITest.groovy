@@ -263,10 +263,13 @@ class AppendBlobAPITest extends APISpec {
 
         when:
         bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, bac, null, null)
+
         then:
         thrown(StorageException)
+
         cleanup:
         defaultInputStream.get().reset()
+        
         where:
         modified | unmodified | match       | noneMatch    | leaseID        | appendPosE | maxSizeLTE
         newDate  | null       | null        | null         | null           | null       | null
