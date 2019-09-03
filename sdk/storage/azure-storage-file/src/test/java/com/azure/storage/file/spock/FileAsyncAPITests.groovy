@@ -418,13 +418,17 @@ class FileAsyncAPITests extends APISpec {
         }
     }
 
-    def "Set httpHeaders"() {
+    def "Set httpHeaders fpk"() {
         given:
+        primaryFileAsyncClient.createWithResponse(1024, null, null).block()
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
-        primaryFileAsyncClient.createWithResponse(1024, null, null).block()
+        // TODO: Set file permission key
+        FileProperties fileProperties = new FileProperties(httpHeaders.fileContentType, httpHeaders.fileContentEncoding, httpHeaders.fileContentLanguage,
+            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, smbProperties, null)
+
         expect:
-        StepVerifier.create(primaryFileAsyncClient.setPropertiesWithResponse(512, httpHeaders, smbProperties, filePermission))
+        StepVerifier.create(primaryFileAsyncClient.setPropertiesWithResponse(512, fileProperties))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 200)
                 assert it.value().smbProperties()
@@ -438,13 +442,34 @@ class FileAsyncAPITests extends APISpec {
             }.verifyComplete()
     }
 
-    // TODO: Add test that tests set with a file permission key once create file permission and get file permission APIs are created
+    def "Set httpHeaders fp"() {
+        given:
+        primaryFileAsyncClient.createWithResponse(1024, null, null).block()
+        smbProperties.fileCreationTime(getUTCNow())
+            .fileLastWriteTime(getUTCNow())
+        FileProperties fileProperties = new FileProperties(httpHeaders.fileContentType, httpHeaders.fileContentEncoding, httpHeaders.fileContentLanguage,
+            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, smbProperties, filePermission)
+
+        expect:
+        StepVerifier.create(primaryFileAsyncClient.setPropertiesWithResponse(512, fileProperties))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 200)
+                assert it.value().smbProperties()
+                assert it.value().smbProperties().filePermissionKey()
+                assert it.value().smbProperties().ntfsFileAttributes()
+                assert it.value().smbProperties().fileLastWriteTime()
+                assert it.value().smbProperties().fileCreationTime()
+                assert it.value().smbProperties().fileChangeTime()
+                assert it.value().smbProperties().parentId()
+                assert it.value().smbProperties().fileId()
+            }.verifyComplete()
+    }
 
     def "Set httpHeaders error"() {
         given:
         primaryFileAsyncClient.createWithResponse(1024, null, null).block()
         when:
-        def setHttpHeaderVerifier = StepVerifier.create(primaryFileAsyncClient.setProperties(-1, httpHeaders, null, null))
+        def setHttpHeaderVerifier = StepVerifier.create(primaryFileAsyncClient.setProperties(-1, null))
         then:
         setHttpHeaderVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.OUT_OF_RANGE_INPUT)

@@ -357,25 +357,22 @@ public class FileClient {
      *
      * <p>Set the httpHeaders of contentType of "text/plain"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setHttpHeaders#long-filehttpheaders-filesmbproperties-string}
+     * {@codesnippet com.azure.storage.file.fileClient.setProperties#long-fileproperties}
      *
      * <p>Clear the httpHeaders of the file and preserve the SMB properties</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setHttpHeaders#long-filehttpheaders-filesmbproperties-string.clearHttpHeaderspreserveSMBProperties}
+     * {@codesnippet com.azure.storage.file.fileClient.setProperties#long-fileproperties.clearHttpHeaderspreserveSMBProperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a>.</p>
      *
      * @param newFileSize New file size of the file
-     * @param httpHeaders Resizes a file to the specified size. If the specified byte value is less than the current size of the file, then all ranges above the specified byte value are cleared.
-     * @param smbProperties The SMB properties of the file.
-     * @param filePermission The file permission of the file.
+     * @param fileProperties The user-settable file properties for a file
      * @return The {@link FileInfo file info}
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public FileInfo setProperties(long newFileSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties,
-        String filePermission) {
-        return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, Context.NONE).value();
+    public FileInfo setProperties(long newFileSize, FileProperties fileProperties) {
+        return setPropertiesWithResponse(newFileSize, fileProperties, Context.NONE).value();
     }
 
     /**
@@ -387,26 +384,23 @@ public class FileClient {
      *
      * <p>Set the httpHeaders of contentType of "text/plain"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setHttpHeadersWithResponse#long-filehttpheaders-filesmbproperties-string-Context}
+     * {@codesnippet com.azure.storage.file.fileClient.setPropertiesWithResponse#long-fileproperties-Context}
      *
      * <p>Clear the httpHeaders of the file and preserve the SMB properties</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setHttpHeadersWithResponse#long-filehttpheaders-filesmbproperties-string-Context.clearHttpHeaderspreserveSMBProperties}
+     * {@codesnippet com.azure.storage.file.fileClient.setPropertiesWithResponse#long-fileproperties-Context.clearHttpHeaderspreserveSMBProperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a>.</p>
      *
      * @param newFileSize New file size of the file
-     * @param httpHeaders Resizes a file to the specified size. If the specified byte value is less than the current size of the file, then all ranges above the specified byte value are cleared.
-     * @param smbProperties The SMB properties of the file.
-     * @param filePermission The file permission of the file.
+     * @param fileProperties The user-settable file properties for a file
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Response containing the {@link FileInfo file info} with headers and status code
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public Response<FileInfo> setPropertiesWithResponse(long newFileSize, FileHTTPHeaders httpHeaders,
-        FileSmbProperties smbProperties, String filePermission, Context context) {
-        return fileAsyncClient.setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, context).block();
+    public Response<FileInfo> setPropertiesWithResponse(long newFileSize, FileProperties fileProperties, Context context) {
+        return fileAsyncClient.setPropertiesWithResponse(newFileSize, fileProperties, context).block();
     }
 
     /**

@@ -412,13 +412,17 @@ class FileAPITests extends APISpec {
         thrown(HttpResponseException)
     }
 
-    def "Set httpHeaders"() {
+    def "Set httpHeaders fpk"() {
         given:
         primaryFileClient.createWithResponse(1024, null, null, null)
         when:
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
-        def resp = primaryFileClient.setPropertiesWithResponse(512, httpHeaders, smbProperties, filePermission, null)
+        // TODO: Set file permission key
+        FileProperties fileProperties = new FileProperties(httpHeaders.fileContentType, httpHeaders.fileContentEncoding, httpHeaders.fileContentLanguage,
+            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, smbProperties, null)
+
+        def resp = primaryFileClient.setPropertiesWithResponse(512, fileProperties, null)
         then:
         FileTestHelper.assertResponseStatusCode(resp, 200)
         resp.value().eTag()
@@ -433,13 +437,34 @@ class FileAPITests extends APISpec {
         resp.value().smbProperties().fileId()
     }
 
-    // TODO: Add test that tests set with a file permission key once create file permission and get file permission APIs are created
+    def "Set httpHeaders fp"() {
+        given:
+        primaryFileClient.createWithResponse(1024, null, null, null)
+        when:
+        smbProperties.fileCreationTime(getUTCNow())
+            .fileLastWriteTime(getUTCNow())
+        FileProperties fileProperties = new FileProperties(httpHeaders.fileContentType, httpHeaders.fileContentEncoding, httpHeaders.fileContentLanguage,
+            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, smbProperties, filePermission)
 
+        def resp = primaryFileClient.setPropertiesWithResponse(512, fileProperties, null)
+        then:
+        FileTestHelper.assertResponseStatusCode(resp, 200)
+        resp.value().eTag()
+        resp.value().lastModified()
+        resp.value().smbProperties()
+        resp.value().smbProperties().filePermissionKey()
+        resp.value().smbProperties().ntfsFileAttributes()
+        resp.value().smbProperties().fileLastWriteTime()
+        resp.value().smbProperties().fileCreationTime()
+        resp.value().smbProperties().fileChangeTime()
+        resp.value().smbProperties().parentId()
+        resp.value().smbProperties().fileId()
+    }
     def "Set httpHeaders error"() {
         given:
         primaryFileClient.createWithResponse(1024, null, null, null)
         when:
-        primaryFileClient.setPropertiesWithResponse(-1, httpHeaders, null, null, null)
+        primaryFileClient.setPropertiesWithResponse(-1, null, null)
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.OUT_OF_RANGE_INPUT)
