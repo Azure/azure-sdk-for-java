@@ -135,7 +135,7 @@ public final class BlockBlobClient extends BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The information of the uploaded block blob.
-     * @throws {@link UnexpectedLengthException} when the length of data does not match the input {@code length}.
+     * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
      * @throws IOException If an I/O error occurs
      */
@@ -215,7 +215,7 @@ public final class BlockBlobClient extends BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A response containing status code and HTTP headers
-     * @throws {@link UnexpectedLengthException} when the length of data does not match the input {@code length}.
+     * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
      */
     public VoidResponse stageBlockWithResponse(String base64BlockID, InputStream data, long length,
