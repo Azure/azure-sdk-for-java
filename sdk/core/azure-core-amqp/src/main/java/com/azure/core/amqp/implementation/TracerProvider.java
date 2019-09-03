@@ -34,8 +34,8 @@ public class TracerProvider {
      * new span will be added as a child, otherwise the span will be created and added to the context and any downstream
      * start calls will use the created span as the parent.
      *
-     * @param {@link Context context} Additional metadata that is passed through the call stack.
-     * @param {@link ProcessKind processKind} the invoking process type.
+     * @param context Additional metadata that is passed through the call stack.
+     * @param processKind the invoking process type.
      * @return An updated context object.
      */
     public Context startSpan(Context context, ProcessKind processKind) {
