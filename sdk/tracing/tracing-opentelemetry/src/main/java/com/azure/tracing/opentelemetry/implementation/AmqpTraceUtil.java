@@ -10,30 +10,27 @@ public final class AmqpTraceUtil {
     private AmqpTraceUtil() { }
 
     /**
-     * Parse OpenTelemetry Status from Amqp Error Condition.
+     * Parses an OpenTelemetry Status from AMQP Error Condition.
      *
-     * @param statusMessage AMQP header value for this error condition.
+     * @param statusMessage AMQP description for this error condition.
      * @param error the error occurred during response transmission (optional).
-     * @return the corresponding OpenTelemetry {@code Status}.
+     * @return the corresponding OpenTelemetry {@link Status}.
      */
     public static Status parseStatusMessage(String statusMessage, Throwable error) {
-        String message = null;
-
         if (error != null) {
-            message = error.getMessage();
-            if (message == null) {
-                message = error.getClass().getSimpleName();
-                return Status.UNKNOWN.withDescription(message);
-            }
-        }
+            final String message = error.getMessage();
 
-        // No error.
-        if (error == null && statusMessage.equalsIgnoreCase("success")) {
+            return message != null
+                ? Status.UNKNOWN.withDescription(message)
+                : Status.UNKNOWN.withDescription(error.getClass().getSimpleName());
+
+        } else if (statusMessage.equalsIgnoreCase("success")) {
+            // No error.
             return Status.OK;
+        } else {
+            // return status with custom error condition message
+            return Status.UNKNOWN.withDescription(statusMessage);
         }
-
-        // return status with custom error condition message
-        return Status.UNKNOWN.withDescription(statusMessage);
     }
 }
 
