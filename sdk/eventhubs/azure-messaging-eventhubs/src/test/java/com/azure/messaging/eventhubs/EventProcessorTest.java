@@ -166,7 +166,8 @@ public class EventProcessorTest {
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(SPAN_CONTEXT, "value1")
-                    .addData("scope", (Closeable) () -> {})
+                    .addData("scope", (Closeable) () -> {
+                    })
                     .addData(OPENTELEMETRY_SPAN_KEY, "value2");
             }
         );
