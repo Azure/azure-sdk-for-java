@@ -159,8 +159,7 @@ public final class SecretAsyncClient {
 
     /**
      * Get the specified secret with specified version from the key vault. The get operation is
-     * applicable to any secret stored in Azure Key Vault. This operation requires the {@code
-     * secrets/get} permission.
+     * applicable to any secret stored in Azure Key Vault. This operation requires the {@code secrets/get} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a specific version of the secret in the key vault. Subscribes to the call
@@ -185,8 +184,7 @@ public final class SecretAsyncClient {
 
     /**
      * Get the specified secret with specified version from the key vault. The get operation is
-     * applicable to any secret stored in Azure Key Vault. This operation requires the {@code
-     * secrets/get} permission.
+     * applicable to any secret stored in Azure Key Vault. This operation requires the {@code secrets/get} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a specific version of the secret in the key vault. Subscribes to the call

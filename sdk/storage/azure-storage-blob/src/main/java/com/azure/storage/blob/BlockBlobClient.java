@@ -10,7 +10,7 @@ import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlockBlobItem;
-import com.azure.storage.blob.models.BlockItem;
+import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
@@ -135,8 +135,9 @@ public final class BlockBlobClient extends BlobClient {
      * @return The information of the uploaded block blob.
      * @throws IOException If an I/O error occurs
      */
+
     public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHTTPHeaders headers,
-                                                      Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) throws IOException {
+        Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) throws IOException {
         Flux<ByteBuffer> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE))
             .map(i -> i * BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
             .concatMap(pos -> Mono.fromCallable(() -> {
@@ -296,8 +297,8 @@ public final class BlockBlobClient extends BlobClient {
      *
      * @return The list of blocks.
      */
-    public Iterable<BlockItem> listBlocks(BlockListType listType) {
-        return this.listBlocks(listType, null, null);
+    public BlockList listBlocks(BlockListType listType) {
+        return this.listBlocksWithResponse(listType, null, null).value();
     }
 
     /**
@@ -312,11 +313,11 @@ public final class BlockBlobClient extends BlobClient {
      *
      * @return The list of blocks.
      */
-    public Iterable<BlockItem> listBlocks(BlockListType listType,
+    public Response<BlockList> listBlocksWithResponse(BlockListType listType,
                                           LeaseAccessConditions leaseAccessConditions, Duration timeout) {
-        Flux<BlockItem> response = blockBlobAsyncClient.listBlocks(listType, leaseAccessConditions);
+        Mono<Response<BlockList>> response = blockBlobAsyncClient.listBlocks(listType, leaseAccessConditions);
 
-        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**

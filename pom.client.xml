@@ -244,6 +244,7 @@
               <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
               <failOnError>true</failOnError>
               <failOnWarnings>true</failOnWarnings>
+              <doclint>all</doclint>
             </configuration>
           </execution>
         </executions>
@@ -362,6 +363,10 @@
                 <packages>com.azure.core.auth*</packages>
               </group>
               <group>
+                <title>Azure Core - HTTP - Netty</title>
+                <packages>com.azure.core.http.netty*</packages>
+              </group>
+              <group>
                 <title>Azure Core - Management</title>
                 <packages>com.azure.core.management*</packages>
               </group>
@@ -422,6 +427,7 @@
             <additionalOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java</additionalOptions>
             <failOnError>false</failOnError>
             <failOnWarnings>false</failOnWarnings>
+            <doclint>all</doclint>
           </configuration>
         </plugin>
 
@@ -555,6 +561,7 @@
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-file/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
               </additionalOptions>
+              <doclint>all</doclint>
             </configuration>
           </reportSet>
         </reportSets>
@@ -671,6 +678,32 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
               <additionalJOption>--no-module-directories</additionalJOption>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Add Automatic-Module-Name -->
+    <profile>
+      <id>modulename</id>
+      <activation>
+        <file>
+          <missing>src/main/java/module-info.java</missing>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <configuration>
+              <archive>
+                <manifestEntries>
+                  <!-- This value will be read out of each projects properties and inserted into its manifest -->
+                  <Automatic-Module-Name>${project.automatic.module.name}</Automatic-Module-Name>
+                </manifestEntries>
+              </archive>
             </configuration>
           </plugin>
         </plugins>

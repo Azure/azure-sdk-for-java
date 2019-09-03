@@ -3,20 +3,26 @@
 
 package com.azure.storage.file.spock
 
+import com.azure.core.http.HttpClient
+import com.azure.core.http.ProxyOptions
+import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
+import com.azure.core.test.utils.ResourceNamer
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.core.util.logging.ClientLogger
-import com.azure.storage.file.DirectoryClientBuilder
+
 import com.azure.storage.file.FileClientBuilder
+import com.azure.storage.file.FileServiceAsyncClient
 import com.azure.storage.file.FileServiceClient
 import com.azure.storage.file.FileServiceClientBuilder
 import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.ListSharesOptions
 import spock.lang.Specification
 
-import java.nio.file.Files
+import java.time.OffsetDateTime
+import java.util.function.Supplier
 
 class APISpec extends Specification {
     // Field common used for all APIs.
@@ -24,19 +30,21 @@ class APISpec extends Specification {
     def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     def tmpFolder = getClass().getClassLoader().getResource("tmptestfiles")
     def testFolder = getClass().getClassLoader().getResource("testfiles")
-   // def testFolder = "src/test/resources/testfiles/"
-    def interceptorManager
-    def testResourceName
+    InterceptorManager interceptorManager
+    TestResourceNamer testResourceName
 
     // Primary Clients used for API tests
-    def primaryFileServiceClient
-    def primaryFileServiceAsyncClient
+    FileServiceClient primaryFileServiceClient
+    FileServiceAsyncClient primaryFileServiceAsyncClient
 
 
     // Test name for test method name.
     def methodName
     def testMode = getTestMode()
     def connectionString
+
+    // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
+    static boolean enableDebugging = false
 
     /**
      * Setup the File service clients commonly used for the API tests.
@@ -101,7 +109,9 @@ class APISpec extends Specification {
         if (testMode == TestMode.RECORD) {
             return new FileServiceClientBuilder()
                 .connectionString(connectionString)
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
+                .httpClient(getHttpClient())
         } else {
             return new FileServiceClientBuilder()
                 .connectionString(connectionString)
@@ -114,7 +124,9 @@ class APISpec extends Specification {
             return new ShareClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
+                .httpClient(getHttpClient())
         } else {
             return new ShareClientBuilder()
                 .connectionString(connectionString)
@@ -125,16 +137,18 @@ class APISpec extends Specification {
 
     def directoryBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String directoryPath) {
         if (testMode == TestMode.RECORD) {
-            return new DirectoryClientBuilder()
+            return new FileClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
-                .directoryPath(directoryPath)
+                .resourcePath(directoryPath)
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
+                .httpClient(getHttpClient())
         } else {
-            return new DirectoryClientBuilder()
+            return new FileClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
-                .directoryPath(directoryPath)
+                .resourcePath(directoryPath)
                 .httpClient(interceptorManager.getPlaybackClient())
         }
     }
@@ -144,13 +158,15 @@ class APISpec extends Specification {
             return new FileClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
-                .filePath(filePath)
+                .resourcePath(filePath)
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
+                .httpClient(getHttpClient())
         } else {
             return new FileClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
-                .filePath(filePath)
+                .resourcePath(filePath)
                 .httpClient(interceptorManager.getPlaybackClient())
         }
     }
@@ -163,5 +179,22 @@ class APISpec extends Specification {
             return fullName
         }
         return matcher[0][1] + matcher[0][3]
+    }
+
+    static HttpClient getHttpClient() {
+        if (enableDebugging) {
+            return HttpClient.createDefault().proxy(new Supplier<ProxyOptions>() {
+                @Override
+                ProxyOptions get() {
+                    return new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
+                }
+            })
+        } else {
+            return HttpClient.createDefault()
+        }
+    }
+
+    OffsetDateTime getUTCNow() {
+        return testResourceName.now()
     }
 }

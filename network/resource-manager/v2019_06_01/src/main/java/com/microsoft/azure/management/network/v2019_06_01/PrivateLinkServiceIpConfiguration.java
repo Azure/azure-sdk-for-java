@@ -9,15 +9,15 @@
 package com.microsoft.azure.management.network.v2019_06_01;
 
 import com.microsoft.azure.management.network.v2019_06_01.implementation.SubnetInner;
-import com.microsoft.azure.management.network.v2019_06_01.implementation.PublicIPAddressInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.SubResource;
 
 /**
  * The private link service ip configuration.
  */
 @JsonFlatten
-public class PrivateLinkServiceIpConfiguration {
+public class PrivateLinkServiceIpConfiguration extends SubResource {
     /**
      * The private IP address of the IP configuration.
      */
@@ -38,17 +38,17 @@ public class PrivateLinkServiceIpConfiguration {
     private SubnetInner subnet;
 
     /**
-     * The reference of the public IP resource.
+     * Whether the ip configuration is primary or not.
      */
-    @JsonProperty(value = "properties.publicIPAddress")
-    private PublicIPAddressInner publicIPAddress;
+    @JsonProperty(value = "properties.primary")
+    private Boolean primary;
 
     /**
-     * Gets the provisioning state of the public IP resource. Possible values
-     * are: 'Updating', 'Deleting', and 'Failed'.
+     * The provisioning state of the private link service ip configuration.
+     * Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Available from Api-Version 2016-03-30 onwards, it represents whether the
@@ -63,6 +63,18 @@ public class PrivateLinkServiceIpConfiguration {
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /**
+     * A unique read-only string that changes whenever the resource is updated.
+     */
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    private String etag;
+
+    /**
+     * The resource type.
+     */
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    private String type;
 
     /**
      * Get the private IP address of the IP configuration.
@@ -125,41 +137,41 @@ public class PrivateLinkServiceIpConfiguration {
     }
 
     /**
-     * Get the reference of the public IP resource.
+     * Get whether the ip configuration is primary or not.
      *
-     * @return the publicIPAddress value
+     * @return the primary value
      */
-    public PublicIPAddressInner publicIPAddress() {
-        return this.publicIPAddress;
+    public Boolean primary() {
+        return this.primary;
     }
 
     /**
-     * Set the reference of the public IP resource.
+     * Set whether the ip configuration is primary or not.
      *
-     * @param publicIPAddress the publicIPAddress value to set
+     * @param primary the primary value to set
      * @return the PrivateLinkServiceIpConfiguration object itself.
      */
-    public PrivateLinkServiceIpConfiguration withPublicIPAddress(PublicIPAddressInner publicIPAddress) {
-        this.publicIPAddress = publicIPAddress;
+    public PrivateLinkServiceIpConfiguration withPrimary(Boolean primary) {
+        this.primary = primary;
         return this;
     }
 
     /**
-     * Get gets the provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
+     * Get the provisioning state of the private link service ip configuration. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'.
      *
      * @return the provisioningState value
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
     /**
-     * Set gets the provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
+     * Set the provisioning state of the private link service ip configuration. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'.
      *
      * @param provisioningState the provisioningState value to set
      * @return the PrivateLinkServiceIpConfiguration object itself.
      */
-    public PrivateLinkServiceIpConfiguration withProvisioningState(String provisioningState) {
+    public PrivateLinkServiceIpConfiguration withProvisioningState(ProvisioningState provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -202,6 +214,24 @@ public class PrivateLinkServiceIpConfiguration {
     public PrivateLinkServiceIpConfiguration withName(String name) {
         this.name = name;
         return this;
+    }
+
+    /**
+     * Get a unique read-only string that changes whenever the resource is updated.
+     *
+     * @return the etag value
+     */
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the resource type.
+     *
+     * @return the type value
+     */
+    public String type() {
+        return this.type;
     }
 
 }

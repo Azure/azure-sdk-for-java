@@ -51,7 +51,7 @@ public final class ConfigurationClient {
      *
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.addSetting#string-string}
+     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.addSetting#String-String}
      *
      * @param key The key of the configuration setting to add.
      * @param value The value associated with this configuration setting key.
@@ -74,7 +74,7 @@ public final class ConfigurationClient {
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.addSetting#ConfigurationSetting}
+     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.addSetting#ConfigurationSetting}
      *
      * @param setting The setting to add to the configuration service.
      * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
@@ -97,7 +97,7 @@ public final class ConfigurationClient {
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.addSettingWithResponse#ConfigurationSetting-Context}
+     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.addSettingWithResponse#ConfigurationSetting-Context}
      *
      * @param setting The setting to add to the configuration service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -124,7 +124,7 @@ public final class ConfigurationClient {
      *
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setSetting#string-string}
+     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.setSetting#String-String}
      *
      * @param key The key of the configuration setting to create or update.
      * @param value The value of this configuration setting.
@@ -151,7 +151,7 @@ public final class ConfigurationClient {
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection". <p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setSetting#ConfigurationSetting}
+     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.setSetting#ConfigurationSetting}
      *
      * @param setting The configuration setting to create or update.
      * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
@@ -181,7 +181,7 @@ public final class ConfigurationClient {
      *
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setSettingWithResponse#ConfigurationSetting-Context}
+     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.setSettingWithResponse#ConfigurationSetting-Context}
      *
      * @param setting The configuration setting to create or update.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -210,7 +210,7 @@ public final class ConfigurationClient {
      *
      * <p>Update a setting with the key "prodDBConnection" to have the value "updated_db_connection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.updateSetting#string-string}
+     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.updateSetting#String-String}
      *
      * @param key The key of the configuration setting to update.
      * @param value The updated value of this configuration setting.

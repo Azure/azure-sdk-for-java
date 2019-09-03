@@ -204,7 +204,7 @@ QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint
 ### Create a queue
 
 Create a queue in the Storage Account using `${SASToken}` as credential.
-Throws StorageErrorException If the queue fails to be created.
+Throws StorageException If the queue fails to be created.
 
 ```Java
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", accountName);
@@ -215,7 +215,7 @@ QueueClient newQueueClient = queueServiceClient.createQueue("myqueue");
 ### Delete a queue
 
 Delete a queue in the Storage Account using `${SASToken}` as credential.
-Throws StorageErrorException If the queue fails to be deleted.
+Throws StorageException If the queue fails to be deleted.
 ```Java
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", accountName);
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).credential(SASToken).buildClient();
@@ -409,3 +409,5 @@ If you would like to become an active contributor to this project please follow 
 [samples_message]: src/samples/java/com/azure/storage/queue/MessageSamples.java
 [samples_queue_exception]: src/samples/java/com/azure/storage/queue/QueueExceptionSamples.java
 [samples_async]: src/samples/java/com/azure/storage/queue/AsyncSamples.java
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-queue/README.png)

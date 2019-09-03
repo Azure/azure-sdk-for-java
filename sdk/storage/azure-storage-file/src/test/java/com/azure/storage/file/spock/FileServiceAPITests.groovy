@@ -13,7 +13,7 @@ import com.azure.storage.file.models.RetentionPolicy
 import com.azure.storage.file.models.ShareItem
 import com.azure.storage.file.models.ShareProperties
 import com.azure.storage.file.models.StorageErrorCode
-import com.azure.storage.file.models.StorageErrorException
+import com.azure.storage.file.models.StorageException
 import spock.lang.Unroll
 
 class FileServiceAPITests extends APISpec {
@@ -54,14 +54,14 @@ class FileServiceAPITests extends APISpec {
 
     def "Create share"() {
         when:
-        def createShareResponse = primaryFileServiceClient.createShare(shareName)
+        def createShareResponse = primaryFileServiceClient.createShareWithResponse(shareName, null, null, null)
         then:
         FileTestHelper.assertResponseStatusCode(createShareResponse, 201)
     }
 
     def "Create share max overloads"() {
         when:
-        def createShareResponse = primaryFileServiceClient.createShare(shareName, testMetadata, 1)
+        def createShareResponse = primaryFileServiceClient.createShareWithResponse(shareName, testMetadata, 1, null)
         then:
         FileTestHelper.assertResponseStatusCode(createShareResponse, 201)
     }
@@ -69,9 +69,9 @@ class FileServiceAPITests extends APISpec {
     @Unroll
     def "Create share with invalid args"() {
         when:
-        primaryFileServiceClient.createShare(shareName, metadata, quota)
+        primaryFileServiceClient.createShareWithResponse(shareName, metadata, quota, null)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
         where:
         metadata                                      | quota | statusCode | errMsg
@@ -83,7 +83,7 @@ class FileServiceAPITests extends APISpec {
         given:
         primaryFileServiceClient.createShare(shareName)
         when:
-        def deleteShareResponse = primaryFileServiceClient.deleteShare(shareName)
+        def deleteShareResponse = primaryFileServiceClient.deleteShareWithResponse(shareName, null, null)
         then:
         FileTestHelper.assertResponseStatusCode(deleteShareResponse, 202)
     }
@@ -92,7 +92,7 @@ class FileServiceAPITests extends APISpec {
         when:
         primaryFileServiceClient.deleteShare(testResourceName.randomName(methodName, 60))
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.SHARE_NOT_FOUND)
     }
 
@@ -107,7 +107,7 @@ class FileServiceAPITests extends APISpec {
             }
 
             testShares.add(share)
-            primaryFileServiceClient.createShare(share.name(), share.metadata(), share.properties().quota())
+            primaryFileServiceClient.createShareWithResponse(share.name(), share.metadata(), share.properties().quota(), null)
         }
         when:
         def shares = primaryFileServiceClient.listShares(options).iterator()
@@ -132,9 +132,9 @@ class FileServiceAPITests extends APISpec {
             ShareItem share = new ShareItem().name(shareName + i).properties(new ShareProperties().quota(2))
                 .metadata(testMetadata)
             def shareClient = primaryFileServiceClient.getShareClient(share.name())
-            shareClient.create(share.metadata(), share.properties().quota())
+            shareClient.createWithResponse(share.metadata(), share.properties().quota(), null)
             if (i == 2) {
-                def snapshot = shareClient.createSnapshot().value().snapshot()
+                def snapshot = shareClient.createSnapshot().snapshot()
                 testShares.add(new ShareItem().name(share.name()).metadata(share.metadata()).properties(share.properties()).snapshot(snapshot))
             }
             testShares.add(share)
@@ -156,16 +156,16 @@ class FileServiceAPITests extends APISpec {
 
     def "Set and get properties"() {
         given:
-        def originalProperties = primaryFileServiceClient.getProperties().value()
+        def originalProperties = primaryFileServiceClient.getProperties()
         def retentionPolicy = new RetentionPolicy().enabled(true).days(3)
         def metrics = new Metrics().enabled(true).includeAPIs(false)
             .retentionPolicy(retentionPolicy).version("1.0")
         def updatedProperties = new FileServiceProperties().hourMetrics(metrics)
             .minuteMetrics(metrics).cors(new ArrayList<>())
         when:
-        def getPropertiesBeforeResponse = primaryFileServiceClient.getProperties()
-        def setPropertiesResponse = primaryFileServiceClient.setProperties(updatedProperties)
-        def getPropertiesAfterResponse = primaryFileServiceClient.getProperties()
+        def getPropertiesBeforeResponse = primaryFileServiceClient.getPropertiesWithResponse(null)
+        def setPropertiesResponse = primaryFileServiceClient.setPropertiesWithResponse(updatedProperties, null)
+        def getPropertiesAfterResponse = primaryFileServiceClient.getPropertiesWithResponse(null)
         then:
         FileTestHelper.assertResponseStatusCode(getPropertiesBeforeResponse, 200)
         FileTestHelper.assertFileServicePropertiesAreEqual(originalProperties, getPropertiesBeforeResponse.value())
@@ -186,7 +186,7 @@ class FileServiceAPITests extends APISpec {
             .minuteMetrics(metrics).cors(coreList)
         primaryFileServiceClient.setProperties(updatedProperties)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
         where:
         coreList               | statusCode | errMsg

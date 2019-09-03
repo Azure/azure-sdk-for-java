@@ -5,8 +5,11 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.implementation.tracing.ProcessKind;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpSendLink;
 import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
@@ -17,6 +20,7 @@ import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Signal;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -25,13 +29,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+
+import static com.azure.core.implementation.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.implementation.tracing.Tracer.ENTITY_PATH;
+import static com.azure.core.implementation.tracing.Tracer.HOST_NAME;
+import static com.azure.core.implementation.tracing.Tracer.SPAN_CONTEXT;
 
 /**
  * A producer responsible for transmitting {@link EventData} to a specific Event Hub, grouped together in batches.
@@ -58,28 +69,24 @@ import java.util.stream.Collector;
  * <p><strong>Create a producer that routes events to any partition</strong></p>
  * To allow automatic routing of messages to available partition, do not specify the {@link
  * EventHubProducerOptions#partitionId() partitionId} when creating the {@link EventHubAsyncProducer}.
- * <p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation}
  *
  * <p><strong>Create a producer that publishes events to partition "foo" with a timeout of 45 seconds.</strong></p>
- * <p>
  * Developers can push events to a single partition by specifying the {@link EventHubProducerOptions#partitionId(String)
  * partitionId} when creating an {@link EventHubAsyncProducer}.
- * <p>
+ *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation#partitionId}
  *
  * <p><strong>Publish events to the same partition, grouped together using {@link SendOptions#partitionKey(String)}.</strong></p>
- * <p>
  * If developers want to push similar events to end up at the same partition, but do not require them to go to a
  * specific partition, they can use {@link SendOptions#partitionKey(String)}.
  * <p>
  * In the sample below, all the "sandwiches" end up in the same partition, but it could end up in partition 0, 1, etc.
  * of the available partitions. All that matters to the end user is that they are grouped together.
- * <p>
+ * </p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducer.send#publisher-sendOptions}
  *
  * <p><strong>Publish events using an {@link EventDataBatch}.</strong></p>
- * <p>
  * Developers can create an {@link EventDataBatch}, add the events they want into it, and publish these
  * events together. When creating a {@link EventDataBatch batch}, developers can specify a set of {@link BatchOptions
  * options} to configure this batch.
@@ -88,10 +95,11 @@ import java.util.stream.Collector;
  * users' gaming systems, but do not want to slow down the network with telemetry. So they limit the size of their
  * {@link EventDataBatch batches} to be no larger than 256 bytes. The events within the batch also get hashed to the
  * same partition because they all share the same {@link BatchOptions#partitionKey()}.
- * <p>
+ * </p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducer.send#eventDataBatch}
  *
  * @see EventHubAsyncClient#createProducer()
+ * @see EventHubAsyncClient#createProducer(EventHubProducerOptions)
  */
 @Immutable
 public class EventHubAsyncProducer implements Closeable {
@@ -110,17 +118,19 @@ public class EventHubAsyncProducer implements Closeable {
     private final EventHubProducerOptions senderOptions;
     private final Mono<AmqpSendLink> sendLinkMono;
     private final boolean isPartitionSender;
+    private final TracerProvider tracerProvider;
 
     /**
      * Creates a new instance of this {@link EventHubAsyncProducer} that sends messages to {@link
      * EventHubProducerOptions#partitionId() options.partitionId()} if it is not {@code null} or an empty string,
      * otherwise, allows the service to load balance the messages amongst available partitions.
      */
-    EventHubAsyncProducer(Mono<AmqpSendLink> amqpSendLinkMono, EventHubProducerOptions options) {
+    EventHubAsyncProducer(Mono<AmqpSendLink> amqpSendLinkMono, EventHubProducerOptions options, TracerProvider tracerProvider) {
         // Caching the created link so we don't invoke another link creation.
         this.sendLinkMono = amqpSendLinkMono.cache();
         this.senderOptions = options;
         this.isPartitionSender = !ImplUtils.isNullOrEmpty(options.partitionId());
+        this.tracerProvider = tracerProvider;
     }
 
     /**
@@ -138,7 +148,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
      */
     public Mono<EventDataBatch> createBatch(BatchOptions options) {
-        Objects.requireNonNull(options);
+        Objects.requireNonNull(options, "'options' cannot be null.");
 
         final BatchOptions clone = options.clone();
 
@@ -179,7 +189,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when the event is pushed to the service.
      */
     public Mono<Void> send(EventData event) {
-        Objects.requireNonNull(event);
+        Objects.requireNonNull(event, "'event' cannot be null.");
 
         return send(Flux.just(event));
     }
@@ -199,8 +209,8 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when the event is pushed to the service.
      */
     public Mono<Void> send(EventData event, SendOptions options) {
-        Objects.requireNonNull(event);
-        Objects.requireNonNull(options);
+        Objects.requireNonNull(event, "'event' cannot be null.");
+        Objects.requireNonNull(options, "'options' cannot be null.");
 
         return send(Flux.just(event), options);
     }
@@ -214,7 +224,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Iterable<EventData> events) {
-        Objects.requireNonNull(events);
+        Objects.requireNonNull(events, "'events' cannot be null.");
 
         return send(Flux.fromIterable(events));
     }
@@ -229,7 +239,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Iterable<EventData> events, SendOptions options) {
-        Objects.requireNonNull(events);
+        Objects.requireNonNull(events, "'options' cannot be null.");
 
         return send(Flux.fromIterable(events), options);
     }
@@ -243,7 +253,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Flux<EventData> events) {
-        Objects.requireNonNull(events);
+        Objects.requireNonNull(events, "'events' cannot be null.");
 
         return send(events, DEFAULT_SEND_OPTIONS);
     }
@@ -258,8 +268,8 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Flux<EventData> events, SendOptions options) {
-        Objects.requireNonNull(events);
-        Objects.requireNonNull(options);
+        Objects.requireNonNull(events, "'events' cannot be null.");
+        Objects.requireNonNull(options, "'options' cannot be null.");
 
         return sendInternal(events, options);
     }
@@ -274,7 +284,7 @@ public class EventHubAsyncProducer implements Closeable {
      * @see EventHubAsyncProducer#createBatch(BatchOptions)
      */
     public Mono<Void> send(EventDataBatch batch) {
-        Objects.requireNonNull(batch);
+        Objects.requireNonNull(batch, "'batch' cannot be null.");
 
         if (batch.getEvents().isEmpty()) {
             logger.info("Cannot send an EventBatch that is empty.");
@@ -294,7 +304,14 @@ public class EventHubAsyncProducer implements Closeable {
         final String partitionKey = options.partitionKey();
 
         verifyPartitionKey(partitionKey);
+        if (tracerProvider.isEnabled()) {
+            return sendInternalTracingEnabled(events, partitionKey);
+        } else {
+            return sendInternalTracingDisabled(events, partitionKey);
+        }
+    }
 
+    private Mono<Void> sendInternalTracingDisabled(Flux<EventData> events, String partitionKey) {
         return sendLinkMono.flatMap(link -> {
             return link.getLinkSize()
                 .flatMap(size -> {
@@ -307,6 +324,63 @@ public class EventHubAsyncProducer implements Closeable {
                 })
                 .flatMap(list -> sendInternal(Flux.fromIterable(list)));
         });
+    }
+
+    private Mono<Void> sendInternalTracingEnabled(Flux<EventData> events, String partitionKey) {
+        return sendLinkMono.flatMap(link -> {
+            final AtomicReference<Context> sendSpanContext = new AtomicReference<>(Context.NONE);
+            return link.getLinkSize()
+                .flatMap(size -> {
+                    final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
+                    final BatchOptions batchOptions = new BatchOptions()
+                        .partitionKey(partitionKey)
+                        .maximumSizeInBytes(batchSize);
+
+                    return events.map(eventData -> {
+                        Context parentContext = eventData.context();
+                        Context entityContext = parentContext.addData(ENTITY_PATH, link.getEntityPath());
+                        sendSpanContext.set(tracerProvider.startSpan(entityContext.addData(HOST_NAME, link.getHostname()), ProcessKind.SEND));
+                        // add span context on event data
+                        return setSpanContext(eventData, parentContext);
+                    }).collect(new EventDataCollector(batchOptions, 1, () -> link.getErrorContext()));
+                })
+                .flatMap(list -> sendInternal(Flux.fromIterable(list)))
+                .doOnEach(signal -> {
+                    tracerProvider.endSpan(sendSpanContext.get(), signal);
+                });
+        });
+    }
+
+    private EventData setSpanContext(EventData event, Context parentContext) {
+        Optional<Object> eventContextData = event.context().getData(SPAN_CONTEXT);
+        if (eventContextData.isPresent()) {
+            // if message has context (in case of retries), link it to the span
+            Object spanContextObject = eventContextData.get();
+            if (spanContextObject instanceof Context) {
+                tracerProvider.addSpanLinks((Context) eventContextData.get());
+                // TODO (samvaity): not supported in Opencensus yet
+                // builder.addLink((Context)eventContextData.get());
+            } else {
+                logger.warning(String.format(Locale.US,
+                    "Event Data context type is not of type Context, but type: %s. Not adding span links.",
+                    spanContextObject != null ? spanContextObject.getClass() : "null"));
+            }
+
+            return event;
+        } else {
+            // Starting the span makes the sampling decision (nothing is logged at this time)
+            Context eventSpanContext = tracerProvider.startSpan(parentContext, ProcessKind.RECEIVE);
+            if (eventSpanContext != null) {
+                Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
+
+                if (eventDiagnosticIdOptional.isPresent()) {
+                    event.addProperty(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
+                    tracerProvider.endSpan(eventSpanContext, Signal.complete());
+                    event.addContext(SPAN_CONTEXT, eventSpanContext);
+                }
+            }
+        }
+        return  event;
     }
 
     private Mono<Void> sendInternal(Flux<EventDataBatch> eventBatches) {

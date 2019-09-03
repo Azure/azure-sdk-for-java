@@ -2,10 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.file.models.FileServiceProperties;
-import com.azure.storage.file.models.StorageErrorException;
+import com.azure.storage.file.models.StorageException;
 
 import java.util.UUID;
 
@@ -33,28 +32,28 @@ public class FileServiceSample {
         for (int i = 0; i < 3; i++) {
             try {
                 fileServiceClient.createShare(generateRandomName());
-            } catch (StorageErrorException e) {
+            } catch (StorageException e) {
                 System.out.printf("Failed to create share %d. Reasons: %s", i, e.getMessage());
             }
         }
 
         // Get properties from the file service
         try {
-            Response<FileServiceProperties> response = fileServiceClient.getProperties();
+            FileServiceProperties properties = fileServiceClient.getProperties();
 
-            System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b\n",
-                response.value().hourMetrics(), response.value().minuteMetrics());
-        } catch (StorageErrorException e) {
+            System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b%n",
+                properties.hourMetrics(), properties.minuteMetrics());
+        } catch (StorageException e) {
             System.out.println("Failed to get the account properties. Reasons: " + e.getMessage());
         }
         // List all shares under file service and delete them.
         fileServiceClient.listShares().forEach(
             shareItem -> {
                 try {
-                    System.out.printf("This is the share name: %s in the file account.\n", shareItem.name());
+                    System.out.printf("This is the share name: %s in the file account.%n", shareItem.name());
                     fileServiceClient.deleteShare(shareItem.name());
                     System.out.println("The share has been deleted from the storage file account!");
-                } catch (StorageErrorException e) {
+                } catch (StorageException e) {
                     System.out.println("Failed to delete the share. Reasons: " + e.getMessage());
                 }
             }
