@@ -7,8 +7,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * The EventHubs common error code Strings
+ */
 public class EventHubErrorCodeStrings {
-    static final String ERROR_STRINGS_FILE_NAME = "event";
+    static final String ERROR_STRINGS_FILE_NAME = "eventhubsErrorStrings.properties";
     private static Properties errorStrings;
 
     // Cannot null or empty
