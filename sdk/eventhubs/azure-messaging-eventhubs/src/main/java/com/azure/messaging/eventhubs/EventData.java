@@ -115,7 +115,7 @@ public class EventData implements Comparable<EventData> {
 
         this.body = body;
         this.properties = new HashMap<>();
-        this.systemProperties = new SystemProperties(Collections.emptyMap());
+        this.systemProperties = new SystemProperties();
         this.context = context;
     }
 
@@ -243,7 +243,7 @@ public class EventData implements Comparable<EventData> {
      * <b>received</b> EventData.
      *
      * @return an encapsulation of all SystemProperties appended by EventHubs service into EventData. {@code null} if
-     *      the {@link EventData} is not received and is created by the public constructors.
+     *     the {@link EventData} is not received and is created by the public constructors.
      */
     public Map<String, Object> systemProperties() {
         return systemProperties;
@@ -298,7 +298,7 @@ public class EventData implements Comparable<EventData> {
      *
      * @return Sequence number for this event.
      * @throws IllegalStateException if {@link #systemProperties()} does not contain the sequence number in a
-     *      retrieved event.
+     *     retrieved event.
      */
     public long sequenceNumber() {
         return systemProperties.sequenceNumber();
@@ -352,9 +352,37 @@ public class EventData implements Comparable<EventData> {
      */
     private static class SystemProperties extends HashMap<String, Object> {
         private static final long serialVersionUID = -2827050124966993723L;
+        private final String offset;
+        private final String partitionKey;
+        private final Instant enqueuedTime;
+        private final long sequenceNumber;
+
+        SystemProperties() {
+            super();
+            offset = null;
+            partitionKey = null;
+            enqueuedTime = null;
+            sequenceNumber = -1;
+        }
 
         SystemProperties(final Map<String, Object> map) {
-            super(Collections.unmodifiableMap(map));
+            super(map);
+            this.offset = getSystemProperty(OFFSET_ANNOTATION_NAME.getValue());
+            this.partitionKey = getSystemProperty(PARTITION_KEY_ANNOTATION_NAME.getValue());
+
+            final Date enqueuedTimeValue = getSystemProperty(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
+            this.enqueuedTime = enqueuedTimeValue != null ? enqueuedTimeValue.toInstant() : null;
+
+            final Long sequenceNumber = getSystemProperty(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
+            if (sequenceNumber == null) {
+                throw new IllegalStateException(String.format(Locale.US, "sequenceNumber: %s should always be in map.", SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
+            }
+            this.sequenceNumber = sequenceNumber;
+
+            remove(OFFSET_ANNOTATION_NAME.getValue());
+            remove(PARTITION_KEY_ANNOTATION_NAME.getValue());
+            remove(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
+            remove(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
         }
 
         /**
@@ -363,7 +391,7 @@ public class EventData implements Comparable<EventData> {
          * @return The offset within the Event Hubs stream.
          */
         private String offset() {
-            return this.getSystemProperty(OFFSET_ANNOTATION_NAME.getValue());
+            return offset;
         }
 
         /**
@@ -373,7 +401,7 @@ public class EventData implements Comparable<EventData> {
          * @return A partition key for this Event Data.
          */
         private String partitionKey() {
-            return this.getSystemProperty(PARTITION_KEY_ANNOTATION_NAME.getValue());
+            return partitionKey;
         }
 
         /**
@@ -382,8 +410,7 @@ public class EventData implements Comparable<EventData> {
          * @return The time this was enqueued in the service.
          */
         private Instant enqueuedTime() {
-            final Date enqueuedTimeValue = this.getSystemProperty(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
-            return enqueuedTimeValue != null ? enqueuedTimeValue.toInstant() : null;
+            return enqueuedTime;
         }
 
         /**
@@ -392,15 +419,9 @@ public class EventData implements Comparable<EventData> {
          *
          * @return Sequence number for this event.
          * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a
-         *      retrieved event.
+         *     retrieved event.
          */
         private long sequenceNumber() {
-            final Long sequenceNumber = this.getSystemProperty(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
-
-            if (sequenceNumber == null) {
-                throw new IllegalStateException(String.format(Locale.US, "sequenceNumber: %s should always be in map.", SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
-            }
-
             return sequenceNumber;
         }
 
