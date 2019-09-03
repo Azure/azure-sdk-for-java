@@ -3,13 +3,13 @@
 
 package com.azure.storage.file;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.AccountSASPermission;
 import com.azure.storage.common.AccountSASResourceType;
 import com.azure.storage.common.AccountSASService;
@@ -17,10 +17,8 @@ import com.azure.storage.common.AccountSASSignatureValues;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.models.CorsRule;
 import com.azure.storage.file.models.DeleteSnapshotsOptionType;
@@ -69,13 +67,10 @@ public final class FileServiceAsyncClient {
      * Creates a FileServiceClient that sends requests to the storage account at {@code endpoint}.
      * Each service call goes through the {@code httpPipeline}.
      *
-     * @param endpoint URL for the Storage File service
-     * @param httpPipeline HttpPipeline that the HTTP requests and responses flow through
+     * @param azureFileStorage Client that interacts with the service interfaces.
      */
-    FileServiceAsyncClient(URL endpoint, HttpPipeline httpPipeline) {
-        this.azureFileStorageClient = new AzureFileStorageBuilder().pipeline(httpPipeline)
-            .url(endpoint.toString())
-            .build();
+    FileServiceAsyncClient(AzureFileStorageImpl azureFileStorage) {
+        this.azureFileStorageClient = azureFileStorage;
     }
 
     /**
@@ -102,7 +97,21 @@ public final class FileServiceAsyncClient {
      * @return a ShareAsyncClient that interacts with the specified share
      */
     public ShareAsyncClient getShareAsyncClient(String shareName) {
-        return new ShareAsyncClient(azureFileStorageClient, shareName);
+        return this.getShareAsyncClient(shareName, null);
+    }
+
+    /**
+     * Constructs a ShareAsyncClient that interacts with the specified share.
+     *
+     * <p>If the share doesn't exist in the storage account {@link ShareAsyncClient#create() create} in the azureFileStorageClient will
+     * need to be called before interaction with the share can happen.</p>
+     *
+     * @param shareName Name of the share
+     * @param snapshot Snapshot ID of the share
+     * @return a ShareAsyncClient that interacts with the specified share
+     */
+    public ShareAsyncClient getShareAsyncClient(String shareName, String snapshot) {
+        return new ShareAsyncClient(azureFileStorageClient, shareName, snapshot);
     }
 
     /**
@@ -378,7 +387,7 @@ public final class FileServiceAsyncClient {
     }
 
     Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata, Integer quotaInGB, Context context) {
-        ShareAsyncClient shareAsyncClient = new ShareAsyncClient(azureFileStorageClient, shareName);
+        ShareAsyncClient shareAsyncClient = new ShareAsyncClient(azureFileStorageClient, shareName, null);
 
         return postProcessResponse(shareAsyncClient.createWithResponse(metadata, quotaInGB, context))
             .map(response -> new SimpleResponse<>(response, shareAsyncClient));

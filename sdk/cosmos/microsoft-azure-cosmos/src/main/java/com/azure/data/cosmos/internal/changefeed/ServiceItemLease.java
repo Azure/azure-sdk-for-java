@@ -192,23 +192,37 @@ public class ServiceItemLease implements Lease {
     }
 
     public static ServiceItemLease fromDocument(Document document) {
-        return new ServiceItemLease()
+        ServiceItemLease lease = new ServiceItemLease()
             .withId(document.id())
             .withEtag(document.etag())
             .withTs(document.getString(Constants.Properties.LAST_MODIFIED))
             .withOwner(document.getString("Owner"))
             .withLeaseToken(document.getString("LeaseToken"))
             .withContinuationToken(document.getString("ContinuationToken"));
+
+        String leaseTimestamp = document.getString("timestamp");
+        if (leaseTimestamp != null) {
+            return lease.withTimestamp(ZonedDateTime.parse(leaseTimestamp));
+        } else {
+            return lease;
+        }
     }
 
     public static ServiceItemLease fromDocument(CosmosItemProperties document) {
-        return new ServiceItemLease()
+        ServiceItemLease lease = new ServiceItemLease()
             .withId(document.id())
             .withEtag(document.etag())
             .withTs(document.getString(Constants.Properties.LAST_MODIFIED))
             .withOwner(document.getString("Owner"))
             .withLeaseToken(document.getString("LeaseToken"))
             .withContinuationToken(document.getString("ContinuationToken"));
+
+        String leaseTimestamp = document.getString("timestamp");
+        if (leaseTimestamp != null) {
+            return lease.withTimestamp(ZonedDateTime.parse(leaseTimestamp));
+        } else {
+            return lease;
+        }
     }
 
     @Override

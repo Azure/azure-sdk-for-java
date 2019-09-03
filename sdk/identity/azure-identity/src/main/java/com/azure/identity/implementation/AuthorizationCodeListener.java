@@ -4,21 +4,31 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.implementation.http.UrlBuilder;
+import com.azure.core.util.logging.ClientLogger;
+import fi.iki.elonen.NanoHTTPD;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoProcessor;
-import reactor.netty.DisposableServer;
-import reactor.netty.http.server.HttpServer;
+
+import java.io.IOException;
 
 /**
  * A local HTTP server that listens to the authorization code response from Azure Active Directory.
  */
 public final class AuthorizationCodeListener {
-    private DisposableServer server;
+    private final ClientLogger logger = new ClientLogger(AuthorizationCodeListener.class);
+
+    private NanoHTTPD httpServer;
     private MonoProcessor<String> authorizationCodeEmitter;
 
-    private AuthorizationCodeListener(DisposableServer server, MonoProcessor<String> authorizationCodeEmitter) {
-        this.server = server;
+    private AuthorizationCodeListener(NanoHTTPD httpServer, MonoProcessor<String> authorizationCodeEmitter) {
+        this.httpServer = httpServer;
         this.authorizationCodeEmitter = authorizationCodeEmitter;
+
+        try {
+            this.httpServer.start();
+        } catch (IOException e) {
+            logger.error("Unable to start identity authorization code listener on port " + httpServer.getListeningPort(), e);
+        }
     }
 
     /**
@@ -28,14 +38,14 @@ public final class AuthorizationCodeListener {
      */
     public static Mono<AuthorizationCodeListener> create(int port) {
         MonoProcessor<String> monoProcessor = MonoProcessor.create();
-        return HttpServer.create()
-            .port(port)
-            .handle((inbound, outbound) -> {
-                monoProcessor.onNext(getCodeFromUri(inbound.uri()));
-                return inbound.receive().then();
-            })
-            .bind()
-            .map(server -> new AuthorizationCodeListener(server, monoProcessor));
+
+        return Mono.just(new NanoHTTPD(port) {
+            @Override
+            public Response serve(final IHTTPSession session) {
+                monoProcessor.onNext(getCodeFromUri(session.getUri()));
+                return super.serve(session);
+            }
+        }).map(server -> new AuthorizationCodeListener(server, monoProcessor));
     }
 
     /**
@@ -43,7 +53,10 @@ public final class AuthorizationCodeListener {
      * @return a Publisher signaling the completion
      */
     public Mono<Void> dispose() {
-        return Mono.fromRunnable(() -> server.disposeNow());
+        return Mono.fromRunnable(() -> {
+            httpServer.closeAllConnections();
+            httpServer.stop();
+        });
     }
 
     /**
