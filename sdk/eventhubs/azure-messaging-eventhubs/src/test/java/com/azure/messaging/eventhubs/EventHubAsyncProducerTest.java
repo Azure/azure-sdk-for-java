@@ -30,7 +30,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,12 +41,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 public class EventHubAsyncProducerTest {
     @Mock
@@ -175,7 +174,7 @@ public class EventHubAsyncProducerTest {
     public void sendStartSpanSingleMessage() {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        final List<Tracer> tracers = Arrays.asList(tracer1);
+        final List<Tracer> tracers = Collections.singletonList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
         final Flux<EventData> testData = Flux.just(
             new EventData(TEST_CONTENTS.getBytes(UTF_8)),
@@ -183,7 +182,6 @@ public class EventHubAsyncProducerTest {
 
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
-        final SendOptions options = new SendOptions().partitionKey("Some partition key");
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
             .retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)))
             .partitionId("my-partition-id");
@@ -220,7 +218,7 @@ public class EventHubAsyncProducerTest {
     public void sendMessageAddlink() {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        final List<Tracer> tracers = Arrays.asList(tracer1);
+        final List<Tracer> tracers = Collections.singletonList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
         final Flux<EventData> testData = Flux.just(
             new EventData(TEST_CONTENTS.getBytes(UTF_8), new Context(SPAN_CONTEXT, Context.NONE)),
@@ -228,7 +226,6 @@ public class EventHubAsyncProducerTest {
 
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
-        final SendOptions options = new SendOptions().partitionKey("Some partition key");
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
             .retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)))
             .partitionId("my-partition-id");
