@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageException;
@@ -650,7 +651,7 @@ public class BlobClient {
      * @param tier The new tier for the blob.
      */
     public void setTier(AccessTier tier) {
-        setTierWithResponse(tier, null, null, Context.NONE);
+        setTierWithResponse(tier, null, null, null, Context.NONE);
     }
 
     /**
@@ -667,14 +668,16 @@ public class BlobClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
      *
      * @param tier The new tier for the blob.
+     * @param priority Optional priority to set for re-hydrating blobs.
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
      * not match the active lease on the blob.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse setTierWithResponse(AccessTier tier, LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobAsyncClient.setTierWithResponse(tier, leaseAccessConditions, context);
+    public VoidResponse setTierWithResponse(AccessTier tier, RehydratePriority priority,
+            LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
+        Mono<VoidResponse> response = blobAsyncClient.setTierWithResponse(tier, priority, leaseAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

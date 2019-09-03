@@ -10,6 +10,8 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.AccessTierOptional;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -118,7 +120,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, long length) {
-        return uploadWithResponse(data, length, null, null, null).flatMap(FluxUtil::toMono);
+        return uploadWithResponse(data, length, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -145,18 +147,18 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
-        Metadata metadata, BlobAccessConditions accessConditions) {
-        return withContext(context -> uploadWithResponse(data, length, headers, metadata, accessConditions, context));
+        Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions) {
+        return withContext(context -> uploadWithResponse(data, length, headers, metadata, tier, accessConditions, context));
     }
 
     Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
-        Metadata metadata, BlobAccessConditions accessConditions, Context context) {
+        Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions, Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
-            null, data, length, null, metadata, null, null, headers, accessConditions.leaseAccessConditions(), null,
-            accessConditions.modifiedAccessConditions(), context))
+            null, data, length, null, metadata, AccessTierOptional.fromString(tier.toString()), null, headers,
+            accessConditions.leaseAccessConditions(), null, accessConditions.modifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
     }
 
@@ -197,7 +199,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, int blockSize, int numBuffers) {
-        return this.uploadWithResponse(data, blockSize, numBuffers, null, null, null).flatMap(FluxUtil::toMono);
+        return this.uploadWithResponse(data, blockSize, numBuffers, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -239,7 +241,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, int blockSize, int numBuffers,
-        BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
+        BlobHTTPHeaders headers, Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions) {
         // TODO: Parallelism parameter? Or let Reactor handle it?
         // TODO: Sample/api reference
         Objects.requireNonNull(data, "data must not be null");
@@ -298,7 +300,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
             }) // TODO: parallelism?
             .collect(Collectors.toList())
             .flatMap(ids ->
-                this.commitBlockListWithResponse(ids, headers, metadata, accessConditions));
+                this.commitBlockListWithResponse(ids, headers, metadata, tier, accessConditions));
 
     }
 
@@ -309,7 +311,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return An empty response
      */
     public Mono<Void> uploadFromFile(String filePath) {
-        return uploadFromFile(filePath, BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, null, null, null);
+        return uploadFromFile(filePath, BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, null, null, null, null);
     }
 
     /**
@@ -325,7 +327,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @throws UncheckedIOException If an I/O error occurs
      */
     public Mono<Void> uploadFromFile(String filePath, Integer blockSize, BlobHTTPHeaders headers, Metadata metadata,
-                                     BlobAccessConditions accessConditions) {
+            AccessTier tier, BlobAccessConditions accessConditions) {
         if (blockSize < 0 || blockSize > BLOB_MAX_UPLOAD_BLOCK_SIZE) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Block size should not exceed 100MB"));
         }
@@ -337,9 +339,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
                     .doOnNext(chunk -> blockIds.put(chunk.offset(), getBlockID()))
                     .flatMap(chunk -> {
                         String blockId = blockIds.get(chunk.offset());
-                        return stageBlockWithResponse(blockId, FluxUtil.readFile(channel, chunk.offset(), chunk.count()), chunk.count(), null);
+                        return stageBlockWithResponse(
+                            blockId, FluxUtil.readFile(channel, chunk.offset(), chunk.count()), chunk.count(), null);
                     })
-                    .then(Mono.defer(() -> commitBlockListWithResponse(new ArrayList<>(blockIds.values()), headers, metadata, accessConditions)))
+                    .then(Mono.defer(() -> commitBlockListWithResponse(
+                        new ArrayList<>(blockIds.values()), headers, metadata, tier, accessConditions)))
                     .then()
                     .doOnTerminate(() -> {
                         try {
@@ -543,7 +547,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response containing the information of the block blob.
      */
     public Mono<BlockBlobItem> commitBlockList(List<String> base64BlockIDs) {
-        return commitBlockListWithResponse(base64BlockIDs, null, null, null).flatMap(FluxUtil::toMono);
+        return commitBlockListWithResponse(base64BlockIDs, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -563,17 +567,21 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response containing the information of the block blob.
      */
     public Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIDs,
-                                                                     BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
-        return withContext(context -> commitBlockListWithResponse(base64BlockIDs, headers, metadata, accessConditions, context));
+            BlobHTTPHeaders headers, Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions) {
+        return withContext(context -> commitBlockListWithResponse(base64BlockIDs, headers, metadata, tier,
+            accessConditions, context));
     }
 
     Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIDs,
-                                                              BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Context context) {
+            BlobHTTPHeaders headers, Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions,
+            Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(
-            null, null, new BlockLookupList().latest(base64BlockIDs), null, null, null, metadata, null, null, headers,
-            accessConditions.leaseAccessConditions(), null, accessConditions.modifiedAccessConditions(), context))
-            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));    }
+            null, null, new BlockLookupList().latest(base64BlockIDs), null, null, null, metadata,
+            AccessTierOptional.fromString(tier.toString()), null, headers, accessConditions.leaseAccessConditions(),
+            null, accessConditions.modifiedAccessConditions(), context))
+            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
+    }
 }
