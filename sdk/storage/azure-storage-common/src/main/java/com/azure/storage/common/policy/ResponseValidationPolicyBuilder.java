@@ -37,11 +37,15 @@ public class ResponseValidationPolicyBuilder {
      * @param headerName The header to validate.
      * @return This policy.
      */
-    public ResponseValidationPolicyBuilder optionalEcho(String headerName) {
+    public ResponseValidationPolicyBuilder addOptionalEcho(String headerName) {
         assertions.add((httpResponse, logger) -> {
+            String requestHeaderValue = httpResponse.request().headers().value(headerName);
             String responseHeaderValue = httpResponse.headerValue(headerName);
-            if (responseHeaderValue != null && !responseHeaderValue.equals(httpResponse.request().headers().value(headerName))) {
-                throw logger.logExceptionAsError(new RuntimeException());
+            if (responseHeaderValue != null && !responseHeaderValue.equals(requestHeaderValue)) {
+                throw logger.logExceptionAsError(new RuntimeException(String.format(
+                    "Unexpected header value. Expected response to echo `%s: %s`. Got value `%s`.",
+                    headerName, requestHeaderValue, responseHeaderValue
+                )));
             }
         });
 

@@ -110,7 +110,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      */
     private HttpPipelinePolicy makeValidationPolicy() {
         ResponseValidationPolicyBuilder builder = new ResponseValidationPolicyBuilder()
-            .optionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID); // echo client request id
+            .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID); // echo client request id
 
         applyServiceSpecificValidations(builder);
 
