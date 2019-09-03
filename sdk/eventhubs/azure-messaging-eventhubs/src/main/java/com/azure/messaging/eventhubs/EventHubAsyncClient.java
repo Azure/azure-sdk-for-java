@@ -333,6 +333,10 @@ public class EventHubAsyncClient implements Closeable {
         throw new IllegalArgumentException("No starting position was set.");
     }
 
+    String eventHubName() {
+        return this.eventHubName;
+    }
+
     private static class ResponseMapper implements AmqpResponseMapper {
         @Override
         public EventHubProperties toEventHubProperties(Map<?, ?> amqpBody) {
