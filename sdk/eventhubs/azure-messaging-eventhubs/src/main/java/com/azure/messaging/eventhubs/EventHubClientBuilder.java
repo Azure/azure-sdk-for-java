@@ -44,11 +44,13 @@ import java.util.ServiceLoader;
  * <strong>Credentials are required</strong> to perform operations against Azure Event Hubs. They can be set by using
  * one of the following methods:
  * <ul>
- *     <li>{@link #connectionString(String)} with a connection string to a specific Event Hub.</li>
- *     <li>{@link #connectionString(String, String)} with an Event Hub <i>namespace</i> connection string and the
- *     Event Hub name.</li>
- *     <li>{@link #credential(String, String, TokenCredential)} with the hostname, Event Hub name, and a set of
- *     credentials authorized to use the Event Hub.</li>
+ *     <li>{@link #connectionString(String) connectionString(String)} with a connection string to a specific Event Hub.
+ *     </li>
+ *     <li>{@link #connectionString(String, String) connectionString(String, String)} with an Event Hub <i>namespace</i>
+ *     connection string and the Event Hub name.</li>
+ *     <li>{@link #credential(String, String, TokenCredential) credential(String, String, TokenCredential)} with the
+ *     fully qualified domain name (FQDN), Event Hub name, and a set of credentials authorized to use the Event Hub.
+ *     </li>
  * </ul>
  *
  * <p>
