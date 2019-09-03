@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.tracing.opentelemetry;
+package com.azure.tracing.opentelemetry.implementation;
 
 import io.opencensus.trace.Status;
 
-final class HttpTraceUtil {
+public final class HttpTraceUtil {
     private static final Status STATUS_100 = Status.UNKNOWN.withDescription("Continue");
     private static final Status STATUS_101 = Status.UNKNOWN.withDescription("Switching Protocols");
     private static final Status STATUS_402 = Status.UNKNOWN.withDescription("Payment Required");
