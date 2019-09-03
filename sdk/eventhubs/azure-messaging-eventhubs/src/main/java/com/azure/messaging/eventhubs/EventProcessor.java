@@ -63,11 +63,16 @@ public class EventProcessor {
     EventProcessor(EventHubAsyncClient eventHubAsyncClient, String consumerGroupName,
         PartitionProcessorFactory partitionProcessorFactory, EventPosition initialEventPosition,
         PartitionManager partitionManager, TracerProvider tracerProvider) {
-        Objects.requireNonNull(eventHubAsyncClient, "eventHubAsyncClient cannot be null");
-        Objects.requireNonNull(consumerGroupName, "consumerGroupName cannot be null");
-        Objects.requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null");
-        Objects.requireNonNull(initialEventPosition, "initialEventPosition cannot be null");
-        Objects.requireNonNull(partitionManager, "partitionManager cannot be null");
+        Objects.requireNonNull(eventHubAsyncClient,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENTHUB_ASYNC_CLIENT_CANNOT_NULL));
+        Objects.requireNonNull(consumerGroupName,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONSUMER_GROUP_NAME_CANNOT_NULL));
+        Objects.requireNonNull(partitionProcessorFactory,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_PROCESSOR_FACTORY_CANNOT_NULL));
+        Objects.requireNonNull(initialEventPosition,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.INITIAL_EVENT_POSITION_CANNOT_NULL));
+        Objects.requireNonNull(partitionManager,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_MANAGER_CANNOT_NULL));
 
         this.identifier = UUID.randomUUID().toString();
         logger.info("The instance ID for this event processors is {}", this.identifier);

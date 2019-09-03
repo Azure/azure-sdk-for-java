@@ -42,9 +42,9 @@ public class EventHubErrorCodeStrings {
     static final String PARTITION_MANAGER_CANNOT_NULL = "null_partition_manager";
     static final String INITIAL_EVENT_POSITION_CANNOT_NULL = "null_initial_event_position";
     static final String EVENTHUB_NAME_CANNOT_EMPTY = "empty_eventhub_name";
-    static final String BODY_CANNOT_NULL = "null_body";
     static final String PROPERTY_KEY_CANNOT_NULL = "null_property_key";
     static final String PROPERTY_VALUE_CANNOT_NULL = "null_property_value";
+    static final String TRACER_PROVIDER_CANNOT_NULL = "null_tracer_provider";
 
     static final String NULL_SEQUENCE_NUM_IN_MAP = "null_sequence_num_in_map";
     static final String TOKEN_TIME_TO_LIVE_ERROR_MSG = "token_time_to_live_error_msg";
@@ -93,6 +93,12 @@ public class EventHubErrorCodeStrings {
     public static final String ENTITY_SEND_FAILED_SCHEDULE_RETRY = "entity_send_failed_schedule_retry";
     public static final String ENTITY_SEND_TIMEOUT = "entity_send_timeout";
 
+    /**
+     *  Gets the error String for the specified property.
+     *
+     * @param propertyName the property name for which error string is required.
+     * @return The {@link String value} containing the error message.
+     */
     public static String getErrorString(String propertyName) {
         loadProperties();
         return errorStrings.getProperty(propertyName);

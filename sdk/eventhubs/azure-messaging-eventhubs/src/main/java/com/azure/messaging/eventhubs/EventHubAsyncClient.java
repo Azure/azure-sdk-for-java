@@ -93,17 +93,15 @@ public class EventHubAsyncClient implements Closeable {
             EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.REACTOR_PROVIDER_CANNOT_NULL));
         Objects.requireNonNull(handlerProvider,
             EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.REACTOR_HANDLER_PROVIDER_CANNOT_NULL));
-
-        Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
+        Objects.requireNonNull(tracerProvider,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.TRACER_PROVIDER_CANNOT_NULL));
 
         this.connectionOptions = connectionOptions;
         this.tracerProvider = tracerProvider;
         this.eventHubName = connectionOptions.eventHubName();
         this.connectionId = StringUtil.getRandomString("MF");
-        this.connectionMono = Mono.fromCallable(() -> {
-            return (EventHubConnection) new ReactorConnection(connectionId, connectionOptions, provider,
-                handlerProvider, new ResponseMapper());
-        }).doOnSubscribe(c -> hasConnection.set(true))
+        this.connectionMono = Mono.fromCallable(() -> (EventHubConnection) new ReactorConnection(connectionId, connectionOptions, provider,
+            handlerProvider, new ResponseMapper())).doOnSubscribe(c -> hasConnection.set(true))
             .cache();
 
         this.defaultProducerOptions = new EventHubProducerOptions()
