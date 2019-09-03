@@ -50,8 +50,8 @@ public class TracerProvider {
     }
 
     /**
-     * Given a context containing the current tracing span the span is marked completed with status info from {@link Signal}
-     * For each tracer plugged into the SDK the current tracing span is marked as completed.
+     * Given a context containing the current tracing span the span is marked completed with status info from
+     * {@link Signal}.  For each tracer plugged into the SDK the current tracing span is marked as completed.
      *
      * @param context Additional metadata that is passed through the call stack.
      * @param signal The signal indicates the status and contains the metadata we need to end the tracing span.
