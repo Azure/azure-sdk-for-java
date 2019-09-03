@@ -16,6 +16,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
+import static com.azure.core.amqp.MessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.APPLICATION_PROPERTIES;
 import static com.azure.messaging.eventhubs.TestUtils.ENQUEUED_TIME;
@@ -122,6 +125,12 @@ public class EventDataTest {
     @Test
     public void deserializeProtonJMessage() {
         // Arrange
+        final String[] systemPropertyNames = new String[] {
+            PARTITION_KEY_ANNOTATION_NAME.getValue(),
+            OFFSET_ANNOTATION_NAME.getValue(),
+            ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(),
+            SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
+        };
         final Message message = getMessage(PAYLOAD_BYTES);
 
         // Act
@@ -145,6 +154,13 @@ public class EventDataTest {
             Assert.assertTrue(eventData.properties().containsKey(key));
             Assert.assertEquals(value, eventData.properties().get(key));
         });
+
+        // Verify that the partitionKey, offset, enqueued time, sequenceNumber properties are no longer in the system
+        // properties map.
+        for (String property : systemPropertyNames) {
+            Assert.assertFalse(property + " should not be in system properties map.",
+                eventData.systemProperties().containsKey(property));
+        }
 
         // Verifying the contents of our message is the same.
     }
