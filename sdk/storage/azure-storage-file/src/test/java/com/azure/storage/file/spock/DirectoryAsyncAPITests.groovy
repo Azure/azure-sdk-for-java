@@ -446,7 +446,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, null))
+        StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -457,7 +457,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         when:
-        def createFileErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse(fileName, maxSize, null))
+        def createFileErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse(fileName, maxSize, null, null))
         then:
         createFileErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMsg)
@@ -476,10 +476,10 @@ class DirectoryAsyncAPITests extends APISpec {
             .fileContentType("txt")
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
-        FileProperties properties = new FileProperties("txt", null, null, null, null, null, testMetadata, smbProperties, filePermission)
+        FileProperties properties = new FileProperties("txt", null, null, null, null, null, smbProperties, filePermission)
 
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, properties))
+        StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, properties, testMetadata))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -491,9 +491,9 @@ class DirectoryAsyncAPITests extends APISpec {
         primaryDirectoryAsyncClient.create().block()
 
         when:
-        FileProperties properties = new FileProperties("txt", null, null, null, fileContentMD5, null, metadata, null, null)
+        FileProperties properties = new FileProperties("txt", null, null, null, fileContentMD5, null, null, null)
 
-        def errorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse(fileName, maxSize, properties))
+        def errorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse(fileName, maxSize, properties, metadata))
 
         then:
         errorVerifier.verifyErrorSatisfies({

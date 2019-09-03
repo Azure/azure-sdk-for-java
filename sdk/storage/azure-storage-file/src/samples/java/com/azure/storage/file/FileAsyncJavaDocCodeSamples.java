@@ -116,11 +116,11 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#createWithResponse(long, FileProperties)}
+     * Generates a code sample for using {@link FileAsyncClient#createWithResponse(long, FileProperties, Map)}
      */
     public void createWithResponse() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.createWithResponse#long-fileproperties
+        // BEGIN: com.azure.storage.file.fileAsyncClient.createWithResponse#long-fileproperties-map
         String contentType = "text/html";
         String contentEncoding = "gzip";
         String contentLanguage = "tr,en";
@@ -131,11 +131,11 @@ public class FileAsyncJavaDocCodeSamples {
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         FileProperties fileProperties = new FileProperties(contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5, contentDisposition, metadata, smbProperties, filePermission);
-        fileAsyncClient.createWithResponse(1024, fileProperties)
+            contentMd5, contentDisposition, smbProperties, filePermission);
+        fileAsyncClient.createWithResponse(1024, fileProperties, Collections.singletonMap("directory", "metadata"))
             .subscribe(response -> System.out.printf("Creating the file completed with status code %d",
                 response.statusCode()));
-        // END: com.azure.storage.file.fileAsyncClient.createWithResponse#long-fileproperties
+        // END: com.azure.storage.file.fileAsyncClient.createWithResponse#long-fileproperties-map
     }
 
     /**

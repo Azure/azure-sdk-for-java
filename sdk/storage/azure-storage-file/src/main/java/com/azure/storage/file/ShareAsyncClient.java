@@ -651,7 +651,7 @@ public class ShareAsyncClient {
      *
      * <p>Create the file "myfile" with length of 1024 bytes, some headers, file smb properties and metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.shareAsyncClient.createFileWithResponseproperties}
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-fileproperties-map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -659,6 +659,7 @@ public class ShareAsyncClient {
      * @param fileName Name of the file.
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @param fileProperties The user settable file properties of the file.
+     * @param metadata Optional name-value pairs associated with the file as metadata.
      * @return A response containing a {@link FileAsyncClient} to interact with the created file and the
      * status of its creation.
      * @throws StorageException If one of the following cases happen:
@@ -671,14 +672,14 @@ public class ShareAsyncClient {
      *     </li>
      * </ul>
      */
-    public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties) {
-        return withContext(context -> createFileWithResponse(fileName, maxSize, fileProperties, context));
+    public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties, Map<String, String> metadata) {
+        return withContext(context -> createFileWithResponse(fileName, maxSize, fileProperties, metadata, context));
     }
 
     Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties,
-        Context context) {
+        Map<String, String> metadata, Context context) {
         FileAsyncClient fileAsyncClient = getFileClient(fileName);
-        return postProcessResponse(fileAsyncClient.createWithResponse(maxSize, fileProperties, context))
+        return postProcessResponse(fileAsyncClient.createWithResponse(maxSize, fileProperties, metadata, context))
             .map(response -> new SimpleResponse<>(response, fileAsyncClient));
     }
 

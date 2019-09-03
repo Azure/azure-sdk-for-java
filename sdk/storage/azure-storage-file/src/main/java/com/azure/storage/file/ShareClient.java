@@ -528,7 +528,7 @@ public class ShareClient {
      * </ul>
      */
     public FileClient createFile(String fileName, long maxSize) {
-        return createFileWithResponse(fileName, maxSize, null, Context.NONE).value();
+        return createFileWithResponse(fileName, maxSize, null, null, Context.NONE).value();
     }
 
     /**
@@ -538,7 +538,7 @@ public class ShareClient {
      *
      * <p>Create the file "myfile" with length of 1024 bytes, some headers, file smb properties and metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.createFileWithResponse#string-long-fileproperties-context}
+     * {@codesnippet com.azure.storage.file.shareClient.createFileWithResponse#string-long-fileproperties-map-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -546,6 +546,7 @@ public class ShareClient {
      * @param fileName Name of the file.
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @param fileProperties The user settable file properties of the file.
+     * @param metadata Optional name-value pairs associated with the file as metadata.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing a {@link FileClient} to interact with the created file and the
      * status of its creation.
@@ -559,9 +560,9 @@ public class ShareClient {
      *     </li>
      * </ul>
      */
-    public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties, Context context) {
+    public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties, Map<String, String> metadata, Context context) {
         FileClient fileClient = getFileClient(fileName);
-        return new SimpleResponse<>(fileClient.createWithResponse(maxSize, fileProperties, context), fileClient);
+        return new SimpleResponse<>(fileClient.createWithResponse(maxSize, fileProperties, metadata, context), fileClient);
     }
 
     /**

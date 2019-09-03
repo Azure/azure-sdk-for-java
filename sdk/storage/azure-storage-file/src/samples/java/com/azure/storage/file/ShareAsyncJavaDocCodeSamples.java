@@ -211,26 +211,25 @@ public class ShareAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#createFileWithResponse(String, long, FileProperties)}
+     * Generates a code sample for using {@link ShareAsyncClient#createFileWithResponse(String, long, FileProperties, Map)}
      */
     public void createFileWithResponse() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-fileproperties
+        // BEGIN: com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-fileproperties-map
         String contentType = "text/html";
         String contentEncoding = "gzip";
         String contentLanguage = "tr,en";
         String cacheControl = "no-transform";
         byte[] contentMd5 = new byte[0];
         String contentDisposition = "attachment";
-        Map<String,String> metadata = Collections.singletonMap("directory", "metadata");
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         FileProperties fileProperties = new FileProperties(contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5, contentDisposition, metadata, smbProperties, filePermission);
-        shareAsyncClient.createFileWithResponse("myfile", 1024, fileProperties)
+            contentMd5, contentDisposition, smbProperties, filePermission);
+        shareAsyncClient.createFileWithResponse("myfile", 1024, fileProperties, Collections.singletonMap("directory", "metadata"))
             .subscribe(response -> System.out.printf("Creating the file completed with status code %d",
                 response.statusCode()));
-        // END: com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-fileproperties
+        // END: com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-fileproperties-map
     }
 
     /**

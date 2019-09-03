@@ -449,7 +449,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryDirectoryClient.createFileWithResponse("testCreateFile", 1024, null, null), 201)
+            primaryDirectoryClient.createFileWithResponse("testCreateFile", 1024, null,null, null), 201)
     }
 
     @Unroll
@@ -457,7 +457,7 @@ class DirectoryAPITests extends APISpec {
         given:
         primaryDirectoryClient.create()
         when:
-        primaryDirectoryClient.createFileWithResponse(fileName, maxSize, null, null)
+        primaryDirectoryClient.createFileWithResponse(fileName, maxSize, null, null, null)
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
@@ -475,10 +475,10 @@ class DirectoryAPITests extends APISpec {
             .fileContentType("txt")
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
-        FileProperties properties = new FileProperties("txt", null, null, null, null, null, testMetadata, smbProperties, filePermission)
+        FileProperties properties = new FileProperties("txt", null, null, null, null, null, smbProperties, filePermission)
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryDirectoryClient.createFileWithResponse("testCreateFile", 1024, properties, null), 201)
+            primaryDirectoryClient.createFileWithResponse("testCreateFile", 1024, properties, testMetadata, null), 201)
     }
 
     @Unroll
@@ -486,9 +486,9 @@ class DirectoryAPITests extends APISpec {
         given:
         primaryDirectoryClient.create()
         when:
-        FileProperties properties = new FileProperties("txt", null, null, null, fileContentMD5, null, metadata, null, null)
+        FileProperties properties = new FileProperties("txt", null, null, null, fileContentMD5, null, null, null)
 
-        primaryDirectoryClient.createFileWithResponse(fileName, maxSize, properties, null)
+        primaryDirectoryClient.createFileWithResponse(fileName, maxSize, properties, metadata, null)
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, errMsg)

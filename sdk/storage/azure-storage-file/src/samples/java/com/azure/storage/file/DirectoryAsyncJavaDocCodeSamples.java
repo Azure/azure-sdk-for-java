@@ -151,28 +151,28 @@ public class DirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#createFileWithResponse(String, long, FileProperties)}
+     * Generates a code sample for using {@link DirectoryAsyncClient#createFileWithResponse(String, long, FileProperties, Map)}
      */
     public void createFileWithResponse() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-fileproperties
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-fileproperties-map
         String contentType = "text/html";
         String contentEncoding = "gzip";
         String contentLanguage = "tr,en";
         String cacheControl = "no-transform";
         byte[] contentMd5 = new byte[0];
         String contentDisposition = "attachment";
-        Map<String,String> metadata = Collections.singletonMap("directory", "metadata");
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         FileProperties fileProperties = new FileProperties(contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5, contentDisposition, metadata, smbProperties, filePermission);
-        directoryAsyncClient.createFileWithResponse("myFile", 1024, fileProperties).subscribe(
+            contentMd5, contentDisposition, smbProperties, filePermission);
+        directoryAsyncClient.createFileWithResponse("myFile", 1024, fileProperties,
+            Collections.singletonMap("directory", "metadata")).subscribe(
                 response ->  System.out.printf("Creating the file completed with status code %d", response.statusCode()),
                 error -> System.err.println(error.toString()),
                 () -> System.out.println("Completed creating the file.")
         );
-        // END: com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-fileproperties
+        // END: com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-fileproperties-map
     }
 
     /**

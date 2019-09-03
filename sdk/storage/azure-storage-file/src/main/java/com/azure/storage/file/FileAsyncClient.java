@@ -147,7 +147,7 @@ public class FileAsyncClient {
      * an invalid resource name.
      */
     public Mono<FileInfo> create(long maxSize) {
-        return createWithResponse(maxSize, null).flatMap(FluxUtil::toMono);
+        return createWithResponse(maxSize, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -157,21 +157,22 @@ public class FileAsyncClient {
      *
      * <p>Create the file with length of 1024 bytes, some headers, file smb properties and metadata.</p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.createWithResponse##long-fileproperties}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.createWithResponse##long-fileproperties-map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @param fileProperties The user settable file properties.
+     * @param metadata Optional name-value pairs associated with the file as metadata.
      * @return A response containing the {@link FileInfo file info} and the status of creating the file.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
-    public Mono<Response<FileInfo>> createWithResponse(long maxSize, FileProperties fileProperties) {
-        return withContext(context -> createWithResponse(maxSize, fileProperties, context));
+    public Mono<Response<FileInfo>> createWithResponse(long maxSize, FileProperties fileProperties, Map<String, String> metadata) {
+        return withContext(context -> createWithResponse(maxSize, fileProperties, metadata, context));
     }
 
-    Mono<Response<FileInfo>> createWithResponse(long maxSize, FileProperties fileProperties, Context context) {
+    Mono<Response<FileInfo>> createWithResponse(long maxSize, FileProperties fileProperties, Map<String, String> metadata, Context context) {
         FileProperties properties = fileProperties == null ? new FileProperties() : fileProperties;
         FileSmbProperties smbProperties = properties.smbProperties() == null ? new FileSmbProperties() : properties.smbProperties();
 
@@ -195,7 +196,7 @@ public class FileAsyncClient {
             .fileContentType(properties.contentType());
 
         return postProcessResponse(azureFileStorageClient.files().createWithRestResponseAsync(shareName, filePath, maxSize, fileAttributes,
-            fileCreationTime, fileLastWriteTime, null, properties.metadata(), filePermission, filePermissionKey, httpHeaders, context))
+            fileCreationTime, fileLastWriteTime, null, metadata, filePermission, filePermissionKey, httpHeaders, context))
             .map(this::createFileInfoResponse);
     }
 

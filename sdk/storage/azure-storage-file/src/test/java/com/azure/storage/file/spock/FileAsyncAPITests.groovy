@@ -82,10 +82,10 @@ class FileAsyncAPITests extends APISpec {
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
         FileProperties fileProperties = new FileProperties(httpHeaders.fileContentType, httpHeaders.fileContentEncoding, httpHeaders.fileContentLanguage,
-            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, testMetadata, smbProperties, null)
+            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, smbProperties, null)
         // TODO : Add file permission key
         expect:
-        StepVerifier.create(primaryFileAsyncClient.createWithResponse(1024, fileProperties))
+        StepVerifier.create(primaryFileAsyncClient.createWithResponse(1024, fileProperties, testMetadata))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
                 assert it.value().lastModified()
@@ -105,9 +105,9 @@ class FileAsyncAPITests extends APISpec {
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
         FileProperties fileProperties = new FileProperties(httpHeaders.fileContentType, httpHeaders.fileContentEncoding, httpHeaders.fileContentLanguage,
-            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, testMetadata, smbProperties, filePermission)
+            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, smbProperties, filePermission)
         expect:
-        StepVerifier.create(primaryFileAsyncClient.createWithResponse(1024, fileProperties))
+        StepVerifier.create(primaryFileAsyncClient.createWithResponse(1024, fileProperties, testMetadata))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
                 assert it.value().lastModified()
@@ -125,8 +125,7 @@ class FileAsyncAPITests extends APISpec {
     @Unroll
     def "Create file with args error"() {
         when:
-        FileProperties fileProperties = new FileProperties(null, null, null, null, null, null, metadata, null, null)
-        def createFileErrorVerifier = StepVerifier.create(primaryFileAsyncClient.createWithResponse(maxSize, fileProperties))
+        def createFileErrorVerifier = StepVerifier.create(primaryFileAsyncClient.createWithResponse(maxSize, null, metadata))
         then:
         createFileErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMsg)
@@ -423,7 +422,7 @@ class FileAsyncAPITests extends APISpec {
         given:
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
-        primaryFileAsyncClient.createWithResponse(1024, null).block()
+        primaryFileAsyncClient.createWithResponse(1024, null, null).block()
         expect:
         StepVerifier.create(primaryFileAsyncClient.setPropertiesWithResponse(512, httpHeaders, smbProperties, filePermission))
             .assertNext {
@@ -443,7 +442,7 @@ class FileAsyncAPITests extends APISpec {
 
     def "Set httpHeaders error"() {
         given:
-        primaryFileAsyncClient.createWithResponse(1024, null).block()
+        primaryFileAsyncClient.createWithResponse(1024, null, null).block()
         when:
         def setHttpHeaderVerifier = StepVerifier.create(primaryFileAsyncClient.setProperties(-1, httpHeaders, null, null))
         then:
@@ -455,8 +454,8 @@ class FileAsyncAPITests extends APISpec {
     def "Set metadata"() {
         given:
         FileProperties fileProperties = new FileProperties(httpHeaders.fileContentType, httpHeaders.fileContentEncoding, httpHeaders.fileContentLanguage,
-            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, testMetadata, null, null)
-        primaryFileAsyncClient.createWithResponse(1024, fileProperties).block()
+            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, null, null)
+        primaryFileAsyncClient.createWithResponse(1024, fileProperties, testMetadata).block()
         def updatedMetadata = Collections.singletonMap("update", "value")
         when:
         def getPropertiesBeforeVerifier = StepVerifier.create(primaryFileAsyncClient.getProperties())

@@ -270,16 +270,16 @@ class ShareAPITests extends APISpec {
         primaryShareClient.create()
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryShareClient.createFileWithResponse("testCreateFile", 1024, null,  null), 201)
+            primaryShareClient.createFileWithResponse("testCreateFile", 1024, null,  null, null), 201)
     }
 
     def "Create file file permission"() {
         given:
         primaryShareClient.create()
-        FileProperties properties = new FileProperties(null, null, null, null, null, null, null, null, filePermission)
+        FileProperties properties = new FileProperties(null, null, null, null, null, null, null, filePermission)
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryShareClient.createFileWithResponse("testCreateFile", 1024, properties, null), 201)
+            primaryShareClient.createFileWithResponse("testCreateFile", 1024, properties, null, null), 201)
     }
 
     def "Create file file permission key"() {
@@ -288,11 +288,11 @@ class ShareAPITests extends APISpec {
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
         // TODO: add file permission key
-        FileProperties properties = new FileProperties(null, null, null, null, null, null, null, smbProperties, null)
+        FileProperties properties = new FileProperties(null, null, null, null, null, null, smbProperties, null)
 
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryShareClient.createFileWithResponse("testCreateFile", 1024, properties, null), 201)
+            primaryShareClient.createFileWithResponse("testCreateFile", 1024, properties, null, null), 201)
     }
 
     @Unroll
@@ -300,7 +300,7 @@ class ShareAPITests extends APISpec {
         given:
         primaryShareClient.create()
         when:
-        primaryShareClient.createFileWithResponse(fileName, maxSize, null, null)
+        primaryShareClient.createFileWithResponse(fileName, maxSize, null, null, null)
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
@@ -316,10 +316,10 @@ class ShareAPITests extends APISpec {
         primaryShareClient.create()
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
-        FileProperties properties = new FileProperties("txt", null, null, null, null, null, testMetadata, smbProperties, filePermission)
+        FileProperties properties = new FileProperties("txt", null, null, null, null, null, smbProperties, filePermission)
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryShareClient.createFileWithResponse("testCreateFile", 1024, properties, null), 201)
+            primaryShareClient.createFileWithResponse("testCreateFile", 1024, properties, testMetadata, null), 201)
     }
 
     @Unroll
@@ -328,8 +328,8 @@ class ShareAPITests extends APISpec {
         primaryShareClient.create()
 
         when:
-        FileProperties properties = new FileProperties("txt", null, null, null, fileContentMD5, null, metadata, null, null)
-        primaryShareClient.createFileWithResponse(fileName, maxSize, properties, null)
+        FileProperties properties = new FileProperties("txt", null, null, null, fileContentMD5, null, null, null)
+        primaryShareClient.createFileWithResponse(fileName, maxSize, properties, metadata, null)
 
         then:
         def e = thrown(StorageException)

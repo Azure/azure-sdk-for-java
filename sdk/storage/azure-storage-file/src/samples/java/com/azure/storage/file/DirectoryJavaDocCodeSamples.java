@@ -152,26 +152,25 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#createFileWithResponse(String, long, FileProperties, Context)}
+     * Generates a code sample for using {@link DirectoryClient#createFileWithResponse(String, long, FileProperties, Map, Context)}
      */
     public void createFileMaxOverload() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long-fileproperties-context
+        // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long-fileproperties-map-context
         String contentType = "text/html";
         String contentEncoding = "gzip";
         String contentLanguage = "tr,en";
         String cacheControl = "no-transform";
         byte[] contentMd5 = new byte[0];
         String contentDisposition = "attachment";
-        Map<String,String> metadata = Collections.singletonMap("directory", "metadata");
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         FileProperties fileProperties = new FileProperties(contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5, contentDisposition, metadata, smbProperties, filePermission);
+            contentMd5, contentDisposition, smbProperties, filePermission);
         Response<FileClient> response = directoryClient.createFileWithResponse("myFile", 1024,
-            fileProperties, new Context(key1, value1));
+            fileProperties, Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
         System.out.println("Completed creating the file with status code: " + response.statusCode());
-        // END: com.azure.storage.file.directoryClient.createFile#string-long-fileproperties-context
+        // END: com.azure.storage.file.directoryClient.createFile#string-long-fileproperties-map-context
     }
 
     /**

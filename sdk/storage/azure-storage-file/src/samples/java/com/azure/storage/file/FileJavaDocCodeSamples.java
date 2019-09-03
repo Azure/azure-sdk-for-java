@@ -112,25 +112,25 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#createWithResponse(long, FileProperties, Context)}
+     * Generates a code sample for using {@link FileClient#createWithResponse(long, FileProperties, Map, Context)}
      */
     public void createWithResponse() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.createWithResponse#long-fileproperties-context
+        // BEGIN: com.azure.storage.file.fileClient.createWithResponse#long-fileproperties-map-context
         String contentType = "text/html";
         String contentEncoding = "gzip";
         String contentLanguage = "tr,en";
         String cacheControl = "no-transform";
         byte[] contentMd5 = new byte[0];
         String contentDisposition = "attachment";
-        Map<String,String> metadata = Collections.singletonMap("directory", "metadata");
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         FileProperties fileProperties = new FileProperties(contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5, contentDisposition, metadata, smbProperties, filePermission);
-        Response<FileInfo> response = fileClient.createWithResponse(1024, fileProperties, new Context(key1, value1));
+            contentMd5, contentDisposition, smbProperties, filePermission);
+        Response<FileInfo> response = fileClient.createWithResponse(1024, fileProperties,
+            Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
         System.out.printf("Creating the file completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.fileClient.createWithResponse#long-fileproperties-context
+        // END: com.azure.storage.file.fileClient.createWithResponse#long-fileproperties-map-context
     }
 
     /**

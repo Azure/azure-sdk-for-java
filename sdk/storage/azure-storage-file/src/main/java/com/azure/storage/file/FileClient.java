@@ -81,7 +81,7 @@ public class FileClient {
      * @throws StorageException If the file has already existed, the parent directory does not exist or fileName is an invalid resource name.
      */
     public FileInfo create(long maxSize) {
-        return createWithResponse(maxSize, null, Context.NONE).value();
+        return createWithResponse(maxSize, null, null, Context.NONE).value();
     }
 
     /**
@@ -91,20 +91,20 @@ public class FileClient {
      *
      * <p>Create the file with length of 1024 bytes, some headers, file smb properties and metadata.</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.createWithResponse#long-fileproperties-context}
+     * {@codesnippet com.azure.storage.file.fileClient.createWithResponse#long-fileproperties-map-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @param fileProperties The user settable file properties of the file.
-     * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
+     * @param metadata Optional name-value pairs associated with the file as metadata.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileInfo file info} and the status of creating the file.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
-    public Response<FileInfo> createWithResponse(long maxSize, FileProperties fileProperties, Context context) {
-        return fileAsyncClient.createWithResponse(maxSize, fileProperties, context).block();
+    public Response<FileInfo> createWithResponse(long maxSize, FileProperties fileProperties, Map<String, String> metadata, Context context) {
+        return fileAsyncClient.createWithResponse(maxSize, fileProperties, metadata, context).block();
     }
 
     /**

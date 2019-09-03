@@ -49,21 +49,18 @@ public final class FileProperties {
      * @param cacheControl The Cache-Control request header.
      * @param contentMD5 The MD5 hash of the file to check the message content integrity.
      * @param contentDisposition The Content-Disposition header that specifies how to process the response.
-     * @param metadata A set of name-value pairs associated with this file as user-defined metadata.
      * @param smbProperties The SMB properties of the file.
      * @param filePermission The file permission of the file. smbProperties.filePermissionKey and filePermission must
      *                       not both be set simultaneously
      */
     public FileProperties(final String contentType, final String contentEncoding, final String contentLanguage,
-        final String cacheControl, final byte[] contentMD5, final String contentDisposition,
-        final Map<String, String> metadata, final FileSmbProperties smbProperties, final String filePermission) {
+        final String cacheControl, final byte[] contentMD5, final String contentDisposition, final FileSmbProperties smbProperties, final String filePermission) {
         this.contentType = contentType;
         this.contentEncoding = contentEncoding;
         this.contentLanguage = contentLanguage;
         this.cacheControl = cacheControl;
         this.contentMD5 = ImplUtils.clone(contentMD5);
         this.contentDisposition = contentDisposition;
-        this.metadata = metadata;
         this.smbProperties = smbProperties;
         this.filePermission = filePermission;
     }

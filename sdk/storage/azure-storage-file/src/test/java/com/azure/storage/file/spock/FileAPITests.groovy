@@ -65,7 +65,7 @@ class FileAPITests extends APISpec {
 
     def "Create file"() {
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryFileClient.createWithResponse(1024, null, null), 201)
+        FileTestHelper.assertResponseStatusCode(primaryFileClient.createWithResponse(1024, null, null, null), 201)
     }
 
     def "Create file error"() {
@@ -82,9 +82,9 @@ class FileAPITests extends APISpec {
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
         FileProperties fileProperties = new FileProperties(httpHeaders.fileContentType, httpHeaders.fileContentEncoding, httpHeaders.fileContentLanguage,
-            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, testMetadata, smbProperties, null)
+            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, smbProperties, null)
         // TODO Set file permission key
-        def resp = primaryFileClient.createWithResponse(1024, fileProperties, null)
+        def resp = primaryFileClient.createWithResponse(1024, fileProperties, testMetadata, null)
         then:
         FileTestHelper.assertResponseStatusCode(resp, 201)
         resp.value().eTag()
@@ -104,8 +104,8 @@ class FileAPITests extends APISpec {
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
         FileProperties fileProperties = new FileProperties(httpHeaders.fileContentType, httpHeaders.fileContentEncoding, httpHeaders.fileContentLanguage,
-            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, testMetadata, smbProperties, filePermission)
-        def resp = primaryFileClient.createWithResponse(1024, fileProperties, null)
+            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, smbProperties, filePermission)
+        def resp = primaryFileClient.createWithResponse(1024, fileProperties, testMetadata, null)
         then:
         FileTestHelper.assertResponseStatusCode(resp, 201)
         resp.value().eTag()
@@ -122,8 +122,7 @@ class FileAPITests extends APISpec {
     @Unroll
     def "Create file with args error"() {
         when:
-        FileProperties fileProperties = new FileProperties(null, null, null, null, null, null, metadata, null, null)
-        primaryFileClient.createWithResponse(maxSize, fileProperties, null)
+        primaryFileClient.createWithResponse(maxSize, null, metadata, null)
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
@@ -137,8 +136,8 @@ class FileAPITests extends APISpec {
     def "Create file permission and key error"() {
         when:
         FileSmbProperties properties = new FileSmbProperties().filePermissionKey(filePermissionKey)
-        FileProperties fileProperties = new FileProperties(null, null, null, null, null, null, null, properties, permission)
-        primaryFileClient.createWithResponse(1024, fileProperties, null)
+        FileProperties fileProperties = new FileProperties(null, null, null, null, null, null, properties, permission)
+        primaryFileClient.createWithResponse(1024, fileProperties, null, null)
         then:
         thrown(IllegalArgumentException)
         where:
@@ -372,7 +371,7 @@ class FileAPITests extends APISpec {
 
     def "Delete file"() {
         given:
-        primaryFileClient.createWithResponse(1024, null, null)
+        primaryFileClient.createWithResponse(1024, null, null, null)
         expect:
         FileTestHelper.assertResponseStatusCode(primaryFileClient.deleteWithResponse(null), 202)
     }
@@ -415,7 +414,7 @@ class FileAPITests extends APISpec {
 
     def "Set httpHeaders"() {
         given:
-        primaryFileClient.createWithResponse(1024, null, null)
+        primaryFileClient.createWithResponse(1024, null, null, null)
         when:
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
@@ -438,7 +437,7 @@ class FileAPITests extends APISpec {
 
     def "Set httpHeaders error"() {
         given:
-        primaryFileClient.createWithResponse(1024, null, null)
+        primaryFileClient.createWithResponse(1024, null, null, null)
         when:
         primaryFileClient.setPropertiesWithResponse(-1, httpHeaders, null, null, null)
         then:
@@ -449,8 +448,8 @@ class FileAPITests extends APISpec {
     def "Set metadata"() {
         given:
         FileProperties fileProperties = new FileProperties(httpHeaders.fileContentType, httpHeaders.fileContentEncoding, httpHeaders.fileContentLanguage,
-            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, testMetadata, null, null)
-        primaryFileClient.createWithResponse(1024, fileProperties, null)
+            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, null, null)
+        primaryFileClient.createWithResponse(1024, fileProperties, testMetadata, null)
         def updatedMetadata = Collections.singletonMap("update", "value")
         when:
         def getPropertiesBefore = primaryFileClient.getProperties()

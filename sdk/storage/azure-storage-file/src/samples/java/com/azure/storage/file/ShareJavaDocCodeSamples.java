@@ -198,7 +198,7 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#createFileWithResponse(String, long, FileProperties, Context)}
+     * Generates a code sample for using {@link ShareClient#createFileWithResponse(String, long, FileProperties, Map, Context)}
      */
     public void createFileWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
@@ -209,14 +209,14 @@ public class ShareJavaDocCodeSamples {
         String cacheControl = "no-transform";
         byte[] contentMd5 = new byte[0];
         String contentDisposition = "attachment";
-        Map<String,String> metadata = Collections.singletonMap("directory", "metadata");
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         FileProperties fileProperties = new FileProperties(contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5, contentDisposition, metadata, smbProperties, filePermission);
-        Response<FileClient> response = shareClient.createFileWithResponse("myfile", 1024, fileProperties, new Context(key1, value1));
+            contentMd5, contentDisposition, smbProperties, filePermission);
+        Response<FileClient> response = shareClient.createFileWithResponse("myfile", 1024, fileProperties,
+            Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
         System.out.printf("Creating the file completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.shareClient.createFileWithResponse#string-long-fileproperties-context
+        // END: com.azure.storage.file.shareClient.createFileWithResponse#string-long-fileproperties-map-context
     }
 
     /**
