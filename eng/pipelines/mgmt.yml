@@ -3,16 +3,26 @@ trigger:
     include:
     - master
   paths:
-    exclude:
-    - sdk/
+    include:
+    - '/pom.management.xml'
+    - '/eng/'
+    - '/parent/'
+    - '/profiles/'
+    - '*/resource-manager/*'
+    - '*/azure-mgmt*'
 
 pr:
   branches:
     include:
     - master
   paths:
-    exclude:
-    - sdk/
+    include:
+    - '/pom.management.xml'
+    - '/eng/'
+    - '/parent/'
+    - '/profiles/'
+    - '*/resource-manager/*'
+    - '*/azure-mgmt*'
 
 variables:
   MavenGoals: 'clean,compile'
