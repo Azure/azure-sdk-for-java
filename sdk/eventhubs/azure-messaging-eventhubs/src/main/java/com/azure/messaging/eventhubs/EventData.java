@@ -373,12 +373,12 @@ public class EventData implements Comparable<EventData> {
             super(map);
             this.partitionKey = removeSystemProperty(PARTITION_KEY_ANNOTATION_NAME.getValue());
 
-            final Long offset = removeSystemProperty(OFFSET_ANNOTATION_NAME.getValue());
+            final String offset = removeSystemProperty(OFFSET_ANNOTATION_NAME.getValue());
             if (offset == null) {
                 throw new IllegalStateException(String.format(Locale.US,
                     "offset: %s should always be in map.", OFFSET_ANNOTATION_NAME.getValue()));
             }
-            this.offset = offset;
+            this.offset = Long.valueOf(offset);
 
             final Date enqueuedTimeValue = removeSystemProperty(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
             if (enqueuedTimeValue == null) {
