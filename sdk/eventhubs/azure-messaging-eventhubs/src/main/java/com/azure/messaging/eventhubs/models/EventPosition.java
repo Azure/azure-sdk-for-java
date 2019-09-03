@@ -184,8 +184,8 @@ public final class EventPosition {
     public String toString() {
         return String.format(Locale.US, "offset[%s], sequenceNumber[%s], enqueuedTime[%s], isInclusive[%s]",
             offset, sequenceNumber,
-            enqueuedDateTime != null ? enqueuedDateTime.toEpochMilli() :
-                EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.NULL),
+            enqueuedDateTime != null ? enqueuedDateTime.toEpochMilli()
+                : EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.NULL),
             isInclusive);
     }
 
