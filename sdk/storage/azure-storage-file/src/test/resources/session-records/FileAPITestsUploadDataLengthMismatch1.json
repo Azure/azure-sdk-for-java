@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsuploaddatalengthmismatch130722ed583dbb3?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsuploaddatalengthmismatch156914517d63eba?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D729F515DD9379\"",
-      "Last-Modified" : "Mon, 26 Aug 2019 07:14:50 GMT",
+      "ETag" : "\"0x8D7309025C5C75A\"",
+      "Last-Modified" : "Tue, 03 Sep 2019 16:59:56 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "6c563d3a-801a-0063-3fdd-5b7653000000",
-      "Date" : "Mon, 26 Aug 2019 07:14:50 GMT",
-      "x-ms-client-request-id" : "386da309-747b-42a8-9054-d197d617f73c"
+      "x-ms-request-id" : "d333a65e-d01a-0130-1779-622c09000000",
+      "Date" : "Tue, 03 Sep 2019 16:59:55 GMT",
+      "x-ms-client-request-id" : "01c43a0d-c7b5-4d93-9f11-b53f3787a846"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsuploaddatalengthmismatch130722ed583dbb3/fileapitestsuploaddatalengthmismatch162287ae2bfcf10",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsuploaddatalengthmismatch156914517d63eba/fileapitestsuploaddatalengthmismatch103738ab4356fff",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
@@ -31,22 +31,35 @@
       "x-ms-file-permission-key" : "2189138948451189390*13168958551941065216",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-08-26T07:14:50.8062568Z",
-      "Last-Modified" : "Mon, 26 Aug 2019 07:14:50 GMT",
+      "x-ms-file-creation-time" : "2019-09-03T16:59:56.3881057Z",
+      "Last-Modified" : "Tue, 03 Sep 2019 16:59:56 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Mon, 26 Aug 2019 07:14:50 GMT",
-      "ETag" : "\"0x8D729F515F11768\"",
+      "Date" : "Tue, 03 Sep 2019 16:59:55 GMT",
+      "ETag" : "\"0x8D7309025CDC661\"",
       "x-ms-file-attributes" : "Archive",
-      "x-ms-file-change-time" : "2019-08-26T07:14:50.8062568Z",
+      "x-ms-file-change-time" : "2019-09-03T16:59:56.3881057Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "6c563d3c-801a-0063-40dd-5b7653000000",
-      "x-ms-client-request-id" : "512224c2-363a-4844-86c6-c91dc8654c47",
-      "x-ms-file-last-write-time" : "2019-08-26T07:14:50.8062568Z"
+      "x-ms-request-id" : "d333a660-d01a-0130-1879-622c09000000",
+      "x-ms-client-request-id" : "79581f67-42d9-4440-a769-4ef25cfcea77",
+      "x-ms-file-last-write-time" : "2019-09-03T16:59:56.3881057Z"
     },
     "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsuploaddatalengthmismatch156914517d63eba/fileapitestsuploaddatalengthmismatch103738ab4356fff?comp=range",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "com.azure.core.implementation.exception.UnexpectedLengthException",
+      "ErrorMessage" : "Request body emitted 7 bytes less than the expected 8 bytes."
+    }
   } ],
-  "variables" : [ "fileapitestsuploaddatalengthmismatch130722ed583dbb3", "fileapitestsuploaddatalengthmismatch162287ae2bfcf10" ]
+  "variables" : [ "fileapitestsuploaddatalengthmismatch156914517d63eba", "fileapitestsuploaddatalengthmismatch103738ab4356fff" ]
 }

@@ -16,7 +16,6 @@ import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.util.concurrent.atomic.AtomicLong;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
