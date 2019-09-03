@@ -371,6 +371,50 @@ public class SearchSyncTests extends SearchTestBase {
         Assert.assertEquals(100.0, ((SearchPagedResponse) resultsIterator.next()).coverage(), 0);
     }
 
+    @Override
+    public void canUseHitHighlighting() {
+        //arrange
+        String description = "Description";
+        String category = "Category";
+
+        SearchParameters sp = new SearchParameters();
+        sp.filter("Rating eq 5");
+        sp.highlightPreTag("<b>");
+        sp.highlightPostTag("</b>");
+        sp.highlightFields(Arrays.asList(category, description));
+
+        //act
+        PagedIterable<SearchResult> results = client.search("luxury hotel", sp, new SearchRequestOptions());
+
+        //sanity
+        Assert.assertNotNull(results);
+        Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
+        PagedResponse<SearchResult> result = iterator.next();
+        List<SearchResult> documents = result.items();
+
+        // sanity
+        Assert.assertEquals(1, documents.size());
+        Map<String, List<String>> highlights = documents.get(0).highlights();
+        Assert.assertNotNull(highlights);
+        Assert.assertEquals(2, highlights.keySet().size());
+        Assert.assertTrue(highlights.containsKey(description));
+        Assert.assertTrue(highlights.containsKey(category));
+
+        String categoryHighlight = highlights.get(category).get(0);
+
+        //asserts
+        Assert.assertEquals("<b>Luxury</b>", categoryHighlight);
+
+        // Typed as IEnumerable so we get the right overload of Assert.Equals below.
+        List<String> expectedDescriptionHighlights =
+            Arrays.asList(
+                "Best <b>hotel</b> in town if you like <b>luxury</b> <b>hotels</b>.",
+                "We highly recommend this <b>hotel</b>."
+            );
+
+        Assert.assertEquals(expectedDescriptionHighlights, highlights.get(description));
+    }
+
     private List<Map<String, Object>> getSearchResults(PagedIterable<SearchResult> results) {
         Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
         List<Map<String, Object>> searchResults = new ArrayList<>();

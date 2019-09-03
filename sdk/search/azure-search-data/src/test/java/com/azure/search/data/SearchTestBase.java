@@ -286,6 +286,9 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     @Test
     public abstract void searchWithScoringProfileBoostsScore();
 
+    @Test
+    public abstract void canUseHitHighlighting();
+
     abstract void search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions);
 
     abstract void indexDocuments(List<IndexAction> indexActions);
