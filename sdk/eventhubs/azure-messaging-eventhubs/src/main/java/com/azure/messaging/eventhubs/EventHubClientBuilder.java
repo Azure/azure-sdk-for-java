@@ -418,9 +418,8 @@ public class EventHubClientBuilder {
             this.initialEventPosition == null ? EventPosition.earliest()
                 : this.initialEventPosition;
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
-
-        return new EventProcessor(buildAsyncClient(), this.consumerGroupName,
-            this.partitionProcessorFactory, initialEventPosition, partitionManager, eventHubName, tracerProvider);
+        return new EventProcessor(buildAsyncClient(), consumerGroupName, partitionProcessorFactory,
+            initialEventPosition, partitionManager, tracerProvider);
     }
 
     private ConnectionOptions getConnectionOptions() {
