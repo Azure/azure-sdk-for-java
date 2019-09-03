@@ -5,7 +5,7 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.TransportType;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubsConstants;
+import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
 import com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler;
 import com.azure.messaging.eventhubs.implementation.handler.ReceiveLinkHandler;
 import com.azure.messaging.eventhubs.implementation.handler.SendLinkHandler;
@@ -49,7 +49,9 @@ public class ReactorHandlerProvider {
                 return new WebSocketsConnectionHandler(connectionId, hostname);
             default:
                 throw logger.logExceptionAsWarning(new IllegalArgumentException(
-                    String.format(Locale.US, EventHubsConstants.TRANSPORT_TYPE_NOT_SUPPORTED, transportType)));
+                    String.format(Locale.US,
+                        EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.TRANSPORT_TYPE_NOT_SUPPORTED),
+                        transportType)));
         }
     }
 

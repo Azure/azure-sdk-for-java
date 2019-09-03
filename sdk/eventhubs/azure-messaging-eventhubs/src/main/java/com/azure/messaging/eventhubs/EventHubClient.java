@@ -44,9 +44,11 @@ public class EventHubClient implements Closeable {
     private final EventHubConsumerOptions defaultConsumerOptions;
 
     EventHubClient(EventHubAsyncClient client, ConnectionOptions connectionOptions) {
-        Objects.requireNonNull(connectionOptions, EventHubsConstants.CONNECTION_OPTIONS_CANNOT_NULL);
+        Objects.requireNonNull(connectionOptions,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONNECTION_OPTIONS_CANNOT_NULL));
 
-        this.client = Objects.requireNonNull(client, EventHubsConstants.CLIENT_CANNOT_NULL);
+        this.client = Objects.requireNonNull(client,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CLIENT_CANNOT_NULL));
         this.retry = connectionOptions.retry();
         this.defaultProducerOptions = new EventHubProducerOptions()
             .retry(connectionOptions.retry());
@@ -108,7 +110,8 @@ public class EventHubClient implements Closeable {
      * @throws NullPointerException if {@code options} is {@code null}.
      */
     public EventHubProducer createProducer(EventHubProducerOptions options) {
-        Objects.requireNonNull(options, EventHubsConstants.OPTIONS_CANNOT_NULL);
+        Objects.requireNonNull(options,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.OPTIONS_CANNOT_NULL));
 
         final EventHubAsyncProducer producer = client.createProducer(options);
 

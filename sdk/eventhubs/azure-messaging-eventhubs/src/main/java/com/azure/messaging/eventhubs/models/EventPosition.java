@@ -8,7 +8,7 @@ import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
 import com.azure.messaging.eventhubs.EventHubClient;
-import com.azure.messaging.eventhubs.EventHubsConstants;
+import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
 
 import java.time.Instant;
 import java.util.Locale;
@@ -111,7 +111,8 @@ public final class EventPosition {
      * @throws NullPointerException if {@code offset} is null.
      */
     public static EventPosition fromOffset(String offset, boolean isInclusive) {
-        Objects.requireNonNull(offset, EventHubsConstants.OFFSET_CANNOT_NULL);
+        Objects.requireNonNull(offset,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.OFFSET_CANNOT_NULL));
 
         return new EventPosition(isInclusive, offset, null, null);
     }
@@ -183,7 +184,8 @@ public final class EventPosition {
     public String toString() {
         return String.format(Locale.US, "offset[%s], sequenceNumber[%s], enqueuedTime[%s], isInclusive[%s]",
             offset, sequenceNumber,
-            enqueuedDateTime != null ? enqueuedDateTime.toEpochMilli() : EventHubsConstants.NULL,
+            enqueuedDateTime != null ? enqueuedDateTime.toEpochMilli() :
+                EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.NULL),
             isInclusive);
     }
 

@@ -9,7 +9,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubsConstants;
+import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
 import org.apache.qpid.proton.engine.HandlerException;
 import org.apache.qpid.proton.reactor.Reactor;
 import reactor.core.scheduler.Scheduler;
@@ -99,7 +99,9 @@ class ReactorExecutor implements Closeable {
                     rescheduledReactor = true;
                 } catch (RejectedExecutionException exception) {
                     logger.warning(LOG_MESSAGE, connectionId,
-                        StringUtil.toStackTraceString(exception, EventHubsConstants.REACTOR_FAILED_EXECUTOR_DOWN));
+                        StringUtil.toStackTraceString(exception,
+                            EventHubErrorCodeStrings.getErrorString(
+                                EventHubErrorCodeStrings.REACTOR_FAILED_EXECUTOR_DOWN)));
 
                     this.reactor.attachments().set(RejectedExecutionException.class, RejectedExecutionException.class, exception);
                 }

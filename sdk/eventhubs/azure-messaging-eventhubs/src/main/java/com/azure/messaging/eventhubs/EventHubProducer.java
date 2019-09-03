@@ -85,8 +85,10 @@ public class EventHubProducer implements Closeable {
      * @throws NullPointerException if {@code producer} or {@code tryTimeout} is null.
      */
     EventHubProducer(EventHubAsyncProducer producer, Duration tryTimeout) {
-        this.producer = Objects.requireNonNull(producer, EventHubsConstants.PRODUCER_CANNOT_NULL);
-        this.tryTimeout = Objects.requireNonNull(tryTimeout, EventHubsConstants.TRY_TIME_OUT_CANNOT_NULL);
+        this.producer = Objects.requireNonNull(producer,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PRODUCER_CANNOT_NULL));
+        this.tryTimeout = Objects.requireNonNull(tryTimeout,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.TRY_TIME_OUT_CANNOT_NULL));
     }
 
     /**

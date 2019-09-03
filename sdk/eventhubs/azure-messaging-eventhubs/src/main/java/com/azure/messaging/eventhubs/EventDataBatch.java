@@ -82,7 +82,8 @@ public final class EventDataBatch {
      */
     public boolean tryAdd(final EventData eventData) {
         if (eventData == null) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException(EventHubsConstants.EVENT_DATA_CANNOT_NULL));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException(
+                    EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENT_DATA_CANNOT_NULL)));
         }
 
         final int size;
@@ -90,7 +91,9 @@ public final class EventDataBatch {
             size = getSize(eventData, events.isEmpty());
         } catch (BufferOverflowException exception) {
             throw logger.logExceptionAsWarning(new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-                String.format(Locale.US, EventHubsConstants.PAYLOAD_EXCEEDED_MAX_SIZE, maxMessageSize / 1024),
+                String.format(Locale.US,
+                    EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PAYLOAD_EXCEEDED_MAX_SIZE),
+                    maxMessageSize / 1024),
                 contextProvider.getErrorContext()));
         }
 
@@ -115,7 +118,8 @@ public final class EventDataBatch {
     }
 
     private int getSize(final EventData eventData, final boolean isFirst) {
-        Objects.requireNonNull(eventData, EventHubsConstants.EVENT_DATA_CANNOT_NULL);
+        Objects.requireNonNull(eventData,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENT_DATA_CANNOT_NULL));
 
         final Message amqpMessage = createAmqpMessage(eventData, partitionKey);
         int eventSize = amqpMessage.encode(this.eventBytes, 0, maxMessageSize); // actual encoded bytes size
@@ -195,7 +199,8 @@ public final class EventDataBatch {
                             break;
                         default:
                             throw logger.logExceptionAsWarning(new IllegalArgumentException(
-                                String.format(Locale.US, EventHubsConstants.UNRESERVED_PROPERTY_NAME, key)));
+                                String.format(Locale.US, EventHubErrorCodeStrings.getErrorString(
+                                        EventHubErrorCodeStrings.UNRESERVED_PROPERTY_NAME), key)));
                     }
                 } else {
                     final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)

@@ -72,18 +72,18 @@ public class EventProcessor {
         PartitionProcessorFactory partitionProcessorFactory, EventPosition initialEventPosition,
         PartitionManager partitionManager,
         String eventHubName) {
-        this.eventHubAsyncClient = Objects
-            .requireNonNull(eventHubAsyncClient, EventHubsConstants.EVENTHUB_ASYNC_CLIENT_CANNOT_NULL);
-        this.consumerGroupName = Objects
-            .requireNonNull(consumerGroupName, EventHubsConstants.CONSUMER_GROUP_NAME_CANNOT_NULL);
-        this.partitionProcessorFactory = Objects
-            .requireNonNull(partitionProcessorFactory, EventHubsConstants.PARTITION_PROCESSOR_FACTORY_CANNOT_NULL);
-        this.partitionManager = Objects
-            .requireNonNull(partitionManager, EventHubsConstants.PARTITION_MANAGER_CANNOT_NULL);
-        this.initialEventPosition = Objects
-            .requireNonNull(initialEventPosition, EventHubsConstants.INITIAL_EVENT_POSITION_CANNOT_NULL);
-        this.eventHubName = Objects
-            .requireNonNull(eventHubName, EventHubsConstants.EVENTHUB_NAME_CANNOT_NULL);
+        this.eventHubAsyncClient = Objects.requireNonNull(eventHubAsyncClient,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENTHUB_ASYNC_CLIENT_CANNOT_NULL));
+        this.consumerGroupName = Objects.requireNonNull(consumerGroupName,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONSUMER_GROUP_NAME_CANNOT_NULL));
+        this.partitionProcessorFactory = Objects.requireNonNull(partitionProcessorFactory,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_PROCESSOR_FACTORY_CANNOT_NULL));
+        this.partitionManager = Objects.requireNonNull(partitionManager,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_MANAGER_CANNOT_NULL));
+        this.initialEventPosition = Objects.requireNonNull(initialEventPosition,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.INITIAL_EVENT_POSITION_CANNOT_NULL));
+        this.eventHubName = Objects.requireNonNull(eventHubName,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENTHUB_NAME_CANNOT_NULL));
         this.identifier = UUID.randomUUID().toString();
         logger.info("The instance ID for this event processors is {}", this.identifier);
     }

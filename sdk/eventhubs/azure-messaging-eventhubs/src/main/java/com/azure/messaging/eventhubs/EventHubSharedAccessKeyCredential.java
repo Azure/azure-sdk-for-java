@@ -68,16 +68,22 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
     public EventHubSharedAccessKeyCredential(String policyName, String sharedAccessKey, Duration tokenValidity)
         throws NoSuchAlgorithmException, InvalidKeyException {
 
-        Objects.requireNonNull(sharedAccessKey, EventHubsConstants.SHARED_ACCESS_KEY_CANNOT_NULL);
-        this.policyName = Objects.requireNonNull(policyName, EventHubsConstants.POLICY_NAME_CANNOT_NULL);
-        this.tokenValidity = Objects.requireNonNull(tokenValidity, EventHubsConstants.TOKEN_VALIDITY_CANNOT_NULL);
+        Objects.requireNonNull(sharedAccessKey,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.SHARED_ACCESS_KEY_CANNOT_NULL));
+        this.policyName = Objects.requireNonNull(policyName,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.POLICY_NAME_CANNOT_NULL));
+        this.tokenValidity = Objects.requireNonNull(tokenValidity,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.TOKEN_VALIDITY_CANNOT_NULL));
 
         if (policyName.isEmpty()) {
-            throw new IllegalArgumentException(EventHubsConstants.POLICY_NAME_CANNOT_EMPTY);
+            throw new IllegalArgumentException(
+                EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.POLICY_NAME_CANNOT_EMPTY));
         } else if (sharedAccessKey.isEmpty()) {
-            throw new IllegalArgumentException(EventHubsConstants.SHARED_ACCESS_KEY_CANNOT_EMPTY);
+            throw new IllegalArgumentException(
+                EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.SHARED_ACCESS_KEY_CANNOT_EMPTY));
         } else if (tokenValidity.isZero() || tokenValidity.isNegative()) {
-            throw new IllegalArgumentException(EventHubsConstants.TOKEN_TIME_TO_LIVE_ERROR_MSG);
+            throw new IllegalArgumentException(
+                EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.TOKEN_TIME_TO_LIVE_ERROR_MSG));
         }
 
         hmac = Mac.getInstance(HASH_ALGORITHM);
@@ -99,7 +105,8 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
         if (scopes.length != 1) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(EventHubsConstants.SCOPES_RULES));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.SCOPES_RULES)));
         }
 
         return Mono.fromCallable(() -> generateSharedAccessSignature(scopes[0]));
@@ -107,7 +114,8 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
 
     private AccessToken generateSharedAccessSignature(final String resource) throws UnsupportedEncodingException {
         if (ImplUtils.isNullOrEmpty(resource)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(EventHubsConstants.RESOURCE_CANNOT_EMPTY));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.RESOURCE_CANNOT_EMPTY)));
         }
 
         final String utf8Encoding = UTF_8.name();

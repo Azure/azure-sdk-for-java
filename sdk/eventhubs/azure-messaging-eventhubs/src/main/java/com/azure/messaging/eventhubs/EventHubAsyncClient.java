@@ -85,9 +85,12 @@ public class EventHubAsyncClient implements Closeable {
     private final EventHubConsumerOptions defaultConsumerOptions;
 
     EventHubAsyncClient(ConnectionOptions connectionOptions, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
-        Objects.requireNonNull(connectionOptions, EventHubsConstants.CONNECTION_OPTIONS_CANNOT_NULL);
-        Objects.requireNonNull(provider, EventHubsConstants.REACTOR_PROVIDER_CANNOT_NULL);
-        Objects.requireNonNull(handlerProvider, EventHubsConstants.REACTOR_HANDLER_PROVIDER_CANNOT_NULL);
+        Objects.requireNonNull(connectionOptions,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONNECTION_OPTIONS_CANNOT_NULL));
+        Objects.requireNonNull(provider,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.REACTOR_PROVIDER_CANNOT_NULL));
+        Objects.requireNonNull(handlerProvider,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.REACTOR_HANDLER_PROVIDER_CANNOT_NULL));
 
         this.connectionOptions = connectionOptions;
         this.eventHubName = connectionOptions.eventHubName();
@@ -158,7 +161,8 @@ public class EventHubAsyncClient implements Closeable {
      * @throws NullPointerException if {@code options} is {@code null}.
      */
     public EventHubAsyncProducer createProducer(EventHubProducerOptions options) {
-        Objects.requireNonNull(options, EventHubsConstants.OPTIONS_CANNOT_NULL);
+        Objects.requireNonNull(options,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.OPTIONS_CANNOT_NULL));
 
         final EventHubProducerOptions clonedOptions = options.clone();
 
@@ -244,15 +248,21 @@ public class EventHubAsyncClient implements Closeable {
      */
     public EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
                                                 EventHubConsumerOptions options) {
-        Objects.requireNonNull(eventPosition, EventHubsConstants.EVENT_POSITION_CANNOT_NULL);
-        Objects.requireNonNull(options, EventHubsConstants.OPTIONS_CANNOT_NULL);
-        Objects.requireNonNull(consumerGroup, EventHubsConstants.CONSUMER_GROUP_CANNOT_NULL);
-        Objects.requireNonNull(partitionId, EventHubsConstants.PARTITION_ID_CANNOT_NULL);
+        Objects.requireNonNull(eventPosition,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENT_POSITION_CANNOT_NULL));
+        Objects.requireNonNull(options,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.OPTIONS_CANNOT_NULL));
+        Objects.requireNonNull(consumerGroup,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONSUMER_GROUP_CANNOT_NULL));
+        Objects.requireNonNull(partitionId,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_ID_CANNOT_NULL));
 
         if (consumerGroup.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(EventHubsConstants.CONSUMER_GROUP_CANNOT_EMPTY));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONSUMER_GROUP_CANNOT_EMPTY)));
         } else if (partitionId.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(EventHubsConstants.PARTITION_ID_CANNOT_EMPTY));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_ID_CANNOT_EMPTY)));
         }
 
         final EventHubConsumerOptions clonedOptions = options.clone();
@@ -295,8 +305,8 @@ public class EventHubAsyncClient implements Closeable {
                 }
             } catch (IOException exception) {
                 throw logger.logExceptionAsError(new AmqpException(false,
-                    EventHubsConstants.UNABLE_CLOSE_CONNECTION_TO_SERVICE, exception,
-                    new ErrorContext(connectionOptions.host())));
+                    EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.UNABLE_CLOSE_CONNECTION_TO_SERVICE),
+                    exception, new ErrorContext(connectionOptions.host())));
             }
         }
     }
@@ -324,7 +334,8 @@ public class EventHubAsyncClient implements Closeable {
             return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), isInclusiveFlag, ms);
         }
 
-        throw new IllegalArgumentException(EventHubsConstants.NO_STARTING_POSITION_SET);
+        throw new IllegalArgumentException(
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.NO_STARTING_POSITION_SET));
     }
 
     private static class ResponseMapper implements AmqpResponseMapper {

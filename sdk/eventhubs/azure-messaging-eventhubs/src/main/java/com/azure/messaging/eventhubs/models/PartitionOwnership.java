@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.implementation.annotation.Fluent;
-import com.azure.messaging.eventhubs.EventHubsConstants;
+import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
 
 import java.util.Objects;
 
@@ -40,7 +40,8 @@ public class PartitionOwnership {
      * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership eventHubName(String eventHubName) {
-        this.eventHubName = Objects.requireNonNull(eventHubName, EventHubsConstants.EVENTHUB_NAME_CANNOT_NULL);
+        this.eventHubName = Objects.requireNonNull(eventHubName,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENTHUB_NAME_CANNOT_NULL));
         return this;
     }
 
@@ -60,7 +61,8 @@ public class PartitionOwnership {
      * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership consumerGroupName(String consumerGroupName) {
-        this.consumerGroupName = Objects.requireNonNull(consumerGroupName, EventHubsConstants.CONSUMER_GROUP_NAME_CANNOT_NULL);
+        this.consumerGroupName = Objects.requireNonNull(consumerGroupName,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONSUMER_GROUP_NAME_CANNOT_NULL));
         return this;
     }
 
@@ -80,7 +82,8 @@ public class PartitionOwnership {
      * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership partitionId(String partitionId) {
-        this.partitionId = Objects.requireNonNull(partitionId, EventHubsConstants.PARTITION_ID_CANNOT_NULL);
+        this.partitionId = Objects.requireNonNull(partitionId,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_ID_CANNOT_NULL));
         return this;
     }
 
@@ -100,7 +103,8 @@ public class PartitionOwnership {
      * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership ownerId(String ownerId) {
-        this.ownerId = Objects.requireNonNull(ownerId, EventHubsConstants.OWNER_ID_CANNOT_NULL);
+        this.ownerId = Objects.requireNonNull(ownerId,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.OWNER_ID_CANNOT_NULL));
         return this;
     }
 

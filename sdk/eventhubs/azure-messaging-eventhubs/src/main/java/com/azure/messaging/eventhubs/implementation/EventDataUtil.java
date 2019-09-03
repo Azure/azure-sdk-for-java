@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.MessageConstant;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubsConstants;
+import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -159,7 +159,8 @@ public class EventDataUtil {
                         break;
                     default:
                         throw new IllegalArgumentException(String.format(Locale.US,
-                            EventHubsConstants.UNRESERVED_PROPERTY_NAME, key));
+                            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.UNRESERVED_PROPERTY_NAME),
+                            key));
                 }
             } else {
                 final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
@@ -236,7 +237,8 @@ public class EventDataUtil {
             return Double.BYTES;
         }
 
-        throw new IllegalArgumentException(String.format(Locale.US, EventHubsConstants.ENCODING_TYPE_NOT_SUPPORTED,
+        throw new IllegalArgumentException(String.format(Locale.US,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.ENCODING_TYPE_NOT_SUPPORTED),
             obj.getClass()));
     }
 

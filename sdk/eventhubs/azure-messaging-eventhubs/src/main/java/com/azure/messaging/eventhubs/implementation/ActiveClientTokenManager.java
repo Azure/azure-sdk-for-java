@@ -8,7 +8,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubsConstants;
+import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
@@ -70,7 +70,8 @@ class ActiveClientTokenManager implements Closeable {
      */
     Mono<Long> authorize() {
         if (hasDisposed.get()) {
-            return Mono.error(new AzureException(EventHubsConstants.CANNOT_AUTHORIZE_CBS));
+            return Mono.error(new AzureException(
+                EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CANNOT_AUTHORIZE_CBS)));
         }
 
         return cbsNode.flatMap(cbsNode -> cbsNode.authorize(tokenAudience))

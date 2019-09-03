@@ -4,8 +4,8 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.implementation.annotation.Immutable;
+import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
 import com.azure.messaging.eventhubs.PartitionProcessor;
-import com.azure.messaging.eventhubs.EventHubsConstants;
 
 import java.util.Objects;
 
@@ -27,10 +27,12 @@ public class PartitionContext {
      * @param consumerGroupName The consumer group name.
      */
     public PartitionContext(String partitionId, String eventHubName, String consumerGroupName) {
-        this.partitionId = Objects.requireNonNull(partitionId, EventHubsConstants.PARTITION_ID_CANNOT_NULL);
-        this.eventHubName = Objects.requireNonNull(eventHubName,  EventHubsConstants.EVENTHUB_NAME_CANNOT_NULL);
+        this.partitionId = Objects.requireNonNull(partitionId,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_ID_CANNOT_NULL));
+        this.eventHubName = Objects.requireNonNull(eventHubName,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENTHUB_NAME_CANNOT_NULL));
         this.consumerGroupName = Objects.requireNonNull(consumerGroupName,
-            EventHubsConstants.CONSUMER_GROUP_NAME_CANNOT_NULL);
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONSUMER_GROUP_NAME_CANNOT_NULL));
     }
 
     /**

@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubsConstants;
+import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
 import com.azure.messaging.eventhubs.implementation.handler.CustomIOHandler;
 import com.azure.messaging.eventhubs.implementation.handler.ReactorHandler;
 import org.apache.qpid.proton.Proton;
@@ -61,7 +61,8 @@ public class ReactorProvider {
 
         if (maxFrameSize <= 0) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException(EventHubsConstants.MAX_FRAME_SIZE_REQUIRE_POSITIVE_NUM));
+                new IllegalArgumentException(EventHubErrorCodeStrings.getErrorString(
+                    EventHubErrorCodeStrings.MAX_FRAME_SIZE_REQUIRE_POSITIVE_NUM)));
         }
 
         final ReactorOptions reactorOptions = new ReactorOptions();
