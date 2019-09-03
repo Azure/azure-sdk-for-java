@@ -1,0 +1,28 @@
+{
+    "networkCallRecords": [
+        {
+            "Method": "POST",
+            "Uri": "https://azs-sdk15232298b3bc.search.windows.net/indexes('geopoints')/docs/search.index?api-version=2019-05-06",
+            "Headers": {
+                "Content-Type": "application/json; charset=utf-8"
+            },
+            "Response": {
+                "Pragma": "no-cache",
+                "retry-after": "0",
+                "request-id": "ac4ceb38-69b4-4291-b49f-15a64107f1e0",
+                "StatusCode": "200",
+                "Date": "Thu, 29 Aug 2019 09:10:31 GMT",
+                "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+                "Cache-Control": "no-cache",
+                "elapsed-time": "117",
+                "OData-Version": "4.0",
+                "Expires": "-1",
+                "Content-Length": "230",
+                "Body": "{\"@odata.context\":\"https://azs-sdk15232298b3bc.search.windows.net/indexes('geopoints')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+                "Preference-Applied": "odata.include-annotations=\"*\"",
+                "Content-Type": "application/json; odata.metadata=minimal"
+            }
+        }
+    ],
+    "variables": []
+}

@@ -5,6 +5,7 @@ package com.azure.search.data.customization;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.search.data.SearchIndexAsyncClient;
+import com.azure.search.data.customization.models.GeoPoint;
 import com.azure.search.data.env.SearchIndexClientTestBase;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
@@ -90,7 +91,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         expectedDoc.put("Rating", 3);
         expectedDoc.put("Address", addressDoc);
         expectedDoc.put("Rooms", rooms);
-        //TODO: Support GeoTypes
+        expectedDoc.put("Location", GeoPoint.createWithDefaultCrs(40.760586, -73.975403).createObjectMap());
 
         try {
             super.indexDocument(asyncClient, expectedDoc);
@@ -104,7 +105,6 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         StepVerifier
             .create(futureDoc)
             .assertNext(result -> {
-                result.remove("Location");
                 Assert.assertEquals(expectedDoc, result);
             })
             .verifyComplete();
