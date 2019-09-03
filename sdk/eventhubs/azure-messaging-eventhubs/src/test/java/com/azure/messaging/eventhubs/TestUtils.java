@@ -64,7 +64,7 @@ final class TestUtils {
      */
     static Message getMessage(byte[] contents, String messageTrackingValue) {
         final Map<Symbol, Object> systemProperties = new HashMap<>();
-        systemProperties.put(getSymbol(OFFSET_ANNOTATION_NAME), OFFSET);
+        systemProperties.put(getSymbol(OFFSET_ANNOTATION_NAME), String.valueOf(OFFSET));
         systemProperties.put(getSymbol(PARTITION_KEY_ANNOTATION_NAME), PARTITION_KEY);
         systemProperties.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME), Date.from(ENQUEUED_TIME));
         systemProperties.put(getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME), SEQUENCE_NUMBER);

@@ -13,6 +13,7 @@ import org.junit.Test;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,6 +29,7 @@ import static com.azure.messaging.eventhubs.TestUtils.PARTITION_KEY;
 import static com.azure.messaging.eventhubs.TestUtils.SEQUENCE_NUMBER;
 import static com.azure.messaging.eventhubs.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.apache.qpid.proton.amqp.Symbol.getSymbol;
 
 public class EventDataTest {
     // Create a giant payload with 10000 characters that are "a".
@@ -44,7 +46,7 @@ public class EventDataTest {
         new EventData((ByteBuffer) null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void messageNotNull() {
         new EventData((Message) null);
     }
@@ -170,7 +172,10 @@ public class EventDataTest {
      */
     private static EventData constructMessage(long sequenceNumber) {
         final HashMap<Symbol, Object> properties = new HashMap<>();
-        properties.put(Symbol.getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), sequenceNumber);
+        properties.put(getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), sequenceNumber);
+        properties.put(getSymbol(OFFSET_ANNOTATION_NAME.getValue()), String.valueOf(OFFSET));
+        properties.put(getSymbol(PARTITION_KEY_ANNOTATION_NAME.getValue()), PARTITION_KEY);
+        properties.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), Date.from(ENQUEUED_TIME));
 
         final Message message = Proton.message();
         message.setMessageAnnotations(new MessageAnnotations(properties));
