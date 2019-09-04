@@ -11,7 +11,10 @@ import io.netty.channel.nio.NioEventLoopGroup;
  */
 public class NettyAsyncHttpClientBuilderJavaDocCodeSnippets {
 
-    private void simpleInstantiation() {
+    /**
+     * Code snippet for simple http client instantiation.
+     */
+    public void simpleInstantiation() {
 
         // BEGIN: com.azure.core.http.netty.instantiation-simple
         HttpClient client = new NettyAsyncHttpClientBuilder()
@@ -21,7 +24,10 @@ public class NettyAsyncHttpClientBuilderJavaDocCodeSnippets {
         // END: com.azure.core.http.netty.instantiation-simple
     }
 
-    private void fixedThreadPoolSample() {
+    /**
+     * Code snippet for creating http client with fixed thread pool.
+     */
+    public void fixedThreadPoolSample() {
 
         // BEGIN: com.azure.core.http.netty.NettyAsyncHttpClientBuilder#NioEventLoopGroup
         int threadCount = 5;

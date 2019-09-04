@@ -21,6 +21,7 @@ import okio.ByteString;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoSink;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,19 +60,8 @@ class OkHttpAsyncHttpClient implements HttpClient {
             //      but block on the thread backing flux. This ignore any subscribeOn applied to send(r)
             //
             toOkHttpRequest(request).subscribe(okHttpRequest -> {
-                Call call = httpClient.newCall(okHttpRequest);
-                call.enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        sink.error(e);
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) {
-                        sink.success(new OkHttpResponse(response, request));
-                    }
-                });
-            }, throwable -> sink.error(throwable));
+                httpClient.newCall(okHttpRequest).enqueue(new OkHttpCallback(sink, request));
+            }, sink::error);
         }));
     }
 
@@ -81,27 +71,27 @@ class OkHttpAsyncHttpClient implements HttpClient {
      * @param request the azure-core request
      * @return the Mono emitting okhttp request
      */
-    private static Mono<Request> toOkHttpRequest(HttpRequest request) {
-        return Mono.just(new Request.Builder())
-                .map(rb -> {
-                    rb.url(request.url());
-                    if (request.headers() != null) {
-                        return rb.headers(Headers.of(request.headers().toMap()));
-                    } else {
-                        return rb.headers(Headers.of(new HashMap<>()));
-                    }
-                })
-                .flatMap((Function<Request.Builder, Mono<Request.Builder>>) rb -> {
-                    if (request.httpMethod() == HttpMethod.GET) {
-                        return Mono.just(rb.get());
-                    } else if (request.httpMethod() == HttpMethod.HEAD) {
-                        return Mono.just(rb.head());
-                    } else {
-                        return toOkHttpRequestBody(request.body(), request.headers())
-                                .map(requestBody -> rb.method(request.httpMethod().toString(), requestBody));
-                    }
-                })
-                .map(rb -> rb.build());
+    private static Mono<okhttp3.Request> toOkHttpRequest(HttpRequest request) {
+        return Mono.just(new okhttp3.Request.Builder())
+            .map(rb -> {
+                rb.url(request.url());
+                if (request.headers() != null) {
+                    return rb.headers(okhttp3.Headers.of(request.headers().toMap()));
+                } else {
+                    return rb.headers(okhttp3.Headers.of(new HashMap<>()));
+                }
+            })
+            .flatMap((Function<Request.Builder, Mono<Request.Builder>>) rb -> {
+                if (request.httpMethod() == HttpMethod.GET) {
+                    return Mono.just(rb.get());
+                } else if (request.httpMethod() == HttpMethod.HEAD) {
+                    return Mono.just(rb.head());
+                } else {
+                    return toOkHttpRequestBody(request.body(), request.headers())
+                            .map(requestBody -> rb.method(request.httpMethod().toString(), requestBody));
+                }
+            })
+            .map(rb -> rb.build());
     }
 
     /**
@@ -113,9 +103,9 @@ class OkHttpAsyncHttpClient implements HttpClient {
      */
     private static Mono<RequestBody> toOkHttpRequestBody(Flux<ByteBuffer> bbFlux, HttpHeaders headers) {
         Mono<okio.ByteString> bsMono = bbFlux == null
-                ? EMPTY_BYTE_STRING_MONO
-                : toByteString(bbFlux);
-        //
+            ? EMPTY_BYTE_STRING_MONO
+            : toByteString(bbFlux);
+        
         return bsMono.map(bs -> {
             String contentType = headers.value("Content-Type");
             if (contentType == null) {
@@ -141,17 +131,37 @@ class OkHttpAsyncHttpClient implements HttpClient {
     private static Mono<ByteString> toByteString(Flux<ByteBuffer> bbFlux) {
         Objects.requireNonNull(bbFlux);
         return Mono.using(okio.Buffer::new,
-                buffer -> bbFlux.reduce(buffer, (b, byteBuffer) -> {
-                    try {
-                        b.write(byteBuffer);
-                        return b;
-                    } catch (IOException ioe) {
-                        throw Exceptions.propagate(ioe);
-                    }
-                })
-                .map(b -> ByteString.of(b.readByteArray())),
-                okio.Buffer::clear)
+            buffer -> bbFlux.reduce(buffer, (b, byteBuffer) -> {
+                try {
+                    b.write(byteBuffer);
+                    return b;
+                } catch (IOException ioe) {
+                    throw Exceptions.propagate(ioe);
+                }
+            })
+            .map(b -> ByteString.of(b.readByteArray())),
+            okio.Buffer::clear)
             .switchIfEmpty(EMPTY_BYTE_STRING_MONO);
+    }
+
+    private static class OkHttpCallback implements okhttp3.Callback {
+        private final MonoSink<HttpResponse> sink;
+        private final HttpRequest request;
+
+        OkHttpCallback(MonoSink<HttpResponse> sink, HttpRequest request) {
+            this.sink = sink;
+            this.request = request;
+        }
+
+        @Override
+        public void onFailure(okhttp3.Call call, IOException e) {
+            sink.error(e);
+        }
+
+        @Override
+        public void onResponse(okhttp3.Call call, okhttp3.Response response) {
+            sink.success(new OkHttpResponse(response, request));
+        }
     }
 
     /**
@@ -176,10 +186,10 @@ class OkHttpAsyncHttpClient implements HttpClient {
                 this.responseBodyMono = Mono.empty();
             } else {
                 this.responseBodyMono = Mono.using(() -> innerResponse.body(),
-                        rb -> Mono.just(rb),
-                        // Resource cleanup
-                        // https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
-                        rb -> rb.close());
+                    rb -> Mono.just(rb),
+                    // Resource cleanup
+                    // https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
+                    ResponseBody::close);
             }
             super.request(request);
         }
@@ -202,39 +212,39 @@ class OkHttpAsyncHttpClient implements HttpClient {
         @Override
         public Flux<ByteBuffer> body() {
             return this.responseBodyMono
-                    .flatMapMany(irb -> toFluxByteBuffer(irb.byteStream()));
+                .flatMapMany(irb -> toFluxByteBuffer(irb.byteStream()));
         }
 
         @Override
         public Mono<byte[]> bodyAsByteArray() {
             return this.responseBodyMono
-                    .flatMap(rb -> {
-                        try {
-                            byte[] content = rb.bytes();
-                            return content.length == 0 ? Mono.empty() : Mono.just(content);
-                        } catch (IOException ioe) {
-                            throw Exceptions.propagate(ioe);
-                        }
-                    });
+                .flatMap(rb -> {
+                    try {
+                        byte[] content = rb.bytes();
+                        return content.length == 0 ? Mono.empty() : Mono.just(content);
+                    } catch (IOException ioe) {
+                        throw Exceptions.propagate(ioe);
+                    }
+                });
         }
 
         @Override
         public Mono<String> bodyAsString() {
             return this.responseBodyMono
-                    .flatMap(rb -> {
-                        try {
-                            String content = rb.string();
-                            return content.length() == 0 ? Mono.empty() : Mono.just(content);
-                        } catch (IOException ioe) {
-                            throw Exceptions.propagate(ioe);
-                        }
-                    });
+                .flatMap(rb -> {
+                    try {
+                        String content = rb.string();
+                        return content.length() == 0 ? Mono.empty() : Mono.just(content);
+                    } catch (IOException ioe) {
+                        throw Exceptions.propagate(ioe);
+                    }
+                });
         }
 
         @Override
         public Mono<String> bodyAsString(Charset charset) {
             return bodyAsByteArray()
-                    .map(bytes -> new String(bytes, charset));
+                .map(bytes -> new String(bytes, charset));
         }
 
         @Override
@@ -266,23 +276,23 @@ class OkHttpAsyncHttpClient implements HttpClient {
         private static Flux<ByteBuffer> toFluxByteBuffer(InputStream inputStream) {
             Pair pair = new Pair();
             return Flux.just(true)
-                    .repeat()
-                    .map(ignore -> {
-                        byte[] buffer = new byte[BYTE_BUFFER_CHUNK_SIZE];
-                        try {
-                            int numBytes = inputStream.read(buffer);
-                            if (numBytes > 0) {
-                                return pair.buffer(ByteBuffer.wrap(buffer, 0, numBytes)).readBytes(numBytes);
-                            } else {
-                                return pair.buffer(null).readBytes(numBytes);
-                            }
-                        } catch (IOException ioe) {
-                            throw Exceptions.propagate(ioe);
+                .repeat()
+                .map(ignore -> {
+                    byte[] buffer = new byte[BYTE_BUFFER_CHUNK_SIZE];
+                    try {
+                        int numBytes = inputStream.read(buffer);
+                        if (numBytes > 0) {
+                            return pair.buffer(ByteBuffer.wrap(buffer, 0, numBytes)).readBytes(numBytes);
+                        } else {
+                            return pair.buffer(null).readBytes(numBytes);
                         }
-                    })
-                    .takeUntil(p -> p.readBytes() == -1)
-                    .filter(p -> p.readBytes() > 0)
-                    .map(p -> p.buffer());
+                    } catch (IOException ioe) {
+                        throw Exceptions.propagate(ioe);
+                    }
+                })
+                .takeUntil(p -> p.readBytes() == -1)
+                .filter(p -> p.readBytes() > 0)
+                .map(Pair::buffer);
         }
 
         private static class Pair {

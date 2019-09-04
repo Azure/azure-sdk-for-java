@@ -19,11 +19,11 @@ import java.util.Objects;
  * Builder to configure and build an implementation of {@link HttpClient} for OkHttp.
  */
 public class OkHttpAsyncHttpClientBuilder {
-    private final OkHttpClient okHttpClient;
-    //
-    private final static Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(120);
-    private final static Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60);
-    //
+    private final okhttp3.OkHttpClient okHttpClient;
+
+    private static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(120);
+    private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60);
+
     private List<Interceptor> networkInterceptors = new ArrayList<>();
     private Duration readTimeout;
     private Duration connectionTimeout;

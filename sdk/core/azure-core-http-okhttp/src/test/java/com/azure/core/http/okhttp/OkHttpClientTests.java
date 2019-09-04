@@ -52,7 +52,7 @@ public class OkHttpClientTests {
         server.stubFor(
                 WireMock.post("/shortPost").willReturn(WireMock.aResponse().withBody(SHORT_BODY)));
         server.start();
-   }
+    }
 
     @AfterClass
     public static void afterClass() {

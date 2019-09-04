@@ -105,7 +105,7 @@
     <spotbugs.version>4.0.0-beta3</spotbugs.version>
     <spotbugs.maven.version>3.1.12.2</spotbugs.maven.version>
     <proton-j-version>0.31.0</proton-j-version>
-    <qpid-proton-j-extensions-version>1.2.0</qpid-proton-j-extensions-version>
+    <qpid-proton-j-extensions-version>1.2.1</qpid-proton-j-extensions-version>
     <log4j-api.version>2.11.1</log4j-api.version>
     <groovy-eclipse-compiler.version>3.4.0-01</groovy-eclipse-compiler.version>
     <groovy-eclipse-batch.version>2.5.8-01</groovy-eclipse-batch.version>
