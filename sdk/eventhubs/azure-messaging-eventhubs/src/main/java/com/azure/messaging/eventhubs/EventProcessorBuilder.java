@@ -3,8 +3,14 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.implementation.tracing.Tracer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.PartitionContext;
+import java.util.Objects;
+import java.util.ServiceLoader;
+import java.util.function.Function;
 import reactor.core.publisher.Mono;
 
 /**
@@ -16,28 +22,19 @@ import reactor.core.publisher.Mono;
  * following fields:
  *
  * <ul>
- * <li><b>Consumer group name.</b></li>
- * <li><b>{@link EventHubAsyncClient}</b> - An asynchronous Event Hub client the {@link EventProcessor} will use for
+ * <li>{@link #consumerGroup(String) Consumer group name}.</li>
+ * <li>{@link EventHubAsyncClient} - An asynchronous Event Hub client the {@link EventProcessor} will use for
  * consuming events.</li>
- * <li><b>{@link #processEvent(ProcessEventConsumer)}</b> - A callback for processing new events as they are received.</li>
- * <li><b>{@link PartitionManager}</b> - An instance of PartitionManager. To get started, you can pass an instance of
+ * <li>{@link PartitionManager} - An instance of PartitionManager. To get started, you can pass an instance of
  * {@link InMemoryPartitionManager}. For production, choose an implementation that will store checkpoints and partition
  * ownership details to a durable store.</li>
+ * <li>{@link #partitionProcessorFactory(Function) partitionProcessorFactory} - A user-defined {@link Function} that creates
+ * new instances of {@link PartitionProcessor} for processing events. Users should extend from
+ * {@link PartitionProcessor} abstract class to implement {@link PartitionProcessor#processEvent(EventData)}.</li>
  * </ul>
  *
- * <p><strong>Creating an {@link EventProcessor} using a {@link #processEvent(ProcessEventConsumer)} function</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventprocessorbuilder.processevent}
- *
- * <p>
- *  To create a more advanced {@link EventProcessor}, use the
- *  {@link #partitionProcessorFactory(PartitionProcessorFactory)} instead of {@link #processEvent(ProcessEventConsumer)}.
- *  The {@link PartitionProcessorFactory} provides the ability to control when checkpoints are updated, handle
- *  errors that might occur during event processing and perform partition-specific initialization of
- *  {@link PartitionProcessor}.
- * </p>
- *
- * <p><strong>Creating an {@link EventProcessor} using {@link PartitionProcessorFactory}</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventprocessorbuilder.partitionprocessorfactory}
+ * <p><strong>Creating an {@link EventProcessor}</strong></p>
+ * {@codesnippet com.azure.messaging.eventhubs.eventprocessorbuilder.instantiation}
  *
  * @see EventProcessor
  * @see EventHubConsumer
@@ -46,12 +43,10 @@ public class EventProcessorBuilder {
 
     private final ClientLogger logger = new ClientLogger(EventProcessorBuilder.class);
 
-    private EventPosition initialEventPosition;
-    private PartitionProcessorFactory partitionProcessorFactory;
+    private Function<PartitionContext, PartitionProcessor> partitionProcessorFactory;
     private String consumerGroup;
     private PartitionManager partitionManager;
     private EventHubAsyncClient eventHubAsyncClient;
-    private ProcessEventConsumer processEvent;
 
     /**
      * Sets the Event Hub client the {@link EventProcessor} will use to connect to the Event Hub for consuming events.
@@ -72,18 +67,6 @@ public class EventProcessorBuilder {
      */
     public EventProcessorBuilder consumerGroup(String consumerGroup) {
         this.consumerGroup = consumerGroup;
-        return this;
-    }
-
-    /**
-     * Sets the callback for processing new events as they are received from all partitions this {@link EventProcessor}
-     * is responsible for. Instance of a {@link CheckpointManager} is also provided for updating checkpoints.
-     *
-     * @param processEvent A callback for processing new events as they are received.
-     * @return The updated {@link EventProcessorBuilder} instance.
-     */
-    public EventProcessorBuilder processEvent(ProcessEventConsumer processEvent) {
-        this.processEvent = processEvent;
         return this;
     }
 
@@ -116,19 +99,9 @@ public class EventProcessorBuilder {
      * @param partitionProcessorFactory The factory that creates new {@link PartitionProcessor} for each partition.
      * @return The updated {@link EventProcessorBuilder} instance.
      */
-    public EventProcessorBuilder partitionProcessorFactory(PartitionProcessorFactory partitionProcessorFactory) {
+    public EventProcessorBuilder partitionProcessorFactory(
+        Function<PartitionContext, PartitionProcessor> partitionProcessorFactory) {
         this.partitionProcessorFactory = partitionProcessorFactory;
-        return this;
-    }
-
-    /**
-     * Sets the initial event position, defaulting to {@link EventPosition#earliest()} if this property is not set.
-     *
-     * @param initialEventPosition The initial event position.
-     * @return The updated {@link EventProcessorBuilder} instance.
-     */
-    public EventProcessorBuilder initialEventPosition(EventPosition initialEventPosition) {
-        this.initialEventPosition = initialEventPosition;
         return this;
     }
 
@@ -137,51 +110,15 @@ public class EventProcessorBuilder {
      * method will return a new instance of {@link EventProcessor}.
      *
      * <p>
-     * If the {@link #initialEventPosition(EventPosition) initial event position} is not set, all partitions processed
-     * by this {@link EventProcessor} will start processing from {@link EventPosition#earliest() earliest} available
-     * event in the respective partitions.
+     * All partitions processed by this {@link EventProcessor} will start processing from {@link
+     * EventPosition#earliest() earliest} available event in the respective partitions.
      * </p>
      *
      * @return A new instance of {@link EventProcessor}.
-     * @throws IllegalStateException if either one of {@link #processEvent(ProcessEventConsumer)} or {@link
-     * #partitionProcessorFactory(PartitionProcessorFactory)} is not set. This exception will also be thrown if both are
-     * set.
      */
     public EventProcessor buildEventProcessor() {
-        EventPosition initialEventPosition =
-            this.initialEventPosition == null ? EventPosition.earliest()
-                : this.initialEventPosition;
-        if (processEvent == null && partitionProcessorFactory == null) {
-            throw logger.logExceptionAsWarning(
-                new IllegalStateException("Either processEvent function or the partitionProcessorFactory "
-                    + "must be provided for creating an EventProcessor instance"));
-        }
-
-        if (processEvent != null && partitionProcessorFactory != null) {
-            throw logger.logExceptionAsWarning(
-                new IllegalStateException("Both processEvent function and partitionProcessorFactory cannot "
-                    + "be set"));
-        }
-
-        if (partitionProcessorFactory == null) {
-            partitionProcessorFactory = createPartitionProcessorFactory();
-        }
-
+        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
         return new EventProcessor(eventHubAsyncClient, this.consumerGroup,
-            this.partitionProcessorFactory, initialEventPosition, partitionManager);
-    }
-
-    private PartitionProcessorFactory createPartitionProcessorFactory() {
-        return (partitionContext, checkpointManager) -> new PartitionProcessor(partitionContext, checkpointManager) {
-            @Override
-            public Mono<Void> processEvent(EventData eventData) {
-                try {
-                    processEvent.processEvent(eventData, partitionContext, checkpointManager);
-                    return Mono.empty();
-                } catch (Exception ex) {
-                    return Mono.error(ex);
-                }
-            }
-        };
+            this.partitionProcessorFactory, EventPosition.earliest(), partitionManager, tracerProvider);
     }
 }

@@ -20,13 +20,11 @@ public class LogPartitionProcessor extends PartitionProcessor {
      * Creates a new {@link PartitionProcessor} instance that logs every interaction with {@link EventProcessor}.
      *
      * @param partitionContext The partition context to know which partition this processor is receiving events from.
-     * @param checkpointManager The checkpoint manager for updating checkpoints.
      */
-    public LogPartitionProcessor(PartitionContext partitionContext,
-        CheckpointManager checkpointManager) {
-        super(partitionContext, checkpointManager);
+    public LogPartitionProcessor(PartitionContext partitionContext) {
+        super(partitionContext);
         logger.info("Creating partition processor: Event Hub name = {}; consumer group name = {}; partition id = {}",
-            partitionContext.eventHubName(), partitionContext.consumerGroupName(), partitionContext.partitionId());
+            partitionContext.eventHubName(), partitionContext.consumerGroup(), partitionContext.partitionId());
     }
 
     /**
@@ -39,8 +37,8 @@ public class LogPartitionProcessor extends PartitionProcessor {
     public Mono<Void> processEvent(EventData eventData) {
         logger.info(
             "Processing event: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}",
-            partitionContext().eventHubName(), partitionContext().consumerGroupName(), partitionContext().partitionId(),
+            partitionContext().eventHubName(), partitionContext().consumerGroup(), partitionContext().partitionId(),
             eventData.sequenceNumber());
-        return this.checkpointManager().updateCheckpoint(eventData);
+        return this.partitionContext().updateCheckpoint(eventData);
     }
 }

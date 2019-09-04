@@ -9,31 +9,32 @@ import java.util.Objects;
 import reactor.core.publisher.Mono;
 
 /**
- * An abstract class defining all the operations that a partition processor can perform.
+ * An abstract class defining all the operations that a partition processor can perform. Users of
+ * {@link EventProcessor} should extend from this class and implement {@link #processEvent(EventData)} for processing
+ * events. Additionally, users can override:
+ * <ul>
+ *     <li>{@link #initialize()} - This method is called before at the beginning of processing a partition.</li>
+ *     <li>{@link #processError(Throwable)} - This method is called if there is an error while processing events</li>
+ *     <li>{@link #close(CloseReason)} - This method is called at the end of processing a partition. The
+ *     {@link CloseReason} specifies why the processing of a partition stopped.</li>
+ * </ul>
  * <p>
- * An instance of partition processor will process events only from a single partition. New instances of partition
- * processors will be created through {@link PartitionProcessorFactory#createPartitionProcessor(PartitionContext,
- * CheckpointManager) PartitionProcessorFactory}.
+ * An instance of partition processor will process events from a single partition only.
  * </p>
- * <p>
- * Implementations of this abstract class also have the responsibility of updating checkpoints when appropriate.
- * </p>
+ * <p>Implementations of this abstract class also have the responsibility of updating checkpoints when appropriate.</p>
  */
 public abstract class PartitionProcessor {
 
     private final ClientLogger logger = new ClientLogger(PartitionProcessor.class);
     private final PartitionContext partitionContext;
-    private final CheckpointManager checkpointManager;
 
     /**
      * Creates a new instance of PartitionProcessor with the given partition context and checkpoint manager
      *
      * @param partitionContext The partition information specific to this PartitionProcessor instance.
-     * @param checkpointManager The checkpoint manager this PartitionProcessor can use to update checkpoints.
      */
-    public PartitionProcessor(PartitionContext partitionContext, CheckpointManager checkpointManager) {
+    public PartitionProcessor(PartitionContext partitionContext) {
         this.partitionContext = Objects.requireNonNull(partitionContext, "partitionContext cannot be null");
-        this.checkpointManager = Objects.requireNonNull(checkpointManager, "checkpointManager cannot be null");
     }
 
     /**
@@ -43,15 +44,6 @@ public abstract class PartitionProcessor {
      */
     public PartitionContext partitionContext() {
         return this.partitionContext;
-    }
-
-    /**
-     * The checkpoint manager that this PartitionProcessor can use to update checkpoints.
-     *
-     * @return The checkpoint manager that this PartitionProcessor can use to update checkpoints.
-     */
-    public CheckpointManager checkpointManager() {
-        return this.checkpointManager;
     }
 
     /**

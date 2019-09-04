@@ -1,0 +1,101 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queuesasteststestqueuesasupdatedeletewithpermissions807317",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "9c190ccc-9003-0099-34cf-5ebfb4000000",
+      "Date" : "Fri, 30 Aug 2019 01:11:50 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queuesasteststestqueuesasupdatedeletewithpermissions807317/messages",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "9c190cd0-9003-0099-36cf-5ebfb4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>063400c4-b676-4e0e-a244-6d66a91b7ecb</MessageId><InsertionTime>Fri, 30 Aug 2019 01:11:50 GMT</InsertionTime><ExpirationTime>Fri, 06 Sep 2019 01:11:50 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAeihH589e1QE=</PopReceipt><TimeNextVisible>Fri, 30 Aug 2019 01:11:50 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Fri, 30 Aug 2019 01:11:50 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queuesasteststestqueuesasupdatedeletewithpermissions807317/messages/063400c4-b676-4e0e-a244-6d66a91b7ecb?popreceipt=AgAAAAMAAAAAAAAAeihH589e1QE%3d&visibilitytimeout=0&sv=2019-02-02&spr=https%2Chttp&st=2019-08-29T01%3A11%3A50Z&se=2019-08-31T01%3A11%3A50Z&sip=0.0.0.0-255.255.255.255&sp=raup&sig=REDACTED",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-time-next-visible" : "Fri, 30 Aug 2019 01:11:50 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "9c190cd5-9003-0099-3acf-5ebfb4000000",
+      "x-ms-popreceipt" : "AwAAAAMAAAAAAAAAGVZO589e1QEAAAAA",
+      "Date" : "Fri, 30 Aug 2019 01:11:50 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queuesasteststestqueuesasupdatedeletewithpermissions807317/messages?numofmessages=1&visibilitytimeout=30&sv=2019-02-02&spr=https%2Chttp&st=2019-08-29T01%3A11%3A50Z&se=2019-08-31T01%3A11%3A50Z&sip=0.0.0.0-255.255.255.255&sp=raup&sig=REDACTED",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "9c190cdb-9003-0099-40cf-5ebfb4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>063400c4-b676-4e0e-a244-6d66a91b7ecb</MessageId><InsertionTime>Fri, 30 Aug 2019 01:11:50 GMT</InsertionTime><ExpirationTime>Fri, 06 Sep 2019 01:11:50 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAJTw2+c9e1QE=</PopReceipt><TimeNextVisible>Fri, 30 Aug 2019 01:12:20 GMT</TimeNextVisible><DequeueCount>1</DequeueCount><MessageText>testing</MessageText></QueueMessage></QueueMessagesList>",
+      "Date" : "Fri, 30 Aug 2019 01:11:50 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queuesasteststestqueuesasupdatedeletewithpermissions807317?sv=2019-02-02&spr=https%2Chttp&st=2019-08-29T01%3A11%3A50Z&se=2019-08-31T01%3A11%3A50Z&sip=0.0.0.0-255.255.255.255&sp=raup&sig=REDACTED",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "AuthorizationFailure",
+      "retry-after" : "0",
+      "Content-Length" : "246",
+      "StatusCode" : "403",
+      "x-ms-request-id" : "9c190cde-9003-0099-43cf-5ebfb4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthorizationFailure</Code><Message>This request is not authorized to perform this operation.\nRequestId:9c190cde-9003-0099-43cf-5ebfb4000000\nTime:2019-08-30T01:11:51.0065088Z</Message></Error>",
+      "Date" : "Fri, 30 Aug 2019 01:11:50 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "queuesasteststestqueuesasupdatedeletewithpermissions807317", "2019-08-30T01:11:50.933Z", "2019-08-30T01:11:50.933Z", "queue603652f5" ]
+}

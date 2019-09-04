@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
+import com.azure.storage.common.Constants;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -33,7 +36,7 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient client = new FileClientBuilder()
             .connectionString("${connectionString}")
             .endpoint("${endpoint}")
-            .buildAsyncClient();
+            .buildFileAsyncClient();
         // END: com.azure.storage.file.fileAsyncClient.instantiation
     }
 
@@ -47,8 +50,8 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = new FileClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net?{SASToken}")
             .shareName("myshare")
-            .filePath("myfilepath")
-            .buildAsyncClient();
+            .resourcePath("myfilepath")
+            .buildFileAsyncClient();
         // END: com.azure.storage.file.fileAsyncClient.instantiation.sastoken
         return fileAsyncClient;
     }
@@ -63,8 +66,8 @@ public class FileAsyncJavaDocCodeSamples {
             .endpoint("https://{accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
             .shareName("myshare")
-            .filePath("myfilepath")
-            .buildAsyncClient();
+            .resourcePath("myfilepath")
+            .buildFileAsyncClient();
         // END: com.azure.storage.file.fileAsyncClient.instantiation.credential
         return fileAsyncClient;
     }
@@ -79,8 +82,8 @@ public class FileAsyncJavaDocCodeSamples {
         String connectionString = "DefaultEndpointsProtocol=https;AccountName={name};AccountKey={key};"
             + "EndpointSuffix={core.windows.net}";
         FileAsyncClient fileAsyncClient = new FileClientBuilder()
-            .connectionString(connectionString).shareName("myshare").filePath("myfilepath")
-            .buildAsyncClient();
+            .connectionString(connectionString).shareName("myshare").resourcePath("myfilepath")
+            .buildFileAsyncClient();
         // END: com.azure.storage.file.fileAsyncClient.instantiation.connectionstring
         return fileAsyncClient;
     }
@@ -569,6 +572,36 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link FileAsyncClient#generateSAS(String, FileSASPermission, OffsetDateTime,
+     * OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     */
+    public void generateSASAsync() {
+        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileAsyncClient.generateSAS
+        String identifier = "identifier";
+        FileSASPermission permissions = new FileSASPermission()
+            .read(true)
+            .create(true)
+            .delete(true)
+            .write(true);
+        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        IPRange ipRange = new IPRange()
+            .ipMin("0.0.0.0")
+            .ipMax("255.255.255.255");
+        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        String cacheControl = "cache";
+        String contentDisposition = "disposition";
+        String contentEncoding = "encoding";
+        String contentLanguage = "language";
+        String contentType = "type";
+        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+        String sas = fileAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
+            ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+        // END: com.azure.storage.file.fileAsyncClient.generateSAS
+    }
+
+    /**
      * Generates a code sample for using {@link FileAsyncClient#getShareSnapshotId()}
      */
     public void getShareSnapshotIdAsync() {
@@ -578,9 +611,9 @@ public class FileAsyncJavaDocCodeSamples {
             .endpoint("https://${accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
             .shareName("myshare")
-            .filePath("myfiile")
+            .resourcePath("myfiile")
             .snapshot(currentTime.toString())
-            .buildAsyncClient();
+            .buildFileAsyncClient();
 
         System.out.printf("Snapshot ID: %s%n", fileAsyncClient.getShareSnapshotId());
         // END: com.azure.storage.file.fileAsyncClient.getShareSnapshotId

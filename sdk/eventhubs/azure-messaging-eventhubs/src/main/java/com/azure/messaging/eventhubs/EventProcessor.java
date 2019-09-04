@@ -3,24 +3,20 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.models.PartitionContext;
-import com.azure.messaging.eventhubs.models.PartitionOwnership;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
+import com.azure.messaging.eventhubs.implementation.PartitionBasedLoadBalancer;
+import com.azure.messaging.eventhubs.implementation.PartitionPumpManager;
 import com.azure.messaging.eventhubs.models.EventPosition;
-
-import java.io.IOException;
-import java.util.Map;
+import com.azure.messaging.eventhubs.models.PartitionContext;
 import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.reactivestreams.Publisher;
+import java.util.function.Function;
 import reactor.core.Disposable;
-import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -31,28 +27,22 @@ import reactor.core.scheduler.Schedulers;
  * instances and track progress when events are processed. Based on the number of instances running, each Event
  * Processor may own zero or more partitions to balance the workload among all the instances.
  *
- * <p>
- * To create an instance of EventProcessor, use the fluent {@link EventProcessorBuilder}.
- * </p>
+ * <p>To create an instance of EventProcessor, use the fluent {@link EventProcessorBuilder}.</p>
  *
  * @see EventProcessorBuilder
  */
 public class EventProcessor {
 
-    private static final long INTERVAL_IN_SECONDS = 10; // run every 10 seconds
-    private static final long INITIAL_DELAY = 0; // start immediately
-    private static final long OWNERSHIP_EXPIRATION_TIME_IN_MILLIS = TimeUnit.SECONDS.toMillis(30);
+    private static final long INTERVAL_IN_SECONDS = 10; // run the load balancer every 10 seconds
+    private static final long BASE_JITTER_IN_SECONDS = 2; // the initial delay jitter before starting the processor
     private final ClientLogger logger = new ClientLogger(EventProcessor.class);
 
-    private final EventHubAsyncClient eventHubAsyncClient;
-    private final String consumerGroupName;
-    private final EventPosition initialEventPosition;
-    private final PartitionProcessorFactory partitionProcessorFactory;
-    private final PartitionManager partitionManager;
     private final String identifier;
-    private final Map<String, EventHubAsyncConsumer> partitionConsumers = new ConcurrentHashMap<>();
-    private final String eventHubName;
     private final AtomicBoolean started = new AtomicBoolean(false);
+    private final PartitionPumpManager partitionPumpManager;
+    private final PartitionBasedLoadBalancer partitionBasedLoadBalancer;
+    private final PartitionManager partitionManager;
+
     private Disposable runner;
     private Scheduler scheduler;
 
@@ -60,28 +50,31 @@ public class EventProcessor {
      * Package-private constructor. Use {@link EventHubClientBuilder} to create an instance.
      *
      * @param eventHubAsyncClient The {@link EventHubAsyncClient}.
-     * @param consumerGroupName The consumer group name used in this event processor to consumer events.
+     * @param consumerGroup The consumer group name used in this event processor to consumer events.
      * @param partitionProcessorFactory The factory to create new partition processor(s).
      * @param initialEventPosition Initial event position to start consuming events.
      * @param partitionManager The partition manager used for reading and updating partition ownership and checkpoint
      * information.
+     * @param tracerProvider The tracer implementation.
      */
-    EventProcessor(EventHubAsyncClient eventHubAsyncClient, String consumerGroupName,
-        PartitionProcessorFactory partitionProcessorFactory, EventPosition initialEventPosition,
-        PartitionManager partitionManager) {
-        this.eventHubAsyncClient = Objects
-            .requireNonNull(eventHubAsyncClient, "eventHubAsyncClient cannot be null");
-        this.consumerGroupName = Objects
-            .requireNonNull(consumerGroupName, "consumerGroupname cannot be null");
-        this.partitionProcessorFactory = Objects
-            .requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null");
+    EventProcessor(EventHubAsyncClient eventHubAsyncClient, String consumerGroup,
+        Function<PartitionContext, PartitionProcessor> partitionProcessorFactory, EventPosition initialEventPosition,
+        PartitionManager partitionManager, TracerProvider tracerProvider) {
+
+        Objects.requireNonNull(eventHubAsyncClient, "eventHubAsyncClient cannot be null");
+        Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null");
+        Objects.requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null");
+        Objects.requireNonNull(initialEventPosition, "initialEventPosition cannot be null");
+
         this.partitionManager = partitionManager == null ? findPartitionManager() : partitionManager;
-        this.initialEventPosition = Objects
-            .requireNonNull(initialEventPosition, "initialEventPosition cannot be null");
-        this.eventHubName = Objects
-            .requireNonNull(eventHubAsyncClient.eventHubName(), "eventHubName cannot be null");
         this.identifier = UUID.randomUUID().toString();
         logger.info("The instance ID for this event processors is {}", this.identifier);
+        this.partitionPumpManager = new PartitionPumpManager(partitionManager, partitionProcessorFactory,
+            initialEventPosition, eventHubAsyncClient, tracerProvider);
+        this.partitionBasedLoadBalancer =
+            new PartitionBasedLoadBalancer(this.partitionManager, eventHubAsyncClient,
+                eventHubAsyncClient.eventHubName(),
+                consumerGroup, identifier, TimeUnit.MINUTES.toSeconds(1), partitionPumpManager);
     }
 
     /**
@@ -148,7 +141,11 @@ public class EventProcessor {
         }
         logger.info("Starting a new event processor instance with id {}", this.identifier);
         scheduler = Schedulers.newElastic("EventProcessor");
-        runner = scheduler.schedulePeriodically(this::run, INITIAL_DELAY, INTERVAL_IN_SECONDS, TimeUnit.SECONDS);
+        Double jitterInMillis =
+            ThreadLocalRandom.current().nextDouble() * TimeUnit.SECONDS.toMillis(BASE_JITTER_IN_SECONDS);
+        // Add a bit of jitter to initialDelay to minimize contention if multiple EventProcessors start at the same time
+        runner = scheduler.schedulePeriodically(partitionBasedLoadBalancer::loadBalance, jitterInMillis.longValue(),
+            TimeUnit.SECONDS.toMillis(INTERVAL_IN_SECONDS) /* TODO: make this configurable */, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -166,109 +163,8 @@ public class EventProcessor {
             logger.info("Event processor has already stopped");
             return;
         }
-        this.partitionConsumers.forEach((key, value) -> {
-            try {
-                logger.info("Closing event hub consumer for partition {}", key);
-                value.close();
-                logger.info("Closed event hub consumer for partition {}", key);
-                partitionConsumers.remove(key);
-            } catch (IOException ex) {
-                logger.warning("Unable to close event hub consumer for partition {}", key);
-            }
-        });
         runner.dispose();
         scheduler.dispose();
-    }
-
-    /*
-     * A simple implementation of an event processor that:
-     * 1. Fetches all partition ids from Event Hub
-     * 2. Gets the current ownership information of all the partitions from PartitionManager
-     * 3. Claims ownership of any partition that doesn't have an owner yet.
-     * 4. Starts a new PartitionProcessor and receives events from each of the partitions this instance owns
-     */
-    private void run() {
-        /* This will run periodically to get new ownership details and close/open new
-        consumers when ownership of this instance has changed */
-        final Flux<PartitionOwnership> ownershipFlux = partitionManager.listOwnership(eventHubName, consumerGroupName)
-            .cache();
-        eventHubAsyncClient.getPartitionIds()
-            .flatMap(id -> getCandidatePartitions(ownershipFlux, id))
-            .flatMap(this::claimOwnership)
-            .subscribe(this::receiveEvents, ex -> logger.warning("Failed to receive events {}", ex.getMessage()),
-                () -> logger.info("Completed starting partition pumps for new partitions owned"));
-    }
-
-    /*
-     * Get the candidate partitions for claiming ownerships
-     */
-    private Publisher<? extends PartitionOwnership> getCandidatePartitions(Flux<PartitionOwnership> ownershipFlux,
-        String id) {
-        return ownershipFlux
-            // Ownership has never been claimed, so it won't exist in the list, so we provide a default.
-            .filter(ownership -> id.equals(ownership.partitionId()))
-            .single(new PartitionOwnership()
-                .partitionId(id)
-                .eventHubName(this.eventHubName)
-                .ownerId(this.identifier)
-                .consumerGroupName(this.consumerGroupName)
-                .ownerLevel(0L));
-    }
-
-
-    /*
-     * Claim ownership of the given partition if it's available
-     */
-    private Publisher<? extends PartitionOwnership> claimOwnership(PartitionOwnership ownershipInfo) {
-        // Claim ownership if:
-        // it's not previously owned by any other instance,
-        // or if the last modified time is greater than ownership expiration time
-        // and previous owner is not this instance
-        if (ownershipInfo.lastModifiedTime() == null
-            || (System.currentTimeMillis() - ownershipInfo.lastModifiedTime() > OWNERSHIP_EXPIRATION_TIME_IN_MILLIS
-            && !ownershipInfo.ownerId().equals(this.identifier))) {
-            ownershipInfo.ownerId(this.identifier); // update instance id before claiming ownership
-            return partitionManager.claimOwnership(ownershipInfo).doOnComplete(() -> {
-                logger.info("Claimed ownership of partition {}", ownershipInfo.partitionId());
-            }).doOnError(error -> {
-                logger.error("Unable to claim ownership of partition {}", ownershipInfo.partitionId(), error);
-            });
-        } else {
-            return Flux.empty();
-        }
-    }
-
-    /*
-     * Creates a new consumer for given partition and starts receiving events for that partition.
-     */
-    private void receiveEvents(PartitionOwnership partitionOwnership) {
-        EventHubConsumerOptions consumerOptions = new EventHubConsumerOptions();
-        consumerOptions.ownerLevel(0L);
-
-        EventPosition startFromEventPosition = partitionOwnership.sequenceNumber() == null ? this.initialEventPosition
-            : EventPosition.fromSequenceNumber(partitionOwnership.sequenceNumber(), false);
-
-        EventHubAsyncConsumer consumer = this.eventHubAsyncClient
-            .createConsumer(this.consumerGroupName, partitionOwnership.partitionId(), startFromEventPosition,
-                consumerOptions);
-        this.partitionConsumers.put(partitionOwnership.partitionId(), consumer);
-
-        PartitionContext partitionContext = new PartitionContext(partitionOwnership.partitionId(), this.eventHubName,
-            this.consumerGroupName);
-        CheckpointManager checkpointManager = new CheckpointManager(this.identifier, partitionContext,
-            this.partitionManager, null);
-        logger.info("Subscribing to receive events from partition {}", partitionOwnership.partitionId());
-        PartitionProcessor partitionProcessor = this.partitionProcessorFactory
-            .createPartitionProcessor(partitionContext, checkpointManager);
-        partitionProcessor.initialize().subscribe();
-
-        consumer.receive().subscribeOn(Schedulers.newElastic("PartitionPump"))
-            .subscribe(eventData -> partitionProcessor.processEvent(eventData).subscribe(unused -> {
-            }, partitionProcessor::processError),
-                partitionProcessor::processError,
-                // Currently, there is no way to distinguish if the receiver was closed because
-                // another receiver with higher/same owner level(epoch) connected or because
-                // this event processor explicitly called close on this consumer.
-                () -> partitionProcessor.close(CloseReason.LOST_PARTITION_OWNERSHIP));
+        this.partitionPumpManager.stopAllPartitionPumps();
     }
 }

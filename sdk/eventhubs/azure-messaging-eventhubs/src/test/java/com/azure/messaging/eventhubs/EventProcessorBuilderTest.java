@@ -42,55 +42,13 @@ public class EventProcessorBuilderTest {
     @Test(expected = NullPointerException.class)
     public void testEventProcessorBuilderMissingProperties() {
         EventProcessor eventProcessor = new EventProcessorBuilder()
-            .processEvent((eventData, partitionContext, checkpointManager) -> System.out.println(eventData.sequenceNumber()))
-            .buildEventProcessor();
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void testEventProcessorBuilderMissingBothProcessors() {
-        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
-            .connectionString(CORRECT_CONNECTION_STRING)
-            .buildAsyncClient();
-        EventProcessor eventProcessor = new EventProcessorBuilder()
-            .consumerGroup("test")
-            .eventHubClient(eventHubAsyncClient)
-            .buildEventProcessor();
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void testEventProcessorBuilderWithFactoryAndProcessEvent() {
-        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
-            .connectionString(CORRECT_CONNECTION_STRING)
-            .buildAsyncClient();
-
-        EventProcessor eventProcessor = new EventProcessorBuilder()
-            .consumerGroup("consumer-group")
-            .eventHubClient(eventHubAsyncClient)
-            .processEvent((eventData, partitionContext, checkpointManager) -> System.out.println(eventData.sequenceNumber()))
-            .partitionProcessorFactory(
-                ((partitionContext, checkpointManager) -> new PartitionProcessor(partitionContext, checkpointManager) {
+            .partitionProcessorFactory((partitionContext -> new PartitionProcessor(partitionContext) {
                     @Override
                     public Mono<Void> processEvent(EventData eventData) {
                         return Mono.fromRunnable(() -> System.out.println(eventData.sequenceNumber()));
                     }
                 }))
             .buildEventProcessor();
-        assertNotNull(eventProcessor);
-    }
-
-    @Test
-    public void testEventProcessorBuilderWithLambda() {
-        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
-            .connectionString(CORRECT_CONNECTION_STRING)
-            .buildAsyncClient();
-
-        EventProcessor eventProcessor = new EventProcessorBuilder()
-            .consumerGroup("consumer-group")
-            .eventHubClient(eventHubAsyncClient)
-            .processEvent((eventData, partitionContext, checkpointManager) -> System.out.println(eventData.sequenceNumber()))
-            .partitionManager(new InMemoryPartitionManager())
-            .buildEventProcessor();
-        assertNotNull(eventProcessor);
     }
 
     @Test
@@ -102,8 +60,7 @@ public class EventProcessorBuilderTest {
         EventProcessor eventProcessor = new EventProcessorBuilder()
             .consumerGroup("consumer-group")
             .eventHubClient(eventHubAsyncClient)
-            .partitionProcessorFactory(
-                ((partitionContext, checkpointManager) -> new PartitionProcessor(partitionContext, checkpointManager) {
+            .partitionProcessorFactory((partitionContext -> new PartitionProcessor(partitionContext) {
                     @Override
                     public Mono<Void> processEvent(EventData eventData) {
                         return Mono.fromRunnable(() -> System.out.println(eventData.sequenceNumber()));

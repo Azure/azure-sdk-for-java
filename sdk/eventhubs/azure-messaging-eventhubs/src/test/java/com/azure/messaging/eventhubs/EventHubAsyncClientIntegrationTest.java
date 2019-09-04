@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
@@ -24,10 +25,7 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -76,8 +74,9 @@ public class EventHubAsyncClientIntegrationTest extends ApiTestBase {
 
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         final ConnectionOptions connectionOptions = getConnectionOptions();
+        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
-        client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);
+        client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider, tracerProvider);
 
         setupEventTestData(client);
     }
@@ -89,7 +88,7 @@ public class EventHubAsyncClientIntegrationTest extends ApiTestBase {
 
     @Test(expected = NullPointerException.class)
     public void nullConstructor() throws NullPointerException {
-        new EventHubAsyncClient(null, null, null);
+        new EventHubAsyncClient(null, null, null, null);
     }
 
     /**
@@ -132,7 +131,7 @@ public class EventHubAsyncClientIntegrationTest extends ApiTestBase {
         final CountDownLatch countDownLatch = new CountDownLatch(numberOfClients);
         final EventHubAsyncClient[] clients = new EventHubAsyncClient[numberOfClients];
         for (int i = 0; i < numberOfClients; i++) {
-            clients[i] = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()));
+            clients[i] = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()), null);
         }
 
         final EventHubAsyncProducer producer = clients[0].createProducer(new EventHubProducerOptions().partitionId(PARTITION_ID));

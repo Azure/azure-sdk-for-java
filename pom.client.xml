@@ -1,6 +1,6 @@
 <!-- Copyright (c) Microsoft Corporation. All rights reserved.
      Licensed under the MIT License. -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
     <relativePath>./parent/pom.xml</relativePath>
   </parent>
 
@@ -107,27 +107,6 @@
 
   <build>
     <plugins>
-      <!-- Enforce Maven 3.6.1 -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>enforce-maven</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <requireMavenVersion>
-                  <version>3.6.1</version>
-                </requireMavenVersion>
-              </rules>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
       <!-- This plugin scans checkstyle issues in the code -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -265,6 +244,7 @@
               <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
               <failOnError>true</failOnError>
               <failOnWarnings>true</failOnWarnings>
+              <doclint>all</doclint>
             </configuration>
           </execution>
         </executions>
@@ -447,6 +427,7 @@
             <additionalOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java</additionalOptions>
             <failOnError>false</failOnError>
             <failOnWarnings>false</failOnWarnings>
+            <doclint>all</doclint>
           </configuration>
         </plugin>
 
@@ -580,6 +561,7 @@
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-file/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
               </additionalOptions>
+              <doclint>all</doclint>
             </configuration>
           </reportSet>
         </reportSets>
@@ -781,7 +763,7 @@
         <module>./eng/jacoco-test-coverage</module>
       </modules>
     </profile>
-    
+
     <profile>
       <id>template-module</id>
       <activation>

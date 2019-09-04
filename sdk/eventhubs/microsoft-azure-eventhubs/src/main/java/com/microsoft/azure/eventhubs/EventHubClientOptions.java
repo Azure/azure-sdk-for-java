@@ -13,13 +13,14 @@ public class EventHubClientOptions {
     private Duration operationTimeout = null;
     private TransportType transportType = null;
     private RetryPolicy retryPolicy = null;
+    private ProxyConfiguration proxyConfiguration = null;
 
     /**
      * Create with all defaults
      */
     public EventHubClientOptions() {
     }
-    
+
     /**
      * Set the operation timeout.
      * @param operationTimeout  new operation timeout, null to unset any previous value
@@ -29,7 +30,7 @@ public class EventHubClientOptions {
         this.operationTimeout = operationTimeout;
         return this;
     }
-    
+
     /**
      * Get the operation timeout.
      * @return  operation timeout or null if not set
@@ -37,7 +38,7 @@ public class EventHubClientOptions {
     public Duration getOperationTimeout() {
         return this.operationTimeout;
     }
-    
+
     /**
      * Set the {@link TransportType} for the connection to the Event Hubs service
      * @param transportType  new transport type, null to unset any previous value
@@ -47,7 +48,7 @@ public class EventHubClientOptions {
         this.transportType = transportType;
         return this;
     }
-    
+
     /**
      * Get the transport type
      * @return  {@link TransportType} or null if not set
@@ -55,7 +56,7 @@ public class EventHubClientOptions {
     public TransportType getTransportType() {
         return this.transportType;
     }
-    
+
     /**
      * Set the {@link RetryPolicy} for operations
      * @param retryPolicy  new retry policy, null to unset any previous value
@@ -65,12 +66,32 @@ public class EventHubClientOptions {
         this.retryPolicy = retryPolicy;
         return this;
     }
-    
+
     /**
      * Get the retry policy
      * @return  {@link RetryPolicy} or null if not set
      */
     public RetryPolicy getRetryPolicy() {
         return this.retryPolicy;
+    }
+
+    /**
+     * Sets the proxy configuration for the client options.
+     *
+     * @param proxyConfiguration The proxy configuration to set on the options.
+     * @return The updated options object.
+     */
+    public EventHubClientOptions setProxyConfiguration(ProxyConfiguration proxyConfiguration) {
+        this.proxyConfiguration = proxyConfiguration;
+        return this;
+    }
+
+    /**
+     * Gets the proxy configuration for this set of options.
+     *
+     * @return Gets the proxy configuration.
+     */
+    public ProxyConfiguration getProxyConfiguration() {
+        return proxyConfiguration;
     }
 }

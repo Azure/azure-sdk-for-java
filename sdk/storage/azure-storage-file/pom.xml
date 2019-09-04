@@ -83,13 +83,11 @@
     <dependency>
       <groupId>org.spockframework</groupId>
       <artifactId>spock-core</artifactId>
-      <version>1.3-groovy-2.5</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
 
   <build>
-
     <sourceDirectory>src/main/java</sourceDirectory>
     <testSourceDirectory>src/test/java</testSourceDirectory>
 
@@ -98,6 +96,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
         <configuration>
           <compilerId>groovy-eclipse-compiler</compilerId>
           <compilerArgument>-Xlint:unchecked</compilerArgument>

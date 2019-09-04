@@ -1,42 +1,45 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefilemaxoverloadinvalidargs393389bf?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefilemaxoverloadinvalidargs30570984?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72829E0DB24C4\"",
-      "Last-Modified" : "Sat, 24 Aug 2019 00:27:42 GMT",
+      "ETag" : "\"0x8D72C151823F315\"",
+      "Last-Modified" : "Thu, 29 Aug 2019 00:09:00 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "a99ecb83-201a-004c-5b12-5af769000000",
-      "Date" : "Sat, 24 Aug 2019 00:27:42 GMT",
-      "x-ms-client-request-id" : "b1ace825-318a-4ccf-bd60-9a3504da9006"
+      "x-ms-request-id" : "7f7371d8-f01a-00cd-02fd-5d553e000000",
+      "Date" : "Thu, 29 Aug 2019 00:09:00 GMT",
+      "x-ms-client-request-id" : "3487e512-9722-4675-89af-3b619ce38e11"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefilemaxoverloadinvalidargs393389bf/test%0cile",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefilemaxoverloadinvalidargs30570984/fileName",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
     },
     "Response" : {
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "Connection" : "close",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "EmptyMetadataKey",
       "retry-after" : "0",
-      "Content-Length" : "324",
+      "Content-Length" : "278",
       "StatusCode" : "400",
-      "Body" : "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"\"http://www.w3.org/TR/html4/strict.dtd\">\r\n<HTML><HEAD><TITLE>Bad Request</TITLE>\r\n<META HTTP-EQUIV=\"Content-Type\" Content=\"text/html; charset=us-ascii\"></HEAD>\r\n<BODY><h2>Bad Request - Invalid URL</h2>\r\n<hr><p>HTTP Error 400. The request URL is invalid.</p>\r\n</BODY></HTML>\r\n",
-      "Date" : "Sat, 24 Aug 2019 00:27:42 GMT",
-      "Content-Type" : "text/html; charset=us-ascii"
+      "x-ms-request-id" : "7f7371da-f01a-00cd-03fd-5d553e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:7f7371da-f01a-00cd-03fd-5d553e000000\nTime:2019-08-29T00:09:00.7529414Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Thu, 29 Aug 2019 00:09:00 GMT",
+      "x-ms-client-request-id" : "fab349b6-f72f-40fa-a2d8-de5077729a57",
+      "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareasyncapitestscreatefilemaxoverloadinvalidargs393389bf" ]
+  "variables" : [ "shareasyncapitestscreatefilemaxoverloadinvalidargs30570984" ]
 }
