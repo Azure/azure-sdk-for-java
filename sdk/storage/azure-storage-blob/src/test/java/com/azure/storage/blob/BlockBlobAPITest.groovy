@@ -11,7 +11,7 @@ import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.rest.Response
-import com.azure.core.implementation.exception.UnexpectedLengthException;
+import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.storage.blob.models.BlobAccessConditions
 import com.azure.storage.blob.models.BlobHTTPHeaders
 import com.azure.storage.blob.models.BlobRange

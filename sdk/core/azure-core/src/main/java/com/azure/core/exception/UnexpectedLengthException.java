@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.implementation.exception;
+package com.azure.core.exception;
 
 /**
  * This exception class represents an error when the specified input length doesn't match the data length.

@@ -4,7 +4,7 @@
 package com.azure.storage.file.spock
 
 import com.azure.core.exception.HttpResponseException
-import com.azure.core.implementation.exception.UnexpectedLengthException
+import com.azure.core.exception.UnexpectedLengthException
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.FileAsyncClient
 import com.azure.storage.file.models.FileHTTPHeaders
