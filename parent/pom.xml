@@ -116,6 +116,7 @@
     <reactor-core.version>3.2.10.RELEASE</reactor-core.version>
     <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
     <netty.version>4.1.33.Final</netty.version>
+    <okhttp.version>4.1.0</okhttp.version>
     <async-http-client.version>2.5.2</async-http-client.version>
     <opencensus.version>0.20.0</opencensus.version>
     <rxjava.version>1.2.4</rxjava.version>
@@ -356,6 +357,12 @@
         <groupId>org.nanohttpd</groupId>
         <artifactId>nanohttpd</artifactId>
         <version>${nanohttpd.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.squareup.okhttp3</groupId>
+        <artifactId>okhttp</artifactId>
+        <version>${okhttp.version}</version>
       </dependency>
 
       <dependency>
