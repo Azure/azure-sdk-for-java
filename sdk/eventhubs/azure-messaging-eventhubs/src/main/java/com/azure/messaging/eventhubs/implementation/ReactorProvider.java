@@ -60,8 +60,7 @@ public class ReactorProvider {
         Objects.requireNonNull(globalHandler);
 
         if (maxFrameSize <= 0) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException(EventHubErrorCodeStrings.getErrorString(
+            throw logger.logExceptionAsError(new IllegalArgumentException(EventHubErrorCodeStrings.getErrorString(
                     EventHubErrorCodeStrings.MAX_FRAME_SIZE_REQUIRE_POSITIVE_NUM)));
         }
 
