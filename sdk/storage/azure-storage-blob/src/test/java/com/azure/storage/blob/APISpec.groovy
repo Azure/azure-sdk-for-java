@@ -221,8 +221,6 @@ class APISpec extends Specification {
     }
 
     def getOAuthServiceClient() {
-
-
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.accountName()))
             .httpClient(getHttpClient())
