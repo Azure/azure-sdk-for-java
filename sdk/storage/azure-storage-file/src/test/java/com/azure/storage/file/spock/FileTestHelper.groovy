@@ -131,24 +131,22 @@ class FileTestHelper {
         if (expected == null) {
             return actual == null
         } else {
-            Objects.equals(expected.name(), actual.name())
-            if (expected.properties() == null) {
-                return actual.properties() == null
-            }
-            if (!Objects.equals(expected.properties().quota(), actual.properties().quota())) {
+            if (!Objects.equals(expected.name(), actual.name())) {
                 return false
             }
-            if (includeMetadata) {
-                if (!Objects.equals(expected.metadata(), actual.metadata())) {
-                    return false
-                }
+
+            if (includeMetadata && !Objects.equals(expected.metadata(), actual.metadata())) {
+                return false
             }
-            if (includeSnapshot) {
-                if (!Objects.equals(expected.snapshot(), actual.snapshot())) {
-                    return false
-                }
+            if (includeSnapshot && !Objects.equals(expected.snapshot(), actual.snapshot())) {
+                return false
             }
-            return true
+
+            if (expected.properties() == null) {
+                return actual.properties() == null
+            } else {
+                return Objects.equals(expected.properties().quota(), actual.properties().quota())
+            }
         }
     }
 

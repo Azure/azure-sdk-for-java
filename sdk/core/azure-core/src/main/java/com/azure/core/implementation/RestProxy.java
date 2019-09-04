@@ -542,9 +542,8 @@ public class RestProxy implements InvocationHandler {
         return handleRestReturnType(asyncDecodedHttpResponse, methodParser, returnType, context);
     }
 
-    protected Object handleResumeOperation(HttpRequest httpRequest, OperationDescription operationDescription, SwaggerMethodParser methodParser, Type returnType, Context context)
-        throws Exception {
-        throw new Exception("The resume operation is not available in the base RestProxy class.");
+    protected Object handleResumeOperation(HttpRequest httpRequest, OperationDescription operationDescription, SwaggerMethodParser methodParser, Type returnType, Context context) {
+        throw logger.logExceptionAsError(Exceptions.propagate(new Exception("The resume operation is not available in the base RestProxy class.")));
     }
 
     /**

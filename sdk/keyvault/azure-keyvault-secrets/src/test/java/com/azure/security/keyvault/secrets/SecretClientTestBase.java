@@ -76,7 +76,7 @@ public abstract class SecretClientTestBase extends TestBase {
             httpClient = interceptorManager.getPlaybackClient();
             policies.add(interceptorManager.getRecordPolicy());
         } else {
-            httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
+            httpClient = new NettyAsyncHttpClientBuilder().setWiretap(true).build();
             policies.add(interceptorManager.getRecordPolicy());
         }
 
