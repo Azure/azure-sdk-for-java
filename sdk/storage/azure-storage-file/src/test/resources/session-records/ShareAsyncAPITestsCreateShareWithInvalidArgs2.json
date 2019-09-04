@@ -1,10 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatesharewithinvalidargs297674169b0?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatesharewithinvalidargs216547893c8?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "312590e3-d69e-456f-a65a-49dcb700db24"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -13,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "326",
       "StatusCode" : "400",
-      "x-ms-request-id" : "ab179c6d-201a-00cf-2f12-5a57c4000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:ab179c6d-201a-00cf-2f12-5a57c4000000\nTime:2019-08-24T00:27:36.3945672Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>6000</HeaderValue></Error>",
-      "Date" : "Sat, 24 Aug 2019 00:27:35 GMT",
-      "x-ms-client-request-id" : "172575b0-b55d-4f42-a903-655e17427f37",
+      "x-ms-request-id" : "e7c18c8f-101a-0044-19c2-62ec1a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:e7c18c8f-101a-0044-19c2-62ec1a000000\nTime:2019-09-04T01:44:27.9383319Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>6000</HeaderValue></Error>",
+      "Date" : "Wed, 04 Sep 2019 01:44:27 GMT",
+      "x-ms-client-request-id" : "312590e3-d69e-456f-a65a-49dcb700db24",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareasyncapitestscreatesharewithinvalidargs297674169b0" ]
+  "variables" : [ "shareasyncapitestscreatesharewithinvalidargs216547893c8" ]
 }
