@@ -125,16 +125,17 @@ public final class PartitionBasedLoadBalancer {
 
             if (ImplUtils.isNullOrEmpty(partitionIds)) {
                 // This may be due to an error when getting Event Hub metadata.
-                throw Exceptions
-                    .propagate(new IllegalStateException("There are no partitions in Event Hub " + this.eventHubName));
+                throw logger.logExceptionAsError(Exceptions.propagate(
+                    new IllegalStateException("There are no partitions in Event Hub " + eventHubName)));
             }
+
             int numberOfPartitions = partitionIds.size();
             logger.info("Partition manager returned {} ownership records", partitionOwnershipMap.size());
             logger.info("EventHubAsyncClient returned {} partitions", numberOfPartitions);
             if (!isValid(partitionOwnershipMap)) {
                 // User data is corrupt.
-                throw Exceptions
-                    .propagate(new IllegalStateException("Invalid partitionOwnership data from PartitionManager"));
+                throw logger.logExceptionAsError(Exceptions.propagate(
+                    new IllegalStateException("Invalid partitionOwnership data from PartitionManager")));
             }
 
             /*
