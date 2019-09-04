@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.implementation.annotation.Fluent;
+
 import java.util.Objects;
 
 /**
@@ -17,7 +18,7 @@ public class PartitionOwnership {
     private String partitionId;
     private String ownerId;
     private long ownerLevel;
-    private String offset;
+    private Long offset;
     private Long sequenceNumber;
     private Long lastModifiedTime;
     private String eTag;
@@ -128,7 +129,7 @@ public class PartitionOwnership {
      *
      * @return The offset that serves as checkpoint for the partition id in this ownership record.
      */
-    public String offset() {
+    public Long offset() {
         return offset;
     }
 
@@ -138,7 +139,7 @@ public class PartitionOwnership {
      * @param offset The offset that serves as checkpoint for the partition id in this ownership record.
      * @return The updated {@link PartitionOwnership} instance.
      */
-    public PartitionOwnership offset(String offset) {
+    public PartitionOwnership offset(Long offset) {
         this.offset = offset;
         return this;
     }

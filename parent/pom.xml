@@ -6,7 +6,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.2.0</version>
+  <version>1.3.0</version>
 
   <name>Microsoft Azure SDK for Java Parent</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
@@ -100,12 +100,13 @@
 
     <!-- Dependency Versions -->
     <jackson.version>2.9.9</jackson.version>
+    <jackson-databind.version>2.9.9.3</jackson-databind.version>
     <client-runtime.version>1.6.12</client-runtime.version>
     <commons-codec.version>1.10</commons-codec.version>
     <spotbugs.version>4.0.0-beta3</spotbugs.version>
-    <spotbugs.maven.version>3.1.12</spotbugs.maven.version>
+    <spotbugs.maven.version>3.1.12.2</spotbugs.maven.version>
     <proton-j-version>0.31.0</proton-j-version>
-    <qpid-proton-j-extensions-version>1.2.0</qpid-proton-j-extensions-version>
+    <qpid-proton-j-extensions-version>1.2.1</qpid-proton-j-extensions-version>
     <log4j-api.version>2.11.1</log4j-api.version>
     <groovy-eclipse-compiler.version>3.4.0-01</groovy-eclipse-compiler.version>
     <groovy-eclipse-batch.version>2.5.8-01</groovy-eclipse-batch.version>
@@ -115,6 +116,7 @@
     <reactor-core.version>3.2.10.RELEASE</reactor-core.version>
     <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
     <netty.version>4.1.33.Final</netty.version>
+    <okhttp.version>4.1.0</okhttp.version>
     <async-http-client.version>2.5.2</async-http-client.version>
     <opencensus.version>0.20.0</opencensus.version>
     <rxjava.version>1.2.4</rxjava.version>
@@ -133,6 +135,7 @@
     <commons-validator.version>1.6</commons-validator.version>
     <commons-collections4.version>4.2</commons-collections4.version>
     <jcommander.version>1.58</jcommander.version>
+    <nanohttpd.version>2.3.1</nanohttpd.version>
 
     <!-- Test Dependency Versions -->
     <adal4j.version>1.6.3</adal4j.version>
@@ -144,7 +147,7 @@
     <azure-mgmt-graph-rbac.version>1.3.0</azure-mgmt-graph-rbac.version>
     <azure-mgmt-storage.version>1.3.0</azure-mgmt-storage.version>
     <azure-storage.version>8.0.0</azure-storage.version>
-    <spock-core.version>1.1-groovy-2.4</spock-core.version>
+    <spock-core.version>1.3-groovy-2.5</spock-core.version>
     <cglib-nodep.version>3.2.7</cglib-nodep.version>
     <slf4j-test.version>1.2.0</slf4j-test.version>
     <reactor-test.version>3.2.3.RELEASE</reactor-test.version>
@@ -162,7 +165,7 @@
     <sdk-build-tools.version>1.0.0</sdk-build-tools.version>
     <maven-javadoc.version>3.0.1</maven-javadoc.version>
     <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
-    <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     <jetty-maven-plugin.version>9.3.22.v20171030</jetty-maven-plugin.version>
     <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
     <maven-resources-plugin.version>2.4.3</maven-resources-plugin.version>
@@ -177,8 +180,8 @@
     <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
     <maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
     <maven-checkstyle-plugin.version>3.1.0</maven-checkstyle-plugin.version>
-    <checkstyle.version>8.19</checkstyle.version>
-    <mockito-core.version>2.28.2</mockito-core.version>
+    <checkstyle.version>8.24</checkstyle.version>
+    <mockito-core.version>3.0.0</mockito-core.version>
     <powermock.version>1.7.4</powermock.version>
     <jacoco-maven-plugin.version>0.8.4</jacoco-maven-plugin.version>
     <maven-exec-plugin.version>1.2.1</maven-exec-plugin.version>
@@ -236,10 +239,11 @@
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
-        <version>${jackson.version}</version>
+        <version>${jackson-databind.version}</version>
       </dependency>
 
       <dependency>
+
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-annotations</artifactId>
         <version>${jackson.version}</version>
@@ -350,6 +354,18 @@
       </dependency>
 
       <dependency>
+        <groupId>org.nanohttpd</groupId>
+        <artifactId>nanohttpd</artifactId>
+        <version>${nanohttpd.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.squareup.okhttp3</groupId>
+        <artifactId>okhttp</artifactId>
+        <version>${okhttp.version}</version>
+      </dependency>
+
+      <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>${junit.version}</version>
@@ -437,6 +453,12 @@
         <groupId>com.nimbusds</groupId>
         <artifactId>oauth2-oidc-sdk</artifactId>
         <version>${oauth2-oidc-sdk.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.codehaus.groovy</groupId>
+        <artifactId>groovy-eclipse-compiler</artifactId>
+        <version>${groovy-eclipse-compiler.version}</version>
       </dependency>
 
       <!-- Test dependencies -->

@@ -15,6 +15,7 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
+import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
@@ -45,22 +46,23 @@ import java.util.function.Supplier
 
 class APISpec extends Specification {
     @Shared
-    private ClientLogger logger = new ClientLogger(APISpec.class)
+    ClientLogger logger = new ClientLogger(APISpec.class)
 
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 
     // both sync and async clients point to same container
     @Shared
     ContainerClient cc
+
     @Shared
     ContainerAsyncClient ccAsync
 
     // Fields used for conveniently creating blobs with data.
     static final String defaultText = "default"
 
-    static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.getBytes(StandardCharsets.UTF_8))
+    public static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.getBytes(StandardCharsets.UTF_8))
 
-    static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>() {
+    static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>(){
         @Override
         InputStream get() {
             return new ByteArrayInputStream(defaultText.getBytes(StandardCharsets.UTF_8))
@@ -68,6 +70,8 @@ class APISpec extends Specification {
     }
 
     static int defaultDataSize = defaultData.remaining()
+
+    static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map{buffer -> buffer.duplicate()}
 
     // Prefixes for blobs and containers
     String containerPrefix = "jtc" // java test container
@@ -96,6 +100,8 @@ class APISpec extends Specification {
     static final String receivedLeaseID = "received"
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
+
+    public static final String defaultEndpointTemplate = "http://%s.blob.core.windows.net/"
 
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
@@ -130,7 +136,6 @@ class APISpec extends Specification {
     def setup() {
         String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
         String className = specificationContext.getCurrentSpec().getName()
-
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
         this.testName = fullTestName.substring(0, substringIndex)
@@ -162,6 +167,11 @@ class APISpec extends Specification {
         }
 
         interceptorManager.close()
+    }
+
+    //TODO: Should this go in core.
+     static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
+         return FluxUtil.collectBytesInByteBufferStream(content).map{bytes -> ByteBuffer.wrap(bytes)}
     }
 
     static TestMode setupTestMode() {
@@ -212,7 +222,7 @@ class APISpec extends Specification {
 
     def getOAuthServiceClient() {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCredential.accountName()))
+            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.accountName()))
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
@@ -232,14 +242,29 @@ class APISpec extends Specification {
     }
 
     BlobServiceClient getServiceClient(SharedKeyCredential credential) {
-        return getServiceClient(credential, String.format("https://%s.blob.core.windows.net", credential.accountName()), null)
+        return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.accountName()), null)
     }
 
     BlobServiceClient getServiceClient(SharedKeyCredential credential, String endpoint) {
         return getServiceClient(credential, endpoint, null)
     }
 
-    BlobServiceClient getServiceClient(SharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
+    BlobServiceClient getServiceClient(SharedKeyCredential credential, String endpoint,
+                                       HttpPipelinePolicy... policies) {
+        return getServiceClientBuilder(credential, endpoint, policies).buildClient()
+    }
+
+    BlobServiceClient getServiceClient(SASTokenCredential credential, String endpoint) {
+        return getServiceClientBuilder(null, endpoint, null).credential(credential).buildClient()
+    }
+
+    BlobServiceAsyncClient getServiceAsyncClient(SharedKeyCredential credential) {
+        return getServiceClientBuilder(credential, String.format(defaultEndpointTemplate, credential.accountName()))
+            .buildAsyncClient()
+    }
+
+    BlobServiceClientBuilder getServiceClientBuilder(SharedKeyCredential credential, String endpoint,
+                                                     HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
@@ -257,34 +282,7 @@ class APISpec extends Specification {
             builder.credential(credential)
         }
 
-        return builder.buildClient()
-    }
-
-    BlobServiceClient getServiceClient(SASTokenCredential credential, String endpoint) {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(endpoint)
-            .httpClient(getHttpClient())
-            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
-
-        return builder.credential(credential).buildClient()
-    }
-
-    BlobServiceAsyncClient getServiceAsyncClient(SharedKeyCredential credential) {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .credential(credential)
-            .endpoint(String.format("https://%s.blob.core.windows.net", credential.accountName()))
-            .httpClient(getHttpClient())
-            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
-
-        return builder.buildAsyncClient()
+        return builder
     }
 
     ContainerClient getContainerClient(SASTokenCredential credential, String endpoint) {
@@ -381,13 +379,13 @@ class APISpec extends Specification {
         return builder.buildBlobClient()
     }
 
-    private HttpClient getHttpClient() {
+    HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
         if (testMode == TestMode.RECORD) {
-            builder.wiretap(true)
+            builder.setWiretap(true)
 
             if (Boolean.parseBoolean(ConfigurationManager.getConfiguration().get("AZURE_TEST_DEBUGGING"))) {
-                builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+                builder.setProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             }
 
             return builder.build();
@@ -440,7 +438,7 @@ class APISpec extends Specification {
      * This will retrieve the etag to be used in testing match conditions. The result will typically be assigned to
      * the ifMatch condition when testing success and the ifNoneMatch condition when testing failure.
      *
-     * @param bu
+     * @param bc
      *      The URL to the blob to get the etag on.
      * @param match
      *      The ETag value for this test. If {@code receivedEtag} is passed, that will signal that the test is expecting
@@ -448,9 +446,17 @@ class APISpec extends Specification {
      * @return
      * The appropriate etag value to run the current test.
      */
-    def setupBlobMatchCondition(BlobClient bu, String match) {
+    def setupBlobMatchCondition(BlobClient bc, String match) {
         if (match == receivedEtag) {
-            bu.getPropertiesWithResponse(null, null, null).headers().value("ETag")
+            return bc.getPropertiesWithResponse(null, null, null).headers().value("ETag")
+        } else {
+            return match
+        }
+    }
+
+    def setupBlobMatchCondition(BlobAsyncClient bac, String match) {
+        if (match == receivedEtag) {
+            return bac.getPropertiesWithResponse(null, null).block().headers().value("ETag")
         } else {
             return match
         }
@@ -462,7 +468,7 @@ class APISpec extends Specification {
      * proper setting of the header. If we pass null, though, we don't want to acquire a lease, as that will interfere
      * with other AC tests.
      *
-     * @param bu
+     * @param bc
      *      The blob on which to acquire a lease.
      * @param leaseID
      *      The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID}, or {@code null}.
@@ -470,13 +476,28 @@ class APISpec extends Specification {
      * The actual leaseAccessConditions of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
      * returned.
      */
-    def setupBlobLeaseCondition(BlobClient bu, String leaseID) {
+    def setupBlobLeaseCondition(BlobClient bc, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            responseLeaseId = bu.acquireLease(null, -1)
+            responseLeaseId = bc.acquireLease(null, -1)
         }
+        if (leaseID == receivedLeaseID) {
+            return responseLeaseId
+        } else {
+            return leaseID
+        }
+    }
 
-        return (leaseID == receivedLeaseID) ? responseLeaseId : leaseID
+    def setupBlobLeaseCondition(BlobAsyncClient bac, String leaseID) {
+        String responseLeaseId = null
+        if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
+            responseLeaseId = bac.acquireLease(null, -1).block()
+        }
+        if (leaseID == receivedLeaseID) {
+            return responseLeaseId
+        } else {
+            return leaseID
+        }
     }
 
     def setupContainerMatchCondition(ContainerClient cu, String match) {
@@ -501,6 +522,51 @@ class APISpec extends Specification {
         URL url = new URL("http://devtest.blob.core.windows.net/test-container/test-blob")
         HttpRequest request = new HttpRequest(HttpMethod.POST, url, headers, null)
         return request
+    }
+
+    /*
+    This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
+    to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
+    with than was worth it.
+     */
+    def getStubResponse(int code, HttpRequest request) {
+        return new HttpResponse() {
+
+            @Override
+            int statusCode() {
+                return code
+            }
+
+            @Override
+            String headerValue(String s) {
+                return null
+            }
+
+            @Override
+            HttpHeaders headers() {
+                return new HttpHeaders()
+            }
+
+            @Override
+            Flux<ByteBuffer> body() {
+                return Flux.empty()
+            }
+
+            @Override
+            Mono<byte[]> bodyAsByteArray() {
+                return Mono.just(new byte[0])
+            }
+
+            @Override
+            Mono<String> bodyAsString() {
+                return Mono.just("")
+            }
+
+            @Override
+            Mono<String> bodyAsString(Charset charset) {
+                return Mono.just("")
+            }
+        }.request(request)
     }
 
     def waitForCopy(ContainerClient bu, String status) {
@@ -596,7 +662,6 @@ class APISpec extends Specification {
     to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
     with than was worth it. Because this type is just for BlobDownload, we don't need to accept a header type.
      */
-
     class MockDownloadHttpResponse extends HttpResponse {
         private final int statusCode
         private final HttpHeaders headers

@@ -199,7 +199,7 @@ public class ServiceClientCheck extends AbstractCheck {
     }
 
     /**
-     * Checks for the class name of Service Client. It should be named <ServiceName>AsyncClient or <ServiceName>Client.
+     * Checks for the class name of Service Client. It should be named &lt;ServiceName&gt;AsyncClient or &lt;ServiceName&gt;Client.
      *
      * @param classDefToken the CLASS_DEF AST node
      */
@@ -341,11 +341,11 @@ public class ServiceClientCheck extends AbstractCheck {
      * Given the method is already annotated @ServiceMethod. Checks if the return type is {@code Response<T>} or
      * {@code Mono<Response<T>>},
      * Sync:
-     *  If the return type is Response<T>, the method name must end with WithResponse.
+     *  If the return type is {@code Response<T>}, the method name must end with WithResponse.
      *  If the return type is T, the method name must NOT end with WithResponse.
      * Async:
-     *  If the return type is Mono<Response<T>>, the method name must end with WithResponse.
-     *  If the return type is Mono<T>, the method name must NOT end with WithResponse.
+     *  If the return type is {@code Mono<Response<T>>}, the method name must end with WithResponse.
+     *  If the return type is {@code Mono<T>}, the method name must NOT end with WithResponse.
      *
      * @param methodDefToken METHOD_DEF AST node
      */
@@ -477,7 +477,7 @@ public class ServiceClientCheck extends AbstractCheck {
     }
 
     /**
-     * Get full name of return type. Such as Response, Mono<Response>.
+     * Get full name of return type. Such as Response, {@code Mono<Response>}.
      *
      * @param token a token could be a TYPE, TYPE_ARGUMENT, TYPE_ARGUMENTS token
      * @param sb a StringBuilder that used to collect method return type.

@@ -1,30 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsgetpropertieserror9000466551c7971d4?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsgetpropertieserror652328cd811af90af?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "241f7b66-5f1a-44fc-97b9-8e70883706ce"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D728299C3FF192\"",
-      "Last-Modified" : "Sat, 24 Aug 2019 00:25:47 GMT",
+      "ETag" : "\"0x8D730D958FA4EA2\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 01:43:55 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "90b84619-201a-006e-2d12-5a995f000000",
-      "Date" : "Sat, 24 Aug 2019 00:25:46 GMT",
-      "x-ms-client-request-id" : "366b4ed2-07be-4e92-95f6-3ee2f33362f5"
+      "x-ms-request-id" : "e7c18988-101a-0044-2cc2-62ec1a000000",
+      "Date" : "Wed, 04 Sep 2019 01:43:55 GMT",
+      "x-ms-client-request-id" : "241f7b66-5f1a-44fc-97b9-8e70883706ce"
     },
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsgetpropertieserror9000466551c7971d4/fileapitestsgetpropertieserror9107301c8f71bb870",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsgetpropertieserror652328cd811af90af/fileapitestsgetpropertieserror049735d1185eb1408",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "82240751-4dfe-4271-b310-3ffb0c4bcfc2"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -32,11 +34,11 @@
       "x-ms-error-code" : "ResourceNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "x-ms-request-id" : "90b8461b-201a-006e-2e12-5a995f000000",
-      "Date" : "Sat, 24 Aug 2019 00:25:46 GMT",
-      "x-ms-client-request-id" : "8720b5f0-a446-451c-80e5-1bd4c241c735"
+      "x-ms-request-id" : "e7c1898a-101a-0044-2dc2-62ec1a000000",
+      "Date" : "Wed, 04 Sep 2019 01:43:55 GMT",
+      "x-ms-client-request-id" : "82240751-4dfe-4271-b310-3ffb0c4bcfc2"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileapitestsgetpropertieserror9000466551c7971d4", "fileapitestsgetpropertieserror9107301c8f71bb870" ]
+  "variables" : [ "fileapitestsgetpropertieserror652328cd811af90af", "fileapitestsgetpropertieserror049735d1185eb1408" ]
 }
