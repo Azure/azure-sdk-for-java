@@ -114,9 +114,9 @@ public class OkHttpAsyncHttpClientBuilder {
     }
 
     /**
-     * Sets the setDispatcher that also composes the thread pool for executing HTTP requests.
+     * Sets the dispatcher that also composes the thread pool for executing HTTP requests.
      *
-     * @param dispatcher the setDispatcher to use
+     * @param dispatcher the dispatcher to use
      * @return the updated OkHttpAsyncHttpClientBuilder object
      */
     public OkHttpAsyncHttpClientBuilder setDispatcher(Dispatcher dispatcher) {
@@ -126,9 +126,9 @@ public class OkHttpAsyncHttpClientBuilder {
     }
 
     /**
-     * Sets the setProxy.
+     * Sets the proxy.
      *
-     * @param proxy the setProxy
+     * @param proxy the proxy
      * @return the updated OkHttpAsyncHttpClientBuilder object
      */
     public OkHttpAsyncHttpClientBuilder setProxy(java.net.Proxy proxy) {
@@ -138,9 +138,9 @@ public class OkHttpAsyncHttpClientBuilder {
     }
 
     /**
-     * Sets the setProxy authenticator.
+     * Sets the proxy authenticator.
      *
-     * @param proxyAuthenticator the setProxy authenticator
+     * @param proxyAuthenticator the proxy authenticator
      * @return the updated OkHttpAsyncHttpClientBuilder object
      */
     public OkHttpAsyncHttpClientBuilder setProxyAuthenticator(Authenticator proxyAuthenticator) {

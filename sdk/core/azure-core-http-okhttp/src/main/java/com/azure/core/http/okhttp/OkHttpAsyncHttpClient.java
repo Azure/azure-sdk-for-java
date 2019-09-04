@@ -8,8 +8,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -37,10 +35,10 @@ import java.util.function.Function;
 class OkHttpAsyncHttpClient implements HttpClient {
     private final OkHttpClient httpClient;
     //
-    private final static Mono<okio.ByteString> EMPTY_BYTE_STRING_MONO = Mono.just(okio.ByteString.EMPTY);
-    private final static MediaType MEDIA_TYPE_OCTET_STREAM = MediaType.parse("application/octet-stream");
+    private static final Mono<okio.ByteString> EMPTY_BYTE_STRING_MONO = Mono.just(okio.ByteString.EMPTY);
+    private static final MediaType MEDIA_TYPE_OCTET_STREAM = MediaType.parse("application/octet-stream");
 
-    public OkHttpAsyncHttpClient(OkHttpClient httpClient) {
+    OkHttpAsyncHttpClient(OkHttpClient httpClient) {
         this.httpClient = httpClient;
     }
 
@@ -172,9 +170,9 @@ class OkHttpAsyncHttpClient implements HttpClient {
         private final HttpHeaders headers;
         private final Mono<ResponseBody> responseBodyMono;
         // using 4K as default buffer size: https://stackoverflow.com/a/237495/1473510
-        private final static int BYTE_BUFFER_CHUNK_SIZE = 4096;
+        private static final int BYTE_BUFFER_CHUNK_SIZE = 4096;
 
-        public OkHttpResponse(Response innerResponse, HttpRequest request) {
+        OkHttpResponse(Response innerResponse, HttpRequest request) {
             this.statusCode = innerResponse.code();
             this.headers = fromOkHttpHeaders(innerResponse.headers());
             if (innerResponse.body() == null) {

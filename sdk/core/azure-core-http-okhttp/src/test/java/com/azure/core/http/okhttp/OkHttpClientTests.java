@@ -170,20 +170,20 @@ public class OkHttpClientTests {
                 socket.close();
                 return 1;
             })
-                    .subscribeOn(Schedulers.elastic())
-                    .subscribe();
+                .subscribeOn(Schedulers.elastic())
+                .subscribe();
             //
             latch.await();
             HttpClient client = HttpClient.createDefault();
             HttpRequest request = new HttpRequest(HttpMethod.GET,
-                    new URL("http://localhost:" + ss.getLocalPort() + "/get"));
+                new URL("http://localhost:" + ss.getLocalPort() + "/get"));
             HttpResponse response = client.send(request).block();
             Assert.assertEquals(200, response.statusCode());
             System.out.println("reading body");
             //
             StepVerifier.create(response.bodyAsByteArray())
-                    // .awaitDone(20, TimeUnit.SECONDS)
-                    .verifyError(IOException.class);
+                // .awaitDone(20, TimeUnit.SECONDS)
+                .verifyError(IOException.class);
         } finally {
             ss.close();
         }
@@ -221,7 +221,7 @@ public class OkHttpClientTests {
 
         StepVerifier.create(numBytesMono)
 //              .awaitDone(timeoutSeconds, TimeUnit.SECONDS)
-                .expectNext((long)(numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length))
+                .expectNext((long) (numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length))
                 .verifyComplete();
 //
 //        long numBytes = numBytesMono.block();
