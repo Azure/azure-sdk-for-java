@@ -76,6 +76,9 @@
   <suppress checks="FinalClass" files="RequestResponseLink.java"/>
   <suppress checks="FinalClass" files="Util.java"/>
 
+  <!-- Public API with Impl in Public API TODO confirm, remove -->
+  <suppress checks="NoImplInPublicAPI" files="OpenTelemetryTracer.java"/>
+
   <!-- Star imports are ok in unit tests - it makes it easier to import all assertions, etc -->
   <suppress checks="AvoidStarImport" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
 

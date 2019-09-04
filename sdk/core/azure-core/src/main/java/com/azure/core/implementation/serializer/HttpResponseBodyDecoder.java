@@ -3,7 +3,6 @@
 
 package com.azure.core.implementation.serializer;
 
-import com.azure.core.implementation.annotation.ReturnValueWireType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpResponse;
@@ -14,6 +13,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.Base64Url;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.UnixTime;
+import com.azure.core.implementation.annotation.ReturnValueWireType;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.TypeUtil;
@@ -396,12 +396,25 @@ final class HttpResponseBodyDecoder {
         Type returnType = decodeData.returnType();
         if (returnType == null) {
             return false;
-        } else {
-            return !FluxUtil.isFluxByteBuffer(returnType)
-                    && !(TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class) && TypeUtil.isTypeOrSubTypeOf(TypeUtil.getTypeArgument(returnType), Void.class))
-                    && !TypeUtil.isTypeOrSubTypeOf(returnType, byte[].class)
-                    && !TypeUtil.isTypeOrSubTypeOf(returnType, Void.TYPE) && !TypeUtil.isTypeOrSubTypeOf(returnType, Void.class);
         }
+
+        // Unwrap from Mono
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)) {
+            returnType = TypeUtil.getTypeArgument(returnType);
+        }
+
+        // Find body for complex responses
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, ResponseBase.class)) {
+            ParameterizedType parameterizedType = (ParameterizedType) TypeUtil.getSuperType(returnType, ResponseBase.class);
+            if (parameterizedType.getActualTypeArguments().length == 2) {
+                // check body type
+                returnType = parameterizedType.getActualTypeArguments()[1];
+            }
+        }
+
+        return !FluxUtil.isFluxByteBuffer(returnType)
+                && !TypeUtil.isTypeOrSubTypeOf(returnType, byte[].class)
+                && !TypeUtil.isTypeOrSubTypeOf(returnType, Void.TYPE) && !TypeUtil.isTypeOrSubTypeOf(returnType, Void.class);
     }
 
     /**

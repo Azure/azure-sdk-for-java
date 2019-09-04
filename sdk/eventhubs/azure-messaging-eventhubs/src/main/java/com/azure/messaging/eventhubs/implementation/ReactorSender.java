@@ -209,6 +209,11 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     }
 
     @Override
+    public String getHostname() {
+        return handler.getHostname();
+    }
+
+    @Override
     public Mono<Integer> getLinkSize() {
         if (this.hasConnected.get() && this.maxMessageSize > 0) {
             return Mono.just(maxMessageSize);

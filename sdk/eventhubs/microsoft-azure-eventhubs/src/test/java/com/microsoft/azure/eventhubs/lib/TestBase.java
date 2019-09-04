@@ -14,8 +14,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 /**
- * all tests derive from this base - provides common functionality
- * - provides a way to checkout EventHub for each test to exclusively run with
+ * all tests derive from this base - provides common functionality - provides a way to checkout EventHub for each test
+ * to exclusively run with
  */
 public abstract class TestBase {
     protected final Logger logger;
@@ -29,20 +29,19 @@ public abstract class TestBase {
     }
 
     public static CompletableFuture<Void> pushEventsToPartition(final EventHubClient ehClient, final String partitionId, final int noOfEvents)
-            throws EventHubException {
+        throws EventHubException {
         return ehClient.createPartitionSender(partitionId)
-                .thenComposeAsync(new Function<PartitionSender, CompletableFuture<Void>>() {
-                    @Override
-                    public CompletableFuture<Void> apply(PartitionSender pSender) {
-                        @SuppressWarnings("unchecked")
-                        final CompletableFuture<Void>[] sends = new CompletableFuture[noOfEvents];
-                        for (int count = 0; count < noOfEvents; count++) {
-                            final EventData sendEvent = EventData.create("test string".getBytes());
-                            sends[count] = pSender.send(sendEvent);
-                        }
-
-                        return CompletableFuture.allOf(sends);
+            .thenComposeAsync(new Function<PartitionSender, CompletableFuture<Void>>() {
+                @Override
+                public CompletableFuture<Void> apply(PartitionSender pSender) {
+                    @SuppressWarnings("unchecked") final CompletableFuture<Void>[] sends = new CompletableFuture[noOfEvents];
+                    for (int count = 0; count < noOfEvents; count++) {
+                        final EventData sendEvent = EventData.create("test string".getBytes());
+                        sends[count] = pSender.send(sendEvent);
                     }
-                });
+
+                    return CompletableFuture.allOf(sends);
+                }
+            });
     }
 }
