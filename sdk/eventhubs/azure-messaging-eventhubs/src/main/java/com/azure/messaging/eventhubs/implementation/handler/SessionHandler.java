@@ -42,7 +42,8 @@ public class SessionHandler extends Handler {
     public void onSessionLocalOpen(Event e) {
         logger.verbose("onSessionLocalOpen connectionId[{}], entityName[{}], condition[{}]",
             getConnectionId(), this.entityName,
-            e.getSession().getCondition() == null ? ClientConstants.NOT_APPLICABLE : e.getSession().getCondition().toString());
+            e.getSession().getCondition() == null ? ClientConstants.NOT_APPLICABLE
+                : e.getSession().getCondition().toString());
 
         final Session session = e.getSession();
 
@@ -55,8 +56,10 @@ public class SessionHandler extends Handler {
 
             session.close();
 
-            final String message = String.format(Locale.US, "onSessionLocalOpen connectionId[%s], entityName[%s], underlying IO of reactorDispatcher faulted with error: %s",
-                getConnectionId(), this.entityName, ioException.getMessage());
+            final String message =
+                String.format(Locale.US, "onSessionLocalOpen connectionId[%s], entityName[%s], underlying IO of "
+                        + "reactorDispatcher faulted with error: %s",
+                    getConnectionId(), this.entityName, ioException.getMessage());
             final Throwable exception = new AmqpException(false, message, ioException, getErrorContext());
 
             onNext(exception);
@@ -92,14 +95,17 @@ public class SessionHandler extends Handler {
         final Session session = e.getSession();
 
         logger.info("onSessionRemoteClose connectionId[{}], entityName[{}], condition[{}]",
-            entityName, getConnectionId(),
-            session == null || session.getRemoteCondition() == null ? ClientConstants.NOT_APPLICABLE : session.getRemoteCondition().toString());
+            entityName,
+            getConnectionId(),
+            session == null || session.getRemoteCondition() == null ? ClientConstants.NOT_APPLICABLE
+                : session.getRemoteCondition().toString());
 
         ErrorCondition condition = session != null ? session.getRemoteCondition() : null;
 
         if (session != null && session.getLocalState() != EndpointState.CLOSED) {
             logger.info(
-                "onSessionRemoteClose closing a local session for connectionId[{}], entityName[{}], condition[{}], description[{}]",
+                "onSessionRemoteClose closing a local session for connectionId[{}], entityName[{}], condition[{}], "
+                    + "description[{}]",
                 getConnectionId(), entityName,
                 condition != null ? condition.getCondition() : ClientConstants.NOT_APPLICABLE,
                 condition != null ? condition.getDescription() : ClientConstants.NOT_APPLICABLE);
@@ -112,7 +118,8 @@ public class SessionHandler extends Handler {
 
         if (condition != null) {
             final Exception exception = ExceptionUtil.toException(condition.getCondition().toString(),
-                String.format(Locale.US, "onSessionRemoteClose connectionId[%s], entityName[%s]", getConnectionId(), entityName),
+                String.format(Locale.US, "onSessionRemoteClose connectionId[%s], entityName[%s]", getConnectionId(),
+                    entityName),
                 getErrorContext());
 
             onNext(exception);
@@ -134,7 +141,8 @@ public class SessionHandler extends Handler {
 
     private void onSessionTimeout() {
         // It is supposed to close a local session to handle timeout exception.
-        // However, closing the session can result in NPE because of proton-j bug (https://issues.apache.org/jira/browse/PROTON-1939).
+        // However, closing the session can result in NPE because of proton-j bug (https://issues.apache
+        // .org/jira/browse/PROTON-1939).
         // And the bug will cause the reactor thread to stop processing pending tasks scheduled on the reactor and
         // as a result task won't be completed at all.
 

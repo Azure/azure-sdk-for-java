@@ -32,9 +32,9 @@ import reactor.util.function.Tuple2;
  * distributing the number of partitions uniformly among all the  active {@link EventProcessor EventProcessors}.
  * <p>
  * This load balancer will retrieve partition ownership details from the {@link PartitionManager} to find the number of
- * active {@link EventProcessor EventProcessors}. It uses the last modified time to decide if an EventProcessor is active. If a
- * partition ownership entry has not be updated for a specified duration of time, the owner of that partition is
- * considered inactive and the partition is available for other EventProcessors to own.
+ * active {@link EventProcessor EventProcessors}. It uses the last modified time to decide if an EventProcessor is
+ * active. If a partition ownership entry has not be updated for a specified duration of time, the owner of that
+ * partition is considered inactive and the partition is available for other EventProcessors to own.
  * </p>
  */
 public final class PartitionBasedLoadBalancer {
@@ -140,8 +140,8 @@ public final class PartitionBasedLoadBalancer {
             /*
              * Remove all partitions' ownership that have not been modified for a configuration period of time. This
              * means
-             * that the previous EventProcessor that owned the partition is probably down and the partition is now eligible
-             * to be claimed by other EventProcessors.
+             * that the previous EventProcessor that owned the partition is probably down and the partition is now
+             * eligible to be claimed by other EventProcessors.
              */
             Map<String, PartitionOwnership> activePartitionOwnershipMap = removeInactivePartitionOwnerships(
                 partitionOwnershipMap);
@@ -179,13 +179,14 @@ public final class PartitionBasedLoadBalancer {
 
             /*
              * If the number of partitions in Event Hub is not evenly divisible by number of active event processors,
-             * a few Event Processors may own 1 additional partition than the minimum when the load is balanced. Calculate
-             * the number of event processors that can own additional partition.
+             * a few Event Processors may own 1 additional partition than the minimum when the load is balanced.
+             * Calculate the number of event processors that can own additional partition.
              */
             int numberOfEventProcessorsWithAdditionalPartition = numberOfPartitions % numberOfActiveEventProcessors;
 
             logger.info("Expected min partitions per event processor = {}, expected number of event "
-                + "processors with additional partition = {}", minPartitionsPerEventProcessor, numberOfEventProcessorsWithAdditionalPartition);
+                + "processors with additional partition = {}", minPartitionsPerEventProcessor,
+                numberOfEventProcessorsWithAdditionalPartition);
 
             if (isLoadBalanced(minPartitionsPerEventProcessor, numberOfEventProcessorsWithAdditionalPartition,
                 ownerPartitionMap)) {
@@ -201,7 +202,8 @@ public final class PartitionBasedLoadBalancer {
                 return;
             }
 
-            // If we have reached this stage, this event processor has to claim/steal ownership of at least 1 more partition
+            // If we have reached this stage, this event processor has to claim/steal ownership of at least 1
+            // more partition
             logger.info(
                 "Load is unbalanced and this event processor should own more partitions");
             /*
@@ -212,8 +214,8 @@ public final class PartitionBasedLoadBalancer {
              *
              * OR
              *
-             * Find a partition to steal from another event processor. Pick the event processor that has owns the highest
-             * number of partitions.
+             * Find a partition to steal from another event processor. Pick the event processor that has owns the
+             * highest number of partitions.
              */
             String partitionToClaim = partitionIds.parallelStream()
                 .filter(partitionId -> !activePartitionOwnershipMap.containsKey(partitionId))
