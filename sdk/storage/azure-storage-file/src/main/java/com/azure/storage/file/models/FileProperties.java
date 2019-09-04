@@ -51,7 +51,8 @@ public final class FileProperties {
      * @param smbProperties The SMB properties of the file.
      */
     public FileProperties(final String contentType, final String contentEncoding, final String contentLanguage,
-        final String cacheControl, final byte[] contentMD5, final String contentDisposition, final FileSmbProperties smbProperties) {
+        final String cacheControl, final byte[] contentMD5, final String contentDisposition,
+        final FileSmbProperties smbProperties) {
         this.contentType = contentType;
         this.contentEncoding = contentEncoding;
         this.contentLanguage = contentLanguage;
@@ -250,5 +251,73 @@ public final class FileProperties {
         return smbProperties;
     }
 
-    // TODO: Add some setters for settable properties
+    /**
+     * Sets the content type.
+     * @param contentType The content type.
+     * @return the updated FileProperties object.
+     */
+    public FileProperties contentType(String contentType) {
+        this.contentType = contentType;
+        return this;
+    }
+
+    /**
+     * Sets the content md5.
+     * @param contentMD5 The content md5.
+     * @return the updated FileProperties object.
+     */
+    public FileProperties contentMD5(byte[] contentMD5) {
+        this.contentMD5 = contentMD5;
+        return this;
+    }
+
+    /**
+     * Sets the content encoding.
+     * @param contentEncoding The content encoding.
+     * @return the updated FileProperties object.
+     */
+    public FileProperties contentEncoding(String contentEncoding) {
+        this.contentEncoding = contentEncoding;
+        return this;
+    }
+
+    /**
+     * Sets the cache control.
+     * @param cacheControl The cache control.
+     * @return the updated FileProperties object.
+     */
+    public FileProperties cacheControl(String cacheControl) {
+        this.cacheControl = cacheControl;
+        return this;
+    }
+
+    /**
+     * Sets the content disposition.
+     * @param contentDisposition The content disposition.
+     * @return the updated FileProperties object.
+     */
+    public FileProperties contentDisposition(String contentDisposition) {
+        this.contentDisposition = contentDisposition;
+        return this;
+    }
+
+    /**
+     * Sets the content language.
+     * @param contentLanguage The content language.
+     * @return the updated FileProperties object.
+     */
+    public FileProperties contentLanguage(String contentLanguage) {
+        this.contentLanguage = contentLanguage;
+        return this;
+    }
+
+    /**
+     * Sets the file smb properties.
+     * @param smbProperties The file smb properties.
+     * @return the updated FileProperties object.
+     */
+    public FileProperties smbProperties(FileSmbProperties smbProperties) {
+        this.smbProperties = smbProperties;
+        return this;
+    }
 }
