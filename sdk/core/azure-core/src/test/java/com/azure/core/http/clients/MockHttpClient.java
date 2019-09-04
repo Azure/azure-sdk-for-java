@@ -12,7 +12,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
-import com.azure.core.implementation.Base64Url;
+import com.azure.core.util.Base64Url;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.util.FluxUtil;
 import reactor.core.publisher.Mono;

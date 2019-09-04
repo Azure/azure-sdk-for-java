@@ -9,7 +9,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.http.policy.spi.AfterRetryPolicyProvider;
+import com.azure.core.http.policy.AfterRetryPolicyProvider;
 import com.azure.core.implementation.util.ImplUtils;
 import io.opencensus.trace.AttributeValue;
 import io.opencensus.trace.Span;

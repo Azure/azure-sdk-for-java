@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
-
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;

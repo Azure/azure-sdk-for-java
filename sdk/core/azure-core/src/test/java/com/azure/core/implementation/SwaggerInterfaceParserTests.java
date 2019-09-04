@@ -3,10 +3,10 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.implementation.exception.MissingRequiredAnnotationException;
 import org.junit.Test;
 

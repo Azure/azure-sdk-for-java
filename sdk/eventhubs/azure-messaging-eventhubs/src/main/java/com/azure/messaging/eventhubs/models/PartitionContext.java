@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.annotation.Immutable;
 import com.azure.messaging.eventhubs.PartitionProcessor;
 import java.util.Objects;
 

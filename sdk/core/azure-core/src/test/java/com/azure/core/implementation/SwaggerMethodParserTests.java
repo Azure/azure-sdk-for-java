@@ -5,9 +5,9 @@ package com.azure.core.implementation;
 
 import com.azure.core.MyOtherRestException;
 import com.azure.core.MyRestException;
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Patch;
-import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Patch;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.entities.HttpBinJSON;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;

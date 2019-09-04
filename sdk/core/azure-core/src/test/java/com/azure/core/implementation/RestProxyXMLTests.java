@@ -3,11 +3,11 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.implementation.annotation.BodyParam;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.Put;
-import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.Put;
+import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.entities.AccessPolicy;
 import com.azure.core.entities.SignedIdentifierInner;
 import com.azure.core.entities.SignedIdentifiersWrapper;

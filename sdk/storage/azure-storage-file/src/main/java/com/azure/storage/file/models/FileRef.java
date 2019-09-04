@@ -3,8 +3,6 @@
 
 package com.azure.storage.file.models;
 
-import com.azure.core.implementation.annotation.Fluent;
-
 /**
  * Contains file or directory reference information in the storage File service.
  */

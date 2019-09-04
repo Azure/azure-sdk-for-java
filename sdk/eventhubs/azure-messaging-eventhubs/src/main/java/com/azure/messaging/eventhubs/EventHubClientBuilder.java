@@ -7,7 +7,7 @@ import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.AzureException;
-import com.azure.core.implementation.annotation.ServiceClientBuilder;
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.BaseConfigurations;
 import com.azure.core.util.configuration.Configuration;

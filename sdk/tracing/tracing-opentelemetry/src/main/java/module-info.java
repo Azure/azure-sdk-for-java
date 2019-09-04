@@ -1,7 +1,7 @@
 module com.azure.tracing.opentelemetry {
     requires com.azure.core;
 
-    requires io.opencensus;
+    requires opencensus.api;
 
     exports com.azure.tracing.opentelemetry;
 

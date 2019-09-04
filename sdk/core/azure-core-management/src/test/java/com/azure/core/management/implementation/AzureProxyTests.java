@@ -4,14 +4,14 @@
 package com.azure.core.management.implementation;
 
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.implementation.annotation.Delete;
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.Put;
-import com.azure.core.implementation.annotation.PathParam;
-import com.azure.core.implementation.annotation.ResumeOperation;
-import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.Put;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.ResumeOperation;
+import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;

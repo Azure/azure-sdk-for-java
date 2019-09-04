@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation.serializer.jackson;
 
-import com.azure.core.implementation.annotation.JsonFlatten;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JsonMappingException;

@@ -5,8 +5,8 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
-import com.azure.core.implementation.annotation.HeaderCollection;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
