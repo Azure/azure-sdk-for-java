@@ -100,6 +100,7 @@
 
     <!-- Dependency Versions -->
     <jackson.version>2.9.9</jackson.version>
+    <jackson-databind.version>2.9.9.3</jackson-databind.version>
     <client-runtime.version>1.6.12</client-runtime.version>
     <commons-codec.version>1.10</commons-codec.version>
     <spotbugs.version>4.0.0-beta3</spotbugs.version>
@@ -237,10 +238,11 @@
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
-        <version>${jackson.version}</version>
+        <version>${jackson-databind.version}</version>
       </dependency>
 
       <dependency>
+
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-annotations</artifactId>
         <version>${jackson.version}</version>
