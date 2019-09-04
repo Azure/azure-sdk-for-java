@@ -8,7 +8,6 @@ import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
 import com.azure.messaging.eventhubs.EventHubClient;
-import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
 
 import java.time.Instant;
 import java.util.Locale;
