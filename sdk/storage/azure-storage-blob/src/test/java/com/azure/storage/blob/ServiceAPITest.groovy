@@ -19,7 +19,6 @@ import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.models.StorageServiceProperties
 import com.azure.storage.blob.models.StorageServiceStats
 import com.azure.storage.blob.models.UserDelegationKey
-import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RequestRetryPolicy
 import spock.lang.Ignore
@@ -271,7 +270,9 @@ class ServiceAPITest extends APISpec {
 
     def "Set props error"() {
         when:
-        getServiceClient(primaryCredential, "https://error.blob.core.windows.net")
+        setupBlobServiceClientBuilder("https://error.blob.core.windows.net")
+            .credential(primaryCredential)
+            .buildClient()
             .setProperties(new StorageServiceProperties())
 
         then:
@@ -285,7 +286,9 @@ class ServiceAPITest extends APISpec {
 
     def "Get props error"() {
         when:
-        getServiceClient(primaryCredential, "https://error.blob.core.windows.net")
+        setupBlobServiceClientBuilder("https://error.blob.core.windows.net")
+            .credential(primaryCredential)
+            .buildClient()
             .getProperties()
 
         then:
@@ -341,7 +344,7 @@ class ServiceAPITest extends APISpec {
     def "Get stats"() {
         setup:
         String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.accountName())
-        BlobServiceClient serviceClient = getServiceClient(primaryCredential, secondaryEndpoint)
+        BlobServiceClient serviceClient = setupBlobServiceClientBuilder(secondaryEndpoint).credential(primaryCredential).buildClient()
         Response<StorageServiceStats> response = serviceClient.getStatisticsWithResponse(null, null)
 
         expect:
@@ -355,7 +358,7 @@ class ServiceAPITest extends APISpec {
     def "Get stats min"() {
         setup:
         String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.accountName())
-        BlobServiceClient serviceClient = getServiceClient(primaryCredential, secondaryEndpoint)
+        BlobServiceClient serviceClient = setupBlobServiceClientBuilder(secondaryEndpoint).credential(primaryCredential).buildClient()
 
         expect:
         serviceClient.getStatisticsWithResponse(null, null).statusCode() == 200
@@ -388,7 +391,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get account info error"() {
         when:
-        BlobServiceClient serviceURL = getServiceClient((SharedKeyCredential) null, primaryBlobServiceClient.getAccountUrl().toString())
+        BlobServiceClient serviceURL = setupBlobServiceClientBuilder(primaryBlobServiceClient.getAccountUrl().toString()).buildClient()
         serviceURL.getAccountInfo()
 
         then:
@@ -399,9 +402,10 @@ class ServiceAPITest extends APISpec {
     // This test validates a fix for a bug that caused NPE to be thrown when the account did not exist.
     def "Invalid account name"() {
         setup:
-        URL badURL = new URL("http://fake.blobfake.core.windows.net")
-        BlobServiceClient client = getServiceClient(primaryCredential, badURL.toString(),
+        def client = setupBlobServiceClientBuilder("http://fake.blobfake.core.windows.net",
             new RequestRetryPolicy(new RequestRetryOptions(null, 2, null, null, null, null)))
+            .credential(primaryCredential)
+            .buildClient()
 
         when:
         client.getProperties()

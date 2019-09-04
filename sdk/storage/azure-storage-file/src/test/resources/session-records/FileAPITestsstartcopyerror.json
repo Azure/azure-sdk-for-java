@@ -1,0 +1,76 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/startcopyerrorfileapitestsstartcopyerror15c42435e4a067?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "384c4da2-9eab-44f3-869d-e491198cc7b4"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73191EDD28959\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:45:12 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "78864e07-901a-0137-647a-63da8c000000",
+      "Date" : "Wed, 04 Sep 2019 23:45:12 GMT",
+      "x-ms-client-request-id" : "384c4da2-9eab-44f3-869d-e491198cc7b4"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/startcopyerrorfileapitestsstartcopyerror15c42435e4a067/startcopyerrorfileapitestsstartcopyerror15c2865895f762",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "32fbc1da-3e4c-4c8c-91d0-c6779a6eb817"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "2189138948451189390*13168958551941065216",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-09-04T23:45:12.8374757Z",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:45:12 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 04 Sep 2019 23:45:12 GMT",
+      "ETag" : "\"0x8D73191EDF33DE5\"",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2019-09-04T23:45:12.8374757Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "78864e0a-901a-0137-657a-63da8c000000",
+      "x-ms-client-request-id" : "32fbc1da-3e4c-4c8c-91d0-c6779a6eb817",
+      "x-ms-file-last-write-time" : "2019-09-04T23:45:12.8374757Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/startcopyerrorfileapitestsstartcopyerror15c42435e4a067/startcopyerrorfileapitestsstartcopyerror15c2865895f762",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "306ec50c-46f8-47ba-8dd5-3716ff658430"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidHeaderValue",
+      "retry-after" : "0",
+      "Content-Length" : "330",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "78864e11-901a-0137-6c7a-63da8c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:78864e11-901a-0137-6c7a-63da8c000000\nTime:2019-09-04T23:45:12.8703777Z</Message><HeaderName>x-ms-copy-source</HeaderName><HeaderValue>some url</HeaderValue></Error>",
+      "Date" : "Wed, 04 Sep 2019 23:45:12 GMT",
+      "x-ms-client-request-id" : "306ec50c-46f8-47ba-8dd5-3716ff658430",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "startcopyerrorfileapitestsstartcopyerror15c42435e4a067", "startcopyerrorfileapitestsstartcopyerror15c2865895f762" ]
+}

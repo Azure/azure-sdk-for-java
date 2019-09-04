@@ -86,6 +86,7 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.0.0-preview.4</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -116,6 +117,15 @@
     <dependency>
       <groupId>cglib</groupId>
       <artifactId>cglib-nodep</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- test dependencies on azure-storage-common -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-common</artifactId>
+      <version>12.0.0-preview.3</version>
+      <type>test-jar</type>
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/uploaddataerrorfileasyncapitestsuploaddataerror85c60762a0?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "8417feb8-4f0c-4092-ac07-b4ebc2868153"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73191F0394C07\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:45:16 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "78864ea1-901a-0137-637a-63da8c000000",
+      "Date" : "Wed, 04 Sep 2019 23:45:16 GMT",
+      "x-ms-client-request-id" : "8417feb8-4f0c-4092-ac07-b4ebc2868153"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/uploaddataerrorfileasyncapitestsuploaddataerror85c60762a0/uploaddataerrorfileasyncapitestsuploaddataerror85c144971d?comp=range",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "24da152d-9daa-4f02-9f53-faddf81caac6",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "78864ea4-901a-0137-657a-63da8c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:78864ea4-901a-0137-657a-63da8c000000\nTime:2019-09-04T23:45:16.6970755Z</Message></Error>",
+      "Date" : "Wed, 04 Sep 2019 23:45:16 GMT",
+      "x-ms-client-request-id" : "24da152d-9daa-4f02-9f53-faddf81caac6",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "uploaddataerrorfileasyncapitestsuploaddataerror85c60762a0", "uploaddataerrorfileasyncapitestsuploaddataerror85c144971d" ]
+}

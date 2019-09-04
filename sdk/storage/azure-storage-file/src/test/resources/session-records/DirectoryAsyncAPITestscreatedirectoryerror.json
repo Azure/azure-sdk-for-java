@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createdirectoryerror12345554cfb9f9dd242178?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "f375c33d-bd9b-4c13-87a8-e1f85052b739"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73191E0F1E52D\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:44:51 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "78864b97-901a-0137-477a-63da8c000000",
+      "Date" : "Wed, 04 Sep 2019 23:44:50 GMT",
+      "x-ms-client-request-id" : "f375c33d-bd9b-4c13-87a8-e1f85052b739"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createdirectoryerror042364cfb91f59a9840d2b/createdirectoryerror69949d2a69c696eac418f9?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "b8809c75-413d-47b2-b29d-02d5fc61e643"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "217",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "78864b99-901a-0137-487a-63da8c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:78864b99-901a-0137-487a-63da8c000000\nTime:2019-09-04T23:44:51.0563068Z</Message></Error>",
+      "Date" : "Wed, 04 Sep 2019 23:44:50 GMT",
+      "x-ms-client-request-id" : "b8809c75-413d-47b2-b29d-02d5fc61e643",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "createdirectoryerror12345554cfb9f9dd242178", "createdirectoryerror69949d2a69c696eac418f9", "createdirectoryerror042364cfb91f59a9840d2b" ]
+}

@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/downloaddataerrorfileapitestsdownloaddataerror8f282358f29?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "93536217-75bb-4377-b0cf-12d7e2f6a03c"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73191E966EB66\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:45:05 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "78864d82-901a-0137-6a7a-63da8c000000",
+      "Date" : "Wed, 04 Sep 2019 23:45:04 GMT",
+      "x-ms-client-request-id" : "93536217-75bb-4377-b0cf-12d7e2f6a03c"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/downloaddataerrorfileapitestsdownloaddataerror8f282358f29/downloaddataerrorfileapitestsdownloaddataerror8f2563691a4",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "bc25a220-1ab5-49d0-bd74-b08821dc2c69"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "78864d86-901a-0137-6d7a-63da8c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:78864d86-901a-0137-6d7a-63da8c000000\nTime:2019-09-04T23:45:05.2430086Z</Message></Error>",
+      "Date" : "Wed, 04 Sep 2019 23:45:04 GMT",
+      "x-ms-client-request-id" : "bc25a220-1ab5-49d0-bd74-b08821dc2c69",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "downloaddataerrorfileapitestsdownloaddataerror8f282358f29", "downloaddataerrorfileapitestsdownloaddataerror8f2563691a4" ]
+}

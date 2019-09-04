@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilemaxoverloadinvalidargs69857ecdaf7f00d7?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "aef18ed9-f7d6-45fd-ac3c-8d4ad5abfe54"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73191FE325C63\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:45:40 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "78865162-901a-0137-217a-63da8c000000",
+      "Date" : "Wed, 04 Sep 2019 23:45:39 GMT",
+      "x-ms-client-request-id" : "aef18ed9-f7d6-45fd-ac3c-8d4ad5abfe54"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilemaxoverloadinvalidargs69857ecdaf7f00d7/testfile:",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "453a9eb4-b76c-412a-a9ba-6b2cc245a0b4"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidResourceName",
+      "retry-after" : "0",
+      "Content-Length" : "243",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "78865164-901a-0137-227a-63da8c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:78865164-901a-0137-227a-63da8c000000\nTime:2019-09-04T23:45:40.1377199Z</Message></Error>",
+      "Date" : "Wed, 04 Sep 2019 23:45:39 GMT",
+      "x-ms-client-request-id" : "453a9eb4-b76c-412a-a9ba-6b2cc245a0b4",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "createfilemaxoverloadinvalidargs69857ecdaf7f00d7" ]
+}

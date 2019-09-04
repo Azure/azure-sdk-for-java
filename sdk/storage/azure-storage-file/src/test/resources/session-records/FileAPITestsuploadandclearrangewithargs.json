@@ -1,0 +1,133 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/uploadandclearrangewithargs34646c46f38b28b5444?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "196574e2-7b08-46f3-b7b5-091c632ad4e3"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73191E7916948\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:45:02 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "78864d20-901a-0137-117a-63da8c000000",
+      "Date" : "Wed, 04 Sep 2019 23:45:01 GMT",
+      "x-ms-client-request-id" : "196574e2-7b08-46f3-b7b5-091c632ad4e3"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/uploadandclearrangewithargs34646c46f38b28b5444/uploadandclearrangewithargs19311cd3085678fe745",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "791149a2-1dec-45fc-9bde-f92b1e7c80ec"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "2189138948451189390*13168958551941065216",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-09-04T23:45:02.1695667Z",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:45:02 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 04 Sep 2019 23:45:01 GMT",
+      "ETag" : "\"0x8D73191E79772B3\"",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2019-09-04T23:45:02.1695667Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "78864d22-901a-0137-127a-63da8c000000",
+      "x-ms-client-request-id" : "791149a2-1dec-45fc-9bde-f92b1e7c80ec",
+      "x-ms-file-last-write-time" : "2019-09-04T23:45:02.1695667Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/uploadandclearrangewithargs34646c46f38b28b5444/uploadandclearrangewithargs19311cd3085678fe745?comp=range",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "a289bd0b-6654-43df-b109-0550b759a79c",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73191E79D1961\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:45:02 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "78864d24-901a-0137-147a-63da8c000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 04 Sep 2019 23:45:01 GMT",
+      "x-ms-client-request-id" : "a289bd0b-6654-43df-b109-0550b759a79c",
+      "Content-MD5" : "A5momLrihyOacM8O00uT1g=="
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/uploadandclearrangewithargs34646c46f38b28b5444/uploadandclearrangewithargs19311cd3085678fe745?comp=range",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "47fadeb8-1052-4257-9800-24240ca8ebfe"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73191E7A16029\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:45:02 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "78864d25-901a-0137-157a-63da8c000000",
+      "Date" : "Wed, 04 Sep 2019 23:45:01 GMT",
+      "x-ms-client-request-id" : "47fadeb8-1052-4257-9800-24240ca8ebfe"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/uploadandclearrangewithargs34646c46f38b28b5444/uploadandclearrangewithargs19311cd3085678fe745",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "254182b7-2947-41e5-a96c-33f788b8309b"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "2189138948451189390*13168958551941065216",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-09-04T23:45:02.1695667Z",
+      "Content-Range" : "bytes 1-7/22",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:45:02 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "206",
+      "Date" : "Wed, 04 Sep 2019 23:45:01 GMT",
+      "Accept-Ranges" : "bytes",
+      "x-ms-server-encrypted" : "true",
+      "x-ms-type" : "File",
+      "ETag" : "\"0x8D73191E7A16029\"",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2019-09-04T23:45:02.1695667Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "7",
+      "x-ms-request-id" : "78864d26-901a-0137-167a-63da8c000000",
+      "Body" : "[0, 0, 0, 0, 0, 0, 0]",
+      "x-ms-client-request-id" : "254182b7-2947-41e5-a96c-33f788b8309b",
+      "x-ms-file-last-write-time" : "2019-09-04T23:45:02.1695667Z",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "uploadandclearrangewithargs34646c46f38b28b5444", "uploadandclearrangewithargs19311cd3085678fe745" ]
+}

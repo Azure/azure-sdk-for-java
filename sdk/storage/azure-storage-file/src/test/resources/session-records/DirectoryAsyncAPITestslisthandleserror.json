@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/listhandleserror4996055139bf21b944e158d3?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "4ac39573-b65b-4eb0-8ea1-12bb93651ad4"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73191E378E1F9\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:44:55 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "78864c34-901a-0137-4d7a-63da8c000000",
+      "Date" : "Wed, 04 Sep 2019 23:44:54 GMT",
+      "x-ms-client-request-id" : "4ac39573-b65b-4eb0-8ea1-12bb93651ad4"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/listhandleserror4996055139bf21b944e158d3/listhandleserror739512708b61c183840148f4?comp=listhandles",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "996bddc1-fd30-45b5-9af9-c391b8accf59"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "78864c36-901a-0137-4e7a-63da8c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:78864c36-901a-0137-4e7a-63da8c000000\nTime:2019-09-04T23:44:55.2954014Z</Message></Error>",
+      "Date" : "Wed, 04 Sep 2019 23:44:54 GMT",
+      "x-ms-client-request-id" : "996bddc1-fd30-45b5-9af9-c391b8accf59",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "listhandleserror4996055139bf21b944e158d3", "listhandleserror739512708b61c183840148f4" ]
+}

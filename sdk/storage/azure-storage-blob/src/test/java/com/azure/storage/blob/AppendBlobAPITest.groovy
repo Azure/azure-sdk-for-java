@@ -293,7 +293,7 @@ class AppendBlobAPITest extends APISpec {
     def "Append block from URL min"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        byte[] data = getRandomByteArray(1024)
+        byte[] data = generateRandomByteArray(1024)
         bc.appendBlock(new ByteArrayInputStream(data), data.length)
 
         AppendBlobClient destURL = cc.getAppendBlobClient(generateBlobName())
@@ -312,7 +312,7 @@ class AppendBlobAPITest extends APISpec {
     def "Append block from URL range"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        byte[] data = getRandomByteArray(4 * 1024)
+        byte[] data = generateRandomByteArray(4 * 1024)
         bc.appendBlock(new ByteArrayInputStream(data), data.length)
 
         AppendBlobClient destURL = cc.getAppendBlobClient(generateBlobName())
@@ -330,7 +330,7 @@ class AppendBlobAPITest extends APISpec {
     def "Append block from URL MD5"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        byte[] data = getRandomByteArray(1024)
+        byte[] data = generateRandomByteArray(1024)
         bc.appendBlock(new ByteArrayInputStream(data), data.length)
 
         AppendBlobClient destURL = cc.getAppendBlobClient(generateBlobName())
@@ -347,7 +347,7 @@ class AppendBlobAPITest extends APISpec {
     def "Append block from URL MD5 fail"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        byte[] data = getRandomByteArray(1024)
+        byte[] data = generateRandomByteArray(1024)
         bc.appendBlock(new ByteArrayInputStream(data), data.length)
 
         def destURL = cc.getAppendBlobClient(generateBlobName())

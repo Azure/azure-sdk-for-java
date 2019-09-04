@@ -326,14 +326,14 @@ class ContainerAPITest extends APISpec {
         SignedIdentifier identifier = new SignedIdentifier()
             .id("0000")
             .accessPolicy(new AccessPolicy()
-                .start(getUTCNow())
-                .expiry(getUTCNow().plusDays(1))
+                .start(generateUTCNow())
+                .expiry(generateUTCNow().plusDays(1))
                 .permission("r"))
         SignedIdentifier identifier2 = new SignedIdentifier()
             .id("0001")
             .accessPolicy(new AccessPolicy()
-                .start(getUTCNow())
-                .expiry(getUTCNow().plusDays(2))
+                .start(generateUTCNow())
+                .expiry(generateUTCNow().plusDays(2))
                 .permission("w"))
         List<SignedIdentifier> ids = new ArrayList<>()
         ids.add(identifier)
@@ -430,8 +430,8 @@ class ContainerAPITest extends APISpec {
         SignedIdentifier identifier = new SignedIdentifier()
             .id("0000")
             .accessPolicy(new AccessPolicy()
-                .start(getUTCNow())
-                .expiry(getUTCNow().plusDays(1))
+                .start(generateUTCNow())
+                .expiry(generateUTCNow().plusDays(1))
                 .permission("r"))
         List<SignedIdentifier> ids = new ArrayList<>()
         ids.push(identifier)
@@ -1377,7 +1377,7 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Break lease"() {
         setup:
-        cc.acquireLease(getRandomUUID(), leaseTime)
+        cc.acquireLease(generateRandomUUID(), leaseTime)
 
         def breakLeaseResponse = cc.breakLeaseWithResponse(breakPeriod, null, null, null)
         def state = LeaseStateType.fromString(cc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-lease-state"))
@@ -1472,7 +1472,7 @@ class ContainerAPITest extends APISpec {
     def "Change lease"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        Response<String> changeLeaseResponse = cc.changeLeaseWithResponse(leaseID, getRandomUUID(), null, null, null)
+        Response<String> changeLeaseResponse = cc.changeLeaseWithResponse(leaseID, generateRandomUUID(), null, null, null)
         leaseID = changeLeaseResponse.value()
 
         expect:
@@ -1485,7 +1485,7 @@ class ContainerAPITest extends APISpec {
         def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
 
         expect:
-        cc.changeLeaseWithResponse(leaseID, getRandomUUID(), null, null, null).statusCode() == 200
+        cc.changeLeaseWithResponse(leaseID, generateRandomUUID(), null, null, null).statusCode() == 200
     }
 
     @Unroll
@@ -1495,7 +1495,7 @@ class ContainerAPITest extends APISpec {
         def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
 
         expect:
-        cc.changeLeaseWithResponse(leaseID, getRandomUUID(), mac, null, null).statusCode() == 200
+        cc.changeLeaseWithResponse(leaseID, generateRandomUUID(), mac, null, null).statusCode() == 200
 
         where:
         modified | unmodified
@@ -1511,7 +1511,7 @@ class ContainerAPITest extends APISpec {
         def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
 
         when:
-        cc.changeLeaseWithResponse(leaseID, getRandomUUID(), mac, null, null)
+        cc.changeLeaseWithResponse(leaseID, generateRandomUUID(), mac, null, null)
 
         then:
         thrown(StorageException)
@@ -1605,9 +1605,9 @@ class ContainerAPITest extends APISpec {
             cc.create()
         }
 
-        AppendBlobClient bu = getBlobClient(primaryCredential,
-            String.format("http://%s.blob.core.windows.net/%s/rootblob", primaryCredential.accountName(), ContainerClient.ROOT_CONTAINER_NAME))
-            .asAppendBlobClient()
+        def bu = setupBlobClientBuilder(String.format("http://%s.blob.core.windows.net/%s/rootblob", primaryCredential.accountName(), ContainerClient.ROOT_CONTAINER_NAME))
+            .credential(primaryCredential)
+            .buildAppendBlobClient()
 
         when:
         Response<AppendBlobItem> createResponse = bu.createWithResponse(null, null, null, null, null)
@@ -1688,7 +1688,8 @@ class ContainerAPITest extends APISpec {
 
     def "Get account info error"() {
         when:
-        BlobServiceClient serviceURL = getServiceClient(primaryBlobServiceClient.getAccountUrl().toString())
+        BlobServiceClient serviceURL = setupBlobServiceClientBuilder(primaryBlobServiceClient.getAccountUrl().toString())
+            .buildClient()
 
         serviceURL.getContainerClient(generateContainerName()).getAccountInfo()
 

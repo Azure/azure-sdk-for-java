@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createsnapshotmetadata072150254690d3b864f65?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "8f749c62-98a5-4240-bfbc-4e9054b81ce7"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73191FC8D4520\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:45:37 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "78865104-901a-0137-577a-63da8c000000",
+      "Date" : "Wed, 04 Sep 2019 23:45:36 GMT",
+      "x-ms-client-request-id" : "8f749c62-98a5-4240-bfbc-4e9054b81ce7"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createsnapshotmetadata072150254690d3b864f65?restype=share&comp=snapshot",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "9e08e1f9-9f42-4eaf-8859-4d99242f994a"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-snapshot" : "2019-09-04T23:45:37.0000000Z",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73191FC5A2680\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:45:37 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "78865106-901a-0137-587a-63da8c000000",
+      "Date" : "Wed, 04 Sep 2019 23:45:36 GMT",
+      "x-ms-client-request-id" : "9e08e1f9-9f42-4eaf-8859-4d99242f994a"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "createsnapshotmetadata072150254690d3b864f65", "createsnapshotmetadata06093a76c2126aedc4d3d" ]
+}

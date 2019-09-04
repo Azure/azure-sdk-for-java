@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilemaxoverloadinvalidargs187240a956127f5f?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "d01cd6bb-2a26-473d-b91a-73ed90c6ee9e"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73191FE47703C\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:45:40 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "78865165-901a-0137-237a-63da8c000000",
+      "Date" : "Wed, 04 Sep 2019 23:45:39 GMT",
+      "x-ms-client-request-id" : "d01cd6bb-2a26-473d-b91a-73ed90c6ee9e"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilemaxoverloadinvalidargs187240a956127f5f/fileName",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "6567e373-cb65-4ef7-b9d6-eba4fc3f12c9"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "OutOfRangeInput",
+      "retry-after" : "0",
+      "Content-Length" : "236",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "78865169-901a-0137-267a-63da8c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The file size exceeds the maximum permissible limit.\nRequestId:78865169-901a-0137-267a-63da8c000000\nTime:2019-09-04T23:45:40.2648437Z</Message></Error>",
+      "Date" : "Wed, 04 Sep 2019 23:45:39 GMT",
+      "x-ms-client-request-id" : "6567e373-cb65-4ef7-b9d6-eba4fc3f12c9",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "createfilemaxoverloadinvalidargs187240a956127f5f" ]
+}

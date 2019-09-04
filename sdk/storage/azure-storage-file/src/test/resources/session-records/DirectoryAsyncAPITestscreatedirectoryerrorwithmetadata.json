@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createdirectoryerrorwithmetadata28213a503cac4061?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "59172125-6258-43a3-bae5-84b8b6f863a0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73191E11DBAF2\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:44:51 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "78864ba1-901a-0137-4e7a-63da8c000000",
+      "Date" : "Wed, 04 Sep 2019 23:44:50 GMT",
+      "x-ms-client-request-id" : "59172125-6258-43a3-bae5-84b8b6f863a0"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createdirectoryerrorwithmetadata28213a503cac4061/createdirectoryerrorwithmetadata302697eb192971df?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "907db0ec-5a6b-42e1-a258-9b8f752715f9"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "AuthenticationFailed",
+      "retry-after" : "0",
+      "Content-Length" : "952",
+      "StatusCode" : "403",
+      "x-ms-request-id" : "78864ba3-901a-0137-4f7a-63da8c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:78864ba3-901a-0137-4f7a-63da8c000000\nTime:2019-09-04T23:44:51.3375778Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'MqnX4K5qcX3+SkCYEWhplKfid0fgndJ0Qs5ohyql2rg=' is not the same as any computed signature. Server used following string to sign: 'PUT\n\n\n\n\n\nWed, 04 Sep 2019 23:44:51 GMT\n\n\n\n\n\nx-ms-client-request-id:907db0ec-5a6b-42e1-a258-9b8f752715f9\nx-ms-file-attributes:None\nx-ms-file-creation-time:now\nx-ms-file-last-write-time:now\nx-ms-file-permission:inherit\nx-ms-meta-testmeta:value\nx-ms-version:2019-02-02\n/azstoragesdkaccount/createdirectoryerrorwithmetadata28213a503cac4061/createdirectoryerrorwithmetadata302697eb192971df\nrestype:directory'.</AuthenticationErrorDetail></Error>",
+      "Date" : "Wed, 04 Sep 2019 23:44:50 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "createdirectoryerrorwithmetadata28213a503cac4061", "createdirectoryerrorwithmetadata302697eb192971df" ]
+}

@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfileinvalidargs00255039bab91e8c5451da?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "4432f7c2-13cc-4878-92f2-af82c0140f21"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D7319200C31F8B\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:45:44 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "788651d4-901a-0137-757a-63da8c000000",
+      "Date" : "Wed, 04 Sep 2019 23:45:43 GMT",
+      "x-ms-client-request-id" : "4432f7c2-13cc-4878-92f2-af82c0140f21"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfileinvalidargs00255039bab91e8c5451da/testfile:",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "0740afe6-7c04-4386-9802-4739f95bff65"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidResourceName",
+      "retry-after" : "0",
+      "Content-Length" : "243",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "788651d6-901a-0137-767a-63da8c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:788651d6-901a-0137-767a-63da8c000000\nTime:2019-09-04T23:45:44.4458822Z</Message></Error>",
+      "Date" : "Wed, 04 Sep 2019 23:45:43 GMT",
+      "x-ms-client-request-id" : "0740afe6-7c04-4386-9802-4739f95bff65",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "createfileinvalidargs00255039bab91e8c5451da" ]
+}

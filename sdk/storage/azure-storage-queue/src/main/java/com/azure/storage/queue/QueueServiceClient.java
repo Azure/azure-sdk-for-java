@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
@@ -158,7 +159,7 @@ public final class QueueServiceClient {
      *
      * @return {@link QueueItem Queues} in the storage account
      */
-    public Iterable<QueueItem> listQueues() {
+    public PagedIterable<QueueItem> listQueues() {
         return listQueues(null, null);
     }
 
@@ -180,7 +181,7 @@ public final class QueueServiceClient {
      * @param options Options for listing queues
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      */
-    public Iterable<QueueItem> listQueues(QueuesSegmentOptions options) {
+    public PagedIterable<QueueItem> listQueues(QueuesSegmentOptions options) {
         return listQueues(null, options);
     }
 
@@ -194,8 +195,8 @@ public final class QueueServiceClient {
      * @param options Options for listing queues
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      */
-    Iterable<QueueItem> listQueues(String marker, QueuesSegmentOptions options) {
-        return client.listQueues(marker, options).toIterable();
+    PagedIterable<QueueItem> listQueues(String marker, QueuesSegmentOptions options) {
+        return new PagedIterable<>(client.listQueues(marker, options));
     }
 
     /**

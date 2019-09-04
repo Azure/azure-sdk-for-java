@@ -14,9 +14,9 @@ import java.util.concurrent.locks.ReentrantLock
 class ProgressReporterTest extends APISpec {
     def "Report progress sequential"() {
         setup:
-        ByteBuffer buf1 = getRandomData(10)
-        ByteBuffer buf2 = getRandomData(15)
-        ByteBuffer buf3 = getRandomData(5)
+        ByteBuffer buf1 = generateRandomByteBuffer(10)
+        ByteBuffer buf2 = generateRandomByteBuffer(15)
+        ByteBuffer buf3 = generateRandomByteBuffer(5)
 
         IProgressReceiver mockReceiver = Mock(IProgressReceiver)
 
@@ -40,11 +40,13 @@ class ProgressReporterTest extends APISpec {
         setup:
         IProgressReceiver mockReceiver = Mock(IProgressReceiver)
 
-        ByteBuffer buffer = getRandomData(1 * 1024 * 1024)
+        ByteBuffer buffer = generateRandomByteBuffer(1 * 1024 * 1024)
         Flux<ByteBuffer> data = ProgressReporter.addProgressReporting(Flux.just(buffer), mockReceiver)
 
         when:
-        BlockBlobAsyncClient bu = getBlobAsyncClient(primaryCredential, cc.getContainerUrl().toString(), generateBlobName())
+        BlockBlobAsyncClient bu = setupBlobClientBuilder(cc.getContainerUrl().toString())
+            .blobName(generateBlobName())
+            .buildBlobAsyncClient()
             .asBlockBlobAsyncClient()
 
         bu.upload(data, buffer.remaining()).block()
@@ -60,9 +62,9 @@ class ProgressReporterTest extends APISpec {
 
     def "Report progress parallel"() {
         setup:
-        ByteBuffer buf1 = getRandomData(10)
-        ByteBuffer buf2 = getRandomData(15)
-        ByteBuffer buf3 = getRandomData(5)
+        ByteBuffer buf1 = generateRandomByteBuffer(10)
+        ByteBuffer buf2 = generateRandomByteBuffer(15)
+        ByteBuffer buf3 = generateRandomByteBuffer(5)
 
         ReentrantLock lock = new ReentrantLock()
         AtomicLong totalProgress = new AtomicLong(0)

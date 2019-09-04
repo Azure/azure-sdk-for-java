@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/listhandleserrordirectoryapitestslisthandleserror98610777b?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "4855c7f6-983f-407a-8f80-20b937793768"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73191D9BAB660\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:44:38 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "78864a9f-901a-0137-737a-63da8c000000",
+      "Date" : "Wed, 04 Sep 2019 23:44:38 GMT",
+      "x-ms-client-request-id" : "4855c7f6-983f-407a-8f80-20b937793768"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/listhandleserrordirectoryapitestslisthandleserror98610777b/listhandleserrordirectoryapitestslisthandleserror986719635?comp=listhandles",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "1642ac31-1edf-4257-b027-5f09cd93f64b"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "78864aa1-901a-0137-747a-63da8c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:78864aa1-901a-0137-747a-63da8c000000\nTime:2019-09-04T23:44:40.7503474Z</Message></Error>",
+      "Date" : "Wed, 04 Sep 2019 23:44:40 GMT",
+      "x-ms-client-request-id" : "1642ac31-1edf-4257-b027-5f09cd93f64b",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "listhandleserrordirectoryapitestslisthandleserror98610777b", "listhandleserrordirectoryapitestslisthandleserror986719635" ]
+}

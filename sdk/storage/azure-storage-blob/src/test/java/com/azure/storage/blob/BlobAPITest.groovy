@@ -106,7 +106,9 @@ class BlobAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
-        BlobClient bu2 = getBlobClient(primaryCredential, bc.getBlobUrl().toString(), new MockRetryRangeResponsePolicy())
+        def bu2 = setupBlobClientBuilder(bc.getBlobUrl().toString(), new MockRetryRangeResponsePolicy())
+            .credential(primaryCredential)
+            .buildBlobClient()
 
         when:
         BlobRange range = new BlobRange(2, 5L)
@@ -849,7 +851,7 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Break lease"() {
         setup:
-        bc.acquireLeaseWithResponse(getRandomUUID(), leaseTime, null, null, null)
+        bc.acquireLeaseWithResponse(generateRandomUUID(), leaseTime, null, null, null)
 
         Response<Integer> breakLeaseResponse = bc.breakLeaseWithResponse(breakPeriod, null, null, null)
         String leaseState = bc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-lease-state")
@@ -935,8 +937,8 @@ class BlobAPITest extends APISpec {
 
     def "Change lease"() {
         setup:
-        String acquireLease = bc.acquireLease(getRandomUUID(), 15)
-        Response<String> changeLeaseResponse = bc.changeLeaseWithResponse(acquireLease, getRandomUUID(), null, null, null)
+        String acquireLease = bc.acquireLease(generateRandomUUID(), 15)
+        Response<String> changeLeaseResponse = bc.changeLeaseWithResponse(acquireLease, generateRandomUUID(), null, null, null)
 
         expect:
         bc.releaseLeaseWithResponse(changeLeaseResponse.value(), null, null, null).statusCode() == 200
@@ -948,7 +950,7 @@ class BlobAPITest extends APISpec {
         def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
 
         expect:
-        bc.changeLeaseWithResponse(leaseID, getRandomUUID(), null, null, null).statusCode() == 200
+        bc.changeLeaseWithResponse(leaseID, generateRandomUUID(), null, null, null).statusCode() == 200
     }
 
     @Unroll
@@ -963,7 +965,7 @@ class BlobAPITest extends APISpec {
             .ifNoneMatch(noneMatch)
 
         expect:
-        bc.changeLeaseWithResponse(leaseID, getRandomUUID(), mac, null, null).statusCode() == 200
+        bc.changeLeaseWithResponse(leaseID, generateRandomUUID(), mac, null, null).statusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch
@@ -986,7 +988,7 @@ class BlobAPITest extends APISpec {
             .ifNoneMatch(noneMatch)
 
         when:
-        bc.changeLeaseWithResponse(leaseID, getRandomUUID(), mac, null, null)
+        bc.changeLeaseWithResponse(leaseID, generateRandomUUID(), mac, null, null)
 
         then:
         thrown(StorageException)
@@ -1284,7 +1286,7 @@ class BlobAPITest extends APISpec {
         setup:
         // Data has to be large enough and copied between accounts to give us enough time to abort
         bc.asBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
+            .upload(new ByteArrayInputStream(generateRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
         // So we don't have to create a SAS.
         cc.setAccessPolicy(PublicAccessType.BLOB, null)
 
@@ -1311,7 +1313,7 @@ class BlobAPITest extends APISpec {
     def "Abort copy"() {
         setup:
         // Data has to be large enough and copied between accounts to give us enough time to abort
-        bc.asBlockBlobClient().upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
+        bc.asBlockBlobClient().upload(new ByteArrayInputStream(generateRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
         // So we don't have to create a SAS.
         cc.setAccessPolicy(PublicAccessType.BLOB, null)
 
@@ -1336,7 +1338,7 @@ class BlobAPITest extends APISpec {
     def "Abort copy min"() {
         setup:
         // Data has to be large enough and copied between accounts to give us enough time to abort
-        bc.asBlockBlobClient().upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
+        bc.asBlockBlobClient().upload(new ByteArrayInputStream(generateRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
         // So we don't have to create a SAS.
         cc.setAccessPolicy(PublicAccessType.BLOB, null)
 
@@ -1354,7 +1356,7 @@ class BlobAPITest extends APISpec {
     def "Abort copy lease"() {
         setup:
         // Data has to be large enough and copied between accounts to give us enough time to abort
-        bc.asBlockBlobClient().upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
+        bc.asBlockBlobClient().upload(new ByteArrayInputStream(generateRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
         // So we don't have to create a SAS.
         cc.setAccessPolicy(PublicAccessType.BLOB, null)
 
@@ -1897,7 +1899,8 @@ class BlobAPITest extends APISpec {
 
     def "Get account info error"() {
         when:
-        BlobServiceClient serviceURL = getServiceClient(primaryBlobServiceClient.getAccountUrl().toString())
+        BlobServiceClient serviceURL = setupBlobServiceClientBuilder(primaryBlobServiceClient.getAccountUrl().toString())
+            .buildClient()
 
         serviceURL.getContainerClient(generateContainerName()).getBlobClient(generateBlobName()).getAccountInfo()
 

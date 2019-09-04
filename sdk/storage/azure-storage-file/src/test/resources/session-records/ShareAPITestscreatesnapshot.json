@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createsnapshotshareapitestscreatesnapshot4f034880fd81a?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "3635cd3d-85d3-4325-9ec8-872337b349d9"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73191FB982109\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:45:35 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "788650ee-901a-0137-487a-63da8c000000",
+      "Date" : "Wed, 04 Sep 2019 23:45:35 GMT",
+      "x-ms-client-request-id" : "3635cd3d-85d3-4325-9ec8-872337b349d9"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createsnapshotshareapitestscreatesnapshot4f034880fd81a?restype=share&comp=snapshot",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "63459fff-65cd-4ed1-84b8-dbc8209a99bf"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-snapshot" : "2019-09-04T23:45:35.0000000Z",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73191FB982109\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:45:35 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "788650f1-901a-0137-4a7a-63da8c000000",
+      "Date" : "Wed, 04 Sep 2019 23:45:35 GMT",
+      "x-ms-client-request-id" : "63459fff-65cd-4ed1-84b8-dbc8209a99bf"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "createsnapshotshareapitestscreatesnapshot4f034880fd81a", "createsnapshotshareapitestscreatesnapshot4f004117c5071" ]
+}

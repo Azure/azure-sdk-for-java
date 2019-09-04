@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/deletedirectoryerror92358013b78bfabeb45f98?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "ed9e01b1-2162-4cab-8f18-f747da6ab442"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73191E14F5E81\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:44:51 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "78864bac-901a-0137-577a-63da8c000000",
+      "Date" : "Wed, 04 Sep 2019 23:44:51 GMT",
+      "x-ms-client-request-id" : "ed9e01b1-2162-4cab-8f18-f747da6ab442"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/deletedirectoryerror92358013b78bfabeb45f98/deletedirectoryerror362397b3ea1a112d34182b?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "3a447f2a-e512-4618-af16-70247f56e64d"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "78864bae-901a-0137-587a-63da8c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:78864bae-901a-0137-587a-63da8c000000\nTime:2019-09-04T23:44:51.6658944Z</Message></Error>",
+      "Date" : "Wed, 04 Sep 2019 23:44:51 GMT",
+      "x-ms-client-request-id" : "3a447f2a-e512-4618-af16-70247f56e64d",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "deletedirectoryerror92358013b78bfabeb45f98", "deletedirectoryerror362397b3ea1a112d34182b" ]
+}

@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createdirectoryinvalidname266941120aa982b9d49?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "80b3e5ec-da5a-45c4-9393-1918dc3c2bba"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73191FDA1915E\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:45:39 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "78865136-901a-0137-017a-63da8c000000",
+      "Date" : "Wed, 04 Sep 2019 23:45:38 GMT",
+      "x-ms-client-request-id" : "80b3e5ec-da5a-45c4-9393-1918dc3c2bba"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createdirectoryinvalidname266941120aa982b9d49/test%2fdirectory?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "a21839a8-862c-461e-b925-f7f153252974"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ParentNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "224",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "78865138-901a-0137-027a-63da8c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ParentNotFound</Code><Message>The specified parent path does not exist.\nRequestId:78865138-901a-0137-027a-63da8c000000\nTime:2019-09-04T23:45:39.1838007Z</Message></Error>",
+      "Date" : "Wed, 04 Sep 2019 23:45:38 GMT",
+      "x-ms-client-request-id" : "a21839a8-862c-461e-b925-f7f153252974",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "createdirectoryinvalidname266941120aa982b9d49" ]
+}

@@ -1,0 +1,76 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/setmetadataerror49029cc2942204ead47f0851?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "7bdd4464-8bbd-4df4-8130-9c911243bdc5"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73191E1B9FA78\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:44:52 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "78864bc5-901a-0137-6b7a-63da8c000000",
+      "Date" : "Wed, 04 Sep 2019 23:44:51 GMT",
+      "x-ms-client-request-id" : "7bdd4464-8bbd-4df4-8130-9c911243bdc5"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/setmetadataerror49029cc2942204ead47f0851/setmetadataerror975486d6b594d481a4c658f0?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "893d7547-fa0d-4e7f-99b1-0c78812c0c20"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "16004293428625128841*13168958551941065216",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-09-04T23:44:52.4744526Z",
+      "Last-Modified" : "Wed, 04 Sep 2019 23:44:52 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 04 Sep 2019 23:44:51 GMT",
+      "ETag" : "\"0x8D73191E1D0174E\"",
+      "x-ms-file-attributes" : "Directory",
+      "x-ms-file-change-time" : "2019-09-04T23:44:52.4744526Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "78864bcc-901a-0137-717a-63da8c000000",
+      "x-ms-client-request-id" : "893d7547-fa0d-4e7f-99b1-0c78812c0c20",
+      "x-ms-file-last-write-time" : "2019-09-04T23:44:52.4744526Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/setmetadataerror49029cc2942204ead47f0851/setmetadataerror975486d6b594d481a4c658f0?restype=directory&comp=metadata",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "2599d972-e1ad-414c-8989-de28c2802c69"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "EmptyMetadataKey",
+      "retry-after" : "0",
+      "Content-Length" : "278",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "78864bcd-901a-0137-727a-63da8c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:78864bcd-901a-0137-727a-63da8c000000\nTime:2019-09-04T23:44:52.5097085Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Wed, 04 Sep 2019 23:44:51 GMT",
+      "x-ms-client-request-id" : "2599d972-e1ad-414c-8989-de28c2802c69",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "setmetadataerror49029cc2942204ead47f0851", "setmetadataerror975486d6b594d481a4c658f0" ]
+}
