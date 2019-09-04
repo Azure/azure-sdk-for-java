@@ -23,7 +23,6 @@ import com.azure.storage.file.models.DirectorysListFilesAndDirectoriesSegmentRes
 import com.azure.storage.file.models.DirectorysListHandlesResponse;
 import com.azure.storage.file.models.DirectorysSetMetadataResponse;
 import com.azure.storage.file.models.DirectorysSetPropertiesResponse;
-import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRef;
 import com.azure.storage.file.models.HandleItem;
@@ -41,6 +40,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.file.FileExtensions.filePermissionAndKeyHelper;
 import static com.azure.storage.file.PostProcessor.postProcessResponse;
 
 /**
@@ -173,7 +173,7 @@ public class DirectoryAsyncClient {
         FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
-        FileExtensions.filePermissionAndKeyHelper(filePermission, properties.filePermissionKey());
+        filePermissionAndKeyHelper(filePermission, properties.filePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
         filePermission = properties.filePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
@@ -324,7 +324,7 @@ public class DirectoryAsyncClient {
         FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
-        FileExtensions.filePermissionAndKeyHelper(filePermission, properties.filePermissionKey());
+        filePermissionAndKeyHelper(filePermission, properties.filePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
         filePermission = properties.filePermission(filePermission, FileConstants.PRESERVE);

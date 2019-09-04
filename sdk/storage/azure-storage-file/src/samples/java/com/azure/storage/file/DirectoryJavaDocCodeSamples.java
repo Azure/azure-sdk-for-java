@@ -134,8 +134,8 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-filesmbproperties-string-map-context
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
-        Response<DirectoryClient> response = directoryClient.createSubDirectoryWithResponse("subdir", smbProperties,
-            filePermission, Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
+        Response<DirectoryClient> response = directoryClient.createSubDirectoryWithResponse("subdir",
+            smbProperties, filePermission, Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
         System.out.printf("Creating the sub directory completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-filesmbproperties-string-map-context
     }
@@ -309,7 +309,8 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryClient.setPropertiesWithResponse#filesmbproperties-string-Context
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
-        Response<FileSmbProperties> response = directoryClient.setPropertiesWithResponse(smbProperties, filePermission, new Context(key1, value1));
+        Response<FileSmbProperties> response = directoryClient.setPropertiesWithResponse(smbProperties, filePermission,
+            new Context(key1, value1));
         System.out.printf("Directory change time is %s.", response.value().fileChangeTime());
         // END: com.azure.storage.file.directoryClient.setPropertiesWithResponse#filesmbproperties-string-Context
     }

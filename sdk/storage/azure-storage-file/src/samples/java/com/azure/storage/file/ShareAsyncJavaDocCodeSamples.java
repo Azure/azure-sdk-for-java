@@ -226,7 +226,8 @@ public class ShareAsyncJavaDocCodeSamples {
         String filePermission = "filePermission";
         FileProperties fileProperties = new FileProperties(contentType, contentEncoding, contentLanguage, cacheControl,
             contentMd5, contentDisposition, smbProperties, filePermission);
-        shareAsyncClient.createFileWithResponse("myfile", 1024, fileProperties, Collections.singletonMap("directory", "metadata"))
+        shareAsyncClient.createFileWithResponse("myfile", 1024, fileProperties,
+            Collections.singletonMap("directory", "metadata"))
             .subscribe(response -> System.out.printf("Creating the file completed with status code %d",
                 response.statusCode()));
         // END: com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-fileproperties-map

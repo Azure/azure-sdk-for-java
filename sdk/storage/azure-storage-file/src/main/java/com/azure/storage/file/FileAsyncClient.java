@@ -68,6 +68,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeoutException;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.file.FileExtensions.filePermissionAndKeyHelper;
 import static com.azure.storage.file.PostProcessor.postProcessResponse;
 
 /**
@@ -157,7 +158,7 @@ public class FileAsyncClient {
      *
      * <p>Create the file with length of 1024 bytes, some headers, file smb properties and metadata.</p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.createWithResponse##long-fileproperties-map}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.createWithResponse#long-fileproperties-map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -177,7 +178,7 @@ public class FileAsyncClient {
         FileSmbProperties smbProperties = properties.smbProperties() == null ? new FileSmbProperties() : properties.smbProperties();
 
         // Checks that file permission and file permission key are valid
-        FileExtensions.filePermissionAndKeyHelper(properties.filePermission(), smbProperties.filePermissionKey());
+        filePermissionAndKeyHelper(properties.filePermission(), smbProperties.filePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
         String filePermission = smbProperties.filePermission(properties.filePermission(), FileConstants.FILE_PERMISSION_INHERIT);
@@ -580,7 +581,7 @@ public class FileAsyncClient {
         FileSmbProperties smbProperties = properties.smbProperties() == null ? new FileSmbProperties() : properties.smbProperties();
 
         // Checks that file permission and file permission key are valid
-        FileExtensions.filePermissionAndKeyHelper(properties.filePermission(), smbProperties.filePermissionKey());
+        filePermissionAndKeyHelper(properties.filePermission(), smbProperties.filePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
         String filePermission = smbProperties.filePermission(properties.filePermission(), FileConstants.PRESERVE);

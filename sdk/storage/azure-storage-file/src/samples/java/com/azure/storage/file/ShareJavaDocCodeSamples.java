@@ -202,7 +202,7 @@ public class ShareJavaDocCodeSamples {
      */
     public void createFileWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareClient.createFileWithResponse#string-long-fileproperties-context
+        // BEGIN: com.azure.storage.file.shareClient.createFileWithResponse#string-long-fileproperties-map-context
         String contentType = "text/html";
         String contentEncoding = "gzip";
         String contentLanguage = "tr,en";

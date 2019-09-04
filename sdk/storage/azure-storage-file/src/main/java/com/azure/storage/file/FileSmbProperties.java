@@ -3,6 +3,7 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.storage.file.models.DirectorysCreateResponse;
 import com.azure.storage.file.models.DirectorysGetPropertiesResponse;
 import com.azure.storage.file.models.DirectorysSetPropertiesResponse;
@@ -22,14 +23,18 @@ public class FileSmbProperties {
     private EnumSet<NtfsFileAttributes> ntfsFileAttributes;
     private OffsetDateTime fileCreationTime;
     private OffsetDateTime fileLastWriteTime;
-    private OffsetDateTime fileChangeTime;
-    private String fileId;
-    private String parentId;
+    private final OffsetDateTime fileChangeTime;
+    private final String fileId;
+    private final String parentId;
 
     /**
      * Default constructor
      */
     public FileSmbProperties() {
+        // Non user-settable properties
+        fileChangeTime = null;
+        fileId = null;
+        parentId = null;
     }
 
     /**
@@ -130,9 +135,9 @@ public class FileSmbProperties {
      * @return The value of the file permission header
      */
     String filePermission(String filePermission, String defaultValue) {
-        return (filePermission == null) && (filePermissionKey == null) ?
-            defaultValue :
-            filePermission;
+        return (filePermission == null) && (filePermissionKey == null)
+            ? defaultValue
+            : filePermission;
     }
 
     /**
@@ -141,9 +146,9 @@ public class FileSmbProperties {
      * @return The value of the ntfs attributes header
      */
     String ntfsFileAttributes(String defaultValue) {
-        return ntfsFileAttributes == null ?
-            defaultValue :
-            NtfsFileAttributes.toString(ntfsFileAttributes);
+        return ntfsFileAttributes == null
+            ? defaultValue
+            : NtfsFileAttributes.toString(ntfsFileAttributes);
     }
 
     /**
@@ -152,9 +157,9 @@ public class FileSmbProperties {
      * @return The value of the creation time header
      */
     String fileCreationTime(String defaultValue) {
-        return fileCreationTime == null ?
-            defaultValue :
-            parseFileSMBDate(fileCreationTime);
+        return fileCreationTime == null
+            ? defaultValue
+            : parseFileSMBDate(fileCreationTime);
     }
 
     /**
@@ -163,9 +168,9 @@ public class FileSmbProperties {
      * @return The value of the last write time header
      */
     String fileLastWriteTime(String defaultValue) {
-        return fileLastWriteTime == null ?
-            defaultValue :
-            parseFileSMBDate(fileLastWriteTime);
+        return fileLastWriteTime == null
+            ? defaultValue
+            : parseFileSMBDate(fileLastWriteTime);
     }
 
     /**
@@ -178,6 +183,15 @@ public class FileSmbProperties {
         return time.format(DateTimeFormatter.ofPattern(FileConstants.SMB_DATE_STRING));
     }
 
+    /**
+     * Given an <code>OffsetDateTime</code>, generates a {@code String} representing a date in the format needed for
+     * file SMB properties
+     * @param time the <code>OffsetDateTime</code> to be interpreted as a {@code String}
+     * @return The {@code String} representing the date
+     */
+    private static String parseFileSMBDateString(OffsetDateTime time) {
+        return time.format(DateTimeFormatter.ofPattern(FileConstants.SMB_DATE_STRING));
+    }
     /**
      * Creates a new {@link FileSmbProperties} from a {@link FilesCreateResponse}.
      * @param response The {@link FilesCreateResponse}.
