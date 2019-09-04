@@ -172,7 +172,7 @@ public final class PageBlobClient extends BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The information of the uploaded pages.
-     * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
+     * @throws {@link UnexpectedLengthException} when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
      */
     public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body,
