@@ -58,7 +58,6 @@ public class EventHubErrorCodeStrings {
     static final String EVENT_DATA_EXCEEDS_MAX_NUM_BATCHES = "event_data_exceeds_max_num_batches";
     static final String HTTP_PROXY_CANNOT_PARSED_TO_PROXY = "http_proxy_cannot_parsed_to_proxy";
     static final String NO_STARTING_POSITION_SET = "no_starting_position_set";
-    static final String NULL_SEQUENCE_NUM_IN_MAP = "null_sequence_num_in_map";
     static final String PARTITION_KEY_EXCEEDS_MAX_LENGTH = "partition_key_exceeds_max_length";
     static final String SCOPES_RULES = "scopes_rules";
     static final String TOKEN_TIME_TO_LIVE_ERROR_MSG = "token_time_to_live_error_msg";
@@ -70,7 +69,6 @@ public class EventHubErrorCodeStrings {
     public static final String CONSUMER_GROUP_NAME_CANNOT_NULL = "null_consumer_group_name";
     public static final String EVENTHUB_NAME_CANNOT_NULL = "null_eventhub_name";
     public static final String MESSAGE_CANNOT_NULL = "null_message";
-    public static final String OFFSET_CANNOT_NULL = "null_offset";
     public static final String OWNER_ID_CANNOT_NULL = "null_owner_id";
     public static final String PARTITION_ID_CANNOT_NULL = "null_partition_id";
 
@@ -96,7 +94,6 @@ public class EventHubErrorCodeStrings {
     public static final String MESSAGE_BODY_EXPECT_AMQP_VALUE = "message_body_expect_amqp_value";
     public static final String MESSAGE_BODY_VALUE_EXPECT_MAP_TYPE = "message_body_value_expect_map_type";
     public static final String NON_NEGATIVE_TIMEOUT = "non_negative_timeout";
-    public static final String NULL = "null";
     public static final String PAYLOAD_EXCEEDED_MAX_SIZE = "payload_exceeded_max_size";
     public static final String REACTOR_DISPATCHER_CLOSED = "reactor_dispatcher_closed";
     public static final String REACTOR_FAILED_EXECUTOR_DOWN = "reactor_failed_executor_down";
