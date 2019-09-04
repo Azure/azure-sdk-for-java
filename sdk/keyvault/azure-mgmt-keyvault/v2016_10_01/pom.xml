@@ -71,6 +71,7 @@
             <artifactId>azure-arm-client-runtime</artifactId>
             <type>test-jar</type>
             <scope>test</scope>
+            <version>1.6.5</version>
         </dependency>
     </dependencies>
     <build>
