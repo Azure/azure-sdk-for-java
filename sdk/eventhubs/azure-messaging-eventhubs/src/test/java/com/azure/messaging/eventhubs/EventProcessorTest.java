@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionContext;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -24,6 +25,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.implementation.tracing.Tracer.DIAGNOSTIC_ID_KEY;
@@ -299,12 +301,15 @@ public class EventProcessorTest {
     @Test
     public void testWithMultiplePartitions() throws Exception {
         // Arrange
+        final CountDownLatch count = new CountDownLatch(1);
+
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1", "2", "3"));
         when(eventHubAsyncClient.eventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient
             .createConsumer(anyString(), eq("1"), any(EventPosition.class), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer1);
-        when(consumer1.receive()).thenReturn(Flux.just(eventData1, eventData2));
+        when(consumer1.receive()).thenReturn(
+            Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(eventData1, eventData2)));
         when(eventData1.sequenceNumber()).thenReturn(1L);
         when(eventData2.sequenceNumber()).thenReturn(2L);
         when(eventData1.offset()).thenReturn(1L);
@@ -313,14 +318,14 @@ public class EventProcessorTest {
         when(eventHubAsyncClient
             .createConsumer(anyString(), eq("2"), any(EventPosition.class), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer2);
-        when(consumer2.receive()).thenReturn(Flux.just(eventData3));
+        when(consumer2.receive()).thenReturn(Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(eventData3)));
         when(eventData3.sequenceNumber()).thenReturn(1L);
         when(eventData3.offset()).thenReturn(1L);
 
         when(eventHubAsyncClient
             .createConsumer(anyString(), eq("3"), any(EventPosition.class), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer3);
-        when(consumer3.receive()).thenReturn(Flux.just(eventData4));
+        when(consumer3.receive()).thenReturn(Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(eventData4)));
         when(eventData4.sequenceNumber()).thenReturn(1L);
         when(eventData4.offset()).thenReturn(1L);
 
@@ -332,10 +337,11 @@ public class EventProcessorTest {
             "test-consumer",
             TestPartitionProcessor::new, EventPosition.latest(), partitionManager, tracerProvider);
         eventProcessor.start();
-        Thread.sleep(TimeUnit.SECONDS.toMillis(3));
+        final boolean completed = count.await(10, TimeUnit.SECONDS);
         eventProcessor.stop();
 
         // Assert
+        Assert.assertTrue(completed);
         StepVerifier.create(partitionManager.listOwnership("test-eh", "test-consumer"))
             .expectNextCount(1).verifyComplete();
 
