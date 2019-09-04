@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.storage.common.BaseClientBuilder;
+import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 
 abstract class BaseBlobClientBuilder<T extends BaseClientBuilder<T>> extends BaseClientBuilder<T> {
 
@@ -18,5 +19,10 @@ abstract class BaseBlobClientBuilder<T extends BaseClientBuilder<T>> extends Bas
     @Override
     protected final String getServiceUrlMidfix() {
         return BLOB_ENDPOINT_MIDFIX;
+    }
+
+    @Override
+    protected final void applyServiceSpecificValidations(ResponseValidationPolicyBuilder builder) {
+        // for blob service validations
     }
 }
