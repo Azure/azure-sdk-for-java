@@ -3,6 +3,7 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
@@ -313,7 +314,7 @@ public class DirectoryClient {
      *
      * @return {@link FileRef File info} in the storage directory
      */
-    public Iterable<FileRef> listFilesAndDirectories() {
+    public PagedIterable<FileRef> listFilesAndDirectories() {
         return listFilesAndDirectories(null, null);
     }
 
@@ -334,8 +335,8 @@ public class DirectoryClient {
      *                   If the request does not specify maxresults or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @return {@link FileRef File info} in this directory with prefix and max number of return results.
      */
-    public Iterable<FileRef> listFilesAndDirectories(String prefix, Integer maxResults) {
-        return directoryAsyncClient.listFilesAndDirectories(prefix, maxResults).toIterable();
+    public PagedIterable<FileRef> listFilesAndDirectories(String prefix, Integer maxResults) {
+        return new PagedIterable<>(directoryAsyncClient.listFilesAndDirectories(prefix, maxResults));
     }
 
     /**
@@ -354,8 +355,8 @@ public class DirectoryClient {
      * @param recursive Specifies operation should apply to the directory specified in the URI, its files, its subdirectories and their files.
      * @return {@link HandleItem handles} in the directory that satisfy the requirements
      */
-    public Iterable<HandleItem> listHandles(Integer maxResult, boolean recursive) {
-        return directoryAsyncClient.listHandles(maxResult, recursive).collectList().block();
+    public PagedIterable<HandleItem> listHandles(Integer maxResult, boolean recursive) {
+        return new PagedIterable<>(directoryAsyncClient.listHandles(maxResult, recursive));
     }
 
     /**
@@ -374,10 +375,10 @@ public class DirectoryClient {
      * @param recursive A boolean value that specifies if the operation should also apply to the files and subdirectories of the directory specified in the URI.
      * @return The counts of number of handles closed.
      */
-    public Iterable<Integer> forceCloseHandles(String handleId, boolean recursive) {
+    public PagedIterable<Integer> forceCloseHandles(String handleId, boolean recursive) {
         // TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
         // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
-        return directoryAsyncClient.forceCloseHandles(handleId, recursive).collectList().block();
+        return new PagedIterable<>(directoryAsyncClient.forceCloseHandles(handleId, recursive));
     }
 
     /**

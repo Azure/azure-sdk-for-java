@@ -272,6 +272,40 @@ class DirectoryAsyncAPITests extends APISpec {
         }
     }
 
+    @Unroll
+    def "List files and directories"() {
+        given:
+        primaryDirectoryAsyncClient.create().block()
+
+        for (def expectedFile : expectedFiles) {
+            primaryDirectoryAsyncClient.createFile(expectedFile, 2).block()
+        }
+
+        for (def expectedDirectory : expectedDirectories) {
+            primaryDirectoryAsyncClient.createSubDirectory(expectedDirectory).block()
+        }
+
+        when:
+        def foundFiles = [] as Set
+        def foundDirectories = [] as Set
+        for (def fileRef : primaryDirectoryAsyncClient.listFilesAndDirectories().toIterable()) {
+            if (fileRef.isDirectory()) {
+                foundDirectories << fileRef.name()
+            } else {
+                foundFiles << fileRef.name()
+            }
+        }
+
+        then:
+        expectedFiles == foundFiles
+        expectedDirectories == foundDirectories
+
+        where:
+        expectedFiles          | expectedDirectories
+        ["a", "b", "c"] as Set | ["d", "e"] as Set
+        ["a", "c", "e"] as Set | ["b", "d"] as Set
+    }
+
     /**
      * The listing hierarchy:
      * share -> dir -> listOp0 (dir) -> listOp3 (file)

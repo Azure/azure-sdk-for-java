@@ -161,6 +161,11 @@
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-okhttp</artifactId>
+          <version>${azure-core.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
           <artifactId>azure-core-management</artifactId>
           <version>${azure-core.version}</version>
         </dependency>

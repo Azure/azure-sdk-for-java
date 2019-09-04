@@ -3,11 +3,12 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.util.Context;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
-import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
@@ -22,9 +23,9 @@ import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Flux;
 
 import java.net.URL;
-import java.time.OffsetDateTime;
 import java.nio.ByteBuffer;
 import java.nio.file.FileAlreadyExistsException;
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
@@ -595,8 +596,8 @@ public class FileClient {
      *
      * @return {@link FileRange ranges} in the files.
      */
-    public Iterable<FileRange> listRanges() {
-        return fileAsyncClient.listRanges(null).toIterable();
+    public PagedIterable<FileRange> listRanges() {
+        return listRanges(null);
     }
 
     /**
@@ -614,8 +615,8 @@ public class FileClient {
      * @param range Optional byte range which returns file data only from the specified range.
      * @return {@link FileRange ranges} in the files that satisfy the requirements
      */
-    public Iterable<FileRange> listRanges(FileRange range) {
-        return fileAsyncClient.listRanges(range).toIterable();
+    public PagedIterable<FileRange> listRanges(FileRange range) {
+        return new PagedIterable<>(fileAsyncClient.listRanges(range));
     }
 
     /**
@@ -632,7 +633,7 @@ public class FileClient {
      *
      * @return {@link HandleItem handles} in the files that satisfy the requirements
      */
-    public Iterable<HandleItem> listHandles() {
+    public PagedIterable<HandleItem> listHandles() {
         return listHandles(null);
     }
 
@@ -651,8 +652,8 @@ public class FileClient {
      * @param maxResults Optional max number of results returned per page
      * @return {@link HandleItem handles} in the file that satisfy the requirements
      */
-    public Iterable<HandleItem> listHandles(Integer maxResults) {
-        return fileAsyncClient.listHandles(maxResults).toIterable();
+    public PagedIterable<HandleItem> listHandles(Integer maxResults) {
+        return new PagedIterable<>(fileAsyncClient.listHandles(maxResults));
     }
 
     /**
@@ -670,10 +671,10 @@ public class FileClient {
      * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all handles.
      * @return The counts of number of handles closed
      */
-    public Iterable<Integer> forceCloseHandles(String handleId) {
+    public PagedIterable<Integer> forceCloseHandles(String handleId) {
         // TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
         // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
-        return fileAsyncClient.forceCloseHandles(handleId).toIterable();
+        return new PagedIterable<>(fileAsyncClient.forceCloseHandles(handleId));
     }
 
     /**

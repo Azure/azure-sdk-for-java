@@ -1,10 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueserviceasyncapitestscreatequeuewithinvalidmetadata95553",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueserviceasyncapitestscreatequeuewithinvalidmetadata27365",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "2ca5978d-14e5-4359-9f14-1eb92f18801d"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -13,12 +14,12 @@
       "retry-after" : "0",
       "Content-Length" : "260",
       "StatusCode" : "400",
-      "x-ms-request-id" : "60ef4e46-a003-0074-1dcf-5eb630000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:60ef4e46-a003-0074-1dcf-5eb630000000\nTime:2019-08-30T01:12:01.9148807Z</Message></Error>",
-      "Date" : "Fri, 30 Aug 2019 01:12:01 GMT",
+      "x-ms-request-id" : "7c5362a0-2003-0003-36c2-623371000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:7c5362a0-2003-0003-36c2-623371000000\nTime:2019-09-04T01:46:07.8453926Z</Message></Error>",
+      "Date" : "Wed, 04 Sep 2019 01:46:07 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueserviceasyncapitestscreatequeuewithinvalidmetadata95553" ]
+  "variables" : [ "queueserviceasyncapitestscreatequeuewithinvalidmetadata27365" ]
 }
