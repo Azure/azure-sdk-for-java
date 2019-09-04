@@ -11,6 +11,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.http.policy.spi.AfterRetryPolicyProvider;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.tracing.opentelemetry.implementation.HttpTraceUtil;
 import io.opencensus.trace.AttributeValue;
 import io.opencensus.trace.Span;
 import io.opencensus.trace.Span.Kind;

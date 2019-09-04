@@ -7,6 +7,10 @@ import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
+import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.implementation.tracing.ProcessKind;
+import com.azure.core.implementation.tracing.Tracer;
+import com.azure.core.util.Context;
 import com.azure.messaging.eventhubs.implementation.AmqpSendLink;
 import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
@@ -26,15 +30,23 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+import static com.azure.core.implementation.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
+import static com.azure.core.implementation.tracing.Tracer.SPAN_CONTEXT;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.never;
 
 /**
  * Unit tests to verify functionality of {@link EventHubProducer}.
@@ -57,10 +69,11 @@ public class EventHubProducerTest {
         when(sendLink.getErrorContext()).thenReturn(new ErrorContext("test-namespace"));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
         when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
+        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
         asyncProducer = new EventHubAsyncProducer(
             Mono.fromCallable(() -> sendLink),
-            new EventHubProducerOptions().retry(retryOptions));
+            new EventHubProducerOptions().retry(retryOptions), tracerProvider);
     }
 
     @After
@@ -92,6 +105,77 @@ public class EventHubProducerTest {
     }
 
     /**
+     *Verifies start and end span invoked when sending a single message.
+     */
+    @Test
+    public void sendStartSpanSingleMessage() {
+        //Arrange
+        final Tracer tracer1 = mock(Tracer.class);
+        final List<Tracer> tracers = Arrays.asList(tracer1);
+        TracerProvider tracerProvider = new TracerProvider(tracers);
+
+        EventHubAsyncProducer asyncProducer = new EventHubAsyncProducer(
+            Mono.fromCallable(() -> sendLink),
+            new EventHubProducerOptions().retry(retryOptions), tracerProvider);
+        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.tryTimeout());
+        final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
+
+        when(tracer1.start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(OPENTELEMETRY_SPAN_KEY, "value");
+            }
+        );
+
+        when(tracer1.start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.RECEIVE))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(OPENTELEMETRY_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
+            }
+        );
+        //Act
+        producer.send(eventData);
+
+        //Assert
+        verify(tracer1, times(1)).start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND));
+        verify(tracer1, times(1)).start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.RECEIVE));
+        verify(tracer1, times(2)).end(eq("success"), isNull(), any());
+    }
+
+    /**
+     *Verifies start and end span invoked when linking a single message on retry.
+     */
+    @Test
+    public void sendMessageAddlink() {
+        //Arrange
+        final Tracer tracer1 = mock(Tracer.class);
+        final List<Tracer> tracers = Arrays.asList(tracer1);
+        TracerProvider tracerProvider = new TracerProvider(tracers);
+
+        EventHubAsyncProducer asyncProducer = new EventHubAsyncProducer(
+            Mono.fromCallable(() -> sendLink),
+            new EventHubProducerOptions().retry(retryOptions), tracerProvider);
+        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.tryTimeout());
+        final EventData eventData = new EventData("hello-world".getBytes(UTF_8), new Context(SPAN_CONTEXT, Context.NONE));
+
+        when(tracer1.start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(OPENTELEMETRY_SPAN_KEY, "value");
+            }
+        );
+
+        //Act
+        producer.send(eventData);
+
+        //Assert
+        verify(tracer1, times(1)).start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND));
+        verify(tracer1, never()).start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.RECEIVE));
+        verify(tracer1, times(1)).addLink(any());
+        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
+    }
+
+    /**
      * Verifies we can send multiple messages.
      */
     @Test
@@ -104,6 +188,7 @@ public class EventHubProducerTest {
         }).toIterable();
 
         final SendOptions options = new SendOptions();
+
         final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.tryTimeout());
 
         // Act
@@ -141,7 +226,9 @@ public class EventHubProducerTest {
         final EventData tooLargeEvent = new EventData(new byte[maxEventPayload + 1]);
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(retryOptions);
-        final EventHubAsyncProducer hubAsyncProducer = new EventHubAsyncProducer(Mono.fromCallable(() -> link), producerOptions);
+        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
+
+        final EventHubAsyncProducer hubAsyncProducer = new EventHubAsyncProducer(Mono.fromCallable(() -> link), producerOptions, tracerProvider);
         final EventHubProducer hubProducer = new EventHubProducer(hubAsyncProducer, retryOptions.tryTimeout());
 
         // Act

@@ -244,6 +244,7 @@
               <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
               <failOnError>true</failOnError>
               <failOnWarnings>true</failOnWarnings>
+              <doclint>all</doclint>
             </configuration>
           </execution>
         </executions>
@@ -430,6 +431,7 @@
             <additionalOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java</additionalOptions>
             <failOnError>false</failOnError>
             <failOnWarnings>false</failOnWarnings>
+            <doclint>all</doclint>
           </configuration>
         </plugin>
 
@@ -563,6 +565,7 @@
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-file/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
               </additionalOptions>
+              <doclint>all</doclint>
             </configuration>
           </reportSet>
         </reportSets>

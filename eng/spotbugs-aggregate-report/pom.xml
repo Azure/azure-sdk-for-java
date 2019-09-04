@@ -60,6 +60,7 @@
                 <source>..\..\sdk\core\azure-core-amqp\src\main\java</source>
                 <source>..\..\sdk\core\azure-core-http-netty\src\main\java</source>
                 <source>..\..\sdk\core\azure-core-http-okhttp\src\main\java</source>
+                <source>..\..\sdk\core\azure-core-http-netty\src\samples\java</source>
                 <source>..\..\sdk\core\azure-core-management\src\main\java</source>
                 <source>..\..\sdk\core\azure-core-test\src\main\java</source>
                 <source>..\..\sdk\eventhubs\azure-messaging-eventhubs\src\main\java</source>
