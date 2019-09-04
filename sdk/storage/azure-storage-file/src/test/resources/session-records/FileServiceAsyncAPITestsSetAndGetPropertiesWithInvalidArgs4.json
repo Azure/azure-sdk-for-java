@@ -4,7 +4,8 @@
     "Uri" : "https://azstoragesdkaccount.file.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "c26df246-7184-4301-94b9-1a09822a41e5",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -14,13 +15,13 @@
       "retry-after" : "0",
       "Content-Length" : "340",
       "StatusCode" : "400",
-      "x-ms-request-id" : "efe54924-601a-008c-1012-5a7d2d000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlNodeValue</Code><Message>The value for one of the XML nodes is not in the correct format.\nRequestId:efe54924-601a-008c-1012-5a7d2d000000\nTime:2019-08-24T00:28:13.8372190Z</Message><XmlNodeName>AllowedMethods</XmlNodeName><XmlNodeValue>NOTAREALHTTPMETHOD</XmlNodeValue></Error>",
-      "Date" : "Sat, 24 Aug 2019 00:28:13 GMT",
-      "x-ms-client-request-id" : "f2064efa-6376-479e-af47-13d264cf4944",
+      "x-ms-request-id" : "e7c18f06-101a-0044-0cc2-62ec1a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlNodeValue</Code><Message>The value for one of the XML nodes is not in the correct format.\nRequestId:e7c18f06-101a-0044-0cc2-62ec1a000000\nTime:2019-09-04T01:44:48.0040859Z</Message><XmlNodeName>AllowedMethods</XmlNodeName><XmlNodeValue>NOTAREALHTTPMETHOD</XmlNodeValue></Error>",
+      "Date" : "Wed, 04 Sep 2019 01:44:47 GMT",
+      "x-ms-client-request-id" : "c26df246-7184-4301-94b9-1a09822a41e5",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "29224450209b46f897c78a52544ec136f5905157c33d4a9b8bf6e3dfd8bc1196" ]
+  "variables" : [ "315425d60de843f6b36cf28ca4cc2c472a2aaed6d15c4bb0a051f7e972aa42f3" ]
 }

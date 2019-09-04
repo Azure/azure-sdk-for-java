@@ -1,10 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatesharewithinvalidargs056303340e6?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatesharewithinvalidargs081738c02eb?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "b44d5fdf-7da8-415a-a950-d2be46a65492"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -13,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "42bce4e7-801a-010a-3912-5a6faa000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:42bce4e7-801a-010a-3912-5a6faa000000\nTime:2019-08-24T00:27:35.9893308Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Sat, 24 Aug 2019 00:27:35 GMT",
-      "x-ms-client-request-id" : "8db37f9a-35f4-4424-9529-3a2907df2f9c",
+      "x-ms-request-id" : "e7c18c8b-101a-0044-15c2-62ec1a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:e7c18c8b-101a-0044-15c2-62ec1a000000\nTime:2019-09-04T01:44:27.8202218Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Wed, 04 Sep 2019 01:44:27 GMT",
+      "x-ms-client-request-id" : "b44d5fdf-7da8-415a-a950-d2be46a65492",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareasyncapitestscreatesharewithinvalidargs056303340e6" ]
+  "variables" : [ "shareasyncapitestscreatesharewithinvalidargs081738c02eb" ]
 }

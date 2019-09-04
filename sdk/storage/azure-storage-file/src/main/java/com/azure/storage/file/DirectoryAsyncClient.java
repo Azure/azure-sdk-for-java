@@ -4,42 +4,46 @@
 package com.azure.storage.file;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.DirectorysCreateResponse;
-import com.azure.storage.file.models.DirectorysForceCloseHandlesResponse;
 import com.azure.storage.file.models.DirectorysGetPropertiesResponse;
 import com.azure.storage.file.models.DirectorysListFilesAndDirectoriesSegmentResponse;
-import com.azure.storage.file.models.DirectorysListHandlesResponse;
 import com.azure.storage.file.models.DirectorysSetMetadataResponse;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileRef;
 import com.azure.storage.file.models.HandleItem;
-import com.azure.storage.file.models.StorageErrorException;
-import reactor.core.publisher.Flux;
+import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.function.Function;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.file.PostProcessor.postProcessResponse;
 
 /**
  * This class provides a client that contains all the operations for interacting with directory in Azure Storage File Service.
@@ -50,9 +54,9 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  *
  * {@codesnippet com.azure.storage.file.directoryAsyncClient.instantiation}
  *
- * <p>View {@link DirectoryClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link FileClientBuilder this} for additional ways to construct the client.</p>
  *
- * @see DirectoryClientBuilder
+ * @see FileClientBuilder
  * @see DirectoryClient
  * @see SharedKeyCredential
  * @see SASTokenCredential
@@ -80,26 +84,6 @@ public class DirectoryAsyncClient {
         this.directoryPath = directoryPath;
         this.snapshot = snapshot;
         this.azureFileStorageClient = azureFileStorageClient;
-    }
-
-    /**
-     * Creates a DirectoryAsyncClient that sends requests to this directory at {@code endpoint}.
-     * Each service call goes through the {@code httpPipeline}.
-     * @param endpoint URL for the Storage File service
-     * @param httpPipeline HttpPipeline that HTTP requests and response flow through
-     * @param shareName Name of the share
-     * @param directoryPath Name of the directory
-     * @param snapshot Optional snapshot of the share
-     */
-    DirectoryAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String directoryPath, String snapshot) {
-        Objects.requireNonNull(shareName);
-        Objects.requireNonNull(directoryPath);
-        this.shareName = shareName;
-        this.directoryPath = directoryPath;
-        this.snapshot = snapshot;
-        this.azureFileStorageClient = new AzureFileStorageBuilder().pipeline(httpPipeline)
-                                          .url(endpoint.toString())
-                                          .build();
     }
 
     /**
@@ -157,7 +141,7 @@ public class DirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @return The {@link DirectoryInfo directory info}.
-     * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
+     * @throws StorageException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
      */
     public Mono<DirectoryInfo> create() {
         return createWithResponse(null).flatMap(FluxUtil::toMono);
@@ -177,7 +161,7 @@ public class DirectoryAsyncClient {
      *
      * @param metadata Optional metadata to associate with the directory
      * @return A response containing the directory info and the status of creating the directory.
-     * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
+     * @throws StorageException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
      */
     public Mono<Response<DirectoryInfo>> createWithResponse(Map<String, String> metadata) {
         return withContext(context -> createWithResponse(metadata, context));
@@ -189,7 +173,9 @@ public class DirectoryAsyncClient {
         String filePermission = "inherit";
         String fileCreationTime = "now";
         String fileLastWriteTime = "now";
-        return azureFileStorageClient.directorys().createWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime, fileLastWriteTime, null, metadata, filePermission, null, context)
+        return postProcessResponse(azureFileStorageClient.directorys().
+            createWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime, fileLastWriteTime,
+                null, metadata, filePermission, null, context))
             .map(this::createWithRestResponse);
     }
 
@@ -206,7 +192,7 @@ public class DirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
      * @return An empty response.
-     * @throws StorageErrorException If the share doesn't exist
+     * @throws StorageException If the share doesn't exist
      */
     public Mono<Void> delete() {
         return deleteWithResponse().flatMap(FluxUtil::toMono);
@@ -225,14 +211,15 @@ public class DirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If the share doesn't exist
+     * @throws StorageException If the share doesn't exist
      */
     public Mono<VoidResponse> deleteWithResponse() {
-        return withContext(context -> deleteWithResponse(context));
+        return withContext(this::deleteWithResponse);
     }
 
     Mono<VoidResponse> deleteWithResponse(Context context) {
-        return azureFileStorageClient.directorys().deleteWithRestResponseAsync(shareName, directoryPath, context).map(VoidResponse::new)
+        return postProcessResponse(azureFileStorageClient.directorys()
+            .deleteWithRestResponseAsync(shareName, directoryPath, context))
             .map(VoidResponse::new);
     }
 
@@ -271,11 +258,12 @@ public class DirectoryAsyncClient {
      * @return A response containing the storage directory properties with headers and response status code
      */
     public Mono<Response<DirectoryProperties>> getPropertiesWithResponse() {
-        return withContext(context -> getPropertiesWithResponse(context));
+        return withContext(this::getPropertiesWithResponse);
     }
 
     Mono<Response<DirectoryProperties>> getPropertiesWithResponse(Context context) {
-        return azureFileStorageClient.directorys().getPropertiesWithRestResponseAsync(shareName, directoryPath, snapshot, null, context)
+        return postProcessResponse(azureFileStorageClient.directorys()
+            .getPropertiesWithRestResponseAsync(shareName, directoryPath, snapshot, null, context))
             .map(this::getPropertiesResponse);
     }
 
@@ -299,7 +287,7 @@ public class DirectoryAsyncClient {
      *
      * @param metadata Optional metadata to set on the directory, if null is passed the metadata for the directory is cleared
      * @return information about the directory
-     * @throws StorageErrorException If the directory doesn't exist or the metadata contains invalid keys
+     * @throws StorageException If the directory doesn't exist or the metadata contains invalid keys
      */
     public Mono<DirectorySetMetadataInfo> setMetadata(Map<String, String> metadata) {
         return setMetadataWithResponse(metadata).flatMap(FluxUtil::toMono);
@@ -325,14 +313,15 @@ public class DirectoryAsyncClient {
      *
      * @param metadata Optional metadata to set on the directory, if null is passed the metadata for the directory is cleared
      * @return A response containing the information about the directory with headers and response status code
-     * @throws StorageErrorException If the directory doesn't exist or the metadata contains invalid keys
+     * @throws StorageException If the directory doesn't exist or the metadata contains invalid keys
      */
     public Mono<Response<DirectorySetMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata) {
         return withContext(context -> setMetadataWithResponse(metadata, context));
     }
 
     Mono<Response<DirectorySetMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
-        return azureFileStorageClient.directorys().setMetadataWithRestResponseAsync(shareName, directoryPath, null, metadata, context)
+        return postProcessResponse(azureFileStorageClient.directorys()
+            .setMetadataWithRestResponseAsync(shareName, directoryPath, null, metadata, context))
             .map(this::setMetadataResponse);
     }
 
@@ -350,7 +339,7 @@ public class DirectoryAsyncClient {
      *
      * @return {@link FileRef File info} in the storage directory
      */
-    public Flux<FileRef> listFilesAndDirectories() {
+    public PagedFlux<FileRef> listFilesAndDirectories() {
         return listFilesAndDirectories(null, null);
     }
 
@@ -371,9 +360,19 @@ public class DirectoryAsyncClient {
      *                   If the request does not specify maxresults or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @return {@link FileRef File info} in this directory with prefix and max number of return results.
      */
-    public Flux<FileRef> listFilesAndDirectories(String prefix, Integer maxResults) {
-        return azureFileStorageClient.directorys().listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryPath, prefix, snapshot, null, maxResults, null, Context.NONE)
-                  .flatMapMany(response -> nextPageForFileAndDirecotries(response, prefix, maxResults));
+    public PagedFlux<FileRef> listFilesAndDirectories(String prefix, Integer maxResults) {
+        Function<String, Mono<PagedResponse<FileRef>>> retriever =
+            marker -> postProcessResponse(this.azureFileStorageClient.directorys()
+                .listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryPath, prefix, snapshot,
+                    marker, maxResults, null, Context.NONE))
+                .map(response -> new PagedResponseBase<>(response.request(),
+                    response.statusCode(),
+                    response.headers(),
+                    convertResponseAndGetNumOfResults(response),
+                    response.value().nextMarker(),
+                    response.deserializedHeaders()));
+
+        return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
     /**
@@ -392,9 +391,19 @@ public class DirectoryAsyncClient {
      * @param recursive Specifies operation should apply to the directory specified in the URI, its files, its subdirectories and their files.
      * @return {@link HandleItem handles} in the directory that satisfy the requirements
      */
-    public Flux<HandleItem> listHandles(Integer maxResult, boolean recursive) {
-        return azureFileStorageClient.directorys().listHandlesWithRestResponseAsync(shareName, directoryPath, null, maxResult, null, snapshot, recursive, Context.NONE)
-                   .flatMapMany(response -> nextPageForHandles(response, maxResult, recursive));
+    public PagedFlux<HandleItem> listHandles(Integer maxResult, boolean recursive) {
+        Function<String, Mono<PagedResponse<HandleItem>>> retriever =
+            marker -> postProcessResponse(this.azureFileStorageClient.directorys()
+            .listHandlesWithRestResponseAsync(shareName, directoryPath, marker, maxResult, null, snapshot, recursive,
+                Context.NONE))
+            .map(response -> new PagedResponseBase<>(response.request(),
+                response.statusCode(),
+                response.headers(),
+                response.value().handleList(),
+                response.value().nextMarker(),
+                response.deserializedHeaders()));
+
+        return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
     /**
@@ -413,11 +422,21 @@ public class DirectoryAsyncClient {
      * @param recursive A boolean value that specifies if the operation should also apply to the files and subdirectories of the directory specified in the URI.
      * @return The counts of number of handles closed
      */
-    public Flux<Integer> forceCloseHandles(String handleId, boolean recursive) {
+    public PagedFlux<Integer> forceCloseHandles(String handleId, boolean recursive) {
         // TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
         // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
-        return azureFileStorageClient.directorys().forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, handleId, null, null, snapshot, recursive, Context.NONE)
-            .flatMapMany(response -> nextPageForForceCloseHandles(response, handleId, recursive));
+        Function<String, Mono<PagedResponse<Integer>>> retriever =
+            marker -> postProcessResponse(this.azureFileStorageClient.directorys()
+            .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, handleId, null, marker, snapshot,
+                recursive, Context.NONE))
+            .map(response -> new PagedResponseBase<>(response.request(),
+                response.statusCode(),
+                response.headers(),
+                Collections.singletonList(response.deserializedHeaders().numberOfHandlesClosed()),
+                response.deserializedHeaders().marker(),
+                response.deserializedHeaders()));
+
+        return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
     /**
@@ -434,7 +453,7 @@ public class DirectoryAsyncClient {
      *
      * @param subDirectoryName Name of the subdirectory
      * @return A subdirectory client.
-     * @throws StorageErrorException If the subdirectory has already existed, the parent directory does not exist or directory is an invalid resource name.
+     * @throws StorageException If the subdirectory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
     public Mono<DirectoryAsyncClient> createSubDirectory(String subDirectoryName) {
         return createSubDirectoryWithResponse(subDirectoryName, null).flatMap(FluxUtil::toMono);
@@ -455,7 +474,7 @@ public class DirectoryAsyncClient {
      * @param subDirectoryName Name of the subdirectory
      * @param metadata Optional metadata to associate with the subdirectory
      * @return A response containing the subdirectory client and the status of creating the directory.
-     * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or subdirectory is an invalid resource name.
+     * @throws StorageException If the directory has already existed, the parent directory does not exist or subdirectory is an invalid resource name.
      */
     public Mono<Response<DirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName, Map<String, String> metadata) {
         return withContext(context -> createSubDirectoryWithResponse(subDirectoryName, metadata, context));
@@ -463,7 +482,7 @@ public class DirectoryAsyncClient {
 
     Mono<Response<DirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName, Map<String, String> metadata, Context context) {
         DirectoryAsyncClient createSubClient = getSubDirectoryClient(subDirectoryName);
-        return createSubClient.createWithResponse(metadata, context)
+        return postProcessResponse(createSubClient.createWithResponse(metadata, context))
             .map(response -> new SimpleResponse<>(response, createSubClient));
     }
 
@@ -481,7 +500,7 @@ public class DirectoryAsyncClient {
      *
      * @param subDirectoryName Name of the subdirectory
      * @return An empty response.
-     * @throws StorageErrorException If the subdirectory doesn't exist, the parent directory does not exist or subdirectory name is an invalid resource name.
+     * @throws StorageException If the subdirectory doesn't exist, the parent directory does not exist or subdirectory name is an invalid resource name.
      */
     public Mono<Void> deleteSubDirectory(String subDirectoryName) {
         return deleteSubDirectoryWithResponse(subDirectoryName).flatMap(FluxUtil::toMono);
@@ -501,7 +520,7 @@ public class DirectoryAsyncClient {
      *
      * @param subDirectoryName Name of the subdirectory
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If the subdirectory doesn't exist, the parent directory does not exist or subdirectory name is an invalid resource name.
+     * @throws StorageException If the subdirectory doesn't exist, the parent directory does not exist or subdirectory name is an invalid resource name.
      */
     public Mono<VoidResponse> deleteSubDirectoryWithResponse(String subDirectoryName) {
         return withContext(context -> deleteSubDirectoryWithResponse(subDirectoryName, context));
@@ -509,7 +528,7 @@ public class DirectoryAsyncClient {
 
     Mono<VoidResponse> deleteSubDirectoryWithResponse(String subDirectoryName, Context context) {
         DirectoryAsyncClient deleteSubClient = getSubDirectoryClient(subDirectoryName);
-        return deleteSubClient.deleteWithResponse(context).map(VoidResponse::new);
+        return postProcessResponse(deleteSubClient.deleteWithResponse(context)).map(VoidResponse::new);
     }
 
     /**
@@ -527,7 +546,7 @@ public class DirectoryAsyncClient {
      * @param fileName Name of the file
      * @param maxSize Size of the file
      * @return The FileAsyncClient.
-     * @throws StorageErrorException If the file has already existed, the parent directory does not exist or file name is an invalid resource name.
+     * @throws StorageException If the file has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
     public Mono<FileAsyncClient> createFile(String fileName, long maxSize) {
         return createFileWithResponse(fileName, maxSize, null, null).flatMap(FluxUtil::toMono);
@@ -550,7 +569,7 @@ public class DirectoryAsyncClient {
      * @param httpHeaders the Http headers set to the file
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
      * @return A response containing the directory info and the status of creating the directory.
-     * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or file name is an invalid resource name.
+     * @throws StorageException If the directory has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
     public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata) {
         return withContext(context -> createFileWithResponse(fileName, maxSize, httpHeaders, metadata, context));
@@ -558,7 +577,8 @@ public class DirectoryAsyncClient {
 
     Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata, Context context) {
         FileAsyncClient fileAsyncClient = getFileClient(fileName);
-        return fileAsyncClient.createWithResponse(maxSize, httpHeaders, metadata, context).map(response -> new SimpleResponse<>(response, fileAsyncClient));
+        return postProcessResponse(fileAsyncClient.createWithResponse(maxSize, httpHeaders, metadata, context))
+            .map(response -> new SimpleResponse<>(response, fileAsyncClient));
     }
 
     /**
@@ -575,7 +595,7 @@ public class DirectoryAsyncClient {
      *
      * @param fileName Name of the file
      * @return An empty response.
-     * @throws StorageErrorException If the directory doesn't exist or the file doesn't exist or file name is an invalid resource name.
+     * @throws StorageException If the directory doesn't exist or the file doesn't exist or file name is an invalid resource name.
      */
     public Mono<Void> deleteFile(String fileName) {
         return deleteFileWithResponse(fileName).flatMap(FluxUtil::toMono);
@@ -595,7 +615,7 @@ public class DirectoryAsyncClient {
      *
      * @param fileName Name of the file
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If the directory doesn't exist or the file doesn't exist or file name is an invalid resource name.
+     * @throws StorageException If the directory doesn't exist or the file doesn't exist or file name is an invalid resource name.
      */
     public Mono<VoidResponse> deleteFileWithResponse(String fileName) {
         return withContext(context -> deleteFileWithResponse(fileName, context));
@@ -603,7 +623,8 @@ public class DirectoryAsyncClient {
 
     Mono<VoidResponse> deleteFileWithResponse(String fileName, Context context) {
         FileAsyncClient fileAsyncClient = getFileClient(fileName);
-        return fileAsyncClient.deleteWithResponse(context).map(VoidResponse::new);
+        return postProcessResponse(fileAsyncClient.deleteWithResponse(context))
+            .map(VoidResponse::new);
     }
 
     /**
@@ -648,45 +669,15 @@ public class DirectoryAsyncClient {
         return new SimpleResponse<>(response, directorySetMetadataInfo);
     }
 
-    private Flux<FileRef> nextPageForFileAndDirecotries(final DirectorysListFilesAndDirectoriesSegmentResponse response, final String prefix, final Integer maxResult) {
-        List<FileRef> fileRefs = convertResponseAndGetNumOfResults(response);
-
-        if (response.value().nextMarker() == null) {
-            return Flux.fromIterable(fileRefs);
-        }
-        Mono<DirectorysListFilesAndDirectoriesSegmentResponse> listResponse = azureFileStorageClient.directorys().listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryPath, prefix, snapshot, response.value().nextMarker(), maxResult, null, Context.NONE);
-        Flux<FileRef> fileRefPublisher = listResponse.flatMapMany(newResponse -> nextPageForFileAndDirecotries(newResponse, prefix, maxResult));
-        return Flux.fromIterable(fileRefs).concatWith(fileRefPublisher);
-    }
-
-    private Flux<HandleItem> nextPageForHandles(DirectorysListHandlesResponse response, Integer maxResult, boolean recursive) {
-        List<HandleItem> handleItems = response.value().handleList();
-
-        if (response.value().nextMarker() == null) {
-            return Flux.fromIterable(handleItems);
-        }
-        Mono<DirectorysListHandlesResponse> listResponse = azureFileStorageClient.directorys().listHandlesWithRestResponseAsync(shareName, directoryPath, response.value().nextMarker(), maxResult, null, snapshot,  recursive, Context.NONE);
-        Flux<HandleItem> fileRefPublisher = listResponse.flatMapMany(newResponse -> nextPageForHandles(newResponse, maxResult, recursive));
-        return Flux.fromIterable(handleItems).concatWith(fileRefPublisher);
-    }
-
-    private Flux<Integer> nextPageForForceCloseHandles(DirectorysForceCloseHandlesResponse response, String handleId, boolean recursive) {
-        List<Integer> handleCount = Arrays.asList(response.deserializedHeaders().numberOfHandlesClosed());
-
-        if (response.deserializedHeaders().marker() == null) {
-            return Flux.fromIterable(handleCount);
-        }
-        Mono<DirectorysForceCloseHandlesResponse> listResponse = azureFileStorageClient.directorys().forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, handleId, null, response.deserializedHeaders().marker(), snapshot, recursive, Context.NONE);
-        Flux<Integer> fileRefPublisher = listResponse.flatMapMany(newResponse -> nextPageForForceCloseHandles(newResponse, handleId, recursive));
-        return Flux.fromIterable(handleCount).concatWith(fileRefPublisher);
-    }
-
     private List<FileRef> convertResponseAndGetNumOfResults(DirectorysListFilesAndDirectoriesSegmentResponse response) {
-        List<FileRef> fileRefs = new ArrayList<>();
+        Set<FileRef> fileRefs = new TreeSet<>(Comparator.comparing(FileRef::name));
         if (response.value().segment() != null) {
-            response.value().segment().directoryItems().forEach(directoryItem -> fileRefs.add(new FileRef(directoryItem.name(), true, null)));
-            response.value().segment().fileItems().forEach(fileItem -> fileRefs.add(new FileRef(fileItem.name(), false, fileItem.properties())));
+            response.value().segment().directoryItems()
+                .forEach(directoryItem -> fileRefs.add(new FileRef(directoryItem.name(), true, null)));
+            response.value().segment().fileItems()
+                .forEach(fileItem -> fileRefs.add(new FileRef(fileItem.name(), false, fileItem.properties())));
         }
-        return fileRefs;
+
+        return new ArrayList<>(fileRefs);
     }
 }

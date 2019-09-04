@@ -7,6 +7,9 @@ import com.azure.core.http.rest.Response
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.models.UserDelegationKey
+import com.azure.storage.common.AccountSASPermission
+import com.azure.storage.common.AccountSASResourceType
+import com.azure.storage.common.AccountSASSignatureValues
 import com.azure.storage.common.Constants
 import com.azure.storage.common.IPRange
 import com.azure.storage.common.SASProtocol
@@ -72,77 +75,6 @@ class HelperTest extends APISpec {
         0      | -1
     }
 
-    def "serviceSASSignatureValues network test blob snapshot"() {
-        setup:
-        String containerName = generateContainerName()
-        String blobName = generateBlobName()
-        ContainerClient cu = primaryBlobServiceClient.createContainer(containerName)
-        BlockBlobClient bu = cu.getBlockBlobClient(blobName)
-        bu.upload(defaultInputStream.get(), defaultDataSize) // need something to snapshot
-        String snapshotId = bu.createSnapshot().getSnapshotId()
-
-        BlobSASPermission p = new BlobSASPermission()
-            .read(true)
-            .write(true)
-            .create(true)
-            .delete(true)
-            .add(true)
-
-        IPRange ipR = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
-
-        ServiceSASSignatureValues v = new ServiceSASSignatureValues()
-            .permissions(p.toString())
-            .startTime(getUTCNow())
-            .expiryTime(getUTCNow().plusDays(1))
-            .resource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
-            .canonicalName(String.format("/blob/%s/%s/%s", primaryCredential.accountName(), containerName, blobName))
-            .snapshotId(snapshotId)
-            .ipRange(ipR)
-            .protocol(SASProtocol.HTTPS_ONLY)
-            .cacheControl("cache")
-            .contentDisposition("disposition")
-            .contentEncoding("encoding")
-            .contentLanguage("language")
-            .contentType("type")
-
-        when:
-        BlobURLParts parts = URLParser.parse(bu.getBlobUrl())
-        parts.sasQueryParameters(v.generateSASQueryParameters(primaryCredential)).scheme("https")
-        // base blob with snapshot SAS
-        AppendBlobClient bsu = getBlobClient(parts.toURL().toString(), null).asAppendBlobClient()
-
-        bsu.download(new ByteArrayOutputStream())
-
-        then:
-        // snapshot-level SAS shouldn't be able to access base blob
-        thrown(StorageException)
-
-        when:
-        // blob snapshot with snapshot SAS
-        parts.snapshot(snapshotId)
-        bsu = getBlobClient(parts.toURL().toString(), SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode()))
-            .asAppendBlobClient()
-
-        ByteArrayOutputStream data = new ByteArrayOutputStream()
-        bsu.download(data)
-
-        then:
-        notThrown(StorageException)
-        data.toByteArray() == defaultData.array()
-
-        and:
-        Response<BlobProperties> properties = bsu.getPropertiesWithResponse(null, null, null)
-
-        then:
-        properties.value().cacheControl() == "cache"
-        properties.value().contentDisposition() == "disposition"
-        properties.value().contentEncoding() == "encoding"
-        properties.value().contentLanguage() == "language"
-        properties.headers().value("Content-Type") == "type"
-    }
-
     /*
      This test will ensure that each field gets placed into the proper location within the string to sign and that null
      values are handled correctly. We will validate the whole SAS with service calls as well as correct serialization of
@@ -152,7 +84,7 @@ class HelperTest extends APISpec {
     @Unroll
     def "serviceSasSignatures string to sign"() {
         when:
-        ServiceSASSignatureValues v = new ServiceSASSignatureValues()
+        BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
         if (permissions != null) {
             v.permissions(new BlobSASPermission().read(true).toString())
         } else {
@@ -187,7 +119,7 @@ class HelperTest extends APISpec {
             .contentLanguage(language)
             .contentType(type)
 
-        SASQueryParameters token = v.generateSASQueryParameters(primaryCredential)
+        BlobServiceSASQueryParameters token = v.generateSASQueryParameters(primaryCredential)
 
         if (startTime != null) {
             expectedStringToSign = String.format(expectedStringToSign,
@@ -228,7 +160,7 @@ class HelperTest extends APISpec {
     @Unroll
     def "serviceSasSignatures string to sign user delegation key"() {
         when:
-        ServiceSASSignatureValues v = new ServiceSASSignatureValues()
+        BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
         if (permissions != null) {
             v.permissions(new BlobSASPermission().read(true).toString())
         } else {
@@ -271,7 +203,7 @@ class HelperTest extends APISpec {
             .signedVersion(keyVersion)
             .value(keyValue)
 
-        SASQueryParameters token = v.generateSASQueryParameters(key)
+        BlobServiceSASQueryParameters token = v.generateSASQueryParameters(key)
 
         expectedStringToSign = String.format(expectedStringToSign, Utility.ISO_8601_UTC_DATE_FORMATTER.format(v.expiryTime()), primaryCredential.accountName())
 
@@ -305,7 +237,7 @@ class HelperTest extends APISpec {
     @Unroll
     def "serviceSASSignatureValues canonicalizedResource"() {
         setup:
-        ServiceSASSignatureValues v = new ServiceSASSignatureValues()
+        BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
             .expiryTime(expiryTime)
             .permissions(new BlobSASPermission().toString())
             .resource(expectedResource)
@@ -321,7 +253,7 @@ class HelperTest extends APISpec {
             primaryCredential.accountName())
 
         when:
-        SASQueryParameters token = v.generateSASQueryParameters(primaryCredential)
+        BlobServiceSASQueryParameters token = v.generateSASQueryParameters(primaryCredential)
 
         then:
         token.signature() == primaryCredential.computeHmac256(expectedStringToSign)
@@ -338,7 +270,7 @@ class HelperTest extends APISpec {
     @Unroll
     def "serviceSasSignatureValues IA"() {
         setup:
-        ServiceSASSignatureValues v = new ServiceSASSignatureValues()
+        BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
             .permissions(new AccountSASPermission().toString())
             .expiryTime(OffsetDateTime.now())
             .resource(containerName)
@@ -699,7 +631,7 @@ class HelperTest extends APISpec {
             .blobName("blob")
             .snapshot("snapshot")
 
-        ServiceSASSignatureValues sasValues = new ServiceSASSignatureValues()
+        BlobServiceSASSignatureValues sasValues = new BlobServiceSASSignatureValues()
             .expiryTime(OffsetDateTime.now(ZoneOffset.UTC).plusDays(1))
             .permissions("r")
             .canonicalName(String.format("/blob/%s/container/blob", primaryCredential.accountName()))

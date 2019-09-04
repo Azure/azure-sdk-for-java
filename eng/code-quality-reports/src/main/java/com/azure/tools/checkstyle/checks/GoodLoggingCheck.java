@@ -12,8 +12,8 @@ import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.HashSet;
+import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -37,8 +37,8 @@ public class GoodLoggingCheck extends AbstractCheck {
 
     // Boolean indicator that indicates if the java class imports ClientLogger
     private boolean hasClientLoggerImported;
-    // A container stores the class names, pop top element if exist the class name AST node
-    private Deque<String> classNameDeque = new ArrayDeque<>();
+    // A LIFO queue stores the class names, pop top element if exist the class name AST node
+    private Queue<String> classNameDeque = Collections.asLifoQueue(new ArrayDeque<>());
     // Collection of Invalid logging packages
     private static final Set<String> INVALID_LOGS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         "org.slf4j", "org.apache.logging.log4j", "java.util.logging"
@@ -73,7 +73,7 @@ public class GoodLoggingCheck extends AbstractCheck {
     @Override
     public void leaveToken(DetailAST ast) {
         if (ast.getType() == TokenTypes.CLASS_DEF) {
-            classNameDeque.pollFirst();
+            classNameDeque.poll();
         }
     }
 
@@ -91,7 +91,7 @@ public class GoodLoggingCheck extends AbstractCheck {
                 });
                 break;
             case TokenTypes.CLASS_DEF:
-                classNameDeque.addFirst(ast.findFirstToken(TokenTypes.IDENT).getText());
+                classNameDeque.offer(ast.findFirstToken(TokenTypes.IDENT).getText());
                 break;
             case TokenTypes.LITERAL_NEW:
                 checkLoggerInstantiation(ast);
@@ -151,7 +151,7 @@ public class GoodLoggingCheck extends AbstractCheck {
             // Check instantiation of ClientLogger
             final String containerClassName = FullIdent.createFullIdent(exprToken.getFirstChild()).getText();
             // Add suffix of '.class' at the end of class name
-            final String className = classNameDeque.peekFirst();
+            final String className = classNameDeque.peek();
             if (!containerClassName.equals(className + ".class")) {
                 log(exprToken, String.format("Not newing a ClientLogger with matching class name. Use ''%s.class'' instead of ''%s''", className, containerClassName));
             }

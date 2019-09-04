@@ -9,6 +9,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.*;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
@@ -75,7 +76,7 @@ public abstract class SecretClientTestBase extends TestBase {
             httpClient = interceptorManager.getPlaybackClient();
             policies.add(interceptorManager.getRecordPolicy());
         } else {
-            httpClient = HttpClient.createDefault().wiretap(true);
+            httpClient = new NettyAsyncHttpClientBuilder().setWiretap(true).build();
             policies.add(interceptorManager.getRecordPolicy());
         }
 

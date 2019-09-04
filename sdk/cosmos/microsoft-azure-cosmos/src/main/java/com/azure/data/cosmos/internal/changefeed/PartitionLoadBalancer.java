@@ -21,4 +21,12 @@ public interface PartitionLoadBalancer {
      * @return a representation of the deferred computation of this call.
      */
     Mono<Void> stop();
+
+    /**
+     * Returns true if the instance is running.
+     *
+     * @return true if the instance is running.
+     */
+    boolean isRunning();
+
 }

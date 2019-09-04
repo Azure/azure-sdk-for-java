@@ -1,42 +1,47 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatefileinvalidargs07905960cc45af6b?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatefileinvalidargs0649869685feccf6?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "5f18301d-406b-4a32-a68e-55f46f7a1b0b"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72829B6E9B0E8\"",
-      "Last-Modified" : "Sat, 24 Aug 2019 00:26:32 GMT",
+      "ETag" : "\"0x8D730D960339204\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 01:44:07 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "28c90fe9-b01a-0060-0112-5a7554000000",
-      "Date" : "Sat, 24 Aug 2019 00:26:31 GMT",
-      "x-ms-client-request-id" : "d9d38534-f364-4a70-8392-d35bb3671e2f"
+      "x-ms-request-id" : "e7c18a7b-101a-0044-6ac2-62ec1a000000",
+      "Date" : "Wed, 04 Sep 2019 01:44:07 GMT",
+      "x-ms-client-request-id" : "5f18301d-406b-4a32-a68e-55f46f7a1b0b"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatefileinvalidargs07905960cc45af6b/test%0cile",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatefileinvalidargs0649869685feccf6/testfile:",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "4b37522c-07b8-4330-9bf7-acc48853115c"
     },
     "Response" : {
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "Connection" : "close",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidResourceName",
       "retry-after" : "0",
-      "Content-Length" : "324",
+      "Content-Length" : "243",
       "StatusCode" : "400",
-      "Body" : "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"\"http://www.w3.org/TR/html4/strict.dtd\">\r\n<HTML><HEAD><TITLE>Bad Request</TITLE>\r\n<META HTTP-EQUIV=\"Content-Type\" Content=\"text/html; charset=us-ascii\"></HEAD>\r\n<BODY><h2>Bad Request - Invalid URL</h2>\r\n<hr><p>HTTP Error 400. The request URL is invalid.</p>\r\n</BODY></HTML>\r\n",
-      "Date" : "Sat, 24 Aug 2019 00:26:32 GMT",
-      "Content-Type" : "text/html; charset=us-ascii"
+      "x-ms-request-id" : "e7c18a7d-101a-0044-6bc2-62ec1a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:e7c18a7d-101a-0044-6bc2-62ec1a000000\nTime:2019-09-04T01:44:08.8204619Z</Message></Error>",
+      "Date" : "Wed, 04 Sep 2019 01:44:08 GMT",
+      "x-ms-client-request-id" : "4b37522c-07b8-4330-9bf7-acc48853115c",
+      "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestscreatefileinvalidargs07905960cc45af6b" ]
+  "variables" : [ "shareapitestscreatefileinvalidargs0649869685feccf6" ]
 }
