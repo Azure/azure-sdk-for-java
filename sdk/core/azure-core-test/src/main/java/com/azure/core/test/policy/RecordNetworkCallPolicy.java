@@ -39,6 +39,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     private static final int DEFAULT_BUFFER_LENGTH = 1024;
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String CONTENT_ENCODING = "Content-Encoding";
+    private static final String X_MS_CLIENT_REQUEST_ID = "x-ms-client-request-id";
     private static final String X_MS_VERSION = "x-ms-version";
     private static final String USER_AGENT = "User-Agent";
     private static final String STATUS_CODE = "StatusCode";
@@ -66,6 +67,10 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         final NetworkCallRecord networkCallRecord = new NetworkCallRecord();
         Map<String, String> headers = new HashMap<>();
+
+        if (context.httpRequest().headers().value(X_MS_CLIENT_REQUEST_ID) != null) {
+            headers.put(X_MS_CLIENT_REQUEST_ID, context.httpRequest().headers().value(X_MS_CLIENT_REQUEST_ID));
+        }
 
         if (context.httpRequest().headers().value(CONTENT_TYPE) != null) {
             headers.put(CONTENT_TYPE, context.httpRequest().headers().value(CONTENT_TYPE));
