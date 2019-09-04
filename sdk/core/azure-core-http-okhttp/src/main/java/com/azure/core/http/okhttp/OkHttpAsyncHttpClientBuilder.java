@@ -22,10 +22,10 @@ import java.util.Objects;
 public class OkHttpAsyncHttpClientBuilder {
     private final ClientLogger logger = new ClientLogger(OkHttpAsyncHttpClientBuilder.class);
     private final okhttp3.OkHttpClient okHttpClient;
-    //
-    private final static Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(120);
-    private final static Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60);
-    //
+
+    private static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(120);
+    private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60);
+
     private List<Interceptor> networkInterceptors = new ArrayList<>();
     private Duration readTimeout;
     private Duration connectionTimeout;
