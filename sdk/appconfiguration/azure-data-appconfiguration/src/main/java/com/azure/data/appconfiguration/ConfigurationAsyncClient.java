@@ -44,7 +44,8 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  * @see ConfigurationClientBuilder
  * @see ConfigurationClientCredentials
  */
-@ServiceClient(builder = ConfigurationClientBuilder.class, isAsync = true, serviceInterfaces = ConfigurationService.class)
+@ServiceClient(builder = ConfigurationClientBuilder.class, isAsync = true, serviceInterfaces =
+    ConfigurationService.class)
 public final class ConfigurationAsyncClient {
     private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClient.class);
 
@@ -78,7 +79,7 @@ public final class ConfigurationAsyncClient {
      * @param key The key of the configuration setting to add.
      * @param value The value associated with this configuration setting key.
      * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key
-     * is an invalid value (which will also throw HttpResponseException described below).
+     *     is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key exists.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -102,7 +103,7 @@ public final class ConfigurationAsyncClient {
      *
      * @param setting The setting to add to the configuration service.
      * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key
-     * is an invalid value (which will also throw HttpResponseException described below).
+     *     is an invalid value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
@@ -125,8 +126,9 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addSettingWithResponse#ConfigurationSetting}
      *
      * @param setting The setting to add to the configuration service.
-     * @return A REST response containing the {@link ConfigurationSetting} that was created, if a key collision occurs or the key
-     * is an invalid value (which will also throw HttpResponseException described below).
+     * @return A REST response containing the {@link ConfigurationSetting} that was created, if a key collision occurs
+     *     or the key
+     *     is an invalid value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
@@ -143,7 +145,15 @@ public final class ConfigurationAsyncClient {
 
         // This service method call is similar to setSetting except we're passing If-Not-Match = "*". If the service
         // finds any existing configuration settings, then its e-tag will match and the service will return an error.
-        return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, null, getETagValue(ETAG_ANY), context)
+        return service
+            .setKey(
+                serviceEndpoint,
+                setting.key(),
+                setting.label(),
+                setting,
+                null,
+                getETagValue(ETAG_ANY),
+                context)
             .doOnRequest(ignoredValue -> logger.info("Adding ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Added ConfigurationSetting - {}", response.value()))
             .onErrorMap(ConfigurationAsyncClient::addSettingExceptionMapper)
@@ -162,7 +172,7 @@ public final class ConfigurationAsyncClient {
      * @param key The key of the configuration setting to create or update.
      * @param value The value of this configuration setting.
      * @return The {@link ConfigurationSetting} that was created or updated, if the key is an invalid
-     * value (which will also throw HttpResponseException described below).
+     *     value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceModifiedException If the setting exists and is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -190,13 +200,14 @@ public final class ConfigurationAsyncClient {
      *
      * @param setting The configuration setting to create or update.
      * @return The {@link ConfigurationSetting} that was created or updated, if the key is an invalid
-     * value, the setting is locked, or an etag was provided but does not match the service's current etag value (which
-     * will also throw HttpResponseException described below).
+     *     value, the setting is locked, or an etag was provided but does not match the service's current etag value
+     *     (which
+     *     will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws ResourceModifiedException If the {@link ConfigurationSetting#etag() etag} was specified, is not the
-     * wildcard character, and the current configuration value's etag does not match, or the
-     * setting exists and is locked.
+     *     wildcard character, and the current configuration value's etag does not match, or the
+     *     setting exists and is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -220,14 +231,16 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setSettingWithResponse#ConfigurationSetting}
      *
      * @param setting The configuration setting to create or update.
-     * @return A REST response containing the {@link ConfigurationSetting} that was created or updated, if the key is an invalid
-     * value, the setting is locked, or an etag was provided but does not match the service's current etag value (which
-     * will also throw HttpResponseException described below).
+     * @return A REST response containing the {@link ConfigurationSetting} that was created or updated, if the key is an
+     *     invalid
+     *     value, the setting is locked, or an etag was provided but does not match the service's current etag value
+     *     (which
+     *     will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws ResourceModifiedException If the {@link ConfigurationSetting#etag() etag} was specified, is not the
-     * wildcard character, and the current configuration value's etag does not match, or the
-     * setting exists and is locked.
+     *     wildcard character, and the current configuration value's etag does not match, or the
+     *     setting exists and is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -245,7 +258,15 @@ public final class ConfigurationAsyncClient {
         // Otherwise, the service throws an exception because the current configuration value was updated and we have an
         // old value locally.
         // If no etag value was passed in, then the value is always added or updated.
-        return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, getETagValue(setting.etag()), null, context)
+        return service
+            .setKey(
+                serviceEndpoint,
+                setting.key(),
+                setting.label(),
+                setting,
+                getETagValue(setting.etag()),
+                null,
+                context)
             .doOnRequest(ignoredValue -> logger.info("Setting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Set ConfigurationSetting - {}", response.value()))
             .doOnError(error -> logger.warning("Failed to set ConfigurationSetting - {}", setting, error));
@@ -264,10 +285,12 @@ public final class ConfigurationAsyncClient {
      * @param key The key of the configuration setting to update.
      * @param value The updated value of this configuration setting.
      * @return The {@link ConfigurationSetting} that was updated, if the configuration value does not
-     * exist, is locked, or the key is an invalid value (which will also throw HttpResponseException described below).
+     *     exist, is locked, or the key is an invalid value (which will also throw HttpResponseException described
+     *     below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
-     * @throws HttpResponseException If a ConfigurationSetting with the key does not exist or the configuration value
-     * is locked.
+     * @throws HttpResponseException If a ConfigurationSetting with the key does not exist or the configuration
+     *     value
+     *     is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -285,18 +308,20 @@ public final class ConfigurationAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value "updated_db_connection".</p>
+     * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value
+     * "updated_db_connection".</p>
      *
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.updateSetting#ConfigurationSetting}
      *
      * @param setting The setting to add or update in the service.
      * @return The {@link ConfigurationSetting} that was updated, if the configuration value does not
-     * exist, is locked, or the key is an invalid value (which will also throw HttpResponseException described below).
+     *     exist, is locked, or the key is an invalid value (which will also throw HttpResponseException described
+     *     below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label does not
-     * exist, the setting is locked, or {@link ConfigurationSetting#etag() etag} is specified but does not match
-     * the current value.
+     *     exist, the setting is locked, or {@link ConfigurationSetting#etag() etag} is specified but does not match
+     *     the current value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -313,18 +338,21 @@ public final class ConfigurationAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value "updated_db_connection".</p>
+     * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value
+     * "updated_db_connection".</p>
      *
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.updateSettingWithResponse#ConfigurationSetting}
      *
      * @param setting The setting to add or update in the service.
-     * @return A REST response containing the {@link ConfigurationSetting} that was updated, if the configuration value does not
-     * exist, is locked, or the key is an invalid value (which will also throw HttpResponseException described below).
+     * @return A REST response containing the {@link ConfigurationSetting} that was updated, if the configuration value
+     *     does not
+     *     exist, is locked, or the key is an invalid value (which will also throw HttpResponseException described
+     *     below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label does not
-     * exist, the setting is locked, or {@link ConfigurationSetting#etag() etag} is specified but does not match
-     * the current value.
+     *     exist, the setting is locked, or {@link ConfigurationSetting#etag() etag} is specified but does not match
+     *     the current value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -338,7 +366,15 @@ public final class ConfigurationAsyncClient {
 
         String etag = setting.etag() == null ? ETAG_ANY : setting.etag();
 
-        return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, getETagValue(etag), null, context)
+        return service
+            .setKey(
+                serviceEndpoint,
+                setting.key(),
+                setting.label(),
+                setting,
+                getETagValue(etag),
+                null,
+                context)
             .doOnRequest(ignoredValue -> logger.info("Updating ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Updated ConfigurationSetting - {}", response.value()))
             .doOnError(error -> logger.warning("Failed to update ConfigurationSetting - {}", setting, error));
@@ -355,7 +391,7 @@ public final class ConfigurationAsyncClient {
      *
      * @param key The key of the setting to retrieve.
      * @return The {@link ConfigurationSetting} stored in the service, if the configuration value does
-     * not exist or the key is an invalid value (which will also throw HttpResponseException described below).
+     *     not exist or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceNotFoundException If a ConfigurationSetting with {@code key} does not exist.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -378,7 +414,7 @@ public final class ConfigurationAsyncClient {
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
      * @return The {@link ConfigurationSetting} stored in the service, if the configuration value does
-     * not exist or the key is an invalid value (which will also throw HttpResponseException described below).
+     *     not exist or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
@@ -400,8 +436,9 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSettingWithResponse#ConfigurationSetting}
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
-     * @return A REST response containing the {@link ConfigurationSetting} stored in the service, if the configuration value does
-     * not exist or the key is an invalid value (which will also throw HttpResponseException described below).
+     * @return A REST response containing the {@link ConfigurationSetting} stored in the service, if the configuration
+     *     value does
+     *     not exist or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
@@ -433,7 +470,7 @@ public final class ConfigurationAsyncClient {
      *
      * @param key The key of the setting to delete.
      * @return The deleted ConfigurationSetting or {@code null} if it didn't exist. {@code null} is also returned if
-     * the {@code key} is an invalid value (which will also throw HttpResponseException described below).
+     *     the {@code key} is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceModifiedException If the ConfigurationSetting is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -460,13 +497,13 @@ public final class ConfigurationAsyncClient {
      *
      * @param setting The ConfigurationSetting to delete.
      * @return The deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if
-     * the {@code key} is an invalid value or {@link ConfigurationSetting#etag() etag} is set but does not match the
-     * current etag (which will also throw HttpResponseException described below).
+     *     the {@code key} is an invalid value or {@link ConfigurationSetting#etag() etag} is set but does not match the
+     *     current etag (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws NullPointerException When {@code setting} is {@code null}.
      * @throws ResourceModifiedException If the ConfigurationSetting is locked.
      * @throws ResourceNotFoundException If {@link ConfigurationSetting#etag() etag} is specified, not the wildcard
-     * character, and does not match the current etag value.
+     *     character, and does not match the current etag value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -489,14 +526,16 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteSettingWithResponse#ConfigurationSetting}
      *
      * @param setting The ConfigurationSetting to delete.
-     * @return A REST response containing the deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if
-     * the {@code key} is an invalid value or {@link ConfigurationSetting#etag() etag} is set but does not match the
-     * current etag (which will also throw HttpResponseException described below).
+     * @return A REST response containing the deleted ConfigurationSetting or {@code null} if didn't exist. {@code null}
+     *     is also returned if
+     *     the {@code key} is an invalid value or {@link ConfigurationSetting#etag() etag} is set but does not match
+     *     the
+     *     current etag (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws NullPointerException When {@code setting} is {@code null}.
      * @throws ResourceModifiedException If the ConfigurationSetting is locked.
      * @throws ResourceNotFoundException If {@link ConfigurationSetting#etag() etag} is specified, not the wildcard
-     * character, and does not match the current etag value.
+     *     character, and does not match the current etag value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -508,7 +547,14 @@ public final class ConfigurationAsyncClient {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
-        return service.delete(serviceEndpoint, setting.key(), setting.label(), getETagValue(setting.etag()), null, context)
+        return service
+            .delete(
+                serviceEndpoint,
+                setting.key(),
+                setting.label(),
+                getETagValue(setting.etag()),
+                null,
+                context)
             .doOnRequest(ignoredValue -> logger.info("Deleting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Deleted ConfigurationSetting - {}", response.value()))
             .doOnError(error -> logger.warning("Failed to delete ConfigurationSetting - {}", setting, error));
@@ -526,7 +572,7 @@ public final class ConfigurationAsyncClient {
      *
      * @param options Optional. Options to filter configuration setting results from the service.
      * @return A Flux of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
-     * contains all of the current settings in the service.
+     *     contains all of the current settings in the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listSettings(SettingSelector options) {
@@ -603,10 +649,14 @@ public final class ConfigurationAsyncClient {
             String labels = ImplUtils.arrayToString(selector.labels(), label -> label);
             String range = selector.range() != null ? String.format(RANGE_QUERY, selector.range()) : null;
 
-            result = service.listKeyValueRevisions(serviceEndpoint, keys, labels, fields, selector.acceptDateTime(), range, context)
-                .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions - {}", selector))
-                .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions - {}", selector))
-                .doOnError(error -> logger.warning("Failed to list ConfigurationSetting revisions - {}", selector, error));
+            result =
+                service
+                    .listKeyValueRevisions(
+                        serviceEndpoint, keys, labels, fields, selector.acceptDateTime(), range, context)
+                    .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions - {}", selector))
+                    .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions - {}", selector))
+                    .doOnError(
+                        error -> logger.warning("Failed to list ConfigurationSetting revisions - {}", selector, error));
         } else {
             result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null, context)
                 .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions"))
@@ -621,7 +671,8 @@ public final class ConfigurationAsyncClient {
         Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink, context)
             .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
-            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error));
+            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
+                error));
         return result;
     }
 
@@ -635,12 +686,14 @@ public final class ConfigurationAsyncClient {
         Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink, context)
             .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
-            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error));
+            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
+                error));
 
         return result.flatMapMany(r -> extractAndFetchConfigurationSettings(r, context));
     }
 
-    private Publisher<ConfigurationSetting> extractAndFetchConfigurationSettings(PagedResponse<ConfigurationSetting> page, Context context) {
+    private Publisher<ConfigurationSetting> extractAndFetchConfigurationSettings(
+        PagedResponse<ConfigurationSetting> page, Context context) {
         return ImplUtils.extractAndFetch(page, context, this::listSettings);
     }
 
