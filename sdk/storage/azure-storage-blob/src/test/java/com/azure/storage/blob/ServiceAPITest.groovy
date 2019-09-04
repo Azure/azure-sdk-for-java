@@ -292,7 +292,7 @@ class ServiceAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    // The eng system service principal needs to be fixed
+    // The eng sys account does not work as expected. Need to work with the account.
     @Ignore
     def "Get UserDelegationKey"() {
         setup:
@@ -313,7 +313,7 @@ class ServiceAPITest extends APISpec {
         response.value().value() != null
     }
 
-    // The eng system service principal needs to be fixed
+    // The eng sys account does not work as expected. Need to work with the account.
     @Ignore
     def "Get UserDelegationKey min"() {
         setup:

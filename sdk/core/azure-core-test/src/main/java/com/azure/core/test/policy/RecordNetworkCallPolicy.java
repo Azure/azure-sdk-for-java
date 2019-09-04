@@ -71,7 +71,6 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         if (context.httpRequest().headers().value(X_MS_CLIENT_REQUEST_ID) != null) {
             headers.put(X_MS_CLIENT_REQUEST_ID, context.httpRequest().headers().value(X_MS_CLIENT_REQUEST_ID));
         }
-
         if (context.httpRequest().headers().value(CONTENT_TYPE) != null) {
             headers.put(CONTENT_TYPE, context.httpRequest().headers().value(CONTENT_TYPE));
         }
