@@ -405,7 +405,8 @@ final class HttpResponseBodyDecoder {
 
         // Find body for complex responses
         if (TypeUtil.isTypeOrSubTypeOf(returnType, ResponseBase.class)) {
-            ParameterizedType parameterizedType = (ParameterizedType) TypeUtil.getSuperType(returnType, ResponseBase.class);
+            ParameterizedType parameterizedType =
+                (ParameterizedType) TypeUtil.getSuperType(returnType, ResponseBase.class);
             if (parameterizedType.getActualTypeArguments().length == 2) {
                 // check body type
                 returnType = parameterizedType.getActualTypeArguments()[1];
@@ -414,7 +415,8 @@ final class HttpResponseBodyDecoder {
 
         return !FluxUtil.isFluxByteBuffer(returnType)
                 && !TypeUtil.isTypeOrSubTypeOf(returnType, byte[].class)
-                && !TypeUtil.isTypeOrSubTypeOf(returnType, Void.TYPE) && !TypeUtil.isTypeOrSubTypeOf(returnType, Void.class);
+                && !TypeUtil.isTypeOrSubTypeOf(returnType, Void.TYPE)
+                && !TypeUtil.isTypeOrSubTypeOf(returnType, Void.class);
     }
 
     /**
