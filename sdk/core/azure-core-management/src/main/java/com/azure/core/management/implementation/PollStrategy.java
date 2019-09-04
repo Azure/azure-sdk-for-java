@@ -45,15 +45,15 @@ abstract class PollStrategy {
         long delayInMilliseconds;
 
         PollStrategyData(RestProxy restProxy,
-                                SwaggerMethodParser methodParser,
-                                long delayInMilliseconds) {
+                         SwaggerMethodParser methodParser,
+                         long delayInMilliseconds) {
             this.restProxy = restProxy;
             this.methodParser = methodParser;
             this.delayInMilliseconds = delayInMilliseconds;
         }
 
         abstract PollStrategy initializeStrategy(RestProxy restProxy,
-                                        SwaggerMethodParser methodParser);
+                                                 SwaggerMethodParser methodParser);
     }
 
     @SuppressWarnings("unchecked")
@@ -66,7 +66,8 @@ abstract class PollStrategy {
     }
 
     protected Mono<HttpResponse> ensureExpectedStatus(HttpResponse httpResponse, int[] additionalAllowedStatusCodes) {
-        Mono<HttpResponseDecoder.HttpDecodedResponse> asyncDecodedResponse = new HttpResponseDecoder(restProxy.serializer()).decode(Mono.just(httpResponse), this.methodParser);
+        Mono<HttpResponseDecoder.HttpDecodedResponse> asyncDecodedResponse =
+            new HttpResponseDecoder(restProxy.serializer()).decode(Mono.just(httpResponse), this.methodParser);
         return asyncDecodedResponse.flatMap(decodedResponse -> {
             return restProxy.ensureExpectedStatus(decodedResponse, methodParser, additionalAllowedStatusCodes);
         }).map(decodedResponse -> httpResponse);
@@ -164,13 +165,23 @@ abstract class PollStrategy {
         })).flatMap(response -> updateFromAsync(response)));
     }
 
-    Mono<OperationStatus<Object>> createOperationStatusMono(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, Type operationStatusResultType, Context context) {
+    Mono<OperationStatus<Object>> createOperationStatusMono(HttpRequest httpRequest, HttpResponse httpResponse,
+                                                            SwaggerMethodParser methodParser,
+                                                            Type operationStatusResultType, Context context) {
         OperationStatus<Object> operationStatus;
         if (!isDone()) {
             operationStatus = new OperationStatus<>(this, httpRequest);
         } else {
             try {
-                final Object resultObject = restProxy.handleRestReturnType(new HttpResponseDecoder(restProxy.serializer()).decode(Mono.just(httpResponse), this.methodParser), methodParser, operationStatusResultType, context);
+                final Object resultObject =
+                    restProxy
+                        .handleRestReturnType(
+                            new HttpResponseDecoder(
+                                restProxy.serializer()).decode(Mono.just(httpResponse),
+                                this.methodParser),
+                            methodParser,
+                            operationStatusResultType,
+                            context);
                 operationStatus = new OperationStatus<>(resultObject, status());
             } catch (HttpResponseException e) {
                 operationStatus = new OperationStatus<>(e, OperationState.FAILED);
@@ -179,18 +190,22 @@ abstract class PollStrategy {
         return Mono.just(operationStatus);
     }
 
-    Flux<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType, Context context) {
+    Flux<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest,
+                                                                 final SwaggerMethodParser methodParser,
+                                                                 final Type operationStatusResultType,
+                                                                 Context context) {
         return sendPollRequestWithDelay()
-                .flatMap(httpResponse -> createOperationStatusMono(originalHttpRequest, httpResponse, methodParser, operationStatusResultType, context))
-                .repeat()
-                .takeUntil(operationStatus -> isDone());
+            .flatMap(httpResponse -> createOperationStatusMono(originalHttpRequest, httpResponse, methodParser,
+                operationStatusResultType, context))
+            .repeat()
+            .takeUntil(operationStatus -> isDone());
     }
 
     Mono<HttpResponse> pollUntilDone() {
         return sendPollRequestWithDelay()
-                .repeat()
-                .takeUntil(ignored -> isDone())
-                .last();
+            .repeat()
+            .takeUntil(ignored -> isDone())
+            .last();
     }
 
     /**
