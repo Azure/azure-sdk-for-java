@@ -60,6 +60,11 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
                 put("tenantId", tenantId);
                 put("clientCertificate", clientCertificate);
             }});
-        return new ClientCertificateCredential(tenantId, clientId, clientCertificate, clientCertificatePassword, identityClientOptions);
+        return new ClientCertificateCredential(
+            tenantId,
+            clientId,
+            clientCertificate,
+            clientCertificatePassword,
+            identityClientOptions);
     }
 }
