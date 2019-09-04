@@ -497,7 +497,7 @@ public final class Utility {
      * @param length The expected input data length.
      * @param blockSize The size of each ByteBuffer.
      * @return {@link ByteBuffer} which contains the input data.
-     * @throws UnexpectedLengthException when input data length mismatch input length.
+     * @throws {@link UnexpectedLengthException} when input data length mismatch input length.
      * @throws RuntimeException When I/O error occurs.
      */
     public static Flux<ByteBuffer> convertStreamToByteBuffer(InputStream data, long length, int blockSize) {
