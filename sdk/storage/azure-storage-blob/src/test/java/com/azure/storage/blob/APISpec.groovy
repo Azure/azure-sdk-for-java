@@ -382,10 +382,10 @@ class APISpec extends Specification {
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
         if (testMode == TestMode.RECORD) {
-            builder.wiretap(true)
+            builder.setWiretap(true)
 
             if (Boolean.parseBoolean(ConfigurationManager.getConfiguration().get("AZURE_TEST_DEBUGGING"))) {
-                builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+                builder.setProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             }
 
             return builder.build();
