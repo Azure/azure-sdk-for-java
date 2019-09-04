@@ -112,7 +112,7 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#createWithResponse(long, FileProperties, Map, Context)}
+     * Generates a code sample for using {@link FileClient#createWithResponse(long, FileProperties, String, Map, Context)}
      */
     public void createWithResponse() {
         FileClient fileClient = createClientWithSASToken();
@@ -126,8 +126,8 @@ public class FileJavaDocCodeSamples {
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         FileProperties fileProperties = new FileProperties(contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5, contentDisposition, smbProperties, filePermission);
-        Response<FileInfo> response = fileClient.createWithResponse(1024, fileProperties,
+            contentMd5, contentDisposition, smbProperties);
+        Response<FileInfo> response = fileClient.createWithResponse(1024, fileProperties, filePermission,
             Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
         System.out.printf("Creating the file completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.fileClient.createWithResponse#long-fileproperties-map-context
@@ -419,7 +419,7 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#setProperties(long, FileProperties)}
+     * Generates a code sample for using {@link FileClient#setProperties(long, FileProperties, String)}
      */
     public void setHTTPHeaders() {
         FileClient fileClient = createClientWithSASToken();
@@ -433,25 +433,25 @@ public class FileJavaDocCodeSamples {
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         FileProperties fileProperties = new FileProperties(contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5, contentDisposition, smbProperties, filePermission);
-        fileClient.setProperties(1024, fileProperties);
+            contentMd5, contentDisposition, smbProperties);
+        fileClient.setProperties(1024, fileProperties, filePermission);
         System.out.printf("Setting the file httpHeaders completed.");
         // END: com.azure.storage.file.fileClient.setProperties#long-fileproperties
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#setProperties(long, FileProperties)} to clear httpHeaders and preserve SMB properties.
+     * Generates a code sample for using {@link FileClient#setProperties(long, FileProperties, String)} to clear httpHeaders and preserve SMB properties.
      */
     public void clearSyncHTTPHeaders() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.setProperties#long-fileproperties.clearHttpHeaderspreserveSMBProperties
-        FileInfo response = fileClient.setProperties(1024, null);
+        FileInfo response = fileClient.setProperties(1024, null, null);
         System.out.printf("Setting the file httpHeaders completed.");
         // END: com.azure.storage.file.fileClient.setProperties#long-fileproperties.clearHttpHeaderspreserveSMBProperties
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#setPropertiesWithResponse(long, FileProperties, Context)}
+     * Generates a code sample for using {@link FileClient#setPropertiesWithResponse(long, FileProperties, String, Context)}
      */
     public void setHttpHeadersWithResponse() {
         FileClient fileClient = createClientWithSASToken();
@@ -465,21 +465,22 @@ public class FileJavaDocCodeSamples {
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         FileProperties fileProperties = new FileProperties(contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5, contentDisposition, smbProperties, filePermission);
+            contentMd5, contentDisposition, smbProperties);
         Response<FileInfo> response = fileClient.setPropertiesWithResponse(1024, fileProperties,
-            new Context(key1, value1));
+            filePermission, new Context(key1, value1));
         System.out.printf("Setting the file httpHeaders completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.fileClient.setPropertiesWithResponse#long-fileproperties-Context
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#setPropertiesWithResponse(long, FileProperties, Context)}
+     * Generates a code sample for using {@link FileClient#setPropertiesWithResponse(long, FileProperties, String, Context)}
      * (long, FileHTTPHeaders)} to clear httpHeaders.
      */
     public void clearHTTPHeaders() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.setPropertiesWithResponse#long-fileproperties-Context.clearHttpHeaderspreserveSMBProperties
-        Response<FileInfo> response = fileClient.setPropertiesWithResponse(1024, null, new Context(key1, value1));
+        Response<FileInfo> response = fileClient.setPropertiesWithResponse(1024, null, null,
+            new Context(key1, value1));
         System.out.printf("Setting the file httpHeaders completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.fileClient.setPropertiesWithResponse#long-fileproperties-Context.clearHttpHeaderspreserveSMBProperties
     }

@@ -32,7 +32,6 @@ public final class FileProperties {
     private CopyStatusType copyStatus;
     private Boolean isServerEncrypted;
     private FileSmbProperties smbProperties;
-    private String filePermission;
 
     /**
      * Creates an empty instance of FileProperties
@@ -50,11 +49,9 @@ public final class FileProperties {
      * @param contentMD5 The MD5 hash of the file to check the message content integrity.
      * @param contentDisposition The Content-Disposition header that specifies how to process the response.
      * @param smbProperties The SMB properties of the file.
-     * @param filePermission The file permission of the file. smbProperties.filePermissionKey and filePermission must
-     *                       not both be set simultaneously
      */
     public FileProperties(final String contentType, final String contentEncoding, final String contentLanguage,
-        final String cacheControl, final byte[] contentMD5, final String contentDisposition, final FileSmbProperties smbProperties, final String filePermission) {
+        final String cacheControl, final byte[] contentMD5, final String contentDisposition, final FileSmbProperties smbProperties) {
         this.contentType = contentType;
         this.contentEncoding = contentEncoding;
         this.contentLanguage = contentLanguage;
@@ -62,7 +59,6 @@ public final class FileProperties {
         this.contentMD5 = ImplUtils.clone(contentMD5);
         this.contentDisposition = contentDisposition;
         this.smbProperties = smbProperties;
-        this.filePermission = filePermission;
     }
 
     /**
@@ -254,10 +250,5 @@ public final class FileProperties {
         return smbProperties;
     }
 
-    /**
-     * @return The file permission of the file.
-     */
-    public String filePermission() {
-        return filePermission;
-    }
+    // TODO: Add some setters for settable properties
 }

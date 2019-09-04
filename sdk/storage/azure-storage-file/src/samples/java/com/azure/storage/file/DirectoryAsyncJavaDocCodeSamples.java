@@ -152,7 +152,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#createFileWithResponse(String, long, FileProperties, Map)}
+     * Generates a code sample for using {@link DirectoryAsyncClient#createFileWithResponse(String, long, FileProperties, String, Map)}
      */
     public void createFileWithResponse() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
@@ -166,8 +166,8 @@ public class DirectoryAsyncJavaDocCodeSamples {
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         FileProperties fileProperties = new FileProperties(contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5, contentDisposition, smbProperties, filePermission);
-        directoryAsyncClient.createFileWithResponse("myFile", 1024, fileProperties,
+            contentMd5, contentDisposition, smbProperties);
+        directoryAsyncClient.createFileWithResponse("myFile", 1024, fileProperties, filePermission,
             Collections.singletonMap("directory", "metadata")).subscribe(
                 response ->  System.out.printf("Creating the file completed with status code %d", response.statusCode()),
                 error -> System.err.println(error.toString()),

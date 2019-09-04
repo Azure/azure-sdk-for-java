@@ -652,7 +652,7 @@ public class ShareAsyncClient {
      * </ul>
      */
     public Mono<FileAsyncClient> createFile(String fileName, long maxSize) {
-        return createFileWithResponse(fileName, maxSize, null, null).flatMap(FluxUtil::toMono);
+        return createFileWithResponse(fileName, maxSize, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -670,6 +670,7 @@ public class ShareAsyncClient {
      * @param fileName Name of the file.
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @param fileProperties The user settable file properties of the file.
+     * @param filePermission The file permission of the file.
      * @param metadata Optional name-value pairs associated with the file as metadata.
      * @return A response containing a {@link FileAsyncClient} to interact with the created file and the
      * status of its creation.
@@ -683,14 +684,15 @@ public class ShareAsyncClient {
      *     </li>
      * </ul>
      */
-    public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties, Map<String, String> metadata) {
-        return withContext(context -> createFileWithResponse(fileName, maxSize, fileProperties, metadata, context));
+    public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties,
+        String filePermission, Map<String, String> metadata) {
+        return withContext(context -> createFileWithResponse(fileName, maxSize, fileProperties, filePermission, metadata, context));
     }
 
     Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties,
-        Map<String, String> metadata, Context context) {
+        String filePermission, Map<String, String> metadata, Context context) {
         FileAsyncClient fileAsyncClient = getFileClient(fileName);
-        return postProcessResponse(fileAsyncClient.createWithResponse(maxSize, fileProperties, metadata, context))
+        return postProcessResponse(fileAsyncClient.createWithResponse(maxSize, fileProperties, filePermission, metadata, context))
             .map(response -> new SimpleResponse<>(response, fileAsyncClient));
     }
 

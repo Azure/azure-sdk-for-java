@@ -152,7 +152,7 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#createFileWithResponse(String, long, FileProperties, Map, Context)}
+     * Generates a code sample for using {@link DirectoryClient#createFileWithResponse(String, long, FileProperties, String, Map, Context)}
      */
     public void createFileMaxOverload() {
         DirectoryClient directoryClient = createClientWithSASToken();
@@ -166,9 +166,9 @@ public class DirectoryJavaDocCodeSamples {
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         FileProperties fileProperties = new FileProperties(contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5, contentDisposition, smbProperties, filePermission);
+            contentMd5, contentDisposition, smbProperties);
         Response<FileClient> response = directoryClient.createFileWithResponse("myFile", 1024,
-            fileProperties, Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
+            fileProperties, filePermission, Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
         System.out.println("Completed creating the file with status code: " + response.statusCode());
         // END: com.azure.storage.file.directoryClient.createFile#string-long-fileproperties-map-context
     }

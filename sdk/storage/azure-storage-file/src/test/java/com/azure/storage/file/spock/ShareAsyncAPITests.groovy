@@ -314,7 +314,7 @@ class ShareAsyncAPITests extends APISpec {
         given:
         primaryShareAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null))
+        StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null, null))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -323,10 +323,10 @@ class ShareAsyncAPITests extends APISpec {
     def "Create file file permission"() {
         given:
         primaryShareAsyncClient.create().block()
-        FileProperties properties = new FileProperties(null, null, null, null, null, null, null, filePermission)
+        FileProperties properties = new FileProperties()
 
         expect:
-        StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024,  properties, null))
+        StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024,  properties, filePermission, null))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -338,10 +338,10 @@ class ShareAsyncAPITests extends APISpec {
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
         // TODO: add file permission key
-        FileProperties properties = new FileProperties(null, null, null, null, null, null, smbProperties, null)
+        FileProperties properties = new FileProperties(null, null, null, null, null, null, smbProperties)
 
         expect:
-        StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, properties, null))
+        StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, properties, null, null))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -352,7 +352,7 @@ class ShareAsyncAPITests extends APISpec {
         given:
         primaryShareAsyncClient.create().block()
         when:
-        def createFileErrorVerifier = StepVerifier.create(primaryShareAsyncClient.createFileWithResponse(fileName, maxSize, null, null))
+        def createFileErrorVerifier = StepVerifier.create(primaryShareAsyncClient.createFileWithResponse(fileName, maxSize, null, null, null))
         then:
         createFileErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMsg)
@@ -370,9 +370,9 @@ class ShareAsyncAPITests extends APISpec {
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("txt")
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
-        FileProperties properties = new FileProperties("txt", null, null, null, null, null, smbProperties, filePermission)
+        FileProperties properties = new FileProperties("txt", null, null, null, null, null, smbProperties)
         expect:
-        StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, properties, testMetadata))
+        StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, properties, filePermission, testMetadata))
                 .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -384,9 +384,9 @@ class ShareAsyncAPITests extends APISpec {
         primaryShareAsyncClient.create().block()
 
         when:
-        FileProperties properties = new FileProperties("txt", null, null, null, fileContentMD5, null, null, null)
+        FileProperties properties = new FileProperties("txt", null, null, null, fileContentMD5, null, null)
 
-        def createFileVerifier = StepVerifier.create(primaryShareAsyncClient.createFileWithResponse(fileName, maxSize, properties, metadata))
+        def createFileVerifier = StepVerifier.create(primaryShareAsyncClient.createFileWithResponse(fileName, maxSize, properties, null, metadata))
 
         then:
         createFileVerifier.verifyErrorSatisfies {

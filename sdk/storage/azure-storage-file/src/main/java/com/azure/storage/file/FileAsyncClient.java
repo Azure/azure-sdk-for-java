@@ -150,7 +150,7 @@ public class FileAsyncClient {
      * an invalid resource name.
      */
     public Mono<FileInfo> create(long maxSize) {
-        return createWithResponse(maxSize, null, null).flatMap(FluxUtil::toMono);
+        return createWithResponse(maxSize, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -167,23 +167,26 @@ public class FileAsyncClient {
      *
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @param fileProperties The user settable file properties.
+     * @param filePermission The file permission of the file.
      * @param metadata Optional name-value pairs associated with the file as metadata.
      * @return A response containing the {@link FileInfo file info} and the status of creating the file.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
-    public Mono<Response<FileInfo>> createWithResponse(long maxSize, FileProperties fileProperties, Map<String, String> metadata) {
-        return withContext(context -> createWithResponse(maxSize, fileProperties, metadata, context));
+    public Mono<Response<FileInfo>> createWithResponse(long maxSize, FileProperties fileProperties, String filePermission,
+        Map<String, String> metadata) {
+        return withContext(context -> createWithResponse(maxSize, fileProperties, filePermission, metadata, context));
     }
 
-    Mono<Response<FileInfo>> createWithResponse(long maxSize, FileProperties fileProperties, Map<String, String> metadata, Context context) {
+    Mono<Response<FileInfo>> createWithResponse(long maxSize, FileProperties fileProperties, String filePermission,
+        Map<String, String> metadata, Context context) {
         FileProperties properties = fileProperties == null ? new FileProperties() : fileProperties;
         FileSmbProperties smbProperties = properties.smbProperties() == null ? new FileSmbProperties() : properties.smbProperties();
 
         // Checks that file permission and file permission key are valid
-        filePermissionAndKeyHelper(properties.filePermission(), smbProperties.filePermissionKey());
+        filePermissionAndKeyHelper(filePermission, smbProperties.filePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
-        String filePermission = smbProperties.filePermission(properties.filePermission(), FileConstants.FILE_PERMISSION_INHERIT);
+        filePermission = smbProperties.filePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
         String filePermissionKey = smbProperties.filePermissionKey();
 
         String fileAttributes = smbProperties.ntfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
@@ -543,11 +546,12 @@ public class FileAsyncClient {
      *
      * @param newFileSize New file size of the file
      * @param fileProperties The user-settable file properties for a file
+     * @param filePermission The file permission of the file
      * @return The {@link FileInfo file info}
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public Mono<FileInfo> setProperties(long newFileSize, FileProperties fileProperties) {
-        return setPropertiesWithResponse(newFileSize, fileProperties).flatMap(FluxUtil::toMono);
+    public Mono<FileInfo> setProperties(long newFileSize, FileProperties fileProperties, String filePermission) {
+        return setPropertiesWithResponse(newFileSize, fileProperties, filePermission).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -574,19 +578,21 @@ public class FileAsyncClient {
      * @return Response containing the {@link FileInfo file info} and response status code
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, FileProperties fileProperties) {
-        return withContext(context -> setPropertiesWithResponse(newFileSize, fileProperties, context));
+    public Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, FileProperties fileProperties,
+        String filePermission) {
+        return withContext(context -> setPropertiesWithResponse(newFileSize, fileProperties, filePermission, context));
     }
 
-    Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, FileProperties fileProperties, Context context) {
+    Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, FileProperties fileProperties,
+        String filePermission, Context context) {
         FileProperties properties = fileProperties == null ? new FileProperties() : fileProperties;
         FileSmbProperties smbProperties = properties.smbProperties() == null ? new FileSmbProperties() : properties.smbProperties();
 
         // Checks that file permission and file permission key are valid
-        filePermissionAndKeyHelper(properties.filePermission(), smbProperties.filePermissionKey());
+        filePermissionAndKeyHelper(filePermission, smbProperties.filePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
-        String filePermission = smbProperties.filePermission(properties.filePermission(), FileConstants.PRESERVE);
+        filePermission = smbProperties.filePermission(filePermission, FileConstants.PRESERVE);
         String filePermissionKey = smbProperties.filePermissionKey();
 
         String fileAttributes = smbProperties.ntfsFileAttributes(FileConstants.PRESERVE);

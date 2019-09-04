@@ -631,7 +631,7 @@ public class DirectoryAsyncClient {
      * @throws StorageException If the file has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
     public Mono<FileAsyncClient> createFile(String fileName, long maxSize) {
-        return createFileWithResponse(fileName, maxSize, null, null).flatMap(FluxUtil::toMono);
+        return createFileWithResponse(fileName, maxSize, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -649,17 +649,20 @@ public class DirectoryAsyncClient {
      * @param fileName Name of the file
      * @param maxSize Max size of the file
      * @param fileProperties The user settable file properties of the file.
+     * @param filePermission The file permission of the file.
      * @param metadata Optional name-value pairs associated with the file as metadata.
      * @return A response containing the directory info and the status of creating the directory.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
-    public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties, Map<String, String> metadata) {
-        return withContext(context -> createFileWithResponse(fileName, maxSize, fileProperties, metadata, context));
+    public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize,
+        FileProperties fileProperties, String filePermission, Map<String, String> metadata) {
+        return withContext(context -> createFileWithResponse(fileName, maxSize, fileProperties, filePermission, metadata, context));
     }
 
-    Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties, Map<String, String> metadata, Context context) {
+    Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties,
+        String filePermission, Map<String, String> metadata, Context context) {
         FileAsyncClient fileAsyncClient = getFileClient(fileName);
-        return postProcessResponse(fileAsyncClient.createWithResponse(maxSize, fileProperties, metadata, context))
+        return postProcessResponse(fileAsyncClient.createWithResponse(maxSize, fileProperties, filePermission, metadata, context))
             .map(response -> new SimpleResponse<>(response, fileAsyncClient));
     }
 

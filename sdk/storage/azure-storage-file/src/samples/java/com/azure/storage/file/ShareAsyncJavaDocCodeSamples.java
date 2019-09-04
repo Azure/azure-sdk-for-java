@@ -211,7 +211,7 @@ public class ShareAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#createFileWithResponse(String, long, FileProperties, Map)}
+     * Generates a code sample for using {@link ShareAsyncClient#createFileWithResponse(String, long, FileProperties, String, Map)}
      */
     public void createFileWithResponse() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
@@ -225,8 +225,8 @@ public class ShareAsyncJavaDocCodeSamples {
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         FileProperties fileProperties = new FileProperties(contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5, contentDisposition, smbProperties, filePermission);
-        shareAsyncClient.createFileWithResponse("myfile", 1024, fileProperties,
+            contentMd5, contentDisposition, smbProperties);
+        shareAsyncClient.createFileWithResponse("myfile", 1024, fileProperties, filePermission,
             Collections.singletonMap("directory", "metadata"))
             .subscribe(response -> System.out.printf("Creating the file completed with status code %d",
                 response.statusCode()));

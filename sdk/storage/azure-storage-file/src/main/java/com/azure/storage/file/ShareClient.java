@@ -528,7 +528,7 @@ public class ShareClient {
      * </ul>
      */
     public FileClient createFile(String fileName, long maxSize) {
-        return createFileWithResponse(fileName, maxSize, null, null, Context.NONE).value();
+        return createFileWithResponse(fileName, maxSize, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -546,6 +546,7 @@ public class ShareClient {
      * @param fileName Name of the file.
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @param fileProperties The user settable file properties of the file.
+     * @param filePermission The file permission of the file
      * @param metadata Optional name-value pairs associated with the file as metadata.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing a {@link FileClient} to interact with the created file and the
@@ -560,9 +561,10 @@ public class ShareClient {
      *     </li>
      * </ul>
      */
-    public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties, Map<String, String> metadata, Context context) {
+    public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties,
+        String filePermission, Map<String, String> metadata, Context context) {
         FileClient fileClient = getFileClient(fileName);
-        return new SimpleResponse<>(fileClient.createWithResponse(maxSize, fileProperties, metadata, context), fileClient);
+        return new SimpleResponse<>(fileClient.createWithResponse(maxSize, fileProperties, filePermission, metadata, context), fileClient);
     }
 
     /**

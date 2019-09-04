@@ -81,7 +81,7 @@ public class FileClient {
      * @throws StorageException If the file has already existed, the parent directory does not exist or fileName is an invalid resource name.
      */
     public FileInfo create(long maxSize) {
-        return createWithResponse(maxSize, null, null, Context.NONE).value();
+        return createWithResponse(maxSize, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -98,13 +98,15 @@ public class FileClient {
      *
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @param fileProperties The user settable file properties of the file.
+     * @param filePermission The file permission of the file.
      * @param metadata Optional name-value pairs associated with the file as metadata.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileInfo file info} and the status of creating the file.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
-    public Response<FileInfo> createWithResponse(long maxSize, FileProperties fileProperties, Map<String, String> metadata, Context context) {
-        return fileAsyncClient.createWithResponse(maxSize, fileProperties, metadata, context).block();
+    public Response<FileInfo> createWithResponse(long maxSize, FileProperties fileProperties, String filePermission,
+        Map<String, String> metadata, Context context) {
+        return fileAsyncClient.createWithResponse(maxSize, fileProperties, filePermission, metadata, context).block();
     }
 
     /**
@@ -368,11 +370,12 @@ public class FileClient {
      *
      * @param newFileSize New file size of the file
      * @param fileProperties The user-settable file properties for a file
+     * @param filePermission The file permission of the file
      * @return The {@link FileInfo file info}
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public FileInfo setProperties(long newFileSize, FileProperties fileProperties) {
-        return setPropertiesWithResponse(newFileSize, fileProperties, Context.NONE).value();
+    public FileInfo setProperties(long newFileSize, FileProperties fileProperties, String filePermission) {
+        return setPropertiesWithResponse(newFileSize, fileProperties, filePermission, Context.NONE).value();
     }
 
     /**
@@ -395,12 +398,14 @@ public class FileClient {
      *
      * @param newFileSize New file size of the file
      * @param fileProperties The user-settable file properties for a file
+     * @param filePermission The file permission of the file
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Response containing the {@link FileInfo file info} with headers and status code
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public Response<FileInfo> setPropertiesWithResponse(long newFileSize, FileProperties fileProperties, Context context) {
-        return fileAsyncClient.setPropertiesWithResponse(newFileSize, fileProperties, context).block();
+    public Response<FileInfo> setPropertiesWithResponse(long newFileSize, FileProperties fileProperties,
+        String filePermission, Context context) {
+        return fileAsyncClient.setPropertiesWithResponse(newFileSize, fileProperties, filePermission, context).block();
     }
 
     /**
