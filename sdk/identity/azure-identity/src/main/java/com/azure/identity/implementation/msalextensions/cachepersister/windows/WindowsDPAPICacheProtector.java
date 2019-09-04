@@ -46,9 +46,12 @@ public class WindowsDPAPICacheProtector extends CacheProtectorBase {
 
         byte[] encryptedBytes = new byte[(int) cacheFile.length()];
 
-        FileInputStream stream = new FileInputStream(cacheFile);
-        stream.read(encryptedBytes);
-        stream.close();
+        try (FileInputStream stream = new FileInputStream(cacheFile)) {
+            int read = 0;
+            while (read != encryptedBytes.length) {
+                read += stream.read(encryptedBytes);
+            }
+        }
 
         byte[] decryptedBytes = Crypt32Util.cryptUnprotectData(encryptedBytes);
         return decryptedBytes;
@@ -64,9 +67,9 @@ public class WindowsDPAPICacheProtector extends CacheProtectorBase {
 
         byte[] encryptedBytes = Crypt32Util.cryptProtectData(data);
 
-        FileOutputStream stream = new FileOutputStream(cacheFile);
-        stream.write(encryptedBytes);
-        stream.close();
+        try (FileOutputStream stream = new FileOutputStream(cacheFile)) {
+            stream.write(encryptedBytes);
+        }
     }
 
     /**

@@ -1,11 +1,21 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.secrets;
 
 import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
 
+/**
+ * Sample showing how to authenticate to key vault with a shared token cache credential.
+ */
 public class PersistentTokenCacheDemo {
 
+    /**
+     * Authenticates from shared token cache and gets a secret.
+     * @param args Unused. Arguments to the program.
+     */
     public static void main(String[] args) {
 
         // Wrote to AZURE_USERNAME env variable
@@ -17,13 +27,11 @@ public class PersistentTokenCacheDemo {
             .buildClient();
 
         // Try to get a secret! Only works if you are logged in
-        try{
+        try {
             System.out.println("\nWhat is the super secret secret?\n\n");
             Secret secret = client.getSecret("the-secret");
             System.out.println("Secret was found: " + secret.value());
-        }
-
-        catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("Sad life, we shall never know :( ");
         }
     }

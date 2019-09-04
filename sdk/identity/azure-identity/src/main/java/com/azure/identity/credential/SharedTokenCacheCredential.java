@@ -34,7 +34,6 @@ import java.util.concurrent.CompletableFuture;
 public class SharedTokenCacheCredential implements TokenCredential {
     private final String username;
     private final String clientID;
-    private final IdentityClientOptions identityClientOptions;
     private final Configuration configuration;
 
     private final PublicClientApplication pubClient;
@@ -60,7 +59,6 @@ public class SharedTokenCacheCredential implements TokenCredential {
         }
 
         this.clientID = clientID;
-        this.identityClientOptions = identityClientOptions;
 
         PersistentTokenCacheAccessAspect accessAspect;
 
