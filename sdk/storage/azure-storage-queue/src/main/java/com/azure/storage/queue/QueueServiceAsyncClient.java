@@ -32,6 +32,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -194,7 +195,7 @@ public final class QueueServiceAsyncClient {
      * @return {@link QueueItem Queues} in the storage account
      */
     public PagedFlux<QueueItem> listQueues() {
-        return listQueues(null, null);
+        return listQueues(null, null, null);
     }
 
     /**
@@ -216,7 +217,7 @@ public final class QueueServiceAsyncClient {
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      */
     public PagedFlux<QueueItem> listQueues(QueuesSegmentOptions options) {
-        return listQueues(null, options);
+        return listQueues(null, options, null);
     }
 
     /**
@@ -227,9 +228,10 @@ public final class QueueServiceAsyncClient {
      *
      * @param marker Starting point to list the queues
      * @param options Options for listing queues
+     * @param timeout An optional timeout to be applied to the network asynchronous operations.
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      */
-    PagedFlux<QueueItem> listQueues(String marker, QueuesSegmentOptions options) {
+    PagedFlux<QueueItem> listQueues(String marker, QueuesSegmentOptions options, Duration timeout) {
         final String prefix = (options != null) ? options.prefix() : null;
         final Integer maxResults = (options != null) ? options.maxResults() : null;
         final List<ListQueuesIncludeType> include = new ArrayList<>();
@@ -241,15 +243,15 @@ public final class QueueServiceAsyncClient {
         }
 
         Function<String, Mono<PagedResponse<QueueItem>>> retriever =
-            nextMarker -> postProcessResponse(this.client.services()
+            nextMarker -> postProcessResponse(Utility.applyOptionalTimeout(this.client.services()
                 .listQueuesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include,
-                    null, null, Context.NONE))
+                    null, null, Context.NONE), timeout)
                 .map(response -> new PagedResponseBase<>(response.request(),
                     response.statusCode(),
                     response.headers(),
                     response.value().queueItems(),
                     response.value().nextMarker(),
-                    response.deserializedHeaders()));
+                    response.deserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(marker), retriever);
     }

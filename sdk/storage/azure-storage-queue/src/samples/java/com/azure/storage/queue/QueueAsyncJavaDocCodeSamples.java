@@ -23,7 +23,7 @@ import java.util.Map;
  */
 
 public class QueueAsyncJavaDocCodeSamples {
-    
+
     private QueueAsyncClient client = createAsyncClientWithSASToken();
 
     /**
@@ -192,11 +192,13 @@ public class QueueAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueAsyncClient#dequeueMessages(Integer, Duration)}
+     * Generates a code sample for using {@link QueueAsyncClient#dequeueMessagesWithOptionalTimeout(Integer, Duration,
+     * Duration)}
      */
     public void dequeueMessageAsyncMaxOverload() {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer-duration
-        client.dequeueMessages(5, Duration.ofSeconds(60)).subscribe(
+        client.dequeueMessagesWithOptionalTimeout(5, Duration.ofSeconds(60), Duration.ofSeconds(1))
+            .subscribe(
             dequeuedMessage -> System.out.println("The message got from dequeue operation: "
                 + dequeuedMessage.messageText()),
             error -> System.err.print(error.toString()),
@@ -220,11 +222,11 @@ public class QueueAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueAsyncClient#peekMessages(Integer)}
+     * Generates a code sample for using {@link QueueAsyncClient#peekMessages(Integer, Duration)}
      */
     public void peekMessageAsyncMaxOverload() {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.peekMessages#integer
-        client.peekMessages(5).subscribe(
+        client.peekMessages(5, Duration.ofSeconds(1)).subscribe(
             peekMessage -> System.out.printf("Peeked message %s has been dequeued %d times",
                 peekMessage.messageId(), peekMessage.dequeueCount()),
             error -> System.err.print(error.toString()),
@@ -407,7 +409,7 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#getAccessPolicy()}
      */
     public void getAccessPolicyAsync() {
-        
+
         // BEGIN: com.azure.storage.queue.queueAsyncClient.getAccessPolicy
         client.getAccessPolicy()
             .subscribe(result -> System.out.printf("Access policy %s allows these permissions: %s",

@@ -505,7 +505,7 @@ public final class QueueAsyncClient {
      * @throws StorageException If the queue doesn't exist
      */
     public PagedFlux<DequeuedMessage> dequeueMessages() {
-        return dequeueMessages(1, null);
+        return dequeueMessagesWithOptionalTimeout(1, null, null);
     }
 
     /**
@@ -529,7 +529,7 @@ public final class QueueAsyncClient {
      * @throws StorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
     public PagedFlux<DequeuedMessage> dequeueMessages(Integer maxMessages) {
-        return dequeueMessages(maxMessages, null);
+        return dequeueMessagesWithOptionalTimeout(maxMessages, null, null);
     }
 
     /**
@@ -548,26 +548,28 @@ public final class QueueAsyncClient {
      * @param maxMessages Optional. Maximum number of messages to get, if there are less messages exist in the queue than requested
      * all the messages will be returned. If left empty only 1 message will be retrieved, the allowed range is 1 to 32
      * messages.
-     * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue in seconds.
+     * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue.
      * If left empty the dequeued messages will be invisible for 30 seconds. The timeout must be between 1 second and 7 days.
+     * @param timeout An optional timeout to be applied to the network asynchronous operations.
      * @return Up to {@code maxMessages} {@link DequeuedMessage DequeuedMessages} from the queue. Each DeqeuedMessage contains
      * {@link DequeuedMessage#messageId() messageId} and {@link DequeuedMessage#popReceipt() popReceipt} used to interact
      * with the message and other metadata about the message.
      * @throws StorageException If the queue doesn't exist or {@code maxMessages} or {@code visibilityTimeout} is
      * outside of the allowed bounds
      */
-    public PagedFlux<DequeuedMessage> dequeueMessages(Integer maxMessages, Duration visibilityTimeout) {
+    public PagedFlux<DequeuedMessage> dequeueMessagesWithOptionalTimeout(Integer maxMessages, Duration visibilityTimeout,
+                                                                         Duration timeout) {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         Function<String, Mono<PagedResponse<DequeuedMessage>>> retriever =
-            marker -> postProcessResponse(this.client.messages()
+            marker -> postProcessResponse(Utility.applyOptionalTimeout(this.client.messages()
                 .dequeueWithRestResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds,
-                    null, null, Context.NONE))
+                    null, null, Context.NONE), timeout)
                 .map(response -> new PagedResponseBase<>(response.request(),
                     response.statusCode(),
                     response.headers(),
                     response.value(),
                     null,
-                    response.deserializedHeaders()));
+                    response.deserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
@@ -590,7 +592,7 @@ public final class QueueAsyncClient {
      * @return A {@link PeekedMessage} that contains metadata about the message.
      */
     public PagedFlux<PeekedMessage> peekMessages() {
-        return peekMessages(null);
+        return peekMessages(null, null);
     }
 
     /**
@@ -611,20 +613,21 @@ public final class QueueAsyncClient {
      * @param maxMessages Optional. Maximum number of messages to peek, if there are less messages exist in the queue than requested
      * all the messages will be peeked. If left empty only 1 message will be peeked, the allowed range is 1 to 32
      * messages.
+     * @param timeout An optional timeout to be applied to the network asynchronous operations.
      * @return Up to {@code maxMessages} {@link PeekedMessage PeekedMessages} from the queue. Each PeekedMessage contains
      * metadata about the message.
      * @throws StorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
-    public PagedFlux<PeekedMessage> peekMessages(Integer maxMessages) {
+    public PagedFlux<PeekedMessage> peekMessages(Integer maxMessages, Duration timeout) {
         Function<String, Mono<PagedResponse<PeekedMessage>>> retriever =
-            marker -> postProcessResponse(this.client.messages()
-                .peekWithRestResponseAsync(queueName, maxMessages, null, null, Context.NONE))
+            marker -> postProcessResponse(Utility.applyOptionalTimeout(this.client.messages()
+                .peekWithRestResponseAsync(queueName, maxMessages, null, null, Context.NONE), timeout)
             .map(response -> new PagedResponseBase<>(response.request(),
                 response.statusCode(),
                 response.headers(),
                 response.value(),
                 null,
-                response.deserializedHeaders()));
+                response.deserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
