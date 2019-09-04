@@ -11,9 +11,11 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.util.logging.ClientLogger;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoSink;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,11 +31,11 @@ import java.util.function.Function;
 class OkHttpAsyncHttpClient implements HttpClient {
     private final ClientLogger logger = new ClientLogger(OkHttpAsyncHttpClient.class);
     private final okhttp3.OkHttpClient httpClient;
-    //
-    private final static Mono<okio.ByteString> EMPTY_BYTE_STRING_MONO = Mono.just(okio.ByteString.EMPTY);
-    private final static okhttp3.MediaType MEDIA_TYPE_OCTET_STREAM = okhttp3.MediaType.parse("application/octet-stream");
 
-    public OkHttpAsyncHttpClient(okhttp3.OkHttpClient httpClient) {
+    private static final Mono<okio.ByteString> EMPTY_BYTE_STRING_MONO = Mono.just(okio.ByteString.EMPTY);
+    private static final okhttp3.MediaType MEDIA_TYPE_OCTET_STREAM = okhttp3.MediaType.parse("application/octet-stream");
+
+    OkHttpAsyncHttpClient(okhttp3.OkHttpClient httpClient) {
         this.httpClient = httpClient;
     }
 
@@ -53,19 +55,8 @@ class OkHttpAsyncHttpClient implements HttpClient {
             //      but block on the thread backing flux. This ignore any subscribeOn applied to send(r)
             //
             toOkHttpRequest(request).subscribe(okHttpRequest -> {
-                okhttp3.Call call = httpClient.newCall(okHttpRequest);
-                call.enqueue(new okhttp3.Callback() {
-                    @Override
-                    public void onFailure(okhttp3.Call call, IOException e) {
-                        sink.error(e);
-                    }
-
-                    @Override
-                    public void onResponse(okhttp3.Call call, okhttp3.Response response) {
-                        sink.success(new OkHttpResponse(response, request));
-                    }
-                });
-            }, throwable -> sink.error(throwable));
+                httpClient.newCall(okHttpRequest).enqueue(new OkHttpCallback(sink, request));
+            }, sink::error);
         }));
     }
 
@@ -77,25 +68,25 @@ class OkHttpAsyncHttpClient implements HttpClient {
      */
     private static Mono<okhttp3.Request> toOkHttpRequest(HttpRequest request) {
         return Mono.just(new okhttp3.Request.Builder())
-                .map(rb -> {
-                    rb.url(request.url());
-                    if (request.headers() != null) {
-                        return rb.headers(okhttp3.Headers.of(request.headers().toMap()));
-                    } else {
-                        return rb.headers(okhttp3.Headers.of(new HashMap<>()));
-                    }
-                })
-                .flatMap((Function<Request.Builder, Mono<Request.Builder>>) rb -> {
-                    if (request.httpMethod() == HttpMethod.GET) {
-                        return Mono.just(rb.get());
-                    } else if (request.httpMethod() == HttpMethod.HEAD) {
-                        return Mono.just(rb.head());
-                    } else {
-                        return toOkHttpRequestBody(request.body(), request.headers())
-                                .map(requestBody -> rb.method(request.httpMethod().toString(), requestBody));
-                    }
-                })
-                .map(rb -> rb.build());
+            .map(rb -> {
+                rb.url(request.url());
+                if (request.headers() != null) {
+                    return rb.headers(okhttp3.Headers.of(request.headers().toMap()));
+                } else {
+                    return rb.headers(okhttp3.Headers.of(new HashMap<>()));
+                }
+            })
+            .flatMap((Function<Request.Builder, Mono<Request.Builder>>) rb -> {
+                if (request.httpMethod() == HttpMethod.GET) {
+                    return Mono.just(rb.get());
+                } else if (request.httpMethod() == HttpMethod.HEAD) {
+                    return Mono.just(rb.head());
+                } else {
+                    return toOkHttpRequestBody(request.body(), request.headers())
+                            .map(requestBody -> rb.method(request.httpMethod().toString(), requestBody));
+                }
+            })
+            .map(rb -> rb.build());
     }
 
     /**
@@ -109,7 +100,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
         Mono<okio.ByteString> bsMono = bbFlux == null
                 ? EMPTY_BYTE_STRING_MONO
                 : aggregate(bbFlux);
-        //
+
         return bsMono.map(byteString1 -> {
             String contentType = headers.value("Content-Type");
             if (contentType == null) {
@@ -135,17 +126,37 @@ class OkHttpAsyncHttpClient implements HttpClient {
     private static Mono<okio.ByteString> aggregate(Flux<ByteBuffer> bbFlux) {
         Objects.requireNonNull(bbFlux);
         return Mono.using(okio.Buffer::new,
-                buffer -> bbFlux.reduce(buffer, (b, byteBuffer) -> {
-                    try {
-                        b.write(byteBuffer);
-                        return b;
-                    } catch (IOException ioe) {
-                        throw Exceptions.propagate(ioe);
-                    }
-                })
-                .map(b -> okio.ByteString.of(b.readByteArray())),
-                okio.Buffer::clear)
+            buffer -> bbFlux.reduce(buffer, (b, byteBuffer) -> {
+                try {
+                    b.write(byteBuffer);
+                    return b;
+                } catch (IOException ioe) {
+                    throw Exceptions.propagate(ioe);
+                }
+            })
+            .map(b -> okio.ByteString.of(b.readByteArray())),
+            okio.Buffer::clear)
             .switchIfEmpty(EMPTY_BYTE_STRING_MONO);
+    }
+
+    private static class OkHttpCallback implements okhttp3.Callback {
+        private final MonoSink<HttpResponse> sink;
+        private final HttpRequest request;
+
+        OkHttpCallback(MonoSink<HttpResponse> sink, HttpRequest request) {
+            this.sink = sink;
+            this.request = request;
+        }
+
+        @Override
+        public void onFailure(okhttp3.Call call, IOException e) {
+            sink.error(e);
+        }
+
+        @Override
+        public void onResponse(okhttp3.Call call, okhttp3.Response response) {
+            sink.success(new OkHttpResponse(response, request));
+        }
     }
 
     /**
@@ -154,9 +165,11 @@ class OkHttpAsyncHttpClient implements HttpClient {
     private static class OkHttpResponse extends HttpResponse {
         private final okhttp3.Response inner;
         private final HttpHeaders headers;
-        private final static int BYTE_BUFFER_CHUNK_SIZE = 1024;
+        private static final int BYTE_BUFFER_CHUNK_SIZE = 1024;
 
-        public OkHttpResponse(okhttp3.Response inner, HttpRequest request) {
+        OkHttpResponse(okhttp3.Response inner, HttpRequest request) {
+            Objects.requireNonNull(inner);
+            Objects.requireNonNull(request);
             this.inner = inner;
             this.headers = fromOkHttpHeaders(this.inner.headers());
             super.request(request);
@@ -190,15 +203,15 @@ class OkHttpAsyncHttpClient implements HttpClient {
                 return Mono.empty();
             } else {
                 return Mono.using(() -> this.responseBody(),
-                        rb -> {
-                            try {
-                                byte[] content = rb.bytes();
-                                return content.length == 0 ? Mono.empty() : Mono.just(content);
-                            } catch (IOException ioe) {
-                                throw Exceptions.propagate(ioe);
-                            }
-                        },
-                        rb -> rb.close());
+                    rb -> {
+                        try {
+                            byte[] content = rb.bytes();
+                            return content.length == 0 ? Mono.empty() : Mono.just(content);
+                        } catch (IOException ioe) {
+                            throw Exceptions.propagate(ioe);
+                        }
+                    },
+                    rb -> rb.close());
             }
         }
 
@@ -207,16 +220,16 @@ class OkHttpAsyncHttpClient implements HttpClient {
             if (this.responseBody() == null) {
                 return Mono.empty();
             } else {
-                return Mono.using(() -> this.responseBody(),
-                        rb -> {
-                            try {
-                                String content = rb.string();
-                                return content.length() == 0 ? Mono.empty() : Mono.just(content);
-                            } catch (IOException ioe) {
-                                throw Exceptions.propagate(ioe);
-                            }
-                        },
-                        rb -> rb.close());
+                return Mono.using(this::responseBody,
+                    rb -> {
+                        try {
+                            String content = rb.string();
+                            return content.isEmpty() ? Mono.empty() : Mono.just(content);
+                        } catch (IOException ioe) {
+                            throw Exceptions.propagate(ioe);
+                        }
+                    },
+                    ResponseBody::close);
             }
         }
 
@@ -228,8 +241,9 @@ class OkHttpAsyncHttpClient implements HttpClient {
 
         @Override
         public void close() {
-            if (this.inner.body() != null) {
-                this.inner.body().close();
+            final ResponseBody body = this.inner.body();
+            if (body != null) {
+                body.close();
             }
         }
 
@@ -261,34 +275,34 @@ class OkHttpAsyncHttpClient implements HttpClient {
         private static Flux<ByteBuffer> toFluxByteBuffer(InputStream inputStream) {
             Pair pair = new Pair();
             return Flux.using(() -> inputStream,
-                    // Read input stream chunk by chunk and emit each as java.nio.ByteBuffer
-                    is -> Flux.just(true)
-                            .repeat()
-                            .map(ignore -> {
-                                byte[] buffer = new byte[BYTE_BUFFER_CHUNK_SIZE];
-                                try {
-                                    int numBytes = is.read(buffer);
-                                    if (numBytes > 0) {
-                                        return pair.buffer(ByteBuffer.wrap(buffer, 0, numBytes)).readBytes(numBytes);
-                                    } else {
-                                        return pair.buffer(null).readBytes(numBytes);
-                                    }
-                                } catch (IOException ioe) {
-                                    throw Exceptions.propagate(ioe);
-                                }
-                            })
-                            .takeUntil(p -> p.readBytes() == -1)
-                            .filter(p -> p.readBytes() > 0)
-                            .map(p -> p.buffer()),
-                    // Resource cleanup
-                    // https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
-                    is -> {
+                // Read input stream chunk by chunk and emit each as java.nio.ByteBuffer
+                is -> Flux.just(true)
+                    .repeat()
+                    .map(ignore -> {
+                        byte[] buffer = new byte[BYTE_BUFFER_CHUNK_SIZE];
                         try {
-                            is.close();
+                            int numBytes = is.read(buffer);
+                            if (numBytes > 0) {
+                                return pair.buffer(ByteBuffer.wrap(buffer, 0, numBytes)).readBytes(numBytes);
+                            } else {
+                                return pair.buffer(null).readBytes(numBytes);
+                            }
                         } catch (IOException ioe) {
                             throw Exceptions.propagate(ioe);
                         }
+                    })
+                    .takeUntil(p -> p.readBytes() == -1)
+                    .filter(p -> p.readBytes() > 0)
+                    .map(p -> p.buffer()),
+                // Resource cleanup
+                // https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
+                is -> {
+                    try {
+                        is.close();
+                    } catch (IOException ioe) {
+                        throw Exceptions.propagate(ioe);
                     }
+                }
             );
         }
 
