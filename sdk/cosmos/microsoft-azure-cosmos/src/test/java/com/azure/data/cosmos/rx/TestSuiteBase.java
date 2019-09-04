@@ -90,7 +90,7 @@ public class TestSuiteBase extends CosmosClientTest {
     protected static final int TIMEOUT = 40000;
     protected static final int FEED_TIMEOUT = 40000;
     protected static final int SETUP_TIMEOUT = 60000;
-    protected static final int SHUTDOWN_TIMEOUT = 12000;
+    protected static final int SHUTDOWN_TIMEOUT = 24000;
 
     protected static final int SUITE_SETUP_TIMEOUT = 120000;
     protected static final int SUITE_SHUTDOWN_TIMEOUT = 60000;
