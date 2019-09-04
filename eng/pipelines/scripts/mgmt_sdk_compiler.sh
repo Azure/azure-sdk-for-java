@@ -44,7 +44,7 @@ mvn --version
 #for some reason the workingdirectory dos not seem to work...
 #fix the following cd cmd once we figure out how to get it to work
 #change to the root of the sources repo
-#cd ../../..
+cd ../../..
 
 for i in `ls -d */*/v20* sdk/*/azure-mgmt-*/v20* | grep -v "node_modules/*/*"`; 
 do 
