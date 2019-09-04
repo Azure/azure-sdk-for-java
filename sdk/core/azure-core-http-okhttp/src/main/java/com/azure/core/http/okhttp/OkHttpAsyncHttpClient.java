@@ -33,7 +33,8 @@ class OkHttpAsyncHttpClient implements HttpClient {
     private final okhttp3.OkHttpClient httpClient;
 
     private static final Mono<okio.ByteString> EMPTY_BYTE_STRING_MONO = Mono.just(okio.ByteString.EMPTY);
-    private static final okhttp3.MediaType MEDIA_TYPE_OCTET_STREAM = okhttp3.MediaType.parse("application/octet-stream");
+    private static final okhttp3.MediaType MEDIA_TYPE_OCTET_STREAM =
+        okhttp3.MediaType.parse("application/octet-stream");
 
     OkHttpAsyncHttpClient(okhttp3.OkHttpClient httpClient) {
         this.httpClient = httpClient;

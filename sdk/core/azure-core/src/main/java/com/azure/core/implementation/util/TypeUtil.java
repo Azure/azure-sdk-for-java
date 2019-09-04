@@ -84,7 +84,8 @@ public final class TypeUtil {
                  * with actual type arguments from the parameterized type
                  */
                 Type[] superTypeArguments = getTypeArguments(genericSuperClass);
-                List<Type> typeParameters = Arrays.asList(((Class<?>) parameterizedType.getRawType()).getTypeParameters());
+                List<Type> typeParameters =
+                    Arrays.asList(((Class<?>) parameterizedType.getRawType()).getTypeParameters());
                 int j = 0;
                 for (int i = 0; i != superTypeArguments.length; i++) {
                     if (typeParameters.contains(superTypeArguments[i])) {
@@ -132,7 +133,7 @@ public final class TypeUtil {
 
     /**
      * Determines if a type is the same or a subtype for another type.
-     * 
+     *
      * @param subType the supposed sub type
      * @param superType the supposed super type
      * @return true if the first type is the same or a subtype for the second type
@@ -171,7 +172,8 @@ public final class TypeUtil {
     }
 
     /**
-     * Returns whether the rest response expects to have any body (by checking if the body parameter type is set to Void,
+     * Returns whether the rest response expects to have any body (by checking if the body parameter type is set to
+     * Void,
      * in which case no body is expected).
      *
      * @param restResponseReturnType The RestResponse subtype containing the type arguments we are inspecting.
