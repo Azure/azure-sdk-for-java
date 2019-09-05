@@ -390,9 +390,6 @@ class ShareAPITests extends APISpec {
             primaryShareClient.createPermissionWithResponse(filePermission, null), 201)
     }
 
-
-    // TODO : Get Permission Auto-genned code broken does not accept share name
-    @Ignore
     def "Create and get permission"() {
         given:
         primaryShareClient.create()
@@ -416,9 +413,6 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.FILE_INVALID_PERMISSION)
     }
 
-
-    // TODO : Get Permission Auto-genned code broken does not accept share name
-    @Ignore
     def "Get permission error"() {
         given:
         primaryShareClient.create()

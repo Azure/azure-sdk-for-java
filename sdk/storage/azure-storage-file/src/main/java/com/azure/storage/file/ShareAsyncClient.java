@@ -839,7 +839,7 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<String>> getPermissionWithResponse(String filePermissionKey, Context context) {
-        return postProcessResponse(azureFileStorageClient.shares().getPermissionWithRestResponseAsync(filePermissionKey, null, context))
+        return postProcessResponse(azureFileStorageClient.shares().getPermissionWithRestResponseAsync(shareName, filePermissionKey, null, context))
             .map(response -> new SimpleResponse<>(response, response.value().permission()));
     }
 

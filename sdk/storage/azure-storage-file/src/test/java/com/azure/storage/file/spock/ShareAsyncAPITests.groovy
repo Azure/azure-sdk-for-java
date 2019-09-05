@@ -459,8 +459,6 @@ class ShareAsyncAPITests extends APISpec {
             }.verifyComplete()
     }
 
-    @Ignore
-    // TODO : Get Permission Auto-genned code broken does not accept share name
     def "Create and get permission"() {
         given:
         primaryShareAsyncClient.create().block()
@@ -469,7 +467,7 @@ class ShareAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryShareAsyncClient.getPermissionWithResponse(filePermissionKey))
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 201)
+                assert FileTestHelper.assertResponseStatusCode(it, 200)
             }.verifyComplete()
     }
 
@@ -485,8 +483,6 @@ class ShareAsyncAPITests extends APISpec {
             }
     }
 
-    @Ignore
-    // TODO : Get Permission Auto-genned code broken does not accept share name
     def "Get permission error"() {
         given:
         primaryShareAsyncClient.create().block()
