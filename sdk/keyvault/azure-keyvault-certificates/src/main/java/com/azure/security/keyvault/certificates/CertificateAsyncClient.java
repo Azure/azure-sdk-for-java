@@ -25,7 +25,9 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
@@ -69,19 +71,22 @@ public class CertificateAsyncClient {
      * @return A {@link Poller} polling on the create certificate operation status.
      */
     public Poller<CertificateOperation> createCertificate(String name, CertificatePolicy policy, Map<String, String> tags) {
-        CertificateRequestParameters certificateRequestParameters = new CertificateRequestParameters()
-            .certificatePolicy(new CertificatePolicyRequest(policy))
-            .tags(tags);
-        return new Poller<CertificateOperation>(Duration.ofSeconds(1), createPollOperation(name),
-            (() -> createCertificateWithResponse(name, policy, tags)
-                .flatMap(certificateOperationResponse -> {
-                    System.out.println("Activation function");
-                    return Mono.just(certificateOperationResponse.value());
-                })),
-            (poller -> {
-                service.updateCertificateOperation(endpoint, name, API_VERSION, ACCEPT_LANGUAGE,
-                    new CertificateOperationUpdateParameter().cancellationRequested(true), CONTENT_TYPE_HEADER_VALUE, Context.NONE);
-            }));
+        return new Poller<CertificateOperation>(Duration.ofSeconds(1), createPollOperation(name), actvationOperation(name, policy, tags), cancelOperation(name));
+    }
+
+    private Consumer<Poller<CertificateOperation>> cancelOperation(String name) {
+        return poller -> {
+            service.updateCertificateOperation(endpoint, name, API_VERSION, ACCEPT_LANGUAGE,
+                new CertificateOperationUpdateParameter().cancellationRequested(true), CONTENT_TYPE_HEADER_VALUE, Context.NONE);
+        };
+    }
+
+    private Supplier<Mono<CertificateOperation>> actvationOperation(String name, CertificatePolicy policy, Map<String, String> tags) {
+        return () -> createCertificateWithResponse(name, policy, tags)
+            .flatMap(certificateOperationResponse -> {
+                System.out.println("Activation function");
+                return Mono.just(certificateOperationResponse.value());
+            });
     }
 
     /**
@@ -100,18 +105,7 @@ public class CertificateAsyncClient {
      * @return A {@link Poller} polling on the create certificate operation status.
      */
     public Poller<CertificateOperation> createCertificate(String name, CertificatePolicy policy) {
-        CertificateRequestParameters certificateRequestParameters = new CertificateRequestParameters()
-            .certificatePolicy(new CertificatePolicyRequest(policy));
-        return new Poller<CertificateOperation>(Duration.ofSeconds(1), createPollOperation(name),
-            (() -> createCertificateWithResponse(name, policy, null)
-                .flatMap(certificateOperationResponse -> {
-                    System.out.println("Activation function");
-                    return Mono.just(certificateOperationResponse.value());
-                })),
-            (poller -> {
-                service.updateCertificateOperation(endpoint, name, API_VERSION, ACCEPT_LANGUAGE,
-                    new CertificateOperationUpdateParameter().cancellationRequested(true), CONTENT_TYPE_HEADER_VALUE, Context.NONE);
-            }));
+        return createCertificate(name, policy, null);
     }
 
     /*
