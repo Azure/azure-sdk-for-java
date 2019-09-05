@@ -4,6 +4,7 @@
 package com.azure.storage.file;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -24,6 +25,7 @@ import com.azure.storage.file.models.DirectorysGetPropertiesResponse;
 import com.azure.storage.file.models.DirectorysListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.models.DirectorysSetMetadataResponse;
 import com.azure.storage.file.models.DirectorysSetPropertiesResponse;
+import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRef;
 import com.azure.storage.file.models.HandleItem;
@@ -297,7 +299,7 @@ public class DirectoryAsyncClient {
      * @param filePermission The file permission of the directory.
      * @return The storage directory SMB properties
      */
-    public Mono<FileSmbProperties> setProperties(FileSmbProperties smbProperties, String filePermission) {
+    public Mono<DirectoryInfo> setProperties(FileSmbProperties smbProperties, String filePermission) {
         return setPropertiesWithResponse(smbProperties, filePermission).flatMap(FluxUtil::toMono);
     }
 
@@ -318,11 +320,11 @@ public class DirectoryAsyncClient {
      * @param filePermission The file permission of the directory.
      * @return A response containing the storage directory smb properties with headers and response status code
      */
-    public Mono<Response<FileSmbProperties>> setPropertiesWithResponse(FileSmbProperties smbProperties, String filePermission) {
+    public Mono<Response<DirectoryInfo>> setPropertiesWithResponse(FileSmbProperties smbProperties, String filePermission) {
         return withContext(context -> setPropertiesWithResponse(smbProperties, filePermission, Context.NONE));
     }
 
-    Mono<Response<FileSmbProperties>> setPropertiesWithResponse(FileSmbProperties smbProperties, String filePermission,
+    Mono<Response<DirectoryInfo>> setPropertiesWithResponse(FileSmbProperties smbProperties, String filePermission,
         Context context) {
 
         FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
@@ -631,7 +633,7 @@ public class DirectoryAsyncClient {
      * @throws StorageException If the file has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
     public Mono<FileAsyncClient> createFile(String fileName, long maxSize) {
-        return createFileWithResponse(fileName, maxSize, null, null, null).flatMap(FluxUtil::toMono);
+        return createFileWithResponse(fileName, maxSize, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -648,22 +650,24 @@ public class DirectoryAsyncClient {
      *
      * @param fileName Name of the file
      * @param maxSize Max size of the file
-     * @param fileProperties The user settable file properties of the file.
+     * @param httpHeaders The user settable file http headers.
+     * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file.
      * @param metadata Optional name-value pairs associated with the file as metadata.
      * @return A response containing the directory info and the status of creating the directory.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
     public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize,
-        FileProperties fileProperties, String filePermission, Map<String, String> metadata) {
-        return withContext(context -> createFileWithResponse(fileName, maxSize, fileProperties, filePermission, metadata, context));
+        FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
+        return withContext(context -> createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission,
+            metadata, context));
     }
 
-    Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties,
-        String filePermission, Map<String, String> metadata, Context context) {
+    Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         FileAsyncClient fileAsyncClient = getFileClient(fileName);
-        return postProcessResponse(fileAsyncClient.createWithResponse(maxSize, fileProperties, filePermission, metadata, context))
-            .map(response -> new SimpleResponse<>(response, fileAsyncClient));
+        return postProcessResponse(fileAsyncClient.createWithResponse(maxSize, httpHeaders, smbProperties, filePermission,
+            metadata, context)).map(response -> new SimpleResponse<>(response, fileAsyncClient));
     }
 
     /**
@@ -746,9 +750,12 @@ public class DirectoryAsyncClient {
         return new SimpleResponse<>(response, directoryProperties);
     }
 
-    private Response<FileSmbProperties> setPropertiesResponse(final DirectorysSetPropertiesResponse response) {
+    private Response<DirectoryInfo> setPropertiesResponse(final DirectorysSetPropertiesResponse response) {
+        String eTag = response.deserializedHeaders().eTag();
+        OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
         FileSmbProperties smbProperties = new FileSmbProperties(response);
-        return new SimpleResponse<>(response, smbProperties);
+        DirectoryInfo directoryInfo = new DirectoryInfo(eTag, lastModified, smbProperties);
+        return new SimpleResponse<>(response, directoryInfo);
     }
 
     private Response<DirectorySetMetadataInfo> setMetadataResponse(final DirectorysSetMetadataResponse response) {

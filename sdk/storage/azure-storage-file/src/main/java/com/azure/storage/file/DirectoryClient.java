@@ -13,6 +13,7 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
+import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRef;
 import com.azure.storage.file.models.HandleItem;
@@ -221,7 +222,7 @@ public class DirectoryClient {
      * @param filePermission The file permission of the directory.
      * @return The storage directory SMB properties
      */
-    public FileSmbProperties setProperties(FileSmbProperties smbProperties, String filePermission) {
+    public DirectoryInfo setProperties(FileSmbProperties smbProperties, String filePermission) {
         return setPropertiesWithResponse(smbProperties, filePermission, Context.NONE).value();
     }
 
@@ -243,7 +244,7 @@ public class DirectoryClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the storage directory smb properties with headers and response status code
      */
-    public Response<FileSmbProperties> setPropertiesWithResponse(FileSmbProperties smbProperties, String filePermission, Context context) {
+    public Response<DirectoryInfo> setPropertiesWithResponse(FileSmbProperties smbProperties, String filePermission, Context context) {
         return directoryAsyncClient.setPropertiesWithResponse(smbProperties, filePermission, context).block();
     }
 
@@ -485,7 +486,7 @@ public class DirectoryClient {
      * @throws StorageException If the file has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
     public FileClient createFile(String fileName, long maxSize) {
-        return createFileWithResponse(fileName, maxSize,  null, null, null, Context.NONE).value();
+        return createFileWithResponse(fileName, maxSize,  null, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -495,24 +496,25 @@ public class DirectoryClient {
      *
      * <p>Create the file named "myFile"</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.createFile#string-long-fileproperties-map-context}
+     * {@codesnippet com.azure.storage.file.directoryClient.createFile#string-long-filehttpheaders-filesmbproperties-string-map-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file
      * @param maxSize Max size of the file
-     * @param fileProperties The user settable file properties of the file.
+     * @param httpHeaders The user settable file http headers.
+     * @param smbProperties The user settable file smb properties.
      * @param filePermission THe file permission of the file.
      * @param metadata Optional name-value pairs associated with the file as metadata.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the directory info and the status of creating the directory.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
-    public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties,
-        String filePermission, Map<String, String> metadata, Context context) {
-        return directoryAsyncClient.createFileWithResponse(fileName, maxSize, fileProperties, filePermission, metadata, context)
-            .map(response -> new SimpleResponse<>(response, new FileClient(response.value()))).block();
+    public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
+        return directoryAsyncClient.createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission,
+            metadata, context).map(response -> new SimpleResponse<>(response, new FileClient(response.value()))).block();
     }
 
     /**

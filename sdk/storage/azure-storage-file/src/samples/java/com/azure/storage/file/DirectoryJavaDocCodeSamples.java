@@ -14,11 +14,13 @@ import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.HandleItem;
+import com.azure.storage.file.models.NtfsFileAttributes;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Map;
 
 /**
@@ -152,25 +154,28 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#createFileWithResponse(String, long, FileProperties, String, Map, Context)}
+     * Generates a code sample for using {@link DirectoryClient#createFileWithResponse(String, long, FileHTTPHeaders, FileSmbProperties, String, Map, Context)}
      */
     public void createFileMaxOverload() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long-fileproperties-map-context
-        String contentType = "text/html";
-        String contentEncoding = "gzip";
-        String contentLanguage = "tr,en";
-        String cacheControl = "no-transform";
-        byte[] contentMd5 = new byte[0];
-        String contentDisposition = "attachment";
-        FileSmbProperties smbProperties = new FileSmbProperties();
+        // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long-filehttpheaders-filesmbproperties-string-map-context
+        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
+            .fileContentType("text/html")
+            .fileContentEncoding("gzip")
+            .fileContentLanguage("en")
+            .fileCacheControl("no-transform")
+            .fileContentDisposition("attachment");
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .fileCreationTime(OffsetDateTime.now())
+            .fileLastWriteTime(OffsetDateTime.now())
+            .filePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
-        FileProperties fileProperties = new FileProperties(contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5, contentDisposition, smbProperties);
+        // NOTE: filePermission and filePermissionKey should never be both set
         Response<FileClient> response = directoryClient.createFileWithResponse("myFile", 1024,
-            fileProperties, filePermission, Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
+            httpHeaders, smbProperties, filePermission, Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
         System.out.println("Completed creating the file with status code: " + response.statusCode());
-        // END: com.azure.storage.file.directoryClient.createFile#string-long-fileproperties-map-context
+        // END: com.azure.storage.file.directoryClient.createFile#string-long-filehttpheaders-filesmbproperties-string-map-context
     }
 
     /**
@@ -296,8 +301,8 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryClient.setProperties#filesmbproperties-string
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
-        FileSmbProperties response = directoryClient.setProperties(smbProperties, filePermission);
-        System.out.printf("Directory change time is %s.", response.fileChangeTime());
+        DirectoryInfo response = directoryClient.setProperties(smbProperties, filePermission);
+        System.out.printf("Directory latest modified date is %s.", response.lastModified());
         // END: com.azure.storage.file.directoryClient.setProperties#filesmbproperties-string
     }
 
@@ -309,9 +314,9 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryClient.setPropertiesWithResponse#filesmbproperties-string-Context
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
-        Response<FileSmbProperties> response = directoryClient.setPropertiesWithResponse(smbProperties, filePermission,
+        Response<DirectoryInfo> response = directoryClient.setPropertiesWithResponse(smbProperties, filePermission,
             new Context(key1, value1));
-        System.out.printf("Directory change time is %s.", response.value().fileChangeTime());
+        System.out.printf("Directory latest modified date is %s.", response.value().lastModified());
         // END: com.azure.storage.file.directoryClient.setPropertiesWithResponse#filesmbproperties-string-Context
     }
 

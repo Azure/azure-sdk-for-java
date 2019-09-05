@@ -184,15 +184,6 @@ public class FileSmbProperties {
     }
 
     /**
-     * Given an <code>OffsetDateTime</code>, generates a {@code String} representing a date in the format needed for
-     * file SMB properties
-     * @param time the <code>OffsetDateTime</code> to be interpreted as a {@code String}
-     * @return The {@code String} representing the date
-     */
-    private static String parseFileSMBDateString(OffsetDateTime time) {
-        return time.format(DateTimeFormatter.ofPattern(FileConstants.SMB_DATE_STRING));
-    }
-    /**
      * Creates a new {@link FileSmbProperties} from a {@link FilesCreateResponse}.
      * @param response The {@link FilesCreateResponse}.
      */

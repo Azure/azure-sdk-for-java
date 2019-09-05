@@ -12,6 +12,7 @@ import com.azure.storage.common.SASProtocol;
 import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.ShareInfo;
 import com.azure.storage.file.models.ShareProperties;
@@ -528,7 +529,7 @@ public class ShareClient {
      * </ul>
      */
     public FileClient createFile(String fileName, long maxSize) {
-        return createFileWithResponse(fileName, maxSize, null, null, null, Context.NONE).value();
+        return createFileWithResponse(fileName, maxSize, null, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -538,14 +539,15 @@ public class ShareClient {
      *
      * <p>Create the file "myfile" with length of 1024 bytes, some headers, file smb properties and metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.createFileWithResponse#string-long-fileproperties-map-context}
+     * {@codesnippet com.azure.storage.file.shareClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file.
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
-     * @param fileProperties The user settable file properties of the file.
+     * @param httpHeaders The user settable file http headers.
+     * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file
      * @param metadata Optional name-value pairs associated with the file as metadata.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -561,10 +563,11 @@ public class ShareClient {
      *     </li>
      * </ul>
      */
-    public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties,
-        String filePermission, Map<String, String> metadata, Context context) {
+    public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         FileClient fileClient = getFileClient(fileName);
-        return new SimpleResponse<>(fileClient.createWithResponse(maxSize, fileProperties, filePermission, metadata, context), fileClient);
+        return new SimpleResponse<>(fileClient.createWithResponse(maxSize, httpHeaders, smbProperties, filePermission,
+            metadata, context), fileClient);
     }
 
     /**

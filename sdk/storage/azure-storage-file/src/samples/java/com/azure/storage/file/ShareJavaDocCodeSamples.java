@@ -14,6 +14,7 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.AccessPolicy;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileProperties;
+import com.azure.storage.file.models.NtfsFileAttributes;
 import com.azure.storage.file.models.ShareInfo;
 import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.ShareSnapshotInfo;
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
@@ -198,25 +200,28 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#createFileWithResponse(String, long, FileProperties, String, Map, Context)}
+     * Generates a code sample for using {@link ShareClient#createFileWithResponse(String, long, FileHTTPHeaders, FileSmbProperties, String, Map, Context)}
      */
     public void createFileWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareClient.createFileWithResponse#string-long-fileproperties-map-context
-        String contentType = "text/html";
-        String contentEncoding = "gzip";
-        String contentLanguage = "tr,en";
-        String cacheControl = "no-transform";
-        byte[] contentMd5 = new byte[0];
-        String contentDisposition = "attachment";
-        FileSmbProperties smbProperties = new FileSmbProperties();
+        // BEGIN: com.azure.storage.file.shareClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map-context
+        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
+            .fileContentType("text/html")
+            .fileContentEncoding("gzip")
+            .fileContentLanguage("en")
+            .fileCacheControl("no-transform")
+            .fileContentDisposition("attachment");
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .fileCreationTime(OffsetDateTime.now())
+            .fileLastWriteTime(OffsetDateTime.now())
+            .filePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
-        FileProperties fileProperties = new FileProperties(contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5, contentDisposition, smbProperties);
-        Response<FileClient> response = shareClient.createFileWithResponse("myfile", 1024, fileProperties,
+        // NOTE: filePermission and filePermissionKey should never be both set
+        Response<FileClient> response = shareClient.createFileWithResponse("myfile", 1024, httpHeaders, smbProperties,
             filePermission, Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
         System.out.printf("Creating the file completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.shareClient.createFileWithResponse#string-long-fileproperties-map-context
+        // END: com.azure.storage.file.shareClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map-context
     }
 
     /**

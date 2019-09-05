@@ -316,7 +316,7 @@ class ShareAsyncAPITests extends APISpec {
         given:
         primaryShareAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null, null))
+        StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null, null, null))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -325,10 +325,9 @@ class ShareAsyncAPITests extends APISpec {
     def "Create file file permission"() {
         given:
         primaryShareAsyncClient.create().block()
-        FileProperties properties = new FileProperties()
 
         expect:
-        StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024,  properties, filePermission, null))
+        StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null, filePermission, null))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -341,10 +340,9 @@ class ShareAsyncAPITests extends APISpec {
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
             .filePermissionKey(permissionKey)
-        FileProperties properties = new FileProperties(null, null, null, null, null, null, smbProperties)
 
         expect:
-        StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, properties, null, null))
+        StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, null, smbProperties, null, null))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -355,7 +353,7 @@ class ShareAsyncAPITests extends APISpec {
         given:
         primaryShareAsyncClient.create().block()
         when:
-        def createFileErrorVerifier = StepVerifier.create(primaryShareAsyncClient.createFileWithResponse(fileName, maxSize, null, null, null))
+        def createFileErrorVerifier = StepVerifier.create(primaryShareAsyncClient.createFileWithResponse(fileName, maxSize, null, null, null, null))
         then:
         createFileErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMsg)
@@ -373,9 +371,8 @@ class ShareAsyncAPITests extends APISpec {
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("txt")
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
-        FileProperties properties = new FileProperties("txt", null, null, null, null, null, smbProperties)
         expect:
-        StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, properties, filePermission, testMetadata))
+        StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, httpHeaders, smbProperties, filePermission, testMetadata))
                 .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -387,9 +384,8 @@ class ShareAsyncAPITests extends APISpec {
         primaryShareAsyncClient.create().block()
 
         when:
-        FileProperties properties = new FileProperties("txt", null, null, null, fileContentMD5, null, null)
 
-        def createFileVerifier = StepVerifier.create(primaryShareAsyncClient.createFileWithResponse(fileName, maxSize, properties, null, metadata))
+        def createFileVerifier = StepVerifier.create(primaryShareAsyncClient.createFileWithResponse(fileName, maxSize, httpHeaders, null, null, metadata))
 
         then:
         createFileVerifier.verifyErrorSatisfies {
@@ -397,11 +393,11 @@ class ShareAsyncAPITests extends APISpec {
         }
 
         where:
-        fileName    | maxSize | fileContentMD5 | metadata                              | errMsg
-        "testfile:" | 1024    | null           | testMetadata                          | StorageErrorCode.INVALID_RESOURCE_NAME
-        "fileName"  | -1      | null           | testMetadata                          | StorageErrorCode.OUT_OF_RANGE_INPUT
-        "fileName"  | 1024    | new byte[0]    | testMetadata                          | StorageErrorCode.INVALID_HEADER_VALUE
-        "fileName"  | 1024    | null           | Collections.singletonMap("", "value") | StorageErrorCode.EMPTY_METADATA_KEY
+        fileName    | maxSize | httpHeaders                                       | metadata                              | errMsg
+        "testfile:" | 1024    | null                                              | testMetadata                          | StorageErrorCode.INVALID_RESOURCE_NAME
+        "fileName"  | -1      | null                                              | testMetadata                          | StorageErrorCode.OUT_OF_RANGE_INPUT
+        "fileName"  | 1024    | new FileHTTPHeaders().fileContentMD5(new byte[0]) | testMetadata                          | StorageErrorCode.INVALID_HEADER_VALUE
+        "fileName"  | 1024    | null                                              | Collections.singletonMap("", "value") | StorageErrorCode.EMPTY_METADATA_KEY
 
     }
 

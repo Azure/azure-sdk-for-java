@@ -31,6 +31,7 @@ import java.time.ZoneOffset
 
 class FileAPITests extends APISpec {
     FileClient primaryFileClient
+    ShareClient shareClient
     def shareName
     def filePath
     def defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8))
@@ -43,7 +44,7 @@ class FileAPITests extends APISpec {
     def setup() {
         shareName = testResourceName.randomName(methodName, 60)
         filePath = testResourceName.randomName(methodName, 60)
-        ShareClient shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
+        shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
         shareClient.create()
         primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
@@ -65,7 +66,7 @@ class FileAPITests extends APISpec {
 
     def "Create file"() {
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryFileClient.createWithResponse(1024, null, null, null, null), 201)
+        FileTestHelper.assertResponseStatusCode(primaryFileClient.createWithResponse(1024, null, null, null, null, null), 201)
     }
 
     def "Create file error"() {
@@ -78,13 +79,12 @@ class FileAPITests extends APISpec {
 
     def "Create file with args fpk"() {
         when:
+        def filePermissionKey = shareClient.createPermission(filePermission)
         // We recreate file properties for each test since we need to store the times for the test with getUTCNow()
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
-        FileProperties fileProperties = new FileProperties(httpHeaders.fileContentType, httpHeaders.fileContentEncoding, httpHeaders.fileContentLanguage,
-            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, smbProperties)
-        // TODO Set file permission key
-        def resp = primaryFileClient.createWithResponse(1024, fileProperties, null, testMetadata, null)
+            .filePermissionKey(filePermissionKey)
+        def resp = primaryFileClient.createWithResponse(1024, httpHeaders, smbProperties, null, testMetadata, null)
         then:
         FileTestHelper.assertResponseStatusCode(resp, 201)
         resp.value().eTag()
@@ -103,9 +103,7 @@ class FileAPITests extends APISpec {
         when:
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
-        FileProperties fileProperties = new FileProperties(httpHeaders.fileContentType, httpHeaders.fileContentEncoding, httpHeaders.fileContentLanguage,
-            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, smbProperties)
-        def resp = primaryFileClient.createWithResponse(1024, fileProperties, filePermission, testMetadata, null)
+        def resp = primaryFileClient.createWithResponse(1024, httpHeaders, smbProperties, filePermission, testMetadata, null)
         then:
         FileTestHelper.assertResponseStatusCode(resp, 201)
         resp.value().eTag()
@@ -122,7 +120,7 @@ class FileAPITests extends APISpec {
     @Unroll
     def "Create file with args error"() {
         when:
-        primaryFileClient.createWithResponse(maxSize, null, null, metadata, null)
+        primaryFileClient.createWithResponse(maxSize, null, null, null, metadata, null)
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
@@ -135,9 +133,8 @@ class FileAPITests extends APISpec {
     @Unroll
     def "Create file permission and key error"() {
         when:
-        FileSmbProperties properties = new FileSmbProperties().filePermissionKey(filePermissionKey)
-        FileProperties fileProperties = new FileProperties(null, null, null, null, null, null, properties)
-        primaryFileClient.createWithResponse(1024, fileProperties, permission, null, null)
+        FileSmbProperties smbProperties = new FileSmbProperties().filePermissionKey(filePermissionKey)
+        primaryFileClient.createWithResponse(1024, null, smbProperties, permission, null, null)
         then:
         thrown(IllegalArgumentException)
         where:
@@ -371,7 +368,7 @@ class FileAPITests extends APISpec {
 
     def "Delete file"() {
         given:
-        primaryFileClient.createWithResponse(1024, null, null, null, null)
+        primaryFileClient.createWithResponse(1024, null, null, null, null, null)
         expect:
         FileTestHelper.assertResponseStatusCode(primaryFileClient.deleteWithResponse(null), 202)
     }
@@ -414,15 +411,14 @@ class FileAPITests extends APISpec {
 
     def "Set httpHeaders fpk"() {
         given:
-        primaryFileClient.createWithResponse(1024, null, null, null, null)
+        primaryFileClient.createWithResponse(1024, null, null, null, null, null)
+        def filePermissionKey = shareClient.createPermission(filePermission)
         when:
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
-        // TODO: Set file permission key
-        FileProperties fileProperties = new FileProperties(httpHeaders.fileContentType, httpHeaders.fileContentEncoding, httpHeaders.fileContentLanguage,
-            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, smbProperties)
+            .filePermissionKey(filePermissionKey)
 
-        def resp = primaryFileClient.setPropertiesWithResponse(512, fileProperties, null, null)
+        def resp = primaryFileClient.setPropertiesWithResponse(512, httpHeaders, smbProperties, null, null)
         then:
         FileTestHelper.assertResponseStatusCode(resp, 200)
         resp.value().eTag()
@@ -439,14 +435,12 @@ class FileAPITests extends APISpec {
 
     def "Set httpHeaders fp"() {
         given:
-        primaryFileClient.createWithResponse(1024, null, null, null, null)
+        primaryFileClient.createWithResponse(1024, null, null, null, null, null)
         when:
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
-        FileProperties fileProperties = new FileProperties(httpHeaders.fileContentType, httpHeaders.fileContentEncoding, httpHeaders.fileContentLanguage,
-            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, smbProperties)
 
-        def resp = primaryFileClient.setPropertiesWithResponse(512, fileProperties, filePermission, null)
+        def resp = primaryFileClient.setPropertiesWithResponse(512, httpHeaders, smbProperties, filePermission, null)
         then:
         FileTestHelper.assertResponseStatusCode(resp, 200)
         resp.value().eTag()
@@ -462,9 +456,9 @@ class FileAPITests extends APISpec {
     }
     def "Set httpHeaders error"() {
         given:
-        primaryFileClient.createWithResponse(1024, null, null, null, null)
+        primaryFileClient.createWithResponse(1024, null, null, null, null, null)
         when:
-        primaryFileClient.setPropertiesWithResponse(-1, null, null, null)
+        primaryFileClient.setPropertiesWithResponse(-1, null, null, null, null)
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.OUT_OF_RANGE_INPUT)
@@ -472,9 +466,7 @@ class FileAPITests extends APISpec {
 
     def "Set metadata"() {
         given:
-        FileProperties fileProperties = new FileProperties(httpHeaders.fileContentType, httpHeaders.fileContentEncoding, httpHeaders.fileContentLanguage,
-            httpHeaders.fileCacheControl, httpHeaders.fileContentMD5, httpHeaders.fileContentDisposition, null)
-        primaryFileClient.createWithResponse(1024, fileProperties, null, testMetadata, null)
+        primaryFileClient.createWithResponse(1024, httpHeaders, null, null, testMetadata, null)
         def updatedMetadata = Collections.singletonMap("update", "value")
         when:
         def getPropertiesBefore = primaryFileClient.getProperties()

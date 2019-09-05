@@ -150,7 +150,7 @@ public class FileAsyncClient {
      * an invalid resource name.
      */
     public Mono<FileInfo> create(long maxSize) {
-        return createWithResponse(maxSize, null, null, null).flatMap(FluxUtil::toMono);
+        return createWithResponse(maxSize, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -160,27 +160,27 @@ public class FileAsyncClient {
      *
      * <p>Create the file with length of 1024 bytes, some headers, file smb properties and metadata.</p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.createWithResponse#long-fileproperties-map}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.createWithResponse#long-filehttpheaders-filesmbproperties-map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
-     * @param fileProperties The user settable file properties.
+     * @param httpHeaders The user settable file http headers.
+     * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file.
      * @param metadata Optional name-value pairs associated with the file as metadata.
      * @return A response containing the {@link FileInfo file info} and the status of creating the file.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
-    public Mono<Response<FileInfo>> createWithResponse(long maxSize, FileProperties fileProperties, String filePermission,
-        Map<String, String> metadata) {
-        return withContext(context -> createWithResponse(maxSize, fileProperties, filePermission, metadata, context));
+    public Mono<Response<FileInfo>> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties,
+        String filePermission, Map<String, String> metadata) {
+        return withContext(context -> createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context));
     }
 
-    Mono<Response<FileInfo>> createWithResponse(long maxSize, FileProperties fileProperties, String filePermission,
-        Map<String, String> metadata, Context context) {
-        FileProperties properties = fileProperties == null ? new FileProperties() : fileProperties;
-        FileSmbProperties smbProperties = properties.smbProperties() == null ? new FileSmbProperties() : properties.smbProperties();
+    Mono<Response<FileInfo>> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties,
+        String filePermission, Map<String, String> metadata, Context context) {
+        smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
         filePermissionAndKeyHelper(filePermission, smbProperties.filePermissionKey());
@@ -192,14 +192,6 @@ public class FileAsyncClient {
         String fileAttributes = smbProperties.ntfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
         String fileCreationTime = smbProperties.fileCreationTime(FileConstants.FILE_TIME_NOW);
         String fileLastWriteTime = smbProperties.fileLastWriteTime(FileConstants.FILE_TIME_NOW);
-
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
-            .fileCacheControl(properties.cacheControl())
-            .fileContentDisposition(properties.contentDisposition())
-            .fileContentEncoding(properties.contentEncoding())
-            .fileContentLanguage(properties.contentLanguage())
-            .fileContentMD5(properties.contentMD5())
-            .fileContentType(properties.contentType());
 
         return postProcessResponse(azureFileStorageClient.files().createWithRestResponseAsync(shareName, filePath, maxSize, fileAttributes,
             fileCreationTime, fileLastWriteTime, null, metadata, filePermission, filePermissionKey, httpHeaders, context))
@@ -535,58 +527,60 @@ public class FileAsyncClient {
      *
      * <p>Set the httpHeaders of contentType of "text/plain"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.setProperties#long-fileproperties}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.setProperties#long-filehttpheaders-filesmbproperties-string}
      *
      * <p>Clear the metadata of the file and preserve the SMB properties</p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.setProperties#long-fileproperties.clearHttpHeaderspreserveSMBProperties}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.setProperties#long-filehttpheaders-filesmbproperties-string.clearHttpHeaderspreserveSMBProperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a>.</p>
      *
      * @param newFileSize New file size of the file
-     * @param fileProperties The user-settable file properties for a file
+     * @param httpHeaders The user settable file http headers.
+     * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file
      * @return The {@link FileInfo file info}
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public Mono<FileInfo> setProperties(long newFileSize, FileProperties fileProperties, String filePermission) {
-        return setPropertiesWithResponse(newFileSize, fileProperties, filePermission).flatMap(FluxUtil::toMono);
+    public Mono<FileInfo> setProperties(long newFileSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties,
+        String filePermission) {
+        return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Sets the user-defined file properties to associate to the file.
      *
-     * <p>If {@code null} is passed for the fileProperties.httpHeaders it will clear the httpHeaders associated to the file.
-     * If {@code null} is passed for the fileProperties.filesmbproperties it will preserve the filesmb properties associated with the file.</p>
+     * <p>If {@code null} is passed for the httpHeaders it will clear the httpHeaders associated to the file.
+     * If {@code null} is passed for the filesmbproperties it will preserve the filesmbproperties associated with the file.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Set the httpHeaders of contentType of "text/plain"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.setPropertiesWithResponse#long-fileproperties}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-string}
      *
      * <p>Clear the metadata of the file and preserve the SMB properties</p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.setPropertiesWithResponse#long-fileproperties.clearHttpHeaderspreserveSMBProperties}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-string.clearHttpHeaderspreserveSMBProperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a>.</p>
      *
-     * @param newFileSize New file size of the file
-     * @param fileProperties The user-settable file properties for a file
-     * @return Response containing the {@link FileInfo file info} and response status code
+     * @param newFileSize New file size of the file.
+     * @param httpHeaders The user settable file http headers.
+     * @param smbProperties The user settable file smb properties.
+     * @return Response containing the {@link FileInfo file info} and response status code.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, FileProperties fileProperties,
-        String filePermission) {
-        return withContext(context -> setPropertiesWithResponse(newFileSize, fileProperties, filePermission, context));
+    public Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, FileHTTPHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission) {
+        return withContext(context -> setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, context));
     }
 
-    Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, FileProperties fileProperties,
-        String filePermission, Context context) {
-        FileProperties properties = fileProperties == null ? new FileProperties() : fileProperties;
-        FileSmbProperties smbProperties = properties.smbProperties() == null ? new FileSmbProperties() : properties.smbProperties();
+    Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, FileHTTPHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission, Context context) {
+        smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
         filePermissionAndKeyHelper(filePermission, smbProperties.filePermissionKey());
@@ -598,14 +592,6 @@ public class FileAsyncClient {
         String fileAttributes = smbProperties.ntfsFileAttributes(FileConstants.PRESERVE);
         String fileCreationTime = smbProperties.fileCreationTime(FileConstants.PRESERVE);
         String fileLastWriteTime = smbProperties.fileLastWriteTime(FileConstants.PRESERVE);
-
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
-            .fileCacheControl(properties.cacheControl())
-            .fileContentDisposition(properties.contentDisposition())
-            .fileContentEncoding(properties.contentEncoding())
-            .fileContentLanguage(properties.contentLanguage())
-            .fileContentMD5(properties.contentMD5())
-            .fileContentType(properties.contentType());
 
         return postProcessResponse(azureFileStorageClient.files().setHTTPHeadersWithRestResponseAsync(shareName, filePath, fileAttributes,
             fileCreationTime, fileLastWriteTime, null, newFileSize, filePermission, filePermissionKey, httpHeaders, context))

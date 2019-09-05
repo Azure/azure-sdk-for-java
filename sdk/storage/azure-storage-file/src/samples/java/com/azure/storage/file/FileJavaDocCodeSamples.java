@@ -19,6 +19,7 @@ import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileUploadInfo;
+import com.azure.storage.file.models.NtfsFileAttributes;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -28,6 +29,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Map;
 
 /**
@@ -112,25 +114,28 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#createWithResponse(long, FileProperties, String, Map, Context)}
+     * Generates a code sample for using {@link FileClient#createWithResponse(long, FileHTTPHeaders, FileSmbProperties, String, Map, Context)}
      */
     public void createWithResponse() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.createWithResponse#long-fileproperties-map-context
-        String contentType = "text/html";
-        String contentEncoding = "gzip";
-        String contentLanguage = "tr,en";
-        String cacheControl = "no-transform";
-        byte[] contentMd5 = new byte[0];
-        String contentDisposition = "attachment";
-        FileSmbProperties smbProperties = new FileSmbProperties();
+        // BEGIN: com.azure.storage.file.fileClient.createWithResponse#long-filehttpheaders-filesmbproperties-map-context
+        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
+            .fileContentType("text/html")
+            .fileContentEncoding("gzip")
+            .fileContentLanguage("en")
+            .fileCacheControl("no-transform")
+            .fileContentDisposition("attachment");
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .fileCreationTime(OffsetDateTime.now())
+            .fileLastWriteTime(OffsetDateTime.now())
+            .filePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
-        FileProperties fileProperties = new FileProperties(contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5, contentDisposition, smbProperties);
-        Response<FileInfo> response = fileClient.createWithResponse(1024, fileProperties, filePermission,
+        // NOTE: filePermission and filePermissionKey should never be both set
+        Response<FileInfo> response = fileClient.createWithResponse(1024, httpHeaders, smbProperties, filePermission,
             Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
         System.out.printf("Creating the file completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.fileClient.createWithResponse#long-fileproperties-map-context
+        // END: com.azure.storage.file.fileClient.createWithResponse#long-filehttpheaders-filesmbproperties-map-context
     }
 
     /**
@@ -419,70 +424,77 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#setProperties(long, FileProperties, String)}
+     * Generates a code sample for using {@link FileClient#setProperties(long, FileHTTPHeaders, FileSmbProperties, String)}
      */
     public void setHTTPHeaders() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.setProperties#long-fileproperties
-        String contentType = "text/html";
-        String contentEncoding = "gzip";
-        String contentLanguage = "tr,en";
-        String cacheControl = "no-transform";
-        byte[] contentMd5 = null;
-        String contentDisposition = "attachment";
-        FileSmbProperties smbProperties = new FileSmbProperties();
+        // BEGIN: com.azure.storage.file.fileClient.setProperties#long-filehttpheaders-filesmbproperties-string
+        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
+            .fileContentType("text/html")
+            .fileContentEncoding("gzip")
+            .fileContentLanguage("en")
+            .fileCacheControl("no-transform")
+            .fileContentDisposition("attachment");
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .fileCreationTime(OffsetDateTime.now())
+            .fileLastWriteTime(OffsetDateTime.now())
+            .filePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
-        FileProperties fileProperties = new FileProperties(contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5, contentDisposition, smbProperties);
-        fileClient.setProperties(1024, fileProperties, filePermission);
+        // NOTE: filePermission and filePermissionKey should never be both set
+        fileClient.setProperties(1024, httpHeaders, smbProperties, filePermission);
         System.out.printf("Setting the file httpHeaders completed.");
-        // END: com.azure.storage.file.fileClient.setProperties#long-fileproperties
+        // END: com.azure.storage.file.fileClient.setProperties#long-filehttpheaders-filesmbproperties-string
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#setProperties(long, FileProperties, String)} to clear httpHeaders and preserve SMB properties.
+     * Generates a code sample for using {@link FileClient#setProperties(long, FileHTTPHeaders, FileSmbProperties, String)}
+     * to clear httpHeaders and preserve SMB properties.
      */
     public void clearSyncHTTPHeaders() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.setProperties#long-fileproperties.clearHttpHeaderspreserveSMBProperties
-        FileInfo response = fileClient.setProperties(1024, null, null);
+        // BEGIN: com.azure.storage.file.fileClient.setProperties#long-filehttpheaders-filesmbproperties.clearHttpHeaderspreserveSMBProperties
+        FileInfo response = fileClient.setProperties(1024, null, null, null);
         System.out.printf("Setting the file httpHeaders completed.");
-        // END: com.azure.storage.file.fileClient.setProperties#long-fileproperties.clearHttpHeaderspreserveSMBProperties
+        // END: com.azure.storage.file.fileClient.setProperties#long-filehttpheaders-filesmbproperties.clearHttpHeaderspreserveSMBProperties
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#setPropertiesWithResponse(long, FileProperties, String, Context)}
+     * Generates a code sample for using {@link FileClient#setPropertiesWithResponse(long, FileHTTPHeaders, FileSmbProperties, String, Context)}
      */
     public void setHttpHeadersWithResponse() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.setPropertiesWithResponse#long-fileproperties-Context
-        String contentType = "text/html";
-        String contentEncoding = "gzip";
-        String contentLanguage = "tr,en";
-        String cacheControl = "no-transform";
-        byte[] contentMd5 = null;
-        String contentDisposition = "attachment";
-        FileSmbProperties smbProperties = new FileSmbProperties();
+        // BEGIN: com.azure.storage.file.fileClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-Context
+        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
+            .fileContentType("text/html")
+            .fileContentEncoding("gzip")
+            .fileContentLanguage("en")
+            .fileCacheControl("no-transform")
+            .fileContentDisposition("attachment");
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .fileCreationTime(OffsetDateTime.now())
+            .fileLastWriteTime(OffsetDateTime.now())
+            .filePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
-        FileProperties fileProperties = new FileProperties(contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5, contentDisposition, smbProperties);
-        Response<FileInfo> response = fileClient.setPropertiesWithResponse(1024, fileProperties,
+        // NOTE: filePermission and filePermissionKey should never be both set
+        Response<FileInfo> response = fileClient.setPropertiesWithResponse(1024, httpHeaders, smbProperties,
             filePermission, new Context(key1, value1));
         System.out.printf("Setting the file httpHeaders completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.fileClient.setPropertiesWithResponse#long-fileproperties-Context
+        // END: com.azure.storage.file.fileClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-Context
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#setPropertiesWithResponse(long, FileProperties, String, Context)}
+     * Generates a code sample for using {@link FileClient#setPropertiesWithResponse(long, FileHTTPHeaders, FileSmbProperties, String, Context)}
      * (long, FileHTTPHeaders)} to clear httpHeaders.
      */
     public void clearHTTPHeaders() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.setPropertiesWithResponse#long-fileproperties-Context.clearHttpHeaderspreserveSMBProperties
-        Response<FileInfo> response = fileClient.setPropertiesWithResponse(1024, null, null,
+        // BEGIN: com.azure.storage.file.fileClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-Context.clearHttpHeaderspreserveSMBProperties
+        Response<FileInfo> response = fileClient.setPropertiesWithResponse(1024, null, null, null,
             new Context(key1, value1));
         System.out.printf("Setting the file httpHeaders completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.fileClient.setPropertiesWithResponse#long-fileproperties-Context.clearHttpHeaderspreserveSMBProperties
+        // END: com.azure.storage.file.fileClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-Context.clearHttpHeaderspreserveSMBProperties
     }
 
     /**

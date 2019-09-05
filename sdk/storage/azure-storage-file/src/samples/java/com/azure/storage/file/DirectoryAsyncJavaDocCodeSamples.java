@@ -7,11 +7,13 @@ import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileProperties;
+import com.azure.storage.file.models.NtfsFileAttributes;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Map;
 
 /**
@@ -152,28 +154,31 @@ public class DirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#createFileWithResponse(String, long, FileProperties, String, Map)}
+     * Generates a code sample for using {@link DirectoryAsyncClient#createFileWithResponse(String, long, FileHTTPHeaders, FileSmbProperties, String, Map)}
      */
     public void createFileWithResponse() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-fileproperties-map
-        String contentType = "text/html";
-        String contentEncoding = "gzip";
-        String contentLanguage = "tr,en";
-        String cacheControl = "no-transform";
-        byte[] contentMd5 = new byte[0];
-        String contentDisposition = "attachment";
-        FileSmbProperties smbProperties = new FileSmbProperties();
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map
+        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
+            .fileContentType("text/html")
+            .fileContentEncoding("gzip")
+            .fileContentLanguage("en")
+            .fileCacheControl("no-transform")
+            .fileContentDisposition("attachment");
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .fileCreationTime(OffsetDateTime.now())
+            .fileLastWriteTime(OffsetDateTime.now())
+            .filePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
-        FileProperties fileProperties = new FileProperties(contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5, contentDisposition, smbProperties);
-        directoryAsyncClient.createFileWithResponse("myFile", 1024, fileProperties, filePermission,
+        // NOTE: filePermission and filePermissionKey should never be both set
+        directoryAsyncClient.createFileWithResponse("myFile", 1024, httpHeaders, smbProperties, filePermission,
             Collections.singletonMap("directory", "metadata")).subscribe(
                 response ->  System.out.printf("Creating the file completed with status code %d", response.statusCode()),
                 error -> System.err.println(error.toString()),
                 () -> System.out.println("Completed creating the file.")
         );
-        // END: com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-fileproperties-map
+        // END: com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map
     }
 
     /**
@@ -322,7 +327,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         directoryAsyncClient.setProperties(smbProperties, filePermission).subscribe(properties -> {
-            System.out.printf("Directory latest change time is %s.", properties.fileChangeTime());
+            System.out.printf("Directory latest modified date is %s:", properties.lastModified());
         });
         // END: com.azure.storage.file.directoryAsyncClient.setProperties#filesmbproperties-string
     }
@@ -336,7 +341,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         directoryAsyncClient.setPropertiesWithResponse(smbProperties, filePermission).subscribe(properties -> {
-            System.out.printf("Directory latest change time is %s:", properties.value().fileChangeTime());
+            System.out.printf("Directory latest modified date is %s:", properties.value().lastModified());
         });
         // END: com.azure.storage.file.directoryAsyncClient.setPropertiesWithResponse#filesmbproperties-string
     }

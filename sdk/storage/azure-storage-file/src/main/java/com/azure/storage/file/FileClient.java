@@ -3,6 +3,7 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
@@ -13,6 +14,7 @@ import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileDownloadInfo;
+import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
@@ -81,7 +83,7 @@ public class FileClient {
      * @throws StorageException If the file has already existed, the parent directory does not exist or fileName is an invalid resource name.
      */
     public FileInfo create(long maxSize) {
-        return createWithResponse(maxSize, null, null, null, Context.NONE).value();
+        return createWithResponse(maxSize, null, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -91,22 +93,23 @@ public class FileClient {
      *
      * <p>Create the file with length of 1024 bytes, some headers, file smb properties and metadata.</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.createWithResponse#long-fileproperties-map-context}
+     * {@codesnippet com.azure.storage.file.fileClient.createWithResponse#long-filehttpheaders-filesmbproperties-map-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
-     * @param fileProperties The user settable file properties of the file.
+     * @param httpHeaders The user settable file http headers.
+     * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file.
      * @param metadata Optional name-value pairs associated with the file as metadata.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileInfo file info} and the status of creating the file.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
-    public Response<FileInfo> createWithResponse(long maxSize, FileProperties fileProperties, String filePermission,
-        Map<String, String> metadata, Context context) {
-        return fileAsyncClient.createWithResponse(maxSize, fileProperties, filePermission, metadata, context).block();
+    public Response<FileInfo> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties,
+        String filePermission, Map<String, String> metadata, Context context) {
+        return fileAsyncClient.createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context).block();
     }
 
     /**
@@ -359,23 +362,25 @@ public class FileClient {
      *
      * <p>Set the httpHeaders of contentType of "text/plain"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setProperties#long-fileproperties}
+     * {@codesnippet com.azure.storage.file.fileClient.setProperties#long-filehttpheaders-filesmbproperties-string}
      *
      * <p>Clear the httpHeaders of the file and preserve the SMB properties</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setProperties#long-fileproperties.clearHttpHeaderspreserveSMBProperties}
+     * {@codesnippet com.azure.storage.file.fileClient.setProperties#long-filehttpheaders-filesmbproperties.clearHttpHeaderspreserveSMBProperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a>.</p>
      *
      * @param newFileSize New file size of the file
-     * @param fileProperties The user-settable file properties for a file
+     * @param httpHeaders The user settable file http headers.
+     * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file
      * @return The {@link FileInfo file info}
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public FileInfo setProperties(long newFileSize, FileProperties fileProperties, String filePermission) {
-        return setPropertiesWithResponse(newFileSize, fileProperties, filePermission, Context.NONE).value();
+    public FileInfo setProperties(long newFileSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties,
+        String filePermission) {
+        return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, Context.NONE).value();
     }
 
     /**
@@ -387,25 +392,26 @@ public class FileClient {
      *
      * <p>Set the httpHeaders of contentType of "text/plain"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setPropertiesWithResponse#long-fileproperties-Context}
+     * {@codesnippet com.azure.storage.file.fileClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-Context}
      *
      * <p>Clear the httpHeaders of the file and preserve the SMB properties</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setPropertiesWithResponse#long-fileproperties-Context.clearHttpHeaderspreserveSMBProperties}
+     * {@codesnippet com.azure.storage.file.fileClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-Context.clearHttpHeaderspreserveSMBProperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a>.</p>
      *
      * @param newFileSize New file size of the file
-     * @param fileProperties The user-settable file properties for a file
+     * @param httpHeaders The user settable file http headers.
+     * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Response containing the {@link FileInfo file info} with headers and status code
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public Response<FileInfo> setPropertiesWithResponse(long newFileSize, FileProperties fileProperties,
-        String filePermission, Context context) {
-        return fileAsyncClient.setPropertiesWithResponse(newFileSize, fileProperties, filePermission, context).block();
+    public Response<FileInfo> setPropertiesWithResponse(long newFileSize, FileHTTPHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission, Context context) {
+        return fileAsyncClient.setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, context).block();
     }
 
     /**

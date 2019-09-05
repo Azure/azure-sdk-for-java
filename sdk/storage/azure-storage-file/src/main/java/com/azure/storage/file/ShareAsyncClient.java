@@ -21,6 +21,7 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.ShareCreateSnapshotHeaders;
 import com.azure.storage.file.models.ShareGetPropertiesHeaders;
@@ -653,7 +654,7 @@ public class ShareAsyncClient {
      * </ul>
      */
     public Mono<FileAsyncClient> createFile(String fileName, long maxSize) {
-        return createFileWithResponse(fileName, maxSize, null, null, null).flatMap(FluxUtil::toMono);
+        return createFileWithResponse(fileName, maxSize, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -663,14 +664,15 @@ public class ShareAsyncClient {
      *
      * <p>Create the file "myfile" with length of 1024 bytes, some headers, file smb properties and metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-fileproperties-map}
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file.
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
-     * @param fileProperties The user settable file properties of the file.
+     * @param httpHeaders The user settable file http headers.
+     * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file.
      * @param metadata Optional name-value pairs associated with the file as metadata.
      * @return A response containing a {@link FileAsyncClient} to interact with the created file and the
@@ -685,16 +687,17 @@ public class ShareAsyncClient {
      *     </li>
      * </ul>
      */
-    public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties,
-        String filePermission, Map<String, String> metadata) {
-        return withContext(context -> createFileWithResponse(fileName, maxSize, fileProperties, filePermission, metadata, context));
+    public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
+        return withContext(context -> createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission,
+            metadata, context));
     }
 
-    Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileProperties fileProperties,
-        String filePermission, Map<String, String> metadata, Context context) {
+    Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         FileAsyncClient fileAsyncClient = getFileClient(fileName);
-        return postProcessResponse(fileAsyncClient.createWithResponse(maxSize, fileProperties, filePermission, metadata, context))
-            .map(response -> new SimpleResponse<>(response, fileAsyncClient));
+        return postProcessResponse(fileAsyncClient.createWithResponse(maxSize, httpHeaders, smbProperties, filePermission,
+            metadata, context)).map(response -> new SimpleResponse<>(response, fileAsyncClient));
     }
 
     /**
