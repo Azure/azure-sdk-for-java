@@ -65,6 +65,7 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
         if (currentWork == null) {
             logger.warning("There is no work to request EventData for. Listener should have been created with work.");
         } else {
+            logger.info("Starting subscription with work: {}", currentWork.getId());
             subscription.request(currentWork.getNumberOfEvents());
         }
     }
@@ -145,6 +146,7 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
                 "This has not been subscribed to. Cannot start receiving work."));
         }
 
+        logger.info("Scheduling receiver for: {}", work.getId());
         subscription.request(work.getNumberOfEvents());
         timer.schedule(new ReceiveTimeoutTask(work), work.getTimeout().toMillis());
     }
