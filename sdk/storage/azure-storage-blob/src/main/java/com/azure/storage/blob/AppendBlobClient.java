@@ -25,7 +25,6 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 
-
 /**
  * Client to an append blob. It may only be instantiated through a {@link BlobClientBuilder}, via
  * the method {@link BlobClient#asAppendBlobClient()}, or via the method
