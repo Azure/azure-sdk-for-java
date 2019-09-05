@@ -683,6 +683,7 @@ public final class ContainerClient {
 
     /**
      * Generates a user delegation SAS token with the specified parameters
+     *
      * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
      * @param accountName The {@code String} account name for the SAS
      * @param permissions The {@code ContainerSASPermissions} permission for the SAS
@@ -698,6 +699,7 @@ public final class ContainerClient {
 
     /**
      * Generates a user delegation SAS token with the specified parameters
+     *
      * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
      * @param accountName The {@code String} account name for the SAS
      * @param permissions The {@code ContainerSASPermissions} permission for the SAS
@@ -718,6 +720,14 @@ public final class ContainerClient {
 
     /**
      * Generates a user delegation SAS token with the specified parameters
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.generateUserDelegationSAS}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas">Azure Docs</a></p>
+     *
      * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
      * @param accountName The {@code String} account name for the SAS
      * @param permissions The {@code ContainerSASPermissions} permission for the SAS
@@ -745,6 +755,7 @@ public final class ContainerClient {
 
     /**
      * Generates a SAS token with the specified parameters
+     *
      * @param permissions The {@code ContainerSASPermissions} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      *
@@ -756,6 +767,7 @@ public final class ContainerClient {
 
     /**
      * Generates a SAS token with the specified parameters
+     *
      * @param identifier The {@code String} name of the access policy on the container this SAS references if any
      *
      * @return A string that represents the SAS token
@@ -766,6 +778,7 @@ public final class ContainerClient {
 
     /**
      * Generates a SAS token with the specified parameters
+     *
      * @param identifier The {@code String} name of the access policy on the container this SAS references if any
      * @param permissions The {@code ContainerSASPermissions} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
@@ -784,6 +797,14 @@ public final class ContainerClient {
 
     /**
      * Generates a SAS token with the specified parameters
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.generateSAS}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a></p>
+     *
      * @param identifier The {@code String} name of the access policy on the container this SAS references if any
      * @param permissions The {@code ContainerSASPermissions} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
