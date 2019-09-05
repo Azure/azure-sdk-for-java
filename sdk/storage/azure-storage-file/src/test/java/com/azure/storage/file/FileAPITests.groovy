@@ -5,6 +5,7 @@ package com.azure.storage.file
 
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.http.rest.Response
+import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.implementation.util.FluxUtil
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.models.FileCopyInfo
@@ -209,6 +210,23 @@ class FileAPITests extends APISpec {
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 416, StorageErrorCode.INVALID_RANGE)
+    }
+
+    @Unroll
+    def "Upload data length mismatch"() {
+        given:
+        primaryFileClient.create(1024)
+        when:
+        primaryFileClient.uploadWithResponse(defaultData, size, 0, null)
+        then:
+        def e = thrown(UnexpectedLengthException)
+        e.getMessage().contains(errMsg)
+        cleanup:
+        defaultData.clear()
+        where:
+        size | errMsg
+        6 | "more than"
+        8 | "less than"
     }
 
     def "Download data error"() {

@@ -3,7 +3,7 @@
 
 package com.azure.storage.file
 
-
+import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.file.models.CorsRule
 import com.azure.storage.file.models.FileServiceProperties
 import com.azure.storage.file.models.Metrics
@@ -16,6 +16,8 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 class FileTestHelper {
+    private static final ClientLogger logger = new ClientLogger(FileTestHelper.class)
+
     static <T extends Throwable> boolean assertExceptionStatusCodeAndMessage(T throwable, int expectedStatusCode, StorageErrorCode errMessage) {
         return assertExceptionStatusCode(throwable, expectedStatusCode) && assertExceptionErrorMessage(throwable, errMessage)
     }
@@ -112,10 +114,14 @@ class FileTestHelper {
 
     static String createRandomFileWithLength(int size, String folder, String fileName) {
         def path = Paths.get(folder)
+        if (path == null) {
+            throw logger.logExceptionAsError(new RuntimeException("The folder path does not exist."))
+        }
+
         if (!Files.exists(path)) {
             Files.createDirectory(path)
         }
-        def randomFile = new File(folder + "/" + fileName)
+        def randomFile = new File(folder, fileName)
         RandomAccessFile raf = new RandomAccessFile(randomFile, "rw")
         raf.setLength(size)
         raf.close()
