@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatefilemaxoverloadinvalidargs213318ba?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatefilemaxoverloadinvalidargs2499504c?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "94920331-90c6-4fd5-8585-29c206df18a0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "14523ca3-ca03-4094-a798-d5d7ae3421ac"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7317BB9F75EBA\"",
-      "Last-Modified" : "Wed, 04 Sep 2019 21:06:16 GMT",
+      "ETag" : "\"0x8D732509035C8B1\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 22:29:49 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "caec573b-c01a-0019-2e64-631280000000",
-      "Date" : "Wed, 04 Sep 2019 21:06:16 GMT",
-      "x-ms-client-request-id" : "94920331-90c6-4fd5-8585-29c206df18a0"
+      "x-ms-request-id" : "a60ab493-101a-0035-3f39-64fe2f000000",
+      "Date" : "Thu, 05 Sep 2019 22:29:48 GMT",
+      "x-ms-client-request-id" : "14523ca3-ca03-4094-a798-d5d7ae3421ac"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatefilemaxoverloadinvalidargs213318ba/directoryapitestscreatefilemaxoverloadinvalidargs2875103e?restype=directory",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatefilemaxoverloadinvalidargs2499504c/directoryapitestscreatefilemaxoverloadinvalidargs21845096?restype=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "d98c9299-b2c5-4995-9498-680653a1bc29"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "0cea62f3-af50-40c6-a3c1-0e99bb0161ad"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "x-ms-file-permission-key" : "1749612463032355572*8114634751575874941",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-09-04T21:06:16.7863395Z",
-      "Last-Modified" : "Wed, 04 Sep 2019 21:06:16 GMT",
+      "x-ms-file-creation-time" : "2019-09-05T22:29:49.5563172Z",
+      "Last-Modified" : "Thu, 05 Sep 2019 22:29:49 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 04 Sep 2019 21:06:16 GMT",
-      "ETag" : "\"0x8D7317BBA055063\"",
+      "Date" : "Thu, 05 Sep 2019 22:29:48 GMT",
+      "ETag" : "\"0x8D7325090470FA4\"",
       "x-ms-file-attributes" : "Directory",
-      "x-ms-file-change-time" : "2019-09-04T21:06:16.7863395Z",
+      "x-ms-file-change-time" : "2019-09-05T22:29:49.5563172Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "caec5745-c01a-0019-3264-631280000000",
-      "x-ms-client-request-id" : "d98c9299-b2c5-4995-9498-680653a1bc29",
-      "x-ms-file-last-write-time" : "2019-09-04T21:06:16.7863395Z"
+      "x-ms-request-id" : "a60ab495-101a-0035-4039-64fe2f000000",
+      "x-ms-client-request-id" : "0cea62f3-af50-40c6-a3c1-0e99bb0161ad",
+      "x-ms-file-last-write-time" : "2019-09-05T22:29:49.5563172Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatefilemaxoverloadinvalidargs213318ba/directoryapitestscreatefilemaxoverloadinvalidargs2875103e%2ffileName",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatefilemaxoverloadinvalidargs2499504c/directoryapitestscreatefilemaxoverloadinvalidargs21845096%2ffileName",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "81d374a1-648b-4ca6-9a4d-6331f1074e45"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "841de729-a0b9-4194-880d-2920ed373512"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -64,13 +64,13 @@
       "retry-after" : "0",
       "Content-Length" : "310",
       "StatusCode" : "400",
-      "x-ms-request-id" : "caec5754-c01a-0019-3a64-631280000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:caec5754-c01a-0019-3a64-631280000000\nTime:2019-09-04T21:06:16.8839590Z</Message><HeaderName>x-ms-content-md5</HeaderName><HeaderValue /></Error>",
-      "Date" : "Wed, 04 Sep 2019 21:06:16 GMT",
-      "x-ms-client-request-id" : "81d374a1-648b-4ca6-9a4d-6331f1074e45",
+      "x-ms-request-id" : "a60ab496-101a-0035-4139-64fe2f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:a60ab496-101a-0035-4139-64fe2f000000\nTime:2019-09-05T22:29:49.6461019Z</Message><HeaderName>x-ms-content-md5</HeaderName><HeaderValue /></Error>",
+      "Date" : "Thu, 05 Sep 2019 22:29:48 GMT",
+      "x-ms-client-request-id" : "841de729-a0b9-4194-880d-2920ed373512",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "directoryapitestscreatefilemaxoverloadinvalidargs213318ba", "directoryapitestscreatefilemaxoverloadinvalidargs2875103e" ]
+  "variables" : [ "directoryapitestscreatefilemaxoverloadinvalidargs2499504c", "directoryapitestscreatefilemaxoverloadinvalidargs21845096" ]
 }

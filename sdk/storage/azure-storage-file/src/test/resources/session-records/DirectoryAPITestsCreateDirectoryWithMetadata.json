@@ -1,54 +1,54 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatedirectorywithmetadata0508691cd5?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatedirectorywithmetadata504294ba05?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "d0cb9311-5cc5-435b-a842-4a43a048e45e"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "9cd12578-43f6-4023-bf9b-d2e7e4113bbb"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7317BABE46AB5\"",
-      "Last-Modified" : "Wed, 04 Sep 2019 21:05:53 GMT",
+      "ETag" : "\"0x8D732508376A0ED\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 22:29:28 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "caec5222-c01a-0019-7564-631280000000",
-      "Date" : "Wed, 04 Sep 2019 21:05:53 GMT",
-      "x-ms-client-request-id" : "d0cb9311-5cc5-435b-a842-4a43a048e45e"
+      "x-ms-request-id" : "a60ab35d-101a-0035-4f39-64fe2f000000",
+      "Date" : "Thu, 05 Sep 2019 22:29:27 GMT",
+      "x-ms-client-request-id" : "9cd12578-43f6-4023-bf9b-d2e7e4113bbb"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatedirectorywithmetadata0508691cd5/directoryapitestscreatedirectorywithmetadata5449597cd2?restype=directory",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatedirectorywithmetadata504294ba05/directoryapitestscreatedirectorywithmetadata87447c3676?restype=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "c2bd627e-aaf4-4289-98e8-dce481e88e61"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "3225c424-ae35-4111-82b9-f4c20f4dd267"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "x-ms-file-permission-key" : "1749612463032355572*8114634751575874941",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-09-04T21:05:53.1789108Z",
-      "Last-Modified" : "Wed, 04 Sep 2019 21:05:53 GMT",
+      "x-ms-file-creation-time" : "2019-09-05T22:29:28.1590304Z",
+      "Last-Modified" : "Thu, 05 Sep 2019 22:29:28 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 04 Sep 2019 21:05:53 GMT",
-      "ETag" : "\"0x8D7317BABF31B34\"",
+      "Date" : "Thu, 05 Sep 2019 22:29:27 GMT",
+      "ETag" : "\"0x8D7325083861820\"",
       "x-ms-file-attributes" : "Directory",
-      "x-ms-file-change-time" : "2019-09-04T21:05:53.1789108Z",
+      "x-ms-file-change-time" : "2019-09-05T22:29:28.1590304Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "caec5224-c01a-0019-7664-631280000000",
-      "x-ms-client-request-id" : "c2bd627e-aaf4-4289-98e8-dce481e88e61",
-      "x-ms-file-last-write-time" : "2019-09-04T21:05:53.1789108Z"
+      "x-ms-request-id" : "a60ab360-101a-0035-5139-64fe2f000000",
+      "x-ms-client-request-id" : "3225c424-ae35-4111-82b9-f4c20f4dd267",
+      "x-ms-file-last-write-time" : "2019-09-05T22:29:28.1590304Z"
     },
     "Exception" : null
   } ],
-  "variables" : [ "directoryapitestscreatedirectorywithmetadata0508691cd5", "directoryapitestscreatedirectorywithmetadata5449597cd2" ]
+  "variables" : [ "directoryapitestscreatedirectorywithmetadata504294ba05", "directoryapitestscreatedirectorywithmetadata87447c3676" ]
 }

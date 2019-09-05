@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatesnapshotmetadataerror89285bc397e1?restype=share&comp=snapshot",
+    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatesnapshotmetadataerror605193d995c7?restype=share&comp=snapshot",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "0e06ddd5-4c07-4226-9592-920b7065f958"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "f064d43c-92d2-4fbd-9bf6-f819b12c5f7b"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "caec4f69-c01a-0019-5464-631280000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:caec4f69-c01a-0019-5464-631280000000\nTime:2019-09-04T21:05:42.1644982Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Wed, 04 Sep 2019 21:05:42 GMT",
-      "x-ms-client-request-id" : "0e06ddd5-4c07-4226-9592-920b7065f958",
+      "x-ms-request-id" : "a8e73612-e01a-0021-4739-64b640000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:a8e73612-e01a-0021-4739-64b640000000\nTime:2019-09-05T22:31:40.9326030Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Thu, 05 Sep 2019 22:31:40 GMT",
+      "x-ms-client-request-id" : "f064d43c-92d2-4fbd-9bf6-f819b12c5f7b",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestscreatesnapshotmetadataerror89285bc397e1" ]
+  "variables" : [ "shareapitestscreatesnapshotmetadataerror605193d995c7" ]
 }

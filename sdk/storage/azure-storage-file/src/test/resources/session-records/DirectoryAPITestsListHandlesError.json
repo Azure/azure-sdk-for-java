@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestslisthandleserror808025e6807e0a31?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestslisthandleserror71664d8f5e9cba15?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "8dec9444-fe30-45b3-9d3e-50d28d66cdc4"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "5997e09e-a199-4b71-ae19-d8c81aeb3d14"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7317BB5F22692\"",
-      "Last-Modified" : "Wed, 04 Sep 2019 21:06:09 GMT",
+      "ETag" : "\"0x8D732508BA3B7EA\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 22:29:41 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "caec558f-c01a-0019-2d64-631280000000",
-      "Date" : "Wed, 04 Sep 2019 21:06:09 GMT",
-      "x-ms-client-request-id" : "8dec9444-fe30-45b3-9d3e-50d28d66cdc4"
+      "x-ms-request-id" : "a60ab422-101a-0035-6939-64fe2f000000",
+      "Date" : "Thu, 05 Sep 2019 22:29:40 GMT",
+      "x-ms-client-request-id" : "5997e09e-a199-4b71-ae19-d8c81aeb3d14"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestslisthandleserror808025e6807e0a31/directoryapitestslisthandleserror506911bf731ce45c?comp=listhandles",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestslisthandleserror71664d8f5e9cba15/directoryapitestslisthandleserror42006aee98f1df80?comp=listhandles",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "3bd771cf-8488-4844-aa86-c5ffec3f7b95"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "cf493c5e-df65-4f48-aace-2ee96e200a01"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -35,13 +35,13 @@
       "retry-after" : "0",
       "Content-Length" : "223",
       "StatusCode" : "404",
-      "x-ms-request-id" : "caec5598-c01a-0019-3464-631280000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:caec5598-c01a-0019-3464-631280000000\nTime:2019-09-04T21:06:10.0448718Z</Message></Error>",
-      "Date" : "Wed, 04 Sep 2019 21:06:09 GMT",
-      "x-ms-client-request-id" : "3bd771cf-8488-4844-aa86-c5ffec3f7b95",
+      "x-ms-request-id" : "a60ab424-101a-0035-6a39-64fe2f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:a60ab424-101a-0035-6a39-64fe2f000000\nTime:2019-09-05T22:29:41.8719428Z</Message></Error>",
+      "Date" : "Thu, 05 Sep 2019 22:29:41 GMT",
+      "x-ms-client-request-id" : "cf493c5e-df65-4f48-aace-2ee96e200a01",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "directoryapitestslisthandleserror808025e6807e0a31", "directoryapitestslisthandleserror506911bf731ce45c" ]
+  "variables" : [ "directoryapitestslisthandleserror71664d8f5e9cba15", "directoryapitestslisthandleserror42006aee98f1df80" ]
 }

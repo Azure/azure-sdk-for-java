@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatesharewithinvalidargs135694aa7b86b?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatesharewithinvalidargs196879e616873?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "7e8ee6bb-f99c-46de-8237-d22187be763d"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "c17b8688-e6af-470e-8af7-8e154c0d52c8"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "260",
       "StatusCode" : "400",
-      "x-ms-request-id" : "caec4f14-c01a-0019-0964-631280000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:caec4f14-c01a-0019-0964-631280000000\nTime:2019-09-04T21:05:40.8834838Z</Message></Error>",
-      "Date" : "Wed, 04 Sep 2019 21:05:40 GMT",
-      "x-ms-client-request-id" : "7e8ee6bb-f99c-46de-8237-d22187be763d",
+      "x-ms-request-id" : "a8e735fb-e01a-0021-3839-64b640000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:a8e735fb-e01a-0021-3839-64b640000000\nTime:2019-09-05T22:31:39.5405928Z</Message></Error>",
+      "Date" : "Thu, 05 Sep 2019 22:31:39 GMT",
+      "x-ms-client-request-id" : "c17b8688-e6af-470e-8af7-8e154c0d52c8",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestscreatesharewithinvalidargs135694aa7b86b" ]
+  "variables" : [ "shareapitestscreatesharewithinvalidargs196879e616873" ]
 }

@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://gapradev.file.core.windows.net/shareasyncapitestsgetpermissionerror216365d57c45b7?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "e9f33322-4a1a-4890-9e9d-68c938a689eb"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D7323FF274DBB9\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 20:30:52 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "360c55b4-e01a-0031-1c28-647328000000",
+      "Date" : "Thu, 05 Sep 2019 20:30:52 GMT",
+      "x-ms-client-request-id" : "e9f33322-4a1a-4890-9e9d-68c938a689eb"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://gapradev.file.core.windows.net/{shareName}?restype=share&comp=filepermission",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "52171600-993e-435a-b63d-06242e4ceaf2"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidHeaderValue",
+      "retry-after" : "0",
+      "Content-Length" : "335",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "360c55b7-e01a-0031-1d28-647328000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:360c55b7-e01a-0031-1d28-647328000000\nTime:2019-09-05T20:30:53.0177595Z</Message><HeaderName>x-ms-file-permission-key</HeaderName><HeaderValue>abcde</HeaderValue></Error>",
+      "Date" : "Thu, 05 Sep 2019 20:30:52 GMT",
+      "x-ms-client-request-id" : "52171600-993e-435a-b63d-06242e4ceaf2",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareasyncapitestsgetpermissionerror216365d57c45b7" ]
+}

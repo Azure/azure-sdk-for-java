@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/fileserviceasyncapitestscreatesharewithinvalidargs09700907?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/fileserviceasyncapitestscreatesharewithinvalidargs0373940e?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "ebf8555a-4526-43d8-9110-4a2416effd74"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "c7c90603-6b90-41a8-b14b-a9a53c79105f"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "260",
       "StatusCode" : "400",
-      "x-ms-request-id" : "caec6581-c01a-0019-3064-631280000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:caec6581-c01a-0019-3064-631280000000\nTime:2019-09-04T21:07:16.6317169Z</Message></Error>",
-      "Date" : "Wed, 04 Sep 2019 21:07:16 GMT",
-      "x-ms-client-request-id" : "ebf8555a-4526-43d8-9110-4a2416effd74",
+      "x-ms-request-id" : "a60ab897-101a-0035-4339-64fe2f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:a60ab897-101a-0035-4339-64fe2f000000\nTime:2019-09-05T22:31:00.6394677Z</Message></Error>",
+      "Date" : "Thu, 05 Sep 2019 22:30:59 GMT",
+      "x-ms-client-request-id" : "c7c90603-6b90-41a8-b14b-a9a53c79105f",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileserviceasyncapitestscreatesharewithinvalidargs09700907" ]
+  "variables" : [ "fileserviceasyncapitestscreatesharewithinvalidargs0373940e" ]
 }

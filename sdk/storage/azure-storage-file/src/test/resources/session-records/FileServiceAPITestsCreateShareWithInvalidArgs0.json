@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/fileserviceapitestscreatesharewithinvalidargs045471f2ea?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/fileserviceapitestscreatesharewithinvalidargs074589cef5?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "a396c7b3-1b39-408b-b429-48f8d2988c90"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "66934238-10c5-49f5-a0b2-e4bb76f9c1f7"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "260",
       "StatusCode" : "400",
-      "x-ms-request-id" : "caec5e46-c01a-0019-4f64-631280000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:caec5e46-c01a-0019-4f64-631280000000\nTime:2019-09-04T21:06:46.3153481Z</Message></Error>",
-      "Date" : "Wed, 04 Sep 2019 21:06:46 GMT",
-      "x-ms-client-request-id" : "a396c7b3-1b39-408b-b429-48f8d2988c90",
+      "x-ms-request-id" : "a60ab6ac-101a-0035-5339-64fe2f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:a60ab6ac-101a-0035-5339-64fe2f000000\nTime:2019-09-05T22:30:22.6107379Z</Message></Error>",
+      "Date" : "Thu, 05 Sep 2019 22:30:21 GMT",
+      "x-ms-client-request-id" : "66934238-10c5-49f5-a0b2-e4bb76f9c1f7",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileserviceapitestscreatesharewithinvalidargs045471f2ea" ]
+  "variables" : [ "fileserviceapitestscreatesharewithinvalidargs074589cef5" ]
 }

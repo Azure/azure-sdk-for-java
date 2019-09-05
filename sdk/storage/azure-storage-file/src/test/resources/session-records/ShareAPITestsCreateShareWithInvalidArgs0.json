@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatesharewithinvalidargs021725dac0443?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatesharewithinvalidargs079018baa1284?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "2a39b6f1-1fb9-4aa7-9080-3d8934b8cd5f"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "cd07b7b7-6bf0-4e5c-b630-e26c4e9dae40"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "caec4f09-c01a-0019-7e64-631280000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:caec4f09-c01a-0019-7e64-631280000000\nTime:2019-09-04T21:05:40.6824805Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Wed, 04 Sep 2019 21:05:40 GMT",
-      "x-ms-client-request-id" : "2a39b6f1-1fb9-4aa7-9080-3d8934b8cd5f",
+      "x-ms-request-id" : "a8e735f8-e01a-0021-3639-64b640000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:a8e735f8-e01a-0021-3639-64b640000000\nTime:2019-09-05T22:31:39.3445901Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Thu, 05 Sep 2019 22:31:39 GMT",
+      "x-ms-client-request-id" : "cd07b7b7-6bf0-4e5c-b630-e26c4e9dae40",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestscreatesharewithinvalidargs021725dac0443" ]
+  "variables" : [ "shareapitestscreatesharewithinvalidargs079018baa1284" ]
 }

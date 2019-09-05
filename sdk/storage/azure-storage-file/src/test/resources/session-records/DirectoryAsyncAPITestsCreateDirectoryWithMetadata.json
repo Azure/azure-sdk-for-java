@@ -1,54 +1,54 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestscreatedirectorywithmetadata16474270?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestscreatedirectorywithmetadata13082a1f?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "8de97c67-a728-40ec-a773-609810f52fe2"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "846a9ea8-3f87-4190-b2ba-e46b244a45f3"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7317BD182AC2F\"",
-      "Last-Modified" : "Wed, 04 Sep 2019 21:06:56 GMT",
+      "ETag" : "\"0x8D73250ACA12A31\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 22:30:37 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "caec60a7-c01a-0019-3964-631280000000",
-      "Date" : "Wed, 04 Sep 2019 21:06:56 GMT",
-      "x-ms-client-request-id" : "8de97c67-a728-40ec-a773-609810f52fe2"
+      "x-ms-request-id" : "a60ab74b-101a-0035-4039-64fe2f000000",
+      "Date" : "Thu, 05 Sep 2019 22:30:36 GMT",
+      "x-ms-client-request-id" : "846a9ea8-3f87-4190-b2ba-e46b244a45f3"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestscreatedirectorywithmetadata16474270/directoryasyncapitestscreatedirectorywithmetadata33729bd8?restype=directory",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestscreatedirectorywithmetadata13082a1f/directoryasyncapitestscreatedirectorywithmetadata36205809?restype=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "d7948dba-d0b9-4de2-8154-d4121cdadfba"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "0e1a39ec-3c1c-4877-af3c-54a772de8ed5"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "x-ms-file-permission-key" : "1749612463032355572*8114634751575874941",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-09-04T21:06:56.2841846Z",
-      "Last-Modified" : "Wed, 04 Sep 2019 21:06:56 GMT",
+      "x-ms-file-creation-time" : "2019-09-05T22:30:37.2335977Z",
+      "Last-Modified" : "Thu, 05 Sep 2019 22:30:37 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 04 Sep 2019 21:06:56 GMT",
-      "ETag" : "\"0x8D7317BD19034F6\"",
+      "Date" : "Thu, 05 Sep 2019 22:30:36 GMT",
+      "ETag" : "\"0x8D73250ACB20969\"",
       "x-ms-file-attributes" : "Directory",
-      "x-ms-file-change-time" : "2019-09-04T21:06:56.2841846Z",
+      "x-ms-file-change-time" : "2019-09-05T22:30:37.2335977Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "caec60ae-c01a-0019-3f64-631280000000",
-      "x-ms-client-request-id" : "d7948dba-d0b9-4de2-8154-d4121cdadfba",
-      "x-ms-file-last-write-time" : "2019-09-04T21:06:56.2841846Z"
+      "x-ms-request-id" : "a60ab74d-101a-0035-4139-64fe2f000000",
+      "x-ms-client-request-id" : "0e1a39ec-3c1c-4877-af3c-54a772de8ed5",
+      "x-ms-file-last-write-time" : "2019-09-05T22:30:37.2335977Z"
     },
     "Exception" : null
   } ],
-  "variables" : [ "directoryasyncapitestscreatedirectorywithmetadata16474270", "directoryasyncapitestscreatedirectorywithmetadata33729bd8" ]
+  "variables" : [ "directoryasyncapitestscreatedirectorywithmetadata13082a1f", "directoryasyncapitestscreatedirectorywithmetadata36205809" ]
 }

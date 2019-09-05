@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatedirectoryerrorwithmetadata66082052?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatedirectoryerrorwithmetadata297148d8?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "f5c46a0d-ce77-4521-ad22-13f41ea886df"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "e3bf2e4a-2bc6-49ff-928d-1e7c88555790"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7317BAC195DA4\"",
-      "Last-Modified" : "Wed, 04 Sep 2019 21:05:53 GMT",
+      "ETag" : "\"0x8D7325083AEEF50\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 22:29:28 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "caec522f-c01a-0019-0164-631280000000",
-      "Date" : "Wed, 04 Sep 2019 21:05:53 GMT",
-      "x-ms-client-request-id" : "f5c46a0d-ce77-4521-ad22-13f41ea886df"
+      "x-ms-request-id" : "a60ab363-101a-0035-5439-64fe2f000000",
+      "Date" : "Thu, 05 Sep 2019 22:29:27 GMT",
+      "x-ms-client-request-id" : "e3bf2e4a-2bc6-49ff-928d-1e7c88555790"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatedirectoryerrorwithmetadata66082052/directoryapitestscreatedirectoryerrorwithmetadata24703b2d?restype=directory",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatedirectoryerrorwithmetadata297148d8/directoryapitestscreatedirectoryerrorwithmetadata0625383a?restype=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "877ad65e-3fae-423e-8311-8a1372e5d79a"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "bc9af2f7-caff-48d5-a312-a2da92b20006"
     },
     "Response" : {
       "Server" : "Microsoft-HTTPAPI/2.0",
@@ -34,12 +34,12 @@
       "retry-after" : "0",
       "Content-Length" : "959",
       "StatusCode" : "403",
-      "x-ms-request-id" : "caec5232-c01a-0019-0364-631280000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:caec5232-c01a-0019-0364-631280000000\nTime:2019-09-04T21:05:53.5006511Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request '4EU0kTxwH/drOKba14CgKjAqB6SqKp4sJ0ROF1BTKhI=' is not the same as any computed signature. Server used following string to sign: 'PUT\n\n\n\n\n\nWed, 04 Sep 2019 21:05:52 GMT\n\n\n\n\n\nx-ms-client-request-id:877ad65e-3fae-423e-8311-8a1372e5d79a\nx-ms-file-attributes:None\nx-ms-file-creation-time:Now\nx-ms-file-last-write-time:Now\nx-ms-file-permission:Inherit\nx-ms-meta-testmeta:value\nx-ms-version:2019-02-02\n/gapradev/directoryapitestscreatedirectoryerrorwithmetadata66082052/directoryapitestscreatedirectoryerrorwithmetadata24703b2d\nrestype:directory'.</AuthenticationErrorDetail></Error>",
-      "Date" : "Wed, 04 Sep 2019 21:05:53 GMT",
+      "x-ms-request-id" : "a60ab365-101a-0035-5539-64fe2f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:a60ab365-101a-0035-5539-64fe2f000000\nTime:2019-09-05T22:29:28.5156840Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'Pfx9wgSsFMTspwvwXWJWE2b+aUI7ho/uBrIolQNKaxk=' is not the same as any computed signature. Server used following string to sign: 'PUT\n\n\n\n\n\nThu, 05 Sep 2019 22:29:28 GMT\n\n\n\n\n\nx-ms-client-request-id:bc9af2f7-caff-48d5-a312-a2da92b20006\nx-ms-file-attributes:None\nx-ms-file-creation-time:Now\nx-ms-file-last-write-time:Now\nx-ms-file-permission:Inherit\nx-ms-meta-testmeta:value\nx-ms-version:2019-02-02\n/gapradev/directoryapitestscreatedirectoryerrorwithmetadata297148d8/directoryapitestscreatedirectoryerrorwithmetadata0625383a\nrestype:directory'.</AuthenticationErrorDetail></Error>",
+      "Date" : "Thu, 05 Sep 2019 22:29:27 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "directoryapitestscreatedirectoryerrorwithmetadata66082052", "directoryapitestscreatedirectoryerrorwithmetadata24703b2d" ]
+  "variables" : [ "directoryapitestscreatedirectoryerrorwithmetadata297148d8", "directoryapitestscreatedirectoryerrorwithmetadata0625383a" ]
 }

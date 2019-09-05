@@ -4,8 +4,8 @@
     "Uri" : "https://gapradev.file.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "be7d00a9-8746-4c37-8856-20b8852dce58",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "a95350e4-4fe5-492b-ac4b-8a9bb274363e",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -15,13 +15,13 @@
       "retry-after" : "0",
       "Content-Length" : "294",
       "StatusCode" : "400",
-      "x-ms-request-id" : "caec6029-c01a-0019-4364-631280000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:caec6029-c01a-0019-4364-631280000000\nTime:2019-09-04T21:06:54.1554532Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
-      "Date" : "Wed, 04 Sep 2019 21:06:54 GMT",
-      "x-ms-client-request-id" : "be7d00a9-8746-4c37-8856-20b8852dce58",
+      "x-ms-request-id" : "a60ab72f-101a-0035-2b39-64fe2f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:a60ab72f-101a-0035-2b39-64fe2f000000\nTime:2019-09-05T22:30:34.5309728Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
+      "Date" : "Thu, 05 Sep 2019 22:30:33 GMT",
+      "x-ms-client-request-id" : "a95350e4-4fe5-492b-ac4b-8a9bb274363e",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileserviceapitestssetandgetpropertieswithinvalidargs316717" ]
+  "variables" : [ "fileserviceapitestssetandgetpropertieswithinvalidargs398271" ]
 }

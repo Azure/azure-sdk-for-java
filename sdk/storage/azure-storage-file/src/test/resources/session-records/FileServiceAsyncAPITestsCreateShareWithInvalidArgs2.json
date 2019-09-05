@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/fileserviceasyncapitestscreatesharewithinvalidargs29818304?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/fileserviceasyncapitestscreatesharewithinvalidargs2972269a?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "bf938ac7-eb53-4799-a2e4-7a599b293f48"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "8a5a79cc-96cd-4c78-a0e3-d75a01808d64"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "323",
       "StatusCode" : "400",
-      "x-ms-request-id" : "caec65a4-c01a-0019-4264-631280000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:caec65a4-c01a-0019-4264-631280000000\nTime:2019-09-04T21:07:16.9377210Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>0</HeaderValue></Error>",
-      "Date" : "Wed, 04 Sep 2019 21:07:16 GMT",
-      "x-ms-client-request-id" : "bf938ac7-eb53-4799-a2e4-7a599b293f48",
+      "x-ms-request-id" : "a60ab8a1-101a-0035-4d39-64fe2f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:a60ab8a1-101a-0035-4d39-64fe2f000000\nTime:2019-09-05T22:31:00.9684728Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>0</HeaderValue></Error>",
+      "Date" : "Thu, 05 Sep 2019 22:31:00 GMT",
+      "x-ms-client-request-id" : "8a5a79cc-96cd-4c78-a0e3-d75a01808d64",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileserviceasyncapitestscreatesharewithinvalidargs29818304" ]
+  "variables" : [ "fileserviceasyncapitestscreatesharewithinvalidargs2972269a" ]
 }

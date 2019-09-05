@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://gapradev.file.core.windows.net/fileserviceasyncapitestsdeletesharedoesnotexist805286f52?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/fileserviceasyncapitestsdeletesharedoesnotexist3065503ee?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "1ef7f5a1-54c4-4614-b0b4-eb1b32281619"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "619bb45e-46b4-4590-864a-720e423b99d0"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "caec65d0-c01a-0019-5864-631280000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:caec65d0-c01a-0019-5864-631280000000\nTime:2019-09-04T21:07:17.3477263Z</Message></Error>",
-      "Date" : "Wed, 04 Sep 2019 21:07:17 GMT",
-      "x-ms-client-request-id" : "1ef7f5a1-54c4-4614-b0b4-eb1b32281619",
+      "x-ms-request-id" : "a60ab8ad-101a-0035-5839-64fe2f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:a60ab8ad-101a-0035-5839-64fe2f000000\nTime:2019-09-05T22:31:01.3904760Z</Message></Error>",
+      "Date" : "Thu, 05 Sep 2019 22:31:00 GMT",
+      "x-ms-client-request-id" : "619bb45e-46b4-4590-864a-720e423b99d0",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileserviceasyncapitestsdeletesharedoesnotexist935378c5b", "fileserviceasyncapitestsdeletesharedoesnotexist805286f52" ]
+  "variables" : [ "fileserviceasyncapitestsdeletesharedoesnotexist207478cf3", "fileserviceasyncapitestsdeletesharedoesnotexist3065503ee" ]
 }

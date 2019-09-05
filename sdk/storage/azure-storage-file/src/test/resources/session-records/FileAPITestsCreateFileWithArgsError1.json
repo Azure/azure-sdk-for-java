@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/fileapitestscreatefilewithargserror19606353ddcf528?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/fileapitestscreatefilewithargserror183508732f65221?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "981214f5-1cd7-4238-9e20-4a72cac6db06"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "5441e4c2-b619-4268-814d-3a560f155127"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7317B83736F96\"",
-      "Last-Modified" : "Wed, 04 Sep 2019 21:04:45 GMT",
+      "ETag" : "\"0x8D732506D835138\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 22:28:51 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "f4f8c80b-301a-0032-2764-63924c000000",
-      "Date" : "Wed, 04 Sep 2019 21:04:44 GMT",
-      "x-ms-client-request-id" : "981214f5-1cd7-4238-9e20-4a72cac6db06"
+      "x-ms-request-id" : "a60ab154-101a-0035-4539-64fe2f000000",
+      "Date" : "Thu, 05 Sep 2019 22:28:50 GMT",
+      "x-ms-client-request-id" : "5441e4c2-b619-4268-814d-3a560f155127"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/fileapitestscreatefilewithargserror19606353ddcf528/fileapitestscreatefilewithargserror10607843aabce82",
+    "Uri" : "https://gapradev.file.core.windows.net/fileapitestscreatefilewithargserror183508732f65221/fileapitestscreatefilewithargserror117069926486503",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "bb4193b2-8364-4902-8f56-0072115ecf8e"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "9edf2e11-3f1a-4199-8dd8-8186730b9543"
     },
     "Response" : {
       "Server" : "Microsoft-HTTPAPI/2.0",
@@ -34,12 +34,12 @@
       "retry-after" : "0",
       "Content-Length" : "967",
       "StatusCode" : "403",
-      "x-ms-request-id" : "f4f8c80d-301a-0032-2864-63924c000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:f4f8c80d-301a-0032-2864-63924c000000\nTime:2019-09-04T21:04:45.3873547Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'ijpiLZ5QjAo61U+XZqMg4dLnjyWfhxC3Wd0nYFbWILo=' is not the same as any computed signature. Server used following string to sign: 'PUT\n\n\n\n\n\nWed, 04 Sep 2019 21:04:44 GMT\n\n\n\n\n\nx-ms-client-request-id:bb4193b2-8364-4902-8f56-0072115ecf8e\nx-ms-content-length:1024\nx-ms-file-attributes:None\nx-ms-file-creation-time:Now\nx-ms-file-last-write-time:Now\nx-ms-file-permission:Inherit\nx-ms-meta-testmeta:value\nx-ms-type:file\nx-ms-version:2019-02-02\n/gapradev/fileapitestscreatefilewithargserror19606353ddcf528/fileapitestscreatefilewithargserror10607843aabce82'.</AuthenticationErrorDetail></Error>",
-      "Date" : "Wed, 04 Sep 2019 21:04:44 GMT",
+      "x-ms-request-id" : "a60ab156-101a-0035-4639-64fe2f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:a60ab156-101a-0035-4639-64fe2f000000\nTime:2019-09-05T22:28:51.3269617Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'Wpqkk2JFmx6bJy2VicIJH8kFQG7FDwTSsvLHE3m6dWc=' is not the same as any computed signature. Server used following string to sign: 'PUT\n\n\n\n\n\nThu, 05 Sep 2019 22:28:51 GMT\n\n\n\n\n\nx-ms-client-request-id:9edf2e11-3f1a-4199-8dd8-8186730b9543\nx-ms-content-length:1024\nx-ms-file-attributes:None\nx-ms-file-creation-time:Now\nx-ms-file-last-write-time:Now\nx-ms-file-permission:Inherit\nx-ms-meta-testmeta:value\nx-ms-type:file\nx-ms-version:2019-02-02\n/gapradev/fileapitestscreatefilewithargserror183508732f65221/fileapitestscreatefilewithargserror117069926486503'.</AuthenticationErrorDetail></Error>",
+      "Date" : "Thu, 05 Sep 2019 22:28:50 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileapitestscreatefilewithargserror19606353ddcf528", "fileapitestscreatefilewithargserror10607843aabce82" ]
+  "variables" : [ "fileapitestscreatefilewithargserror183508732f65221", "fileapitestscreatefilewithargserror117069926486503" ]
 }

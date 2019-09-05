@@ -1,83 +1,104 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestssetpropertiesfilepermissionkey88608c?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestssetpropertiesfilepermissionkey123002?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "4582d515-17a1-41fe-b68a-7ad7c7bda514"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "acd931ec-018d-4db9-be97-2207a6f466ea"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7317BD390F359\"",
-      "Last-Modified" : "Wed, 04 Sep 2019 21:06:59 GMT",
+      "ETag" : "\"0x8D73250AEFC824A\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 22:30:41 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "caec617e-c01a-0019-0464-631280000000",
-      "Date" : "Wed, 04 Sep 2019 21:06:59 GMT",
-      "x-ms-client-request-id" : "4582d515-17a1-41fe-b68a-7ad7c7bda514"
+      "x-ms-request-id" : "a60ab782-101a-0035-6a39-64fe2f000000",
+      "Date" : "Thu, 05 Sep 2019 22:30:40 GMT",
+      "x-ms-client-request-id" : "acd931ec-018d-4db9-be97-2207a6f466ea"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestssetpropertiesfilepermissionkey88608c/directoryasyncapitestssetpropertiesfilepermissionkey290056?restype=directory",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestssetpropertiesfilepermissionkey123002?restype=share&comp=filepermission",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "f67125eb-a7c0-4bf7-8e33-841baaef3813"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "65cf5431-faa7-48c2-990d-478ec8eaff83",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "15518056309741717644*8114634751575874941",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "a60ab784-101a-0035-6b39-64fe2f000000",
+      "Date" : "Thu, 05 Sep 2019 22:30:40 GMT",
+      "x-ms-client-request-id" : "65cf5431-faa7-48c2-990d-478ec8eaff83"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestssetpropertiesfilepermissionkey123002/directoryasyncapitestssetpropertiesfilepermissionkey744414?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "9c94bcb4-6153-44ad-8f91-ea46892661ee"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "x-ms-file-permission-key" : "1749612463032355572*8114634751575874941",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-09-04T21:06:59.7333163Z",
-      "Last-Modified" : "Wed, 04 Sep 2019 21:06:59 GMT",
+      "x-ms-file-creation-time" : "2019-09-05T22:30:41.2806278Z",
+      "Last-Modified" : "Thu, 05 Sep 2019 22:30:41 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 04 Sep 2019 21:06:59 GMT",
-      "ETag" : "\"0x8D7317BD39E80AB\"",
+      "Date" : "Thu, 05 Sep 2019 22:30:40 GMT",
+      "ETag" : "\"0x8D73250AF1B9086\"",
       "x-ms-file-attributes" : "Directory",
-      "x-ms-file-change-time" : "2019-09-04T21:06:59.7333163Z",
+      "x-ms-file-change-time" : "2019-09-05T22:30:41.2806278Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "caec6184-c01a-0019-0964-631280000000",
-      "x-ms-client-request-id" : "f67125eb-a7c0-4bf7-8e33-841baaef3813",
-      "x-ms-file-last-write-time" : "2019-09-04T21:06:59.7333163Z"
+      "x-ms-request-id" : "a60ab785-101a-0035-6c39-64fe2f000000",
+      "x-ms-client-request-id" : "9c94bcb4-6153-44ad-8f91-ea46892661ee",
+      "x-ms-file-last-write-time" : "2019-09-05T22:30:41.2806278Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestssetpropertiesfilepermissionkey88608c/directoryasyncapitestssetpropertiesfilepermissionkey290056?restype=directory&comp=properties",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestssetpropertiesfilepermissionkey123002/directoryasyncapitestssetpropertiesfilepermissionkey744414?restype=directory&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "bc0e0e9f-84f2-4213-8262-13b476c7a34d"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "fffd360e-3952-40c6-a1e1-829ad312bd72"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
-      "x-ms-file-permission-key" : "1749612463032355572*8114634751575874941",
+      "x-ms-file-permission-key" : "15518056309741717644*8114634751575874941",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-09-04T21:06:58.5869322Z",
-      "Last-Modified" : "Wed, 04 Sep 2019 21:06:59 GMT",
+      "x-ms-file-creation-time" : "2019-09-05T22:30:41.2400000Z",
+      "Last-Modified" : "Thu, 05 Sep 2019 22:30:41 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 04 Sep 2019 21:06:59 GMT",
-      "ETag" : "\"0x8D7317BD3AAB874\"",
+      "Date" : "Thu, 05 Sep 2019 22:30:40 GMT",
+      "ETag" : "\"0x8D73250AF2D6ACF\"",
       "x-ms-file-attributes" : "Directory",
-      "x-ms-file-change-time" : "2019-09-04T21:06:59.8133876Z",
+      "x-ms-file-change-time" : "2019-09-05T22:30:41.3976271Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "caec6188-c01a-0019-0d64-631280000000",
-      "x-ms-client-request-id" : "bc0e0e9f-84f2-4213-8262-13b476c7a34d",
-      "x-ms-file-last-write-time" : "2019-09-04T21:06:58.5869322Z"
+      "x-ms-request-id" : "a60ab787-101a-0035-6d39-64fe2f000000",
+      "x-ms-client-request-id" : "fffd360e-3952-40c6-a1e1-829ad312bd72",
+      "x-ms-file-last-write-time" : "2019-09-05T22:30:41.2400000Z"
     },
     "Exception" : null
   } ],
-  "variables" : [ "directoryasyncapitestssetpropertiesfilepermissionkey88608c", "directoryasyncapitestssetpropertiesfilepermissionkey290056", "2019-09-04T21:06:58.586932200Z", "2019-09-04T21:06:58.586932200Z" ]
+  "variables" : [ "directoryasyncapitestssetpropertiesfilepermissionkey123002", "directoryasyncapitestssetpropertiesfilepermissionkey744414", "2019-09-05T22:30:41.240Z", "2019-09-05T22:30:41.240Z" ]
 }

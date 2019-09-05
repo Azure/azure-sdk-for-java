@@ -4,8 +4,8 @@
     "Uri" : "https://gapradev.file.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "81acacc8-b361-4059-a0cc-3a24ca1bbcba"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "a25a9667-bef4-427c-8d06-d18ebc5b33a4"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -13,10 +13,10 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "caec5fc9-c01a-0019-6864-631280000000",
+      "x-ms-request-id" : "a60ab71b-101a-0035-1e39-64fe2f000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceProperties><HourMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></HourMetrics><MinuteMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></MinuteMetrics><Cors /></StorageServiceProperties>",
-      "Date" : "Wed, 04 Sep 2019 21:06:52 GMT",
-      "x-ms-client-request-id" : "81acacc8-b361-4059-a0cc-3a24ca1bbcba",
+      "Date" : "Thu, 05 Sep 2019 22:30:28 GMT",
+      "x-ms-client-request-id" : "a25a9667-bef4-427c-8d06-d18ebc5b33a4",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
@@ -25,8 +25,8 @@
     "Uri" : "https://gapradev.file.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "9a3ef6d1-492b-40f5-a44c-7d93b71a8e88"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "380bb5b9-6d5c-4271-9794-365eff3f8c4d"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -34,10 +34,10 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "caec5fd0-c01a-0019-6f64-631280000000",
+      "x-ms-request-id" : "a60ab71c-101a-0035-1f39-64fe2f000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceProperties><HourMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></HourMetrics><MinuteMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></MinuteMetrics><Cors /></StorageServiceProperties>",
-      "Date" : "Wed, 04 Sep 2019 21:06:52 GMT",
-      "x-ms-client-request-id" : "9a3ef6d1-492b-40f5-a44c-7d93b71a8e88",
+      "Date" : "Thu, 05 Sep 2019 22:30:28 GMT",
+      "x-ms-client-request-id" : "380bb5b9-6d5c-4271-9794-365eff3f8c4d",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
@@ -46,8 +46,8 @@
     "Uri" : "https://gapradev.file.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "3f7968de-f47c-40fc-ae2c-99a4054da244",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "c80ba59f-de93-4d24-b466-deb408ab87bb",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -56,9 +56,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "caec5fda-c01a-0019-7964-631280000000",
-      "Date" : "Wed, 04 Sep 2019 21:06:53 GMT",
-      "x-ms-client-request-id" : "3f7968de-f47c-40fc-ae2c-99a4054da244"
+      "x-ms-request-id" : "a60ab71d-101a-0035-2039-64fe2f000000",
+      "Date" : "Thu, 05 Sep 2019 22:30:31 GMT",
+      "x-ms-client-request-id" : "c80ba59f-de93-4d24-b466-deb408ab87bb"
     },
     "Exception" : null
   }, {
@@ -66,8 +66,8 @@
     "Uri" : "https://gapradev.file.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
-      "x-ms-client-request-id" : "187f0c8c-31a3-4ec2-b388-e4f585c26ed8"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "51a2be68-c67a-415b-9c65-d934539852dd"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -75,13 +75,13 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "caec6001-c01a-0019-1b64-631280000000",
+      "x-ms-request-id" : "a60ab725-101a-0035-2339-64fe2f000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceProperties><HourMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></HourMetrics><MinuteMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></MinuteMetrics><Cors /></StorageServiceProperties>",
-      "Date" : "Wed, 04 Sep 2019 21:06:53 GMT",
-      "x-ms-client-request-id" : "187f0c8c-31a3-4ec2-b388-e4f585c26ed8",
+      "Date" : "Thu, 05 Sep 2019 22:30:31 GMT",
+      "x-ms-client-request-id" : "51a2be68-c67a-415b-9c65-d934539852dd",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileserviceapitestssetandgetproperties366103c79c8d2" ]
+  "variables" : [ "fileserviceapitestssetandgetproperties17387453f29d2" ]
 }
