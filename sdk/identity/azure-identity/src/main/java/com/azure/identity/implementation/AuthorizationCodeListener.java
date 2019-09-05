@@ -42,7 +42,7 @@ public final class AuthorizationCodeListener {
         return Mono.just(new NanoHTTPD(port) {
             @Override
             public Response serve(final IHTTPSession session) {
-                String uriWithQueryParams = session.getUri()+"?"+session.getQueryParameterString();
+                String uriWithQueryParams = session.getUri() + "?" + session.getQueryParameterString();
                 monoProcessor.onNext(getCodeFromUri(uriWithQueryParams));
                 return newFixedLengthResponse("");
             }
