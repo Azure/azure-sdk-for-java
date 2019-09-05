@@ -281,6 +281,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- See http://checkstyle.sf.net/config_javadoc.html -->
     <module name="JavadocMethod">
       <property name="scope" value="protected"/>
+      <property name="suppressLoadErrors" value="true"/>
     </module>
 
     <!-- Verifies that all throws in the public API have JavaDocs explaining why and when they are thrown. -->

@@ -7,10 +7,15 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -40,6 +45,7 @@ import java.util.TreeMap;
 import java.util.function.Function;
 
 public final class Utility {
+    private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
     private static final String DESERIALIZED_HEADERS = "deserializedHeaders";
     private static final String ETAG = "eTag";
 
@@ -481,5 +487,47 @@ public final class Utility {
             }
         }
         return null;
+    }
+
+    /**
+     * A utility method for converting the input stream to Flux of ByteBuffer. Will check the equality of
+     * entity length and the input length.
+     *
+     * @param data The input data which needs to convert to ByteBuffer.
+     * @param length The expected input data length.
+     * @param blockSize The size of each ByteBuffer.
+     * @return {@link ByteBuffer} which contains the input data.
+     * @throws UnexpectedLengthException when input data length mismatch input length.
+     * @throws RuntimeException When I/O error occurs.
+     */
+    public static Flux<ByteBuffer> convertStreamToByteBuffer(InputStream data, long length, int blockSize) {
+        final long[] currentTotalLength = new long[1];
+        return Flux.range(0, (int) Math.ceil((double) length / (double) blockSize))
+            .map(i -> i * blockSize)
+            .concatMap(pos -> Mono.fromCallable(() -> {
+                long count = pos + blockSize > length ? length - pos : blockSize;
+                byte[] cache = new byte[(int) count];
+                int lastIndex = data.read(cache);
+                currentTotalLength[0] += lastIndex;
+                if (currentTotalLength[0] < count) {
+                    throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
+                        String.format("Request body emitted %d bytes less than the expected %d bytes.",
+                            currentTotalLength[0], length), currentTotalLength[0], length));
+                }
+                return ByteBuffer.wrap(cache);
+            }))
+            .doOnComplete(() -> {
+                try {
+                    if (data.available() > 0) {
+                        Long totalLength = currentTotalLength[0] + data.available();
+                        throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
+                            String.format("Request body emitted %d bytes more than the expected %d bytes.",
+                                totalLength, length), totalLength, length));
+                    }
+                } catch (IOException e) {
+                    throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurs. Error deatils: "
+                        + e.getMessage()));
+                }
+            });
     }
 }

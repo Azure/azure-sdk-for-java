@@ -1,10 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceapitestsdeletesharedoesnotexist6141547e720?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceapitestsdeletesharedoesnotexist60915c0ec8b?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "ea6b1db3-67d0-4cfe-aed8-d4cf410bd3fa"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -13,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "b02cf5a1-c01a-0046-6112-5aeee0000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:b02cf5a1-c01a-0046-6112-5aeee0000000\nTime:2019-08-24T00:27:45.4726439Z</Message></Error>",
-      "Date" : "Sat, 24 Aug 2019 00:27:45 GMT",
-      "x-ms-client-request-id" : "4115b637-b6aa-44f0-b265-a9cf92a77a5f",
+      "x-ms-request-id" : "e7c18d27-101a-0044-10c2-62ec1a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:e7c18d27-101a-0044-10c2-62ec1a000000\nTime:2019-09-04T01:44:32.9460085Z</Message></Error>",
+      "Date" : "Wed, 04 Sep 2019 01:44:32 GMT",
+      "x-ms-client-request-id" : "ea6b1db3-67d0-4cfe-aed8-d4cf410bd3fa",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileserviceapitestsdeletesharedoesnotexist82080d49cd7", "fileserviceapitestsdeletesharedoesnotexist6141547e720" ]
+  "variables" : [ "fileserviceapitestsdeletesharedoesnotexist291287a91c9", "fileserviceapitestsdeletesharedoesnotexist60915c0ec8b" ]
 }

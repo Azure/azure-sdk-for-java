@@ -22,6 +22,7 @@ import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.implementation.http.ContentType;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.http.UrlBuilder;
@@ -148,21 +149,51 @@ public class RestProxy implements InvocationHandler {
                     methodParser.context(args).addData("caller-method", methodParser.fullyQualifiedMethodName());
                 context = startTracingSpan(method, context);
 
+                if (request.body() != null) {
+                    request.body(validateLength(request));
+                }
+
                 final Mono<HttpResponse> asyncResponse = send(request, context);
-                //
+
                 Mono<HttpDecodedResponse> asyncDecodedResponse = this.decoder.decode(asyncResponse, methodParser);
-                //
-                return handleHttpResponse(
-                    request,
-                    asyncDecodedResponse,
-                    methodParser,
-                    methodParser.returnType(),
+
+                return handleHttpResponse(request, asyncDecodedResponse, methodParser, methodParser.returnType(),
                     context);
             }
 
         } catch (Exception e) {
             throw logger.logExceptionAsError(Exceptions.propagate(e));
         }
+    }
+
+    private Flux<ByteBuffer> validateLength(final HttpRequest request) {
+        final Flux<ByteBuffer> bbFlux = request.body();
+        if (bbFlux == null) {
+            return Flux.empty();
+        }
+
+        return Flux.defer(() -> {
+            Long expectedLength = Long.valueOf(request.headers().value("Content-Length"));
+            final long[] currentTotalLength = new long[1];
+            return bbFlux.doOnEach(s -> {
+                if (s.isOnNext()) {
+                    ByteBuffer byteBuffer = s.get();
+                    int currentLength = (byteBuffer == null) ? 0 : byteBuffer.remaining();
+                    currentTotalLength[0] += currentLength;
+                    if (currentTotalLength[0] > expectedLength) {
+                        throw logger.logExceptionAsError(new UnexpectedLengthException(
+                            String.format("Request body emitted %d bytes more than the expected %d bytes.",
+                                currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
+                    }
+                } else if (s.isOnComplete()) {
+                    if (expectedLength.compareTo(currentTotalLength[0]) != 0) {
+                        throw logger.logExceptionAsError(new UnexpectedLengthException(
+                            String.format("Request body emitted %d bytes less than the expected %d bytes.",
+                                currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
+                    }
+                }
+            });
+        });
     }
 
     private Method determineResumeMethod(Method method, String resumeMethodName) {
@@ -305,6 +336,8 @@ public class RestProxy implements InvocationHandler {
                 if (!bodyContentString.isEmpty()) {
                     request.body(bodyContentString);
                 }
+            } else if (bodyContentObject instanceof ByteBuffer) {
+                request.body(Flux.just((ByteBuffer) bodyContentObject));
             } else {
                 final String bodyContentString =
                     serializer.serialize(bodyContentObject, SerializerEncoding.fromHeaders(request.headers()));
@@ -545,9 +578,9 @@ public class RestProxy implements InvocationHandler {
     }
 
     protected Object handleResumeOperation(HttpRequest httpRequest, OperationDescription operationDescription,
-                                           SwaggerMethodParser methodParser, Type returnType, Context context)
-        throws Exception {
-        throw new Exception("The resume operation is not available in the base RestProxy class.");
+            SwaggerMethodParser methodParser, Type returnType, Context context) {
+        throw logger.logExceptionAsError(Exceptions.propagate(new Exception(
+            "The resume operation is not available in the base RestProxy class.")));
     }
 
     /**

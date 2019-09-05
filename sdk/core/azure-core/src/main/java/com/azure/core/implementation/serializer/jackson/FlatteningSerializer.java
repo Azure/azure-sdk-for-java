@@ -4,6 +4,7 @@
 package com.azure.core.implementation.serializer.jackson;
 
 import com.azure.core.implementation.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -41,6 +42,8 @@ import java.util.concurrent.LinkedBlockingQueue;
  * {'properties' : { 'name' : 'my_name' }} in the serialized payload.
  */
 class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSerializer {
+    private final ClientLogger logger = new ClientLogger(FlatteningSerializer.class);
+
     /**
      * The default mapperAdapter for the current type.
      */
@@ -144,7 +147,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
             try {
                 escapeMapKeys(f.get(value));
             } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
+                throw logger.logExceptionAsError(new RuntimeException(e));
             }
         }
     }

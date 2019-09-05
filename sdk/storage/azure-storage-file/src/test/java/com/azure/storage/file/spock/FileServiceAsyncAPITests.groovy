@@ -125,22 +125,27 @@ class FileServiceAsyncAPITests extends APISpec {
             testShares.add(share)
             primaryFileServiceAsyncClient.createShareWithResponse(share.name(), share.metadata(), share.properties().quota()).block()
         }
+
         when:
         def sharesVerifier = StepVerifier.create(primaryFileServiceAsyncClient.listShares(options))
+
         then:
         sharesVerifier.thenConsumeWhile {
             FileTestHelper.assertSharesAreEqual(testShares.pop(), it, includeMetadata, includeSnapshot)
         }.verifyComplete()
+
         for (int i = 0; i < 3 - limits; i++) {
             testShares.pop()
         }
+
         testShares.isEmpty()
+
         where:
         options                                                                                               | limits | includeMetadata | includeSnapshot
         new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithfilter")                        | 3      | false           | true
         new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithfilter").includeMetadata(true)  | 3      | true            | true
         new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithfilter").includeMetadata(false) | 3      | false           | true
-        new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithfilter").maxResults(2)          | 2      | true            | true
+        new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithfilter").maxResults(2)          | 3      | false           | true
     }
 
     @Unroll
