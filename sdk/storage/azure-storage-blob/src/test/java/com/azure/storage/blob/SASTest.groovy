@@ -211,18 +211,22 @@ class SASTest extends APISpec {
             .add(true)
             .list(true)
 
-        OffsetDateTime expiryTime = generateUTCNow().plusDays(1)
+        def expiryTime = generateUTCNow().plusDays(1)
 
         when:
         def sasWithId = cc.generateSAS(identifier.id())
 
-        ContainerClient client1 = getContainerClient(SASTokenCredential.fromSASTokenString(sasWithId), cc.getContainerUrl().toString())
+        def client1 = setupContainerClientBuilder(cc.getContainerUrl().toString())
+            .credential(SASTokenCredential.fromSASTokenString(sasWithId))
+            .buildClient()
 
         client1.listBlobsFlat().iterator().hasNext()
 
         def sasWithPermissions = cc.generateSAS(permissions, expiryTime)
 
-        ContainerClient client2 = getContainerClient(SASTokenCredential.fromSASTokenString(sasWithPermissions), cc.getContainerUrl().toString())
+        def client2 = setupContainerClientBuilder(cc.getContainerUrl().toString())
+            .credential(SASTokenCredential.fromSASTokenString(sasWithPermissions))
+            .buildClient()
 
         client2.listBlobsFlat().iterator().hasNext()
 
@@ -436,14 +440,16 @@ class SASTest extends APISpec {
             .add(true)
             .list(true)
 
-        OffsetDateTime expiryTime = generateUTCNow().plusDays(1)
+        def expiryTime = generateUTCNow().plusDays(1)
 
-        UserDelegationKey key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
+        def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
         when:
         def sasWithPermissions = cc.generateUserDelegationSAS(key, primaryCredential.accountName(), permissions, expiryTime)
 
-        ContainerClient client = getContainerClient(SASTokenCredential.fromSASTokenString(sasWithPermissions), cc.getContainerUrl().toString())
+        def client = setupContainerClientBuilder(cc.getContainerUrl().toString())
+            .credential(SASTokenCredential.fromSASTokenString(sasWithPermissions))
+            .buildClient()
         client.listBlobsFlat().iterator().hasNext()
 
         then:

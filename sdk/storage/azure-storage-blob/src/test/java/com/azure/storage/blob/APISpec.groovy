@@ -186,6 +186,10 @@ class APISpec extends TestBase {
         return setupBuilder(new BlobServiceClientBuilder(), endpoint, policies)
     }
 
+    def setupContainerClientBuilder(String endpoint, HttpPipelinePolicy... policies) {
+        return setupBuilder(new ContainerClientBuilder(), endpoint, policies)
+    }
+
     def setupBlobClientBuilder(String endpoint, HttpPipelinePolicy... policies) {
         return setupBuilder(new BlobClientBuilder(), endpoint, policies)
     }
