@@ -14,15 +14,23 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+/**
+ * Subscriber that takes {@link SynchronousReceiveWork} and publishes events to them in the order received.
+ */
 public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
     private final Timer timer = new Timer("SynchronousEventSubscriber");
     private final ClientLogger logger = new ClientLogger(SynchronousEventSubscriber.class);
     private final Queue<SynchronousReceiveWork> pendingWork = new ConcurrentLinkedQueue<>();
     private volatile Subscription subscription;
 
-    public SynchronousEventSubscriber(SynchronousReceiveWork receiveItem) {
-        Objects.requireNonNull(receiveItem, "'receiveItem' cannot be null.");
-        pendingWork.add(receiveItem);
+    /**
+     * Creates an instance with an initial receive work item.
+     *
+     * @param work Initial work item to start publishing to.
+     */
+    public SynchronousEventSubscriber(SynchronousReceiveWork work) {
+        Objects.requireNonNull(work, "'receiveItem' cannot be null.");
+        pendingWork.add(work);
     }
 
     /**
@@ -30,7 +38,7 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
      *
      * @param work Synchronous receive work to add to the queue.
      */
-    public synchronized void queueReceiveWork(SynchronousReceiveWork work) {
+    public void queueReceiveWork(SynchronousReceiveWork work) {
         Objects.requireNonNull(work, "'work' cannot be null.");
 
         final boolean isEmpty = pendingWork.isEmpty();
@@ -42,6 +50,11 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
         }
     }
 
+    /**
+     * On an initial subscription, will take the first work item, and request that amount of work for it.
+     *
+     * @param subscription Subscription for upstream.
+     */
     @Override
     protected void hookOnSubscribe(Subscription subscription) {
         if (this.subscription == null) {
@@ -56,15 +69,31 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
         }
     }
 
+    /**
+     * Publishes the event to the current {@link SynchronousReceiveWork}. If that work item is complete, will pop off
+     * that work item, and queue the next one.
+     *
+     * @param value Event to publish.
+     */
     @Override
     protected void hookOnNext(EventData value) {
-        final SynchronousReceiveWork currentItem = pendingWork.peek();
+        SynchronousReceiveWork currentItem = pendingWork.peek();
         if (currentItem == null) {
             logger.warning("EventData received when there is no pending work. Skipping.");
             return;
         }
 
-        currentItem.next(value);
+        if (!currentItem.isComplete()) {
+            currentItem.next(value);
+        } else {
+            pendingWork.remove(currentItem);
+            currentItem = pendingWork.peek();
+
+            if (currentItem == null) {
+                logger.warning("Current work completed before this value was seen. There is no more pending work.");
+                return;
+            }
+        }
 
         if (!currentItem.isComplete()) {
             return;
@@ -77,6 +106,9 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
         updateWork(nextWork);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void hookOnError(Throwable throwable) {
         logger.error("Error occurred in subscriber.", throwable);
@@ -88,6 +120,9 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void dispose() {
         final SynchronousReceiveWork[] remainingWork = pendingWork.toArray(new SynchronousReceiveWork[0]);
