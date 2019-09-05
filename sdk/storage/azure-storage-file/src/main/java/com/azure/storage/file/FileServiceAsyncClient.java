@@ -3,9 +3,12 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
@@ -25,12 +28,8 @@ import com.azure.storage.file.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.ListSharesIncludeType;
 import com.azure.storage.file.models.ListSharesOptions;
-import com.azure.storage.file.models.ListSharesResponse;
-import com.azure.storage.file.models.ServicesListSharesSegmentResponse;
 import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.StorageException;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -39,6 +38,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 import static com.azure.storage.file.PostProcessor.postProcessResponse;
@@ -64,8 +64,7 @@ public final class FileServiceAsyncClient {
     private final AzureFileStorageImpl azureFileStorageClient;
 
     /**
-     * Creates a FileServiceClient that sends requests to the storage account at {@code endpoint}.
-     * Each service call goes through the {@code httpPipeline}.
+     * Creates a FileServiceClient from the passed {@link AzureFileStorageImpl implementation client}.
      *
      * @param azureFileStorage Client that interacts with the service interfaces.
      */
@@ -128,7 +127,7 @@ public final class FileServiceAsyncClient {
      *
      * @return {@link ShareItem Shares} in the storage account without their metadata or snapshots
      */
-    public Flux<ShareItem> listShares() {
+    public PagedFlux<ShareItem> listShares() {
         return listShares(null);
     }
 
@@ -160,7 +159,7 @@ public final class FileServiceAsyncClient {
      * @param options Options for listing shares
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
-    public Flux<ShareItem> listShares(ListSharesOptions options) {
+    public PagedFlux<ShareItem> listShares(ListSharesOptions options) {
         return listShares(null, options);
     }
 
@@ -171,15 +170,12 @@ public final class FileServiceAsyncClient {
      * @param options Options for listing shares
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
-    private Flux<ShareItem> listShares(String marker, ListSharesOptions options) {
-        String prefix = null;
-        Integer maxResults = null;
+    private PagedFlux<ShareItem> listShares(String marker, ListSharesOptions options) {
+        final String prefix = (options != null) ? options.prefix() : null;
+        final Integer maxResults = (options != null) ? options.maxResults() : null;
         List<ListSharesIncludeType> include = new ArrayList<>();
 
         if (options != null) {
-            prefix = options.prefix();
-            maxResults = options.maxResults();
-
             if (options.includeMetadata()) {
                 include.add(ListSharesIncludeType.fromString(ListSharesIncludeType.METADATA.toString()));
             }
@@ -189,31 +185,17 @@ public final class FileServiceAsyncClient {
             }
         }
 
-        return azureFileStorageClient.services().listSharesSegmentWithRestResponseAsync(prefix, marker, maxResults, include, null, Context.NONE)
-            .flatMapMany(response -> Flux.fromIterable(response.value().shareItems()));
-    }
+        Function<String, Mono<PagedResponse<ShareItem>>> retriever =
+            nextMarker -> postProcessResponse(this.azureFileStorageClient.services()
+                .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include, null, Context.NONE))
+            .map(response -> new PagedResponseBase<>(response.request(),
+                response.statusCode(),
+                response.headers(),
+                response.value().shareItems(),
+                response.value().nextMarker(),
+                response.deserializedHeaders()));
 
-    /*
-     * Helper function used to auto-enumerate through paged responses
-     */
-    private Flux<ShareItem> listShares(ServicesListSharesSegmentResponse response, List<ListSharesIncludeType> include, Context context) {
-        ListSharesResponse value = response.value();
-        Mono<ServicesListSharesSegmentResponse> result = azureFileStorageClient.services()
-            .listSharesSegmentWithRestResponseAsync(value.prefix(), value.marker(), value.maxResults(), include, null, context);
-
-        return result.flatMapMany(r -> extractAndFetchShares(r, include, context));
-    }
-
-    /*
-     * Helper function used to auto-enumerate through paged responses
-     */
-    private Publisher<ShareItem> extractAndFetchShares(ServicesListSharesSegmentResponse response, List<ListSharesIncludeType> include, Context context) {
-        String nextPageLink = response.value().nextMarker();
-        if (ImplUtils.isNullOrEmpty(nextPageLink)) {
-            return Flux.fromIterable(response.value().shareItems());
-        }
-
-        return Flux.fromIterable(response.value().shareItems()).concatWith(listShares(response, include, context));
+        return new PagedFlux<>(() -> retriever.apply(marker), retriever);
     }
 
     /**
