@@ -1,0 +1,68 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/uploaddatalengthmismatch4126927a0b1dcb92e4f2?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "f026cf19-8876-45d6-b98f-9fca355ac3c7"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73227C8F2A9DA\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 17:37:55 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "e1b5bc1f-a01a-003b-6710-647228000000",
+      "Date" : "Thu, 05 Sep 2019 17:37:54 GMT",
+      "x-ms-client-request-id" : "f026cf19-8876-45d6-b98f-9fca355ac3c7"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/uploaddatalengthmismatch4126927a0b1dcb92e4f2/uploaddatalengthmismatch1813421ed8d62092a4f9",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "61b80838-eea2-4837-b433-359925a0a371"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "2189138948451189390*13168958551941065216",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-09-05T17:37:55.3260138Z",
+      "Last-Modified" : "Thu, 05 Sep 2019 17:37:55 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 05 Sep 2019 17:37:55 GMT",
+      "ETag" : "\"0x8D73227C8FB9A6A\"",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2019-09-05T17:37:55.3260138Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "e1b5bc22-a01a-003b-6810-647228000000",
+      "x-ms-client-request-id" : "61b80838-eea2-4837-b433-359925a0a371",
+      "x-ms-file-last-write-time" : "2019-09-05T17:37:55.3260138Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/uploaddatalengthmismatch4126927a0b1dcb92e4f2/uploaddatalengthmismatch1813421ed8d62092a4f9?comp=range",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "49428eac-1e78-4614-b492-ce08557dcfd0",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "com.azure.core.exception.UnexpectedLengthException",
+      "ErrorMessage" : "Request body emitted 7 bytes less than the expected 8 bytes."
+    }
+  } ],
+  "variables" : [ "uploaddatalengthmismatch4126927a0b1dcb92e4f2", "uploaddatalengthmismatch1813421ed8d62092a4f9" ]
+}
