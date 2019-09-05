@@ -1563,7 +1563,7 @@ class ContainerAPITest extends APISpec {
         bu2.createWithResponse(null, null, null, null, null).statusCode() == 201
         bu5.getPropertiesWithResponse(null, null, null).statusCode() == 200
         bu3.createWithResponse(512, null, null, null, null, null, null).statusCode() == 201
-        bu4.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null).statusCode() == 201
+        bu4.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null, null).statusCode() == 201
 
         when:
         Iterator<BlobItem> blobs = cc.listBlobsFlat().iterator()

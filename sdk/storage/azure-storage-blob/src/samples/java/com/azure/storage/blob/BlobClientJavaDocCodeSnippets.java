@@ -12,6 +12,7 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
@@ -162,12 +163,12 @@ public class BlobClientJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobClient#setTier(AccessTier)} and
-     * {@link BlobClient#setTierWithResponse(AccessTier, LeaseAccessConditions, Duration, Context)}
+     * {@link BlobClient#setTierWithResponse(AccessTier, RehydratePriority, LeaseAccessConditions, Duration, Context)}
      */
     public void setTier() {
         // BEGIN: com.azure.storage.blob.BlobClient.setTier#AccessTier
         System.out.printf("Set tier completed with status code %d%n",
-            client.setTierWithResponse(AccessTier.HOT, null, null, null).statusCode());
+            client.setTierWithResponse(AccessTier.HOT, null, null, null, null).statusCode());
         // END: com.azure.storage.blob.BlobClient.setTier#AccessTier
 
 
@@ -254,7 +255,7 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient#startCopyFromURLWithResponse(URL, Metadata, ModifiedAccessConditions, BlobAccessConditions, Duration, Context)}
+     * Code snippets for {@link BlobClient#startCopyFromURLWithResponse(URL, Metadata, AccessTier, RehydratePriority, ModifiedAccessConditions, BlobAccessConditions, Duration, Context)}
      */
     public void startCopyFromURLWithResponseCodeSnippets() {
 
@@ -266,7 +267,7 @@ public class BlobClientJavaDocCodeSnippets {
             new LeaseAccessConditions().leaseId(leaseId));
 
         System.out.printf("Copy identifier: %s%n",
-            client.startCopyFromURLWithResponse(url, metadata, modifiedAccessConditions, blobAccessConditions, timeout,
+            client.startCopyFromURLWithResponse(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD, modifiedAccessConditions, blobAccessConditions, timeout,
                 new Context(key2, value2)));
         // END: com.azure.storage.blob.BlobClient.startCopyFromURLWithResponse#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
     }
@@ -285,7 +286,7 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient#copyFromURLWithResponse(URL, Metadata, ModifiedAccessConditions, BlobAccessConditions, Duration, Context)}
+     * Code snippets for {@link BlobClient#copyFromURLWithResponse(URL, Metadata, AccessTier, ModifiedAccessConditions, BlobAccessConditions, Duration, Context)}
      */
     public void copyFromURLWithResponseCodeSnippets() {
 
@@ -297,7 +298,7 @@ public class BlobClientJavaDocCodeSnippets {
             new LeaseAccessConditions().leaseId(leaseId));
 
         System.out.printf("Copy identifier: %s%n",
-            client.copyFromURLWithResponse(url, metadata, modifiedAccessConditions, blobAccessConditions, timeout,
+            client.copyFromURLWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions, blobAccessConditions, timeout,
                 new Context(key1, value1)).value());
         // END: com.azure.storage.blob.BlobClient.copyFromURLWithResponse#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
     }
@@ -393,14 +394,14 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient#setTierWithResponse(AccessTier, LeaseAccessConditions, Duration, Context)}
+     * Code snippets for {@link BlobClient#setTierWithResponse(AccessTier, RehydratePriority, LeaseAccessConditions, Duration, Context)}
      */
     public void setTierWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobClient.setTierWithResponse#AccessTier-LeaseAccessConditions-Duration-Context
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().leaseId(leaseId);
 
         System.out.printf("Set tier completed with status code %d%n",
-            client.setTierWithResponse(AccessTier.HOT, accessConditions, timeout, new Context(key2, value2)).statusCode());
+            client.setTierWithResponse(AccessTier.HOT, RehydratePriority.STANDARD, accessConditions, timeout, new Context(key2, value2)).statusCode());
         // END: com.azure.storage.blob.BlobClient.setTierWithResponse#AccessTier-LeaseAccessConditions-Duration-Context
     }
 

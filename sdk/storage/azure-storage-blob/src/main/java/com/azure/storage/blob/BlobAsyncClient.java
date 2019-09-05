@@ -270,6 +270,7 @@ public class BlobAsyncClient {
         sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
             ? new ModifiedAccessConditions() : sourceModifiedAccessConditions;
         destAccessConditions = destAccessConditions == null ? new BlobAccessConditions() : destAccessConditions;
+        AccessTierOptional tierOp = tier == null ? null : AccessTierOptional.fromString(tier.toString());
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
         SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
@@ -279,7 +280,7 @@ public class BlobAsyncClient {
             .sourceIfNoneMatch(sourceModifiedAccessConditions.ifNoneMatch());
 
         return postProcessResponse(this.azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(
-            null, null, sourceURL, null, metadata, AccessTierOptional.fromString(tier.toString()), priority, null, sourceConditions,
+            null, null, sourceURL, null, metadata, tierOp, priority, null, sourceConditions,
             destAccessConditions.modifiedAccessConditions(), destAccessConditions.leaseAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().copyId()));
     }
@@ -377,6 +378,7 @@ public class BlobAsyncClient {
         sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
             ? new ModifiedAccessConditions() : sourceModifiedAccessConditions;
         destAccessConditions = destAccessConditions == null ? new BlobAccessConditions() : destAccessConditions;
+        AccessTierOptional tierOp = tier == null ? null : AccessTierOptional.fromString(tier.toString());
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
         SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
@@ -386,7 +388,7 @@ public class BlobAsyncClient {
             .sourceIfNoneMatch(sourceModifiedAccessConditions.ifNoneMatch());
 
         return postProcessResponse(this.azureBlobStorage.blobs().copyFromURLWithRestResponseAsync(
-            null, null, copySource, null, metadata, AccessTierOptional.fromString(tier.toString()), null, sourceConditions,
+            null, null, copySource, null, metadata, tierOp, null, sourceConditions,
             destAccessConditions.modifiedAccessConditions(), destAccessConditions.leaseAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().copyId()));
     }

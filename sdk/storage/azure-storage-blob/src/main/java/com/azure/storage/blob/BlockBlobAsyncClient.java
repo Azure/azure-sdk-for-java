@@ -155,10 +155,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions, Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+        AccessTierOptional opTier = tier == null ? null : AccessTierOptional.fromString(tier.toString());
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
-            null, data, length, null, metadata, AccessTierOptional.fromString(tier.toString()), null, headers,
-            accessConditions.leaseAccessConditions(), null, accessConditions.modifiedAccessConditions(), context))
+            null, data, length, null, metadata, opTier, null, headers, accessConditions.leaseAccessConditions(), null,
+            accessConditions.modifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
     }
 
@@ -577,10 +578,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
             Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+        AccessTierOptional tierOp = tier == null ? null : AccessTierOptional.fromString(tier.toString());
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(
             null, null, new BlockLookupList().latest(base64BlockIDs), null, null, null, metadata,
-            AccessTierOptional.fromString(tier.toString()), null, headers, accessConditions.leaseAccessConditions(),
+            tierOp, null, headers, accessConditions.leaseAccessConditions(),
             null, accessConditions.modifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
     }

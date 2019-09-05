@@ -197,7 +197,7 @@ public class BlobClient {
      * @return The copy ID for the long running operation.
      */
     public String startCopyFromURL(URL sourceURL) {
-        return startCopyFromURLWithResponse(sourceURL, null, null, null, null, Context.NONE).value();
+        return startCopyFromURLWithResponse(sourceURL, null, null, null, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -221,10 +221,11 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The copy ID for the long running operation.
      */
-    public Response<String> startCopyFromURLWithResponse(URL sourceURL, Metadata metadata, ModifiedAccessConditions sourceModifiedAccessConditions,
-                                                         BlobAccessConditions destAccessConditions, Duration timeout, Context context) {
+    public Response<String> startCopyFromURLWithResponse(URL sourceURL, Metadata metadata, AccessTier tier,
+            RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
+            BlobAccessConditions destAccessConditions, Duration timeout, Context context) {
         Mono<Response<String>> response = blobAsyncClient
-            .startCopyFromURLWithResponse(sourceURL, metadata, sourceModifiedAccessConditions, destAccessConditions, context);
+            .startCopyFromURLWithResponse(sourceURL, metadata, tier, priority, sourceModifiedAccessConditions, destAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -284,7 +285,7 @@ public class BlobClient {
      * @return The copy ID for the long running operation.
      */
     public String copyFromURL(URL copySource) {
-        return copyFromURLWithResponse(copySource, null, null, null, null, Context.NONE).value();
+        return copyFromURLWithResponse(copySource, null, null, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -308,10 +309,11 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The copy ID for the long running operation.
      */
-    public Response<String> copyFromURLWithResponse(URL copySource, Metadata metadata, ModifiedAccessConditions sourceModifiedAccessConditions,
-                                                    BlobAccessConditions destAccessConditions, Duration timeout, Context context) {
+    public Response<String> copyFromURLWithResponse(URL copySource, Metadata metadata, AccessTier tier,
+            ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
+            Duration timeout, Context context) {
         Mono<Response<String>> response = blobAsyncClient
-            .copyFromURLWithResponse(copySource, metadata, sourceModifiedAccessConditions, destAccessConditions, context);
+            .copyFromURLWithResponse(copySource, metadata, tier, sourceModifiedAccessConditions, destAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
