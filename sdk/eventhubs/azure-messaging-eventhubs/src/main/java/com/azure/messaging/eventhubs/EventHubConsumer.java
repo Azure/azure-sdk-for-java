@@ -91,7 +91,10 @@ public class EventHubConsumer implements Closeable {
             queueWork(maximumMessageCount, maximumWaitTime, emitter);
         });
 
-        final Flux<EventData> map = events.collectList().map(Flux::fromIterable).block();
+        final Flux<EventData> map = events.collectList().map(x -> {
+            logger.info("Number of events received: {}", x.size());
+            return Flux.fromIterable(x);
+        }).block();
         return new IterableStream<>(map);
     }
 

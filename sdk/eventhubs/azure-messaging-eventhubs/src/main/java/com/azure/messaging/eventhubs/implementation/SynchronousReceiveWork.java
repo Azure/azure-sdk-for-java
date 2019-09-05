@@ -99,6 +99,7 @@ public class SynchronousReceiveWork {
      */
     public synchronized void complete() {
         if (!isTerminal || emitter.isCancelled()) {
+            logger.info("Id: {}. Completing task.", id);
             isTerminal = true;
             emitter.complete();
         }

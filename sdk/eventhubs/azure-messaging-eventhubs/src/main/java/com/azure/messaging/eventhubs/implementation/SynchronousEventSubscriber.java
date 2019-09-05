@@ -47,8 +47,10 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
         pendingWork.add(work);
 
         if (isEmpty) {
+            logger.info("There is no existing work in queue. Scheduling: {}", work.getId());
             scheduleWork(work);
         } else {
+            logger.info("Verifying if there are any new work items. {}", work.getId());
             getOrUpdateNextWork();
         }
     }
@@ -68,6 +70,7 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
         if (work == null) {
             logger.warning("There is no work to request EventData for. Listener should have been created with work.");
         } else {
+            logger.info("Scheduling first work item: {}", work.getId());
             scheduleWork(work);
         }
     }
@@ -90,6 +93,7 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
         currentItem.next(value);
 
         if (currentItem.isTerminal()) {
+            logger.info("Work: {}, Is completed. Closing flux.", currentItem.getId());
             currentItem.complete();
             getOrUpdateNextWork();
         }
@@ -126,6 +130,10 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
 
     private synchronized SynchronousReceiveWork getOrUpdateNextWork() {
         SynchronousReceiveWork work = pendingWork.peek();
+        if (work == null) {
+            subscription.request(0);
+        }
+
         if (work == null || !work.isTerminal()) {
             return work;
         }
@@ -134,6 +142,7 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
         work = pendingWork.peek();
 
         if (work == null) {
+            subscription.request(0);
             return null;
         }
 
@@ -147,9 +156,8 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
                 "This has not been subscribed to. Cannot start receiving work."));
         }
 
-        logger.info("Scheduling receiver for: {}", work.getId());
         final int pending = work.getNumberOfEvents() - pendingReceives.get();
-
+        logger.info("Work: {}, Pending: {}, Scheduling receive timeout task.", work.getId(), pending);
         if (pending > 0) {
             pendingReceives.addAndGet(pending);
             subscription.request(pending);
@@ -158,7 +166,8 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
         timer.schedule(new ReceiveTimeoutTask(work), work.getTimeout().toMillis());
     }
 
-    private static class ReceiveTimeoutTask extends TimerTask {
+    private class ReceiveTimeoutTask extends TimerTask {
+        private final ClientLogger logger = new ClientLogger(ReceiveTimeoutTask.class);
         private final SynchronousReceiveWork work;
 
         ReceiveTimeoutTask(SynchronousReceiveWork work) {
@@ -167,7 +176,9 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
 
         @Override
         public void run() {
+            logger.info("Timeout task encountered, disposing of task. Work: {}", work.getId());
             work.complete();
+            SynchronousEventSubscriber.this.getOrUpdateNextWork();
         }
     }
 }
