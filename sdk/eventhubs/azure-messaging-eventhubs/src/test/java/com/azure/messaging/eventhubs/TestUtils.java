@@ -15,6 +15,7 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,6 +64,10 @@ final class TestUtils {
      * Creates a mock message with the contents provided.
      */
     static Message getMessage(byte[] contents, String messageTrackingValue) {
+        return getMessage(contents, messageTrackingValue, Collections.emptyMap());
+    }
+
+    static Message getMessage(byte[] contents, String messageTrackingValue, Map<String, String> additionalProperties) {
         final Map<Symbol, Object> systemProperties = new HashMap<>();
         systemProperties.put(getSymbol(OFFSET_ANNOTATION_NAME), OFFSET);
         systemProperties.put(getSymbol(PARTITION_KEY_ANNOTATION_NAME), PARTITION_KEY);
@@ -78,6 +83,10 @@ final class TestUtils {
 
         if (!ImplUtils.isNullOrEmpty(messageTrackingValue)) {
             applicationProperties.put(MESSAGE_TRACKING_ID, messageTrackingValue);
+        }
+
+        if (additionalProperties != null) {
+            additionalProperties.forEach(applicationProperties::put);
         }
 
         message.setApplicationProperties(new ApplicationProperties(applicationProperties));
