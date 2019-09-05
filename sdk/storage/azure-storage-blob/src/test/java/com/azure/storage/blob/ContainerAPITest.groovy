@@ -119,9 +119,9 @@ class ContainerAPITest extends APISpec {
         response.value().blobPublicAccess() == null
         !response.value().hasImmutabilityPolicy()
         !response.value().hasLegalHold()
-        response.headers().value("x-ms-lease-duration") == null
-        response.headers().value("x-ms-lease-state") == LeaseStateType.AVAILABLE.toString()
-        response.headers().value("x-ms-lease-status") == LeaseStatusType.UNLOCKED.toString()
+        response.value().leaseDuration() == null
+        response.value().leaseState() == LeaseStateType.AVAILABLE
+        response.value().leaseStatus() == LeaseStatusType.UNLOCKED
         response.value().metadata().size() == 0
     }
 

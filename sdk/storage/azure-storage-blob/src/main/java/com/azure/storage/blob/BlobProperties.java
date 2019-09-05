@@ -11,25 +11,16 @@ import com.azure.storage.blob.models.Metadata;
 import java.time.OffsetDateTime;
 
 public final class BlobProperties {
-
     private final BlobType blobType;
-
     private final Metadata metadata;
-
     private final long blobSize;
-
     private final byte[] contentMD5;
-
     private final String contentEncoding;
-
     private final String contentDisposition;
-
     private final String contentLanguage;
-
     private final String cacheControl;
-
     private final OffsetDateTime lastModified;
-
+    private final String eTag;
 
     BlobProperties(BlobGetPropertiesHeaders generatedHeaders) {
         this.blobType = generatedHeaders.blobType();
@@ -41,6 +32,7 @@ public final class BlobProperties {
         this.contentLanguage = generatedHeaders.contentLanguage();
         this.cacheControl = generatedHeaders.cacheControl();
         this.lastModified = generatedHeaders.lastModified();
+        this.eTag = generatedHeaders.eTag();
     }
 
 
@@ -105,5 +97,12 @@ public final class BlobProperties {
      */
     public OffsetDateTime lastModified() {
         return lastModified;
+    }
+
+    /**
+     * @return the eTag of the blob
+     */
+    public String eTag() {
+        return eTag;
     }
 }
