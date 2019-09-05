@@ -20,7 +20,7 @@ jobs:
         inputs:
           mavenPomFile: $(PomFile)
           goals: 'package'
-          options: '$(DefaultOptions) $(ProfileFlag) -Dmaven.test.skip=true'
+          options: '$(DefaultOptions) $(ProfileFlag) -DskipTests'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
           jdkArchitectureOption: 'x64'

@@ -1,10 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsdeleteexistqueue50612088c39b9337d4",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsdeleteexistqueue8281978f20c4612244",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "d2d0b9f5-19c1-487e-8e2c-fe30c48b79a0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -12,16 +13,17 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9c190356-9003-0099-17cf-5ebfb4000000",
-      "Date" : "Fri, 30 Aug 2019 01:11:24 GMT"
+      "x-ms-request-id" : "b1814594-6003-00c8-0ec2-62a141000000",
+      "Date" : "Wed, 04 Sep 2019 01:45:37 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsdeleteexistqueue50612088c39b9337d4",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsdeleteexistqueue8281978f20c4612244",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "ab2fa111-7dec-4aa3-9c2b-c96ea89b13ac"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -29,10 +31,10 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "9c19035f-9003-0099-1ecf-5ebfb4000000",
-      "Date" : "Fri, 30 Aug 2019 01:11:24 GMT"
+      "x-ms-request-id" : "b181459a-6003-00c8-13c2-62a141000000",
+      "Date" : "Wed, 04 Sep 2019 01:45:37 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestsdeleteexistqueue50612088c39b9337d4" ]
+  "variables" : [ "queueapitestsdeleteexistqueue8281978f20c4612244" ]
 }

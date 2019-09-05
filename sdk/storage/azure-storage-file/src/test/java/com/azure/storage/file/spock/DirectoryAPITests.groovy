@@ -27,7 +27,7 @@ class DirectoryAPITests extends APISpec {
         directoryPath = testResourceName.randomName(methodName, 60)
         def shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
         shareClient.create()
-        primaryDirectoryClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).buildClient()
+        primaryDirectoryClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).buildDirectoryClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
     }
 
@@ -64,7 +64,7 @@ class DirectoryAPITests extends APISpec {
         given:
         def testShareName = testResourceName.randomName(methodName, 60)
         when:
-        directoryBuilderHelper(interceptorManager, testShareName, directoryPath).buildClient().create()
+        directoryBuilderHelper(interceptorManager, testShareName, directoryPath).buildDirectoryClient().create()
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.SHARE_NOT_FOUND)
@@ -142,39 +142,38 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.EMPTY_METADATA_KEY)
     }
 
-    /**
-     * The listing hierarchy:
-     * share -> dir -> listOp0 (dir) -> listOp3 (file)
-     *                               -> listOp4 (file)
-     *              -> listOp1 (dir) -> listOp5 (file)
-     *                               -> listOp6 (file)
-     *              -> listOp2 (file)
-     */
+    @Unroll
     def "List files and directories"() {
         given:
         primaryDirectoryClient.create()
-        def nameList = new LinkedList()
-        def dirPrefix = testResourceName.randomName(methodName, 60)
-        for (int i = 0; i < 2; i++) {
-            def subDirClient = primaryDirectoryClient.getSubDirectoryClient(dirPrefix + i)
-            subDirClient.create()
-            for (int j = 0; j < 2; j++) {
-                def num = i * 2 + j + 3
-                subDirClient.createFile(dirPrefix + num, 1024)
-            }
+
+        for (def expectedFile : expectedFiles) {
+            primaryDirectoryClient.createFile(expectedFile, 2)
         }
-        primaryDirectoryClient.createFile(dirPrefix + 2, 1024)
-        for (int i = 0; i < 3; i++) {
-            nameList.add(dirPrefix + i)
+
+        for (def expectedDirectory : expectedDirectories) {
+            primaryDirectoryClient.createSubDirectory(expectedDirectory)
         }
 
         when:
-        def fileRefIter = primaryDirectoryClient.listFilesAndDirectories().iterator()
-        then:
-        while (fileRefIter.hasNext()) {
-            Objects.equals(nameList.pop(), fileRefIter.next().name())
+        def foundFiles = [] as Set
+        def foundDirectories = [] as Set
+        for (def fileRef : primaryDirectoryClient.listFilesAndDirectories()) {
+            if (fileRef.isDirectory()) {
+                foundDirectories << fileRef.name()
+            } else {
+                foundFiles << fileRef.name()
+            }
         }
-        nameList.isEmpty()
+
+        then:
+        expectedFiles == foundFiles
+        expectedDirectories == foundDirectories
+
+        where:
+        expectedFiles          | expectedDirectories
+        ["a", "b", "c"] as Set | ["d", "e"] as Set
+        ["a", "c", "e"] as Set | ["b", "d"] as Set
     }
 
     /**
@@ -234,7 +233,7 @@ class DirectoryAPITests extends APISpec {
 
     def "List handles error"() {
         when:
-        primaryDirectoryClient.listHandles(null, true)
+        primaryDirectoryClient.listHandles(null, true).iterator().hasNext()
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
@@ -249,7 +248,7 @@ class DirectoryAPITests extends APISpec {
         given:
         primaryDirectoryClient.create()
         when:
-        primaryDirectoryClient.forceCloseHandles("handleId", true)
+        primaryDirectoryClient.forceCloseHandles("handleId", true).iterator().hasNext()
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.INVALID_HEADER_VALUE)
@@ -388,7 +387,7 @@ class DirectoryAPITests extends APISpec {
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
             1, 1), ZoneOffset.UTC).toString()
         when:
-        def shareSnapshotClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).snapshot(snapshot).buildClient()
+        def shareSnapshotClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).snapshot(snapshot).buildDirectoryClient()
         then:
         snapshot.equals(shareSnapshotClient.getShareSnapshotId())
     }

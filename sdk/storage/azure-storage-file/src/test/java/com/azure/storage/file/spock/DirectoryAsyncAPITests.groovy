@@ -27,7 +27,7 @@ class DirectoryAsyncAPITests extends APISpec {
         directoryPath = testResourceName.randomName(methodName, 60)
         def shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
         shareClient.create()
-        primaryDirectoryAsyncClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).buildAsyncClient()
+        primaryDirectoryAsyncClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).buildDirectoryAsyncClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
     }
 
@@ -67,7 +67,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         def testShareName = testResourceName.randomName(methodName, 60)
         when:
-        def createDirErrorVerifier = StepVerifier.create(directoryBuilderHelper(interceptorManager, testShareName, directoryPath).buildAsyncClient().create())
+        def createDirErrorVerifier = StepVerifier.create(directoryBuilderHelper(interceptorManager, testShareName, directoryPath).buildDirectoryAsyncClient().create())
         then:
         createDirErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.SHARE_NOT_FOUND)
@@ -162,6 +162,40 @@ class DirectoryAsyncAPITests extends APISpec {
         setMetadataVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.EMPTY_METADATA_KEY)
         }
+    }
+
+    @Unroll
+    def "List files and directories"() {
+        given:
+        primaryDirectoryAsyncClient.create().block()
+
+        for (def expectedFile : expectedFiles) {
+            primaryDirectoryAsyncClient.createFile(expectedFile, 2).block()
+        }
+
+        for (def expectedDirectory : expectedDirectories) {
+            primaryDirectoryAsyncClient.createSubDirectory(expectedDirectory).block()
+        }
+
+        when:
+        def foundFiles = [] as Set
+        def foundDirectories = [] as Set
+        for (def fileRef : primaryDirectoryAsyncClient.listFilesAndDirectories().toIterable()) {
+            if (fileRef.isDirectory()) {
+                foundDirectories << fileRef.name()
+            } else {
+                foundFiles << fileRef.name()
+            }
+        }
+
+        then:
+        expectedFiles == foundFiles
+        expectedDirectories == foundDirectories
+
+        where:
+        expectedFiles          | expectedDirectories
+        ["a", "b", "c"] as Set | ["d", "e"] as Set
+        ["a", "c", "e"] as Set | ["b", "d"] as Set
     }
 
     /**
@@ -400,7 +434,7 @@ class DirectoryAsyncAPITests extends APISpec {
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
             1, 1), ZoneOffset.UTC).toString()
         when:
-        def shareSnapshotClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).snapshot(snapshot).buildAsyncClient()
+        def shareSnapshotClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).snapshot(snapshot).buildDirectoryAsyncClient()
         then:
         snapshot.equals(shareSnapshotClient.getShareSnapshotId())
     }

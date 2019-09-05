@@ -1,58 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestsforceclosehandleserror2852811910?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestsforceclosehandleserror6269951f40?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "24e79bb5-89e6-4116-a9bb-32dac64ad567"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72829EB93B9CA\"",
-      "Last-Modified" : "Sat, 24 Aug 2019 00:28:00 GMT",
+      "ETag" : "\"0x8D730D974161502\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 01:44:40 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "b02cf6b1-c01a-0046-2a12-5aeee0000000",
-      "Date" : "Sat, 24 Aug 2019 00:28:00 GMT",
-      "x-ms-client-request-id" : "e1275916-d62c-4f0b-9fdd-3864d049bdac"
+      "x-ms-request-id" : "e7c18e22-101a-0044-56c2-62ec1a000000",
+      "Date" : "Wed, 04 Sep 2019 01:44:40 GMT",
+      "x-ms-client-request-id" : "24e79bb5-89e6-4116-a9bb-32dac64ad567"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestsforceclosehandleserror2852811910/directoryasyncapitestsforceclosehandleserror2864445cf9?restype=directory",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestsforceclosehandleserror6269951f40/directoryasyncapitestsforceclosehandleserror750499469d?restype=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "3370faa7-89de-4977-bf08-29741bf50a7d"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "x-ms-file-permission-key" : "16004293428625128841*13168958551941065216",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-08-24T00:28:00.7758138Z",
-      "Last-Modified" : "Sat, 24 Aug 2019 00:28:00 GMT",
+      "x-ms-file-creation-time" : "2019-09-04T01:44:41.0252711Z",
+      "Last-Modified" : "Wed, 04 Sep 2019 01:44:41 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Sat, 24 Aug 2019 00:28:00 GMT",
-      "ETag" : "\"0x8D72829EB9A893A\"",
+      "Date" : "Wed, 04 Sep 2019 01:44:40 GMT",
+      "ETag" : "\"0x8D730D9741C25A7\"",
       "x-ms-file-attributes" : "Directory",
-      "x-ms-file-change-time" : "2019-08-24T00:28:00.7758138Z",
+      "x-ms-file-change-time" : "2019-09-04T01:44:41.0252711Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "b02cf6b4-c01a-0046-2c12-5aeee0000000",
-      "x-ms-client-request-id" : "7223e6f7-c828-4f50-a0a2-aa1ee0625183",
-      "x-ms-file-last-write-time" : "2019-08-24T00:28:00.7758138Z"
+      "x-ms-request-id" : "e7c18e24-101a-0044-57c2-62ec1a000000",
+      "x-ms-client-request-id" : "3370faa7-89de-4977-bf08-29741bf50a7d",
+      "x-ms-file-last-write-time" : "2019-09-04T01:44:41.0252711Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestsforceclosehandleserror2852811910/directoryasyncapitestsforceclosehandleserror2864445cf9?comp=forceclosehandles",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestsforceclosehandleserror6269951f40/directoryasyncapitestsforceclosehandleserror750499469d?comp=forceclosehandles",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "e1f2b6f7-72eb-4239-b809-191a5169f470"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -61,13 +64,13 @@
       "retry-after" : "0",
       "Content-Length" : "328",
       "StatusCode" : "400",
-      "x-ms-request-id" : "b02cf6b5-c01a-0046-2d12-5aeee0000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:b02cf6b5-c01a-0046-2d12-5aeee0000000\nTime:2019-08-24T00:28:01.1906198Z</Message><HeaderName>x-ms-handle-id</HeaderName><HeaderValue>handleId</HeaderValue></Error>",
-      "Date" : "Sat, 24 Aug 2019 00:28:01 GMT",
-      "x-ms-client-request-id" : "a8ce4c2e-ec02-4acb-b5ff-c00dd57da49c",
+      "x-ms-request-id" : "e7c18e25-101a-0044-58c2-62ec1a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:e7c18e25-101a-0044-58c2-62ec1a000000\nTime:2019-09-04T01:44:41.0635971Z</Message><HeaderName>x-ms-handle-id</HeaderName><HeaderValue>handleId</HeaderValue></Error>",
+      "Date" : "Wed, 04 Sep 2019 01:44:40 GMT",
+      "x-ms-client-request-id" : "e1f2b6f7-72eb-4239-b809-191a5169f470",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "directoryasyncapitestsforceclosehandleserror2852811910", "directoryasyncapitestsforceclosehandleserror2864445cf9" ]
+  "variables" : [ "directoryasyncapitestsforceclosehandleserror6269951f40", "directoryasyncapitestsforceclosehandleserror750499469d" ]
 }

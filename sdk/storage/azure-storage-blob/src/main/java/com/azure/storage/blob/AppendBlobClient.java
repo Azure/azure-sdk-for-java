@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
@@ -14,6 +15,7 @@ import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
+import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -22,7 +24,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.Duration;
-
 
 /**
  * Client to an append blob. It may only be instantiated through a {@link BlobClientBuilder}, via
@@ -123,7 +124,7 @@ public final class AppendBlobClient extends BlobClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the created appended blob.
      */
     public Response<AppendBlobItem> createWithResponse(BlobHTTPHeaders headers, Metadata metadata,
-                                           BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        BlobAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.createWithResponse(headers, metadata, accessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -159,22 +160,13 @@ public final class AppendBlobClient extends BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#value() value} contains the append blob operation.
+     * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
+     * @throws NullPointerException if the input data is null.
      */
     public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length,
-                                                AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout, Context context) {
-        Flux<ByteBuffer> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) MAX_APPEND_BLOCK_BYTES))
-            .map(i -> i * MAX_APPEND_BLOCK_BYTES)
-            .concatMap(pos -> Mono.fromCallable(() -> {
-                long count = pos + MAX_APPEND_BLOCK_BYTES > length ? length - pos : MAX_APPEND_BLOCK_BYTES;
-                byte[] cache = new byte[(int) count];
-                int read = 0;
-                while (read < count) {
-                    read += data.read(cache, read, (int) count - read);
-                }
-
-                return ByteBuffer.wrap(cache);
-            }));
-
+        AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout, Context context) {
+        Objects.requireNonNull(data);
+        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, MAX_APPEND_BLOCK_BYTES);
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, appendBlobAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -213,7 +205,8 @@ public final class AppendBlobClient extends BlobClient {
     public AppendBlobItem appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
             byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
             SourceModifiedAccessConditions sourceAccessConditions, Duration timeout) {
-        return this.appendBlockFromUrlWithResponse(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, timeout, Context.NONE).value();
+        return this.appendBlockFromUrlWithResponse(sourceURL, sourceRange, sourceContentMD5, destAccessConditions,
+            sourceAccessConditions, timeout, Context.NONE).value();
     }
 
     /**

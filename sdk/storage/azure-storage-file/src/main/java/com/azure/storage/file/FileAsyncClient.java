@@ -4,9 +4,12 @@
 package com.azure.storage.file;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -16,7 +19,6 @@ import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.models.CopyStatusType;
 import com.azure.storage.file.models.FileCopyInfo;
@@ -32,10 +34,7 @@ import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.FileUploadRangeHeaders;
 import com.azure.storage.file.models.FilesCreateResponse;
 import com.azure.storage.file.models.FilesDownloadResponse;
-import com.azure.storage.file.models.FilesForceCloseHandlesResponse;
 import com.azure.storage.file.models.FilesGetPropertiesResponse;
-import com.azure.storage.file.models.FilesGetRangeListResponse;
-import com.azure.storage.file.models.FilesListHandlesResponse;
 import com.azure.storage.file.models.FilesSetHTTPHeadersResponse;
 import com.azure.storage.file.models.FilesSetMetadataResponse;
 import com.azure.storage.file.models.FilesStartCopyResponse;
@@ -66,6 +65,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 import static com.azure.storage.file.PostProcessor.postProcessResponse;
@@ -112,27 +113,6 @@ public class FileAsyncClient {
         this.filePath = filePath;
         this.snapshot = snapshot;
         this.azureFileStorageClient = azureFileStorageClient;
-    }
-
-    /**
-     * Creates a FileAsyncClient that sends requests to the storage account at {@code endpoint}. Each service call goes
-     * through the {@code httpPipeline}.
-     *
-     * @param endpoint URL for the Storage File service
-     * @param httpPipeline HttpPipeline that HTTP requests and response flow through
-     * @param shareName Name of the share
-     * @param filePath Path to the file
-     * @param snapshot Optional snapshot of the share
-     */
-    FileAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String filePath, String snapshot) {
-        Objects.requireNonNull(shareName);
-        Objects.requireNonNull(filePath);
-        this.shareName = shareName;
-        this.filePath = filePath;
-        this.snapshot = snapshot;
-        this.azureFileStorageClient = new AzureFileStorageBuilder().pipeline(httpPipeline)
-            .url(endpoint.toString())
-            .build();
     }
 
     /**
@@ -211,7 +191,7 @@ public class FileAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Copy file from source url to the {@code filePath} </p>
+     * <p>Copy file from source url to the {@code resourcePath} </p>
      *
      * {@codesnippet com.azure.storage.file.fileAsyncClient.startCopy#string-map}
      *
@@ -232,7 +212,7 @@ public class FileAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Copy file from source url to the {@code filePath} </p>
+     * <p>Copy file from source url to the {@code resourcePath} </p>
      *
      * {@codesnippet com.azure.storage.file.fileAsyncClient.startCopyWithResponse#string-map}
      *
@@ -857,7 +837,7 @@ public class FileAsyncClient {
      *
      * @return {@link FileRange ranges} in the files.
      */
-    public Flux<FileRange> listRanges() {
+    public PagedFlux<FileRange> listRanges() {
         return listRanges(null);
     }
 
@@ -876,10 +856,19 @@ public class FileAsyncClient {
      * @param range Optional byte range which returns file data only from the specified range.
      * @return {@link FileRange ranges} in the files that satisfy the requirements
      */
-    public Flux<FileRange> listRanges(FileRange range) {
+    public PagedFlux<FileRange> listRanges(FileRange range) {
         String rangeString = range == null ? null : range.toString();
-        return azureFileStorageClient.files().getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, rangeString, Context.NONE)
-            .flatMapMany(this::convertListRangesResponseToFileRangeInfo);
+        Function<String, Mono<PagedResponse<FileRange>>> retriever =
+            marker -> postProcessResponse(this.azureFileStorageClient.files()
+                .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, rangeString, Context.NONE))
+            .map(response -> new PagedResponseBase<>(response.request(),
+                response.statusCode(),
+                response.headers(),
+                response.value().stream().map(FileRange::new).collect(Collectors.toList()),
+                null,
+                response.deserializedHeaders()));
+
+        return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
     /**
@@ -896,7 +885,7 @@ public class FileAsyncClient {
      *
      * @return {@link HandleItem handles} in the files that satisfy the requirements
      */
-    public Flux<HandleItem> listHandles() {
+    public PagedFlux<HandleItem> listHandles() {
         return listHandles(null);
     }
 
@@ -915,9 +904,19 @@ public class FileAsyncClient {
      * @param maxResults Optional maximum number of results will return per page
      * @return {@link HandleItem handles} in the file that satisfy the requirements
      */
-    public Flux<HandleItem> listHandles(Integer maxResults) {
-        return azureFileStorageClient.files().listHandlesWithRestResponseAsync(shareName, filePath, null, maxResults, null, snapshot, Context.NONE)
-            .flatMapMany(response -> nextPageForHandles(response, maxResults));
+    public PagedFlux<HandleItem> listHandles(Integer maxResults) {
+        Function<String, Mono<PagedResponse<HandleItem>>> retriever =
+            marker -> postProcessResponse(this.azureFileStorageClient.files()
+                .listHandlesWithRestResponseAsync(shareName, filePath, marker, maxResults, null, snapshot,
+                    Context.NONE))
+                .map(response -> new PagedResponseBase<>(response.request(),
+                    response.statusCode(),
+                    response.headers(),
+                    response.value().handleList(),
+                    response.value().nextMarker(),
+                    response.deserializedHeaders()));
+
+        return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
     /**
@@ -937,11 +936,21 @@ public class FileAsyncClient {
      * handles.
      * @return The counts of number of handles closed
      */
-    public Flux<Integer> forceCloseHandles(String handleId) {
+    public PagedFlux<Integer> forceCloseHandles(String handleId) {
         // TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
         // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github
-        return azureFileStorageClient.files().forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, null, snapshot, Context.NONE)
-            .flatMapMany(response -> nextPageForForceCloseHandles(response, handleId));
+        Function<String, Mono<PagedResponse<Integer>>> retriever =
+            marker -> postProcessResponse(this.azureFileStorageClient.files()
+                .forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, marker,
+                    snapshot, Context.NONE))
+                .map(response -> new PagedResponseBase<>(response.request(),
+                    response.statusCode(),
+                    response.headers(),
+                    Collections.singletonList(response.deserializedHeaders().numberOfHandlesClosed()),
+                    response.deserializedHeaders().marker(),
+                    response.deserializedHeaders()));
+
+        return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
     /**
@@ -1057,29 +1066,6 @@ public class FileAsyncClient {
         return fileServiceSASSignatureValues;
     }
 
-    private Flux<Integer> nextPageForForceCloseHandles(final FilesForceCloseHandlesResponse response, final String handleId) {
-        List<Integer> handleCount = Collections.singletonList(response.deserializedHeaders().numberOfHandlesClosed());
-
-        if (response.deserializedHeaders().marker() == null) {
-            return Flux.fromIterable(handleCount);
-        }
-        Mono<FilesForceCloseHandlesResponse> listResponse = azureFileStorageClient.files().forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, response.deserializedHeaders().marker(), snapshot, Context.NONE);
-        Flux<Integer> fileRefPublisher = listResponse.flatMapMany(newResponse -> nextPageForForceCloseHandles(newResponse, handleId));
-        return Flux.fromIterable(handleCount).concatWith(fileRefPublisher);
-    }
-
-    private Flux<HandleItem> nextPageForHandles(final FilesListHandlesResponse response, final Integer maxResults) {
-        List<HandleItem> handleItems = response.value().handleList();
-
-        if (response.value().nextMarker() == null) {
-            return Flux.fromIterable(handleItems);
-        }
-
-        Mono<FilesListHandlesResponse> listResponse = azureFileStorageClient.files().listHandlesWithRestResponseAsync(shareName, filePath, response.value().nextMarker(), maxResults, null, snapshot, Context.NONE);
-        Flux<HandleItem> fileRefPublisher = listResponse.flatMapMany(newResponse -> nextPageForHandles(newResponse, maxResults));
-        return Flux.fromIterable(handleItems).concatWith(fileRefPublisher);
-    }
-
     private Response<FileInfo> createFileInfoResponse(final FilesCreateResponse response) {
         String eTag = response.deserializedHeaders().eTag();
         OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
@@ -1167,15 +1153,5 @@ public class FileAsyncClient {
         boolean isServerEncrypted = response.deserializedHeaders().isServerEncrypted();
         FileMetadataInfo fileMetadataInfo = new FileMetadataInfo(eTag, isServerEncrypted);
         return new SimpleResponse<>(response, fileMetadataInfo);
-    }
-
-    private Flux<FileRange> convertListRangesResponseToFileRangeInfo(FilesGetRangeListResponse response) {
-        List<FileRange> fileRanges = new ArrayList<>();
-        response.value().forEach(range -> {
-            long start = range.start();
-            long end = range.end();
-            fileRanges.add(new FileRange(start, end));
-        });
-        return Flux.fromIterable(fileRanges);
     }
 }
