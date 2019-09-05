@@ -4,14 +4,20 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.SynchronousEventSubscriber;
+import com.azure.messaging.eventhubs.implementation.SynchronousReceiveWork;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * A consumer responsible for reading {@link EventData} from a specific Event Hub partition in the context of a specific
@@ -30,16 +36,22 @@ import java.util.Objects;
  * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  */
 public class EventHubConsumer implements Closeable {
+    private static final AtomicReferenceFieldUpdater<EventHubConsumer, SynchronousEventSubscriber> SUBSCRIBER =
+        AtomicReferenceFieldUpdater.newUpdater(EventHubConsumer.class, SynchronousEventSubscriber.class,
+            "eventSubscriber");
+
+    private final ClientLogger logger = new ClientLogger(EventHubConsumer.class);
+    private final AtomicLong idGenerator = new AtomicLong();
+
     private final EventHubAsyncConsumer consumer;
-    private final Flux<EventData> receiveEvents;
     private final Duration timeout;
+    private volatile SynchronousEventSubscriber eventSubscriber;
 
     EventHubConsumer(EventHubAsyncConsumer consumer, EventHubConsumerOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
         this.consumer = Objects.requireNonNull(consumer, "'consumer' cannot be null.");
         this.timeout = options.retry().tryTimeout();
-        this.receiveEvents = this.consumer.receive();
     }
 
     /**
@@ -75,10 +87,29 @@ public class EventHubConsumer implements Closeable {
             throw new IllegalArgumentException("'maximumWaitTime' cannot be zero or less.");
         }
 
-        final Flux<EventData> events = receiveEvents
-            .windowTimeout(maximumMessageCount, timeout)
-            .blockFirst(timeout);
+        final Flux<EventData> events = Flux.create(emitter -> {
+            queueWork(maximumMessageCount, maximumWaitTime, emitter);
+        });
+
         return new IterableStream<>(events);
+    }
+
+    /**
+     * Given an {@code emitter}, queues that work in {@link SynchronousEventSubscriber}. If the {@link #eventSubscriber}
+     * has not been initialised yet, will initialise it.
+     */
+    private void queueWork(int maximumMessageCount, Duration maximumWaitTime, FluxSink<EventData> emitter) {
+        final long id = idGenerator.getAndIncrement();
+        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maximumWaitTime,
+            emitter);
+
+        if (SUBSCRIBER.compareAndSet(this, null, new SynchronousEventSubscriber(work))) {
+            logger.info("Started synchronous event subscriber.");
+            consumer.receive().subscribeWith(SUBSCRIBER.get(this));
+        } else {
+            logger.info("Queueing work item in SynchronousEventSubscriber.");
+            SUBSCRIBER.get(this).queueReceiveWork(work);
+        }
     }
 
     /**
