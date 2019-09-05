@@ -17,6 +17,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -524,12 +525,12 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#listRanges(FileRange)}
+     * Generates a code sample for using {@link FileAsyncClient#listRanges(FileRange, Duration)}
      */
     public void listRangesAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.listRanges#filerange
-        fileAsyncClient.listRanges(new FileRange(1024, 2048L))
+        fileAsyncClient.listRanges(new FileRange(1024, 2048L), Duration.ofSeconds(1))
             .subscribe(result -> System.out.printf("List ranges completed with start: %d, end: %d",
                 result.start(), result.end()));
         // END: com.azure.storage.file.fileAsyncClient.listRanges#filerange
@@ -547,26 +548,26 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#listHandles(Integer)}
+     * Generates a code sample for using {@link FileAsyncClient#listHandles(Integer, Duration)}
      */
     public void listHandlesAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.listHandles#integer
-        fileAsyncClient.listHandles(10)
+        fileAsyncClient.listHandles(10, Duration.ofSeconds(1))
             .subscribe(result -> System.out.printf("List handles completed with handle id %s", result.handleId()));
         // END: com.azure.storage.file.fileAsyncClient.listHandles#integer
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#forceCloseHandles(String)}
+     * Generates a code sample for using {@link FileAsyncClient#forceCloseHandles(String, Duration)}
      */
     public void forceCloseHandlesAsync() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.forceCloseHandles#string
-        fileAsyncClient.listHandles(10)
+        fileAsyncClient.listHandles(10, Duration.ofSeconds(1))
             .subscribe(result -> {
-                fileAsyncClient.forceCloseHandles(result.handleId()).subscribe(numOfClosedHandles ->
-                    System.out.printf("Close %d handles.", numOfClosedHandles));
+                fileAsyncClient.forceCloseHandles(result.handleId(), Duration.ofSeconds(1)).subscribe(
+                    numOfClosedHandles -> System.out.printf("Close %d handles.", numOfClosedHandles));
             });
         // END: com.azure.storage.file.fileAsyncClient.forceCloseHandles#string
     }

@@ -33,8 +33,10 @@ class ShareAPITests extends APISpec {
         given:
         def accoutName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accoutName)
+
         when:
         def shareURL = primaryShareClient.getShareUrl().toString()
+
         then:
         expectURL.equals(shareURL)
     }
@@ -42,6 +44,7 @@ class ShareAPITests extends APISpec {
     def "Get root directory client"() {
         given:
         def directoryClient = primaryShareClient.getRootDirectoryClient()
+
         expect:
         directoryClient instanceof DirectoryClient
     }
@@ -55,13 +58,14 @@ class ShareAPITests extends APISpec {
 
     def "Create share"() {
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryShareClient.createWithResponse(null, null, null), 201)
+        FileTestHelper.assertResponseStatusCode(primaryShareClient.createWithResponse(null, null, null, null), 201)
     }
 
     @Unroll
     def "Create share with args"() {
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryShareClient.createWithResponse(metadata, quota, null), 201)
+        FileTestHelper.assertResponseStatusCode(primaryShareClient.createWithResponse(metadata, quota, null, null), 201)
+
         where:
         metadata     | quota
         null         | null
@@ -73,10 +77,12 @@ class ShareAPITests extends APISpec {
     @Unroll
     def "Create share with invalid args"() {
         when:
-        primaryShareClient.createWithResponse(metadata, quota, null)
+        primaryShareClient.createWithResponse(metadata, quota, null, null)
+
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMessage)
+
         where:
         metadata                                       | quota | statusCode | errMessage
         Collections.singletonMap("", "value")          | 1     | 400        | StorageErrorCode.EMPTY_METADATA_KEY
@@ -88,10 +94,12 @@ class ShareAPITests extends APISpec {
         given:
         primaryShareClient.create()
         def shareSnapshotName = testResourceName.randomName(methodName, 60)
+
         when:
-        def createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(null, null)
+        def createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(null, null, null)
         def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
             .snapshot(createSnapshotResponse.value().snapshot()).buildClient()
+
         then:
         Objects.equals(createSnapshotResponse.value().snapshot(),
             shareSnapshotClient.getSnapshotId())
@@ -100,6 +108,7 @@ class ShareAPITests extends APISpec {
     def "Create snapshot error"() {
         when:
         primaryShareClient.createSnapshot()
+
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.SHARE_NOT_FOUND)
@@ -109,10 +118,12 @@ class ShareAPITests extends APISpec {
         given:
         primaryShareClient.create()
         def shareSnapshotName = testResourceName.randomName(methodName, 60)
+
         when:
-        def createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(testMetadata, null)
+        def createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(testMetadata, null, null)
         def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
             .snapshot(createSnapshotResponse.value().snapshot()).buildClient()
+
         then:
         Objects.equals(createSnapshotResponse.value().snapshot(),
             shareSnapshotClient.getSnapshotId())
@@ -120,7 +131,8 @@ class ShareAPITests extends APISpec {
 
     def "Create snapshot metadata error"() {
         when:
-        primaryShareClient.createSnapshotWithResponse(Collections.singletonMap("", "value"), null)
+        primaryShareClient.createSnapshotWithResponse(Collections.singletonMap("", "value"), null, null)
+
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.EMPTY_METADATA_KEY)
@@ -129,13 +141,15 @@ class ShareAPITests extends APISpec {
     def "Delete share"() {
         given:
         primaryShareClient.create()
+
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryShareClient.deleteWithResponse(null), 202)
+        FileTestHelper.assertResponseStatusCode(primaryShareClient.deleteWithResponse(null, null), 202)
     }
 
     def "Delete share error"() {
         when:
         primaryShareClient.delete()
+
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.SHARE_NOT_FOUND)
@@ -143,9 +157,11 @@ class ShareAPITests extends APISpec {
 
     def "Get properties"() {
         given:
-        primaryShareClient.createWithResponse(testMetadata, 1, null)
+        primaryShareClient.createWithResponse(testMetadata, 1, null, null)
+
         when:
-        def getPropertiesResponse = primaryShareClient.getPropertiesWithResponse(null)
+        def getPropertiesResponse = primaryShareClient.getPropertiesWithResponse(null, null)
+
         then:
         FileTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
         testMetadata.equals(getPropertiesResponse.value().metadata())
@@ -155,6 +171,7 @@ class ShareAPITests extends APISpec {
     def "Get properties error"() {
         when:
         primaryShareClient.getProperties()
+
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.SHARE_NOT_FOUND)
@@ -162,11 +179,13 @@ class ShareAPITests extends APISpec {
 
     def "Set quota"() {
         given:
-        primaryShareClient.createWithResponse(null, 1, null)
+        primaryShareClient.createWithResponse(null, 1, null, null)
+
         when:
         def getQuotaBeforeResponse = primaryShareClient.getProperties()
-        def setQuotaResponse = primaryShareClient.setQuotaWithResponse(2, null)
+        def setQuotaResponse = primaryShareClient.setQuotaWithResponse(2, null, null)
         def getQuotaAfterResponse = primaryShareClient.getProperties()
+
         then:
         getQuotaBeforeResponse.quota() == 1
         FileTestHelper.assertResponseStatusCode(setQuotaResponse, 200)
@@ -183,12 +202,14 @@ class ShareAPITests extends APISpec {
 
     def "Set metadata"() {
         given:
-        primaryShareClient.createWithResponse(testMetadata, null, null)
+        primaryShareClient.createWithResponse(testMetadata, null, null, null)
         def metadataAfterSet = Collections.singletonMap("afterset", "value")
+
         when:
         def getMetadataBeforeResponse = primaryShareClient.getProperties()
-        def setMetadataResponse = primaryShareClient.setMetadataWithResponse(metadataAfterSet, null)
+        def setMetadataResponse = primaryShareClient.setMetadataWithResponse(metadataAfterSet, null, null)
         def getMetadataAfterResponse = primaryShareClient.getProperties()
+
         then:
         testMetadata.equals(getMetadataBeforeResponse.metadata())
         FileTestHelper.assertResponseStatusCode(setMetadataResponse, 200)
@@ -198,6 +219,7 @@ class ShareAPITests extends APISpec {
     def "Set metadata error"() {
         when:
         primaryShareClient.setMetadata(testMetadata)
+
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.SHARE_NOT_FOUND)
@@ -206,16 +228,19 @@ class ShareAPITests extends APISpec {
     def "Create directory"() {
         given:
         primaryShareClient.create()
+
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryShareClient.createDirectoryWithResponse("testCreateDirectory", null, null), 201)
+            primaryShareClient.createDirectoryWithResponse("testCreateDirectory", null, null, null), 201)
     }
 
     def "Create directory invalid name"() {
         given:
         primaryShareClient.create()
+
         when:
         primaryShareClient.createDirectory("test/directory")
+
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.PARENT_NOT_FOUND)
@@ -224,16 +249,19 @@ class ShareAPITests extends APISpec {
     def "Create directory metadata"() {
         given:
         primaryShareClient.create()
+
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryShareClient.createDirectoryWithResponse("testCreateDirectory", testMetadata, null), 201)
+            primaryShareClient.createDirectoryWithResponse("testCreateDirectory", testMetadata, null, null), 201)
     }
 
     def "Create directory metadata error"() {
         given:
         primaryShareClient.create()
+
         when:
-        primaryShareClient.createDirectoryWithResponse("testdirectory", Collections.singletonMap("", "value"), null)
+        primaryShareClient.createDirectoryWithResponse("testdirectory", Collections.singletonMap("", "value"), null, null)
+
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.EMPTY_METADATA_KEY)
@@ -242,20 +270,24 @@ class ShareAPITests extends APISpec {
     def "Create file"() {
         given:
         primaryShareClient.create()
+
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, null, null), 201)
+            primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, null, null, null), 201)
     }
 
     @Unroll
     def "Create file invalid args"() {
         given:
         primaryShareClient.create()
+
         when:
-        primaryShareClient.createFileWithResponse(fileName, maxSize, null, null, null)
+        primaryShareClient.createFileWithResponse(fileName, maxSize, null, null, null, null)
+
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
+
         where:
         fileName    | maxSize | statusCode | errMsg
         "testfile:" | 1024    | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
@@ -268,9 +300,10 @@ class ShareAPITests extends APISpec {
         primaryShareClient.create()
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
             .fileContentType("txt")
+
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryShareClient.createFileWithResponse("testCreateFile", 1024, httpHeaders, testMetadata, null), 201)
+            primaryShareClient.createFileWithResponse("testCreateFile", 1024, httpHeaders, testMetadata, null, null), 201)
     }
 
     @Unroll
@@ -279,7 +312,7 @@ class ShareAPITests extends APISpec {
         primaryShareClient.create()
 
         when:
-        primaryShareClient.createFileWithResponse(fileName, maxSize, httpHeaders, metadata, null)
+        primaryShareClient.createFileWithResponse(fileName, maxSize, httpHeaders, metadata, null, null)
 
         then:
         def e = thrown(StorageException)
@@ -298,15 +331,18 @@ class ShareAPITests extends APISpec {
         def directoryName = "testCreateDirectory"
         primaryShareClient.create()
         primaryShareClient.createDirectory(directoryName)
+
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryShareClient.deleteDirectoryWithResponse(directoryName, null), 202)
+        FileTestHelper.assertResponseStatusCode(primaryShareClient.deleteDirectoryWithResponse(directoryName, null, null), 202)
     }
 
     def "Delete directory error"() {
         given:
         primaryShareClient.create()
+
         when:
         primaryShareClient.deleteDirectory("testdirectory")
+
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
@@ -317,16 +353,19 @@ class ShareAPITests extends APISpec {
         def fileName = "testCreateFile"
         primaryShareClient.create()
         primaryShareClient.createFile(fileName, 1024)
+
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryShareClient.deleteFileWithResponse(fileName, null), 202)
+            primaryShareClient.deleteFileWithResponse(fileName, null, null), 202)
     }
 
     def "Delete file error"() {
         given:
         primaryShareClient.create()
+
         when:
         primaryShareClient.deleteFile("testdirectory")
+
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
@@ -336,8 +375,10 @@ class ShareAPITests extends APISpec {
         given:
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
             1, 1), ZoneOffset.UTC).toString()
+
         when:
         def shareSnapshotClient = shareBuilderHelper(interceptorManager, shareName).snapshot(snapshot).buildClient()
+
         then:
         snapshot.equals(shareSnapshotClient.getSnapshotId())
     }

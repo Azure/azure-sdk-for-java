@@ -18,6 +18,7 @@ import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.ShareSnapshotInfo;
 import com.azure.storage.file.models.ShareStatistics;
 import com.azure.storage.file.models.SignedIdentifier;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -115,24 +116,27 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#createWithResponse(Map, Integer, Context)} with Quota.
+     * Generates a code sample for using {@link ShareClient#createWithResponse(Map, Integer,
+     * Duration, Context)} with Quota.
      */
     public void createWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.ShareClient.createWithResponse#Map-Integer-Context.quota
-        Response<ShareInfo> response = shareClient.createWithResponse(null, 10, new Context(key1, value1));
+        Response<ShareInfo> response = shareClient.createWithResponse(null, 10,
+            Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete creating the shares with status code: " + response.statusCode());
         // END: com.azure.storage.file.ShareClient.createWithResponse#Map-Integer-Context.quota
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#createWithResponse(Map, Integer, Context)} with Metadata.
+     * Generates a code sample for using {@link ShareClient#createWithResponse(Map, Integer,
+     * Duration, Context)} with Metadata.
      */
     public void createWithResponseMetadata() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.ShareClient.createWithResponse#Map-Integer-Context.metadata
-        Response<ShareInfo> response = shareClient.createWithResponse(Collections.singletonMap("share", "metadata"), null,
-            new Context(key1, value1));
+        Response<ShareInfo> response = shareClient.createWithResponse(Collections.singletonMap("share", "metadata"),
+            null, Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete creating the shares with status code: " + response.statusCode());
         // END: com.azure.storage.file.ShareClient.createWithResponse#Map-Integer-Context.metadata
     }
@@ -149,13 +153,13 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#createDirectoryWithResponse(String, Map, Context)}
+     * Generates a code sample for using {@link ShareClient#createDirectoryWithResponse(String, Map, Duration, Context)}
      */
     public void createDirectoryWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.createDirectoryWithResponse#string-map-Context
         Response<DirectoryClient> response = shareClient.createDirectoryWithResponse("documents",
-            Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
+            Collections.singletonMap("directory", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Creating the directory completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.shareClient.createDirectoryWithResponse#string-map-Context
     }
@@ -183,26 +187,28 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#createSnapshotWithResponse(Map, Context)}
+     * Generates a code sample for using {@link ShareClient#createSnapshotWithResponse(Map, Duration, Context)}
      */
     public void createSnapshotWithMetadata() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.createSnapshotWithResponse#map-Context
         Response<ShareSnapshotInfo> response =
-            shareClient.createSnapshotWithResponse(Collections.singletonMap("snpashot", "metadata"), new Context(key1, value1));
+            shareClient.createSnapshotWithResponse(Collections.singletonMap("snpashot", "metadata"),
+                Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete creating the share snpashot with snapshot id: " + response.value().snapshot());
         // END: com.azure.storage.file.shareClient.createSnapshotWithResponse#map-Context
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#createFileWithResponse(String, long, FileHTTPHeaders, Map, Context)}
+     * Generates a code sample for using {@link ShareClient#createFileWithResponse(String, long, FileHTTPHeaders, Map,
+     * Duration, Context)}
      */
     public void createFileWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.createFileWithResponse#string-long-filehttpheaders-map-Context
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
         Response<FileClient> response = shareClient.createFileWithResponse("myfile", 1024, httpHeaders,
-            Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
+            Collections.singletonMap("directory", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Creating the file completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.shareClient.createFileWithResponse#string-long-filehttpheaders-map-Context
     }
@@ -219,12 +225,13 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#deleteDirectoryWithResponse(String, Context)}
+     * Generates a code sample for using {@link ShareClient#deleteDirectoryWithResponse(String, Duration, Context)}
      */
     public void deleteDirectoryWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.deleteDirectoryWithResponse#string-Context
-        VoidResponse response = shareClient.deleteDirectoryWithResponse("mydirectory", new Context(key1, value1));
+        VoidResponse response = shareClient.deleteDirectoryWithResponse("mydirectory",
+            Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete deleting the directory with status code: " + response.statusCode());
         // END: com.azure.storage.file.shareClient.deleteDirectoryWithResponse#string-Context
     }
@@ -241,12 +248,13 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#deleteFileWithResponse(String, Context)}
+     * Generates a code sample for using {@link ShareClient#deleteFileWithResponse(String, Duration, Context)}
      */
     public void deleteFileWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.deleteFileWithResponse#string-Context
-        VoidResponse response = shareClient.deleteFileWithResponse("myfile", new Context(key1, value1));
+        VoidResponse response = shareClient.deleteFileWithResponse("myfile",
+            Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete deleting the file with status code: " + response.statusCode());
         // END: com.azure.storage.file.shareClient.deleteFileWithResponse#string-Context
     }
@@ -268,7 +276,7 @@ public class ShareJavaDocCodeSamples {
     public void deleteShareWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.deleteWithResponse#Context
-        VoidResponse response = shareClient.deleteWithResponse(new Context(key1, value1));
+        VoidResponse response = shareClient.deleteWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete deleting the share with status code: " + response.statusCode());
         // END: com.azure.storage.file.shareClient.deleteWithResponse#Context
     }
@@ -285,12 +293,13 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#getPropertiesWithResponse(Context)}
+     * Generates a code sample for using {@link ShareClient#getPropertiesWithResponse(Duration, Context)}
      */
     public void getPropertiesWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.getPropertiesWithResponse#Context
-        ShareProperties properties = shareClient.getPropertiesWithResponse(new Context(key1, value1)).value();
+        ShareProperties properties = shareClient.getPropertiesWithResponse(
+            Duration.ofSeconds(1), new Context(key1, value1)).value();
         System.out.printf("Share quota: %d, Metadata: %s", properties.quota(), properties.metadata());
         // END: com.azure.storage.file.shareClient.getPropertiesWithResponse#Context
     }
@@ -306,12 +315,13 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#setQuotaWithResponse(int, Context)}
+     * Generates a code sample for using {@link ShareClient#setQuotaWithResponse(int, Duration, Context)}
      */
     public void setQuotaWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.setQuotaWithResponse#int-Context
-        Response<ShareInfo> response = shareClient.setQuotaWithResponse(1024, new Context(key1, value1));
+        Response<ShareInfo> response = shareClient.setQuotaWithResponse(1024,
+            Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting the share quota completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.shareClient.setQuotaWithResponse#int-Context
     }
@@ -328,13 +338,13 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#setMetadataWithResponse(Map, Context)}
+     * Generates a code sample for using {@link ShareClient#setMetadataWithResponse(Map, Duration, Context)}
      */
     public void setMetadataWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.setMetadataWithResponse#map-Context
         Response<ShareInfo> response = shareClient.setMetadataWithResponse(
-            Collections.singletonMap("share", "updatedMetadata"),
+            Collections.singletonMap("share", "updatedMetadata"), Duration.ofSeconds(1),
             new Context(key1, value1));
         System.out.printf("Setting the share metadata completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.shareClient.setMetadataWithResponse#map-Context
@@ -360,7 +370,8 @@ public class ShareJavaDocCodeSamples {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.getAccessPolicy
         for (SignedIdentifier result : shareClient.getAccessPolicy()) {
-            System.out.printf("Access policy %s allows these permissions: %s", result.id(), result.accessPolicy().permission());
+            System.out.printf("Access policy %s allows these permissions: %s",
+                result.id(), result.accessPolicy().permission());
         }
         // END: com.azure.storage.file.shareClient.getAccessPolicy
     }
@@ -383,7 +394,7 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#setAccessPolicyWithResponse(List, Context)}
+     * Generates a code sample for using {@link ShareClient#setAccessPolicyWithResponse(List, Duration, Context)}
      */
     public void setAccessPolicyWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
@@ -395,7 +406,7 @@ public class ShareJavaDocCodeSamples {
         SignedIdentifier permission = new SignedIdentifier().id("mypolicy").accessPolicy(accessPolicy);
 
         Response<ShareInfo> response = shareClient.setAccessPolicyWithResponse(Collections.singletonList(permission),
-            new Context(key1, value1));
+            Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting access policies completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.shareClient.setAccessPolicyWithResponse#List-Context
     }
@@ -413,12 +424,13 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#getStatisticsWithResponse(Context)}
+     * Generates a code sample for using {@link ShareClient#getStatisticsWithResponse(Duration, Context)}
      */
     public void getStatisticsWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.getStatisticsWithResponse#Context
-        Response<ShareStatistics> response = shareClient.getStatisticsWithResponse(new Context(key1, value1));
+        Response<ShareStatistics> response = shareClient.getStatisticsWithResponse(
+            Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("The share is using %d GB", response.value().getShareUsageInGB());
         // END: com.azure.storage.file.shareClient.getStatisticsWithResponse#Context
     }

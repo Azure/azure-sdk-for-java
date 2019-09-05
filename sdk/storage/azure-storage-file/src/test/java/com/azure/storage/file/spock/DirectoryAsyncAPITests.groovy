@@ -12,6 +12,7 @@ import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Unroll
 
+import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -226,7 +227,8 @@ class DirectoryAsyncAPITests extends APISpec {
         }
 
         when:
-        def listFileAndDirVerifier = StepVerifier.create(primaryDirectoryAsyncClient.listFilesAndDirectories(prefix, maxResults))
+        def listFileAndDirVerifier = StepVerifier.create(primaryDirectoryAsyncClient.listFilesAndDirectories(prefix,
+            maxResults, Duration.ofSeconds(30)))
 
         then:
         listFileAndDirVerifier.thenConsumeWhile {
@@ -248,7 +250,8 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.listHandles(maxResult, recursive)).verifyComplete()
+        StepVerifier.create(primaryDirectoryAsyncClient.listHandles(maxResult, recursive,
+            Duration.ofSeconds(30))).verifyComplete()
         where:
         maxResult | recursive
         2         | true
@@ -257,7 +260,8 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "List handles error"() {
         when:
-        def listHandlesVerifier = StepVerifier.create(primaryDirectoryAsyncClient.listHandles(null, true))
+        def listHandlesVerifier = StepVerifier.create(primaryDirectoryAsyncClient.listHandles(null,
+            true, Duration.ofSeconds(30)))
         then:
         listHandlesVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
@@ -273,7 +277,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         when:
-        def forceCloseHandlesErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.forceCloseHandles("handleId", true))
+        def forceCloseHandlesErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.forceCloseHandles("handleId", true, null))
         then:
         forceCloseHandlesErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.INVALID_HEADER_VALUE)

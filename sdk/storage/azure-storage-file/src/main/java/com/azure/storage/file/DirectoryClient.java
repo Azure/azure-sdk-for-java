@@ -338,7 +338,7 @@ public class DirectoryClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The counts of number of handles closed.
      */
-    public PagedIterable<Integer> forceCloseHandles(String handleId, Duration timeout, boolean recursive) {
+    public PagedIterable<Integer> forceCloseHandles(String handleId, boolean recursive, Duration timeout) {
         // TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
         // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
         return new PagedIterable<>(directoryAsyncClient.forceCloseHandles(handleId, recursive, timeout));

@@ -24,6 +24,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -112,14 +113,15 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#createWithResponse(long, FileHTTPHeaders, Map, Context)}
+     * Generates a code sample for using {@link FileClient#createWithResponse(long, FileHTTPHeaders, Map,
+     * Duration, Context)}
      */
     public void createWithResponse() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.createWithResponse#long-filehttpheaders-map-Context
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
         Response<FileInfo> response = fileClient.createWithResponse(1024, httpHeaders,
-            Collections.singletonMap("file", "updatedMetadata"), new Context(key1, value1));
+            Collections.singletonMap("file", "updatedMetadata"), Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Creating the file completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.fileClient.createWithResponse#long-filehttpheaders-map-Context
     }
@@ -138,14 +140,14 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#startCopyWithResponse(String, Map, Context)}
+     * Generates a code sample for using {@link FileClient#startCopyWithResponse(String, Map, Duration, Context)}
      */
     public void startCopyWithResponse() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.startCopyWithResponse#string-map-Context
         Response<FileCopyInfo> response = fileClient.startCopyWithResponse(
             "https://{accountName}.file.core.windows.net?{SASToken}",
-            Collections.singletonMap("file", "metadata"), new Context(key1, value1));
+            Collections.singletonMap("file", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete copying the file with copy Id: " + response.value().copyId());
         // END: com.azure.storage.file.fileClient.startCopyWithResponse#string-map-Context
     }
@@ -162,12 +164,13 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#abortCopyWithResponse(String, Context)}
+     * Generates a code sample for using {@link FileClient#abortCopyWithResponse(String, Duration, Context)}
      */
     public void abortCopyWithResponse() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.abortCopyWithResponse#string-Context
-        VoidResponse response = fileClient.abortCopyWithResponse("someCopyId", new Context(key1, value1));
+        VoidResponse response = fileClient.abortCopyWithResponse("someCopyId", Duration.ofSeconds(1),
+            new Context(key1, value1));
         System.out.printf("Abort copying the file completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.fileClient.abortCopyWithResponse#string-Context
     }
@@ -185,27 +188,28 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#uploadWithResponse(ByteBuffer, long, Context)}
+     * Generates a code sample for using {@link FileClient#uploadWithResponse(ByteBuffer, long, Duration, Context)}
      */
     public void uploadWithResponse() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-Context
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         Response<FileUploadInfo> response = fileClient.uploadWithResponse(defaultData, defaultData.remaining(),
-            new Context(key1, value1));
+            Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete uploading the data with status code: " + response.statusCode());
         // END: com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-Context
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#uploadWithResponse(ByteBuffer, long, long, Context)}
+     * Generates a code sample for using {@link FileClient#uploadWithResponse(ByteBuffer, long, long,
+     * Duration, Context)}
      */
     public void uploadWithResponseMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-long-Context
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         Response<FileUploadInfo> response = fileClient.uploadWithResponse(defaultData, defaultData.remaining(),
-            1024, new Context(key1, value1));
+            1024, Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete uploading the data with status code: " + response.statusCode());
         // END: com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-long-Context
     }
@@ -222,13 +226,13 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#clearRangeWithResponse(long, long, Context)}
+     * Generates a code sample for using {@link FileClient#clearRangeWithResponse(long, long, Duration, Context)}
      */
     public void clearRangeMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.clearRangeWithResponse#long-long-Context
         Response<FileUploadInfo> response = fileClient.clearRangeWithResponse(1024, 1024,
-            new Context(key1, value1));
+            Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete clearing the range with status code: " + response.statusCode());
         // END: com.azure.storage.file.fileClient.clearRangeWithResponse#long-long-Context
     }
@@ -276,13 +280,13 @@ public class FileJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using {@link FileClient#downloadWithPropertiesWithResponse(
-     * FileRange, Boolean, Context)}
+     * FileRange, Boolean, Duration, Context)}
      */
     public void downloadWithPropertiesWithResponse() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.downloadWithPropertiesWithResponse#filerange-boolean-Context
         Response<FileDownloadInfo> response = fileClient.downloadWithPropertiesWithResponse(new FileRange(1024, 2047L),
-            false, new Context(key1, value1));
+            false, Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete downloading the data with status code: " + response.statusCode());
         response.value().body().subscribe(
             byteBuffer ->  System.out.println("Complete downloading the data with body: "
@@ -331,12 +335,12 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#deleteWithResponse(Context)}
+     * Generates a code sample for using {@link FileClient#deleteWithResponse(Duration, Context)}
      */
     public void deleteWithResponse() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.deleteWithResponse#Context
-        VoidResponse response = fileClient.deleteWithResponse(new Context(key1, value1));
+        VoidResponse response = fileClient.deleteWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete deleting the file with status code: " + response.statusCode());
         // END: com.azure.storage.file.fileClient.deleteWithResponse#Context
     }
@@ -353,12 +357,13 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#getPropertiesWithResponse(Context)}
+     * Generates a code sample for using {@link FileClient#getPropertiesWithResponse(Duration, Context)}
      */
     public void getPropertiesWithResponse() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.getPropertiesWithResponse#Context
-        Response<FileProperties> response = fileClient.getPropertiesWithResponse(new Context(key1, value1));
+        Response<FileProperties> response = fileClient.getPropertiesWithResponse(
+            Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("File latest modified date is %s.", response.value().lastModified());
         // END: com.azure.storage.file.fileClient.getPropertiesWithResponse#Context
     }
@@ -375,36 +380,37 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#setMetadataWithResponse(Map, Context)}
+     * Generates a code sample for using {@link FileClient#setMetadataWithResponse(Map, Duration, Context)}
      */
     public void setMetadataWithResponse() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.setMetadataWithResponse#map-Context
         Response<FileMetadataInfo> response = fileClient.setMetadataWithResponse(
-            Collections.singletonMap("file", "updatedMetadata"), new Context(key1, value1));
+            Collections.singletonMap("file", "updatedMetadata"), Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting the file metadata completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.fileClient.setMetadataWithResponse#map-Context
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#setMetadataWithResponse(Map, Context)} to clear metadata.
+     * Generates a code sample for using {@link FileClient#setMetadataWithResponse(Map,
+     * Duration, Context)} to clear metadata.
      */
     public void clearMetadataWithResponse() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.setMetadataWithResponse#map-Context.clearMetadata
         Response<FileMetadataInfo> response = fileClient.setMetadataWithResponse(null,
-            new Context(key1, value1));
+            Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting the file metadata completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.fileClient.setMetadataWithResponse#map-Context.clearMetadata
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#setMetadataWithResponse(Map, Context)} to clear metadata.
+     * Generates a code sample for using {@link FileClient#setMetadataWithResponse(Map, Duration, Context)} to clear metadata.
      */
     public void clearMetadata() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.setMetadata#map.clearMetadata
-        fileClient.setMetadata(null);
+        fileClient.setMetadataWithResponse(null, null, new Context(key1, value1));
         System.out.printf("Setting the file metadata completed.");
         // END: com.azure.storage.file.fileClient.setMetadata#map.clearMetadata
     }
@@ -433,27 +439,29 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#setHttpHeadersWithResponse(long, FileHTTPHeaders, Context)}
+     * Generates a code sample for using {@link FileClient#setHttpHeadersWithResponse(long, FileHTTPHeaders,
+     * Duration, Context)}
      */
     public void setHttpHeadersWithResponse() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.setHttpHeadersWithResponse#long-filehttpheaders-Context
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
         Response<FileInfo> response = fileClient.setHttpHeadersWithResponse(1024, httpHeaders,
-            new Context(key1, value1));
+            Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting the file httpHeaders completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.fileClient.setHttpHeadersWithResponse#long-filehttpheaders-Context
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#setHttpHeadersWithResponse(long, FileHTTPHeaders, Context)}
+     * Generates a code sample for using {@link FileClient#setHttpHeadersWithResponse(long, FileHTTPHeaders,
+     * Duration, Context)}
      * (long, FileHTTPHeaders)} to clear httpHeaders.
      */
     public void clearHTTPHeaders() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.setHttpHeadersWithResponse#long-filehttpheaders-Context.clearHttpHeaders
         Response<FileInfo> response = fileClient.setHttpHeadersWithResponse(1024, null,
-            new Context(key1, value1));
+            Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting the file httpHeaders completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.fileClient.setHttpHeadersWithResponse#long-filehttpheaders-Context.clearHttpHeaders
     }
@@ -471,12 +479,12 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#listRanges(FileRange)}
+     * Generates a code sample for using {@link FileClient#listRanges(FileRange, Duration)}
      */
     public void listRangesMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.listRanges#filerange
-        Iterable<FileRange> ranges = fileClient.listRanges(new FileRange(1024, 2048L));
+        Iterable<FileRange> ranges = fileClient.listRanges(new FileRange(1024, 2048L), Duration.ofSeconds(1));
         ranges.forEach(range ->
             System.out.printf("List ranges completed with start: %d, end: %d", range.start(), range.end()));
         // END: com.azure.storage.file.fileClient.listRanges#filerange
@@ -495,26 +503,26 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#listHandles(Integer)}
+     * Generates a code sample for using {@link FileClient#listHandles(Integer, Duration)}
      */
     public void listHandlesWithOverload() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.listHandles#integer
-        fileClient.listHandles(10)
+        fileClient.listHandles(10, Duration.ofSeconds(1))
             .forEach(handleItem -> System.out.printf("List handles completed with handleId %s",
                 handleItem.handleId()));
         // END: com.azure.storage.file.fileClient.listHandles#integer
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#forceCloseHandles(String)}
+     * Generates a code sample for using {@link FileClient#forceCloseHandles(String, Duration)}
      */
     public void forceCloseHandles() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.forceCloseHandles#string
-        fileClient.listHandles(10)
+        fileClient.listHandles(10, Duration.ofSeconds(1))
             .forEach(result ->
-                fileClient.forceCloseHandles(result.handleId()).forEach(numOfClosedHandles ->
+                fileClient.forceCloseHandles(result.handleId(), Duration.ofSeconds(1)).forEach(numOfClosedHandles ->
                     System.out.printf("Close %d handles.", numOfClosedHandles)
                 ));
         // END: com.azure.storage.file.fileClient.forceCloseHandles#string
