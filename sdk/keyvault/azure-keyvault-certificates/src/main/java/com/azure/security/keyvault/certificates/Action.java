@@ -7,7 +7,7 @@ import com.azure.security.keyvault.certificates.models.LifetimeActionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The action that will be executed.
+ * The action configured in certificate policy that will be executed at a specific trigger scenario.
  */
 class Action {
     /**
