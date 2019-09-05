@@ -345,6 +345,13 @@ public final class FileServiceClient {
     /**
      * Generates an account SAS token with the specified parameters
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.FileServiceClient.generateAccountSAS}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a>.</p>
+     *
      * @param accountSASService The {@code AccountSASService} services for the account SAS
      * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
      * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS

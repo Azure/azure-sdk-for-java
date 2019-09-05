@@ -850,6 +850,13 @@ public class ShareAsyncClient {
     /**
      * Generates a SAS token with the specified parameters
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.generateSAS}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
+     *
      * @param identifier The {@code String} name of the access policy on the share this SAS references if any
      * @param permissions The {@code ShareSASPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
