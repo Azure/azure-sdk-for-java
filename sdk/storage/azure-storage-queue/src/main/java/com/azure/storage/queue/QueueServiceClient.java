@@ -101,6 +101,7 @@ public final class QueueServiceClient {
      */
     public Response<QueueClient> createQueueWithResponse(String queueName, Map<String, String> metadata,
                                                          Duration timeout, Context context) {
+
         Mono<Response<QueueAsyncClient>> asyncResponse = client.createQueueWithResponse(queueName, metadata, context);
         Response<QueueAsyncClient> response = Utility.blockWithOptionalTimeout(asyncResponse, timeout);
         return new SimpleResponse<>(response, new QueueClient(response.value()));

@@ -461,10 +461,10 @@ public final class QueueAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-message">Azure Docs</a>.</p>
      *
      * @param messageText Message text
-     * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue in seconds.
+     * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue.
      * If unset the value will default to 0 and the message will be instantly visible. The timeout must be between 0
      * seconds and 7 days.
-     * @param timeToLive Optional. How long the message will stay alive in the queue in seconds. If unset the value will
+     * @param timeToLive Optional. How long the message will stay alive in the queue. If unset the value will
      * default to 7 days, if -1 is passed the message will not expire. The time to live must be -1 or any positive number.
      * @return A {@link EnqueuedMessage} value that contains the {@link EnqueuedMessage#messageId() messageId} and
      * {@link EnqueuedMessage#popReceipt() popReceipt} that are used to interact with the message and other metadata

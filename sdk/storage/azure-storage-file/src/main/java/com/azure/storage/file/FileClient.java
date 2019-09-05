@@ -9,6 +9,7 @@ import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
@@ -22,10 +23,12 @@ import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.file.FileAlreadyExistsException;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -82,7 +85,8 @@ public class FileClient {
      * @throws StorageException If the file has already existed, the parent directory does not exist or fileName is an invalid resource name.
      */
     public FileInfo create(long maxSize) {
-        return createWithResponse(maxSize, null, null, Context.NONE).value();
+        return createWithResponse(maxSize, null, null,
+            null, Context.NONE).value();
     }
 
     /**
@@ -101,12 +105,15 @@ public class FileClient {
      * @param httpHeaders Additional parameters for the operation.
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileInfo file info} and the status of creating the file.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
-    public Response<FileInfo> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata, Context context) {
-        return fileAsyncClient.createWithResponse(maxSize, httpHeaders, metadata, context).block();
+    public Response<FileInfo> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders, Map<String,
+        String> metadata, Duration timeout, Context context) {
+        Mono<Response<FileInfo>> response = fileAsyncClient.createWithResponse(maxSize, httpHeaders, metadata, context);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**

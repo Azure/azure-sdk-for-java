@@ -13,6 +13,7 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
@@ -31,6 +32,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -340,7 +342,7 @@ public class DirectoryAsyncClient {
      * @return {@link FileRef File info} in the storage directory
      */
     public PagedFlux<FileRef> listFilesAndDirectories() {
-        return listFilesAndDirectories(null, null);
+        return listFilesAndDirectories(null, null, null);
     }
 
     /**
@@ -358,19 +360,20 @@ public class DirectoryAsyncClient {
      * @param prefix Optional prefix which filters the results to return only files and directories whose name begins with.
      * @param maxResults Optional maximum number of files and/or directories to return per page.
      *                   If the request does not specify maxresults or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @param timeout An optional timeout to be applied to the network asynchronous operations.
      * @return {@link FileRef File info} in this directory with prefix and max number of return results.
      */
-    public PagedFlux<FileRef> listFilesAndDirectories(String prefix, Integer maxResults) {
+    public PagedFlux<FileRef> listFilesAndDirectories(String prefix, Integer maxResults, Duration timeout) {
         Function<String, Mono<PagedResponse<FileRef>>> retriever =
-            marker -> postProcessResponse(this.azureFileStorageClient.directorys()
+            marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
                 .listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryPath, prefix, snapshot,
-                    marker, maxResults, null, Context.NONE))
+                    marker, maxResults, null, Context.NONE), timeout)
                 .map(response -> new PagedResponseBase<>(response.request(),
                     response.statusCode(),
                     response.headers(),
                     convertResponseAndGetNumOfResults(response),
                     response.value().nextMarker(),
-                    response.deserializedHeaders()));
+                    response.deserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
@@ -389,25 +392,27 @@ public class DirectoryAsyncClient {
      *
      * @param maxResult Optional maximum number of results will return per page
      * @param recursive Specifies operation should apply to the directory specified in the URI, its files, its subdirectories and their files.
+     * @param timeout An optional timeout to be applied to the network asynchronous operations.
      * @return {@link HandleItem handles} in the directory that satisfy the requirements
      */
-    public PagedFlux<HandleItem> listHandles(Integer maxResult, boolean recursive) {
+    public PagedFlux<HandleItem> listHandles(Integer maxResult, boolean recursive, Duration timeout) {
         Function<String, Mono<PagedResponse<HandleItem>>> retriever =
-            marker -> postProcessResponse(this.azureFileStorageClient.directorys()
+            marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
             .listHandlesWithRestResponseAsync(shareName, directoryPath, marker, maxResult, null, snapshot, recursive,
-                Context.NONE))
+                Context.NONE), timeout)
             .map(response -> new PagedResponseBase<>(response.request(),
                 response.statusCode(),
                 response.headers(),
                 response.value().handleList(),
                 response.value().nextMarker(),
-                response.deserializedHeaders()));
+                response.deserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
     /**
-     * Closes a handle or handles opened on a directory or a file at the service. It is intended to be used alongside {@link DirectoryAsyncClient#listHandles(Integer, boolean)} .
+     * Closes a handle or handles opened on a directory or a file at the service. It is intended to be used alongside
+     * {@link DirectoryAsyncClient#listHandles(Integer, boolean, Duration)} .
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -420,21 +425,22 @@ public class DirectoryAsyncClient {
      *
      * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all handles.
      * @param recursive A boolean value that specifies if the operation should also apply to the files and subdirectories of the directory specified in the URI.
+     * @param timeout An optional timeout to be applied to the network asynchronous operations.
      * @return The counts of number of handles closed
      */
-    public PagedFlux<Integer> forceCloseHandles(String handleId, boolean recursive) {
+    public PagedFlux<Integer> forceCloseHandles(String handleId, boolean recursive, Duration timeout) {
         // TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
         // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
         Function<String, Mono<PagedResponse<Integer>>> retriever =
-            marker -> postProcessResponse(this.azureFileStorageClient.directorys()
+            marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
             .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, handleId, null, marker, snapshot,
-                recursive, Context.NONE))
+                recursive, Context.NONE), timeout)
             .map(response -> new PagedResponseBase<>(response.request(),
                 response.statusCode(),
                 response.headers(),
                 Collections.singletonList(response.deserializedHeaders().numberOfHandlesClosed()),
                 response.deserializedHeaders().marker(),
-                response.deserializedHeaders()));
+                response.deserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
