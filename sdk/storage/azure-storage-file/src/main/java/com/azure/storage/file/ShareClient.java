@@ -649,6 +649,48 @@ public class ShareClient {
     }
 
     /**
+     * Creates a permission a the share level. If a permission already exists, it returns the key of it,
+     * else creates a new permission and returns the key.
+     *
+     * @param filePermission The file permission to get/create.
+     * @return The file permission key associated with the file permission.
+     */
+    public String createPermission(String filePermission) {
+        return createPermissionWithResponse(filePermission, Context.NONE).value();
+    }
+
+    /**
+     * Creates a permission a the share level. If a permission already exists, it returns the key of it,
+     * else creates a new permission and returns the key.
+     *
+     * @param filePermission The file permission to get/create.
+     * @return A response that contains the file permission key associated with the file permission.
+     */
+    public Response<String> createPermissionWithResponse(String filePermission, Context context) {
+        return client.createPermissionWithResponse(filePermission, context).block();
+    }
+
+    /**
+     * Gets a permission for a given key.
+     *
+     * @param filePermissionKey The file permission key.
+     * @return The file permission associated with the file permission key.
+     */
+    public String getPermission(String filePermissionKey) {
+        return getPermissionWithResponse(filePermissionKey, Context.NONE).value();
+    }
+
+    /**
+     * Gets a permission for a given key.
+     *
+     * @param filePermissionKey The file permission key.
+     * @return A response that contains th file permission associated with the file permission key.
+     */
+    public Response<String> getPermissionWithResponse(String filePermissionKey, Context context) {
+        return client.getPermissionWithResponse(filePermissionKey, context).block();
+    }
+
+    /**
      * Get snapshot id which attached to {@link ShareClient}.
      * Return {@code null} if no snapshot id attached.
      *

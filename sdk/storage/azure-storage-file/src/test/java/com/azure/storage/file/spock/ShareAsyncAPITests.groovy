@@ -14,6 +14,7 @@ import com.azure.storage.file.models.FileProperties
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.StorageErrorCode
 import reactor.test.StepVerifier
+import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -289,9 +290,10 @@ class ShareAsyncAPITests extends APISpec {
     def "Create directory file permission key"() {
         given:
         primaryShareAsyncClient.create().block()
+        def permissionKey = primaryShareAsyncClient.createPermission(filePermission).block()
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
-        // TODO: add file permission key
+            .filePermissionKey(permissionKey)
         expect:
         StepVerifier.create(primaryShareAsyncClient.createDirectoryWithResponse("testCreateDirectory", smbProperties, null, null))
             .assertNext {
@@ -335,9 +337,10 @@ class ShareAsyncAPITests extends APISpec {
     def "Create file file permission key"() {
         given:
         primaryShareAsyncClient.create().block()
+        def permissionKey = primaryShareAsyncClient.createPermission(filePermission).block()
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
-        // TODO: add file permission key
+            .filePermissionKey(permissionKey)
         FileProperties properties = new FileProperties(null, null, null, null, null, null, smbProperties)
 
         expect:
@@ -447,6 +450,57 @@ class ShareAsyncAPITests extends APISpec {
         deleteFileErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
         }
+    }
+
+    def "Create permission"() {
+        given:
+        primaryShareAsyncClient.create().block()
+
+        expect:
+        StepVerifier.create(primaryShareAsyncClient.createPermissionWithResponse(filePermission))
+            .assertNext() {
+                assert FileTestHelper.assertResponseStatusCode(it, 201)
+            }.verifyComplete()
+    }
+
+    @Ignore
+    // TODO : Get Permission Auto-genned code broken does not accept share name
+    def "Create and get permission"() {
+        given:
+        primaryShareAsyncClient.create().block()
+        def filePermissionKey = primaryShareAsyncClient.createPermission(filePermission).block()
+
+        expect:
+        StepVerifier.create(primaryShareAsyncClient.getPermissionWithResponse(filePermissionKey))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 201)
+            }.verifyComplete()
+    }
+
+    def "Create permission error"() {
+        given:
+        primaryShareAsyncClient.create().block()
+
+        expect:
+        // Invalid permission
+        StepVerifier.create(primaryShareAsyncClient.createPermissionWithResponse("abcde"))
+            .verifyErrorSatisfies {
+                assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.FILE_INVALID_PERMISSION)
+            }
+    }
+
+    @Ignore
+    // TODO : Get Permission Auto-genned code broken does not accept share name
+    def "Get permission error"() {
+        given:
+        primaryShareAsyncClient.create().block()
+
+        expect:
+        // Invalid permission key
+        StepVerifier.create(primaryShareAsyncClient.getPermissionWithResponse("abcde"))
+            .verifyErrorSatisfies {
+                assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.INVALID_HEADER_VALUE)
+            }
     }
 
     def "Get snapshot id"() {

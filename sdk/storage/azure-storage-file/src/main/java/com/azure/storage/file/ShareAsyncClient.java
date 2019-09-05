@@ -25,6 +25,7 @@ import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.ShareCreateSnapshotHeaders;
 import com.azure.storage.file.models.ShareGetPropertiesHeaders;
 import com.azure.storage.file.models.ShareInfo;
+import com.azure.storage.file.models.SharePermission;
 import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.ShareSnapshotInfo;
 import com.azure.storage.file.models.ShareStatistics;
@@ -784,6 +785,60 @@ public class ShareAsyncClient {
     Mono<VoidResponse> deleteFileWithResponse(String fileName, Context context) {
         return postProcessResponse(getFileClient(fileName).deleteWithResponse(context))
             .map(VoidResponse::new);
+    }
+
+    /**
+     * Creates a permission a the share level. If a permission already exists, it returns the key of it,
+     * else creates a new permission and returns the key.
+     *
+     * @param filePermission The file permission to get/create.
+     * @return The file permission key associated with the file permission.
+     */
+    public Mono<String> createPermission(String filePermission) {
+        return createPermissionWithResponse(filePermission).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a permission a the share level. If a permission already exists, it returns the key of it,
+     * else creates a new permission and returns the key.
+     *
+     * @param filePermission The file permission to get/create.
+     * @return A response that contains the file permission key associated with the file permission.
+     */
+    public Mono<Response<String>> createPermissionWithResponse(String filePermission) {
+        return withContext(context -> createPermissionWithResponse(filePermission, context));
+    }
+
+    Mono<Response<String>> createPermissionWithResponse(String filePermission, Context context) {
+        // NOTE: Should we check for null or empty?
+        SharePermission sharePermission = new SharePermission().permission(filePermission);
+        return postProcessResponse(azureFileStorageClient.shares().createPermissionWithRestResponseAsync(shareName, sharePermission, null, context))
+            .map(response -> new SimpleResponse<>(response, response.deserializedHeaders().filePermissionKey()));
+    }
+
+    /**
+     * Gets a permission for a given key.
+     *
+     * @param filePermissionKey The file permission key.
+     * @return The file permission associated with the file permission key.
+     */
+    public Mono<String> getPermission(String filePermissionKey) {
+        return getPermissionWithResponse(filePermissionKey).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets a permission for a given key.
+     *
+     * @param filePermissionKey The file permission key.
+     * @return A response that contains th file permission associated with the file permission key.
+     */
+    public Mono<Response<String>> getPermissionWithResponse(String filePermissionKey) {
+        return withContext(context -> getPermissionWithResponse(filePermissionKey, context));
+    }
+
+    Mono<Response<String>> getPermissionWithResponse(String filePermissionKey, Context context) {
+        return postProcessResponse(azureFileStorageClient.shares().getPermissionWithRestResponseAsync(filePermissionKey, null, context))
+            .map(response -> new SimpleResponse<>(response, response.value().permission()));
     }
 
     /**

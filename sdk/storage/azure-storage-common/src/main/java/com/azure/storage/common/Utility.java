@@ -280,6 +280,19 @@ public final class Utility {
     }
 
     /**
+     * Asserts that a value is not {@code null} or "".
+     *
+     * @param param Name of the parameter
+     * @param value Value of the parameter
+     * @throws IllegalArgumentException If {@code value} is {@code null} or ""
+     */
+    public static void assertNotNullOrEmpty(final String param, final Object value) {
+        if (value == null || value.equals("")) {
+            throw new IllegalArgumentException(String.format(Locale.ROOT, Constants.MessageConstants.ARGUMENT_NULL_OR_EMPTY, param));
+        }
+    }
+
+    /**
      * Asserts that the specified number is in the valid range. The range is inclusive.
      *
      * @param param Name of the parameter

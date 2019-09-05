@@ -14,6 +14,7 @@ import com.azure.storage.file.models.FileProperties
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageException
+import org.junit.Ignore
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -380,6 +381,53 @@ class ShareAPITests extends APISpec {
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
+    }
+
+    def "Create permission"() {
+        given:
+        primaryShareClient.create()
+
+        expect:
+        FileTestHelper.assertResponseStatusCode(
+            primaryShareClient.createPermissionWithResponse(filePermission, null), 201)
+    }
+
+    @Ignore
+    // TODO : Get Permission Auto-genned code broken does not accept share name
+    def "Create and get permission"() {
+        given:
+        primaryShareClient.create()
+        def permissionKey = primaryShareClient.createPermission(filePermission)
+
+        when:
+        def permission = primaryShareClient.getPermission(permissionKey)
+
+        then:
+        permission == filePermission
+    }
+
+    def "Create permission error"() {
+        given:
+        primaryShareClient.create()
+
+        when:
+        primaryShareClient.createPermissionWithResponse("abcde", null)
+        then:
+        def e = thrown(StorageException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.FILE_INVALID_PERMISSION)
+    }
+
+    @Ignore
+    // TODO : Get Permission Auto-genned code broken does not accept share name
+    def "Get permission error"() {
+        given:
+        primaryShareClient.create()
+
+        when:
+        primaryShareClient.getPermissionWithResponse("abcde", null)
+        then:
+        def e = thrown(StorageException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.INVALID_HEADER_VALUE)
     }
 
     def "Get snapshot id"() {
