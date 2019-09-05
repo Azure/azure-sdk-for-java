@@ -68,7 +68,7 @@ class CertificateIssuerSetParameters {
      * @param credentials the credentials value to set
      * @return the CertificateIssuerSetParameters object itself.
      */
-    CertificateIssuerSetParameters vredentials(IssuerCredentials credentials) {
+    CertificateIssuerSetParameters credentials(IssuerCredentials credentials) {
         this.credentials = credentials;
         return this;
     }
