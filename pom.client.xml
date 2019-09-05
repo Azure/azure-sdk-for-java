@@ -792,6 +792,7 @@
     <module>./sdk/core/azure-core-test</module>
     <module>./sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>./sdk/keyvault/azure-keyvault-secrets</module>
+    <module>./sdk/keyvault/azure-keyvault-certificates</module>
     <module>./sdk/keyvault/azure-keyvault-keys</module>
     <module>./sdk/tracing/tracing-opentelemetry</module>
     <module>./sdk/identity/azure-identity</module>
