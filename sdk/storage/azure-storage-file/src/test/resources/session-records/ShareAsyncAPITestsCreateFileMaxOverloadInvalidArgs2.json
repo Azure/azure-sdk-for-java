@@ -1,30 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefilemaxoverloadinvalidargs236437bb?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefilemaxoverloadinvalidargs29597175?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "d9c5bd77-ec8e-4b12-88f5-cda5601cc181"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72C15180E42DE\"",
-      "Last-Modified" : "Thu, 29 Aug 2019 00:09:00 GMT",
+      "ETag" : "\"0x8D730D96E1F8A25\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 01:44:30 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "7f7371d3-f01a-00cd-7efd-5d553e000000",
-      "Date" : "Thu, 29 Aug 2019 00:09:00 GMT",
-      "x-ms-client-request-id" : "75b1096d-009e-45ac-8be2-c8f7c5f3807d"
+      "x-ms-request-id" : "e7c18cef-101a-0044-64c2-62ec1a000000",
+      "Date" : "Wed, 04 Sep 2019 01:44:30 GMT",
+      "x-ms-client-request-id" : "d9c5bd77-ec8e-4b12-88f5-cda5601cc181"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefilemaxoverloadinvalidargs236437bb/fileName",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefilemaxoverloadinvalidargs29597175/fileName",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "cbf65d2e-8640-4425-87ac-4ec86348ad1c"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -33,13 +35,13 @@
       "retry-after" : "0",
       "Content-Length" : "310",
       "StatusCode" : "400",
-      "x-ms-request-id" : "7f7371d5-f01a-00cd-7ffd-5d553e000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:7f7371d5-f01a-00cd-7ffd-5d553e000000\nTime:2019-08-29T00:09:00.6108051Z</Message><HeaderName>x-ms-content-md5</HeaderName><HeaderValue /></Error>",
-      "Date" : "Thu, 29 Aug 2019 00:09:00 GMT",
-      "x-ms-client-request-id" : "0c5d304e-539b-454a-bfcb-f1b1f3cd4b86",
+      "x-ms-request-id" : "e7c18cf1-101a-0044-65c2-62ec1a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:e7c18cf1-101a-0044-65c2-62ec1a000000\nTime:2019-09-04T01:44:31.0142069Z</Message><HeaderName>x-ms-content-md5</HeaderName><HeaderValue /></Error>",
+      "Date" : "Wed, 04 Sep 2019 01:44:30 GMT",
+      "x-ms-client-request-id" : "cbf65d2e-8640-4425-87ac-4ec86348ad1c",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareasyncapitestscreatefilemaxoverloadinvalidargs236437bb" ]
+  "variables" : [ "shareasyncapitestscreatefilemaxoverloadinvalidargs29597175" ]
 }

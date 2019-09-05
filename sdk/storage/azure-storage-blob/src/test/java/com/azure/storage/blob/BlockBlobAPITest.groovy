@@ -4,14 +4,32 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.http.*
+
+import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpMethod
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpRequest
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
-import com.azure.storage.blob.models.*
+import com.azure.storage.blob.models.BlobAccessConditions
+import com.azure.storage.blob.models.BlobHTTPHeaders
+import com.azure.storage.blob.models.BlobRange
+import com.azure.storage.blob.models.BlockItem
+import com.azure.storage.blob.models.BlockListType
+import com.azure.storage.blob.models.LeaseAccessConditions
+import com.azure.storage.blob.models.Metadata
+import com.azure.storage.blob.models.ModifiedAccessConditions
+import com.azure.storage.blob.models.PublicAccessType
+import com.azure.storage.blob.models.SourceModifiedAccessConditions
+import com.azure.storage.blob.models.StorageErrorCode
+import com.azure.storage.blob.models.StorageErrorException
+import com.azure.storage.blob.models.StorageException
 import com.azure.storage.common.policy.RequestRetryOptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -742,7 +760,9 @@ class BlockBlobAPITest extends APISpec {
         AccessTier.fromString(bc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-access-tier")) == AccessTier.COOL
     }
 
+    // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
+    @Requires({ APISpec.liveMode() })
     def "Async buffered upload"() {
         when:
         def data = getRandomData(dataSize)
@@ -781,7 +801,9 @@ class BlockBlobAPITest extends APISpec {
         return result.remaining() == 0
     }
 
+    // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
+    @Requires({ APISpec.liveMode() })
     def "Buffered upload chunked source"() {
         /*
         This test should validate that the upload should work regardless of what format the passed data is in because
@@ -828,7 +850,9 @@ class BlockBlobAPITest extends APISpec {
         5                                              | 1
     }
 
+    // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
+    @Requires({ APISpec.liveMode() })
     def "Buffered upload headers"() {
         when:
         bac.uploadWithResponse(defaultFlux, 10, 2, new BlobHTTPHeaders().blobCacheControl(cacheControl)
@@ -848,7 +872,9 @@ class BlockBlobAPITest extends APISpec {
         "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
     }
 
+    // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
+    @Requires({ APISpec.liveMode() })
     def "Buffered upload metadata"() {
         setup:
         Metadata metadata = new Metadata()
@@ -873,7 +899,9 @@ class BlockBlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
+    @Requires({ APISpec.liveMode() })
     def "Buffered upload AC"() {
         setup:
         bac.upload(defaultFlux, defaultDataSize).block()
@@ -897,7 +925,9 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
+    // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
+    @Requires({ APISpec.liveMode() })
     def "Buffered upload AC fail"() {
         setup:
         bac.upload(defaultFlux, defaultDataSize).block()

@@ -336,8 +336,8 @@ class ContainerAPITest extends APISpec {
                 .expiry(getUTCNow().plusDays(2))
                 .permission("w"))
         List<SignedIdentifier> ids = new ArrayList<>()
-        ids.push(identifier)
-        ids.push(identifier2)
+        ids.add(identifier)
+        ids.add(identifier2)
 
         when:
         def response = cc.setAccessPolicyWithResponse(null, ids, null, null, null)

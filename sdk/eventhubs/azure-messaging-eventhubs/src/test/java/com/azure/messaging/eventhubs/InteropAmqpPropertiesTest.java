@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
 import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
@@ -25,12 +26,19 @@ import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.time.Instant;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
+import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_TRACKING_ID;
+import static com.azure.messaging.eventhubs.TestUtils.getSymbol;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -57,7 +65,8 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
     @Override
     protected void beforeTest() {
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
+        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
+        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, tracerProvider);
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID)
             .retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
@@ -102,8 +111,14 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
         message.setGroupId("group-id");
         message.setReplyToGroupId("replyToGroupId");
 
-        final Map<Symbol, Object> messageAnnotations = new HashMap<>();
-        messageAnnotations.put(Symbol.getSymbol("message-annotation-1"), "messageAnnotationValue");
+        final Map<Symbol, Object> expectedAnnotations = new HashMap<>();
+        expectedAnnotations.put(Symbol.getSymbol("message-annotation-1"), "messageAnnotationValue");
+
+        final Map<Symbol, Object> messageAnnotations = new HashMap<>(expectedAnnotations);
+        messageAnnotations.put(getSymbol(OFFSET_ANNOTATION_NAME), "100");
+        messageAnnotations.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME), Date.from(Instant.now()));
+        messageAnnotations.put(getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME), 15L);
+
         message.setMessageAnnotations(new MessageAnnotations(messageAnnotations));
 
         message.setBody(new Data(Binary.create(ByteBuffer.wrap(PAYLOAD.getBytes()))));
@@ -115,7 +130,7 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
         StepVerifier.create(consumer.receive().filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1))
             .then(() -> producer.send(msgEvent).block(TIMEOUT))
             .assertNext(event -> {
-                validateAmqpProperties(message, messageAnnotations, applicationProperties, event);
+                validateAmqpProperties(message, expectedAnnotations, applicationProperties, event);
                 receivedEventData.set(event);
             })
             .verifyComplete();
@@ -124,7 +139,7 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
 
         StepVerifier.create(consumer.receive().filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1))
             .then(() -> producer.send(receivedEventData.get()).block(TIMEOUT))
-            .assertNext(event -> validateAmqpProperties(message, messageAnnotations, applicationProperties, event))
+            .assertNext(event -> validateAmqpProperties(message, expectedAnnotations, applicationProperties, event))
             .verifyComplete();
     }
 

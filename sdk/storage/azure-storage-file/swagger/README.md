@@ -535,3 +535,18 @@ directive:
     delete $["x-ms-enum"];
     $["x-ms-parameter-location"] = "method";
 ```
+
+### Add the CustomFileAndDirectoryListingDeserializer attribute
+``` yaml
+directive:
+- from: FilesAndDirectoriesListSegment.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "import com.fasterxml.jackson.annotation.JsonProperty;",
+        "import com.fasterxml.jackson.annotation.JsonProperty;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;").
+      replace(
+        "public final class FilesAndDirectoriesListSegment {",
+        "@JsonDeserialize(using = CustomFileAndDirectoryListingDeserializer.class)\npublic final class FilesAndDirectoriesListSegment {");
+```

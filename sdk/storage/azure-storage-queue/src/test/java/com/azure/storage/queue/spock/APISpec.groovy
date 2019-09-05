@@ -144,7 +144,7 @@ class APISpec extends Specification {
 
     static HttpClient getHttpClient() {
         if (enableDebugging) {
-            return HttpClient.createDefault().proxy(new Supplier<ProxyOptions>() {
+            return HttpClient.createDefault().setProxy(new Supplier<ProxyOptions>() {
                 @Override
                 ProxyOptions get() {
                     return new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))

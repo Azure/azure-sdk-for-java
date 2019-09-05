@@ -23,6 +23,7 @@ import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
+import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
@@ -90,6 +91,9 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
         policies.addAll(this.additionalPolicies);
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
+
+        policies.add(makeValidationPolicy());
+
         policies.add(new HttpLoggingPolicy(logLevel));
 
         return new HttpPipelineBuilder()
@@ -97,6 +101,29 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
             .httpClient(httpClient)
             .build();
     }
+
+    /**
+     * Creates a policy that makes assertions on HTTP responses. These assertions are general purpose; method-specific
+     * validations should be performed in the convenience layer.
+     *
+     * @return The validation policy.
+     */
+    private HttpPipelinePolicy makeValidationPolicy() {
+        ResponseValidationPolicyBuilder builder = new ResponseValidationPolicyBuilder()
+            .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID); // echo client request id
+
+        applyServiceSpecificValidations(builder);
+
+        return builder.build();
+    }
+
+    /**
+     * Applies validation of general-purpose requests to builder. Method-specific validations should be performed in the
+     * convenience layer.
+     *
+     * @param builder Builder to assemble assertions together.
+     */
+    protected abstract void applyServiceSpecificValidations(ResponseValidationPolicyBuilder builder);
 
     /**
      * Sets the blob service endpoint, additionally parses it for information (SAS token, path information, etc.)
