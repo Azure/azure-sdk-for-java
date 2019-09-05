@@ -47,11 +47,11 @@ public class EventHubConsumer implements Closeable {
     private final Duration timeout;
     private volatile SynchronousEventSubscriber eventSubscriber;
 
-    EventHubConsumer(EventHubAsyncConsumer consumer, EventHubConsumerOptions options) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
+    EventHubConsumer(EventHubAsyncConsumer consumer, Duration tryTimeout) {
+        Objects.requireNonNull(tryTimeout, "'tryTimeout' cannot be null.");
 
         this.consumer = Objects.requireNonNull(consumer, "'consumer' cannot be null.");
-        this.timeout = options.retry().tryTimeout();
+        this.timeout = tryTimeout;
     }
 
     /**
