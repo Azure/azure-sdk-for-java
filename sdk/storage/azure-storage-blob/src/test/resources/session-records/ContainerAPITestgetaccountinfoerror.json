@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcgetaccountinfoerror091643f17a0dc6650247ed8?restype=container",
+    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcgetaccountinfoerror019642c8ce83efb0ec4b898?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "48d0bb01-62aa-4d34-bca0-35a46197850c"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "b687196d-020c-404f-9468-f302029ff3ec"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D730FF5604B20F\"",
-      "Last-Modified" : "Wed, 04 Sep 2019 06:15:51 GMT",
+      "ETag" : "\"0x8D732491C23DBD8\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 21:36:28 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "182ac627-901e-007c-09e8-62ad43000000",
-      "Date" : "Wed, 04 Sep 2019 06:15:50 GMT",
-      "x-ms-client-request-id" : "48d0bb01-62aa-4d34-bca0-35a46197850c"
+      "x-ms-request-id" : "3962a7ae-d01e-0025-5831-647818000000",
+      "Date" : "Thu, 05 Sep 2019 21:36:27 GMT",
+      "x-ms-client-request-id" : "b687196d-020c-404f-9468-f302029ff3ec"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcgetaccountinfoerror1476538b2ebe8670fc47c3b?restype=account&comp=properties",
+    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcgetaccountinfoerror1324557429691c6f3d4bf79?restype=account&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "8c370f7b-a00f-4a05-be6b-359d2ab75b88"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "f99f9037-ecb5-482d-a4be-30d95f60d08f"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -35,20 +35,20 @@
       "retry-after" : "0",
       "Content-Length" : "223",
       "StatusCode" : "404",
-      "x-ms-request-id" : "182ac63e-901e-007c-1be8-62ad43000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:182ac63e-901e-007c-1be8-62ad43000000\nTime:2019-09-04T06:15:51.4476883Z</Message></Error>",
-      "Date" : "Wed, 04 Sep 2019 06:15:50 GMT",
-      "x-ms-client-request-id" : "8c370f7b-a00f-4a05-be6b-359d2ab75b88",
+      "x-ms-request-id" : "3962a7c0-d01e-0025-6731-647818000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:3962a7c0-d01e-0025-6731-647818000000\nTime:2019-09-05T21:36:28.3128580Z</Message></Error>",
+      "Date" : "Thu, 05 Sep 2019 21:36:27 GMT",
+      "x-ms-client-request-id" : "f99f9037-ecb5-482d-a4be-30d95f60d08f",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net?prefix=jtcgetaccountinfoerror&comp=list",
+    "Uri" : "https://jaschrepragrs.blob.core.windows.net?prefix=jtcgetaccountinfoerror&comp=list",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "da7f4e35-3104-457f-b763-58dd156d8e39"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "b451cb59-b21f-4c1d-9d9a-431dd531cafb"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -56,20 +56,20 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "182ac64b-901e-007c-27e8-62ad43000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcgetaccountinfoerror</Prefix><Containers><Container><Name>jtcgetaccountinfoerror091643f17a0dc6650247ed8</Name><Properties><Last-Modified>Wed, 04 Sep 2019 06:15:51 GMT</Last-Modified><Etag>\"0x8D730FF5604B20F\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Wed, 04 Sep 2019 06:15:50 GMT",
-      "x-ms-client-request-id" : "da7f4e35-3104-457f-b763-58dd156d8e39",
+      "x-ms-request-id" : "3962a7d5-d01e-0025-7c31-647818000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://jaschrepragrs.blob.core.windows.net/\"><Prefix>jtcgetaccountinfoerror</Prefix><Containers><Container><Name>jtcgetaccountinfoerror019642c8ce83efb0ec4b898</Name><Properties><Last-Modified>Thu, 05 Sep 2019 21:36:28 GMT</Last-Modified><Etag>\"0x8D732491C23DBD8\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 05 Sep 2019 21:36:27 GMT",
+      "x-ms-client-request-id" : "b451cb59-b21f-4c1d-9d9a-431dd531cafb",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcgetaccountinfoerror091643f17a0dc6650247ed8?restype=container",
+    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcgetaccountinfoerror019642c8ce83efb0ec4b898?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "c50cbcfb-806d-42b2-af78-50dabc626d19"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "4403623a-6fa3-4019-b50d-e7a9713fcee8"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -77,11 +77,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "182ac654-901e-007c-30e8-62ad43000000",
-      "Date" : "Wed, 04 Sep 2019 06:15:50 GMT",
-      "x-ms-client-request-id" : "c50cbcfb-806d-42b2-af78-50dabc626d19"
+      "x-ms-request-id" : "3962a7eb-d01e-0025-1131-647818000000",
+      "Date" : "Thu, 05 Sep 2019 21:36:27 GMT",
+      "x-ms-client-request-id" : "4403623a-6fa3-4019-b50d-e7a9713fcee8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcgetaccountinfoerror091643f17a0dc6650247ed8", "jtcgetaccountinfoerror1476538b2ebe8670fc47c3b" ]
+  "variables" : [ "jtcgetaccountinfoerror019642c8ce83efb0ec4b898", "jtcgetaccountinfoerror1324557429691c6f3d4bf79" ]
 }
