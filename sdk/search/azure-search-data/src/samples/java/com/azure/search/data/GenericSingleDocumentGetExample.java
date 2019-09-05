@@ -14,7 +14,9 @@ public class GenericSingleDocumentGetExample {
     public static void GetSingleDocument(){
         SearchIndexAsyncClient searchClient = getSearchClient();
 
-        Mono<Document> result = searchClient.getDocument("22");
+        Mono<Document> result = searchClient.getDocument("22")
+            .doOnSuccess(val -> System.out.println("success"))
+            .doOnError(err -> System.out.println("error:"+err));
         Document document = result.block();
         for(String key: document.keySet()) {
             System.out.println(key + ":" + document.get(key));
