@@ -129,6 +129,7 @@ public final class BlockBlobClient extends BlobClient {
      *         provided in the {@link InputStream}.
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
+     * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -353,6 +354,7 @@ public final class BlockBlobClient extends BlobClient {
      * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
+     * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.

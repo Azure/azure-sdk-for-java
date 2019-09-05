@@ -142,6 +142,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *         emitted by the {@code Flux}.
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
+     * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
      *
      * @return A reactive response containing the information of the uploaded block blob.
@@ -238,6 +239,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *         The amount of memory consumed by this method may be up to blockSize * numBuffers.
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
+     * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
@@ -321,6 +323,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @param blockSize Size of the blocks to upload
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
+     * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
      *
      * @return An empty response
@@ -563,6 +566,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
+     * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
      *
      * @return A reactive response containing the information of the block blob.
