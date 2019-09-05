@@ -23,7 +23,7 @@ public class SynchronousReceiveWork {
     private final Duration timeout;
     private final FluxSink<EventData> emitter;
 
-    private volatile boolean hasError = false;
+    private volatile boolean isTerminal = false;
 
     /**
      * Creates a new synchronous receive work.
@@ -64,18 +64,18 @@ public class SynchronousReceiveWork {
      *
      * @return The number of events to receive.
      */
-    public int getNumberOfEvents() {
+    int getNumberOfEvents() {
         return numberToReceive;
     }
 
     /**
-     * Gets whether or not the work item is complete.
+     * Gets whether or not the work item has reached a terminal state.
      *
      * @return {@code true} if all the events have been fetched, it has been cancelled, or an error occurred. {@code
      *     false} otherwise.
      */
-    public boolean isComplete() {
-        return emitter.isCancelled() || remaining.get() == 0 || hasError;
+    boolean isTerminal() {
+        return emitter.isCancelled() || remaining.get() == 0 || isTerminal;
     }
 
     /**
@@ -89,7 +89,7 @@ public class SynchronousReceiveWork {
             remaining.decrementAndGet();
         } catch (Exception e) {
             logger.warning("Exception occurred while emitting next received event.", e);
-            hasError = true;
+            isTerminal = true;
             emitter.error(e);
         }
     }
@@ -98,7 +98,8 @@ public class SynchronousReceiveWork {
      * Completes the publisher. If the publisher has encountered an error, or an error has occurred, it does nothing.
      */
     public synchronized void complete() {
-        if (!hasError || emitter.isCancelled()) {
+        if (!isTerminal || emitter.isCancelled()) {
+            isTerminal = true;
             emitter.complete();
         }
     }
@@ -109,7 +110,7 @@ public class SynchronousReceiveWork {
      * @param error Error to publish downstream.
      */
     public void error(Throwable error) {
-        hasError = true;
+        isTerminal = true;
         emitter.error(error);
     }
 }

@@ -13,12 +13,14 @@ import java.util.Queue;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Subscriber that takes {@link SynchronousReceiveWork} and publishes events to them in the order received.
  */
 public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
     private final Timer timer = new Timer("SynchronousEventSubscriber");
+    private final AtomicInteger pendingReceives = new AtomicInteger();
     private final ClientLogger logger = new ClientLogger(SynchronousEventSubscriber.class);
     private final Queue<SynchronousReceiveWork> pendingWork = new ConcurrentLinkedQueue<>();
     private volatile Subscription subscription;
@@ -44,9 +46,10 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
         final boolean isEmpty = pendingWork.isEmpty();
         pendingWork.add(work);
 
-        // There was no work before we added this new work item.
         if (isEmpty) {
-            updateWork(work);
+            scheduleWork(work);
+        } else {
+            getOrUpdateNextWork();
         }
     }
 
@@ -61,12 +64,11 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
             this.subscription = subscription;
         }
 
-        final SynchronousReceiveWork currentWork = pendingWork.peek();
-        if (currentWork == null) {
+        final SynchronousReceiveWork work = pendingWork.peek();
+        if (work == null) {
             logger.warning("There is no work to request EventData for. Listener should have been created with work.");
         } else {
-            logger.info("Starting subscription with work: {}", currentWork.getId());
-            subscription.request(currentWork.getNumberOfEvents());
+            scheduleWork(work);
         }
     }
 
@@ -78,33 +80,19 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
      */
     @Override
     protected void hookOnNext(EventData value) {
-        SynchronousReceiveWork currentItem = pendingWork.peek();
+        SynchronousReceiveWork currentItem = getOrUpdateNextWork();
         if (currentItem == null) {
             logger.warning("EventData received when there is no pending work. Skipping.");
             return;
         }
 
-        if (!currentItem.isComplete()) {
-            currentItem.next(value);
-        } else {
-            pendingWork.remove(currentItem);
-            currentItem = pendingWork.peek();
+        pendingReceives.decrementAndGet();
+        currentItem.next(value);
 
-            if (currentItem == null) {
-                logger.warning("Current work completed before this value was seen. There is no more pending work.");
-                return;
-            }
+        if (currentItem.isTerminal()) {
+            currentItem.complete();
+            getOrUpdateNextWork();
         }
-
-        if (!currentItem.isComplete()) {
-            return;
-        }
-
-        currentItem.complete();
-        pendingWork.remove();
-
-        final SynchronousReceiveWork nextWork = pendingWork.peek();
-        updateWork(nextWork);
     }
 
     /**
@@ -136,18 +124,37 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
         super.dispose();
     }
 
-    private synchronized void updateWork(SynchronousReceiveWork work) {
-        if (work == null) {
-            return;
+    private synchronized SynchronousReceiveWork getOrUpdateNextWork() {
+        SynchronousReceiveWork work = pendingWork.peek();
+        if (work == null || !work.isTerminal()) {
+            return work;
         }
 
+        pendingWork.remove(work);
+        work = pendingWork.peek();
+
+        if (work == null) {
+            return null;
+        }
+
+        scheduleWork(work);
+        return work;
+    }
+
+    private synchronized void scheduleWork(SynchronousReceiveWork work) {
         if (subscription == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "This has not been subscribed to. Cannot start receiving work."));
         }
 
         logger.info("Scheduling receiver for: {}", work.getId());
-        subscription.request(work.getNumberOfEvents());
+        final int pending = work.getNumberOfEvents() - pendingReceives.get();
+
+        if (pending > 0) {
+            pendingReceives.addAndGet(pending);
+            subscription.request(pending);
+        }
+
         timer.schedule(new ReceiveTimeoutTask(work), work.getTimeout().toMillis());
     }
 
@@ -160,9 +167,7 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
 
         @Override
         public void run() {
-            if (!work.isComplete()) {
-                work.complete();
-            }
+            work.complete();
         }
     }
 }
