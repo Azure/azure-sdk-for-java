@@ -13,6 +13,7 @@ import com.azure.core.http.HttpRequest
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
+import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobAccessConditions
 import com.azure.storage.blob.models.BlobHTTPHeaders
 import com.azure.storage.blob.models.BlobRange
