@@ -108,17 +108,6 @@ public class BlobClient {
     }
 
     /**
-     * Initializes a {@link ContainerClient} object pointing to the container this blob is in. This method does not
-     * create a container. It simply constructs the URL to the container and offers access to methods relevant to
-     * containers.
-     *
-     * @return A {@link ContainerClient} object pointing to the container containing the blob
-     */
-    public ContainerClient getContainerClient() {
-        return new ContainerClient(blobAsyncClient.getContainerAsyncClient());
-    }
-
-    /**
      * Gets the URL of the blob represented by this client.
      *
      * @return the URL.

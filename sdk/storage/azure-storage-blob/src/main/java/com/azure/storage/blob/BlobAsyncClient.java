@@ -151,21 +151,6 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Initializes a {@link ContainerAsyncClient} object pointing to the container this blob is in. This method does not
-     * create a container. It simply constructs the client to the container and offers access to methods relevant to
-     * containers.
-     *
-     * @return A {@link ContainerAsyncClient} object pointing to the container containing the blob
-     */
-    public ContainerAsyncClient getContainerAsyncClient() {
-        BlobURLParts parts = URLParser.parse(getBlobUrl());
-        return new ContainerAsyncClient(new AzureBlobStorageBuilder()
-            .url(String.format("%s://%s/%s", parts.scheme(), parts.host(), parts.containerName()))
-            .pipeline(azureBlobStorage.getHttpPipeline())
-            .build());
-    }
-
-    /**
      * Gets the URL of the blob represented by this client.
      *
      * @return the URL.

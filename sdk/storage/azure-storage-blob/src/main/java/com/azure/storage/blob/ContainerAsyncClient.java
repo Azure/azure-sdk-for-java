@@ -222,18 +222,6 @@ public final class ContainerAsyncClient {
     }
 
     /**
-     * Initializes a {@link BlobServiceAsyncClient} object pointing to the storage account this container is in.
-     *
-     * @return A {@link BlobServiceAsyncClient} object pointing to the specified storage account
-     */
-    public BlobServiceAsyncClient getBlobServiceAsyncClient() {
-        return new BlobServiceAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.stripLastPathSegment(getContainerUrl()).toString())
-            .pipeline(azureBlobStorage.getHttpPipeline())
-            .build());
-    }
-
-    /**
      * Gets the URL of the container represented by this client.
      *
      * @return the URL.

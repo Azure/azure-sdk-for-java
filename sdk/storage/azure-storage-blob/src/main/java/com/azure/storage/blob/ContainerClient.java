@@ -174,14 +174,6 @@ public final class ContainerClient {
     }
 
     /**
-     * Initializes a {@link BlobServiceClient} object pointing to the storage account this container is in.
-     * @return A {@link BlobServiceClient} object pointing to the specified storage account
-     */
-    public BlobServiceClient getBlobServiceClient() {
-        return new BlobServiceClient(containerAsyncClient.getBlobServiceAsyncClient());
-    }
-
-    /**
      * Gets the URL of the container represented by this client.
      * @return the URL.
      */
