@@ -3,8 +3,8 @@
 package com.azure.search.data.tests;
 
 import com.azure.search.data.SearchIndexAsyncClient;
-import org.junit.Assert;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 public class IndexingAsyncTests extends IndexingTestBase {
     private SearchIndexAsyncClient client;
@@ -12,10 +12,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
     @Override
     public void countingDocsOfNewIndexGivesZero() {
         Mono<Long> result = client.countDocuments();
-        Long actual = result.block();
-        Long expected = 0L;
-
-        Assert.assertEquals(expected, actual);
+        StepVerifier.create(result).expectNext(0L).expectComplete().verify();
     }
 
     @Override
