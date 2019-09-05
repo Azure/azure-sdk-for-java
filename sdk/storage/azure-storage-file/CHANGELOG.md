@@ -9,7 +9,6 @@ and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/azure-storage-file_12.0.0-preview.3/sdk/storage/azure-storage-file/src/samples/java/com/azure/storage/file)
 demonstrate the new API.
 
-- Unit tests are using groovy spock testing framework.
 - Added tracing telemetry on maximum overload API.
 - Added generate SAS token APIs.
 - Throw `StorageException` with error code when get error response from service.

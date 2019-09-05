@@ -7,7 +7,6 @@ This package's
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/azure-storage-queue_12.0.0-preview.3/sdk/storage/azure-storage-queue/src/samples/java/com/azure/storage/queue)
 
-- Unit tests are using groovy spock testing framework.
 - Added tracing telemetry on maximum overload API.
 - Added generate SAS token APIs.
 - Throw `StorageException` with error code when get error response from service.
