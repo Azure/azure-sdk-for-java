@@ -167,6 +167,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Mono} containing the requested {@link Certificate certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Certificate> getCertificateWithPolicy(String name) {
         return withContext(context -> getCertificateWithResponse(name, "", context)).flatMap(FluxUtil::toMono);
     }
@@ -193,6 +194,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Certificate certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Certificate>> getCertificateWithResponse(String name, String version) {
         return withContext(context -> getCertificateWithResponse(name, version == null ? "" : version, context));
     }
@@ -212,6 +214,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Mono} containing the requested {@link Certificate certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Certificate> getCertificate(String name, String version) {
         return withContext(context -> getCertificateWithResponse(name, version == null ? "" : version, context)).flatMap(FluxUtil::toMono);
     }
@@ -232,6 +235,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException if {@link CertificateBase#name() name} or {@link CertificateBase#version() version} is empty string.
      * @return A {@link Mono} containing the {@link CertificateBase updated certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Certificate> updateCertificate(CertificateBase certificate) {
         return withContext(context -> updateCertificateWithResponse(certificate, context)).flatMap(FluxUtil::toMono);
     }
@@ -252,6 +256,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException if {@link CertificateBase#name() name} or {@link CertificateBase#version() version} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link CertificateBase updated certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Certificate>> updateCertificateWithResponse(CertificateBase certificate) {
        return withContext(context -> updateCertificateWithResponse(certificate, context));
     }
@@ -279,6 +284,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException if {@link CertificateBase#name()}  name} or {@link CertificateBase#version() version} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Certificate certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Certificate> getCertificate(CertificateBase certificateBase) {
         return withContext(context -> getCertificateWithResponse(certificateBase.name(), certificateBase.version(), context)).flatMap(FluxUtil::toMono);
     }
@@ -299,6 +305,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException when a certificate with {@code name} is empty string.
      * @return A {@link Mono} containing the {@link DeletedCertificate deleted certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedCertificate> deleteCertificate(String name) {
         return withContext(context -> deleteCertificateWithResponse(name, context)).flatMap(FluxUtil::toMono);
     }
@@ -319,6 +326,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException when a certificate with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link DeletedCertificate deleted certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedCertificate>> deleteCertificateWithResponse(String name) {
         return withContext(context -> deleteCertificateWithResponse(name, context));
     }
@@ -344,6 +352,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException when a certificate with {@code name} is empty string.
      * @return A {@link Mono} containing the {@link DeletedCertificate deleted certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedCertificate> getDeletedCertificate(String name) {
         return withContext(context -> getDeletedCertificateWithResponse(name, context)).flatMap(FluxUtil::toMono);
     }
@@ -365,6 +374,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException when a certificate with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link DeletedCertificate deleted certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedCertificate>> getDeletedCertificateWithResponse(String name) {
         return withContext(context -> getDeletedCertificateWithResponse(name, context));
     }
@@ -388,6 +398,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException when a certificate with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link VoidResponse}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VoidResponse> purgeDeletedCertificate(String name) {
         return withContext(context -> purgeDeletedCertificate(name, context));
     }
@@ -412,6 +423,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException when a certificate with {@code name} is empty string.
      * @return A {@link Mono} containing the {@link Certificate recovered certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Certificate> recoverDeletedCertificate(String name) {
         return withContext(context -> recoverDeletedCertificateWithResponse(name, context)).flatMap(FluxUtil::toMono);
     }
@@ -432,6 +444,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException when a certificate with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Certificate recovered certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Certificate>> recoverDeletedCertificateWithResponse(String name) {
         return withContext(context -> recoverDeletedCertificateWithResponse(name, context));
     }
@@ -455,7 +468,8 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException when a certificate with {@code name} is empty string.
      * @return A {@link Mono} containing the backed up certificate blob.
      */
-     public Mono<byte[]> backupCertificate(String name) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<byte[]> backupCertificate(String name) {
         return withContext(context -> backupCertificateWithResponse(name, context)).flatMap(FluxUtil::toMono);
     }
 
@@ -474,6 +488,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException when a certificate with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the backed up certificate blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<byte[]>> backupCertificateWithResponse(String name) {
         return withContext(context -> backupCertificateWithResponse(name, context));
     }
@@ -500,6 +515,7 @@ public class CertificateAsyncClient {
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
      * @return A {@link Mono} containing the {@link Certificate restored certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Certificate> restoreCertificate(byte[] backup) {
         return withContext(context -> restoreCertificateWithResponse(backup, context)).flatMap(FluxUtil::toMono);
     }
@@ -519,6 +535,7 @@ public class CertificateAsyncClient {
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Certificate restored certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Certificate>> restoreCertificateWithResponse(byte[] backup) {
         return withContext(context -> restoreCertificateWithResponse(backup, context));
     }
@@ -709,6 +726,7 @@ public class CertificateAsyncClient {
      * @param certificateName the certificate for whom certifcate signing request is needed
      * @return A {@link Mono} containing the cerficate signing request blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<byte[]> getPendingCertificateSigningRequest(String certificateName) {
         return withContext(context -> getPendingCertificateSigningRequestWithResponse(certificateName, context)).flatMap(FluxUtil::toMono);
     }
@@ -725,6 +743,7 @@ public class CertificateAsyncClient {
      * @param certificateName the certificate for whom certifcate signing request is needed
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the certificate signing request blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<byte[]>> getPendingCertificateSigningRequestWithResponse(String certificateName) {
         return withContext(context -> getPendingCertificateSigningRequestWithResponse(certificateName, context));
     }
@@ -759,6 +778,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException if {@code x509Certificates} is invalid/corrupt or {@code name} is empty.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the merged certificate.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Certificate>> mergeCertificateWithResponse(String name, List<byte[]> x509Certificates) {
         return withContext(context -> mergeCertificateWithResponse(name, x509Certificates, context));
     }
@@ -784,6 +804,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException if {@code mergeCertificateConfig} is invalid/corrupt.
      * @return A {@link Mono} containing the merged certificate.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Certificate> mergeCertificate(MergeCertificateConfig mergeCertificateConfig) {
         return withContext(context -> mergeCertificateWithResponse(mergeCertificateConfig, context)).flatMap(FluxUtil::toMono);
     }
@@ -803,6 +824,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException if {@code mergeCertificateConfig} is invalid/corrupt.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the merged certificate.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Certificate>> mergeCertificateWithResponse(MergeCertificateConfig mergeCertificateConfig) {
         Objects.requireNonNull(mergeCertificateConfig, "The merge certificate configuration cannot be null");
         return withContext(context -> mergeCertificateWithResponse(mergeCertificateConfig, context));
@@ -829,6 +851,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link CertificatePolicy certificate policy}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificatePolicy> getCertificatePolicy(String name) {
         return withContext(context -> getCertificatePolicyWithResponse(name, context)).flatMap(FluxUtil::toMono);
     }
@@ -847,6 +870,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Mono} containing the requested {@link CertificatePolicy certificate policy}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificatePolicy>> getCertificatePolicyWithResponse(String name) {
         return withContext(context -> getCertificatePolicyWithResponse(name, context));
     }
@@ -875,6 +899,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException if {@code name} is empty string or if {@code policy} is invalid.
      * @return A {@link Mono} containing the updated {@link CertificatePolicy certificate policy}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificatePolicy> updateCertificatePolicy(String certificateName, CertificatePolicy policy) {
         return withContext(context -> updateCertificatePolicyWithResponse(certificateName, policy, context)).flatMap(FluxUtil::toMono);
     }
@@ -896,6 +921,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException if {@code name} is empty string or if {@code policy} is invalid.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the updated {@link CertificatePolicy certificate policy}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificatePolicy>> updateCertificatePolicyWithResponse(String certificateName, CertificatePolicy policy) {
         return withContext(context -> updateCertificatePolicyWithResponse(certificateName, policy, context));
     }
@@ -922,6 +948,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException when a certificate issuer with {@code name} is empty string.
      * @return A {@link Mono} containing the created {@link Issuer certificate issuer}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Issuer> createCertificateIssuer(String name, String provider) {
         return withContext(context -> createCertificateIssuerWithResponse(name, provider, context)).flatMap(FluxUtil::toMono);
     }
@@ -947,6 +974,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException when a certificate issuer with {@code name} is empty string.
      * @return A {@link Mono} containing the created {@link Issuer certificate issuer}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Issuer> createCertificateIssuer(Issuer issuer) {
         return withContext(context -> createCertificateIssuerWithResponse(issuer, context)).flatMap(FluxUtil::toMono);
     }
@@ -966,6 +994,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException when a certificate issuer with {@code name} is empty string.
      * @return A {@link Mono} containing  a {@link Response} whose {@link Response#value() value} contains the created {@link Issuer certificate issuer}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Issuer>> createCertificateIssuerWithResponse(Issuer issuer) {
         return withContext(context -> createCertificateIssuerWithResponse(issuer, context));
     }
@@ -994,6 +1023,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Issuer certificate issuer}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Issuer>> getCertificateIssuerWithResponse(String name){
         return withContext(context -> getCertificateIssuerWithResponse(name, context));
     }
@@ -1012,6 +1042,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Mono} containing the requested {@link Issuer certificate issuer}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Issuer> getCertificateIssuer(String name){
         return withContext(context -> getCertificateIssuerWithResponse(name, context)).flatMap(FluxUtil::toMono);
     }
@@ -1035,6 +1066,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException if {@link IssuerBase#name() name} is empty string.
      * @return A {@link Mono} containing the requested {@link Issuer certificate issuer}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Issuer> getCertificateIssuer(IssuerBase issuerBase){
         return withContext(context -> getCertificateIssuerWithResponse(issuerBase.name(), context)).flatMap(FluxUtil::toMono);
     }
@@ -1054,6 +1086,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException if {@link IssuerBase#name() name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Issuer certificate issuer}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Issuer>> getCertificateIssuerWithResponse(IssuerBase issuerBase){
         return withContext(context -> getCertificateIssuerWithResponse(issuerBase.name(), context));
     }
@@ -1073,6 +1106,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException when a certificate issuer with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Issuer deleted issuer}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Issuer>> deleteCertificateIssuerWithResponse(String name){
         return withContext(context -> deleteCertificateIssuerWithResponse(name, context));
     }
@@ -1092,6 +1126,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException when a certificate issuer with {@code name} is empty string.
      * @return A {@link Mono} containing the {@link Issuer deleted issuer}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Issuer> deleteCertificateIssuer(String name){
         return withContext(context -> deleteCertificateIssuerWithResponse(name, context)).flatMap(FluxUtil::toMono);
     }
@@ -1164,6 +1199,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException if {@link Issuer#name() name} is empty string.
      * @return A {@link Mono} containing the {@link Issuer updated issuer}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Issuer> updateCertificateIssuer(Issuer issuer) {
         return withContext(context -> updateCertificateIssuerWithResponse(issuer, context).flatMap(FluxUtil::toMono));
     }
@@ -1241,6 +1277,7 @@ public class CertificateAsyncClient {
      *
      * @return A {@link PagedFlux} containing all of the {@link Contact certificate contacts} in the vault.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Contact> listCertificateContacts() {
         return new PagedFlux<>(
             () -> withContext(context -> listCertificateContactsFirstPage(context)));
@@ -1269,6 +1306,7 @@ public class CertificateAsyncClient {
      *
      * @return A {@link PagedFlux} containing all of the {@link Contact deleted certificate contacts} in the vault.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Contact> deleteCertificateContacts() {
         return new PagedFlux<>(
             () -> withContext(context -> deleteCertificateContactsWithResponse(context)));
@@ -1301,6 +1339,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException when the {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link CertificateOperation deleted certificate operation}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateOperation> deleteCertificateOperation(String certificateName) {
         return withContext(context -> deleteCertificateOperationWithResponse(certificateName, context)).flatMap(FluxUtil::toMono);
     }
@@ -1320,6 +1359,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException when the {@code name} is empty string.
      * @return A {@link Mono} containing the {@link CertificateOperation deleted certificate operation}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateOperation>> deleteCertificateOperationWithResponse(String certificateName) {
         return withContext(context -> deleteCertificateOperationWithResponse(certificateName, context));
     }
@@ -1342,6 +1382,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException when the {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link CertificateOperation cancelled certificate operation}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateOperation> cancelCertificateOperation(String certificateName) {
         return withContext(context -> cancelCertificateOperationWithResponse(certificateName, context)).flatMap(FluxUtil::toMono);
     }
@@ -1360,6 +1401,7 @@ public class CertificateAsyncClient {
      * @throws HttpRequestException when the {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link CertificateOperation cancelled certificate operation}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateOperation>> cancelCertificateOperationWithResponse(String certificateName) {
         return withContext(context -> cancelCertificateOperationWithResponse(certificateName, context));
     }
