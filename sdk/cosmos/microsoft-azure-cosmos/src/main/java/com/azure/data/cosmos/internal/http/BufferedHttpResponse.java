@@ -56,11 +56,6 @@ public class BufferedHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Flux<InputStream> bodyAsInputStream() {
-        return bodyAsByteArray().flatMapMany(bytes -> Flux.just(new ByteArrayInputStream(bytes)));
-    }
-
-    @Override
     public Mono<String> bodyAsString() {
         return bodyAsByteArray()
                 .map(bytes -> bytes == null ? null : new String(bytes, StandardCharsets.UTF_8));

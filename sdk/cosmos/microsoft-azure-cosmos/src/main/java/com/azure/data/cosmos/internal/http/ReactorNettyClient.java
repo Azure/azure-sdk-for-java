@@ -75,7 +75,8 @@ class ReactorNettyClient implements HttpClient {
                 tcpClient = tcpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.INFO);
             }
             //  By default, keep alive is enabled on http client
-            tcpClient = tcpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 30 * 1000);
+            tcpClient = tcpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
+                httpClientConfig.getConfigs().getConnectionAcquireTimeoutInMillis());
 
             return tcpClient;
         });
@@ -164,11 +165,6 @@ class ReactorNettyClient implements HttpClient {
         @Override
         public Flux<ByteBuf> body() {
             return bodyIntern().doFinally(s -> this.close());
-        }
-
-        @Override
-        public Flux<InputStream> bodyAsInputStream() {
-            return bodyIntern().asInputStream().doFinally(s -> this.close());
         }
 
         @Override

@@ -41,10 +41,10 @@ Licensed under the MIT License.
     <mockito.version>1.10.19</mockito.version>
     <netty.version>4.1.38.Final</netty.version>
     <netty-tcnative.version>2.0.25.Final</netty-tcnative.version>
-    <reactor-netty.version>0.9.0.RC1</reactor-netty.version>
+    <reactor-netty.version>0.9.0.M3</reactor-netty.version>
     <sdk-version>3.1.0</sdk-version>
     <guava.version>27.0.1-jre</guava.version>
-    <reactor-core.version>3.3.0.RC1</reactor-core.version>
+    <reactor-core.version>3.3.0.M3</reactor-core.version>
     <test.groups>unit</test.groups>
     <collectedArtifactsForReleaseLocation>${project.basedir}/target/collectedArtifactsForRelease</collectedArtifactsForReleaseLocation>
     <javadoc.opts/>

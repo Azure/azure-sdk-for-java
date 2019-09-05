@@ -30,18 +30,18 @@ public interface HttpClient {
             throw new IllegalArgumentException("HttpClientConfig is null");
         }
 
-        Integer maxIdleConnectionTimeoutInMillis = 60 * 1000;
+        Integer maxIdleConnectionTimeoutInMillis = httpClientConfig.getConfigs().getMaxIdleConnectionTimeoutInMillis();
         if (httpClientConfig.getMaxIdleConnectionTimeoutInMillis() != null) {
             maxIdleConnectionTimeoutInMillis = httpClientConfig.getMaxIdleConnectionTimeoutInMillis();
         }
 
         //  Default pool size
-        Integer maxPoolSize = 500;
+        Integer maxPoolSize = httpClientConfig.getConfigs().getReactorNettyMaxConnectionPoolSize();
         if (httpClientConfig.getMaxPoolSize() != null) {
             maxPoolSize = httpClientConfig.getMaxPoolSize();
         }
 
-        int connectionAcquireTimeoutInMillis = 45 * 1000;
+        int connectionAcquireTimeoutInMillis = httpClientConfig.getConfigs().getConnectionAcquireTimeoutInMillis();
 
         ConnectionProvider fixedConnectionProvider =
             ConnectionProvider.fixed(httpClientConfig.getConfigs().getReactorNettyConnectionPoolName(),

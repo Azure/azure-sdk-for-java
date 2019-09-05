@@ -241,98 +241,58 @@ class RxGatewayStoreModel implements RxStoreModel {
     private Flux<RxDocumentServiceResponse> toDocumentServiceResponse(Mono<HttpResponse> httpResponseMono,
                                                                             RxDocumentServiceRequest request) {
 
-        if (request.getIsMedia()) {
-            return httpResponseMono.flatMap(httpResponse -> {
+        return httpResponseMono.flatMap(httpResponse ->  {
 
-                // header key/value pairs
-                HttpHeaders httpResponseHeaders = httpResponse.headers();
-                int httpResponseStatus = httpResponse.statusCode();
+            // header key/value pairs
+            HttpHeaders httpResponseHeaders = httpResponse.headers();
+            int httpResponseStatus = httpResponse.statusCode();
 
-                Flux<InputStream> inputStreamObservable;
+            Flux<String> contentObservable;
 
-                if (request.getOperationType() == OperationType.Delete) {
-                    // for delete we don't expect any body
-                    inputStreamObservable = Flux.just(IOUtils.toInputStream("", StandardCharsets.UTF_8));
-                } else {
-                    inputStreamObservable = httpResponse.bodyAsInputStream();
-                }
+            if (request.getOperationType() == OperationType.Delete) {
+                // for delete we don't expect any body
+                contentObservable = Flux.just(StringUtils.EMPTY);
+            } else {
+                // transforms the ByteBufFlux to Flux<String>
+                contentObservable = httpResponse.bodyAsString().flux();
+            }
 
-                return inputStreamObservable
-                        .flatMap(contentInputStream -> {
-                            try {
-                                // If there is any error in the header response this throws exception
-                                // TODO: potential performance improvement: return Observable.error(exception) on failure instead of throwing Exception
-                                validateOrThrow(request,
-                                        HttpResponseStatus.valueOf(httpResponseStatus),
-                                        httpResponseHeaders,
-                                        null,
-                                        contentInputStream);
+            return contentObservable
+                .flatMap(content -> {
+                    try {
+                        // If there is any error in the header response this throws exception
+                        // TODO: potential performance improvement: return Observable.error(exception) on failure instead of throwing Exception
+                        validateOrThrow(request, HttpResponseStatus.valueOf(httpResponseStatus), httpResponseHeaders, content, null);
 
-                                // transforms to Observable<StoreResponse>
-                                StoreResponse rsp = new StoreResponse(httpResponseStatus, HttpUtils
-                                        .unescape(httpResponseHeaders.toMap().entrySet()), contentInputStream);
-                                return Flux.just(rsp);
-                            } catch (Exception e) {
-                                return Flux.error(e);
-                            }
-                        }).single();
+                        // transforms to Observable<StoreResponse>
+                        StoreResponse rsp = new StoreResponse(httpResponseStatus,
+                            HttpUtils.unescape(httpResponseHeaders.toMap().entrySet()),
+                            content);
+                        return Flux.just(rsp);
+                    } catch (Exception e) {
+                        return Flux.error(e);
+                    }
+                }).single();
 
-            }).map(RxDocumentServiceResponse::new).flux();
+        }).map(RxDocumentServiceResponse::new)
+               .onErrorResume(throwable -> {
+                   if (!(throwable instanceof Exception)) {
+                       // fatal error
+                       logger.error("Unexpected failure {}", throwable.getMessage(), throwable);
+                       return Mono.error(throwable);
+                   }
 
-        } else {
-            return httpResponseMono.flatMap(httpResponse ->  {
+                   Exception exception = (Exception) throwable;
+                   if (!(exception instanceof CosmosClientException)) {
+                       // wrap in CosmosClientException
+                       logger.error("Network failure", exception);
+                       CosmosClientException dce = BridgeInternal.createCosmosClientException(0, exception);
+                       BridgeInternal.setRequestHeaders(dce, request.getHeaders());
+                       return Mono.error(dce);
+                   }
 
-                // header key/value pairs
-                HttpHeaders httpResponseHeaders = httpResponse.headers();
-                int httpResponseStatus = httpResponse.statusCode();
-
-                Flux<String> contentObservable;
-
-                if (request.getOperationType() == OperationType.Delete) {
-                    // for delete we don't expect any body
-                    contentObservable = Flux.just(StringUtils.EMPTY);
-                } else {
-                    // transforms the ByteBufFlux to Flux<String>
-                    contentObservable = httpResponse.bodyAsString().flux();
-                }
-
-                return contentObservable
-                        .flatMap(content -> {
-                            try {
-                                // If there is any error in the header response this throws exception
-                                // TODO: potential performance improvement: return Observable.error(exception) on failure instead of throwing Exception
-                                validateOrThrow(request, HttpResponseStatus.valueOf(httpResponseStatus), httpResponseHeaders, content, null);
-
-                                // transforms to Observable<StoreResponse>
-                                StoreResponse rsp = new StoreResponse(httpResponseStatus,
-                                        HttpUtils.unescape(httpResponseHeaders.toMap().entrySet()),
-                                        content);
-                                return Flux.just(rsp);
-                            } catch (Exception e) {
-                                return Flux.error(e);
-                            }
-                        }).single();
-
-            }).map(RxDocumentServiceResponse::new)
-                    .onErrorResume(throwable -> {
-                        if (!(throwable instanceof Exception)) {
-                            // fatal error
-                            logger.error("Unexpected failure {}", throwable.getMessage(), throwable);
-                            return Mono.error(throwable);
-                        }
-
-                        Exception exception = (Exception) throwable;
-                        if (!(exception instanceof CosmosClientException)) {
-                            // wrap in CosmosClientException
-                            logger.error("Network failure", exception);
-                            CosmosClientException dce = BridgeInternal.createCosmosClientException(0, exception);
-                            BridgeInternal.setRequestHeaders(dce, request.getHeaders());
-                            return Mono.error(dce);
-                        }
-
-                        return Mono.error(exception);
-            }).flux();
-        }
+                   return Mono.error(exception);
+               }).flux();
     }
 
     private void validateOrThrow(RxDocumentServiceRequest request, HttpResponseStatus status, HttpHeaders headers, String body,

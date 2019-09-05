@@ -70,13 +70,6 @@ public abstract class HttpResponse implements AutoCloseable {
     public abstract Flux<ByteBuf> body();
 
     /**
-     * Get the response content as InputStream.
-     *
-     * @return this response content as InputStream
-     */
-    public abstract Flux<InputStream> bodyAsInputStream();
-
-    /**
      * Get the response content as a byte[].
      *
      * @return this response content as a byte[]
