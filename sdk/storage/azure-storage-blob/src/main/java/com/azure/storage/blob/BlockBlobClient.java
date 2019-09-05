@@ -135,6 +135,7 @@ public final class BlockBlobClient extends BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The information of the uploaded block blob.
+     * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
      * @throws IOException If an I/O error occurs
      */
