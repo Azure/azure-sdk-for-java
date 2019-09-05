@@ -20,7 +20,7 @@ jobs:
         # 59m 59s, timed out
         Http_E2E:
           DisplayName: ReadMyWrites Integration Tests
-          OSVmImage: 'vs2017-win2016'
+          OSVmImage: 'windows-2019'
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Session'
@@ -98,7 +98,7 @@ jobs:
         # 28m 42s, expect passed (rebalanced)
         Single_Region_Long:
           DisplayName: Long Integration Tests
-          OSVmImage: 'vs2017-win2016'
+          OSVmImage: 'windows-2019'
           ProfileFlag: '-e -Plong'
           DESIRED_CONSISTENCIES: '["Session"]'
           PREFERRED_LOCATIONS: null
@@ -188,7 +188,7 @@ jobs:
         # 59m 58s, timed out
         Https_E2E:
           DisplayName: Single Region ReadMyWrites
-          OSVmImage: 'vs2017-win2016'
+          OSVmImage: 'windows-2019'
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Strong'
@@ -251,7 +251,7 @@ jobs:
         # 29m 23s, expect passed
         Long:
           DisplayName: Multimaster Multi Region Long
-          OSVmImage: 'vs2017-win2016'
+          OSVmImage: 'windows-2019'
           ProfileFlag: '-e -Plong'
           AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
         # 06m 34s, previously failing
