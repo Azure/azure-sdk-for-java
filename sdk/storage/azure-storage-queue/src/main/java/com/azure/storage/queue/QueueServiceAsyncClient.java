@@ -461,7 +461,7 @@ public final class QueueServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     *{@codesnippet com.azure.storage.queue.queueServiceAsyncClient.generateAccountSAS}
+     *{@codesnippet com.azure.storage.queue.queueServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a>.</p>

@@ -18,7 +18,7 @@ public class BlobServiceClientJavaDocCodeSnippets {
      * AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IPRange, SASProtocol)}
      */
     public void generateAccountSAS() {
-        // BEGIN: com.azure.storage.blob.blobServiceClient.generateAccountSAS
+        // BEGIN: com.azure.storage.blob.blobServiceClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
         AccountSASService service = new AccountSASService()
             .blob(true)
             .file(true)
@@ -47,7 +47,7 @@ public class BlobServiceClientJavaDocCodeSnippets {
 
         String sas = client.generateAccountSAS(service, resourceType, permission, expiryTime, startTime, version,
             ipRange, sasProtocol);
-        // END: com.azure.storage.blob.blobServiceClient.generateAccountSAS
+        // END: com.azure.storage.blob.blobServiceClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
     }
 
 }

@@ -624,7 +624,7 @@ public final class QueueClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     *{@codesnippet com.azure.storage.queue.queueClient.generateSAS}
+     *{@codesnippet com.azure.storage.queue.queueClient.generateSAS#String-QueueSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
