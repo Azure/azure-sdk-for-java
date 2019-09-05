@@ -24,7 +24,7 @@ autorest --use=C:/work/autorest.java --use=C:/work/autorest.modeler --version=2.
 
 ### Code generation settings
 ``` yaml
-input-file: ./file-2019-02-02.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.FileStorage/preview/2019-02-02/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file
@@ -539,4 +539,19 @@ directive:
     delete $.default;
     delete $["x-ms-enum"];
     $["x-ms-parameter-location"] = "method";
+```
+
+### Add the CustomFileAndDirectoryListingDeserializer attribute
+``` yaml
+directive:
+- from: FilesAndDirectoriesListSegment.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "import com.fasterxml.jackson.annotation.JsonProperty;",
+        "import com.fasterxml.jackson.annotation.JsonProperty;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;").
+      replace(
+        "public final class FilesAndDirectoriesListSegment {",
+        "@JsonDeserialize(using = CustomFileAndDirectoryListingDeserializer.class)\npublic final class FilesAndDirectoriesListSegment {");
 ```

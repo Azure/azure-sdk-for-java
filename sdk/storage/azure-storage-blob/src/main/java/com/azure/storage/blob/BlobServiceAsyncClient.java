@@ -26,6 +26,10 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.blob.models.StorageServiceStats;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.AccountSASPermission;
+import com.azure.storage.common.AccountSASResourceType;
+import com.azure.storage.common.AccountSASService;
+import com.azure.storage.common.AccountSASSignatureValues;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
@@ -411,7 +415,7 @@ public final class BlobServiceAsyncClient {
      * @return A string that represents the SAS token
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
-                                     AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
         return this.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime,
             null /* startTime */, null /* version */, null /* ipRange */, null /* sasProtocol */);
     }
@@ -430,27 +434,12 @@ public final class BlobServiceAsyncClient {
      * @return A string that represents the SAS token
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
-                                     AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version, IPRange ipRange,
-                                     SASProtocol sasProtocol) {
-
-        AccountSASSignatureValues accountSASSignatureValues = new AccountSASSignatureValues();
-        accountSASSignatureValues.services(accountSASService == null ? null : accountSASService.toString());
-        accountSASSignatureValues.resourceTypes(accountSASResourceType == null ? null : accountSASResourceType.toString());
-        accountSASSignatureValues.permissions(accountSASPermission == null ? null : accountSASPermission.toString());
-        accountSASSignatureValues.expiryTime(expiryTime);
-        accountSASSignatureValues.startTime(startTime);
-
-        if (version != null) {
-            accountSASSignatureValues.version(version);
-        }
-
-        accountSASSignatureValues.ipRange(ipRange);
-        accountSASSignatureValues.protocol(sasProtocol);
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        IPRange ipRange, SASProtocol sasProtocol) {
 
         SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.azureBlobStorage.getHttpPipeline());
+        Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
-        SASQueryParameters sasQueryParameters = accountSASSignatureValues.generateSASQueryParameters(sharedKeyCredential);
-
-        return sasQueryParameters.encode();
+        return AccountSASSignatureValues.generateAccountSAS(sharedKeyCredential, accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Data;
@@ -58,6 +59,7 @@ public class EventData implements Comparable<EventData> {
     private final Map<String, Object> properties;
     private final ByteBuffer body;
     private final SystemProperties systemProperties;
+    private Context context;
 
     static {
         final Set<String> properties = new HashSet<>();
@@ -76,7 +78,18 @@ public class EventData implements Comparable<EventData> {
      * @param body The data to set for this event.
      */
     public EventData(byte[] body) {
-        this(ByteBuffer.wrap(body));
+        this(body, Context.NONE);
+    }
+
+    /**
+     * Creates an event containing the {@code data}.
+     *
+     * @param body The data to set for this event.
+     * @param context A specified key-value pair of type {@link Context}.
+     * @throws NullPointerException if {@code body} or if {@code context} is {@code null}.
+     */
+    public EventData(byte[] body, Context context) {
+        this(ByteBuffer.wrap(body), context);
     }
 
     /**
@@ -86,20 +99,35 @@ public class EventData implements Comparable<EventData> {
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(ByteBuffer body) {
+        this(body, Context.NONE);
+    }
+
+    /**
+     * Creates an event containing the {@code body}.
+     *
+     * @param body The data to set for this event.
+     * @param context A specified key-value pair of type {@link Context}.
+     * @throws NullPointerException if {@code body} or if {@code context} is {@code null}.
+     */
+    public EventData(ByteBuffer body, Context context) {
         Objects.requireNonNull(body, "'body' cannot be null.");
+        Objects.requireNonNull(body, "'context' cannot be null.");
 
         this.body = body;
         this.properties = new HashMap<>();
-        this.systemProperties = new SystemProperties(Collections.emptyMap());
+        this.systemProperties = new SystemProperties();
+        this.context = context;
     }
 
-    /*
-     * Creates an event from a message
+    /**
+     * Creates an event from a proton-j message
+     *
+     * @throws IllegalStateException if required the system properties, enqueued time, offset, or sequence number are
+     *     not found in the message.
+     * @throws NullPointerException if {@code message} is null.
      */
     EventData(Message message) {
-        if (message == null) {
-            throw new IllegalArgumentException("'message' cannot be null");
-        }
+        Objects.requireNonNull(message, "'message' cannot be null.");
 
         final Map<Symbol, Object> messageAnnotations = message.getMessageAnnotations().getValue();
         final HashMap<String, Object> receiveProperties = new HashMap<>();
@@ -124,6 +152,7 @@ public class EventData implements Comparable<EventData> {
             addMapEntry(receiveProperties, MessageConstant.REPLY_TO_GROUP_ID, message.getReplyToGroupId());
         }
 
+        this.context = Context.NONE;
         this.systemProperties = new SystemProperties(receiveProperties);
         this.properties = message.getApplicationProperties() == null
             ? new HashMap<>()
@@ -173,19 +202,28 @@ public class EventData implements Comparable<EventData> {
     }
 
     /**
+     * Adds a new key value pair to the existing context on Event Data.
+     *
+     * @param key The key for this context object
+     * @param value The value for this context object.
+     * @return The updated EventData object.
+     * @throws NullPointerException if {@code key} or {@code value} is null.
+     */
+    public EventData addContext(String key, Object value) {
+        Objects.requireNonNull(key, "The 'key' parameter cannot be null.");
+        Objects.requireNonNull(value, "The 'value' parameter cannot be null.");
+        this.context = context.addData(key, value);
+        return this;
+    }
+
+    /**
      * The set of free-form event properties which may be used for passing metadata associated with the event with the
      * event body during Event Hubs operations.
      *
      * <p>
      * A common use case for {@code properties()} is to associate serialization hints for the {@link #body()} as an aid
-     * to consumers who wish to deserialize the binary data.
+     * to consumers who wish to deserialize the binary data. See {@link #addProperty(String, Object)} for a sample.
      * </p>
-     *
-     * <p>
-     * <strong>Adding serialization hint using {@link #addProperty(String, Object)}</strong>
-     * </p>
-     *
-     * {@codesnippet com.azure.messaging.eventhubs.eventdata.addProperty#string-object}
      *
      * @return Application properties associated with this {@link EventData}.
      */
@@ -194,11 +232,20 @@ public class EventData implements Comparable<EventData> {
     }
 
     /**
+     * A specified key-value pair of type {@link Context} to set additional information on the event.
+     *
+     * @return the {@link Context} object set on the event
+     */
+    public Context context() {
+        return context;
+    }
+
+    /**
      * Properties that are populated by EventHubService. As these are populated by Service, they are only present on a
      * <b>received</b> EventData.
      *
      * @return an encapsulation of all SystemProperties appended by EventHubs service into EventData. {@code null} if
-     *         the {@link EventData} is not received and is created by the public constructors.
+     *     the {@link EventData} is not received and is created by the public constructors.
      */
     public Map<String, Object> systemProperties() {
         return systemProperties;
@@ -222,9 +269,10 @@ public class EventData implements Comparable<EventData> {
     /**
      * Gets the offset of the event when it was received from the associated Event Hub partition.
      *
-     * @return The offset within the Event Hub partition.
+     * @return The offset within the Event Hub partition of the received event. {@code null} if the EventData was not
+     *     received from Event Hub service.
      */
-    public String offset() {
+    public Long offset() {
         return systemProperties.offset();
     }
 
@@ -232,7 +280,8 @@ public class EventData implements Comparable<EventData> {
      * Gets a partition key used for message partitioning. If it exists, this value was used to compute a hash to select
      * a partition to send the message to.
      *
-     * @return A partition key for this Event Data.
+     * @return A partition key for this Event Data. {@code null} if the EventData was not received from Event Hub
+     *     service or there was no partition key set when the event was sent to the Event Hub.
      */
     public String partitionKey() {
         return systemProperties.partitionKey();
@@ -241,7 +290,8 @@ public class EventData implements Comparable<EventData> {
     /**
      * Gets the instant, in UTC, of when the event was enqueued in the Event Hub partition.
      *
-     * @return The instant, in UTC, this was enqueued in the Event Hub partition.
+     * @return The instant, in UTC, this was enqueued in the Event Hub partition. {@code null} if the EventData was not
+     *     received from Event Hub service.
      */
     public Instant enqueuedTime() {
         return systemProperties.enqueuedTime();
@@ -251,11 +301,10 @@ public class EventData implements Comparable<EventData> {
      * Gets the sequence number assigned to the event when it was enqueued in the associated Event Hub partition. This
      * is unique for every message received in the Event Hub partition.
      *
-     * @return Sequence number for this event.
-     * @throws IllegalStateException if {@link #systemProperties()} does not contain the sequence number in a
-     *         retrieved event.
+     * @return The sequence number for this event. {@code null} if the EventData was not received from Event Hub
+     *     service.
      */
-    public long sequenceNumber() {
+    public Long sequenceNumber() {
         return systemProperties.sequenceNumber();
     }
 
@@ -307,9 +356,43 @@ public class EventData implements Comparable<EventData> {
      */
     private static class SystemProperties extends HashMap<String, Object> {
         private static final long serialVersionUID = -2827050124966993723L;
+        private final Long offset;
+        private final String partitionKey;
+        private final Instant enqueuedTime;
+        private final Long sequenceNumber;
+
+        SystemProperties() {
+            super();
+            offset = null;
+            partitionKey = null;
+            enqueuedTime = null;
+            sequenceNumber = null;
+        }
 
         SystemProperties(final Map<String, Object> map) {
-            super(Collections.unmodifiableMap(map));
+            super(map);
+            this.partitionKey = removeSystemProperty(PARTITION_KEY_ANNOTATION_NAME.getValue());
+
+            final String offset = removeSystemProperty(OFFSET_ANNOTATION_NAME.getValue());
+            if (offset == null) {
+                throw new IllegalStateException(String.format(Locale.US,
+                    "offset: %s should always be in map.", OFFSET_ANNOTATION_NAME.getValue()));
+            }
+            this.offset = Long.valueOf(offset);
+
+            final Date enqueuedTimeValue = removeSystemProperty(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
+            if (enqueuedTimeValue == null) {
+                throw new IllegalStateException(String.format(Locale.US,
+                    "enqueuedTime: %s should always be in map.", ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
+            }
+            this.enqueuedTime = enqueuedTimeValue.toInstant();
+
+            final Long sequenceNumber = removeSystemProperty(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
+            if (sequenceNumber == null) {
+                throw new IllegalStateException(String.format(Locale.US,
+                    "sequenceNumber: %s should always be in map.", SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
+            }
+            this.sequenceNumber = sequenceNumber;
         }
 
         /**
@@ -317,8 +400,8 @@ public class EventData implements Comparable<EventData> {
          *
          * @return The offset within the Event Hubs stream.
          */
-        private String offset() {
-            return this.getSystemProperty(OFFSET_ANNOTATION_NAME.getValue());
+        private Long offset() {
+            return offset;
         }
 
         /**
@@ -328,7 +411,7 @@ public class EventData implements Comparable<EventData> {
          * @return A partition key for this Event Data.
          */
         private String partitionKey() {
-            return this.getSystemProperty(PARTITION_KEY_ANNOTATION_NAME.getValue());
+            return partitionKey;
         }
 
         /**
@@ -337,8 +420,7 @@ public class EventData implements Comparable<EventData> {
          * @return The time this was enqueued in the service.
          */
         private Instant enqueuedTime() {
-            final Date enqueuedTimeValue = this.getSystemProperty(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
-            return enqueuedTimeValue != null ? enqueuedTimeValue.toInstant() : null;
+            return enqueuedTime;
         }
 
         /**
@@ -347,22 +429,16 @@ public class EventData implements Comparable<EventData> {
          *
          * @return Sequence number for this event.
          * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a
-         *         retrieved event.
+         *     retrieved event.
          */
-        private long sequenceNumber() {
-            final Long sequenceNumber = this.getSystemProperty(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
-
-            if (sequenceNumber == null) {
-                throw new IllegalStateException(String.format(Locale.US, "sequenceNumber: %s should always be in map.", SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
-            }
-
+        private Long sequenceNumber() {
             return sequenceNumber;
         }
 
         @SuppressWarnings("unchecked")
-        private <T> T getSystemProperty(final String key) {
+        private <T> T removeSystemProperty(final String key) {
             if (this.containsKey(key)) {
-                return (T) (this.get(key));
+                return (T) (this.remove(key));
             }
 
             return null;

@@ -6,7 +6,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-data-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.1.0</version>
+  <version>1.2.0</version>
 
   <name>Microsoft Azure SDK for Java - Data Plane Libraries</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
     <relativePath>./parent/pom.xml</relativePath>
   </parent>
 
@@ -70,6 +70,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${maven-checkstyle-plugin.version}</version>
         <dependencies>
           <dependency>
             <groupId>com.azure</groupId>
@@ -259,6 +260,10 @@
             <linksource>false</linksource>
             <excludePackageNames>com.microsoft.azure.template:*.impl.*:*.implementation.*</excludePackageNames>
             <groups>
+              <group>
+                <title>Azure Application Insights</title>
+                <packages>com.microsoft.azure.applicationinsights*</packages>
+              </group>
               <group>
                 <title>Azure Batch</title>
                 <packages>com.microsoft.azure.batch*</packages>
@@ -515,7 +520,7 @@
     </profile>
 
     <profile>
-      <id>non-shippping-modules</id>
+      <id>non-shipping-modules</id>
       <activation>
         <property>
           <name>include-non-shipping-modules</name>
@@ -542,11 +547,18 @@
 
   <modules>
     <module>./sdk/batch/microsoft-azure-batch</module>
+    <module>./sdk/applicationinsights/microsoft-azure-applicationinsights-query</module>
     <module>./sdk/cosmos</module>
     <module>./sdk/eventhubs/microsoft-azure-eventhubs/pom.xml</module>
     <module>./sdk/eventhubs/microsoft-azure-eventhubs-eph/pom.xml</module>
     <module>./sdk/eventhubs/microsoft-azure-eventhubs-extensions/pom.xml</module>
-    <module>./sdk/keyvault/pom.data.xml</module>
+    <module>./sdk/keyvault/microsoft-azure-keyvault/pom.xml</module>
+    <module>./sdk/keyvault/microsoft-azure-keyvault-complete/pom.xml</module>
+    <module>./sdk/keyvault/microsoft-azure-keyvault-core/pom.xml</module>
+    <module>./sdk/keyvault/microsoft-azure-keyvault-cryptography/pom.xml</module>
+    <module>./sdk/keyvault/microsoft-azure-keyvault-extensions/pom.xml</module>
+    <module>./sdk/keyvault/microsoft-azure-keyvault-test/pom.xml</module>
+    <module>./sdk/keyvault/microsoft-azure-keyvault-webkey/pom.xml</module>
     <module>./sdk/servicebus/microsoft-azure-servicebus</module>
     <module>./sdk/storage/microsoft-azure-storage-blob</module>
   </modules>

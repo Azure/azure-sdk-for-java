@@ -28,11 +28,6 @@ public final class StorageErrorCode extends ExpandableStringEnum<StorageErrorCod
     public static final StorageErrorCode ACCOUNT_IS_DISABLED = fromString("AccountIsDisabled");
 
     /**
-     * Static value AuthenticationError for StorageErrorCode.
-     */
-    public static final StorageErrorCode AUTHENTICATION_ERROR = fromString("AuthenticationError");
-
-    /**
      * Static value AuthenticationFailed for StorageErrorCode.
      */
     public static final StorageErrorCode AUTHENTICATION_FAILED = fromString("AuthenticationFailed");
