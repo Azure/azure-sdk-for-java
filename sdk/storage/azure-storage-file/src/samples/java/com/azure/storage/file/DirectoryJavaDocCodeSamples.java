@@ -173,7 +173,8 @@ public class DirectoryJavaDocCodeSamples {
         String filePermission = "filePermission";
         // NOTE: filePermission and filePermissionKey should never be both set
         Response<FileClient> response = directoryClient.createFileWithResponse("myFile", 1024,
-            httpHeaders, smbProperties, filePermission, Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
+            httpHeaders, smbProperties, filePermission, Collections.singletonMap("directory", "metadata"),
+            new Context(key1, value1));
         System.out.println("Completed creating the file with status code: " + response.statusCode());
         // END: com.azure.storage.file.directoryClient.createFile#string-long-filehttpheaders-filesmbproperties-string-map-context
     }

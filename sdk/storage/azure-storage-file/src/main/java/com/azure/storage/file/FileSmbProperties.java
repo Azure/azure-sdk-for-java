@@ -3,7 +3,6 @@
 
 package com.azure.storage.file;
 
-import com.azure.core.http.HttpHeaders;
 import com.azure.storage.file.models.DirectorysCreateResponse;
 import com.azure.storage.file.models.DirectorysGetPropertiesResponse;
 import com.azure.storage.file.models.DirectorysSetPropertiesResponse;

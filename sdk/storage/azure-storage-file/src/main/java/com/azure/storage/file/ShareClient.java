@@ -13,7 +13,6 @@ import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileHTTPHeaders;
-import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.ShareInfo;
 import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.ShareSnapshotInfo;
@@ -667,6 +666,7 @@ public class ShareClient {
      * else creates a new permission and returns the key.
      *
      * @param filePermission The file permission to get/create.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that contains the file permission key associated with the file permission.
      */
     public Response<String> createPermissionWithResponse(String filePermission, Context context) {
@@ -687,6 +687,7 @@ public class ShareClient {
      * Gets a permission for a given key.
      *
      * @param filePermissionKey The file permission key.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that contains th file permission associated with the file permission key.
      */
     public Response<String> getPermissionWithResponse(String filePermissionKey, Context context) {

@@ -4,7 +4,6 @@
 package com.azure.storage.file;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -26,7 +25,6 @@ import com.azure.storage.file.models.DirectorysListFilesAndDirectoriesSegmentRes
 import com.azure.storage.file.models.DirectorysSetMetadataResponse;
 import com.azure.storage.file.models.DirectorysSetPropertiesResponse;
 import com.azure.storage.file.models.FileHTTPHeaders;
-import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRef;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
@@ -643,7 +641,7 @@ public class DirectoryAsyncClient {
      *
      * <p>Create the file named "myFile"</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-fileproperties-map}
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>

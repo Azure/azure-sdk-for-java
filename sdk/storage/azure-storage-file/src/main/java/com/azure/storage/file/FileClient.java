@@ -3,7 +3,6 @@
 
 package com.azure.storage.file;
 
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
@@ -93,7 +92,7 @@ public class FileClient {
      *
      * <p>Create the file with length of 1024 bytes, some headers, file smb properties and metadata.</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.createWithResponse#long-filehttpheaders-filesmbproperties-map-context}
+     * {@codesnippet com.azure.storage.file.fileClient.createWithResponse#long-filehttpheaders-filesmbproperties-string-map-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -366,7 +365,7 @@ public class FileClient {
      *
      * <p>Clear the httpHeaders of the file and preserve the SMB properties</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setProperties#long-filehttpheaders-filesmbproperties.clearHttpHeaderspreserveSMBProperties}
+     * {@codesnippet com.azure.storage.file.fileClient.setProperties#long-filehttpheaders-filesmbproperties-string.clearHttpHeaderspreserveSMBProperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a>.</p>
@@ -392,11 +391,11 @@ public class FileClient {
      *
      * <p>Set the httpHeaders of contentType of "text/plain"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-Context}
+     * {@codesnippet com.azure.storage.file.fileClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-string-Context}
      *
      * <p>Clear the httpHeaders of the file and preserve the SMB properties</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-Context.clearHttpHeaderspreserveSMBProperties}
+     * {@codesnippet com.azure.storage.file.fileClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-string-Context.clearHttpHeaderspreserveSMBProperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a>.</p>

@@ -160,7 +160,7 @@ public class FileAsyncClient {
      *
      * <p>Create the file with length of 1024 bytes, some headers, file smb properties and metadata.</p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.createWithResponse#long-filehttpheaders-filesmbproperties-map}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.createWithResponse#long-filehttpheaders-filesmbproperties-string-map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -570,6 +570,7 @@ public class FileAsyncClient {
      * @param newFileSize New file size of the file.
      * @param httpHeaders The user settable file http headers.
      * @param smbProperties The user settable file smb properties.
+     * @param filePermission The file permission of the file.
      * @return Response containing the {@link FileInfo file info} and response status code.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
