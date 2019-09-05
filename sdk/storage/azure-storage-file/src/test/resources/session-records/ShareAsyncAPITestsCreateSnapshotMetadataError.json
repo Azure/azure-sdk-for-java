@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/shareasyncapitestscreatesnapshotmetadataerror11221625cf?restype=share&comp=snapshot",
+    "Uri" : "https://gapradev.file.core.windows.net/shareasyncapitestscreatesnapshotmetadataerror28619f7e3c?restype=share&comp=snapshot",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "7aab7735-d5a0-44c8-a9c1-fd9124e50ecf"
+      "x-ms-client-request-id" : "a23f1f89-0370-43ee-b3a6-f578700ba087"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "a60ab5f2-101a-0035-4639-64fe2f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:a60ab5f2-101a-0035-4639-64fe2f000000\nTime:2019-09-05T22:30:10.7565074Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Thu, 05 Sep 2019 22:30:09 GMT",
-      "x-ms-client-request-id" : "7aab7735-d5a0-44c8-a9c1-fd9124e50ecf",
+      "x-ms-request-id" : "51ddbec1-b01a-002c-2a3e-647e94000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:51ddbec1-b01a-002c-2a3e-647e94000000\nTime:2019-09-05T23:08:38.7177600Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Thu, 05 Sep 2019 23:08:37 GMT",
+      "x-ms-client-request-id" : "a23f1f89-0370-43ee-b3a6-f578700ba087",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareasyncapitestscreatesnapshotmetadataerror11221625cf" ]
+  "variables" : [ "shareasyncapitestscreatesnapshotmetadataerror28619f7e3c" ]
 }

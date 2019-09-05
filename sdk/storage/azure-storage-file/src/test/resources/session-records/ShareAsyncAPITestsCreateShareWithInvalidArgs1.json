@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/shareasyncapitestscreatesharewithinvalidargs1218910decd?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/shareasyncapitestscreatesharewithinvalidargs198046c7191?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "f724030e-68fc-44af-bbd3-c50568f2257c"
+      "x-ms-client-request-id" : "15a476b3-eb5a-40d5-9636-d850b8171bbb"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "260",
       "StatusCode" : "400",
-      "x-ms-request-id" : "a60ab5dc-101a-0035-3839-64fe2f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:a60ab5dc-101a-0035-3839-64fe2f000000\nTime:2019-09-05T22:30:09.4304825Z</Message></Error>",
-      "Date" : "Thu, 05 Sep 2019 22:30:08 GMT",
-      "x-ms-client-request-id" : "f724030e-68fc-44af-bbd3-c50568f2257c",
+      "x-ms-request-id" : "51ddbea7-b01a-002c-1a3e-647e94000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:51ddbea7-b01a-002c-1a3e-647e94000000\nTime:2019-09-05T23:08:37.2997580Z</Message></Error>",
+      "Date" : "Thu, 05 Sep 2019 23:08:36 GMT",
+      "x-ms-client-request-id" : "15a476b3-eb5a-40d5-9636-d850b8171bbb",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareasyncapitestscreatesharewithinvalidargs1218910decd" ]
+  "variables" : [ "shareasyncapitestscreatesharewithinvalidargs198046c7191" ]
 }

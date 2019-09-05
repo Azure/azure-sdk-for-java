@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreateandgetpermission54165efdd5cdece?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreateandgetpermission951413d3b10a9a5?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "53f97965-e40c-450f-875b-2e82c2ecfd8b"
+      "x-ms-client-request-id" : "729eedda-7c98-4bd8-a41a-5d5078b34d66"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7325081C08A4F\"",
-      "Last-Modified" : "Thu, 05 Sep 2019 22:29:25 GMT",
+      "ETag" : "\"0x8D732560C1118C2\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 23:09:04 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "a60ab32b-101a-0035-2f39-64fe2f000000",
-      "Date" : "Thu, 05 Sep 2019 22:29:24 GMT",
-      "x-ms-client-request-id" : "53f97965-e40c-450f-875b-2e82c2ecfd8b"
+      "x-ms-request-id" : "51ddc058-b01a-002c-5c3e-647e94000000",
+      "Date" : "Thu, 05 Sep 2019 23:09:03 GMT",
+      "x-ms-client-request-id" : "729eedda-7c98-4bd8-a41a-5d5078b34d66"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreateandgetpermission54165efdd5cdece?restype=share&comp=filepermission",
+    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreateandgetpermission951413d3b10a9a5?restype=share&comp=filepermission",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "e3266140-d1e1-4f58-8c78-7756785321e1",
+      "x-ms-client-request-id" : "843adbb3-c116-4287-87ce-f2a7b6c5d776",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -36,33 +36,30 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "a60ab32d-101a-0035-3039-64fe2f000000",
-      "Date" : "Thu, 05 Sep 2019 22:29:24 GMT",
-      "x-ms-client-request-id" : "e3266140-d1e1-4f58-8c78-7756785321e1"
+      "x-ms-request-id" : "51ddc05b-b01a-002c-5d3e-647e94000000",
+      "Date" : "Thu, 05 Sep 2019 23:09:03 GMT",
+      "x-ms-client-request-id" : "843adbb3-c116-4287-87ce-f2a7b6c5d776"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://gapradev.file.core.windows.net/{shareName}?restype=share&comp=filepermission",
+    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreateandgetpermission951413d3b10a9a5?restype=share&comp=filepermission",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "f263d77f-d4d0-4176-9537-00941ee093b3"
+      "x-ms-client-request-id" : "5c4809c6-347e-4643-8ce8-d624409fe972"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-error-code" : "InvalidResourceName",
       "retry-after" : "0",
-      "Content-Length" : "243",
-      "StatusCode" : "400",
-      "x-ms-request-id" : "a60ab32e-101a-0035-3139-64fe2f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:a60ab32e-101a-0035-3139-64fe2f000000\nTime:2019-09-05T22:29:25.3946229Z</Message></Error>",
-      "Date" : "Thu, 05 Sep 2019 22:29:24 GMT",
-      "x-ms-client-request-id" : "f263d77f-d4d0-4176-9537-00941ee093b3",
-      "Content-Type" : "application/xml"
+      "Content-Length" : "225",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "51ddc05f-b01a-002c-603e-647e94000000",
+      "Date" : "Thu, 05 Sep 2019 23:09:04 GMT",
+      "x-ms-client-request-id" : "5c4809c6-347e-4643-8ce8-d624409fe972"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestscreateandgetpermission54165efdd5cdece" ]
+  "variables" : [ "shareapitestscreateandgetpermission951413d3b10a9a5" ]
 }

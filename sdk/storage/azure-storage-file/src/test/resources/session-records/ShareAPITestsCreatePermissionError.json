@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatepermissionerror80722069e87724b?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatepermissionerror7307532aeba8b62?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "264f5074-be5c-4739-9280-ee2a5e0e08a4"
+      "x-ms-client-request-id" : "e08dea7c-5eeb-4895-baab-60859d844e14"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D73250D950EE66\"",
-      "Last-Modified" : "Thu, 05 Sep 2019 22:31:52 GMT",
+      "ETag" : "\"0x8D732560C565F11\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 23:09:05 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "a8e736bc-e01a-0021-4639-64b640000000",
-      "Date" : "Thu, 05 Sep 2019 22:31:52 GMT",
-      "x-ms-client-request-id" : "264f5074-be5c-4739-9280-ee2a5e0e08a4"
+      "x-ms-request-id" : "51ddc062-b01a-002c-633e-647e94000000",
+      "Date" : "Thu, 05 Sep 2019 23:09:04 GMT",
+      "x-ms-client-request-id" : "e08dea7c-5eeb-4895-baab-60859d844e14"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatepermissionerror80722069e87724b?restype=share&comp=filepermission",
+    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatepermissionerror7307532aeba8b62?restype=share&comp=filepermission",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "97e4d48f-3b5c-488f-872d-72720c9f4789",
+      "x-ms-client-request-id" : "3e8f438d-956d-4ed8-9fd4-6f738c7512ee",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -36,13 +36,13 @@
       "retry-after" : "0",
       "Content-Length" : "233",
       "StatusCode" : "400",
-      "x-ms-request-id" : "a8e736bf-e01a-0021-4739-64b640000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>FileInvalidPermission</Code><Message>The specified file permission is not valid.\nRequestId:a8e736bf-e01a-0021-4739-64b640000000\nTime:2019-09-05T22:31:52.1886805Z</Message></Error>",
-      "Date" : "Thu, 05 Sep 2019 22:31:52 GMT",
-      "x-ms-client-request-id" : "97e4d48f-3b5c-488f-872d-72720c9f4789",
+      "x-ms-request-id" : "51ddc065-b01a-002c-643e-647e94000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>FileInvalidPermission</Code><Message>The specified file permission is not valid.\nRequestId:51ddc065-b01a-002c-643e-647e94000000\nTime:2019-09-05T23:09:05.2747816Z</Message></Error>",
+      "Date" : "Thu, 05 Sep 2019 23:09:04 GMT",
+      "x-ms-client-request-id" : "3e8f438d-956d-4ed8-9fd4-6f738c7512ee",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestscreatepermissionerror80722069e87724b" ]
+  "variables" : [ "shareapitestscreatepermissionerror7307532aeba8b62" ]
 }
