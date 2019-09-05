@@ -68,31 +68,12 @@
           <version>1.0.0-preview.3</version>
         </dependency>
 
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-      </dependency>
-
-        <dependency>
-            <groupId>com.microsoft.azure</groupId>
-            <artifactId>azure-mgmt-resources</artifactId>
-        </dependency>
-
-        <dependency>
-          <groupId>com.microsoft.azure</groupId>
-          <artifactId>msal4j</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-
-      <dependency>
+       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-core-http-netty</artifactId>
         <version>1.0.0-preview.4</version>
-      </dependency>
+        <scope>test</scope>
+       </dependency>
 
     </dependencies>
 </project>

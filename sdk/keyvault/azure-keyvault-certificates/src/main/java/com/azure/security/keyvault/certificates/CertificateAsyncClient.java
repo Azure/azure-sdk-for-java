@@ -123,8 +123,8 @@ public class CertificateAsyncClient {
                 System.out.println("Calling Polling Function");
                 return service.getCertificateOperation(endpoint, certificateName, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
                     .flatMap(this::processCertificateOperationResponse);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (HttpRequestException e) {
+                logger.logExceptionAsError(e);
                 return Mono.just(new PollResponse<>(PollResponse.OperationStatus.FAILED, null));
             }
         };
