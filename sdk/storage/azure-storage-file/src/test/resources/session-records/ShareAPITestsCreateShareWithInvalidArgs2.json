@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatesharewithinvalidargs2720748c92d57?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatesharewithinvalidargs245459b4d8d1c?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "e24cfe0a-b620-4be0-8794-1e67d60e8aa0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "c592039b-7811-43d2-96d9-3be1171fa4eb"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "326",
       "StatusCode" : "400",
-      "x-ms-request-id" : "e7c18a1c-101a-0044-1fc2-62ec1a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:e7c18a1c-101a-0044-1fc2-62ec1a000000\nTime:2019-09-04T01:44:02.1262066Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>6000</HeaderValue></Error>",
-      "Date" : "Wed, 04 Sep 2019 01:44:02 GMT",
-      "x-ms-client-request-id" : "e24cfe0a-b620-4be0-8794-1e67d60e8aa0",
+      "x-ms-request-id" : "caec4f1b-c01a-0019-1064-631280000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:caec4f1b-c01a-0019-1064-631280000000\nTime:2019-09-04T21:05:41.0294855Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>6000</HeaderValue></Error>",
+      "Date" : "Wed, 04 Sep 2019 21:05:40 GMT",
+      "x-ms-client-request-id" : "c592039b-7811-43d2-96d9-3be1171fa4eb",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestscreatesharewithinvalidargs2720748c92d57" ]
+  "variables" : [ "shareapitestscreatesharewithinvalidargs245459b4d8d1c" ]
 }

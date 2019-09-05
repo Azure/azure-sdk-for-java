@@ -1,74 +1,74 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceasyncapitestslistshareswithfilter343023ff9c60?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/fileserviceasyncapitestslistshareswithfilter392310da7430?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
-      "x-ms-client-request-id" : "42e4e8b9-1edf-4b58-8526-d6bd1617637c"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "731598f4-b450-4346-bd0f-d227496aa79a"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D73158D7491798\"",
-      "Last-Modified" : "Wed, 04 Sep 2019 16:56:33 GMT",
+      "ETag" : "\"0x8D7317BDF6F2AAC\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 21:07:19 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "98310d2d-b01a-0120-6141-631aef000000",
-      "Date" : "Wed, 04 Sep 2019 16:56:33 GMT",
-      "x-ms-client-request-id" : "42e4e8b9-1edf-4b58-8526-d6bd1617637c"
+      "x-ms-request-id" : "caec6698-c01a-0019-5664-631280000000",
+      "Date" : "Wed, 04 Sep 2019 21:07:19 GMT",
+      "x-ms-client-request-id" : "731598f4-b450-4346-bd0f-d227496aa79a"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceasyncapitestslistshareswithfilter343023ff9c61?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/fileserviceasyncapitestslistshareswithfilter392310da7431?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
-      "x-ms-client-request-id" : "4b657dde-65d2-4023-9d0b-07730df02c96"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "51773645-91e5-4d23-bc5d-d2be7f77a083"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D73158D74F0C6B\"",
-      "Last-Modified" : "Wed, 04 Sep 2019 16:56:33 GMT",
+      "ETag" : "\"0x8D7317BDF7BD5D8\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 21:07:19 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "98310d2f-b01a-0120-6241-631aef000000",
-      "Date" : "Wed, 04 Sep 2019 16:56:33 GMT",
-      "x-ms-client-request-id" : "4b657dde-65d2-4023-9d0b-07730df02c96"
+      "x-ms-request-id" : "caec669f-c01a-0019-5c64-631280000000",
+      "Date" : "Wed, 04 Sep 2019 21:07:19 GMT",
+      "x-ms-client-request-id" : "51773645-91e5-4d23-bc5d-d2be7f77a083"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceasyncapitestslistshareswithfilter343023ff9c62?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/fileserviceasyncapitestslistshareswithfilter392310da7432?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
-      "x-ms-client-request-id" : "06b39968-814e-4d1b-b41f-eadfa444eca4"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "283acdbc-3bff-4105-aba5-6197761d307e"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D73158D7550134\"",
-      "Last-Modified" : "Wed, 04 Sep 2019 16:56:33 GMT",
+      "ETag" : "\"0x8D7317BDF865C2C\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 21:07:19 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "98310d31-b01a-0120-6341-631aef000000",
-      "Date" : "Wed, 04 Sep 2019 16:56:33 GMT",
-      "x-ms-client-request-id" : "06b39968-814e-4d1b-b41f-eadfa444eca4"
+      "x-ms-request-id" : "caec66a8-c01a-0019-6364-631280000000",
+      "Date" : "Wed, 04 Sep 2019 21:07:19 GMT",
+      "x-ms-client-request-id" : "283acdbc-3bff-4105-aba5-6197761d307e"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=fileserviceasyncapitestslistshareswithfilter&maxresults=2&include=&comp=list",
+    "Uri" : "https://gapradev.file.core.windows.net?prefix=fileserviceasyncapitestslistshareswithfilter&maxresults=2&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
-      "x-ms-client-request-id" : "835b7eb5-9e0d-4297-89cc-7759d223d4d2"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "eb98934c-9624-4a4b-898e-4c0e71fc31a6"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -76,20 +76,20 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "98310d33-b01a-0120-6441-631aef000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>fileserviceasyncapitestslistshareswithfilter</Prefix><MaxResults>2</MaxResults><Shares><Share><Name>fileserviceasyncapitestslistshareswithfilter343023ff9c60</Name><Properties><Last-Modified>Wed, 04 Sep 2019 16:56:33 GMT</Last-Modified><Etag>\"0x8D73158D7491798\"</Etag><Quota>1</Quota></Properties></Share><Share><Name>fileserviceasyncapitestslistshareswithfilter343023ff9c61</Name><Properties><Last-Modified>Wed, 04 Sep 2019 16:56:33 GMT</Last-Modified><Etag>\"0x8D73158D74F0C6B\"</Etag><Quota>2</Quota></Properties></Share></Shares><NextMarker>/azstoragesdkaccount/fileserviceasyncapitestslistshareswithfilter343023ff9c62</NextMarker></EnumerationResults>",
-      "Date" : "Wed, 04 Sep 2019 16:56:33 GMT",
-      "x-ms-client-request-id" : "835b7eb5-9e0d-4297-89cc-7759d223d4d2",
+      "x-ms-request-id" : "caec66af-c01a-0019-6964-631280000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gapradev.file.core.windows.net/\"><Prefix>fileserviceasyncapitestslistshareswithfilter</Prefix><MaxResults>2</MaxResults><Shares><Share><Name>fileserviceasyncapitestslistshareswithfilter392310da7430</Name><Properties><Last-Modified>Wed, 04 Sep 2019 21:07:19 GMT</Last-Modified><Etag>\"0x8D7317BDF6F2AAC\"</Etag><Quota>1</Quota></Properties></Share><Share><Name>fileserviceasyncapitestslistshareswithfilter392310da7431</Name><Properties><Last-Modified>Wed, 04 Sep 2019 21:07:19 GMT</Last-Modified><Etag>\"0x8D7317BDF7BD5D8\"</Etag><Quota>2</Quota></Properties></Share></Shares><NextMarker>/gapradev/fileserviceasyncapitestslistshareswithfilter392310da7432</NextMarker></EnumerationResults>",
+      "Date" : "Wed, 04 Sep 2019 21:07:19 GMT",
+      "x-ms-client-request-id" : "eb98934c-9624-4a4b-898e-4c0e71fc31a6",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=fileserviceasyncapitestslistshareswithfilter&marker=/azstoragesdkaccount/fileserviceasyncapitestslistshareswithfilter343023ff9c62&maxresults=2&include=&comp=list",
+    "Uri" : "https://gapradev.file.core.windows.net?prefix=fileserviceasyncapitestslistshareswithfilter&marker=/gapradev/fileserviceasyncapitestslistshareswithfilter392310da7432&maxresults=2&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
-      "x-ms-client-request-id" : "818094a6-73fe-4a21-afba-a66a3255f838"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "0190a862-f2e9-4e7f-b2c5-937ae4f84fb5"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -97,13 +97,13 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "98310d35-b01a-0120-6541-631aef000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>fileserviceasyncapitestslistshareswithfilter</Prefix><Marker>/azstoragesdkaccount/fileserviceasyncapitestslistshareswithfilter343023ff9c62</Marker><MaxResults>2</MaxResults><Shares><Share><Name>fileserviceasyncapitestslistshareswithfilter343023ff9c62</Name><Properties><Last-Modified>Wed, 04 Sep 2019 16:56:33 GMT</Last-Modified><Etag>\"0x8D73158D7550134\"</Etag><Quota>3</Quota></Properties></Share></Shares><NextMarker /></EnumerationResults>",
-      "Date" : "Wed, 04 Sep 2019 16:56:33 GMT",
-      "x-ms-client-request-id" : "818094a6-73fe-4a21-afba-a66a3255f838",
+      "x-ms-request-id" : "caec66b2-c01a-0019-6c64-631280000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gapradev.file.core.windows.net/\"><Prefix>fileserviceasyncapitestslistshareswithfilter</Prefix><Marker>/gapradev/fileserviceasyncapitestslistshareswithfilter392310da7432</Marker><MaxResults>2</MaxResults><Shares><Share><Name>fileserviceasyncapitestslistshareswithfilter392310da7432</Name><Properties><Last-Modified>Wed, 04 Sep 2019 21:07:19 GMT</Last-Modified><Etag>\"0x8D7317BDF865C2C\"</Etag><Quota>3</Quota></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "Date" : "Wed, 04 Sep 2019 21:07:19 GMT",
+      "x-ms-client-request-id" : "0190a862-f2e9-4e7f-b2c5-937ae4f84fb5",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileserviceasyncapitestslistshareswithfilter343023ff9c6" ]
+  "variables" : [ "fileserviceasyncapitestslistshareswithfilter392310da743" ]
 }

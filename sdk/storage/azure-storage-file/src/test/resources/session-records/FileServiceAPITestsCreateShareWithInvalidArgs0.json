@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceapitestscreatesharewithinvalidargs03666446d6?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/fileserviceapitestscreatesharewithinvalidargs045471f2ea?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "26408309-00d5-4438-9f5b-60f38bd22ed3"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "a396c7b3-1b39-408b-b429-48f8d2988c90"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "260",
       "StatusCode" : "400",
-      "x-ms-request-id" : "e7c18d1f-101a-0044-09c2-62ec1a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:e7c18d1f-101a-0044-09c2-62ec1a000000\nTime:2019-09-04T01:44:32.7258339Z</Message></Error>",
-      "Date" : "Wed, 04 Sep 2019 01:44:32 GMT",
-      "x-ms-client-request-id" : "26408309-00d5-4438-9f5b-60f38bd22ed3",
+      "x-ms-request-id" : "caec5e46-c01a-0019-4f64-631280000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:caec5e46-c01a-0019-4f64-631280000000\nTime:2019-09-04T21:06:46.3153481Z</Message></Error>",
+      "Date" : "Wed, 04 Sep 2019 21:06:46 GMT",
+      "x-ms-client-request-id" : "a396c7b3-1b39-408b-b429-48f8d2988c90",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileserviceapitestscreatesharewithinvalidargs03666446d6" ]
+  "variables" : [ "fileserviceapitestscreatesharewithinvalidargs045471f2ea" ]
 }

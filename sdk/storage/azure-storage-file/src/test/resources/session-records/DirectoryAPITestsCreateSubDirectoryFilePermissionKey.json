@@ -1,0 +1,83 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatesubdirectoryfilepermissionkey984433?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "d5fdc6c2-1ce9-474c-83ac-e482ba258653"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D7317BB7A1FB18\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 21:06:12 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "caec5631-c01a-0019-4564-631280000000",
+      "Date" : "Wed, 04 Sep 2019 21:06:12 GMT",
+      "x-ms-client-request-id" : "d5fdc6c2-1ce9-474c-83ac-e482ba258653"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatesubdirectoryfilepermissionkey984433/directoryapitestscreatesubdirectoryfilepermissionkey744853?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "25fb8a95-38fd-4737-beb1-321adc758cc1"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "1749612463032355572*8114634751575874941",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-09-04T21:06:12.8797931Z",
+      "Last-Modified" : "Wed, 04 Sep 2019 21:06:12 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 04 Sep 2019 21:06:12 GMT",
+      "ETag" : "\"0x8D7317BB7B138EB\"",
+      "x-ms-file-attributes" : "Directory",
+      "x-ms-file-change-time" : "2019-09-04T21:06:12.8797931Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "caec5633-c01a-0019-4664-631280000000",
+      "x-ms-client-request-id" : "25fb8a95-38fd-4737-beb1-321adc758cc1",
+      "x-ms-file-last-write-time" : "2019-09-04T21:06:12.8797931Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatesubdirectoryfilepermissionkey984433/directoryapitestscreatesubdirectoryfilepermissionkey744853%2ftestCreateSubDirectory?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "04c5ef96-379a-4931-a0ab-ea6697efb88f"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "1749612463032355572*8114634751575874941",
+      "x-ms-file-id" : "11529285414812647424",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-09-04T21:06:11.8368261Z",
+      "Last-Modified" : "Wed, 04 Sep 2019 21:06:11 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 04 Sep 2019 21:06:12 GMT",
+      "ETag" : "\"0x8D7317BB7121405\"",
+      "x-ms-file-attributes" : "Directory",
+      "x-ms-file-change-time" : "2019-09-04T21:06:11.8368261Z",
+      "x-ms-file-parent-id" : "13835128424026341376",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "caec5637-c01a-0019-4a64-631280000000",
+      "x-ms-client-request-id" : "04c5ef96-379a-4931-a0ab-ea6697efb88f",
+      "x-ms-file-last-write-time" : "2019-09-04T21:06:11.8368261Z"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "directoryapitestscreatesubdirectoryfilepermissionkey984433", "directoryapitestscreatesubdirectoryfilepermissionkey744853", "2019-09-04T21:06:11.836826100Z", "2019-09-04T21:06:11.836826100Z" ]
+}

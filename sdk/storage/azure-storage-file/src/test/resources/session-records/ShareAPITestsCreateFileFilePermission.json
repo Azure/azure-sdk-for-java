@@ -1,0 +1,54 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatefilefilepermission4463162557e3c7?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "e111da45-2877-42b1-8f71-2952449df86c"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D7317BA842FDF2\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 21:05:46 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "caec50a7-c01a-0019-5864-631280000000",
+      "Date" : "Wed, 04 Sep 2019 21:05:46 GMT",
+      "x-ms-client-request-id" : "e111da45-2877-42b1-8f71-2952449df86c"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatefilefilepermission4463162557e3c7/testCreateFile",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "1830f032-b8fd-4aa0-a16d-0c1127d4e28d"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "10570340844661901768*8114634751575874941",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-09-04T21:05:47.0873815Z",
+      "Last-Modified" : "Wed, 04 Sep 2019 21:05:47 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 04 Sep 2019 21:05:47 GMT",
+      "ETag" : "\"0x8D7317BA8519CD7\"",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2019-09-04T21:05:47.0873815Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "caec50b3-c01a-0019-5d64-631280000000",
+      "x-ms-client-request-id" : "1830f032-b8fd-4aa0-a16d-0c1127d4e28d",
+      "x-ms-file-last-write-time" : "2019-09-04T21:05:47.0873815Z"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestscreatefilefilepermission4463162557e3c7" ]
+}

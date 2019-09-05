@@ -1,40 +1,40 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/sharename/filename",
+    "Uri" : "https://gapradev.file.core.windows.net/sharename/filename",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "c8214f7b-442e-429b-afcd-ee54f8fbfd1d"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "1f76d491-c35d-4b24-9609-d45768f21815"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
-      "x-ms-file-permission-key" : "2189138948451189390*13168958551941065216",
-      "x-ms-file-id" : "13835146016212385792",
+      "x-ms-file-permission-key" : "15581347578553677299*8114634751575874941",
+      "x-ms-file-id" : "13835088841607741440",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-09-04T01:44:00.5349456Z",
-      "Last-Modified" : "Wed, 04 Sep 2019 01:44:00 GMT",
+      "x-ms-file-creation-time" : "2019-09-04T21:05:37.6147901Z",
+      "Last-Modified" : "Wed, 04 Sep 2019 21:05:37 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 04 Sep 2019 01:44:00 GMT",
-      "ETag" : "\"0x8D730D95BF9D050\"",
+      "Date" : "Wed, 04 Sep 2019 21:05:37 GMT",
+      "ETag" : "\"0x8D7317BA2AC35BD\"",
       "x-ms-file-attributes" : "Archive",
-      "x-ms-file-change-time" : "2019-09-04T01:44:00.5349456Z",
+      "x-ms-file-change-time" : "2019-09-04T21:05:37.6147901Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "e7c189f0-101a-0044-7cc2-62ec1a000000",
-      "x-ms-client-request-id" : "c8214f7b-442e-429b-afcd-ee54f8fbfd1d",
-      "x-ms-file-last-write-time" : "2019-09-04T01:44:00.5349456Z"
+      "x-ms-request-id" : "caec4e7b-c01a-0019-7d64-631280000000",
+      "x-ms-client-request-id" : "1f76d491-c35d-4b24-9609-d45768f21815",
+      "x-ms-file-last-write-time" : "2019-09-04T21:05:37.6147901Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/sharename/filename?comp=range&sv=2019-02-02&spr=https%2Chttp&st=2019-09-03T01%3A43%3A58Z&se=2019-09-05T01%3A43%3A58Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://gapradev.file.core.windows.net/sharename/filename?comp=range&sv=2019-02-02&spr=https%2Chttp&st=2019-09-03T21%3A05%3A36Z&se=2019-09-05T21%3A05%3A36Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "42707502-51b9-4679-89e3-b4bd87299cbb",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "95b12d25-6071-4f01-9530-2492c11c6159",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
@@ -44,20 +44,20 @@
       "retry-after" : "0",
       "Content-Length" : "279",
       "StatusCode" : "403",
-      "x-ms-request-id" : "e7c189f1-101a-0044-7dc2-62ec1a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthorizationPermissionMismatch</Code><Message>This request is not authorized to perform this operation using this permission.\nRequestId:e7c189f1-101a-0044-7dc2-62ec1a000000\nTime:2019-09-04T01:44:00.5717520Z</Message></Error>",
-      "Date" : "Wed, 04 Sep 2019 01:44:00 GMT",
-      "x-ms-client-request-id" : "42707502-51b9-4679-89e3-b4bd87299cbb",
+      "x-ms-request-id" : "caec4e7f-c01a-0019-0164-631280000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthorizationPermissionMismatch</Code><Message>This request is not authorized to perform this operation using this permission.\nRequestId:caec4e7f-c01a-0019-0164-631280000000\nTime:2019-09-04T21:05:37.6864356Z</Message></Error>",
+      "Date" : "Wed, 04 Sep 2019 21:05:37 GMT",
+      "x-ms-client-request-id" : "95b12d25-6071-4f01-9530-2492c11c6159",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/sharename/filename?sv=2019-02-02&spr=https%2Chttp&st=2019-09-03T01%3A43%3A58Z&se=2019-09-05T01%3A43%3A58Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://gapradev.file.core.windows.net/sharename/filename?sv=2019-02-02&spr=https%2Chttp&st=2019-09-03T21%3A05%3A36Z&se=2019-09-05T21%3A05%3A36Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "99e19b6d-aba9-4c0b-bfe0-efe6b5e0473e"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "8b27c330-0fa3-4065-a2b1-6f15b85d2276"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -65,11 +65,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "e7c189f2-101a-0044-7ec2-62ec1a000000",
-      "Date" : "Wed, 04 Sep 2019 01:44:00 GMT",
-      "x-ms-client-request-id" : "99e19b6d-aba9-4c0b-bfe0-efe6b5e0473e"
+      "x-ms-request-id" : "caec4e84-c01a-0019-0664-631280000000",
+      "Date" : "Wed, 04 Sep 2019 21:05:37 GMT",
+      "x-ms-client-request-id" : "8b27c330-0fa3-4065-a2b1-6f15b85d2276"
     },
     "Exception" : null
   } ],
-  "variables" : [ "2019-09-04T01:43:58.621Z", "2019-09-04T01:43:58.621Z" ]
+  "variables" : [ "2019-09-04T21:05:36.546883400Z", "2019-09-04T21:05:36.546883400Z" ]
 }

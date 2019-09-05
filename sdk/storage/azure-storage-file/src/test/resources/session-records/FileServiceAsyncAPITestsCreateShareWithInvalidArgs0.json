@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceasyncapitestscreatesharewithinvalidargs045312b7?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/fileserviceasyncapitestscreatesharewithinvalidargs09700907?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "04fd53d6-4158-4e9b-8490-60c85ba7e1e2"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "ebf8555a-4526-43d8-9110-4a2416effd74"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "260",
       "StatusCode" : "400",
-      "x-ms-request-id" : "e7c18e9c-101a-0044-3ac2-62ec1a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:e7c18e9c-101a-0044-3ac2-62ec1a000000\nTime:2019-09-04T01:44:44.8581470Z</Message></Error>",
-      "Date" : "Wed, 04 Sep 2019 01:44:44 GMT",
-      "x-ms-client-request-id" : "04fd53d6-4158-4e9b-8490-60c85ba7e1e2",
+      "x-ms-request-id" : "caec6581-c01a-0019-3064-631280000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:caec6581-c01a-0019-3064-631280000000\nTime:2019-09-04T21:07:16.6317169Z</Message></Error>",
+      "Date" : "Wed, 04 Sep 2019 21:07:16 GMT",
+      "x-ms-client-request-id" : "ebf8555a-4526-43d8-9110-4a2416effd74",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileserviceasyncapitestscreatesharewithinvalidargs045312b7" ]
+  "variables" : [ "fileserviceasyncapitestscreatesharewithinvalidargs09700907" ]
 }

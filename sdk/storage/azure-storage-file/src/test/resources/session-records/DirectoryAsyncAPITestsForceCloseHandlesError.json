@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestsforceclosehandleserror6269951f40?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestsforceclosehandleserror3521692015?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "24e79bb5-89e6-4116-a9bb-32dac64ad567"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "54429b39-d866-45d1-a72f-148a85de4355"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D730D974161502\"",
-      "Last-Modified" : "Wed, 04 Sep 2019 01:44:40 GMT",
+      "ETag" : "\"0x8D7317BD86821B9\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 21:07:07 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "e7c18e22-101a-0044-56c2-62ec1a000000",
-      "Date" : "Wed, 04 Sep 2019 01:44:40 GMT",
-      "x-ms-client-request-id" : "24e79bb5-89e6-4116-a9bb-32dac64ad567"
+      "x-ms-request-id" : "caec6384-c01a-0019-6864-631280000000",
+      "Date" : "Wed, 04 Sep 2019 21:07:07 GMT",
+      "x-ms-client-request-id" : "54429b39-d866-45d1-a72f-148a85de4355"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestsforceclosehandleserror6269951f40/directoryasyncapitestsforceclosehandleserror750499469d?restype=directory",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestsforceclosehandleserror3521692015/directoryasyncapitestsforceclosehandleserror51800e59b0?restype=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "3370faa7-89de-4977-bf08-29741bf50a7d"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "53858a8c-c172-4b81-9c63-e93ee234b5d8"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
-      "x-ms-file-permission-key" : "16004293428625128841*13168958551941065216",
+      "x-ms-file-permission-key" : "1749612463032355572*8114634751575874941",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-09-04T01:44:41.0252711Z",
-      "Last-Modified" : "Wed, 04 Sep 2019 01:44:41 GMT",
+      "x-ms-file-creation-time" : "2019-09-04T21:07:07.8486812Z",
+      "Last-Modified" : "Wed, 04 Sep 2019 21:07:07 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 04 Sep 2019 01:44:40 GMT",
-      "ETag" : "\"0x8D730D9741C25A7\"",
+      "Date" : "Wed, 04 Sep 2019 21:07:07 GMT",
+      "ETag" : "\"0x8D7317BD874CF1C\"",
       "x-ms-file-attributes" : "Directory",
-      "x-ms-file-change-time" : "2019-09-04T01:44:41.0252711Z",
+      "x-ms-file-change-time" : "2019-09-04T21:07:07.8486812Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "e7c18e24-101a-0044-57c2-62ec1a000000",
-      "x-ms-client-request-id" : "3370faa7-89de-4977-bf08-29741bf50a7d",
-      "x-ms-file-last-write-time" : "2019-09-04T01:44:41.0252711Z"
+      "x-ms-request-id" : "caec6389-c01a-0019-6c64-631280000000",
+      "x-ms-client-request-id" : "53858a8c-c172-4b81-9c63-e93ee234b5d8",
+      "x-ms-file-last-write-time" : "2019-09-04T21:07:07.8486812Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestsforceclosehandleserror6269951f40/directoryasyncapitestsforceclosehandleserror750499469d?comp=forceclosehandles",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestsforceclosehandleserror3521692015/directoryasyncapitestsforceclosehandleserror51800e59b0?comp=forceclosehandles",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "e1f2b6f7-72eb-4239-b809-191a5169f470"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "5f170fe9-c410-4f2d-9523-fe45ce796d14"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -64,13 +64,13 @@
       "retry-after" : "0",
       "Content-Length" : "328",
       "StatusCode" : "400",
-      "x-ms-request-id" : "e7c18e25-101a-0044-58c2-62ec1a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:e7c18e25-101a-0044-58c2-62ec1a000000\nTime:2019-09-04T01:44:41.0635971Z</Message><HeaderName>x-ms-handle-id</HeaderName><HeaderValue>handleId</HeaderValue></Error>",
-      "Date" : "Wed, 04 Sep 2019 01:44:40 GMT",
-      "x-ms-client-request-id" : "e1f2b6f7-72eb-4239-b809-191a5169f470",
+      "x-ms-request-id" : "caec638c-c01a-0019-6f64-631280000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:caec638c-c01a-0019-6f64-631280000000\nTime:2019-09-04T21:07:07.9146016Z</Message><HeaderName>x-ms-handle-id</HeaderName><HeaderValue>handleId</HeaderValue></Error>",
+      "Date" : "Wed, 04 Sep 2019 21:07:07 GMT",
+      "x-ms-client-request-id" : "5f170fe9-c410-4f2d-9523-fe45ce796d14",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "directoryasyncapitestsforceclosehandleserror6269951f40", "directoryasyncapitestsforceclosehandleserror750499469d" ]
+  "variables" : [ "directoryasyncapitestsforceclosehandleserror3521692015", "directoryasyncapitestsforceclosehandleserror51800e59b0" ]
 }

@@ -1,45 +1,45 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatedirectoryerrorwithmetadata00081?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestscreatedirectoryerrorwithmetadata98609?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "3a33b095-e0fd-490f-bb0f-598db48c3f9b"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "63b959a4-590f-4818-a00f-49eeea90cbdf"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D730D971EC9615\"",
-      "Last-Modified" : "Wed, 04 Sep 2019 01:44:37 GMT",
+      "ETag" : "\"0x8D7317BD1B8D731\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 21:06:56 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "e7c18dba-101a-0044-7fc2-62ec1a000000",
-      "Date" : "Wed, 04 Sep 2019 01:44:37 GMT",
-      "x-ms-client-request-id" : "3a33b095-e0fd-490f-bb0f-598db48c3f9b"
+      "x-ms-request-id" : "caec60c1-c01a-0019-5164-631280000000",
+      "Date" : "Wed, 04 Sep 2019 21:06:56 GMT",
+      "x-ms-client-request-id" : "63b959a4-590f-4818-a00f-49eeea90cbdf"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatedirectoryerrorwithmetadata00081/directoryasyncapitestscreatedirectoryerrorwithmetadata04629?restype=directory",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestscreatedirectoryerrorwithmetadata98609/directoryasyncapitestscreatedirectoryerrorwithmetadata86489?restype=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "c4ce454b-c820-4c3f-9105-18f0b7ed713f"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "8812adb2-91b8-458a-b2b5-1db8de42544d"
     },
     "Response" : {
       "Server" : "Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "AuthenticationFailed",
       "retry-after" : "0",
-      "Content-Length" : "974",
+      "Content-Length" : "963",
       "StatusCode" : "403",
-      "x-ms-request-id" : "e7c18dbd-101a-0044-80c2-62ec1a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:e7c18dbd-101a-0044-80c2-62ec1a000000\nTime:2019-09-04T01:44:37.4071797Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'viHY/tolMPQNpS1dRALH1vfMAFY1K4cs6OihZHa7ayQ=' is not the same as any computed signature. Server used following string to sign: 'PUT\n\n\n\n\n\nWed, 04 Sep 2019 01:44:35 GMT\n\n\n\n\n\nx-ms-client-request-id:c4ce454b-c820-4c3f-9105-18f0b7ed713f\nx-ms-file-attributes:None\nx-ms-file-creation-time:now\nx-ms-file-last-write-time:now\nx-ms-file-permission:inherit\nx-ms-meta-testmeta:value\nx-ms-version:2019-02-02\n/azstoragesdkaccount/directoryasyncapitestscreatedirectoryerrorwithmetadata00081/directoryasyncapitestscreatedirectoryerrorwithmetadata04629\nrestype:directory'.</AuthenticationErrorDetail></Error>",
-      "Date" : "Wed, 04 Sep 2019 01:44:37 GMT",
+      "x-ms-request-id" : "caec60c5-c01a-0019-5464-631280000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:caec60c5-c01a-0019-5464-631280000000\nTime:2019-09-04T21:06:56.6434812Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'COZc1FiAsPcWiHhz3SFcg3tWqHf8dsi79dsk0MjUdvQ=' is not the same as any computed signature. Server used following string to sign: 'PUT\n\n\n\n\n\nWed, 04 Sep 2019 21:06:55 GMT\n\n\n\n\n\nx-ms-client-request-id:8812adb2-91b8-458a-b2b5-1db8de42544d\nx-ms-file-attributes:None\nx-ms-file-creation-time:Now\nx-ms-file-last-write-time:Now\nx-ms-file-permission:Inherit\nx-ms-meta-testmeta:value\nx-ms-version:2019-02-02\n/gapradev/directoryasyncapitestscreatedirectoryerrorwithmetadata98609/directoryasyncapitestscreatedirectoryerrorwithmetadata86489\nrestype:directory'.</AuthenticationErrorDetail></Error>",
+      "Date" : "Wed, 04 Sep 2019 21:06:56 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "directoryasyncapitestscreatedirectoryerrorwithmetadata00081", "directoryasyncapitestscreatedirectoryerrorwithmetadata04629" ]
+  "variables" : [ "directoryasyncapitestscreatedirectoryerrorwithmetadata98609", "directoryasyncapitestscreatedirectoryerrorwithmetadata86489" ]
 }

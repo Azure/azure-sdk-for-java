@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatedirectorypermissionandkeyerror142204?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "b70b0227-5aac-4970-a786-9bb8bbf641c2"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D7317BACCF19AE\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 21:05:54 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "caec5270-c01a-0019-3e64-631280000000",
+      "Date" : "Wed, 04 Sep 2019 21:05:54 GMT",
+      "x-ms-client-request-id" : "b70b0227-5aac-4970-a786-9bb8bbf641c2"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "directoryapitestscreatedirectorypermissionandkeyerror142204", "directoryapitestscreatedirectorypermissionandkeyerror149204" ]
+}

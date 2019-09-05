@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?restype=service&comp=properties",
+    "Uri" : "https://gapradev.file.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "25a1119a-8d39-4220-ae16-afafec3eadcf",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "04de96e2-03f6-4424-b7af-30bae3eb138f",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -15,13 +15,13 @@
       "retry-after" : "0",
       "Content-Length" : "294",
       "StatusCode" : "400",
-      "x-ms-request-id" : "e7c18f00-101a-0044-06c2-62ec1a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:e7c18f00-101a-0044-06c2-62ec1a000000\nTime:2019-09-04T01:44:47.8309247Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
-      "Date" : "Wed, 04 Sep 2019 01:44:47 GMT",
-      "x-ms-client-request-id" : "25a1119a-8d39-4220-ae16-afafec3eadcf",
+      "x-ms-request-id" : "caec676f-c01a-0019-1b64-631280000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:caec676f-c01a-0019-1b64-631280000000\nTime:2019-09-04T21:07:22.9718041Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
+      "Date" : "Wed, 04 Sep 2019 21:07:22 GMT",
+      "x-ms-client-request-id" : "04de96e2-03f6-4424-b7af-30bae3eb138f",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "6bccd86e35a64c54a900946df7b850990d732c757b3349a5bebf9c45efe1ef1a" ]
+  "variables" : [ "2bd0652040994abd8b4b22610930faf3e7f7ff2b1b044076a38418cfd78a3d71" ]
 }

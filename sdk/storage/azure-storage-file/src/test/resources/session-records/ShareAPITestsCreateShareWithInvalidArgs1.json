@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatesharewithinvalidargs156369dcedd43?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatesharewithinvalidargs135694aa7b86b?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "fb27e6d1-0869-46a7-87bc-7e4413af8fcb"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "7e8ee6bb-f99c-46de-8237-d22187be763d"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "260",
       "StatusCode" : "400",
-      "x-ms-request-id" : "e7c18a1a-101a-0044-1dc2-62ec1a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:e7c18a1a-101a-0044-1dc2-62ec1a000000\nTime:2019-09-04T01:44:02.0621474Z</Message></Error>",
-      "Date" : "Wed, 04 Sep 2019 01:44:02 GMT",
-      "x-ms-client-request-id" : "fb27e6d1-0869-46a7-87bc-7e4413af8fcb",
+      "x-ms-request-id" : "caec4f14-c01a-0019-0964-631280000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:caec4f14-c01a-0019-0964-631280000000\nTime:2019-09-04T21:05:40.8834838Z</Message></Error>",
+      "Date" : "Wed, 04 Sep 2019 21:05:40 GMT",
+      "x-ms-client-request-id" : "7e8ee6bb-f99c-46de-8237-d22187be763d",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestscreatesharewithinvalidargs156369dcedd43" ]
+  "variables" : [ "shareapitestscreatesharewithinvalidargs135694aa7b86b" ]
 }

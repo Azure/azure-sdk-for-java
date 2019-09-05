@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatedirectoryerror24426d4fb43?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestscreatedirectoryerror85379ecbfdb?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "a8884bd7-40b9-40a7-a915-4aafffbfd502"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "8c92bdc1-2125-4309-99c1-a5af7714e78b"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D730D971C1AB4D\"",
-      "Last-Modified" : "Wed, 04 Sep 2019 01:44:37 GMT",
+      "ETag" : "\"0x8D7317BD14B9630\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 21:06:55 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "e7c18db0-101a-0044-77c2-62ec1a000000",
-      "Date" : "Wed, 04 Sep 2019 01:44:37 GMT",
-      "x-ms-client-request-id" : "a8884bd7-40b9-40a7-a915-4aafffbfd502"
+      "x-ms-request-id" : "caec608c-c01a-0019-1f64-631280000000",
+      "Date" : "Wed, 04 Sep 2019 21:06:55 GMT",
+      "x-ms-client-request-id" : "8c92bdc1-2125-4309-99c1-a5af7714e78b"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatedirectoryerror05705598ee8/directoryasyncapitestscreatedirectoryerror74985a1ddbe?restype=directory",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestscreatedirectoryerror78211734218/directoryasyncapitestscreatedirectoryerror74548372672?restype=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "5d3b8b04-3c99-41f9-af34-b6a8fd73643c"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 11.0.3; Windows 10 10.0",
+      "x-ms-client-request-id" : "415c0aa7-c8e3-40ae-a792-5b97183bc174"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -35,13 +35,13 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "e7c18db2-101a-0044-78c2-62ec1a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:e7c18db2-101a-0044-78c2-62ec1a000000\nTime:2019-09-04T01:44:37.1219130Z</Message></Error>",
-      "Date" : "Wed, 04 Sep 2019 01:44:37 GMT",
-      "x-ms-client-request-id" : "5d3b8b04-3c99-41f9-af34-b6a8fd73643c",
+      "x-ms-request-id" : "caec6096-c01a-0019-2864-631280000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:caec6096-c01a-0019-2864-631280000000\nTime:2019-09-04T21:06:55.9664765Z</Message></Error>",
+      "Date" : "Wed, 04 Sep 2019 21:06:55 GMT",
+      "x-ms-client-request-id" : "415c0aa7-c8e3-40ae-a792-5b97183bc174",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "directoryasyncapitestscreatedirectoryerror24426d4fb43", "directoryasyncapitestscreatedirectoryerror74985a1ddbe", "directoryasyncapitestscreatedirectoryerror05705598ee8" ]
+  "variables" : [ "directoryasyncapitestscreatedirectoryerror85379ecbfdb", "directoryasyncapitestscreatedirectoryerror74548372672", "directoryasyncapitestscreatedirectoryerror78211734218" ]
 }
