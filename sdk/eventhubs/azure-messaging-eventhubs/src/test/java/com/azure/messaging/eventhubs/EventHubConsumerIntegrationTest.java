@@ -127,22 +127,103 @@ public class EventHubConsumerIntegrationTest extends ApiTestBase {
         // Arrange
         final int numberOfEvents = 15;
         final String partitionId = "1";
-        final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId,
-            EventPosition.fromEnqueuedTime(Instant.now()));
-        final EventHubProducerOptions options = new EventHubProducerOptions().partitionId(partitionId);
-        final EventHubProducer producer = client.createProducer(options);
-        final List<EventData> events = TestUtils.getEvents(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID)
-            .collectList().block();
-        producer.send(events);
+        final List<EventData> events = TestUtils.getEventsAsList(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID);
 
-        // Act
-        final IterableStream<EventData> receive = consumer.receive(100, Duration.ofSeconds(5));
+        final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
+        final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
 
-        // Assert
-        final List<EventData> asList = receive.stream().collect(Collectors.toList());
-        Assert.assertEquals(numberOfEvents, asList.size());
+        final EventHubProducer producer = client.createProducer(new EventHubProducerOptions().partitionId(partitionId));
+
+        try {
+            producer.send(events);
+
+            // Act
+            final IterableStream<EventData> receive = consumer.receive(100, Duration.ofSeconds(5));
+
+            // Assert
+            final List<EventData> asList = receive.stream().collect(Collectors.toList());
+            Assert.assertEquals(numberOfEvents, asList.size());
+        } finally {
+            dispose(producer, consumer);
+        }
     }
 
+    /**
+     * Verify that we don't continue to fetch more events when there are no listeners.
+     */
+    @Test
+    public void doesNotContinueToReceiveEvents() {
+        // Arrange
+        final int numberOfEvents = 15;
+        final int secondSetOfEvents = 25;
+        final int receiveNumber = 10;
+        final String partitionId = "1";
+
+        final List<EventData> events = TestUtils.getEventsAsList(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID);
+        final List<EventData> events2 = TestUtils.getEventsAsList(secondSetOfEvents, TestUtils.MESSAGE_TRACKING_ID);
+
+        final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId,
+            EventPosition.fromEnqueuedTime(Instant.now()));
+
+        final EventHubProducer producer = client.createProducer(new EventHubProducerOptions().partitionId(partitionId));
+
+        try {
+            producer.send(events);
+
+            // Act
+            final IterableStream<EventData> receive = consumer.receive(receiveNumber, Duration.ofSeconds(5));
+
+            // Assert
+            final List<EventData> asList = receive.stream().collect(Collectors.toList());
+            Assert.assertEquals(receiveNumber, asList.size());
+
+            producer.send(events2);
+        } finally {
+            dispose(consumer, producer);
+        }
+    }
+
+    /**
+     * Verify that we don't continue to fetch more events when there are no listeners.
+     */
+    @Test
+    public void multipleConsumers() {
+        final int numberOfEvents = 15;
+        final int receiveNumber = 10;
+        final String partitionId = "1";
+
+        final List<EventData> events = TestUtils.getEventsAsList(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID);
+
+        final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
+        final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
+        final EventHubConsumer consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
+        final EventHubProducer producer = client.createProducer(new EventHubProducerOptions().partitionId(partitionId));
+
+        try {
+            producer.send(events);
+
+            // Act
+            final IterableStream<EventData> receive = consumer.receive(receiveNumber, Duration.ofSeconds(5));
+            final IterableStream<EventData> receive2 = consumer2.receive(receiveNumber, Duration.ofSeconds(5));
+
+            // Assert
+            final List<Long> asList = receive.stream().map(EventData::sequenceNumber).collect(Collectors.toList());
+            final List<Long> asList2 = receive2.stream().map(EventData::sequenceNumber).collect(Collectors.toList());
+
+            Assert.assertEquals(receiveNumber, asList.size());
+            Assert.assertEquals(receiveNumber, asList2.size());
+
+            Collections.sort(asList);
+            Collections.sort(asList2);
+
+            final Long[] first = asList.toArray(new Long[0]);
+            final Long[] second = asList2.toArray(new Long[0]);
+
+            Assert.assertArrayEquals(first, second);
+        } finally {
+            dispose(consumer, producer);
+        }
+    }
 
     /**
      * Verify that we can receive until the timeout multiple times.
@@ -153,27 +234,32 @@ public class EventHubConsumerIntegrationTest extends ApiTestBase {
         final int numberOfEvents = 15;
         final int numberOfEvents2 = 3;
         final String partitionId = "1";
-        final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId,
-            EventPosition.fromEnqueuedTime(Instant.now()));
-        final EventHubProducerOptions options = new EventHubProducerOptions().partitionId(partitionId);
-        final EventHubProducer producer = client.createProducer(options);
         final List<EventData> events = TestUtils.getEventsAsList(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID);
         final List<EventData> events2 = TestUtils.getEventsAsList(numberOfEvents2, TestUtils.MESSAGE_TRACKING_ID);
-        producer.send(events);
 
-        // Act
-        final IterableStream<EventData> receive = consumer.receive(100, Duration.ofSeconds(3));
+        final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId,
+            EventPosition.fromEnqueuedTime(Instant.now()));
+        final EventHubProducer producer = client.createProducer(new EventHubProducerOptions().partitionId(partitionId));
 
-        producer.send(events2);
+        try {
+            producer.send(events);
 
-        final IterableStream<EventData> receive2 = consumer.receive(100, Duration.ofSeconds(3));
+            // Act
+            final IterableStream<EventData> receive = consumer.receive(100, Duration.ofSeconds(3));
 
-        // Assert
-        final List<EventData> asList = receive.stream().collect(Collectors.toList());
-        Assert.assertEquals(numberOfEvents, asList.size());
+            producer.send(events2);
 
-        final List<EventData> asList2 = receive2.stream().collect(Collectors.toList());
-        Assert.assertEquals(numberOfEvents2, asList2.size());
+            final IterableStream<EventData> receive2 = consumer.receive(100, Duration.ofSeconds(3));
+
+            // Assert
+            final List<EventData> asList = receive.stream().collect(Collectors.toList());
+            Assert.assertEquals(numberOfEvents, asList.size());
+
+            final List<EventData> asList2 = receive2.stream().collect(Collectors.toList());
+            Assert.assertEquals(numberOfEvents2, asList2.size());
+        } finally {
+            dispose(consumer, producer);
+        }
     }
 
     /**
