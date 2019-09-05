@@ -13,7 +13,6 @@ import org.apache.qpid.proton.message.Message;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -26,9 +25,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
@@ -47,6 +44,7 @@ public class EventHubConsumerTest {
 
     private final String messageTrackingUUID = UUID.randomUUID().toString();
     private final EmitterProcessor<Message> messageProcessor = EmitterProcessor.create(100, false);
+    private final FluxSink<Message> sink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final DirectProcessor<Throwable> errorProcessor = DirectProcessor.create();
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final DirectProcessor<AmqpShutdownSignal> shutdownProcessor = DirectProcessor.create();
@@ -54,34 +52,29 @@ public class EventHubConsumerTest {
     @Mock
     private AmqpReceiveLink amqpReceiveLink;
 
-    private Mono<AmqpReceiveLink> receiveLinkMono;
-    private List<Message> messages = new ArrayList<>();
-    private EventHubConsumerOptions options;
-    private EventHubAsyncConsumer asyncConsumer;
     private EventHubConsumer consumer;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        receiveLinkMono = Mono.fromCallable(() -> amqpReceiveLink);
+        Mono<AmqpReceiveLink> receiveLinkMono = Mono.fromCallable(() -> amqpReceiveLink);
 
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor);
         when(amqpReceiveLink.getErrors()).thenReturn(errorProcessor);
         when(amqpReceiveLink.getConnectionStates()).thenReturn(endpointProcessor);
         when(amqpReceiveLink.getShutdownSignals()).thenReturn(shutdownProcessor);
 
-        options = new EventHubConsumerOptions()
+        EventHubConsumerOptions options = new EventHubConsumerOptions()
             .identifier("an-identifier")
             .prefetchCount(PREFETCH)
             .retry(new RetryOptions())
             .scheduler(Schedulers.elastic());
-        asyncConsumer = new EventHubAsyncConsumer(receiveLinkMono, options);
+        EventHubAsyncConsumer asyncConsumer = new EventHubAsyncConsumer(receiveLinkMono, options);
         consumer = new EventHubConsumer(asyncConsumer, options);
     }
 
     @After
     public void teardown() throws IOException {
-        messages.clear();
         Mockito.framework().clearInlineMocks();
         consumer.close();
     }
@@ -171,55 +164,12 @@ public class EventHubConsumerTest {
             .forEachOrdered(number -> Assert.assertTrue(firstActual.containsKey(number)));
     }
 
-    /**
-     * Verifies that this completes after 1 second and receives as many events as possible in that time. And can perform
-     * it again.
-     */
-    @Ignore("Test fails sporadically.")
-    @Test
-    public void receivesMultipleTimesReachesTimeout() {
-        // Arrange
-        final int numberOfEvents = 3;
-        final int numberOfEvents2 = 5;
-        final int firstReceive = 8;
-        final int secondReceive = 6;
-        final Duration timeout = Duration.ofSeconds(1);
-
-        sendMessages(numberOfEvents);
-        final IterableStream<EventData> receive = consumer.receive(firstReceive, timeout);
-
-        // Assert first
-        final Map<Integer, EventData> firstActual = receive.stream()
-            .collect(Collectors.toMap(EventHubConsumerTest::getPositionId, Function.identity()));
-
-        Assert.assertEquals(numberOfEvents, firstActual.size());
-        int startingIndex = 0;
-        int endIndex = numberOfEvents;
-        IntStream.range(startingIndex, endIndex)
-            .forEachOrdered(number -> Assert.assertTrue(firstActual.containsKey(number)));
-
-        // Start the second receive.
-        sendMessages(numberOfEvents2);
-        final IterableStream<EventData> receive2 = consumer.receive(secondReceive, timeout);
-
-        final Map<Integer, EventData> secondActual = receive2.stream()
-            .collect(Collectors.toMap(EventHubConsumerTest::getPositionId, Function.identity()));
-
-        Assert.assertEquals(numberOfEvents2, secondActual.size());
-
-        startingIndex += numberOfEvents;
-        endIndex += numberOfEvents2;
-        IntStream.range(startingIndex, endIndex)
-            .forEachOrdered(number -> Assert.assertTrue(secondActual.containsKey(number)));
-    }
-
     private static Integer getPositionId(EventData event) {
         final String value = String.valueOf(event.properties().get(MESSAGE_POSITION_ID));
         return Integer.valueOf(value);
     }
 
     private void sendMessages(int numberOfEvents) {
-        FluxSink<Message> sink = messageProcessor.sink();
         for (int i = 0; i < numberOfEvents; i++) {
             Map<String, String> set = new HashMap<>();
             set.put(MESSAGE_POSITION_ID, Integer.valueOf(i).toString());

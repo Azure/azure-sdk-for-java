@@ -18,6 +18,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
@@ -98,6 +99,10 @@ final class TestUtils {
     static Flux<EventData> getEvents(int numberOfEvents, String messageTrackingValue) {
         return Flux.range(0, numberOfEvents)
             .map(number -> getEvent("Event " + number, messageTrackingValue, number));
+    }
+
+    static List<EventData> getEventsAsList(int numberOfEvents, String messageTrackingValue) {
+        return getEvents(numberOfEvents, messageTrackingValue).collectList().block();
     }
 
     static EventData getEvent(String body, String messageTrackingValue, int position) {
