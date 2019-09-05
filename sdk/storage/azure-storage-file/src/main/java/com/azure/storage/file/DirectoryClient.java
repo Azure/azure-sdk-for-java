@@ -475,8 +475,9 @@ public class DirectoryClient {
      */
     public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders,
                                                        Map<String, String> metadata, Duration timeout, Context context) {
-        Response<FileInfo> response = getFileClient(fileName).createWithResponse(maxSize, httpHeaders, metadata, null, Context.NONE);
-        return new SimpleResponse<>(response, new FileClient(response.value())))
+        FileClient fileClient = getFileClient(fileName);
+        Response<FileInfo> response = fileClient.createWithResponse(maxSize, httpHeaders, metadata, timeout, context);
+        return new SimpleResponse<>(response, fileClient);
     }
 
     /**

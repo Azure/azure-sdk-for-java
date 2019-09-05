@@ -30,6 +30,7 @@ import com.azure.storage.file.models.ListSharesIncludeType;
 import com.azure.storage.file.models.ListSharesOptions;
 import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.StorageException;
+import java.time.Duration;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -128,7 +129,7 @@ public final class FileServiceAsyncClient {
      * @return {@link ShareItem Shares} in the storage account without their metadata or snapshots
      */
     public PagedFlux<ShareItem> listShares() {
-        return listShares(null);
+        return listShares(null, null);
     }
 
     /**
@@ -157,10 +158,11 @@ public final class FileServiceAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-shares">Azure Docs</a>.</p>
      *
      * @param options Options for listing shares
+     * @param timeout An optional timeout to be applied to the network asynchronous operations.
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
-    public PagedFlux<ShareItem> listShares(ListSharesOptions options) {
-        return listShares(null, options);
+    public PagedFlux<ShareItem> listShares(ListSharesOptions options, Duration timeout) {
+        return listShares(null, options, timeout);
     }
 
     /**
@@ -168,9 +170,10 @@ public final class FileServiceAsyncClient {
      *
      * @param marker Starting point to list the shares
      * @param options Options for listing shares
+     * @param timeout An optional timeout to be applied to the network asynchronous operations.
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
-    private PagedFlux<ShareItem> listShares(String marker, ListSharesOptions options) {
+    private PagedFlux<ShareItem> listShares(String marker, ListSharesOptions options, Duration timeout) {
         final String prefix = (options != null) ? options.prefix() : null;
         final Integer maxResults = (options != null) ? options.maxResults() : null;
         List<ListSharesIncludeType> include = new ArrayList<>();
@@ -186,14 +189,14 @@ public final class FileServiceAsyncClient {
         }
 
         Function<String, Mono<PagedResponse<ShareItem>>> retriever =
-            nextMarker -> postProcessResponse(this.azureFileStorageClient.services()
-                .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include, null, Context.NONE))
+            nextMarker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
+                .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include, null, Context.NONE), timeout)
             .map(response -> new PagedResponseBase<>(response.request(),
                 response.statusCode(),
                 response.headers(),
                 response.value().shareItems(),
                 response.value().nextMarker(),
-                response.deserializedHeaders()));
+                response.deserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(marker), retriever);
     }
