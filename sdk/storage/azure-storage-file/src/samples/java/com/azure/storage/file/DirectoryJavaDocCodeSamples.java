@@ -105,11 +105,11 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void createWithResponse() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.createWithResponse#map-Context
+        // BEGIN: com.azure.storage.file.directoryClient.createWithResponse#map-duration-ontext
         Response<DirectoryInfo> response = directoryClient.createWithResponse(
             Collections.singletonMap("directory", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Completed creating the directory with status code: " + response.statusCode());
-        // END: com.azure.storage.file.directoryClient.createWithResponse#map-Context
+        // END: com.azure.storage.file.directoryClient.createWithResponse#map-duration-context
     }
 
     /**
@@ -129,11 +129,11 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void createSubDirectoryMaxOverload() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-map-Context
+        // BEGIN: com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-map-duration-context
         Response<DirectoryClient> response = directoryClient.createSubDirectoryWithResponse("subdir",
             Collections.singletonMap("directory", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Creating the sub directory completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-map-Context
+        // END: com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-map-duration-context
     }
 
     /**
@@ -153,13 +153,13 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void createFileMaxOverload() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-map-Context
+        // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-map-duration-context
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
         Response<FileClient> response = directoryClient.createFileWithResponse("myFile", 1024,
             httpHeaders, Collections.singletonMap("directory", "metadata"), Duration.ofSeconds(1),
             new Context(key1, value1));
         System.out.println("Completed creating the file with status code: " + response.statusCode());
-        // END: com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-map-Context
+        // END: com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-map-duration-context
     }
 
     /**
@@ -180,12 +180,12 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void listDirectoriesAndFilesMaxOverload() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer
+        // BEGIN: com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer-duration
         directoryClient.listFilesAndDirectories("subdir", 10, Duration.ofSeconds(1)).forEach(
             fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
                 fileRef.isDirectory(), fileRef.name())
         );
-        // END: com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer
+        // END: com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer-duration
     }
 
     /**
@@ -193,10 +193,10 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void deleteFile() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.DirectoryClient.deleteFileWithResponse#String-Context
+        // BEGIN: com.azure.storage.file.DirectoryClient.deleteFile#string
         directoryClient.deleteFile("myfile");
         System.out.println("Completed deleting the file.");
-        // END: com.azure.storage.file.DirectoryClient.deleteFileWithResponse#String-Context
+        // END: com.azure.storage.file.DirectoryClient.deleteFile#string
     }
 
     /**
@@ -204,11 +204,11 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void deleteFileWithResponse() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.deleteFileWithResponse#string-Context
+        // BEGIN: com.azure.storage.file.DirectoryClient.deleteFileWithResponse#string--duration-context
         VoidResponse response = directoryClient.deleteFileWithResponse("myfile",
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Completed deleting the file with status code: " + response.statusCode());
-        // END: com.azure.storage.file.directoryClient.deleteFileWithResponse#string-Context
+        // END: com.azure.storage.file.DirectoryClient.deleteFileWithResponse#string--duration-context
     }
 
     /**
@@ -227,11 +227,11 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void deleteSubDirectoryWithResponse() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.deleteSubDirectoryWithResponse#string-Context
+        // BEGIN: com.azure.storage.file.directoryClient.deleteSubDirectoryWithResponse#string-duration-context
         VoidResponse response = directoryClient.deleteSubDirectoryWithResponse("mysubdirectory",
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Completed deleting the subdirectory with status code: " + response.statusCode());
-        // END: com.azure.storage.file.directoryClient.deleteSubDirectoryWithResponse#string-Context
+        // END: com.azure.storage.file.directoryClient.deleteSubDirectoryWithResponse#string-duration-context
     }
 
     /**
@@ -250,10 +250,10 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void deleteWithResponse() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.DirectoryClient.deleteWithResponse#Context
+        // BEGIN: com.azure.storage.file.DirectoryClient.deleteWithResponse#duration-context
         VoidResponse response = directoryClient.deleteWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Completed deleting the file with status code: " + response.statusCode());
-        // END: com.azure.storage.file.DirectoryClient.deleteWithResponse#Context
+        // END: com.azure.storage.file.DirectoryClient.deleteWithResponse#duration-context
     }
 
     /**
@@ -272,11 +272,11 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void getPropertiesWithResponse() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.getPropertiesWithResponse#Context
+        // BEGIN: com.azure.storage.file.directoryClient.getPropertiesWithResponse#duration-context
         Response<DirectoryProperties> response = directoryClient.getPropertiesWithResponse(
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Directory latest modified date is %s.", response.value().lastModified());
-        // END: com.azure.storage.file.directoryClient.getPropertiesWithResponse#Context
+        // END: com.azure.storage.file.directoryClient.getPropertiesWithResponse#duration-context
     }
 
     /**
@@ -296,12 +296,12 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void setMetadataWithResponse() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.setMetadataWithResponse#map-Context
+        // BEGIN: com.azure.storage.file.directoryClient.setMetadataWithResponse#map-duration-context
         Response<DirectorySetMetadataInfo> response =
             directoryClient.setMetadataWithResponse(Collections.singletonMap("directory", "updatedMetadata"),
                 Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting the directory metadata completed with updated etag %d", response.statusCode());
-        // END: com.azure.storage.file.directoryClient.setMetadataWithResponse#map-Context
+        // END: com.azure.storage.file.directoryClient.setMetadataWithResponse#map-duration-context
     }
 
     /**
@@ -320,11 +320,11 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void clearMetadata() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.DirectoryClient.setMetadataWithResponse#Map-Context.clearMetadata
+        // BEGIN: com.azure.storage.file.DirectoryClient.setMetadataWithResponse#map-duration-context.clearMetadata
         Response<DirectorySetMetadataInfo> response = directoryClient.setMetadataWithResponse(null,
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Directory latest modified date is %s.", response.statusCode());
-        // END: com.azure.storage.file.DirectoryClient.setMetadataWithResponse#Map-Context.clearMetadata
+        // END: com.azure.storage.file.DirectoryClient.setMetadataWithResponse#map-duration-context.clearMetadata
     }
 
     /**
@@ -332,10 +332,10 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void listHandles() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.listHandles#Integer-boolean
+        // BEGIN: com.azure.storage.file.directoryClient.listHandles#Integer-boolean-duration
         Iterable<HandleItem> result = directoryClient.listHandles(10, true, Duration.ofSeconds(1));
         System.out.printf("Get handles completed with handle id %s", result.iterator().next().handleId());
-        // END: com.azure.storage.file.directoryClient.listHandles#Integer-boolean
+        // END: com.azure.storage.file.directoryClient.listHandles#Integer-boolean-duration
     }
 
     /**

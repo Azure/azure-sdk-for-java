@@ -181,14 +181,14 @@ public class DirectoryAsyncJavaDocCodeSamples {
      */
     public void listDirectoriesAndFilesAsyncMaxOverload() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories#string-integer
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories#string-integer-duration
         directoryAsyncClient.listFilesAndDirectories("subdir", 10, Duration.ofSeconds(1)).subscribe(
             fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
                 fileRef.isDirectory(), fileRef.name()),
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed listing the directories and files.")
         );
-        // END: com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories#string-integer
+        // END: com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories#string-integer-duration
     }
 
     /**
@@ -349,11 +349,11 @@ public class DirectoryAsyncJavaDocCodeSamples {
      */
     public void listHandlesAsync() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean-duration
         directoryAsyncClient.listHandles(10, true, Duration.ofSeconds(1))
             .subscribe(handleItem -> System.out.printf("Get handles completed with handle id %s",
                 handleItem.handleId()));
-        // END: com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean
+        // END: com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean-duration
     }
 
     /**

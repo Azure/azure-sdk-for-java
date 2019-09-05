@@ -352,7 +352,7 @@ public class DirectoryAsyncClient {
      *
      * <p>List all sub-directories with "subdir" prefix and return 10 results in the account</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories#string-integer}
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories#string-integer-duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files">Azure Docs</a>.</p>
@@ -385,7 +385,7 @@ public class DirectoryAsyncClient {
      *
      * <p>Get 10 handles with recursive call.</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean}
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean-duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>

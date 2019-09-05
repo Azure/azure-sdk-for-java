@@ -96,7 +96,7 @@ public class FileClient {
      *
      * <p>Create the file with length of 1024 bytes, some headers and metadata.</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.createWithResponse#long-filehttpheaders-map-Context}
+     * {@codesnippet com.azure.storage.file.fileClient.createWithResponse#long-filehttpheaders-map-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -144,7 +144,7 @@ public class FileClient {
      *
      * <p>Copy file from source getDirectoryUrl to the {@code resourcePath} </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.startCopyWithResponse#string-map-Context}
+     * {@codesnippet com.azure.storage.file.fileClient.startCopyWithResponse#string-map-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-file">Azure Docs</a>.</p>
@@ -187,7 +187,7 @@ public class FileClient {
      *
      * <p>Abort copy file from copy id("someCopyId") </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.abortCopyWithResponse#string-Context}
+     * {@codesnippet com.azure.storage.file.fileClient.abortCopyWithResponse#string-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-file">Azure Docs</a>.</p>

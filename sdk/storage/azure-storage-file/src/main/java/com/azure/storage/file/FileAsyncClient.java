@@ -848,7 +848,7 @@ public class FileAsyncClient {
      *
      * <p>List all ranges within the file range from 1KB to 2KB.</p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.listRanges#filerange}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.listRanges#filerange-duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
@@ -897,7 +897,7 @@ public class FileAsyncClient {
      *
      * <p>List 10 handles for the file client.</p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.listHandles#integer}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.listHandles#integer-duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>

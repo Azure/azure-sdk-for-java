@@ -529,11 +529,11 @@ public class FileAsyncJavaDocCodeSamples {
      */
     public void listRangesAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.listRanges#filerange
+        // BEGIN: com.azure.storage.file.fileAsyncClient.listRanges#filerange-duration
         fileAsyncClient.listRanges(new FileRange(1024, 2048L), Duration.ofSeconds(1))
             .subscribe(result -> System.out.printf("List ranges completed with start: %d, end: %d",
                 result.start(), result.end()));
-        // END: com.azure.storage.file.fileAsyncClient.listRanges#filerange
+        // END: com.azure.storage.file.fileAsyncClient.listRanges#filerange-duration
     }
 
     /**
@@ -552,10 +552,10 @@ public class FileAsyncJavaDocCodeSamples {
      */
     public void listHandlesAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.listHandles#integer
+        // BEGIN: com.azure.storage.file.fileAsyncClient.listHandles#integer-duration
         fileAsyncClient.listHandles(10, Duration.ofSeconds(1))
             .subscribe(result -> System.out.printf("List handles completed with handle id %s", result.handleId()));
-        // END: com.azure.storage.file.fileAsyncClient.listHandles#integer
+        // END: com.azure.storage.file.fileAsyncClient.listHandles#integer-duration
     }
 
     /**

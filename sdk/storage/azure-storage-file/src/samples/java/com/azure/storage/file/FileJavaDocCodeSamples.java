@@ -118,12 +118,12 @@ public class FileJavaDocCodeSamples {
      */
     public void createWithResponse() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.createWithResponse#long-filehttpheaders-map-Context
+        // BEGIN: com.azure.storage.file.fileClient.createWithResponse#long-filehttpheaders-map-duration-context
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
         Response<FileInfo> response = fileClient.createWithResponse(1024, httpHeaders,
             Collections.singletonMap("file", "updatedMetadata"), Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Creating the file completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.fileClient.createWithResponse#long-filehttpheaders-map-Context
+        // END: com.azure.storage.file.fileClient.createWithResponse#long-filehttpheaders-map-duration-context
     }
 
     /**
@@ -144,12 +144,12 @@ public class FileJavaDocCodeSamples {
      */
     public void startCopyWithResponse() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.startCopyWithResponse#string-map-Context
+        // BEGIN: com.azure.storage.file.fileClient.startCopyWithResponse#string-map-duration-context
         Response<FileCopyInfo> response = fileClient.startCopyWithResponse(
             "https://{accountName}.file.core.windows.net?{SASToken}",
             Collections.singletonMap("file", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete copying the file with copy Id: " + response.value().copyId());
-        // END: com.azure.storage.file.fileClient.startCopyWithResponse#string-map-Context
+        // END: com.azure.storage.file.fileClient.startCopyWithResponse#string-map-duration-context
     }
 
     /**
@@ -168,11 +168,11 @@ public class FileJavaDocCodeSamples {
      */
     public void abortCopyWithResponse() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.abortCopyWithResponse#string-Context
+        // BEGIN: com.azure.storage.file.fileClient.abortCopyWithResponse#string-duration-context
         VoidResponse response = fileClient.abortCopyWithResponse("someCopyId", Duration.ofSeconds(1),
             new Context(key1, value1));
         System.out.printf("Abort copying the file completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.fileClient.abortCopyWithResponse#string-Context
+        // END: com.azure.storage.file.fileClient.abortCopyWithResponse#string-duration-context
     }
 
     /**
