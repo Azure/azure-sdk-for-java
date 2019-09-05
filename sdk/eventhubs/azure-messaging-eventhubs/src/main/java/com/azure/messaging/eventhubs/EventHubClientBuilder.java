@@ -21,7 +21,6 @@ import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.implementation.ReactorProvider;
-import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ProxyAuthenticationType;
 import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import reactor.core.scheduler.Scheduler;
@@ -65,19 +64,10 @@ import java.util.ServiceLoader;
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclient.instantiation}
  *
- * <p>
- * <strong>Creating an {@link EventProcessor} using Event Hub instance connection string</strong>
- * </p>
- *
- * {@codesnippet com.azure.messaging.eventhubs.eventprocessor.instantiation}
- *
  * @see EventHubClient
  * @see EventHubAsyncClient
- * @see EventProcessor
- * @see <a href="https://docs.microsoft.com/azure/event-hubs/event-hubs-get-connection-string">See 'Event Hubs get
- *     connection string' to information on obtaining the FQDN for Event Hubs.</a>
  */
-@ServiceClientBuilder(serviceClients = {EventHubAsyncClient.class, EventHubClient.class, EventProcessor.class})
+@ServiceClientBuilder(serviceClients = {EventHubAsyncClient.class, EventHubClient.class})
 public class EventHubClientBuilder {
     private final ClientLogger logger = new ClientLogger(EventHubClientBuilder.class);
 
@@ -93,10 +83,6 @@ public class EventHubClientBuilder {
     private TransportType transport;
     private String host;
     private String eventHubName;
-    private EventPosition initialEventPosition;
-    private PartitionProcessorFactory partitionProcessorFactory;
-    private String consumerGroupName;
-    private PartitionManager partitionManager;
 
     /**
      * Creates a new instance with the default transport {@link TransportType#AMQP}.
@@ -354,88 +340,6 @@ public class EventHubClientBuilder {
         final EventHubAsyncClient client = new EventHubAsyncClient(connectionOptions, provider, handlerProvider, tracerProvider);
 
         return new EventHubClient(client, connectionOptions);
-    }
-
-    /**
-     * This property must be set for building an {@link EventProcessor}.
-     *
-     * Sets the consumer group name from which the {@link EventProcessor} should consume events from.
-     *
-     * @param consumerGroupName The consumer group name this {@link EventProcessor} should consume events from.
-     * @return The updated {@link EventHubClientBuilder} object.
-     */
-    public EventHubClientBuilder consumerGroupName(String consumerGroupName) {
-        this.consumerGroupName = consumerGroupName;
-        return this;
-    }
-
-    /**
-     * This property can be optionally set when building an {@link EventProcessor}.
-     *
-     * Sets the initial event position. If this property is not set and if checkpoint for a partition doesn't exist,
-     * {@link EventPosition#earliest()} will be used as the initial event position to start consuming events.
-     *
-     * @param initialEventPosition The initial event position.
-     * @return The updated {@link EventHubClientBuilder} object.
-     */
-    public EventHubClientBuilder initialEventPosition(EventPosition initialEventPosition) {
-        this.initialEventPosition = initialEventPosition;
-        return this;
-    }
-
-    /**
-     * This property must be set when building an {@link EventProcessor}.
-     *
-     * Sets the {@link PartitionManager} the {@link EventProcessor} will use for storing partition ownership and
-     * checkpoint information.
-     *
-     * @param partitionManager Implementation of {@link PartitionManager}.
-     * @return The updated {@link EventHubClientBuilder} object.
-     */
-    public EventHubClientBuilder partitionManager(PartitionManager partitionManager) {
-        // If this is not set, look for classes implementing PartitionManager interface
-        // in the classpath and use it automatically. (To be implemented)
-        this.partitionManager = partitionManager;
-        return this;
-    }
-
-    /**
-     * This property must be set when building an {@link EventProcessor}.
-     *
-     * Sets the partition processor factory for creating new instance(s) of {@link PartitionProcessor}.
-     *
-     * @param partitionProcessorFactory The factory that creates new processor for each partition.
-     * @return The updated {@link EventHubClientBuilder} object.
-     */
-    public EventHubClientBuilder partitionProcessorFactory(PartitionProcessorFactory partitionProcessorFactory) {
-        this.partitionProcessorFactory = partitionProcessorFactory;
-        return this;
-    }
-
-    /**
-     * This will create a new {@link EventProcessor} configured with the options set in this builder. Each call to this
-     * method will return a new instance of {@link EventProcessor}.
-     *
-     * <p>
-     * A new instance of {@link EventHubAsyncClient} will be created with configured options by calling the {@link
-     * #buildAsyncClient()} that will be used by the {@link EventProcessor}.
-     * </p>
-     *
-     * <p>
-     * If the {@link #initialEventPosition(EventPosition) initial event position} is not set, all partitions processed
-     * by this {@link EventProcessor} will start processing from {@link EventPosition#earliest() earliest} available
-     * event in the respective partitions.
-     * </p>
-     *
-     * @return A new instance of {@link EventProcessor}.
-     */
-    public EventProcessor buildEventProcessor() {
-        EventPosition initialEventPosition =
-            this.initialEventPosition == null ? EventPosition.earliest()
-                : this.initialEventPosition;
-        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
-        return new EventProcessor(buildAsyncClient(), consumerGroupName, partitionProcessorFactory,
-            initialEventPosition, partitionManager, tracerProvider);
     }
 
     private ConnectionOptions getConnectionOptions() {

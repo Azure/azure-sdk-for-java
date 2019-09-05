@@ -9,29 +9,26 @@ import com.azure.messaging.eventhubs.implementation.PartitionBasedLoadBalancer;
 import com.azure.messaging.eventhubs.implementation.PartitionPumpManager;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import java.util.Objects;
+import java.util.ServiceLoader;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
 import reactor.core.Disposable;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 /**
- * This is the starting point for event processor.
- * <p>
- * Event Processor-based application consists of one or more instances of {@link EventProcessor} which have been
- * configured to consume events from the same Event Hub and consumer group. Event Processors balance the
- * workload across different instances and track progress when events are processed.
- * </p>
+ * Event Processor provides a convenient mechanism to consume events from all partitions of an Event Hub in the context
+ * of a consumer group. Event Processor-based application consists of one or more instances of EventProcessor(s) which
+ * are set up to consume events from the same Event Hub, consumer group to balance the workload across different
+ * instances and track progress when events are processed. Based on the number of instances running, each Event
+ * Processor may own zero or more partitions to balance the workload among all the instances.
  *
- * <p><strong>Creating an {@link EventProcessor} instance using Event Hub instance connection
- * string</strong></p>
+ * <p>To create an instance of EventProcessor, use the fluent {@link EventProcessorBuilder}.</p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventprocessor.instantiation}
- *
- * @see EventHubAsyncClient
- * @see EventHubClientBuilder
+ * @see EventProcessorBuilder
  */
 public class EventProcessor {
 
@@ -43,7 +40,7 @@ public class EventProcessor {
     private final AtomicBoolean started = new AtomicBoolean(false);
     private final PartitionPumpManager partitionPumpManager;
     private final PartitionBasedLoadBalancer partitionBasedLoadBalancer;
-    private final TracerProvider tracerProvider;
+    private final PartitionManager partitionManager;
 
     private Disposable runner;
     private Scheduler scheduler;
@@ -52,36 +49,71 @@ public class EventProcessor {
      * Package-private constructor. Use {@link EventHubClientBuilder} to create an instance.
      *
      * @param eventHubAsyncClient The {@link EventHubAsyncClient}.
-     * @param consumerGroupName The consumer group name used in this event processor to consumer events.
+     * @param consumerGroup The consumer group name used in this event processor to consumer events.
      * @param partitionProcessorFactory The factory to create new partition processor(s).
-     * @param initialEventPosition The event position to start processing events from a partition if no checkpoint is
-     * available for the partition.
-     * @param partitionManager The partition manager this Event Processor will use for reading and writing partition
-     * ownership and checkpoint information.
+     * @param initialEventPosition Initial event position to start consuming events.
+     * @param partitionManager The partition manager used for reading and updating partition ownership and checkpoint
+     * information.
      * @param tracerProvider The tracer implementation.
      */
-    EventProcessor(EventHubAsyncClient eventHubAsyncClient, String consumerGroupName,
-        PartitionProcessorFactory partitionProcessorFactory, EventPosition initialEventPosition,
+    EventProcessor(EventHubAsyncClient eventHubAsyncClient, String consumerGroup,
+        Supplier<PartitionProcessor> partitionProcessorFactory, EventPosition initialEventPosition,
         PartitionManager partitionManager, TracerProvider tracerProvider) {
+
         Objects.requireNonNull(eventHubAsyncClient,
             EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENTHUB_ASYNC_CLIENT_CANNOT_NULL));
-        Objects.requireNonNull(consumerGroupName,
+        Objects.requireNonNull(consumerGroup,
             EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONSUMER_GROUP_NAME_CANNOT_NULL));
         Objects.requireNonNull(partitionProcessorFactory,
             EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_PROCESSOR_FACTORY_CANNOT_NULL));
         Objects.requireNonNull(initialEventPosition,
             EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.INITIAL_EVENT_POSITION_CANNOT_NULL));
-        Objects.requireNonNull(partitionManager,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_MANAGER_CANNOT_NULL));
 
+        this.partitionManager = partitionManager == null ? findPartitionManager() : partitionManager;
         this.identifier = UUID.randomUUID().toString();
         logger.info("The instance ID for this event processors is {}", this.identifier);
         this.partitionPumpManager = new PartitionPumpManager(partitionManager, partitionProcessorFactory,
             initialEventPosition, eventHubAsyncClient, tracerProvider);
         this.partitionBasedLoadBalancer =
-            new PartitionBasedLoadBalancer(partitionManager, eventHubAsyncClient, eventHubAsyncClient.eventHubName(),
-                consumerGroupName, identifier, TimeUnit.MINUTES.toSeconds(5), partitionPumpManager);
-        this.tracerProvider = tracerProvider;
+            new PartitionBasedLoadBalancer(this.partitionManager, eventHubAsyncClient,
+                eventHubAsyncClient.eventHubName(),
+                consumerGroup, identifier, TimeUnit.MINUTES.toSeconds(1), partitionPumpManager);
+    }
+
+    /**
+     * Looks for a user-defined PartitionManager implementation in classpath.
+     * <p>
+     * If there are more than one user-defined PartitionManagers, this method will throw an exception. User has to
+     * specify a PartitionManager explicitly in {@link EventProcessorBuilder}.
+     * </p>
+     *
+     * @return A {@link PartitionManager} implementation found in classpath, or {@link InMemoryPartitionManager}
+     * otherwise.
+     */
+    private PartitionManager findPartitionManager() {
+        ServiceLoader<PartitionManager> partitionManagers = ServiceLoader.load(PartitionManager.class);
+        PartitionManager partitionManager = null;
+
+        for (PartitionManager partitionManagerInClassPath : partitionManagers) {
+            if (partitionManager != null) {
+                // If more than one PartitionManager is found in classpath, throw an exception
+                // User has to specify which one to use.
+                throw logger.logExceptionAsWarning(
+                    new IllegalStateException("Found multiple PartitionManagers in classpath. Specify one in "
+                        + "EventProcessorOptions"));
+            }
+            if (!(partitionManagerInClassPath instanceof InMemoryPartitionManager)) {
+                // Don't consider InMemoryPartitionManager.
+                partitionManager = partitionManagerInClassPath;
+            }
+        }
+
+        if (partitionManager == null) {
+            // No PartitionManagers found in classpath.
+            throw logger.logExceptionAsWarning(
+                new IllegalStateException("No PartitionManager implementation found in classpath."));
+        }
+        return partitionManager;
     }
 
     /**

@@ -99,7 +99,7 @@ public final class SharesImpl {
         @Get("{shareName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<SharesGetPermissionResponse> getPermission(@HostParam("url") String url, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+        Mono<SharesGetPermissionResponse> getPermission(@PathParam("shareName") String shareName, @HostParam("url") String url, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Put("{shareName}")
         @ExpectedResponses({200})
@@ -298,22 +298,24 @@ public final class SharesImpl {
     /**
      * Returns the permission (security descriptor) for a given key.
      *
+     * @param shareName The name of the target share.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharesGetPermissionResponse> getPermissionWithRestResponseAsync(Context context) {
+    public Mono<SharesGetPermissionResponse> getPermissionWithRestResponseAsync(String shareName, Context context) {
         final String filePermissionKey = null;
         final Integer timeout = null;
         final String restype = "share";
         final String comp = "filepermission";
-        return service.getPermission(this.client.getUrl(), filePermissionKey, timeout, this.client.getVersion(), restype, comp, context);
+        return service.getPermission(shareName, this.client.getUrl(), filePermissionKey, timeout, this.client.getVersion(), restype, comp, context);
     }
 
     /**
      * Returns the permission (security descriptor) for a given key.
      *
+     * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
@@ -321,10 +323,10 @@ public final class SharesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharesGetPermissionResponse> getPermissionWithRestResponseAsync(String filePermissionKey, Integer timeout, Context context) {
+    public Mono<SharesGetPermissionResponse> getPermissionWithRestResponseAsync(String shareName, String filePermissionKey, Integer timeout, Context context) {
         final String restype = "share";
         final String comp = "filepermission";
-        return service.getPermission(this.client.getUrl(), filePermissionKey, timeout, this.client.getVersion(), restype, comp, context);
+        return service.getPermission(shareName, this.client.getUrl(), filePermissionKey, timeout, this.client.getVersion(), restype, comp, context);
     }
 
     /**
