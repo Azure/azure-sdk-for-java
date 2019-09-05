@@ -1,0 +1,14 @@
+# directories
+**/bin/
+**/obj/
+**/out/
+
+# files
+.dockerignore
+Dockerfile*
+**/*.trx
+**/*.md
+**/*.ps1
+**/*.cmd
+**/*.sh
+
