@@ -275,7 +275,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
      */
     public void generateAccountSASAsync() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.queue.FileServiceAsyncClient.generateAccountSAS
+        // BEGIN: com.azure.storage.file.FileServiceAsyncClient.generateAccountSAS
         AccountSASService service = new AccountSASService()
             .blob(true)
             .file(true)
@@ -304,6 +304,6 @@ public class FileServiceAsyncJavaDocCodeSamples {
 
         String sas = fileServiceAsyncClient.generateAccountSAS(service, resourceType, permission, expiryTime, startTime,
             version, ipRange, sasProtocol);
-        // END: com.azure.storage.queue.FileServiceAsyncClient.generateAccountSAS
+        // END: com.azure.storage.file.FileServiceAsyncClient.generateAccountSAS
     }
 }
