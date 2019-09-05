@@ -1,0 +1,100 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/listqueuesqueueserviceasyncapitestslistqueues1c6353275cf0",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "e22e285a-b2ae-45b9-9261-5648ee1bf1ee"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "e619a99c-c003-0002-577e-63328c000000",
+      "Date" : "Thu, 05 Sep 2019 00:14:33 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/listqueuesqueueserviceasyncapitestslistqueues1c6353275cf1",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "62ffe922-0676-495b-8867-c4c10c370a3c"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "e619a9a0-c003-0002-5a7e-63328c000000",
+      "Date" : "Thu, 05 Sep 2019 00:14:33 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/listqueuesqueueserviceasyncapitestslistqueues1c6353275cf2",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "ed280bc1-9d00-427a-ba09-f80e5e8aac46"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "e619a9a8-c003-0002-5f7e-63328c000000",
+      "Date" : "Thu, 05 Sep 2019 00:14:33 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net?prefix=listqueues&maxresults=2&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "a9b96cd3-7f56-4aae-bc94-312f00c03546"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "e619a9af-c003-0002-657e-63328c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.queue.core.windows.net/\"><Prefix>listqueues</Prefix><MaxResults>2</MaxResults><Queues><Queue><Name>listqueuesqueueserviceasyncapitestslistqueues1c6353275cf0</Name></Queue><Queue><Name>listqueuesqueueserviceasyncapitestslistqueues1c6353275cf1</Name></Queue></Queues><NextMarker>/azstoragesdkaccount/listqueuesqueueserviceasyncapitestslistqueues1c6353275cf2</NextMarker></EnumerationResults>",
+      "Date" : "Thu, 05 Sep 2019 00:14:33 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net?prefix=listqueues&marker=/azstoragesdkaccount/listqueuesqueueserviceasyncapitestslistqueues1c6353275cf2&maxresults=2&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "6e9d682f-3fc9-4612-9d47-efb2c3b24105"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "e619a9b4-c003-0002-6a7e-63328c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.queue.core.windows.net/\"><Prefix>listqueues</Prefix><Marker>/azstoragesdkaccount/listqueuesqueueserviceasyncapitestslistqueues1c6353275cf2</Marker><MaxResults>2</MaxResults><Queues><Queue><Name>listqueuesqueueserviceasyncapitestslistqueues1c6353275cf2</Name></Queue></Queues><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 05 Sep 2019 00:14:33 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "listqueuesqueueserviceasyncapitestslistqueues1c6353275cf" ]
+}

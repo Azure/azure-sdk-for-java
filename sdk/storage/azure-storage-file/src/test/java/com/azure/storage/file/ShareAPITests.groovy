@@ -54,13 +54,13 @@ class ShareAPITests extends APISpec {
 
     def "Create share"() {
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryShareClient.createWithResponse(null, null, null), 201)
+        assertResponseStatusCode(primaryShareClient.createWithResponse(null, null, null), 201)
     }
 
     @Unroll
     def "Create share with args"() {
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryShareClient.createWithResponse(metadata, quota, null), 201)
+        assertResponseStatusCode(primaryShareClient.createWithResponse(metadata, quota, null), 201)
 
         where:
         metadata     | quota
@@ -137,7 +137,7 @@ class ShareAPITests extends APISpec {
         primaryShareClient.create()
 
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryShareClient.deleteWithResponse(null), 202)
+        assertResponseStatusCode(primaryShareClient.deleteWithResponse(null), 202)
     }
 
     def "Delete share error"() {
@@ -157,7 +157,7 @@ class ShareAPITests extends APISpec {
         def getPropertiesResponse = primaryShareClient.getPropertiesWithResponse(null)
 
         then:
-        FileTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
+        assertResponseStatusCode(getPropertiesResponse, 200)
         testMetadata == getPropertiesResponse.value().metadata()
         getPropertiesResponse.value().quota() == 1
     }
@@ -182,7 +182,7 @@ class ShareAPITests extends APISpec {
 
         then:
         getQuotaBeforeResponse.quota() == 1
-        FileTestHelper.assertResponseStatusCode(setQuotaResponse, 200)
+        assertResponseStatusCode(setQuotaResponse, 200)
         getQuotaAfterResponse.quota() == 2
     }
 
@@ -207,7 +207,7 @@ class ShareAPITests extends APISpec {
 
         then:
         testMetadata == getMetadataBeforeResponse.metadata()
-        FileTestHelper.assertResponseStatusCode(setMetadataResponse, 200)
+        assertResponseStatusCode(setMetadataResponse, 200)
         metadataAfterSet == getMetadataAfterResponse.metadata()
     }
 
@@ -225,7 +225,7 @@ class ShareAPITests extends APISpec {
         primaryShareClient.create()
 
         expect:
-        FileTestHelper.assertResponseStatusCode(
+        assertResponseStatusCode(
             primaryShareClient.createDirectoryWithResponse("testCreateDirectory", null, null), 201)
     }
 
@@ -246,7 +246,7 @@ class ShareAPITests extends APISpec {
         primaryShareClient.create()
 
        expect:
-        FileTestHelper.assertResponseStatusCode(
+        assertResponseStatusCode(
             primaryShareClient.createDirectoryWithResponse("testCreateDirectory", testMetadata, null), 201)
     }
 
@@ -267,7 +267,7 @@ class ShareAPITests extends APISpec {
         primaryShareClient.create()
 
         expect:
-        FileTestHelper.assertResponseStatusCode(
+        assertResponseStatusCode(
             primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, null, null), 201)
     }
 
@@ -297,7 +297,7 @@ class ShareAPITests extends APISpec {
             .fileContentType("txt")
 
         expect:
-        FileTestHelper.assertResponseStatusCode(
+        assertResponseStatusCode(
             primaryShareClient.createFileWithResponse("testCreateFile", 1024, httpHeaders, testMetadata, null), 201)
     }
 
@@ -328,7 +328,7 @@ class ShareAPITests extends APISpec {
         primaryShareClient.createDirectory(directoryName)
 
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryShareClient.deleteDirectoryWithResponse(directoryName, null), 202)
+        assertResponseStatusCode(primaryShareClient.deleteDirectoryWithResponse(directoryName, null), 202)
     }
 
     def "Delete directory error"() {
@@ -350,7 +350,7 @@ class ShareAPITests extends APISpec {
         primaryShareClient.createFile(fileName, 1024)
 
         expect:
-        FileTestHelper.assertResponseStatusCode(
+        assertResponseStatusCode(
             primaryShareClient.deleteFileWithResponse(fileName, null), 202)
     }
 

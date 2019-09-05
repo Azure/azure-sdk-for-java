@@ -1,0 +1,43 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/enqueuetimetolivequeueapitestsenqueuetimetolive77972503b2",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "ee6a1f79-a100-4820-84fe-2e04b11fface"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "22918973-8003-0101-157e-6377de000000",
+      "Date" : "Thu, 05 Sep 2019 00:14:09 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/enqueuetimetolivequeueapitestsenqueuetimetolive77972503b2/messages?visibilitytimeout=0&messagettl=2",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "762582ce-9ef5-49f6-90ea-e92e3c46ea06",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "2291897b-8003-0101-1c7e-6377de000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>8c3ff0f3-a9ca-438d-8202-7e0be85ed397</MessageId><InsertionTime>Thu, 05 Sep 2019 00:14:10 GMT</InsertionTime><ExpirationTime>Thu, 05 Sep 2019 00:14:12 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAA+l87135j1QE=</PopReceipt><TimeNextVisible>Thu, 05 Sep 2019 00:14:10 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Thu, 05 Sep 2019 00:14:09 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "enqueuetimetolivequeueapitestsenqueuetimetolive77972503b2" ]
+}

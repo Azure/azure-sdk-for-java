@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/createqueuewithinvalidmetadata06551fa663f21147b",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "94dff2aa-f4c2-4df0-9fe7-b64c76aba94b"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidMetadata",
+      "retry-after" : "0",
+      "Content-Length" : "260",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "22919890-8003-0101-5a7e-6377de000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:22919890-8003-0101-5a7e-6377de000000\nTime:2019-09-05T00:14:30.0681011Z</Message></Error>",
+      "Date" : "Thu, 05 Sep 2019 00:14:29 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "createqueuewithinvalidmetadata06551fa663f21147b" ]
+}

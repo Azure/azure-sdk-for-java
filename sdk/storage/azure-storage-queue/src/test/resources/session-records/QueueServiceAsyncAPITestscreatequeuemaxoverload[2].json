@@ -1,0 +1,43 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/createqueuemaxoverload90470578f1f1472f24d5f",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "08b820f5-de34-40a5-8902-e9b4104b5225"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "e619a8f4-c003-0002-407e-63328c000000",
+      "Date" : "Thu, 05 Sep 2019 00:14:32 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/createqueuemaxoverload90470578f1f1472f24d5f/messages",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "f8b36d71-2cb1-4968-803f-609b7570da4f",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "e619a902-c003-0002-4c7e-63328c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>1c96a9d8-cc6d-4251-9a35-af740b56185e</MessageId><InsertionTime>Thu, 05 Sep 2019 00:14:32 GMT</InsertionTime><ExpirationTime>Thu, 12 Sep 2019 00:14:32 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAi19t5H5j1QE=</PopReceipt><TimeNextVisible>Thu, 05 Sep 2019 00:14:32 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Thu, 05 Sep 2019 00:14:32 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "createqueuemaxoverload90470578f1f1472f24d5f" ]
+}

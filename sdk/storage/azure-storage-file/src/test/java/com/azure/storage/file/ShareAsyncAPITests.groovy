@@ -56,7 +56,7 @@ class ShareAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryShareAsyncClient.createWithResponse(null, null))
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 201)
+                assert assertResponseStatusCode(it, 201)
             }.verifyComplete()
     }
 
@@ -65,7 +65,7 @@ class ShareAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryShareAsyncClient.createWithResponse(metadata, quota))
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 201)
+                assert assertResponseStatusCode(it, 201)
             }.verifyComplete()
 
         where:
@@ -103,7 +103,7 @@ class ShareAsyncAPITests extends APISpec {
 
         then:
         createSnapshotVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 201)
+            assert assertResponseStatusCode(it, 201)
             def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
                 .snapshot(it.value().snapshot()).buildClient()
             assert Objects.equals(it.value().snapshot(),
@@ -131,7 +131,7 @@ class ShareAsyncAPITests extends APISpec {
 
         then:
         createSnapshotVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 201)
+            assert assertResponseStatusCode(it, 201)
             def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
                 .snapshot(it.value().snapshot()).buildClient()
             assert Objects.equals(it.value().snapshot(),
@@ -156,7 +156,7 @@ class ShareAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryShareAsyncClient.deleteWithResponse())
             .assertNext {
-                FileTestHelper.assertResponseStatusCode(it, 201)
+                assertResponseStatusCode(it, 201)
             }
     }
 
@@ -177,7 +177,7 @@ class ShareAsyncAPITests extends APISpec {
 
         then:
         getPropertiesVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 200)
+            assert assertResponseStatusCode(it, 200)
             assert testMetadata == it.value().metadata()
             assert it.value().quota() == 1
         }.verifyComplete()
@@ -205,7 +205,7 @@ class ShareAsyncAPITests extends APISpec {
             assert it.quota() == 1
         }
         setQuotaVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 200)
+            assert assertResponseStatusCode(it, 200)
         }
         getQuotaAfterVerifier.assertNext {
             assert it.quota() == 2
@@ -235,7 +235,7 @@ class ShareAsyncAPITests extends APISpec {
             assert testMetadata == it.metadata()
         }
         setMetadataVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 200)
+            assert assertResponseStatusCode(it, 200)
         }
         getMetadataAfterVerifier.assertNext {
             assert metadataAfterSet == it.metadata()
@@ -257,7 +257,7 @@ class ShareAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryShareAsyncClient.createDirectoryWithResponse("testCreateDirectory", null))
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 201)
+                assert assertResponseStatusCode(it, 201)
             }.verifyComplete()
     }
 
@@ -281,7 +281,7 @@ class ShareAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryShareAsyncClient.createDirectoryWithResponse("testCreateDirectory", testMetadata))
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 201)
+                assert assertResponseStatusCode(it, 201)
             }.verifyComplete()
     }
 
@@ -305,7 +305,7 @@ class ShareAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null))
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 201)
+                assert assertResponseStatusCode(it, 201)
             }.verifyComplete()
     }
 
@@ -337,7 +337,7 @@ class ShareAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, httpHeaders, testMetadata))
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 201)
+                assert assertResponseStatusCode(it, 201)
             }.verifyComplete()
     }
 
@@ -372,7 +372,7 @@ class ShareAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryShareAsyncClient.deleteDirectoryWithResponse(directoryName))
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 202)
+                assert assertResponseStatusCode(it, 202)
             }.verifyComplete()
     }
 
@@ -398,7 +398,7 @@ class ShareAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryShareAsyncClient.deleteFileWithResponse(fileName))
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 202)
+                assert assertResponseStatusCode(it, 202)
             }.verifyComplete()
 
     }

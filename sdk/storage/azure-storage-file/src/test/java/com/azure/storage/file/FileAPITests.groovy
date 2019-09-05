@@ -54,7 +54,7 @@ class FileAPITests extends APISpec {
 
     def "Create file"() {
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryFileClient.createWithResponse(1024, null, null, null), 201)
+        assertResponseStatusCode(primaryFileClient.createWithResponse(1024, null, null, null), 201)
     }
 
     def "Create file error"() {
@@ -68,7 +68,7 @@ class FileAPITests extends APISpec {
 
     def "Create file with args"() {
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryFileClient.createWithResponse(1024, httpHeaders, testMetadata, null), 201)
+        assertResponseStatusCode(primaryFileClient.createWithResponse(1024, httpHeaders, testMetadata, null), 201)
     }
 
     @Unroll
@@ -98,8 +98,8 @@ class FileAPITests extends APISpec {
         def downloadResponse = primaryFileClient.downloadWithPropertiesWithResponse(null, null, null)
 
         then:
-        FileTestHelper.assertResponseStatusCode(uploadResponse, 201)
-        FileTestHelper.assertResponseStatusCode(downloadResponse, 200)
+        assertResponseStatusCode(uploadResponse, 201)
+        assertResponseStatusCode(downloadResponse, 200)
         downloadResponse.value().contentLength() == dataLength
 
         Arrays.equals(dataBytes, FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().body()).block())
@@ -120,8 +120,8 @@ class FileAPITests extends APISpec {
         def downloadResponse = primaryFileClient.downloadWithPropertiesWithResponse(new FileRange(1, dataLength), true, null)
 
         then:
-        FileTestHelper.assertResponseStatusCode(uploadResponse, 201)
-        FileTestHelper.assertResponseStatusCode(downloadResponse, 206)
+        assertResponseStatusCode(uploadResponse, 201)
+        assertResponseStatusCode(downloadResponse, 206)
         downloadResponse.value().contentLength() == dataLength
 
         Arrays.equals(dataBytes, FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().body()).block())
@@ -297,7 +297,7 @@ class FileAPITests extends APISpec {
         Response<FileCopyInfo> copyInfoResponse = primaryFileClient.startCopyWithResponse(sourceURL, null, null)
 
         then:
-        FileTestHelper.assertResponseStatusCode(copyInfoResponse, 202)
+        assertResponseStatusCode(copyInfoResponse, 202)
         copyInfoResponse.value().copyId() != null
     }
 
@@ -323,7 +323,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.createWithResponse(1024, null, null, null)
 
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryFileClient.deleteWithResponse(null), 202)
+        assertResponseStatusCode(primaryFileClient.deleteWithResponse(null), 202)
     }
 
     def "Delete file error"() {
@@ -343,7 +343,7 @@ class FileAPITests extends APISpec {
         def getPropertiesResponse = primaryFileClient.getPropertiesWithResponse(null)
 
         then:
-        FileTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
+        assertResponseStatusCode(getPropertiesResponse, 200)
         getPropertiesResponse.value().eTag() != null
         getPropertiesResponse.value().lastModified() != null
     }
@@ -363,7 +363,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.createWithResponse(1024, httpHeaders, testMetadata, null)
 
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryFileClient.setHttpHeadersWithResponse(512, httpHeaders, null), 200)
+        assertResponseStatusCode(primaryFileClient.setHttpHeadersWithResponse(512, httpHeaders, null), 200)
     }
 
     def "Set httpHeaders error"() {
@@ -390,7 +390,7 @@ class FileAPITests extends APISpec {
 
         then:
         testMetadata == getPropertiesBefore.metadata()
-        FileTestHelper.assertResponseStatusCode(setPropertiesResponse, 200)
+        assertResponseStatusCode(setPropertiesResponse, 200)
         updatedMetadata == getPropertiesAfter.metadata()
     }
 

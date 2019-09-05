@@ -1,0 +1,42 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/setinvalidmetaqueueapitestssetinvalidmeta20f97304ddb01",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "4bd563ad-4107-4db0-8277-77906a8a01dc"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "22918784-8003-0101-5c7e-6377de000000",
+      "Date" : "Thu, 05 Sep 2019 00:14:07 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/setinvalidmetaqueueapitestssetinvalidmeta20f97304ddb01?comp=metadata",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "17219f37-c90d-4b67-b9fa-4c1b3905f0dd"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "AuthenticationFailed",
+      "retry-after" : "0",
+      "Content-Length" : "795",
+      "StatusCode" : "403",
+      "x-ms-request-id" : "2291878e-8003-0101-657e-6377de000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:2291878e-8003-0101-657e-6377de000000\nTime:2019-09-05T00:14:08.2260025Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'FgqUrB8/lXQ7DvuNxKZ//W2se+ohU6vys0aoyUjhg4I=' is not the same as any computed signature. Server used following string to sign: 'PUT\n\n\n\n\n\nThu, 05 Sep 2019 00:14:08 GMT\n\n\n\n\n\nx-ms-client-request-id:17219f37-c90d-4b67-b9fa-4c1b3905f0dd\nx-ms-meta-invalidmeta:value\nx-ms-version:2018-03-28\n/azstoragesdkaccount/setinvalidmetaqueueapitestssetinvalidmeta20f97304ddb01\ncomp:metadata'.</AuthenticationErrorDetail></Error>",
+      "Date" : "Thu, 05 Sep 2019 00:14:07 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "setinvalidmetaqueueapitestssetinvalidmeta20f97304ddb01" ]
+}

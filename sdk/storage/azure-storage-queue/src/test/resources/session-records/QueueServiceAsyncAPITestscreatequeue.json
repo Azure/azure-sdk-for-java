@@ -1,0 +1,43 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/createqueuequeueserviceasyncapitestscreatequeue61c723405e",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "3bb62cc8-7886-47ed-90b9-2941b0fdbc91"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "e619a84c-c003-0002-2a7e-63328c000000",
+      "Date" : "Thu, 05 Sep 2019 00:14:31 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/createqueuequeueserviceasyncapitestscreatequeue61c723405e/messages",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "338345e4-017c-48bd-bcd4-28695688cdcb",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "e619a85a-c003-0002-347e-63328c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>a14d3020-9b81-41d3-953a-76442c5d3ccc</MessageId><InsertionTime>Thu, 05 Sep 2019 00:14:31 GMT</InsertionTime><ExpirationTime>Thu, 12 Sep 2019 00:14:31 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAApxfr435j1QE=</PopReceipt><TimeNextVisible>Thu, 05 Sep 2019 00:14:31 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Thu, 05 Sep 2019 00:14:31 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "createqueuequeueserviceasyncapitestscreatequeue61c723405e" ]
+}

@@ -1,0 +1,85 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/deletemessageinvalidargs02535b77413d02e014f0",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "40511433-79c0-4023-86a7-10c4bcd34d9e"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "22918b4d-8003-0101-337e-6377de000000",
+      "Date" : "Thu, 05 Sep 2019 00:14:12 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/deletemessageinvalidargs02535b77413d02e014f0/messages",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "924aa758-e581-42a6-bd42-9a5b2860e867",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "22918b57-8003-0101-3b7e-6377de000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>be23f1e2-3e9c-4b20-8949-f0a775be81c7</MessageId><InsertionTime>Thu, 05 Sep 2019 00:14:13 GMT</InsertionTime><ExpirationTime>Thu, 12 Sep 2019 00:14:13 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAa4bC2H5j1QE=</PopReceipt><TimeNextVisible>Thu, 05 Sep 2019 00:14:13 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Thu, 05 Sep 2019 00:14:12 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/deletemessageinvalidargs02535b77413d02e014f0/messages?numofmessages=1&visibilitytimeout=30",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "e2b12530-42c3-4f12-97bd-d7f0a59e95d6"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "22918b5a-8003-0101-3e7e-6377de000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>be23f1e2-3e9c-4b20-8949-f0a775be81c7</MessageId><InsertionTime>Thu, 05 Sep 2019 00:14:13 GMT</InsertionTime><ExpirationTime>Thu, 12 Sep 2019 00:14:13 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAwVqp6n5j1QE=</PopReceipt><TimeNextVisible>Thu, 05 Sep 2019 00:14:43 GMT</TimeNextVisible><DequeueCount>1</DequeueCount><MessageText>test message</MessageText></QueueMessage></QueueMessagesList>",
+      "Date" : "Thu, 05 Sep 2019 00:14:12 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/deletemessageinvalidargs02535b77413d02e014f0/messages/be23f1e2-3e9c-4b20-8949-f0a775be81c7Random?popreceipt=AgAAAAMAAAAAAAAAwVqp6n5j1QE%3d",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "61fd42a1-81da-4af1-9b7b-b712c55646be"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "MessageNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "221",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "22918b63-8003-0101-457e-6377de000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>MessageNotFound</Code><Message>The specified message does not exist.\nRequestId:22918b63-8003-0101-457e-6377de000000\nTime:2019-09-05T00:14:14.4490124Z</Message></Error>",
+      "Date" : "Thu, 05 Sep 2019 00:14:13 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "deletemessageinvalidargs02535b77413d02e014f0" ]
+}

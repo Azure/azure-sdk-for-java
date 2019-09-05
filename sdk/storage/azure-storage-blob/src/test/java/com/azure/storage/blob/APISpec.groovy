@@ -216,11 +216,11 @@ class APISpec extends TestBase {
     }
 
     def generateContainerName() {
-        generateResourceName(containerPrefix + entityNo++, 63)
+        generateResourceName(containerPrefix + getTestName() + entityNo++, 63)
     }
 
     def generateBlobName() {
-        generateResourceName(blobPrefix + entityNo++, 63)
+        generateResourceName(blobPrefix + getTestName() + entityNo++, 63)
     }
 
     def getBlockID() {

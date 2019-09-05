@@ -60,7 +60,7 @@ class DirectoryAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(null))
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 201)
+                assert assertResponseStatusCode(it, 201)
             }.verifyComplete()
     }
 
@@ -81,7 +81,7 @@ class DirectoryAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(testMetadata))
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 201)
+                assert assertResponseStatusCode(it, 201)
             }.verifyComplete()
     }
 
@@ -105,7 +105,7 @@ class DirectoryAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.deleteWithResponse())
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 202)
+                assert assertResponseStatusCode(it, 202)
             }.verifyComplete()
     }
 
@@ -126,7 +126,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
         expect:
         getPropertiesVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 200)
+            assert assertResponseStatusCode(it, 200)
             assert it.value().eTag()
         }.verifyComplete()
     }
@@ -156,7 +156,7 @@ class DirectoryAsyncAPITests extends APISpec {
             assert testMetadata == it.value().metadata()
         }.verifyComplete()
         setPropertiesVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 200)
+            assert assertResponseStatusCode(it, 200)
         }.verifyComplete()
         getPropertiesAfterVerifier.assertNext {
             assert updatedMetadata == it.value().metadata()
@@ -306,7 +306,7 @@ class DirectoryAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.createSubDirectoryWithResponse("testCreateSubDirectory", null))
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 201)
+                assert assertResponseStatusCode(it, 201)
             }.verifyComplete()
     }
 
@@ -330,7 +330,7 @@ class DirectoryAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.createSubDirectoryWithResponse("testCreateSubDirectory", testMetadata))
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 201)
+                assert assertResponseStatusCode(it, 201)
             }.verifyComplete()
     }
 
@@ -356,7 +356,7 @@ class DirectoryAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.deleteSubDirectoryWithResponse(subDirectoryName))
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 202)
+                assert assertResponseStatusCode(it, 202)
             }.verifyComplete()
     }
 
@@ -380,7 +380,7 @@ class DirectoryAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null))
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 201)
+                assert assertResponseStatusCode(it, 201)
             }.verifyComplete()
     }
 
@@ -413,7 +413,7 @@ class DirectoryAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, httpHeaders, testMetadata))
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 201)
+                assert assertResponseStatusCode(it, 201)
             }.verifyComplete()
     }
 
@@ -448,7 +448,7 @@ class DirectoryAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.deleteFileWithResponse(fileName))
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 202)
+                assert assertResponseStatusCode(it, 202)
             }.verifyComplete()
     }
 

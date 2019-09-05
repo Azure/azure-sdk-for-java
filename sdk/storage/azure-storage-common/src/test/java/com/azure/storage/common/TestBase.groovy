@@ -1,9 +1,11 @@
 package com.azure.storage.common
 
+
 import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.http.rest.Response
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
@@ -137,5 +139,9 @@ class TestBase extends Specification {
 
     def getRecordPolicy() {
         return interceptorManager.getRecordPolicy()
+    }
+
+    def assertResponseStatusCode(Response<?> response, int expectedStatusCode) {
+        return expectedStatusCode == response.statusCode()
     }
 }

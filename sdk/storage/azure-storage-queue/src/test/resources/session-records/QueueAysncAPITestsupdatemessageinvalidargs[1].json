@@ -1,0 +1,86 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/updatemessageinvalidargs8606352be8bc4bde64a7",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "56cba702-5b11-47d3-ad13-d0b2636dbd18"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "229195fa-8003-0101-177e-6377de000000",
+      "Date" : "Thu, 05 Sep 2019 00:14:25 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/updatemessageinvalidargs8606352be8bc4bde64a7/messages",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "055a8903-2951-4b3d-8149-3f908dccba63",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "2291960d-8003-0101-277e-6377de000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>012fd4ec-e372-472d-8d4d-82a09c68d767</MessageId><InsertionTime>Thu, 05 Sep 2019 00:14:26 GMT</InsertionTime><ExpirationTime>Thu, 12 Sep 2019 00:14:26 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAkTi34H5j1QE=</PopReceipt><TimeNextVisible>Thu, 05 Sep 2019 00:14:26 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Thu, 05 Sep 2019 00:14:25 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/updatemessageinvalidargs8606352be8bc4bde64a7/messages?numofmessages=1",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "58c4234c-2ac9-4d9a-b56d-6e5fa79fc829"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "22919644-8003-0101-597e-6377de000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>012fd4ec-e372-472d-8d4d-82a09c68d767</MessageId><InsertionTime>Thu, 05 Sep 2019 00:14:26 GMT</InsertionTime><ExpirationTime>Thu, 12 Sep 2019 00:14:26 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAA4nG88n5j1QE=</PopReceipt><TimeNextVisible>Thu, 05 Sep 2019 00:14:56 GMT</TimeNextVisible><DequeueCount>1</DequeueCount><MessageText>test message before update</MessageText></QueueMessage></QueueMessagesList>",
+      "Date" : "Thu, 05 Sep 2019 00:14:25 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/updatemessageinvalidargs8606352be8bc4bde64a7/messages/012fd4ec-e372-472d-8d4d-82a09c68d767Random?popreceipt=AgAAAAMAAAAAAAAA4nG88n5j1QE%3d&visibilitytimeout=1",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "x-ms-client-request-id" : "68c3cf38-aabd-4aa8-9f6f-dad2aea83951",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "MessageNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "221",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "22919650-8003-0101-647e-6377de000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>MessageNotFound</Code><Message>The specified message does not exist.\nRequestId:22919650-8003-0101-647e-6377de000000\nTime:2019-09-05T00:14:26.7078564Z</Message></Error>",
+      "Date" : "Thu, 05 Sep 2019 00:14:26 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "updatemessageinvalidargs8606352be8bc4bde64a7" ]
+}

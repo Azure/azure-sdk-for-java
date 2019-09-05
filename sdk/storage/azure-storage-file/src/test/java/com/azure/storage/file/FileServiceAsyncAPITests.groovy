@@ -60,7 +60,7 @@ class FileServiceAsyncAPITests extends APISpec {
 
         then:
         createShareVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 201)
+            assert assertResponseStatusCode(it, 201)
         }.verifyComplete()
     }
 
@@ -71,7 +71,7 @@ class FileServiceAsyncAPITests extends APISpec {
 
         then:
         createShareVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 201)
+            assert assertResponseStatusCode(it, 201)
         }
 
         where:
@@ -109,7 +109,7 @@ class FileServiceAsyncAPITests extends APISpec {
 
         then:
         deleteShareVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 202)
+            assert assertResponseStatusCode(it, 202)
         }
     }
 
@@ -171,7 +171,7 @@ class FileServiceAsyncAPITests extends APISpec {
                 StepVerifier.create(shareAsyncClient.createSnapshotWithResponse(null))
                     .assertNext {
                         testShares.add(new ShareItem().name(share.name()).metadata(share.metadata()).properties(share.properties()).snapshot(it.value().snapshot()))
-                        FileTestHelper.assertResponseStatusCode(it, 201)
+                        assertResponseStatusCode(it, 201)
                     }.verifyComplete()
             }
             testShares.add(share)
@@ -208,15 +208,15 @@ class FileServiceAsyncAPITests extends APISpec {
 
         then:
         getPropertiesBeforeVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 200)
+            assert assertResponseStatusCode(it, 200)
             assert FileTestHelper.assertFileServicePropertiesAreEqual(originalProperties, it.value())
         }.verifyComplete()
         setPropertiesVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 202)
+            assert assertResponseStatusCode(it, 202)
         }
 
         getPropertiesAfterVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 200)
+            assert assertResponseStatusCode(it, 200)
             assert FileTestHelper.assertFileServicePropertiesAreEqual(originalProperties, it.value())
         }.verifyComplete()
     }

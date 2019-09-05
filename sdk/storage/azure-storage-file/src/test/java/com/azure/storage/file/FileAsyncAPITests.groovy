@@ -54,7 +54,7 @@ class FileAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryFileAsyncClient.createWithResponse(1024, null, null))
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 201)
+                assert assertResponseStatusCode(it, 201)
             }
     }
 
@@ -72,7 +72,7 @@ class FileAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryFileAsyncClient.createWithResponse(1024, httpHeaders, testMetadata))
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 201)
+                assert assertResponseStatusCode(it, 201)
             }.verifyComplete()
     }
 
@@ -102,12 +102,12 @@ class FileAsyncAPITests extends APISpec {
 
         then:
         uploadVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 201)
+            assert assertResponseStatusCode(it, 201)
         }.verifyComplete()
 
         downloadVerifier.assertNext {
             assert it.value().contentLength() == (long) dataLength
-            assert FileTestHelper.assertResponseStatusCode(it, 200)
+            assert assertResponseStatusCode(it, 200)
         }.verifyComplete()
         cleanup:
         defaultData.clear()
@@ -123,11 +123,11 @@ class FileAsyncAPITests extends APISpec {
 
         then:
         uploadVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 201)
+            assert assertResponseStatusCode(it, 201)
         }.verifyComplete()
 
         downloadVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 206)
+            assert assertResponseStatusCode(it, 206)
             assert it.value().contentLength() == (long) dataLength
         }.verifyComplete()
 
@@ -171,7 +171,7 @@ class FileAsyncAPITests extends APISpec {
 
         then:
         clearRangeVerifier.assertNext {
-            FileTestHelper.assertResponseStatusCode(it, 201)
+            assertResponseStatusCode(it, 201)
         }
         downloadResponseVerifier.assertNext {
             assert it.value().body() != null
@@ -191,7 +191,7 @@ class FileAsyncAPITests extends APISpec {
 
         then:
         clearRangeVerifier.assertNext {
-            FileTestHelper.assertResponseStatusCode(it, 201)
+            assertResponseStatusCode(it, 201)
         }
         downloadResponseVerifier.assertNext {
             assert it.value().body() != null
@@ -313,7 +313,7 @@ class FileAsyncAPITests extends APISpec {
 
         then:
         copyInfoVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 202)
+            assert assertResponseStatusCode(it, 202)
             assert it.value().copyId() != null
         }.verifyComplete()
     }
@@ -343,7 +343,7 @@ class FileAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryFileAsyncClient.deleteWithResponse())
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 202)
+                assert assertResponseStatusCode(it, 202)
             }.verifyComplete()
     }
 
@@ -366,7 +366,7 @@ class FileAsyncAPITests extends APISpec {
 
         then:
         getPropertiesVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 200)
+            assert assertResponseStatusCode(it, 200)
             assert it.value().eTag() != null
             assert it.value().lastModified() != null
         }
@@ -391,7 +391,7 @@ class FileAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryFileAsyncClient.setHttpHeadersWithResponse(512, httpHeaders))
             .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 200)
+                assert assertResponseStatusCode(it, 200)
             }.verifyComplete()
     }
 
@@ -423,7 +423,7 @@ class FileAsyncAPITests extends APISpec {
             assert testMetadata == it.metadata()
         }.verifyComplete()
         setPropertiesVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 200)
+            assert assertResponseStatusCode(it, 200)
         }.verifyComplete()
         getPropertiesAfterVerifier.assertNext {
             assert updatedMetadata == it.metadata()

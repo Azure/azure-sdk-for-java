@@ -59,7 +59,7 @@ class FileServiceAPITests extends APISpec {
         def createShareResponse = primaryFileServiceClient.createShareWithResponse(shareName, null, null, null)
 
         then:
-        FileTestHelper.assertResponseStatusCode(createShareResponse, 201)
+        assertResponseStatusCode(createShareResponse, 201)
     }
 
     def "Create share max overloads"() {
@@ -67,7 +67,7 @@ class FileServiceAPITests extends APISpec {
         def createShareResponse = primaryFileServiceClient.createShareWithResponse(shareName, testMetadata, 1, null)
 
         then:
-        FileTestHelper.assertResponseStatusCode(createShareResponse, 201)
+        assertResponseStatusCode(createShareResponse, 201)
     }
 
     @Unroll
@@ -93,7 +93,7 @@ class FileServiceAPITests extends APISpec {
         def deleteShareResponse = primaryFileServiceClient.deleteShareWithResponse(shareName, null, null)
 
         then:
-        FileTestHelper.assertResponseStatusCode(deleteShareResponse, 202)
+        assertResponseStatusCode(deleteShareResponse, 202)
     }
 
     def "Delete share does not exist"() {
@@ -183,10 +183,10 @@ class FileServiceAPITests extends APISpec {
         def getPropertiesAfterResponse = primaryFileServiceClient.getPropertiesWithResponse(null)
 
         then:
-        FileTestHelper.assertResponseStatusCode(getPropertiesBeforeResponse, 200)
+        assertResponseStatusCode(getPropertiesBeforeResponse, 200)
         FileTestHelper.assertFileServicePropertiesAreEqual(originalProperties, getPropertiesBeforeResponse.value())
-        FileTestHelper.assertResponseStatusCode(setPropertiesResponse, 202)
-        FileTestHelper.assertResponseStatusCode(getPropertiesAfterResponse, 200)
+        assertResponseStatusCode(setPropertiesResponse, 202)
+        assertResponseStatusCode(getPropertiesAfterResponse, 200)
         FileTestHelper.assertFileServicePropertiesAreEqual(updatedProperties, getPropertiesAfterResponse.value())
     }
 

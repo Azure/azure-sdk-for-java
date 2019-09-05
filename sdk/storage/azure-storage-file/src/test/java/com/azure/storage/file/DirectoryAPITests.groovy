@@ -58,7 +58,7 @@ class DirectoryAPITests extends APISpec {
 
     def "Create directory"() {
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.createWithResponse(null, null), 201)
+        assertResponseStatusCode(primaryDirectoryClient.createWithResponse(null, null), 201)
     }
 
     def "Create directory error"() {
@@ -75,7 +75,7 @@ class DirectoryAPITests extends APISpec {
 
     def "Create directory with metadata"() {
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.createWithResponse(testMetadata, null), 201)
+        assertResponseStatusCode(primaryDirectoryClient.createWithResponse(testMetadata, null), 201)
     }
 
     def "Create directory error with metadata"() {
@@ -95,7 +95,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
 
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.deleteWithResponse(null), 202)
+        assertResponseStatusCode(primaryDirectoryClient.deleteWithResponse(null), 202)
     }
 
     def "Delete directory error"() {
@@ -113,7 +113,7 @@ class DirectoryAPITests extends APISpec {
         def getPropertiesResponse = primaryDirectoryClient.getPropertiesWithResponse(null)
 
         expect:
-        FileTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
+        assertResponseStatusCode(getPropertiesResponse, 200)
         getPropertiesResponse.value().eTag()
     }
 
@@ -138,7 +138,7 @@ class DirectoryAPITests extends APISpec {
 
         then:
         testMetadata == getPropertiesBefore.metadata()
-        FileTestHelper.assertResponseStatusCode(setPropertiesResponse, 200)
+        assertResponseStatusCode(setPropertiesResponse, 200)
         updatedMetadata == getPropertiesAfter.metadata()
     }
 
@@ -277,7 +277,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
 
         expect:
-        FileTestHelper.assertResponseStatusCode(
+        assertResponseStatusCode(
             primaryDirectoryClient.createSubDirectoryWithResponse("testCreateSubDirectory", null, null), 201)
     }
 
@@ -298,7 +298,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
 
         expect:
-        FileTestHelper.assertResponseStatusCode(
+        assertResponseStatusCode(
             primaryDirectoryClient.createSubDirectoryWithResponse("testCreateSubDirectory", testMetadata, null), 201)
     }
 
@@ -321,7 +321,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.createSubDirectory(subDirectoryName)
 
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.deleteSubDirectoryWithResponse(subDirectoryName, null), 202)
+        assertResponseStatusCode(primaryDirectoryClient.deleteSubDirectoryWithResponse(subDirectoryName, null), 202)
     }
 
     def "Delete sub directory error"() {
@@ -342,7 +342,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
 
         expect:
-        FileTestHelper.assertResponseStatusCode(
+        assertResponseStatusCode(
             primaryDirectoryClient.createFileWithResponse("testCreateFile", 1024, null, null, null), 201)
     }
 
@@ -372,7 +372,7 @@ class DirectoryAPITests extends APISpec {
             .fileContentType("txt")
 
         expect:
-        FileTestHelper.assertResponseStatusCode(
+        assertResponseStatusCode(
             primaryDirectoryClient.createFileWithResponse("testCreateFile", 1024, httpHeaders, testMetadata, null), 201)
     }
 
@@ -404,7 +404,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.createFile(fileName, 1024)
 
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.deleteFileWithResponse(fileName, null), 202)
+        assertResponseStatusCode(primaryDirectoryClient.deleteFileWithResponse(fileName, null), 202)
     }
 
     def "Delete file error"() {
