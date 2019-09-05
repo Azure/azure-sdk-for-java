@@ -8,14 +8,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.PartitionBasedLoadBalancer;
 import com.azure.messaging.eventhubs.implementation.PartitionPumpManager;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.PartitionContext;
 import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
+import java.util.function.Supplier;
 import reactor.core.Disposable;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -58,7 +57,7 @@ public class EventProcessor {
      * @param tracerProvider The tracer implementation.
      */
     EventProcessor(EventHubAsyncClient eventHubAsyncClient, String consumerGroup,
-        Function<PartitionContext, PartitionProcessor> partitionProcessorFactory, EventPosition initialEventPosition,
+        Supplier<PartitionProcessor> partitionProcessorFactory, EventPosition initialEventPosition,
         PartitionManager partitionManager, TracerProvider tracerProvider) {
 
         Objects.requireNonNull(eventHubAsyncClient, "eventHubAsyncClient cannot be null");

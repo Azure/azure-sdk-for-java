@@ -9,23 +9,12 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 /**
- * A sample implementation of {@link PartitionProcessor}. This implementation logs the APIs that are called by
- * {@link EventProcessor} while processing a partition.
+ * A sample implementation of {@link PartitionProcessor}. This implementation logs the APIs that are called by {@link
+ * EventProcessor} while processing a partition.
  */
 public class LogPartitionProcessor extends PartitionProcessor {
 
     private final Logger logger = LoggerFactory.getLogger(LogPartitionProcessor.class);
-
-    /**
-     * Creates a new {@link PartitionProcessor} instance that logs every interaction with {@link EventProcessor}.
-     *
-     * @param partitionContext The partition context to know which partition this processor is receiving events from.
-     */
-    public LogPartitionProcessor(PartitionContext partitionContext) {
-        super(partitionContext);
-        logger.info("Creating partition processor: Event Hub name = {}; consumer group name = {}; partition id = {}",
-            partitionContext.eventHubName(), partitionContext.consumerGroup(), partitionContext.partitionId());
-    }
 
     /**
      * {@inheritDoc}
@@ -34,11 +23,11 @@ public class LogPartitionProcessor extends PartitionProcessor {
      * @return a representation of the deferred computation of this call.
      */
     @Override
-    public Mono<Void> processEvent(EventData eventData) {
+    public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
         logger.info(
             "Processing event: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}",
-            partitionContext().eventHubName(), partitionContext().consumerGroup(), partitionContext().partitionId(),
+            partitionContext.eventHubName(), partitionContext.consumerGroup(), partitionContext.partitionId(),
             eventData.sequenceNumber());
-        return this.partitionContext().updateCheckpoint(eventData);
+        return partitionContext.updateCheckpoint(eventData);
     }
 }

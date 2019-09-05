@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs;
 import static org.junit.Assert.assertNotNull;
 
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
+import com.azure.messaging.eventhubs.models.PartitionContext;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
@@ -42,9 +43,9 @@ public class EventProcessorBuilderTest {
     @Test(expected = NullPointerException.class)
     public void testEventProcessorBuilderMissingProperties() {
         EventProcessor eventProcessor = new EventProcessorBuilder()
-            .partitionProcessorFactory((partitionContext -> new PartitionProcessor(partitionContext) {
+            .partitionProcessorFactory((() -> new PartitionProcessor() {
                     @Override
-                    public Mono<Void> processEvent(EventData eventData) {
+                    public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
                         return Mono.fromRunnable(() -> System.out.println(eventData.sequenceNumber()));
                     }
                 }))
@@ -60,9 +61,9 @@ public class EventProcessorBuilderTest {
         EventProcessor eventProcessor = new EventProcessorBuilder()
             .consumerGroup("consumer-group")
             .eventHubClient(eventHubAsyncClient)
-            .partitionProcessorFactory((partitionContext -> new PartitionProcessor(partitionContext) {
+            .partitionProcessorFactory((() -> new PartitionProcessor() {
                     @Override
-                    public Mono<Void> processEvent(EventData eventData) {
+                    public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
                         return Mono.fromRunnable(() -> System.out.println(eventData.sequenceNumber()));
                     }
                 }))

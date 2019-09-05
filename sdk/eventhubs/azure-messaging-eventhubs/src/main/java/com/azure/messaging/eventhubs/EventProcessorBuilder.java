@@ -8,10 +8,9 @@ import com.azure.core.implementation.tracing.Tracer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionContext;
-import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.function.Function;
-import reactor.core.publisher.Mono;
+import java.util.function.Supplier;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
@@ -28,9 +27,11 @@ import reactor.core.publisher.Mono;
  * <li>{@link PartitionManager} - An instance of PartitionManager. To get started, you can pass an instance of
  * {@link InMemoryPartitionManager}. For production, choose an implementation that will store checkpoints and partition
  * ownership details to a durable store.</li>
- * <li>{@link #partitionProcessorFactory(Function) partitionProcessorFactory} - A user-defined {@link Function} that creates
+ * <li>{@link #partitionProcessorFactory(Supplier) partitionProcessorFactory} - A user-defined {@link Function} that
+ * creates
  * new instances of {@link PartitionProcessor} for processing events. Users should extend from
- * {@link PartitionProcessor} abstract class to implement {@link PartitionProcessor#processEvent(EventData)}.</li>
+ * {@link PartitionProcessor} abstract class to implement
+ * {@link PartitionProcessor#processEvent(PartitionContext, EventData)}.</li>
  * </ul>
  *
  * <p><strong>Creating an {@link EventProcessor}</strong></p>
@@ -43,7 +44,7 @@ public class EventProcessorBuilder {
 
     private final ClientLogger logger = new ClientLogger(EventProcessorBuilder.class);
 
-    private Function<PartitionContext, PartitionProcessor> partitionProcessorFactory;
+    private Supplier<PartitionProcessor> partitionProcessorFactory;
     private String consumerGroup;
     private PartitionManager partitionManager;
     private EventHubAsyncClient eventHubAsyncClient;
@@ -99,8 +100,7 @@ public class EventProcessorBuilder {
      * @param partitionProcessorFactory The factory that creates new {@link PartitionProcessor} for each partition.
      * @return The updated {@link EventProcessorBuilder} instance.
      */
-    public EventProcessorBuilder partitionProcessorFactory(
-        Function<PartitionContext, PartitionProcessor> partitionProcessorFactory) {
+    public EventProcessorBuilder partitionProcessorFactory(Supplier<PartitionProcessor> partitionProcessorFactory) {
         this.partitionProcessorFactory = partitionProcessorFactory;
         return this;
     }

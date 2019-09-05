@@ -80,7 +80,7 @@ public class EventProcessorTest {
         when(eventData2.offset()).thenReturn("100");
 
         final InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
-        final TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor(partitionManager);
+        final TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
 
         final long beforeTest = System.currentTimeMillis();
 
@@ -88,7 +88,7 @@ public class EventProcessorTest {
         final EventProcessor eventProcessor = new EventProcessorBuilder()
             .eventHubClient(eventHubAsyncClient)
             .consumerGroup("test-consumer")
-            .partitionProcessorFactory(partitionContext -> testPartitionProcessor)
+            .partitionProcessorFactory(() -> testPartitionProcessor)
             .partitionManager(partitionManager)
             .buildEventProcessor();
 
@@ -98,12 +98,6 @@ public class EventProcessorTest {
 
         // Assert
         assertNotNull(eventProcessor.identifier());
-
-        assertNotNull(testPartitionProcessor.partitionContext());
-
-        assertEquals("1", testPartitionProcessor.partitionContext().partitionId());
-        assertEquals("test-eh", testPartitionProcessor.partitionContext().eventHubName());
-        assertEquals("test-consumer", testPartitionProcessor.partitionContext().consumerGroup());
 
         StepVerifier.create(partitionManager.listOwnership("test-eh", "test-consumer"))
             .expectNextCount(1).verifyComplete();
@@ -144,13 +138,13 @@ public class EventProcessorTest {
         when(consumer1.receive()).thenReturn(Flux.just(eventData1));
 
         final InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
-        final FaultyPartitionProcessor faultyPartitionProcessor = new FaultyPartitionProcessor(partitionManager);
+        final FaultyPartitionProcessor faultyPartitionProcessor = new FaultyPartitionProcessor();
 
         // Act
         final EventProcessor eventProcessor = new EventProcessorBuilder()
             .eventHubClient(eventHubAsyncClient)
             .consumerGroup("test-consumer")
-            .partitionProcessorFactory(partitionContext -> faultyPartitionProcessor)
+            .partitionProcessorFactory(() -> faultyPartitionProcessor)
             .partitionManager(partitionManager)
             .buildEventProcessor();
 
@@ -276,12 +270,9 @@ public class EventProcessorTest {
         final InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
 
         //Act
-        final EventProcessor eventProcessor = new EventProcessorBuilder()
-            .eventHubClient(eventHubAsyncClient)
-            .consumerGroup("test-consumer")
-            .partitionProcessorFactory(FaultyPartitionProcessor::new)
-            .partitionManager(partitionManager)
-            .buildEventProcessor();
+
+        final EventProcessor eventProcessor = new EventProcessor(eventHubAsyncClient, "test-consumer",
+            FaultyPartitionProcessor::new, EventPosition.earliest(), partitionManager, tracerProvider);
         eventProcessor.start();
         TimeUnit.SECONDS.sleep(10);
         eventProcessor.stop();
@@ -337,12 +328,9 @@ public class EventProcessorTest {
         final InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
 
         //Act
-        final EventProcessor eventProcessor = new EventProcessorBuilder()
-            .eventHubClient(eventHubAsyncClient)
-            .consumerGroup("test-consumer")
-            .partitionProcessorFactory(TestPartitionProcessor::new)
-            .partitionManager(partitionManager)
-            .buildEventProcessor();
+        final EventProcessor eventProcessor = new EventProcessor(eventHubAsyncClient, "test-consumer",
+            TestPartitionProcessor::new, EventPosition.earliest(), partitionManager, tracerProvider);
+
         eventProcessor.start();
         TimeUnit.SECONDS.sleep(10);
         eventProcessor.stop();
@@ -357,38 +345,22 @@ public class EventProcessorTest {
 
         boolean error;
 
-        FaultyPartitionProcessor(PartitionManager partitionManager) {
-            super(new PartitionContext("1", "test-eh", "test-consumer", "owner", null, partitionManager));
-        }
-
-        FaultyPartitionProcessor(PartitionContext partitionContext) {
-            super(partitionContext);
-        }
-
         @Override
-        public Mono<Void> processEvent(EventData eventData) {
+        public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
             return Mono.error(new IllegalStateException());
         }
 
         @Override
-        public void processError(Throwable throwable) {
+        public void processError(PartitionContext partitionContext, Throwable throwable) {
             error = true;
         }
     }
 
     private static final class TestPartitionProcessor extends PartitionProcessor {
 
-        TestPartitionProcessor(PartitionManager partitionManager) {
-            super(new PartitionContext("1", "test-eh", "test-consumer", "owner", null, partitionManager));
-        }
-
-        TestPartitionProcessor(PartitionContext partitionContext) {
-            super(partitionContext);
-        }
-
         @Override
-        public Mono<Void> processEvent(EventData eventData) {
-            return this.partitionContext().updateCheckpoint(eventData);
+        public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
+            return partitionContext.updateCheckpoint(eventData);
         }
     }
 

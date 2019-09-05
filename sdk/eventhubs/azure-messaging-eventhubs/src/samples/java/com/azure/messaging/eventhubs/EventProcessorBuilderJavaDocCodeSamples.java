@@ -4,8 +4,6 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.PartitionContext;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import reactor.core.publisher.Mono;
 
 /**
@@ -41,24 +39,14 @@ public class EventProcessorBuilderJavaDocCodeSamples {
     public static final class PartitionProcessorImpl extends PartitionProcessor {
 
         /**
-         * Creates a new instance of {@link PartitionProcessorImpl}.
-         *
-         * @param partitionContext The partition information specific to this instance of {@link
-         * PartitionProcessorImpl}.
-         */
-        public PartitionProcessorImpl(PartitionContext partitionContext) {
-            super(partitionContext);
-        }
-
-        /**
          * Processes the event data.
          *
          * @return a representation of deferred processing of events.
          */
         @Override
-        public Mono<Void> processEvent(EventData eventData) {
+        public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
             System.out.println("Processing event with sequence number " + eventData.sequenceNumber());
-            return this.partitionContext().updateCheckpoint(eventData);
+            return partitionContext.updateCheckpoint(eventData);
         }
     }
     // END: com.azure.messaging.eventhubs.eventprocessorbuilder.instantiation

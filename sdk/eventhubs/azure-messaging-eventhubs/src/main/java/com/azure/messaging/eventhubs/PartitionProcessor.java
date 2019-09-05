@@ -5,17 +5,16 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.PartitionContext;
-import java.util.Objects;
 import reactor.core.publisher.Mono;
 
 /**
- * An abstract class defining all the operations that a partition processor can perform. Users of
- * {@link EventProcessor} should extend from this class and implement {@link #processEvent(EventData)} for processing
- * events. Additionally, users can override:
+ * An abstract class defining all the operations that a partition processor can perform. Users of {@link EventProcessor}
+ * should extend from this class and implement {@link #processEvent(PartitionContext, EventData)} for processing events.
+ * Additionally, users can override:
  * <ul>
- *     <li>{@link #initialize()} - This method is called before at the beginning of processing a partition.</li>
- *     <li>{@link #processError(Throwable)} - This method is called if there is an error while processing events</li>
- *     <li>{@link #close(CloseReason)} - This method is called at the end of processing a partition. The
+ *     <li>{@link #initialize(PartitionContext)} - This method is called before at the beginning of processing a partition.</li>
+ *     <li>{@link #processError(PartitionContext, Throwable)} - This method is called if there is an error while processing events</li>
+ *     <li>{@link #close(PartitionContext, CloseReason)} - This method is called at the end of processing a partition. The
  *     {@link CloseReason} specifies why the processing of a partition stopped.</li>
  * </ul>
  * <p>
@@ -26,33 +25,16 @@ import reactor.core.publisher.Mono;
 public abstract class PartitionProcessor {
 
     private final ClientLogger logger = new ClientLogger(PartitionProcessor.class);
-    private final PartitionContext partitionContext;
-
-    /**
-     * Creates a new instance of PartitionProcessor with the given partition context and checkpoint manager
-     *
-     * @param partitionContext The partition information specific to this PartitionProcessor instance.
-     */
-    public PartitionProcessor(PartitionContext partitionContext) {
-        this.partitionContext = Objects.requireNonNull(partitionContext, "partitionContext cannot be null");
-    }
-
-    /**
-     * The partition information specific to this instance of PartitionProcessor.
-     *
-     * @return The partition information specific to this instance of PartitionProcessor.
-     */
-    public PartitionContext partitionContext() {
-        return this.partitionContext;
-    }
 
     /**
      * This method is called when this {@link EventProcessor} takes ownership of a new partition and before any events
      * from this partition are received.
      *
+     * @param partitionContext The partition information for initialization before events from the partition are
+     * processed.
      * @return a representation of the deferred computation of this call.
      */
-    public Mono<Void> initialize() {
+    public Mono<Void> initialize(PartitionContext partitionContext) {
         logger.info("Initializing partition processor for partition {}", partitionContext.partitionId());
         return Mono.empty();
     }
@@ -62,21 +44,24 @@ public abstract class PartitionProcessor {
      * asynchronously.
      *
      * <p>
-     * This is also a good place to update checkpoints as appropriate.
+     * This is also a good place to update checkpoints using the {@code partitionContext} as appropriate.
      *
+     * @param partitionContext The partition information the event data belongs to.
      * @param eventData {@link EventData} received from this partition.
      * @return a representation of the deferred computation of this call.
      */
-    public abstract Mono<Void> processEvent(EventData eventData);
+    public abstract Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData);
 
     /**
      * This method is called when an error occurs while receiving events from Event Hub. An error also marks the end of
      * event data stream.
      *
+     * @param partitionContext The partition information where the error occurred.
      * @param throwable The {@link Throwable} that caused this method to be called.
      */
-    public void processError(Throwable throwable) {
-        logger.warning("Error occurred in partition processor for partition {} ", partitionContext.partitionId());
+    public void processError(PartitionContext partitionContext, Throwable throwable) {
+        logger.warning("Error occurred in partition processor for partition {} ", partitionContext.partitionId(),
+            throwable);
     }
 
     /**
@@ -84,10 +69,11 @@ public abstract class PartitionProcessor {
      * reasons and the reasons and implementations of this interface can take appropriate actions to cleanup before the
      * partition processor is shutdown.
      *
+     * @param partitionContext The partition information for which the processing of events is closed.
      * @param closeReason The reason for closing this partition processor.
      * @return a representation of the deferred computation of this call.
      */
-    public Mono<Void> close(CloseReason closeReason) {
+    public Mono<Void> close(PartitionContext partitionContext, CloseReason closeReason) {
         logger.info("Closing partition processor for partition {} with close reason {}",
             partitionContext.partitionId(), closeReason);
         return Mono.empty();
