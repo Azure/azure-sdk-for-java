@@ -312,7 +312,7 @@ public class FileClient {
      *
      * <p>Delete the file</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.deleteWithResponse#Context}
+     * {@codesnippet com.azure.storage.file.fileClient.deleteWithResponse#duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
@@ -354,7 +354,7 @@ public class FileClient {
      *
      * <p>Retrieve file properties</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.getPropertiesWithResponse#Context}
+     * {@codesnippet com.azure.storage.file.fileClient.getPropertiesWithResponse#duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file-properties">Azure Docs</a>.</p>
@@ -404,11 +404,11 @@ public class FileClient {
      *
      * <p>Set the httpHeaders of contentType of "text/plain"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setHttpHeadersWithResponse#long-filehttpheaders-Context}
+     * {@codesnippet com.azure.storage.file.fileClient.setHttpHeadersWithResponse#long-filehttpheaders-duration-context}
      *
      * <p>Clear the httpHeaders of the file</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setHttpHeadersWithResponse#long-filehttpheaders-Context.clearHttpHeaders}
+     * {@codesnippet com.azure.storage.file.fileClient.setHttpHeadersWithResponse#long-filehttpheaders-duration-context.clearHttpHeaders}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a>.</p>
@@ -460,11 +460,11 @@ public class FileClient {
      *
      * <p>Set the metadata to "file:updatedMetadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setMetadataWithResponse#map-Context}
+     * {@codesnippet com.azure.storage.file.fileClient.setMetadataWithResponse#map-duration-context}
      *
      * <p>Clear the metadata of the file</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setMetadataWithResponse#map-Context.clearMetadata}
+     * {@codesnippet com.azure.storage.file.fileClient.setMetadataWithResponse#map-duration-context.clearMetadata}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-metadata">Azure Docs</a>.</p>
@@ -637,7 +637,7 @@ public class FileClient {
      *
      * <p>List all ranges within the file range from 1KB to 2KB.</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.listRanges#filerange}
+     * {@codesnippet com.azure.storage.file.fileClient.listRanges#filerange-duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
@@ -675,7 +675,7 @@ public class FileClient {
      *
      * <p>List 10 handles for the file client.</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.listHandles#integer}
+     * {@codesnippet com.azure.storage.file.fileClient.listHandles#integer-duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>
@@ -695,7 +695,7 @@ public class FileClient {
      *
      * <p>Force close handles with handles returned by list handles in recursive.</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.forceCloseHandles#string}
+     * {@codesnippet com.azure.storage.file.fileClient.forceCloseHandles#string-duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>

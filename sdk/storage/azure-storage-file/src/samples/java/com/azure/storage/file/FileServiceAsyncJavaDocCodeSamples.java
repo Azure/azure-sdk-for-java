@@ -143,14 +143,14 @@ public class FileServiceAsyncJavaDocCodeSamples {
      */
     public void listSharesAsyncWithPrefix() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.prefix
+        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.prefix-duration
         fileServiceAsyncClient.listShares(new ListSharesOptions().prefix("azure"),
-            Duration.ofSeconds(1)).subscribe(
-            shareItem -> System.out.printf("Share %s exists in the account", shareItem.name()),
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete listing the shares!")
+                Duration.ofSeconds(1)).subscribe(
+                shareItem -> System.out.printf("Share %s exists in the account", shareItem.name()),
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete listing the shares!")
         );
-        // END: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.prefix
+        // END: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.prefix-duration
     }
 
     /**
@@ -158,14 +158,14 @@ public class FileServiceAsyncJavaDocCodeSamples {
      */
     public void listSharesAsyncWithOverload() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot
+        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot-duration
         fileServiceAsyncClient.listShares(new ListSharesOptions().includeMetadata(true)
             .includeSnapshots(true), Duration.ofSeconds(1)).subscribe(
                 shareItem -> System.out.printf("Share %s exists in the account", shareItem.name()),
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete listing the shares!")
         );
-        // END: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot
+        // END: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot-duration
     }
 
     /**

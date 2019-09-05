@@ -112,11 +112,11 @@ public final class FileServiceClient {
      *
      * <p>List all shares that begin with "azure"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix}
+     * {@codesnippet com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix-duration}
      *
      * <p>List all shares including their snapshots and metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot}
+     * {@codesnippet com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot-duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-shares">Azure Docs</a>.</p>
@@ -156,7 +156,7 @@ public final class FileServiceClient {
      *
      * <p>Retrieve File service properties</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.getPropertiesWithResponse#Context}
+     * {@codesnippet com.azure.storage.file.fileServiceClient.getPropertiesWithResponse#duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file-service-properties">Azure Docs</a>.</p>
@@ -276,7 +276,7 @@ public final class FileServiceClient {
      *
      * <p>Create the share "test" with a quota of 10 GB</p>
      *
-     * {@codesnippet com.azure.storage.file.FileServiceClient.createShareWithResponse#String-Map-Integer-Context}
+     * {@codesnippet com.azure.storage.file.FileServiceClient.createShareWithResponse#string-map-integer-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
@@ -324,7 +324,7 @@ public final class FileServiceClient {
      *
      * <p>Delete the snapshot of share "test" that was created at current time. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.deleteShareWithResponse#string-string-Context}
+     * {@codesnippet com.azure.storage.file.fileServiceClient.deleteShareWithResponse#string-string-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>

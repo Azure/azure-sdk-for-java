@@ -339,10 +339,10 @@ public class FileJavaDocCodeSamples {
      */
     public void deleteWithResponse() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.deleteWithResponse#Context
+        // BEGIN: com.azure.storage.file.fileClient.deleteWithResponse#duration-context
         VoidResponse response = fileClient.deleteWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete deleting the file with status code: " + response.statusCode());
-        // END: com.azure.storage.file.fileClient.deleteWithResponse#Context
+        // END: com.azure.storage.file.fileClient.deleteWithResponse#duration-context
     }
 
     /**
@@ -361,11 +361,11 @@ public class FileJavaDocCodeSamples {
      */
     public void getPropertiesWithResponse() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.getPropertiesWithResponse#Context
+        // BEGIN: com.azure.storage.file.fileClient.getPropertiesWithResponse#duration-context
         Response<FileProperties> response = fileClient.getPropertiesWithResponse(
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("File latest modified date is %s.", response.value().lastModified());
-        // END: com.azure.storage.file.fileClient.getPropertiesWithResponse#Context
+        // END: com.azure.storage.file.fileClient.getPropertiesWithResponse#duration-context
     }
 
     /**
@@ -384,11 +384,11 @@ public class FileJavaDocCodeSamples {
      */
     public void setMetadataWithResponse() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.setMetadataWithResponse#map-Context
+        // BEGIN: com.azure.storage.file.fileClient.setMetadataWithResponse#map-duration-context
         Response<FileMetadataInfo> response = fileClient.setMetadataWithResponse(
             Collections.singletonMap("file", "updatedMetadata"), Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting the file metadata completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.fileClient.setMetadataWithResponse#map-Context
+        // END: com.azure.storage.file.fileClient.setMetadataWithResponse#map-duration-context
     }
 
     /**
@@ -397,20 +397,20 @@ public class FileJavaDocCodeSamples {
      */
     public void clearMetadataWithResponse() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.setMetadataWithResponse#map-Context.clearMetadata
+        // BEGIN: com.azure.storage.file.fileClient.setMetadataWithResponse#map-duration-context.clearMetadata
         Response<FileMetadataInfo> response = fileClient.setMetadataWithResponse(null,
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting the file metadata completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.fileClient.setMetadataWithResponse#map-Context.clearMetadata
+        // END: com.azure.storage.file.fileClient.setMetadataWithResponse#map-duration-context.clearMetadata
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#setMetadataWithResponse(Map, Duration, Context)} to clear metadata.
+     * Generates a code sample for using {@link FileClient#setMetadata(Map)} to clear metadata.
      */
     public void clearMetadata() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.setMetadata#map.clearMetadata
-        fileClient.setMetadataWithResponse(null, null, new Context(key1, value1));
+        fileClient.setMetadata(null);
         System.out.printf("Setting the file metadata completed.");
         // END: com.azure.storage.file.fileClient.setMetadata#map.clearMetadata
     }
@@ -444,12 +444,12 @@ public class FileJavaDocCodeSamples {
      */
     public void setHttpHeadersWithResponse() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.setHttpHeadersWithResponse#long-filehttpheaders-Context
+        // BEGIN: com.azure.storage.file.fileClient.setHttpHeadersWithResponse#long-filehttpheaders-duration-context
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
         Response<FileInfo> response = fileClient.setHttpHeadersWithResponse(1024, httpHeaders,
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting the file httpHeaders completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.fileClient.setHttpHeadersWithResponse#long-filehttpheaders-Context
+        // END: com.azure.storage.file.fileClient.setHttpHeadersWithResponse#long-filehttpheaders-duration-context
     }
 
     /**
@@ -459,11 +459,11 @@ public class FileJavaDocCodeSamples {
      */
     public void clearHTTPHeaders() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.setHttpHeadersWithResponse#long-filehttpheaders-Context.clearHttpHeaders
+        // BEGIN: com.azure.storage.file.fileClient.setHttpHeadersWithResponse#long-filehttpheaders-duration-context.clearHttpHeaders
         Response<FileInfo> response = fileClient.setHttpHeadersWithResponse(1024, null,
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting the file httpHeaders completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.fileClient.setHttpHeadersWithResponse#long-filehttpheaders-Context.clearHttpHeaders
+        // END: com.azure.storage.file.fileClient.setHttpHeadersWithResponse#long-filehttpheaders-duration-context.clearHttpHeaders
     }
 
     /**
@@ -483,11 +483,11 @@ public class FileJavaDocCodeSamples {
      */
     public void listRangesMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.listRanges#filerange
+        // BEGIN: com.azure.storage.file.fileClient.listRanges#filerange-duration
         Iterable<FileRange> ranges = fileClient.listRanges(new FileRange(1024, 2048L), Duration.ofSeconds(1));
         ranges.forEach(range ->
             System.out.printf("List ranges completed with start: %d, end: %d", range.start(), range.end()));
-        // END: com.azure.storage.file.fileClient.listRanges#filerange
+        // END: com.azure.storage.file.fileClient.listRanges#filerange-duration
     }
 
     /**
@@ -507,11 +507,11 @@ public class FileJavaDocCodeSamples {
      */
     public void listHandlesWithOverload() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.listHandles#integer
+        // BEGIN: com.azure.storage.file.fileClient.listHandles#integer-duration
         fileClient.listHandles(10, Duration.ofSeconds(1))
             .forEach(handleItem -> System.out.printf("List handles completed with handleId %s",
                 handleItem.handleId()));
-        // END: com.azure.storage.file.fileClient.listHandles#integer
+        // END: com.azure.storage.file.fileClient.listHandles#integer-duration
     }
 
     /**
@@ -519,13 +519,13 @@ public class FileJavaDocCodeSamples {
      */
     public void forceCloseHandles() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.forceCloseHandles#string
+        // BEGIN: com.azure.storage.file.fileClient.forceCloseHandles#string-duration
         fileClient.listHandles(10, Duration.ofSeconds(1))
             .forEach(result ->
                 fileClient.forceCloseHandles(result.handleId(), Duration.ofSeconds(1)).forEach(numOfClosedHandles ->
                     System.out.printf("Close %d handles.", numOfClosedHandles)
                 ));
-        // END: com.azure.storage.file.fileClient.forceCloseHandles#string
+        // END: com.azure.storage.file.fileClient.forceCloseHandles#string-duration
     }
 
     /**

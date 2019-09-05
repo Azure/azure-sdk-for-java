@@ -115,12 +115,12 @@ public class FileServiceJavaDocCodeSamples {
      */
     public void createShareWithMetadata() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.FileServiceClient.createShareWithResponse#String-Map-Integer-Context
+        // BEGIN: com.azure.storage.file.FileServiceClient.createShareWithResponse#string-map-integer-duration-context
         Response<ShareClient> response = fileServiceClient.createShareWithResponse("test",
             Collections.singletonMap("share", "metadata"), null, Duration.ofSeconds(1),
             new Context(key1, value1));
         System.out.printf("Creating the share completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.FileServiceClient.createShareWithResponse#String-Map-Integer-Context
+        // END: com.azure.storage.file.FileServiceClient.createShareWithResponse#string-map-integer-duration-context
     }
 
     /**
@@ -140,11 +140,11 @@ public class FileServiceJavaDocCodeSamples {
      */
     public void listSharesWithPrefix() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix
+        // BEGIN: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix-duration
         fileServiceClient.listShares(new ListSharesOptions().prefix("azure"), Duration.ofSeconds(1)).forEach(
             shareItem -> System.out.printf("Share %s exists in the account", shareItem.name())
         );
-        // END: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix
+        // END: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix-duration
     }
 
     /**
@@ -153,12 +153,12 @@ public class FileServiceJavaDocCodeSamples {
      */
     public void listSharesWithMetadataAndSnapshot() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot
+        // BEGIN: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot-duration
         fileServiceClient.listShares(new ListSharesOptions().includeMetadata(true)
             .includeSnapshots(true), Duration.ofSeconds(1)).forEach(
                 shareItem -> System.out.printf("Share %s exists in the account", shareItem.name())
         );
-        // END: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot
+        // END: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot-duration
     }
 
     /**
@@ -177,12 +177,12 @@ public class FileServiceJavaDocCodeSamples {
      */
     public void deleteShareMaxOverload() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceClient.deleteShareWithResponse#string-string-Context
+        // BEGIN: com.azure.storage.file.fileServiceClient.deleteShareWithResponse#string-string-duration-context
         OffsetDateTime midnight = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         VoidResponse response = fileServiceClient.deleteShareWithResponse("test", midnight.toString(),
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Deleting the snapshot completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.fileServiceClient.deleteShareWithResponse#string-string-Context
+        // END: com.azure.storage.file.fileServiceClient.deleteShareWithResponse#string-string-duration-context
     }
 
     /**
@@ -200,28 +200,14 @@ public class FileServiceJavaDocCodeSamples {
     /**
      * Generates a code sample for using {@link FileServiceClient#getPropertiesWithResponse(Duration, Context)}
      */
-    public void getPropertiesWithRespose() {
-        FileServiceClient fileServiceClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceClient.getPropertiesWithRespose#Context
-        Response<FileServiceProperties> properties = fileServiceClient.getPropertiesWithResponse(
-            Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b",
-            properties.value().hourMetrics().enabled(),
-            properties.value().minuteMetrics().enabled());
-        // END: com.azure.storage.file.fileServiceClient.getPropertiesWithRespose#Context
-    }
-
-    /**
-     * Generates a code sample for using {@link FileServiceClient#getPropertiesWithResponse(Duration, Context)}
-     */
     public void getPropertiesWithResponse() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceClient.getPropertiesWithResponse#Context
+        // BEGIN: com.azure.storage.file.fileServiceClient.getPropertiesWithResponse#duration-context
         FileServiceProperties properties = fileServiceClient.getPropertiesWithResponse(
             Duration.ofSeconds(1), new Context(key1, value1)).value();
         System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b", properties.hourMetrics().enabled(),
             properties.minuteMetrics().enabled());
-        // END: com.azure.storage.file.fileServiceClient.getPropertiesWithResponse#Context
+        // END: com.azure.storage.file.fileServiceClient.getPropertiesWithResponse#duration-context
     }
 
     /**

@@ -123,11 +123,11 @@ public class ShareClient {
      *
      * <p>Create the share with metadata "share:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.ShareClient.createWithResponse#Map-Integer-Context.metadata}
+     * {@codesnippet com.azure.storage.file.ShareClient.createWithResponse#map-integer-duration-context.metadata}
      *
      * <p>Create the share with a quota of 10 GB</p>
      *
-     * {@codesnippet com.azure.storage.file.ShareClient.createWithResponse#Map-Integer-Context.quota}
+     * {@codesnippet com.azure.storage.file.ShareClient.createWithResponse#map-integer-duration-context.quota}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
@@ -173,7 +173,7 @@ public class ShareClient {
      *
      * <p>Create a snapshot with metadata "snapshot:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.createSnapshotWithResponse#map-Context}
+     * {@codesnippet com.azure.storage.file.shareClient.createSnapshotWithResponse#map-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-share">Azure Docs</a>.</p>
@@ -216,7 +216,7 @@ public class ShareClient {
      *
      * <p>Delete the share</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.deleteWithResponse#Context}
+     * {@codesnippet com.azure.storage.file.shareClient.deleteWithResponse#duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
@@ -259,7 +259,7 @@ public class ShareClient {
      *
      * <p>Retrieve the share properties</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.getPropertiesWithResponse#Context}
+     * {@codesnippet com.azure.storage.file.shareClient.getPropertiesWithResponse#duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -301,7 +301,7 @@ public class ShareClient {
      *
      * <p>Set the quota to 1024 GB</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.setQuotaWithResponse#int-Context}
+     * {@codesnippet com.azure.storage.file.shareClient.setQuotaWithResponse#int-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -352,7 +352,7 @@ public class ShareClient {
      *
      * <p>Set the metadata to "share:updatedMetadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.setMetadataWithResponse#map-Context}
+     * {@codesnippet com.azure.storage.file.shareClient.setMetadataWithResponse#map-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
@@ -415,7 +415,7 @@ public class ShareClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.setAccessPolicyWithResponse#List-Context}
+     * {@codesnippet com.azure.storage.file.shareClient.setAccessPolicyWithResponse#list-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
@@ -457,7 +457,7 @@ public class ShareClient {
      *
      * <p>Retrieve the storage statistics</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.getStatisticsWithResponse#Context}
+     * {@codesnippet com.azure.storage.file.shareClient.getStatisticsWithResponse#duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
@@ -499,7 +499,7 @@ public class ShareClient {
      *
      * <p>Create the directory "documents" with metadata "directory:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.createDirectoryWithResponse#string-map-Context}
+     * {@codesnippet com.azure.storage.file.shareClient.createDirectoryWithResponse#string-map-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
@@ -555,7 +555,7 @@ public class ShareClient {
      *
      * <p>Create the file "myfile" with length of 1024 bytes, some headers and metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.createFileWithResponse#string-long-filehttpheaders-map-Context}
+     * {@codesnippet com.azure.storage.file.shareClient.createFileWithResponse#string-long-filehttpheaders-map-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -610,7 +610,7 @@ public class ShareClient {
      *
      * <p>Delete the directory "mydirectory"</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.deleteDirectoryWithResponse#string-Context}
+     * {@codesnippet com.azure.storage.file.shareClient.deleteDirectoryWithResponse#string-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
@@ -652,7 +652,7 @@ public class ShareClient {
      *
      * <p>Delete the file "myfile"</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.deleteFileWithResponse#string-Context}
+     * {@codesnippet com.azure.storage.file.shareClient.deleteFileWithResponse#string-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
