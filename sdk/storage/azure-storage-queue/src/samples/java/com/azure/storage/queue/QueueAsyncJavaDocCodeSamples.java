@@ -196,7 +196,7 @@ public class QueueAsyncJavaDocCodeSamples {
      * Duration)}
      */
     public void dequeueMessageAsyncMaxOverload() {
-        // BEGIN: com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer-duration
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer-duration-duration
         client.dequeueMessagesWithOptionalTimeout(5, Duration.ofSeconds(60), Duration.ofSeconds(1))
             .subscribe(
             dequeuedMessage -> System.out.println("The message got from dequeue operation: "
@@ -204,7 +204,7 @@ public class QueueAsyncJavaDocCodeSamples {
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete dequeuing the message!")
         );
-        // END: com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer-duration
+        // END: com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer-duration-duration
     }
 
 
@@ -225,14 +225,14 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#peekMessages(Integer, Duration)}
      */
     public void peekMessageAsyncMaxOverload() {
-        // BEGIN: com.azure.storage.queue.queueAsyncClient.peekMessages#integer
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.peekMessages#integer-duration
         client.peekMessages(5, Duration.ofSeconds(1)).subscribe(
             peekMessage -> System.out.printf("Peeked message %s has been dequeued %d times",
                 peekMessage.messageId(), peekMessage.dequeueCount()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete peeking the message!")
         );
-        // END: com.azure.storage.queue.queueAsyncClient.peekMessages#integer
+        // END: com.azure.storage.queue.queueAsyncClient.peekMessages#integer-duration
     }
 
     /**

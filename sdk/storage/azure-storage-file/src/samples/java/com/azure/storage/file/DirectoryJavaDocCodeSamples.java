@@ -105,7 +105,7 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void createWithResponse() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.createWithResponse#map-duration-ontext
+        // BEGIN: com.azure.storage.file.directoryClient.createWithResponse#map-duration-context
         Response<DirectoryInfo> response = directoryClient.createWithResponse(
             Collections.singletonMap("directory", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Completed creating the directory with status code: " + response.statusCode());

@@ -540,7 +540,7 @@ public final class QueueAsyncClient {
      *
      * <p>Dequeue up to 5 messages and give them a 60 second timeout period</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer-duration}
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer-duration-duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
@@ -605,7 +605,7 @@ public final class QueueAsyncClient {
      *
      * <p>Peek up to the first five messages</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.peekMessages#integer}
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.peekMessages#integer-duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/peek-messages">Azure Docs</a>.</p>

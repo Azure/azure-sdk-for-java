@@ -87,7 +87,7 @@ public final class QueueClient {
      *
      * <p>Create a queue with metadata "queue:metadataMap"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.createWithResponse#map-Context}
+     * {@codesnippet com.azure.storage.queue.queueClient.createWithResponse#map-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
@@ -128,7 +128,7 @@ public final class QueueClient {
      *
      * <p>Delete a queue</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.deleteWithResponse#Context}
+     * {@codesnippet com.azure.storage.queue.queueClient.deleteWithResponse#duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
@@ -170,7 +170,7 @@ public final class QueueClient {
      *
      * <p>Get the properties of the queue</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.getPropertiesWithResponse#Context}
+     * {@codesnippet com.azure.storage.queue.queueClient.getPropertiesWithResponse#duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-metadata">Azure Docs</a>.</p>
@@ -220,11 +220,11 @@ public final class QueueClient {
      *
      * <p>Set the queue's metadata to "queue:metadataMap"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.setMetadataWithResponse#map-Context}
+     * {@codesnippet com.azure.storage.queue.queueClient.setMetadataWithResponse#map-duration-context}
      *
      * <p>Clear the queue's metadata</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.clearMetadataWithResponse#map-Context}
+     * {@codesnippet com.azure.storage.queue.queueClient.clearMetadataWithResponse#map-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-metadata">Azure Docs</a>.</p>
@@ -286,7 +286,7 @@ public final class QueueClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.setAccessPolicyWithResponse#List-Context}
+     * {@codesnippet com.azure.storage.queue.queueClient.setAccessPolicyWithResponse#List-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
@@ -328,7 +328,7 @@ public final class QueueClient {
      *
      * <p>Clear the messages</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.clearMessagesWithResponse#Context}
+     * {@codesnippet com.azure.storage.queue.queueClient.clearMessagesWithResponse#duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/clear-messages">Azure Docs</a>.</p>
@@ -455,7 +455,7 @@ public final class QueueClient {
      *
      * <p>Dequeue up to 5 messages and give them a 60 second timeout period</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.dequeueMessages#integer-duration}
+     * {@codesnippet com.azure.storage.queue.queueClient.dequeueMessages#integer-duration-duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
@@ -507,7 +507,7 @@ public final class QueueClient {
      *
      * <p>Peek up to the first five messages</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.peekMessages#integer}
+     * {@codesnippet com.azure.storage.queue.queueClient.peekMessages#integer-duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/peek-messages">Azure Docs</a>.</p>
@@ -557,7 +557,7 @@ public final class QueueClient {
      *
      * <p>Dequeue the first message and update it to "Hello again, Azure" and hide it for 5 seconds</p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueClient.updateMessageWithResponse#String-String-String-Duration-Context}
+     * {@codesnippet com.azure.storage.queue.QueueClient.updateMessageWithResponse#String-String-String-Duration-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/update-message">Azure Docs</a>.</p>
@@ -607,7 +607,7 @@ public final class QueueClient {
      *
      * <p>Delete the first message</p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueClient.deleteMessageWithResponse#String-String-Context}
+     * {@codesnippet com.azure.storage.queue.QueueClient.deleteMessageWithResponse#String-String-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-message2">Azure Docs</a>.</p>

@@ -90,7 +90,7 @@ public final class QueueServiceClient {
      *
      * <p>Create the queue "test" with metadata "queue:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.createQueueWithResponse#string-map-Context}
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.createQueueWithResponse#string-map-duration-context}
      *
      * @param queueName Name of the queue
      * @param metadata Metadata to associate with the queue
@@ -130,7 +130,7 @@ public final class QueueServiceClient {
      *
      * <p>Delete the queue "test"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.deleteQueueWithResponse#string-Context}
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.deleteQueueWithResponse#string-duration-context}
      *
      * @param queueName Name of the queue
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -226,7 +226,7 @@ public final class QueueServiceClient {
      *
      * <p>Retrieve Queue service properties</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.getPropertiesWithResponse#Context}
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.getPropertiesWithResponse#duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-properties">Azure Docs</a>.</p>
@@ -288,11 +288,11 @@ public final class QueueServiceClient {
      *
      * <p>Clear CORS in the Queue service</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesWithResponse#storageServiceProperties-Context}
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesWithResponse#storageServiceProperties-duration-context}
      *
      * <p>Enable Minute and Hour Metrics</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesWithResponseEnableMetrics#storageServiceProperties-Context}
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesWithResponseEnableMetrics#storageServiceProperties-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure Docs</a>.</p>
@@ -343,7 +343,7 @@ public final class QueueServiceClient {
      *
      * <p>Retrieve the geo replication information</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.getStatisticsWithResponse#Context}
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.getStatisticsWithResponse#duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>

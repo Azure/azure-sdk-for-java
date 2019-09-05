@@ -208,6 +208,7 @@ public class DirectoryClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Set the metadata to "directory:updatedMetadata"</p>
      * {@codesnippet com.azure.storage.file.directoryClient.setMetadataWithResponse#map-duration-context}
+     *
      * <p>Clear the metadata of the directory</p>
      * {@codesnippet com.azure.storage.file.DirectoryClient.setMetadataWithResponse#Map-duration-context.clearMetadata}
      * <p>For more information, see the
