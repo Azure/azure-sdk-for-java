@@ -12,7 +12,9 @@ public class IndexingAsyncTests extends IndexingTestBase {
     @Override
     public void countingDocsOfNewIndexGivesZero() {
         Mono<Long> result = client.countDocuments();
-        StepVerifier.create(result).expectNext(0L).expectComplete().verify();
+        Long expected = 0L;
+
+        StepVerifier.create(result).expectNext(expected).expectComplete().verify();
     }
 
     @Override
