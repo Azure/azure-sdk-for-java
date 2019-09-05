@@ -19,7 +19,7 @@ public class RestProxyWithHttpProxyOkHttpTests extends RestProxyTests {
     protected HttpClient createHttpClient() {
 
         return new OkHttpAsyncHttpClientBuilder()
-                .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+                .setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
                 .build();
     }
 

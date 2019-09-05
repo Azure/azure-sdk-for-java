@@ -687,7 +687,7 @@ public final class RntbdTransportClientTest {
      * @param request   An RNTBD request instance
      * @param response  The RNTBD response instance to be returned as a result of the request
      */
-    @Test(enabled = true, groups = "unit", dataProvider = "fromMockedRntbdResponseToExpectedDocumentClientException")
+    @Test(enabled = false, groups = "unit", dataProvider = "fromMockedRntbdResponseToExpectedDocumentClientException")
     public void verifyRequestFailures(
         final FailureValidator.Builder builder,
         final RxDocumentServiceRequest request,

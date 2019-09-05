@@ -9,6 +9,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import java.io.Closeable;
 import java.nio.ByteBuffer;
+import java.util.Map;
 import reactor.core.publisher.Flux;
 
 /**
