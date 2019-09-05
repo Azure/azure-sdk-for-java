@@ -137,6 +137,11 @@ directive:
         const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
         $.put.parameters.splice(0, 0, { "$ref": path });
     }
+    param = $.get.parameters[0];
+    if (!param["$ref"].endsWith("ShareName")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
+        $.get.parameters.splice(0, 0, { "$ref": path });
+    }
 ```
 
 ### /{shareName}?restype=share&comp=properties
