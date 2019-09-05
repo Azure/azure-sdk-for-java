@@ -88,7 +88,7 @@ class TestBase extends Specification {
         sleep(milliseconds)
     }
 
-    def <T extends BaseClientBuilder> T setupBuilder(BaseClientBuilder<T> builder, String endpoint,
+    def <T extends BaseClientBuilder<T>> T setupBuilder(T builder, String endpoint,
         HttpPipelinePolicy... policies) {
         builder.endpoint(endpoint)
             .httpClient(getHttpClient())
@@ -102,10 +102,10 @@ class TestBase extends Specification {
             builder.addPolicy(getRecordPolicy())
         }
 
-        return (T) builder
+        return builder
     }
 
-    def <T extends BaseClientBuilder> T setupBuilder(BaseClientBuilder<T> builder, String connectionString) {
+    def <T extends BaseClientBuilder<T>> T setupBuilder(T builder, String connectionString) {
         builder.connectionString(connectionString)
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
@@ -114,7 +114,7 @@ class TestBase extends Specification {
             builder.addPolicy(getRecordPolicy())
         }
 
-        return (T) builder
+        return builder
     }
 
     def getHttpClient() {
