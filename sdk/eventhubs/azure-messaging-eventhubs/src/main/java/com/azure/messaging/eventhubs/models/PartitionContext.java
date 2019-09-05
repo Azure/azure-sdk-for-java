@@ -104,7 +104,7 @@ public class PartitionContext {
      * @param offset The offset to update the checkpoint.
      * @return a representation of deferred execution of this call.
      */
-    public Mono<Void> updateCheckpoint(long sequenceNumber, String offset) {
+    public Mono<Void> updateCheckpoint(long sequenceNumber, Long offset) {
         String previousETag = this.eTag.get();
         Checkpoint checkpoint = new Checkpoint()
             .consumerGroupName(consumerGroup)

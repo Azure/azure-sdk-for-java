@@ -66,7 +66,7 @@ public class PartitionBasedLoadBalancerTest {
             .forEach(index -> {
                 EventData eventData = mock(EventData.class);
                 when(eventData.sequenceNumber()).thenReturn((long) index);
-                when(eventData.offset()).thenReturn(String.valueOf(index));
+                when(eventData.offset()).thenReturn(Long.valueOf(index));
                 eventDataList.add(eventData);
             });
         this.partitionManager = new InMemoryPartitionManager();

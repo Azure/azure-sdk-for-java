@@ -1,51 +1,54 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcdeleteac0containerapitestdeleteac8d3499457bd942f71?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdeleteac0containerapitestdeleteac65599789531272304?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "5c379153-b44d-4086-9a85-46f61efdace0"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72813417CB3AA\"",
-      "Last-Modified" : "Fri, 23 Aug 2019 21:45:46 GMT",
+      "ETag" : "\"0x8D730FEDB6DC373\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 06:12:25 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "b1ded27c-001e-00f1-5afc-59e1e5000000",
-      "Date" : "Fri, 23 Aug 2019 21:45:45 GMT",
-      "x-ms-client-request-id" : "1fda2f24-1a83-4a45-b947-b22366592197"
+      "x-ms-request-id" : "1828c4da-901e-007c-68e7-62ad43000000",
+      "Date" : "Wed, 04 Sep 2019 06:12:25 GMT",
+      "x-ms-client-request-id" : "5c379153-b44d-4086-9a85-46f61efdace0"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcdeleteac0containerapitestdeleteac8d3499457bd942f71?comp=lease&restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdeleteac0containerapitestdeleteac65599789531272304?comp=lease&restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "20be5907-d55a-4b16-963d-988030a1d5c2"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72813417CB3AA\"",
-      "x-ms-lease-id" : "332c2712-912b-4126-a5aa-8d5965a56143",
-      "Last-Modified" : "Fri, 23 Aug 2019 21:45:46 GMT",
+      "ETag" : "\"0x8D730FEDB6DC373\"",
+      "x-ms-lease-id" : "931d1107-21ab-406d-be79-e3f9981b6153",
+      "Last-Modified" : "Wed, 04 Sep 2019 06:12:25 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "b1ded2b7-001e-00f1-11fc-59e1e5000000",
-      "Date" : "Fri, 23 Aug 2019 21:45:45 GMT",
-      "x-ms-client-request-id" : "21f47a40-c5dd-43ea-8386-76feb24a131a"
+      "x-ms-request-id" : "1828c515-901e-007c-1ae7-62ad43000000",
+      "Date" : "Wed, 04 Sep 2019 06:12:25 GMT",
+      "x-ms-client-request-id" : "20be5907-d55a-4b16-963d-988030a1d5c2"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcdeleteac0containerapitestdeleteac8d3499457bd942f71?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdeleteac0containerapitestdeleteac65599789531272304?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "da0acca0-e596-4e0a-be84-558b840bc0fe"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -53,17 +56,18 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "b1ded2eb-001e-00f1-43fc-59e1e5000000",
-      "Date" : "Fri, 23 Aug 2019 21:45:45 GMT",
-      "x-ms-client-request-id" : "8ae10602-48b3-4c29-83e8-fb46ed0ca386"
+      "x-ms-request-id" : "1828c533-901e-007c-31e7-62ad43000000",
+      "Date" : "Wed, 04 Sep 2019 06:12:25 GMT",
+      "x-ms-client-request-id" : "da0acca0-e596-4e0a-be84-558b840bc0fe"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net?prefix=jtcdeleteac&comp=list",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net?prefix=jtcdeleteac&comp=list",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "8fe6bcad-401b-45bb-8d9a-676b14763a10"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -71,13 +75,13 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "b1ded328-001e-00f1-7efc-59e1e5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcdeleteac</Prefix><Containers /><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 23 Aug 2019 21:45:45 GMT",
-      "x-ms-client-request-id" : "068f7baf-e663-400c-b1dd-f9cc227e898a",
+      "x-ms-request-id" : "1828c53e-901e-007c-3be7-62ad43000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcdeleteac</Prefix><Containers /><NextMarker /></EnumerationResults>",
+      "Date" : "Wed, 04 Sep 2019 06:12:25 GMT",
+      "x-ms-client-request-id" : "8fe6bcad-401b-45bb-8d9a-676b14763a10",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcdeleteac0containerapitestdeleteac8d3499457bd942f71" ]
+  "variables" : [ "jtcdeleteac0containerapitestdeleteac65599789531272304" ]
 }

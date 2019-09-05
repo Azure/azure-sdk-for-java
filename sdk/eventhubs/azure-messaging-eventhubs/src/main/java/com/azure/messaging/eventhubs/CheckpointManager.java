@@ -5,10 +5,10 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionContext;
+import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
-import reactor.core.publisher.Mono;
 
 /**
  * The checkpoint manager that clients should use to update checkpoints to track progress of events processed. Each
@@ -70,7 +70,7 @@ public class CheckpointManager {
      * @param offset The offset to update the checkpoint.
      * @return a representation of deferred execution of this call.
      */
-    public Mono<Void> updateCheckpoint(long sequenceNumber, String offset) {
+    public Mono<Void> updateCheckpoint(long sequenceNumber, Long offset) {
         String previousETag = this.eTag.get();
         Checkpoint checkpoint = new Checkpoint()
             .consumerGroupName(partitionContext.consumerGroup())
