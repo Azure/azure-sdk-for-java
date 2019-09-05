@@ -17,6 +17,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.ContainerItem;
+import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListContainersOptions;
 import com.azure.storage.blob.models.Metadata;
@@ -68,14 +69,16 @@ public final class BlobServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(BlobServiceAsyncClient.class);
 
     private final AzureBlobStorageImpl azureBlobStorage;
+    private final CpkInfo cpk;
 
     /**
      * Package-private constructor for use by {@link BlobServiceClientBuilder}.
      *
      * @param azureBlobStorage the API client for blob storage
      */
-    BlobServiceAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
+    BlobServiceAsyncClient(AzureBlobStorageImpl azureBlobStorage, CpkInfo cpk) {
         this.azureBlobStorage = azureBlobStorage;
+        this.cpk = cpk;
     }
 
     /**
@@ -90,7 +93,7 @@ public final class BlobServiceAsyncClient {
         return new ContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getAccountUrl(), containerName).toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build());
+            .build(), cpk);
     }
 
     /**

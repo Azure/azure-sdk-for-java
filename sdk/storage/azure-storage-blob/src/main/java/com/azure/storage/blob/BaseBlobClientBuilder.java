@@ -4,7 +4,9 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.BaseClientBuilder;
+import com.azure.storage.common.Constants;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 
 abstract class BaseBlobClientBuilder<T extends BaseClientBuilder<T>> extends BaseClientBuilder<T> {
@@ -23,6 +25,19 @@ abstract class BaseBlobClientBuilder<T extends BaseClientBuilder<T>> extends Bas
 
     @Override
     protected final void applyServiceSpecificValidations(ResponseValidationPolicyBuilder builder) {
-        // for blob service validations
+        // CPK
+        builder
+            .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
+            .addCustomAssertion((response, logger) -> {
+                // if this was a CPK request
+                if (response.request().headers().value(Constants.HeaderConstants.ENCRYPTION_KEY) != null) {
+                    if (!Boolean.parseBoolean(response.headerValue(Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED))) {
+                        throw logger.logExceptionAsError(new RuntimeException(String.format(
+                            "Unexpected response header of `%s: %s`. Expected value `%s`.",
+                            Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED, "false", "true"
+                        )));
+                    }
+                }
+            });
     }
 }
