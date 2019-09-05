@@ -126,27 +126,58 @@
 
     <plugins>
       <plugin>
+        <!-- Skip maven compiler and use gmavenplus plugin instead -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <compilerId>groovy-eclipse-compiler</compilerId>
-          <compilerArgument>-Xlint:unchecked</compilerArgument>
-          <source>1.8</source>
-          <target>1.8</target>
-          <showDeprecation>true</showDeprecation>
+          <skip>true</skip>
         </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-eclipse-compiler</artifactId>
-            <version>${groovy-eclipse-compiler.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-eclipse-batch</artifactId>
-            <version>${groovy-eclipse-batch.version}</version>
-          </dependency>
-        </dependencies>
+<!--        <dependencies>-->
+<!--          <dependency>-->
+<!--            <groupId>org.codehaus.groovy</groupId>-->
+<!--            <artifactId>groovy-eclipse-compiler</artifactId>-->
+<!--            <version>${groovy-eclipse-compiler.version}</version>-->
+<!--          </dependency>-->
+<!--          <dependency>-->
+<!--            <groupId>org.codehaus.groovy</groupId>-->
+<!--            <artifactId>groovy-eclipse-batch</artifactId>-->
+<!--            <version>${groovy-eclipse-batch.version}</version>-->
+<!--          </dependency>-->
+<!--        </dependencies>-->
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>1.6.2</version>
+        <configuration>
+          <sources>
+            <source>
+              <directory>${project.basedir}/src/main/java</directory>
+              <includes>
+                <include>**/*.groovy</include>
+              </includes>
+            </source>
+          </sources>
+          <testSources>
+            <testSource>
+              <directory>${project.basedir}/src/test/java</directory>
+              <includes>
+                <include>**/*.groovy</include>
+              </includes>
+            </testSource>
+          </testSources>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>addSources</goal>
+              <goal>addTestSources</goal>
+              <goal>compile</goal>
+<!--              <goal>compileTests</goal>-->
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

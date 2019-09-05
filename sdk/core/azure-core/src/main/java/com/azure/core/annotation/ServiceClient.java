@@ -19,13 +19,17 @@ public @interface ServiceClient {
     /**
      * The builder class that can construct an instance of this class.
      * All service clients are instantiated using a builder and this is a required field.
-     * Also, builders should be annotated with {@link ServiceClientBuilder}
+     * Also, builders should be annotated with {@link ServiceClientBuilder}.
+     *
+     * @return the classname of the builder that can create an instance of this class.
      */
     Class<?> builder();
 
     /**
      * Represents whether the network IO methods on this client will be performed asynchronously or
      * synchronously (i.e. blocking).
+     *
+     * @return {@code true} is the Service Client is asynchronous.
      */
     boolean isAsync() default false;
 

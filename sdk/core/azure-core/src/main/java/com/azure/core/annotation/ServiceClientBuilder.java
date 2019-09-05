@@ -18,6 +18,8 @@ public @interface ServiceClientBuilder {
 
     /**
      * An array of classes that this builder can build.
+     *
+     * @return An array of all classnames that this builder can create an instance of.
      */
     Class<?>[] serviceClients();
 }

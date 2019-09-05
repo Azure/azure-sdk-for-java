@@ -3,8 +3,6 @@
 
 package com.azure.core.annotation;
 
-import com.azure.core.annotation.ReturnType;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;

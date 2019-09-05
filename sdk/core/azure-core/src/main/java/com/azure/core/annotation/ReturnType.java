@@ -3,8 +3,6 @@
 
 package com.azure.core.annotation;
 
-import com.azure.core.annotation.ServiceMethod;
-
 /**
  * Enumeration of return types used with {@link ServiceMethod} annotation to indicate if a
  * method is expected to return a single item or a collection

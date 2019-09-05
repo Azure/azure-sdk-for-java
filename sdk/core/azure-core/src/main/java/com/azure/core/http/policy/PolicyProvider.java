@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.core.http.policy;
 
-import com.azure.core.http.policy.HttpPipelinePolicy;
-
 /**
  * Implementing classes automatically provide policies.
  */
