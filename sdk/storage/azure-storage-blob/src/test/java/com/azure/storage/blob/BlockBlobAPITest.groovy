@@ -11,7 +11,8 @@ import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.rest.Response
-import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobAccessConditions
 import com.azure.storage.blob.models.BlobHTTPHeaders
 import com.azure.storage.blob.models.BlobRange
@@ -544,7 +545,7 @@ class BlockBlobAPITest extends APISpec {
         String leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
 
         when:
-        bc.listBlocksWithResponse(BlockListType.ALL, new LeaseAccessConditions().leaseId(leaseID), null)
+        bc.listBlocksWithResponse(BlockListType.ALL, new LeaseAccessConditions().leaseId(leaseID), null, Context.NONE)
 
         then:
         notThrown(StorageException)
@@ -555,7 +556,7 @@ class BlockBlobAPITest extends APISpec {
         setupBlobLeaseCondition(bc, garbageLeaseID)
 
         when:
-        bc.listBlocksWithResponse(BlockListType.ALL, new LeaseAccessConditions().leaseId(garbageLeaseID), null)
+        bc.listBlocksWithResponse(BlockListType.ALL, new LeaseAccessConditions().leaseId(garbageLeaseID), null, Context.NONE)
 
         then:
         def e = thrown(StorageException)
