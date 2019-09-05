@@ -22,11 +22,9 @@ cd <swagger-folder>
 autorest --use=C:/work/autorest.java --use=C:/work/autorest.modeler --version=2.0.4280
 ```
 
-Due to limitations, after generation has completed add the `@JsonDeserialize(using = CustomHierarchicalListingDeserializer.class)` annotation to `BlobHierarchyListSegment`.
-
 ### Code generation settings
 ``` yaml
-input-file: ./blob-2019-02-02.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2019-02-02/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -868,3 +866,19 @@ directive:
       $.put.parameters.splice(1, 0, { "$ref": path + "Path" });
     }
 ```
+
+### Add the CustomHierarchicalListingDeserializer attribute
+``` yaml
+directive:
+- from: BlobHierarchyListSegment.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "import com.fasterxml.jackson.annotation.JsonProperty;",
+        "import com.fasterxml.jackson.annotation.JsonProperty;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;").
+      replace(
+        "public final class BlobHierarchyListSegment {",
+        "@JsonDeserialize(using = CustomHierarchicalListingDeserializer.class)\npublic final class BlobHierarchyListSegment {");
+```
+

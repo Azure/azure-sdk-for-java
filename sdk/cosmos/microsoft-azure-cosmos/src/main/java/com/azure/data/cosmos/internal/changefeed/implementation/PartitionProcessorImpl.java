@@ -16,10 +16,13 @@ import com.azure.data.cosmos.internal.changefeed.ProcessorSettings;
 import com.azure.data.cosmos.internal.changefeed.exceptions.PartitionNotFoundException;
 import com.azure.data.cosmos.internal.changefeed.exceptions.PartitionSplitException;
 import com.azure.data.cosmos.internal.changefeed.exceptions.TaskCancelledException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.List;
+import java.time.ZonedDateTime;
 
 import static com.azure.data.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
 
@@ -27,16 +30,19 @@ import static com.azure.data.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInt
  * Implementation for {@link PartitionProcessor}.
  */
 class PartitionProcessorImpl implements PartitionProcessor {
+    private static final Logger logger = LoggerFactory.getLogger(PartitionProcessorImpl.class);
+
     private static final int DefaultMaxItemCount = 100;
-    // private final Observable<FeedResponse<Document>> query;
     private final ProcessorSettings settings;
     private final PartitionCheckpointer checkpointer;
     private final ChangeFeedObserver observer;
     private final ChangeFeedOptions options;
     private final ChangeFeedContextClient documentClient;
-    private RuntimeException resultException;
+    private volatile RuntimeException resultException;
 
-    private String lastContinuation;
+    private volatile String lastContinuation;
+    private volatile boolean isFirstQueryForChangeFeeds;
+
 
     public PartitionProcessorImpl(ChangeFeedObserver observer, ChangeFeedContextClient documentClient, ProcessorSettings settings, PartitionCheckpointer checkpointer) {
         this.observer = observer;
@@ -51,95 +57,113 @@ class PartitionProcessorImpl implements PartitionProcessor {
         this.options.startFromBeginning(settings.isStartFromBeginning());
         this.options.requestContinuation(settings.getStartContinuation());
         this.options.startDateTime(settings.getStartTime());
-
-        //this.query = documentClient.createDocumentChangeFeedQuery(self.properties.getCollectionSelfLink(), this.options);
     }
 
     @Override
     public Mono<Void> run(CancellationToken cancellationToken) {
-        PartitionProcessorImpl self = this;
         this.lastContinuation = this.settings.getStartContinuation();
+        this.isFirstQueryForChangeFeeds = true;
 
-        return Mono.fromRunnable( () -> {
-            while (!cancellationToken.isCancellationRequested()) {
-                Duration delay = self.settings.getFeedPollDelay();
+        this.options.requestContinuation(this.lastContinuation);
 
-                try {
-                    self.options.requestContinuation(self.lastContinuation);
-                    List<FeedResponse<CosmosItemProperties>> documentFeedResponseList = self.documentClient.createDocumentChangeFeedQuery(self.settings.getCollectionSelfLink(), self.options)
-                        .collectList()
-                        .block();
-
-                    for (FeedResponse<CosmosItemProperties> documentFeedResponse : documentFeedResponseList) {
-                        self.lastContinuation = documentFeedResponse.continuationToken();
-                        if (documentFeedResponse.results() != null && documentFeedResponse.results().size() > 0) {
-                            self.dispatchChanges(documentFeedResponse);
-                        }
-
-                        self.options.requestContinuation(self.lastContinuation);
-
-                        if (cancellationToken.isCancellationRequested()) {
-                            // Observation was cancelled.
-                            throw new TaskCancelledException();
-                        }
-                    }
-
-                    if (this.options.maxItemCount().compareTo(this.settings.getMaxItemCount()) == 0) {
-                        this.options.maxItemCount(this.settings.getMaxItemCount());   // Reset after successful execution.
-                    }
-                } catch (RuntimeException ex) {
-                    if (ex.getCause() instanceof CosmosClientException) {
-
-                        CosmosClientException clientException = (CosmosClientException) ex.getCause();
-                        // this.logger.WarnException("exception: partition '{0}'", clientException, this.properties.PartitionKeyRangeId);
-                        StatusCodeErrorType docDbError = ExceptionClassifier.classifyClientException(clientException);
-
-                        switch (docDbError) {
-                            case PARTITION_NOT_FOUND: {
-                                self.resultException = new PartitionNotFoundException("Partition not found.", self.lastContinuation);
-                            }
-                            case PARTITION_SPLIT: {
-                                self.resultException = new PartitionSplitException("Partition split.", self.lastContinuation);
-                            }
-                            case UNDEFINED: {
-                                self.resultException = ex;
-                            }
-                            case MAX_ITEM_COUNT_TOO_LARGE: {
-                                if (this.options.maxItemCount() == null) {
-                                    this.options.maxItemCount(DefaultMaxItemCount);
-                                } else if (this.options.maxItemCount() <= 1) {
-                                    // this.logger.ErrorFormat("Cannot reduce maxItemCount further as it's already at {0}.", this.options.MaxItemCount);
-                                    throw ex;
-                                }
-
-                                this.options.maxItemCount(this.options.maxItemCount() / 2);
-                                // this.logger.WarnFormat("Reducing maxItemCount, new value: {0}.", this.options.MaxItemCount);
-                                break;
-                            }
-                            default: {
-                                // this.logger.Fatal($"Unrecognized DocDbError enum value {docDbError}");
-                                // Debug.Fail($"Unrecognized DocDbError enum value {docDbError}");
-                                self.resultException = ex;
-                            }
-                        }
-                    } else if (ex instanceof TaskCancelledException) {
-                        // this.logger.WarnException("exception: partition '{0}'", canceledException, this.properties.PartitionKeyRangeId);
-                        self.resultException = ex;
-                    }
+        return Flux.just(this)
+            .flatMap( value -> {
+                if (cancellationToken.isCancellationRequested()) {
+                    return Flux.empty();
                 }
 
-                long remainingWork = delay.toMillis();
-
-                try {
-                    while (!cancellationToken.isCancellationRequested() && remainingWork > 0) {
-                        Thread.sleep(100);
-                        remainingWork -= 100;
-                    }
-                } catch (InterruptedException iex) {
-                    // exception caught
+                if(this.isFirstQueryForChangeFeeds) {
+                    this.isFirstQueryForChangeFeeds = false;
+                    return Flux.just(value);
                 }
-            }
-        });
+
+                ZonedDateTime stopTimer = ZonedDateTime.now().plus(this.settings.getFeedPollDelay());
+                return Mono.just(value)
+                    .delayElement(Duration.ofMillis(100))
+                    .repeat( () -> {
+                        ZonedDateTime currentTime = ZonedDateTime.now();
+                        return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
+                    }).last();
+
+            })
+            .flatMap(value -> this.documentClient.createDocumentChangeFeedQuery(this.settings.getCollectionSelfLink(), this.options)
+                .limitRequest(1)
+            )
+            .flatMap(documentFeedResponse -> {
+                if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
+
+                this.lastContinuation = documentFeedResponse.continuationToken();
+                if (documentFeedResponse.results() != null && documentFeedResponse.results().size() > 0) {
+                    return this.dispatchChanges(documentFeedResponse)
+                        .doFinally( (Void) -> {
+                            this.options.requestContinuation(this.lastContinuation);
+
+                            if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
+                        }).flux();
+                }
+                this.options.requestContinuation(this.lastContinuation);
+
+                if (cancellationToken.isCancellationRequested()) {
+                    return Flux.error(new TaskCancelledException());
+                }
+
+                return Flux.empty();
+            })
+            .doOnComplete(() -> {
+                if (this.options.maxItemCount().compareTo(this.settings.getMaxItemCount()) != 0) {
+                    this.options.maxItemCount(this.settings.getMaxItemCount());   // Reset after successful execution.
+                }
+            })
+            .onErrorResume(throwable -> {
+                if (throwable instanceof CosmosClientException) {
+
+                    CosmosClientException clientException = (CosmosClientException) throwable;
+                    this.logger.warn("Exception: partition {}", this.options.partitionKey().getInternalPartitionKey(), clientException);
+                    StatusCodeErrorType docDbError = ExceptionClassifier.classifyClientException(clientException);
+
+                    switch (docDbError) {
+                        case PARTITION_NOT_FOUND: {
+                            this.resultException = new PartitionNotFoundException("Partition not found.", this.lastContinuation);
+                        }
+                        case PARTITION_SPLIT: {
+                            this.resultException = new PartitionSplitException("Partition split.", this.lastContinuation);
+                        }
+                        case UNDEFINED: {
+                            this.resultException = new RuntimeException(clientException);
+                        }
+                        case MAX_ITEM_COUNT_TOO_LARGE: {
+                            if (this.options.maxItemCount() == null) {
+                                this.options.maxItemCount(DefaultMaxItemCount);
+                            } else if (this.options.maxItemCount() <= 1) {
+                                this.logger.error("Cannot reduce maxItemCount further as it's already at {}", this.options.maxItemCount(), clientException);
+                                this.resultException = new RuntimeException(clientException);
+                            }
+
+                            this.options.maxItemCount(this.options.maxItemCount() / 2);
+                            this.logger.warn("Reducing maxItemCount, new value: {}", this.options.maxItemCount());
+                            return Flux.empty();
+                        }
+                        default: {
+                            this.logger.error("Unrecognized DocDbError enum value {}", docDbError, clientException);
+                            this.resultException = new RuntimeException(clientException);
+                        }
+                    }
+                } else if (throwable instanceof TaskCancelledException) {
+                    this.logger.debug("Exception: partition {}", this.settings.getPartitionKeyRangeId(), throwable);
+                    this.resultException = (TaskCancelledException) throwable;
+                }
+                return Flux.error(throwable);
+            })
+            .repeat(() -> {
+                if (cancellationToken.isCancellationRequested()) {
+                    this.resultException = new TaskCancelledException();
+                    return false;
+                }
+
+                return true;
+            })
+            .onErrorResume(throwable -> Flux.empty())
+            .then();
     }
 
     @Override
@@ -147,9 +171,10 @@ class PartitionProcessorImpl implements PartitionProcessor {
         return this.resultException;
     }
 
-    private void dispatchChanges(FeedResponse<CosmosItemProperties> response) {
+    private Mono<Void> dispatchChanges(FeedResponse<CosmosItemProperties> response) {
         ChangeFeedObserverContext context = new ChangeFeedObserverContextImpl(this.settings.getPartitionKeyRangeId(), response, this.checkpointer);
 
         this.observer.processChanges(context, response.results());
+        return Mono.empty();
     }
 }

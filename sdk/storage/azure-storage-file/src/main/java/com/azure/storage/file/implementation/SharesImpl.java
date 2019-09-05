@@ -21,10 +21,12 @@ import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.util.Context;
 import com.azure.storage.file.models.DeleteSnapshotsOptionType;
+import com.azure.storage.file.models.SharesCreatePermissionResponse;
 import com.azure.storage.file.models.SharesCreateResponse;
 import com.azure.storage.file.models.SharesCreateSnapshotResponse;
 import com.azure.storage.file.models.SharesDeleteResponse;
 import com.azure.storage.file.models.SharesGetAccessPolicyResponse;
+import com.azure.storage.file.models.SharesGetPermissionResponse;
 import com.azure.storage.file.models.SharesGetPropertiesResponse;
 import com.azure.storage.file.models.SharesGetStatisticsResponse;
 import com.azure.storage.file.models.SharesSetAccessPolicyResponse;
@@ -32,9 +34,10 @@ import com.azure.storage.file.models.SharesSetMetadataResponse;
 import com.azure.storage.file.models.SharesSetQuotaResponse;
 import com.azure.storage.file.models.SignedIdentifier;
 import com.azure.storage.file.models.StorageErrorException;
+import reactor.core.publisher.Mono;
+
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -87,6 +90,16 @@ public final class SharesImpl {
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<SharesCreateSnapshotResponse> createSnapshot(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+
+        @Put("{shareName}")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Mono<SharesCreatePermissionResponse> createPermission(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+
+        @Get("{shareName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Mono<SharesGetPermissionResponse> getPermission(@HostParam("url") String url, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Put("{shareName}")
         @ExpectedResponses({200})
@@ -246,6 +259,70 @@ public final class SharesImpl {
         final String restype = "share";
         final String comp = "snapshot";
         return service.createSnapshot(shareName, this.client.getUrl(), timeout, metadata, this.client.getVersion(), restype, comp, context);
+    }
+
+    /**
+     * Create a permission (a security descriptor).
+     *
+     * @param shareName The name of the target share.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SharesCreatePermissionResponse> createPermissionWithRestResponseAsync(String shareName, Context context) {
+        final Integer timeout = null;
+        final String restype = "share";
+        final String comp = "filepermission";
+        return service.createPermission(shareName, this.client.getUrl(), timeout, this.client.getVersion(), restype, comp, context);
+    }
+
+    /**
+     * Create a permission (a security descriptor).
+     *
+     * @param shareName The name of the target share.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SharesCreatePermissionResponse> createPermissionWithRestResponseAsync(String shareName, Integer timeout, Context context) {
+        final String restype = "share";
+        final String comp = "filepermission";
+        return service.createPermission(shareName, this.client.getUrl(), timeout, this.client.getVersion(), restype, comp, context);
+    }
+
+    /**
+     * Returns the permission (security descriptor) for a given key.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SharesGetPermissionResponse> getPermissionWithRestResponseAsync(Context context) {
+        final String filePermissionKey = null;
+        final Integer timeout = null;
+        final String restype = "share";
+        final String comp = "filepermission";
+        return service.getPermission(this.client.getUrl(), filePermissionKey, timeout, this.client.getVersion(), restype, comp, context);
+    }
+
+    /**
+     * Returns the permission (security descriptor) for a given key.
+     *
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SharesGetPermissionResponse> getPermissionWithRestResponseAsync(String filePermissionKey, Integer timeout, Context context) {
+        final String restype = "share";
+        final String comp = "filepermission";
+        return service.getPermission(this.client.getUrl(), filePermissionKey, timeout, this.client.getVersion(), restype, comp, context);
     }
 
     /**

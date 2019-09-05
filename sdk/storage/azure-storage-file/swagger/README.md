@@ -24,7 +24,7 @@ autorest --use=C:/work/autorest.java --use=C:/work/autorest.modeler --version=2.
 
 ### Code generation settings
 ``` yaml
-input-file: ./file-2018-11-09.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.FileStorage/preview/2019-02-02/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file
@@ -75,7 +75,7 @@ directive:
     }
 ```
 
-### FileServiceProperties
+### /?restype=service&comp=properties
 ``` yaml
 directive:
 - from: swagger-document
@@ -123,6 +123,19 @@ directive:
         $.put.parameters.splice(0, 0, { "$ref": path });
         $.get.parameters.splice(0, 0, { "$ref": path });
         $.delete.parameters.splice(0, 0, { "$ref": path });
+    }
+```
+
+### /{shareName}?restype=share&comp=filepermission
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=filepermission"]
+  transform: >
+    let param = $.put.parameters[0];
+    if (!param["$ref"].endsWith("ShareName")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
+        $.put.parameters.splice(0, 0, { "$ref": path });
     }
 ```
 
@@ -209,6 +222,30 @@ directive:
         op.delete.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.delete.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
         delete $["/{shareName}/{directory}?restype=directory"];
+        op.put.responses["201"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.put.responses["201"].headers["x-ms-file-change-time"].format = "date-time";
+        op.get.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.get.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.get.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
+    }
+```
+
+### /{shareName}/{directoryPath}?restype=directory&comp=properties
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    if (!$["/{shareName}/{directoryPath}?restype=directory&comp=properties"]) {
+        const op = $["/{shareName}/{directoryPath}?restype=directory&comp=properties"] = $["/{shareName}/{directory}?restype=directory&comp=properties"];
+        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
+        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
+        op.put.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
+        delete $["/{shareName}/{directory}?restype=directory&comp=properties"];
+        op.put.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.put.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.put.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
     }
 ```
 
@@ -291,6 +328,18 @@ directive:
         op.delete.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.delete.parameters.splice(1, 0, { "$ref": path + "FilePath" });
         delete $["/{shareName}/{directory}/{fileName}"];
+        op.put.responses["201"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.put.responses["201"].headers["x-ms-file-change-time"].format = "date-time";
+        op.get.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.get.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.get.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
+        op.get.responses["206"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.get.responses["206"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.get.responses["206"].headers["x-ms-file-change-time"].format = "date-time";
+        op.head.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.head.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.head.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
     }
 ```
 
@@ -306,6 +355,9 @@ directive:
         op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
         delete $["/{shareName}/{directory}/{fileName}?comp=properties"];
+        op.put.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.put.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.put.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
     }
 ```
 
@@ -336,6 +388,21 @@ directive:
         op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
         delete $["/{shareName}/{directory}/{fileName}?comp=range"];
+    }
+```
+
+### /{shareName}/{filePath}?comp=range&fromURL
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    if (!$["/{shareName}/{filePath}?comp=range&fromURL"]) {
+        const op = $["/{shareName}/{filePath}?comp=range&fromURL"] = $["/{shareName}/{directory}/{fileName}?comp=range&fromURL"];
+        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
+        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
+        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
+        delete $["/{shareName}/{directory}/{fileName}?comp=range&fromURL"];
     }
 ```
 
@@ -442,5 +509,29 @@ directive:
 - from: swagger-document
   where: $.parameters.ApiVersionParameter
   transform: >
-    $.enum = [ "2018-11-09" ];
+    $.enum = [ "2019-02-02" ];
+```
+
+### Convert FileCreationTime and FileLastWriteTime to String to Support 'now'
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.FileCreationTime
+  transform: >
+    delete $.format;
+- from: swagger-document
+  where: $.parameters.FileLastWriteTime
+  transform: >
+    delete $.format;
+```
+
+### FileRangeWriteFromUrl Constant
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.FileRangeWriteFromUrl
+  transform: >
+    delete $.default;
+    delete $["x-ms-enum"];
+    $["x-ms-parameter-location"] = "method";
 ```

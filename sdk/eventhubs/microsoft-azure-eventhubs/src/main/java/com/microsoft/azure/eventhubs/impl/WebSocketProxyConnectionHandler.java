@@ -3,6 +3,8 @@
 
 package com.microsoft.azure.eventhubs.impl;
 
+import com.microsoft.azure.eventhubs.ProxyConfiguration;
+import com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType;
 import com.microsoft.azure.proton.transport.proxy.ProxyHandler;
 import com.microsoft.azure.proton.transport.proxy.impl.ProxyHandlerImpl;
 import com.microsoft.azure.proton.transport.proxy.impl.ProxyImpl;
@@ -21,13 +23,18 @@ import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
 public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(WebSocketProxyConnectionHandler.class);
-    private final String proxySelectorModifiedError = "ProxySelector has been modified.";
+    private static final String PROXY_SELECTOR_HAS_BEEN_MODIFIED = "ProxySelector has been modified.";
+    private final ProxyConfiguration proxyConfiguration;
 
     public static Boolean shouldUseProxy(final String hostName) {
+        Objects.requireNonNull(hostName);
+
         final URI uri = createURIFromHostNamePort(hostName, ClientConstants.HTTPS_PORT);
+
         final ProxySelector proxySelector = ProxySelector.getDefault();
         if (proxySelector == null) {
             return false;
@@ -37,15 +44,26 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         return isProxyAddressLegal(proxies);
     }
 
-    public WebSocketProxyConnectionHandler(AmqpConnection amqpConnection) {
+    /**
+     * Creates a WebSocket proxy connection handler for the {@code amqpConnection} and {@code proxyConfiguration}.
+     *
+     * @param amqpConnection AMQP connection to the service.
+     * @param proxyConfiguration Required. Proxy configuration to use.
+     * @throws NullPointerException if {@code proxyConfiguration} is {@code null}.
+     */
+    public WebSocketProxyConnectionHandler(AmqpConnection amqpConnection, ProxyConfiguration proxyConfiguration) {
         super(amqpConnection);
+
+        this.proxyConfiguration = proxyConfiguration;
     }
 
     @Override
     protected void addTransportLayers(final Event event, final TransportInternal transport) {
         super.addTransportLayers(event, transport);
 
-        final ProxyImpl proxy = new ProxyImpl();
+        final ProxyImpl proxy = proxyConfiguration != null
+            ? new ProxyImpl(getProtonConfiguration(proxyConfiguration))
+            : new ProxyImpl();
 
         // host name used to create proxy connect request
         // after creating the socket to proxy
@@ -71,11 +89,13 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         final ErrorCondition errorCondition = transport.getCondition();
         final String hostName = event.getReactor().getConnectionAddress(connection);
         final ProxySelector proxySelector = ProxySelector.getDefault();
+        final boolean isProxyConfigured = proxySelector != null
+            || (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured());
 
         if (errorCondition == null
                 || !(errorCondition.getCondition().equals(ConnectionError.FRAMING_ERROR)
                         || errorCondition.getCondition().equals(AmqpErrorCode.PROTON_IO_ERROR))
-                || proxySelector == null
+                || !isProxyConfigured
                 || StringUtil.isNullOrEmpty(hostName)) {
             return;
         }
@@ -93,10 +113,16 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         }
 
         final IOException ioException = reconstructIOException(errorCondition);
-        proxySelector.connectFailed(
-                createURIFromHostNamePort(this.getAmqpConnection().getHostName(), this.getProtocolPort()),
-                new InetSocketAddress(hostNameParts[0], port),
-                ioException);
+        final URI url = createURIFromHostNamePort(this.getAmqpConnection().getHostName(), this.getProtocolPort());
+        final InetSocketAddress address = new InetSocketAddress(hostNameParts[0], port);
+
+        if (TRACE_LOGGER.isErrorEnabled()) {
+            TRACE_LOGGER.error(String.format("Failed to connect to url: '%s', proxy host: '%s'", url.toString(), address.getHostString()), ioException);
+        }
+
+        if (proxySelector != null) {
+            proxySelector.connectFailed(url, address, ioException);
+        }
     }
 
     @Override
@@ -112,17 +138,21 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
     }
 
     private InetSocketAddress getProxyAddress() {
+        if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()) {
+            return (InetSocketAddress) proxyConfiguration.proxyAddress().address();
+        }
+
         final URI serviceUri = createURIFromHostNamePort(
                 this.getAmqpConnection().getHostName(),
                 this.getProtocolPort());
         final ProxySelector proxySelector = ProxySelector.getDefault();
         if (proxySelector == null) {
-            throw new IllegalStateException(proxySelectorModifiedError);
+            throw new IllegalStateException(PROXY_SELECTOR_HAS_BEEN_MODIFIED);
         }
 
         final List<Proxy> proxies = proxySelector.select(serviceUri);
         if (!isProxyAddressLegal(proxies)) {
-            throw new IllegalStateException(proxySelectorModifiedError);
+            throw new IllegalStateException(PROXY_SELECTOR_HAS_BEEN_MODIFIED);
         }
 
         final Proxy proxy = proxies.get(0);
@@ -150,5 +180,30 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         // it swallows the IOException and translates it to proton-io errorCode
         // we reconstruct the IOException in this case - but, callstack is lost
         return new IOException(errorCondition.getDescription());
+    }
+
+    private static com.microsoft.azure.proton.transport.proxy.ProxyConfiguration getProtonConfiguration(ProxyConfiguration configuration) {
+        final ProxyAuthenticationType type = getProtonAuthenticationType(configuration.authentication());
+        final String username = configuration.hasUserDefinedCredentials()
+            ? configuration.credentials().getUserName()
+            : null;
+        final String password = configuration.hasUserDefinedCredentials()
+            ? new String(configuration.credentials().getPassword())
+            : null;
+
+        return new com.microsoft.azure.proton.transport.proxy.ProxyConfiguration(type, configuration.proxyAddress(), username, password);
+    }
+
+    private static ProxyAuthenticationType getProtonAuthenticationType(ProxyConfiguration.ProxyAuthenticationType type) {
+        switch (type) {
+            case DIGEST:
+                return ProxyAuthenticationType.DIGEST;
+            case BASIC:
+                return ProxyAuthenticationType.BASIC;
+            case NONE:
+                return ProxyAuthenticationType.NONE;
+            default:
+                throw new IllegalArgumentException("This authentication type is unknown:" + type.name());
+        }
     }
 }

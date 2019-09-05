@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
@@ -20,7 +21,6 @@ import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -43,7 +43,7 @@ import java.util.List;
  * Docs</a> for more information on containers.
  */
 public final class ContainerClient {
-    private ContainerAsyncClient containerAsyncClient;
+    private final ContainerAsyncClient containerAsyncClient;
 
     public static final String ROOT_CONTAINER_NAME = ContainerAsyncClient.ROOT_CONTAINER_NAME;
 
@@ -387,7 +387,7 @@ public final class ContainerClient {
 
     /**
      * Returns a lazy loaded list of blobs in this container, with folder structures flattened. The returned {@link
-     * Iterable} can be iterated through while new items are automatically retrieved as needed.
+     * PagedIterable} can be consumed through while new items are automatically retrieved as needed.
      *
      * <p>
      * Blob names are returned in lexicographic order.
@@ -397,13 +397,13 @@ public final class ContainerClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      * @return The listed blobs, flattened.
      */
-    public Iterable<BlobItem> listBlobsFlat() {
+    public PagedIterable<BlobItem> listBlobsFlat() {
         return this.listBlobsFlat(new ListBlobsOptions(), null);
     }
 
     /**
      * Returns a lazy loaded list of blobs in this container, with folder structures flattened. The returned {@link
-     * Iterable} can be iterated through while new items are automatically retrieved as needed.
+     * PagedIterable} can be consumed through while new items are automatically retrieved as needed.
      *
      * <p>
      * Blob names are returned in lexicographic order.
@@ -416,10 +416,8 @@ public final class ContainerClient {
      *
      * @return The listed blobs, flattened.
      */
-    public Iterable<BlobItem> listBlobsFlat(ListBlobsOptions options, Duration timeout) {
-        Flux<BlobItem> response = containerAsyncClient.listBlobsFlat(options);
-
-        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
+    public PagedIterable<BlobItem> listBlobsFlat(ListBlobsOptions options, Duration timeout) {
+        return new PagedIterable<>(containerAsyncClient.listBlobsFlatWithOptionalTimeout(options, timeout));
     }
 
     /**
@@ -449,7 +447,7 @@ public final class ContainerClient {
      *
      * @return A reactive response emitting the prefixes and blobs.
      */
-    public Iterable<BlobItem> listBlobsHierarchy(String directory) {
+    public PagedIterable<BlobItem> listBlobsHierarchy(String directory) {
         return this.listBlobsHierarchy("/", new ListBlobsOptions().prefix(directory), null);
     }
 
@@ -482,10 +480,8 @@ public final class ContainerClient {
      *
      * @return A reactive response emitting the prefixes and blobs.
      */
-    public Iterable<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
-        Flux<BlobItem> response = containerAsyncClient.listBlobsHierarchy(delimiter, options);
-
-        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
+    public PagedIterable<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
+        return new PagedIterable<>(containerAsyncClient.listBlobsHierarchyWithOptionalTimeout(delimiter, options, timeout));
     }
 
     /**
@@ -695,7 +691,7 @@ public final class ContainerClient {
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-                                            ContainerSASPermission permissions, OffsetDateTime expiryTime) {
+        ContainerSASPermission permissions, OffsetDateTime expiryTime) {
         return this.containerAsyncClient.generateUserDelegationSAS(userDelegationKey, accountName, permissions,
             expiryTime);
     }
@@ -714,8 +710,8 @@ public final class ContainerClient {
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-                                            ContainerSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-                                            SASProtocol sasProtocol, IPRange ipRange) {
+        ContainerSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        SASProtocol sasProtocol, IPRange ipRange) {
         return this.containerAsyncClient.generateUserDelegationSAS(userDelegationKey, accountName, permissions,
             expiryTime, startTime, version, sasProtocol, ipRange);
     }
@@ -739,9 +735,9 @@ public final class ContainerClient {
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-                                            ContainerSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-                                            SASProtocol sasProtocol, IPRange ipRange, String cacheControl, String contentDisposition,
-                                            String contentEncoding, String contentLanguage, String contentType) {
+        ContainerSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        SASProtocol sasProtocol, IPRange ipRange, String cacheControl, String contentDisposition,
+        String contentEncoding, String contentLanguage, String contentType) {
         return this.containerAsyncClient.generateUserDelegationSAS(userDelegationKey, accountName, permissions,
             expiryTime, startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
             contentLanguage, contentType);
@@ -781,7 +777,7 @@ public final class ContainerClient {
      * @return A string that represents the SAS token
      */
     public String generateSAS(String identifier, ContainerSASPermission permissions, OffsetDateTime expiryTime,
-                              OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
+        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
         return this.containerAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version,
             sasProtocol, ipRange);
     }
@@ -804,8 +800,8 @@ public final class ContainerClient {
      * @return A string that represents the SAS token
      */
     public String generateSAS(String identifier, ContainerSASPermission permissions, OffsetDateTime expiryTime,
-                              OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
-                              String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
+        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
+        String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
         return this.containerAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version,
             sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
     }

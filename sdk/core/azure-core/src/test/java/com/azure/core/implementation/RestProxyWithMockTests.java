@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation;
 
+import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.implementation.annotation.BodyParam;
 import com.azure.core.implementation.annotation.ExpectedResponses;
 import com.azure.core.implementation.annotation.Get;
@@ -18,9 +19,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.MockHttpClient;
+import com.azure.core.http.clients.MockHttpClient;
 import com.azure.core.http.MockHttpResponse;
-import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -40,7 +40,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -328,7 +327,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         ResponseBase<HeaderCollectionTypePackagePrivateFields, Void> packagePrivateFields();
     }
 
-    private static final HttpClient HEADER_COLLECTION_HTTP_CLIENT = new MockHttpClient() {
+    private static final HttpClient HEADER_COLLECTION_HTTP_CLIENT = new NoOpHttpClient() {
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             final HttpHeaders headers = new HttpHeaders().put("name", "Phillip")
@@ -336,7 +335,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
                 .put("header-collection-prefix-two", "2")
                 .put("header-collection-prefix-three", "3");
             final MockHttpResponse response = new MockHttpResponse(request, 200, headers);
-            return Mono.<HttpResponse>just(response);
+            return Mono.just(response);
         }
     };
 
@@ -425,21 +424,6 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
         @Override
         public abstract Mono<HttpResponse> send(HttpRequest request);
-
-        @Override
-        public HttpClient proxy(Supplier<ProxyOptions> proxyOptions) {
-            throw new IllegalStateException("MockHttpClient.proxy not implemented.");
-        }
-
-        @Override
-        public HttpClient wiretap(boolean enableWiretap) {
-            throw new IllegalStateException("MockHttpClient.wiretap not implemented.");
-        }
-
-        @Override
-        public HttpClient port(int port) {
-            throw new IllegalStateException("MockHttpClient.port not implemented.");
-        }
     }
 
 

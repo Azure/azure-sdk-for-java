@@ -7,7 +7,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.implementation.http.PagedResponseBase;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -85,6 +84,23 @@ public class PagedFluxTest {
     }
 
     @Test
+    public void testPagedFluxSubscribeToPagesWithSinglePageResultWithoutNextPageRetriever() throws MalformedURLException {
+        PagedFlux<Integer> pagedFlux = getIntegerPagedFluxSinglePage();
+        StepVerifier.create(pagedFlux.byPage().log())
+            .expectNext(pagedResponses.get(0))
+            .verifyComplete();
+
+        pagedFlux = getIntegerPagedFluxSinglePage();
+        StepVerifier.create(pagedFlux.byPage(null).log())
+            .verifyComplete();
+
+        pagedFlux = getIntegerPagedFluxSinglePage();
+        StepVerifier.create(pagedFlux.log())
+            .expectNext(0, 1, 2)
+            .verifyComplete();
+    }
+
+    @Test
     public void testPagedFluxSubscribeToPagesWithTwoPages() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(2);
         StepVerifier.create(pagedFlux.byPage().log())
@@ -124,9 +140,23 @@ public class PagedFluxTest {
             continuationToken -> getNextPage(continuationToken, pagedResponses));
     }
 
+    private PagedFlux<Integer> getIntegerPagedFluxSinglePage() throws MalformedURLException {
+        HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
+            .put("header2", "value2");
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
+
+        String deserializedHeaders = "header1,value1,header2,value2";
+        pagedResponses = IntStream.range(0, 1)
+            .boxed()
+            .map(i -> createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, i, 1))
+            .collect(Collectors.toList());
+
+        return new PagedFlux<>(() -> pagedResponses.isEmpty() ? Mono.empty() : Mono.just(pagedResponses.get(0)));
+    }
+
     private PagedResponseBase<String, Integer> createPagedResponse(HttpRequest httpRequest,
         HttpHeaders httpHeaders, String deserializedHeaders, int i, int noOfPages) {
-        return new PagedResponseBase<>(httpRequest, HttpResponseStatus.OK.code(),
+        return new PagedResponseBase<>(httpRequest, 200,
             httpHeaders,
             getItems(i),
             i < noOfPages - 1 ? String.valueOf(i + 1) : null,

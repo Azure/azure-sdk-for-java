@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatedirectoryerror44617f32834228?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D72829BF8614AB\"",
+      "Last-Modified" : "Sat, 24 Aug 2019 00:26:46 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "799c28e1-e01a-00d9-7512-5a965a000000",
+      "Date" : "Sat, 24 Aug 2019 00:26:46 GMT",
+      "x-ms-client-request-id" : "3047eefd-5ee1-4b99-b190-303cb555ead9"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatedirectoryerror68209aca543bde/directoryapitestscreatedirectoryerror1771122b60bdf5?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "217",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "799c28e4-e01a-00d9-7612-5a965a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:799c28e4-e01a-00d9-7612-5a965a000000\nTime:2019-08-24T00:26:46.8650490Z</Message></Error>",
+      "Date" : "Sat, 24 Aug 2019 00:26:46 GMT",
+      "x-ms-client-request-id" : "6ff17057-8782-4401-9938-494bf629bcd3",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "directoryapitestscreatedirectoryerror44617f32834228", "directoryapitestscreatedirectoryerror1771122b60bdf5", "directoryapitestscreatedirectoryerror68209aca543bde" ]
+}

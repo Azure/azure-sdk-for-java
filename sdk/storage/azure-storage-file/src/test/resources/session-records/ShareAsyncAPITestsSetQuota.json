@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestssetquota8122246c2ce41c6524e?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D72829DDD487BA\"",
+      "Last-Modified" : "Sat, 24 Aug 2019 00:27:37 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "ab179c8c-201a-00cf-4812-5a57c4000000",
+      "Date" : "Sat, 24 Aug 2019 00:27:36 GMT",
+      "x-ms-client-request-id" : "eda6f34e-696d-451a-ac68-1658d75002a8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareasyncapitestssetquota8122246c2ce41c6524e" ]
+}

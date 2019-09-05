@@ -173,7 +173,7 @@ public final class PollerJavaDocCodeSnippets {
 
         Poller<String> myPoller = null;
 
-        // BEGIN: com.azure.core.util.polling.poller.poll
+        // BEGIN: com.azure.core.util.polling.poller.poll-manually
         myPoller.setAutoPollingEnabled(false);
         PollResponse<String> pollResponse = null;
         // We assume that we get SUCCESSFULLY_COMPLETED status from pollOperation when polling is complete.
@@ -187,7 +187,7 @@ public final class PollerJavaDocCodeSnippets {
             }
         }
         System.out.println("Polling complete with status  " + myPoller.getStatus().toString());
-        // END: com.azure.core.util.polling.poller.poll
+        // END: com.azure.core.util.polling.poller.poll-manually
     }
 
     /**
@@ -197,7 +197,7 @@ public final class PollerJavaDocCodeSnippets {
 
         Poller<String> myPoller = null;
 
-        // BEGIN: com.azure.core.util.polling.poller.poll.indepth
+        // BEGIN: com.azure.core.util.polling.poller.poll-indepth
         // Turn off auto polling and this code will take control of polling
         myPoller.setAutoPollingEnabled(false);
 
@@ -216,6 +216,6 @@ public final class PollerJavaDocCodeSnippets {
             }
         }
         System.out.println("Polling complete with status  " + myPoller.getStatus().toString());
-        // END: com.azure.core.util.polling.poller.poll.indepth
+        // END: com.azure.core.util.polling.poller.poll-indepth
     }
 }

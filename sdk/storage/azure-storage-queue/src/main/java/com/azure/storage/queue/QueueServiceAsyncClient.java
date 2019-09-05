@@ -2,15 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.AccountSASPermission;
+import com.azure.storage.common.AccountSASResourceType;
+import com.azure.storage.common.AccountSASService;
+import com.azure.storage.common.AccountSASSignatureValues;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.CorsRule;
 import com.azure.storage.queue.models.ListQueuesIncludeType;
@@ -18,7 +24,7 @@ import com.azure.storage.queue.models.ListQueuesSegmentResponse;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.ServicesListQueuesSegmentResponse;
-import com.azure.storage.queue.models.StorageErrorException;
+import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
 import reactor.core.publisher.Flux;
@@ -26,9 +32,14 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
+import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.queue.PostProcessor.postProcessResponse;
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue account in Azure Storage.
@@ -47,7 +58,7 @@ import java.util.Map;
  * @see SASTokenCredential
  */
 public final class QueueServiceAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(QueueServiceAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(QueueServiceAsyncClient.class);
     private final AzureQueueStorageImpl client;
 
     /**
@@ -57,10 +68,8 @@ public final class QueueServiceAsyncClient {
      * @param endpoint URL for the Storage Queue service
      * @param httpPipeline HttpPipeline that the HTTP requests and response flow through
      */
-    QueueServiceAsyncClient(URL endpoint, HttpPipeline httpPipeline) {
-        this.client = new AzureQueueStorageBuilder().pipeline(httpPipeline)
-            .url(endpoint.toString())
-            .build();
+    QueueServiceAsyncClient(AzureQueueStorageImpl azureQueueStorage) {
+        this.client = azureQueueStorage;
     }
 
     /**
@@ -71,8 +80,8 @@ public final class QueueServiceAsyncClient {
         try {
             return new URL(client.getUrl());
         } catch (MalformedURLException ex) {
-            LOGGER.error("Queue Service URL is malformed");
-            throw new RuntimeException("Storage account URL is malformed");
+            logger.error("Queue Service URL is malformed");
+            throw logger.logExceptionAsError(new RuntimeException("Storage account URL is malformed"));
         }
     }
 
@@ -99,11 +108,11 @@ public final class QueueServiceAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.createQueue#string}
      *
      * @param queueName Name of the queue
-     * @return A response containing the QueueAsyncClient and the status of creating the queue
-     * @throws StorageErrorException If a queue with the same name and different metadata already exists
+     * @return The {@link QueueAsyncClient QueueAsyncClient}
+     * @throws StorageException If a queue with the same name and different metadata already exists
      */
-    public Mono<Response<QueueAsyncClient>> createQueue(String queueName) {
-        return createQueue(queueName, null);
+    public Mono<QueueAsyncClient> createQueue(String queueName) {
+        return createQueueWithResponse(queueName, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -114,17 +123,22 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Create the queue "test" with metadata "queue:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.createQueue#string-map}
+     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.createQueueWithResponse#string-map}
      *
      * @param queueName Name of the queue
      * @param metadata Metadata to associate with the queue
-     * @return A response containing the QueueAsyncClient and the status of creating the queue
-     * @throws StorageErrorException If a queue with the same name and different metadata already exists
+     * @return A response containing the {@link QueueAsyncClient QueueAsyncClient} and the status of creating the queue
+     * @throws StorageException If a queue with the same name and different metadata already exists
      */
-    public Mono<Response<QueueAsyncClient>> createQueue(String queueName, Map<String, String> metadata) {
+    public Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata) {
+        Objects.requireNonNull(queueName);
+        return withContext(context -> createQueueWithResponse(queueName, metadata, context));
+    }
+
+    Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata, Context context) {
         QueueAsyncClient queueAsyncClient = new QueueAsyncClient(client, queueName);
 
-        return queueAsyncClient.create(metadata)
+        return postProcessResponse(queueAsyncClient.createWithResponse(metadata, context))
             .map(response -> new SimpleResponse<>(response, queueAsyncClient));
     }
 
@@ -138,11 +152,32 @@ public final class QueueServiceAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.deleteQueue#string}
      *
      * @param queueName Name of the queue
-     * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If the queue doesn't exist
+     * @return An empty response
+     * @throws StorageException If the queue doesn't exist
      */
-    public Mono<VoidResponse> deleteQueue(String queueName) {
-        return new QueueAsyncClient(client, queueName).delete();
+    public Mono<Void> deleteQueue(String queueName) {
+        return deleteQueueWithResponse(queueName).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes a queue in the storage account
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the queue "test"</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.deleteQueueWithResponse#string}
+     *
+     * @param queueName Name of the queue
+     * @return A response that only contains headers and response status code
+     * @throws StorageException If the queue doesn't exist
+     */
+    public Mono<VoidResponse> deleteQueueWithResponse(String queueName) {
+        return withContext(context -> deleteQueueWithResponse(queueName, context));
+    }
+
+    Mono<VoidResponse> deleteQueueWithResponse(String queueName, Context context) {
+        return new QueueAsyncClient(client, queueName).deleteWithResponse(context);
     }
 
     /**
@@ -250,10 +285,33 @@ public final class QueueServiceAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-properties">Azure Docs</a>.</p>
      *
-     * @return Storage account Queue service properties
+     * @return Storage account {@link StorageServiceProperties Queue service properties}
      */
-    public Mono<Response<StorageServiceProperties>> getProperties() {
-        return client.services().getPropertiesWithRestResponseAsync(Context.NONE)
+    public Mono<StorageServiceProperties> getProperties() {
+        return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Retrieves the properties of the storage account's Queue service. The properties range from storage analytics and
+     * metric to CORS (Cross-Origin Resource Sharing).
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve Queue service properties</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.getPropertiesWithResponse}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-properties">Azure Docs</a>.</p>
+     *
+     * @return A response containing the Storage account {@link StorageServiceProperties Queue service properties}
+     */
+    public Mono<Response<StorageServiceProperties>> getPropertiesWithResponse() {
+        return withContext(this::getPropertiesWithResponse);
+    }
+
+    Mono<Response<StorageServiceProperties>> getPropertiesWithResponse(Context context) {
+        return postProcessResponse(client.services().getPropertiesWithRestResponseAsync(context))
             .map(response -> new SimpleResponse<>(response, response.value()));
     }
 
@@ -278,8 +336,8 @@ public final class QueueServiceAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure Docs</a>.</p>
      *
      * @param properties Storage account Queue service properties
-     * @return A response that only contains headers and response status code
-     * @throws StorageErrorException When one of the following is true
+     * @return An empty response
+     * @throws StorageException When one of the following is true
      * <ul>
      *     <li>A CORS rule is missing one of its fields</li>
      *     <li>More than five CORS rules will exist for the Queue service</li>
@@ -291,8 +349,50 @@ public final class QueueServiceAsyncClient {
      *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
      * </ul>
      */
-    public Mono<VoidResponse> setProperties(StorageServiceProperties properties) {
-        return client.services().setPropertiesWithRestResponseAsync(properties, Context.NONE)
+    public Mono<Void> setProperties(StorageServiceProperties properties) {
+        return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Sets the properties for the storage account's Queue service. The properties range from storage analytics and
+     * metric to CORS (Cross-Origin Resource Sharing).
+     *
+     * To maintain the CORS in the Queue service pass a {@code null} value for {@link StorageServiceProperties#cors() CORS}.
+     * To disable all CORS in the Queue service pass an empty list for {@link StorageServiceProperties#cors() CORS}.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p>Clear CORS in the Queue service</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponse#storageServiceProperties}
+     *
+     * <p>Enable Minute and Hour Metrics</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponseEnableMetrics#storageServiceProperties}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure Docs</a>.</p>
+     *
+     * @param properties Storage account Queue service properties
+     * @return A response that only contains headers and response status code
+     * @throws StorageException When one of the following is true
+     * <ul>
+     *     <li>A CORS rule is missing one of its fields</li>
+     *     <li>More than five CORS rules will exist for the Queue service</li>
+     *     <li>Size of all CORS rules exceeds 2KB</li>
+     *     <li>
+     *         Length of {@link CorsRule#allowedHeaders() allowed headers}, {@link CorsRule#exposedHeaders() exposed headers},
+     *         or {@link CorsRule#allowedOrigins() allowed origins} exceeds 256 characters.
+     *     </li>
+     *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
+     * </ul>
+     */
+    public Mono<VoidResponse> setPropertiesWithResponse(StorageServiceProperties properties) {
+        return withContext(context -> setPropertiesWithResponse(properties, context));
+    }
+
+    Mono<VoidResponse> setPropertiesWithResponse(StorageServiceProperties properties, Context context) {
+        return postProcessResponse(client.services().setPropertiesWithRestResponseAsync(properties, context))
             .map(VoidResponse::new);
     }
 
@@ -310,8 +410,69 @@ public final class QueueServiceAsyncClient {
      *
      * @return The geo replication information about the Queue service
      */
-    public Mono<Response<StorageServiceStats>> getStatistics() {
-        return client.services().getStatisticsWithRestResponseAsync(Context.NONE)
+    public Mono<StorageServiceStats> getStatistics() {
+        return getStatisticsWithResponse().flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Retrieves the geo replication information about the Queue service.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve the geo replication information</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.getStatisticsWithResponse}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
+     *
+     * @return A response containing the geo replication information about the Queue service
+     */
+    public Mono<Response<StorageServiceStats>> getStatisticsWithResponse() {
+        return withContext(this::getStatisticsWithResponse);
+    }
+
+    Mono<Response<StorageServiceStats>> getStatisticsWithResponse(Context context) {
+        return postProcessResponse(client.services().getStatisticsWithRestResponseAsync(context))
             .map(response -> new SimpleResponse<>(response, response.value()));
+    }
+
+    /**
+     * Generates an account SAS token with the specified parameters
+     *
+     * @param accountSASService The {@code AccountSASService} services for the account SAS
+     * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
+     * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
+        return this.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime,
+            null /* startTime */, null /* version */, null /* ipRange */, null /* sasProtocol */);
+    }
+
+    /**
+     * Generates an account SAS token with the specified parameters
+     *
+     * @param accountSASService The {@code AccountSASService} services for the account SAS
+     * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
+     * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
+     * @param startTime The {@code OffsetDateTime} start time for the account SAS
+     * @param version The {@code String} version for the account SAS
+     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version, IPRange ipRange,
+        SASProtocol sasProtocol) {
+
+        SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.client.getHttpPipeline());
+        Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
+
+        return AccountSASSignatureValues.generateAccountSAS(sharedKeyCredential, accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
+
     }
 }

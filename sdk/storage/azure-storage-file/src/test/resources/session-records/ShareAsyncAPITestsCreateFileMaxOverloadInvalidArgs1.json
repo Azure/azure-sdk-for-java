@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefilemaxoverloadinvalidargs132385c4?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D72C1517B16615\"",
+      "Last-Modified" : "Thu, 29 Aug 2019 00:08:59 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "7f7371ce-f01a-00cd-7afd-5d553e000000",
+      "Date" : "Thu, 29 Aug 2019 00:08:59 GMT",
+      "x-ms-client-request-id" : "ba1df396-d1ab-452d-93dd-7937f79f592b"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefilemaxoverloadinvalidargs132385c4/fileName",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "OutOfRangeInput",
+      "retry-after" : "0",
+      "Content-Length" : "236",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "7f7371d0-f01a-00cd-7bfd-5d553e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The file size exceeds the maximum permissible limit.\nRequestId:7f7371d0-f01a-00cd-7bfd-5d553e000000\nTime:2019-08-29T00:09:00.4686689Z</Message></Error>",
+      "Date" : "Thu, 29 Aug 2019 00:09:00 GMT",
+      "x-ms-client-request-id" : "8c54e1c8-9dbb-4cbf-a36f-10121cf60092",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareasyncapitestscreatefilemaxoverloadinvalidargs132385c4" ]
+}

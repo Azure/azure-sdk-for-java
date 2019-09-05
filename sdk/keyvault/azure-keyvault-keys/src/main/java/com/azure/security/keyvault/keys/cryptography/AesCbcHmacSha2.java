@@ -309,15 +309,15 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
     public ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] authenticationData, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
 
         if (key == null) {
-            throw new IllegalArgumentException("No key material");
+            throw logger.logExceptionAsError(new IllegalArgumentException("No key material"));
         }
 
         if (iv == null) {
-            throw new IllegalArgumentException("No initialization vector");
+            throw logger.logExceptionAsError(new IllegalArgumentException("No initialization vector"));
         }
 
         if (authenticationData == null) {
-            throw new IllegalArgumentException("No authentication data");
+            throw logger.logExceptionAsError(new IllegalArgumentException("No authentication data"));
         }
 
         // Create the Encryptor

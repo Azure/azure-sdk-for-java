@@ -12,7 +12,7 @@ public final class DecryptResult {
     /**
      * The decrypted content.
      */
-    private byte[] plainText;
+    private final byte[] plainText;
 
     /**
      * Creates the instance of Decrypt Result holding decrypted content.

@@ -35,12 +35,15 @@ import com.azure.storage.file.models.FilesListHandlesResponse;
 import com.azure.storage.file.models.FilesSetHTTPHeadersResponse;
 import com.azure.storage.file.models.FilesSetMetadataResponse;
 import com.azure.storage.file.models.FilesStartCopyResponse;
+import com.azure.storage.file.models.FilesUploadRangeFromURLResponse;
 import com.azure.storage.file.models.FilesUploadRangeResponse;
+import com.azure.storage.file.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.models.StorageErrorException;
-import io.netty.buffer.ByteBuf;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
+import java.util.Map;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -74,64 +77,69 @@ public final class FilesImpl {
     @Host("{url}")
     @ServiceInterface(name = "AzureFileStorageFiles")
     private interface FilesService {
-        @Put("{shareName}/{filePath}")
+        @Put("{shareName}/{resourcePath}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesCreateResponse> create(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") long fileContentLength, @HeaderParam("x-ms-type") String fileTypeConstant, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-content-type") String fileContentType, @HeaderParam("x-ms-content-encoding") String fileContentEncoding, @HeaderParam("x-ms-content-language") String fileContentLanguage, @HeaderParam("x-ms-cache-control") String fileCacheControl, @HeaderParam("x-ms-content-md5") String fileContentMD5, @HeaderParam("x-ms-content-disposition") String fileContentDisposition, Context context);
+        Mono<FilesCreateResponse> create(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") long fileContentLength, @HeaderParam("x-ms-type") String fileTypeConstant, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") String fileCreationTime, @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime, @HeaderParam("x-ms-content-type") String fileContentType, @HeaderParam("x-ms-content-encoding") String fileContentEncoding, @HeaderParam("x-ms-content-language") String fileContentLanguage, @HeaderParam("x-ms-cache-control") String fileCacheControl, @HeaderParam("x-ms-content-md5") String fileContentMD5, @HeaderParam("x-ms-content-disposition") String fileContentDisposition, Context context);
 
-        @Get("{shareName}/{filePath}")
+        @Get("{shareName}/{resourcePath}")
         @ExpectedResponses({200, 206})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesDownloadResponse> download(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5, Context context);
+        Mono<FilesDownloadResponse> download(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5, Context context);
 
-        @Head("{shareName}/{filePath}")
+        @Head("{shareName}/{resourcePath}")
         @ExpectedResponses({200})
-        Mono<FilesGetPropertiesResponse> getProperties(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, Context context);
+        Mono<FilesGetPropertiesResponse> getProperties(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, Context context);
 
-        @Delete("{shareName}/{filePath}")
+        @Delete("{shareName}/{resourcePath}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesDeleteResponse> delete(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, Context context);
+        Mono<FilesDeleteResponse> delete(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, Context context);
 
-        @Put("{shareName}/{filePath}")
+        @Put("{shareName}/{resourcePath}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesSetHTTPHeadersResponse> setHTTPHeaders(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") Long fileContentLength, @QueryParam("comp") String comp, @HeaderParam("x-ms-content-type") String fileContentType, @HeaderParam("x-ms-content-encoding") String fileContentEncoding, @HeaderParam("x-ms-content-language") String fileContentLanguage, @HeaderParam("x-ms-cache-control") String fileCacheControl, @HeaderParam("x-ms-content-md5") String fileContentMD5, @HeaderParam("x-ms-content-disposition") String fileContentDisposition, Context context);
+        Mono<FilesSetHTTPHeadersResponse> setHTTPHeaders(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") Long fileContentLength, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") String fileCreationTime, @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime, @QueryParam("comp") String comp, @HeaderParam("x-ms-content-type") String fileContentType, @HeaderParam("x-ms-content-encoding") String fileContentEncoding, @HeaderParam("x-ms-content-language") String fileContentLanguage, @HeaderParam("x-ms-cache-control") String fileCacheControl, @HeaderParam("x-ms-content-md5") String fileContentMD5, @HeaderParam("x-ms-content-disposition") String fileContentDisposition, Context context);
 
-        @Put("{shareName}/{filePath}")
+        @Put("{shareName}/{resourcePath}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesSetMetadataResponse> setMetadata(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
+        Mono<FilesSetMetadataResponse> setMetadata(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
 
-        @Put("{shareName}/{filePath}")
+        @Put("{shareName}/{resourcePath}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesUploadRangeResponse> uploadRange(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @BodyParam("application/octet-stream") Flux<ByteBuf> optionalbody, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-write") FileRangeWriteType fileRangeWrite, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-MD5") String contentMD5, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
+        Mono<FilesUploadRangeResponse> uploadRange(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-write") FileRangeWriteType fileRangeWrite, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-MD5") String contentMD5, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
 
-        @Get("{shareName}/{filePath}")
+        @Put("{shareName}/{resourcePath}")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Mono<FilesUploadRangeFromURLResponse> uploadRangeFromURL(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-copy-source") String copySource, @HeaderParam("x-ms-source-range") String sourceRange, @HeaderParam("x-ms-write") String fileRangeWriteFromUrl, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-source-content-crc64") String sourceContentCrc64, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, @HeaderParam("x-ms-source-if-match-crc64") String sourceIfMatchCrc64, @HeaderParam("x-ms-source-if-none-match-crc64") String sourceIfNoneMatchCrc64, Context context);
+
+        @Get("{shareName}/{resourcePath}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesGetRangeListResponse> getRangeList(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range, @QueryParam("comp") String comp, Context context);
+        Mono<FilesGetRangeListResponse> getRangeList(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range, @QueryParam("comp") String comp, Context context);
 
-        @Put("{shareName}/{filePath}")
+        @Put("{shareName}/{resourcePath}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesStartCopyResponse> startCopy(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-copy-source") String copySource, Context context);
+        Mono<FilesStartCopyResponse> startCopy(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-copy-source") String copySource, Context context);
 
-        @Put("{shareName}/{filePath}")
+        @Put("{shareName}/{resourcePath}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesAbortCopyResponse> abortCopy(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("copyid") String copyId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-copy-action") String copyActionAbortConstant, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
+        Mono<FilesAbortCopyResponse> abortCopy(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("copyid") String copyId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-copy-action") String copyActionAbortConstant, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
 
-        @Get("{shareName}/{filePath}")
+        @Get("{shareName}/{resourcePath}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesListHandlesResponse> listHandles(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("timeout") Integer timeout, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
+        Mono<FilesListHandlesResponse> listHandles(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("timeout") Integer timeout, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
 
-        @Put("{shareName}/{filePath}")
+        @Put("{shareName}/{resourcePath}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesForceCloseHandlesResponse> forceCloseHandles(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("marker") String marker, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-handle-id") String handleId, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
+        Mono<FilesForceCloseHandlesResponse> forceCloseHandles(@PathParam("shareName") String shareName, @PathParam("resourcePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("marker") String marker, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-handle-id") String handleId, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
     }
 
     /**
@@ -140,22 +148,27 @@ public final class FilesImpl {
      * @param shareName The name of the target share.
      * @param filePath The path of the target file.
      * @param fileContentLength Specifies the maximum size for the file, up to 1 TB.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesCreateResponse> createWithRestResponseAsync(String shareName, String filePath, long fileContentLength, Context context) {
+    public Mono<FilesCreateResponse> createWithRestResponseAsync(String shareName, String filePath, long fileContentLength, String fileAttributes, String fileCreationTime, String fileLastWriteTime, Context context) {
         final Integer timeout = null;
         final String fileTypeConstant = "file";
         final Map<String, String> metadata = null;
+        final String filePermission = null;
+        final String filePermissionKey = null;
         final String fileContentType = null;
         final String fileContentEncoding = null;
         final String fileContentLanguage = null;
         final String fileCacheControl = null;
         final String fileContentDisposition = null;
         String fileContentMD5Converted = null;
-        return service.create(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, metadata, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
+        return service.create(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
     }
 
     /**
@@ -164,15 +177,20 @@ public final class FilesImpl {
      * @param shareName The name of the target share.
      * @param filePath The path of the target file.
      * @param fileContentLength Specifies the maximum size for the file, up to 1 TB.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileHTTPHeaders Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesCreateResponse> createWithRestResponseAsync(String shareName, String filePath, long fileContentLength, Integer timeout, Map<String, String> metadata, FileHTTPHeaders fileHTTPHeaders, Context context) {
+    public Mono<FilesCreateResponse> createWithRestResponseAsync(String shareName, String filePath, long fileContentLength, String fileAttributes, String fileCreationTime, String fileLastWriteTime, Integer timeout, Map<String, String> metadata, String filePermission, String filePermissionKey, FileHTTPHeaders fileHTTPHeaders, Context context) {
         final String fileTypeConstant = "file";
         String fileContentType = null;
         if (fileHTTPHeaders != null) {
@@ -199,7 +217,7 @@ public final class FilesImpl {
             fileContentDisposition = fileHTTPHeaders.fileContentDisposition();
         }
         String fileContentMD5Converted = Base64Util.encodeToString(fileContentMD5);
-        return service.create(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, metadata, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
+        return service.create(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
     }
 
     /**
@@ -303,14 +321,19 @@ public final class FilesImpl {
      *
      * @param shareName The name of the target share.
      * @param filePath The path of the target file.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesSetHTTPHeadersResponse> setHTTPHeadersWithRestResponseAsync(String shareName, String filePath, Context context) {
+    public Mono<FilesSetHTTPHeadersResponse> setHTTPHeadersWithRestResponseAsync(String shareName, String filePath, String fileAttributes, String fileCreationTime, String fileLastWriteTime, Context context) {
         final Integer timeout = null;
         final Long fileContentLength = null;
+        final String filePermission = null;
+        final String filePermissionKey = null;
         final String comp = "properties";
         final String fileContentType = null;
         final String fileContentEncoding = null;
@@ -318,7 +341,7 @@ public final class FilesImpl {
         final String fileCacheControl = null;
         final String fileContentDisposition = null;
         String fileContentMD5Converted = null;
-        return service.setHTTPHeaders(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
+        return service.setHTTPHeaders(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
     }
 
     /**
@@ -326,15 +349,20 @@ public final class FilesImpl {
      *
      * @param shareName The name of the target share.
      * @param filePath The path of the target file.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param fileContentLength Resizes a file to the specified size. If the specified byte value is less than the current size of the file, then all ranges above the specified byte value are cleared.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileHTTPHeaders Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesSetHTTPHeadersResponse> setHTTPHeadersWithRestResponseAsync(String shareName, String filePath, Integer timeout, Long fileContentLength, FileHTTPHeaders fileHTTPHeaders, Context context) {
+    public Mono<FilesSetHTTPHeadersResponse> setHTTPHeadersWithRestResponseAsync(String shareName, String filePath, String fileAttributes, String fileCreationTime, String fileLastWriteTime, Integer timeout, Long fileContentLength, String filePermission, String filePermissionKey, FileHTTPHeaders fileHTTPHeaders, Context context) {
         final String comp = "properties";
         String fileContentType = null;
         if (fileHTTPHeaders != null) {
@@ -361,7 +389,7 @@ public final class FilesImpl {
             fileContentDisposition = fileHTTPHeaders.fileContentDisposition();
         }
         String fileContentMD5Converted = Base64Util.encodeToString(fileContentMD5);
-        return service.setHTTPHeaders(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
+        return service.setHTTPHeaders(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
     }
 
     /**
@@ -412,7 +440,7 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesUploadRangeResponse> uploadRangeWithRestResponseAsync(String shareName, String filePath, String range, FileRangeWriteType fileRangeWrite, long contentLength, Context context) {
-        final Flux<ByteBuf> optionalbody = null;
+        final Flux<ByteBuffer> optionalbody = null;
         final Integer timeout = null;
         final String comp = "range";
         String contentMD5Converted = null;
@@ -435,10 +463,68 @@ public final class FilesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesUploadRangeResponse> uploadRangeWithRestResponseAsync(String shareName, String filePath, String range, FileRangeWriteType fileRangeWrite, long contentLength, Flux<ByteBuf> optionalbody, Integer timeout, byte[] contentMD5, Context context) {
+    public Mono<FilesUploadRangeResponse> uploadRangeWithRestResponseAsync(String shareName, String filePath, String range, FileRangeWriteType fileRangeWrite, long contentLength, Flux<ByteBuffer> optionalbody, Integer timeout, byte[] contentMD5, Context context) {
         final String comp = "range";
         String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         return service.uploadRange(shareName, filePath, this.client.getUrl(), optionalbody, timeout, range, fileRangeWrite, contentLength, contentMD5Converted, this.client.getVersion(), comp, context);
+    }
+
+    /**
+     * Upload a range of bytes to a file where the contents are read from a URL.
+     *
+     * @param shareName The name of the target share.
+     * @param filePath The path of the target file.
+     * @param range Writes data to the specified byte range in the file.
+     * @param copySource Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another file within the same storage account, you may use Shared Key to authenticate the source file. If you are copying a file from another storage account, or if you are copying a blob from the same storage account or another storage account, then you must authenticate the source file or blob using a shared access signature. If the source is a public blob, no authentication is required to perform the copy operation. A file in a share snapshot can also be specified as a copy source.
+     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write header is set to clear, the value of this header must be set to zero.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FilesUploadRangeFromURLResponse> uploadRangeFromURLWithRestResponseAsync(String shareName, String filePath, String range, String copySource, long contentLength, Context context) {
+        final Integer timeout = null;
+        final String sourceRange = null;
+        final String fileRangeWriteFromUrl = "update";
+        final String comp = "range";
+        String sourceContentCrc64Converted = null;
+        String sourceIfMatchCrc64Converted = null;
+        String sourceIfNoneMatchCrc64Converted = null;
+        return service.uploadRangeFromURL(shareName, filePath, this.client.getUrl(), timeout, range, copySource, sourceRange, fileRangeWriteFromUrl, contentLength, sourceContentCrc64Converted, this.client.getVersion(), comp, sourceIfMatchCrc64Converted, sourceIfNoneMatchCrc64Converted, context);
+    }
+
+    /**
+     * Upload a range of bytes to a file where the contents are read from a URL.
+     *
+     * @param shareName The name of the target share.
+     * @param filePath The path of the target file.
+     * @param range Writes data to the specified byte range in the file.
+     * @param copySource Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another file within the same storage account, you may use Shared Key to authenticate the source file. If you are copying a file from another storage account, or if you are copying a blob from the same storage account or another storage account, then you must authenticate the source file or blob using a shared access signature. If the source is a public blob, no authentication is required to perform the copy operation. A file in a share snapshot can also be specified as a copy source.
+     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write header is set to clear, the value of this header must be set to zero.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param sourceRange Bytes of source data in the specified range.
+     * @param sourceContentCrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy source.
+     * @param sourceModifiedAccessConditions Additional parameters for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FilesUploadRangeFromURLResponse> uploadRangeFromURLWithRestResponseAsync(String shareName, String filePath, String range, String copySource, long contentLength, Integer timeout, String sourceRange, byte[] sourceContentCrc64, SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
+        final String fileRangeWriteFromUrl = "update";
+        final String comp = "range";
+        byte[] sourceIfMatchCrc64 = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfMatchCrc64 = sourceModifiedAccessConditions.sourceIfMatchCrc64();
+        }
+        byte[] sourceIfNoneMatchCrc64 = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfNoneMatchCrc64 = sourceModifiedAccessConditions.sourceIfNoneMatchCrc64();
+        }
+        String sourceContentCrc64Converted = Base64Util.encodeToString(sourceContentCrc64);
+        String sourceIfMatchCrc64Converted = Base64Util.encodeToString(sourceIfMatchCrc64);
+        String sourceIfNoneMatchCrc64Converted = Base64Util.encodeToString(sourceIfNoneMatchCrc64);
+        return service.uploadRangeFromURL(shareName, filePath, this.client.getUrl(), timeout, range, copySource, sourceRange, fileRangeWriteFromUrl, contentLength, sourceContentCrc64Converted, this.client.getVersion(), comp, sourceIfMatchCrc64Converted, sourceIfNoneMatchCrc64Converted, context);
     }
 
     /**

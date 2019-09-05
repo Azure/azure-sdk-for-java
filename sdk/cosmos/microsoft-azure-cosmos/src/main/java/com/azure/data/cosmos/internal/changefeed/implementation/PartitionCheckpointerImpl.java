@@ -24,11 +24,10 @@ class PartitionCheckpointerImpl implements PartitionCheckpointer {
 
     @Override
     public Mono<Void> checkpointPartition(String сontinuationToken) {
-        PartitionCheckpointerImpl self = this;
         return this.leaseCheckpointer.checkpoint(this.lease, сontinuationToken)
             .map(lease1 -> {
-                self.lease = lease1;
-                logger.info(String.format("Checkpoint: partition %s, new continuation %s", self.lease.getLeaseToken(), self.lease.getContinuationToken()));
+                this.lease = lease1;
+                logger.info("Checkpoint: partition {}, new continuation {}", this.lease.getLeaseToken(), this.lease.getContinuationToken());
                 return lease1;
             })
             .then();

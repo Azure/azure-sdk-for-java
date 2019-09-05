@@ -1,0 +1,43 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestscreatefilewithargserror17690945320cead?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D728297CF02F70\"",
+      "Last-Modified" : "Sat, 24 Aug 2019 00:24:55 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "90b84561-201a-006e-4112-5a995f000000",
+      "Date" : "Sat, 24 Aug 2019 00:24:54 GMT",
+      "x-ms-client-request-id" : "08de7717-5e6c-4a6a-afe6-4b7f83bf428d"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestscreatefilewithargserror17690945320cead/fileapitestscreatefilewithargserror196898e81caa36e",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "AuthenticationFailed",
+      "retry-after" : "0",
+      "Content-Length" : "1046",
+      "StatusCode" : "403",
+      "x-ms-request-id" : "90b84563-201a-006e-4212-5a995f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:90b84563-201a-006e-4212-5a995f000000\nTime:2019-08-24T00:24:55.1861003Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'c4FekCXcIH4NSKFWaYIJQV+GcDCMpJw3El+a2yhpyEk=' is not the same as any computed signature. Server used following string to sign: 'PUT\n\n\n\n\n\nSat, 24 Aug 2019 00:24:55 GMT\n\n\n\n\n\nx-ms-client-request-id:22a5bf75-a069-4ced-988f-c5c4b39b1459\nx-ms-content-language:en\nx-ms-content-length:1024\nx-ms-content-type:application/octet-stream\nx-ms-file-attributes:None\nx-ms-file-creation-time:now\nx-ms-file-last-write-time:now\nx-ms-file-permission:inherit\nx-ms-meta-testmeta:value\nx-ms-type:file\nx-ms-version:2019-02-02\n/azstoragesdkaccount/fileapitestscreatefilewithargserror17690945320cead/fileapitestscreatefilewithargserror196898e81caa36e'.</AuthenticationErrorDetail></Error>",
+      "Date" : "Sat, 24 Aug 2019 00:24:54 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fileapitestscreatefilewithargserror17690945320cead", "fileapitestscreatefilewithargserror196898e81caa36e" ]
+}

@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatedirectorymetadataerror92514f73444a?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D72829B6A8C769\"",
+      "Last-Modified" : "Sat, 24 Aug 2019 00:26:31 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "28c90fdc-b01a-0060-7612-5a7554000000",
+      "Date" : "Sat, 24 Aug 2019 00:26:31 GMT",
+      "x-ms-client-request-id" : "d1244193-c3d8-4e29-9f4b-e3d8967ec1b4"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatedirectorymetadataerror92514f73444a/testdirectory?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "EmptyMetadataKey",
+      "retry-after" : "0",
+      "Content-Length" : "278",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "28c90fde-b01a-0060-7712-5a7554000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:28c90fde-b01a-0060-7712-5a7554000000\nTime:2019-08-24T00:26:31.9959555Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Sat, 24 Aug 2019 00:26:31 GMT",
+      "x-ms-client-request-id" : "55791ea9-3b92-4bb7-825f-976b0d17b549",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestscreatedirectorymetadataerror92514f73444a" ]
+}

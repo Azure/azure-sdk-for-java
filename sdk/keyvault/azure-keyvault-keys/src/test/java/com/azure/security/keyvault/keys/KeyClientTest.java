@@ -10,8 +10,8 @@ import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.KeyBase;
 import com.azure.security.keyvault.keys.models.KeyCreateOptions;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
-import io.netty.handler.codec.http.HttpResponseStatus;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +52,7 @@ public class KeyClientTest extends KeyClientTestBase {
      * Tests that an attempt to create a key with empty string name throws an error.
      */
     public void setKeyEmptyName() {
-        assertRestException(() -> client.createKey("", KeyType.RSA), ResourceModifiedException.class, HttpResponseStatus.BAD_REQUEST.code());
+        assertRestException(() -> client.createKey("", KeyType.RSA), ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
     }
 
     /**
@@ -60,7 +60,7 @@ public class KeyClientTest extends KeyClientTestBase {
      */
     public void setKeyNullType() {
         setKeyEmptyValueRunner((key) -> {
-            assertRestException(() -> client.createKey(key.name(), key.keyType()), ResourceModifiedException.class, HttpResponseStatus.BAD_REQUEST.code());
+            assertRestException(() -> client.createKey(key.name(), key.keyType()), ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
         });
     }
 
@@ -121,7 +121,7 @@ public class KeyClientTest extends KeyClientTestBase {
      * Tests that an attempt to get a non-existing key throws an error.
      */
     public void getKeyNotFound() {
-        assertRestException(() -> client.getKey("non-existing"),  ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
+        assertRestException(() -> client.getKey("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
@@ -142,7 +142,7 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     public void deleteKeyNotFound() {
-        assertRestException(() -> client.deleteKey("non-existing"), ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
+        assertRestException(() -> client.deleteKey("non-existing"), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
 
@@ -150,7 +150,7 @@ public class KeyClientTest extends KeyClientTestBase {
      * Tests that an attempt to retrieve a non existing deleted key throws an error on a soft-delete enabled vault.
      */
     public void getDeletedKeyNotFound() {
-        assertRestException(() -> client.getDeletedKey("non-existing"),  ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
+        assertRestException(() -> client.getDeletedKey("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
 
@@ -173,7 +173,7 @@ public class KeyClientTest extends KeyClientTestBase {
      * Tests that an attempt to recover a non existing deleted key throws an error on a soft-delete enabled vault.
      */
     public void recoverDeletedKeyNotFound() {
-        assertRestException(() -> client.recoverDeletedKey("non-existing"),  ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
+        assertRestException(() -> client.recoverDeletedKey("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
@@ -192,7 +192,7 @@ public class KeyClientTest extends KeyClientTestBase {
      * Tests that an attempt to backup a non existing key throws an error.
      */
     public void backupKeyNotFound() {
-        assertRestException(() -> client.backupKey("non-existing"),  ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
+        assertRestException(() -> client.backupKey("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
@@ -220,7 +220,7 @@ public class KeyClientTest extends KeyClientTestBase {
      */
     public void restoreKeyFromMalformedBackup() {
         byte[] keyBackupBytes = "non-existing".getBytes();
-        assertRestException(() -> client.restoreKey(keyBackupBytes), ResourceModifiedException.class, HttpResponseStatus.BAD_REQUEST.code());
+        assertRestException(() -> client.restoreKey(keyBackupBytes), ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
     }
 
     /**

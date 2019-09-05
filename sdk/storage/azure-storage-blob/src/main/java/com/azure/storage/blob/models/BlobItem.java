@@ -34,12 +34,6 @@ public final class BlobItem {
     private String snapshot;
 
     /*
-     * The versionId property.
-     */
-    @JsonProperty(value = "VersionId", required = true)
-    private String versionId;
-
-    /*
      * The properties property.
      */
     @JsonProperty(value = "Properties", required = true)
@@ -52,10 +46,10 @@ public final class BlobItem {
     private Map<String, String> metadata;
 
     /*
-     * The tags property.
+     * The versionId property.
      */
-    @JsonProperty(value = "Tags")
-    private BlobTags tags;
+    @JsonProperty(value = "VersionId", required = true)
+    private String versionId;
 
     /*
      * The isPrefix property.
@@ -124,26 +118,6 @@ public final class BlobItem {
     }
 
     /**
-     * Get the versionId property: The versionId property.
-     *
-     * @return the versionId value.
-     */
-    public String versionId() {
-        return this.versionId;
-    }
-
-    /**
-     * Set the versionId property: The versionId property.
-     *
-     * @param versionId the versionId value to set.
-     * @return the BlobItem object itself.
-     */
-    public BlobItem versionId(String versionId) {
-        this.versionId = versionId;
-        return this;
-    }
-
-    /**
      * Get the properties property: The properties property.
      *
      * @return the properties value.
@@ -184,22 +158,22 @@ public final class BlobItem {
     }
 
     /**
-     * Get the tags property: The tags property.
+     * Get the versionId property: The versionId property.
      *
-     * @return the tags value.
+     * @return the versionId value.
      */
-    public BlobTags tags() {
-        return this.tags;
+    public String versionId() {
+        return this.versionId;
     }
 
     /**
-     * Set the tags property: The tags property.
+     * Set the versionId property: The versionId property.
      *
-     * @param tags the tags value to set.
+     * @param versionId the versionId value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem tags(BlobTags tags) {
-        this.tags = tags;
+    public BlobItem versionId(String versionId) {
+        this.versionId = versionId;
         return this;
     }
 

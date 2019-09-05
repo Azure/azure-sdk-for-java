@@ -3,6 +3,8 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -15,7 +17,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 
 abstract class AesKw extends LocalKeyWrapAlgorithm {
-
     static final byte[] DEFAULT_IV = new byte[] { (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6 };
     static final String CIPHER_NAME = "AESWrap";
 
@@ -33,7 +34,7 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
 
             // The default provider does not support the specification of IV. This
             // is guarded by the CreateEncrypter wrapper method and the iv parameter
-            // can be ignored when using the default provider 
+            // can be ignored when using the default provider
             if (provider == null) {
                 cipher.init(Cipher.UNWRAP_MODE, new SecretKeySpec(key, "AES"));
             } else {
@@ -63,7 +64,7 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
 
             // The default provider does not support the specification of IV. This
             // is guarded by the CreateEncrypter wrapper method and the iv parameter
-            // can be ignored when using the default provider 
+            // can be ignored when using the default provider
             if (provider == null) {
                 cipher.init(Cipher.WRAP_MODE, new SecretKeySpec(key, "AES"));
             } else {
@@ -78,6 +79,8 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
         }
 
     }
+
+    private final ClientLogger logger = new ClientLogger(AesKw.class);
 
     protected AesKw(String name) {
         super(name);
@@ -105,21 +108,21 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
     public ICryptoTransform createEncryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
         if (key == null) {
-            throw new IllegalArgumentException("key");
+            throw logger.logExceptionAsError(new IllegalArgumentException("key"));
         }
 
         if (key.length != 128 >> 3 && key.length != 192 >> 3 && key.length != 256 >> 3) {
-            throw new IllegalArgumentException("key length must be 128, 192 or 256 bits");
+            throw logger.logExceptionAsError(new IllegalArgumentException("key length must be 128, 192 or 256 bits"));
         }
 
         if (iv != null) {
             // iv length must be 64 bits
             if (iv.length != 8) {
-                throw new IllegalArgumentException("iv length must be 64 bits");
+                throw logger.logExceptionAsError(new IllegalArgumentException("iv length must be 64 bits"));
             }
             // iv cannot be specified with the default provider
             if (provider == null) {
-                throw new IllegalArgumentException("user specified iv is not supported with the default provider");
+                throw logger.logExceptionAsError(new IllegalArgumentException("user specified iv is not supported with the default provider"));
             }
         }
 
@@ -148,22 +151,22 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
     public ICryptoTransform createDecryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
         if (key == null) {
-            throw new IllegalArgumentException("key");
+            throw logger.logExceptionAsError(new IllegalArgumentException("key"));
         }
 
         if (key.length != 128 >> 3 && key.length != 192 >> 3 && key.length != 256 >> 3) {
-            throw new IllegalArgumentException("key length must be 128, 192 or 256 bits");
+            throw logger.logExceptionAsError(new IllegalArgumentException("key length must be 128, 192 or 256 bits"));
         }
 
 
         if (iv != null) {
             // iv length must be 64 bits
             if (iv.length != 8) {
-                throw new IllegalArgumentException("iv length must be 64 bits");
+                throw logger.logExceptionAsError(new IllegalArgumentException("iv length must be 64 bits"));
             }
             // iv cannot be specified with the default provider
             if (provider == null) {
-                throw new IllegalArgumentException("user specified iv is not supported with the default provider");
+                throw logger.logExceptionAsError(new IllegalArgumentException("user specified iv is not supported with the default provider"));
             }
         }
 
