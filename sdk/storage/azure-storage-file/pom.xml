@@ -97,54 +97,33 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <skip>true</skip>
-        </configuration>
-        <!--        <dependencies>-->
-        <!--          <dependency>-->
-        <!--            <groupId>org.codehaus.groovy</groupId>-->
-        <!--            <artifactId>groovy-eclipse-compiler</artifactId>-->
-        <!--            <version>${groovy-eclipse-compiler.version}</version>-->
-        <!--          </dependency>-->
-        <!--          <dependency>-->
-        <!--            <groupId>org.codehaus.groovy</groupId>-->
-        <!--            <artifactId>groovy-eclipse-batch</artifactId>-->
-        <!--            <version>${groovy-eclipse-batch.version}</version>-->
-        <!--          </dependency>-->
-        <!--        </dependencies>-->
-      </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
-        <version>1.6.2</version>
-        <configuration>
-          <sources>
-            <source>
-              <directory>${project.basedir}/src/main/java</directory>
-              <includes>
-                <include>**/*.groovy</include>
-              </includes>
-            </source>
-          </sources>
-          <testSources>
-            <testSource>
-              <directory>${project.basedir}/src/test/java</directory>
-              <includes>
-                <include>**/*.groovy</include>
-              </includes>
-            </testSource>
-          </testSources>
+          <source>11</source>
+          <target>11</target>
         </configuration>
         <executions>
           <execution>
+            <id>test-compile</id>
+            <phase>process-test-sources</phase>
             <goals>
-              <goal>addSources</goal>
-              <goal>addTestSources</goal>
-              <goal>compile</goal>
-          <!--<goal>compileTests</goal>-->
+              <goal>testCompile</goal>
             </goals>
+            <configuration>
+              <compilerId>groovy-eclipse-compiler</compilerId>
+            </configuration>
           </execution>
         </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-eclipse-compiler</artifactId>
+            <version>${groovy-eclipse-compiler.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-eclipse-batch</artifactId>
+            <version>${groovy-eclipse-batch.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>
