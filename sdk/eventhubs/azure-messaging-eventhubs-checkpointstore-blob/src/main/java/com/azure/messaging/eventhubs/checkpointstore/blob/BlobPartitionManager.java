@@ -103,7 +103,8 @@ public class BlobPartitionManager implements PartitionManager {
 
                 Metadata metadata = new Metadata();
                 metadata.put(OWNER_ID, partitionOwnership.ownerId());
-                metadata.put(OFFSET, partitionOwnership.offset());
+                Long offset = partitionOwnership.offset();
+                metadata.put(OFFSET, offset == null ? null : String.valueOf(offset));
                 Long sequenceNumber = partitionOwnership.sequenceNumber();
                 metadata.put(SEQUENCE_NUMBER, sequenceNumber == null ? null : String.valueOf(sequenceNumber));
                 BlobAccessConditions blobAccessConditions = new BlobAccessConditions();
@@ -164,8 +165,9 @@ public class BlobPartitionManager implements PartitionManager {
         String sequenceNumber = checkpoint.sequenceNumber() == null ? null
             : String.valueOf(checkpoint.sequenceNumber());
 
+        String offset = checkpoint.offset() == null ? null : String.valueOf(checkpoint.offset());
         metadata.put(SEQUENCE_NUMBER, sequenceNumber);
-        metadata.put(OFFSET, checkpoint.offset());
+        metadata.put(OFFSET, offset);
         metadata.put(OWNER_ID, checkpoint.ownerId());
         BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
@@ -207,7 +209,7 @@ public class BlobPartitionManager implements PartitionManager {
                         partitionOwnership.sequenceNumber(Long.valueOf(entry.getValue()));
                         break;
                     case OFFSET:
-                        partitionOwnership.offset(entry.getValue());
+                        partitionOwnership.offset(Long.valueOf(entry.getValue()));
                         break;
                     default:
                         // do nothing, other metadata that we don't use

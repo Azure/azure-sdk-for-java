@@ -89,7 +89,7 @@ public class BlobPartitionManagerTest {
             .partitionId("0")
             .eTag("etag")
             .sequenceNumber(2L)
-            .offset("100");
+            .offset(100L);
 
         Map<String, String> headers = new HashMap<>();
         headers.put("eTag", "etag2");

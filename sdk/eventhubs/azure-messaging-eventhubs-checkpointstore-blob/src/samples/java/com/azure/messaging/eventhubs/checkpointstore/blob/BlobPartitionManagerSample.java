@@ -44,7 +44,7 @@ public class BlobPartitionManagerSample {
             .partitionId("0")
             .eTag("")
             .sequenceNumber(2L)
-            .offset("250");
+            .offset(250L);
         blobPartitionManager.updateCheckpoint(checkpoint)
             .subscribe(etag -> System.out.println(etag), error -> System.out
                 .println(error.getMessage()));
