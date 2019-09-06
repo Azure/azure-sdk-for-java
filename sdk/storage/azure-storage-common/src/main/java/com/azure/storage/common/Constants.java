@@ -86,6 +86,8 @@ public final class Constants {
 
         public static final String ENCRYPTION_KEY_SHA256 = "x-ms-encryption-key-sha256";
 
+        public static final String SERVER_ENCRYPTED = "x-ms-server-encrypted";
+
         public static final String REQUEST_SERVER_ENCRYPTED = "x-ms-request-server-encrypted";
 
         private HeaderConstants() {

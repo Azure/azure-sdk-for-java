@@ -37,6 +37,7 @@ public class AppendBlobItem {
     public AppendBlobItem(AppendBlobAppendBlockFromUrlHeaders generatedHeaders) {
         this.lastModified = generatedHeaders.lastModified();
         this.contentMD5 = generatedHeaders.contentMD5();
+        this.encryptionKeySha256 = generatedHeaders.encryptionKeySha256();
         this.blobAppendOffset = generatedHeaders.blobAppendOffset();
         this.blobCommittedBlockCount = generatedHeaders.blobCommittedBlockCount();
     }

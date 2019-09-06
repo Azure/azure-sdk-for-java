@@ -23,7 +23,7 @@ public class CustomerProvidedKey {
      * The algorithm for Azure Blob Storage to encrypt with.
      * Azure Blob Storage only offers AES256 encryption.
      */
-    private final String encryptionAlgorithm = "AES256";
+    private final EncryptionAlgorithmType encryptionAlgorithm = EncryptionAlgorithmType.AES256;
 
 
     /**
@@ -81,7 +81,7 @@ public class CustomerProvidedKey {
      *
      * @return A label for the encryption algorithm, as understood by Azure Storage.
      */
-    public String encryptionAlgorithm() {
+    public EncryptionAlgorithmType encryptionAlgorithm() {
         return encryptionAlgorithm;
     }
 }
