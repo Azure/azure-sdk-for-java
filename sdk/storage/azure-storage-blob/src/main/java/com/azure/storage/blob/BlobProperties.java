@@ -104,5 +104,4 @@ public final class BlobProperties {
     public OffsetDateTime lastModified() {
         return lastModified;
     }
-
 }

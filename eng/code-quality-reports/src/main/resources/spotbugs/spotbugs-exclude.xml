@@ -379,7 +379,6 @@
       <Package name="com.microsoft.azure.storage.blob"/>
       <Package name="com.azure.storage.file.models"/>
       <Class name="com.azure.storage.blob.HTTPGetterInfo"/>
-      <Class name="com.azure.storage.blob.BlobProperties"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>
