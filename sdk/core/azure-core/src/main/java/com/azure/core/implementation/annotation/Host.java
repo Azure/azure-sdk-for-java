@@ -14,8 +14,7 @@ import static java.lang.annotation.ElementType.TYPE;
  *
  * <p>This is the 'host' field or 'x-ms-parameterized-host.hostTemplate' field in a Swagger document. parameters are
  * enclosed in {}s, e.g. {accountName}. An HTTP client must accept the parameterized host as the base URL for the
- * request,
- * replacing the parameters during runtime with the actual values users provide.</p>
+ * request, replacing the parameters during runtime with the actual values users provide.</p>
  *
  * <p>For parameterized hosts, parameters annotated with {@link HostParam} must be provided. See Java docs in
  * {@link HostParam} for directions for host parameters.</p>
@@ -44,8 +43,8 @@ import static java.lang.annotation.ElementType.TYPE;
  *  }</pre>
  */
 @Target(value = {TYPE})
-@Retention(RetentionPolicy.RUNTIME)
 // Record this annotation in the class file and make it available during runtime.
+@Retention(RetentionPolicy.RUNTIME)
 public @interface Host {
     /**
      * Get the protocol/scheme, host, and optional port number in a single string.

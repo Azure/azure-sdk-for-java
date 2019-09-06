@@ -380,15 +380,15 @@ public final class AzureProxy extends RestProxy {
             || httpRequestMethod == HttpMethod.GET
             || httpRequestMethod == HttpMethod.HEAD
             || !methodParser.expectsResponseBody()) {
-            pollStrategyMono = Mono.<PollStrategy>just(new CompletedPollStrategy(
+            pollStrategyMono = Mono.just(new CompletedPollStrategy(
                 new CompletedPollStrategy.CompletedPollStrategyData(AzureProxy.this, methodParser, httpResponse)));
         } else {
             final HttpResponse bufferedOriginalHttpResponse = httpResponse.buffer();
             pollStrategyMono = bufferedOriginalHttpResponse.bodyAsString()
                 .map(originalHttpResponseBody -> {
                     if (originalHttpResponseBody == null || originalHttpResponseBody.isEmpty()) {
-                        throw logger.logExceptionAsError(new CloudException("The HTTP response does not contain a "
-                            + "body.", bufferedOriginalHttpResponse));
+                        throw logger.logExceptionAsError(new CloudException(
+                            "The HTTP response does not contain a body.", bufferedOriginalHttpResponse));
                     }
                     PollStrategy pollStrategy;
                     try {
