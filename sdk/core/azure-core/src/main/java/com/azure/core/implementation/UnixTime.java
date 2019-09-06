@@ -8,7 +8,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 /**
- * A wrapper over java.time.OffsetDateTime used for specifying unix seconds format during serialization and deserialization.
+ * A wrapper over java.time.OffsetDateTime used for specifying unix seconds format during serialization and
+ * deserialization.
  */
 public final class UnixTime {
     /**

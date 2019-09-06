@@ -27,7 +27,8 @@ public final class AuthorizationCodeListener {
         try {
             this.httpServer.start();
         } catch (IOException e) {
-            logger.error("Unable to start identity authorization code listener on port " + httpServer.getListeningPort(), e);
+            logger.error(
+                "Unable to start identity authorization code listener on port " + httpServer.getListeningPort(), e);
         }
     }
 
