@@ -8,6 +8,7 @@ import org.junit.*;
 
 import java.io.*;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 public class CacheLockTest {
 
@@ -24,8 +25,8 @@ public class CacheLockTest {
         java.nio.file.Path classes = java.nio.file.Paths.get(currDir, "target", "classes");
         java.nio.file.Path tests = java.nio.file.Paths.get(currDir, "target", "test-classes");
 
-        testerFilename = java.nio.file.Paths.get(currDir, "target", "tester.txt").toString();
-        lockfile = java.nio.file.Paths.get(currDir, "target", "testlock.lockfile").toString();
+        testerFilename = java.nio.file.Paths.get(home, "tester.txt").toString();
+        lockfile = java.nio.file.Paths.get(home, "testlock.lockfile").toString();
 
         String delimiter = ":";
         if (Platform.isWindows()) {
@@ -129,16 +130,16 @@ public class CacheLockTest {
         Process process9 = new ProcessBuilder(new String[]{"java", "-cp", folder, mainClass, Integer.toString(9), lockfile, testerFilename}).start();
         Process process10 = new ProcessBuilder(new String[]{"java", "-cp", folder, mainClass, Integer.toString(10), lockfile, testerFilename}).start();
 
-        process1.waitFor();
-        process2.waitFor();
-        process3.waitFor();
-        process4.waitFor();
-        process5.waitFor();
-        process6.waitFor();
-        process7.waitFor();
-        process8.waitFor();
-        process9.waitFor();
-        process10.waitFor();
+        waitForProcess(process1);
+        waitForProcess(process2);
+        waitForProcess(process3);
+        waitForProcess(process4);
+        waitForProcess(process5);
+        waitForProcess(process6);
+        waitForProcess(process7);
+        waitForProcess(process8);
+        waitForProcess(process9);
+        waitForProcess(process10);
 
         Stack<String> stack = new Stack<>();
         int popped = 0;
@@ -174,6 +175,12 @@ public class CacheLockTest {
         Assert.assertEquals("10 processes didn't write", popped, 10);
     }
 
+    private void waitForProcess(Process process) throws InterruptedException {
+        if (process.waitFor() != 0) {
+            throw new RuntimeException(new BufferedReader(new InputStreamReader(process.getErrorStream()))
+                .lines().collect(Collectors.joining("\n")));
+        }
+    }
 
     /*
      * Class to be used for testing threads
