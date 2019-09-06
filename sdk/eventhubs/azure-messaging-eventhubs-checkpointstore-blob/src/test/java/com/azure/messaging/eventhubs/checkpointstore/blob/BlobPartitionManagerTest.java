@@ -25,12 +25,14 @@ import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.Metadata;
+import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
@@ -101,6 +103,7 @@ public class BlobPartitionManagerTest {
     }
 
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testClaimOwnership() {
         PartitionOwnership po = createPartitionOwnership("eh", "cg", "0", "owner1");
@@ -110,9 +113,9 @@ public class BlobPartitionManagerTest {
 
         when(containerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
         when(blobAsyncClient.asBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
-        when(blockBlobAsyncClient.uploadWithResponse(any(Flux.class), eq(0L),
+        when(blockBlobAsyncClient.uploadWithResponse(ArgumentMatchers.<Flux<ByteBuffer>>any(), eq(0L),
             isNull(), any(Metadata.class), any(BlobAccessConditions.class)))
-            .thenReturn(Mono.just(new ResponseBase(null, 200, httpHeaders, null, null)));
+            .thenReturn(Mono.just(new ResponseBase<>(null, 200, httpHeaders, null, null)));
 
         BlobPartitionManager blobPartitionManager = new BlobPartitionManager(containerAsyncClient);
         StepVerifier.create(blobPartitionManager.claimOwnership(po))

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 
 <FindBugsFilter>
   <!-- These existing KeyVault Attribute APIs return their super class rather than the actual type. -->
@@ -380,6 +379,7 @@
       <Package name="com.microsoft.azure.storage.blob"/>
       <Package name="com.azure.storage.file.models"/>
       <Class name="com.azure.storage.blob.HTTPGetterInfo"/>
+      <Class name="com.azure.storage.blob.BlobProperties"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>
