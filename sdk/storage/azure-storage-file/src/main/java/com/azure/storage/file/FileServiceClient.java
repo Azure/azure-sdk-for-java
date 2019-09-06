@@ -112,17 +112,17 @@ public final class FileServiceClient {
      *
      * <p>List all shares that begin with "azure"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix-duration-context}
+     * {@codesnippet com.azure.storage.file.FileServiceClient.listShares#ListSharesOptions-Duration-Context1}
      *
      * <p>List all shares including their snapshots and metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot-duration-context}
+     * {@codesnippet com.azure.storage.file.FileServiceClient.listShares#ListSharesOptions-Duration-Context2}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-shares">Azure Docs</a>.</p>
      *
      * @param options Options for listing shares
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
@@ -162,7 +162,7 @@ public final class FileServiceClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file-service-properties">Azure Docs</a>.</p>
      *
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the Storage account {@link FileServiceProperties File service properties} with headers and response status code
      */
@@ -229,7 +229,7 @@ public final class FileServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-service-properties">Azure Docs</a>.</p>
      *
      * @param properties Storage account File service properties
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
      * @throws StorageException When one of the following is true
@@ -286,7 +286,7 @@ public final class FileServiceClient {
      * @param metadata Optional metadata to associate with the share
      * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
      * less than or equal to 5120. The default value is 5120.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link ShareClient ShareClient} and the status of creating the share.
      * @throws StorageException If a share with the same name already exists or {@code quotaInGB} is outside the
@@ -332,7 +332,7 @@ public final class FileServiceClient {
      *
      * @param shareName Name of the share
      * @param snapshot Identifier of the snapshot
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
      * @throws StorageException If the share doesn't exist or the snapshot doesn't exist

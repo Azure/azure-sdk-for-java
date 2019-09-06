@@ -105,7 +105,7 @@ public class FileClient {
      * @param httpHeaders Additional parameters for the operation.
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileInfo file info} and the status of creating the file.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or directory is an invalid resource name.
@@ -152,7 +152,7 @@ public class FileClient {
      * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileCopyInfo file copy info} and the status of copying the file.
      */
@@ -193,7 +193,7 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-file">Azure Docs</a>.</p>
      *
      * @param copyId Specifies the copy id which has copying pending status associate with it.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the status of aborting copy the file.
      */
@@ -270,14 +270,14 @@ public class FileClient {
      *
      * <p>Download the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.downloadWithPropertiesWithResponse#filerange-boolean-Context}
+     * {@codesnippet com.azure.storage.file.FileClient.downloadWithPropertiesWithResponse#FileRange-Boolean-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
      *
      * @param range Optional byte range which returns file data only from the specified range.
      * @param rangeGetContentMD5 Optional boolean which the service returns the MD5 hash for the range when it sets to true, as long as the range is less than or equal to 4 MB in size.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileDownloadInfo file download info} headers and response status code
      */
@@ -318,7 +318,7 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @return A response that only contains headers and response status code
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws StorageException If the directory doesn't exist or the file doesn't exist.
      */
@@ -359,7 +359,7 @@ public class FileClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file-properties">Azure Docs</a>.</p>
      *
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileProperties Storage file properties} with headers and status code
      */
@@ -415,7 +415,7 @@ public class FileClient {
      *
      * @param newFileSize New file size of the file
      * @param httpHeaders Resizes a file to the specified size. If the specified byte value is less than the current size of the file, then all ranges above the specified byte value are cleared.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Response containing the {@link FileInfo file info} with headers and status code
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -470,7 +470,7 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-metadata">Azure Docs</a>.</p>
      *
      * @param metadata Options.Metadata to set on the file, if null is passed the metadata for the file is cleared
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Response containing the {@link FileMetadataInfo file meta info} with headers and status code
      * @throws StorageException If the file doesn't exist or the metadata contains invalid keys
@@ -508,14 +508,14 @@ public class FileClient {
      *
      * <p>Upload "default" to the file. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-Context}
+     * {@codesnippet com.azure.storage.file.FileClient.uploadWithResponse#ByteBuffer-long-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
      * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is set to clear, the value of this header must be set to zero.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link FileUploadInfo file upload info}
      * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
@@ -532,7 +532,7 @@ public class FileClient {
      *
      * <p>Upload data "default" starting from 1024. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-long-Context}
+     * {@codesnippet com.azure.storage.file.FileClient.uploadWithResponse#ByteBuffer-long-long-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -540,7 +540,7 @@ public class FileClient {
      * @param data The data which will upload to the storage file.
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code null}
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileUploadInfo file upload info} with headers and response status code
      * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
@@ -576,14 +576,14 @@ public class FileClient {
      *
      * <p>Clear the range starting from 1024 with length of 1024. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.clearRangeWithResponse#long-long-Context}
+     * {@codesnippet com.azure.storage.file.FileClient.clearRangeWithResponse#long-long-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code null}
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileUploadInfo file upload info} with headers and response status code
      */
@@ -643,7 +643,7 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
      *
      * @param range Optional byte range which returns file data only from the specified range.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link FileRange ranges} in the files that satisfy the requirements
      */
@@ -682,7 +682,7 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>
      *
      * @param maxResults Optional max number of results returned per page
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link HandleItem handles} in the file that satisfy the requirements
      */
@@ -703,7 +703,7 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
      *
      * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all handles.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The counts of number of handles closed
      */

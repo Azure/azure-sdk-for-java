@@ -30,7 +30,6 @@ import com.azure.storage.queue.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.models.SignedIdentifier;
 import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.UpdatedMessage;
-import java.util.ArrayList;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;

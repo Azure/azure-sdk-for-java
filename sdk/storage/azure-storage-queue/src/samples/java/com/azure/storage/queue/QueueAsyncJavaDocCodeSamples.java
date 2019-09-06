@@ -198,11 +198,11 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer-duration
         client.dequeueMessages(5, Duration.ofSeconds(60))
             .subscribe(
-            dequeuedMessage -> System.out.println("The message got from dequeue operation: "
-                + dequeuedMessage.messageText()),
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete dequeuing the message!")
-        );
+                dequeuedMessage -> System.out.println("The message got from dequeue operation: "
+                    + dequeuedMessage.messageText()),
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete dequeuing the message!")
+            );
         // END: com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer-duration
     }
 

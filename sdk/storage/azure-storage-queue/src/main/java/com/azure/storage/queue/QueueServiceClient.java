@@ -6,17 +6,26 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.storage.common.*;
 import com.azure.core.util.Context;
+import com.azure.storage.common.AccountSASPermission;
+import com.azure.storage.common.AccountSASResourceType;
+import com.azure.storage.common.AccountSASService;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.queue.models.*;
-import reactor.core.publisher.Mono;
-
+import com.azure.storage.queue.models.CorsRule;
+import com.azure.storage.queue.models.QueueItem;
+import com.azure.storage.queue.models.QueuesSegmentOptions;
+import com.azure.storage.queue.models.StorageException;
+import com.azure.storage.queue.models.StorageServiceProperties;
+import com.azure.storage.queue.models.StorageServiceStats;
 import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue account in Azure Storage.
@@ -94,7 +103,7 @@ public final class QueueServiceClient {
      *
      * @param queueName Name of the queue
      * @param metadata Metadata to associate with the queue
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the QueueClient and the status of creating the queue
      * @throws StorageException If a queue with the same name and different metadata already exists
@@ -133,7 +142,7 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.deleteQueueWithResponse#string-duration-context}
      *
      * @param queueName Name of the queue
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the status of deleting the queue
      * @throws StorageException If the queue doesn't exist
@@ -158,7 +167,7 @@ public final class QueueServiceClient {
      * @return {@link QueueItem Queues} in the storage account
      */
     public PagedIterable<QueueItem> listQueues() {
-        return listQueues(null, null);
+        return listQueues(null, null, Context.NONE);
     }
 
     /**
@@ -171,17 +180,18 @@ public final class QueueServiceClient {
      *
      * <p>List all queues that begin with "azure"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions}
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
      *
      * @param options Options for listing queues
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      */
-    public PagedIterable<QueueItem> listQueues(QueuesSegmentOptions options, Duration timeout) {
-        return listQueues(null, options, timeout);
+    public PagedIterable<QueueItem> listQueues(QueuesSegmentOptions options, Duration timeout, Context context) {
+        return listQueues(null, options, timeout, context);
     }
 
     /**
@@ -192,11 +202,11 @@ public final class QueueServiceClient {
      *
      * @param marker Starting point to list the queues
      * @param options Options for listing queues
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      */
-    PagedIterable<QueueItem> listQueues(String marker, QueuesSegmentOptions options, Duration timeout) {
-        return new PagedIterable<>(client.listQueues(marker, options, timeout));
+    PagedIterable<QueueItem> listQueues(String marker, QueuesSegmentOptions options, Duration timeout, Context context) {
+        return new PagedIterable<>(client.listQueuesWithOptionalTimeout(marker, options, timeout, context));
     }
 
     /**
@@ -231,8 +241,8 @@ public final class QueueServiceClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-properties">Azure Docs</a>.</p>
      *
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return A response containing the Storage account Queue service properties
      */
     public Response<StorageServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
@@ -298,7 +308,7 @@ public final class QueueServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure Docs</a>.</p>
      *
      * @param properties Storage account Queue service properties
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
      * @throws StorageException When one of the following is true
@@ -348,7 +358,7 @@ public final class QueueServiceClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
      *
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the geo replication information about the Queue service
      */

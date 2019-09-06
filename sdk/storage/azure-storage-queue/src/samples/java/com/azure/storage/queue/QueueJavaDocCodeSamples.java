@@ -108,7 +108,7 @@ public class QueueJavaDocCodeSamples {
         VoidResponse response = client.createWithResponse(Collections.singletonMap("queue", "metadataMap"),
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete creating queue with status code: " + response.statusCode());
-        // END: com.azure.storage.queue.queueClient.createWithResponse#map-Context
+        // END: com.azure.storage.queue.queueClient.createWithResponse#map-duration-context
     }
 
     /**
@@ -128,11 +128,11 @@ public class QueueJavaDocCodeSamples {
      */
     public void enqueueMessageWithTimeoutOverload() {
 
-        // BEGIN: com.azure.storage.queue.queueClient.enqueueMessageWithResponse#string-duration-duration-Context
+        // BEGIN: com.azure.storage.queue.QueueClient.enqueueMessageWithResponse#String-Duration-Duration-Duration-Context1
         EnqueuedMessage enqueuedMessage = client.enqueueMessageWithResponse("Hello, Azure",
             Duration.ofSeconds(5), null, Duration.ofSeconds(1), new Context(key1, value1)).value();
         System.out.printf("Message %s expires at %s", enqueuedMessage.messageId(), enqueuedMessage.expirationTime());
-        // END: com.azure.storage.queue.queueClient.enqueueMessageWithResponse#string-duration-duration-Context
+        // END: com.azure.storage.queue.QueueClient.enqueueMessageWithResponse#String-Duration-Duration-Duration-Context1
     }
 
     /**
@@ -140,11 +140,11 @@ public class QueueJavaDocCodeSamples {
      * Duration, Context)}
      */
     public void enqueueMessageWithLiveTimeOverload() {
-        // BEGIN: com.azure.storage.queue.QueueClient.enqueueMessageWithResponse-liveTime#String-Duration-Duration-Context
+        // BEGIN: com.azure.storage.queue.QueueClient.enqueueMessageWithResponse#String-Duration-Duration-Duration-Context2
         EnqueuedMessage enqueuedMessage = client.enqueueMessageWithResponse("Goodbye, Azure",
             null, Duration.ofSeconds(5), Duration.ofSeconds(1), new Context(key1, value1)).value();
         System.out.printf("Message %s expires at %s", enqueuedMessage.messageId(), enqueuedMessage.expirationTime());
-        // END: com.azure.storage.queue.QueueClient.enqueueMessageWithResponse-liveTime#String-Duration-Duration-Context
+        // END: com.azure.storage.queue.QueueClient.enqueueMessageWithResponse#String-Duration-Duration-Duration-Context2
     }
 
     /**

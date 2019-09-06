@@ -120,15 +120,16 @@ public class QueueServiceJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueServiceClient#listQueues(QueuesSegmentOptions, Duration)} )}
+     * Generates a code sample for using {@link QueueServiceClient#listQueues(QueuesSegmentOptions, Duration, Context)} )}
      */
     public void listQueuesWithOverload() {
-        // BEGIN: com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions-duration
-        client.listQueues(new QueuesSegmentOptions().prefix("azure"), Duration.ofSeconds(1)).forEach(
-            queueItem -> System.out.printf("Queue %s exists in the account and has metadata %s",
+        // BEGIN: com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions-duration-context
+        client.listQueues(new QueuesSegmentOptions().prefix("azure"), Duration.ofSeconds(1),
+            new Context(key1, value1)).forEach(
+                queueItem -> System.out.printf("Queue %s exists in the account and has metadata %s",
                 queueItem.name(), queueItem.metadata())
         );
-        // END: com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions-duration
+        // END: com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions-duration-context
     }
 
     /**

@@ -192,12 +192,12 @@ public class FileJavaDocCodeSamples {
      */
     public void uploadWithResponse() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-Context
+        // BEGIN: com.azure.storage.file.FileClient.uploadWithResponse#ByteBuffer-long-Duration-Context
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         Response<FileUploadInfo> response = fileClient.uploadWithResponse(defaultData, defaultData.remaining(),
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete uploading the data with status code: " + response.statusCode());
-        // END: com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-Context
+        // END: com.azure.storage.file.FileClient.uploadWithResponse#ByteBuffer-long-Duration-Context
     }
 
     /**
@@ -206,12 +206,12 @@ public class FileJavaDocCodeSamples {
      */
     public void uploadWithResponseMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-long-Context
+        // BEGIN: com.azure.storage.file.FileClient.uploadWithResponse#ByteBuffer-long-long-Duration-Context
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         Response<FileUploadInfo> response = fileClient.uploadWithResponse(defaultData, defaultData.remaining(),
             1024, Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete uploading the data with status code: " + response.statusCode());
-        // END: com.azure.storage.file.fileClient.uploadWithResponse#bytebuffer-long-long-Context
+        // END: com.azure.storage.file.FileClient.uploadWithResponse#ByteBuffer-long-long-Duration-Context
     }
 
     /**
@@ -230,11 +230,11 @@ public class FileJavaDocCodeSamples {
      */
     public void clearRangeMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.clearRangeWithResponse#long-long-Context
+        // BEGIN: com.azure.storage.file.FileClient.clearRangeWithResponse#long-long-Duration-Context
         Response<FileUploadInfo> response = fileClient.clearRangeWithResponse(1024, 1024,
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete clearing the range with status code: " + response.statusCode());
-        // END: com.azure.storage.file.fileClient.clearRangeWithResponse#long-long-Context
+        // END: com.azure.storage.file.FileClient.clearRangeWithResponse#long-long-Duration-Context
     }
 
     /**
@@ -284,7 +284,7 @@ public class FileJavaDocCodeSamples {
      */
     public void downloadWithPropertiesWithResponse() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.downloadWithPropertiesWithResponse#filerange-boolean-Context
+        // BEGIN: com.azure.storage.file.FileClient.downloadWithPropertiesWithResponse#FileRange-Boolean-Duration-Context
         Response<FileDownloadInfo> response = fileClient.downloadWithPropertiesWithResponse(new FileRange(1024, 2047L),
             false, Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete downloading the data with status code: " + response.statusCode());
@@ -294,7 +294,7 @@ public class FileJavaDocCodeSamples {
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete downloading the data!")
         );
-        // END: com.azure.storage.file.fileClient.downloadWithPropertiesWithResponse#filerange-boolean-Context
+        // END: com.azure.storage.file.FileClient.downloadWithPropertiesWithResponse#FileRange-Boolean-Duration-Context
     }
 
     /**
