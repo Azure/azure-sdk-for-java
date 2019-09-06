@@ -456,10 +456,10 @@ public class ShareJavaDocCodeSamples {
      */
     public void createPermissionWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.createPermissionWithResponse#string-context
+        // BEGIN: com.azure.storage.file.shareClient.createPermissionWithResponse#string-context
         Response<String> response = shareClient.createPermissionWithResponse("filePermission", Context.NONE);
         System.out.printf("The file permission key is %s", response.value());
-        // END: com.azure.storage.file.shareAsyncClient.createPermissionWithResponse#string-context
+        // END: com.azure.storage.file.shareClient.createPermissionWithResponse#string-context
     }
 
     /**
@@ -467,10 +467,10 @@ public class ShareJavaDocCodeSamples {
      */
     public void getPermission() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.getPermission#string
+        // BEGIN: com.azure.storage.file.shareClient.getPermission#string
         String response = shareClient.getPermission("filePermissionKey");
         System.out.printf("The file permission is %s", response);
-        // END: com.azure.storage.file.shareAsyncClient.getPermission#string
+        // END: com.azure.storage.file.shareClient.getPermission#string
     }
 
     /**
@@ -478,10 +478,10 @@ public class ShareJavaDocCodeSamples {
      */
     public void getPermissionWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.getPermissionWithResponse#string-context
+        // BEGIN: com.azure.storage.file.shareClient.getPermissionWithResponse#string-context
         Response<String> response = shareClient.getPermissionWithResponse("filePermissionKey", Context.NONE);
         System.out.printf("The file permission is %s", response.value());
-        // END: com.azure.storage.file.shareAsyncClient.getPermissionWithResponse#string-context
+        // END: com.azure.storage.file.shareClient.getPermissionWithResponse#string-context
     }
 
     /**

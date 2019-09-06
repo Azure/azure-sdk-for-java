@@ -651,7 +651,7 @@ public class ShareClient {
     }
 
     /**
-     * Creates a permission a the share level. If a permission already exists, it returns the key of it,
+     * Creates a permission at the share level. If a permission already exists, it returns the key of it,
      * else creates a new permission and returns the key.
      *
      * <p><strong>Code Samples</strong></p>
@@ -666,7 +666,7 @@ public class ShareClient {
     }
 
     /**
-     * Creates a permission a the share level. If a permission already exists, it returns the key of it,
+     * Creates a permission t the share level. If a permission already exists, it returns the key of it,
      * else creates a new permission and returns the key.
      *
      * <p><strong>Code Samples</strong></p>
