@@ -397,8 +397,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Recovers the deleted secret from the key vault enabled for soft-delete. Prints out the details of the
-     * recovered secret
-     * returned in the response.</p>
+     * recovered secret returned in the response.</p>
      * //Assuming secret is deleted on a soft-delete enabled key vault.
      * {@codesnippet com.azure.security.keyvault.secretclient.recoverDeletedSecret#string}
      *
@@ -418,8 +417,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Recovers the deleted secret from the key vault enabled for soft-delete. Prints out the details of the
-     * recovered secret
-     * returned in the response.</p>
+     * recovered secret returned in the response.</p>
      * //Assuming secret is deleted on a soft-delete enabled key vault.
      * {@codesnippet com.azure.security.keyvault.secretclient.recoverDeletedSecretWithResponse#string-Context}
      *
@@ -478,8 +476,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Restores the secret in the key vault from its backup byte array. Prints out the details of the restored secret
-     * returned
-     * in the response.</p>
+     * returned in the response.</p>
      * //Pass the secret backup byte array of the secret to be restored.
      * {@codesnippet com.azure.security.keyvault.secretclient.restoreSecret#byte}
      *
@@ -497,8 +494,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Restores the secret in the key vault from its backup byte array. Prints out the details of the restored secret
-     * returned
-     * in the response.</p>
+     * returned in the response.</p>
      * //Pass the secret backup byte array of the secret to be restored.
      * {@codesnippet com.azure.security.keyvault.secretclient.restoreSecretWithResponse#byte-Context}
      *

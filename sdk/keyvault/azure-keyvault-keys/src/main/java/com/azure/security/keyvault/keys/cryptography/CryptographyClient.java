@@ -446,9 +446,8 @@ public final class CryptographyClient {
 
     /**
      * Unwraps a symmetric key using the configured key that was initially used for wrapping that key. This operation is
-     * the reverse of the wrap operation.
-     * The unwrap operation supports asymmetric and symmetric keys to unwrap. This operation requires the keys/unwrapKey
-     * permission.
+     * the reverse of the wrap operation. The unwrap operation supports asymmetric and symmetric keys to unwrap. This
+     * operation requires the keys/unwrapKey permission.
      *
      * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for wrapping the specified
      * key content. Possible values for asymmetric keys include:
