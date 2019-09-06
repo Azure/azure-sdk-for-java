@@ -119,7 +119,7 @@ class QueueServiceAPITests extends APISpec {
             primaryQueueServiceClient.createQueueWithResponse(queue.name(), queue.metadata(), null, null)
         }
         when:
-        def queueListIter = primaryQueueServiceClient.listQueues(options, null)
+        def queueListIter = primaryQueueServiceClient.listQueues(options, null, null)
         then:
         queueListIter.each {
             QueueTestHelper.assertQueuesAreEqual(it, testQueues.pop())
@@ -137,7 +137,7 @@ class QueueServiceAPITests extends APISpec {
         when:
         primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 60))
         then:
-        !primaryQueueServiceClient.listQueues(new QueuesSegmentOptions().prefix(methodName), null).iterator().hasNext()
+        !primaryQueueServiceClient.listQueues(new QueuesSegmentOptions().prefix(methodName), null, null).iterator().hasNext()
     }
 
     def "Get and set properties"() {
