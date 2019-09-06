@@ -44,8 +44,8 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  * @see ConfigurationClientBuilder
  * @see ConfigurationClientCredentials
  */
-@ServiceClient(builder = ConfigurationClientBuilder.class, isAsync = true, serviceInterfaces =
-    ConfigurationService.class)
+@ServiceClient(builder = ConfigurationClientBuilder.class, isAsync = true,
+    serviceInterfaces = ConfigurationService.class)
 public final class ConfigurationAsyncClient {
     private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClient.class);
 

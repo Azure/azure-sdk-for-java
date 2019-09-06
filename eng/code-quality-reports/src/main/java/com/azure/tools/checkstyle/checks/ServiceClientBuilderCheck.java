@@ -10,7 +10,7 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import java.util.Stack;
 
 /**
- * The @ServiceClientBuilder class should have the following rules:
+ * The {@literal @ServiceClientBuilder} class should have the following rules:
  * <ol>
  * <li>All service client builder should be named &lt;ServiceName&gt;ClientBuilder and annotated with
  * {@literal @ServiceClientBuilder}.</li>
@@ -20,7 +20,7 @@ import java.util.Stack;
 public class ServiceClientBuilderCheck extends AbstractCheck {
     private static final String SERVICE_CLIENT_BUILDER = "ServiceClientBuilder";
 
-    private Stack<Boolean> hasServiceClientBuilderAnnotationStack = new Stack();
+    private Stack<Boolean> hasServiceClientBuilderAnnotationStack = new Stack<>();
     private Stack<Boolean> hasBuildMethodStack = new Stack<>();
     private boolean hasServiceClientBuilderAnnotation;
     private boolean hasBuildMethod;
