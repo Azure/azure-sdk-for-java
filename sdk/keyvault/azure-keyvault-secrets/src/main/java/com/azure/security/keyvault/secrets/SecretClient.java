@@ -20,8 +20,8 @@ import java.util.List;
 /**
  * The SecretClient provides synchronous methods to manage {@link Secret secrets} in the Azure Key Vault. The client
  * supports creating, retrieving, updating, deleting, purging, backing up, restoring and listing the {@link Secret
- * secrets}. The client
- * also supports listing {@link DeletedSecret deleted secrets} for a soft-delete enabled Azure Key Vault.
+ * secrets}. The client also supports listing {@link DeletedSecret deleted secrets} for a soft-delete enabled Azure Key
+ * Vault.
  *
  * <p><strong>Samples to construct the sync client</strong></p>
  * {@codesnippet com.azure.security.keyvault.secretclient.sync.construct}
@@ -45,14 +45,12 @@ public final class SecretClient {
 
     /**
      * The set operation adds a secret to the Azure Key Vault. If the named secret already exists, a new version of the
-     * secret
-     * is created in the key vault. This operation requires the {@code secrets/set} permission.
+     * secret is created in the key vault. This operation requires the {@code secrets/set} permission.
      *
      * <p>The {@link Secret} is required. The {@link Secret#expires() expires}, {@link Secret#contentType() contentType}
      * and
      * {@link Secret#notBefore() notBefore} values in {@code secret} are optional. The {@link Secret#enabled() enabled}
-     * field is
-     * set to true by key vault, if not specified.</p>
+     * field is set to true by key vault, if not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * {@codesnippet com.azure.security.keyvault.secretclient.setSecret#secret}
@@ -132,13 +130,11 @@ public final class SecretClient {
 
     /**
      * Get the secret which represents {@link SecretBase secretBase} from the key vault. The get operation is applicable
-     * to any
-     * secret stored in Azure Key Vault. This operation requires the {@code secrets/get} permission.
+     * to any secret stored in Azure Key Vault. This operation requires the {@code secrets/get} permission.
      *
      * <p>The list operations {@link SecretClient#listSecrets()} and {@link SecretClient#listSecretVersions(String)}
-     * return
-     * the {@link List} containing {@link SecretBase base secret} as output excluding the include the value of the
-     * secret.
+     * return the {@link List} containing {@link SecretBase base secret} as output excluding the include the value of
+     * the secret.
      * This operation can then be used to get the full secret with its value from {@code secretBase}.</p>
      * <p><strong>Code Samples</strong></p>
      * {@codesnippet com.azure.security.keyvault.secretclient.getSecretWithResponse#secretBase}
@@ -148,8 +144,8 @@ public final class SecretClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Secret secret}.
      * @throws ResourceNotFoundException when a secret with {@link SecretBase#name() name} and {@link
      *     SecretBase#version() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link SecretBase#name()  name} or {@link SecretBase#version() version} is
-     *     empty string.
+     * @throws HttpRequestException if {@link SecretBase#name()  name} or {@link SecretBase#version() version} is empty
+     *     string.
      */
     public Response<Secret> getSecretWithResponse(SecretBase secretBase, Context context) {
         return client.getSecretWithResponse(secretBase, context).block();
@@ -157,13 +153,11 @@ public final class SecretClient {
 
     /**
      * Get the secret which represents {@link SecretBase secretBase} from the key vault. The get operation is applicable
-     * to any
-     * secret stored in Azure Key Vault. This operation requires the {@code secrets/get} permission.
+     * to any secret stored in Azure Key Vault. This operation requires the {@code secrets/get} permission.
      *
      * <p>The list operations {@link SecretClient#listSecrets()} and {@link SecretClient#listSecretVersions(String)}
-     * return
-     * the {@link List} containing {@link SecretBase base secret} as output excluding the include the value of the
-     * secret.
+     * return the {@link List} containing {@link SecretBase base secret} as output excluding the include the value of
+     * the secret.
      * This operation can then be used to get the full secret with its value from {@code secretBase}.</p>
      * <p><strong>Code Samples</strong></p>
      * {@codesnippet com.azure.security.keyvault.secretclient.getSecret#secretBase}
@@ -202,19 +196,17 @@ public final class SecretClient {
      * applicable to any secret stored in Azure Key Vault. This operation requires the {@code secrets/get} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets a specific version of the secret in the key vault. Subscribes to the call
-     * asynchronously and prints out the
-     * returned secret details when a response is received.</p>
+     * <p>Gets a specific version of the secret in the key vault. Subscribes to the call asynchronously and prints out
+     * the returned secret details when a response is received.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.getSecretWithResponse#string-string-Context}
      *
      * @param name The name of the secret, cannot be null
-     * @param version The version of the secret to retrieve. If this is an empty String or null, this
-     *     call is equivalent to calling {@link #getSecret(String)}, with the latest version being
-     *     retrieved.
+     * @param version The version of the secret to retrieve. If this is an empty String or null, this call is equivalent
+     *     to calling {@link #getSecret(String)}, with the latest version being retrieved.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Secret}.
-     * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't
-     *     exist in the key vault.
+     * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't exist in the key
+     *     vault.
      * @throws HttpRequestException if {@code name}  name} or {@code version} is empty string.
      */
     public Response<Secret> getSecretWithResponse(String name, String version, Context context) {
@@ -223,17 +215,16 @@ public final class SecretClient {
 
     /**
      * Updates the attributes associated with the specified secret, but not the value of the specified secret in the key
-     * vault. The update
-     * operation changes specified attributes of an existing stored secret and attributes that are not specified in the
-     * request are left unchanged.
-     * The value of a secret itself cannot be changed. This operation requires the {@code secrets/set} permission.
+     * vault. The update operation changes specified attributes of an existing stored secret and attributes that are not
+     * specified in the request are left unchanged. The value of a secret itself cannot be changed. This operation
+     * requires the {@code secrets/set} permission.
      *
      * <p>The {@code secret} is required and its fields {@link SecretBase#name() name} and {@link SecretBase#version()
      * version} cannot be null.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets the latest version of the secret, changes its expiry time and the updates the secret in the key
-     * vault.</p>
+     * <p>Gets the latest version of the secret, changes its expiry time and the updates the secret in the key vault.
+     * </p>
      * {@codesnippet com.azure.security.keyvault.secretclient.updateSecretWithResponse#secretBase-Context}
      *
      * @param secret The {@link SecretBase base secret} object with updated properties.
@@ -251,10 +242,9 @@ public final class SecretClient {
 
     /**
      * Updates the attributes associated with the specified secret, but not the value of the specified secret in the key
-     * vault. The update
-     * operation changes specified attributes of an existing stored secret and attributes that are not specified in the
-     * request are left unchanged.
-     * The value of a secret itself cannot be changed. This operation requires the {@code secrets/set} permission.
+     * vault. The update operation changes specified attributes of an existing stored secret and attributes that are not
+     * specified in the request are left unchanged. The value of a secret itself cannot be changed. This operation
+     * requires the {@code secrets/set} permission.
      *
      * <p>The {@code secret} is required and its fields {@link SecretBase#name() name} and {@link SecretBase#version()
      * version} cannot be null.</p>
@@ -278,11 +268,9 @@ public final class SecretClient {
 
     /**
      * Deletes a secret from the key vault. If soft-delete is enabled on the key vault then the secret is placed in the
-     * deleted state
-     * and requires to be purged for permanent deletion else the secret is permanently deleted. The delete operation
-     * applies to any secret stored in Azure Key Vault but
-     * it cannot be applied to an individual version of a secret. This operation requires the {@code secrets/delete}
-     * permission.
+     * deleted state and requires to be purged for permanent deletion else the secret is permanently deleted. The delete
+     * operation applies to any secret stored in Azure Key Vault but it cannot be applied to an individual version of a
+     * secret. This operation requires the {@code secrets/delete} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the secret from the keyvault. Prints out the recovery id of the deleted secret returned in the
@@ -301,11 +289,9 @@ public final class SecretClient {
 
     /**
      * Deletes a secret from the key vault. If soft-delete is enabled on the key vault then the secret is placed in the
-     * deleted state
-     * and requires to be purged for permanent deletion else the secret is permanently deleted. The delete operation
-     * applies to any secret stored in Azure Key Vault but
-     * it cannot be applied to an individual version of a secret. This operation requires the {@code secrets/delete}
-     * permission.
+     * deleted state and requires to be purged for permanent deletion else the secret is permanently deleted. The delete
+     * operation applies to any secret stored in Azure Key Vault but it cannot be applied to an individual version of a
+     * secret. This operation requires the {@code secrets/delete} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the secret from the keyvault. Prints out the recovery id of the deleted secret returned in the
@@ -329,8 +315,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the deleted secret from the key vault enabled for soft-delete. Prints out the details of the deleted
-     * secret
-     * returned in the response.</p>
+     * secret returned in the response.</p>
      * //Assuming secret is deleted on a soft-delete enabled key vault.
      * {@codesnippet com.azure.security.keyvault.secretclient.getDeletedSecret#string}
      *
@@ -349,8 +334,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the deleted secret from the key vault enabled for soft-delete. Prints out the details of the deleted
-     * secret
-     * returned in the response.</p>
+     * secret returned in the response.</p>
      * //Assuming secret is deleted on a soft-delete enabled key vault.
      * {@codesnippet com.azure.security.keyvault.secretclient.getDeletedSecretWithResponse#string-Context}
      *
@@ -529,22 +513,19 @@ public final class SecretClient {
 
     /**
      * List the secrets in the key vault. The list Secrets operation is applicable to the entire vault. The individual
-     * secret response
-     * in the list is represented by {@link SecretBase} as only the base secret identifier and its attributes are
-     * provided in the response. The secret values and individual secret versions are not listed in the response. This
-     * operation requires the {@code secrets/list} permission.
+     * secret response in the list is represented by {@link SecretBase} as only the base secret identifier and its
+     * attributes are provided in the response. The secret values and individual secret versions are not listed in the
+     * response. This operation requires the {@code secrets/list} permission.
      *
      * <p>It is possible to get full secrets with values from this information. Loop over the {@link SecretBase secret}
-     * and
-     * call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the {@link Secret secret} with
+     * and call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the {@link Secret secret} with
      * value included of its latest version.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets}
      *
      * <p><strong>Code Samples to iterate over secrets by page</strong></p>
      * <p>It is possible to get full secrets with values from this information. Iterate over all the {@link SecretBase
-     * secret} by page and
-     * call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the {@link Secret secret} with
-     * value included of its latest version.</p>
+     * secret} by page and call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the
+     * {@link Secret secret} with value included of its latest version.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets.iterableByPage}
      *
      * @return {@link PagedIterable} of {@link SecretBase} of all the secrets in the vault. The {@link SecretBase}
@@ -556,15 +537,13 @@ public final class SecretClient {
 
     /**
      * List the secrets in the key vault. The list Secrets operation is applicable to the entire vault. The individual
-     * secret response
-     * in the list is represented by {@link SecretBase} as only the base secret identifier and its attributes are
-     * provided in the response. The secret values and individual secret versions are not listed in the response. This
-     * operation requires the {@code secrets/list} permission.
+     * secret response in the list is represented by {@link SecretBase} as only the base secret identifier and its
+     * attributes are provided in the response. The secret values and individual secret versions are not listed in the
+     * response. This operation requires the {@code secrets/list} permission.
      *
      * <p><strong>Code Samples to iterate over secrets by page</strong></p>
      * <p>It is possible to get full secrets with values from this information. Loop over the {@link SecretBase secret}
-     * and
-     * call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the {@link Secret secret} with
+     * and call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the {@link Secret secret} with
      * value included of its latest version.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets#Context}
      *
@@ -578,9 +557,8 @@ public final class SecretClient {
 
     /**
      * Lists {@link DeletedSecret deleted secrets} of the key vault. The get deleted secrets operation returns the
-     * secrets that
-     * have been deleted for a vault enabled for soft-delete. This operation requires the {@code secrets/list}
-     * permission.
+     * secrets that have been deleted for a vault enabled for soft-delete. This operation requires the
+     * {@code secrets/list} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Lists the deleted secrets in the key vault and for each deleted secret prints out its recovery id.</p>
@@ -595,9 +573,8 @@ public final class SecretClient {
 
     /**
      * Lists {@link DeletedSecret deleted secrets} of the key vault. The get deleted secrets operation returns the
-     * secrets that
-     * have been deleted for a vault enabled for soft-delete. This operation requires the {@code secrets/list}
-     * permission.
+     * secrets that have been deleted for a vault enabled for soft-delete. This operation requires the
+     * {@code secrets/list} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Lists the deleted secrets in the key vault and for each deleted secret prints out its recovery id.</p>
@@ -616,14 +593,12 @@ public final class SecretClient {
 
     /**
      * List all versions of the specified secret. The individual secret response in the list is represented by {@link
-     * SecretBase}
-     * as only the base secret identifier and its attributes are provided in the response. The secret values are
-     * not provided in the response. This operation requires the {@code secrets/list} permission.
+     * SecretBase} as only the base secret identifier and its attributes are provided in the response. The secret values
+     * are not provided in the response. This operation requires the {@code secrets/list} permission.
      *
      * <p>It is possible to get full Secrets with values for each version from this information. Loop over the {@link
-     * SecretBase secret} and
-     * call {@link SecretClient#getSecret(SecretBase)} . This will return the {@link Secret} secrets with values
-     * included of the specified versions.</p>
+     * SecretBase secret} and call {@link SecretClient#getSecret(SecretBase)}. This will return the
+     * {@link Secret secrets} with values included of the specified versions.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string}
      *
      * @param name The name of the secret.
@@ -638,22 +613,19 @@ public final class SecretClient {
 
     /**
      * List all versions of the specified secret. The individual secret response in the list is represented by {@link
-     * SecretBase}
-     * as only the base secret identifier and its attributes are provided in the response. The secret values are
-     * not provided in the response. This operation requires the {@code secrets/list} permission.
+     * SecretBase} as only the base secret identifier and its attributes are provided in the response. The secret values
+     * are not provided in the response. This operation requires the {@code secrets/list} permission.
      *
      * <p>It is possible to get full Secrets with values for each version from this information. Loop over the {@link
-     * SecretBase secret} and
-     * call {@link SecretClient#getSecret(SecretBase)} . This will return the {@link Secret} secrets with values
-     * included of the specified versions.</p>
+     * SecretBase secret} and call {@link SecretClient#getSecret(SecretBase)} . This will return the
+     * {@link Secret secrets} with values included of the specified versions.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string-Context}
      *
      *
      * <p><strong>Code Samples to iterate over secret versions by page</strong></p>
      * <p>It is possible to get full Secrets with values for each version from this information. Iterate over all the
-     * {@link SecretBase secret} by each page and
-     * call {@link SecretClient#getSecret(SecretBase)} . This will return the {@link Secret} secrets with values
-     * included of the specified versions.</p>
+     * {@link SecretBase secret} by each page and call {@link SecretClient#getSecret(SecretBase)} . This will return the
+     * {@link Secret secrets} with values included of the specified versions.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string-Context-iterableByPage}
      *
      * @param name The name of the secret.

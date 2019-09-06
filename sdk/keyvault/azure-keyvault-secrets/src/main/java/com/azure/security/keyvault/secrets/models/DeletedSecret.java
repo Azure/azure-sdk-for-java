@@ -21,8 +21,7 @@ import java.time.ZoneOffset;
 public final class DeletedSecret extends SecretBase {
 
     /**
-     * The url of the recovery object, used to identify and recover the deleted
-     * secret.
+     * The url of the recovery object, used to identify and recover the deleted secret.
      */
     @JsonProperty(value = "recoveryId")
     private String recoveryId;
@@ -77,8 +76,7 @@ public final class DeletedSecret extends SecretBase {
 
     /**
      * Unpacks the scheduledPurageDate json response. Converts the {@link Long scheduledPurgeDate} epoch second value to
-     * OffsetDateTime and updates the
-     * value of class variable scheduledPurgeDate.
+     * OffsetDateTime and updates the value of class variable scheduledPurgeDate.
      */
     @JsonProperty("scheduledPurgeDate")
     private void unpackScheduledPurgeDate(Long scheduledPurgeDate) {
@@ -88,8 +86,7 @@ public final class DeletedSecret extends SecretBase {
 
     /**
      * Unpacks the deletedDate json response. Converts the {@link Long deletedDate} epoch second value to OffsetDateTime
-     * and updates the
-     * value of class variable deletedDate.
+     * and updates the value of class variable deletedDate.
      */
     @JsonProperty("deletedDate")
     private void deletedDate(Long deletedDate) {
