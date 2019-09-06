@@ -47,7 +47,7 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  * @see CertificateClientBuilder
  * @see PagedFlux
  */
-@ServiceClient(builder = CertificateAsyncClient.class, isAsync = true, serviceInterfaces = CertificateService.class)
+@ServiceClient(builder = CertificateClientBuilder.class, isAsync = true, serviceInterfaces = CertificateService.class)
 public class CertificateAsyncClient {
     static final String API_VERSION = "7.0";
     static final String ACCEPT_LANGUAGE = "en-US";
