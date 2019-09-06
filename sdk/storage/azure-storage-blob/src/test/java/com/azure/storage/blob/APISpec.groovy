@@ -447,7 +447,7 @@ class APISpec extends Specification {
      */
     def setupBlobMatchCondition(BlobClient bc, String match) {
         if (match == receivedEtag) {
-            return bc.getPropertiesWithResponse(null, null, null).headers().value("ETag")
+            return bc.getProperties().eTag()
         } else {
             return match
         }
@@ -455,7 +455,7 @@ class APISpec extends Specification {
 
     def setupBlobMatchCondition(BlobAsyncClient bac, String match) {
         if (match == receivedEtag) {
-            return bac.getPropertiesWithResponse(null, null).block().headers().value("ETag")
+            return bac.getProperties().block().eTag()
         } else {
             return match
         }
@@ -501,7 +501,7 @@ class APISpec extends Specification {
 
     def setupContainerMatchCondition(ContainerClient cu, String match) {
         if (match == receivedEtag) {
-            return cu.getPropertiesWithResponse(null, null, null).headers().value("ETag")
+            return cu.getProperties().eTag()
         } else {
             return match
         }
@@ -509,7 +509,7 @@ class APISpec extends Specification {
 
     def setupContainerLeaseCondition(ContainerClient cu, String leaseID) {
         if (leaseID == receivedLeaseID) {
-            return cu.acquireLeaseWithResponse(null, -1, null, null, null).value()
+            return cu.acquireLease(null, -1)
         } else {
             return leaseID
         }
