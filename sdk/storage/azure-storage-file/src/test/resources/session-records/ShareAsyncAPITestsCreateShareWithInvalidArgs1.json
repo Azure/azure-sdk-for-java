@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatesharewithinvalidargs151219a5d24?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/shareasyncapitestscreatesharewithinvalidargs1024330f6f0?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "06b663f8-d0c2-4427-ae25-60ac013a58b6"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "f56b20a8-5e71-480d-8f35-8297ba53f0b7"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "260",
       "StatusCode" : "400",
-      "x-ms-request-id" : "e7c18c8d-101a-0044-17c2-62ec1a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:e7c18c8d-101a-0044-17c2-62ec1a000000\nTime:2019-09-04T01:44:27.8772748Z</Message></Error>",
-      "Date" : "Wed, 04 Sep 2019 01:44:27 GMT",
-      "x-ms-client-request-id" : "06b663f8-d0c2-4427-ae25-60ac013a58b6",
+      "x-ms-request-id" : "36c45775-601a-0000-6244-64923b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:36c45775-601a-0000-6244-64923b000000\nTime:2019-09-05T23:48:44.7889627Z</Message></Error>",
+      "Date" : "Thu, 05 Sep 2019 23:48:44 GMT",
+      "x-ms-client-request-id" : "f56b20a8-5e71-480d-8f35-8297ba53f0b7",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareasyncapitestscreatesharewithinvalidargs151219a5d24" ]
+  "variables" : [ "shareasyncapitestscreatesharewithinvalidargs1024330f6f0" ]
 }

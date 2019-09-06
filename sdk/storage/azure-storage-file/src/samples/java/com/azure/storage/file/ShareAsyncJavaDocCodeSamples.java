@@ -10,12 +10,14 @@ import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.AccessPolicy;
 import com.azure.storage.file.models.FileHTTPHeaders;
+import com.azure.storage.file.models.NtfsFileAttributes;
 import com.azure.storage.file.models.SignedIdentifier;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
@@ -182,15 +184,18 @@ public class ShareAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#createDirectoryWithResponse(String, Map)}
+     * Generates a code sample for using {@link ShareAsyncClient#createDirectoryWithResponse(String, FileSmbProperties, String, Map)}
      */
     public void createDirectoryWithResponse() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.createDirectoryWithResponse#string-map
-        shareAsyncClient.createDirectoryWithResponse("documents", Collections.singletonMap("directory", "metadata"))
+        // BEGIN: com.azure.storage.file.shareAsyncClient.createDirectoryWithResponse#string-filesmbproperties-string-map
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        shareAsyncClient.createDirectoryWithResponse("documents", smbProperties, filePermission,
+            Collections.singletonMap("directory", "metadata"))
             .subscribe(response -> System.out.printf("Creating the directory completed with status code %d",
                 response.statusCode()));
-        // END: com.azure.storage.file.shareAsyncClient.createDirectoryWithResponse#string-map
+        // END: com.azure.storage.file.shareAsyncClient.createDirectoryWithResponse#string-filesmbproperties-string-map
     }
 
     /**
@@ -199,24 +204,35 @@ public class ShareAsyncJavaDocCodeSamples {
     public void createFileAsyncMaxOverload() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.createFile#string-long-filehttpheaders-map
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
         shareAsyncClient.createFile("myfile", 1024)
             .doOnSuccess(response -> System.out.println("Creating the file completed."));
         // END: com.azure.storage.file.shareAsyncClient.createFile#string-long-filehttpheaders-map
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#createFileWithResponse(String, long, FileHTTPHeaders, Map)}
+     * Generates a code sample for using {@link ShareAsyncClient#createFileWithResponse(String, long, FileHTTPHeaders, FileSmbProperties, String, Map)}
      */
     public void createFileWithResponse() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-filehttpheaders-map
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
-        shareAsyncClient.createFileWithResponse("myfile", 1024, httpHeaders,
+        // BEGIN: com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map
+        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
+            .fileContentType("text/html")
+            .fileContentEncoding("gzip")
+            .fileContentLanguage("en")
+            .fileCacheControl("no-transform")
+            .fileContentDisposition("attachment");
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .fileCreationTime(OffsetDateTime.now())
+            .fileLastWriteTime(OffsetDateTime.now())
+            .filePermissionKey("filePermissionKey");
+        String filePermission = "filePermission";
+        // NOTE: filePermission and filePermissionKey should never be both set
+        shareAsyncClient.createFileWithResponse("myfile", 1024, httpHeaders, smbProperties, filePermission,
             Collections.singletonMap("directory", "metadata"))
             .subscribe(response -> System.out.printf("Creating the file completed with status code %d",
                 response.statusCode()));
-        // END: com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-filehttpheaders-map
+        // END: com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map
     }
 
     /**
@@ -420,6 +436,50 @@ public class ShareAsyncJavaDocCodeSamples {
         shareAsyncClient.getStatistics().doOnSuccess(response -> System.out.printf("The share is using %d GB",
             response.getShareUsageInGB()));
         // END: com.azure.storage.file.shareAsyncClient.getStatistics
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareAsyncClient#createPermission(String)}
+     */
+    public void createPermissionAsync() {
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.shareAsyncClient.createPermission#string
+        shareAsyncClient.createPermission("filePermission").subscribe(
+            response -> System.out.printf("The file permission key is %s", response));
+        // END: com.azure.storage.file.shareAsyncClient.createPermission#string
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareAsyncClient#createPermissionWithResponse(String)}
+     */
+    public void createPermissionWithResponse() {
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.shareAsyncClient.createPermissionWithResponse#string
+        shareAsyncClient.createPermissionWithResponse("filePermission").subscribe(
+            response -> System.out.printf("The file permission key is %s", response.value()));
+        // END: com.azure.storage.file.shareAsyncClient.createPermissionWithResponse#string
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareAsyncClient#getPermission(String)}
+     */
+    public void getPermissionAsync() {
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.shareAsyncClient.getPermission#string
+        shareAsyncClient.getPermission("filePermissionKey").subscribe(
+            response -> System.out.printf("The file permission is %s", response));
+        // END: com.azure.storage.file.shareAsyncClient.getPermission#string
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareAsyncClient#getPermissionWithResponse(String)}
+     */
+    public void getPermissionWithResponse() {
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.shareAsyncClient.getPermissionWithResponse#string
+        shareAsyncClient.getPermissionWithResponse("filePermissionKey").subscribe(
+            response -> System.out.printf("The file permission is %s", response.value()));
+        // END: com.azure.storage.file.shareAsyncClient.getPermissionWithResponse#string
     }
 
     /**
