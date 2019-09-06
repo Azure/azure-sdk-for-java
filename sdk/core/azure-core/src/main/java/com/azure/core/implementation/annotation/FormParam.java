@@ -16,9 +16,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <pre>
  * {@literal @}POST("spellcheck")
- * {@literal Observable<Response<ResponseBody>>} spellChecker({@literal @}Header("X-BingApis-SDK") String xBingApisSDK,
- *         {@literal @}Query ("UserId") String userId, {@literal @}FormParam("Text") String text);
- * </pre>
+ * {@literal Observable<Response<ResponseBody>>} spellChecker(@Header("X-BingApis-SDK") String xBingApisSDK, @Query
+ * ("UserId") String userId, @FormParam("Text") String text);</pre>
  *
  * <p>The value of parameter text will be encoded and encoded value will be added to the form data sent to the API.</p>
  */

@@ -23,8 +23,8 @@ import static java.lang.annotation.ElementType.TYPE;
 @Inherited
 /**
  * Indicates functionality that is in preview and as such is subject to change in non-backwards compatible ways in
- * future releases, including removal, regardless of any compatibility expectations set by the containing library
- * version.
+ * future releases,
+ * including removal, regardless of any compatibility expectations set by the containing library version.
  *
  *  Examples:
  *

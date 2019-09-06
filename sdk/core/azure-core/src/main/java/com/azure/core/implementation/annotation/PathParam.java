@@ -18,11 +18,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <p><strong>Example 1:</strong></p>
  *
  * <pre>
- * {@literal @}GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/"
- *     + "Microsoft.Compute/virtualMachines/")
- * VirtualMachine getByResourceGroup(@PathParam("subscriptionId") String subscriptionId,
- *         @PathParam("resourceGroupName") String rgName, @PathParam("foo") String bar);
- * </pre>
+ * {@literal @}GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft
+ * .Compute/virtualMachines/")
+ *  VirtualMachine getByResourceGroup(@PathParam("subscriptionId") String subscriptionId, @PathParam
+ *  ("resourceGroupName") String rgName, @PathParam("foo") String bar);</pre>
  *
  * <p>The value of parameters subscriptionId, resourceGroupName will be encoded and encoded value will be used to
  * replace the corresponding path segment <code>{subscriptionId}</code>, <code>{resourceGroupName}</code>
@@ -34,7 +33,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <pre>
  * {@literal @}GET("http://wq.com/foo/{subpath}/values")
- * String getValues(@PathParam("subpath") String param1);</pre>
+ *  String getValues(@PathParam("subpath") String param1);</pre>
  *
  * <p>In this case, if consumer pass "a/b" as the value for param1 then the resolved url looks like:
  * "<code>http://wq.com/foo/a%2Fb/values</code>".</p>
@@ -43,7 +42,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <pre>
  * {@literal @}GET("http://wq.com/foo/{subpath}/values")
- * String getValues(@PathParam(value = "subpath", encoded = true) String param1);</pre>
+ *  String getValues(@PathParam(value = "subpath", encoded = true) String param1);</pre>
  *
  * <p>In this case, if consumer pass "a/b" as the value for param1 then the resolved url looks as expected:
  * "<code>http://wq.com/foo/a/b/values</code>".</p>

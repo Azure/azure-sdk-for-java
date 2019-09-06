@@ -29,7 +29,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <pre>
  * {@literal @}POST("formdata/stream/uploadfile")
- *  void uploadFileViaBody({@literal @}BodyParam("application/octet-stream") FileInputStream fileContent);</pre>
+ *  void uploadFileViaBody(@BodyParam("application/octet-stream") FileInputStream fileContent);</pre>
  */
 @Retention(RUNTIME)
 @Target(PARAMETER)

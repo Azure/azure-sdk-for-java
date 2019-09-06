@@ -17,19 +17,16 @@ import java.lang.annotation.Target;
  * <p><strong>Example 1: Relative path segments</strong></p>
  *
  * <pre>
- * {@literal @}Get("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft"
- *     + ".Compute/virtualMachines/{vmName}")
- * VirtualMachine getByResourceGroup({@literal @}PathParam("resourceGroupName") String rgName,
- *         {@literal @}PathParam("vmName") String vmName,
- *         {@literal @}PathParam("subscriptionId") String subscriptionId);
- * </pre>
+ * {@literal @}Get("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft
+ * .Compute/virtualMachines/{vmName}")
+ *  VirtualMachine getByResourceGroup(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String
+ *  vmName, @PathParam("subscriptionId") String subscriptionId);</pre>
  *
  * <p><strong>Example 2: Absolute path segment</strong></p>
  *
  * <pre>
  * {@literal @}Get({nextLink})
- * {@literal List<VirtualMachine>} listNext({@literal @}PathParam("nextLink") String nextLink);
- * </pre>
+ * {@literal List<VirtualMachine>} listNext(@PathParam("nextLink") String nextLink);</pre>
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

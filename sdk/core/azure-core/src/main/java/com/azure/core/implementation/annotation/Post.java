@@ -17,17 +17,17 @@ import java.lang.annotation.Target;
  * <p><strong>Example 1: Relative path segments</strong></p>
  *
  * <pre>
- * {@literal @}Post("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft"
- *     + ".Compute/virtualMachines/{vmName}/restart")
- * void restart(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String vmName,
- *         @PathParam("subscriptionId") String subscriptionId);</pre>
+ * {@literal @}Post("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft
+ * .Compute/virtualMachines/{vmName}/restart")
+ *  void restart(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String vmName, @PathParam
+ *  ("subscriptionId") String subscriptionId);</pre>
  *
  * <p><strong>Example 2: Absolute path segment</strong></p>
  *
  * <pre>
  * {@literal @}Post(https://{functionApp}.azurewebsites.net/admin/functions/{name}/keys/{keyName})
- * NameValuePair generateFunctionKey(@PathParam("functionApp") String functionApp,
- *         @PathParam("name") String function, @PathParam("keyName") String keyName);</pre>
+ *  NameValuePair generateFunctionKey(@PathParam("functionApp") String functionApp, @PathParam("name") String
+ *  function, @PathParam("keyName") String keyName);</pre>
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
