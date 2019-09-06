@@ -4,6 +4,7 @@
 package com.azure.storage.file.spock
 
 import com.azure.core.exception.HttpResponseException
+import com.azure.core.exception.UnexpectedLengthException
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.FileAsyncClient
 import com.azure.storage.file.models.FileHTTPHeaders
@@ -140,6 +141,26 @@ class FileAsyncAPITests extends APISpec {
         }
         cleanup:
         defaultData.clear()
+    }
+
+    @Unroll
+    def "Upload data length mismatch"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+        when:
+        def uploadErrorVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData),
+            size, 0))
+        then:
+        uploadErrorVerifier.verifyErrorSatisfies {
+            assert it instanceof UnexpectedLengthException
+            assert it.getMessage().contains(errMsg)
+        }
+        cleanup:
+        defaultData.clear()
+        where:
+        size | errMsg
+        6 | "more than"
+        8 | "less than"
     }
 
     def "Download data error"() {

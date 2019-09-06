@@ -40,67 +40,98 @@ interface ConfigurationService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<ConfigurationSetting>> getKeyValue(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
-                                                     @QueryParam("$select") String fields, @HeaderParam("Accept-Datetime") String acceptDatetime,
-                                                     @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
-                                                     Context context);
+    Mono<Response<ConfigurationSetting>> getKeyValue(
+        @HostParam("url") String url,
+        @PathParam("key") String key,
+        @QueryParam("label") String label,
+        @QueryParam("$select") String fields,
+        @HeaderParam("Accept-Datetime") String acceptDatetime,
+        @HeaderParam("If-Match") String ifMatch,
+        @HeaderParam("If-None-Match") String ifNoneMatch,
+        Context context);
 
     @Put("kv/{key}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {409}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(code = {412}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<ConfigurationSetting>> setKey(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
-                                                @BodyParam(ContentType.APPLICATION_JSON) ConfigurationSetting keyValueParameters,
-                                                @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
-                                                Context context);
+    Mono<Response<ConfigurationSetting>> setKey(
+        @HostParam("url") String url,
+        @PathParam("key") String key,
+        @QueryParam("label") String label,
+        @BodyParam(ContentType.APPLICATION_JSON) ConfigurationSetting keyValueParameters,
+        @HeaderParam("If-Match") String ifMatch,
+        @HeaderParam("If-None-Match") String ifNoneMatch,
+        Context context);
 
     @Delete("kv/{key}")
     @ExpectedResponses({200, 204})
     @UnexpectedResponseExceptionType(code = {409}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(code = {412}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<ConfigurationSetting>> delete(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
-                                                @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
-                                                Context context);
+    Mono<Response<ConfigurationSetting>> delete(
+        @HostParam("url") String url,
+        @PathParam("key") String key,
+        @QueryParam("label") String label,
+        @HeaderParam("If-Match") String ifMatch,
+        @HeaderParam("If-None-Match") String ifNoneMatch,
+        Context context);
 
     @Put("locks/{key}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<ConfigurationSetting>> lockKeyValue(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
-                                                      @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
-                                                      Context context);
+    Mono<Response<ConfigurationSetting>> lockKeyValue(
+        @HostParam("url") String url,
+        @PathParam("key") String key,
+        @QueryParam("label") String label,
+        @HeaderParam("If-Match") String ifMatch,
+        @HeaderParam("If-None-Match") String ifNoneMatch,
+        Context context);
 
     @Delete("locks/{key}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<ConfigurationSetting>> unlockKeyValue(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
-                                                        @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
-                                                        Context context);
+    Mono<Response<ConfigurationSetting>> unlockKeyValue(
+        @HostParam("url") String url,
+        @PathParam("key") String key,
+        @QueryParam("label") String label,
+        @HeaderParam("If-Match") String ifMatch,
+        @HeaderParam("If-None-Match") String ifNoneMatch,
+        Context context);
 
     @Get("kv")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(ConfigurationSettingPage.class)
-    Mono<PagedResponse<ConfigurationSetting>> listKeyValues(@HostParam("url") String url, @QueryParam("key") String key, @QueryParam("label") String label,
-                                                            @QueryParam("$select") String fields, @HeaderParam("Accept-Datetime") String acceptDatetime,
-                                                            Context context);
+    Mono<PagedResponse<ConfigurationSetting>> listKeyValues(
+        @HostParam("url") String url,
+        @QueryParam("key") String key,
+        @QueryParam("label") String label,
+        @QueryParam("$select") String fields,
+        @HeaderParam("Accept-Datetime") String acceptDatetime,
+        Context context);
 
     @Get("{nextUrl}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(ConfigurationSettingPage.class)
-    Mono<PagedResponse<ConfigurationSetting>> listKeyValues(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl,
-                                                            Context context);
+    Mono<PagedResponse<ConfigurationSetting>> listKeyValues(
+        @HostParam("url") String url,
+        @PathParam(value = "nextUrl", encoded = true) String nextUrl,
+        Context context);
 
     @Get("revisions")
     @ExpectedResponses({200, 206})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(ConfigurationSettingPage.class)
-    Mono<PagedResponse<ConfigurationSetting>> listKeyValueRevisions(@HostParam("url") String url, @QueryParam("key") String key,
-                                                                    @QueryParam("label") String label, @QueryParam("$select") String fields,
-                                                                    @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range,
-                                                                    Context context);
+    Mono<PagedResponse<ConfigurationSetting>> listKeyValueRevisions(
+        @HostParam("url") String url,
+        @QueryParam("key") String key,
+        @QueryParam("label") String label,
+        @QueryParam("$select") String fields,
+        @HeaderParam("Accept-Datetime") String acceptDatetime,
+        @HeaderParam("Range") String range,
+        Context context);
 }

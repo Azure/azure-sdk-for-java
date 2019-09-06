@@ -22,7 +22,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * {@literal @}Host("{accountName}.{suffix}")
  *  interface DatalakeService {
  *   {@literal @}GET("jobs/{jobIdentity}")
- *    Job getJob(@HostParam("accountName") String accountName, @HostParam("suffix") String suffix, @PathParam("jobIdentity") jobIdentity);
+ *    Job getJob(@HostParam("accountName") String accountName, @HostParam("suffix") String suffix, @PathParam
+ *    ("jobIdentity") jobIdentity);
  *  }</pre>
  *
  * <p><strong>Example 2: Unnamed parameter</strong></p>
@@ -41,7 +42,7 @@ public @interface HostParam {
      * The name of the variable in the endpoint uri template which will be replaced with the value
      * of the parameter annotated with this annotation.
      * @return The name of the variable in the endpoint uri template which will be replaced with the
-     * value of the parameter annotated with this annotation.
+     *     value of the parameter annotated with this annotation.
      */
     String value();
     /**

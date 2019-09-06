@@ -49,16 +49,16 @@ final class SignatureEncoding {
             return Asn1DerSignatureEncoding.decode(asn1DerSignature, algorithm);
         } catch (IllegalArgumentException ex) {
             throw (IllegalArgumentException) new IllegalArgumentException(
-                    ex.getMessage() + " " + Hex.encodeHexString(asn1DerSignature)).initCause(ex);
+                ex.getMessage() + " " + Hex.encodeHexString(asn1DerSignature)).initCause(ex);
         }
     }
 
     /*
-    * Converts a raw ECDSA signature in the form R|S to an ASN.1 DER encoded signature.
-    * @param signature A raw ECDSA signature in the form R|S.
-    * @param algorithm The algorithm used to produce the given signature.
-    * @return The ASN.1 DER encoded signature of the given signature.
-    */
+     * Converts a raw ECDSA signature in the form R|S to an ASN.1 DER encoded signature.
+     * @param signature A raw ECDSA signature in the form R|S.
+     * @param algorithm The algorithm used to produce the given signature.
+     * @return The ASN.1 DER encoded signature of the given signature.
+     */
     static byte[] toAsn1Der(byte[] signature, String algorithm) throws NoSuchAlgorithmException {
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
 
@@ -76,17 +76,17 @@ final class SignatureEncoding {
     }
 
     /*
-    * Converts a raw ECDSA signature in the form R|S to an ASN.1 DER encoded signature.
-    * @param signature A raw ECDSA signature in the form R|S.
-    * @param algorithm The algorithm used to produce the given signature.
-    * @return The ASN.1 DER encoded signature of the given signature.
-    */
+     * Converts a raw ECDSA signature in the form R|S to an ASN.1 DER encoded signature.
+     * @param signature A raw ECDSA signature in the form R|S.
+     * @param algorithm The algorithm used to produce the given signature.
+     * @return The ASN.1 DER encoded signature of the given signature.
+     */
     static byte[] toAsn1Der(byte[] signature, Ecdsa algorithm) {
         try {
             return Asn1DerSignatureEncoding.encode(signature, algorithm);
         } catch (IllegalArgumentException ex) {
             throw (IllegalArgumentException) new IllegalArgumentException(
-                    ex.getMessage() + " " + Hex.encodeHexString(signature)).initCause(ex);
+                ex.getMessage() + " " + Hex.encodeHexString(signature)).initCause(ex);
         }
     }
 }
@@ -96,14 +96,17 @@ final class Asn1DerSignatureEncoding {
     // the EDCSA ASN.1 DER signature is in the format:
     // 0x30 b1 0x02 b2 (vr) 0x02 b3 (vs)
     // where:
-    //      * b1 one or more bytes equal to the length, in bytes, of the remaining list of bytes (from the first 0x02 to the end of the encoding)
+    //      * b1 one or more bytes equal to the length, in bytes, of the remaining list of bytes (from the first 0x02
+    //      to the end of the encoding)
     //      * b2 one or more bytes equal to the length, in bytes, of (vr)
     //      * b3 one or more bytes equal to the length, in bytes, of (vs)
     //     (vr) is the signed big-endian encoding of the value "r", of minimal length
     //     (vs) is the signed big-endian encoding of the value "s", of minimal length
     //
-    //      * lengths which are less than 0x80 can be expressed in one byte.  For lengths greater then 0x80 the first byte denotes the
-    //        length in bytes of the length with the most significant bit masked off, i.e. 0x81 denotes the length is one byte long.
+    //      * lengths which are less than 0x80 can be expressed in one byte.  For lengths greater then 0x80 the first
+    //      byte denotes the
+    //        length in bytes of the length with the most significant bit masked off, i.e. 0x81 denotes the length is
+    //        one byte long.
 
     private Asn1DerSignatureEncoding() {
 

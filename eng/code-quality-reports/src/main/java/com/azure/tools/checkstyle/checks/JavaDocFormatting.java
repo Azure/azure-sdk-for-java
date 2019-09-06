@@ -9,8 +9,8 @@ import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 
 /**
- *  Description text should only have one space character after the parameter name or {@code @return} statement.
- *  Text should not start on a new line or have any additional spacing or indentation.
+ * Description text should only have one space character after the parameter name or {@code @return} statement.
+ * Text should not start on a new line or have any additional spacing or indentation.
  */
 public class JavaDocFormatting extends AbstractJavadocCheck {
 
@@ -22,7 +22,8 @@ public class JavaDocFormatting extends AbstractJavadocCheck {
     private static final String ERROR_DESCRIPTION_ON_NEW_LINE = "Description for %s must be on same the same line.";
     private static final String ERROR_NO_DESCRIPTION = "Description is missing for %s. Consider adding a description.";
     private static final String ERROR_NO_WS_AFTER_IDENT = "No white space after %s. Consider fixing format.";
-    private static final String ERROR_EXTRA_SPACE = "Only one white space is expected after %s. Consider removing extra spaces.";
+    private static final String ERROR_EXTRA_SPACE =
+        "Only one white space is expected after %s. Consider removing extra spaces.";
 
     @Override
     public int[] getAcceptableJavadocTokens() {

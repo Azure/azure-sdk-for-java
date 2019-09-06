@@ -52,11 +52,14 @@ public class ConfigurationClientCredentials {
     /**
      * Creates an instance that is able to authorize requests to Azure App Configuration service.
      *
-     * @param connectionString Connection string in the format "endpoint={endpoint_value};id={id_value};secret={secret_value}"
+     * @param connectionString Connection string in the format "endpoint={endpoint_value};id={id_value};
+     *     secret={secret_value}"
      * @throws NoSuchAlgorithmException When the HMAC-SHA256 MAC algorithm cannot be instantiated.
-     * @throws InvalidKeyException When the {@code connectionString} secret is invalid and cannot instantiate the HMAC-SHA256 algorithm.
+     * @throws InvalidKeyException When the {@code connectionString} secret is invalid and cannot instantiate the
+     *     HMAC-SHA256 algorithm.
      */
-    public ConfigurationClientCredentials(String connectionString) throws InvalidKeyException, NoSuchAlgorithmException {
+    public ConfigurationClientCredentials(String connectionString)
+        throws InvalidKeyException, NoSuchAlgorithmException {
         credentials = new CredentialInformation(connectionString);
         headerProvider = new AuthorizationHeaderProvider(credentials);
     }
@@ -78,7 +81,8 @@ public class ConfigurationClientCredentials {
      * @return a flux of headers to add for authorization
      * @throws NoSuchAlgorithmException If the SHA-256 algorithm doesn't exist.
      */
-    public Mono<Map<String, String>> getAuthorizationHeadersAsync(URL url, String httpMethod, Flux<ByteBuffer> contents) {
+    public Mono<Map<String, String>> getAuthorizationHeadersAsync(URL url, String httpMethod,
+                                                                  Flux<ByteBuffer> contents) {
         return contents
             .collect(() -> {
                 try {
@@ -91,22 +95,28 @@ public class ConfigurationClientCredentials {
                         messageDigest.update(byteBuffer);
                     }
                 })
-            .flatMap(messageDigest -> Mono.just(headerProvider.getAuthenticationHeaders(url, httpMethod, messageDigest)));
+            .flatMap(messageDigest -> Mono.just(headerProvider.getAuthenticationHeaders(
+                url,
+                httpMethod,
+                messageDigest)));
     }
 
     private static class AuthorizationHeaderProvider {
         private final String signedHeadersValue = String.join(";", SIGNED_HEADERS);
+        private static final String HMAC_SHA256 = "HMAC-SHA256 Credential=%s, SignedHeaders=%s, Signature=%s";
         private final CredentialInformation credentials;
         private final Mac sha256HMAC;
 
-        AuthorizationHeaderProvider(CredentialInformation credentials) throws NoSuchAlgorithmException, InvalidKeyException {
+        AuthorizationHeaderProvider(CredentialInformation credentials)
+            throws NoSuchAlgorithmException, InvalidKeyException {
             this.credentials = credentials;
 
             sha256HMAC = Mac.getInstance("HmacSHA256");
             sha256HMAC.init(new SecretKeySpec(credentials.secret(), "HmacSHA256"));
         }
 
-        private Map<String, String> getAuthenticationHeaders(final URL url, final String httpMethod, final MessageDigest messageDigest) {
+        private Map<String, String> getAuthenticationHeaders(final URL url, final String httpMethod,
+                                                             final MessageDigest messageDigest) {
             final Map<String, String> headers = new HashMap<>();
             final String contentHash = Base64.getEncoder().encodeToString(messageDigest.digest());
 
@@ -139,11 +149,10 @@ public class ConfigurationClientCredentials {
             // The line separator has to be \n. Using %n with String.format will result in a 401 from the service.
             String stringToSign = httpMethod.toUpperCase(Locale.US) + "\n" + pathAndQuery + "\n" + signed;
 
-            final String signature = Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
-            httpHeaders.put(AUTHORIZATION_HEADER, String.format("HMAC-SHA256 Credential=%s, SignedHeaders=%s, Signature=%s",
-                credentials.id(),
-                signedHeadersValue,
-                signature));
+            final String signature =
+                Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
+            httpHeaders.put(AUTHORIZATION_HEADER,
+                String.format(HMAC_SHA256, credentials.id(), signedHeadersValue, signature));
         }
     }
 
