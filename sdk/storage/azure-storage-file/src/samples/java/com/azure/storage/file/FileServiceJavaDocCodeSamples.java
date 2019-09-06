@@ -143,7 +143,7 @@ public class FileServiceJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix-duration-context
         fileServiceClient.listShares(new ListSharesOptions().prefix("azure"), Duration.ofSeconds(1),
             new Context(key1, value1)).forEach(
-            shareItem -> System.out.printf("Share %s exists in the account", shareItem.name())
+                shareItem -> System.out.printf("Share %s exists in the account", shareItem.name())
         );
         // END: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix-duration-context
     }

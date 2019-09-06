@@ -697,7 +697,7 @@ public class FileClient {
      *
      * <p>Force close handles with handles returned by list handles in recursive.</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.forceCloseHandles#string-duration}
+     * {@codesnippet com.azure.storage.file.fileClient.forceCloseHandles#string-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>

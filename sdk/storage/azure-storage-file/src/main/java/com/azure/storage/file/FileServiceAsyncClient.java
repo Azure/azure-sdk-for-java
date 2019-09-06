@@ -173,32 +173,31 @@ public final class FileServiceAsyncClient {
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
      PagedFlux<ShareItem> listSharesWithOptionalTimeout(String marker, ListSharesOptions options, Duration timeout, Context context) {
-        final String prefix = (options != null) ? options.prefix() : null;
-        final Integer maxResults = (options != null) ? options.maxResults() : null;
-        List<ListSharesIncludeType> include = new ArrayList<>();
+         final String prefix = (options != null) ? options.prefix() : null;
+         final Integer maxResults = (options != null) ? options.maxResults() : null;
+         List<ListSharesIncludeType> include = new ArrayList<>();
 
-        if (options != null) {
-            if (options.includeMetadata()) {
-                include.add(ListSharesIncludeType.fromString(ListSharesIncludeType.METADATA.toString()));
-            }
+         if (options != null) {
+             if (options.includeMetadata()) {
+                 include.add(ListSharesIncludeType.fromString(ListSharesIncludeType.METADATA.toString()));
+             }
 
-            if (options.includeSnapshots()) {
-                include.add(ListSharesIncludeType.fromString(ListSharesIncludeType.SNAPSHOTS.toString()));
-            }
-        }
+             if (options.includeSnapshots()) {
+                 include.add(ListSharesIncludeType.fromString(ListSharesIncludeType.SNAPSHOTS.toString()));
+             }
+         }
 
-        Function<String, Mono<PagedResponse<ShareItem>>> retriever =
-            nextMarker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
-                .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include, null, context), timeout)
-            .map(response -> new PagedResponseBase<>(response.request(),
-                response.statusCode(),
-                response.headers(),
-                response.value().shareItems(),
-                response.value().nextMarker(),
-                response.deserializedHeaders())));
-
-        return new PagedFlux<>(() -> retriever.apply(marker), retriever);
-    }
+         Function<String, Mono<PagedResponse<ShareItem>>> retriever =
+             nextMarker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
+                 .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include, null, context), timeout)
+             .map(response -> new PagedResponseBase<>(response.request(),
+                 response.statusCode(),
+                 response.headers(),
+                 response.value().shareItems(),
+                 response.value().nextMarker(),
+                 response.deserializedHeaders())));
+         return new PagedFlux<>(() -> retriever.apply(marker), retriever);
+     }
 
     /**
      * Retrieves the properties of the storage account's File service. The properties range from storage analytics and

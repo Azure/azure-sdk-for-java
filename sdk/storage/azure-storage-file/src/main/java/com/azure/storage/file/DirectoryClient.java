@@ -287,6 +287,7 @@ public class DirectoryClient {
      * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all handles.
      * @param recursive A boolean value that specifies if the operation should also apply to the files and subdirectories of the directory specified in the URI.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The counts of number of handles closed.
      */
     public PagedIterable<Integer> forceCloseHandles(String handleId, boolean recursive, Duration timeout, Context context) {

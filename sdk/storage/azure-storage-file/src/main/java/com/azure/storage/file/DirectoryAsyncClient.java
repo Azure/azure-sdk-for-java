@@ -25,11 +25,9 @@ import com.azure.storage.file.models.DirectorysGetPropertiesResponse;
 import com.azure.storage.file.models.DirectorysListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.models.DirectorysSetMetadataResponse;
 import com.azure.storage.file.models.FileHTTPHeaders;
-import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileRef;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
-import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;

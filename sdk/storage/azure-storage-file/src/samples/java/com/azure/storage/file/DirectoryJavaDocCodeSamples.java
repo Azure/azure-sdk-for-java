@@ -183,8 +183,8 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer-duration-context
         directoryClient.listFilesAndDirectories("subdir", 10, Duration.ofSeconds(1),
             new Context(key1, value1)).forEach(
-            fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
-                fileRef.isDirectory(), fileRef.name())
+                fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
+                    fileRef.isDirectory(), fileRef.name())
         );
         // END: com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer-duration-context
     }
@@ -205,11 +205,11 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void deleteFileWithResponse() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.DirectoryClient.deleteFileWithResponse#string--duration-context
+        // BEGIN: com.azure.storage.file.DirectoryClient.deleteFileWithResponse#string-duration-context
         VoidResponse response = directoryClient.deleteFileWithResponse("myfile",
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Completed deleting the file with status code: " + response.statusCode());
-        // END: com.azure.storage.file.DirectoryClient.deleteFileWithResponse#string--duration-context
+        // END: com.azure.storage.file.DirectoryClient.deleteFileWithResponse#string-duration-context
     }
 
     /**

@@ -13,7 +13,6 @@ import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.ListSharesOptions;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -145,9 +144,9 @@ public class FileServiceAsyncJavaDocCodeSamples {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.prefix
         fileServiceAsyncClient.listShares(new ListSharesOptions().prefix("azure")).subscribe(
-                shareItem -> System.out.printf("Share %s exists in the account", shareItem.name()),
-                error -> System.err.print(error.toString()),
-                () -> System.out.println("Complete listing the shares!")
+            shareItem -> System.out.printf("Share %s exists in the account", shareItem.name()),
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Complete listing the shares!")
         );
         // END: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.prefix
     }
@@ -163,7 +162,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
                 shareItem -> System.out.printf("Share %s exists in the account", shareItem.name()),
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete listing the shares!")
-        );
+            );
         // END: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot
     }
 
