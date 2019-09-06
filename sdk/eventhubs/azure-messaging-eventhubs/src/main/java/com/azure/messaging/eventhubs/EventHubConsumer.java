@@ -82,9 +82,11 @@ public class EventHubConsumer implements Closeable {
         Objects.requireNonNull(maximumWaitTime, "'maximumWaitTime' cannot be null.");
 
         if (maximumMessageCount < 1) {
-            throw new IllegalArgumentException("'maximumMessageCount' cannot be less than 1.");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'maximumMessageCount' cannot be less than 1."));
         } else if (maximumWaitTime.isNegative() || maximumWaitTime.isZero()) {
-            throw new IllegalArgumentException("'maximumWaitTime' cannot be zero or less.");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
         }
 
         final Flux<EventData> events = Flux.create(emitter -> {
